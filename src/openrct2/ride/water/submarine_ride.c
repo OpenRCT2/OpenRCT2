@@ -111,7 +111,7 @@ static void submarine_ride_paint_track_flat(paint_session * session, uint8 rideI
     }
 
     if (track_paint_util_should_paint_supports(position)) {
-        metal_a_supports_paint_setup((direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, heightLower, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, heightLower, gTrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -125,14 +125,14 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(paint_session *
 
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_STICK, 4, -1, height - 16, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, gTrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B4, direction), 0xFFFF, 0);
             break;
         case 2:
             paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_STICK, 4, -1, height - 16, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_STICK, 4, -1, height - 16, gTrackColours[SCHEME_SUPPORTS]);
             paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0, direction), 0xFFFF, 0);
             break;
     }

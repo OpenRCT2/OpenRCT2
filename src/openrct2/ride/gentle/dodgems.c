@@ -54,7 +54,7 @@ static void paint_dodgems(paint_session * session, uint8 rideIndex, uint8 trackS
     rct_ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
     uint32 imageId = SPR_DODGEMS_FLOOR | gTrackColours[SCHEME_SUPPORTS];
     sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());

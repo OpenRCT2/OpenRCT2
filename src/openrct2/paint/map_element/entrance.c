@@ -173,7 +173,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     if (image_id == 0) {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
@@ -267,7 +267,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     if (image_id == 0) {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(direction & 1, 0, height, image_id, NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 80, 0x20);

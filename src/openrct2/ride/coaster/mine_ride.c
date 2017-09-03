@@ -34,14 +34,14 @@ static void mine_ride_track_flat(paint_session * session, uint8 rideIndex, uint8
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19338, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19339, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -61,7 +61,7 @@ static void mine_ride_track_station(paint_session * session, uint8 rideIndex, ui
 
     sub_98197C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height + 3);
     sub_98196C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
-    track_paint_util_draw_station_metal_supports_2(direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
+    track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -75,25 +75,25 @@ static void mine_ride_track_25_deg_up(paint_session * session, uint8 rideIndex, 
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19388, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19389, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19390, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19391, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -113,25 +113,25 @@ static void mine_ride_track_flat_to_25_deg_up(paint_session * session, uint8 rid
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19380, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19381, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19382, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19383, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -151,25 +151,25 @@ static void mine_ride_track_25_deg_up_to_flat(paint_session * session, uint8 rid
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19384, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19385, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19386, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19387, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -208,19 +208,19 @@ static void mine_ride_track_left_quarter_turn_5(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19427, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19432, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19437, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19422, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -293,19 +293,19 @@ static void mine_ride_track_left_quarter_turn_5(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19423, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19428, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19433, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19418, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -337,26 +337,26 @@ static void mine_ride_track_flat_to_left_bank(paint_session * session, uint8 rid
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19340, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19348, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19341, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19349, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19342, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19343, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -372,27 +372,27 @@ static void mine_ride_track_flat_to_right_bank(paint_session * session, uint8 ri
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19344, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19345, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19346, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19350, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19347, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19351, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -409,26 +409,26 @@ static void mine_ride_track_left_bank_to_flat(paint_session * session, uint8 rid
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19346, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19350, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19347, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19351, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19344, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19345, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -444,27 +444,27 @@ static void mine_ride_track_right_bank_to_flat(paint_session * session, uint8 ri
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19342, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19343, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19340, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19348, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19341, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19349, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -482,19 +482,19 @@ static void mine_ride_track_banked_left_quarter_turn_5(paint_session * session, 
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19447, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19458, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19452, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19457, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19442, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -567,20 +567,20 @@ static void mine_ride_track_banked_left_quarter_turn_5(paint_session * session, 
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19443, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19448, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19453, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19459, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19438, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -612,26 +612,26 @@ static void mine_ride_track_left_bank_to_25_deg_up(paint_session * session, uint
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19352, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19356, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19353, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19357, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19354, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19355, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -651,27 +651,27 @@ static void mine_ride_track_right_bank_to_25_deg_up(paint_session * session, uin
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19358, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19359, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19360, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19362, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19361, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19363, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -692,26 +692,26 @@ static void mine_ride_track_25_deg_up_to_left_bank(paint_session * session, uint
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19364, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19368, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19365, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19369, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19366, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19367, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -731,27 +731,27 @@ static void mine_ride_track_25_deg_up_to_right_bank(paint_session * session, uin
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19370, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19371, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19372, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19374, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19373, 0, 0, 32, 20, 3, height, 0, 6, height);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19375, 0, 0, 32, 1, 34, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -795,25 +795,25 @@ static void mine_ride_track_left_bank(paint_session * session, uint8 rideIndex, 
     case 0:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19376, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 1:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19377, 0, 0, 32, 1, 26, height, 0, 27, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 2:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19378, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     case 3:
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19379, 0, 0, 32, 20, 3, height, 0, 6, height);
         if (track_paint_util_should_paint_supports(session->MapPosition)) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         }
         break;
     }
@@ -836,19 +836,19 @@ static void mine_ride_track_s_bend_left(paint_session * session, uint8 rideIndex
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19460, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19464, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19463, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19467, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -861,11 +861,11 @@ static void mine_ride_track_s_bend_left(paint_session * session, uint8 rideIndex
         switch (direction) {
         case 0:
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19461, 0, 0, 32, 26, 3, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 5, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 3, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19465, 0, 0, 32, 26, 3, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19462, 0, 0, 32, 26, 3, height, 0, 6, height);
@@ -887,11 +887,11 @@ static void mine_ride_track_s_bend_left(paint_session * session, uint8 rideIndex
             break;
         case 2:
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19461, 0, 0, 32, 26, 3, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 5, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 3, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19465, 0, 0, 32, 26, 3, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -901,19 +901,19 @@ static void mine_ride_track_s_bend_left(paint_session * session, uint8 rideIndex
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19463, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19467, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19460, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19464, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -938,19 +938,19 @@ static void mine_ride_track_s_bend_right(paint_session * session, uint8 rideInde
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19468, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19472, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19471, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19475, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -963,11 +963,11 @@ static void mine_ride_track_s_bend_right(paint_session * session, uint8 rideInde
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19469, 0, 0, 32, 26, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19473, 0, 0, 32, 26, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19470, 0, 0, 32, 26, 3, height);
@@ -989,11 +989,11 @@ static void mine_ride_track_s_bend_right(paint_session * session, uint8 rideInde
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19469, 0, 0, 32, 26, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19473, 0, 0, 32, 26, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -1003,19 +1003,19 @@ static void mine_ride_track_s_bend_right(paint_session * session, uint8 rideInde
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19471, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19475, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19468, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19472, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1040,19 +1040,19 @@ static void mine_ride_track_left_quarter_turn_3(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19397, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19400, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19403, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19394, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1086,19 +1086,19 @@ static void mine_ride_track_left_quarter_turn_3(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19395, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19398, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19401, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19392, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1131,19 +1131,19 @@ static void mine_ride_track_left_quarter_turn_3_bank(paint_session * session, ui
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19409, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19416, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19412, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19415, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19406, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1177,20 +1177,20 @@ static void mine_ride_track_left_quarter_turn_3_bank(paint_session * session, ui
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19407, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19410, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19413, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19417, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19404, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1223,19 +1223,19 @@ static void mine_ride_track_left_half_banked_helix_up_small(paint_session * sess
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19495, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19502, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19498, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19501, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19492, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1269,20 +1269,20 @@ static void mine_ride_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19493, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19496, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19499, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19503, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19490, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1300,20 +1300,20 @@ static void mine_ride_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19492, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19495, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19502, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19498, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19501, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1352,20 +1352,20 @@ static void mine_ride_track_left_half_banked_helix_up_small(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19490, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19493, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19496, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19499, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19503, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1385,20 +1385,20 @@ static void mine_ride_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19476, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19479, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19482, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19485, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19489, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 11, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 11, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1432,20 +1432,20 @@ static void mine_ride_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19478, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19481, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19488, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19484, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19487, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1463,20 +1463,20 @@ static void mine_ride_track_right_half_banked_helix_up_small(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19479, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19482, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 9, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19485, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19489, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 11, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 11, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19476, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1516,19 +1516,19 @@ static void mine_ride_track_right_half_banked_helix_up_small(paint_session * ses
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19481, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19488, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 15, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19484, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19487, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19478, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 12, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1571,19 +1571,19 @@ static void mine_ride_track_left_half_banked_helix_up_large(paint_session * sess
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19535, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19546, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19540, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19545, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19530, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1656,20 +1656,20 @@ static void mine_ride_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19531, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19536, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19541, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19547, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19526, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1687,20 +1687,20 @@ static void mine_ride_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19530, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19535, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19546, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19540, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19545, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1778,20 +1778,20 @@ static void mine_ride_track_left_half_banked_helix_up_large(paint_session * sess
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19526, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19531, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19536, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19541, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19547, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1811,20 +1811,20 @@ static void mine_ride_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19504, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19509, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19514, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19519, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19525, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -1897,20 +1897,20 @@ static void mine_ride_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19508, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19513, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19524, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19518, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19523, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -1928,20 +1928,20 @@ static void mine_ride_track_right_half_banked_helix_up_large(paint_session * ses
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19509, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19514, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19519, 0, 0, 20, 32, 3, height, 6, 0, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19525, 0, 0, 1, 32, 26, height, 27, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19504, 0, 0, 20, 32, 3, height, 6, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         switch (direction) {
@@ -2020,19 +2020,19 @@ static void mine_ride_track_right_half_banked_helix_up_large(paint_session * ses
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19513, 0, 0, 32, 20, 3, height, 0, 6, height);
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19524, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19518, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19523, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19508, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -2072,26 +2072,26 @@ static void mine_ride_track_on_ride_photo(paint_session * session, uint8 rideInd
     switch (direction) {
     case 0:
         sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 5, 6, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19338, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
         break;
     case 1:
         sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19339, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
         break;
     case 2:
         sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 5, 6, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19338, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
         break;
     case 3:
         sub_98196C_rotated(direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 6, height, gTrackColours[SCHEME_SUPPORTS]);
         sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19339, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
         break;
     }
@@ -2109,19 +2109,19 @@ static void mine_ride_track_left_eighth_to_diag(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19564, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19568, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19572, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19576, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -2174,19 +2174,19 @@ static void mine_ride_track_left_eighth_to_diag(paint_session * session, uint8 r
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19567, 0, 0, 16, 16, 3, height, 16, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19571, 0, 0, 16, 18, 3, height, 0, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19575, 0, 0, 16, 16, 3, height, 0, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19579, 0, 0, 16, 16, 3, height, 16, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2203,19 +2203,19 @@ static void mine_ride_track_right_eighth_to_diag(paint_session * session, uint8 
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19548, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19552, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19556, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19560, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -2268,19 +2268,19 @@ static void mine_ride_track_right_eighth_to_diag(paint_session * session, uint8 
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19551, 0, 0, 16, 16, 3, height, 16, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19555, 0, 0, 16, 16, 3, height, 0, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19559, 0, 0, 16, 18, 3, height, 0, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19563, 0, 0, 16, 16, 3, height, 16, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2311,19 +2311,19 @@ static void mine_ride_track_left_eighth_bank_to_diag(paint_session * session, ui
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19596, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19600, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19604, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19608, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -2376,19 +2376,19 @@ static void mine_ride_track_left_eighth_bank_to_diag(paint_session * session, ui
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19599, 0, 0, 16, 16, 3, height, 16, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19603, 0, 0, 16, 18, 0, height, 0, 16, height + 27);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19607, 0, 0, 16, 16, 3, height, 0, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19611, 0, 0, 16, 16, 3, height, 16, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2405,19 +2405,19 @@ static void mine_ride_track_right_eighth_bank_to_diag(paint_session * session, u
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19580, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19584, 0, 0, 32, 20, 3, height, 0, 6, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19588, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19592, 0, 0, 32, 1, 26, height, 0, 27, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         if (direction == 0 || direction == 3) {
@@ -2470,19 +2470,19 @@ static void mine_ride_track_right_eighth_bank_to_diag(paint_session * session, u
         switch (direction) {
         case 0:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19583, 0, 0, 16, 16, 3, height, 16, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19587, 0, 0, 16, 16, 3, height, 0, 0, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19591, 0, 0, 16, 18, 0, height, 0, 16, height + 27);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19595, 0, 0, 16, 16, 3, height, 16, 16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
@@ -2539,17 +2539,17 @@ static void mine_ride_track_diag_flat(paint_session * session, uint8 rideIndex, 
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19613, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2592,17 +2592,17 @@ static void mine_ride_track_diag_25_deg_up(paint_session * session, uint8 rideIn
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19625, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2645,17 +2645,17 @@ static void mine_ride_track_diag_flat_to_25_deg_up(paint_session * session, uint
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19617, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2698,17 +2698,17 @@ static void mine_ride_track_diag_25_deg_up_to_flat(paint_session * session, uint
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19621, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2751,17 +2751,17 @@ static void mine_ride_track_diag_25_deg_down(paint_session * session, uint8 ride
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19627, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 14, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 14, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2801,17 +2801,17 @@ static void mine_ride_track_diag_flat_to_25_deg_down(paint_session * session, ui
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19623, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2855,17 +2855,17 @@ static void mine_ride_track_diag_25_deg_down_to_flat(paint_session * session, ui
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19619, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2909,17 +2909,17 @@ static void mine_ride_track_diag_flat_to_left_bank(paint_session * session, uint
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19633, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -2963,17 +2963,17 @@ static void mine_ride_track_diag_flat_to_right_bank(paint_session * session, uin
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19638, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3017,17 +3017,17 @@ static void mine_ride_track_diag_left_bank_to_flat(paint_session * session, uint
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19640, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3071,17 +3071,17 @@ static void mine_ride_track_diag_right_bank_to_flat(paint_session * session, uin
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19635, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3125,17 +3125,17 @@ static void mine_ride_track_diag_left_bank_to_25_deg_up(paint_session * session,
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19653, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3179,17 +3179,17 @@ static void mine_ride_track_diag_right_bank_to_25_deg_up(paint_session * session
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19658, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3233,17 +3233,17 @@ static void mine_ride_track_diag_25_deg_up_to_left_bank(paint_session * session,
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19643, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3287,17 +3287,17 @@ static void mine_ride_track_diag_25_deg_up_to_right_bank(paint_session * session
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19648, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3338,17 +3338,17 @@ static void mine_ride_track_diag_left_bank_to_25_deg_down(paint_session * sessio
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19650, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3390,17 +3390,17 @@ static void mine_ride_track_diag_right_bank_to_25_deg_down(paint_session * sessi
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19645, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 10, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3445,17 +3445,17 @@ static void mine_ride_track_diag_25_deg_down_to_left_bank(paint_session * sessio
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19660, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3499,17 +3499,17 @@ static void mine_ride_track_diag_25_deg_down_to_right_bank(paint_session * sessi
     case 3:
         switch (direction) {
         case 0:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19655, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_b_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_b_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3552,17 +3552,17 @@ static void mine_ride_track_diag_left_bank(paint_session * session, uint8 rideIn
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19629, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -3605,17 +3605,17 @@ static void mine_ride_track_diag_right_bank(paint_session * session, uint8 rideI
     case 3:
         switch (direction) {
         case 0:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 1:
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 19631, -16, -16, 32, 32, 3, height, -16, -16, height);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 2:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         case 3:
-            metal_a_supports_paint_setup(METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 6, height, gTrackColours[SCHEME_SUPPORTS]);
             break;
         }
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);

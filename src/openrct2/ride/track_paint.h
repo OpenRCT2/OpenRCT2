@@ -273,14 +273,14 @@ void track_paint_util_draw_station_3(uint8 rideIndex, uint8 trackSequence, uint8
 void track_paint_util_draw_station_inverted(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant);
 bool track_paint_util_should_paint_supports(rct_xy16 position);
 void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation);
-void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour);
-void track_paint_util_draw_station_metal_supports_2(uint8 direction, uint16 height, uint32 colour, uint8 type);
+void track_paint_util_draw_station_metal_supports(paint_session * session, uint8 direction, uint16 height, uint32 colour);
+void track_paint_util_draw_station_metal_supports_2(paint_session * session, uint8 direction, uint16 height, uint32 colour, uint8 type);
 
 void track_paint_util_right_quarter_turn_5_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const rct_xy16 offsets[4][5], const rct_xy16 boundsLengths[4][5], const rct_xyz16 boundsOffsets[4][5], uint8 rotation);
 void track_paint_util_right_quarter_turn_5_tiles_paint_2(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
 void track_paint_util_right_quarter_turn_5_tiles_paint_3(sint16 height, sint32 direction, uint8 rotation, uint8 trackSequence, uint32 colourFlags, const sprite_bb sprites[][5]);
 void track_paint_util_right_quarter_turn_5_tiles_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType);
-void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(sint16 height, uint8 direction, uint8 trackSequence);
+void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence);
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3);
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3);
 void track_paint_util_right_quarter_turn_3_tiles_paint(sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const rct_xy16 offsets[4][3], const rct_xy16 boundsLengths[4][3], const rct_xyz16 boundsOffsets[4][3], uint8 rotation);
@@ -306,7 +306,7 @@ void track_paint_util_right_quarter_turn_1_tile_tunnel(uint8 direction, uint16 b
 
 void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackSequence);
 
-void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height);
+void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 direction, uint16 height);
 
 typedef void (*TRACK_PAINT_FUNCTION)(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element* mapElement);
 typedef TRACK_PAINT_FUNCTION (*TRACK_PAINT_FUNCTION_GETTER)(sint32 trackType, sint32 direction);

@@ -26,7 +26,7 @@
 #include "../../world/scenery.h"
 
 // 6B8172:
-static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
+static void scenery_multiple_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
 {
     if (tile->var_7 & 0x20) {
         return;
@@ -46,7 +46,7 @@ static void scenery_multiple_paint_supports(uint8 direction, uint16 height, rct_
         supportImageColourFlags = dword_F4387C;
     }
 
-    wooden_b_supports_paint_setup((direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
+    wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
 
     sint32 clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
 
@@ -232,20 +232,20 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     boxlength.z = ah;
     sub_98197C(image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
     if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2) {
-        scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
         return;
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT) {
         if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
             sint32 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
             if (al != direction) {
-                scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+                scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
                 return;
             }
         }
         rct_drawpixelinfo* dpi = session->Unk140E9A8;
         if (dpi->zoom_level > 1) {
-            scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+            scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
             return;
         }
         // 6B8331:
@@ -326,12 +326,12 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     rct_drawpixelinfo* dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 0) {
-        scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
         return;
     }
     uint8 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
     if (al != direction) {
-        scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
         return;
     }
     // Draw scrolling text:
@@ -369,5 +369,5 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     uint16 scroll = (gCurrentTicks / 2) % string_width;
     sub_98199C(scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
-    scenery_multiple_paint_supports(direction, height, mapElement, dword_F4387C, tile);
+    scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
 }

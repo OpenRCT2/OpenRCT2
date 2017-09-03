@@ -860,9 +860,9 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
     }
 
     if (byte_98D8A4[edges] == 0) {
-        path_a_supports_paint_setup(0, ax, height, imageFlags, footpathEntry, NULL);
+        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, footpathEntry, NULL);
     } else {
-        path_a_supports_paint_setup(1, ax, height, imageFlags, footpathEntry, NULL);
+        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, footpathEntry, NULL);
     }
 
     height += 32;
@@ -982,7 +982,7 @@ void path_paint_box_support(paint_session * session, rct_map_element* mapElement
 
     for (sint8 i = 3; i > -1; --i) {
         if (!(edges & (1 << i))) {
-            path_b_supports_paint_setup(supports[i], ax, height, imageFlags, footpathEntry);
+            path_b_supports_paint_setup(session, supports[i], ax, height, imageFlags, footpathEntry);
         }
     }
 

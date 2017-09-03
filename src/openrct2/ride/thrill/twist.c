@@ -89,7 +89,7 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
 
     uint32 imageId;
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
     track_paint_util_paint_floor(edges, gTrackColours[SCHEME_MISC], height, floorSpritesCork, get_current_rotation());
 

@@ -91,7 +91,7 @@ static void chairlift_paint_util_draw_supports(paint_session * session, sint32 s
             continue;
         }
 
-        if (metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS])) {
+        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS])) {
             success = true;
         }
     }
@@ -107,7 +107,7 @@ static void chairlift_paint_util_draw_supports(paint_session * session, sint32 s
         }
         uint16 temp = supportSegments[s].height;
         supportSegments[s].height = session->Support.height;
-        metal_a_supports_paint_setup(METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }
@@ -176,7 +176,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 0, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
     if (!isStart && !isEnd) {
         imageId = ((direction == 0) ? SPR_20502 : SPR_20504) | gTrackColours[SCHEME_TRACK];
@@ -255,7 +255,7 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
     if (!isStart && !isEnd) {
         imageId = ((direction == 1) ? SPR_20503 : SPR_20505) | gTrackColours[SCHEME_TRACK];

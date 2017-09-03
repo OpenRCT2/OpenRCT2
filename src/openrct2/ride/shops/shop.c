@@ -31,7 +31,7 @@
  */
 static void shop_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
     rct_ride *ride = get_ride(rideIndex);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);

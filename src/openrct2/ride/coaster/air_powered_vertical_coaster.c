@@ -191,7 +191,7 @@ static void air_powered_vertical_rc_track_flat(paint_session * session, uint8 ri
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -211,7 +211,7 @@ static void air_powered_vertical_rc_track_station(paint_session * session, uint8
     sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2, height);
     sub_98199C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 6, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     rct_ride * ride = get_ride(rideIndex);
     track_paint_util_draw_station_platform(ride, direction, height, 5, mapElement);
@@ -256,7 +256,7 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(paint_session * s
     };
 
     track_paint_util_right_quarter_turn_5_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(height, direction, trackSequence);
+    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
     track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
@@ -296,7 +296,7 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(paint_session * sess
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -322,7 +322,7 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(paint_session * ses
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 26, height, 0, 27, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -384,7 +384,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(paint_sess
         sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
     }
 
-    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(height, direction, trackSequence);
+    track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
     track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
@@ -423,7 +423,7 @@ static void air_powered_vertical_rc_track_left_bank(paint_session * session, uin
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -448,7 +448,7 @@ static void air_powered_vertical_rc_track_brakes(paint_session * session, uint8 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -564,7 +564,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             sub_98197C_rotated(direction, supportsImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
             sub_98199C_rotated(direction, trackImageId, 0, 0, 20, 32, bbHeight, height, 0, 6, height);
 
-            wooden_a_supports_paint_setup(0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
             paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -586,7 +586,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             sub_98199C_rotated(direction, trackImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         }
 
-        wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
         if (trackSequence == 0) {
             paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
@@ -606,12 +606,12 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             sub_98199C_rotated(direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         }
 
-        wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
         break;
     case 5:
-        if (wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
+        if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
             uint32 floorImageId;
             if (direction & 1) {
                 floorImageId = SPR_FLOOR_PLANKS_90_DEG | gTrackColours[SCHEME_SUPPORTS];
@@ -634,7 +634,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             sub_98197C_rotated(direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
             sub_98199C_rotated(direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
         }
-        wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
         paint_util_set_vertical_tunnel(height + 240);
 

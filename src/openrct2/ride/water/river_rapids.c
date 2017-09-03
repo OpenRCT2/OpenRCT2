@@ -271,7 +271,7 @@ static void paint_river_rapids_track_flat(paint_session * session, uint8 rideInd
         sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
     }
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction & 1) {
         paint_util_push_tunnel_right(height, TUNNEL_6);
@@ -306,7 +306,7 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height - 8, TUNNEL_7);
             break;
 
@@ -318,7 +318,7 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height + 8, TUNNEL_8);
             break;
 
@@ -330,7 +330,7 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height + 8, TUNNEL_8);
             break;
 
@@ -341,7 +341,7 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height - 8, TUNNEL_7);
             break;
     }
@@ -363,7 +363,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height - 8, TUNNEL_6);
             break;
 
@@ -375,7 +375,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height + 8, TUNNEL_14);
             break;
 
@@ -387,7 +387,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height + 8, TUNNEL_14);
             break;
 
@@ -398,7 +398,7 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height - 8, TUNNEL_6);
             break;
     }
@@ -420,7 +420,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height, TUNNEL_6);
             break;
 
@@ -432,7 +432,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height, TUNNEL_8);
             break;
 
@@ -444,7 +444,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(height, TUNNEL_8);
             break;
 
@@ -455,7 +455,7 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
             sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
 
-            wooden_a_supports_paint_setup(1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(height, TUNNEL_6);
             break;
     }
@@ -548,7 +548,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(paint_session * se
             break;
     }
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
@@ -602,7 +602,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * s
             break;
     }
 
-    wooden_a_supports_paint_setup(1 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, 1 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
@@ -646,7 +646,7 @@ static void paint_river_rapids_track_waterfall(paint_session * session, uint8 ri
         sub_98199C(imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17, get_current_rotation());
     }
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction & 1) {
         paint_util_push_tunnel_right(height, TUNNEL_9);
@@ -679,7 +679,7 @@ static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideI
         sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 27, height + 17, get_current_rotation());
     }
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction & 1) {
         paint_util_push_tunnel_right(height, TUNNEL_6);
@@ -726,7 +726,7 @@ static void paint_river_rapids_track_whirlpool(paint_session * session, uint8 ri
         sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
     }
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction & 1) {
         paint_util_push_tunnel_right(height, TUNNEL_6);

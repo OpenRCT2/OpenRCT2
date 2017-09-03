@@ -716,19 +716,19 @@ void track_paint_util_draw_pier(rct_ride * ride, const rct_ride_entrance_definit
     }
 }
 
-void track_paint_util_draw_station_metal_supports(uint8 direction, uint16 height, uint32 colour)
+void track_paint_util_draw_station_metal_supports(paint_session * session, uint8 direction, uint16 height, uint32 colour)
 {
-    track_paint_util_draw_station_metal_supports_2(direction, height, colour, 3);
+    track_paint_util_draw_station_metal_supports_2(session, direction, height, colour, 3);
 }
 
-void track_paint_util_draw_station_metal_supports_2(uint8 direction, uint16 height, uint32 colour, uint8 type)
+void track_paint_util_draw_station_metal_supports_2(paint_session * session, uint8 direction, uint16 height, uint32 colour, uint8 type)
 {
     if (direction & 1) {
-        metal_a_supports_paint_setup(type, 6, 0, height, colour);
-        metal_a_supports_paint_setup(type, 7, 0, height, colour);
+        metal_a_supports_paint_setup(session, type, 6, 0, height, colour);
+        metal_a_supports_paint_setup(session, type, 7, 0, height, colour);
     } else {
-        metal_a_supports_paint_setup(type, 5, 0, height, colour);
-        metal_a_supports_paint_setup(type, 8, 0, height, colour);
+        metal_a_supports_paint_setup(session, type, 5, 0, height, colour);
+        metal_a_supports_paint_setup(session, type, 8, 0, height, colour);
     }
 }
 
@@ -1242,7 +1242,7 @@ void track_paint_util_right_quarter_turn_5_tiles_tunnel(sint16 height, uint8 dir
     }
 }
 
-void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(sint16 height, uint8 direction, uint8 trackSequence)
+void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence)
 {
     if (trackSequence != 1 && trackSequence != 4) {
         static const uint8 supportTypes[][7] = {
@@ -1252,7 +1252,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(sint16 height, 
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8 supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
     }
 }
 
@@ -1718,12 +1718,12 @@ void track_paint_util_right_vertical_loop_segments(uint8 direction, uint8 trackS
     paint_util_set_segment_support_height(paint_util_rotate_segments(RightVerticalLoopSegments[trackSequence], direction), 0xFFFF, 0);
 }
 
-void track_paint_util_left_corkscrew_up_supports(uint8 direction, uint16 height) {
+void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 direction, uint16 height) {
     // TODO: Figure out which of these looks best, and use one to keep a consistent world
     if (direction == 2) {
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     }
-    metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     if (direction != 2) {
         paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     }

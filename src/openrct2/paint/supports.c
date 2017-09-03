@@ -341,7 +341,7 @@ extern bool gUseOriginalRidePaint;
  * @param[out] underground (Carry flag) true if underground.
  * @returns (al) true if any supports have been drawn, otherwise false.
  */
-bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground)
+bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground)
 {
     if (underground != NULL){
         *underground = false;
@@ -351,11 +351,11 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
-    sint32 z = floor2(gPaintSession.Support.height + 15, 16);
+    sint32 z = floor2(session->Support.height + 15, 16);
     height -= z;
     if (height < 0) {
         if (underground != NULL) {
@@ -370,7 +370,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
     sint32 rotation = get_current_rotation();
 
     // Draw base support (usually shaped to the slope)
-    sint32 slope = gPaintSession.Support.slope;
+    sint32 slope = session->Support.slope;
     if (slope & (1 << 5)) {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
@@ -429,7 +429,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     // Draw repeated supports for left over space
     while (height != 0) {
-        if ((z & 16) == 0 && height >= 2 && z + 16 != gPaintSession.Unk141E9DC) {
+        if ((z & 16) == 0 && height >= 2 && z + 16 != session->Unk141E9DC) {
             // Full support
             sint32 imageId = WoodenSupportImageIds[supportType].full | imageColourFlags;
             uint8 ah = height == 2 ? 23 : 28;
@@ -459,14 +459,14 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-            if (byte_97B23C[special].var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
+            if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
                 sub_98197C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
                 hasSupports = true;
             } else {
                 hasSupports = true;
                 paint_struct* ps = sub_98198C(imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
                 if (ps != NULL) {
-                    paint_struct* edi = gPaintSession.WoodenSupportsPrependTo;
+                    paint_struct* edi = session->WoodenSupportsPrependTo;
                     edi->var_20 = ps;
                 }
             }
@@ -488,7 +488,7 @@ bool wooden_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
  *
  * @return (al) whether supports have been drawn
  */
-bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool * underground)
+bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool * underground)
 {
 #ifndef NO_RCT2
     if (gUseOriginalRidePaint) {
@@ -505,12 +505,12 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
         return false;
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         if (underground != NULL) *underground = false; // AND
         return false;
     }
 
-    uint16 baseHeight = ceil2(gPaintSession.Support.height, 16);
+    uint16 baseHeight = ceil2(session->Support.height, 16);
     sint16 supportLength = height - baseHeight;
 
     if (supportLength < 0) {
@@ -522,9 +522,9 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     bool goTo662E8B = false;
 
-    if (gPaintSession.Support.slope & 0x20) {
+    if (session->Support.slope & 0x20) {
         goTo662E8B = true;
-    } else if (gPaintSession.Support.slope & 0x10) {
+    } else if (session->Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
@@ -536,7 +536,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
             baseHeight += 32;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[gPaintSession.Support.slope & 0x1F];
+            imageId += word_97B3C4[session->Support.slope & 0x1F];
 
             sub_98197C(
                 imageId | imageColourFlags,
@@ -560,7 +560,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             _9E32B1 = true;
         }
-    } else if ((gPaintSession.Support.slope & 0x0F) != 0) {
+    } else if ((session->Support.slope & 0x0F) != 0) {
         heightSteps -= 1;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
@@ -572,7 +572,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
             baseHeight += 16;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[gPaintSession.Support.slope & 0x1F];
+            imageId += word_97B3C4[session->Support.slope & 0x1F];
 
             sub_98197C(
                 imageId | imageColourFlags,
@@ -606,7 +606,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
     if (!skipTo663004) {
         while (heightSteps > 0) {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gPaintSession.Unk141E9DC) {
+            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->Unk141E9DC) {
                 sub_98196C(
                     WoodenSupportImageIds[supportType].half | imageColourFlags,
                     0, 0,
@@ -643,7 +643,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-            if (supportsDesc.var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
+            if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
                 sub_98197C(
                     imageId | imageColourFlags,
                     0, 0,
@@ -664,7 +664,7 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
                 );
                 _9E32B1 = true;
                 if (paintStruct != NULL) {
-                    gPaintSession.WoodenSupportsPrependTo->var_20 = paintStruct;
+                    session->WoodenSupportsPrependTo->var_20 = paintStruct;
                 }
             }
         }
@@ -683,15 +683,15 @@ bool wooden_b_supports_paint_setup(sint32 supportType, sint32 special, sint32 he
  * @param imageColourFlags (ebp)
  *  rct2: 0x00663105
  */
-bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
+bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
 {
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
         return false;
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
@@ -874,7 +874,7 @@ bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
  *
  * @return (Carry Flag)
  */
-bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
+bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
 {
 #ifndef NO_RCT2
     if (gUseOriginalRidePaint) {
@@ -884,14 +884,14 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
     }
 #endif
 
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
     uint8 originalSegment = segment;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
         return false; // AND
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         return false; // AND
     }
 
@@ -1062,7 +1062,7 @@ bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, sint32 speci
  *
  * @return Whether supports were drawn
  */
-bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags,
+bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags,
                                  rct_footpath_entry * pathEntry, bool * underground)
 {
 #ifndef NO_RCT2
@@ -1082,11 +1082,11 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
         return false;
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         return false;
     }
 
-    uint16 baseHeight = ceil2(gPaintSession.Support.height, 16);
+    uint16 baseHeight = ceil2(session->Support.height, 16);
     sint32 supportLength = height - baseHeight;
     if (supportLength < 0) {
         if (underground != NULL) *underground = true; // STC
@@ -1097,7 +1097,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
 
     sint16 heightSteps = supportLength / 16;
 
-    if (gPaintSession.Support.slope & 0x20) {
+    if (session->Support.slope & 0x20) {
         //save dx2
         sub_98196C(
             (pathEntry->bridge_image + 48) | imageColourFlags,
@@ -1107,14 +1107,14 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
             get_current_rotation()
         );
         hasSupports = true;
-    } else if (gPaintSession.Support.slope & 0x10) {
+    } else if (session->Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
             return false;
         }
 
-        uint32 imageId = (supportType * 24) + word_97B3C4[gPaintSession.Support.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 imageId = (supportType * 24) + word_97B3C4[session->Support.slope & 0x1F] + pathEntry->bridge_image;
 
         sub_98197C(
             imageId | imageColourFlags,
@@ -1138,14 +1138,14 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
 
         hasSupports = true;
 
-    } else if (gPaintSession.Support.slope & 0x0F) {
+    } else if (session->Support.slope & 0x0F) {
         heightSteps -= 1;
         if (heightSteps < 0) {
             if (underground != NULL) *underground = true; // STC
             return false;
         }
 
-        uint32 ebx = (supportType * 24) + word_97B3C4[gPaintSession.Support.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 ebx = (supportType * 24) + word_97B3C4[session->Support.slope & 0x1F] + pathEntry->bridge_image;
 
         sub_98197C(
             ebx | imageColourFlags,
@@ -1161,7 +1161,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
     }
 
     while (heightSteps > 0) {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == gPaintSession.Unk141E9DC) {
+        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session->Unk141E9DC) {
 
             uint32 imageId = (supportType * 24) + pathEntry->bridge_image + 23;
 
@@ -1199,7 +1199,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
         unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-        if (supportsDesc.var_6 == 0 || gPaintSession.WoodenSupportsPrependTo == NULL) {
+        if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
             sub_98197C(
                 imageId | imageColourFlags,
                 0, 0,
@@ -1220,7 +1220,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
             );
             hasSupports = true;
             if (paintStruct != NULL) {
-                gPaintSession.WoodenSupportsPrependTo->var_20 = paintStruct;
+                session->WoodenSupportsPrependTo->var_20 = paintStruct;
             }
         }
     }
@@ -1242,7 +1242,7 @@ bool path_a_supports_paint_setup(sint32 supportType, sint32 special, sint32 heig
  *
  * @return Whether supports were drawn
  */
-bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, uint32 imageColourFlags,
+bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32 special, sint32 height, uint32 imageColourFlags,
                                  rct_footpath_entry * pathEntry)
 {
 #ifndef NO_RCT2
@@ -1254,13 +1254,13 @@ bool path_b_supports_paint_setup(sint32 segment, sint32 special, sint32 height, 
     }
 #endif
 
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
         return false; // AND
     }
 
-    if (!(gPaintSession.Unk141E9DB & G141E9DB_FLAG_1)) {
+    if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
         return false; // AND
     }
 
