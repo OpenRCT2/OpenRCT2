@@ -53,8 +53,8 @@ void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
         x >= 32 &&
         y >= 32
     ) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(-1, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_force_set_general_support_height(session, -1, 0);
         session->Unk141E9DB = 0;
         session->Unk141E9DC = 0xFFFF;
 
@@ -76,8 +76,8 @@ void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
         x >= 32 &&
         y >= 32
     ) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(-1, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_force_set_general_support_height(session, -1, 0);
         session->Unk141E9DC = 0xFFFF;
         session->Unk141E9DB = G141E9DB_FLAG_2;
 
@@ -125,7 +125,7 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
+    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -200,7 +200,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->SpritePosition.y = y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
+        sub_98197C(session, imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
     sint32 bx = dx + 52;
 
@@ -312,7 +312,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
             sint32 xOffset = sy * 10;
             sint32 yOffset = -22 + sx * 10;
-            paint_struct * ps = sub_98197C(5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
+            paint_struct * ps = sub_98197C(session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
             if (ps != NULL) {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
                 ps->colour_image_id = COLOUR_BORDEAUX_RED;
@@ -322,45 +322,45 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 }
 
-void paint_util_push_tunnel_left(uint16 height, uint8 type)
+void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type)
 {
-    gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gPaintSession.LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gPaintSession.LeftTunnelCount++;
+    session->LeftTunnels[session->LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (session->LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        session->LeftTunnels[session->LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->LeftTunnelCount++;
     }
 }
 
-void paint_util_push_tunnel_right(uint16 height, uint8 type)
+void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type)
 {
-    gPaintSession.RightTunnels[gPaintSession.RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gPaintSession.RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gPaintSession.RightTunnels[gPaintSession.RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gPaintSession.RightTunnelCount++;
+    session->RightTunnels[session->RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (session->RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        session->RightTunnels[session->RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->RightTunnelCount++;
     }
 }
 
-void paint_util_set_vertical_tunnel(uint16 height)
+void paint_util_set_vertical_tunnel(paint_session * session, uint16 height)
 {
 #ifdef __TESTPAINT__
     testPaintVerticalTunnelHeight = height;
 #endif
-    gPaintSession.VerticalTunnelHeight = height / 16;
+    session->VerticalTunnelHeight = height / 16;
 }
 
-void paint_util_set_general_support_height(sint16 height, uint8 slope)
+void paint_util_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
 {
-    if (gPaintSession.Support.height >= height) {
+    if (session->Support.height >= height) {
         return;
     }
 
-    paint_util_force_set_general_support_height(height, slope);
+    paint_util_force_set_general_support_height(session, height, slope);
 }
 
-void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
+void paint_util_force_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
 {
-    gPaintSession.Support.height = height;
-    gPaintSession.Support.slope = slope;
+    session->Support.height = height;
+    session->Support.slope = slope;
 }
 
 const uint16 segment_offsets[9] = {
@@ -375,9 +375,9 @@ const uint16 segment_offsets[9] = {
     SEGMENT_D4
 };
 
-void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope)
+void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope)
 {
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (segments & segment_offsets[s]) {
             supportSegments[s].height = height;

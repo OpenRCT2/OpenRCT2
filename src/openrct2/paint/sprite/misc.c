@@ -45,7 +45,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
         case SPRITE_MISC_STEAM_PARTICLE: // 0
         {
             uint32 imageId = 22637 + (misc->steam_particle.frame / 256);
-            sub_98196C(imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
             break;
         }
 
@@ -71,14 +71,14 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             rct_crashed_vehicle_particle particle = misc->crashed_vehicle_particle;
             uint32 imageId = vehicle_particle_base_sprites[particle.var_2E] + particle.frame / 256;
             imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-            sub_98196C(imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
             break;
         }
 
         case SPRITE_MISC_EXPLOSION_CLOUD: // 3
         {
             uint32 imageId = 22878 + (misc->unknown.frame / 256);
-            sub_98196C(imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
             break;
         }
 
@@ -86,7 +86,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
         {
             rct_crash_splash crashSplash = misc->crash_splash;
             uint32 imageId = 22927 + (crashSplash.frame / 256);
-            sub_98196C(imageId, 0, 0, 1, 1, 0, crashSplash.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, crashSplash.z, get_current_rotation());
             break;
         }
 
@@ -94,7 +94,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
         {
             // Like a flare
             uint32 imageId = 22896 + (misc->unknown.frame / 256);
-            sub_98196C(imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
             break;
         }
 
@@ -125,37 +125,37 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             if (al & 1) {
                 switch (ebx) {
                     case 0:
-                        sub_98197C(imageId, 0, 0, 32, 1, 3, height, -32, -3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, -3, height, get_current_rotation());
                         break;
 
                     case 1:
-                        sub_98197C(imageId, 0, 0, 1, 32, 3, height, -3, 0, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, 0, height, get_current_rotation());
                         break;
 
                     case 2:
-                        sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, -3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, -3, height, get_current_rotation());
                         break;
 
                     case 3:
-                        sub_98197C(imageId, 0, 0, 1, 32, 3, height, -3, -32, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, -3, -32, height, get_current_rotation());
                         break;
                 }
             } else {
                 switch (ebx) {
                     case 0:
-                        sub_98197C(imageId, 0, 0, 32, 1, 3, height, -32, 3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, -32, 3, height, get_current_rotation());
                         break;
 
                     case 1:
-                        sub_98197C(imageId, 0, 0, 1, 32, 3, height, 3, 0, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, 0, height, get_current_rotation());
                         break;
 
                     case 2:
-                        sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 3, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 3, height, get_current_rotation());
                         break;
 
                     case 3:
-                        sub_98197C(imageId, 0, 0, 1, 32, 3, height, 3, -32, height, get_current_rotation());
+                        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 3, -32, height, get_current_rotation());
                         break;
                 }
             }
@@ -172,7 +172,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             }
 
             imageId = imageId | (balloon.colour << 19) | IMAGE_TYPE_REMAP;
-            sub_98196C(imageId, 0, 0, 1, 1, 0, balloon.z, get_current_rotation());
+            sub_98196C(session, imageId, 0, 0, 1, 1, 0, balloon.z, get_current_rotation());
             break;
         }
 
@@ -181,7 +181,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
                 rct_duck * duck = &misc->duck;
                 uint32 imageId = duck_get_frame_image(&misc->duck, imageDirection);
                 if (imageId != 0) {
-                    sub_98196C(imageId, 0, 0, 1, 1, 0, duck->z, get_current_rotation());
+                    sub_98196C(session, imageId, 0, 0, 1, 1, 0, duck->z, get_current_rotation());
                 }
             }
             break;

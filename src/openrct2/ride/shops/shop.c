@@ -29,9 +29,9 @@
  *  rct2: 0x0076163F
  *  rct2: 0x007617A5
  */
-static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element* mapElement)
+static void shop_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
     rct_ride *ride = get_ride(rideIndex);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
@@ -52,15 +52,15 @@ static void shop_paint_setup(uint8 rideIndex, uint8 trackSequence, uint8 directi
 
     if (hasSupports) {
         uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
-        sub_98197C(foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98197C(session, foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
 
-        sub_98199C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /* 0x00761160 */

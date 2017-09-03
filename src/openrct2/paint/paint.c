@@ -215,6 +215,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_x
  * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
 paint_struct * sub_98196C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -223,8 +224,6 @@ paint_struct * sub_98196C(
 ) {
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
-
-    paint_session * session = &gPaintSession;
 
     session->UnkF1AD28 = 0;
     session->UnkF1AD2C = NULL;
@@ -360,6 +359,7 @@ paint_struct * sub_98196C(
  * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
 paint_struct * sub_98197C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -367,8 +367,6 @@ paint_struct * sub_98197C(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
     uint32 rotation
 ) {
-    paint_session * session = &gPaintSession;
-
     session->UnkF1AD28 = 0;
     session->UnkF1AD2C = NULL;
 
@@ -426,6 +424,7 @@ paint_struct * sub_98197C(
  * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
 paint_struct * sub_98198C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -436,7 +435,6 @@ paint_struct * sub_98198C(
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-    paint_session * session = &gPaintSession;
     session->UnkF1AD28 = 0;
     session->UnkF1AD2C = NULL;
 
@@ -472,6 +470,7 @@ paint_struct * sub_98198C(
  * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
  */
 paint_struct * sub_98199C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -482,10 +481,8 @@ paint_struct * sub_98199C(
     assert((uint16) bound_box_length_x == (sint16) bound_box_length_x);
     assert((uint16) bound_box_length_y == (sint16) bound_box_length_y);
 
-    paint_session * session = &gPaintSession;
-
     if (session->UnkF1AD28 == NULL) {
-        return sub_98197C(
+        return sub_98197C(session, 
             image_id,
             x_offset, y_offset,
             bound_box_length_x, bound_box_length_y, bound_box_length_z,

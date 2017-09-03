@@ -23,17 +23,17 @@
 /**
  * rct2: 0x007664C2
  */
-static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
+static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     rct_ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = GET_VEHICLE(ride->vehicles[0]);
     }
 
     uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
@@ -42,38 +42,38 @@ static void paint_3d_cinema_structure(uint8 rideIndex, uint8 direction, sint8 xO
     }
 
     uint32 imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
-    sub_98197C(imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3, get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3, get_current_rotation());
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 
 /**
  * rct2: 0x0076574C
  */
-static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_3d_cinema(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
 
     switch(trackSequence) {
-        case 1: paint_3d_cinema_structure(rideIndex, direction, 32, 32, height); break;
-        case 3: paint_3d_cinema_structure(rideIndex, direction, 32, -32, height); break;
-        case 5: paint_3d_cinema_structure(rideIndex, direction, 0, -32, height); break;
-        case 6: paint_3d_cinema_structure(rideIndex, direction, -32, 32, height); break;
-        case 7: paint_3d_cinema_structure(rideIndex, direction, -32, -32, height); break;
-        case 8: paint_3d_cinema_structure(rideIndex, direction, -32, 0, height); break;
+        case 1: paint_3d_cinema_structure(session, rideIndex, direction, 32, 32, height); break;
+        case 3: paint_3d_cinema_structure(session, rideIndex, direction, 32, -32, height); break;
+        case 5: paint_3d_cinema_structure(session, rideIndex, direction, 0, -32, height); break;
+        case 6: paint_3d_cinema_structure(session, rideIndex, direction, -32, 32, height); break;
+        case 7: paint_3d_cinema_structure(session, rideIndex, direction, -32, -32, height); break;
+        case 8: paint_3d_cinema_structure(session, rideIndex, direction, -32, 0, height); break;
     }
 
     sint32 cornerSegments = 0;
@@ -96,9 +96,9 @@ static void paint_3d_cinema(uint8 rideIndex, uint8 trackSequence, uint8 directio
             break;
     }
 
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 128, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
 /* 0x0076554C */

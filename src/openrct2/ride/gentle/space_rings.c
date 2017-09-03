@@ -37,9 +37,9 @@ static const uint32 space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
+static void paint_space_rings_structure(paint_session * session, rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     uint32 vehicleIndex = (segment - direction) & 0x3;
 
@@ -53,9 +53,9 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
             && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-            gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
             vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
-            gPaintSession.CurrentlyDrawnItem = vehicle;
+            session->CurrentlyDrawnItem = vehicle;
             frameNum += (sint8) vehicle->vehicle_sprite_type * 4;
         }
 
@@ -69,56 +69,56 @@ static void paint_space_rings_structure(rct_ride * ride, uint8 direction,  uint3
         }
 
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
-        sub_98197C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
 
         if (vehicle != NULL && vehicle->num_peeps > 0) {
             rct_peep * rider = GET_PEEP(vehicle->peep[0]);
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->tshirt_colour, rider->trousers_colour);
             imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-            sub_98199C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
         }
     }
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00767C40 */
-static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride * ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
     uint32 imageId;
 
-    wooden_a_supports_paint_setup((direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
     switch (trackSequence) {
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
             }
             if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
             }
             break;
         default:
-            track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, space_rings_fence_sprites, get_current_rotation());
+            track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, space_rings_fence_sprites, get_current_rotation());
             break;
     }
 
     switch (trackSequence) {
-        case 0: paint_space_rings_structure(ride, direction, 0, height + 3); break;
-        case 5: paint_space_rings_structure(ride, direction, 1, height + 3); break;
-        case 7: paint_space_rings_structure(ride, direction, 2, height + 3); break;
-        case 8: paint_space_rings_structure(ride, direction, 3, height + 3); break;
+        case 0: paint_space_rings_structure(session, ride, direction, 0, height + 3); break;
+        case 5: paint_space_rings_structure(session, ride, direction, 1, height + 3); break;
+        case 7: paint_space_rings_structure(session, ride, direction, 2, height + 3); break;
+        case 8: paint_space_rings_structure(session, ride, direction, 3, height + 3); break;
     }
 
     sint32 cornerSegments = 0;
@@ -133,9 +133,9 @@ static void paint_space_rings(uint8 rideIndex, uint8 trackSequence, uint8 direct
         case 7: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 8: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
     }
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /**

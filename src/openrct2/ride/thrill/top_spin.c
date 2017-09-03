@@ -48,11 +48,11 @@ static sint8 TopSpinSeatPositionOffset[] = {
  *
  *  rct2: 0x0076750D
  */
-static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, sint32 height, rct_map_element* mapElement) {
+static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, sint32 height, rct_map_element* mapElement) {
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the mapElement that
     // is assigned to the drawings.
-    rct_map_element* curMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element* curMapElement = session->CurrentlyDrawnItem;
 
     height += 3;
 
@@ -67,8 +67,8 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
         ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
 
         armRotation = vehicle->vehicle_sprite_type;
         seatRotation = vehicle->bank_rotation;
@@ -93,7 +93,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     image_id += rideEntry->vehicles[0].base_image_id;
     // Left back bottom support
     image_id += 572;
-    sub_98197C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+    sub_98197C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP) {
@@ -112,7 +112,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     // Left hand arm
     image_id += 380;
 
-    sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     uint32 seatImageId;
 
@@ -162,34 +162,34 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
         break;
     }
 
-    sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+    sub_98199C(session, image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    rct_drawpixelinfo* dpi = gPaintSession.Unk140E9A8;
+    rct_drawpixelinfo* dpi = session->Unk140E9A8;
     if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
 
-        sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+        sub_98199C(session, image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
         if (vehicle->num_peeps > 2)
         {
             image_id = (seatImageId + (2 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
 
-            sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+            sub_98199C(session, image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
 
         if (vehicle->num_peeps > 4)
         {
             image_id = (seatImageId + (3 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
 
-            sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+            sub_98199C(session, image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
 
         if (vehicle->num_peeps > 6)
         {
             image_id = (seatImageId + (4 * 76)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
 
-            sub_98199C(image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+            sub_98199C(session, image_id, (sint8) seatCoords.x, (sint8) seatCoords.y, lengthX, lengthY, 90, seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
         }
     }
 
@@ -204,7 +204,7 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     // Right hand arm
     image_id += 476;
 
-    sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     image_id = gTrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
@@ -217,35 +217,35 @@ static void top_spin_paint_vehicle(sint8 al, sint8 cl, uint8 rideIndex, uint8 di
     // Right back bottom support
     image_id += 573;
 
-    sub_98199C(image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
+    sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    gPaintSession.CurrentlyDrawnItem = curMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = curMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /**
  * rct2: 0x0076679C
  */
-static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
+static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
     rct_ride *ride = get_ride(rideIndex);
-    rct_xy16 position = gPaintSession.MapPosition;
+    rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence) {
-        case 1: top_spin_paint_vehicle(32, 32, rideIndex, direction, height, mapElement); break;
-        case 3: top_spin_paint_vehicle(32, -32, rideIndex, direction, height, mapElement); break;
-        case 5: top_spin_paint_vehicle(0, -32, rideIndex, direction, height, mapElement); break;
-        case 6: top_spin_paint_vehicle(-32, 32, rideIndex, direction, height, mapElement); break;
-        case 7: top_spin_paint_vehicle(-32, -32, rideIndex, direction, height, mapElement); break;
-        case 8: top_spin_paint_vehicle(-32, 0, rideIndex, direction, height, mapElement); break;
+        case 1: top_spin_paint_vehicle(session, 32, 32, rideIndex, direction, height, mapElement); break;
+        case 3: top_spin_paint_vehicle(session, 32, -32, rideIndex, direction, height, mapElement); break;
+        case 5: top_spin_paint_vehicle(session, 0, -32, rideIndex, direction, height, mapElement); break;
+        case 6: top_spin_paint_vehicle(session, -32, 32, rideIndex, direction, height, mapElement); break;
+        case 7: top_spin_paint_vehicle(session, -32, -32, rideIndex, direction, height, mapElement); break;
+        case 8: top_spin_paint_vehicle(session, -32, 0, rideIndex, direction, height, mapElement); break;
     }
 
     sint32 cornerSegments = 0;
@@ -268,9 +268,9 @@ static void paint_top_spin(uint8 rideIndex, uint8 trackSequence, uint8 direction
             break;
     }
 
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 112, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 112, 0x20);
 }
 
 

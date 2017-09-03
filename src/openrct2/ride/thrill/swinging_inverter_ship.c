@@ -60,9 +60,9 @@ static const uint32 swinging_inverter_ship_frame_sprites[] = {
     SPR_SWINGING_INVERTER_SHIP_FRAME_3
 };
 
-static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_swinging_inverter_ship_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = gPaintSession.CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
@@ -74,8 +74,8 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
         && ride->vehicles[0] != SPRITE_INDEX_NULL) {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        gPaintSession.CurrentlyDrawnItem = vehicle;
+        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 vehicleImageId = rideType->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
@@ -105,19 +105,19 @@ static void paint_swinging_inverter_ship_structure(rct_ride * ride, uint8 direct
     uint32 frameImageId = swinging_inverter_ship_frame_sprites[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction & 2) {
-        sub_98197C(vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
-        sub_98199C(frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98197C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98199C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     } else {
-        sub_98197C(frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
-        sub_98199C(vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98197C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98199C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }
 
-    gPaintSession.CurrentlyDrawnItem = savedMapElement;
-    gPaintSession.InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->CurrentlyDrawnItem = savedMapElement;
+    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00760260 */
-static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_swinging_inverter_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
@@ -127,45 +127,45 @@ static void paint_swinging_inverter_ship(uint8 rideIndex, uint8 trackSequence, u
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3) {
         if (direction & 1) {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         } else {
-            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
 
         imageId = SPR_STATION_BASE_D | gTrackColours[SCHEME_SUPPORTS];
-        sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
         switch (direction) {
             case 0:
                 imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_TRACK];
-                sub_98196C(imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
+                sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
                 break;
             case 1:
                 imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_TRACK];
-                sub_98196C(imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
+                sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
                 break;
             case 2:
                 imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_TRACK];
-                sub_98199C(imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height, get_current_rotation());
+                sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height, get_current_rotation());
                 break;
             case 3:
                 imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_TRACK];
-                sub_98199C(imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height, get_current_rotation());
+                sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height, get_current_rotation());
                 break;
         }
     }
 
     switch (relativeTrackSequence) {
-        case 1: paint_swinging_inverter_ship_structure(ride, direction, 48, height + 7); break;
-        case 2: paint_swinging_inverter_ship_structure(ride, direction, 16, height + 7); break;
-        case 0: paint_swinging_inverter_ship_structure(ride, direction, -16, height + 7); break;
-        case 3: paint_swinging_inverter_ship_structure(ride, direction, -48, height + 7); break;
+        case 1: paint_swinging_inverter_ship_structure(session, ride, direction, 48, height + 7); break;
+        case 2: paint_swinging_inverter_ship_structure(session, ride, direction, 16, height + 7); break;
+        case 0: paint_swinging_inverter_ship_structure(session, ride, direction, -16, height + 7); break;
+        case 3: paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7); break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 176, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
 

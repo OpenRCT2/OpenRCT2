@@ -85,5 +85,5 @@ void litter_paint(paint_session * session, rct_litter *litter, sint32 imageDirec
 
     uint32 image_id = imageDirection + litter_sprites[litter->type].base_id;
 
-    sub_98197C(image_id, 0, 0, 4, 4, -1, litter->z, -4, -4, litter->z + 2, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 4, 4, -1, litter->z, -4, -4, litter->z + 2, get_current_rotation());
 }

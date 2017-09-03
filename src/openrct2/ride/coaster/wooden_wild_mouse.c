@@ -128,7 +128,7 @@ enum {
 };
 
 /** rct2: 0x008A5464 */
-static void wooden_wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4] = {
         SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE,
@@ -138,15 +138,15 @@ static void wooden_wild_mouse_track_flat(uint8 rideIndex, uint8 trackSequence, u
     };
 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
-    sub_98196C_rotated(direction, imageId, 0, 6, 32, 20, 1, height);
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D4, direction), height, 0x20);
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C8 | SEGMENT_D4, direction), height, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static void wooden_wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4][2] = {
         { SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE, SPR_STATION_BASE_B_SW_NE },
@@ -155,17 +155,17 @@ static void wooden_wild_mouse_track_station(uint8 rideIndex, uint8 trackSequence
         { SPR_WOODEN_WILD_MOUSE_FLAT_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
 
-    sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2, height);
-    sub_98199C_rotated(direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 6, 32, 20, 1, height, 0, 0, height);
-    wooden_a_supports_paint_setup(direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    sub_98197C_rotated(session, direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height - 2, 0, 2, height);
+    sub_98199C_rotated(session, direction, imageIds[direction][0] | gTrackColours[SCHEME_TRACK], 0, 6, 32, 20, 1, height, 0, 0, height);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A5474 */
-static void wooden_wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4] = {
         {
@@ -184,22 +184,22 @@ static void wooden_wild_mouse_track_25_deg_up(uint8 rideIndex, uint8 trackSequen
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A5484 */
-static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4] = {
         {
@@ -219,25 +219,25 @@ static void wooden_wild_mouse_track_60_deg_up(uint8 rideIndex, uint8 trackSequen
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 3) {
-        sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
-        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 93, height, 28, 4, height - 16);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 104, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
 /** rct2: 0x008A5494 */
-static void wooden_wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4] = {
         {
@@ -256,22 +256,22 @@ static void wooden_wild_mouse_track_flat_to_25_deg_up(uint8 rideIndex, uint8 tra
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 1 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 1 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A54A4 */
-static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -292,27 +292,27 @@ static void wooden_wild_mouse_track_25_deg_up_to_60_deg_up(uint8 rideIndex, uint
     uint32 imageId;
     if (direction == 0 || direction == 3) {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
-static void wooden_wild_mouse_track_60_deg_to_25_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -333,28 +333,28 @@ static void wooden_wild_mouse_track_60_deg_to_25_deg_up(uint8 rideIndex, uint8 t
     uint32 imageId;
     if (direction == 0 || direction == 3) {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        gPaintSession.WoodenSupportsPrependTo = sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        session->WoodenSupportsPrependTo = sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A54C4 */
-static void wooden_wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4] = {
         {
@@ -373,57 +373,57 @@ static void wooden_wild_mouse_track_25_deg_up_to_flat(uint8 rideIndex, uint8 tra
 
     uint8 isChained = track_element_is_lift_hill(mapElement) ? 1 : 0;
     uint32 imageId = imageIds[isChained][direction] | gTrackColours[SCHEME_TRACK];
-    sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+    sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
 
-    wooden_a_supports_paint_setup(direction & 1, 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008A54D4 */
-static void wooden_wild_mouse_track_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A54E4 */
-static void wooden_wild_mouse_track_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A54F4 */
-static void wooden_wild_mouse_track_flat_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_25_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A5504 */
-static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_60_deg_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_60_deg_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A5514 */
-static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_25_deg_up_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A5524 */
-static void wooden_wild_mouse_track_25_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_flat_to_25_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
-static void wooden_wild_mouse_track_right_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const sprite_bb imageIds[4][3] = {
         {
@@ -449,13 +449,13 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(uint8 rideIndex, uint8 
     };
     static uint8 supportType[] = { 4, 5, 2, 3 };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_4(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+    track_paint_util_right_quarter_turn_3_tiles_paint_4(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence) {
     case 0:
     case 3:
-        wooden_a_supports_paint_setup(supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         break;
     }
 
@@ -465,17 +465,17 @@ static void wooden_wild_mouse_track_right_quarter_turn_3(uint8 rideIndex, uint8 
     case 2: blockedSegments = SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4; break;
     case 3: blockedSegments = SEGMENTS_ALL; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static void wooden_wild_mouse_track_left_quarter_turn_3(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    wooden_wild_mouse_track_right_quarter_turn_3(rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
+    wooden_wild_mouse_track_right_quarter_turn_3(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
 }
 
-static void wooden_wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_left_quarter_turn_1(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[4] = {
         SPR_WOODEN_WILD_MOUSE_QUARTER_TURN_1_SW_NE,
@@ -488,32 +488,32 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(uint8 rideIndex, uint8 t
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     switch (direction) {
     case 0:
-        sub_98197C(imageId, 6, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
         break;
     case 1:
-        sub_98196C(imageId, 0, 0, 26, 26, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 26, 26, 1, height, get_current_rotation());
         break;
     case 2:
-        sub_98197C(imageId, 0, 6, 24, 26, 1, height, 2, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height, get_current_rotation());
         break;
     case 3:
-        sub_98196C(imageId, 6, 6, 24, 24, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 6, 24, 24, 1, height, get_current_rotation());
         break;
     }
-    wooden_a_supports_paint_setup(supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    wooden_a_supports_paint_setup(session, supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008A55D4 */
-static void wooden_wild_mouse_track_right_quarter_turn_1(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_right_quarter_turn_1(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_left_quarter_turn_1(rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    wooden_wild_mouse_track_left_quarter_turn_1(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A55E4 */
-static void wooden_wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_flat_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -534,28 +534,28 @@ static void wooden_wild_mouse_track_flat_to_60_deg_up(uint8 rideIndex, uint8 tra
     uint32 imageId;
     if (direction == 0 || direction == 3) {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 29 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 29 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 64, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
 /** rct2: 0x008A55F4 */
-static void wooden_wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     static const uint32 imageIds[2][4][2] = {
         {
@@ -576,36 +576,36 @@ static void wooden_wild_mouse_track_60_deg_up_to_flat(uint8 rideIndex, uint8 tra
     uint32 imageId;
     if (direction == 0 || direction == 3) {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 2, 32, 25, 1, height, 0, 3, height);
     } else {
         imageId = imageIds[isChained][direction][0] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 2, 24, 43, height, 28, 4, height + 2);
         imageId = imageIds[isChained][direction][1] | gTrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
+        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 2, 43, height, 0, 4, height);
     }
 
-    wooden_a_supports_paint_setup(direction & 1, 33 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 33 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_0);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A5604 */
-static void wooden_wild_mouse_track_flat_to_60_deg_down(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_flat_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_60_deg_up_to_flat(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_60_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 /** rct2: 0x008A5614 */
-static void wooden_wild_mouse_track_60_deg_down_to_flat(uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void wooden_wild_mouse_track_60_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    wooden_wild_mouse_track_flat_to_60_deg_up(rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    wooden_wild_mouse_track_flat_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(sint32 trackType, sint32 direction)

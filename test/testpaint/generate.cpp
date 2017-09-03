@@ -876,7 +876,7 @@ private:
             int tunnelHeight = verticalTunnelHeights[0];
             if (tunnelHeight != 0)
             {
-                WriteLine(tabs, "paint_util_set_vertical_tunnel(height%s);", GetOffsetExpressionString(tunnelHeight).c_str());
+                WriteLine(tabs, "paint_util_set_vertical_tunnel(session, height%s);", GetOffsetExpressionString(tunnelHeight).c_str());
             }
         }
     }
@@ -885,17 +885,17 @@ private:
     {
         switch (way) {
         case 0:
-            WriteLine(tabs, "paint_util_push_tunnel_left(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            WriteLine(tabs, "paint_util_push_tunnel_left(session, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
             break;
         case 1:
-            WriteLine(tabs, "paint_util_push_tunnel_right(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            WriteLine(tabs, "paint_util_push_tunnel_right(session, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
             break;
         }
     }
 
     void GenerateTunnelCall(int tabs, int offset, int type)
     {
-        WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+        WriteLine(tabs, "paint_util_push_tunnel_rotated(session, direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
     }
 
     void GenerateSegmentSupportCall(int tabs, std::vector<SegmentSupportCall> segmentSupportCalls[4])
@@ -903,7 +903,7 @@ private:
         for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
         {
             auto ssh = segmentSupportCalls[0][i];
-            std::string szCall = "paint_util_set_segment_support_height(";
+            std::string szCall = "paint_util_set_segment_support_height(session, ";
             if (ssh.segments == SEGMENTS_ALL)
             {
                 szCall += "SEGMENTS_ALL";
@@ -937,7 +937,7 @@ private:
             return;
         }
 
-        WriteLine(tabs, "paint_util_set_general_support_height(height%s, 0x%02X);",
+        WriteLine(tabs, "paint_util_set_general_support_height(session, height%s, 0x%02X);",
             GetOffsetExpressionString((sint16)generalSupports[0].height).c_str(),
             generalSupports[0].slope);
         if (!AllMatch(generalSupports, 4))
