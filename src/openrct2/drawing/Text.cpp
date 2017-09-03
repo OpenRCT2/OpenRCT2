@@ -207,6 +207,8 @@ extern "C"
         utf8 buffer[256];
         format_string(buffer, sizeof(buffer), format, args);
 
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+
         _legacyPaint.UnderlineText = false;
         _legacyPaint.Colour = colour;
         _legacyPaint.Alignment = TextAlignment::LEFT;
@@ -223,10 +225,7 @@ extern "C"
         utf8 buffer[256];
         format_string(buffer, sizeof(buffer), format, args);
 
-        if (gCurrentFontSpriteBase >= 0)
-        {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        }
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
         _legacyPaint.UnderlineText = false;
         _legacyPaint.Colour = colour;

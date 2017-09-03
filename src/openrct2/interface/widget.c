@@ -537,7 +537,10 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
         uint8 colour = w->colours[widget->colour] & 0x7F;
         if (widget_is_disabled(w, widgetIndex))
             colour |= 0x40;
-        gfx_draw_string_left(dpi, widget->text, gCommonFormatArgs, colour, l, t);
+
+        format_string(gCommonStringFormatBuffer, sizeof(gCommonStringFormatBuffer), widget->text, gCommonFormatArgs);
+        set_format_arg(0, uintptr_t, gCommonStringFormatBuffer);
+        gfx_draw_string_left(dpi, STR_STRING, gCommonFormatArgs, colour, l, t);
         textRight = l + gfx_get_string_width(gCommonStringFormatBuffer) + 1;
     }
 
