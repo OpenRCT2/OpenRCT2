@@ -112,7 +112,7 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     platform_get_user_directory(userPath, nullptr, sizeof(userPath));
     if (!platform_ensure_directory_exists(userPath))
     {
-        Console::Error::WriteLine("Could not create user directory (do you have write access to your documents folder?)");
+        Console::Error::WriteLine("Could not create user directory '%s' (do you have write access to your documents folder?)", userPath);
         return nullptr;
     }
     platform_get_exe_path(gExePath, sizeof(gExePath));
