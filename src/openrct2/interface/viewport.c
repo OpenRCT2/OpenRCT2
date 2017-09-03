@@ -1031,14 +1031,14 @@ static void store_interaction_info(paint_struct *ps)
 /**
  * rct2: 0x00679236, 0x00679662, 0x00679B0D, 0x00679FF1
  */
-static bool pixel_is_present_bmp(uint32 imageType, rct_g1_element *image, uint8 *index) {
+static bool pixel_is_present_bmp(uint32 imageType, rct_g1_element *image, uint8 *index, uint8 *palette) {
     // Probably used to check for corruption
     if (!(image->flags & G1_FLAG_BMP)) {
         return false;
     }
 
     if (imageType & IMAGE_TYPE_REMAP) {
-        return gCurrentColourPalette[*index] != 0;
+        return palette[*index] != 0;
     }
 
     if (imageType & IMAGE_TYPE_TRANSPARENT) {
@@ -1126,7 +1126,7 @@ static bool is_pixel_present_rle(uint8 *esi, sint16 x_start_point, sint16 y_star
  * @param y (dx)
  * @return value originally stored in 0x00141F569
  */
-static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 y)
+static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 y, uint8 *palette)
 {
     rct_g1_element *image = gfx_get_g1_element(imageId & 0x7FFFF);
 
@@ -1147,7 +1147,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
                     .zoom_level = dpi->zoom_level - 1
             };
 
-            return sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2);
+            return sub_679074(&zoomed_dpi, imageId - image->zoomed_offset, x / 2, y / 2, palette);
         }
     }
 
@@ -1233,7 +1233,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     uint32 imageType = gCurrentImageType;
 
     if (!(image->flags & G1_FLAG_1)) {
-        return pixel_is_present_bmp(imageType, image, offset);
+        return pixel_is_present_bmp(imageType, image, offset, palette);
     }
 
     // Adding assert here, possibly dead code below. Remove after some time.
@@ -1274,7 +1274,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         source_pointer = (uint8 *) ebx1;
     }
 
-    bool output = pixel_is_present_bmp(imageType, image, new_source_pointer_start + (uintptr_t) offset);
+    bool output = pixel_is_present_bmp(imageType, image, new_source_pointer_start + (uintptr_t) offset, palette);
     free(new_source_pointer_start);
 
     return output;
@@ -1286,6 +1286,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
  */
 static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
+    uint8 *palette = NULL;
     imageId &= 0xBFFFFFFF;
     if (imageId & IMAGE_TYPE_REMAP) {
         gCurrentImageType = IMAGE_TYPE_REMAP;
@@ -1294,11 +1295,11 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
             index &= 0x1F;
         }
         sint32 g1Index = palette_to_g1_offset[index];
-        gCurrentColourPalette = g1Elements[g1Index].offset;
+        palette = g1Elements[g1Index].offset;
     } else {
         gCurrentImageType = 0;
     }
-    return sub_679074(dpi, imageId, x, y);
+    return sub_679074(dpi, imageId, x, y, palette);
 }
 
 /**

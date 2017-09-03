@@ -39,7 +39,6 @@ uint32 gPickupPeepImage;
 sint32 gPickupPeepX;
 sint32 gPickupPeepY;
 
-uint8 *gCurrentColourPalette;
 #ifdef NO_RCT2
 rct_drawpixelinfo *unk_140E9A8;
 #endif
