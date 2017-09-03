@@ -322,30 +322,30 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 }
 
-void paint_util_push_tunnel_left(uint16 height, uint8 type)
+void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type)
 {
-    gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gPaintSession.LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gPaintSession.LeftTunnels[gPaintSession.LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gPaintSession.LeftTunnelCount++;
+    session->LeftTunnels[session->LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (session->LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        session->LeftTunnels[session->LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->LeftTunnelCount++;
     }
 }
 
-void paint_util_push_tunnel_right(uint16 height, uint8 type)
+void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type)
 {
-    gPaintSession.RightTunnels[gPaintSession.RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
-    if (gPaintSession.RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        gPaintSession.RightTunnels[gPaintSession.RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
-        gPaintSession.RightTunnelCount++;
+    session->RightTunnels[session->RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    if (session->RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
+        session->RightTunnels[session->RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->RightTunnelCount++;
     }
 }
 
-void paint_util_set_vertical_tunnel(uint16 height)
+void paint_util_set_vertical_tunnel(paint_session * session, uint16 height)
 {
 #ifdef __TESTPAINT__
     testPaintVerticalTunnelHeight = height;
 #endif
-    gPaintSession.VerticalTunnelHeight = height / 16;
+    session->VerticalTunnelHeight = height / 16;
 }
 
 void paint_util_set_general_support_height(sint16 height, uint8 slope)

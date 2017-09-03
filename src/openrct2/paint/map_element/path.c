@@ -644,11 +644,11 @@ static void sub_6A3F61(paint_session * session, rct_map_element * map_element, u
     if (bp & 2) {
         // Bottom right of tile is a tunnel
         if (bl == 5) {
-            paint_util_push_tunnel_right(height + 16, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height + 16, TUNNEL_10);
         } else if (bp & 1) {
-            paint_util_push_tunnel_right(height, TUNNEL_11);
+            paint_util_push_tunnel_right(session, height, TUNNEL_11);
         } else {
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
         }
     }
 
@@ -658,11 +658,11 @@ static void sub_6A3F61(paint_session * session, rct_map_element * map_element, u
 
     // Bottom left of the tile is a tunnel
     if (bl == 6) {
-        paint_util_push_tunnel_left(height + 16, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height + 16, TUNNEL_10);
     } else if (bp & 8) {
-        paint_util_push_tunnel_left(height , TUNNEL_11);
+        paint_util_push_tunnel_left(session, height , TUNNEL_11);
     } else {
-        paint_util_push_tunnel_left(height , TUNNEL_10);
+        paint_util_push_tunnel_left(session, height , TUNNEL_10);
     }
 }
 

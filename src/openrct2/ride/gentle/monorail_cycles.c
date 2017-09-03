@@ -190,9 +190,9 @@ static void paint_monorail_cycles_track_flat(paint_session * session, uint8 ride
     paint_monorail_cycles_util_7c((bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
 
     if (direction & 1) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
     metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_STICK_ALT : METAL_SUPPORTS_STICK, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -215,7 +215,7 @@ static void paint_monorail_cycles_station(paint_session * session, uint8 rideInd
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
         sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
@@ -225,7 +225,7 @@ static void paint_monorail_cycles_station(paint_session * session, uint8 rideInd
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
@@ -309,19 +309,19 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(paint_session
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     switch (trackSequence) {
@@ -359,7 +359,7 @@ static void paint_monorail_cycles_track_s_bend_left(paint_session * session, uin
 
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_0);
+            paint_util_push_tunnel_left(session, height, TUNNEL_0);
         }
 
         switch (trackSequence) {
@@ -369,7 +369,7 @@ static void paint_monorail_cycles_track_s_bend_left(paint_session * session, uin
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_0);
+            paint_util_push_tunnel_right(session, height, TUNNEL_0);
         }
 
         switch (trackSequence) {
@@ -405,7 +405,7 @@ static void paint_monorail_cycles_track_s_bend_right(paint_session * session, ui
 
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_0);
+            paint_util_push_tunnel_left(session, height, TUNNEL_0);
         }
 
         switch (trackSequence) {
@@ -415,7 +415,7 @@ static void paint_monorail_cycles_track_s_bend_right(paint_session * session, ui
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_0);
+            paint_util_push_tunnel_right(session, height, TUNNEL_0);
         }
 
         switch (trackSequence) {

@@ -131,9 +131,9 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
 
     if (direction & 1) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     if (!is_exit &&

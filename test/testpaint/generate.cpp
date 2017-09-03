@@ -876,7 +876,7 @@ private:
             int tunnelHeight = verticalTunnelHeights[0];
             if (tunnelHeight != 0)
             {
-                WriteLine(tabs, "paint_util_set_vertical_tunnel(height%s);", GetOffsetExpressionString(tunnelHeight).c_str());
+                WriteLine(tabs, "paint_util_set_vertical_tunnel(session, height%s);", GetOffsetExpressionString(tunnelHeight).c_str());
             }
         }
     }
@@ -885,17 +885,17 @@ private:
     {
         switch (way) {
         case 0:
-            WriteLine(tabs, "paint_util_push_tunnel_left(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            WriteLine(tabs, "paint_util_push_tunnel_left(session, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
             break;
         case 1:
-            WriteLine(tabs, "paint_util_push_tunnel_right(height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+            WriteLine(tabs, "paint_util_push_tunnel_right(session, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
             break;
         }
     }
 
     void GenerateTunnelCall(int tabs, int offset, int type)
     {
-        WriteLine(tabs, "paint_util_push_tunnel_rotated(direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
+        WriteLine(tabs, "paint_util_push_tunnel_rotated(session, direction, height%s, TUNNEL_%d);", GetOffsetExpressionString(offset).c_str(), type);
     }
 
     void GenerateSegmentSupportCall(int tabs, std::vector<SegmentSupportCall> segmentSupportCalls[4])

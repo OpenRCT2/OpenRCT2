@@ -45,7 +45,7 @@ static void suspended_monorail_track_flat(paint_session * session, uint8 rideInd
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
     paint_util_set_general_support_height(height + 48, 0x20);
 }
 
@@ -64,7 +64,7 @@ static void suspended_monorail_track_station(paint_session * session, uint8 ride
     sub_98199C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 3, height + 32, 0, 6, height + 32);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station_inverted(session, rideIndex, trackSequence, direction, height, mapElement, STATION_VARIANT_TALL);
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);
 }
@@ -106,9 +106,9 @@ static void suspended_monorail_track_25_deg_up(paint_session * session, uint8 ri
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
     }
     paint_util_set_general_support_height(height + 72, 0x20);
 }
@@ -150,9 +150,9 @@ static void suspended_monorail_track_flat_to_25_deg_up(paint_session * session, 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
     }
     paint_util_set_general_support_height(height + 64, 0x20);
 }
@@ -194,9 +194,9 @@ static void suspended_monorail_track_25_deg_up_to_flat(paint_session * session, 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_9);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_9);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_15);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_15);
     }
     paint_util_set_general_support_height(height + 56, 0x20);
 }
@@ -243,7 +243,7 @@ static void suspended_monorail_track_left_quarter_turn_5(paint_session * session
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;
@@ -328,10 +328,10 @@ static void suspended_monorail_track_left_quarter_turn_5(paint_session * session
 
         switch (direction) {
         case 2:
-            paint_util_push_tunnel_right(height, TUNNEL_9);
+            paint_util_push_tunnel_right(session, height, TUNNEL_9);
             break;
         case 3:
-            paint_util_push_tunnel_left(height, TUNNEL_9);
+            paint_util_push_tunnel_left(session, height, TUNNEL_9);
             break;
         }
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -370,7 +370,7 @@ static void suspended_monorail_track_s_bend_left(paint_session * session, uint8 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;
@@ -451,10 +451,10 @@ static void suspended_monorail_track_s_bend_left(paint_session * session, uint8 
 
         switch (direction) {
         case 1:
-            paint_util_push_tunnel_right(height, TUNNEL_9);
+            paint_util_push_tunnel_right(session, height, TUNNEL_9);
             break;
         case 2:
-            paint_util_push_tunnel_left(height, TUNNEL_9);
+            paint_util_push_tunnel_left(session, height, TUNNEL_9);
             break;
         }
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -486,7 +486,7 @@ static void suspended_monorail_track_s_bend_right(paint_session * session, uint8
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;
@@ -567,10 +567,10 @@ static void suspended_monorail_track_s_bend_right(paint_session * session, uint8
 
         switch (direction) {
         case 1:
-            paint_util_push_tunnel_right(height, TUNNEL_9);
+            paint_util_push_tunnel_right(session, height, TUNNEL_9);
             break;
         case 2:
-            paint_util_push_tunnel_left(height, TUNNEL_9);
+            paint_util_push_tunnel_left(session, height, TUNNEL_9);
             break;
         }
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -602,7 +602,7 @@ static void suspended_monorail_track_left_quarter_turn_3(paint_session * session
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;
@@ -648,10 +648,10 @@ static void suspended_monorail_track_left_quarter_turn_3(paint_session * session
 
         switch (direction) {
         case 2:
-            paint_util_push_tunnel_right(height, TUNNEL_9);
+            paint_util_push_tunnel_right(session, height, TUNNEL_9);
             break;
         case 3:
-            paint_util_push_tunnel_left(height, TUNNEL_9);
+            paint_util_push_tunnel_left(session, height, TUNNEL_9);
             break;
         }
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -690,7 +690,7 @@ static void suspended_monorail_track_left_eighth_to_diag(paint_session * session
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;
@@ -795,7 +795,7 @@ static void suspended_monorail_track_right_eighth_to_diag(paint_session * sessio
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height + 42, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
         }
         paint_util_set_general_support_height(height + 48, 0x20);
         break;

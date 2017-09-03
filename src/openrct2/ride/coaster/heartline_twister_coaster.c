@@ -68,7 +68,7 @@ static void heartline_twister_rc_track_flat(paint_session * session, uint8 rideI
             break;
         }
     }
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
@@ -86,7 +86,7 @@ static void heartline_twister_rc_track_station(paint_session * session, uint8 ri
     sub_98196C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
@@ -142,9 +142,9 @@ static void heartline_twister_rc_track_25_deg_up(paint_session * session, uint8 
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 56, 0x20);
@@ -201,9 +201,9 @@ static void heartline_twister_rc_track_60_deg_up(paint_session * session, uint8 
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
@@ -260,9 +260,9 @@ static void heartline_twister_rc_track_flat_to_25_deg_up(paint_session * session
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);
@@ -319,9 +319,9 @@ static void heartline_twister_rc_track_25_deg_up_to_60_deg_up(paint_session * se
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 72, 0x20);
@@ -378,9 +378,9 @@ static void heartline_twister_rc_track_60_deg_up_to_25_deg_up(paint_session * se
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 72, 0x20);
@@ -437,9 +437,9 @@ static void heartline_twister_rc_track_25_deg_up_to_flat(paint_session * session
         }
     }
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 40, 0x20);
@@ -509,9 +509,9 @@ static void heartline_twister_rc_track_heartline_transfer_up(paint_session * ses
             break;
         }
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         } else {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -596,9 +596,9 @@ static void heartline_twister_rc_track_heartline_transfer_up(paint_session * ses
             break;
         }
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         } else {
-            paint_util_push_tunnel_rotated(direction, height - 16, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height - 16, TUNNEL_0);
         }
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
@@ -630,9 +630,9 @@ static void heartline_twister_rc_track_heartline_transfer_down(paint_session * s
             break;
         }
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         } else {
-            paint_util_push_tunnel_rotated(direction, height - 16, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height - 16, TUNNEL_0);
         }
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
@@ -721,9 +721,9 @@ static void heartline_twister_rc_track_heartline_transfer_down(paint_session * s
             break;
         }
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         } else {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
         }
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -758,7 +758,7 @@ static void heartline_twister_rc_track_left_heartline_roll(paint_session * sessi
             wooden_a_supports_paint_setup(session, 7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         }
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
         break;
@@ -889,7 +889,7 @@ static void heartline_twister_rc_track_left_heartline_roll(paint_session * sessi
             wooden_a_supports_paint_setup(session, 7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         }
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
         break;
@@ -923,7 +923,7 @@ static void heartline_twister_rc_track_right_heartline_roll(paint_session * sess
             wooden_a_supports_paint_setup(session, 7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         }
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
         break;
@@ -1054,7 +1054,7 @@ static void heartline_twister_rc_track_right_heartline_roll(paint_session * sess
             wooden_a_supports_paint_setup(session, 7, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             break;
         }
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 32, 0x20);
         break;

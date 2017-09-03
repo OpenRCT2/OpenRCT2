@@ -67,10 +67,10 @@ static void paint_boat_ride_station(paint_session * session, uint8 rideIndex, ui
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
     if (direction & 1) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
         track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     } else {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
         track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     }
 

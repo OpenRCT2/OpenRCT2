@@ -590,7 +590,7 @@ static void paint_miniature_railway_track_flat(paint_session * session, uint8 ri
         sub_98197C_rotated(direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
     }
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -609,7 +609,7 @@ static void paint_miniature_railway_station(paint_session * session, uint8 rideI
     imageId = miniature_railway_track_pieces_flat_station[direction] | gTrackColours[SCHEME_TRACK];
     sub_98199C_rotated(direction, imageId, 0, 6, 32, 20, 2, height, 0, 0, height);
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
     track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, mapElement);
     // covers shouldn't be offset by +2
@@ -627,10 +627,10 @@ static void paint_miniature_railway_track_25_deg_up(paint_session * session, uin
     sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_7); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_8); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_8); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_7); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_7); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_8); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_8); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_7); break;
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 45 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -648,10 +648,10 @@ static void paint_miniature_railway_track_flat_to_25_deg_up(paint_session * sess
     sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height, TUNNEL_6); break;
-        case 1: paint_util_push_tunnel_right(height, TUNNEL_8); break;
-        case 2: paint_util_push_tunnel_left(height, TUNNEL_8); break;
-        case 3: paint_util_push_tunnel_right(height, TUNNEL_6); break;
+        case 0: paint_util_push_tunnel_left(session, height, TUNNEL_6); break;
+        case 1: paint_util_push_tunnel_right(session, height, TUNNEL_8); break;
+        case 2: paint_util_push_tunnel_left(session, height, TUNNEL_8); break;
+        case 3: paint_util_push_tunnel_right(session, height, TUNNEL_6); break;
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 37 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -669,10 +669,10 @@ static void paint_miniature_railway_track_25_deg_up_to_flat(paint_session * sess
     sub_98197C_rotated(direction, imageId, 0, 2, 32, 25, 2, height, 0, 3, height);
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_6); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_14); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_14); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_6); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_6); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_14); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_14); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_6); break;
     }
 
     wooden_a_supports_paint_setup(session, direction & 1, 41 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -855,19 +855,19 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_sessi
         }
     }
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     sint32 blockedSegments = 0;
@@ -954,11 +954,11 @@ static void paint_miniature_railway_track_s_bend_left(paint_session * session, u
     }
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
         }
     }
 
@@ -1035,11 +1035,11 @@ static void paint_miniature_railway_track_s_bend_right(paint_session * session, 
 
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
         }
     }
 
@@ -1288,10 +1288,10 @@ static void paint_miniature_railway_track_left_eighth_to_diag(paint_session * se
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1439,10 +1439,10 @@ static void paint_miniature_railway_track_right_eighth_to_diag(paint_session * s
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);

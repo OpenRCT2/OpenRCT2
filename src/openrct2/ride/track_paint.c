@@ -1229,16 +1229,16 @@ void track_paint_util_right_quarter_turn_5_tiles_paint_3(paint_session * session
 void track_paint_util_right_quarter_turn_5_tiles_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType)
 {
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
 }
 
@@ -1421,53 +1421,53 @@ void track_paint_util_right_quarter_turn_3_tiles_paint_4(paint_session * session
 void track_paint_util_right_quarter_turn_3_tiles_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType)
 {
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
 
     if (direction == 0 && trackSequence == 3) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
 
 
     if (direction == 1 && trackSequence == 3) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
 
 
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
 {
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height - 8, tunnelType0);
+        paint_util_push_tunnel_left(session, height - 8, tunnelType0);
     }
     if (direction == 0 && trackSequence == 3) {
-        paint_util_push_tunnel_right(height + 8, tunnelType3);
+        paint_util_push_tunnel_right(session, height + 8, tunnelType3);
     }
     if (direction == 1 && trackSequence == 3) {
-        paint_util_push_tunnel_left(height + 8, tunnelType3);
+        paint_util_push_tunnel_left(session, height + 8, tunnelType3);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height - 8, tunnelType0);
+        paint_util_push_tunnel_right(session, height - 8, tunnelType0);
     }
 }
 
 void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(paint_session * session, sint16 height, uint8 direction, uint8 trackSequence, uint8 tunnelType0, uint8 tunnelType3)
 {
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height + 8, tunnelType0);
+        paint_util_push_tunnel_left(session, height + 8, tunnelType0);
     }
     if (direction == 0 && trackSequence == 3) {
-        paint_util_push_tunnel_right(height - 8, tunnelType3);
+        paint_util_push_tunnel_right(session, height - 8, tunnelType3);
     }
     if (direction == 1 && trackSequence == 3) {
-        paint_util_push_tunnel_left(height - 8, tunnelType3);
+        paint_util_push_tunnel_left(session, height - 8, tunnelType3);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height + 8, tunnelType0);
+        paint_util_push_tunnel_right(session, height + 8, tunnelType0);
     }
 }
 
@@ -1541,21 +1541,21 @@ void track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(paint_s
 void track_paint_util_left_quarter_turn_3_tiles_tunnel(paint_session * session, sint16 height, uint8 tunnelType, uint8 direction, uint8 trackSequence)
 {
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
 
 
     if (direction == 2 && trackSequence == 3) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
 
 
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, tunnelType);
+        paint_util_push_tunnel_right(session, height, tunnelType);
     }
 
     if (direction == 3 && trackSequence == 3) {
-        paint_util_push_tunnel_left(height, tunnelType);
+        paint_util_push_tunnel_left(session, height, tunnelType);
     }
 }
 
@@ -1582,14 +1582,14 @@ void track_paint_util_left_quarter_turn_1_tile_tunnel(paint_session * session, u
 {
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(baseHeight + startOffset, startTunnel);
+            paint_util_push_tunnel_left(session, baseHeight + startOffset, startTunnel);
             break;
         case 2:
-            paint_util_push_tunnel_right(baseHeight + endOffset, endTunnel);
+            paint_util_push_tunnel_right(session, baseHeight + endOffset, endTunnel);
             break;
         case 3:
-            paint_util_push_tunnel_right(baseHeight + startOffset, startTunnel);
-            paint_util_push_tunnel_left(baseHeight + endOffset, endTunnel);
+            paint_util_push_tunnel_right(session, baseHeight + startOffset, startTunnel);
+            paint_util_push_tunnel_left(session, baseHeight + endOffset, endTunnel);
             break;
     }
 }

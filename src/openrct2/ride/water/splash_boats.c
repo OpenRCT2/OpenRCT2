@@ -509,9 +509,9 @@ static void paint_splash_boats_track_25_deg_up(paint_session * session, uint8 ri
     wooden_a_supports_paint_setup(session, (direction & 1), 9 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 56, 0x20);
@@ -528,9 +528,9 @@ static void paint_splash_boats_track_60_deg_up(paint_session * session, uint8 ri
     wooden_a_supports_paint_setup(session, (direction & 1), 21 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
@@ -547,9 +547,9 @@ static void paint_splash_boats_track_flat_to_25_deg_up(paint_session * session, 
     wooden_a_supports_paint_setup(session, (direction & 1), 1 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);
@@ -566,9 +566,9 @@ static void paint_splash_boats_track_25_deg_up_to_flat(paint_session * session, 
     wooden_a_supports_paint_setup(session, (direction & 1), 5 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_14);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 40, 0x20);
@@ -585,9 +585,9 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(paint_session * sess
     wooden_a_supports_paint_setup(session, (direction & 1), 13 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 72, 0x20);
@@ -604,9 +604,9 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(paint_session * sess
     wooden_a_supports_paint_setup(session, (direction & 1), 17 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 72, 0x20);
@@ -624,9 +624,9 @@ static void paint_splash_boats_track_25_deg_down(paint_session * session, uint8 
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_8);
     } else {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 56, 0x20);
@@ -649,9 +649,9 @@ static void paint_splash_boats_track_flat_to_25_deg_down(paint_session * session
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_14);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_14);
     } else {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_6);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_6);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 40, 0x20);
@@ -679,9 +679,9 @@ static void paint_splash_boats_track_25_deg_down_to_flat(paint_session * session
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_7);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_7);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_8);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_8);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);
@@ -710,9 +710,9 @@ static void paint_splash_boats_track_flat(paint_session * session, uint8 rideInd
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     if (direction & 1) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -742,7 +742,7 @@ static void paint_splash_boats_station(paint_session * session, uint8 rideIndex,
 
     track_paint_util_draw_station_platform(session, ride, direction, height, 7, mapElement);
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -778,12 +778,12 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * s
     switch (trackSequence) {
         case 0:
             if (direction == 0 || direction == 3) {
-                paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
             }
             break;
         case 6:
             if (direction == 2 || direction == 3) {
-                paint_util_push_tunnel_rotated(direction ^ 1, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction ^ 1, height, TUNNEL_6);
             }
             break;
     }
@@ -821,12 +821,12 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * 
     switch (trackSequence) {
         case 0:
             if (direction == 0 || direction == 3) {
-                paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
             }
             break;
         case 6:
             if (direction == 0 || direction == 1) {
-                paint_util_push_tunnel_rotated(direction ^ 1, height, TUNNEL_6);
+                paint_util_push_tunnel_rotated(session, direction ^ 1, height, TUNNEL_6);
             }
             break;
     }
@@ -898,11 +898,11 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         }
     }
 
@@ -973,11 +973,11 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         }
     }
 

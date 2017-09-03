@@ -141,7 +141,7 @@ static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, 
         imageId = SPR_GO_KARTS_FLAT_FRONT_SW_NE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
         imageId = SPR_GO_KARTS_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
@@ -149,7 +149,7 @@ static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, 
         imageId = SPR_GO_KARTS_FLAT_FRONT_NW_SE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
 
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -183,19 +183,19 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
     switch (direction) {
         case 0:
             wooden_a_supports_paint_setup(session, 0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height - 8, TUNNEL_7);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height + 8, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height + 8, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height - 8, TUNNEL_7);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
             break;
     }
 
@@ -228,19 +228,19 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
     switch (direction) {
         case 0:
             wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height, TUNNEL_8);
+            paint_util_push_tunnel_right(session, height, TUNNEL_8);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height, TUNNEL_8);
+            paint_util_push_tunnel_left(session, height, TUNNEL_8);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
     }
 
@@ -273,19 +273,19 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
     switch (direction) {
         case 0:
             wooden_a_supports_paint_setup(session, 0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height - 8, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
             break;
         case 1:
             wooden_a_supports_paint_setup(session, 1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height + 8, TUNNEL_14);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
             break;
         case 2:
             wooden_a_supports_paint_setup(session, 0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_left(height + 8, TUNNEL_14);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
         case 3:
             wooden_a_supports_paint_setup(session, 1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_push_tunnel_right(height - 8, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
             break;
     }
 
@@ -345,11 +345,11 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
     if (direction == 0 || direction == 2) {
         sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
         sub_98197C(imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
 
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (direction == 0 || direction == 2) {
@@ -450,14 +450,14 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * sessio
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 2:
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
         case 3:
-            paint_util_push_tunnel_left(height, TUNNEL_6);
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
     }
 

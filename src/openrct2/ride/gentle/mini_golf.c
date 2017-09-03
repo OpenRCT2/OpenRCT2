@@ -468,11 +468,11 @@ static void paint_mini_golf_track_flat(paint_session * session, uint8 rideIndex,
     if (direction & 1) {
         imageId = SPR_MINI_GOLF_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
-        paint_util_push_tunnel_right(height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_10);
     } else {
         imageId = SPR_MINI_GOLF_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
-        paint_util_push_tunnel_left(height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_10);
     }
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -516,16 +516,16 @@ static void paint_mini_golf_track_25_deg_up(paint_session * session, uint8 rideI
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height - 8, TUNNEL_1);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
             break;
         case 1:
-            paint_util_push_tunnel_right(height + 8, TUNNEL_2);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(height + 8, TUNNEL_2);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(height - 8, TUNNEL_1);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
             break;
     }
 
@@ -551,16 +551,16 @@ static void paint_mini_golf_track_flat_to_25_deg_up(paint_session * session, uin
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_10);
             break;
         case 1:
-            paint_util_push_tunnel_right(height, TUNNEL_2);
+            paint_util_push_tunnel_right(session, height, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(height, TUNNEL_2);
+            paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
             break;
     }
 
@@ -586,16 +586,16 @@ static void paint_mini_golf_track_25_deg_up_to_flat(paint_session * session, uin
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height - 8, TUNNEL_0);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(height + 8, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_10);
             break;
         case 2:
-            paint_util_push_tunnel_left(height + 8, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_10);
             break;
         case 3:
-            paint_util_push_tunnel_right(height - 8, TUNNEL_0);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
             break;
     }
 
@@ -649,7 +649,7 @@ static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, ui
         track_paint_util_draw_station_covers(session, EDGE_SW, hasSWFence, entranceStyle, direction, height);
 
         // Was leftwards tunnel in game, seems odd
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
@@ -666,7 +666,7 @@ static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, ui
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
         track_paint_util_draw_station_covers(session, EDGE_SE, hasSEFence, entranceStyle, direction, height);
 
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -690,7 +690,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(paint_session * sessi
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_10);
             if (!shouldDrawFence) break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SW_NW | gTrackColours[SCHEME_MISC];
@@ -706,7 +706,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(paint_session * sessi
             break;
 
         case 2:
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
             if (!shouldDrawFence) break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NE_SE | gTrackColours[SCHEME_MISC];
@@ -714,8 +714,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(paint_session * sessi
             break;
 
         case 3:
-            paint_util_push_tunnel_left(height, TUNNEL_10);
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
             if (!shouldDrawFence) break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SE_SW | gTrackColours[SCHEME_MISC];
@@ -758,9 +758,9 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
     paint_util_set_general_support_height(height + 32, 0x20);
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1)) {
-        paint_util_push_tunnel_left(height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_10);
     } else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1)) {
-        paint_util_push_tunnel_right(height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_10);
     }
 
     rct_xy16 boundBox = (direction & 1) ? (rct_xy16) {26, 32} : (rct_xy16) {32, 26};
@@ -804,9 +804,9 @@ static void paint_mini_golf_hole_c(paint_session * session, uint8 rideIndex, uin
     paint_util_set_general_support_height(height + 32, 0x20);
 
     if ((direction == 0 && trackSequence == 0) || (direction == 2 && trackSequence == 1)) {
-        paint_util_push_tunnel_left(height, TUNNEL_10);
+        paint_util_push_tunnel_left(session, height, TUNNEL_10);
     } else if ((direction == 3 && trackSequence == 0) || (direction == 1 && trackSequence == 1)) {
-        paint_util_push_tunnel_right(height, TUNNEL_10);
+        paint_util_push_tunnel_right(session, height, TUNNEL_10);
     }
 
     rct_xy16 boundBox = (direction & 1) ? (rct_xy16) {26, 32} : (rct_xy16) {32, 26};
@@ -855,12 +855,12 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
     switch ((direction << 4) | trackSequence) {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_10);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
             break;
     }
 
@@ -921,12 +921,12 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
     switch ((direction << 4) | trackSequence) {
         case 0x00:
         case 0x12:
-            paint_util_push_tunnel_left(height, TUNNEL_10);
+            paint_util_push_tunnel_left(session, height, TUNNEL_10);
             break;
 
         case 0x02:
         case 0x30:
-            paint_util_push_tunnel_right(height, TUNNEL_10);
+            paint_util_push_tunnel_right(session, height, TUNNEL_10);
             break;
     }
 

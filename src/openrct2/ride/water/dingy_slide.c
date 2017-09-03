@@ -383,7 +383,7 @@ static void dinghy_slide_track_flat(paint_session * session, uint8 rideIndex, ui
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -406,7 +406,7 @@ static void dinghy_slide_track_station(paint_session * session, uint8 rideIndex,
 
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -441,9 +441,9 @@ static void dinghy_slide_track_25_deg_up(paint_session * session, uint8 rideInde
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -470,9 +470,9 @@ static void dinghy_slide_track_60_deg_up(paint_session * session, uint8 rideInde
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -508,9 +508,9 @@ static void dinghy_slide_track_flat_to_25_deg_up(paint_session * session, uint8 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -537,9 +537,9 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(paint_session * session, u
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -566,9 +566,9 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(paint_session * session, u
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -604,9 +604,9 @@ static void dinghy_slide_track_25_deg_up_to_flat(paint_session * session, uint8 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -712,16 +712,16 @@ static void dinghy_slide_track_right_quarter_turn_5(paint_session * session, uin
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     switch (trackSequence) {
@@ -807,11 +807,11 @@ static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIn
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     }
 
@@ -879,11 +879,11 @@ static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideI
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     }
 
@@ -984,7 +984,7 @@ static void dinghy_slide_track_flat_covered(paint_session * session, uint8 rideI
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -1010,9 +1010,9 @@ static void dinghy_slide_track_25_deg_up_covered(paint_session * session, uint8 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1039,9 +1039,9 @@ static void dinghy_slide_track_60_deg_up_covered(paint_session * session, uint8 
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 56, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1068,9 +1068,9 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(paint_session * session
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1097,9 +1097,9 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(paint_session * se
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1126,9 +1126,9 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(paint_session * se
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_1);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 24, TUNNEL_2);
+        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1155,9 +1155,9 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(paint_session * session
     }
 
     if (direction == 0 || direction == 3) {
-        paint_util_push_tunnel_rotated(direction, height - 8, TUNNEL_0);
+        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_rotated(direction, height + 8, TUNNEL_12);
+        paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1263,16 +1263,16 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(paint_session * sess
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     switch (trackSequence) {
@@ -1353,11 +1353,11 @@ static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     }
 
@@ -1425,11 +1425,11 @@ static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uin
 
     if (trackSequence == 0) {
         if (direction == 0 || direction == 3) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     } else if (trackSequence == 3) {
         if (direction == 1 || direction == 2) {
-            paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
+            paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
         }
     }
 

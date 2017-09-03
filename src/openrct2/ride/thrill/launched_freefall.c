@@ -111,7 +111,7 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
-        paint_util_set_vertical_tunnel(height + 32);
+        paint_util_set_vertical_tunnel(session, height + 32);
 
         height -= 64;
     }
@@ -151,7 +151,7 @@ static void paint_launched_freefall_tower_section(paint_session * session, uint8
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(height + 32);
+    paint_util_set_vertical_tunnel(session, height + 32);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 

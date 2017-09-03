@@ -220,7 +220,7 @@ paint_struct * sub_98196C_rotated(uint8 direction, uint32 image_id, sint8 x_offs
 paint_struct * sub_98197C_rotated(uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
 paint_struct * sub_98199C_rotated(uint8 direction, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z);
 
-void paint_util_push_tunnel_rotated(uint8 direction, uint16 height, uint8 type);
+void paint_util_push_tunnel_rotated(paint_session * session, uint8 direction, uint16 height, uint8 type);
 
 bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y);
 bool paint_attach_to_previous_ps(paint_session * session, uint32 image_id, uint16 x, uint16 y);

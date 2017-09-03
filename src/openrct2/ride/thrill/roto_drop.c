@@ -109,7 +109,7 @@ static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
-        paint_util_set_vertical_tunnel(height + 96);
+        paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
 #ifdef __TESTPAINT__
@@ -155,7 +155,7 @@ static void paint_roto_drop_tower_section(paint_session * session, uint8 rideInd
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
 
-    paint_util_set_vertical_tunnel(height + 32);
+    paint_util_set_vertical_tunnel(session, height + 32);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 

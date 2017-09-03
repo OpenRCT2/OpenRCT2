@@ -160,9 +160,9 @@ static void paint_ghost_train_track_flat(paint_session * session, uint8 rideInde
     }
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -199,16 +199,16 @@ static void paint_ghost_train_track_25_deg_up(paint_session * session, uint8 rid
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height - 8, TUNNEL_1);
+            paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
             break;
         case 1:
-            paint_util_push_tunnel_right(height + 8, TUNNEL_2);
+            paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(height + 8, TUNNEL_2);
+            paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(height - 8, TUNNEL_1);
+            paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
             break;
     }
 
@@ -241,16 +241,16 @@ static void paint_ghost_train_track_flat_to_25_deg_up(paint_session * session, u
 
     switch (direction) {
         case 0:
-            paint_util_push_tunnel_left(height, TUNNEL_0);
+            paint_util_push_tunnel_left(session, height, TUNNEL_0);
             break;
         case 1:
-            paint_util_push_tunnel_right(height, TUNNEL_2);
+            paint_util_push_tunnel_right(session, height, TUNNEL_2);
             break;
         case 2:
-            paint_util_push_tunnel_left(height, TUNNEL_2);
+            paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
-            paint_util_push_tunnel_right(height, TUNNEL_0);
+            paint_util_push_tunnel_right(session, height, TUNNEL_0);
             break;
     }
 
@@ -290,10 +290,10 @@ static void paint_ghost_train_track_25_deg_up_to_flat(paint_session * session, u
     paint_ghost_train_track_25_deg_up_to_flat_shared(session, rideIndex, trackSequence, direction, height, mapElement);
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_0); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_12); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_12); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_0); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_0); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_12); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_12); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_0); break;
     }
 }
 
@@ -309,10 +309,10 @@ static void paint_ghost_train_track_flat_to_25_deg_down(paint_session * session,
     paint_ghost_train_track_25_deg_up_to_flat_shared(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 
     switch ((direction + 2) % 4) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_0); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_0); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_0); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_0); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_0); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_0); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_0); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_0); break;
     }
 }
 
@@ -343,9 +343,9 @@ static void paint_ghost_train_station(paint_session * session, uint8 rideIndex, 
     }
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (direction == 0 || direction == 2) {
@@ -424,9 +424,9 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
     track_paint_util_spinning_tunnel_paint(session, 3, height, direction, get_current_rotation());
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
@@ -449,9 +449,9 @@ static void paint_ghost_train_track_brakes(paint_session * session, uint8 rideIn
     }
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     if (track_paint_util_should_paint_supports(position)) {

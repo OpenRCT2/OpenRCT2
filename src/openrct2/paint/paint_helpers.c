@@ -62,11 +62,11 @@ paint_struct * sub_98199C_rotated(
     }
 }
 
-void paint_util_push_tunnel_rotated(uint8 direction, uint16 height, uint8 type)
+void paint_util_push_tunnel_rotated(paint_session * session, uint8 direction, uint16 height, uint8 type)
 {
     if (direction & 1) {
-        paint_util_push_tunnel_right(height, type);
+        paint_util_push_tunnel_right(session, height, type);
     } else {
-        paint_util_push_tunnel_left(height, type);
+        paint_util_push_tunnel_left(session, height, type);
     }
 }

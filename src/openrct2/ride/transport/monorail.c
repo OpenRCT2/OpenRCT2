@@ -454,9 +454,9 @@ static void paint_monorail_track_flat(paint_session * session, uint8 rideIndex, 
     }
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -488,9 +488,9 @@ static void paint_monorail_station(paint_session * session, uint8 rideIndex, uin
     }
 
     if (direction == 0 || direction == 2) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (direction == 0 || direction == 2) {
@@ -521,10 +521,10 @@ static void paint_monorail_track_25_deg_up(paint_session * session, uint8 rideIn
     }
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_7); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_8); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_8); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_7); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_7); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_8); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_8); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_7); break;
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -549,10 +549,10 @@ static void paint_monorail_track_flat_to_25_deg_up(paint_session * session, uint
     }
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height, TUNNEL_6); break;
-        case 1: paint_util_push_tunnel_right(height, TUNNEL_8); break;
-        case 2: paint_util_push_tunnel_left(height, TUNNEL_8); break;
-        case 3: paint_util_push_tunnel_right(height, TUNNEL_6); break;
+        case 0: paint_util_push_tunnel_left(session, height, TUNNEL_6); break;
+        case 1: paint_util_push_tunnel_right(session, height, TUNNEL_8); break;
+        case 2: paint_util_push_tunnel_left(session, height, TUNNEL_8); break;
+        case 3: paint_util_push_tunnel_right(session, height, TUNNEL_6); break;
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -577,10 +577,10 @@ static void paint_monorail_track_25_deg_up_to_flat(paint_session * session, uint
     }
 
     switch (direction) {
-        case 0: paint_util_push_tunnel_left(height - 8, TUNNEL_6); break;
-        case 1: paint_util_push_tunnel_right(height + 8, TUNNEL_14); break;
-        case 2: paint_util_push_tunnel_left(height + 8, TUNNEL_14); break;
-        case 3: paint_util_push_tunnel_right(height - 8, TUNNEL_6); break;
+        case 0: paint_util_push_tunnel_left(session, height - 8, TUNNEL_6); break;
+        case 1: paint_util_push_tunnel_right(session, height + 8, TUNNEL_14); break;
+        case 2: paint_util_push_tunnel_left(session, height + 8, TUNNEL_14); break;
+        case 3: paint_util_push_tunnel_right(session, height - 8, TUNNEL_6); break;
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -622,19 +622,19 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(paint_session * sess
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     if (direction == 0 && trackSequence == 6) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     if (direction == 1 && trackSequence == 6) {
-        paint_util_push_tunnel_left(height, TUNNEL_6);
+        paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_6);
+        paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
     sint32 blockedSegments = 0;
@@ -691,7 +691,7 @@ static void paint_monorail_track_s_bend_left(paint_session * session, uint8 ride
 
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
         }
 
         switch (trackSequence) {
@@ -701,7 +701,7 @@ static void paint_monorail_track_s_bend_left(paint_session * session, uint8 ride
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
         }
 
         switch (trackSequence) {
@@ -755,7 +755,7 @@ static void paint_monorail_track_s_bend_right(paint_session * session, uint8 rid
 
     if (direction == 0 || direction == 2) {
         if (trackSequence == 0) {
-            paint_util_push_tunnel_left(height, TUNNEL_6);
+            paint_util_push_tunnel_left(session, height, TUNNEL_6);
         }
 
         switch (trackSequence) {
@@ -765,7 +765,7 @@ static void paint_monorail_track_s_bend_right(paint_session * session, uint8 rid
         }
     } else {
         if (trackSequence == 3) {
-            paint_util_push_tunnel_right(height, TUNNEL_6);
+            paint_util_push_tunnel_right(session, height, TUNNEL_6);
         }
 
         switch (trackSequence) {
@@ -843,10 +843,10 @@ static void paint_monorail_track_left_eighth_to_diag(paint_session * session, ui
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     sint32 blockedSegments = 0;
@@ -886,10 +886,10 @@ static void paint_monorail_track_right_eighth_to_diag(paint_session * session, u
     }
 
     if (direction == 0 && trackSequence == 0) {
-        paint_util_push_tunnel_left(height, TUNNEL_0);
+        paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
     if (direction == 3 && trackSequence == 0) {
-        paint_util_push_tunnel_right(height, TUNNEL_0);
+        paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
     sint32 blockedSegments = 0;
