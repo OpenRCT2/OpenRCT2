@@ -870,36 +870,36 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
         height += 16;
     }
 
-    paint_util_set_general_support_height(height, 0x20);
+    paint_util_set_general_support_height(session, height, 0x20);
 
     if (footpath_element_is_queue(mapElement)
         || (mapElement->properties.path.edges != 0xFF && hasFences)
         ) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;
     }
 
     if (mapElement->properties.path.edges == 0xFF) {
-        paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
         return;
     }
 
-    paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
 
     if (edges & 1) {
-        paint_util_set_segment_support_height(SEGMENT_CC, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_CC, 0xFFFF, 0);
     }
 
     if (edges & 2) {
-        paint_util_set_segment_support_height(SEGMENT_D4, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_D4, 0xFFFF, 0);
     }
 
     if (edges & 4) {
-        paint_util_set_segment_support_height(SEGMENT_D0, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_D0, 0xFFFF, 0);
     }
 
     if (edges & 8) {
-        paint_util_set_segment_support_height(SEGMENT_C8, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_C8, 0xFFFF, 0);
     }
 }
 
@@ -991,36 +991,36 @@ void path_paint_box_support(paint_session * session, rct_map_element* mapElement
         height += 16;
     }
 
-    paint_util_set_general_support_height(height, 0x20);
+    paint_util_set_general_support_height(session, height, 0x20);
 
     if (footpath_element_is_queue(mapElement)
         || (mapElement->properties.path.edges != 0xFF && hasFences)
         ) {
 
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         return;
     }
 
     if (mapElement->properties.path.edges == 0xFF) {
-        paint_util_set_segment_support_height(SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, 0xFFFF, 0);
         return;
     }
 
-    paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
 
     if (edges & 1) {
-        paint_util_set_segment_support_height(SEGMENT_CC, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_CC, 0xFFFF, 0);
     }
 
     if (edges & 2) {
-        paint_util_set_segment_support_height(SEGMENT_D4, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_D4, 0xFFFF, 0);
     }
 
     if (edges & 4) {
-        paint_util_set_segment_support_height(SEGMENT_D0, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_D0, 0xFFFF, 0);
     }
 
     if (edges & 8) {
-        paint_util_set_segment_support_height(SEGMENT_C8, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_C8, 0xFFFF, 0);
     }
 }

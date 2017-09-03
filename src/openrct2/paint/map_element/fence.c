@@ -160,7 +160,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
-    paint_util_set_general_support_height(height, 0x20);
+    paint_util_set_general_support_height(session, height, 0x20);
 
     uint32 dword_141F710 = 0;
     if (gTrackDesignSaveMode) {

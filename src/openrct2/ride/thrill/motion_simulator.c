@@ -141,8 +141,8 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     case 3: paint_motionsimulator_vehicle(session, -16, -16, direction, height, mapElement); break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 128, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
 /**

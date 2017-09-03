@@ -463,8 +463,8 @@ static void paint_monorail_track_flat(paint_session * session, uint8 rideIndex, 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE25C, 0x008AE26C, 0x008AE27C */
@@ -503,8 +503,8 @@ static void paint_monorail_station(paint_session * session, uint8 rideIndex, uin
 
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE1BC */
@@ -531,8 +531,8 @@ static void paint_monorail_track_25_deg_up(paint_session * session, uint8 rideIn
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE1CC */
@@ -559,8 +559,8 @@ static void paint_monorail_track_flat_to_25_deg_up(paint_session * session, uint
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AE1DC */
@@ -587,8 +587,8 @@ static void paint_monorail_track_25_deg_up_to_flat(paint_session * session, uint
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008AE1EC */
@@ -646,10 +646,10 @@ static void paint_monorail_track_right_quarter_turn_5_tiles(paint_session * sess
         case 6: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE21C */
@@ -718,9 +718,9 @@ static void paint_monorail_track_s_bend_left(paint_session * session, uint8 ride
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 3: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE24C */
@@ -782,9 +782,9 @@ static void paint_monorail_track_s_bend_right(paint_session * session, uint8 rid
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4; break;
         case 3: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE29C */
@@ -806,9 +806,9 @@ static void paint_monorail_track_right_quarter_turn_3_tiles(paint_session * sess
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
         case 3: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE28C */
@@ -858,8 +858,8 @@ static void paint_monorail_track_left_eighth_to_diag(paint_session * session, ui
         case 4: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C8 | SEGMENT_C0 | SEGMENT_D4; break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE32C */
@@ -901,8 +901,8 @@ static void paint_monorail_track_right_eighth_to_diag(paint_session * session, u
         case 4: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D4; break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE33C */
@@ -968,8 +968,8 @@ static void paint_monorail_track_diag_flat(paint_session * session, uint8 rideIn
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AE2DC */
@@ -985,8 +985,8 @@ static void paint_monorail_track_diag_25_deg_up(paint_session * session, uint8 r
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2BC */
@@ -1002,8 +1002,8 @@ static void paint_monorail_track_diag_flat_to_25_deg_up(paint_session * session,
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AE2CC */
@@ -1019,8 +1019,8 @@ static void paint_monorail_track_diag_25_deg_up_to_flat(paint_session * session,
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE30C */
@@ -1036,8 +1036,8 @@ static void paint_monorail_track_diag_25_deg_down(paint_session * session, uint8
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2EC */
@@ -1053,8 +1053,8 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(paint_session * sessio
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AE2FC */
@@ -1070,8 +1070,8 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(paint_session * sessio
     }
 
     sint32 blockedSegments = monorail_diag_blocked_segments[trackSequence];
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /**

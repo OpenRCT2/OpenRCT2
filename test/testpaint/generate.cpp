@@ -903,7 +903,7 @@ private:
         for (size_t i = 0; i < segmentSupportCalls[0].size(); i++)
         {
             auto ssh = segmentSupportCalls[0][i];
-            std::string szCall = "paint_util_set_segment_support_height(";
+            std::string szCall = "paint_util_set_segment_support_height(session, ";
             if (ssh.segments == SEGMENTS_ALL)
             {
                 szCall += "SEGMENTS_ALL";
@@ -937,7 +937,7 @@ private:
             return;
         }
 
-        WriteLine(tabs, "paint_util_set_general_support_height(height%s, 0x%02X);",
+        WriteLine(tabs, "paint_util_set_general_support_height(session, height%s, 0x%02X);",
             GetOffsetExpressionString((sint16)generalSupports[0].height).c_str(),
             generalSupports[0].slope);
         if (!AllMatch(generalSupports, 4))

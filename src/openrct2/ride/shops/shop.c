@@ -59,8 +59,8 @@ static void shop_paint_setup(paint_session * session, uint8 rideIndex, uint8 tra
         sub_98197C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /* 0x00761160 */

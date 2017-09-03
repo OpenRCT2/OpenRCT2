@@ -138,9 +138,9 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
         case 7: cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4; break;
     }
 
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 64, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
 /**

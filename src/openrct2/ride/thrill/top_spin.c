@@ -268,9 +268,9 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
             break;
     }
 
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 112, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 112, 0x20);
 }
 
 

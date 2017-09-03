@@ -182,7 +182,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
         sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
     if (direction & 1) {
         if (relativeTrackSequence != 1 && relativeTrackSequence != 4) {
@@ -254,7 +254,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
         case 4: paint_pirate_ship_structure(session, ride, direction, -64, height); break;
     }
 
-    paint_util_set_general_support_height(height + 112, 0x20);
+    paint_util_set_general_support_height(session, height + 112, 0x20);
 }
 
 /**

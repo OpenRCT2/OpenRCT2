@@ -385,8 +385,8 @@ static void dinghy_slide_track_flat(paint_session * session, uint8 rideIndex, ui
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -408,8 +408,8 @@ static void dinghy_slide_track_station(paint_session * session, uint8 rideIndex,
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -446,8 +446,8 @@ static void dinghy_slide_track_25_deg_up(paint_session * session, uint8 rideInde
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 static void dinghy_slide_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -475,8 +475,8 @@ static void dinghy_slide_track_60_deg_up(paint_session * session, uint8 rideInde
         paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 104, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
 static void dinghy_slide_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -513,8 +513,8 @@ static void dinghy_slide_track_flat_to_25_deg_up(paint_session * session, uint8 
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -542,8 +542,8 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up(paint_session * session, u
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 static void dinghy_slide_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -571,8 +571,8 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up(paint_session * session, u
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -609,8 +609,8 @@ static void dinghy_slide_track_25_deg_up_to_flat(paint_session * session, uint8 
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -725,14 +725,14 @@ static void dinghy_slide_track_right_quarter_turn_5(paint_session * session, uin
     }
 
     switch (trackSequence) {
-    case 0: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0); break;
-    case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0); break;
-    case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
-    case 6: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0); break;
+    case 0: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0); break;
+    case 2: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 3: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0); break;
+    case 5: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+    case 6: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0); break;
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -777,7 +777,7 @@ static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIn
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -786,7 +786,7 @@ static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIn
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 2:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -795,13 +795,13 @@ static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIn
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     }
 
@@ -815,7 +815,7 @@ static void dinghy_slide_track_s_bend_left(paint_session * session, uint8 rideIn
         }
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -849,7 +849,7 @@ static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideI
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -858,7 +858,7 @@ static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideI
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 2:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -867,13 +867,13 @@ static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideI
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 3:
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     }
 
@@ -887,7 +887,7 @@ static void dinghy_slide_track_s_bend_right(paint_session * session, uint8 rideI
         }
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -954,9 +954,9 @@ static void dinghy_slide_track_right_quarter_turn_3(paint_session * session, uin
     case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
     case 3: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -986,8 +986,8 @@ static void dinghy_slide_track_flat_covered(paint_session * session, uint8 rideI
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1015,8 +1015,8 @@ static void dinghy_slide_track_25_deg_up_covered(paint_session * session, uint8 
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 static void dinghy_slide_track_60_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1044,8 +1044,8 @@ static void dinghy_slide_track_60_deg_up_covered(paint_session * session, uint8 
         paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 104, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 104, 0x20);
 }
 
 static void dinghy_slide_track_flat_to_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1073,8 +1073,8 @@ static void dinghy_slide_track_flat_to_25_deg_up_covered(paint_session * session
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1102,8 +1102,8 @@ static void dinghy_slide_track_25_deg_up_to_60_deg_up_covered(paint_session * se
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1131,8 +1131,8 @@ static void dinghy_slide_track_60_deg_up_to_25_deg_up_covered(paint_session * se
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_2);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_up_to_flat_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1160,8 +1160,8 @@ static void dinghy_slide_track_25_deg_up_to_flat_covered(paint_session * session
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_12);
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 static void dinghy_slide_track_25_deg_down_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1276,14 +1276,14 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(paint_session * sess
     }
 
     switch (trackSequence) {
-    case 0: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0); break;
-    case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0); break;
-    case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
-    case 6: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0); break;
+    case 0: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_BC, direction), 0xFFFF, 0); break;
+    case 2: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 3: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4, direction), 0xFFFF, 0); break;
+    case 5: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+    case 6: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8, direction), 0xFFFF, 0); break;
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_left_quarter_turn_5_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1323,7 +1323,7 @@ static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -1332,7 +1332,7 @@ static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 2:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -1341,13 +1341,13 @@ static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), (direction & 1), height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     }
 
@@ -1361,7 +1361,7 @@ static void dinghy_slide_track_s_bend_left_covered(paint_session * session, uint
         }
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1395,7 +1395,7 @@ static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uin
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 1:
         bboy = (direction == 2 || direction == 3) ? 0 : 6;
@@ -1404,7 +1404,7 @@ static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uin
         if (direction == 0 || direction == 1) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 2:
         bboy = (direction == 0 || direction == 1) ? 0 : 6;
@@ -1413,13 +1413,13 @@ static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uin
         if (direction == 2 || direction == 3) {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     case 3:
         sub_98197C_rotated(direction, imageId, 0, 0, 32, 27, 2, height, 0, 2, height);
         sub_98197C_rotated(direction, frontImageId, 0, 0, 32, 27, 0, height, 0, 2, height + 27);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         break;
     }
 
@@ -1433,7 +1433,7 @@ static void dinghy_slide_track_s_bend_right_covered(paint_session * session, uin
         }
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_right_quarter_turn_3_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1500,9 +1500,9 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(paint_session * sess
     case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
     case 3: blockedSegments = SEGMENT_D4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_B8; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void dinghy_slide_track_left_quarter_turn_3_covered(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)

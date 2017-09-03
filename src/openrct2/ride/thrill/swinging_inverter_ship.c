@@ -164,8 +164,8 @@ static void paint_swinging_inverter_ship(paint_session * session, uint8 rideInde
         case 3: paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7); break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 176, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
 

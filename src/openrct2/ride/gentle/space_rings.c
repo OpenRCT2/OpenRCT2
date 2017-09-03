@@ -133,9 +133,9 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
         case 7: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 8: cornerSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
     }
-    paint_util_set_segment_support_height(cornerSegments, height + 2, 0x20);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /**

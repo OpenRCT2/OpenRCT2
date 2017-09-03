@@ -279,8 +279,8 @@ static void paint_river_rapids_track_flat(paint_session * session, uint8 rideInd
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x007576C0 */
@@ -290,7 +290,7 @@ static void paint_river_rapids_station(paint_session * session, uint8 rideIndex,
 
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, mapElement);
     track_paint_util_draw_station_platform(session, ride, direction, height, 12, mapElement);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
@@ -346,8 +346,8 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
@@ -403,8 +403,8 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, uint8 direction, sint32 height, const uint32 sprites[4][2])
@@ -460,8 +460,8 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00757660 */
@@ -549,8 +549,8 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(paint_session * se
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00757700 */
@@ -603,8 +603,8 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * s
     }
 
     wooden_a_supports_paint_setup(session, 1 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00757710 */
@@ -654,8 +654,8 @@ static void paint_river_rapids_track_waterfall(paint_session * session, uint8 ri
         paint_util_push_tunnel_left(session, height, TUNNEL_9);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00757720 */
@@ -687,8 +687,8 @@ static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideI
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00757740 */
@@ -696,7 +696,7 @@ static void paint_river_rapids_track_on_ride_photo(paint_session * session, uint
 {
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, mapElement);
     track_paint_util_onride_photo_paint(session, direction, height + 13, mapElement);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x */
@@ -734,8 +734,8 @@ static void paint_river_rapids_track_whirlpool(paint_session * session, uint8 ri
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /**

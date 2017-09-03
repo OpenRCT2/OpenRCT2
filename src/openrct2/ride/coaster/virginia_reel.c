@@ -248,8 +248,8 @@ static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIn
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00811274 */
@@ -292,8 +292,8 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x00811294 */
@@ -335,8 +335,8 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session,
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x00811294 */
@@ -379,8 +379,8 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008112A4 */
@@ -427,8 +427,8 @@ static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
@@ -441,16 +441,16 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * 
 
     switch (trackSequence) {
         case 2:
-            paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
+            paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8, direction), 0xFFFF, 0);
             break;
         case 0:
         case 3:
             wooden_a_supports_paint_setup(session, virginia_reel_left_quarter_turn_supports[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-            paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
+            paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             break;
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static const uint8 virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = {3, 1, 2, 0};
@@ -486,8 +486,8 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(paint_session * s
             break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00811334 */

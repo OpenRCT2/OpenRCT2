@@ -174,8 +174,8 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
         case 3: paint_ferris_wheel_structure(session, rideIndex, direction, -48, height); break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 176, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
 /**

@@ -110,12 +110,12 @@ static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8
         sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
         paint_util_set_vertical_tunnel(session, height + 96);
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
 #ifdef __TESTPAINT__
-        paint_util_set_general_support_height(height + 32, 0x20);
+        paint_util_set_general_support_height(session, height + 32, 0x20);
 #else
-        paint_util_set_general_support_height(height + 96, 0x20);
+        paint_util_set_general_support_height(session, height + 96, 0x20);
 #endif
 
         return;
@@ -132,9 +132,9 @@ static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8
         case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
     }
-    paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008861A4 */
@@ -153,10 +153,10 @@ static void paint_roto_drop_tower_section(paint_session * session, uint8 rideInd
         sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
     paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /**

@@ -297,35 +297,35 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
     // 6E05D1:
     height += entry->small_scenery.height;
 
-    paint_util_set_general_support_height(ceil2(height, 8), 0x20);
+    paint_util_set_general_support_height(session, ceil2(height, 8), 0x20);
     // 6E05FF:
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP) {
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) {
             // 6E0825:
-            paint_util_set_segment_support_height(SEGMENT_C4, height, 0x20);
+            paint_util_set_segment_support_height(session, SEGMENT_C4, height, 0x20);
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
-                paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
+                paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, height, 0x20);
             }
             return;
         }
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
             // 6E075C:
             direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
-            paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
+            paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
             return;
         }
         return;
     }
     if (entry->small_scenery.flags & (SMALL_SCENERY_FLAG27 | SMALL_SCENERY_FLAG_FULL_TILE)) {
-        paint_util_set_segment_support_height(SEGMENT_C4, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
-            paint_util_set_segment_support_height(SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
         }
         return;
     }
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
         direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         return;
     }
 }

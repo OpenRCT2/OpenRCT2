@@ -592,8 +592,8 @@ static void paint_miniature_railway_track_flat(paint_session * session, uint8 ri
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AD170, 0x008AD180, 0x008AD190 */
@@ -614,8 +614,8 @@ static void paint_miniature_railway_station(paint_session * session, uint8 rideI
     track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, mapElement);
     // covers shouldn't be offset by +2
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 30, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 30, 0x20);
 }
 
 /** rct2: 0x008AD0D0 */
@@ -635,8 +635,8 @@ static void paint_miniature_railway_track_25_deg_up(paint_session * session, uin
 
     wooden_a_supports_paint_setup(session, direction & 1, 45 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AD0E0 */
@@ -656,8 +656,8 @@ static void paint_miniature_railway_track_flat_to_25_deg_up(paint_session * sess
 
     wooden_a_supports_paint_setup(session, direction & 1, 37 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AD0F0 */
@@ -677,8 +677,8 @@ static void paint_miniature_railway_track_25_deg_up_to_flat(paint_session * sess
 
     wooden_a_supports_paint_setup(session, direction & 1, 41 + direction, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 40, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 40, 0x20);
 }
 
 /** rct2: 0x008AD100 */
@@ -881,9 +881,9 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_sessi
         case 6: blockedSegments = SEGMENTS_ALL; break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AD130 */
@@ -969,9 +969,9 @@ static void paint_miniature_railway_track_s_bend_left(paint_session * session, u
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 3: blockedSegments = SEGMENTS_ALL; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static const sint8 s_bend_right_supports_type[4][4] = {
@@ -1050,9 +1050,9 @@ static void paint_miniature_railway_track_s_bend_right(paint_session * session, 
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4; break;
         case 3: blockedSegments = SEGMENTS_ALL; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction & 1), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static const uint32 miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = {
@@ -1135,9 +1135,9 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
         case 2: blockedSegments = SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_C0; break;
         case 3: blockedSegments = SEGMENTS_ALL; break;
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(blockedSegments, direction), 0xFFFF, 0);
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AD1A0 */
@@ -1294,8 +1294,8 @@ static void paint_miniature_railway_track_left_eighth_to_diag(paint_session * se
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static const uint32 miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
@@ -1445,8 +1445,8 @@ static void paint_miniature_railway_track_right_eighth_to_diag(paint_session * s
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AD1E0 */
@@ -1541,8 +1541,8 @@ static void miniature_railway_track_diag_flat(paint_session * session, uint8 rid
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 enum {
@@ -1622,8 +1622,8 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + offsetB[direction], get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
     return;
 }
 
@@ -1667,8 +1667,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(paint_session * sessi
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008AD220 */
@@ -1732,8 +1732,8 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(paint_session * sessi
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + railOffsets[direction], get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AD260 */
@@ -1796,8 +1796,8 @@ static void miniature_railway_track_diag_25_deg_down(paint_session * session, ui
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + railOffsets[direction], get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008AD240 */
@@ -1859,8 +1859,8 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(paint_session * ses
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height + railOffsets[direction], get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 static void miniature_railway_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -1901,8 +1901,8 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(paint_session * ses
         sub_98197C(imageId | gTrackColours[SCHEME_TRACK], -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /**

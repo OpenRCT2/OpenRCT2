@@ -217,8 +217,8 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
@@ -256,8 +256,8 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
 
     track_paint_util_draw_station_platform(session, ride, direction, height, 5, mapElement);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
@@ -297,8 +297,8 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
         }
 
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 5:
         if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
@@ -313,8 +313,8 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
         } else {
             sub_98197C_rotated(direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11, 3, height);
         }
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 6:
         if (isDirection03) {
@@ -325,8 +325,8 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
             sub_98199C_rotated(direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
         }
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     }
 }
@@ -338,8 +338,8 @@ static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 ri
     case 0:
         supportsImageId = reverse_freefall_rc_track_pieces_vertical_supports[direction] | gTrackColours[SCHEME_SUPPORTS];
         sub_98197C(supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height, get_current_rotation());
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 80, 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 1:
         trackImageId = reverse_freefall_rc_track_pieces_vertical[direction] | gTrackColours[SCHEME_TRACK];
@@ -349,8 +349,8 @@ static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 ri
             sub_98197C_rotated(direction, trackImageId, 0, 0, 2, 20, 79, height, 30, 6, height);
         }
         paint_util_set_vertical_tunnel(session, height + 80);
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 80, 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     }
 }

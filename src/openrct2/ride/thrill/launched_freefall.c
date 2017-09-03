@@ -128,9 +128,9 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
         case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
         case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
     }
-    paint_util_set_segment_support_height(blockedSegments, 0xFFFF, 0);
-    paint_util_set_segment_support_height(SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x006FD208 */
@@ -149,10 +149,10 @@ static void paint_launched_freefall_tower_section(paint_session * session, uint8
         sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
     paint_util_set_vertical_tunnel(session, height + 32);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /**

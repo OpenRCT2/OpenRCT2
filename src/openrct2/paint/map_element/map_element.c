@@ -53,8 +53,8 @@ void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
         x >= 32 &&
         y >= 32
     ) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(-1, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_force_set_general_support_height(session, -1, 0);
         session->Unk141E9DB = 0;
         session->Unk141E9DC = 0xFFFF;
 
@@ -76,8 +76,8 @@ void sub_68B2B7(paint_session * session, sint32 x, sint32 y)
         x >= 32 &&
         y >= 32
     ) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_force_set_general_support_height(-1, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_force_set_general_support_height(session, -1, 0);
         session->Unk141E9DC = 0xFFFF;
         session->Unk141E9DB = G141E9DB_FLAG_2;
 
@@ -348,19 +348,19 @@ void paint_util_set_vertical_tunnel(paint_session * session, uint16 height)
     session->VerticalTunnelHeight = height / 16;
 }
 
-void paint_util_set_general_support_height(sint16 height, uint8 slope)
+void paint_util_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
 {
-    if (gPaintSession.Support.height >= height) {
+    if (session->Support.height >= height) {
         return;
     }
 
-    paint_util_force_set_general_support_height(height, slope);
+    paint_util_force_set_general_support_height(session, height, slope);
 }
 
-void paint_util_force_set_general_support_height(sint16 height, uint8 slope)
+void paint_util_force_set_general_support_height(paint_session * session, sint16 height, uint8 slope)
 {
-    gPaintSession.Support.height = height;
-    gPaintSession.Support.slope = slope;
+    session->Support.height = height;
+    session->Support.slope = slope;
 }
 
 const uint16 segment_offsets[9] = {
@@ -375,9 +375,9 @@ const uint16 segment_offsets[9] = {
     SEGMENT_D4
 };
 
-void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope)
+void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope)
 {
-    support_height * supportSegments = gPaintSession.SupportSegments;
+    support_height * supportSegments = session->SupportSegments;
     for (sint32 s = 0; s < 9; s++) {
         if (segments & segment_offsets[s]) {
             supportSegments[s].height = height;

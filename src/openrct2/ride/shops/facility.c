@@ -70,8 +70,8 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
         sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /* 0x00762D44 */

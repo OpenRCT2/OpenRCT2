@@ -195,8 +195,8 @@ static void air_powered_vertical_rc_track_flat(paint_session * session, uint8 ri
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -218,8 +218,8 @@ static void air_powered_vertical_rc_track_station(paint_session * session, uint8
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -260,16 +260,16 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(paint_session * s
     track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
-    case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
-    case 1: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
-    case 4: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
-    case 6: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+    case 0: paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0); break;
+    case 1: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 2: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 3: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+    case 4: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 5: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+    case 6: paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0); break;
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -300,8 +300,8 @@ static void air_powered_vertical_rc_track_flat_to_left_bank(paint_session * sess
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x008AFB84 */
@@ -326,8 +326,8 @@ static void air_powered_vertical_rc_track_flat_to_right_bank(paint_session * ses
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -388,16 +388,16 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(paint_sess
     track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
-    case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
-    case 1: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 2: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 3: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
-    case 4: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
-    case 5: paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
-    case 6: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
+    case 0: paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0); break;
+    case 1: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 2: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 3: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_C4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0); break;
+    case 4: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0); break;
+    case 5: paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D4 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C8, direction), 0xFFFF, 0); break;
+    case 6: paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0); break;
     }
 
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_banked_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -427,8 +427,8 @@ static void air_powered_vertical_rc_track_left_bank(paint_session * session, uin
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -452,8 +452,8 @@ static void air_powered_vertical_rc_track_brakes(paint_session * session, uint8 
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 32, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -568,8 +568,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
 
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
 
-            paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-            paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+            paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
             break;
         }
     case 1:
@@ -592,8 +592,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
         }
 
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 4:
         if (isDirection03) {
@@ -607,8 +607,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
         }
 
         wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 5:
         if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL)) {
@@ -623,8 +623,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
         } else {
             sub_98197C_rotated(direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
         }
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 6:
         if (isDirection03) {
@@ -638,8 +638,8 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
 
         paint_util_set_vertical_tunnel(session, height + 240);
 
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-        paint_util_set_general_support_height(height + supportHeights[trackSequence], 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     }
 }
@@ -671,8 +671,8 @@ static void air_powered_vertical_rc_track_vertical_up(paint_session * session, u
         break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 80, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 80, 0x20);
 }
 
 static void air_powered_vertical_rc_track_vertical_top(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
@@ -745,8 +745,8 @@ static void air_powered_vertical_rc_track_vertical_top(paint_session * session, 
         break;
     }
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 80, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 80, 0x20);
 }
 
 static void air_powered_vertical_rc_track_vertical_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)

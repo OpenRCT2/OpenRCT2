@@ -175,10 +175,10 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
     height += is_exit ? 40 : 56;
-    paint_util_set_general_support_height(height, 0x20);
+    paint_util_set_general_support_height(session, height, 0x20);
 }
 
 /**
@@ -269,8 +269,8 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     }
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
 
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 80, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 80, 0x20);
 }
 
 /**

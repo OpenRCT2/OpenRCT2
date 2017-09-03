@@ -51,12 +51,12 @@ static void scenery_multiple_paint_supports(paint_session * session, uint8 direc
     sint32 clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
 
     if (tile->var_7 & 0x40) {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, clearanceHeight, 0x20);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
     } else {
-        paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     }
 
-    paint_util_set_general_support_height(clearanceHeight, 0x20);
+    paint_util_set_general_support_height(session, clearanceHeight, 0x20);
 }
 
 static rct_large_scenery_text_glyph *scenery_multiple_sign_get_glyph(rct_large_scenery_text *text, uint32 codepoint)

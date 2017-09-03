@@ -53,13 +53,13 @@ static void suspended_swinging_rc_track_flat(paint_session * session, uint8 ride
         }
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A8AA8, 0x008A8AB8, 0x008A8AC8 */
@@ -78,8 +78,8 @@ static void suspended_swinging_rc_track_station(paint_session * session, uint8 r
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
     track_paint_util_draw_station_inverted(session, rideIndex, trackSequence, direction, height, mapElement, STATION_VARIANT_TALL);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_9);
-    paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A8968 */
@@ -117,7 +117,7 @@ static void suspended_swinging_rc_track_25_deg_up(paint_session * session, uint8
         }
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
@@ -140,7 +140,7 @@ static void suspended_swinging_rc_track_25_deg_up(paint_session * session, uint8
     } else {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_5);
     }
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A8978 */
@@ -165,8 +165,8 @@ static void suspended_swinging_rc_track_60_deg_up(paint_session * session, uint8
     } else {
         paint_util_push_tunnel_rotated(session, direction, height + 56, TUNNEL_5);
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 120, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 120, 0x20);
 }
 
 /** rct2: 0x008A8988 */
@@ -204,7 +204,7 @@ static void suspended_swinging_rc_track_flat_to_25_deg_up(paint_session * sessio
         }
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
@@ -227,7 +227,7 @@ static void suspended_swinging_rc_track_flat_to_25_deg_up(paint_session * sessio
     } else {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_5);
     }
-    paint_util_set_general_support_height(height + 64, 0x20);
+    paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
 /** rct2: 0x008A8998 */
@@ -254,8 +254,8 @@ static void suspended_swinging_rc_track_25_deg_up_to_60_deg_up(paint_session * s
     } else {
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_5);
     }
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-    paint_util_set_general_support_height(height + 88, 0x20);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 88, 0x20);
 }
 
 /** rct2: 0x008A89A8 */
@@ -297,7 +297,7 @@ static void suspended_swinging_rc_track_60_deg_up_to_25_deg_up(paint_session * s
         }
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
@@ -320,7 +320,7 @@ static void suspended_swinging_rc_track_60_deg_up_to_25_deg_up(paint_session * s
     } else {
         paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_5);
     }
-    paint_util_set_general_support_height(height + 88, 0x20);
+    paint_util_set_general_support_height(session, height + 88, 0x20);
 }
 
 /** rct2: 0x008A89B8 */
@@ -358,7 +358,7 @@ static void suspended_swinging_rc_track_25_deg_up_to_flat(paint_session * sessio
         }
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         switch (direction) {
         case 0:
@@ -381,7 +381,7 @@ static void suspended_swinging_rc_track_25_deg_up_to_flat(paint_session * sessio
     } else {
         paint_util_push_tunnel_rotated(session, direction, height + 8, TUNNEL_13);
     }
-    paint_util_set_general_support_height(height + 56, 0x20);
+    paint_util_set_general_support_height(session, height + 56, 0x20);
 }
 
 /** rct2: 0x008A89C8 */
@@ -440,16 +440,16 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -466,8 +466,8 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26008, 0, 0, 32, 16, 3, height + 29, 0, 16, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -484,11 +484,11 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26007, 0, 0, 16, 16, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -505,8 +505,8 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26006, 0, 0, 16, 32, 3, height + 29, 16, 0, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -524,7 +524,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -535,7 +535,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_5(paint_session * sess
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -567,16 +567,16 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_4);
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -593,8 +593,8 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26113, 0, 16, 32, 16, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -611,11 +611,11 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26114, 0, 0, 16, 16, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 80, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -632,8 +632,8 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26115, 16, 0, 16, 32, 3, height + 29, 16, 0, height + 37);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -651,7 +651,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -662,7 +662,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_5_25_deg_up(paint_sess
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_5);
             break;
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -687,16 +687,16 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_4);
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -713,8 +713,8 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26093, 0, 0, 32, 16, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -731,11 +731,11 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26094, 0, 16, 16, 16, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 80, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 80, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -752,8 +752,8 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             sub_98196C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26095, 16, 0, 16, 32, 3, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -771,7 +771,7 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -782,7 +782,7 @@ static void suspended_swinging_rc_track_right_quarter_turn_5_25_deg_up(paint_ses
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_5);
             break;
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -821,13 +821,13 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -845,7 +845,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -855,7 +855,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -873,7 +873,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         switch (direction) {
         case 2:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -883,7 +883,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -901,7 +901,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -912,7 +912,7 @@ static void suspended_swinging_rc_track_s_bend_left(paint_session * session, uin
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -937,13 +937,13 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -961,7 +961,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -971,7 +971,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -989,7 +989,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 2:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -999,7 +999,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1017,7 +1017,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1028,7 +1028,7 @@ static void suspended_swinging_rc_track_s_bend_right(paint_session * session, ui
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1053,16 +1053,16 @@ static void suspended_swinging_rc_track_left_quarter_turn_3(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1079,8 +1079,8 @@ static void suspended_swinging_rc_track_left_quarter_turn_3(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26066, 0, 0, 16, 16, 3, height + 29, 16, 16, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1098,7 +1098,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_3(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1109,7 +1109,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_3(paint_session * sess
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1141,19 +1141,19 @@ static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_4);
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1171,7 +1171,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1182,7 +1182,7 @@ static void suspended_swinging_rc_track_left_quarter_turn_3_25_deg_up(paint_sess
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_5);
             break;
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -1207,19 +1207,19 @@ static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_4);
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1237,7 +1237,7 @@ static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 54, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1248,7 +1248,7 @@ static void suspended_swinging_rc_track_right_quarter_turn_3_25_deg_up(paint_ses
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_5);
             break;
         }
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -1281,13 +1281,13 @@ static void suspended_swinging_rc_track_brakes(paint_session * session, uint8 ri
         break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 /** rct2: 0x008A8B48 */
@@ -1310,16 +1310,16 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1336,8 +1336,8 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26048, 0, 0, 32, 16, 3, height + 29, 0, 16, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1354,11 +1354,11 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26047, 0, 0, 16, 16, 3, height + 29, 0, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -1375,8 +1375,8 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26046, 0, 0, 16, 32, 3, height + 29, 16, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -1394,7 +1394,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1405,7 +1405,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_up(paint_sessio
             paint_util_push_tunnel_left(session, height + 16, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1430,16 +1430,16 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1456,8 +1456,8 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26041, 0, 0, 32, 16, 3, height + 29, 0, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1474,11 +1474,11 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26042, 0, 0, 16, 16, 3, height + 29, 0, 16, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -1495,8 +1495,8 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26043, 0, 0, 16, 32, 3, height + 29, 16, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -1514,7 +1514,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1525,7 +1525,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_up(paint_sessi
             paint_util_push_tunnel_left(session, height + 16, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1550,16 +1550,16 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1576,8 +1576,8 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26028, 0, 0, 32, 16, 3, height + 29, 0, 16, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1594,11 +1594,11 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26027, 0, 0, 16, 16, 3, height + 29, 0, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -1615,8 +1615,8 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26026, 0, 0, 16, 32, 3, height + 29, 16, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -1634,7 +1634,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1645,7 +1645,7 @@ static void suspended_swinging_rc_track_left_quarter_helix_large_down(paint_sess
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1670,16 +1670,16 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 58, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height + 16, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1696,8 +1696,8 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26061, 0, 0, 32, 16, 3, height + 29, 0, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -1714,11 +1714,11 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26062, 0, 0, 16, 16, 3, height + 29, 0, 16, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 5:
         switch (direction) {
@@ -1735,8 +1735,8 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26063, 0, 0, 16, 32, 3, height + 29, 16, 0, height + 43);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 6:
         switch (direction) {
@@ -1754,7 +1754,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 46, gTrackColours[SCHEME_SUPPORTS]);
 
         switch (direction) {
@@ -1765,7 +1765,7 @@ static void suspended_swinging_rc_track_right_quarter_helix_large_down(paint_ses
             paint_util_push_tunnel_left(session, height, TUNNEL_3);
             break;
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1790,13 +1790,13 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -1813,8 +1813,8 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26180, 0, 0, 32, 16, 3, height + 29, 0, 16, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1831,12 +1831,12 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26181, 0, 0, 16, 16, 3, height + 29, 0, 0, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
         switch (direction) {
@@ -1854,7 +1854,7 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(paint_session * sess
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 3, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -1870,7 +1870,7 @@ static void suspended_swinging_rc_track_left_eighth_to_diag(paint_session * sess
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -1895,13 +1895,13 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(paint_session * ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
 
         if (direction == 0 || direction == 3) {
             paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
         }
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -1918,8 +1918,8 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(paint_session * ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26164, 0, 0, 32, 16, 3, height + 29, 0, 0, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -1936,12 +1936,12 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(paint_session * ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26165, 0, 0, 16, 16, 3, height + 29, 0, 16, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 4:
         switch (direction) {
@@ -1959,7 +1959,7 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(paint_session * ses
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -1975,7 +1975,7 @@ static void suspended_swinging_rc_track_right_eighth_to_diag(paint_session * ses
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -2012,8 +2012,8 @@ static void suspended_swinging_rc_track_diag_flat(paint_session * session, uint8
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2029,8 +2029,8 @@ static void suspended_swinging_rc_track_diag_flat(paint_session * session, uint8
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2046,8 +2046,8 @@ static void suspended_swinging_rc_track_diag_flat(paint_session * session, uint8
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2064,7 +2064,7 @@ static void suspended_swinging_rc_track_diag_flat(paint_session * session, uint8
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2080,7 +2080,7 @@ static void suspended_swinging_rc_track_diag_flat(paint_session * session, uint8
             break;
         }
 
-        paint_util_set_general_support_height(height + 48, 0x20);
+        paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     }
 }
@@ -2103,8 +2103,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up(paint_session * session, 
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2120,8 +2120,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up(paint_session * session, 
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2137,8 +2137,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up(paint_session * session, 
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2155,7 +2155,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up(paint_session * session, 
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 56, gTrackColours[SCHEME_SUPPORTS]);
@@ -2171,7 +2171,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up(paint_session * session, 
             break;
         }
 
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
 }
@@ -2186,8 +2186,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up(paint_session * session, 
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26210, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2195,8 +2195,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up(paint_session * session, 
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26207, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2204,8 +2204,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up(paint_session * session, 
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26209, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2214,7 +2214,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up(paint_session * session, 
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 32, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2230,7 +2230,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up(paint_session * session, 
             break;
         }
 
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     }
 }
@@ -2253,8 +2253,8 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2270,8 +2270,8 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2287,8 +2287,8 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2305,7 +2305,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(paint_session * s
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
@@ -2321,7 +2321,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_up(paint_session * s
             break;
         }
 
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     }
 }
@@ -2336,8 +2336,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26202, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2345,8 +2345,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26199, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2354,8 +2354,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26201, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2364,7 +2364,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(paint_sessio
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 16, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2380,7 +2380,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_60_deg_up(paint_sessio
             break;
         }
 
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -2395,8 +2395,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26206, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2404,8 +2404,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26203, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2413,8 +2413,8 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(paint_sessio
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26205, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2423,7 +2423,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(paint_sessio
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 21, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2439,7 +2439,7 @@ static void suspended_swinging_rc_track_diag_60_deg_up_to_25_deg_up(paint_sessio
             break;
         }
 
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -2462,8 +2462,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2479,8 +2479,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2496,8 +2496,8 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(paint_session * s
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2514,7 +2514,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(paint_session * s
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
@@ -2530,7 +2530,7 @@ static void suspended_swinging_rc_track_diag_25_deg_up_to_flat(paint_session * s
             break;
         }
 
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
 }
@@ -2553,8 +2553,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down(paint_session * session
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2570,8 +2570,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down(paint_session * session
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2587,8 +2587,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down(paint_session * session
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2605,7 +2605,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down(paint_session * session
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 56, gTrackColours[SCHEME_SUPPORTS]);
@@ -2621,7 +2621,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down(paint_session * session
             break;
         }
 
-        paint_util_set_general_support_height(height + 72, 0x20);
+        paint_util_set_general_support_height(session, height + 72, 0x20);
         break;
     }
 }
@@ -2636,8 +2636,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down(paint_session * session
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26208, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 29);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2645,8 +2645,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down(paint_session * session
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26209, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2654,8 +2654,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down(paint_session * session
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26207, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2663,8 +2663,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down(paint_session * session
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26210, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 93);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 120, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 120, 0x20);
         break;
     }
 }
@@ -2687,7 +2687,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2703,7 +2703,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2719,7 +2719,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2736,7 +2736,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(paint_session *
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 50, gTrackColours[SCHEME_SUPPORTS]);
@@ -2754,7 +2754,7 @@ static void suspended_swinging_rc_track_diag_flat_to_25_deg_down(paint_session *
         break;
     }
 
-    paint_util_set_general_support_height(height + 72, 0x20);
+    paint_util_set_general_support_height(session, height + 72, 0x20);
 }
 
 /** rct2: 0x008A8C68 */
@@ -2767,8 +2767,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26204, -16, -16, 16, 16, 3, height + 29, 0, 0, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2776,8 +2776,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26205, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2785,8 +2785,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26203, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2795,7 +2795,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(paint_se
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 17, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2811,7 +2811,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_60_deg_down(paint_se
             break;
         }
 
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -2826,8 +2826,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26200, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 1:
         switch (direction) {
@@ -2835,8 +2835,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26201, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 2:
         switch (direction) {
@@ -2844,8 +2844,8 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(paint_se
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26199, -16, -16, 32, 32, 3, height + 29, -16, -16, height + 61);
             break;
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     case 3:
         switch (direction) {
@@ -2854,7 +2854,7 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(paint_se
             break;
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_b_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 8, height + 44, gTrackColours[SCHEME_SUPPORTS]);
@@ -2870,7 +2870,7 @@ static void suspended_swinging_rc_track_diag_60_deg_down_to_25_deg_down(paint_se
             break;
         }
 
-        paint_util_set_general_support_height(height + 88, 0x20);
+        paint_util_set_general_support_height(session, height + 88, 0x20);
         break;
     }
 }
@@ -2893,8 +2893,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 1:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2910,8 +2910,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 2:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2927,8 +2927,8 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(paint_session *
                 break;
             }
         }
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 3:
         if (track_element_is_lift_hill(mapElement)) {
@@ -2945,7 +2945,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(paint_session *
             }
         }
 
-        paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
+        paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
         switch (direction) {
         case 0:
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 1, 0, height + 48, gTrackColours[SCHEME_SUPPORTS]);
@@ -2961,7 +2961,7 @@ static void suspended_swinging_rc_track_diag_25_deg_down_to_flat(paint_session *
             break;
         }
 
-        paint_util_set_general_support_height(height + 64, 0x20);
+        paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     }
 }
@@ -2980,13 +2980,13 @@ static void suspended_swinging_rc_track_block_brakes(paint_session * session, ui
         break;
     }
 
-    paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+    paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height + 44, gTrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_3);
-    paint_util_set_general_support_height(height + 48, 0x20);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
 TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(sint32 trackType, sint32 direction)

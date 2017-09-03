@@ -89,9 +89,9 @@ void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 t
 void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type);
 void paint_util_set_vertical_tunnel(paint_session * session, uint16 height);
 
-void paint_util_set_general_support_height(sint16 height, uint8 slope);
-void paint_util_force_set_general_support_height(sint16 height, uint8 slope);
-void paint_util_set_segment_support_height(sint32 segments, uint16 height, uint8 slope);
+void paint_util_set_general_support_height(paint_session * session, sint16 height, uint8 slope);
+void paint_util_force_set_general_support_height(paint_session * session, sint16 height, uint8 slope);
+void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope);
 uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
 
 void map_element_paint_setup(paint_session * session, sint32 x, sint32 y);
