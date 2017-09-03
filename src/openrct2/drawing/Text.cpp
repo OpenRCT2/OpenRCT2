@@ -23,8 +23,8 @@ extern "C"
 
 static TextPaint _legacyPaint;
 
-static void DrawText(rct_drawpixelinfo * dpi, float x, float y, TextPaint * paint, utf8string text);
-static void DrawText(rct_drawpixelinfo * dpi, float x, float y, TextPaint * paint, rct_string_id format, void * args);
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, utf8string text);
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, rct_string_id format, void * args);
 
 StaticLayout::StaticLayout(utf8string source, TextPaint paint, sint32 width)
 {
@@ -39,7 +39,7 @@ StaticLayout::StaticLayout(utf8string source, TextPaint paint, sint32 width)
     _lineHeight = font_get_line_height(fontSpriteBase);
 }
 
-void StaticLayout::Draw(rct_drawpixelinfo *dpi, float x, float y)
+void StaticLayout::Draw(rct_drawpixelinfo * dpi, sint32 x, sint32 y)
 {
     gCurrentFontFlags = 0;
     gCurrentFontSpriteBase = _paint.SpriteBase;
@@ -85,7 +85,7 @@ sint32 StaticLayout::GetLineCount()
     return _lineCount;
 }
 
-static void DrawText(rct_drawpixelinfo * dpi, float x, float y, TextPaint * paint, utf8string text)
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, utf8string text)
 {
     sint32 width = gfx_get_string_width(text);
 
@@ -112,7 +112,7 @@ static void DrawText(rct_drawpixelinfo * dpi, float x, float y, TextPaint * pain
     }
 }
 
-static void DrawText(rct_drawpixelinfo * dpi, float x, float y, TextPaint * paint, rct_string_id format, void * args)
+static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * paint, rct_string_id format, void * args)
 {
     utf8 buffer[256];
     format_string(buffer, sizeof(buffer), format, args);

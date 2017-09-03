@@ -49,7 +49,7 @@ private:
 
 public:
     StaticLayout(utf8string source, TextPaint paint, sint32 width);
-    void Draw(rct_drawpixelinfo * dpi, float x, float y);
+    void Draw(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
     sint32 GetHeight();
     sint32 GetWidth();
     sint32 GetLineCount();
