@@ -18,7 +18,8 @@
 
 #include "../common.h"
 
-extern "C" {
+extern "C"
+{
     #include "drawing.h"
 }
 
@@ -31,24 +32,24 @@ enum class TextAlignment
 
 struct TextPaint
 {
-    uint8 colour;
-    sint16 spriteBase;
-    bool underlineText;
-    TextAlignment alignment;
+    uint8           Colour;
+    sint16          SpriteBase;
+    bool            UnderlineText;
+    TextAlignment   Alignment;
 };
 
 class StaticLayout
 {
 private:
-    utf8string _buffer;
-    TextPaint _paint;
-    sint32 _lineCount;
-    sint32 _lineHeight;
-    sint32 _maxWidth;
+    utf8string  _buffer;
+    TextPaint   _paint;
+    sint32      _lineCount;
+    sint32      _lineHeight;
+    sint32      _maxWidth;
 
 public:
     StaticLayout(utf8string source, TextPaint paint, sint32 width);
-    void Draw(rct_drawpixelinfo *dpi, float x, float y);
+    void Draw(rct_drawpixelinfo * dpi, float x, float y);
     sint32 GetHeight();
     sint32 GetWidth();
     sint32 GetLineCount();
