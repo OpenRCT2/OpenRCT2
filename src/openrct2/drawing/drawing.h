@@ -281,7 +281,6 @@ extern rct_g1_element *g1Elements;
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
 
-extern uint8 *gCurrentColourPalette;
 #ifdef NO_RCT2
 extern rct_drawpixelinfo *unk_140E9A8;
 #else
