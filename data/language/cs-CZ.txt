@@ -3385,7 +3385,7 @@ STR_3372    :{BLACK}= Bankomat
 STR_3373    :{BLACK}= Toaleta
 STR_3374    :Pozor: Vybráno příliš mnoho objektů!
 STR_3375    :Ne všechny objekty této skupiny kulis mohou být vybrány
-STR_3376    :Instalace nového návrhu trati...
+STR_3376    :Instalace nového návrhu trati
 STR_3377    :{SMALLFONT}{BLACK}Instalace nového souboru s návrhem trati
 STR_3378    :Instalovat
 STR_3379    :Zrušit
@@ -4451,6 +4451,9 @@ STR_6138    :OpenRCT2 je dílem mnoha lidí. Seznam všech přispěvatelů je do
 STR_6139    :Všechny názvy produktů a společností jsou vlastnictvím jejich příslušných vlastníků. Jejich užití neimplikuje vazbu ani podporu příslušných vlastníků a tohoto projektu.
 STR_6140    :Seznam změn...
 STR_6141    :RCT1 dolní nástrojová lišta
+STR_6142    :{WINDOW_COLOUR_2}Název trati: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Název atrakce: {BLACK}{STRINGID}
+STR_6144    :Zvýraznit znevalidované bloky pro vykreslení
 
 ###############################################################################
 ## RCT2 Objects
