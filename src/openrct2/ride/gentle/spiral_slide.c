@@ -174,7 +174,7 @@ static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 t
     uint32 imageId = ((direction & 1) ? SPIRAL_SLIDE_BASE_B : SPIRAL_SLIDE_BASE_A) | gTrackColours[SCHEME_SUPPORTS];
     sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, spiral_slide_fence_sprites, get_current_rotation());
 
     switch (trackSequence) {
         case 1: spiral_slide_paint_tile_right(session, rideIndex, trackSequence, direction, height, mapElement); break;

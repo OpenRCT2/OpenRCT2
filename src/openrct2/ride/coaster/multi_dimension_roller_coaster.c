@@ -108,18 +108,18 @@ static void multi_dimension_rc_track_station(paint_session * session, uint8 ride
     bool hasFence;
     if (direction == 0 || direction == 2) {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
-        track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
     } else {
         hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
-        track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
     }
 
     if (direction == 0 || direction == 2) {
         hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
-        track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
     } else {
         hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
-        track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
     }
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
@@ -4061,7 +4061,7 @@ static void multi_dimension_rc_track_on_ride_photo(paint_session * session, uint
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 15807, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         }
-        track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+        track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -4092,7 +4092,7 @@ static void multi_dimension_rc_track_on_ride_photo(paint_session * session, uint
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26228, 0, 0, 32, 20, 3, height + 24, 0, 6, height + 24);
             break;
         }
-        track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+        track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 64, 0x20);

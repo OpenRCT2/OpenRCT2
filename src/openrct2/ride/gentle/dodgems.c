@@ -59,7 +59,7 @@ static void paint_dodgems(paint_session * session, uint8 rideIndex, uint8 trackS
     uint32 imageId = SPR_DODGEMS_FLOOR | gTrackColours[SCHEME_SUPPORTS];
     sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites, get_current_rotation());
 
     switch (direction) {
         case 2:

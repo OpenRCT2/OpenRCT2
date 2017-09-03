@@ -85,7 +85,7 @@ void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, 
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], supportType);
 
     rct_ride * ride = get_ride(rideIndex);
-    track_paint_util_draw_station_platform(ride, direction, height, 9, mapElement);
+    track_paint_util_draw_station_platform(session, ride, direction, height, 9, mapElement);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -1721,7 +1721,7 @@ void bolliger_mabillard_track_right_vertical_loop(paint_session * session, uint8
             break;
     }
 
-    track_paint_util_right_vertical_loop_segments(direction, trackSequence);
+    track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
 }
 
 void bolliger_mabillard_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, sint32 supportType)
@@ -2849,7 +2849,7 @@ void bolliger_mabillard_track_left_quarter_turn_1_60_deg_up(paint_session * sess
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17304, 0, 0, 28, 28, 1, height, 2, 2, height + 99);
             break;
     }
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
 }
@@ -2874,7 +2874,7 @@ void bolliger_mabillard_track_right_quarter_turn_1_60_deg_up(paint_session * ses
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17299, 0, 0, 28, 28, 1, height, 2, 2, height + 99);
             break;
     }
-    track_paint_util_right_quarter_turn_1_tile_tunnel(direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
+    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_7, +56, TUNNEL_8);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
 }
@@ -2993,7 +2993,7 @@ void bolliger_mabillard_track_on_ride_photo(paint_session * session, uint8 rideI
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 17147, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
     }
-    track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);

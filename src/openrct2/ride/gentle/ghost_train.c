@@ -356,7 +356,7 @@ static void paint_ghost_train_station(paint_session * session, uint8 rideIndex, 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -365,8 +365,8 @@ static void paint_ghost_train_station(paint_session * session, uint8 rideIndex, 
 /** rct2: 0x00770C9C */
 static void paint_ghost_train_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets, get_current_rotation());
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+    track_paint_util_right_quarter_turn_3_tiles_paint(session, 3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths, defaultRightQuarterTurn3TilesBoundOffsets, get_current_rotation());
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence) {
         case 0:
@@ -396,8 +396,8 @@ static void paint_ghost_train_track_left_quarter_turn_3_tiles(paint_session * se
 /** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(3, height, 0, direction, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile, get_current_rotation());
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+    track_paint_util_left_quarter_turn_1_tile_paint(session, 3, height, 0, direction, gTrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile, get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
 
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -421,7 +421,7 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
         sub_98197C(imageId, 0, 0, 20, 28, 3, height, 6, 2, height, get_current_rotation());
     }
 
-    track_paint_util_spinning_tunnel_paint(3, height, direction, get_current_rotation());
+    track_paint_util_spinning_tunnel_paint(session, 3, height, direction, get_current_rotation());
 
     if (direction == 0 || direction == 2) {
         paint_util_push_tunnel_left(height, TUNNEL_0);

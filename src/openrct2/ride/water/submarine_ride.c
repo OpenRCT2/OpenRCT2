@@ -81,13 +81,13 @@ static void submarine_ride_paint_track_station(paint_session * session, uint8 ri
         sub_98197C(imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
 
         paint_util_push_tunnel_right(height, TUNNEL_6);
-        track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     } else {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
 
         paint_util_push_tunnel_left(height, TUNNEL_6);
-        track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -120,8 +120,8 @@ static void submarine_ride_paint_track_flat(paint_session * session, uint8 rideI
 
 static void submarine_ride_paint_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_3_tiles_paint(3, height - 16, direction, trackSequence, gTrackColours[SCHEME_TRACK], trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, get_current_rotation());
-    track_paint_util_left_quarter_turn_3_tiles_tunnel(height - 16, TUNNEL_0, direction, trackSequence);
+    track_paint_util_left_quarter_turn_3_tiles_paint(session, 3, height - 16, direction, trackSequence, gTrackColours[SCHEME_TRACK], trackSpritesSubmarineRideMiniHelicoptersQuarterTurn3Tiles, get_current_rotation());
+    track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height - 16, TUNNEL_0, direction, trackSequence);
 
     switch (trackSequence) {
         case 0:
@@ -149,8 +149,8 @@ static void submarine_ride_paint_track_right_quarter_turn_3_tiles(paint_session 
 
 static void submarine_ride_paint_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(1, height - 16, 0, direction, gTrackColours[SCHEME_TRACK], trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile, get_current_rotation());
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height - 16, 0, TUNNEL_0, 0, TUNNEL_0);
+    track_paint_util_left_quarter_turn_1_tile_paint(session, 1, height - 16, 0, direction, gTrackColours[SCHEME_TRACK], trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile, get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height - 16, 0, TUNNEL_0, 0, TUNNEL_0);
 
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(height + 16, 0x20);

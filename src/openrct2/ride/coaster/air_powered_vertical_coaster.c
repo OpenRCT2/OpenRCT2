@@ -214,7 +214,7 @@ static void air_powered_vertical_rc_track_station(paint_session * session, uint8
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
     rct_ride * ride = get_ride(rideIndex);
-    track_paint_util_draw_station_platform(ride, direction, height, 5, mapElement);
+    track_paint_util_draw_station_platform(session, ride, direction, height, 5, mapElement);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -255,9 +255,9 @@ static void air_powered_vertical_rc_track_right_quarter_turn_5(paint_session * s
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
     case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;
@@ -374,7 +374,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(paint_sess
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
 
     if (direction == 1 && trackSequence == 6) {
         uint32 imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4 | gTrackColours[SCHEME_TRACK];
@@ -385,7 +385,7 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(paint_sess
     }
 
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
-    track_paint_util_right_quarter_turn_5_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_5_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     switch (trackSequence) {
     case 0: paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0); break;

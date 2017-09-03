@@ -85,7 +85,7 @@ static void side_friction_rc_track_station(paint_session * session, uint8 rideIn
 
     sub_98197C_rotated(direction, imageIds[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 27, 2, height, 0, 2, height);
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
+    track_paint_util_draw_station_2(session, rideIndex, trackSequence, direction, height, mapElement, 9, 11);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);

@@ -43,7 +43,7 @@ static void lim_launched_rc_track_station(paint_session * session, uint8 rideInd
     }
     sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -386,7 +386,7 @@ static void lim_launched_rc_track_right_vertical_loop(paint_session * session, u
         break;
     }
 
-    track_paint_util_right_vertical_loop_segments(direction, trackSequence);
+    track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
 }
 
 /** rct2: 0x008A6D10 */

@@ -404,7 +404,7 @@ static void dinghy_slide_track_station(paint_session * session, uint8 rideIndex,
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5 + (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -701,8 +701,8 @@ static void dinghy_slide_track_right_quarter_turn_5(paint_session * session, uin
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
 
     switch (trackSequence) {
     case 0:
@@ -937,9 +937,9 @@ static void dinghy_slide_track_right_quarter_turn_3(paint_session * session, uin
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence) {
     case 0:
@@ -1252,8 +1252,8 @@ static void dinghy_slide_track_right_quarter_turn_5_covered(paint_session * sess
         }
     };
 
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
 
     switch (trackSequence) {
     case 0:
@@ -1483,9 +1483,9 @@ static void dinghy_slide_track_right_quarter_turn_3_covered(paint_session * sess
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], frontImageIds);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence) {
     case 0:

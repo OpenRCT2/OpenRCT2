@@ -207,7 +207,7 @@ static void wild_mouse_track_station(paint_session * session, uint8 rideIndex, u
         sub_98199C_rotated(direction, _wild_mouse_brakes_image_ids[direction] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2, height, 0, 0, height);
     }
     track_paint_util_draw_station_metal_supports(session, direction, height, gTrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -456,8 +456,8 @@ static void wild_mouse_track_right_quarter_turn_3(paint_session * session, uint8
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_3(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_0);
+    track_paint_util_right_quarter_turn_3_tiles_paint_3(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], imageIds);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     switch (trackSequence) {
     case 0:
@@ -506,7 +506,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(paint_session * se
             sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
     }
 
-    track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(height, direction, trackSequence, TUNNEL_2, TUNNEL_1);
+    track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(session, height, direction, trackSequence, TUNNEL_2, TUNNEL_1);
 
     switch (trackSequence) {
     case 0:
@@ -561,7 +561,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(paint_session * sess
             sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
     }
 
-    track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
+    track_paint_util_right_quarter_turn_3_tiles_25_deg_up_tunnel(session, height, direction, trackSequence, TUNNEL_1, TUNNEL_2);
 
     switch (trackSequence) {
     case 0:
@@ -624,7 +624,7 @@ static void wild_mouse_track_left_quarter_turn_1(paint_session * session, uint8 
         break;
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, TUNNEL_0, 0, TUNNEL_0);
     paint_util_set_segment_support_height(paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_D0, direction), 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
 }

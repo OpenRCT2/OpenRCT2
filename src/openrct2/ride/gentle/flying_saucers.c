@@ -52,7 +52,7 @@ static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8
     uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | gTrackColours[SCHEME_TRACK];
     sub_98197C(imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites, get_current_rotation());
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 48, 0x20);

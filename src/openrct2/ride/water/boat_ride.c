@@ -68,10 +68,10 @@ static void paint_boat_ride_station(paint_session * session, uint8 rideIndex, ui
 
     if (direction & 1) {
         paint_util_push_tunnel_right(height, TUNNEL_6);
-        track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     } else {
         paint_util_push_tunnel_left(height, TUNNEL_6);
-        track_paint_util_draw_pier(ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
+        track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     }
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);

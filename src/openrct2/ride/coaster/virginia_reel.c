@@ -425,7 +425,7 @@ static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
-    track_paint_util_draw_station(rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);
@@ -436,8 +436,8 @@ static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
 /** rct2: 0x00811304 */
 static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_3_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
-    track_paint_util_left_quarter_turn_3_tiles_tunnel(height, TUNNEL_6, direction, trackSequence);
+    track_paint_util_left_quarter_turn_3_tiles_paint(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+    track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_6, direction, trackSequence);
 
     switch (trackSequence) {
         case 2:
@@ -465,7 +465,7 @@ static void paint_virginia_reel_track_right_quarter_turn_3_tiles(paint_session *
 /** rct2: 0x00811324 */
 static void paint_virginia_reel_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(2, height, 0, direction, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_1_tile, get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_paint(session, 2, height, 0, direction, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_1_tile, get_current_rotation());
 
     switch (direction) {
         case 0:

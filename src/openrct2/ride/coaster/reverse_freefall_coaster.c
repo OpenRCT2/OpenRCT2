@@ -254,7 +254,7 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
         paint_util_push_tunnel_right(height, TUNNEL_6);
     }
 
-    track_paint_util_draw_station_platform(ride, direction, height, 5, mapElement);
+    track_paint_util_draw_station_platform(session, ride, direction, height, 5, mapElement);
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 32, 0x20);

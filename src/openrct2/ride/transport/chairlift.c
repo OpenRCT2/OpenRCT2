@@ -191,7 +191,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
         imageId = SPR_FENCE_METAL_NW | gTrackColours[SCHEME_TRACK];
         sub_98199C(imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
     }
-    track_paint_util_draw_station_covers(EDGE_NW, hasFence, entranceStyle, direction, height);
+    track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd)) {
         imageId = SPR_FENCE_METAL_NE | gTrackColours[SCHEME_TRACK];
@@ -203,7 +203,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
         imageId = SPR_FENCE_METAL_SE | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 32, 1, 27, height, 0, 30, height + 2, get_current_rotation());
     }
-    track_paint_util_draw_station_covers(EDGE_SE, hasFence, entranceStyle, direction, height);
+    track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
 
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
@@ -270,7 +270,7 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
         imageId = SPR_FENCE_METAL_NE | gTrackColours[SCHEME_TRACK];
         sub_98199C(imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
     }
-    track_paint_util_draw_station_covers(EDGE_NE, hasFence, entranceStyle, direction, height);
+    track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd)) {
         imageId = SPR_FENCE_METAL_NW | gTrackColours[SCHEME_TRACK];
@@ -282,7 +282,7 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
         imageId = SPR_FENCE_METAL_SW | gTrackColours[SCHEME_TRACK];
         sub_98197C(imageId, 0, 0, 1, 32, 27, height, 30, 0, height + 2, get_current_rotation());
     }
-    track_paint_util_draw_station_covers(EDGE_SW, hasFence, entranceStyle, direction, height);
+    track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
 
     bool drawRightColumn = true;
     bool drawLeftColumn = true;

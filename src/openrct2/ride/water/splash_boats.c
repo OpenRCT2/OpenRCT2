@@ -740,7 +740,7 @@ static void paint_splash_boats_station(paint_session * session, uint8 rideIndex,
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
-    track_paint_util_draw_station_platform(ride, direction, height, 7, mapElement);
+    track_paint_util_draw_station_platform(session, ride, direction, height, 7, mapElement);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
@@ -751,8 +751,8 @@ static void paint_splash_boats_station(paint_session * session, uint8 rideIndex,
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4) {
         static const uint8 supportTypes[][7] = {
@@ -794,8 +794,8 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * s
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
-    track_paint_util_right_quarter_turn_5_tiles_paint_2(height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
+    track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence, gTrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Side);
 
     if (trackSequence != 1 && trackSequence != 4) {
         static const uint8 supportTypes[][7] = {

@@ -132,8 +132,8 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     rct_xy16 position = { session->MapPosition.x, session->MapPosition.y };
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
-    track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence) {
     case 1: paint_motionsimulator_vehicle(session,  16, -16, direction, height, mapElement); break;

@@ -289,7 +289,7 @@ static void paint_river_rapids_station(paint_session * session, uint8 rideIndex,
     rct_ride *ride = get_ride(rideIndex);
 
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, mapElement);
-    track_paint_util_draw_station_platform(ride, direction, height, 12, mapElement);
+    track_paint_util_draw_station_platform(session, ride, direction, height, 12, mapElement);
     paint_util_set_general_support_height(height + 32, 0x20);
 }
 
@@ -695,7 +695,7 @@ static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideI
 static void paint_river_rapids_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, mapElement);
-    track_paint_util_onride_photo_paint(direction, height + 13, mapElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 13, mapElement);
     paint_util_set_general_support_height(height + 48, 0x20);
 }
 

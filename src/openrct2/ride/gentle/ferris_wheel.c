@@ -144,7 +144,7 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
     uint32 imageId;
     uint8 rotation = get_current_rotation();

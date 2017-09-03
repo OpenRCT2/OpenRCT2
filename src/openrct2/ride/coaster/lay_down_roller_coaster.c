@@ -117,7 +117,7 @@ static void lay_down_rc_track_station(paint_session * session, uint8 rideIndex, 
         sub_98197C_rotated(direction, imageIds[direction][1] | gTrackColours[SCHEME_TRACK], 0, 0, 32, 20, 3, height + 24, 0, 6, height + 24);
         sub_98199C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 1, height + 24, 0, 6, height + 24);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_inverted(rideIndex, trackSequence, direction, height, mapElement, STATION_VARIANT_1);
+        track_paint_util_draw_station_inverted(session, rideIndex, trackSequence, direction, height, mapElement, STATION_VARIANT_1);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_9);
     } else {
         static const uint32 imageIds[4][3] = {
@@ -134,7 +134,7 @@ static void lay_down_rc_track_station(paint_session * session, uint8 rideIndex, 
         }
         sub_98196C_rotated(direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_2(rideIndex, trackSequence, direction, height, mapElement, 9, 11);
+        track_paint_util_draw_station_2(session, rideIndex, trackSequence, direction, height, mapElement, 9, 11);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     }
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -3419,7 +3419,7 @@ static void lay_down_rc_track_right_vertical_loop(paint_session * session, uint8
         }
     }
 
-    track_paint_util_right_vertical_loop_segments(direction, trackSequence);
+    track_paint_util_right_vertical_loop_segments(session, direction, trackSequence);
 }
 
 /** rct2: 0x00824BBC */
@@ -5617,7 +5617,7 @@ static void lay_down_rc_track_left_quarter_turn_1_60_deg_up(paint_session * sess
             break;
         }
     }
-    track_paint_util_left_quarter_turn_1_tile_tunnel(direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
+    track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
 }
@@ -5665,7 +5665,7 @@ static void lay_down_rc_track_right_quarter_turn_1_60_deg_up(paint_session * ses
         }
     }
 
-    track_paint_util_right_quarter_turn_1_tile_tunnel(direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
+    track_paint_util_right_quarter_turn_1_tile_tunnel(session, direction, height, -8, TUNNEL_1, +56, TUNNEL_2);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(height + 104, 0x20);
 }
@@ -5754,7 +5754,7 @@ static void lay_down_rc_track_on_ride_photo(paint_session * session, uint8 rideI
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 16225, 0, 0, 32, 20, 0, height, 0, 6, height + 3);
             break;
         }
-        track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+        track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 48, 0x20);
@@ -5785,7 +5785,7 @@ static void lay_down_rc_track_on_ride_photo(paint_session * session, uint8 rideI
             sub_98197C_rotated(direction, gTrackColours[SCHEME_TRACK] | 26556, 0, 0, 32, 20, 3, height + 24, 0, 6, height + 24);
             break;
         }
-        track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+        track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
         paint_util_push_tunnel_rotated(direction, height, TUNNEL_0);
         paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(height + 64, 0x20);

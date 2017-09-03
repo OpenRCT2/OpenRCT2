@@ -611,7 +611,7 @@ static void paint_miniature_railway_station(paint_session * session, uint8 rideI
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
 
-    track_paint_util_draw_station_3(rideIndex, trackSequence, direction, height + 2, height, mapElement);
+    track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, mapElement);
     // covers shouldn't be offset by +2
 
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
@@ -840,10 +840,10 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_sessi
         bool isSupported = wooden_a_supports_paint_setup(session, right_quarter_turn_5_supports_type[direction][trackSequence], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
 
         if (isSupported == false || (trackSequence == 3 && direction == 2)) {
-            track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets, miniature_railway_right_quarter_turn_5_tiles_bound_lengths, NULL, get_current_rotation());
+            track_paint_util_right_quarter_turn_5_tiles_paint(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], miniature_railway_track_pieces_flat_quarter_turn_5_tiles, miniature_railway_right_quarter_turn_5_tiles_offsets, miniature_railway_right_quarter_turn_5_tiles_bound_lengths, NULL, get_current_rotation());
         }
         else {
-            track_paint_util_right_quarter_turn_5_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], miniature_railway_right_quarter_turn_5_tiles_track_floor, NULL, miniature_railway_right_quarter_turn_5_tiles_bound_lengths, miniature_railway_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
+            track_paint_util_right_quarter_turn_5_tiles_paint(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], miniature_railway_right_quarter_turn_5_tiles_track_floor, NULL, miniature_railway_right_quarter_turn_5_tiles_bound_lengths, miniature_railway_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
 
             sint32 index = miniature_railway_right_quarter_turn_5_tiles_sprite_map[trackSequence];
             uint32 imageId = miniature_railway_track_pieces_flat_quarter_turn_5_tiles[direction][index] | gTrackColours[SCHEME_TRACK];
@@ -1111,10 +1111,10 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
         isSupported = wooden_a_supports_paint_setup(session, supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
     }
     if (isSupported == false) {
-        track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+        track_paint_util_right_quarter_turn_3_tiles_paint(session, 3, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
     }
     else {
-        track_paint_util_right_quarter_turn_3_tiles_paint(3, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], miniature_railway_right_quarter_turn_3_tile_track_floor, NULL, defaultRightQuarterTurn3TilesBoundLengths, miniature_railway_right_quarter_turn_3_tile_bound_offsets, get_current_rotation());
+        track_paint_util_right_quarter_turn_3_tiles_paint(session, 3, height, direction, trackSequence, gTrackColours[SCHEME_SUPPORTS], miniature_railway_right_quarter_turn_3_tile_track_floor, NULL, defaultRightQuarterTurn3TilesBoundLengths, miniature_railway_right_quarter_turn_3_tile_bound_offsets, get_current_rotation());
 
         static const sint8 right_quarter_turn_3_tiles_sprite_map[] = {0, -1, 1, 2};
 
@@ -1127,7 +1127,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
 
         sub_98199C(imageId, (sint8) offset.x, (sint8) offset.y, boundsLength.x, boundsLength.y, 3, height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, get_current_rotation());
     }
-    track_paint_util_right_quarter_turn_3_tiles_tunnel(height, direction, trackSequence, TUNNEL_6);
+    track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_6);
 
     sint32 blockedSegments = 0;
     switch (trackSequence) {

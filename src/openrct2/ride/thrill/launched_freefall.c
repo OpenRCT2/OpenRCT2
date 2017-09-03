@@ -97,7 +97,7 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
     uint32 imageId = SPR_FLOOR_METAL | gTrackColours[SCHEME_SUPPORTS];
     sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-    track_paint_util_paint_fences(edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, launched_freefall_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, launched_freefall_fence_sprites, get_current_rotation());
 
     if (trackSequence == 0) {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_BASE | gTrackColours[SCHEME_TRACK];

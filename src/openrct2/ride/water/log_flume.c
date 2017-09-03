@@ -205,7 +205,7 @@ static void paint_log_flume_track_station(paint_session * session, uint8 rideInd
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station_3(rideIndex, trackSequence, direction, height + 2, height, mapElement);
+    track_paint_util_draw_station_3(session, rideIndex, trackSequence, direction, height + 2, height, mapElement);
     // Covers shouldn't be offset by +2
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
@@ -550,8 +550,8 @@ static void paint_log_flume_track_left_quarter_turn_3_tiles(paint_session * sess
         { SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_NW_NE_SEQ_3 },
     };
 
-    track_paint_util_left_quarter_turn_3_tiles_paint(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIds, get_current_rotation());
-    track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(0, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIdsFront, get_current_rotation(), 27);
+    track_paint_util_left_quarter_turn_3_tiles_paint(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIds, get_current_rotation());
+    track_paint_util_left_quarter_turn_3_tiles_paint_with_height_offset(session, 0, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIdsFront, get_current_rotation(), 27);
 
     if (trackSequence != 1 && trackSequence != 2) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -597,8 +597,8 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(paint_session * ses
         { SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_0, SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_2, SPR_LOG_FLUME_3_TURN_FRONT_SW_NW_SEQ_3 },
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint_2(2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIds, get_current_rotation());
-    track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(0, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIdsFront, get_current_rotation(), 27);
+    track_paint_util_right_quarter_turn_3_tiles_paint_2(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIds, get_current_rotation());
+    track_paint_util_right_quarter_turn_3_tiles_paint_2_with_height_offset(session, 0, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], imageIdsFront, get_current_rotation(), 27);
 
     if (trackSequence != 1 && trackSequence != 2) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -645,7 +645,7 @@ static void paint_log_flume_track_on_ride_photo(paint_session * session, uint8 r
     imageId = LogFlumeTrackFlatImageIds[direction][1] | gTrackColours[SCHEME_TRACK];
     sub_98197C_rotated(direction, imageId, 0, 0, 32, 1, 21, height, 0, 27, height + 5);
 
-    track_paint_util_onride_photo_paint(direction, height + 3, mapElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
 
     paint_util_push_tunnel_rotated(direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(SEGMENTS_ALL, 0xFFFF, 0);
