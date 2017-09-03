@@ -202,7 +202,7 @@ static void CallNew(
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
 
-    newPaintFunction(0, trackSequence, direction, height, mapElement);
+    newPaintFunction(&gPaintSession, 0, trackSequence, direction, height, mapElement);
 }
 
 typedef uint8 (*TestFunction)(uint8, uint8, uint8, std::string *);

@@ -308,27 +308,28 @@ namespace PaintIntercept {
 
 
 extern "C" {
-bool wooden_a_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+bool wooden_a_supports_paint_setup(paint_session * session, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
     return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_A, supportType, special, height, imageColourFlags, underground, gPaintSession.WoodenSupportsPrependTo);
 }
 
-bool wooden_b_supports_paint_setup(int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
+bool wooden_b_supports_paint_setup(paint_session * session, int supportType, int special, int height, uint32 imageColourFlags, bool *underground) {
     return PaintIntercept::PaintWoodenSupports(SUPPORTS_WOOD_B, supportType, special, height, imageColourFlags, underground, gPaintSession.WoodenSupportsPrependTo);
 }
 
-bool metal_a_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
+bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
     return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_A, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
-bool metal_b_supports_paint_setup(uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
+bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, int special, int height, uint32 imageColourFlags) {
     return PaintIntercept::PaintMetalSupports(SUPPORTS_METAL_B, supportType, segment, special, height, imageColourFlags, gPaintSession.SupportSegments);
 }
 
-paint_struct *sub_98196C(session, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation) {
+paint_struct *sub_98196C(paint_session * session, uint32 image_id, sint8 x_offset, sint8 y_offset, sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z, sint16 z_offset, uint32 rotation) {
     return PaintIntercept::Paint6C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, rotation);
 }
 
-paint_struct *sub_98197C(session, 
+paint_struct *sub_98197C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -347,7 +348,8 @@ paint_struct *sub_98197C(session,
     );
 }
 
-paint_struct *sub_98198C(session, 
+paint_struct *sub_98198C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
@@ -366,7 +368,8 @@ paint_struct *sub_98198C(session,
     );
 }
 
-paint_struct *sub_98199C(session, 
+paint_struct *sub_98199C(
+    paint_session * session,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
     sint16 bound_box_length_x, sint16 bound_box_length_y, sint8 bound_box_length_z,
