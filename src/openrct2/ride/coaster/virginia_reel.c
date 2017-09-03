@@ -210,7 +210,7 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
 
     const vehicle_boundbox *bb = &_virginiaReelBoundbox[j];
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+    sub_98197C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
     if (session->Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
         uint8 riding_peep_sprites[4] = {0xFF, 0xFF, 0xFF, 0xFF};
@@ -221,7 +221,7 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
         for (sint32 i = 0; i < countof(draw_order); i++) {
             if (riding_peep_sprites[draw_order[i]] != 0xFF) {
                 image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[draw_order[i]]);
-                sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+                sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
             }
         }
     }
@@ -239,10 +239,10 @@ static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIn
 
     uint32 imageId = sprites[direction] | gTrackColours[SCHEME_TRACK];
     if (direction & 1) {
-        sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
-        sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
@@ -264,9 +264,9 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
     paint_struct * ps;
 
     if (direction & 1) {
-        ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+        ps = sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
     } else {
-        ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+        ps = sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
     }
 
     if (direction == 1 || direction == 2) {
@@ -308,27 +308,27 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session,
     paint_struct * ps;
     switch (direction) {
         case 0:
-            sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 1:
-            ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_8);
             break;
         case 2:
-            ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_8);
             break;
         case 3:
-            sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -351,9 +351,9 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
     paint_struct * ps;
 
     if (direction & 1) {
-        ps = sub_98197C(imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
+        ps = sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
     } else {
-        ps = sub_98197C(imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
+        ps = sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
     }
 
     if (direction == 1 || direction == 2) {
@@ -408,18 +408,18 @@ static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex
 
     if (direction == 0 || direction == 2) {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
 
         imageId = SPR_VIRGINIA_REEL_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 20, 2, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 2, height, 0, 0, height, get_current_rotation());
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
 
         imageId = SPR_VIRGINIA_REEL_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 20, 32, 2, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 2, height, 0, 0, height, get_current_rotation());
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }

@@ -42,15 +42,15 @@ static const uint32 lift_cage_sprites[][2] = {
     {SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT},
 };
 
-static void paint_lift_cage(sint8 index, uint32 colourFlags, sint32 height, uint8 rotation)
+static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourFlags, sint32 height, uint8 rotation)
 {
     uint32 imageId;
 
     imageId = lift_cage_sprites[1 + index][0] | colourFlags;
-    sub_98197C(imageId, 0, 0, 2, 2, 30, height, 2, 2, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 2, 2, height, get_current_rotation());
 
     imageId = lift_cage_sprites[1 + index][1] | colourFlags;
-    sub_98197C(imageId, 0, 0, 2, 2, 30, height, 28, 28, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 28, 28, height, get_current_rotation());
 }
 
 /** rct2: 0x0076C6CC */
@@ -59,11 +59,11 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
     trackSequence = track_map_3x3[direction][trackSequence];
 
     if (trackSequence == 0) {
-        paint_lift_cage(direction, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
+        paint_lift_cage(session, direction, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
-        paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
+        paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
 
-        paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
+        paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
 
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -82,7 +82,7 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
     rct_xy16 position = session->MapPosition;
 
     uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
-        sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
         track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
@@ -109,7 +109,7 @@ static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, u
         return;
     }
 
-    paint_lift_cage(-1, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
+    paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 

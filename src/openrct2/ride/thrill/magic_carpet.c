@@ -87,9 +87,9 @@ static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8
     }
     imageId |= gTrackColours[SCHEME_TRACK];
     if (plane == PLANE_BACK) {
-        sub_98197C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+        sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
     } else {
-        sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+        sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
     }
 }
 
@@ -108,7 +108,7 @@ static void paint_magic_carpet_pendulum(paint_session * session, uint8 plane, ui
                                          SPR_MAGIC_CARPET_PENDULUM_SE;
     }
     imageId |= gTrackColours[SCHEME_TRACK];
-    sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+    sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 }
 
 static void paint_magic_carpet_vehicle(paint_session * session, rct_ride *ride, uint8 direction, uint32 swingImageId,
@@ -133,7 +133,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, rct_ride *ride, 
     }
     offset.z += MagicCarpetOscillationZ[swingImageId];
 
-    sub_98199C(vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+    sub_98199C(session, vehicleImageId | imageColourFlags, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 
     // Riders
     rct_drawpixelinfo *dpi = session->Unk140E9A8;
@@ -145,7 +145,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, rct_ride *ride, 
                 uint32 imageId = baseImageId + (peepIndex * 2);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
                 imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
-                sub_98199C(imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
+                sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
             }
         }
     }
@@ -204,7 +204,7 @@ static void paint_magic_carpet(paint_session * session, uint8 rideIndex, uint8 t
         }
 
         uint32 imageId = SPR_STATION_BASE_D | gTrackColours[SCHEME_SUPPORTS];
-        sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
         break;
     }
 

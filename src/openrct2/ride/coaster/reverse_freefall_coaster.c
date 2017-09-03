@@ -208,11 +208,11 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
 {
     if (direction & 1) {
         uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
         uint32 imageId = SPR_REVERSE_FREEFALL_RC_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
@@ -233,22 +233,22 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
     if (direction == 0 || direction == 2) {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         // height -= 2 (height - 2)
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -308,7 +308,7 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
             } else {
                 floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
             }
-            sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
+            sub_98197C(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
             sub_98199C_rotated(session, direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11, 3, height);
         } else {
             sub_98197C_rotated(session, direction, supportsImageId, 0, 0, isDirection03 ? 26 : 18, 26, 126, height, isDirection03 ? 3 : 11, 3, height);
@@ -337,7 +337,7 @@ static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 ri
     switch (trackSequence) {
     case 0:
         supportsImageId = reverse_freefall_rc_track_pieces_vertical_supports[direction] | gTrackColours[SCHEME_SUPPORTS];
-        sub_98197C(supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height, get_current_rotation());
+        sub_98197C(session, supportsImageId, 0, 0, 26, 26, 79, height, 3, 3, height, get_current_rotation());
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 80, 0x20);
         break;

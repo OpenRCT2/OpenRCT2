@@ -230,7 +230,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     boxlength.x =  s98E3C4[esi].length.x;
     boxlength.y =  s98E3C4[esi].length.y;
     boxlength.z = ah;
-    sub_98197C(image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
     if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2) {
         scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
         return;
@@ -367,7 +367,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
 
     uint16 string_width = gfx_get_string_width(signString);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
-    sub_98199C(scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
+    sub_98199C(session, scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
     scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
 }

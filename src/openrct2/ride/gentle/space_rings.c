@@ -69,13 +69,13 @@ static void paint_space_rings_structure(paint_session * session, rct_ride * ride
         }
 
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
-        sub_98197C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
 
         if (vehicle != NULL && vehicle->num_peeps > 0) {
             rct_peep * rider = GET_PEEP(vehicle->peep[0]);
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->tshirt_colour, rider->trousers_colour);
             imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-            sub_98199C(imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
+            sub_98199C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
         }
     }
 
@@ -102,11 +102,11 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
             }
             if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
             }
             break;
         default:

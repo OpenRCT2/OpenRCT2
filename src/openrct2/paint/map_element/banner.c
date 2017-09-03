@@ -73,12 +73,12 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
             IMAGE_TYPE_REMAP;
     }
 
-    sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
     boundBoxOffsetX = BannerBoundBoxes[direction][1].x;
     boundBoxOffsetY = BannerBoundBoxes[direction][1].y;
 
     image_id++;
-    sub_98197C(image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, 1, 1, 0x15, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 
     // Opposite direction
     direction ^= 2;
@@ -113,5 +113,5 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
     uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
     uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-    sub_98199C(scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
+    sub_98199C(session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 0x15, height + 22, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, get_current_rotation());
 }

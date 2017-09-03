@@ -488,16 +488,16 @@ static void wooden_wild_mouse_track_left_quarter_turn_1(paint_session * session,
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     switch (direction) {
     case 0:
-        sub_98197C(imageId, 6, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 6, 0, 26, 24, 1, height, 6, 2, height, get_current_rotation());
         break;
     case 1:
-        sub_98196C(imageId, 0, 0, 26, 26, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 26, 26, 1, height, get_current_rotation());
         break;
     case 2:
-        sub_98197C(imageId, 0, 6, 24, 26, 1, height, 2, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 6, 24, 26, 1, height, 2, 6, height, get_current_rotation());
         break;
     case 3:
-        sub_98196C(imageId, 6, 6, 24, 24, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 6, 24, 24, 1, height, get_current_rotation());
         break;
     }
     wooden_a_supports_paint_setup(session, supportType[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);

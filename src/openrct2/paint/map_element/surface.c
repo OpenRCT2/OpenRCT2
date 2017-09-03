@@ -526,7 +526,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
 
         if (cur_height != regs.al && cur_height != regs.cl) {
             uint32 image_id = base_image_id + image_offset;
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
             cur_height++;
         }
     }
@@ -534,7 +534,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
     regs.ah = regs.cl;
 
     while (cur_height < regs.al && cur_height < regs.ah) {
-        sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+        sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
         cur_height++;
     }
 
@@ -548,7 +548,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
     }
 
     uint32 image_id = base_image_id + image_offset;
-    sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+    sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
 }
 
 /**
@@ -629,7 +629,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 
         if (curHeight != regs.al && curHeight != regs.cl) {
             uint32 image_id = base_image_id + image_offset;
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
             curHeight++;
         }
     }
@@ -650,7 +650,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 
             uint32 image_id = base_image_id + image_offset;
 
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
             return;
         }
@@ -663,7 +663,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
             }
 
             if (curHeight != tunnelArray[0].height) {
-                sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+                sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
                 curHeight++;
                 continue;
@@ -690,7 +690,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 
 
         uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-        sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
         boundBoxOffsetZ = curHeight * 16;
@@ -702,7 +702,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
         }
 
         image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
-        sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
         curHeight += stru_97B570[tunnelType][0];
 
@@ -788,7 +788,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 
         if (cur_height != regs.al && cur_height != regs.cl) {
             uint32 image_id = base_image_id + image_offset;
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
             cur_height++;
         }
     }
@@ -796,7 +796,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
     regs.ah = regs.cl;
 
     while (cur_height < regs.al && cur_height < regs.ah) {
-        sub_98196C(base_image_id, 0, 0, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+        sub_98196C(session, base_image_id, 0, 0, bounds.x, bounds.y, 15, cur_height * 16, rotation);
         cur_height++;
     }
 
@@ -810,7 +810,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
     }
 
     uint32 image_id = base_image_id + image_offset;
-    sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+    sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
 }
 
 /**
@@ -901,7 +901,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
         if (curHeight != regs.al && curHeight != regs.cl) {
             uint32 image_id = base_image_id + image_offset;
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
             curHeight++;
         }
     }
@@ -922,7 +922,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
             uint32 image_id = base_image_id + image_offset;
 
-            sub_98196C(image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
             return;
         }
@@ -934,7 +934,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
                 memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
             }
 
-            sub_98196C(base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
             curHeight++;
             continue;
@@ -960,7 +960,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
 
         uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-        sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
 
 
         boundBoxOffsetZ = curHeight * 16;
@@ -972,7 +972,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         }
 
         image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
-        sub_98197C(image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
+        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
         curHeight += stru_97B570[tunnelType][0];
 
@@ -1060,17 +1060,17 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         image_id += get_height_marker_offset();
         image_id -= gMapBaseZ;
 
-        sub_98196C(image_id, 16, 16, 1, 1, 0, height, rotation);
+        sub_98196C(session, image_id, 16, 16, 1, 1, 0, height, rotation);
     }
 
 
     bool has_surface = false;
     if (session->VerticalTunnelHeight * 16 == height) {
         // Vertical tunnels
-        sub_98197C(1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
-        sub_98197C(1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
-        sub_98197C(1577, 0, 0, 1, 30, 0, height, 31, 1, height, rotation);
-        sub_98197C(1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40, rotation);
+        sub_98197C(session, 1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
+        sub_98197C(session, 1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
+        sub_98197C(session, 1577, 0, 0, 1, 30, 0, height, 31, 1, height, rotation);
+        sub_98197C(session, 1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40, rotation);
     } else {
         bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
@@ -1137,7 +1137,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         }
 
-        sub_98196C(image_id, 0, 0, 32, 32, -1, height, rotation);
+        sub_98196C(session, image_id, 0, 0, 32, 32, -1, height, rotation);
         has_surface = true;
     }
 
@@ -1178,11 +1178,11 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
             if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
-                sub_98196C(SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
+                sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
                 sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
                 uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
-                sub_98196C(image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
+                sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
             }
         }
     }
@@ -1196,7 +1196,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             rct_xy16 pos = session->MapPosition;
             paint_struct * backup = session->UnkF1AD28;
             sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
-            sub_98196C(SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
+            sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
             session->UnkF1AD28 = backup;
         }
     }
@@ -1210,7 +1210,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             paint_struct * backup = session->UnkF1AD28;
             rct_xy16 pos = session->MapPosition;
             sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
-            sub_98196C(SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
+            sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
             session->UnkF1AD28 = backup;
         }
     }
@@ -1277,7 +1277,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
                 paint_struct * backup = session->UnkF1AD28;
-                sub_98196C(image_id, 0, 0, 32, 32, 1, local_height, rotation);
+                sub_98196C(session, image_id, 0, 0, 32, 32, 1, local_height, rotation);
                 session->UnkF1AD28 = backup;
             }
         }
@@ -1387,7 +1387,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             }
 
             sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
-            sub_98196C(image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
+            sub_98196C(session, image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
@@ -1526,7 +1526,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 }
             }
 
-            sub_98197C(image_id, offset.x, offset.y, box_size.x, box_size.y, 9, local_height, box_offset.x, box_offset.y, local_height + 1, rotation);
+            sub_98197C(session, image_id, offset.x, offset.y, box_size.x, box_size.y, 9, local_height, box_offset.x, box_offset.y, local_height + 1, rotation);
         }
     }
 

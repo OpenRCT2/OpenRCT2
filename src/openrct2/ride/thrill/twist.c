@@ -56,7 +56,7 @@ static void paint_twist_structure(paint_session * session, rct_ride * ride, uint
 
     uint32 structureFrameNum = frameNum % 24;
     uint32 imageId = (baseImageId + structureFrameNum) | imageColourFlags;
-    sub_98197C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
@@ -69,7 +69,7 @@ static void paint_twist_structure(paint_session * session, rct_ride * ride, uint
 
             uint32 peepFrameNum = (frameNum + i * 12) % 216;
             imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
-            sub_98199C(imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
+            sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height, get_current_rotation());
         }
     }
 
@@ -97,11 +97,11 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
         case 7:
             if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_FENCE_ROPE_SW | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 3, get_current_rotation());
             }
             if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation())) {
                 imageId = SPR_FENCE_ROPE_SE | gTrackColours[SCHEME_MISC];
-                sub_98197C(imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, get_current_rotation());
+                sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, get_current_rotation());
             }
             break;
         default:

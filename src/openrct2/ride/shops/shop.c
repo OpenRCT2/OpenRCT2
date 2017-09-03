@@ -52,11 +52,11 @@ static void shop_paint_setup(paint_session * session, uint8 rideIndex, uint8 tra
 
     if (hasSupports) {
         uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
-        sub_98197C(foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98197C(session, foundationImageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
 
-        sub_98199C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 28, 45, height, 2, 2, height, get_current_rotation());
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

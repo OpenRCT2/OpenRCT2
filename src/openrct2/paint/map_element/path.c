@@ -86,7 +86,7 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
 void path_paint_box_support(paint_session * session, rct_map_element* mapElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
-static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     if (footpath_element_is_sloped(mapElement))
         height += 8;
 
@@ -100,7 +100,7 @@ static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_eleme
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2, get_current_rotation());
     }
     if (!(edges & (1 << 1))) {
         imageId = pathBitEntry->image + 2;
@@ -110,7 +110,7 @@ static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_eleme
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 2))) {
@@ -121,7 +121,7 @@ static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_eleme
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 3))) {
@@ -132,12 +132,12 @@ static void path_bit_lights_paint(rct_scenery_entry* pathBitEntry, rct_map_eleme
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 16, 2, 1, 1, 23, height, 16, 3, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 2, 1, 1, 23, height, 16, 3, height + 2, get_current_rotation());
     }
 }
 
 /* rct2: 0x006A5C94 */
-static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     if (footpath_element_is_sloped(mapElement))
         height += 8;
 
@@ -158,7 +158,7 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
         }
 
 
-        sub_98197C(imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
     }
     if (!(edges & (1 << 1))) {
         imageId = pathBitEntry->image + 6;
@@ -175,7 +175,7 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
         }
 
 
-        sub_98197C(imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 2))) {
@@ -193,7 +193,7 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
         }
 
 
-        sub_98197C(imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 3))) {
@@ -211,12 +211,12 @@ static void path_bit_bins_paint(rct_scenery_entry* pathBitEntry, rct_map_element
         }
 
 
-        sub_98197C(imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 7, 1, 1, 7, height, 16, 7, height + 2, get_current_rotation());
     }
 }
 
 /* rct2: 0x006A5E81 */
-static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
+static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     uint32 imageId;
 
     if (!(edges & (1 << 0))) {
@@ -227,7 +227,7 @@ static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_elem
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2, get_current_rotation());
     }
     if (!(edges & (1 << 1))) {
         imageId = pathBitEntry->image + 2;
@@ -237,7 +237,7 @@ static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_elem
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 2))) {
@@ -248,7 +248,7 @@ static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_elem
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2, get_current_rotation());
     }
 
     if (!(edges & (1 << 3))) {
@@ -259,22 +259,22 @@ static void path_bit_benches_paint(rct_scenery_entry* pathBitEntry, rct_map_elem
 
         imageId |= pathBitImageFlags;
 
-        sub_98197C(imageId, 16, 7, 16, 0, 7, height, 8, 6, height + 2, get_current_rotation());
+        sub_98197C(session, imageId, 16, 7, 16, 0, 7, height, 8, 6, height + 2, get_current_rotation());
     }
 }
 
 /* rct2: 0x006A6008 */
-static void path_bit_jumping_fountains_paint(rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
+static void path_bit_jumping_fountains_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_map_element* mapElement, sint32 height, uint8 edges, uint32 pathBitImageFlags, rct_drawpixelinfo* dpi) {
     if (dpi->zoom_level != 0)
         return;
 
     uint32 imageId = pathBitEntry->image;
     imageId |= pathBitImageFlags;
 
-    sub_98197C(imageId + 1, 0, 0, 1, 1, 2, height, 3, 3, height + 2, get_current_rotation());
-    sub_98197C(imageId + 2, 0, 0, 1, 1, 2, height, 3, 29, height + 2, get_current_rotation());
-    sub_98197C(imageId + 3, 0, 0, 1, 1, 2, height, 29, 29, height + 2, get_current_rotation());
-    sub_98197C(imageId + 4, 0, 0, 1, 1, 2, height, 29, 3, height + 2, get_current_rotation());
+    sub_98197C(session, imageId + 1, 0, 0, 1, 1, 2, height, 3, 3, height + 2, get_current_rotation());
+    sub_98197C(session, imageId + 2, 0, 0, 1, 1, 2, height, 3, 29, height + 2, get_current_rotation());
+    sub_98197C(session, imageId + 3, 0, 0, 1, 1, 2, height, 29, 29, height + 2, get_current_rotation());
+    sub_98197C(session, imageId + 4, 0, 0, 1, 1, 2, height, 29, 3, height + 2, get_current_rotation());
 }
 
 /**
@@ -291,67 +291,67 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
         if (footpath_element_is_sloped(map_element)) {
             switch ((map_element->properties.path.type + get_current_rotation()) & 0x03) {
                 case 0:
-                    sub_98197C(95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(95 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 95 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 1:
-                    sub_98197C(94 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(94 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 94 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 94 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
                     break;
                 case 2:
-                    sub_98197C(96 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(96 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 96 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 96 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 3:
-                    sub_98197C(93 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(93 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 93 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 93 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
                     break;
             }
         } else {
             switch (local_ebp) {
                 case 1:
-                    sub_98197C(90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 2:
-                    sub_98197C(91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
                     break;
                 case 3:
-                    sub_98197C(90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4, height + 2, get_current_rotation()); // bound_box_offset_y seems to be a bug
-                    sub_98197C(98 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 90 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 91 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4, height + 2, get_current_rotation()); // bound_box_offset_y seems to be a bug
+                    sub_98197C(session, 98 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 4:
-                    sub_98197C(92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(92 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 92 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 5:
-                    sub_98197C(88 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(88 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 88 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 88 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                     break;
                 case 6:
-                    sub_98197C(91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                    sub_98197C(99 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 91 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 92 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                    sub_98197C(session, 99 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
                     break;
                 case 8:
-                    sub_98197C(89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
                     break;
                 case 9:
-                    sub_98197C(89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
-                    sub_98197C(90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
-                    sub_98197C(97 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 89 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 90 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 97 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
                     break;
                 case 10:
-                    sub_98197C(87 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(87 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 87 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 87 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
                     break;
                 case 12:
-                    sub_98197C(89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                    sub_98197C(92 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28, height + 2, get_current_rotation()); // bound_box_offset_x seems to be a bug
-                    sub_98197C(100 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 89 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 92 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28, height + 2, get_current_rotation()); // bound_box_offset_x seems to be a bug
+                    sub_98197C(session, 100 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
                     break;
                 default:
                     // purposely left empty
@@ -381,12 +381,12 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
 
         uint32 imageId = (direction << 1) + base_image_id + 101;
 
-        sub_98197C(imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
 
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
         boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
         imageId++;
-        sub_98197C(imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
 
         direction--;
         // If text shown
@@ -415,7 +415,7 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
             uint16 string_width = gfx_get_string_width(gCommonStringFormatBuffer);
             uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-            sub_98199C(scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
+            sub_98199C(session, scrolling_text_setup(session, string_id, scroll, scrollingMode), 0, 0, 1, 1, 21, height + 7,  boundBoxOffsets.x,  boundBoxOffsets.y,  boundBoxOffsets.z, get_current_rotation());
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
@@ -435,20 +435,20 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
     if (footpath_element_is_sloped(map_element)) {
         switch ((map_element->properties.path.type + get_current_rotation()) & 0x03) {
             case 0:
-                sub_98197C(81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(81 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 81 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
                 break;
             case 1:
-                sub_98197C(80 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(80 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 80 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 80 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
                 break;
             case 2:
-                sub_98197C(82 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(82 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 82 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 82 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
                 break;
             case 3:
-                sub_98197C(79 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(79 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 79 + base_image_id, 4, 0, 1, 32, 23, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 79 + base_image_id, 28, 0, 1, 32, 23, height, 28, 0, height + 2, get_current_rotation());
                 break;
         }
     } else {
@@ -462,108 +462,108 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
                 // purposely left empty
                 break;
             case 1:
-                sub_98197C(76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                 break;
             case 2:
-                sub_98197C(77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
                 break;
             case 4:
-                sub_98197C(78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(78 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                 break;
             case 5:
-                sub_98197C(74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                 break;
             case 8:
-                sub_98197C(75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
                 break;
             case 10:
-                sub_98197C(73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
                 break;
 
             case 3:
-                sub_98197C(76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
-                sub_98197C(77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4, height + 2, get_current_rotation()); // bound_box_offset_y seems to be a bug
+                sub_98197C(session, 76 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 77 + base_image_id, 28, 0, 1, 28, 7, height, 28, 4, height + 2, get_current_rotation()); // bound_box_offset_y seems to be a bug
                 if (!(dword_F3EF80 & 0x10)) {
-                    sub_98197C(84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
                 }
                 break;
             case 6:
-                sub_98197C(77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 77 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 78 + base_image_id, 0, 4, 28, 1, 7, height, 0, 4, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x20)) {
-                    sub_98197C(85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
                 }
                 break;
             case 9:
-                sub_98197C(75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
-                sub_98197C(76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 75 + base_image_id, 28, 0, 1, 28, 7, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 76 + base_image_id, 0, 28, 28, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x80)) {
-                    sub_98197C(83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
                 }
                 break;
             case 12:
-                sub_98197C(75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
-                sub_98197C(78 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28, height + 2, get_current_rotation()); // bound_box_offset_x seems to be a bug
+                sub_98197C(session, 75 + base_image_id, 4, 0, 1, 28, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 78 + base_image_id, 0, 28, 28, 1, 7, height, 4, 28, height + 2, get_current_rotation()); // bound_box_offset_x seems to be a bug
                 if (!(dword_F3EF80 & 0x40)) {
-                    sub_98197C(86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
                 }
                 break;
 
             case 7:
-                sub_98197C(74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
+                sub_98197C(session, 74 + base_image_id, 0, 4, 32, 1, 7, height, 0, 4, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x10)) {
-                    sub_98197C(84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x20)) {
-                    sub_98197C(85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
                 }
                 break;
             case 13:
-                sub_98197C(74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
+                sub_98197C(session, 74 + base_image_id, 0, 28, 32, 1, 7, height, 0, 28, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x40)) {
-                    sub_98197C(86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x80)) {
-                    sub_98197C(83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
                 }
                 break;
             case 14:
-                sub_98197C(73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 73 + base_image_id, 4, 0, 1, 32, 7, height, 4, 0, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x20)) {
-                    sub_98197C(85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x40)) {
-                    sub_98197C(86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
                 }
                 break;
             case 11:
-                sub_98197C(73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
+                sub_98197C(session, 73 + base_image_id, 28, 0, 1, 32, 7, height, 28, 0, height + 2, get_current_rotation());
                 if (!(dword_F3EF80 & 0x10)) {
-                    sub_98197C(84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x80)) {
-                    sub_98197C(83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
                 }
                 break;
 
             case 15:
                 if (!(dword_F3EF80 & 0x10)) {
-                    sub_98197C(84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 84 + base_image_id, 0, 0, 4, 4, 7, height, 0, 28, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x20)) {
-                    sub_98197C(85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
+                    sub_98197C(session, 85 + base_image_id, 0, 0, 4, 4, 7, height, 28, 28, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x40)) {
-                    sub_98197C(86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 86 + base_image_id, 0, 0, 4, 4, 7, height, 28, 0, height + 2, get_current_rotation());
                 }
                 if (!(dword_F3EF80 & 0x80)) {
-                    sub_98197C(83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
+                    sub_98197C(session, 83 + base_image_id, 0, 0, 4, 4, 7, height, 0, 0, height + 2, get_current_rotation());
                 }
                 break;
 
@@ -610,16 +610,16 @@ static void sub_6A3F61(paint_session * session, rct_map_element * map_element, u
                 rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
                 switch (sceneryEntry->path_bit.draw_type) {
                 case PATH_BIT_DRAW_TYPE_LIGHTS:
-                    path_bit_lights_paint(sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_lights_paint(session, sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_BINS:
-                    path_bit_bins_paint(sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_bins_paint(session, sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_BENCHES:
-                    path_bit_benches_paint(sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_benches_paint(session, sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                    path_bit_jumping_fountains_paint(sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags, dpi);
+                    path_bit_jumping_fountains_paint(session, sceneryEntry, map_element, height, (uint8)bp, sceneryImageFlags, dpi);
                     break;
                 }
 
@@ -747,7 +747,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
                 height2 += 16;
             }
 
-            sub_98196C(imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
+            sub_98196C(session, imageId | patrolColour << 19 | IMAGE_TYPE_REMAP, 16, 16, 1, 1, 0, height2 + 2, get_current_rotation());
         }
     }
 
@@ -760,7 +760,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
         uint32 imageId = (SPR_HEIGHT_MARKER_BASE + height2 / 16) | COLOUR_GREY << 19 | IMAGE_TYPE_REMAP;
         imageId += get_height_marker_offset();
         imageId -= gMapBaseZ;
-        sub_98196C(imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
+        sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
     }
 
     uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;
@@ -833,7 +833,7 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
     }
 
     if (!hasFences || !session->DidPassSurface) {
-        sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
     } else {
         uint32 image_id;
         if (footpath_element_is_sloped(mapElement)) {
@@ -842,12 +842,12 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
             image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
         }
 
-        sub_98197C(image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 
         if (!footpath_element_is_queue(mapElement) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
             // don't draw
         } else {
-            sub_98199C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
         }
     }
 
@@ -947,7 +947,7 @@ void path_paint_box_support(paint_session * session, rct_map_element* mapElement
     }
 
     if (!hasFences || !session->DidPassSurface) {
-        sub_98197C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
     }
     else {
         uint32 bridgeImage;
@@ -959,10 +959,10 @@ void path_paint_box_support(paint_session * session, rct_map_element* mapElement
             bridgeImage |= imageFlags;
         }
 
-        sub_98197C(bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
 
         if (footpath_element_is_queue(mapElement) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
-            sub_98199C(imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
         }
     }
 

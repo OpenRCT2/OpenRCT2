@@ -108,7 +108,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     sint16 lengthY = (direction & 1) ? 28 : 2;
     sint16 lengthX = (direction & 1) ? 2 : 28;
 
-    sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
 
     if (transparant_image_id){
         if (is_exit){
@@ -118,16 +118,16 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
             transparant_image_id |= style->sprite_index + direction + 16;
         }
 
-        sub_98199C(transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
+        sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, 2, 2, height, get_current_rotation());
     }
 
     image_id += 4;
 
-    sub_98197C(image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
+    sub_98197C(session, image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
 
     if (transparant_image_id){
         transparant_image_id += 4;
-        sub_98199C(transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
+        sub_98199C(session, transparant_image_id, 0, 0, lengthX, lengthY, ah, height, (direction & 1) ? 28 : 2, (direction & 1) ? 2 : 28, height, get_current_rotation());
     }
 
     if (direction & 1) {
@@ -166,7 +166,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
         uint16 string_width = gfx_get_string_width(entrance_string);
         uint16 scroll = (gCurrentTicks / 2) % string_width;
 
-        sub_98199C(scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
+        sub_98199C(session, scrolling_text_setup(session, string_id, scroll, style->scrolling_mode), 0, 0, 0x1C, 0x1C, 0x33, height + style->height, 2, 2, height + style->height, get_current_rotation());
     }
 
     image_id = _unk9E32BC;
@@ -216,12 +216,12 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     case 0:
         if (path_entry != (void*)-1) {
             image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
-                sub_98197C(image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
+                sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
         }
 
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
         image_id = (entrance->image_id + direction * 3) | ghost_id;
-            sub_98197C(image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32, get_current_rotation());
+            sub_98197C(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32, get_current_rotation());
 
         if ((direction + 1) & (1 << 1))
             break;
@@ -253,13 +253,13 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
         if (entrance->scrolling_mode == 0xFF)
             break;
 
-        sub_98199C(scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
+        sub_98199C(session, scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
         break;
     case 1:
     case 2:
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
         image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
-            sub_98197C(image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height, get_current_rotation());
+            sub_98197C(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height, get_current_rotation());
         break;
     }
 
@@ -291,7 +291,7 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct
             uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
-            sub_98197C(image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64, get_current_rotation());
+            sub_98197C(session, image_id, 16, 16, 1, 1, 0, height, 31, 31, z + 64, get_current_rotation());
         }
     }
 

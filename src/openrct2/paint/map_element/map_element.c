@@ -125,7 +125,7 @@ static void blank_tiles_paint(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-    sub_98196C(3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
+    sub_98196C(session, 3123, 0, 0, 32, 32, -1, 16, get_current_rotation());
 }
 
 bool gShowSupportSegmentHeights = false;
@@ -200,7 +200,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->SpritePosition.y = y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        sub_98197C(imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
+        sub_98197C(session, imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
     sint32 bx = dx + 52;
 
@@ -312,7 +312,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
             sint32 xOffset = sy * 10;
             sint32 yOffset = -22 + sx * 10;
-            paint_struct * ps = sub_98197C(5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
+            paint_struct * ps = sub_98197C(session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
             if (ps != NULL) {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
                 ps->colour_image_id = COLOUR_BORDEAUX_RED;

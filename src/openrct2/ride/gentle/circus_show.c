@@ -43,7 +43,7 @@ static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uin
         imageId += direction;
     }
 
-    sub_98197C(imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
+    sub_98197C(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
 
     session->CurrentlyDrawnItem = savedMapElement;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;

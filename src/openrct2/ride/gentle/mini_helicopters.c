@@ -30,20 +30,20 @@ static void paint_mini_helicopters_track_station(paint_session * session, uint8 
 
     if (direction == 0 || direction == 2) {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
 
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -64,11 +64,11 @@ static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rid
 
     if (direction & 1) {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     } else {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
@@ -89,22 +89,22 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * sessi
     switch (direction) {
         case 0:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height, TUNNEL_0);
             break;
         case 1:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NW_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height, TUNNEL_2);
             break;
         case 2:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_NE_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height, TUNNEL_2);
             break;
         case 3:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_TO_25_DEG_UP_SE_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height, TUNNEL_0);
             break;
     }
@@ -126,22 +126,22 @@ static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint
     switch (direction) {
         case 0:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_1);
             break;
         case 1:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NW_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_2);
             break;
         case 2:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_NE_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_2);
             break;
         case 3:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_SE_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_1);
             break;
     }
@@ -163,22 +163,22 @@ static void paint_mini_helicopters_track_25_deg_up_to_flat(paint_session * sessi
     switch (direction) {
         case 0:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_0);
             break;
         case 1:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_12);
             break;
         case 2:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_12);
             break;
         case 3:
             imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_25_DEG_UP_TO_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_0);
             break;
     }

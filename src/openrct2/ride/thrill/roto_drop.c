@@ -48,11 +48,11 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
     const uint8 rotation = get_current_rotation();
     // Draw back:
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, rotation);
+    sub_98197C(session, image_id, 0, 0, 2, 2, 41, z, -11, -11, z + 1, rotation);
 
     // Draw front:
     image_id = (baseImage_id + 4) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
+    sub_98197C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
 
     uint8 riding_peep_sprites[64];
     memset(riding_peep_sprites, 0xFF, sizeof(riding_peep_sprites));
@@ -75,7 +75,7 @@ void vehicle_visual_roto_drop(paint_session * session, sint32 x, sint32 imageDir
                 baseImage_id += vehicle->restraints_position / 64;
             }
             image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
-            sub_98199C(image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
+            sub_98199C(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1, rotation);
         }
     };
 
@@ -95,19 +95,19 @@ static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
 
     uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
-    sub_98197C(imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
     track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
     if (trackSequence == 0) {
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 8, 8, height + 3, get_current_rotation());
 
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 2, 2, 30, height + 32, 8, 8, height + 32, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height + 32, 8, 8, height + 32, get_current_rotation());
 
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 2, 2, 30, height + 64, 8, 8, height + 64, get_current_rotation());
 
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -145,12 +145,12 @@ static void paint_roto_drop_tower_section(paint_session * session, uint8 rideInd
     }
 
     uint32 imageId = SPR_ROTO_DROP_TOWER_SEGMENT | gTrackColours[SCHEME_TRACK];
-    sub_98197C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
     rct_map_element * nextMapElement = mapElement + 1;
     if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height) {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

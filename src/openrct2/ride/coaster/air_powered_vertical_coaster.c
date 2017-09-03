@@ -378,10 +378,10 @@ static void air_powered_vertical_rc_track_banked_right_quarter_turn_5(paint_sess
 
     if (direction == 1 && trackSequence == 6) {
         uint32 imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_NW_SW_PART_4 | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
     } else if (direction == 3 && trackSequence == 0) {
         uint32 imageId = SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
     }
 
     track_paint_util_right_quarter_turn_5_tiles_wooden_supports(session, height, direction, trackSequence);
@@ -618,7 +618,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
             } else {
                 floorImageId = SPR_FLOOR_PLANKS | gTrackColours[SCHEME_SUPPORTS];
             }
-            sub_98197C(floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
+            sub_98197C(session, floorImageId, 0, 0, 26, 26, 126, height, 3, 3, height, get_current_rotation());
             sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);
         } else {
             sub_98197C_rotated(session, direction, supportsImageId, 0, 0, 26, 26, 126, height, 3, 3, height);

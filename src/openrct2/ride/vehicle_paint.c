@@ -903,7 +903,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
     }
     uint32 rotation = get_current_rotation();
     sint32 image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-    paint_struct* ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
+    paint_struct* ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -916,7 +916,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
                 if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24) {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
                 }
-                sub_98199C(image_id, 0, 0,  bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
+                sub_98199C(session, image_id, 0, 0,  bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
                 baseImage_id += vehicleEntry->no_vehicle_images;
             }
         }
@@ -2205,7 +2205,7 @@ vehicle_sprite_func vehicle_sprite_funcs[] = {
  *
  *  rct2: 0x006D5600
  */
-static void vehicle_visual_splash1_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_visual_splash1_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     if ((vehicle->track_type >> 2) != TRACK_ELEM_WATER_SPLASH) {
         return;
@@ -2220,14 +2220,14 @@ static void vehicle_visual_splash1_effect(sint32 z, rct_vehicle *vehicle, const 
         return;
     }
     sint32 image_id = 29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
 }
 
 /**
  *
  *  rct2: 0x006D5696
  */
-static void vehicle_visual_splash2_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_visual_splash2_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     if (vehicle->sprite_direction & 7) {
         return;
@@ -2239,14 +2239,14 @@ static void vehicle_visual_splash2_effect(sint32 z, rct_vehicle *vehicle, const 
         return;
     }
     sint32 image_id = 29046 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
 }
 
 /**
  *
  *  rct2: 0x006D57EE
  */
-static void vehicle_visual_splash3_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_visual_splash3_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     if (vehicle->sprite_direction & 7) {
         return;
@@ -2258,14 +2258,14 @@ static void vehicle_visual_splash3_effect(sint32 z, rct_vehicle *vehicle, const 
         return;
     }
     sint32 image_id = 29014 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z, get_current_rotation());
 }
 
 /**
  *
  *  rct2: 0x006D5783
  */
-static void vehicle_visual_splash4_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_visual_splash4_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     rct_vehicle *vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     if (vehicle2->velocity <= 0x50000) {
@@ -2278,14 +2278,14 @@ static void vehicle_visual_splash4_effect(sint32 z, rct_vehicle *vehicle, const 
         return;
     }
     sint32 image_id = 29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
 }
 
 /**
  *
  *  rct2: 0x006D5701
  */
-static void vehicle_visual_splash5_effect(sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
+static void vehicle_visual_splash5_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     rct_vehicle *vehicle2 = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
     if (vehicle2->velocity <= 0x50000) {
@@ -2301,18 +2301,18 @@ static void vehicle_visual_splash5_effect(sint32 z, rct_vehicle *vehicle, const 
         return;
     }
     sint32 image_id = 29078 + ((((vehicle->sprite_direction / 8) + get_current_rotation()) & 3) * 8) + ((gCurrentTicks / 2) & 7);
-    sub_98199C(image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
+    sub_98199C(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z, get_current_rotation());
 }
 
 void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
     switch (vehicleEntry->effect_visual) {
         case 1: /* nullsub */ break;
-        case VEHICLE_VISUAL_SPLASH1_EFFECT: vehicle_visual_splash1_effect(z, vehicle, vehicleEntry); break;
-        case VEHICLE_VISUAL_SPLASH2_EFFECT: vehicle_visual_splash2_effect(z, vehicle, vehicleEntry); break;
-        case VEHICLE_VISUAL_SPLASH3_EFFECT: vehicle_visual_splash3_effect(z, vehicle, vehicleEntry); break;
-        case VEHICLE_VISUAL_SPLASH4_EFFECT: vehicle_visual_splash4_effect(z, vehicle, vehicleEntry); break;
-        case VEHICLE_VISUAL_SPLASH5_EFFECT: vehicle_visual_splash5_effect(z, vehicle, vehicleEntry); break;
+        case VEHICLE_VISUAL_SPLASH1_EFFECT: vehicle_visual_splash1_effect(session, z, vehicle, vehicleEntry); break;
+        case VEHICLE_VISUAL_SPLASH2_EFFECT: vehicle_visual_splash2_effect(session, z, vehicle, vehicleEntry); break;
+        case VEHICLE_VISUAL_SPLASH3_EFFECT: vehicle_visual_splash3_effect(session, z, vehicle, vehicleEntry); break;
+        case VEHICLE_VISUAL_SPLASH4_EFFECT: vehicle_visual_splash4_effect(session, z, vehicle, vehicleEntry); break;
+        case VEHICLE_VISUAL_SPLASH5_EFFECT: vehicle_visual_splash5_effect(session, z, vehicle, vehicleEntry); break;
         default: assert(false); break;
     }
 }
@@ -2344,7 +2344,7 @@ void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDi
 
     if (vehicle->flags & SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE) {
         uint32 ebx = 22965 + vehicle->var_C5;
-        sub_98197C(ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2, get_current_rotation());
+        sub_98197C(session, ebx, 0, 0, 1, 1, 0, z, 0, 0, z + 2, get_current_rotation());
         return;
     }
 

@@ -448,9 +448,9 @@ static void paint_monorail_track_flat(paint_session * session, uint8 rideIndex, 
     uint32 imageId = monorail_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -474,17 +474,17 @@ static void paint_monorail_station(paint_session * session, uint8 rideIndex, uin
 
     if (direction == 0 || direction == 2) {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
     }
 
     imageId = monorail_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98199C(imageId, 0, 6, 32, 20, 2, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 6, 32, 20, 2, height, 0, 0, height, get_current_rotation());
     } else {
-        sub_98199C(imageId, 6, 0, 20, 32, 2, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 6, 0, 20, 32, 2, height, 0, 0, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -515,9 +515,9 @@ static void paint_monorail_track_25_deg_up(paint_session * session, uint8 rideIn
     uint32 imageId = monorail_track_pieces_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
     }
 
     switch (direction) {
@@ -543,9 +543,9 @@ static void paint_monorail_track_flat_to_25_deg_up(paint_session * session, uint
     uint32 imageId = monorail_track_pieces_flat_to_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
     }
 
     switch (direction) {
@@ -571,9 +571,9 @@ static void paint_monorail_track_25_deg_up_to_flat(paint_session * session, uint
     uint32 imageId = monorail_track_pieces_25_deg_up_to_flat[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 6, 32, 20, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, 6, 0, 20, 32, 3, height, get_current_rotation());
     }
 
     switch (direction) {
@@ -684,9 +684,9 @@ static void paint_monorail_track_s_bend_left(paint_session * session, uint8 ride
     rct_xy16 offset = offsetList[trackSequence];
     rct_xy16 bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -748,9 +748,9 @@ static void paint_monorail_track_s_bend_right(paint_session * session, uint8 rid
     rct_xy16 offset = offsetList[trackSequence];
     rct_xy16 bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2) {
-        sub_98196C(imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8) offset.x, (sint8) offset.y, bounds.x, bounds.y, 3, height, get_current_rotation());
     } else {
-        sub_98196C(imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
+        sub_98196C(session, imageId, (sint8) offset.y, (sint8) offset.x, bounds.y, bounds.x, 3, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -827,7 +827,7 @@ static void paint_monorail_track_left_eighth_to_diag(paint_session * session, ui
         uint32 imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
         const rct_xy16 offset = ghost_train_track_pieces_left_eight_to_diag_offset[direction][index];
         const rct_xy16 bounds = ghost_train_track_pieces_left_eight_to_diag_bounds[direction][index];
-        sub_98197C(imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());
     }
 
     switch (trackSequence) {
@@ -870,7 +870,7 @@ static void paint_monorail_track_right_eighth_to_diag(paint_session * session, u
         uint32 imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | gTrackColours[SCHEME_TRACK];
         const rct_xy16 offset = ghost_train_track_pieces_right_eight_to_diag_offset[direction][index];
         const rct_xy16 bounds = ghost_train_track_pieces_right_eight_to_diag_bounds[direction][index];
-        sub_98197C(imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, bounds.x, bounds.y, 2, height, offset.x, offset.y, height, get_current_rotation());
     }
 
     switch (trackSequence) {
@@ -960,7 +960,7 @@ static void paint_monorail_track_diag_flat(paint_session * session, uint8 rideIn
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_flat[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -977,7 +977,7 @@ static void paint_monorail_track_diag_25_deg_up(paint_session * session, uint8 r
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -994,7 +994,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_up(paint_session * session,
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_flat_to_25_deg_up[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -1011,7 +1011,7 @@ static void paint_monorail_track_diag_25_deg_up_to_flat(paint_session * session,
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_25_deg_up_to_flat[direction] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -1028,7 +1028,7 @@ static void paint_monorail_track_diag_25_deg_down(paint_session * session, uint8
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_25_deg_up[(direction + 2) % 4] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -1045,7 +1045,7 @@ static void paint_monorail_track_diag_flat_to_25_deg_down(paint_session * sessio
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_25_deg_up_to_flat[(direction + 2) % 4] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {
@@ -1062,7 +1062,7 @@ static void paint_monorail_track_diag_25_deg_down_to_flat(paint_session * sessio
 {
     if (monorail_diag_image_segment[direction][trackSequence]) {
         uint32 imageId = monorail_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4] | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
+        sub_98197C(session, imageId, -16, -16, 32, 32, 2, height, -16, -16, height, get_current_rotation());
     }
 
     if (trackSequence == 3) {

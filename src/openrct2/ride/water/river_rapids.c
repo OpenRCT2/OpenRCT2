@@ -224,27 +224,27 @@ void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 image
 
     const vehicle_boundbox *bb = &_riverRapidsBoundbox[j];
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
-    sub_98197C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+    sub_98197C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
 
     if (session->Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0) {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but thats how the original does it...)
         sint32 peeps = ((ecx / 8) + 0) & 3;
         image_id = (baseImage_id + ((peeps + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]) ;
-        sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+        sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
         if (vehicle->num_peeps > 2) {
             peeps = ((ecx / 8) + 2) & 3;
             image_id = (baseImage_id + ((peeps + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[2], vehicle->peep_tshirt_colours[3]);
-            sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+            sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
         }
         if (vehicle->num_peeps > 4) {
             peeps = ((ecx / 8) + 1) & 3;
             image_id = (baseImage_id + ((peeps + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[4], vehicle->peep_tshirt_colours[5]);
-            sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+            sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
         }
         if (vehicle->num_peeps > 6) {
             peeps = ((ecx / 8) + 3) & 3;
             image_id = (baseImage_id + ((peeps + 1) * 72)) | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[6], vehicle->peep_tshirt_colours[7]);
-            sub_98199C(image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
+            sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y, bb->offset_z + z, rotation);
         }
     }
 
@@ -259,16 +259,16 @@ static void paint_river_rapids_track_flat(paint_session * session, uint8 rideInd
 
     if (direction & 1) {
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
     } else {
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -301,10 +301,10 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
     switch (direction) {
         case 0:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
@@ -312,11 +312,11 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
 
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
@@ -324,11 +324,11 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
 
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 34, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
@@ -336,10 +336,10 @@ static void paint_river_rapids_track_25_deg(paint_session * session, uint8 direc
 
         case 3:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 34, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
@@ -358,10 +358,10 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
     switch (direction) {
         case 0:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
@@ -369,11 +369,11 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
 
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
@@ -381,11 +381,11 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
 
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 32, 24, 4, height, 0, 4, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 18, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
@@ -393,10 +393,10 @@ static void paint_river_rapids_track_25_deg_to_flat_a(paint_session * session, u
 
         case 3:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 24, 32, 4, height, 4, 0, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 18, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
@@ -415,10 +415,10 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
     switch (direction) {
         case 0:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
@@ -426,11 +426,11 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
 
         case 1:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_8);
@@ -438,11 +438,11 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
 
         case 2:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            ps = sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+            ps = sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_8);
@@ -450,10 +450,10 @@ static void paint_river_rapids_track_25_deg_to_flat_b(paint_session * session, u
 
         case 3:
             imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
             imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height + 16, get_current_rotation());
 
             wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -507,41 +507,41 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(paint_session * se
     switch (direction) {
         case 0:
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SW_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 26, 11, height, 4, 2, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 26, 11, height, 4, 2, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
 
         case 1:
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 28, 11, height, 0, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 28, 11, height, 0, 0, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 30, 7, height, 27, 1, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 30, 7, height, 27, 1, height + 13, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 30, 1, 7, height, 1, 27, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 30, 1, 7, height, 1, 27, height + 13, get_current_rotation());
             break;
 
         case 2:
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_NE_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 26, 28, 11, height, 2, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 26, 28, 11, height, 2, 4, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 2, 7, height, 27, 28, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 2, 7, height, 27, 28, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
 
         case 3:
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_SE_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 28, 11, height, 4, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 28, 11, height, 4, 4, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -561,10 +561,10 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * s
     switch (direction) {
         case 0:
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SW_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 28, 11, height, 4, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 28, 11, height, 4, 4, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 1, 7, height, 28, 28, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -572,31 +572,31 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(paint_session * s
 
         case 1:
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_SE_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 26, 11, height, 4, 2, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 26, 11, height, 4, 2, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 2, 1, 7, height, 28, 27, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
 
         case 2:
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NE_NW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 28, 28, 11, height, 0, 0, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 28, 28, 11, height, 0, 0, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 30, 7, height, 27, 1, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 30, 7, height, 27, 1, height + 13, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 30, 1, 7, height, 1, 27, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 30, 1, 7, height, 1, 27, height + 13, get_current_rotation());
             break;
 
         case 3:
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_NW_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 26, 28, 11, height, 2, 4, height, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 26, 28, 11, height, 2, 4, height, get_current_rotation());
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW | gTrackColours[SCHEME_TRACK];
-            sub_98197C(imageId, 0, 0, 1, 28, 7, height, 27, 2, height + 13, get_current_rotation());
+            sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 27, 2, height + 13, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
@@ -616,34 +616,34 @@ static void paint_river_rapids_track_waterfall(paint_session * session, uint8 ri
 
     if (direction & 1) {
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NE_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NE_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 27, height, 4, 0, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 4, 0, height + 17, get_current_rotation());
 
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_NW_SE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SW_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 1, 32, 27, height, 27, 0, height + 17, get_current_rotation());
     } else {
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_BASE_NW_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_TOP_NW_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 27, height, 0, 4, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 4, height + 17, get_current_rotation());
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_WATERFALL_FRONT_SW_NE : SPR_RIVER_RAPIDS_WATERFALL_FRONT_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_WATERFALL_SIDE_SE_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 1, 27, height, 0, 27, height + 17, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -667,16 +667,16 @@ static void paint_river_rapids_track_rapids(paint_session * session, uint8 rideI
 
     if (direction & 1) {
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_NW_SE_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = SPR_RIVER_RAPIDS_RAPIDS_FRONT_NW_SE | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 11, height, 27, 0, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 11, height, 27, 0, height + 17, get_current_rotation());
     } else {
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_SW_NE_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = SPR_RIVER_RAPIDS_RAPIDS_FRONT_SW_NE | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 11, height, 0, 27, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 11, height, 0, 27, height + 17, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -708,22 +708,22 @@ static void paint_river_rapids_track_whirlpool(paint_session * session, uint8 ri
 
     if (direction & 1) {
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_NW_SE : SPR_RIVER_RAPIDS_FLAT_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 24, 32, 11, height, 4, 0, height, get_current_rotation());
 
         imageId = (direction == 1 ? SPR_RIVER_RAPIDS_FLAT_FRONT_NW_SE : SPR_RIVER_RAPIDS_FLAT_FRONT_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 27, 0, height + 17, get_current_rotation());
     } else {
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_SW_NE : SPR_RIVER_RAPIDS_FLAT_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = (SPR_RIVER_RAPIDS_RAPIDS_WHIRLPOOL_FRAME_0 + frameNum) | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 24, 11, height, 0, 4, height, get_current_rotation());
 
         imageId = (direction == 0 ? SPR_RIVER_RAPIDS_FLAT_FRONT_SW_NE : SPR_RIVER_RAPIDS_FLAT_FRONT_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 27, height + 17, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);

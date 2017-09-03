@@ -27,9 +27,9 @@ paint_struct * sub_98196C_rotated(
     sint16 z_offset)
 {
     if (direction & 1) {
-        return sub_98196C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, get_current_rotation());
+        return sub_98196C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, get_current_rotation());
     } else {
-        return sub_98196C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, get_current_rotation());
+        return sub_98196C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, get_current_rotation());
     }
 }
 
@@ -43,9 +43,9 @@ paint_struct * sub_98197C_rotated(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
 {
     if (direction & 1) {
-        return sub_98197C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
+        return sub_98197C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
     } else {
-        return sub_98197C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
+        return sub_98197C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
     }
 }
 
@@ -59,9 +59,9 @@ paint_struct * sub_98199C_rotated(
     sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z)
 {
     if (direction & 1) {
-        return sub_98199C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
+        return sub_98199C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, get_current_rotation());
     } else {
-        return sub_98199C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
+        return sub_98199C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, get_current_rotation());
     }
 }
 

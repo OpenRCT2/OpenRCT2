@@ -695,16 +695,16 @@ static void paint_splash_boats_track_flat(paint_session * session, uint8 rideInd
 
     if (direction & 1) {
         imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 2, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 2, height, 6, 0, height, get_current_rotation());
 
         imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_SIDE_NW_SE : SPR_SPLASH_BOATS_FLAT_SIDE_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
     } else {
         imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 2, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 2, height, 0, 6, height, get_current_rotation());
 
         imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_SIDE_SW_NE : SPR_SPLASH_BOATS_FLAT_SIDE_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
@@ -726,16 +726,16 @@ static void paint_splash_boats_station(paint_session * session, uint8 rideIndex,
 
     if (direction & 1) {
         uint32 imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height + 3, get_current_rotation());
 
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
     } else {
         uint32 imageId = (direction == 0 ? SPR_SPLASH_BOATS_FLAT_TOP_SW_NE : SPR_SPLASH_BOATS_FLAT_TOP_NE_SW) | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height + 3, get_current_rotation());
 
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);

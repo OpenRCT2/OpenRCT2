@@ -53,13 +53,13 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
 
     image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-    paint_struct* ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
+    paint_struct* ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, get_current_rotation());
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
 
     image_id = (baseImage_id + 1) | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-    ps = sub_98197C(image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10, get_current_rotation());
+    ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10, get_current_rotation());
     if (ps != NULL) {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -78,13 +78,13 @@ static void submarine_ride_paint_track_station(paint_session * session, uint8 ri
 
     if (direction & 1) {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
         track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
     } else {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
         track_paint_util_draw_pier(session, ride, entranceStyle, position, direction, height, mapElement, get_current_rotation());
@@ -102,11 +102,11 @@ static void submarine_ride_paint_track_flat(paint_session * session, uint8 rideI
 
     if (direction & 1) {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, heightLower, 6, 0, heightLower, get_current_rotation());
         paint_util_push_tunnel_right(session, heightLower, TUNNEL_0);
     } else {
         imageId = SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_NE_SW | gTrackColours[SCHEME_TRACK];
-        sub_98197C(imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, heightLower, 0, 6, heightLower, get_current_rotation());
         paint_util_push_tunnel_left(session, heightLower, TUNNEL_0);
     }
 

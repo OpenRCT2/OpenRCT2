@@ -154,9 +154,9 @@ static void paint_ghost_train_track_flat(paint_session * session, uint8 rideInde
     uint32 imageId = ghost_train_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -180,16 +180,16 @@ static void paint_ghost_train_track_25_deg_up(paint_session * session, uint8 rid
 
     uint32 imageId = ghost_train_track_pieces_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
     }
 
     imageId = ghost_train_track_pieces_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 1, 23, height, 0, 27, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 23, height, 0, 27, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 1, 32, 23, height, 27, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 23, height, 27, 0, height, get_current_rotation());
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -223,16 +223,16 @@ static void paint_ghost_train_track_flat_to_25_deg_up(paint_session * session, u
 
     uint32 imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
     }
 
     imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 27, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 15, height, 0, 27, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 1, 32, 15, height, 27, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 15, height, 27, 0, height, get_current_rotation());
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -264,16 +264,16 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(paint_session * ses
 
     uint32 imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
     }
 
     imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][1] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 1, 15, height, 0, 27, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 1, 15, height, 0, 27, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 1, 32, 15, height, 27, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 1, 32, 15, height, 27, 0, height, get_current_rotation());
     }
 
     if (track_paint_util_should_paint_supports(position)) {
@@ -329,17 +329,17 @@ static void paint_ghost_train_station(paint_session * session, uint8 rideIndex, 
 
     if (direction == 0 || direction == 2) {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height, get_current_rotation());
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 3, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 3, height - 2, 2, 0, height, get_current_rotation());
     }
 
     imageId = ghost_train_track_pieces_flat[direction] | gTrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
-        sub_98199C(imageId, 0, 0, 32, 20, 3, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 3, height, 0, 0, height, get_current_rotation());
     } else {
-        sub_98199C(imageId, 0, 0, 20, 32, 3, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 3, height, 0, 0, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {
@@ -416,9 +416,9 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
     uint32 imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 28, 20, 3, height, 2, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 20, 3, height, 2, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 28, 3, height, 6, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 28, 3, height, 6, 2, height, get_current_rotation());
     }
 
     track_paint_util_spinning_tunnel_paint(session, 3, height, direction, get_current_rotation());
@@ -443,9 +443,9 @@ static void paint_ghost_train_track_brakes(paint_session * session, uint8 rideIn
     uint32 imageId = ghost_train_track_pieces_brakes[direction] | gTrackColours[SCHEME_TRACK];
 
     if (direction == 0 || direction == 2) {
-        sub_98197C(imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
     } else {
-        sub_98197C(imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 20, 32, 3, height, 6, 0, height, get_current_rotation());
     }
 
     if (direction == 0 || direction == 2) {

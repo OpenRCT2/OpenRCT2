@@ -501,7 +501,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(paint_session * se
     if (trackSequence == 0 || trackSequence == 3) {
         sint32 part = trackSequence == 0 ? 0 : 1;
         const sprite_bb * sbb = &imageIds[direction][part];
-        sub_98196C(sbb->sprite_id | gTrackColours[SCHEME_TRACK],
+        sub_98196C(session, sbb->sprite_id | gTrackColours[SCHEME_TRACK],
             (sint8)sbb->offset.x, (sint8)sbb->offset.y,
             sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
     }
@@ -556,7 +556,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(paint_session * sess
     if (trackSequence == 0 || trackSequence == 3) {
         sint32 part = trackSequence == 0 ? 0 : 1;
         const sprite_bb * sbb = &imageIds[direction][part];
-        sub_98196C(sbb->sprite_id | gTrackColours[SCHEME_TRACK],
+        sub_98196C(session, sbb->sprite_id | gTrackColours[SCHEME_TRACK],
             (sint8)sbb->offset.x, (sint8)sbb->offset.y,
             sbb->bb_size.x, sbb->bb_size.y, (sint8)sbb->bb_size.z, height + (sint8)sbb->offset.z, get_current_rotation());
     }
@@ -611,16 +611,16 @@ static void wild_mouse_track_left_quarter_turn_1(paint_session * session, uint8 
     uint32 imageId = imageIds[direction] | gTrackColours[SCHEME_TRACK];
     switch (direction) {
     case 0:
-        sub_98197C(imageId, 0, 0, 26, 24, 2, height, 6, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 26, 24, 2, height, 6, 2, height, get_current_rotation());
         break;
     case 1:
-        sub_98196C(imageId, 0, 0, 26, 26, 2, height, get_current_rotation());
+        sub_98196C(session, imageId, 0, 0, 26, 26, 2, height, get_current_rotation());
         break;
     case 2:
-        sub_98197C(imageId, 0, 0, 24, 26, 2, height, 2, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 26, 2, height, 2, 6, height, get_current_rotation());
         break;
     case 3:
-        sub_98197C(imageId, 0, 0, 24, 24, 2, height, 6, 6, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 24, 24, 2, height, 6, 6, height, get_current_rotation());
         break;
     }
     metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, -1, height, gTrackColours[SCHEME_SUPPORTS]);

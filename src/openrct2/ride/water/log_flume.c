@@ -195,7 +195,7 @@ static void paint_log_flume_track_station(paint_session * session, uint8 rideInd
     } else {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
     }
-    sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
     if (direction & 1) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -629,7 +629,7 @@ static void paint_log_flume_track_right_quarter_turn_3_tiles(paint_session * ses
 static void paint_log_flume_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = SPR_STATION_BASE_D | IMAGE_TYPE_REMAP;
-    sub_98196C(imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
+    sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
     if (direction & 1) {
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 6, height, gTrackColours[SCHEME_SUPPORTS]);

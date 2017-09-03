@@ -167,6 +167,7 @@ static const uint32 monorail_cycles_track_pieces_flat_quarter_turn_3_tiles[4][3]
 };
 
 static paint_struct * paint_monorail_cycles_util_7c(
+    paint_session * session,
     bool flip,
     uint32 image_id,
     sint8 x_offset, sint8 y_offset,
@@ -177,17 +178,17 @@ static paint_struct * paint_monorail_cycles_util_7c(
 )
 {
     if (flip) {
-        return sub_98197C(image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, rotation);
+        return sub_98197C(session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset, bound_box_offset_y, bound_box_offset_x, bound_box_offset_z, rotation);
     }
 
-    return sub_98197C(image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, rotation);
+    return sub_98197C(session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset, bound_box_offset_x, bound_box_offset_y, bound_box_offset_z, rotation);
 }
 
 /** rct2: 0x0088AD48 */
 static void paint_monorail_cycles_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId = monorail_cycles_track_pieces_flat[(direction & 1)] | gTrackColours[SCHEME_TRACK];
-    paint_monorail_cycles_util_7c((bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
+    paint_monorail_cycles_util_7c(session, (bool) (direction & 1), imageId, 0, 0, 32, 20, 3, height, 0, 6, height, get_current_rotation());
 
     if (direction & 1) {
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
@@ -208,20 +209,20 @@ static void paint_monorail_cycles_station(paint_session * session, uint8 rideInd
 
     if (direction == 0 || direction == 2) {
         imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
         imageId = SPR_MONORAIL_CYCLES_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
-        sub_98197C(imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
+        sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
 
         imageId = SPR_MONORAIL_CYCLES_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
-        sub_98199C(imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
+        sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
@@ -351,10 +352,10 @@ static void paint_monorail_cycles_track_s_bend_left(paint_session * session, uin
 
     uint32 imageId = monorail_cycles_track_pieces_s_bend_left[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
     switch (trackSequence) {
-        case 0: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
-        case 1: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
-        case 2: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
-        case 3: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 0: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 1: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
+        case 2: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 3: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
     }
 
     if (direction == 0 || direction == 2) {
@@ -397,10 +398,10 @@ static void paint_monorail_cycles_track_s_bend_right(paint_session * session, ui
 
     uint32 imageId = monorail_cycles_track_pieces_s_bend_right[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
     switch (trackSequence) {
-        case 0: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
-        case 1: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
-        case 2: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
-        case 3: paint_monorail_cycles_util_7c(direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 0: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 1: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 6, height, get_current_rotation()); break;
+        case 2: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 26, 1, height, 0, 0, height, get_current_rotation()); break;
+        case 3: paint_monorail_cycles_util_7c(session, direction & 1, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation()); break;
     }
 
     if (direction == 0 || direction == 2) {

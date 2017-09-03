@@ -52,22 +52,22 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
     sint32 lengthY = (direction & 1) == 0 ? 2 : 28;
     if (hasSupports) {
         uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | gTrackColours[SCHEME_3];
-        sub_98197C(foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+        sub_98197C(session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
 
         // Door image or base
-        sub_98199C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+        sub_98199C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
     } else {
         // Door image or base
-        sub_98197C(imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+        sub_98197C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
     }
 
     // Base image if door was drawn
     if (direction == 1) {
         imageId += 2;
-        sub_98197C(imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
+        sub_98197C(session, imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
     } else if (direction == 2) {
         imageId += 4;
-        sub_98197C(imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
+        sub_98197C(session, imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
