@@ -168,7 +168,7 @@ enum {
     SPR_AIR_POWERED_VERTICAL_RC_BANKED_QUARTER_TURN_5_FRONT_SE_NE_PART_0 = 22333,
 };
 
-static uint32 air_powered_vertical_rc_get_support_colour()
+static uint32 air_powered_vertical_rc_get_support_colour(paint_session * session)
 {
     uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
     uint32 trackColour = gTrackColours[SCHEME_TRACK];
@@ -552,7 +552,7 @@ static void air_powered_vertical_rc_track_vertical_slope_up(paint_session * sess
     static const sint8 bbHeights12[] = { 1, 6, 14, 27, 59 };
     static const sint32 supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };
 
-    uint32 supportsImageId = supportImageIds[trackSequence][direction] | air_powered_vertical_rc_get_support_colour();
+    uint32 supportsImageId = supportImageIds[trackSequence][direction] | air_powered_vertical_rc_get_support_colour(session);
     uint32 trackImageId = trackImageIds[trackSequence][direction] | gTrackColours[SCHEME_TRACK];
     sint8 bbHeight;
     bool isDirection03 = (direction == 0 || direction == 3);
@@ -656,7 +656,7 @@ static void air_powered_vertical_rc_track_vertical_up(paint_session * session, u
     uint32 imageId;
     switch (trackSequence) {
     case 0:
-        imageId = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour();
+        imageId = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour(session);
         sub_98197C_rotated(direction, imageId, 0, 0, 26, 26, 79, height, 3, 3, height);
         break;
     case 1:
@@ -704,7 +704,7 @@ static void air_powered_vertical_rc_track_vertical_top(paint_session * session, 
     uint32 imageIdS, imageIdT;
     switch (trackSequence) {
     case 0:
-        imageIdS = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour();
+        imageIdS = imageIds[direction][0] | air_powered_vertical_rc_get_support_colour(session);
         imageIdT = imageIds[direction][1] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
             sub_98197C_rotated(direction, imageIdS, 0, 0, 32, 20, 15, height, 0, 6, height);
@@ -733,7 +733,7 @@ static void air_powered_vertical_rc_track_vertical_top(paint_session * session, 
         paint_util_set_vertical_tunnel(session, height + 80);
         break;
     case 3:
-        imageIdS = imageIds[direction][4] | air_powered_vertical_rc_get_support_colour();
+        imageIdS = imageIds[direction][4] | air_powered_vertical_rc_get_support_colour(session);
         imageIdT = imageIds[direction][5] | gTrackColours[SCHEME_TRACK];
         if (direction == 0) {
             sub_98197C_rotated(direction, imageIdS, 0, 0, 5, 20, 1, height, 24, 6, height);

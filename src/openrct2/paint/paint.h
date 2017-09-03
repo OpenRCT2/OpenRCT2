@@ -183,7 +183,7 @@ typedef struct paint_session
 extern paint_session gPaintSession;
 
 #ifdef NO_RCT2
-#define gTrackColours               gPaintSession.TrackColours
+#define gTrackColours               session->TrackColours
 #else
 #define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
 #define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
