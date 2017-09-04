@@ -27,10 +27,15 @@ extern "C"
     #include "../world/park.h"
 }
 
-struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GA_FLAGS::ALLOW_WHILE_PAUSED, GameActionResult>
+struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>
 {
 public:
     money16 Fee;
+
+    uint16 GetActionFlags() const override
+    {
+        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+    }
 
     void Serialise(DataSerialiser& stream) override
     {
