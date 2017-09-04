@@ -21,7 +21,9 @@
 #include <errno.h>
 #include <fcntl.h>
 #include <fnmatch.h>
-#include <fts.h>
+#ifndef __EMSCRIPTEN__
+    #include <fts.h>
+#endif
 #include <libgen.h>
 #include <locale.h>
 #include <pwd.h>
@@ -189,6 +191,7 @@ bool platform_ensure_directory_exists(const utf8 *path)
 
 bool platform_directory_delete(const utf8 *path)
 {
+#ifdef _FTS_H
     log_verbose("Recursively deleting directory %s", path);
 
     FTS *ftsp;
@@ -239,6 +242,9 @@ bool platform_directory_delete(const utf8 *path)
     free(ourPath);
     fts_close(ftsp);
 
+#else
+    log_warning("OpenRCT2 was compiled without fts.h, deleting '%s' not done.", path);
+#endif // _FTS_H
     return true;
 }
 
