@@ -846,7 +846,11 @@ utf8* platform_get_username() {
 
 bool platform_process_is_elevated()
 {
+#ifndef __EMSCRIPTEN__
    return (geteuid() == 0);
+#else
+   return false;
+#endif // __EMSCRIPTEN__
 }
 
 #endif
