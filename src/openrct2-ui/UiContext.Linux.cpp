@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__)) && !defined(__ANDROID__)
+#if (defined(__linux__) || defined(__OpenBSD__) || defined(__FreeBSD__) || defined(__EMSCRIPTEN__)) && !defined(__ANDROID__)
 
 #include <dlfcn.h>
 #include <sstream>
@@ -240,6 +240,7 @@ namespace OpenRCT2 { namespace Ui
 
         static sint32 Execute(const std::string &command, std::string * output = nullptr)
         {
+#ifndef __EMSCRIPTEN__
             log_verbose("executing \"%s\"...\n", command.c_str());
             FILE * fpipe = popen(command.c_str(), "r");
             if (fpipe == nullptr)
@@ -282,6 +283,10 @@ namespace OpenRCT2 { namespace Ui
 
             // Return exit code
             return pclose(fpipe);
+#else
+            log_warning("Emscripten cannot execute processes. The commandline was '%s'.", command.c_str());
+            return -1;
+#endif // __EMSCRIPTEN__
         }
 
         static std::string GetKDialogFilterString(const std::vector<FileDialogDesc::Filter> filters)
