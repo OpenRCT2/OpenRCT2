@@ -17,6 +17,9 @@
 #include <exception>
 #include <memory>
 #include <string>
+#ifdef __EMSCRIPTEN__
+    #include <emscripten.h>
+#endif // __EMSCRIPTEN__
 #include "audio/AudioContext.h"
 #include "Context.h"
 #include "ui/UiContext.h"
@@ -104,6 +107,9 @@ namespace OpenRCT2
         // Remove this when GetContext() is no longer called so that
         // multiple instances can be created in parallel
         static Context * Instance;
+        static void RunFixedFrameFunc() {
+            Instance->RunFixedFrame();
+        }
 
     public:
         Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
@@ -551,6 +557,7 @@ namespace OpenRCT2
             log_verbose("begin openrct2 loop");
             _finished = false;
 
+#ifndef __EMSCRIPTEN__
             bool variableFrame = ShouldRunVariableFrame();
             bool useVariableFrame;
 
@@ -573,6 +580,9 @@ namespace OpenRCT2
                     RunFixedFrame();
                 }
             } while (!_finished);
+#else
+            emscripten_set_main_loop(RunFixedFrameFunc, 0, 1);
+#endif // __EMSCRIPTEN__
             log_verbose("finish openrct2 loop");
         }
 
