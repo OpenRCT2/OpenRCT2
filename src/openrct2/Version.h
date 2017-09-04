@@ -40,6 +40,9 @@
 #elif defined(__mips__)
     #define OPENRCT2_ARCHITECTURE       "mips"
 #endif
+#ifdef __EMSCRIPTEN__
+    #define OPENRCT2_ARCHITECTURE       "Emscripten"
+#endif
 
 #ifndef OPENRCT2_ARCHITECTURE
     #error "OPENRCT2_ARCHITECTURE is undefined. Please add identification."
@@ -63,6 +66,9 @@
 #endif
 #ifdef __OpenBSD__
     #define OPENRCT2_PLATFORM       "OpenBSD"
+#endif
+#ifdef __EMSCRIPTEN__
+    #define OPENRCT2_PLATFORM       "Emscripten"
 #endif
 #ifndef OPENRCT2_PLATFORM
     #error Unknown platform!
