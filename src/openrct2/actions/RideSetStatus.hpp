@@ -28,25 +28,37 @@ extern "C"
     #include "../ride/ride.h"
 }
 
-struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GA_FLAGS::ALLOW_WHILE_PAUSED, GameActionResult>
+struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {
+private:
+    uint8 _rideIndex;
+    uint8 _status;
+
 public:
-    uint8 RideIndex;
-    uint8 Status;
+    RideSetStatusAction() {}
+    RideSetStatusAction(uint8 rideIndex, uint8 status) :
+        _rideIndex(rideIndex),
+        _status(status)
+    {
+    }
+
+    uint16 GetActionFlags() const override
+    {
+        return GameAction::GetActionFlags() | GA_FLAGS::ALLOW_WHILE_PAUSED;
+    }
 
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
 
-        stream << RideIndex;
-        stream << Status;
+        stream << _rideIndex << _status;
     }
 
     GameActionResult::Ptr Query() const override
     {
-        if (RideIndex >= MAX_RIDES)
+        if (_rideIndex >= MAX_RIDES)
         {
-            log_warning("Invalid game command for ride %u", RideIndex);
+            log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
         return std::make_unique<GameActionResult>();
@@ -57,11 +69,11 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
-        rct_ride *ride = get_ride(RideIndex);
+        rct_ride *ride = get_ride(_rideIndex);
 
         if (ride->type == RIDE_TYPE_NULL)
         {
-            log_warning("Invalid game command for ride %u", RideIndex);
+            log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
 
@@ -72,15 +84,15 @@ public:
             res->Position.z = map_element_height(res->Position.x, res->Position.y);
         }
 
-        switch (Status) {
+        switch (_status) {
         case RIDE_STATUS_CLOSED:
-            if (ride->status == Status)
+            if (ride->status == _status)
             {
                 if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
                 {
                     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
-                    ride_clear_for_construction(RideIndex);
-                    ride_remove_peeps(RideIndex);
+                    ride_clear_for_construction(_rideIndex);
+                    ride_remove_peeps(_rideIndex);
                 }
             }
 
@@ -88,47 +100,47 @@ public:
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = SPRITE_INDEX_NULL;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, RideIndex);
+            window_invalidate_by_number(WC_RIDE, _rideIndex);
             break;
         case RIDE_STATUS_TESTING:
         case RIDE_STATUS_OPEN:
             {
-                if (ride->status == Status)
+                if (ride->status == _status)
                 {
                     return res;
                 }
 
                 // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
                 //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-                rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, RideIndex);
+                rct_window *constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
                 if (constructionWindow != nullptr)
                 {
                     window_close(constructionWindow);
                 }
 
-                if (Status == RIDE_STATUS_TESTING)
+                if (_status == RIDE_STATUS_TESTING)
                 {
-                    if (!ride_is_valid_for_test(RideIndex, Status == RIDE_STATUS_OPEN, 1))
+                    if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                     {
                         //*ebx = MONEY32_UNDEFINED;
                         return res;
                     }
                 }
-                else if (!ride_is_valid_for_open(RideIndex, Status == RIDE_STATUS_OPEN, 1))
+                else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                 {
                     //*ebx = MONEY32_UNDEFINED;
                     return res;
                 }
 
                 ride->race_winner = SPRITE_INDEX_NULL;
-                ride->status = Status;
-                ride_get_measurement(RideIndex, nullptr);
+                ride->status = _status;
+                ride_get_measurement(_rideIndex, nullptr);
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-                window_invalidate_by_number(WC_RIDE, RideIndex);
+                window_invalidate_by_number(WC_RIDE, _rideIndex);
                 break;
             }
         default:
-            Guard::Assert(false, "Invalid status passed: %u", Status);
+            Guard::Assert(false, "Invalid status passed: %u", _status);
             break;
         }
         return res;

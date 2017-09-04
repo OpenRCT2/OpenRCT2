@@ -38,19 +38,34 @@ struct PlaceParkEntranceGameActionResult : public GameActionResult
     }
 };
 
-struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, GA_FLAGS::EDITOR_ONLY, PlaceParkEntranceGameActionResult>
+struct PlaceParkEntranceAction : public GameActionBase<GAME_COMMAND_PLACE_PARK_ENTRANCE, PlaceParkEntranceGameActionResult>
 {
+private:
+    sint16 _x;
+    sint16 _y;
+    sint16 _z;
+    uint8 _direction;
+
 public:
-    sint16 x;
-    sint16 y;
-    sint16 z;
-    uint8 direction;
+    PlaceParkEntranceAction() {}
+    PlaceParkEntranceAction(sint16 x, sint16 y, sint16 z, sint16 direction) :
+        _x(x),
+        _y(y),
+        _z(z),
+        _direction(direction)
+    {
+    }
+
+    uint16 GetActionFlags() const override
+    {
+        return GameActionBase::GetActionFlags() | GA_FLAGS::EDITOR_ONLY;
+    }
 
     void Serialise(DataSerialiser& stream) override
     {
         GameAction::Serialise(stream);
 
-        stream << x << y << z << direction;
+        stream << _x << _y << _z << _direction;
     }
 
     GameActionResult::Ptr Query() const override
@@ -62,16 +77,16 @@ public:
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-        gCommandPosition.x = x;
-        gCommandPosition.y = y;
-        gCommandPosition.z = z * 16;
+        gCommandPosition.x = _x;
+        gCommandPosition.y = _y;
+        gCommandPosition.z = _z * 16;
 
         if (!map_check_free_elements_and_reorganise(3))
         {
             return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
         }
 
-        if (x <= 32 || y <= 32 || x >= (gMapSizeUnits - 32) || y >= (gMapSizeUnits - 32))
+        if (_x <= 32 || _y <= 32 || _x >= (gMapSizeUnits - 32) || _y >= (gMapSizeUnits - 32))
         {
             return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
         }
@@ -91,20 +106,20 @@ public:
             return std::make_unique<PlaceParkEntranceGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_TOO_MANY_PARK_ENTRANCES);
         }
 
-        sint8 zLow = z * 2;
+        sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        rct_xy16 entranceLoc = { x, y };
+        rct_xy16 entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
+                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!gCheatsDisableClearanceChecks)
@@ -132,9 +147,9 @@ public:
 
         gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LAND_PURCHASE;
 
-        gCommandPosition.x = x;
-        gCommandPosition.y = y;
-        gCommandPosition.z = z * 16;
+        gCommandPosition.x = _x;
+        gCommandPosition.y = _y;
+        gCommandPosition.z = _z * 16;
 
         sint8 entranceNum = -1;
         for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
@@ -148,25 +163,25 @@ public:
 
         Guard::Assert(entranceNum != -1);
 
-        gParkEntrances[entranceNum].x = x;
-        gParkEntrances[entranceNum].y = y;
-        gParkEntrances[entranceNum].z = z * 16;
-        gParkEntrances[entranceNum].direction = direction;
+        gParkEntrances[entranceNum].x = _x;
+        gParkEntrances[entranceNum].y = _y;
+        gParkEntrances[entranceNum].z = _z * 16;
+        gParkEntrances[entranceNum].direction = _direction;
 
-        sint8 zLow = z * 2;
+        sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        rct_xy16 entranceLoc = { x, y };
+        rct_xy16 entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)
             {
-                entranceLoc.x += TileDirectionDelta[(direction - 1) & 0x3].x;
-                entranceLoc.y += TileDirectionDelta[(direction - 1) & 0x3].y;
+                entranceLoc.x += TileDirectionDelta[(_direction - 1) & 0x3].x;
+                entranceLoc.y += TileDirectionDelta[(_direction - 1) & 0x3].y;
             }
             else if (index == 2)
             {
-                entranceLoc.x += TileDirectionDelta[(direction + 1) & 0x3].x * 2;
-                entranceLoc.y += TileDirectionDelta[(direction + 1) & 0x3].y * 2;
+                entranceLoc.x += TileDirectionDelta[(_direction + 1) & 0x3].x * 2;
+                entranceLoc.y += TileDirectionDelta[(_direction + 1) & 0x3].y * 2;
             }
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
@@ -185,7 +200,7 @@ public:
             }
 
             newElement->type = MAP_ELEMENT_TYPE_ENTRANCE;
-            newElement->type |= direction;
+            newElement->type |= _direction;
             newElement->properties.entrance.index = index;
             newElement->properties.entrance.type = ENTRANCE_TYPE_PARK_ENTRANCE;
             newElement->properties.entrance.path_type = gFootpathSelectedId;
