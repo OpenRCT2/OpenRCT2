@@ -14,6 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "GameAction.h"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "RideCreateAction.hpp"
@@ -24,11 +25,7 @@ extern "C"
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
     {
-        auto gameAction = PlaceParkEntranceAction();
-        gameAction.x = x;
-        gameAction.y = y;
-        gameAction.z = z;
-        gameAction.direction = direction;
+        auto gameAction = PlaceParkEntranceAction(x, y, z, direction);
         auto result = GameActions::Execute(&gameAction);
         if (result->Error == GA_ERROR::OK)
         {
@@ -63,11 +60,7 @@ extern "C"
     {
         park_entrance_remove_ghost();
 
-        auto gameAction = PlaceParkEntranceAction();
-        gameAction.x = x;
-        gameAction.y = y;
-        gameAction.z = z;
-        gameAction.direction = direction;
+        auto gameAction = PlaceParkEntranceAction(x, y, z, direction);
         gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
         auto result = GameActions::Execute(&gameAction);
@@ -106,13 +99,11 @@ extern "C"
     */
     void ride_construct_new(ride_list_item listItem)
     {
-        auto gameAction = RideCreateAction();
-        gameAction.rideType = listItem.type;
-        gameAction.rideSubType = listItem.entry_index;
+        sint32 rideEntryIndex = ride_get_entry_index(listItem.type, listItem.entry_index);
+        sint32 colour1 = ride_get_random_colour_preset_index(listItem.type);
+        sint32 colour2 = ride_get_unused_preset_vehicle_colour(listItem.type, rideEntryIndex);
 
-        sint32 rideEntryIndex = ride_get_entry_index(gameAction.rideType, gameAction.rideSubType);
-        gameAction.colourPreset1 = ride_get_random_colour_preset_index(gameAction.rideType);
-        gameAction.colourPreset2 = ride_get_unused_preset_vehicle_colour(gameAction.rideType, rideEntryIndex);
+        auto gameAction = RideCreateAction(listItem.type, listItem.entry_index, colour1, colour2);
 
         gameAction.SetCallback([](const GameAction *ga, const RideCreateGameActionResult * result)
         {
@@ -123,6 +114,24 @@ extern "C"
         });
 
         GameActions::Execute(&gameAction);
+    }
+
+    money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour)
+    {
+        sint32 rideEntryIndex = ride_get_entry_index(type, subType);
+        sint32 colour1 = ride_get_random_colour_preset_index(type);
+        sint32 colour2 = ride_get_unused_preset_vehicle_colour(type, rideEntryIndex);
+
+        auto gameAction = RideCreateAction(type, subType, colour1, colour2);
+        gameAction.SetFlags(flags);
+
+        auto r = GameActions::Execute(&gameAction);
+        const RideCreateGameActionResult *res = static_cast<RideCreateGameActionResult*>(r.get());
+
+        *outRideIndex = res->rideIndex;
+        *outRideColour = colour1;
+
+        return res->Cost;
     }
 
     /**
@@ -140,10 +149,7 @@ extern "C"
 
     void ride_set_status(sint32 rideIndex, sint32 status)
     {
-        auto gameAction = RideSetStatusAction();
-        gameAction.RideIndex = rideIndex;
-        gameAction.Status = status;
-
+        auto gameAction = RideSetStatusAction(rideIndex, status);
         GameActions::Execute(&gameAction);
     }
 
