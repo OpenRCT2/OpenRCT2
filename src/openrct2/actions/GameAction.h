@@ -93,7 +93,6 @@ public:
 
 private:
     uint32 const _type;
-    uint16 const _actionFlags;
 
     uint32 _playerId    = 0;    // Callee
     uint32 _flags       = 0;    // GAME_COMMAND_FLAGS
@@ -101,9 +100,8 @@ private:
     Callback_t _callback;
 
 public:
-    GameAction(uint32 type, uint16 actionFlags)
-        : _type(type),
-          _actionFlags(actionFlags)
+    GameAction(uint32 type)
+        : _type(type)
     {
     }
 
@@ -122,9 +120,16 @@ public:
     /**
     * Gets the GA_FLAGS flags that are enabled for this game action.
     */
-    uint16 GetActionFlags() const
+    virtual uint16 GetActionFlags() const
     {
-        return _actionFlags;
+        // Make sure we execute some things only on the client.
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || 
+            (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
+        {
+            return GA_FLAGS::CLIENT_ONLY;
+        }
+
+        return 0;
     }
 
     /**
@@ -193,14 +198,16 @@ public:
 #pragma GCC diagnostic pop
 #endif
 
-template<uint32 TType, uint16 TActionFlags, typename TResultType>
+template<uint32 TType, typename TResultType>
 struct GameActionBase : GameAction
 {
 public:
+    typedef TResultType Result;
+
     static constexpr uint32 TYPE = TType;
 
     GameActionBase()
-        : GameAction(TYPE, TActionFlags)
+        : GameAction(TYPE)
     {
     }
 

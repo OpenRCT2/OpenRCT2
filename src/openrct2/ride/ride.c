@@ -5839,21 +5839,6 @@ bool shop_item_has_common_price(sint32 shopItem)
     }
 }
 
-money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour)
-{
-    sint32 eax = 0;
-    sint32 ebx = flags;
-    sint32 ecx = 0;
-    sint32 edx = type | (subType << 8);
-    sint32 esi = 0;
-    sint32 edi = 0;
-    sint32 ebp = 0;
-    money32 cost = game_do_command_p(GAME_COMMAND_CREATE_RIDE, &eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
-    *outRideIndex = edi & 0xFF;
-    *outRideColour = eax;
-    return cost;
-}
-
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
