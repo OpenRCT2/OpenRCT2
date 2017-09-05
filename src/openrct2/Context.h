@@ -203,6 +203,7 @@ extern "C"
     bool context_has_focus();
     void context_set_cursor_trap(bool value);
     rct_window * context_open_window(rct_windowclass wc);
+    rct_window * context_open_window_view(uint8 view);
     void context_input_handle_keyboard(bool isTitle);
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
     void context_quit();

@@ -335,7 +335,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
         window_guest_open(peep);
         break;
     case NEWS_ITEM_MONEY:
-        window_finances_open();
+        context_open_window(WC_FINANCES);
         break;
     case NEWS_ITEM_RESEARCH:
         if (subject >= 0x10000) {
@@ -372,10 +372,10 @@ void news_item_open_subject(sint32 type, sint32 subject)
         window_guest_list_open_with_filter(GLFT_GUESTS_THINKING_X, subject);;
         break;
     case NEWS_ITEM_AWARD:
-        window_park_awards_open();
+        context_open_window_view(WV_PARK_AWARDS);
         break;
     case NEWS_ITEM_GRAPH:
-        window_park_rating_open();
+        context_open_window_view(WV_PARK_RATING);
         break;
     }
 }

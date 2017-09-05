@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../core/Math.hpp"
-
-#include "../game.h"
-#include "../interface/graph.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride_data.h"
-#include "../sprites.h"
-#include "dropdown.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
+#include <openrct2/game.h>
+#include <openrct2/interface/graph.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
 
 enum {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -541,7 +541,7 @@ static void window_finances_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *
  *
  *  rct2: 0x0069DDF1
  */
-void window_finances_open()
+rct_window * window_finances_open()
 {
     rct_window *w;
 
@@ -567,13 +567,15 @@ void window_finances_open()
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
     window_init_scroll_widgets(w);
+
+    return w;
 }
 
 /**
  *
  *  rct2: 0x0069DDE1
  */
-void window_finances_research_open()
+rct_window * window_finances_research_open()
 {
     rct_window *w;
 
@@ -581,6 +583,8 @@ void window_finances_research_open()
     w = window_find_by_class(WC_FINANCES);
     if (w != nullptr)
         window_finances_set_page(w, WINDOW_FINANCES_PAGE_RESEARCH);
+
+    return w;
 }
 
 #pragma region Summary page

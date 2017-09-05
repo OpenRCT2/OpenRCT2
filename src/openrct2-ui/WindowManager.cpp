@@ -46,6 +46,8 @@ public:
             return window_editor_objective_options_open();
         case WC_EDITOR_SCENARIO_OPTIONS:
             return window_editor_scenario_options_open();
+        case WC_FINANCES:
+            return window_finances_open();
         case WC_FOOTPATH:
             return window_footpath_open();
         case WC_LAND:
@@ -60,6 +62,8 @@ public:
             return window_multiplayer_open();
         case WC_MUSIC_CREDITS:
             return window_music_credits_open();
+        case WC_PARK_INFORMATION:
+            return window_park_entrance_open();
         case WC_RECENT_NEWS:
             return window_news_open();
         case WC_NOTIFICATION_OPTIONS:
@@ -96,6 +100,25 @@ public:
             return nullptr;
         }
     }
+
+    rct_window * OpenView(uint8 view) override
+    {
+        switch (view) {
+        case WV_PARK_AWARDS:
+            return window_park_awards_open();
+        case WV_PARK_RATING:
+            return window_park_rating_open();
+        case WV_PARK_OBJECTIVE:
+            return window_park_objective_open();
+        case WV_PARK_GUESTS:
+            return window_park_guests_open();
+        case WV_FINANCES_RESEARCH:
+            return window_finances_research_open();
+        default:
+            return nullptr;
+        }
+    }
+
 
     void HandleKeyboard(bool isTitle) override
     {

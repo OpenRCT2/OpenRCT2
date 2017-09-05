@@ -30,6 +30,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "viewport.h"
+#include "../Context.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_map_element *mapElement, sint32 x, sint32 y);
@@ -150,7 +151,7 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
         window_ride_open_track(info.mapElement);
         return 1;
     case VIEWPORT_INTERACTION_ITEM_PARK:
-        window_park_entrance_open();
+        context_open_window(WC_PARK_INFORMATION);
         return 1;
     default:
         return 0;

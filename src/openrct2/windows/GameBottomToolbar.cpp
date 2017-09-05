@@ -169,13 +169,13 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
     case WIDX_LEFT_OUTSET:
     case WIDX_MONEY:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            window_finances_open();
+            context_open_window(WC_FINANCES);
         break;
     case WIDX_GUESTS:
-        window_park_guests_open();
+        context_open_window_view(WV_PARK_GUESTS);
         break;
     case WIDX_PARK_RATING:
-        window_park_rating_open();
+        context_open_window_view(WV_PARK_RATING);
         break;
     case WIDX_MIDDLE_INSET:
         if (news_item_is_queue_empty())

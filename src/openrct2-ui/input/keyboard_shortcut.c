@@ -385,7 +385,7 @@ static void shortcut_show_financial_information()
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            window_finances_open();
+            context_open_window(WC_FINANCES);
 }
 
 static void shortcut_show_research_information()
@@ -417,7 +417,7 @@ static void shortcut_show_park_information()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-        window_park_entrance_open();
+        context_open_window(WC_PARK_INFORMATION);
     }
 }
 
