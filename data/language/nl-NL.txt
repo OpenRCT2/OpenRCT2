@@ -3378,7 +3378,7 @@ STR_3372    :{BLACK}= Geldautomaat
 STR_3373    :{BLACK}= Toilet
 STR_3374    :Waarschuwing: teveel objecten geselecteerd!
 STR_3375    :Niet alle objecten in deze decorgroep kunnen worden geselecteerd
-STR_3376    :Nieuw baanontwerp installeren...
+STR_3376    :Installeren...
 STR_3377    :{SMALLFONT}{BLACK}Bestand met nieuw baanontwerp installeren
 STR_3378    :Installeren
 STR_3379    :Annuleren
@@ -4443,6 +4443,10 @@ STR_6138    :OpenRCT2 is het werk van velen, een volledige lijst is te vinden in
 STR_6139    :Alle product- en bedrijfsnamen zijn eigendom van hun respectieve eigenaren. Het gebruik ervan impliceert geen overeenkomst of goedkeuring.
 STR_6140    :Wijzigingsoverzicht...
 STR_6141    :Onderste werkbalk in RCT1-stijl
+STR_6142    :{WINDOW_COLOUR_2}Naam ontwerp: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
+STR_6144    :Markeer opnieuw te tekenen blokken
+
 #############
 # Scenarios #
 #############
