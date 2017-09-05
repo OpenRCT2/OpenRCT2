@@ -53,3 +53,14 @@ rct_window * window_title_options_open();
 rct_window * window_viewport_open();
 rct_window * window_water_open();
 rct_window * window_view_clipping_open();
+
+// WC_FINANCES
+rct_window * window_finances_open();
+rct_window * window_finances_research_open();
+
+// WC_PARK_INFORMATION
+rct_window * window_park_awards_open();
+rct_window * window_park_entrance_open();
+rct_window * window_park_guests_open();
+rct_window * window_park_objective_open();
+rct_window * window_park_rating_open();

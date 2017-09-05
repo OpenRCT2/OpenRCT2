@@ -34,6 +34,7 @@ namespace OpenRCT2
         {
             virtual ~IWindowManager() = default;
             virtual rct_window * OpenWindow(rct_windowclass wc) abstract;
+            virtual rct_window * OpenView(uint8 view) abstract;
 
             virtual void HandleKeyboard(bool isTitle) abstract;
             virtual std::string GetKeyboardShortcutString(sint32 shortcut) abstract;

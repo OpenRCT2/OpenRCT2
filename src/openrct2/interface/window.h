@@ -493,6 +493,16 @@ enum {
     WC_NULL = 255,
 };
 
+
+enum {
+    WV_PARK_AWARDS,
+    WV_PARK_RATING,
+    WV_PARK_OBJECTIVE,
+    WV_PARK_GUESTS,
+    WV_FINANCES_RESEARCH
+
+};
+
 #define validate_global_widx(wc, widx) \
     static_assert(widx == wc ## __ ## widx, "Global WIDX of " #widx " doesn't match actual value.")
 
@@ -697,13 +707,6 @@ void window_map_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
 void window_staff_fire_prompt_open(rct_peep* peep);
-void window_park_awards_open();
-void window_park_entrance_open();
-void window_park_guests_open();
-void window_park_objective_open();
-void window_park_rating_open();
-void window_finances_open();
-void window_finances_research_open();
 void window_new_campaign_open(sint16 campaignType);
 rct_window *window_ride_main_open(sint32 rideIndex);
 rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex);

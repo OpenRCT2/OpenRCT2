@@ -349,7 +349,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_ride_list_open();
         break;
     case WIDX_PARK:
-        window_park_entrance_open();
+        context_open_window(WC_PARK_INFORMATION);
         break;
     case WIDX_STAFF:
         context_open_window(WC_STAFF_LIST);
@@ -358,7 +358,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         window_guest_list_open();
         break;
     case WIDX_FINANCES:
-        window_finances_open();
+        context_open_window(WC_FINANCES);
         break;
     case WIDX_RESEARCH:
         window_research_open();

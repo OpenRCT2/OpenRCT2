@@ -14,23 +14,24 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../core/Math.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../input.h"
-#include "../interface/graph.h"
-#include "../interface/land_tool.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../management/award.h"
-#include "../util/util.h"
-#include "../world/entrance.h"
-#include "dropdown.h"
-#include "../interface/themes.h"
+#include <openrct2/game.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/graph.h>
+#include <openrct2/interface/land_tool.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/management/award.h>
+#include <openrct2/util/util.h>
+#include <openrct2/world/entrance.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/interface/themes.h>
 
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -594,7 +595,7 @@ static void window_park_prepare_window_title_text()
  *
  *  rct2: 0x00667C48
  */
-void window_park_entrance_open()
+rct_window * window_park_entrance_open()
 {
     rct_window* window;
 
@@ -613,6 +614,8 @@ void window_park_entrance_open()
     window->pressed_widgets = 0;
     window_init_scroll_widgets(window);
     window_park_init_viewport(window);
+
+    return window;
 }
 
 /**
@@ -940,7 +943,7 @@ static void window_park_init_viewport(rct_window *w)
 *
 *  rct2: 0x00667CA4
 */
-void window_park_rating_open()
+rct_window * window_park_rating_open()
 {
     rct_window* window;
 
@@ -963,6 +966,8 @@ void window_park_rating_open()
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
     window->event_handlers = &window_park_rating_events;
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 /**
@@ -1054,7 +1059,7 @@ static void window_park_rating_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x00667D35
 */
-void window_park_guests_open()
+rct_window * window_park_guests_open()
 {
     rct_window* window;
 
@@ -1077,6 +1082,8 @@ void window_park_guests_open()
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->event_handlers = &window_park_guests_events;
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 /**
@@ -1418,7 +1425,7 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
  *
  *  rct2: 0x00667E57
  */
-void window_park_objective_open()
+rct_window * window_park_objective_open()
 {
     rct_window* window;
 
@@ -1444,6 +1451,8 @@ void window_park_objective_open()
     window->x = context_get_width() / 2 - 115;
     window->y = context_get_height() / 2 - 87;
     window_invalidate(window);
+
+    return window;
 }
 
 /**
@@ -1581,7 +1590,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 *
 *  rct2: 0x00667DC6
 */
-void window_park_awards_open()
+rct_window * window_park_awards_open()
 {
     rct_window* window;
 
@@ -1604,6 +1613,8 @@ void window_park_awards_open()
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->event_handlers = &window_park_awards_events;
     window_init_scroll_widgets(window);
+
+    return window;
 }
 
 /**

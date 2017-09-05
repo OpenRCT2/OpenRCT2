@@ -47,6 +47,7 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 #include "scenario.h"
+#include "../Context.h"
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS,
@@ -105,7 +106,7 @@ void scenario_begin()
     scenery_set_default_placement_configuration();
     news_item_init_queue();
     if (gScenarioObjectiveType != OBJECTIVE_NONE)
-        window_park_objective_open();
+        context_open_window_view(WV_PARK_OBJECTIVE);
 
     gParkRating = calculate_park_rating();
     gParkValue = calculate_park_value();
@@ -201,7 +202,7 @@ static void scenario_end()
         if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
             window_close(w);
     }
-    window_park_objective_open();
+    context_open_window_view(WV_PARK_OBJECTIVE);
 }
 
 /**

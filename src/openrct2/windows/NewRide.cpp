@@ -21,6 +21,7 @@
 #include "../ride/TrackDesignRepository.h"
 #include "../core/Util.hpp"
 #include "../core/Math.hpp"
+#include "../Context.h"
 
 #include "../audio/audio.h"
 #include "../game.h"
@@ -682,7 +683,7 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         news_item_open_subject(NEWS_ITEM_RESEARCH, (sint32)gResearchLastItemSubject);
         break;
     case WIDX_RESEARCH_FUNDING_BUTTON:
-        window_finances_research_open();
+        context_open_window_view(WV_FINANCES_RESEARCH);
         break;
     }
 }
