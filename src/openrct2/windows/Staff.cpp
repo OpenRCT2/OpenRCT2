@@ -259,7 +259,7 @@ static rct_window_event_list *window_staff_page_events[] = {
     &window_staff_stats_events
 };
 
-uint32 window_staff_page_enabled_widgets[] = {
+static const uint32 window_staff_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |

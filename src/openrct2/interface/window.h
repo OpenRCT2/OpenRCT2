@@ -761,8 +761,7 @@ rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
 
-void window_guest_list_init_vars_a();
-void window_guest_list_init_vars_b();
+void window_guest_list_init_vars();
 void window_bubble_list_item(rct_window* w, sint32 item_position);
 
 void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );

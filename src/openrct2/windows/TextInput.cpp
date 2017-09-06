@@ -89,11 +89,11 @@ static rct_window_event_list window_text_input_events = {
     nullptr
 };
 
-rct_string_id input_text_description;
-char text_input[TEXT_INPUT_SIZE] = { 0 };
-rct_windowclass calling_class = 0;
-rct_windownumber calling_number = 0;
-sint32 calling_widget = 0;
+static rct_string_id input_text_description;
+static char text_input[TEXT_INPUT_SIZE] = { 0 };
+static rct_windowclass calling_class = 0;
+static rct_windownumber calling_number = 0;
+static sint32 calling_widget = 0;
 static sint32 _maxInputLength;
 
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)

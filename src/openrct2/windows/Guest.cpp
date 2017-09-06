@@ -413,7 +413,7 @@ static rct_window_event_list *window_guest_page_events[] = {
 void window_guest_set_colours();
 
 // 0x981D3C
-uint32 window_guest_page_enabled_widgets[] = {
+static const uint32 window_guest_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |

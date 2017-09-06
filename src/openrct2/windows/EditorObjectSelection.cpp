@@ -242,7 +242,7 @@ static bool filter_source(const ObjectRepositoryItem * item);
 static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
 
-void reset_selected_object_count_and_size();
+static void reset_selected_object_count_and_size();
 static sint32 sub_6AB211();
 
 
@@ -1495,7 +1495,7 @@ static void window_editor_object_selection_select_required_objects()
  *
  *  rct2: 0x006AA770
  */
-void reset_selected_object_count_and_size()
+static void reset_selected_object_count_and_size()
 {
     for (uint8 objectType = 0; objectType < 11; objectType++) {
         _numSelectedObjectsForType[objectType] = 0;

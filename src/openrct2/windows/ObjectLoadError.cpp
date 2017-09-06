@@ -41,7 +41,7 @@ enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
 #define TYPE_COL_LEFT (5 * WW_LESS_PADDING / 8 + 1)
 #define LIST_ITEM_HEIGHT 10
 
-rct_widget window_object_load_error_widgets[] = {
+static rct_widget window_object_load_error_widgets[] = {
     { WWT_FRAME,             0, 0,               WW - 1,                0,          WH - 1,     STR_NONE,                       STR_NONE },                // Background
     { WWT_CAPTION,           0, 1,               WW - 2,                1,          14,         STR_OBJECT_LOAD_ERROR_TITLE,    STR_WINDOW_TITLE_TIP },    // Title bar
     { WWT_CLOSEBOX,          0, WW - 13,         WW - 3,                2,          13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP },    // Close button
@@ -95,9 +95,9 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_scrollpaint
 };
 
-rct_object_entry * invalid_entries = nullptr;
-sint32 highlighted_index = -1;
-utf8* file_path = nullptr;
+static rct_object_entry * invalid_entries = nullptr;
+static sint32 highlighted_index = -1;
+static utf8* file_path = nullptr;
 
 /**
 *  Returns an rct_string_id that represents an rct_object_entry's type.
