@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../core/Math.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../interface/widget.h"
-#include "../ride/ride_data.h"
-#include "dropdown.h"
+#include <openrct2/game.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/windows/dropdown.h>
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
@@ -122,7 +123,7 @@ static sint32 ride_name_compare(const void *a, const void *b)
  *
  *  rct2: 0x0069E16F
  */
-void window_new_campaign_open(sint16 campaignType)
+rct_window * window_new_campaign_open(sint16 campaignType)
 {
     rct_window *w;
     Ride *ride;
@@ -131,7 +132,7 @@ void window_new_campaign_open(sint16 campaignType)
     w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
     if (w != nullptr) {
         if (w->campaign.campaign_type == campaignType)
-            return;
+            return w;
 
         window_close(w);
     }
@@ -189,6 +190,8 @@ void window_new_campaign_open(sint16 campaignType)
     qsort(window_new_campaign_rides, numApplicableRides, sizeof(uint8), ride_name_compare);
 
     window_new_campaign_rides[numApplicableRides] = 255;
+
+    return w;
 }
 
 /**

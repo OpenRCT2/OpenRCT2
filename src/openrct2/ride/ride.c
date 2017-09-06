@@ -38,7 +38,6 @@
 #include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
-#include "../windows/error.h"
 #include "../world/banner.h"
 #include "../world/Climate.h"
 #include "../world/footpath.h"
@@ -980,20 +979,20 @@ static sint32 ride_check_if_construction_allowed(Ride *ride)
 {
     rct_ride_entry *rideType = get_ride_entry_by_ride(ride);
     if (rideType == NULL) {
-        window_error_open(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE);
+        context_show_error(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE);
         return 0;
     }
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN) {
         set_format_arg(6, rct_string_id, ride->name);
         set_format_arg(8, uint32, ride->name_arguments);
-        window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
+        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_HAS_BROKEN_DOWN_AND_REQUIRES_FIXING);
         return 0;
     }
 
     if (ride->status != RIDE_STATUS_CLOSED) {
         set_format_arg(6, rct_string_id, ride->name);
         set_format_arg(8, uint32, ride->name_arguments);
-        window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
+        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_MUST_BE_CLOSED_FIRST);
         return 0;
     }
 
@@ -1849,7 +1848,7 @@ sint32 ride_modify(rct_xy_element *input)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
         set_format_arg(6, rct_string_id, ride->name);
         set_format_arg(8, uint32, ride->name_arguments);
-        window_error_open(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
+        context_show_error(STR_CANT_START_CONSTRUCTION_ON, STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         return 0;
     }
 

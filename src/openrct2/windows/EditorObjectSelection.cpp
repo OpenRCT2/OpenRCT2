@@ -33,7 +33,6 @@
 #include "../ride/ride_data.h"
 #include "../util/util.h"
 #include "dropdown.h"
-#include "error.h"
 #include "../sprites.h"
 #include "_legacy.h"
 
@@ -990,7 +989,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint3
             STR_UNABLE_TO_SELECT_THIS_OBJECT :
             STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
-        window_error_open(error_title, gGameCommandErrorText);
+        context_show_error(error_title, gGameCommandErrorText);
         return;
     }
 
@@ -1001,7 +1000,7 @@ static void window_editor_object_selection_scroll_mousedown(rct_window *w, sint3
     }
 
     if (_maxObjectsWasHit) {
-        window_error_open(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
+        context_show_error(STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED);
     }
 }
 

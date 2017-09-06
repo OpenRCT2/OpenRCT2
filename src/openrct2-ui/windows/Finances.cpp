@@ -17,6 +17,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/game.h>
 #include <openrct2/interface/graph.h>
 #include <openrct2/interface/widget.h>
@@ -1094,7 +1095,7 @@ static void window_finances_marketing_mouseup(rct_window *w, rct_widgetindex wid
     else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_6)
         window_finances_set_page(w, widgetIndex - WIDX_TAB_1);
     else if (widgetIndex >= WIDX_CAMPAIGN_1 && widgetIndex <= WIDX_CAMPAIGN_6)
-        window_new_campaign_open(widgetIndex - WIDX_CAMPAIGN_1);
+        context_open_detail_window(WD_NEW_CAMPAIGN, widgetIndex - WIDX_CAMPAIGN_1);
 
 }
 

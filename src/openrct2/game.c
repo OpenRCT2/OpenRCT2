@@ -48,7 +48,6 @@
 #include "title/TitleScreen.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
-#include "windows/error.h"
 #include "windows/tooltip.h"
 #include "world/banner.h"
 #include "world/Climate.h"
@@ -438,7 +437,7 @@ void game_logic_update()
         }
         gErrorType = ERROR_TYPE_NONE;
 
-        window_error_open(title_text, body_text);
+        context_show_error(title_text, body_text);
     }
 
     // Start autosave timer after update
@@ -630,7 +629,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
 
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740 && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
-        window_error_open(gGameCommandErrorTitle, gGameCommandErrorText);
+        context_show_error(gGameCommandErrorTitle, gGameCommandErrorText);
 
     return MONEY32_UNDEFINED;
 }

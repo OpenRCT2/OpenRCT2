@@ -25,7 +25,6 @@
 #include "../object.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "../windows/error.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
@@ -798,7 +797,7 @@ bool mapgen_load_heightmap(const utf8 *path)
     if (strcicmp(extension, ".png") == 0) {
         if (!image_io_png_read(&pixels, &width, &height, path)) {
             log_warning("Error reading PNG");
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
             return false;
         }
 
@@ -807,7 +806,7 @@ bool mapgen_load_heightmap(const utf8 *path)
     }
     else if (strcicmp(extension, ".bmp") == 0) {
         if (!context_read_bmp((void *)&pixels, &width, &height, path)) {
-            // ReadBMP contains window_error_open calls
+            // ReadBMP contains context_show_error calls
             return false;
         }
 
@@ -821,13 +820,13 @@ bool mapgen_load_heightmap(const utf8 *path)
     }
 
     if (width != height) {
-        window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
+        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH);
         free(pixels);
         return false;
     }
 
     if (width > MAXIMUM_MAP_SIZE_PRACTICAL) {
-        window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
+        context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG);
         width = height = min(height, MAXIMUM_MAP_SIZE_PRACTICAL);
     }
 
@@ -949,7 +948,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
 
         if (minValue == maxValue)
         {
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
             free(dest);
             return;
         }

@@ -43,7 +43,6 @@
 #include <openrct2/input.h>
 #include <openrct2/interface/console.h>
 #include <openrct2/interface/window.h>
-#include <openrct2/windows/error.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -561,7 +560,7 @@ public:
             sint32 numChannels = bitmap->format->BytesPerPixel;
             if (numChannels < 3 || bitmap->format->BitsPerPixel < 24)
             {
-                window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
+                context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_24_BIT_BITMAP);
                 SDL_FreeSurface(bitmap);
                 return false;
             }
@@ -611,7 +610,7 @@ public:
         else
         {
             log_warning("Failed to load bitmap: %s", SDL_GetError());
-            window_error_open(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_BITMAP);
             return false;
         }
     }

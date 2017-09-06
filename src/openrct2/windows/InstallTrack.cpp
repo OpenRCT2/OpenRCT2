@@ -26,7 +26,6 @@
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/util.h"
-#include "error.h"
 
 enum {
     WIDX_BACKGROUND,
@@ -110,7 +109,7 @@ void window_install_track_open(const utf8 *path)
 {
     _trackDesign = track_design_open(path);
     if (_trackDesign == nullptr) {
-        window_error_open(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
+        context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
         return;
     }
 
@@ -406,7 +405,7 @@ static void window_install_track_design(rct_window *w)
     platform_get_user_directory(destPath, "track", sizeof(destPath));
     if (!platform_ensure_directory_exists(destPath)) {
         log_error("Unable to create directory '%s'", destPath);
-        window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
         return;
     }
 
@@ -415,7 +414,7 @@ static void window_install_track_design(rct_window *w)
 
     if (platform_file_exists(destPath)) {
         log_info("%s already exists, prompting user for a different track design name", destPath);
-        window_error_open(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE);
         window_text_input_raw_open(
             w,
             WIDX_INSTALL,
@@ -428,7 +427,7 @@ static void window_install_track_design(rct_window *w)
         if (track_repository_install(_trackPath)) {
             window_close(w);
         } else {
-            window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE);
         }
     }
 }

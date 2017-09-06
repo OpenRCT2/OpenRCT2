@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 
 #include <openrct2/Editor.h>
 #include <openrct2/game.h>
@@ -24,7 +25,6 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/error.h>
 
 #pragma region Widgets
 
@@ -569,7 +569,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_CASH, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_CASH, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -585,7 +585,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_CASH, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_CASH, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -601,7 +601,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_INIT_LOAN, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -617,7 +617,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_INIT_LOAN, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -633,7 +633,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_MAX_LOAN, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -649,7 +649,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_MAX_LOAN, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -677,7 +677,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 );
             }
         } else {
-            window_error_open(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -705,7 +705,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
                 );
             }
         } else {
-            window_error_open(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_INTEREST_RATE, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -902,7 +902,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -918,7 +918,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -934,7 +934,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -950,7 +950,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -966,7 +966,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -982,7 +982,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -998,7 +998,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1014,7 +1014,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_w
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1246,7 +1246,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1262,7 +1262,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1278,7 +1278,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1294,7 +1294,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1310,7 +1310,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;
@@ -1326,7 +1326,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
                 0
             );
         } else {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         }
         window_invalidate(w);
         break;

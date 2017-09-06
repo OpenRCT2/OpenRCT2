@@ -22,6 +22,7 @@
 #include "../ride/RideGroupManager.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
+#include "../Context.h"
 
 #include "../audio/audio.h"
 #include "../cheats.h"
@@ -38,7 +39,6 @@
 #include "../ride/track.h"
 #include "../ride/track_data.h"
 #include "../sprites.h"
-#include "../windows/error.h"
 #include "dropdown.h"
 
 enum {
@@ -1960,7 +1960,7 @@ static void window_ride_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_scroll_to_viewport(w);
         break;
     case WIDX_DEMOLISH:
-        window_ride_demolish_prompt_open(w->number);
+        context_open_detail_window(WD_DEMOLISH_RIDE, w->number);
         break;
     case WIDX_CLOSE_LIGHT:
     case WIDX_TEST_LIGHT:
@@ -3652,7 +3652,7 @@ static void window_ride_locate_mechanic(rct_window *w)
         mechanic = ride_find_closest_mechanic(ride, 1);
 
     if (mechanic == nullptr)
-        window_error_open(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
+        context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
     else
         window_staff_open(mechanic);
 }
@@ -3770,7 +3770,7 @@ static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex wid
             }
         }
         if (num_items == 1) {
-            window_error_open(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE);
+            context_show_error(STR_DEBUG_NO_BREAKDOWNS_AVAILABLE, STR_NONE);
         }
         else {
             window_dropdown_show_text(
@@ -3866,10 +3866,10 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
             break;
         }
         if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) {
-            window_error_open(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN);
+            context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_ALREADY_BROKEN);
         }
         else if (ride->status == RIDE_STATUS_CLOSED) {
-            window_error_open(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED);
+            context_show_error(STR_DEBUG_CANT_FORCE_BREAKDOWN, STR_DEBUG_RIDE_IS_CLOSED);
         }
         else {
             sint32 j;

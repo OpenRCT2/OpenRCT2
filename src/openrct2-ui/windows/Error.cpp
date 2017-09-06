@@ -14,16 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../OpenRCT2.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "error.h"
-
-bool gDisableErrorWindowSound = false;
+#include <openrct2/audio/audio.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
 
 enum {
     WIDX_BACKGROUND
@@ -80,7 +78,7 @@ extern "C" {
  * bx: title
  * dx: message
  */
-void window_error_open(rct_string_id title, rct_string_id message)
+rct_window * window_error_open(rct_string_id title, rct_string_id message)
 {
     utf8 *dst;
     sint32 numLines, fontHeight, x, y, width, height, maxY;
@@ -107,12 +105,12 @@ void window_error_open(rct_string_id title, rct_string_id message)
 
     // Don't do unnecessary work in headless. Also saves checking if cursor state is null.
     if (gOpenRCT2Headless) {
-        return;
+        return nullptr;
     }
 
     // Check if there is any text to display
     if (dst == _window_error_text + 1)
-        return;
+        return nullptr;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     width = gfx_get_string_width_new_lined(_window_error_text);
@@ -148,6 +146,8 @@ void window_error_open(rct_string_id title, rct_string_id message)
     if (!gDisableErrorWindowSound) {
         audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
     }
+
+    return w;
 }
 
 }

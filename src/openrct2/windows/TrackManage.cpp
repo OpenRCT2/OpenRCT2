@@ -21,7 +21,6 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../util/util.h"
-#include "error.h"
 
 #pragma region Widgets
 
@@ -216,12 +215,12 @@ static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetI
     }
 
     if (str_is_null_or_empty(text)) {
-        window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NONE);
         return;
     }
 
     if (!filename_valid_characters(text)) {
-        window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS);
         return;
     }
 
@@ -230,7 +229,7 @@ static void window_track_manage_textinput(rct_window *w, rct_widgetindex widgetI
         window_close(w);
         window_track_design_list_reload_tracks();
     } else {
-        window_error_open(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
+        context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_ANOTHER_FILE_EXISTS_WITH_NAME_OR_FILE_IS_WRITE_PROTECTED);
     }
 }
 
@@ -289,7 +288,7 @@ static void window_track_delete_prompt_mouseup(rct_window *w, rct_widgetindex wi
             window_close_by_class(WC_MANAGE_TRACK_DESIGN);
             window_track_design_list_reload_tracks();
         } else {
-            window_error_open(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
+            context_show_error(STR_CANT_DELETE_TRACK_DESIGN, STR_FILE_IS_WRITE_PROTECTED_OR_LOCKED);
         }
         break;
     }

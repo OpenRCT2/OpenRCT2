@@ -16,6 +16,7 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 
 #include <openrct2/drawing/drawing.h>
 #include <openrct2/game.h>
@@ -28,7 +29,6 @@
 #include <openrct2/util/util.h>
 #include <openrct2/world/footpath.h>
 #include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/error.h>
 
 enum {
     WINDOW_STAFF_LIST_TAB_HANDYMEN,
@@ -375,7 +375,7 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
             window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
         } else {
             set_format_arg(0, rct_string_id, StaffNamingConvention[selectedPeepType].plural);
-            window_error_open(STR_NO_THING_IN_PARK_YET, STR_NONE);
+            context_show_error(STR_NO_THING_IN_PARK_YET, STR_NONE);
         }
     }
 }

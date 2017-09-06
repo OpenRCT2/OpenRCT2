@@ -31,7 +31,6 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "error.h"
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
@@ -1396,7 +1395,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 static void map_window_increase_map_size()
 {
     if (gMapSize >= MAXIMUM_MAP_SIZE_TECHNICAL) {
-        window_error_open(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
         return;
     }
 
@@ -1417,7 +1416,7 @@ static void map_window_increase_map_size()
 static void map_window_decrease_map_size()
 {
     if (gMapSize < 16) {
-        window_error_open(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
         return;
     }
 

@@ -16,6 +16,7 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 
 #include <openrct2/game.h>
 #include <openrct2/input.h>
@@ -24,7 +25,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/windows/error.h>
 #include <openrct2/util/util.h>
 
 enum {
@@ -372,14 +372,14 @@ static void window_themes_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_THEMES_DELETE_BUTTON:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             theme_delete();
         }
         break;
     case WIDX_THEMES_RENAME_BUTTON:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             activeAvailableThemeIndex = theme_manager_get_active_available_theme_index();
             activeThemeName = theme_manager_get_available_theme_name(activeAvailableThemeIndex);
@@ -511,7 +511,7 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
         break;
     case WIDX_THEMES_RCT1_RIDE_LIGHTS:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_RIDE);
             theme_save();
@@ -520,7 +520,7 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
         break;
     case WIDX_THEMES_RCT1_PARK_LIGHTS:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_LIGHTS_PARK);
             theme_save();
@@ -529,7 +529,7 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
         break;
     case WIDX_THEMES_RCT1_SCENARIO_FONT:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT);
             theme_save();
@@ -538,7 +538,7 @@ static void window_themes_mousedown(rct_window *w, rct_widgetindex widgetIndex, 
         break;
     case WIDX_THEMES_RCT1_BOTTOM_TOOLBAR:
         if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-            window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
+            context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_NONE);
         } else {
             theme_set_flags(theme_get_flags() ^ UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR);
             theme_save();
@@ -614,7 +614,7 @@ void window_themes_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, 
         if (_colour_index_2 < numColours) {
             if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 && y2 >= _button_offset_y && y2 < _button_offset_y + 11) {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-                    window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
+                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
                 } else {
                     window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].type = WWT_COLOURBTN;
                     window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK].left = _button_offset_x + _colour_index_2 * 12 + window_themes_widgets[WIDX_THEMES_LIST].left;
@@ -629,7 +629,7 @@ void window_themes_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, 
             }
             else if (x >= _button_offset_x && x < _button_offset_x + 12 * 6 - 1 && y2 >= _check_offset_y && y2 < _check_offset_y + 11) {
                 if (theme_get_flags() & UITHEME_FLAG_PREDEFINED) {
-                    window_error_open(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
+                    context_show_error(STR_THEMES_ERR_CANT_CHANGE_THIS_THEME, STR_THEMES_DESC_CANT_CHANGE_THIS_THEME);
                 } else {
                     uint8 colour = theme_get_colour(wc, _colour_index_2);
                     if (colour & COLOUR_FLAG_TRANSLUCENT) {
@@ -667,7 +667,7 @@ static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, 
                 const utf8 * themeName = theme_manager_get_available_theme_name(i);
                 if (strcmp(themeName, text) == 0) {
                     if (widgetIndex != WIDX_THEMES_RENAME_BUTTON) {
-                        window_error_open(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE);
+                        context_show_error(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE);
                     }
                     nameTaken = true;
                     break;
@@ -682,7 +682,7 @@ static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, 
                 window_invalidate(w);
             }
         } else {
-            window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+            context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
         }
         break;
     }

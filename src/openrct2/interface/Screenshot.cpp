@@ -29,7 +29,6 @@
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "../windows/error.h"
 #include "viewport.h"
 
 using namespace OpenRCT2;
@@ -55,7 +54,7 @@ void screenshot_check()
             if (screenshotIndex != -1) {
                 audio_play_sound(SOUND_WINDOW_OPEN, 100, context_get_width() / 2);
             } else {
-                window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
+                context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
             }
 
             // redraw_rain();
@@ -226,7 +225,7 @@ void screenshot_giant()
     sint32 index;
     if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
         log_error("Giant screenshot failed, unable to find a suitable destination path.");
-        window_error_open(STR_SCREENSHOT_FAILED, STR_NONE);
+        context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
         return;
     }
 
@@ -240,7 +239,7 @@ void screenshot_giant()
     // Show user that screenshot saved successfully
     set_format_arg(0, rct_string_id, STR_STRING);
     set_format_arg(2, char *, path_get_filename(path));
-    window_error_open(STR_SCREENSHOT_SAVED_AS, STR_NONE);
+    context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE);
 }
 
 sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
