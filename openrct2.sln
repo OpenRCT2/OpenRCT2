@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26228.9
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-dll", "src\openrct2-dll\openrct2-dll.vcxproj", "{7B8DB129-79EF-417E-B372-8A18E009D261}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -38,6 +38,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-cli", "src\openrct
 	EndProjectSection
 EndProject
 Global
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
+	EndGlobalSection
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
 		Debug|x64 = Debug|x64
@@ -104,5 +107,8 @@ Global
 		{62B020FA-E4FB-4C6E-B32A-DC999470F155} = {480B577D-4E4A-4757-9A42-28A9AD33E6B0}
 		{8DD8AB7D-2EA6-44E3-8265-BAF08E832951} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
 		{B6808F71-30B4-4499-8FF6-0B1C86391842} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
+	EndGlobalSection
+	GlobalSection(Performance) = preSolution
+		HasPerformanceSessions = true
 	EndGlobalSection
 EndGlobal
