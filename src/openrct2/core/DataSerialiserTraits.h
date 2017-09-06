@@ -58,3 +58,26 @@ struct DataSerializerTraits<uint32> : public DataSerializerTraitsIntegral<uint32
 
 template<>
 struct DataSerializerTraits<sint32> : public DataSerializerTraitsIntegral<sint32> {};
+
+template<>
+struct DataSerializerTraits<std::string>
+{
+    static void encode(IStream *stream, const std::string& str)
+    {
+        uint16 len = (uint16)str.size();
+        len = ByteSwapBE(len);
+        stream->Write(&len);
+        stream->WriteArray(str.c_str(), len);
+    }
+    static void decode(IStream *stream, std::string& res)
+    {
+        uint16 len;
+        stream->Read(&len);
+        len = ByteSwapBE(len);
+
+        const char* str = stream->ReadArray<char>(len);
+        res.assign(str, len);
+
+        Memory::FreeArray(str, len);
+    }
+};

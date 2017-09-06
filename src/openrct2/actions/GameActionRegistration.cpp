@@ -19,6 +19,7 @@
 #include "SetParkEntranceFeeAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
+#include "RideSetName.hpp"
 
 namespace GameActions
 {
@@ -28,5 +29,6 @@ namespace GameActions
         Register<PlaceParkEntranceAction>();
         Register<RideCreateAction>();
         Register<RideSetStatusAction>();
+        Register<RideSetNameAction>();
     }
 }
