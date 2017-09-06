@@ -154,23 +154,14 @@ static void window_guest_list_find_groups();
 
 static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* argument_2);
 
-/**
-*
-*  rct2: 0x0068F083
-*/
-void window_guest_list_init_vars_a()
+void window_guest_list_init_vars()
 {
+    // rct2: 0x0068F083
     gNextGuestNumber = 1;
     _window_guest_list_last_find_groups_tick = 0xFFFFFFFF;
     _window_guest_list_selected_filter = 0xFF;
-}
 
-/**
-*
-*  rct2: 0x0068F050
-*/
-void window_guest_list_init_vars_b()
-{
+    // rct2: 0x0068F050
     _window_guest_list_selected_tab = 0;
     _window_guest_list_selected_view = 0;
     _window_guest_list_last_find_groups_tick = 0xFFFFFFFF;

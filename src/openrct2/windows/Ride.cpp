@@ -964,7 +964,7 @@ typedef struct ride_overall_view_t {
     uint8 zoom;
 } ride_overall_view;
 
-ride_overall_view ride_overall_views[MAX_RIDES] = {0};
+static ride_overall_view ride_overall_views[MAX_RIDES] = {0};
 
 const sint32 window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
 const sint32 window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
