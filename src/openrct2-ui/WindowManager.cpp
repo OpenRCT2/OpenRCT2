@@ -125,6 +125,10 @@ public:
         {
         case WD_BANNER:
             return window_banner_open(id);
+        case WD_DEMOLISH_RIDE:
+            return window_ride_demolish_prompt_open(id);
+        case WD_NEW_CAMPAIGN:
+            return window_new_campaign_open(id);
         case WD_SIGN:
             return window_sign_open(id);
         case WD_SIGN_SMALL:
@@ -138,6 +142,10 @@ public:
         }
     }
 
+    rct_window * ShowError(rct_string_id title, rct_string_id message) override
+    {
+        return window_error_open(title, message);
+    }
 
     void HandleKeyboard(bool isTitle) override
     {

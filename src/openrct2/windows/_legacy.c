@@ -18,6 +18,8 @@
 
 #pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 
+bool gDisableErrorWindowSound = false;
+
 /** rct2: 0x0098DA74 */
 const rct_object_entry RequiredSelectedObjects[7] = {
         // Objects that are always required

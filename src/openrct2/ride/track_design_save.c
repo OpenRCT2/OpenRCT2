@@ -22,13 +22,13 @@
 #include "../interface/viewport.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
-#include "../windows/error.h"
 #include "../world/scenery.h"
 #include "ride_data.h"
 #include "track.h"
 #include "track_data.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
+#include "../Context.h"
 
 #define TRACK_MAX_SAVED_MAP_ELEMENTS 1500
 #define TRACK_NEARBY_SCENERY_DISTANCE 1
@@ -85,7 +85,7 @@ void track_design_save_select_map_element(sint32 interactionType, sint32 x, sint
     } else {
         if (collect) {
             if (!track_design_save_add_map_element(interactionType, x, y, mapElement)) {
-                window_error_open(
+                context_show_error(
                     STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY,
                     STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED
                 );
@@ -148,23 +148,23 @@ bool track_design_save(uint8 rideIndex)
     Ride* ride = get_ride(rideIndex);
 
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
-        window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
     }
 
     if (!ride_has_ratings(ride)) {
-        window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
     }
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-        window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
     }
 
     _trackDesign = track_design_save_to_td6(rideIndex);
     if (_trackDesign == NULL) {
-        window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
+        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
         return false;
     }
 
@@ -692,7 +692,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         y /= 32;
 
         if (x > 127 || y > 127 || x < -126 || y < -126){
-            window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
             SafeFree(td6->scenery_elements);
             return false;
         }
@@ -703,7 +703,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
         sint32 z = scenery->z * 8 - gTrackPreviewOrigin.z;
         z /= 8;
         if (z > 127 || z < -126) {
-            window_error_open(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
+            context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY);
             SafeFree(td6->scenery_elements);
             return false;
         }

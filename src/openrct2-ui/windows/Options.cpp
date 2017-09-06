@@ -45,7 +45,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 #include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/error.h>
 
 enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_DISPLAY,
@@ -885,10 +884,10 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                     SafeFree(gConfigGeneral.rct1_path);
                     gConfigGeneral.rct1_path = rct1path;
                     config_save_default();
-                    window_error_open(STR_RESTART_REQUIRED, STR_NONE);
+                    context_show_error(STR_RESTART_REQUIRED, STR_NONE);
                 } else {
                     SafeFree(rct1path);
-                    window_error_open(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
+                    context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
                 }
             }
             window_invalidate(w);
@@ -1386,7 +1385,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                         if (language_open(fallbackLanguage))
                         {
                             // It worked, so we can say it with error message in-game
-                            window_error_open(STR_LANGUAGE_LOAD_FAILED, STR_NONE);
+                            context_show_error(STR_LANGUAGE_LOAD_FAILED, STR_NONE);
                         }
                         // report error to console regardless
                         log_error("Failed to open language file.");
@@ -1431,7 +1430,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_TITLE_MUSIC_DROPDOWN:
             if ((dropdownIndex == 1 || dropdownIndex == 3) && !platform_file_exists(context_get_path_legacy(PATH_ID_CSS50))) {
-                window_error_open(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
+                context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT);
             }
             else {
                 gConfigSound.title_music = (sint8)dropdownIndex;

@@ -27,7 +27,6 @@
 #include "../localisation/localisation.h"
 #include "../rct1.h"
 #include "../sprites.h"
-#include "error.h"
 
 enum {
     WIDX_BACKGROUND,
@@ -196,7 +195,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
 {
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr) {
-        window_error_open(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
+        context_show_error(STR_CANT_BUILD_PARK_ENTRANCE_HERE, STR_TRACK_LOAD_FAILED_ERROR);
         return;
     }
 
@@ -220,7 +219,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
         window_track_manage_open(tdRef);
     } else {
         if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)) {
-            window_error_open(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
+            context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE);
         }
 
         window_track_place_open(tdRef);

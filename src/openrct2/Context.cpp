@@ -1005,6 +1005,12 @@ extern "C"
         return windowManager->OpenDetails(type, id);
     }
 
+    rct_window * context_show_error(rct_string_id title, rct_string_id message)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        return windowManager->ShowError(title, message);
+    }
+
     void context_input_handle_keyboard(bool isTitle)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

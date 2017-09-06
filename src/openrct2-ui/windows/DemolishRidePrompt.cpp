@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
+#include <openrct2/game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2-ui/windows/Window.h>
 
 #define WW 200
 #define WH 100
@@ -75,19 +76,21 @@ static rct_window_event_list window_ride_demolish_events = {
 };
 
 /** Based off of rct2: 0x006B486A */
-static void _window_ride_demolish_prompt_open(sint32 rideIndex)
+rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)
 {
     rct_window *w;
 
     w = window_bring_to_front_by_number(WC_DEMOLISH_RIDE_PROMPT, rideIndex);
     if (w != nullptr)
-        return;
+        return w;
 
     w = window_create_centred(WW, WH, &window_ride_demolish_events, WC_DEMOLISH_RIDE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_ride_demolish_widgets;
     w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_DEMOLISH);
     window_init_scroll_widgets(w);
     w->number = rideIndex;
+
+    return w;
 }
 
 
@@ -135,11 +138,4 @@ static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 y = w->y + (WH / 2) - 3;
 
     gfx_draw_string_centred_wrapped(dpi, gCommonFormatArgs, x, y, WW - 4, STR_DEMOLISH_RIDE_ID, COLOUR_BLACK);
-}
-
-extern "C" {
-    void window_ride_demolish_prompt_open(sint32 rideIndex)
-    {
-        _window_ride_demolish_prompt_open(rideIndex);
-    }
 }

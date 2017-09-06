@@ -17,6 +17,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 
 #include <openrct2/game.h>
 #include <openrct2/interface/widget.h>
@@ -25,7 +26,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 #include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/error.h>
 
 #pragma region Widgets
 
@@ -571,7 +571,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
     case OBJECTIVE_MONTHLY_RIDE_INCOME:
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
         if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency += MONEY(1000,0);
             window_invalidate(w);
@@ -579,7 +579,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
         break;
     case OBJECTIVE_MONTHLY_FOOD_INCOME:
         if (gScenarioObjectiveCurrency >= MONEY(2000000,00)) {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency += MONEY(100,0);
             window_invalidate(w);
@@ -587,7 +587,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
         break;
     case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         if (gScenarioObjectiveNumGuests >= 5000) {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveNumGuests += 100;
             window_invalidate(w);
@@ -595,7 +595,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
         break;
     case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         if (gScenarioObjectiveCurrency >= FIXED_2DP(9,90)) {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency += FIXED_2DP(0,10);
             window_invalidate(w);
@@ -603,7 +603,7 @@ static void window_editor_objective_options_arg_1_increase(rct_window *w)
         break;
     default:
         if (gScenarioObjectiveNumGuests >= 5000) {
-            window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveNumGuests += 50;
             window_invalidate(w);
@@ -619,7 +619,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
     case OBJECTIVE_MONTHLY_RIDE_INCOME:
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
         if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency -= MONEY(1000,0);
             window_invalidate(w);
@@ -627,7 +627,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
         break;
     case OBJECTIVE_MONTHLY_FOOD_INCOME:
         if (gScenarioObjectiveCurrency <= MONEY(1000,00)) {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency -= MONEY(100,0);
             window_invalidate(w);
@@ -635,7 +635,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
         break;
     case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         if (gScenarioObjectiveNumGuests <= 1000) {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveNumGuests -= 100;
             window_invalidate(w);
@@ -643,7 +643,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
         break;
     case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         if (gScenarioObjectiveCurrency <= FIXED_2DP(4,00)) {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveCurrency -= FIXED_2DP(0,10);
             window_invalidate(w);
@@ -651,7 +651,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
         break;
     default:
         if (gScenarioObjectiveNumGuests <= 250) {
-            window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+            context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
         } else {
             gScenarioObjectiveNumGuests -= 50;
             window_invalidate(w);
@@ -663,7 +663,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window *w)
 static void window_editor_objective_options_arg_2_increase(rct_window *w)
 {
     if (gScenarioObjectiveYear >= 25) {
-        window_error_open(STR_CANT_INCREASE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE);
     } else {
         gScenarioObjectiveYear++;
         window_invalidate(w);
@@ -673,7 +673,7 @@ static void window_editor_objective_options_arg_2_increase(rct_window *w)
 static void window_editor_objective_options_arg_2_decrease(rct_window *w)
 {
     if (gScenarioObjectiveYear <= 1) {
-        window_error_open(STR_CANT_REDUCE_FURTHER, STR_NONE);
+        context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE);
     } else {
         gScenarioObjectiveYear--;
         window_invalidate(w);

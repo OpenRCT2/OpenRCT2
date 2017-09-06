@@ -30,7 +30,6 @@
 #include "../world/park.h"
 #include "../world/scenery.h"
 #include "../world/footpath.h"
-#include "../windows/error.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"

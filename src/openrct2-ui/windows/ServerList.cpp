@@ -28,7 +28,6 @@
 #include <openrct2/util/util.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/windows/tooltip.h>
-#include <openrct2/windows/error.h>
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
@@ -200,7 +199,7 @@ static void window_server_list_mouseup(rct_window *w, rct_widgetindex widgetInde
         if (serverIndex >= 0 && serverIndex < _numServerEntries) {
             if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
                 set_format_arg(0, void *, _serverEntries[serverIndex].version);
-                window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+                context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
                 break;
             }
             char *serverAddress = _serverEntries[serverIndex].address;
@@ -236,7 +235,7 @@ static void window_server_list_dropdown(rct_window *w, rct_widgetindex widgetInd
     case DDIDX_JOIN:
         if (strcmp(_serverEntries[serverIndex].version, NETWORK_STREAM_ID) != 0 && strcmp(_serverEntries[serverIndex].version, "") != 0) {
             set_format_arg(0, void *, _serverEntries[serverIndex].version);
-            window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
+            context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_MULTIPLAYER_INCORRECT_SOFTWARE_VERSION);
             break;
         }
         join_server(serverAddress);
@@ -646,7 +645,7 @@ static void join_server(char *address)
     }
 
     if (!network_begin_client(address, port)) {
-        window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+        context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
     }
 
     if (addresscopied) {

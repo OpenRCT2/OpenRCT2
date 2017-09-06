@@ -505,6 +505,8 @@ enum {
 
 enum {
     WD_BANNER,
+    WD_NEW_CAMPAIGN,
+    WD_DEMOLISH_RIDE,
     WD_SIGN,
     WD_SIGN_SMALL,
 
@@ -715,12 +717,10 @@ void window_map_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
 void window_staff_fire_prompt_open(rct_peep* peep);
-void window_new_campaign_open(sint16 campaignType);
 rct_window *window_ride_main_open(sint32 rideIndex);
 rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex);
 rct_window *window_ride_open_track(rct_map_element *mapElement);
 rct_window *window_ride_open_vehicle(rct_vehicle *vehicle);
-void window_ride_demolish_prompt_open(sint32 rideIndex);
 void window_ride_construct(rct_window *w);
 void window_ride_list_open();
 void window_ride_list_refresh_list(rct_window *w);

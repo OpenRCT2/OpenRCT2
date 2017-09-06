@@ -25,7 +25,6 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
-#include <openrct2/windows/error.h>
 #include <openrct2/windows/dropdown.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
@@ -807,19 +806,19 @@ static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetInd
     case WIDX_SHOW_ALL_OPERATING_MODES:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWALLOPERATINGMODES, !gCheatsShowAllOperatingModes, GAME_COMMAND_CHEAT, 0, 0);
         if (gCheatsShowAllOperatingModes) {
-            window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
         }
         break;
     case WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SHOWVEHICLESFROMOTHERTRACKTYPES, !gCheatsShowVehiclesFromOtherTrackTypes, GAME_COMMAND_CHEAT, 0, 0);
         if (gCheatsShowVehiclesFromOtherTrackTypes) {
-            window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
         }
         break;
     case WIDX_DISABLE_TRAIN_LENGTH_LIMITS:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_DISABLETRAINLENGTHLIMIT, !gCheatsDisableTrainLengthLimit, GAME_COMMAND_CHEAT, 0, 0);
         if (gCheatsDisableTrainLengthLimit) {
-            window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
         }
         break;
     case WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK:
@@ -828,7 +827,7 @@ static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetInd
     case WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES, !gCheatsAllowArbitraryRideTypeChanges, GAME_COMMAND_CHEAT, 0, 0);
         if (gCheatsAllowArbitraryRideTypeChanges) {
-            window_error_open(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
+            context_show_error(STR_WARNING_IN_CAPS, STR_THIS_FEATURE_IS_CURRENTLY_UNSTABLE);
         }
         break;
     case WIDX_DISABLE_RIDE_VALUE_AGING:

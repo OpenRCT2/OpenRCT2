@@ -63,7 +63,6 @@ extern "C" {
 #include "../management/finance.h"
 #include "../network/http.h"
 #include "../scenario/scenario.h"
-#include "../windows/error.h"
 #include "../util/util.h"
 #include "../cheats.h"
 
@@ -490,7 +489,7 @@ void Network::UpdateClient()
 
             Close();
             window_network_status_close();
-            window_error_open(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
+            context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
             break;
         }
         }
@@ -2192,7 +2191,7 @@ void Network::Client_Handle_SHOWERROR(NetworkConnection& connection, NetworkPack
 {
     rct_string_id title, message;
     packet >> title >> message;
-    window_error_open(title, message);
+    context_show_error(title, message);
 }
 
 void Network::Client_Handle_GROUPLIST(NetworkConnection& connection, NetworkPacket& packet)

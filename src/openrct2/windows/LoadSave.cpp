@@ -17,6 +17,7 @@
 #include "../config/Config.h"
 #include "../title/TitleScreen.h"
 #include "../core/Memory.hpp"
+#include "../Context.h"
 
 #include <time.h>
 #include "../core/Guard.hpp"
@@ -26,7 +27,6 @@
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "../windows/error.h"
 
 #pragma region Widgets
 
@@ -434,7 +434,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
     switch (widgetIndex) {
         case WIDX_NEW_FOLDER:
             if (!filename_valid_characters(text)) {
-                window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+                context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
                 return;
             }
 
@@ -442,7 +442,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             safe_strcat_path(path, text, sizeof(path));
 
             if (!platform_ensure_directory_exists(path)) {
-                window_error_open(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
+                context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE);
                 return;
             }
             w->no_list_items = 0;
@@ -751,7 +751,7 @@ static bool is_valid_path(const char * path)
 static void window_loadsave_select(rct_window *w, const char *path)
 {
     if (!is_valid_path(path)) {
-        window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
         return;
     }
 
@@ -779,7 +779,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
 
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         } else {
-            window_error_open(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
+            context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
@@ -791,7 +791,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         } else {
             // Not the best message...
-            window_error_open(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
+            context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
@@ -804,7 +804,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         } else {
-            window_error_open(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
+            context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
         break;
@@ -823,7 +823,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
             title_load();
         } else {
-            window_error_open(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
+            context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED);
             gS6Info.editor_step = EDITOR_STEP_OBJECTIVE_SELECTION;
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
         }
@@ -845,7 +845,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
             window_ride_measurements_design_cancel();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
         } else {
-            window_error_open(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
+            context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED);
             window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
         }
         break;

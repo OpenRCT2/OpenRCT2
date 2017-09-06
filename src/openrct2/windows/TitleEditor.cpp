@@ -23,6 +23,7 @@
 #include "../title/TitleSequence.h"
 #include "../title/TitleSequenceManager.h"
 #include "../title/TitleSequencePlayer.h"
+#include "../Context.h"
 
 #include "../game.h"
 #include "../input.h"
@@ -31,7 +32,6 @@
 #include "../sprites.h"
 #include "../util/util.h"
 #include "dropdown.h"
-#include "error.h"
 
 enum WINDOW_TITLE_EDITOR_TAB {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
@@ -498,7 +498,7 @@ static void window_title_editor_mousedown(rct_window *w, rct_widgetindex widgetI
     }
     case WIDX_TITLE_EDITOR_PRESETS_DROPDOWN:
         if (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr) {
-            window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+            context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
         } else {
             sint32 numItems = (sint32)title_sequence_manager_get_count();
             for (sint32 i = 0; i < numItems; i++) {
@@ -631,10 +631,10 @@ static void window_title_editor_textinput(rct_window *w, rct_widgetindex widgetI
                 config_save_default();
                 window_invalidate(w);
             } else {
-                window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
             }
         } else {
-            window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+            context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
         }
         break;
     case WIDX_TITLE_EDITOR_RENAME_SAVE:
@@ -950,7 +950,7 @@ static void window_title_editor_load_sequence(size_t index)
     const char * path = title_sequence_manager_get_path(index);
     TitleSequence * titleSequence = LoadTitleSequence(path);
     if (titleSequence == nullptr) {
-        window_error_open(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
+        context_show_error(STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, STR_NONE);
         return;
     }
 
@@ -973,11 +973,11 @@ static bool window_title_editor_check_can_edit()
 {
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
     if (_isSequenceReadOnly) {
-        window_error_open(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
+        context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
     } else if (_isSequencePlaying) {
-        window_error_open(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
     } else if (commandEditorOpen) {
-        window_error_open(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
+        context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);
     } else {
         return true;
     }
@@ -1019,7 +1019,7 @@ static void window_title_editor_add_park_callback(sint32 result, const utf8 * pa
 static void window_title_editor_rename_park(size_t index, const utf8 * name)
 {
     if (!filename_valid_characters(name)) {
-        window_error_open(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
+        context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
         return;
     }
 
@@ -1027,7 +1027,7 @@ static void window_title_editor_rename_park(size_t index, const utf8 * name)
         if (i != index) {
             const utf8 * savePath = _editingTitleSequence->Saves[i];
             if (_strcmpi(savePath, name) == 0) {
-                window_error_open(STR_ERROR_EXISTING_NAME, STR_NONE);
+                context_show_error(STR_ERROR_EXISTING_NAME, STR_NONE);
                 return;
             }
         }
