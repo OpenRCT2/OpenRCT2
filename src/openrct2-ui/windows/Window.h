@@ -64,3 +64,8 @@ rct_window * window_park_entrance_open();
 rct_window * window_park_guests_open();
 rct_window * window_park_objective_open();
 rct_window * window_park_rating_open();
+
+rct_window * window_banner_open(rct_windownumber number);
+rct_window * window_sign_open(rct_windownumber number);
+rct_window * window_sign_small_open(rct_windownumber number);
+rct_window * window_player_open(uint8 id);
