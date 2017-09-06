@@ -19,6 +19,7 @@
 #include "SetParkEntranceFeeAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
+#include "RideSetName.hpp"
 
 extern "C"
 {
@@ -77,17 +78,16 @@ extern "C"
 #pragma endregion
 
 #pragma region SetParkEntranceFeeAction
-    void park_set_entrance_fee(money32 value)
+    void park_set_entrance_fee(money32 fee)
     {
-        auto gameAction = SetParkEntranceFeeAction();
-        gameAction.Fee = (money16)value;
+        auto gameAction = SetParkEntranceFeeAction((money16)fee);
         GameActions::Execute(&gameAction);
     }
 
     void game_command_set_park_entrance_fee(int *eax, int *ebx, int *ecx, int *edx, int *esi, int *edi, int *ebp)
     {
-        auto gameAction = SetParkEntranceFeeAction();
-        gameAction.Fee = (*edi & 0xFFFF);
+        money16 fee = (money16)(*edi & 0xFFFF);
+        auto gameAction = SetParkEntranceFeeAction(fee);
         GameActions::Execute(&gameAction);
     }
 #pragma endregion
@@ -163,4 +163,22 @@ extern "C"
     }
 
 #pragma endregion
+
+#pragma region RideSetName
+    void ride_set_name(sint32 rideIndex, const char *name)
+    {
+        auto gameAction = RideSetNameAction(rideIndex, name);
+        GameActions::Execute(&gameAction);
+    }
+
+    /**
+    *
+    *  rct2: 0x006B578B
+    */
+    void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    {
+        Guard::Assert(false, "GAME_COMMAND_SET_RIDE_NAME DEPRECATED");
+    }
+#pragma endregion 
+
 }
