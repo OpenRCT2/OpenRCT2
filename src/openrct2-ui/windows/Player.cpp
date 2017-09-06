@@ -14,17 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../input.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../util/util.h"
-#include "dropdown.h"
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
 
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,
@@ -184,7 +185,7 @@ uint32 window_player_page_enabled_widgets[] = {
     (1 << WIDX_TAB_2)
 };
 
-void window_player_open(uint8 id)
+rct_window * window_player_open(uint8 id)
 {
     rct_window* window;
 
@@ -219,6 +220,8 @@ void window_player_open(uint8 id)
 
     window_init_scroll_widgets(window);
     window_player_set_page(window, WINDOW_PLAYER_PAGE_OVERVIEW);
+
+    return window;
 }
 
 static void window_player_overview_show_group_dropdown(rct_window *w, rct_widget *widget)

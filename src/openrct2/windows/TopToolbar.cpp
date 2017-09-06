@@ -1515,7 +1515,7 @@ void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint
         sint32 bannerId = edi;
 
         audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
-        window_banner_open(bannerId);
+        context_open_detail_window(WD_BANNER, bannerId);
     }
 }
 /**

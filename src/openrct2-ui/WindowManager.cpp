@@ -119,6 +119,25 @@ public:
         }
     }
 
+    rct_window * OpenDetails(uint8 type, sint32 id) override
+    {
+        switch (type)
+        {
+        case WD_BANNER:
+            return window_banner_open(id);
+        case WD_SIGN:
+            return window_sign_open(id);
+        case WD_SIGN_SMALL:
+            return window_sign_small_open(id);
+
+        case WD_PLAYER:
+            return window_player_open(id);
+
+        default:
+            return nullptr;
+        }
+    }
+
 
     void HandleKeyboard(bool isTitle) override
     {

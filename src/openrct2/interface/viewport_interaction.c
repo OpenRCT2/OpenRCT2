@@ -390,7 +390,7 @@ sint32 viewport_interaction_right_click(sint32 x, sint32 y)
         viewport_interaction_remove_large_scenery(info.mapElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_BANNER:
-        window_banner_open(info.mapElement->properties.banner.index);
+        context_open_detail_window(WD_BANNER, info.mapElement->properties.banner.index);
         break;
     }
 
@@ -494,7 +494,7 @@ static void viewport_interaction_remove_park_wall(rct_map_element *mapElement, s
 {
     rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
     if (sceneryEntry->wall.scrolling_mode != 0xFF){
-        window_sign_small_open(mapElement->properties.wall.banner_index);
+        context_open_detail_window(WD_SIGN_SMALL, mapElement->properties.wall.banner_index);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
@@ -521,7 +521,7 @@ static void viewport_interaction_remove_large_scenery(rct_map_element *mapElemen
         sint32 id = (mapElement->type & 0xC0) |
             ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
             ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
-        window_sign_open(id);
+        context_open_detail_window(WD_SIGN, id);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(

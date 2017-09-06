@@ -503,6 +503,14 @@ enum {
 
 };
 
+enum {
+    WD_BANNER,
+    WD_SIGN,
+    WD_SIGN_SMALL,
+
+    WD_PLAYER,
+};
+
 #define validate_global_widx(wc, widx) \
     static_assert(widx == wc ## __ ## widx, "Global WIDX of " #widx " doesn't match actual value.")
 
@@ -728,10 +736,6 @@ void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_install_track_open(const char* path);
-void window_banner_open(rct_windownumber number);
-void window_sign_open(rct_windownumber number);
-void window_sign_small_open(rct_windownumber number);
-void window_player_open(uint8 id);
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();

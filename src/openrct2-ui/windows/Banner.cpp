@@ -14,15 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../world/scenery.h"
-#include "dropdown.h"
-#include "../sprites.h"
+#include <openrct2/game.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/world/scenery.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/sprites.h>
 
 #define WW 113
 #define WH 96
@@ -114,7 +115,7 @@ static rct_window_event_list window_banner_events = {
 *
 *  rct2: 0x006BA305
 */
-static void _window_banner_open(rct_windownumber number)
+rct_window * window_banner_open(rct_windownumber number)
 {
     rct_window* w;
     rct_widget *viewportWidget;
@@ -123,7 +124,7 @@ static void _window_banner_open(rct_windownumber number)
     // Check if window is already open
     w = window_bring_to_front_by_number(WC_BANNER, number);
     if (w != nullptr)
-        return;
+        return w;
 
     w = window_create_auto_pos(WW, WH, &window_banner_events, WC_BANNER, WF_NO_SCROLLING);
     w->widgets = window_banner_widgets;
@@ -178,6 +179,8 @@ static void _window_banner_open(rct_windownumber number)
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
+
+    return w;
 }
 
 /**
@@ -371,12 +374,4 @@ static void window_banner_viewport_rotate(rct_window *w)
 
     w->viewport->flags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
     window_invalidate(w);
-}
-
-extern "C"
-{
-    void window_banner_open(rct_windownumber number)
-    {
-        return _window_banner_open(number);
-    }
 }

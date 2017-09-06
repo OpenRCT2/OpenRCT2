@@ -999,6 +999,12 @@ extern "C"
         return windowManager->OpenView(wc);
     }
 
+    rct_window * context_open_detail_window(uint8 type, sint32 id)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        return windowManager->OpenDetails(type, id);
+    }
+
     void context_input_handle_keyboard(bool isTitle)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

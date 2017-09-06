@@ -22,6 +22,7 @@ namespace OpenRCT2 { namespace Ui
     {
         rct_window * OpenWindow(rct_windowclass wc) override { return nullptr; }
         rct_window * OpenView(uint8 view) override { return nullptr; }
+        rct_window * OpenDetails(uint8 type, sint32 id) override { return nullptr; }
         void HandleKeyboard(bool isTitle) override { }
         std::string GetKeyboardShortcutString(sint32 shortcut) override { return std::string(); }
     };
