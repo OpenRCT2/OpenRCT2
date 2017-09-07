@@ -20,6 +20,7 @@
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
+#include "RideDemolishAction.hpp"
 
 namespace GameActions
 {
@@ -30,5 +31,6 @@ namespace GameActions
         Register<RideCreateAction>();
         Register<RideSetStatusAction>();
         Register<RideSetNameAction>();
+        Register<RideDemolishAction>();
     }
 }

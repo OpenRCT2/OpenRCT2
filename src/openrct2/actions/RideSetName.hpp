@@ -82,12 +82,6 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-        if (newUserStringId == 0) 
-        {
-            // FIXME: Regardless of Query this can still happen,
-            //        if the server has sent new commands before our own fired.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
-        }
 
         rct_ride *ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
