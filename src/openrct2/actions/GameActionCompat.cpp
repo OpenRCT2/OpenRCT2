@@ -20,6 +20,7 @@
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
+#include "RideDemolishAction.hpp"
 
 extern "C"
 {
@@ -164,7 +165,7 @@ extern "C"
 
 #pragma endregion
 
-#pragma region RideSetName
+#pragma region RideSetNameAction
     void ride_set_name(sint32 rideIndex, const char *name)
     {
         auto gameAction = RideSetNameAction(rideIndex, name);
@@ -179,6 +180,25 @@ extern "C"
     {
         Guard::Assert(false, "GAME_COMMAND_SET_RIDE_NAME DEPRECATED");
     }
-#pragma endregion 
+#pragma endregion
+
+#pragma region RideDemolishAction
+    void ride_demolish(sint32 rideIndex, sint32 flags)
+    {
+        auto gameAction = RideDemolishAction(rideIndex);
+        gameAction.SetFlags(flags);
+
+        GameActions::Execute(&gameAction);
+    }
+
+    /**
+    *
+    *  rct2: 0x006B49D9
+    */
+    void game_command_demolish_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    {
+        Guard::Assert(false, "GAME_COMMAND_DEMOLISH_RIDE DEPRECATED");
+    }
+#pragma endregion
 
 }
