@@ -18,6 +18,7 @@
 #include "../title/TitleScreen.h"
 #include "../core/Memory.hpp"
 #include "../Context.h"
+#include "Intent.h"
 
 #include <time.h>
 #include "../core/Guard.hpp"
@@ -831,7 +832,9 @@ static void window_loadsave_select(rct_window *w, const char *path)
     }
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
         save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
-        window_install_track_open(pathBuffer);
+        auto intent = new Intent(WC_INSTALL_TRACK);
+        intent->putExtra(2, pathBuffer);
+        context_open_intent(intent);
         window_close_by_class(WC_LOADSAVE);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         break;
