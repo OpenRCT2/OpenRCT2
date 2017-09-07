@@ -98,6 +98,7 @@ namespace OpenRCT2
         uint32  _lastTick = 0;
         uint32  _accumulator = 0;
         uint32  _lastUpdateTick = 0;
+        bool    _variableFrame = false;
 
         /** If set, will end the OpenRCT2 game loop. Intentially private to this module so that the flag can not be set back to false. */
         bool _finished = false;
@@ -107,9 +108,6 @@ namespace OpenRCT2
         // Remove this when GetContext() is no longer called so that
         // multiple instances can be created in parallel
         static Context * Instance;
-        static void RunFixedFrameFunc() {
-            Instance->RunFixedFrame();
-        }
 
     public:
         Context(IPlatformEnvironment * env, IAudioContext * audioContext, IUiContext * uiContext)
@@ -549,6 +547,28 @@ namespace OpenRCT2
             return true;
         }
 
+
+        static void RunGameTick(void * vctx)
+        {
+            Context * ctx = reinterpret_cast<Context *>(vctx);
+            bool useVariableFrame = ctx->ShouldRunVariableFrame();
+            // Make sure we catch the state change and reset it.
+            if (ctx->_variableFrame != useVariableFrame)
+            {
+                ctx->_lastTick = 0;
+                ctx->_variableFrame = useVariableFrame;
+            }
+
+            if (useVariableFrame)
+            {
+                ctx->RunVariableFrame();
+            }
+            else
+            {
+                ctx->RunFixedFrame();
+            }
+        }
+
         /**
         * Run the main game loop until the finished flag is set.
         */
@@ -558,30 +578,15 @@ namespace OpenRCT2
             _finished = false;
 
 #ifndef __EMSCRIPTEN__
-            bool variableFrame = ShouldRunVariableFrame();
-            bool useVariableFrame;
+            _variableFrame = ShouldRunVariableFrame();
 
             do
             {
-                useVariableFrame = ShouldRunVariableFrame();
-                // Make sure we catch the state change and reset it.
-                if (variableFrame != useVariableFrame)
-                {
-                    _lastTick = 0;
-                    variableFrame = useVariableFrame;
-                }
+                RunGameTick(this);
 
-                if (useVariableFrame)
-                {
-                    RunVariableFrame();
-                }
-                else
-                {
-                    RunFixedFrame();
-                }
             } while (!_finished);
 #else
-            emscripten_set_main_loop(RunFixedFrameFunc, 0, 1);
+            emscripten_set_main_loop_arg(RunGameTick, this, 0, 1);
 #endif // __EMSCRIPTEN__
             log_verbose("finish openrct2 loop");
         }
