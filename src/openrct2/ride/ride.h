@@ -1208,6 +1208,9 @@ bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
 
 sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
 
+void ride_demolish(sint32 rideIndex, sint32 flags);
+void ride_stop_peeps_queuing(sint32 rideIndex);
+
 #ifdef __cplusplus
 }
 #endif
