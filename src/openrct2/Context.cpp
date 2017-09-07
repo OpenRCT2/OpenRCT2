@@ -559,7 +559,7 @@ namespace OpenRCT2
             _variableFrame = ShouldRunVariableFrame();
             do
             {
-                RunGameTick(this);
+                RunFrame(this);
             }
             while (!_finished);
 #else
