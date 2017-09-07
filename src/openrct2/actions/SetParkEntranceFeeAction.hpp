@@ -29,8 +29,15 @@ extern "C"
 
 struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>
 {
+private:
+    money16 _fee;
+
 public:
-    money16 Fee;
+    SetParkEntranceFeeAction() {}
+    SetParkEntranceFeeAction(money16 fee) 
+        : _fee(fee)
+    {
+    }
 
     uint16 GetActionFlags() const override
     {
@@ -41,7 +48,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << Fee;
+        stream << _fee;
     }
 
     GameActionResult::Ptr Query() const override
@@ -52,7 +59,7 @@ public:
         {
             return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);
         }
-        if (Fee < MONEY_FREE || Fee > MONEY(100,00))
+        if (_fee < MONEY_FREE || _fee > MONEY(100,00))
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
@@ -61,7 +68,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        gParkEntranceFee = Fee;
+        gParkEntranceFee = _fee;
         window_invalidate_by_class(WC_PARK_INFORMATION);
         return std::make_unique<GameActionResult>();
     }
