@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
+#include "Intent.h"
 
 #include "../game.h"
 #include "../interface/viewport.h"
@@ -468,7 +469,9 @@ void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         }
         break;
     case WIDX_FIRE:
-        window_staff_fire_prompt_open(peep);
+        auto intent = new Intent(WC_FIRE_PROMPT);
+        intent->putExtra(4, (uintptr_t)peep);
+        context_open_intent(intent);
         break;
     case WIDX_RENAME:
         window_text_input_open(w, widgetIndex, STR_STAFF_TITLE_STAFF_MEMBER_NAME, STR_STAFF_PROMPT_ENTER_NAME, peep->name_string_idx, peep->id, 32);
