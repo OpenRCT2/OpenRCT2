@@ -571,8 +571,8 @@ void window_staff_overview_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
     // Clear patrol
     if (dropdownIndex == 1) {
         rct_peep* peep = GET_PEEP(w->number);
-        for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++) {
-            gStaffPatrolAreas[peep->staff_id * RCT12_PATROL_AREA_SIZE + i] = 0;
+        for (sint32 i = 0; i < STAFF_PATROL_AREA_SIZE; i++) {
+            gStaffPatrolAreas[peep->staff_id * STAFF_PATROL_AREA_SIZE + i] = 0;
         }
         gStaffModes[peep->staff_id] &= ~2;
 

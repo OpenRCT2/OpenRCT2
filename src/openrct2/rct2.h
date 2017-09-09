@@ -20,7 +20,7 @@
 #include "common.h"
 
 #define RCT2_MAX_RIDES_IN_PARK              255
-#define RCT2_MAX_STAFF                      204
+#define RCT2_MAX_STAFF                      200
 #define RCT2_MAX_BANNERS_IN_PARK            250
 #define RCT2_MAX_VEHICLES_PER_RIDE          32
 #define RCT2_MAX_CARS_PER_TRAIN             32

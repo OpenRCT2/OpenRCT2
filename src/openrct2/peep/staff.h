@@ -19,11 +19,10 @@
 
 #include "../common.h"
 #include "peep.h"
-#include "../rct12.h"
-#include "../rct2.h"
 
-#define STAFF_MAX_COUNT     200
-#define STAFF_TYPE_COUNT    4
+#define STAFF_MAX_COUNT        200
+#define STAFF_TYPE_COUNT       4
+#define STAFF_PATROL_AREA_SIZE 128
 
 enum STAFF_MODE {
     STAFF_MODE_NONE,
@@ -65,8 +64,8 @@ enum ENTERTAINER_COSTUME {
 
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
-extern uint32 gStaffPatrolAreas[RCT2_MAX_STAFF * RCT12_PATROL_AREA_SIZE];
-extern uint8 gStaffModes[RCT2_MAX_STAFF];
+extern uint32 gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
+extern uint8 gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
 extern uint16 gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

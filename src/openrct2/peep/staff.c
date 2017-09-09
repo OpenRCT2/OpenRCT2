@@ -47,8 +47,8 @@ const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PIRATE,
 };
 
-uint32 gStaffPatrolAreas[RCT2_MAX_STAFF * RCT12_PATROL_AREA_SIZE];
-uint8 gStaffModes[RCT2_MAX_STAFF];
+uint32 gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
+uint8 gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
 uint16 gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
@@ -340,8 +340,8 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
 
             gStaffModes[newStaffId] = STAFF_MODE_WALK;
 
-            for (i = 0; i < RCT12_PATROL_AREA_SIZE; i++) {
-                gStaffPatrolAreas[newStaffId * RCT12_PATROL_AREA_SIZE + i] = 0;
+            for (i = 0; i < STAFF_PATROL_AREA_SIZE; i++) {
+                gStaffPatrolAreas[newStaffId * STAFF_PATROL_AREA_SIZE + i] = 0;
             }
         }
 
@@ -468,7 +468,7 @@ void game_command_set_staff_patrol(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32
             return;
         }
         rct_peep *peep = &sprite->peep;
-        sint32 patrolOffset = peep->staff_id * RCT12_PATROL_AREA_SIZE;
+        sint32 patrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
 
         staff_toggle_patrol_area(peep->staff_id, x, y);
 
@@ -577,8 +577,8 @@ void staff_update_greyed_patrol_areas()
 
     for (sint32 staff_type = 0; staff_type < STAFF_TYPE_COUNT; ++staff_type)
     {
-        sint32 staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * RCT12_PATROL_AREA_SIZE;
-        for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++) {
+        sint32 staffPatrolOffset = (staff_type + STAFF_MAX_COUNT) * STAFF_PATROL_AREA_SIZE;
+        for (sint32 i = 0; i < STAFF_PATROL_AREA_SIZE; i++) {
             gStaffPatrolAreas[staffPatrolOffset + i] = 0;
         }
 
@@ -588,8 +588,8 @@ void staff_update_greyed_patrol_areas()
 
             if (peep->type == PEEP_TYPE_STAFF && staff_type == peep->staff_type)
             {
-                sint32 peepPatrolOffset = peep->staff_id * RCT12_PATROL_AREA_SIZE;
-                for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++) {
+                sint32 peepPatrolOffset = peep->staff_id * STAFF_PATROL_AREA_SIZE;
+                for (sint32 i = 0; i < STAFF_PATROL_AREA_SIZE; i++) {
                     gStaffPatrolAreas[staffPatrolOffset + i] |= gStaffPatrolAreas[peepPatrolOffset + i];
                 }
             }
@@ -812,7 +812,7 @@ bool staff_is_patrol_area_set(sint32 staffIndex, sint32 x, sint32 y)
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32 peepOffset = staffIndex * RCT12_PATROL_AREA_SIZE;
+    sint32 peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
     sint32 offset = (x | y) >> 5;
     sint32 bitIndex = (x | y) & 0x1F;
     return gStaffPatrolAreas[peepOffset + offset] & (((uint32)1) << bitIndex);
@@ -823,7 +823,7 @@ void staff_set_patrol_area(sint32 staffIndex, sint32 x, sint32 y, bool value)
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32 peepOffset = staffIndex * RCT12_PATROL_AREA_SIZE;
+    sint32 peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
     sint32 offset = (x | y) >> 5;
     sint32 bitIndex = (x | y) & 0x1F;
     uint32 *addr = &gStaffPatrolAreas[peepOffset + offset];
@@ -839,7 +839,7 @@ void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y)
     x = (x & 0x1F80) >> 7;
     y = (y & 0x1F80) >> 1;
 
-    sint32 peepOffset = staffIndex * RCT12_PATROL_AREA_SIZE;
+    sint32 peepOffset = staffIndex * STAFF_PATROL_AREA_SIZE;
     sint32 offset = (x | y) >> 5;
     sint32 bitIndex = (x | y) & 0x1F;
     gStaffPatrolAreas[peepOffset + offset] ^= (1 << bitIndex);
