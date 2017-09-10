@@ -450,7 +450,6 @@ private:
         }
 
         addrinfo * result = nullptr;
-        getaddrinfo(address, serviceName.c_str(), &hints, &result);
         int errorcode = getaddrinfo(address, serviceName.c_str(), &hints, &result);
         if (errorcode != 0)
         {
