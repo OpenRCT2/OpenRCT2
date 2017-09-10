@@ -47,6 +47,8 @@ const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PIRATE,
 };
 
+// Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their staff_id
+// Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
 uint32 gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
 uint8 gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
 uint16 gStaffDrawPatrolAreas;

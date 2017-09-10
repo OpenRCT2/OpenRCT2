@@ -1295,7 +1295,7 @@ private:
             FixPeepNextInQueue(peep, spriteIndexMap);
         }
 
-        // The RCT2 structures are bigger than in RCT1, so set them to zero
+        // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
         Memory::Set(gStaffModes, 0, sizeof(gStaffModes));
         Memory::Set(gStaffPatrolAreas, 0, sizeof(gStaffPatrolAreas));
 
@@ -1503,6 +1503,16 @@ private:
 
     void ImportStaffPatrolArea(rct_peep * staffmember)
     {
+        // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
+        // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
+        //   This step also "produces" the 4x4 patrol squares.
+        // - Append the two bitstrings to a 10-bit value like so: yyyyyxxxxx
+        // - Use this 10-bit value as an index into an 8-bit array. The array is sized such that every 4x4 square
+        //   used for the patrols on the map has a bit in that array. If a bit is 1, that square is part of the patrol.
+        //   The correct bit position in that array is found like this: yyyyyxx|xxx
+        //                                          index in the array ----^     ^--- bit position in the 8-bit value
+        // We do the opposite in this function to recover the x and y values.
+
         sint32 peepOffset = staffmember->staff_id * RCT12_PATROL_AREA_SIZE;
         for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
         {
