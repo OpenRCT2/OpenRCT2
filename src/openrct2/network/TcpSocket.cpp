@@ -451,6 +451,13 @@ private:
 
         addrinfo * result = nullptr;
         getaddrinfo(address, serviceName.c_str(), &hints, &result);
+        int errorcode = getaddrinfo(address, serviceName.c_str(), &hints, &result);
+        if (errorcode != 0)
+        {
+            log_error("Resolving address failed: Code %d.", errorcode);
+            log_error("Resolution error message: %s.", gai_strerror(errorcode));
+            return false;
+        }
         if (result == nullptr)
         {
             return false;
