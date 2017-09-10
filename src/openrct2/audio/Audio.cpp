@@ -415,6 +415,7 @@ void audio_close()
 void audio_toggle_all_sounds()
 {
     gConfigSound.sound_enabled = !gConfigSound.sound_enabled;
+    gConfigSound.ride_music_enabled = !gConfigSound.ride_music_enabled;
     if (gConfigSound.sound_enabled)
     {
         audio_unpause_sounds();
