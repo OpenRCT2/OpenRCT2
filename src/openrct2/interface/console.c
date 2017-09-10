@@ -1196,7 +1196,7 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
         } else if (strcmp(argv[0], "themes") == 0) {
             context_open_window(WC_THEMES);
         } else if (strcmp(argv[0], "title_sequences") == 0) {
-            window_title_editor_open(0);
+            context_open_window(WC_TITLE_EDITOR);
         } else if (invalidTitle) {
             console_writeline_error("Cannot open this window in the title screen.");
         } else {

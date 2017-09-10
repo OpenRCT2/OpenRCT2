@@ -6222,9 +6222,8 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_ride_customer_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    auto intent;
-
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
@@ -6241,23 +6240,29 @@ static void window_ride_customer_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_ride_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_SHOW_GUESTS_THOUGHTS:
-        intent = new Intent(WC_GUEST_LIST);
-        intent->putExtra(0, GLFT_GUESTS_THINKING_ABOUT_RIDE);
-        intent->putExtra(1, w->number);
-        context_open_intent(intent);
+    {
+        auto intent = Intent(WC_GUEST_LIST);
+        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_THINKING_ABOUT_RIDE);
+        intent.putExtra(INTENT_EXTRA_1, w->number);
+        context_open_intent(&intent);
         break;
+    }
     case WIDX_SHOW_GUESTS_ON_RIDE:
-        intent = new Intent(WC_GUEST_LIST);
-        intent->putExtra(0, GLFT_GUESTS_ON_RIDE);
-        intent->putExtra(1, w->number);
-        context_open_intent(intent);
+    {
+        auto intent = Intent(WC_GUEST_LIST);
+        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_ON_RIDE);
+        intent.putExtra(INTENT_EXTRA_1, w->number);
+        context_open_intent(&intent);
         break;
+    }
     case WIDX_SHOW_GUESTS_QUEUING:
-        intent = new Intent(WC_GUEST_LIST);
-        intent->putExtra(0, GLFT_GUESTS_IN_QUEUE);
-        intent->putExtra(1, w->number);
-        context_open_intent(intent);
+    {
+        auto intent = Intent(WC_GUEST_LIST);
+        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_IN_QUEUE);
+        intent.putExtra(INTENT_EXTRA_1, w->number);
+        context_open_intent(&intent);
         break;
+    }
     }
 }
 

@@ -72,4 +72,13 @@ rct_window * window_sign_small_open(rct_windownumber number);
 rct_window * window_player_open(uint8 id);
 rct_window * window_new_campaign_open(sint16 campaignType);
 
+rct_window * window_install_track_open(const char* path);
+void window_guest_list_init_vars();
+rct_window * window_guest_list_open();
+rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
+rct_window * window_staff_fire_prompt_open(rct_peep* peep);
+void window_title_editor_open(sint32 tab);
+void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
+void window_scenarioselect_open(scenarioselect_callback callback);
+
 rct_window * window_error_open(rct_string_id title, rct_string_id message);

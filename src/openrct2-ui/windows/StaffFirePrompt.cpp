@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
+#include <openrct2/game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
 
 #define WW 200
 #define WH 100
@@ -74,20 +74,25 @@ static rct_window_event_list window_staff_fire_events = {
     nullptr
 };
 /** Based off of rct2: 0x6C0A77 */
-void window_staff_fire_prompt_open(rct_peep* peep)
+rct_window* window_staff_fire_prompt_open(rct_peep* peep)
 {
+    rct_window * w;
+
     // Check if the confirm window already exists.
-    if (window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index)) {
-        return;
+    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index);
+    if (w != nullptr) {
+        return w;
     }
 
-    rct_window* w = window_create_centred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
+    w = window_create_centred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
     w->enabled_widgets |= (1 << WIDX_CLOSE) | (1 << WIDX_YES) | (1 << WIDX_CANCEL);
 
     window_init_scroll_widgets(w);
 
     w->number = peep->sprite_index;
+
+    return w;
 }
 
 

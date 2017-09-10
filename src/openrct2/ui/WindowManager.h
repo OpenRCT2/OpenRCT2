@@ -19,6 +19,7 @@
 #ifdef __cplusplus
 
 #include <string>
+#include "../windows/Intent.h"
 #include "../common.h"
 
 #include "../interface/window.h"
@@ -33,9 +34,11 @@ namespace OpenRCT2
         interface IWindowManager
         {
             virtual ~IWindowManager() = default;
+            virtual void Init() abstract;
             virtual rct_window * OpenWindow(rct_windowclass wc) abstract;
             virtual rct_window * OpenView(uint8 view) abstract;
             virtual rct_window * OpenDetails(uint8 type, sint32 id) abstract;
+            virtual rct_window * OpenIntent(Intent * intent) abstract;
             virtual rct_window * ShowError(rct_string_id title, rct_string_id message) abstract;
 
             virtual void HandleKeyboard(bool isTitle) abstract;

@@ -2,7 +2,7 @@
 
 Intent::Intent(rct_windowclass windowclass)
 {
-this->_Class = windowclass;
+    this->_Class = windowclass;
 }
 
 Intent *
@@ -33,3 +33,46 @@ Intent::putExtra(uint32 key, utf8string value)
 
     return this;
 }
+rct_windowclass
+Intent::GetWindowClass()
+{
+    return this->_Class;
+}
+void *
+Intent::GetPointerExtra(uint32 key)
+{
+    return (void *) _Pointers.at(key);
+}
+uint32
+Intent::GetUIntExtra(uint32 key)
+{
+    return _UInts.at(key);
+}
+sint32
+Intent::GetSIntExtra(uint32 key)
+{
+    return _SInts.at(key);
+}
+utf8string
+Intent::GetStringExtra(uint32 key)
+{
+    return _Strings.at(key);
+}
+
+extern "C" {
+    Intent *intent_create(rct_windowclass clss)
+    {
+        return new Intent(clss);
+    }
+
+    void intent_release(Intent *intent)
+    {
+        delete intent;
+    }
+
+    void intent_set_sint(Intent * intent, uint32 key, sint32 value)
+    {
+        intent->putExtra(key, value);
+    }
+}
+

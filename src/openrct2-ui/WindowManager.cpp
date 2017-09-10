@@ -25,6 +25,11 @@ using namespace OpenRCT2::Ui;
 class WindowManager final : public IWindowManager
 {
 public:
+    void Init() override
+    {
+        window_guest_list_init_vars();
+    }
+
     rct_window * OpenWindow(rct_windowclass wc) override
     {
         switch (wc) {
@@ -145,6 +150,21 @@ public:
     rct_window * ShowError(rct_string_id title, rct_string_id message) override
     {
         return window_error_open(title, message);
+    }
+
+    rct_window * OpenIntent(Intent * intent) override
+    {
+        switch(intent->GetWindowClass()) {
+        case WC_FIRE_PROMPT:
+            return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_3));
+        case WC_INSTALL_TRACK:
+            return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_2));
+        case WC_GUEST_LIST:
+            return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_0), intent->GetSIntExtra(INTENT_EXTRA_1));
+
+        default:
+            return nullptr;
+        }
     }
 
     void HandleKeyboard(bool isTitle) override

@@ -1438,8 +1438,10 @@ void game_init_all(sint32 mapSize)
 
     gInMapInitCode = false;
 
+    gNextGuestNumber = 1;
+
+    context_init();
     window_new_ride_init_vars();
-    window_guest_list_init_vars();
     scenery_set_default_placement_configuration();
     window_tile_inspector_clear_clipboard();
     load_palette();

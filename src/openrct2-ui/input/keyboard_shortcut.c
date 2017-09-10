@@ -427,7 +427,7 @@ static void shortcut_show_guest_list()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-        window_guest_list_open();
+        context_open_window(WC_GUEST_LIST);
     }
 }
 
