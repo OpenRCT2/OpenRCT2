@@ -1294,6 +1294,19 @@ private:
         {
             FixPeepNextInQueue(peep, spriteIndexMap);
         }
+
+        // The RCT2/OpenRCT2 structures are bigger than in RCT1, so set them to zero
+        Memory::Set(gStaffModes, 0, sizeof(gStaffModes));
+        Memory::Set(gStaffPatrolAreas, 0, sizeof(gStaffPatrolAreas));
+
+        Memory::Copy(gStaffModes, _s4.staff_modes, sizeof(_s4.staff_modes));
+
+        FOR_ALL_STAFF(i, peep)
+        {
+            ImportStaffPatrolArea(peep);
+        }
+        // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
+        staff_update_greyed_patrol_areas();
     }
 
     void ImportPeep(rct_peep * dst, rct1_peep * src)
@@ -1486,6 +1499,47 @@ private:
     void FixPeepNextInQueue(rct_peep * peep, const uint16 * spriteIndexMap)
     {
         peep->next_in_queue = MapSpriteIndex(peep->next_in_queue, spriteIndexMap);
+    }
+
+    void ImportStaffPatrolArea(rct_peep * staffmember)
+    {
+        // The patrol areas in RCT1 are encoded as follows, for coordinates x and y, separately for every staff member:
+        // - Chop off the 7 lowest bits of the x and y coordinates, which leaves 5 bits per coordinate.
+        //   This step also "produces" the 4x4 patrol squares.
+        // - Append the two bitstrings to a 10-bit value like so: yyyyyxxxxx
+        // - Use this 10-bit value as an index into an 8-bit array. The array is sized such that every 4x4 square
+        //   used for the patrols on the map has a bit in that array. If a bit is 1, that square is part of the patrol.
+        //   The correct bit position in that array is found like this: yyyyyxx|xxx
+        //                                          index in the array ----^     ^--- bit position in the 8-bit value
+        // We do the opposite in this function to recover the x and y values.
+
+        sint32 peepOffset = staffmember->staff_id * RCT12_PATROL_AREA_SIZE;
+        for (sint32 i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
+        {
+            if (_s4.patrol_areas[peepOffset + i] == 0)
+            {
+                // No patrol for this area
+                continue;
+            }
+
+            // Loop over the bits of the uint8
+            for (sint32 j = 0; j < 8; j++)
+            {
+                sint8 bit = (_s4.patrol_areas[peepOffset + i] >> j) & 1;
+                if (bit == 0)
+                {
+                    // No patrol for this area
+                    continue;
+                }
+                // val contains the 5 highest bits of both the x and y coordinates
+                sint32 val = j | (i << 3);
+                sint32 x = val & 0x1F;
+                x <<= 7;
+                sint32 y = val & 0x3E0;
+                y <<= 2;
+                staff_set_patrol_area(staffmember->staff_id, x, y, true);
+            }
+        }
     }
 
     void ImportLitter()

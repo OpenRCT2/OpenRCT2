@@ -270,8 +270,8 @@ typedef struct rct_s6_data {
     rct_ride_measurement ride_measurements[8];
     uint32 next_guest_index;
     uint16 grass_and_scenery_tilepos;
-    uint32 patrol_areas[RCT2_MAX_STAFF * 128];
-    uint8 staff_modes[RCT2_MAX_STAFF];
+    uint32 patrol_areas[(RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
+    uint8 staff_modes[RCT2_MAX_STAFF + RCT12_STAFF_TYPE_COUNT];
     uint8 pad_13CA73E;
     uint8 pad_13CA73F;
     uint8 byte_13CA740;

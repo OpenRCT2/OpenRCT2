@@ -20,8 +20,11 @@
 #include "../common.h"
 #include "peep.h"
 
-#define STAFF_MAX_COUNT     200
-#define STAFF_TYPE_COUNT    4
+#define STAFF_MAX_COUNT        200
+#define STAFF_TYPE_COUNT       4
+// The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
+// Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
+#define STAFF_PATROL_AREA_SIZE 128
 
 enum STAFF_MODE {
     STAFF_MODE_NONE,
@@ -63,8 +66,8 @@ enum ENTERTAINER_COSTUME {
 
 extern const rct_string_id StaffCostumeNames[ENTERTAINER_COSTUME_COUNT];
 
-extern uint32 gStaffPatrolAreas[204 * 128];
-extern uint8 gStaffModes[204];
+extern uint32 gStaffPatrolAreas[(STAFF_MAX_COUNT + STAFF_TYPE_COUNT) * STAFF_PATROL_AREA_SIZE];
+extern uint8 gStaffModes[STAFF_MAX_COUNT + STAFF_TYPE_COUNT];
 extern uint16 gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;

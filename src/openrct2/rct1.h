@@ -31,6 +31,7 @@
 #define RCT1_MAX_TRAINS_PER_RIDE      12
 #define RCT1_MAX_MAP_SIZE             128
 #define RCT1_MAX_RIDES_IN_PARK        128
+#define RCT1_MAX_STAFF                116
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
 
 typedef struct ParkLoadResult ParkLoadResult;
@@ -721,8 +722,8 @@ typedef struct rct1_s4 {
     rct_ride_measurement ride_measurements[8];
     uint32 next_guest_index;
     uint16 game_counter_5;
-    uint8 patrol_areas[0x3C00];
-    uint8 unk_1F42AA[116];
+    uint8 patrol_areas[(RCT1_MAX_STAFF + RCT12_STAFF_TYPE_COUNT) * RCT12_PATROL_AREA_SIZE];
+    uint8 staff_modes[RCT1_MAX_STAFF];
     uint8 unk_1F431E[4];
     uint8 unk_1F4322[8];
     uint8 climate;
