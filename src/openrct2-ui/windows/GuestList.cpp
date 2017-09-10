@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
+#include <openrct2/config/Config.h>
 
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "dropdown.h"
+#include <openrct2/game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
 
 enum {
     PAGE_INDIVIDUAL,
@@ -156,12 +156,6 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
 
 void window_guest_list_init_vars()
 {
-    // rct2: 0x0068F083
-    gNextGuestNumber = 1;
-    _window_guest_list_last_find_groups_tick = 0xFFFFFFFF;
-    _window_guest_list_selected_filter = 0xFF;
-
-    // rct2: 0x0068F050
     _window_guest_list_selected_tab = 0;
     _window_guest_list_selected_view = 0;
     _window_guest_list_last_find_groups_tick = 0xFFFFFFFF;
@@ -173,14 +167,14 @@ void window_guest_list_init_vars()
  *
  *  rct2: 0x006992E3
  */
-void window_guest_list_open()
+rct_window * window_guest_list_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_GUEST_LIST);
     if (window != nullptr)
-        return;
+        return window;
 
     window = window_create_auto_pos(350, 330, &window_guest_list_events, WC_GUEST_LIST, WF_10 | WF_RESIZABLE);
     window->widgets = window_guest_list_widgets;
@@ -210,6 +204,8 @@ void window_guest_list_open()
     window->min_height = 330;
     window->max_width = 500;
     window->max_height = 450;
+
+    return window;
 }
 
 /**
@@ -218,9 +214,9 @@ void window_guest_list_open()
  *
  * @param index The number of the ride or index of the thought
  */
-void window_guest_list_open_with_filter(sint32 type, sint32 index)
+rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index)
 {
-    window_guest_list_open();
+    rct_window * w = window_guest_list_open();
 
     _window_guest_list_selected_page = 0;
     _window_guest_list_num_pages = 1;
@@ -286,6 +282,8 @@ void window_guest_list_open_with_filter(sint32 type, sint32 index)
         break;
     }
     }
+
+    return w;
 }
 
 /**

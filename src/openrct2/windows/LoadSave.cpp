@@ -831,13 +831,15 @@ static void window_loadsave_select(rct_window *w, const char *path)
         break;
     }
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK) :
+    {
         save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
-        auto intent = new Intent(WC_INSTALL_TRACK);
-        intent->putExtra(2, pathBuffer);
-        context_open_intent(intent);
+        auto intent = Intent(WC_INSTALL_TRACK);
+        intent.putExtra(INTENT_EXTRA_2, pathBuffer);
+        context_open_intent(&intent);
         window_close_by_class(WC_LOADSAVE);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
         break;
+    }
     case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK) :
     {
         path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));

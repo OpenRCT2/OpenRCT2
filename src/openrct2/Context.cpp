@@ -864,6 +864,11 @@ namespace OpenRCT2
 
 extern "C"
 {
+    void context_init()
+    {
+        GetContext()->GetUiContext()->GetWindowManager()->Init();
+    }
+
     bool context_load_park_from_file(const utf8 * path)
     {
         return GetContext()->LoadParkFromFile(path);
@@ -1003,6 +1008,12 @@ extern "C"
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         return windowManager->OpenDetails(type, id);
+    }
+
+    rct_window * context_open_intent(Intent * intent)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        return windowManager->OpenIntent(intent);
     }
 
     rct_window * context_show_error(rct_string_id title, rct_string_id message)

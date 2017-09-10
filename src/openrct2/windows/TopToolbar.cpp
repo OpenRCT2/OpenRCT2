@@ -355,7 +355,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         context_open_window(WC_STAFF_LIST);
         break;
     case WIDX_GUESTS:
-        window_guest_list_open();
+        context_open_window(WC_GUEST_LIST);
         break;
     case WIDX_FINANCES:
         context_open_window(WC_FINANCES);

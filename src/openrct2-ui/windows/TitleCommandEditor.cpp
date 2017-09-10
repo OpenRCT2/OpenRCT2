@@ -14,18 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
-#include "../title/TitleSequence.h"
-#include "../core/Memory.hpp"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/title/TitleSequence.h>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../input.h"
-#include "../interface/themes.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
-#include "dropdown.h"
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
 
 typedef struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.
@@ -191,7 +192,7 @@ static uint8 get_zoom()
     return zoom;
 }
 
-static void _window_title_command_editor_open(TitleSequence * sequence, sint32 index, bool insert)
+void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bool insert)
 {
     _sequence = sequence;
 
@@ -591,13 +592,5 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
                 w->y + w->widgets[WIDX_INPUT].top,
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
-    }
-}
-
-extern "C"
-{
-    void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bool insert)
-    {
-        _window_title_command_editor_open(sequence, index, insert);
     }
 }

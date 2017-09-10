@@ -14,18 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../scenario/ScenarioRepository.h"
-#include "../scenario/ScenarioSources.h"
-#include "../core/Memory.hpp"
+#include <openrct2/config/Config.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/core/Memory.hpp>
 
-#include "../audio/audio.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../interface/widget.h"
-#include "../interface/themes.h"
-#include "../util/util.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/util/util.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 

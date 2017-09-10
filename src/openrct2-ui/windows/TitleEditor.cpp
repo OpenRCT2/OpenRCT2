@@ -14,24 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../FileClassifier.h"
-#include "../OpenRCT2.h"
-#include "../ParkImporter.h"
-#include "../scenario/ScenarioSources.h"
-#include "../title/TitleScreen.h"
-#include "../title/TitleSequence.h"
-#include "../title/TitleSequenceManager.h"
-#include "../title/TitleSequencePlayer.h"
-#include "../Context.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/FileClassifier.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/ParkImporter.h>
+#include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/title/TitleScreen.h>
+#include <openrct2/title/TitleSequence.h>
+#include <openrct2/title/TitleSequenceManager.h>
+#include <openrct2/title/TitleSequencePlayer.h>
+#include <openrct2/Context.h>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "dropdown.h"
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
 
 enum WINDOW_TITLE_EDITOR_TAB {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
@@ -215,7 +216,7 @@ static sint32 window_title_editor_tab_sprites[] = {
     SPR_TAB_STATS_0
 };
 
-static void _window_title_editor_open(sint32 tab)
+void window_title_editor_open(sint32 tab)
 {
     rct_window* window;
 
@@ -1035,13 +1036,5 @@ static void window_title_editor_rename_park(size_t index, const utf8 * name)
 
     if (TileSequenceRenamePark(_editingTitleSequence, index, name)) {
         TileSequenceSave(_editingTitleSequence);
-    }
-}
-
-extern "C"
-{
-    void window_title_editor_open(sint32 tab)
-    {
-        _window_title_editor_open(tab);
     }
 }

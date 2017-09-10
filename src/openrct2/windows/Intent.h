@@ -1,11 +1,20 @@
 #ifndef OPENRCT2_INTENT_H
 #define OPENRCT2_INTENT_H
 
-#include <map>
 #include "../common.h"
+#ifdef __cplusplus
+extern "C" {
+#endif // __cplusplus
 #include "../interface/window.h"
+#ifdef __cplusplus
+}
+#endif // __cplusplus
+
 
 #ifdef __cplusplus
+
+#include <map>
+
 class Intent
 {
 private:
@@ -16,6 +25,11 @@ private:
     std::map<uint32, uintptr_t> _Pointers;
 public:
     explicit Intent(rct_windowclass windowclass);
+    rct_windowclass GetWindowClass();
+    void * GetPointerExtra(uint32 key);
+    utf8string GetStringExtra(uint32 key);
+    uint32 GetUIntExtra(uint32 key);
+    sint32 GetSIntExtra(uint32 key);
     Intent * putExtra(uint32 key, uint32 value);
     Intent * putExtra(uint32 key, uintptr_t value);
     Intent * putExtra(uint32 key, sint32 value);
@@ -26,13 +40,26 @@ public:
 extern "C" {
 #endif // __cplusplus
 
-    typedef int intent;
+#ifndef __cplusplus
+    typedef int Intent;
+#endif // !__cplusplus
 
-    intent *intent_create(rct_windowclass clss);
-    void intent_set_string(intent *, uint32 key, utf8string value);
-    void intent_set_pointer(intent *, uint32 key, uintptr_t value);
-    void intent_set_sint(intent *, uint32 key, sint32 value);
-    void intent_set_uint(intent *, uint32 key, uint32 value);
+    enum
+    {
+        INTENT_EXTRA_0,
+        INTENT_EXTRA_1,
+
+        INTENT_EXTRA_2,
+
+        INTENT_EXTRA_3,
+    };
+
+    Intent *intent_create(rct_windowclass clss);
+    void intent_release(Intent * intent);
+    void intent_set_string(Intent *, uint32 key, utf8string value);
+    void intent_set_pointer(Intent *, uint32 key, uintptr_t value);
+    void intent_set_sint(Intent *, uint32 key, sint32 value);
+    void intent_set_uint(Intent *, uint32 key, uint32 value);
 #ifdef __cplusplus
 }
 #endif // __cplusplus

@@ -14,18 +14,18 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../object/ObjectManager.h"
-#include "../ride/TrackDesignRepository.h"
-#include "../core/Math.hpp"
-#include "../core/Memory.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
 
-#include "../audio/audio.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
-#include "../sprites.h"
-#include "../util/util.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
 
 enum {
     WIDX_BACKGROUND,
@@ -105,22 +105,22 @@ static void window_install_track_design(rct_window *w);
 *
 *  rct2: 0x006D386D
 */
-void window_install_track_open(const utf8 *path)
+rct_window * window_install_track_open(const utf8 *path)
 {
     _trackDesign = track_design_open(path);
     if (_trackDesign == nullptr) {
         context_show_error(STR_UNABLE_TO_LOAD_FILE, STR_NONE);
-        return;
+        return nullptr;
     }
 
     object_manager_unload_all_objects();
     if (_trackDesign->type == RIDE_TYPE_NULL){
         log_error("Failed to load track (ride type null): %s", path);
-        return;
+        return nullptr;
     }
     if (object_manager_load_object(&_trackDesign->vehicle_object) == nullptr) {
         log_error("Failed to load track (vehicle load fail): %s", path);
-        return;
+        return nullptr;
     }
 
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
@@ -147,6 +147,8 @@ void window_install_track_open(const utf8 *path)
 
     window_install_track_update_preview();
     window_invalidate(w);
+
+    return w;
 }
 
 /**

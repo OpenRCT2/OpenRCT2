@@ -709,14 +709,10 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
-void window_scenarioselect_open(scenarioselect_callback callback);
 void window_track_list_open(ride_list_item item);
-void window_guest_list_open();
-void window_guest_list_open_with_filter(sint32 type, sint32 index);
 void window_map_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
-void window_staff_fire_prompt_open(rct_peep* peep);
 rct_window *window_ride_main_open(sint32 rideIndex);
 rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex);
 rct_window *window_ride_open_track(rct_map_element *mapElement);
@@ -735,7 +731,6 @@ void window_maze_construction_update_pressed_widgets();
 void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
-void window_install_track_open(const char* path);
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();
@@ -746,8 +741,6 @@ void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, r
 
 void window_scenery_open();
 void window_track_manage_open(struct track_design_file_ref *tdFileRef);
-void window_title_editor_open(sint32 tab);
-void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
@@ -761,7 +754,6 @@ rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
 
-void window_guest_list_init_vars();
 void window_bubble_list_item(rct_window* w, sint32 item_position);
 
 void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );
