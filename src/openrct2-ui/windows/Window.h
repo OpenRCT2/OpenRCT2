@@ -20,6 +20,8 @@
 
 #include <openrct2/interface/window.h>
 
+typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
+
 rct_window * window_about_open();
 rct_window * window_changelog_open();
 rct_window * window_cheats_open();
@@ -79,6 +81,9 @@ rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
 rct_window * window_staff_fire_prompt_open(rct_peep* peep);
 void window_title_editor_open(sint32 tab);
 void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
-void window_scenarioselect_open(scenarioselect_callback callback);
+rct_window * window_scenarioselect_open(scenarioselect_callback callback);
 
 rct_window * window_error_open(rct_string_id title, rct_string_id message);
+
+rct_window * window_loadsave_open(sint32 type, char *defaultName);
+void window_loadsave_set_loadsave_callback(loadsave_callback cb);

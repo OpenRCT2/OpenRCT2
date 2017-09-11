@@ -149,7 +149,7 @@ static bool _showLockedInformation = false;
  *
  *  rct2: 0x006781B5
  */
-static void _window_scenarioselect_open(scenarioselect_callback callback)
+rct_window * window_scenarioselect_open(scenarioselect_callback callback)
 {
     rct_window* window;
     sint32 windowWidth;
@@ -157,8 +157,9 @@ static void _window_scenarioselect_open(scenarioselect_callback callback)
 
     _callback = callback;
 
-    if (window_bring_to_front_by_class(WC_SCENARIO_SELECT) != nullptr)
-        return;
+    window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
+    if (window != nullptr)
+        return window;
 
     // Load scenario list
     scenario_repository_scan();
@@ -188,6 +189,8 @@ static void _window_scenarioselect_open(scenarioselect_callback callback)
     window_init_scroll_widgets(window);
     window->viewport_focus_coordinates.var_480 = -1;
     window->highlighted_scenario = nullptr;
+
+    return window;
 }
 
 /**
@@ -699,12 +702,4 @@ static bool is_locking_enabled(rct_window *w)
         return false;
     }
     return true;
-}
-
-extern "C"
-{
-    void window_scenarioselect_open(scenarioselect_callback callback)
-    {
-        _window_scenarioselect_open(callback);
-    }
 }

@@ -1189,9 +1189,13 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widge
 
         // Page widgets
     case WIDX_HEIGHTMAP_SELECT:
-        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE, nullptr);
-        window_loadsave_set_loadsave_callback(window_mapgen_heightmap_loadsave_callback);
+    {
+        auto intent = Intent(WC_LOADSAVE);
+        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE);
+        intent.putExtra(INTENT_EXTRA_6, (void *) window_mapgen_heightmap_loadsave_callback);
+        context_open_intent(&intent);
         return;
+    }
     case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
         _heightmapSmoothMap = !_heightmapSmoothMap;
         widget_set_checkbox_value(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);

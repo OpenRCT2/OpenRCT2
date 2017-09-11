@@ -69,8 +69,6 @@ static rct_window_event_list window_error_events = {
 static char _window_error_text[512];
 static uint16 _window_error_num_lines;
 
-extern "C" {
-
 /**
  *
  *  rct2: 0x0066792F
@@ -148,8 +146,6 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
     }
 
     return w;
-}
-
 }
 
 /**

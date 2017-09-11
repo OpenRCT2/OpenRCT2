@@ -290,7 +290,10 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
     }
 
     window_close_all();
-    window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO, gS6Info.name);
+    auto intent = Intent(WC_LOADSAVE);
+    intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
+    intent.putExtra(INTENT_EXTRA_5, gS6Info.name);
+    context_open_intent(&intent);
 }
 
 /**

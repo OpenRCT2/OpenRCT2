@@ -918,7 +918,10 @@ static void game_load_or_quit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx
  */
 static void load_landscape()
 {
-    window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE, NULL);
+    Intent * intent = intent_create(WC_LOADSAVE);
+    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    context_open_intent(intent);
+    intent_release(intent);
 }
 
 static void utf8_to_rct2_self(char *buffer, size_t length)
@@ -1216,12 +1219,25 @@ void save_game()
         save_game_as();
     }
 }
-void save_game_as()
+
+void * create_save_game_as_intent()
 {
     char name[MAX_PATH];
     safe_strcpy(name, path_get_filename(gScenarioSavePath), MAX_PATH);
     path_remove_extension(name);
-    window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME, name);
+
+    Intent * intent = intent_create(WC_LOADSAVE);
+    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent_set_string(intent, INTENT_EXTRA_5, name);
+
+    return intent;
+}
+
+void save_game_as()
+{
+    Intent * intent = (Intent *) create_save_game_as_intent();
+    context_open_intent(intent);
+    intent_release(intent);
 }
 
 static sint32 compare_autosave_file_paths (const void * a, const void * b ) {
@@ -1396,8 +1412,11 @@ void game_load_or_quit_no_save_prompt()
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
             load_landscape();
         } else {
-            window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-            window_loadsave_set_loadsave_callback(game_load_or_quit_no_save_prompt_callback);
+            Intent * intent = intent_create(WC_LOADSAVE);
+            intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent_set_pointer(intent, INTENT_EXTRA_6, game_load_or_quit_no_save_prompt_callback);
+            context_open_intent(intent);
+            intent_release(intent);
         }
         break;
     case PM_SAVE_BEFORE_QUIT:

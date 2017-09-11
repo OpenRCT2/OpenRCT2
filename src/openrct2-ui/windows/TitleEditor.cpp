@@ -330,8 +330,10 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     case WIDX_TITLE_EDITOR_ADD_SAVE:
         if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
-            window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, nullptr);
-            window_loadsave_set_loadsave_callback(window_title_editor_add_park_callback);
+            auto intent = Intent(WC_LOADSAVE);
+            intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent.putExtra(INTENT_EXTRA_6, (void *) window_title_editor_add_park_callback);
+            context_open_intent(&intent);
         }
         break;
     case WIDX_TITLE_EDITOR_REMOVE_SAVE:

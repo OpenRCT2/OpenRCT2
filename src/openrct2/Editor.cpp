@@ -100,8 +100,10 @@ namespace Editor
     void ConvertSaveToScenario()
     {
         tool_cancel();
-        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME, NULL);
-        window_loadsave_set_loadsave_callback(ConvertSaveToScenarioCallback);
+        auto intent = Intent(WC_LOADSAVE);
+        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+        intent.putExtra(INTENT_EXTRA_5, (void *) ConvertSaveToScenarioCallback);
+        context_open_intent(&intent);
     }
 
     static void ConvertSaveToScenarioCallback(sint32 result, const utf8 * path)

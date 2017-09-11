@@ -13,9 +13,9 @@ Intent::putExtra(uint32 key, uint32 value)
     return this;
 }
 Intent *
-Intent::putExtra(uint32 key, uintptr_t value)
+Intent::putExtra(uint32 key, void * value)
 {
-    _Pointers.insert(std::make_pair(key, value));
+    _Pointers.insert(std::make_pair(key, (uintptr_t) value));
 
     return this;
 }
@@ -71,6 +71,21 @@ extern "C" {
     }
 
     void intent_set_sint(Intent * intent, uint32 key, sint32 value)
+    {
+        intent->putExtra(key, value);
+    }
+
+    void intent_set_string(Intent *intent, uint32 key, utf8string value)
+    {
+        intent->putExtra(key, value);
+    }
+
+    void intent_set_pointer(Intent *intent, uint32 key, void *value)
+    {
+        intent->putExtra(key, value);
+    }
+
+    void intent_set_uint(Intent *intent, uint32 key, uint32 value)
     {
         intent->putExtra(key, value);
     }

@@ -472,7 +472,7 @@ void window_staff_overview_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_FIRE:
     {
         auto intent = Intent(WC_FIRE_PROMPT);
-        intent.putExtra(INTENT_EXTRA_3, (uintptr_t) peep);
+        intent.putExtra(INTENT_EXTRA_3, peep);
         context_open_intent(&intent);
         break;
     }
