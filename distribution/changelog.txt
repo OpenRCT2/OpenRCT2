@@ -6,7 +6,9 @@
 - Feature: [#6235] Add drawing debug option for showing visuals when and where blocks of the screen are painted.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
+- Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
+- Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6115] Random title screen music not random on launch
