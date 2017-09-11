@@ -804,13 +804,18 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         break;
 
     case WIDX_INSTALL_TRACK:
-        if (w->selected_list_item != -1) {
+    {
+        if (w->selected_list_item != -1)
+        {
             w->selected_list_item = -1;
         }
         window_invalidate(w);
 
-        window_loadsave_open(LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK, nullptr);
+        auto intent = Intent(WC_LOADSAVE);
+        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+        context_open_intent(&intent);
         break;
+    }
     case WIDX_FILTER_STRING_BUTTON:
         //window_text_input_open(w, widgetIndex, STR_OBJECT_SEARCH, STR_OBJECT_SEARCH_DESC, STR_STRING, (uint32)_filter_string, 40);
         window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, 40);

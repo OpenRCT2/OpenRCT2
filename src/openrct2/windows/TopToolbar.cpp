@@ -543,8 +543,12 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
 
         switch (dropdownIndex) {
         case DDIDX_NEW_GAME:
-            window_scenarioselect_open(window_top_toolbar_scenarioselect_callback);
+        {
+            auto intent = Intent(WC_SCENARIO_SELECT);
+            intent.putExtra(INTENT_EXTRA_7, (void *) window_top_toolbar_scenarioselect_callback);
+            context_open_intent(&intent);
             break;
+        }
         case DDIDX_LOAD_GAME:
             game_do_command(0, 1, 0, 0, GAME_COMMAND_LOAD_OR_QUIT, 0, 0);
             break;
@@ -554,7 +558,10 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             break;
         case DDIDX_SAVE_GAME_AS:
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
-                window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
+                auto intent = Intent(WC_LOADSAVE);
+                intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent.putExtra(INTENT_EXTRA_5, gS6Info.name);
+                context_open_intent(&intent);
             }
             else {
                 tool_cancel();

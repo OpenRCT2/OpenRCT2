@@ -31,7 +31,7 @@ public:
     uint32 GetUIntExtra(uint32 key);
     sint32 GetSIntExtra(uint32 key);
     Intent * putExtra(uint32 key, uint32 value);
-    Intent * putExtra(uint32 key, uintptr_t value);
+    Intent * putExtra(uint32 key, void * value);
     Intent * putExtra(uint32 key, sint32 value);
     Intent * putExtra(uint32 key, utf8string value);
 };
@@ -52,12 +52,18 @@ extern "C" {
         INTENT_EXTRA_2,
 
         INTENT_EXTRA_3,
+
+        INTENT_EXTRA_4,
+        INTENT_EXTRA_5,
+        INTENT_EXTRA_6,
+
+        INTENT_EXTRA_7,
     };
 
     Intent *intent_create(rct_windowclass clss);
     void intent_release(Intent * intent);
     void intent_set_string(Intent *, uint32 key, utf8string value);
-    void intent_set_pointer(Intent *, uint32 key, uintptr_t value);
+    void intent_set_pointer(Intent *, uint32 key, void * value);
     void intent_set_sint(Intent *, uint32 key, sint32 value);
     void intent_set_uint(Intent *, uint32 key, uint32 value);
 #ifdef __cplusplus

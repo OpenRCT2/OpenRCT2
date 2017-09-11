@@ -180,8 +180,12 @@ bool track_design_save(uint8 rideIndex)
     utf8 track_name[256];
     format_string(track_name, sizeof(track_name), ride->name, &ride->name_arguments);
 
-    window_loadsave_open(LOADSAVETYPE_TRACK | LOADSAVETYPE_SAVE, track_name);
-    window_loadsave_set_loadsave_callback(track_design_save_callback);
+    Intent * intent = intent_create(WC_LOADSAVE);
+    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent_set_string(intent, INTENT_EXTRA_6, track_name);
+    intent_set_pointer(intent, INTENT_EXTRA_6, track_design_save_callback);
+    context_open_intent(intent);
+    intent_release(intent);
 
     return true;
 }

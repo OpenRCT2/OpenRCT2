@@ -14,20 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../title/TitleScreen.h"
-#include "../core/Memory.hpp"
-#include "../Context.h"
-#include "Intent.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/title/TitleScreen.h>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/Context.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2-ui/windows/Window.h>
 
 #include <time.h>
-#include "../core/Guard.hpp"
-#include "../Editor.h"
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
-#include "../util/util.h"
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/Editor.h>
+#include <openrct2/game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/util/util.h>
 
 #pragma region Widgets
 

@@ -18,6 +18,8 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/Context.h>
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/game.h>
@@ -228,16 +230,28 @@ static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetInde
         }
         return;
     } else {
-        switch (widgetIndex) {
+        switch (widgetIndex)
+        {
         case WIDX_SAVE:
-            if (gScreenFlags & (SCREEN_FLAGS_EDITOR)) {
-                window_loadsave_open(LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE, gS6Info.name);
-            } else {
-                save_game_as();
+        {
+            Intent * intent;
+
+            if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
+            {
+                intent = intent_create(WC_LOADSAVE);
+                intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent_set_string(intent, INTENT_EXTRA_5, gS6Info.name);
+            }
+            else
+            {
+                intent = (Intent *) create_save_game_as_intent();
             }
             window_close(w);
-            window_loadsave_set_loadsave_callback(window_save_prompt_callback);
+            intent_set_pointer(intent, INTENT_EXTRA_6, (void *) window_save_prompt_callback);
+            context_open_intent(intent);
+            intent_release(intent);
             break;
+        }
         case WIDX_DONT_SAVE:
             game_load_or_quit_no_save_prompt();
             return;

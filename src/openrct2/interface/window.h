@@ -604,7 +604,6 @@ typedef enum {
 } TOOL_IDX;
 
 typedef void (*modal_callback)(sint32 result);
-typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
 
 typedef void (*close_callback)();
@@ -746,8 +745,6 @@ void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
 void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
 
-rct_window *window_loadsave_open(sint32 type, char *defaultName);
-
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 
 rct_window * window_editor_main_open();
@@ -818,8 +815,6 @@ bool scenery_tool_is_active();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();
-
-void window_loadsave_set_loadsave_callback(loadsave_callback cb);
 
 void window_ride_construction_keyboard_shortcut_turn_left();
 void window_ride_construction_keyboard_shortcut_turn_right();
