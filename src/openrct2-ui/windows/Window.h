@@ -74,7 +74,7 @@ rct_window * window_sign_small_open(rct_windownumber number);
 rct_window * window_player_open(uint8 id);
 rct_window * window_new_campaign_open(sint16 campaignType);
 
-rct_window * window_install_track_open(const char* path);
+rct_window * window_install_track_open(const utf8* path);
 void window_guest_list_init_vars();
 rct_window * window_guest_list_open();
 rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
