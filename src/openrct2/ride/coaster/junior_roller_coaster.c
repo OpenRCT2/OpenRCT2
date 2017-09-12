@@ -1873,12 +1873,12 @@ static const uint32 junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4]
 
 void junior_rc_paint_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 imageId = junior_rc_track_pieces_flat[chainType][direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_flat[chainType][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1893,36 +1893,36 @@ void junior_rc_paint_station(paint_session * session, uint8 rideIndex, uint8 tra
 
     if (direction == 0 || direction == 2) {
         // height -= 2 (height - 2)
-        imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
+        imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
         // height += 2 (height)
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
-            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | gTrackColours[SCHEME_TRACK];
+            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }else{
-            imageId = junior_rc_track_pieces_station[false][direction] | gTrackColours[SCHEME_TRACK];
+            imageId = junior_rc_track_pieces_station[false][direction] | session->TrackColours[SCHEME_TRACK];
         }
         sub_98199C(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height, get_current_rotation());
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
         // height -= 2 (height - 2)
-        imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
+        imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
 
         // height += 2 (height)
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER) {
-            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | gTrackColours[SCHEME_TRACK];
+            imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }else{
-            imageId = junior_rc_track_pieces_station[false][direction] | gTrackColours[SCHEME_TRACK];
+            imageId = junior_rc_track_pieces_station[false][direction] | session->TrackColours[SCHEME_TRACK];
         }
         sub_98199C(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height, get_current_rotation());
 
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
@@ -1934,7 +1934,7 @@ void junior_rc_paint_station(paint_session * session, uint8 rideIndex, uint8 tra
 
 void junior_rc_paint_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 imageId = junior_rc_track_pieces_25_deg_up[chainType][direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
     sint8 tunnel_height[4] = { -8, 8, 8, -8 };
@@ -1943,7 +1943,7 @@ void junior_rc_paint_track_25_deg_up(paint_session * session, uint8 rideIndex, u
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, supportType, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, supportType, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1952,7 +1952,7 @@ void junior_rc_paint_track_25_deg_up(paint_session * session, uint8 rideIndex, u
 
 void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 imageId = junior_rc_track_pieces_flat_to_25_deg_up[chainType][direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_flat_to_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK];
 
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
     if (direction == 0 || direction == 3) {
@@ -1964,7 +1964,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 ride
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
         uint16 ax = (direction == 0) ? 5 : 3;
-        metal_a_supports_paint_setup(session, supportType, 4, ax, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, supportType, 4, ax, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -1973,7 +1973,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(paint_session * session, uint8 ride
 
 void junior_rc_paint_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 imageId = junior_rc_track_pieces_25_deg_up_to_flat[chainType][direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_25_deg_up_to_flat[chainType][direction] | session->TrackColours[SCHEME_TRACK];
     sub_98196C_rotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
 
     uint8 tunnelType;
@@ -1997,7 +1997,7 @@ void junior_rc_paint_track_25_deg_up_to_flat(paint_session * session, uint8 ride
 
     if (track_paint_util_should_paint_supports(session->MapPosition)) {
         sint32 supportType = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, supportType, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, supportType, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2012,16 +2012,16 @@ static const sint8 junior_rc_track_right_quarter_turn_5_tiles_support_height_off
 };
 
 static void junior_rc_right_quarter_turn_5_tiles_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
-    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
+    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_flat_quarter_turn_5_tiles, defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
 
 
     sint32 supportHeight = height + junior_rc_track_right_quarter_turn_5_tiles_support_height_offset[direction][trackSequence];
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2067,7 +2067,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(paint_session * session, uin
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_flat_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
@@ -2080,7 +2080,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(paint_session * session, uin
     }
 
     if (junior_rc_track_pieces_flat_to_left_bank[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_flat_to_left_bank[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_flat_to_left_bank[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
@@ -2093,7 +2093,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(paint_session * session, uin
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2107,7 +2107,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(paint_session * session, ui
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_flat_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
@@ -2120,7 +2120,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(paint_session * session, ui
     }
 
     if (junior_rc_track_pieces_flat_to_right_bank[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_flat_to_right_bank[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_flat_to_right_bank[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
@@ -2133,7 +2133,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(paint_session * session, ui
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2218,24 +2218,24 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(paint_sessio
     if (direction == 2 && (trackSequence == 0 || trackSequence == 6)) {
         thickness = 26;
     }
-    track_paint_util_right_quarter_turn_5_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_banked_quarter_turn_5_tiles, NULL, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths, junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
+    track_paint_util_right_quarter_turn_5_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_banked_quarter_turn_5_tiles, NULL, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths, junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
 
     if (direction == 1 && trackSequence == 6) {
-        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_NW_SW_PART_4_2 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
     }
     else if (direction == 3 && trackSequence == 0) {
-        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_5_TILES_SE_NE_PART_0_2 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
     }
 
     sint32 supportHeight = height;
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, supportHeight, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 0, supportHeight, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2279,7 +2279,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(paint_session * session
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
     }
@@ -2288,7 +2288,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(paint_session * session
     }
 
     if (junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_left_banked_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height, get_current_rotation());
@@ -2301,7 +2301,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(paint_session * session
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch(direction) {
@@ -2322,7 +2322,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(paint_session * sessio
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
     }
@@ -2331,7 +2331,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(paint_session * sessio
     }
 
     if (junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_right_banked_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height, get_current_rotation());
@@ -2344,7 +2344,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(paint_session * sessio
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 3, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch(direction) {
@@ -2376,7 +2376,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(paint_session * session
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
@@ -2389,7 +2389,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(paint_session * session
     }
 
     if (junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_25_deg_up_to_left_bank[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height, get_current_rotation());
@@ -2402,7 +2402,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(paint_session * session
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2427,7 +2427,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(paint_session * sessio
         tunnelHeight = height - 8;
     }
 
-    image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, image_id, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
@@ -2440,7 +2440,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(paint_session * sessio
     }
 
     if (junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] != 0) {
-        image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] | gTrackColours[SCHEME_TRACK];
+        image_id = junior_rc_track_pieces_25_deg_up_to_right_bank[direction][1] | session->TrackColours[SCHEME_TRACK];
 
         if (direction & 1) {
             sub_98197C(session, image_id, 0, 0, 1, 32, 34, height, 27, 0, height, get_current_rotation());
@@ -2453,7 +2453,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(paint_session * sessio
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2513,7 +2513,7 @@ static void junior_rc_left_bank_paint_setup(paint_session * session, uint8 rideI
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_left_bank[direction] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_left_bank[direction] | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, image_id, 0, 0,
         junior_rc_left_bank_bound_lengths[direction].x,
         junior_rc_left_bank_bound_lengths[direction].y,
@@ -2533,7 +2533,7 @@ static void junior_rc_left_bank_paint_setup(paint_session * session, uint8 rideI
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -2550,15 +2550,15 @@ static void junior_rc_right_bank_paint_setup(paint_session * session, uint8 ride
 
 void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[chainType], junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[chainType], junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets, defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
 
     uint8 supportSpecial[4] = { 8, 8, 8, 3 };
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, (direction == 0 || direction == 3) ? 10 : 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, (direction == 0 || direction == 3) ? 10 : 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, supportSpecial[direction], height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, supportSpecial[direction], height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2592,15 +2592,15 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(paint_session * s
 
 void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[chainType], defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+    track_paint_util_right_quarter_turn_5_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[chainType], defaultRightQuarterTurn5TilesOffsets, defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
 
     uint8 supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, supportSpecial[direction], height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, supportSpecial[direction], height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 6:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2675,7 +2675,7 @@ static void junior_rc_s_bend_left_paint_setup(paint_session * session, uint8 rid
         {32, 20},
     };
 
-    uint32 imageId = junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence] | session->TrackColours[SCHEME_TRACK];
     rct_xy16 offset = offsetList[trackSequence];
     rct_xy16 bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2) {
@@ -2690,9 +2690,9 @@ static void junior_rc_s_bend_left_paint_setup(paint_session * session, uint8 rid
         }
 
         switch (trackSequence) {
-            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
         }
     } else {
         if (trackSequence == 3) {
@@ -2700,9 +2700,9 @@ static void junior_rc_s_bend_left_paint_setup(paint_session * session, uint8 rid
         }
 
         switch (trackSequence) {
-            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
         }
     }
 
@@ -2739,7 +2739,7 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
         {32, 20},
     };
 
-    uint32 imageId = junior_rc_track_pieces_s_bend_right[direction&1][trackSequence] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = junior_rc_track_pieces_s_bend_right[direction&1][trackSequence] | session->TrackColours[SCHEME_TRACK];
     rct_xy16 offset = offsetList[trackSequence];
     rct_xy16 bounds = boundsList[trackSequence];
     if (direction == 0 || direction == 2) {
@@ -2754,9 +2754,9 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
         }
 
         switch (trackSequence) {
-            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
         }
     } else {
         if (trackSequence == 3) {
@@ -2764,9 +2764,9 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
         }
 
         switch (trackSequence) {
-            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
-            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]); break;
+            case 0: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 1: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
+            case 3: metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]); break;
         }
     }
 
@@ -2785,7 +2785,7 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
 /** rct2: 0x008AAEB0, 0x0051C0E0, 0x0051C2C1, 0x0051C47F, 0x0051C61D */
 static void junior_rc_right_quarter_turn_3_tiles_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_right_quarter_turn_3_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+    track_paint_util_right_quarter_turn_3_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets, defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     uint8 supportType[2][4] = {
@@ -2795,7 +2795,7 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(paint_session * ses
     switch (trackSequence) {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2893,15 +2893,15 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(paint_session 
         }
     };
 
-    track_paint_util_right_quarter_turn_3_tiles_paint(session, thickness[direction][trackSequence], height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_banked_quarter_turn_3_tiles, NULL, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths, junior_rc_right_quarter_turn_3_tiles_bank_offsets, get_current_rotation());
+    track_paint_util_right_quarter_turn_3_tiles_paint(session, thickness[direction][trackSequence], height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_banked_quarter_turn_3_tiles, NULL, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths, junior_rc_right_quarter_turn_3_tiles_bank_offsets, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     if (direction == 1 && trackSequence == 3) {
-        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_NW_SW_PART_2_2 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 26, height, 0, 27, height, get_current_rotation());
     }
     else if (direction == 3 && trackSequence == 0) {
-        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_BANKED_QUARTER_TURN_3_TILES_SE_NE_PART_0_2 | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 26, height, 27, 0, height, get_current_rotation());
     }
 
@@ -2912,7 +2912,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(paint_session 
     switch (trackSequence) {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -2936,13 +2936,13 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(paint_session * 
 
     switch (trackSequence) {
     case 0:
-        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[chainType][direction][0] | gTrackColours[SCHEME_TRACK];
+        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[chainType][direction][0] | session->TrackColours[SCHEME_TRACK];
         offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
         boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
         boundsOffset = offset;
         break;
     case 3:
-        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[chainType][direction][1] | gTrackColours[SCHEME_TRACK];
+        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_up[chainType][direction][1] | session->TrackColours[SCHEME_TRACK];
         offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
         boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
         boundsOffset = offset;
@@ -2975,7 +2975,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(paint_session * 
     switch (trackSequence) {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3001,13 +3001,13 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(paint_session 
 
     switch (trackSequence) {
     case 0:
-        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[chainType][direction][0] | gTrackColours[SCHEME_TRACK];
+        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[chainType][direction][0] | session->TrackColours[SCHEME_TRACK];
         offset = defaultRightQuarterTurn3TilesOffsets[direction][0];
         boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][0];
         boundsOffset = offset;
         break;
     case 3:
-        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[chainType][direction][1] | gTrackColours[SCHEME_TRACK];
+        imageId = junior_rc_track_pieces_right_quarter_turn_3_tiles_25_deg_down[chainType][direction][1] | session->TrackColours[SCHEME_TRACK];
         offset = defaultRightQuarterTurn3TilesOffsets[direction][2];
         boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][2];
         boundsOffset = offset;
@@ -3039,7 +3039,7 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(paint_session 
     switch (trackSequence) {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 8, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, supportType[(direction & 1)][trackSequence], 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3103,13 +3103,13 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(paint_session
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_small_quarter_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, NULL, defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
+    track_paint_util_right_helix_up_small_quarter_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, NULL, defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 2, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
     else if ( trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 && trackSequence == 0) {
@@ -3148,13 +3148,13 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(paint_sessi
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_small_quarter_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, NULL, defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
+    track_paint_util_right_helix_up_small_quarter_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, NULL, defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
     else if ( trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 2, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 2, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 && trackSequence == 0) {
@@ -3217,13 +3217,13 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(paint_session
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_large_quarter_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, NULL, defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
+    track_paint_util_right_helix_up_large_quarter_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, NULL, defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 1, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
     else if ( trackSequence == 6) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 && trackSequence == 0) {
@@ -3263,13 +3263,13 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(paint_sessi
         direction++;
         direction &= 3;
     }
-    track_paint_util_right_helix_up_large_quarter_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, NULL, defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
+    track_paint_util_right_helix_up_large_quarter_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, NULL, defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 7, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 7, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
     else if ( trackSequence == 6) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 1, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK : METAL_SUPPORTS_FORK_ALT, 4, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     if (direction == 0 && trackSequence == 0) {
@@ -3330,7 +3330,7 @@ static void junior_rc_brake_paint_setup(paint_session * session, uint8 rideIndex
 {
     uint32 image_id;
 
-    image_id = junior_rc_track_pieces_brake[direction] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_brake[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98196C(session, image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
 
@@ -3345,7 +3345,7 @@ static void junior_rc_brake_paint_setup(paint_session * session, uint8 rideIndex
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -3361,7 +3361,7 @@ static void junior_rc_block_brake_paint_setup(paint_session * session, uint8 rid
 
     bool isBraked = (bool)(mapElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
 
-    image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | gTrackColours[SCHEME_TRACK];
+    image_id = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98196C(session, image_id, 6, 0, 20, 32, 1, height, get_current_rotation());
 
@@ -3376,7 +3376,7 @@ static void junior_rc_block_brake_paint_setup(paint_session * session, uint8 rid
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         sint32 edi = (direction & 1) ? 2 : 1;
-        metal_a_supports_paint_setup(session, edi, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, edi, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -3386,17 +3386,17 @@ static void junior_rc_block_brake_paint_setup(paint_session * session, uint8 rid
 /** rct2: 0x008AAF80 */
 static void junior_rc_left_eighth_to_diag_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag, 0, defaultLeftEighthToDiagBoundLengths, defaultLeftEighthToDiagBoundOffsets, get_current_rotation());
+    track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag, 0, defaultLeftEighthToDiagBoundLengths, defaultLeftEighthToDiagBoundOffsets, get_current_rotation());
 
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
-            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3423,17 +3423,17 @@ static void junior_rc_left_eighth_to_diag_paint_setup(paint_session * session, u
 /** rct2: 0x008AAF90 */
 static void junior_rc_right_eighth_to_diag_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag, 0, defaultRightEighthToDiagBoundLengths, defaultRightEighthToDiagBoundOffsets, get_current_rotation());
+    track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag, 0, defaultRightEighthToDiagBoundLengths, defaultRightEighthToDiagBoundOffsets, get_current_rotation());
 
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
-            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3557,17 +3557,17 @@ static const sint8 junior_rc_left_eighth_to_diag_bank_thickness[4][4] = {
 /** rct2: 0x008AB160 */
 static void junior_rc_left_eighth_to_diag_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_left_eighth_to_diag_bank_thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag_bank, 0, junior_rc_left_eighth_to_diag_bank_bound_lengths, junior_rc_left_eighth_to_diag_bank_bound_offsets, get_current_rotation());
+    track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_left_eighth_to_diag_bank_thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag_bank, 0, junior_rc_left_eighth_to_diag_bank_bound_lengths, junior_rc_left_eighth_to_diag_bank_bound_offsets, get_current_rotation());
 
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
-            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3675,17 +3675,17 @@ static const sint8 junior_rc_right_eighth_to_diag_bank_thickness[4][4] = {
 /** rct2: 0x008AB170 */
 static void junior_rc_right_eighth_to_diag_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_right_eighth_to_diag_bank_thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag_bank, 0, junior_rc_right_eighth_to_diag_bank_bound_lengths, junior_rc_right_eighth_to_diag_bank_bound_offsets, get_current_rotation());
+    track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_right_eighth_to_diag_bank_thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag_bank, 0, junior_rc_right_eighth_to_diag_bank_bound_lengths, junior_rc_right_eighth_to_diag_bank_bound_offsets, get_current_rotation());
 
     switch (trackSequence) {
         case 0:
-            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
         case 4:
-            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            if (direction == 0) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 1) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 2) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            if (direction == 3) metal_a_supports_paint_setup(session, METAL_SUPPORTS_FORK_ALT, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -3736,10 +3736,10 @@ static const uint8 junior_rc_diag_support_segment[] = {1, 0, 2, 3};
 
 void junior_rc_paint_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3749,10 +3749,10 @@ void junior_rc_paint_track_diag_flat(paint_session * session, uint8 rideIndex, u
 
 void junior_rc_paint_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3762,10 +3762,10 @@ void junior_rc_paint_track_diag_25_deg_up(paint_session * session, uint8 rideInd
 
 void junior_rc_paint_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3778,10 +3778,10 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(paint_session * session, uint8
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = min(1, chainType);
 
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height + 6, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height + 6, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3791,10 +3791,10 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(paint_session * session, uint8
 
 void junior_rc_paint_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3807,10 +3807,10 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(paint_session * session, uint8
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = min(1, chainType);
 
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 13, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 13, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3821,10 +3821,10 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(paint_session * session, uint8
 void junior_rc_paint_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
 
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3834,10 +3834,10 @@ void junior_rc_paint_track_diag_25_deg_down(paint_session * session, uint8 rideI
 
 void junior_rc_paint_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3850,10 +3850,10 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(paint_session * session, uin
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = min(1, chainType);
 
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 7, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height + 7, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3863,10 +3863,10 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(paint_session * session, uin
 
 void junior_rc_paint_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3879,10 +3879,10 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(paint_session * session, uin
     // There is no specific chain for the Water Coaster, use the Junior RC chain instead
     chainType = min(1, chainType);
 
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3966,15 +3966,15 @@ static void junior_rc_diag_60_deg_down_to_flat_paint_setup(paint_session * sessi
 /** rct2: 0x008AB1C0 */
 static void junior_rc_diag_flat_to_left_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -3985,15 +3985,15 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(paint_session * session
 /** rct2: 0x008AB1D0 */
 static void junior_rc_diag_flat_to_right_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4004,15 +4004,15 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(paint_session * sessio
 /** rct2: 0x008AB1E0 */
 static void junior_rc_diag_left_bank_to_flat_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4023,15 +4023,15 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(paint_session * session
 /** rct2: 0x008AB1F0 */
 static void junior_rc_diag_right_bank_to_flat_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_FLAT_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 27, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4042,15 +4042,15 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(paint_session * sessio
 /** rct2: 0x008AB220 */
 static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4061,15 +4061,15 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(paint_session * se
 /** rct2: 0x008AB230 */
 static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4080,15 +4080,15 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(paint_session * s
 /** rct2: 0x008AB200 */
 static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4099,15 +4099,15 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(paint_session * se
 /** rct2: 0x008AB210 */
 static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4118,15 +4118,15 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(paint_session * s
 /** rct2: 0x008AB200 */
 static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_RIGHT_BANK_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4137,15 +4137,15 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(paint_session * 
 /** rct2: 0x008AB210 */
 static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_LEFT_BANK_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 4, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4156,15 +4156,15 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(paint_session *
 /** rct2: 0x008AB220 */
 static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_RIGHT_BANK_TO_25_DEG_UP_E_W_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4175,15 +4175,15 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(paint_session * 
 /** rct2: 0x008AB230 */
 static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2) {
-        uint32 imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | gTrackColours[SCHEME_TRACK];
+        uint32 imageId = SPR_JUNIOR_RC_DIAG_LEFT_BANK_TO_25_DEG_UP_W_E_PART_0_2 | session->TrackColours[SCHEME_TRACK];
 
         sub_98197C(session, imageId, -16, -16, 32, 32, 0, height, -16, -16, height + 35, get_current_rotation());
     }
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4209,10 +4209,10 @@ const rct_xyz16 junior_rc_diag_right_bank_bound_offsets[4] = {
 static void junior_rc_diag_left_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 thickness = direction == 0 ? 0 : 1;
-    track_paint_util_diag_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_left_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_left_bank_bound_offsets, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4224,10 +4224,10 @@ static void junior_rc_diag_left_bank_paint_setup(paint_session * session, uint8 
 static void junior_rc_diag_right_bank_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 thickness = direction == 2 ? 0 : 1;
-    track_paint_util_diag_tiles_paint(session, thickness, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_right_bank, defaultDiagTileOffsets, defaultDiagBoundLengths, junior_rc_diag_right_bank_bound_offsets, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, junior_rc_diag_support_segment[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4265,7 +4265,7 @@ static const rct_xy16 junior_rc_60_deg_up_bound_lengths[4] = {
 
 void junior_rc_paint_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 image_id = gTrackColours[SCHEME_TRACK];
+    uint32 image_id = session->TrackColours[SCHEME_TRACK];
 
     image_id |= junior_rc_track_pieces_60_deg_up[chainType][direction];
 
@@ -4300,7 +4300,7 @@ void junior_rc_paint_track_60_deg_up(paint_session * session, uint8 rideIndex, u
 
     sint8 support[4] = { 35, 29, 25, 32};
     if (track_paint_util_should_paint_supports(pos)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -4340,7 +4340,7 @@ static const rct_xy16 junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
 
 void junior_rc_paint_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 image_id = gTrackColours[SCHEME_TRACK];
+    uint32 image_id = session->TrackColours[SCHEME_TRACK];
 
     image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[chainType][direction][0];
 
@@ -4357,7 +4357,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(paint_session * session, uint8
         get_current_rotation());
 
     if (junior_rc_track_pieces_25_deg_up_to_60_deg_up[chainType][direction][1] != 0) {
-        image_id = gTrackColours[SCHEME_TRACK];
+        image_id = session->TrackColours[SCHEME_TRACK];
 
         image_id |= junior_rc_track_pieces_25_deg_up_to_60_deg_up[chainType][direction][1];
 
@@ -4393,7 +4393,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(paint_session * session, uint8
 
     sint8 support[4] = { 12, 12, 12, 14};
     if (track_paint_util_should_paint_supports(pos)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -4412,7 +4412,7 @@ static void junior_rc_60_deg_down_to_25_deg_down_paint_setup(paint_session * ses
 
 void junior_rc_paint_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    uint32 image_id = gTrackColours[SCHEME_TRACK];
+    uint32 image_id = session->TrackColours[SCHEME_TRACK];
 
     image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[chainType][direction][0];
 
@@ -4429,7 +4429,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(paint_session * session, uint8
         get_current_rotation());
 
     if (junior_rc_track_pieces_60_deg_up_to_25_deg_up[chainType][direction][1] != 0) {
-        image_id = gTrackColours[SCHEME_TRACK];
+        image_id = session->TrackColours[SCHEME_TRACK];
 
         image_id |= junior_rc_track_pieces_60_deg_up_to_25_deg_up[chainType][direction][1];
 
@@ -4464,7 +4464,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(paint_session * session, uint8
     const rct_xy16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -4483,10 +4483,10 @@ static void junior_rc_25_deg_down_to_60_deg_down_paint_setup(paint_session * ses
 
 void junior_rc_paint_track_diag_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 36, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 36, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4496,10 +4496,10 @@ void junior_rc_paint_track_diag_60_deg_up(paint_session * session, uint8 rideInd
 
 void junior_rc_paint_track_diag_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 28, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 28, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4509,10 +4509,10 @@ void junior_rc_paint_track_diag_60_deg_down(paint_session * session, uint8 rideI
 
 void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 16, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 16, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4524,7 +4524,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(paint_session * session, 
 {
     if (direction == 1 && trackSequence == 3) {
         sub_98197C(session, 
-            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType][direction] | gTrackColours[SCHEME_TRACK],
+            junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType][direction] | session->TrackColours[SCHEME_TRACK],
             -16, -16,
             16, 16, 1,
             height,
@@ -4532,11 +4532,11 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(paint_session * session, 
             get_current_rotation()
         );
     } else {
-        track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+        track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
     }
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 21, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 21, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4548,7 +4548,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(paint_session * sessi
 {
     if (direction == 3 && trackSequence == 0) {
         sub_98197C(session, 
-            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType][direction] | gTrackColours[SCHEME_TRACK],
+            junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType][direction] | session->TrackColours[SCHEME_TRACK],
             -16, -16,
             16, 16, 1,
             height,
@@ -4556,11 +4556,11 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(paint_session * sessi
             get_current_rotation()
         );
     } else {
-        track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+        track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
     }
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 17, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 17, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4570,10 +4570,10 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(paint_session * sessi
 
 void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element* mapElement, JUNIOR_RC_CHAINTYPE chainType)
 {
-    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+    track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[chainType], defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
 
     if (trackSequence == 3) {
-        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_b_supports_paint_setup(session, (direction & 1) ? 2 : 1, junior_rc_diag_support_segment[direction], 8, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     sint32 blockedSegments = junior_rc_diag_blocked_segments[trackSequence];
@@ -4654,7 +4654,7 @@ static const rct_xy16 junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
 
 static void junior_rc_flat_to_60_deg_up_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    uint32 image_id = gTrackColours[SCHEME_TRACK];
+    uint32 image_id = session->TrackColours[SCHEME_TRACK];
 
     bool isChained = mapElement->type & (1 << 7);
 
@@ -4673,7 +4673,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(paint_session * session, uin
         get_current_rotation());
 
     if (junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1] != 0) {
-        image_id = gTrackColours[SCHEME_TRACK];
+        image_id = session->TrackColours[SCHEME_TRACK];
 
         image_id |= junior_rc_track_pieces_flat_to_60_deg_up[isChained][direction][1];
 
@@ -4709,7 +4709,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(paint_session * session, uin
 
     sint8 support[4] = { 12, 12, 12, 14};
     if (track_paint_util_should_paint_supports(pos)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height - 7, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, support[direction], height - 7, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -4723,7 +4723,7 @@ static void junior_rc_60_deg_down_to_flat_paint_setup(paint_session * session, u
 
 static void junior_rc_60_deg_up_to_flat_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
 
-    uint32 image_id = gTrackColours[SCHEME_TRACK];
+    uint32 image_id = session->TrackColours[SCHEME_TRACK];
 
     bool isChained = mapElement->type & (1 << 7);
 
@@ -4742,7 +4742,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(paint_session * session, uin
         get_current_rotation());
 
     if (junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1] != 0) {
-        image_id = gTrackColours[SCHEME_TRACK];
+        image_id = session->TrackColours[SCHEME_TRACK];
 
         image_id |= junior_rc_track_pieces_60_deg_up_to_flat[isChained][direction][1];
 
@@ -4777,7 +4777,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(paint_session * session, uin
     const rct_xy16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos)) {
-        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK, 4, 20, height - 5, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);
@@ -4845,12 +4845,12 @@ static void junior_rc_booster_paint_setup(paint_session * session, uint8 rideInd
     sint32 YoffsetNWSE = -10;
 
     if (direction & 1) {
-        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NE_SW | gTrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32, 1, height, get_current_rotation());
+        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NE_SW | session->TrackColours[SCHEME_TRACK], XoffsetNESW, YoffsetNESW, 20, 32, 1, height, get_current_rotation());
 
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
     else {
-        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NW_SE | gTrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20, 1, height, get_current_rotation());
+        sub_98196C(session, SPR_JUNIOR_RC_BOOSTER_NW_SE | session->TrackColours[SCHEME_TRACK], XoffsetNWSE, YoffsetNWSE, 32, 20, 1, height, get_current_rotation());
 
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
@@ -4858,7 +4858,7 @@ static void junior_rc_booster_paint_setup(paint_session * session, uint8 rideInd
     const rct_xy16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos)) {
         uint8 supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;
-        metal_a_supports_paint_setup(session, supportType, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_D0 | SEGMENT_CC, direction), 0xFFFF, 0);

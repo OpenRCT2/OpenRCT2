@@ -61,7 +61,7 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
         }
     }
 
-    uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
+    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
@@ -77,10 +77,10 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
         imageId = simulatorImageId;
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
         // Stairs
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
         // Stairs (rail)
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY + 32, offsetZ, currentRotation);
         break;
     case 1:
@@ -88,18 +88,18 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
         imageId = simulatorImageId;
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
         // Stairs
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98199C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY, offsetZ, currentRotation);
         // Stairs (rail)
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX + 34, offsetY, offsetZ, currentRotation);
         break;
     case 2:
         // Stairs (rail)
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 20, 2, 44, offsetZ, offsetX, offsetY - 10, offsetZ, currentRotation);
         // Stairs
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX, offsetY + 5, offsetZ, currentRotation);
         // Simulator
         imageId = simulatorImageId;
@@ -107,10 +107,10 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
         break;
     case 3:
         // Stairs (rail)
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_RAIL_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 2, 20, 44, offsetZ, offsetX - 10, offsetY, offsetZ, currentRotation);
         // Stairs
-        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | gTrackColours[SCHEME_MISC];
+        imageId = (SPR_MOTION_SIMULATOR_STAIRS_R0 + direction) | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, offsetX, offsetY, 20, 20, 44, offsetZ, offsetX + 5, offsetY, offsetZ, currentRotation);
         // Simulator
         imageId = simulatorImageId;
@@ -131,9 +131,9 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     Ride *ride = get_ride(rideIndex);
     rct_xy16 position = { session->MapPosition.x, session->MapPosition.y };
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
-    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence) {
     case 1: paint_motionsimulator_vehicle(session,  16, -16, direction, height, mapElement); break;

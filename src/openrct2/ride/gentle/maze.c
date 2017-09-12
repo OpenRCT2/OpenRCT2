@@ -55,10 +55,10 @@ static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 tra
 
     uint32 rotation = get_current_rotation();
     // draw ground
-    sint32 image_id = SPR_TERRAIN_DIRT | gTrackColours[SCHEME_MISC];
+    sint32 image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     sub_98196C(session, image_id, 0, 0, 32, 32, 0, height, rotation);
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, gTrackColours[SCHEME_3], NULL);
+    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], NULL);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
@@ -70,7 +70,7 @@ static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 tra
         case 3: base_image_id = SPR_MAZE_BASE_WOOD; break;
     }
 
-    base_image_id |= gTrackColours[SCHEME_MISC];
+    base_image_id |= session->TrackColours[SCHEME_MISC];
 
 
     image_id = base_image_id + SPR_MAZE_OFFSET_WALL_CENTRE;

@@ -39,7 +39,7 @@ const uint32 dodgems_fence_sprites[] = {
 
 static void paint_dodgems_roof(paint_session * session, sint32 height, sint32 offset)
 {
-    uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | gTrackColours[SCHEME_TRACK];
+    uint32 image_id = (SPR_DODGEMS_ROOF_FRAME + offset) | session->TrackColours[SCHEME_TRACK];
     sub_98196C(session, image_id, 0, 0, 32, 32, 2, height, get_current_rotation());
 
     image_id = (SPR_DODGEMS_ROOF_GLASS + offset) | (PALETTE_DARKEN_3 << 19) | IMAGE_TYPE_TRANSPARENT;
@@ -54,12 +54,12 @@ static void paint_dodgems(paint_session * session, uint8 rideIndex, uint8 trackS
     Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    uint32 imageId = SPR_DODGEMS_FLOOR | gTrackColours[SCHEME_SUPPORTS];
+    uint32 imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, dodgems_fence_sprites, get_current_rotation());
 
     switch (direction) {
         case 2:

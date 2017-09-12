@@ -237,7 +237,7 @@ static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIn
         sprites = virginia_reel_track_pieces_flat_lift_hill;
     }
 
-    uint32 imageId = sprites[direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = sprites[direction] | session->TrackColours[SCHEME_TRACK];
     if (direction & 1) {
         sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -246,7 +246,7 @@ static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIn
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -260,7 +260,7 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
         sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
     }
 
-    uint32 imageId = sprites[direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = sprites[direction] | session->TrackColours[SCHEME_TRACK];
     paint_struct * ps;
 
     if (direction & 1) {
@@ -275,19 +275,19 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
             break;
     }
@@ -304,33 +304,33 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session,
         sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
     }
 
-    uint32 imageId = sprites[direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = sprites[direction] | session->TrackColours[SCHEME_TRACK];
     paint_struct * ps;
     switch (direction) {
         case 0:
             sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
 
-            wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 1:
             ps = sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
-            wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_8);
             break;
         case 2:
             ps = sub_98197C(session, imageId, 0, 0, 32, 27, 2, height, 0, 2, height, get_current_rotation());
             session->WoodenSupportsPrependTo = ps;
 
-            wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_8);
             break;
         case 3:
             sub_98197C(session, imageId, 0, 0, 27, 32, 2, height, 2, 0, height, get_current_rotation());
 
-            wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
     }
@@ -347,7 +347,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
         sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
     }
 
-    uint32 imageId = sprites[direction] | gTrackColours[SCHEME_TRACK];
+    uint32 imageId = sprites[direction] | session->TrackColours[SCHEME_TRACK];
     paint_struct * ps;
 
     if (direction & 1) {
@@ -362,19 +362,19 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
             break;
     }
@@ -407,24 +407,24 @@ static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex
     uint32 imageId;
 
     if (direction == 0 || direction == 2) {
-        imageId = SPR_STATION_BASE_B_SW_NE | gTrackColours[SCHEME_MISC];
+        imageId = SPR_STATION_BASE_B_SW_NE | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, 0, 0, 32, 28, 2, height - 2, 0, 2, height, get_current_rotation());
 
-        imageId = SPR_VIRGINIA_REEL_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_VIRGINIA_REEL_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 32, 20, 2, height, 0, 0, height, get_current_rotation());
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else if (direction == 1 || direction == 3) {
-        imageId = SPR_STATION_BASE_B_NW_SE | gTrackColours[SCHEME_MISC];
+        imageId = SPR_STATION_BASE_B_NW_SE | session->TrackColours[SCHEME_MISC];
         sub_98197C(session, imageId, 0, 0, 28, 32, 2, height - 2, 2, 0, height, get_current_rotation());
 
-        imageId = SPR_VIRGINIA_REEL_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_VIRGINIA_REEL_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 20, 32, 2, height, 0, 0, height, get_current_rotation());
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
     track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -436,7 +436,7 @@ static const uint8 virginia_reel_left_quarter_turn_supports[] = {5, 2, 3, 4};
 /** rct2: 0x00811304 */
 static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_3_tiles_paint(session, 2, height, direction, trackSequence, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
+    track_paint_util_left_quarter_turn_3_tiles_paint(session, 2, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_3_tiles, get_current_rotation());
     track_paint_util_left_quarter_turn_3_tiles_tunnel(session, height, TUNNEL_6, direction, trackSequence);
 
     switch (trackSequence) {
@@ -445,7 +445,7 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * 
             break;
         case 0:
         case 3:
-            wooden_a_supports_paint_setup(session, virginia_reel_left_quarter_turn_supports[direction], 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, virginia_reel_left_quarter_turn_supports[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENTS_ALL, direction), 0xFFFF, 0);
             break;
     }
@@ -465,22 +465,22 @@ static void paint_virginia_reel_track_right_quarter_turn_3_tiles(paint_session *
 /** rct2: 0x00811324 */
 static void paint_virginia_reel_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    track_paint_util_left_quarter_turn_1_tile_paint(session, 2, height, 0, direction, gTrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_1_tile, get_current_rotation());
+    track_paint_util_left_quarter_turn_1_tile_paint(session, 2, height, 0, direction, session->TrackColours[SCHEME_TRACK], virginia_reel_track_pieces_flat_quarter_turn_1_tile, get_current_rotation());
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 5, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 2, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 3, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 4, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;

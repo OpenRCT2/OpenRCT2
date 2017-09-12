@@ -42,6 +42,11 @@ namespace TestPaint
         gTrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
         gTrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
 
+        gPaintSession.TrackColours[SCHEME_TRACK] = DEFAULT_SCHEME_TRACK;
+        gPaintSession.TrackColours[SCHEME_SUPPORTS] = DEFAULT_SCHEME_SUPPORTS;
+        gPaintSession.TrackColours[SCHEME_MISC] = DEFAULT_SCHEME_MISC;
+        gPaintSession.TrackColours[SCHEME_3] = DEFAULT_SCHEME_3;
+
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
         unk_140E9A8 = &dpi;

@@ -84,14 +84,14 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
         imageOffset = vehicle->vehicle_sprite_type % 8;
     }
 
-    uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
+    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP) {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
 
-    imageId = (22150 + (direction & 1) * 2) | gTrackColours[SCHEME_TRACK];
+    imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
@@ -117,7 +117,7 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
         }
     }
 
-    imageId = (22150 + (direction & 1) * 2 + 1) | gTrackColours[SCHEME_TRACK];
+    imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
     sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
 
     session->CurrentlyDrawnItem = savedMapElement;
@@ -142,13 +142,13 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
     Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
     uint32 imageId;
     uint8 rotation = get_current_rotation();
-    uint32 colourFlags = gTrackColours[SCHEME_MISC];
+    uint32 colourFlags = session->TrackColours[SCHEME_MISC];
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, rotation)) {
         imageId = SPR_FENCE_ROPE_NW | colourFlags;
         sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);

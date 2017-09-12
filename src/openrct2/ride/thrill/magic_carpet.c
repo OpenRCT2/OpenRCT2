@@ -85,7 +85,7 @@ static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8
         imageId = plane == PLANE_BACK ? SPR_MAGIC_CARPET_FRAME_NW :
                                         SPR_MAGIC_CARPET_FRAME_SE;
     }
-    imageId |= gTrackColours[SCHEME_TRACK];
+    imageId |= session->TrackColours[SCHEME_TRACK];
     if (plane == PLANE_BACK) {
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
     } else {
@@ -107,7 +107,7 @@ static void paint_magic_carpet_pendulum(paint_session * session, uint8 plane, ui
         imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NW :
                                          SPR_MAGIC_CARPET_PENDULUM_SE;
     }
-    imageId |= gTrackColours[SCHEME_TRACK];
+    imageId |= session->TrackColours[SCHEME_TRACK];
     sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, bbSize.x, bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z, get_current_rotation());
 }
 
@@ -118,7 +118,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, Ride *ride, uint
     uint32 vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
 
     // Vehicle
-    uint32 imageColourFlags = gTrackColours[SCHEME_MISC];
+    uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
@@ -196,14 +196,14 @@ static void paint_magic_carpet(paint_session * session, uint8 rideIndex, uint8 t
     case 0:
     case 2:
         if (direction & 1) {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         } else {
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, gTrackColours[SCHEME_SUPPORTS]);
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
 
-        uint32 imageId = SPR_STATION_BASE_D | gTrackColours[SCHEME_SUPPORTS];
+        uint32 imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
         break;
     }
