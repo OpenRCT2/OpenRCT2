@@ -46,18 +46,20 @@ extern "C" {
 
     enum
     {
-        INTENT_EXTRA_0,
+        INTENT_EXTRA_0, // WC_GUEST_LIST
         INTENT_EXTRA_1,
 
-        INTENT_EXTRA_2,
+        INTENT_EXTRA_2, // WC_INSTALL_TRACK
 
-        INTENT_EXTRA_3,
+        INTENT_EXTRA_3, // WC_FIRE_PROMPT
 
-        INTENT_EXTRA_4,
+        INTENT_EXTRA_4, // WC_LOADSAVE
         INTENT_EXTRA_5,
         INTENT_EXTRA_6,
 
-        INTENT_EXTRA_7,
+        INTENT_EXTRA_7, // WC_SCENARIO_SELECT
+
+        INTENT_EXTRA_8, // WC_TRACK_DESIGN_PLACE, WC_MANAGE_TRACK_DESIGN
     };
 
     Intent *intent_create(rct_windowclass clss);
