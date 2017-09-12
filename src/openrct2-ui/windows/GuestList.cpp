@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <openrct2/config/Config.h>
+#include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/game.h>
 #include <openrct2/interface/widget.h>
