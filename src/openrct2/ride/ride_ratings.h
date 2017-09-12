@@ -36,6 +36,8 @@ typedef struct rating_tuple {
 } rating_tuple;
 assert_struct_size(rating_tuple, 6);
 
+#pragma pack(pop)
+
 enum {
     RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0
 };
