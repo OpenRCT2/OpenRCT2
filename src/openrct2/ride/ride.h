@@ -138,6 +138,9 @@ assert_struct_size(rct_ride_entry, 0x1c2);
 /**
  * Ride structure.
  * size: 0x0260
+ *
+ * This is currently the same as rct2_ride and packed in order to keep Testpaint working.
+ * Testpaint could be modified to work with an unpacked and/or modified Ride struct.
  */
 typedef struct Ride {
     uint8 type;                                                     // 0x000
