@@ -100,7 +100,7 @@ uint8 window_new_campaign_shop_items[64];
 
 static sint32 ride_value_compare(const void *a, const void *b)
 {
-    rct_ride *rideA, *rideB;
+    Ride *rideA, *rideB;
 
     rideA = get_ride(*((uint8*)a));
     rideB = get_ride(*((uint8*)b));
@@ -110,7 +110,7 @@ static sint32 ride_value_compare(const void *a, const void *b)
 static sint32 ride_name_compare(const void *a, const void *b)
 {
     char rideAName[256], rideBName[256];
-    rct_ride *rideA, *rideB;
+    Ride *rideA, *rideB;
 
     rideA = get_ride(*((uint8*)a));
     rideB = get_ride(*((uint8*)b));
@@ -128,7 +128,7 @@ static sint32 ride_name_compare(const void *a, const void *b)
 void window_new_campaign_open(sint16 campaignType)
 {
     rct_window *w;
-    rct_ride *ride;
+    Ride *ride;
     sint32 i, numApplicableRides;
 
     w = window_bring_to_front_by_class(WC_NEW_CAMPAIGN);
@@ -201,7 +201,7 @@ void window_new_campaign_open(sint16 campaignType)
 static void window_new_campaign_get_shop_items()
 {
     sint32 i, numItems;
-    rct_ride *ride;
+    Ride *ride;
 
     uint64 items = 0;
     FOR_ALL_RIDES(i, ride) {
@@ -287,7 +287,7 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
                 if (window_new_campaign_rides[i] == 255)
                     break;
 
-                rct_ride *ride = get_ride(window_new_campaign_rides[i]);
+                Ride *ride = get_ride(window_new_campaign_rides[i]);
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
                 numItems++;
@@ -356,7 +356,7 @@ static void window_new_campaign_invalidate(rct_window *w)
         window_new_campaign_widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
         window_new_campaign_widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
         if (w->campaign.ride_id != SELECTED_RIDE_UNDEFINED) {
-            rct_ride *ride = get_ride(w->campaign.ride_id);
+            Ride *ride = get_ride(w->campaign.ride_id);
             window_new_campaign_widgets[WIDX_RIDE_DROPDOWN].text = ride->name;
             set_format_arg(0, uint32, ride->name_arguments);
         }

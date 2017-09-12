@@ -146,7 +146,7 @@ void finance_pay_interest()
 void finance_pay_ride_upkeep()
 {
     sint32 i;
-    rct_ride* ride;
+    Ride* ride;
 
     FOR_ALL_RIDES(i, ride) {
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
@@ -242,7 +242,7 @@ void finance_update_daily_profit()
         current_profit -= current_loan / 600;
 
         // Ride costs
-        rct_ride *ride;
+        Ride *ride;
         sint32 i;
         FOR_ALL_RIDES(i, ride) {
             if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1) {

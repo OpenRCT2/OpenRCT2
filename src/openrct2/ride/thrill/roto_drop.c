@@ -89,7 +89,7 @@ static void paint_roto_drop_base(paint_session * session, uint8 rideIndex, uint8
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);

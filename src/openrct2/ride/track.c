@@ -582,14 +582,14 @@ sint32 track_is_connected_by_shape(rct_map_element *a, rct_map_element *b)
     return aBank == bBank && aAngle == bAngle;
 }
 
-const rct_preview_track *get_track_def_from_ride(rct_ride *ride, sint32 trackType)
+const rct_preview_track *get_track_def_from_ride(Ride *ride, sint32 trackType)
 {
     return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
         FlatRideTrackBlocks[trackType] :
         TrackBlocks[trackType];
 }
 
-const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, sint32 trackType){
+const rct_track_coordinates *get_track_coord_from_ride(Ride *ride, sint32 trackType){
     return ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
         &FlatTrackCoordinates[trackType] :
         &TrackCoordinates[trackType];
@@ -615,7 +615,7 @@ static rct_map_element *find_station_element(sint32 x, sint32 y, sint32 z, sint3
     return NULL;
 }
 
-static void ride_remove_station(rct_ride *ride, sint32 x, sint32 y, sint32 z)
+static void ride_remove_station(Ride *ride, sint32 x, sint32 y, sint32 z)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
@@ -640,7 +640,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
     sint32 stationY1 = y;
     sint32 stationLength = 1;
 
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
         if (ride->num_stations >= MAX_STATIONS) {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
@@ -774,7 +774,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
     sint32 stationLength = 0;
     sint32 byte_F441D1 = -1;
 
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
         rct_map_element *mapElement = map_get_track_element_at_with_direction_from_ride(x, y, z, direction, rideIndex);
         if (mapElement != NULL) {
@@ -900,7 +900,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
 
 static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 properties_1, sint32 properties_2, sint32 properties_3, sint32 liftHillAndAlternativeState, sint32 flags)
 {
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     if (ride == NULL)
     {
         log_warning("Invalid ride for track placement, rideIndex = %d", rideIndex);
@@ -1503,7 +1503,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
     type = mapElement->properties.track.type;
     bool isLiftHill = track_element_is_lift_hill(mapElement);
 
-    rct_ride* ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
     trackBlock += map_element_get_track_sequence(mapElement);
 
@@ -1831,7 +1831,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
             return MONEY32_UNDEFINED;
         }
 
-        rct_ride *ride = get_ride(rideIndex);
+        Ride *ride = get_ride(rideIndex);
 
         money32 price = (((RideTrackCosts[ride->type].track_price * TrackPricing[TRACK_ELEM_MAZE]) >> 16));
         cost = price / 2 * 10;
@@ -2181,7 +2181,7 @@ bool track_element_is_inverted(rct_map_element *trackElement)
 
 sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank)
 {
-    rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
+    Ride *ride = get_ride(mapElement->properties.track.ride_index);
     sint32 trackColour = mapElement->properties.track.colour;
     return track_get_actual_bank_2(ride->type, trackColour, bank);
 }

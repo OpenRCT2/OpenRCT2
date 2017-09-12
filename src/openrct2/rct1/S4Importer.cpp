@@ -682,9 +682,9 @@ private:
         }
     }
 
-    void ImportRide(rct_ride * dst, rct1_ride * src)
+    void ImportRide(Ride * dst, rct1_ride * src)
     {
-        memset(dst, 0, sizeof(rct_ride));
+        memset(dst, 0, sizeof(Ride));
 
         // This is a peculiarity of this exact version number, which only Heide-Park seems to use.
         if (_s4.game_version == 110018 && src->type == RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER)
@@ -920,7 +920,7 @@ private:
         dst->music_tune_id = 255;
     }
 
-    void SetRideColourScheme(rct_ride * dst, rct1_ride * src)
+    void SetRideColourScheme(Ride * dst, rct1_ride * src)
     {
         // Colours
         dst->colour_scheme_type = src->colour_scheme;
@@ -1009,7 +1009,7 @@ private:
     void FixRideVehicleLinks(const uint16 * spriteIndexMap)
     {
         uint8 i;
-        rct_ride * ride;
+        Ride * ride;
         FOR_ALL_RIDES(i, ride)
         {
             for (uint8 j = 0; j < Util::CountOf(ride->vehicles); j++)
@@ -1088,7 +1088,7 @@ private:
 
     void ImportVehicle(rct_vehicle * dst, rct1_vehicle * src)
     {
-        rct_ride * ride = get_ride(src->ride);
+        Ride * ride = get_ride(src->ride);
         uint8 vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
         dst->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
@@ -1282,7 +1282,7 @@ private:
         }
 
         int i;
-        rct_ride *ride;
+        Ride *ride;
         rct_peep *peep;
 
         FOR_ALL_RIDES(i, ride)
@@ -1483,7 +1483,7 @@ private:
         }
     }
 
-    void FixRidePeepLinks(rct_ride * ride, const uint16 * spriteIndexMap)
+    void FixRidePeepLinks(Ride * ride, const uint16 * spriteIndexMap)
     {
         for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
         {
@@ -2676,7 +2676,7 @@ private:
                         }
 
                         uint8 rideIndex = mapElement->properties.track.ride_index;
-                        rct_ride * ride = get_ride(rideIndex);
+                        Ride * ride = get_ride(rideIndex);
                         ride->num_block_brakes++;
                     }
                 }

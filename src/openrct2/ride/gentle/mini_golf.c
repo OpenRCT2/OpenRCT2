@@ -625,7 +625,7 @@ static void paint_mini_golf_track_25_deg_down_to_flat(paint_session * session, u
 static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     rct_xy16 position = session->MapPosition;
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32 imageId;
     bool hasFence;
@@ -1067,7 +1067,7 @@ void vehicle_visual_mini_golf_ball(paint_session * session, sint32 x, sint32 ima
         return;
     }
 
-    rct_ride *ride = get_ride(vehicle->ride);
+    Ride *ride = get_ride(vehicle->ride);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
 
     uint32 image_id = rideEntry->vehicles[0].base_image_id;

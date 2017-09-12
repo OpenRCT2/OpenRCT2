@@ -1724,7 +1724,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Details
             // Ride
             sint16 rideId = mapElement->properties.track.ride_index;
-            rct_ride *ride = get_ride(rideId);
+            Ride *ride = get_ride(rideId);
             rct_string_id rideType = RideNaming[ride->type].name;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_ID, &rideId, COLOUR_DARK_GREEN, x, y + 11);

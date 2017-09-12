@@ -191,7 +191,7 @@ static void research_rides_setup(){
 
     // Set research required for rides in use
     for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
-        rct_ride* ride = get_ride(rideIndex);
+        Ride * ride = get_ride(rideIndex);
         if (ride->type == RIDE_TYPE_NULL)continue;
         gEditorSelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
     }

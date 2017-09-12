@@ -241,7 +241,7 @@ void window_guest_list_open_with_filter(sint32 type, sint32 index)
     switch(type) {
     case GLFT_GUESTS_ON_RIDE:
     {
-        rct_ride *ride = get_ride(index & 0x000000FF);
+        Ride *ride = get_ride(index & 0x000000FF);
         _window_guest_list_filter_arguments[0] = STR_ON_RIDE;
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IN_RIDE)) {
             _window_guest_list_filter_arguments[0] = STR_IN_RIDE;
@@ -258,7 +258,7 @@ void window_guest_list_open_with_filter(sint32 type, sint32 index)
     }
     case GLFT_GUESTS_IN_QUEUE:
     {
-        rct_ride *ride = get_ride(index & 0x000000FF);
+        Ride *ride = get_ride(index & 0x000000FF);
         _window_guest_list_filter_arguments[0] = STR_QUEUING_FOR;
         _window_guest_list_filter_arguments[1] = ride->name;
         _window_guest_list_filter_arguments[2] = ride->name_arguments_type_name;
@@ -272,7 +272,7 @@ void window_guest_list_open_with_filter(sint32 type, sint32 index)
     }
     case GLFT_GUESTS_THINKING_ABOUT_RIDE:
     {
-        rct_ride *ride = get_ride(index & 0x000000FF);
+        Ride *ride = get_ride(index & 0x000000FF);
         _window_guest_list_filter_arguments[0] = STR_NONE;
         _window_guest_list_filter_arguments[1] = ride->name;
         _window_guest_list_filter_arguments[2] = ride->name_arguments_type_name;

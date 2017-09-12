@@ -22,7 +22,7 @@
 #include "../track.h"
 
 /** rct2: 0x008A2ABC */
-static void paint_enterprise_structure(paint_session * session, rct_ride * ride, sint8 xOffset, sint8 yOffset, uint16 height, rct_map_element * mapElement)
+static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height, rct_map_element * mapElement)
 {
     height += 7;
 
@@ -80,7 +80,7 @@ static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 tra
     trackSequence = track_map_4x4[direction][trackSequence];
 
     sint32 edges = edges_4x4[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);

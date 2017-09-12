@@ -56,7 +56,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
 
     height += 3;
 
-    rct_ride* ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle* vehicle = NULL;
 
@@ -230,7 +230,7 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);

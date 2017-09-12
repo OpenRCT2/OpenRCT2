@@ -346,7 +346,9 @@ void S6Exporter::Export()
     memcpy(_s6.banners, gBanners, sizeof(_s6.banners));
     memcpy(_s6.custom_strings, gUserStrings, sizeof(_s6.custom_strings));
     _s6.game_ticks_1 = gCurrentTicks;
-    memcpy(_s6.rides, gRideList, sizeof(_s6.rides));
+
+    this->ExportRides();
+
     _s6.saved_age           = gSavedAge;
     _s6.saved_view_x        = gSavedViewX;
     _s6.saved_view_y        = gSavedViewY;
@@ -423,6 +425,226 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
     value += maxBankLoan;
     value = ror32(value, 3);
     return value;
+}
+
+void S6Exporter::ExportRides()
+{
+    for (sint32 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
+    {
+        if (gRideList[index].type != RIDE_TYPE_NULL)
+        {
+            ExportRide(&_s6.rides[index], get_ride(index));
+        }
+    }
+}
+
+void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
+{
+    memset(dst, 0, sizeof(rct2_ride));
+
+    dst->type = src->type;
+    dst->subtype = src->subtype;
+    // pad_002;
+    dst->mode = src->mode;
+    dst->colour_scheme_type = src->colour_scheme_type;
+
+    for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i ++)
+    {
+        dst->vehicle_colours[i] = src->vehicle_colours[i];
+    }
+
+    // pad_046;
+    dst->status = src->status;
+    dst->name = src->name;
+    dst->name_arguments = src->name_arguments;
+
+    dst->overall_view = src->overall_view;
+
+    for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+    {
+        dst->station_starts[i] = src->station_starts[i];
+        dst->station_heights[i] = src->station_heights[i];
+        dst->station_length[i] = src->station_length[i];
+        dst->station_depart[i] = src->station_depart[i];
+        dst->train_at_station[i] = src->train_at_station[i];
+        dst->entrances[i] = src->entrances[i];
+        dst->exits[i] = src->exits[i];
+        dst->last_peep_in_queue[i] = src->last_peep_in_queue[i];
+
+        dst->length[i] = src->length[i];
+        dst->time[i] = src->time[i];
+
+        dst->queue_time[i] = src->queue_time[i];
+
+        dst->queue_length[i] = src->queue_length[i];
+    }
+
+    for (uint8 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
+    {
+        dst->vehicles[i] = src->vehicles[i];
+    }
+
+    dst->depart_flags = src->depart_flags;
+
+    dst->num_stations = src->num_stations;
+    dst->num_vehicles = src->num_vehicles;
+    dst->num_cars_per_train = src->num_cars_per_train;
+    dst->proposed_num_vehicles = src->proposed_num_vehicles;
+    dst->proposed_num_cars_per_train = src->proposed_num_cars_per_train;
+    dst->max_trains = src->max_trains;
+    dst->min_max_cars_per_train = src->min_max_cars_per_train;
+    dst->min_waiting_time = src->min_waiting_time;
+    dst->max_waiting_time = src->max_waiting_time;
+
+    // Includes time_limit, num_laps, launch_speed, speed, rotations
+    dst->operation_option = src->operation_option;
+
+    dst->boat_hire_return_direction = src->boat_hire_return_direction;
+    dst->boat_hire_return_position = src->boat_hire_return_position;
+
+    dst->measurement_index = src->measurement_index;
+
+    dst->special_track_elements = src->special_track_elements;
+    // pad_0D6[2];
+
+    dst->max_speed = src->max_speed;
+    dst->average_speed = src->average_speed;
+    dst->current_test_segment = src->current_test_segment;
+    dst->average_speed_test_timeout = src->average_speed_test_timeout;
+    // pad_0E2[0x2];
+
+    dst->max_positive_vertical_g = src->max_positive_vertical_g;
+    dst->max_negative_vertical_g = src->max_negative_vertical_g;
+    dst->max_lateral_g = src->max_lateral_g;
+    dst->previous_vertical_g = src->previous_vertical_g;
+    dst->previous_lateral_g = src->previous_lateral_g;
+    // pad_106[0x2];
+    dst->testing_flags = src->testing_flags;
+    dst->cur_test_track_location = src->cur_test_track_location;
+    dst->turn_count_default = src->turn_count_default;
+    dst->turn_count_banked = src->turn_count_banked;
+    dst->turn_count_sloped = src->turn_count_sloped;
+    // Includes holes and (for some strange reason?!) sheltered_eights
+    dst->inversions = src->inversions;
+    dst->drops = src->drops;
+    dst->start_drop_height = src->start_drop_height;
+    dst->highest_drop_height = src->highest_drop_height;
+    dst->sheltered_length = src->sheltered_length;
+    dst->var_11C = src->var_11C;
+    dst->num_sheltered_sections = src->num_sheltered_sections;
+    dst->cur_test_track_z = src->cur_test_track_z;
+
+    dst->cur_num_customers = src->cur_num_customers;
+    dst->num_customers_timeout = src->num_customers_timeout;
+
+    for (uint8 i = 0; i < RCT2_CUSTOMER_HISTORY_SIZE; i++)
+    {
+        dst->num_customers[i] = src->num_customers[i];
+    }
+
+    dst->price = src->price;
+
+    for (uint8 i = 0; i < 2; i++)
+    {
+        dst->chairlift_bullwheel_location[i] = src->chairlift_bullwheel_location[i];
+        dst->chairlift_bullwheel_z[i] = src->chairlift_bullwheel_z[i];
+    }
+
+    dst->ratings = src->ratings;
+    dst->value = src->value;
+
+    dst->chairlift_bullwheel_rotation = src->chairlift_bullwheel_rotation;
+
+    dst->satisfaction = src->satisfaction;
+    dst->satisfaction_time_out = src->satisfaction_time_out;
+    dst->satisfaction_next = src->satisfaction_next;
+
+    dst->window_invalidate_flags = src->window_invalidate_flags;
+    // pad_14E[0x02];
+
+    dst->total_customers = src->total_customers;
+    dst->total_profit = src->total_profit;
+    dst->popularity = src->popularity;
+    dst->popularity_time_out = src->popularity_time_out;
+    dst->popularity_next = src->popularity_next;
+    dst->num_riders = src->num_riders;
+    dst->music_tune_id = src->music_tune_id;
+    dst->slide_in_use = src->slide_in_use;
+    // Includes maze_tiles
+    dst->slide_peep = src->slide_peep;
+    // pad_160[0xE];
+    dst->slide_peep_t_shirt_colour = src->slide_peep_t_shirt_colour;
+    // pad_16F[0x7];
+    dst->spiral_slide_progress = src->spiral_slide_progress;
+    // pad_177[0x9];
+    dst->build_date = src->build_date;
+    dst->upkeep_cost = src->upkeep_cost;
+    dst->race_winner = src->race_winner;
+    // pad_186[0x02];
+    dst->music_position = src->music_position;
+
+    dst->breakdown_reason_pending = src->breakdown_reason_pending;
+    dst->mechanic_status = src->mechanic_status;
+    dst->mechanic = src->mechanic;
+    dst->inspection_station = src->inspection_station;
+    dst->broken_vehicle = src->broken_vehicle;
+    dst->broken_car = src->broken_car;
+    dst->breakdown_reason = src->breakdown_reason;
+
+    dst->price_secondary = src->price_secondary;
+
+    dst->reliability = src->reliability;
+    dst->unreliability_factor = src->unreliability_factor;
+    dst->downtime = src->downtime;
+    dst->inspection_interval = src->inspection_interval;
+    dst->last_inspection = src->last_inspection;
+
+    for (uint8 i = 0; i < RCT2_DOWNTIME_HISTORY_SIZE; i++)
+    {
+        dst->downtime_history[i] = src->downtime_history[i];
+    }
+
+    dst->no_primary_items_sold = src->no_primary_items_sold;
+    dst->no_secondary_items_sold = src->no_secondary_items_sold;
+
+    dst->breakdown_sound_modifier = src->breakdown_sound_modifier;
+    dst->not_fixed_timeout = src->not_fixed_timeout;
+    dst->last_crash_type = src->last_crash_type;
+    dst->connected_message_throttle = src->connected_message_throttle;
+
+    dst->income_per_hour = src->income_per_hour;
+    dst->profit = src->profit;
+
+    for (uint8 i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    {
+        dst->track_colour_main[i] = src->track_colour_main[i];
+        dst->track_colour_additional[i] = src->track_colour_additional[i];
+        dst->track_colour_supports[i] = src->track_colour_supports[i];
+    }
+
+    dst->music = src->music;
+    dst->entrance_style = src->entrance_style;
+    dst->vehicle_change_timeout = src->vehicle_change_timeout;
+    dst->num_block_brakes = src->num_block_brakes;
+    dst->lift_hill_speed = src->lift_hill_speed;
+    dst->guests_favourite = src->guests_favourite;
+    dst->lifecycle_flags = src->lifecycle_flags;
+
+    for (uint8 i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+    {
+        dst->vehicle_colours_extended[i] = src->vehicle_colours_extended[i];
+    }
+
+    dst->total_air_time = src->total_air_time;
+    dst->current_test_station = src->current_test_station;
+    dst->num_circuits = src->num_circuits;
+    dst->cable_lift_x = src->cable_lift_x;
+    dst->cable_lift_y = src->cable_lift_y;
+    dst->cable_lift_z = src->cable_lift_z;
+    // pad_1FD;
+    dst->cable_lift = src->cable_lift;
+
+    // pad_208[0x58];
 }
 
 extern "C"

@@ -722,7 +722,7 @@ static void paint_splash_boats_track_flat(paint_session * session, uint8 rideInd
 /** rct2: 0x0089B1A0 */
 static void paint_splash_boats_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
 
     if (direction & 1) {
         uint32 imageId = (direction == 1 ? SPR_SPLASH_BOATS_FLAT_TOP_NW_SE : SPR_SPLASH_BOATS_FLAT_TOP_SE_NW) | gTrackColours[SCHEME_TRACK];

@@ -518,7 +518,7 @@ static void window_ride_list_invalidate(rct_window *w)
         sint8 allClosed = -1;
         sint8 allOpen = -1;
         sint32 i;
-        rct_ride *ride;
+        Ride *ride;
         FOR_ALL_RIDES(i, ride) {
             if (w->page != gRideClassifications[ride->type])
                 continue;
@@ -566,7 +566,7 @@ static void window_ride_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, 
 {
     sint32 i, y, argument;
     rct_string_id format, formatSecondary;
-    rct_ride *ride;
+    Ride *ride;
 
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width, dpi->y + dpi->height, ColourMapA[w->colours[1]].mid_light);
 
@@ -741,7 +741,7 @@ static void window_ride_list_draw_tab_images(rct_drawpixelinfo *dpi, rct_window 
 void window_ride_list_refresh_list(rct_window *w)
 {
     sint32 i;
-    rct_ride *ride, *otherRide;
+    Ride *ride, *otherRide;
     char bufferA[128], bufferB[128];
     sint32 list_index = 0;
 
@@ -906,7 +906,7 @@ void window_ride_list_refresh_list(rct_window *w)
 static void window_ride_list_close_all(rct_window *w)
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
         if (w->page != gRideClassifications[ride->type])
@@ -925,7 +925,7 @@ static void window_ride_list_close_all(rct_window *w)
 static void window_ride_list_open_all(rct_window *w)
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
         if (w->page != gRideClassifications[ride->type])

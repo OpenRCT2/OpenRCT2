@@ -440,9 +440,9 @@ public:
         }
     }
 
-    void ImportRide(rct_ride * dst, const rct_ride * src)
+    void ImportRide(Ride * dst, const rct2_ride * src)
     {
-        memset(dst, 0, sizeof(rct_ride));
+        memset(dst, 0, sizeof(Ride));
 
         dst->type = src->type;
         dst->subtype = src->subtype;
@@ -490,9 +490,13 @@ public:
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 
-        for (uint8 i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
+        }
+        for (sint32 i = RCT2_MAX_VEHICLES_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
+        {
+            dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
 
         dst->depart_flags = src->depart_flags;

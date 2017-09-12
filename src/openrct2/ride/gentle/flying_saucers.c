@@ -44,7 +44,7 @@ static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8
     uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
     sint32 edges = edges_4x4[relativeTrackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);

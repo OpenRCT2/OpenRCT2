@@ -723,7 +723,7 @@ void window_guest_viewport_init(rct_window* w){
             || peep->state == PEEP_STATE_ENTERING_RIDE
             || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == SPRITE_LOCATION_NULL)){
 
-            rct_ride *ride = get_ride(peep->current_ride);
+            Ride *ride = get_ride(peep->current_ride);
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
                 rct_vehicle* train = GET_VEHICLE(ride->vehicles[peep->current_train]);
                 sint32 car = peep->current_car;
@@ -737,7 +737,7 @@ void window_guest_viewport_init(rct_window* w){
             }
         }
         if (peep->x == SPRITE_LOCATION_NULL && final_check){
-            rct_ride *ride = get_ride(peep->current_ride);
+            Ride *ride = get_ride(peep->current_ride);
             sint32 x = ride->overall_view.x * 32 + 16;
             sint32 y = ride->overall_view.y * 32 + 16;
             sint32 height = map_element_height(x, y);
@@ -1540,7 +1540,7 @@ void window_guest_rides_update(rct_window *w)
         uint8 ride_id_bit = ride_id % 8;
         uint8 ride_id_offset = ride_id / 8;
         if (peep->rides_been_on[ride_id_offset] & (1 << ride_id_bit)){
-            rct_ride* ride = get_ride(ride_id);
+            Ride* ride = get_ride(ride_id);
             if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE){
                 w->list_item_positions[curr_list_position] = ride_id;
                 curr_list_position++;
@@ -1682,7 +1682,7 @@ void window_guest_rides_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 ride_string_id = STR_PEEP_FAVOURITE_RIDE_NOT_AVAILABLE;
     sint32 ride_string_arguments = 0;
     if (peep->favourite_ride != 0xFF){
-        rct_ride* ride = get_ride(peep->favourite_ride);
+        Ride* ride = get_ride(peep->favourite_ride);
         ride_string_arguments = ride->name_arguments;
         ride_string_id = ride->name;
     }
@@ -1717,7 +1717,7 @@ void window_guest_rides_scroll_paint(rct_window *w, rct_drawpixelinfo *dpi, sint
             gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
             string_format = STR_WINDOW_COLOUR_2_STRINGID;
         }
-        rct_ride* ride = get_ride(w->list_item_positions[list_index]);
+        Ride* ride = get_ride(w->list_item_positions[list_index]);
 
         gfx_draw_string_left(dpi, string_format, (void*)&ride->name, COLOUR_BLACK, 0, y - 1);
     }
@@ -2019,7 +2019,7 @@ void window_guest_inventory_invalidate(rct_window *w)
 
 static rct_string_id window_guest_inventory_format_item(rct_peep *peep, sint32 item)
 {
-    rct_ride *ride;
+    Ride *ride;
 
     // Default arguments
     set_format_arg(0, uint32, ShopItemImage[item]);

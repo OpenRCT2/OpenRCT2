@@ -147,7 +147,7 @@ static void cheat_remove_litter()
 static void cheat_fix_rides()
 {
     sint32 rideIndex;
-    rct_ride *ride;
+    Ride *ride;
     rct_peep *mechanic;
 
     FOR_ALL_RIDES(rideIndex, ride)
@@ -169,7 +169,7 @@ static void cheat_fix_rides()
 static void cheat_renew_rides()
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(i, ride)
     {
@@ -184,7 +184,7 @@ static void cheat_renew_rides()
 static void cheat_make_destructible()
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
     FOR_ALL_RIDES(i, ride)
     {
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
@@ -198,7 +198,7 @@ static void cheat_make_destructible()
 static void cheat_reset_crash_status()
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(i, ride){
         // Reset crash status
@@ -213,7 +213,7 @@ static void cheat_reset_crash_status()
 static void cheat_10_minute_inspections()
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(i, ride) {
         // Set inspection interval to 10 minutes
@@ -368,7 +368,7 @@ static void cheat_remove_all_guests()
     }
 
     sint32 rideIndex;
-    rct_ride *ride;
+    Ride *ride;
 
     FOR_ALL_RIDES(rideIndex, ride)
     {

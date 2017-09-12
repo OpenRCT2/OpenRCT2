@@ -23,7 +23,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            rct_ride * ride = get_ride(rideId);
+            Ride * ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 ride_ratings_update_ride(rideId);
@@ -35,7 +35,7 @@ protected:
     {
         for (int rideId = 0; rideId < MAX_RIDES; rideId++)
         {
-            rct_ride * ride = get_ride(rideId);
+            Ride * ride = get_ride(rideId);
             if (ride->type != RIDE_TYPE_NULL)
             {
                 std::string line = FormatRatings(ride);
@@ -44,7 +44,7 @@ protected:
         }
     }
 
-    std::string FormatRatings(rct_ride * ride)
+    std::string FormatRatings(Ride * ride)
     {
         rating_tuple ratings = ride->ratings;
         std::string line = String::StdFormat("%s: (%d, %d, %d)",
@@ -82,7 +82,7 @@ TEST_F(RideRatings, all)
     int expI = 0;
     for (int rideId = 0; rideId < MAX_RIDES; rideId++)
     {
-        rct_ride * ride = get_ride(rideId);
+        Ride * ride = get_ride(rideId);
         if (ride->type != RIDE_TYPE_NULL)
         {
             std::string actual = FormatRatings(ride);

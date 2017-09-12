@@ -256,7 +256,7 @@ typedef struct rct_s6_data {
     rct_banner banners[RCT2_MAX_BANNERS_IN_PARK];
     char custom_strings[0x8000];
     uint32 game_ticks_1;
-    rct_ride rides[RCT2_MAX_RIDES_IN_PARK];
+    rct2_ride rides[RCT2_MAX_RIDES_IN_PARK];
     uint16 saved_age;
     uint16 saved_view_x;
     uint16 saved_view_y;

@@ -66,7 +66,7 @@ static const uint32 pirate_ship_frame_sprites[][2] = {
 };
 
 /** rct2: 0x4AF254 */
-static void paint_pirate_ship_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_pirate_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
     uint32 imageId, baseImageId;
 
@@ -160,7 +160,7 @@ static void paint_pirate_ship_structure(paint_session * session, rct_ride * ride
 static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x5[direction][trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     uint32 imageId;

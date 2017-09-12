@@ -168,7 +168,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 {
     const rct_xy16 pos = session->MapPosition;
     uint8 trackType = mapElement->properties.track.type;
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     uint32 imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, mapElement, pos, trackType);;
@@ -247,7 +247,7 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
 {
     const rct_xy16 pos = session->MapPosition;
     uint8 trackType = mapElement->properties.track.type;
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     uint32 imageId;
 
     bool isStart = chairlift_paint_util_is_first_track(rideIndex, mapElement, pos, trackType);;

@@ -30,7 +30,7 @@
 
 rct_map_element *gMapElements = (rct_map_element *) RCT2_ADDRESS_MAP_ELEMENTS;
 rct_map_element **gMapElementTilePointers = (rct_map_element **) RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
-rct_ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, rct_ride);
+Ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, Ride);
 rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 sint16 gMapSizeUnits;
 sint16 gMapBaseZ;
@@ -88,7 +88,7 @@ void scenery_paint(paint_session * session, uint8 direction, int height, rct_map
 void fence_paint(paint_session * session, uint8 direction, int height, rct_map_element *mapElement) { }
 void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
 
-rct_ride *get_ride(int index) {
+Ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {
         log_error("invalid index %d for ride", index);
         return NULL;
@@ -104,7 +104,7 @@ rct_ride_entry *get_ride_entry(int index) {
     return gRideEntries[index];
 }
 
-rct_ride_entry *get_ride_entry_by_ride(rct_ride *ride) {
+rct_ride_entry *get_ride_entry_by_ride(Ride *ride) {
     rct_ride_entry *type = get_ride_entry(ride->subtype);
     if (type == NULL) {
         log_error("Invalid ride subtype for ride");

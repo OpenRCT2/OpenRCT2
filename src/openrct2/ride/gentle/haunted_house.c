@@ -48,7 +48,7 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
 
     uint8 frameNum = 0;
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
 
     uint32 baseImageId = ride_type->vehicles[0].base_image_id;
@@ -89,7 +89,7 @@ static void paint_haunted_house(paint_session * session, uint8 rideIndex, uint8 
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);

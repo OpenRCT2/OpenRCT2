@@ -1159,7 +1159,7 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
     if ((peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) &&
         scenario_rand() & 1) {
 
-        rct_ride* ride = get_ride(peep->current_ride);
+        Ride* ride = get_ride(peep->current_ride);
 
         rct_xy8 location = ride->exits[peep->current_ride_station];
         if (location.xy == RCT_XY8_UNDEFINED) {
@@ -1243,7 +1243,7 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
 
     // Mechanic is heading to ride (either broken down or for inspection).
     if (peep->state == PEEP_STATE_ANSWERING || peep->state == PEEP_STATE_HEADING_TO_INSPECTION) {
-        rct_ride* ride = get_ride(peep->current_ride);
+        Ride* ride = get_ride(peep->current_ride);
         uint8 z = ride->station_heights[peep->current_ride_station];
         gPeepPathFindGoalPosition.z = z;
 

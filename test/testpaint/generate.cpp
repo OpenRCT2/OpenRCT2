@@ -1022,7 +1022,7 @@ private:
             direction,
             height,
             (int)mapElement,
-            0 * sizeof(rct_ride),
+            0 * sizeof(Ride),
             trackSequence
         );
     }

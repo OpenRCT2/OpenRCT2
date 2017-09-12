@@ -41,7 +41,7 @@ rct_banner gBanners[MAX_BANNERS];
 static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
 {
     rct_map_element *mapElement;
-    rct_ride *ride;
+    Ride *ride;
     sint32 rideIndex, resultRideIndex;
 
     resultRideIndex = -1;
@@ -491,7 +491,7 @@ extern "C"
     sint32 banner_get_closest_ride_index(sint32 x, sint32 y, sint32 z)
     {
         sint32 i, rideIndex;
-        rct_ride *ride;
+        Ride *ride;
 
         static const rct_xy16 NeighbourCheckOrder[] =
         {

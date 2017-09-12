@@ -46,7 +46,7 @@ rct_crooked_house_bound_box crooked_house_data[] = {
 static void paint_crooked_house_structure(paint_session * session, uint8 direction, uint8 x_offset, uint8 y_offset, uint32 segment, sint32 height) {
     rct_map_element *original_map_element = session->CurrentlyDrawnItem;
 
-    rct_ride *ride = get_ride(original_map_element->properties.track.ride_index);
+    Ride *ride = get_ride(original_map_element->properties.track.ride_index);
 
     rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
 
@@ -70,7 +70,7 @@ static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);

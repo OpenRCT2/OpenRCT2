@@ -37,7 +37,7 @@ static const uint32 space_rings_fence_sprites[] = {
 };
 
 /** rct2: 0x00768A3B */
-static void paint_space_rings_structure(paint_session * session, rct_ride * ride, uint8 direction,  uint32 segment, sint32 height)
+static void paint_space_rings_structure(paint_session * session, Ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
@@ -89,7 +89,7 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     uint32 imageId;

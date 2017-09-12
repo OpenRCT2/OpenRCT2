@@ -3210,7 +3210,7 @@ bool map_element_check_address(const rct_map_element * const element)
 void map_obstruction_set_error_text(rct_map_element *mapElement)
 {
     rct_string_id errorStringId;
-    rct_ride *ride;
+    Ride *ride;
     rct_scenery_entry *sceneryEntry;
 
     errorStringId = STR_OBJECT_IN_THE_WAY;

@@ -233,7 +233,7 @@ sint32 calculate_park_rating()
         sint32 i;
         sint16 total_ride_uptime = 0, total_ride_intensity = 0, total_ride_excitement = 0;
         sint32 num_rides, num_exciting_rides = 0;
-        rct_ride* ride;
+        Ride* ride;
 
         num_rides = 0;
         FOR_ALL_RIDES(i, ride) {
@@ -298,7 +298,7 @@ sint32 calculate_park_rating()
     return result;
 }
 
-static money32 calculate_ride_value(rct_ride *ride)
+static money32 calculate_ride_value(Ride *ride)
 {
     if (ride->type == RIDE_TYPE_NULL)
         return 0;
@@ -319,7 +319,7 @@ money32 calculate_park_value()
     // Sum ride values
     money32 result = 0;
     for (sint32 i = 0; i < 255; i++) {
-        rct_ride* ride = get_ride(i);
+        Ride* ride = get_ride(i);
         result += calculate_ride_value(ride);
     }
 
@@ -368,7 +368,7 @@ static sint32 park_calculate_guest_generation_probability()
     uint32 probability;
     sint32 i, suggestedMaxGuests;
     money16 totalRideValue;
-    rct_ride *ride;
+    Ride *ride;
 
     // Calculate suggested guest maximum (based on ride type) and total ride value
     suggestedMaxGuests = 0;

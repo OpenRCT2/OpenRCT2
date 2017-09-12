@@ -21,12 +21,10 @@
 #include "../world/map.h"
 #include "ride.h"
 
-#define MAX_STATIONS 4
-
-void ride_update_station(rct_ride *ride, sint32 stationIndex);
-sint32 ride_get_first_valid_station_exit(rct_ride * ride);
-sint8 ride_get_first_valid_station_start(const rct_ride *ride);
-sint8 ride_get_first_empty_station_start(const rct_ride *ride);
+void ride_update_station(Ride *ride, sint32 stationIndex);
+sint32 ride_get_first_valid_station_exit(Ride * ride);
+sint8 ride_get_first_valid_station_start(const Ride *ride);
+sint8 ride_get_first_empty_station_start(const Ride *ride);
 
 
 #endif

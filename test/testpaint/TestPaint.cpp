@@ -47,7 +47,7 @@ namespace TestPaint
         unk_140E9A8 = &dpi;
         gPaintSession.Unk140E9A8 = &dpi;
 
-        rct_ride ride = {0};
+        Ride ride = {0};
         ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
 
         rct_ride_entry rideEntry = {0};

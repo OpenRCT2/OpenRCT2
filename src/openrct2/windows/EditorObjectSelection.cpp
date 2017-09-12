@@ -575,7 +575,7 @@ static void setup_in_use_selection_flags()
     } while (map_element_iterator_next(&iter));
 
     for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++) {
-        rct_ride* ride = get_ride(ride_index);
+        Ride* ride = get_ride(ride_index);
         if (ride->type != RIDE_TYPE_NULL) {
             uint8 type = ride->subtype;
             gEditorSelectedObjects[OBJECT_TYPE_RIDE][type] |= (1 << 0);

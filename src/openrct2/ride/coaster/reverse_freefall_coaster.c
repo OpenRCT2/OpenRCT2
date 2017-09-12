@@ -223,7 +223,7 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
 
 static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32 imageId = entranceStyle->base_image_id;
     if (!(gTrackColours[SCHEME_MISC] & (1 << 29))) {

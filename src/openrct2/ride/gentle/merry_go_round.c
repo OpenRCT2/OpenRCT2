@@ -38,7 +38,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
     height += 7;
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
@@ -108,7 +108,7 @@ static void paint_merry_go_round(paint_session * session, uint8 rideIndex, uint8
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);

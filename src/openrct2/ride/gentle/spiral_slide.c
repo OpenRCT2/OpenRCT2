@@ -77,7 +77,7 @@ static void spiral_slide_paint_tile_left(paint_session * session, uint8 rideInde
 static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement) {
     uint32 image_id = 0;
 
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
 
     if (direction == 1) {
         image_id = SPIRAL_SLIDE_INSIDE_R1 | gTrackColours[SCHEME_TRACK];
@@ -165,7 +165,7 @@ static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 t
     trackSequence = track_map_2x2[direction][trackSequence];
 
     sint32 edges = edges_2x2[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);

@@ -1162,7 +1162,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
 static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     sint32 i, x, y, weeksRemaining;
-    rct_ride *ride;
+    Ride *ride;
 
     window_draw_widgets(w, dpi);
     window_finances_draw_tab_images(dpi, w);

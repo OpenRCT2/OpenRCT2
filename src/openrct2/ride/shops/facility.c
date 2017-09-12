@@ -33,7 +33,7 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
 {
     bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_3], NULL);
 
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
 

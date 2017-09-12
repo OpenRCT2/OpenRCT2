@@ -27,7 +27,7 @@ static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uin
 {
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
@@ -56,7 +56,7 @@ static void paint_circus_show(paint_session * session, uint8 rideIndex, uint8 tr
     trackSequence = track_map_3x3[direction][trackSequence];
 
     sint32 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
