@@ -59,11 +59,11 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
     trackSequence = track_map_3x3[direction][trackSequence];
 
     if (trackSequence == 0) {
-        paint_lift_cage(session, direction, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
+        paint_lift_cage(session, direction, session->TrackColours[SCHEME_TRACK], height, get_current_rotation());
 
-        paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
+        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
 
-        paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
+        paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 64, get_current_rotation());
 
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -81,10 +81,10 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
     Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    uint32 imageId = SPR_FLOOR_METAL_B | gTrackColours[SCHEME_SUPPORTS];
+    uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-        track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
+        track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
 
     sint32 blockedSegments = 0;
     switch (trackSequence) {
@@ -109,7 +109,7 @@ static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, u
         return;
     }
 
-    paint_lift_cage(session, -1, gTrackColours[SCHEME_TRACK], height, get_current_rotation());
+    paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height, get_current_rotation());
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 

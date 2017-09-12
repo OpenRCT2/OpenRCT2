@@ -135,24 +135,24 @@ static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, 
 {
     uint32 imageId;
     if (direction == 0 || direction == 2) {
-        imageId = SPR_GO_KARTS_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_GO_KARTS_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
 
-        imageId = SPR_GO_KARTS_FLAT_FRONT_SW_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_GO_KARTS_FLAT_FRONT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     } else {
-        imageId = SPR_GO_KARTS_FLAT_NW_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_GO_KARTS_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
 
-        imageId = SPR_GO_KARTS_FLAT_FRONT_NW_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_GO_KARTS_FLAT_FRONT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 29, 0, height + 2, get_current_rotation());
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -164,14 +164,14 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
     uint32 imageId;
     paint_struct * ps;
 
-    imageId = go_karts_track_pieces_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
     } else {
         ps = sub_98197C(session, imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
     }
 
-    imageId = go_karts_track_pieces_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         sub_98197C(session, imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
     } else {
@@ -182,19 +182,19 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 0, 9, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 9, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 1, 10, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 10, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 0, 11, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 11, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 1, 12, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 12, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
             break;
     }
@@ -209,14 +209,14 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
     uint32 imageId;
     paint_struct * ps;
 
-    imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][0] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
     } else {
         ps = sub_98197C(session, imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
     }
 
-    imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][1] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_flat_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         sub_98197C(session, imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
     } else {
@@ -227,19 +227,19 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 0, 1, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 1, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 1, 2, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 2, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_8);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 0, 3, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 3, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height, TUNNEL_8);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 1, 4, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 4, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
     }
@@ -254,14 +254,14 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
     uint32 imageId;
     paint_struct * ps;
 
-    imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][0] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         ps = sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
     } else {
         ps = sub_98197C(session, imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
     }
 
-    imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][1] | gTrackColours[SCHEME_TRACK];
+    imageId = go_karts_track_pieces_25_deg_up_to_flat[direction][1] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         sub_98197C(session, imageId, 0, 0, 32, 1, 11, height, 0, 29, height + 2, get_current_rotation());
     } else {
@@ -272,19 +272,19 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
 
     switch (direction) {
         case 0:
-            wooden_a_supports_paint_setup(session, 0, 5, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 5, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
             break;
         case 1:
-            wooden_a_supports_paint_setup(session, 1, 6, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 6, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
             break;
         case 2:
-            wooden_a_supports_paint_setup(session, 0, 7, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 0, 7, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
         case 3:
-            wooden_a_supports_paint_setup(session, 1, 8, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+            wooden_a_supports_paint_setup(session, 1, 8, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
             break;
     }
@@ -326,7 +326,7 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
         sprites = go_karts_track_pieces_starting_grid_end;
     }
 
-    imageId = sprites[direction][0] | gTrackColours[SCHEME_TRACK];
+    imageId = sprites[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
     } else {
@@ -341,7 +341,7 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
     }
 
-    imageId = sprites[direction][1] | gTrackColours[SCHEME_TRACK];
+    imageId = sprites[direction][1] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2) {
         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 29, height + 2, get_current_rotation());
 
@@ -365,37 +365,37 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
 
         switch (direction) {
             case 0:
-                imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SW_NE : SPR_GO_KARTS_START_POLE_RED_SW_NE) | gTrackColours[SCHEME_TRACK];
+                imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SW_NE : SPR_GO_KARTS_START_POLE_RED_SW_NE) | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 1, 1, height + 4, get_current_rotation());
 
-                imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE : SPR_GO_KARTS_START_LIGHTS_RED_SW_NE) | gTrackColours[SCHEME_TRACK];
+                imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SW_NE : SPR_GO_KARTS_START_LIGHTS_RED_SW_NE) | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 1, 28, height + 4, get_current_rotation());
                 break;
             case 1:
-                imageId = SPR_GO_KARTS_START_POLE_NW_SE | gTrackColours[SCHEME_TRACK];
+                imageId = SPR_GO_KARTS_START_POLE_NW_SE | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 1, 28, height + 4, get_current_rotation());
 
-                imageId = SPR_GO_KARTS_START_LIGHTS_NW_SE | gTrackColours[SCHEME_TRACK];
+                imageId = SPR_GO_KARTS_START_LIGHTS_NW_SE | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 28, 28, height + 4, get_current_rotation());
                 break;
             case 2:
-                imageId = SPR_GO_KARTS_START_POLE_NE_SW | gTrackColours[SCHEME_TRACK];
+                imageId = SPR_GO_KARTS_START_POLE_NE_SW | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 28, 1, height + 4, get_current_rotation());
 
-                imageId = SPR_GO_KARTS_START_LIGHTS_NE_SW | gTrackColours[SCHEME_TRACK];
+                imageId = SPR_GO_KARTS_START_LIGHTS_NE_SW | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 28, 28, height + 4, get_current_rotation());
                 break;
             case 3:
-                imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SE_NW : SPR_GO_KARTS_START_POLE_RED_SE_NW) | gTrackColours[SCHEME_TRACK];
+                imageId = (hasGreenLight ? SPR_GO_KARTS_START_POLE_GREEN_SE_NW : SPR_GO_KARTS_START_POLE_RED_SE_NW) | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 1, 1, height + 4, get_current_rotation());
 
-                imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW : SPR_GO_KARTS_START_LIGHTS_RED_SE_NW) | gTrackColours[SCHEME_TRACK];
+                imageId = (hasGreenLight ? SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW : SPR_GO_KARTS_START_LIGHTS_RED_SE_NW) | session->TrackColours[SCHEME_TRACK];
                 sub_98197C(session, imageId, 0, 0, 3, 3, 13, height, 28, 1, height + 4, get_current_rotation());
                 break;
         }
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -408,40 +408,40 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * sessio
 
     switch (direction) {
         case 0:
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NW_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 28, 1, height, 0, 2, height, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NW_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 1, 3, height, 29, 2, height + 2, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 1, 3, height, 14, 29, height + 2, get_current_rotation());
             break;
         case 1:
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NE_SE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_NE_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 0, 0, height, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NE_SE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_NE_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 1, 3, height, 2, 29, height + 2, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_NE_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 16, 3, height, 29, 2, height + 2, get_current_rotation());
             break;
         case 2:
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SE_SW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 28, 32, 1, height, 2, 0, height, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SE_SW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 1, 3, height, 2, 2, height + 2, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_B_SE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 16, 3, height, 29, 14, height + 2, get_current_rotation());
             break;
         case 3:
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_SW_NW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_GO_KARTS_FLAT_QUARTER_TURN_1_TILE_EDGE_A_SW_NW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 1, 1, 3, height, 29, 29, height + 2, get_current_rotation());
 
             // The empty sprite isn't drawn
@@ -461,7 +461,7 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * sessio
             break;
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

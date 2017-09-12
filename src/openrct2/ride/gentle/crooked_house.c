@@ -59,7 +59,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
     }
 
 
-    uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | gTrackColours[SCHEME_MISC];
+    uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
 
     rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
     sub_98197C(session, image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x, boundBox.offset_y, height + 3, get_current_rotation());
@@ -73,11 +73,11 @@ static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 
     Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
     switch(trackSequence) {
         case 3: paint_crooked_house_structure(session, direction, 32, 224, 0, height); break;

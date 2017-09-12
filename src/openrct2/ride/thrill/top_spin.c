@@ -83,7 +83,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     //si
     uint8 lengthY = 24;
 
-    uint32 image_id = gTrackColours[SCHEME_MISC];
+    uint32 image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP) {
         image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
     }
@@ -95,7 +95,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     image_id += 572;
     sub_98197C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    image_id = gTrackColours[SCHEME_MISC];
+    image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP) {
         image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
     }
@@ -132,7 +132,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
         seatImageId = image_id;
     }
 
-    image_id = gTrackColours[SCHEME_MISC];
+    image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP) {
         image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
@@ -193,7 +193,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
         }
     }
 
-    image_id = gTrackColours[SCHEME_MISC];
+    image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP) {
         image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_additional[0]);
     }
@@ -206,7 +206,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
 
     sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
-    image_id = gTrackColours[SCHEME_MISC];
+    image_id = session->TrackColours[SCHEME_MISC];
     if (image_id == IMAGE_TYPE_REMAP)
     {
         image_id = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[0], ride->track_colour_supports[0]);
@@ -233,11 +233,11 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
     Ride *ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(session, edges, gTrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, gTrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence) {
         case 1: top_spin_paint_vehicle(session, 32, 32, rideIndex, direction, height, mapElement); break;

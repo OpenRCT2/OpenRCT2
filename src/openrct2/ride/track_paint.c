@@ -314,14 +314,14 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
             if (hasGreenLight) {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
             }
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 0, 32, 8, 1, height + fenceOffsetA, get_current_rotation());
         //height -= 5 (height)
@@ -329,11 +329,11 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         //height += 5 (height + 5)
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
-            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + fenceOffsetA, get_current_rotation());
         //height += 2 (height + 7)
@@ -341,20 +341,20 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
             if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
-                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
-                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = SPR_STATION_FENCE_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             }
             sub_98196C(session, imageId, 0, 31, 32, 1, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 23, 1, 8, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 23, 1, 8, 7, height + fenceOffsetB, get_current_rotation());
         }
         //height -= 7 (height)
@@ -362,10 +362,10 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         //height += 7 (height + 7)
 
         if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 8, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 8, 7, height + fenceOffsetB, get_current_rotation());
         }
     } else if (direction == 1 || direction == 3) {
@@ -374,14 +374,14 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
             if (hasGreenLight) {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
             }
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 1) {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 0, 8, 32, 1, height + fenceOffsetA, get_current_rotation());
         //height -= 5 (height)
@@ -389,11 +389,11 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         //height += 5 (height + 5)
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 1) {
-            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + fenceOffsetA, get_current_rotation());
         //height += 2 (height + 7)
@@ -401,20 +401,20 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
             if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
-                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_BEGIN_ANGLE_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
-                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_LIGHT_BACK_ANGLE_FENCED_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = SPR_STATION_FENCE_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             }
             sub_98196C(session, imageId, 31, 0, 1, 32, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 23, 31, 8, 1, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 23, 31, 8, 1, 7, height + fenceOffsetB, get_current_rotation());
         }
 
@@ -423,10 +423,10 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
         //height += 7 (height + 7)
 
         if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 8, 1, 7, height + fenceOffsetB, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 8, 1, 7, height + fenceOffsetB, get_current_rotation());
         }
     }
@@ -448,14 +448,14 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
             if (hasGreenLight) {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
             }
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 0, 32, 8, 1, height + 6, get_current_rotation());
         //height -= 5 (height)
@@ -463,11 +463,11 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         //height += 5 (height + 5)
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 0) {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_SW_NE : SPR_STATION_PLATFORM_END_RED_LIGHT_SW_NE) | session->TrackColours[SCHEME_SUPPORTS];
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 2) {
-            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_BEGIN_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = SPR_STATION_PLATFORM_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 6, get_current_rotation());
         //height += 2 (height + 7)
@@ -475,20 +475,20 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
             if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
-                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
-                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = SPR_STATION_INVERTED_FENCE_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             }
             sub_98196C(session, imageId, 0, 31, 32, 1, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 23, 1, 8, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 23, 1, 8, 7, height + 8, get_current_rotation());
         }
         //height -= 7 (height)
@@ -496,10 +496,10 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         //height += 7 (height + 7)
 
         if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 0) {
-            imageId = SPR_STATION_FENCE_SMALL_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 8, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 2) {
-            imageId = SPR_STATION_LIGHT_BACK_NE_SW | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NE_SW | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 8, 7, height + 8, get_current_rotation());
         }
     } else if (direction == 1 || direction == 3) {
@@ -508,14 +508,14 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
             if (hasGreenLight) {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+                imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_END_RED_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
             }
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 1) {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 0, 0, 8, 32, 1, height + 6, get_current_rotation());
         //height -= 5 (height)
@@ -523,11 +523,11 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         //height += 5 (height + 5)
 
         if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 3) {
-            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | gTrackColours[SCHEME_SUPPORTS];
+            imageId = (hasGreenLight ? SPR_STATION_PLATFORM_END_GREEN_LIGHT_NW_SE : SPR_STATION_PLATFORM_END_RED_LIGHT_NW_SE) | session->TrackColours[SCHEME_SUPPORTS];
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 1) {
-            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_BEGIN_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
         } else {
-            imageId = SPR_STATION_PLATFORM_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
         }
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 6, get_current_rotation());
         //height += 2 (height + 7)
@@ -535,20 +535,20 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
             if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
-                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_BEGIN_ANGLE_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
-                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_LIGHT_BACK_ANGLE_FENCED_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             } else {
-                imageId = SPR_STATION_INVERTED_FENCE_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+                imageId = SPR_STATION_INVERTED_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             }
             sub_98196C(session, imageId, 31, 0, 1, 32, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
             // Addition: draw only small fence if there is an entrance/exit at the beginning
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 23, 31, 8, 1, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
             // Addition: draw only small fence if there is an entrance/exit at the end
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 23, 31, 8, 1, 7, height + 8, get_current_rotation());
         }
 
@@ -557,10 +557,10 @@ void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideI
         //height += 7 (height + 7)
 
         if (mapElement->properties.track.type == TRACK_ELEM_BEGIN_STATION && direction == 3) {
-            imageId = SPR_STATION_FENCE_SMALL_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SMALL_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 8, 1, 7, height + 8, get_current_rotation());
         } else if (mapElement->properties.track.type == TRACK_ELEM_END_STATION && direction == 1) {
-            imageId = SPR_STATION_LIGHT_BACK_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_LIGHT_BACK_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 8, 1, 7, height + 8, get_current_rotation());
         }
     }
@@ -612,7 +612,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
             break;
     }
 
-    if (gTrackColours[SCHEME_MISC] != IMAGE_TYPE_REMAP) {
+    if (session->TrackColours[SCHEME_MISC] != IMAGE_TYPE_REMAP) {
         baseImageId &= 0x7FFFF;
     }
 
@@ -628,7 +628,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
         imageId = (baseImageId & 0xBFFFFFFF) + imageOffset;
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
 
-        uint32 edi = gTrackColours[SCHEME_TRACK] & (0b11111 << 19);
+        uint32 edi = session->TrackColours[SCHEME_TRACK] & (0b11111 << 19);
 
         // weird jump
         imageId = (baseImageId | edi) + 0x3800000 + imageOffset + 12;
@@ -636,7 +636,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
         return true;
     }
 
-    imageId = (baseImageId + imageOffset) | gTrackColours[SCHEME_TRACK];
+    imageId = (baseImageId + imageOffset) | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, (sint8)bounds.z, offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z, get_current_rotation());
     return true;
 }
@@ -647,31 +647,31 @@ void track_paint_util_draw_station_platform(paint_session * session, Ride *ride,
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     if (direction & 1) {
         bool hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
-        uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE) | gTrackColours[SCHEME_SUPPORTS];
+        uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE) | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 8, 32, 1, height + zOffset, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
 
-        imageId = SPR_STATION_NARROW_EDGE_SW | gTrackColours[SCHEME_SUPPORTS];
+        imageId = SPR_STATION_NARROW_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + zOffset, get_current_rotation());
 
         hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
-            imageId = SPR_STATION_FENCE_NW_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 32, 7, height + zOffset + 2, get_current_rotation());
         }
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
     } else {
         bool hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
-        uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW) | gTrackColours[SCHEME_SUPPORTS];
+        uint32 imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW) | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 32, 8, 1, height + zOffset, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
 
-        imageId = SPR_STATION_NARROW_EDGE_SE | gTrackColours[SCHEME_SUPPORTS];
+        imageId = SPR_STATION_NARROW_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + zOffset, get_current_rotation());
 
         hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
-            imageId = SPR_STATION_FENCE_SW_NE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 32, 1, 7, height + zOffset + 2, get_current_rotation());
         }
         track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
@@ -685,31 +685,31 @@ void track_paint_util_draw_pier(paint_session * session, Ride * ride, const rct_
 
     if (direction & 1) {
         hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
-        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | gTrackColours[SCHEME_SUPPORTS];
+        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE) | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 6, 32, 1, height, 2, 0, height, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
 
-        imageId = SPR_STATION_PIER_EDGE_SW | gTrackColours[SCHEME_SUPPORTS];
+        imageId = SPR_STATION_PIER_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 24, 0, 8, 32, 1, height, get_current_rotation());
 
         hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
         if (hasFence) {
-            imageId = SPR_STATION_PIER_FENCE_SW | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PIER_FENCE_SW | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 31, 0, 1, 32, 7, height + 2, get_current_rotation());
         }
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
     } else {
         hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, rotation);
-        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW) | gTrackColours[SCHEME_SUPPORTS];
+        imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW) | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C(session, imageId, 0, 0, 32, 6, 1, height, 0, 2, height, rotation);
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
 
-        imageId = SPR_STATION_PIER_EDGE_SE | gTrackColours[SCHEME_SUPPORTS];
+        imageId = SPR_STATION_PIER_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 24, 32, 8, 1, height, rotation);
 
         hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, rotation);
         if (hasFence) {
-            imageId = SPR_STATION_PIER_FENCE_SE | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_STATION_PIER_FENCE_SE | session->TrackColours[SCHEME_SUPPORTS];
             sub_98196C(session, imageId, 0, 31, 32, 1, 7, height + 2, rotation);
         }
         track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
@@ -1252,7 +1252,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session *
             { 1, 0xFF, 3, 5, 0xFF, 3, 0 },
         };
         uint8 supportType = supportTypes[direction][trackSequence];
-        wooden_a_supports_paint_setup(session, supportType, 0, height, gTrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
     }
 }
 
@@ -1598,9 +1598,9 @@ void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thick
 {
 
     sint32 frame = gScenarioTicks >> 2 & 3;
-    uint32 colourFlags = gTrackColours[SCHEME_SUPPORTS];
+    uint32 colourFlags = session->TrackColours[SCHEME_SUPPORTS];
 
-    uint32 colourFlags2 = gTrackColours[SCHEME_TRACK];
+    uint32 colourFlags2 = session->TrackColours[SCHEME_TRACK];
     if (colourFlags2 & IMAGE_TYPE_REMAP_2_PLUS) {
         colourFlags |= colourFlags2 & (IMAGE_TYPE_REMAP_2_PLUS | (0x1F << 24));
     }
@@ -1631,8 +1631,8 @@ void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 di
     };
 
     bool takingPhoto = map_element_is_taking_photo(mapElement);
-    uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_MISC];
-    uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | gTrackColours[SCHEME_MISC];
+    uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
+    uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction) {
     case 0:
         sub_98196C(session, imageId, 26, 0, 1, 1, 19, height, get_current_rotation());
@@ -1668,8 +1668,8 @@ void track_paint_util_onride_photo_paint(paint_session * session, uint8 directio
     };
 
     bool takingPhoto = map_element_is_taking_photo(mapElement);
-    uint32 imageId = imageIds[direction][0] | gTrackColours[SCHEME_MISC];
-    uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | gTrackColours[SCHEME_MISC];
+    uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
+    uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction) {
     case 0:
         sub_98196C(session, imageId, 26, 0, 1, 1, 19, height, get_current_rotation());
@@ -1723,7 +1723,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 
     if (direction == 2) {
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     }
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     if (direction != 2) {
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
     }
@@ -1768,23 +1768,23 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
         }
 
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
-        gTrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
-        gTrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
-        gTrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
-        gTrackColours[SCHEME_3] = 0x20C00000;
+        session->TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(ride->track_colour_main[trackColourScheme], ride->track_colour_additional[trackColourScheme]);
+        session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
+        session->TrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
+        session->TrackColours[SCHEME_3] = 0x20C00000;
         if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
-            gTrackColours[SCHEME_TRACK] = 0x21600000;
-            gTrackColours[SCHEME_SUPPORTS] = 0x21600000;
-            gTrackColours[SCHEME_MISC] = 0x21600000;
-            gTrackColours[SCHEME_3] = 0x21600000;
+            session->TrackColours[SCHEME_TRACK] = 0x21600000;
+            session->TrackColours[SCHEME_SUPPORTS] = 0x21600000;
+            session->TrackColours[SCHEME_MISC] = 0x21600000;
+            session->TrackColours[SCHEME_3] = 0x21600000;
         }
         if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
             uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-            gTrackColours[SCHEME_TRACK] = ghost_id;
-            gTrackColours[SCHEME_SUPPORTS] = ghost_id;
-            gTrackColours[SCHEME_MISC] = ghost_id;
-            gTrackColours[SCHEME_3] = ghost_id;
+            session->TrackColours[SCHEME_TRACK] = ghost_id;
+            session->TrackColours[SCHEME_SUPPORTS] = ghost_id;
+            session->TrackColours[SCHEME_MISC] = ghost_id;
+            session->TrackColours[SCHEME_3] = ghost_id;
         }
 
         bool useOriginalRidePaint = false;

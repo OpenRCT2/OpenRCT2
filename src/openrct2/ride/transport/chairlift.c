@@ -91,7 +91,7 @@ static void chairlift_paint_util_draw_supports(paint_session * session, sint32 s
             continue;
         }
 
-        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS])) {
+        if (metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session->TrackColours[SCHEME_SUPPORTS])) {
             success = true;
         }
     }
@@ -107,7 +107,7 @@ static void chairlift_paint_util_draw_supports(paint_session * session, sint32 s
         }
         uint16 temp = supportSegments[s].height;
         supportSegments[s].height = session->Support.height;
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, gTrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_TRUSS, s, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         supportSegments[s].height = temp;
     }
 }
@@ -176,31 +176,31 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(session, 0, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
     if (!isStart && !isEnd) {
-        imageId = ((direction == 0) ? SPR_20502 : SPR_20504) | gTrackColours[SCHEME_TRACK];
+        imageId = ((direction == 0) ? SPR_20502 : SPR_20504) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
     }
 
-    imageId = SPR_FLOOR_METAL | gTrackColours[SCHEME_SUPPORTS];
+    imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
     bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, mapElement, ride, get_current_rotation());
     if (hasFence) {
-        imageId = SPR_FENCE_METAL_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_NW | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, get_current_rotation());
     }
     track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
 
     if ((direction == 2 && isStart) || (direction == 0 && isEnd)) {
-        imageId = SPR_FENCE_METAL_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_NE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 1, 28, 7, height, 2, 2, height + 4, get_current_rotation());
     }
 
     hasFence = track_paint_util_has_fence(EDGE_SE, pos, mapElement, ride, get_current_rotation());
     if (hasFence) {
-        imageId = SPR_FENCE_METAL_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 27, height, 0, 30, height + 2, get_current_rotation());
     }
     track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
@@ -208,33 +208,33 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
     bool drawFrontColumn = true;
     bool drawBackColumn = true;
     if ((direction == 0 && isStart) || (direction == 2 && isEnd)) {
-        imageId = SPR_FENCE_METAL_SW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 28, 27, height, 30, 2, height + 4, get_current_rotation());
 
-        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | gTrackColours[SCHEME_TRACK];
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
-        imageId = SPR_CHAIRLIFT_STATION_END_CAP_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_NE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
         drawFrontColumn = false;
     } else if ((direction == 2 && isStart) || (direction == 0 && isEnd)) {
-        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | gTrackColours[SCHEME_TRACK];
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
-        imageId = SPR_CHAIRLIFT_STATION_END_CAP_SW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_SW | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
         drawBackColumn = false;
     }
 
     if (drawBackColumn) {
-        imageId = SPR_CHAIRLIFT_STATION_COLUMN_NE_SW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_NE_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 16, 1, 1, 7, height + 2, 1, 16, height + 2, get_current_rotation());
     }
 
     if (drawFrontColumn) {
-        imageId = SPR_CHAIRLIFT_STATION_COLUMN_NE_SW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_NE_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 30, 16, 1, 1, 7, height + 2, 1, 16, height + 2, get_current_rotation()); // bound offset x is wrong?
     }
 
@@ -255,31 +255,31 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
 
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
 
-    wooden_a_supports_paint_setup(session, 1, 0, height, gTrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
     if (!isStart && !isEnd) {
-        imageId = ((direction == 1) ? SPR_20503 : SPR_20505) | gTrackColours[SCHEME_TRACK];
+        imageId = ((direction == 1) ? SPR_20503 : SPR_20505) | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
     }
 
-    imageId = SPR_FLOOR_METAL | gTrackColours[SCHEME_SUPPORTS];
+    imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
     bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, mapElement, ride, get_current_rotation());
     if (hasFence) {
-        imageId = SPR_FENCE_METAL_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_NE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, get_current_rotation());
     }
     track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
 
     if ((direction == 1 && isStart) || (direction == 3 && isEnd)) {
-        imageId = SPR_FENCE_METAL_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_NW | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 28, 1, 7, height, 2, 2, height + 4, get_current_rotation());
     }
 
     hasFence = track_paint_util_has_fence(EDGE_SW, pos, mapElement, ride, get_current_rotation());
     if (hasFence) {
-        imageId = SPR_FENCE_METAL_SW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 27, height, 30, 0, height + 2, get_current_rotation());
     }
     track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
@@ -287,33 +287,33 @@ static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideInd
     bool drawRightColumn = true;
     bool drawLeftColumn = true;
     if ((direction == 1 && isStart) || (direction == 3 && isEnd)) {
-        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | gTrackColours[SCHEME_TRACK];
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
-        imageId = SPR_CHAIRLIFT_STATION_END_CAP_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_SE | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
         drawLeftColumn = false;
     } else if ((direction == 3 && isStart) || (direction == 1 && isEnd)) {
-        imageId = SPR_FENCE_METAL_SE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_FENCE_METAL_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 28, 1, 27, height, 2, 30, height + 4, get_current_rotation());
 
-        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | gTrackColours[SCHEME_TRACK];
+        imageId = chairlift_bullwheel_frames[ride->chairlift_bullwheel_rotation / 16384] | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
-        imageId = SPR_CHAIRLIFT_STATION_END_CAP_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_END_CAP_NW | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 4, 4, 26, height, 14, 14, height + 4, get_current_rotation());
 
         drawRightColumn = false;
     }
 
     if (drawLeftColumn) {
-        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 16, 0, 1, 1, 7, height + 2, 16, 1, height + 2, get_current_rotation());
     }
 
     if (drawRightColumn) {
-        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_STATION_COLUMN_SE_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 16, 30, 1, 1, 7, height + 2, 16, 1, height + 2, get_current_rotation()); // bound offset x is wrong?
 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -337,11 +337,11 @@ static void chairlift_paint_flat(paint_session * session, uint8 rideIndex, uint8
 {
     uint32 imageId;
     if (direction & 1) {
-        imageId = SPR_CHAIRLIFT_CABLE_FLAT_SE_NW | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_CABLE_FLAT_SE_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     } else {
-        imageId = SPR_CHAIRLIFT_CABLE_FLAT_SW_NE | gTrackColours[SCHEME_TRACK];
+        imageId = SPR_CHAIRLIFT_CABLE_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
@@ -357,25 +357,25 @@ static void chairlift_paint_25_deg_up(paint_session * session, uint8 rideIndex, 
 
     switch (direction) {
         case 0:
-            imageId = SPR_CHAIRLIFT_CABLE_UP_SW_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CABLE_UP_SW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_7);
             break;
 
         case 1:
-            imageId = SPR_CHAIRLIFT_CABLE_UP_NW_SE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CABLE_UP_NW_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_8);
             break;
 
         case 2:
-            imageId = SPR_CHAIRLIFT_CABLE_UP_NE_SW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CABLE_UP_NE_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_8);
             break;
 
         case 3:
-            imageId = SPR_CHAIRLIFT_CABLE_UP_SE_NW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CABLE_UP_SE_NW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_7);
             break;
@@ -392,40 +392,40 @@ static void chairlift_paint_flat_to_25_deg_up(paint_session * session, uint8 rid
 
     switch (direction) {
         case 0:
-            imageId = SPR_20508 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20508 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
 
-            imageId = SPR_20520 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20520 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
 
         case 1:
-            imageId = SPR_20509 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20509 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20521 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20521 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height, TUNNEL_8);
             break;
 
         case 2:
-            imageId = SPR_20510 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20510 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
 
-            imageId = SPR_20522 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20522 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_8);
             break;
 
         case 3:
-            imageId = SPR_20511 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20511 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20523 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20523 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
@@ -444,40 +444,40 @@ static void chairlift_paint_25_deg_up_to_flat(paint_session * session, uint8 rid
 
     switch (direction) {
         case 0:
-            imageId = SPR_20512 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20512 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
 
-            imageId = SPR_20524 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20524 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height - 8, TUNNEL_6);
             break;
 
         case 1:
-            imageId = SPR_20513 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20513 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20525 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20525 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height + 8, TUNNEL_14);
             break;
 
         case 2:
-            imageId = SPR_20514 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20514 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 32, 6, 2, height, 0, 13, height + 28, get_current_rotation());
 
-            imageId = SPR_20526 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20526 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height + 8, TUNNEL_14);
             break;
 
         case 3:
-            imageId = SPR_20515 | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_20515 | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 6, 32, 2, height, 13, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20527 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20527 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 4, 4, 25, height, 14, 14, height + 1, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height - 8, TUNNEL_6);
@@ -515,50 +515,50 @@ static void chairlift_paint_left_quarter_turn_1_tile(paint_session * session, ui
 
     switch (direction) {
         case 0:
-            imageId = SPR_CHAIRLIFT_CORNER_NW_SW | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CORNER_NW_SW | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20532 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20532 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height, get_current_rotation());
 
-            imageId = SPR_20536 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20536 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 4, height, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
             break;
 
         case 1:
-            imageId = SPR_CHAIRLIFT_CORNER_NW_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CORNER_NW_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 0, height + 28, get_current_rotation());
 
-            imageId = SPR_20533 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20533 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 4, height, get_current_rotation());
 
-            imageId = SPR_20537 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20537 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height, get_current_rotation());
             break;
 
         case 2:
-            imageId = SPR_CHAIRLIFT_CORNER_SE_NE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CORNER_SE_NE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 0, 16, height + 28, get_current_rotation());
 
-            imageId = SPR_20534 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20534 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 4, 16, height, get_current_rotation());
 
-            imageId = SPR_20538 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20538 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height, get_current_rotation());
 
             paint_util_push_tunnel_right(session, height, TUNNEL_6);
             break;
 
         case 3:
-            imageId = SPR_CHAIRLIFT_CORNER_SW_SE | gTrackColours[SCHEME_TRACK];
+            imageId = SPR_CHAIRLIFT_CORNER_SW_SE | session->TrackColours[SCHEME_TRACK];
             sub_98197C(session, imageId, 0, 0, 16, 16, 2, height, 16, 16, height + 28, get_current_rotation());
 
-            imageId = SPR_20535 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20535 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 28, 16, height, get_current_rotation());
 
-            imageId = SPR_20539 | gTrackColours[SCHEME_SUPPORTS];
+            imageId = SPR_20539 | session->TrackColours[SCHEME_SUPPORTS];
             sub_98197C(session, imageId, 0, 0, 2, 2, 27, height, 16, 28, height, get_current_rotation());
 
             paint_util_push_tunnel_left(session, height, TUNNEL_6);
