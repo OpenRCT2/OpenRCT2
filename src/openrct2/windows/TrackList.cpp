@@ -217,7 +217,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
     track_design_file_ref *tdRef = &_trackDesigns[index];
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
-        intent.putExtra(INTENT_EXTRA_8, tdRef);
+        intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
         context_open_intent(&intent);
     } else {
         if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE)) {
@@ -225,7 +225,7 @@ static void window_track_list_select(rct_window *w, sint32 index)
         }
 
         auto intent = Intent(WC_TRACK_DESIGN_PLACE);
-        intent.putExtra(INTENT_EXTRA_8, tdRef);
+        intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
         context_open_intent(&intent);
     }
 }

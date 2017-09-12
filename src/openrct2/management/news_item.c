@@ -371,8 +371,8 @@ void news_item_open_subject(sint32 type, sint32 subject)
     case NEWS_ITEM_PEEPS:
     {
         Intent *intent = intent_create(WC_GUEST_LIST);
-        intent_set_sint(intent, INTENT_EXTRA_0, GLFT_GUESTS_THINKING_X);
-        intent_set_sint(intent, INTENT_EXTRA_1, subject);
+        intent_set_sint(intent, INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_X);
+        intent_set_sint(intent, INTENT_EXTRA_RIDE_ID, subject);
         context_open_intent(intent);
         intent_release(intent);
         break;

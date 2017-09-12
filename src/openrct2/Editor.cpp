@@ -101,8 +101,8 @@ namespace Editor
     {
         tool_cancel();
         auto intent = Intent(WC_LOADSAVE);
-        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-        intent.putExtra(INTENT_EXTRA_5, (void *) ConvertSaveToScenarioCallback);
+        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+        intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) ConvertSaveToScenarioCallback);
         context_open_intent(&intent);
     }
 

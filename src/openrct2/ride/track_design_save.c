@@ -181,9 +181,9 @@ bool track_design_save(uint8 rideIndex)
     format_string(track_name, sizeof(track_name), ride->name, &ride->name_arguments);
 
     Intent * intent = intent_create(WC_LOADSAVE);
-    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
-    intent_set_string(intent, INTENT_EXTRA_6, track_name);
-    intent_set_pointer(intent, INTENT_EXTRA_6, track_design_save_callback);
+    intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK);
+    intent_set_string(intent, INTENT_EXTRA_CALLBACK, track_name);
+    intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, track_design_save_callback);
     context_open_intent(intent);
     intent_release(intent);
 

@@ -531,8 +531,8 @@ static void shortcut_quick_save_game()
     }
     else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
         Intent * intent = intent_create(WC_LOADSAVE);
-        intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-        intent_set_string(intent, INTENT_EXTRA_5, gS6Info.name);
+        intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+        intent_set_string(intent, INTENT_EXTRA_PATH, gS6Info.name);
         context_open_intent(intent);
         intent_release(intent);
     }
