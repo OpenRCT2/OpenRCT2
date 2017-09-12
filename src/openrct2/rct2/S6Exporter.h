@@ -46,6 +46,8 @@ public:
     void SaveScenario(const utf8 * path);
     void SaveScenario(IStream * stream);
     void Export();
+    void ExportRides();
+    void ExportRide(rct2_ride * dst, const Ride * src);
 
 private:
     rct_s6_data _s6;

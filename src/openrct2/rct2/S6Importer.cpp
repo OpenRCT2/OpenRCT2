@@ -490,9 +490,13 @@ public:
             dst->last_peep_in_queue[i] = SPRITE_INDEX_NULL;
         }
 
-        for (uint8 i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE; i++)
         {
             dst->vehicles[i] = src->vehicles[i];
+        }
+        for (sint32 i = RCT2_MAX_VEHICLES_PER_RIDE; i < MAX_VEHICLES_PER_RIDE; i++)
+        {
+            dst->vehicles[i] = SPRITE_INDEX_NULL;
         }
 
         dst->depart_flags = src->depart_flags;
