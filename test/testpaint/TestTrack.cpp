@@ -49,7 +49,7 @@ public:
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         Ride *ride, rct_ride_entry *rideEntry
     ) abstract;
 };
 
@@ -69,7 +69,7 @@ public:
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
@@ -95,7 +95,7 @@ public:
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
             mapElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
@@ -127,7 +127,7 @@ public:
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
             mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
@@ -159,7 +159,7 @@ public:
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
                          rct_map_element *mapElement, rct_map_element *surfaceElement,
-                         rct_ride *ride, rct_ride_entry *rideEntry
+                         Ride *ride, rct_ride_entry *rideEntry
     ) override {
         ride->entrance_style = variant;
     }
@@ -186,7 +186,7 @@ static void CallOriginal(
         direction,
         height,
         (int) mapElement,
-        rideIndex * sizeof(rct_ride),
+        rideIndex * sizeof(Ride),
         trackSequence
     );
 }
