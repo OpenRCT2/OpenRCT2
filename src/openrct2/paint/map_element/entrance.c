@@ -65,7 +65,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
 #endif
 
-    rct_ride* ride = get_ride(map_element->properties.entrance.ride_index);
+    Ride* ride = get_ride(map_element->properties.entrance.ride_index);
     if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) return;
 
     const rct_ride_entrance_definition *style = &RideEntranceDefinitions[ride->entrance_style];

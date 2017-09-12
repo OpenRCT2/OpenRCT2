@@ -304,7 +304,7 @@ static void editor_clear_map_for_editing(bool fromSave)
     //
     {
         sint32 i;
-        rct_ride *ride;
+        Ride *ride;
         FOR_ALL_RIDES(i, ride) {
             user_string_free(ride->name);
         }

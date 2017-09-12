@@ -60,7 +60,7 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
 
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 
@@ -139,7 +139,7 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
         edges = edges_1x4_ne_sw[relativeTrackSequence];
     }
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, gTrackColours[SCHEME_MISC], NULL);

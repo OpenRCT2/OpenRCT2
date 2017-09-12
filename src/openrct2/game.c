@@ -653,7 +653,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
         network_append_server_log(log_msg);
     } else if (command == GAME_COMMAND_CREATE_RIDE && *ebp == 1) { // ebp is 1 if the command comes from ride_create method in ride.c, other calls send ride_entry instead of ride and wont work
         // Get ride name
-        rct_ride* ride = get_ride(*edx);
+        Ride* ride = get_ride(*edx);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 
@@ -666,7 +666,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
         network_append_server_log(log_msg);
     } else if (command == GAME_COMMAND_DEMOLISH_RIDE && (*ebp == 1 || *ebp == 0)) { // ebp is 1 if command comes from ride window prompt, so we don't log "demolishing" ride previews
         // Get ride name
-        rct_ride* ride = get_ride(*edx);
+        Ride* ride = get_ride(*edx);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 
@@ -680,7 +680,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
     } else if (command == GAME_COMMAND_SET_RIDE_APPEARANCE || command == GAME_COMMAND_SET_RIDE_VEHICLES || command == GAME_COMMAND_SET_RIDE_SETTING) {
         // Get ride name
         int ride_index = *edx & 0xFF;
-        rct_ride* ride = get_ride(ride_index);
+        Ride* ride = get_ride(ride_index);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 
@@ -699,7 +699,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
     } else if (command == GAME_COMMAND_SET_RIDE_STATUS) {
         // Get ride name
         int ride_index = *edx & 0xFF;
-        rct_ride* ride = get_ride(ride_index);
+        Ride* ride = get_ride(ride_index);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 
@@ -719,7 +719,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
     } else if (command == GAME_COMMAND_SET_RIDE_PRICE) {
         // Get ride name
         int ride_index = *edx & 0xFF;
-        rct_ride* ride = get_ride(ride_index);
+        Ride* ride = get_ride(ride_index);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 
@@ -836,7 +836,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
     } else if (command == GAME_COMMAND_PLACE_TRACK) {
         // Get ride name
         int ride_index = *edx & 0xFF;
-        rct_ride* ride = get_ride(ride_index);
+        Ride* ride = get_ride(ride_index);
         char ride_name[128];
         format_string(ride_name, 128, ride->name, &ride->name_arguments);
 

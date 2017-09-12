@@ -110,7 +110,7 @@ static bool map_animation_invalidate(rct_map_animation *obj)
 static bool map_animation_invalidate_ride_entrance(sint32 x, sint32 y, sint32 baseZ)
 {
     rct_map_element *mapElement;
-    rct_ride *ride;
+    Ride *ride;
     const rct_ride_entrance_definition *entranceDefinition;
 
     mapElement = map_get_first_element_at(x >> 5, y >> 5);

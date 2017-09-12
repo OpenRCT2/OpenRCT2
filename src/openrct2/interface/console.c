@@ -457,7 +457,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
 {
     if (argc > 0) {
         if (strcmp(argv[0], "list") == 0) {
-            rct_ride *ride;
+            Ride *ride;
             sint32 i;
             FOR_ALL_RIDES(i, ride) {
                 char name[128];
@@ -510,7 +510,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 } else if (ride_index < 0) {
                     console_printf("Ride index must not be negative");
                 } else {
-                    rct_ride *ride = get_ride(ride_index);
+                    Ride *ride = get_ride(ride_index);
                     if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1)) {
                         console_printf("Invalid ride mode.");
                     }
@@ -535,7 +535,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     console_printf("This command expects integer arguments");
                 }
                 else {
-                    rct_ride *ride = get_ride(ride_index);
+                    Ride *ride = get_ride(ride_index);
                     if (friction <= 0) {
                         console_printf("Friction value must be strictly positive");
                     }
@@ -566,7 +566,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     console_printf("This command expects integer arguments");
                 }
                 else {
-                    rct_ride *ride = get_ride(ride_index);
+                    Ride *ride = get_ride(ride_index);
                     if (excitement <= 0) {
                         console_printf("Excitement value must be strictly positive");
                     }
@@ -590,7 +590,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     console_printf("This command expects integer arguments");
                 }
                 else {
-                    rct_ride *ride = get_ride(ride_index);
+                    Ride *ride = get_ride(ride_index);
                     if (intensity <= 0) {
                         console_printf("Intensity value must be strictly positive");
                     }
@@ -614,7 +614,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     console_printf("This command expects integer arguments");
                 }
                 else {
-                    rct_ride *ride = get_ride(ride_index);
+                    Ride *ride = get_ride(ride_index);
                     if (nausea <= 0) {
                         console_printf("Nausea value must be strictly positive");
                     }

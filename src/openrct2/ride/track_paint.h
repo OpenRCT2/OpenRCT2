@@ -261,18 +261,18 @@ extern const uint8 mapLeftEighthTurnToOrthogonal[5];
 
 extern bool gUseOriginalRidePaint;
 
-bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation);
+bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, Ride * ride, uint8 rotation);
 void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 colourFlags, uint16 height, const uint32 floorSprites[4], uint8 rotation);
-void track_paint_util_paint_fences(paint_session * session, uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
+void track_paint_util_paint_fences(paint_session * session, uint8 edges, rct_xy16 position, rct_map_element * mapElement, Ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation);
 bool track_paint_util_draw_station_covers(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height);
 bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t edge, bool hasFence, const rct_ride_entrance_definition * entranceStyle, uint8 direction, uint16 height, uint8 stationVariant);
-void track_paint_util_draw_station_platform(paint_session * session, rct_ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement);
+void track_paint_util_draw_station_platform(paint_session * session, Ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement);
 void track_paint_util_draw_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement);
 void track_paint_util_draw_station_2(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB);
 void track_paint_util_draw_station_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement);
 void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant);
 bool track_paint_util_should_paint_supports(rct_xy16 position);
-void track_paint_util_draw_pier(paint_session * session, rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation);
+void track_paint_util_draw_pier(paint_session * session, Ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation);
 void track_paint_util_draw_station_metal_supports(paint_session * session, uint8 direction, uint16 height, uint32 colour);
 void track_paint_util_draw_station_metal_supports_2(paint_session * session, uint8 direction, uint16 height, uint32 colour, uint8 type);
 

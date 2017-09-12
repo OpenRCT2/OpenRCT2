@@ -166,7 +166,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     rct_map_element *mapElement;
     rct_scenery_entry *sceneryEntry;
     rct_banner *banner;
-    rct_ride *ride;
+    Ride *ride;
     sint32 i, stationIndex;
 
     // No click input for title screen or track manager

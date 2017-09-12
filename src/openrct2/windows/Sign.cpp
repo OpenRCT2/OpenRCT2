@@ -250,7 +250,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_SIGN_TEXT:
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){
-            rct_ride* ride = get_ride(banner->colour);
+            Ride* ride = get_ride(banner->colour);
             set_format_arg(16, uint32, ride->name_arguments);
             string_id = ride->name;
         }
@@ -511,7 +511,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_SIGN_TEXT:
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){
-            rct_ride* ride = get_ride(banner->colour);
+            Ride* ride = get_ride(banner->colour);
             set_format_arg(16, uint32, ride->name_arguments);
             string_id = ride->name;
         }

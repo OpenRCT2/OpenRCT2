@@ -18,7 +18,23 @@
 #define _RIDE_RATINGS_H_
 
 #include "../common.h"
-#include "ride.h"
+
+typedef fixed16_2dp ride_rating;
+
+// Convenience function for writing ride ratings. The result is a 16 bit signed
+// integer. To create the ride rating 3.65 type RIDE_RATING(3,65)
+#define RIDE_RATING(whole, fraction)    FIXED_2DP(whole, fraction)
+#define RIDE_RATING_UNDEFINED           (ride_rating)(uint16)0xFFFF
+
+#pragma pack(push, 1)
+
+// Used for return values, for functions that modify all three.
+typedef struct rating_tuple {
+    ride_rating excitement;
+    ride_rating intensity;
+    ride_rating nausea;
+} rating_tuple;
+assert_struct_size(rating_tuple, 6);
 
 enum {
     RIDE_RATING_STATION_FLAG_NO_ENTRANCE = 1 << 0

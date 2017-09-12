@@ -72,7 +72,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
     sint32 trackType = trackElement->properties.track.type;
     sint32 sequence = map_element_get_track_sequence(trackElement);
     sint32 direction = (edge - map_element_get_direction(trackElement)) & MAP_ELEMENT_DIRECTION_MASK;
-    rct_ride * ride = get_ride(trackElement->properties.track.ride_index);
+    Ride * ride = get_ride(trackElement->properties.track.ride_index);
 
     if (TrackIsAllowedWallEdges(ride->type, trackType, sequence, direction))
     {

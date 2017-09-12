@@ -30,7 +30,7 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle);
 
 rct_vehicle *cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sint32 z, sint32 direction, uint16 var_44, sint32 remaining_distance, bool head)
 {
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_vehicle *current = &(create_sprite(1)->vehicle);
     current->sprite_identifier = SPRITE_IDENTIFIER_VEHICLE;
     current->ride = rideIndex;
@@ -219,7 +219,7 @@ static void cable_lift_update_arriving(rct_vehicle *vehicle)
 }
 
 static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
-    rct_ride* ride = get_ride(vehicle->ride);
+    Ride* ride = get_ride(vehicle->ride);
     for (; vehicle->remaining_distance >= 13962; _vehicleUnkF64E10++) {
         uint8 trackType = vehicle->track_type >> 2;
         if (trackType == TRACK_ELEM_CABLE_LIFT_HILL &&
@@ -304,7 +304,7 @@ static bool sub_6DF01A_loop(rct_vehicle* vehicle) {
 }
 
 static bool sub_6DF21B_loop(rct_vehicle* vehicle) {
-    rct_ride* ride = get_ride(vehicle->ride);
+    Ride* ride = get_ride(vehicle->ride);
     for (; vehicle->remaining_distance < 0; _vehicleUnkF64E10++) {
         uint16 trackProgress = vehicle->track_progress - 1;
         const rct_vehicle_info *moveInfo;

@@ -397,7 +397,7 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
             set_format_arg(0, uint32, 0);
             set_format_arg(4, uint32, 0);
 
-            rct_ride* ride = get_ride(map_element->properties.path.ride_index);
+            Ride* ride = get_ride(map_element->properties.path.ride_index);
             rct_string_id string_id = STR_RIDE_ENTRANCE_CLOSED;
             if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)){
                 set_format_arg(0, rct_string_id, ride->name);

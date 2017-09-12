@@ -37,7 +37,7 @@ enum {
  */
 static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height, rct_map_element* mapElement)
 {
-    rct_ride *ride = get_ride(mapElement->properties.track.ride_index);
+    Ride *ride = get_ride(mapElement->properties.track.ride_index);
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
@@ -128,7 +128,7 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     trackSequence = track_map_2x2[direction][trackSequence];
 
     sint32 edges = edges_2x2[trackSequence];
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_xy16 position = { session->MapPosition.x, session->MapPosition.y };
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, gTrackColours[SCHEME_MISC], NULL);

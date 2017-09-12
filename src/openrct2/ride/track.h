@@ -519,9 +519,9 @@ extern uint8 gTrackGroundFlags;
 
 sint32 track_is_connected_by_shape(rct_map_element *a, rct_map_element *b);
 
-const rct_preview_track *get_track_def_from_ride(rct_ride *ride, sint32 trackType);
+const rct_preview_track *get_track_def_from_ride(Ride *ride, sint32 trackType);
 const rct_preview_track *get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
-const rct_track_coordinates *get_track_coord_from_ride(rct_ride *ride, sint32 trackType);
+const rct_track_coordinates *get_track_coord_from_ride(Ride *ride, sint32 trackType);
 
 void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
 bool track_circuit_iterator_previous(track_circuit_iterator *it);

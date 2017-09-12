@@ -718,7 +718,7 @@ void lightfx_add_lights_magic_vehicles()
 
             static const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
 
-            rct_ride *ride = get_ride(vehicle->ride);
+            Ride *ride = get_ride(vehicle->ride);
             switch (ride->type) {
             case RIDE_TYPE_OBSERVATION_TOWER:
                 lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, vehicle->x, vehicle->y + 16, vehicle->z, LIGHTFX_LIGHT_TYPE_SPOT_3);

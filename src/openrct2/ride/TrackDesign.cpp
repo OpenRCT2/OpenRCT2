@@ -1747,7 +1747,7 @@ static bool track_design_place_preview(rct_track_td6 * td6, money32 * cost, uint
         return false;
     }
 
-    rct_ride      * ride        = get_ride(rideIndex);
+    Ride      * ride        = get_ride(rideIndex);
     rct_string_id new_ride_name = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED,
                                                        "");
     if (new_ride_name != 0)
@@ -1895,7 +1895,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         return MONEY32_UNDEFINED;
     }
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
@@ -2082,7 +2082,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         }
     }
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
 
     // Calculate price
     money32 price = 0;

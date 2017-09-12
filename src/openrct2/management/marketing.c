@@ -42,7 +42,7 @@ uint8 gMarketingCampaignRideIndex[22];
 sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign)
 {
     sint32 probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
-    rct_ride *ride;
+    Ride *ride;
 
     // Lower probability of guest generation if price was already low
     switch (campaign) {
@@ -93,7 +93,7 @@ void marketing_update()
 
         // This sets the string parameters for the marketing types that have an argument.
         if (campaign == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign == ADVERTISING_CAMPAIGN_RIDE) {
-            rct_ride* ride = get_ride(campaignItem);
+            Ride* ride = get_ride(campaignItem);
             set_format_arg(0, rct_string_id, ride->name);
             set_format_arg(2, uint32, ride->name_arguments);
         } else if (campaign == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE) {
@@ -190,7 +190,7 @@ void game_command_start_campaign(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
 bool marketing_is_campaign_type_applicable(sint32 campaignType)
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
 
     switch (campaignType) {

@@ -208,7 +208,7 @@ static sint32 news_item_get_new_history_slot()
 void news_item_get_subject_location(sint32 type, sint32 subject, sint32 *x, sint32 *y, sint32 *z)
 {
     sint32 i;
-    rct_ride *ride;
+    Ride *ride;
     rct_peep *peep;
     rct_vehicle *vehicle;
 

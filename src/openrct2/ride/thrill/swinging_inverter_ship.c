@@ -60,7 +60,7 @@ static const uint32 swinging_inverter_ship_frame_sprites[] = {
     SPR_SWINGING_INVERTER_SHIP_FRAME_3
 };
 
-static void paint_swinging_inverter_ship_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_swinging_inverter_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
@@ -121,7 +121,7 @@ static void paint_swinging_inverter_ship(paint_session * session, uint8 rideInde
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
 
     uint32 imageId;
 

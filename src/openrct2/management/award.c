@@ -149,7 +149,7 @@ static sint32 award_is_deserved_most_tidy(sint32 awardType, sint32 activeAwardTy
 static sint32 award_is_deserved_best_rollercoasters(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, rollerCoasters;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
 
     rollerCoasters = 0;
@@ -251,7 +251,7 @@ static sint32 award_is_deserved_safest(sint32 awardType, sint32 activeAwardTypes
     sint32 i, peepsWhoDislikeVandalism;
     uint16 spriteIndex;
     rct_peep *peep;
-    rct_ride *ride;
+    Ride *ride;
 
     peepsWhoDislikeVandalism = 0;
     FOR_ALL_GUESTS(spriteIndex, peep) {
@@ -304,7 +304,7 @@ static sint32 award_is_deserved_best_food(sint32 awardType, sint32 activeAwardTy
 {
     sint32 i, hungryPeeps, shops, uniqueShops;
     uint64 shopTypes;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
     uint16 spriteIndex;
     rct_peep *peep;
@@ -353,7 +353,7 @@ static sint32 award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardT
 {
     sint32 i, hungryPeeps, shops, uniqueShops;
     uint64 shopTypes;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
     uint16 spriteIndex;
     rct_peep *peep;
@@ -401,7 +401,7 @@ static sint32 award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardT
 static sint32 award_is_deserved_best_restrooms(sint32 awardType, sint32 activeAwardTypes)
 {
     uint32 i, numRestrooms, guestsWhoNeedRestroom;
-    rct_ride *ride;
+    Ride *ride;
     uint16 spriteIndex;
     rct_peep *peep;
 
@@ -436,7 +436,7 @@ static sint32 award_is_deserved_best_restrooms(sint32 awardType, sint32 activeAw
 static sint32 award_is_deserved_most_disappointing(sint32 awardType, sint32 activeAwardTypes)
 {
     uint32 i, countedRides, disappointingRides;
-    rct_ride *ride;
+    Ride *ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
         return 0;
@@ -466,7 +466,7 @@ static sint32 award_is_deserved_most_disappointing(sint32 awardType, sint32 acti
 static sint32 award_is_deserved_best_water_rides(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, waterRides;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
 
     waterRides = 0;
@@ -498,7 +498,7 @@ static sint32 award_is_deserved_best_water_rides(sint32 awardType, sint32 active
 static sint32 award_is_deserved_best_custom_designed_rides(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, customDesignedRides;
-    rct_ride *ride;
+    Ride *ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
         return 0;
@@ -525,7 +525,7 @@ const uint8 dazzling_ride_colours[] = { 5, 14, 20, 30 };
 static sint32 award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, j, countedRides, colourfulRides;
-    rct_ride *ride;
+    Ride *ride;
     uint8 mainTrackColour;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
@@ -576,7 +576,7 @@ static sint32 award_is_deserved_most_confusing_layout(sint32 awardType, sint32 a
 static sint32 award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, gentleRides;
-    rct_ride *ride;
+    Ride *ride;
     rct_ride_entry *rideEntry;
 
     gentleRides = 0;

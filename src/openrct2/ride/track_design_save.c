@@ -145,7 +145,7 @@ static void track_design_save_callback(sint32 result, const utf8 * path)
  */
 bool track_design_save(uint8 rideIndex)
 {
-    rct_ride* ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
 
     if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED)){
         window_error_open(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
@@ -720,7 +720,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 {
     rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     td6->type = ride->type;
     rct_object_entry_extended *object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
 
@@ -862,7 +862,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         x = 0;
     }
 
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_xy8 location = ride->entrances[0];
 
     if (location.xy == RCT_XY8_UNDEFINED) {
@@ -945,7 +945,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
  */
 static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track_td6 *td6)
 {
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     rct_xy_element trackElement;
     track_begin_end trackBeginEnd;
 

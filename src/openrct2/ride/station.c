@@ -19,18 +19,18 @@
 #include "../world/sprite.h"
 #include "station.h"
 
-static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex);
-static void ride_update_station_bumpercar(rct_ride *ride, sint32 stationIndex);
-static void ride_update_station_normal(rct_ride *ride, sint32 stationIndex);
-static void ride_update_station_race(rct_ride *ride, sint32 stationIndex);
-static void ride_race_init_vehicle_speeds(rct_ride *ride);
-static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, bool greenLight);
+static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex);
+static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex);
+static void ride_update_station_normal(Ride *ride, sint32 stationIndex);
+static void ride_update_station_race(Ride *ride, sint32 stationIndex);
+static void ride_race_init_vehicle_speeds(Ride *ride);
+static void ride_invalidate_station_start(Ride *ride, sint32 stationIndex, bool greenLight);
 
 /**
  *
  *  rct2: 0x006ABFFB
  */
-void ride_update_station(rct_ride *ride, sint32 stationIndex)
+void ride_update_station(Ride *ride, sint32 stationIndex)
 {
     if (ride->station_starts[stationIndex].xy == RCT_XY8_UNDEFINED)
         return;
@@ -56,7 +56,7 @@ void ride_update_station(rct_ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC0A1
  */
-static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex)
+static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex)
 {
     rct_map_element *mapElement;
 
@@ -81,7 +81,7 @@ static void ride_update_station_blocksection(rct_ride *ride, sint32 stationIndex
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_bumpercar(rct_ride *ride, sint32 stationIndex)
+static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
@@ -131,7 +131,7 @@ static void ride_update_station_bumpercar(rct_ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC02C
  */
-static void ride_update_station_normal(rct_ride *ride, sint32 stationIndex)
+static void ride_update_station_normal(Ride *ride, sint32 stationIndex)
 {
     sint32 time;
 
@@ -163,7 +163,7 @@ static void ride_update_station_normal(rct_ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC1DF
  */
-static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
+static void ride_update_station_race(Ride *ride, sint32 stationIndex)
 {
     if (
         ride->status == RIDE_STATUS_CLOSED ||
@@ -230,7 +230,7 @@ static void ride_update_station_race(rct_ride *ride, sint32 stationIndex)
  * set the speed of the go kart type vehicle at the start to a random value or alter if peep name is an easter egg
  * @param ride (esi)
  */
-static void ride_race_init_vehicle_speeds(rct_ride *ride)
+static void ride_race_init_vehicle_speeds(Ride *ride)
 {
     for (sint32 i = 0; i < ride->num_vehicles; i++) {
         rct_vehicle *vehicle = &get_sprite(ride->vehicles[i])->vehicle;
@@ -268,7 +268,7 @@ static void ride_race_init_vehicle_speeds(rct_ride *ride)
  *
  *  rct2: 0x006AC2C7
  */
-static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, bool greenLight)
+static void ride_invalidate_station_start(Ride *ride, sint32 stationIndex, bool greenLight)
 {
     sint32 x, y;
     rct_map_element *mapElement;
@@ -287,7 +287,7 @@ static void ride_invalidate_station_start(rct_ride *ride, sint32 stationIndex, b
     map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
-rct_map_element *ride_get_station_start_track_element(rct_ride *ride, sint32 stationIndex)
+rct_map_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex)
 {
     sint32 x, y, z;
     rct_map_element *mapElement;
@@ -307,7 +307,7 @@ rct_map_element *ride_get_station_start_track_element(rct_ride *ride, sint32 sta
     return NULL;
 }
 
-rct_map_element *ride_get_station_exit_element(rct_ride *ride, sint32 x, sint32 y, sint32 z)
+rct_map_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z)
 {
     rct_map_element *mapElement;
 
@@ -321,7 +321,7 @@ rct_map_element *ride_get_station_exit_element(rct_ride *ride, sint32 x, sint32 
     return NULL;
 }
 
-sint32 ride_get_first_valid_station_exit(rct_ride * ride)
+sint32 ride_get_first_valid_station_exit(Ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
@@ -333,7 +333,7 @@ sint32 ride_get_first_valid_station_exit(rct_ride * ride)
     return -1;
 }
 
-sint8 ride_get_first_valid_station_start(const rct_ride *ride)
+sint8 ride_get_first_valid_station_start(const Ride *ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
@@ -345,7 +345,7 @@ sint8 ride_get_first_valid_station_start(const rct_ride *ride)
     return -1;
 }
 
-sint8 ride_get_first_empty_station_start(const rct_ride *ride)
+sint8 ride_get_first_empty_station_start(const Ride *ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {

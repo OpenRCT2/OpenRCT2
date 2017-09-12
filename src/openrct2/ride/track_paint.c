@@ -203,7 +203,7 @@ enum
 
 bool gUseOriginalRidePaint = false;
 
-bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint8 rotation)
+bool track_paint_util_has_fence(enum edge_t edge, rct_xy16 position, rct_map_element * mapElement, Ride * ride, uint8 rotation)
 {
     rct_xy16 offset = { 0, 0 };
     switch (edge) {
@@ -247,7 +247,7 @@ void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 c
     sub_98197C(session, imageId | colourFlags, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
 }
 
-void track_paint_util_paint_fences(paint_session * session, uint8 edges, rct_xy16 position, rct_map_element * mapElement, rct_ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation)
+void track_paint_util_paint_fences(paint_session * session, uint8 edges, rct_xy16 position, rct_map_element * mapElement, Ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation)
 {
     uint32 imageId;
 
@@ -301,7 +301,7 @@ void track_paint_util_draw_station_3(paint_session * session, uint8 rideIndex, u
 void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
     rct_xy16 position = session->MapPosition;
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
 
@@ -435,7 +435,7 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
 void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant)
 {
     rct_xy16 position = session->MapPosition;
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     const bool hasGreenLight = map_element_get_green_light(mapElement);
 
@@ -641,7 +641,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
     return true;
 }
 
-void track_paint_util_draw_station_platform(paint_session * session, rct_ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
+void track_paint_util_draw_station_platform(paint_session * session, Ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
 {
     rct_xy16 position = session->MapPosition;
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -678,7 +678,7 @@ void track_paint_util_draw_station_platform(paint_session * session, rct_ride *r
     }
 }
 
-void track_paint_util_draw_pier(paint_session * session, rct_ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation)
+void track_paint_util_draw_pier(paint_session * session, Ride * ride, const rct_ride_entrance_definition * entranceStyle, rct_xy16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation)
 {
     bool hasFence;
     uint32 imageId;
@@ -1736,7 +1736,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement)
 {
     sint32 rideIndex = mapElement->properties.track.ride_index;
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL) {
         log_error("Attempted to paint invalid ride: %d", rideIndex);
         return;
@@ -1811,7 +1811,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
                     direction,
                     height,
                     (sint32)mapElement,
-                    rideIndex * sizeof(rct_ride),
+                    rideIndex * sizeof(Ride),
                     trackSequence
                 );
             }

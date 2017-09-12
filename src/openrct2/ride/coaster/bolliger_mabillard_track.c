@@ -84,7 +84,7 @@ void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, 
     sub_98196C_rotated(session, direction, imageIds[direction][2] | gTrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, gTrackColours[SCHEME_SUPPORTS], supportType);
 
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     track_paint_util_draw_station_platform(session, ride, direction, height, 9, mapElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);

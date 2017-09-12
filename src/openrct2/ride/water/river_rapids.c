@@ -286,7 +286,7 @@ static void paint_river_rapids_track_flat(paint_session * session, uint8 rideInd
 /** rct2: 0x007576C0 */
 static void paint_river_rapids_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_ride *ride = get_ride(rideIndex);
+    Ride *ride = get_ride(rideIndex);
 
     paint_river_rapids_track_flat(session, rideIndex, trackSequence, direction, height, mapElement);
     track_paint_util_draw_station_platform(session, ride, direction, height, 12, mapElement);

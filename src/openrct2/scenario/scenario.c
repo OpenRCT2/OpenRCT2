@@ -578,7 +578,7 @@ static bool scenario_prepare_rides_for_save()
 {
     sint32 isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     sint32 i;
-    rct_ride * ride;
+    Ride * ride;
     uint8 rcs = 0;
 
     FOR_ALL_RIDES(i, ride)
@@ -766,7 +766,7 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
     bool rideHasTrack[MAX_RIDES];
     ride_all_has_any_track_elements(rideHasTrack);
     for (sint32 i = 0; i < MAX_RIDES; i++) {
-        rct_ride *ride = &s6->rides[i];
+        rct2_ride * ride = &s6->rides[i];
 
         if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
             continue;
@@ -819,7 +819,7 @@ static void scenario_objective_check_10_rollercoasters()
 {
     sint32 i, rcs = 0;
     uint8 type_already_counted[256];
-    rct_ride* ride;
+    Ride* ride;
 
     memset(type_already_counted, 0, 256);
 
@@ -901,7 +901,7 @@ static void scenario_objective_check_10_rollercoasters_length()
     sint32 i, rcs = 0;
     uint8 type_already_counted[256];
     sint16 objective_length = gScenarioObjectiveNumGuests;
-    rct_ride* ride;
+    Ride* ride;
 
     memset(type_already_counted, 0, 256);
 
@@ -933,7 +933,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
     // Originally, this did not check for null rides, neither did it check if
     // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
     sint32 i;
-    rct_ride * ride;
+    Ride * ride;
     sint32 rcs = 0;
     FOR_ALL_RIDES(i, ride)
     {

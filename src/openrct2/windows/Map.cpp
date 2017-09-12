@@ -1613,7 +1613,7 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 {
     rct_map_element *mapElement;
-    rct_ride *ride;
+    Ride *ride;
     uint32 colour;
 
     colour = FALLBACK_COLOUR(PALETTE_INDEX_13);

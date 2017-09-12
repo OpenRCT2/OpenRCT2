@@ -1086,7 +1086,7 @@ static void window_editor_objective_options_rides_resize(rct_window *w)
 static void window_editor_objective_options_rides_update(rct_window *w)
 {
     sint32 i, numItems;
-    rct_ride *ride;
+    Ride *ride;
 
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -1122,7 +1122,7 @@ static void window_editor_objective_options_rides_scrollgetheight(rct_window *w,
  */
 static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    rct_ride *ride;
+    Ride *ride;
     sint32 i;
 
     i = y / 12;
@@ -1192,7 +1192,7 @@ static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawp
 static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
     rct_string_id stringId;
-    rct_ride *ride;
+    Ride *ride;
 
     sint32 colour = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, colour);
@@ -1232,7 +1232,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct
  */
 static void window_editor_objective_options_update_disabled_widgets(rct_window *w)
 {
-    rct_ride *ride;
+    Ride *ride;
     sint32 i, numRides;
 
     // Check if there are any rides (not shops or facilities)

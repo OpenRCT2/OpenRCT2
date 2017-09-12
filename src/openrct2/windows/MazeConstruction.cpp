@@ -181,7 +181,7 @@ static void window_maze_construction_close(rct_window *w)
     hide_gridlines();
 
     uint8 rideIndex = _currentRideIndex;
-    rct_ride* ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
         sint32 savedPausedState = gGamePaused;
         gGamePaused = 0;
@@ -296,7 +296,7 @@ static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex wi
  */
 static void window_maze_construction_update(rct_window *w)
 {
-    rct_ride *ride = get_ride(_currentRideIndex);
+    Ride *ride = get_ride(_currentRideIndex);
     if (ride == nullptr || ride->status != RIDE_STATUS_CLOSED) {
         window_close(w);
         return;
@@ -393,7 +393,7 @@ static void window_maze_construction_entrance_tooldown(sint32 x, sint32 y, rct_w
         gCommandPosition.y,
         gCommandPosition.z);
 
-    rct_ride* ride = get_ride(rideIndex);
+    Ride* ride = get_ride(rideIndex);
     if (ride_are_all_possible_entrances_and_exits_built(ride)){
         tool_cancel();
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -429,7 +429,7 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
  */
 static void window_maze_construction_invalidate(rct_window *w)
 {
-    rct_ride *ride = get_ride(_currentRideIndex);
+    Ride *ride = get_ride(_currentRideIndex);
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);

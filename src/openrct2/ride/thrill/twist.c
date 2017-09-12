@@ -22,7 +22,7 @@
 #include "../track.h"
 
 /** rct2: 0x0076E5C9 */
-static void paint_twist_structure(paint_session * session, rct_ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
+static void paint_twist_structure(paint_session * session, Ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
     rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
 
@@ -84,7 +84,7 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
     trackSequence = track_map_3x3[direction][trackSequence];
 
     const uint8 edges = edges_3x3[trackSequence];
-    rct_ride * ride = get_ride(rideIndex);
+    Ride * ride = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     uint32 imageId;
