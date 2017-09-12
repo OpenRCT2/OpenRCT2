@@ -3795,7 +3795,8 @@ static bool ride_is_mode_valid(rct_ride *ride, uint8 mode)
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
     const uint8 *availableModes = ride_seek_available_modes(ride);
 
-    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gCheatsShowAllOperatingModes){
+    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
+    {
         availableModes += 2;
     }
 
@@ -5823,7 +5824,10 @@ static sint32 ride_get_default_mode(rct_ride *ride)
     for (sint32 i = 0; i < ride->type; i++) {
         while (*(availableModes++) != 255) {}
     }
-    if (rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) {
+    // Since this only selects a default mode and does not prevent other modes from being used, there is no need
+    // to check if select-by-track-type or the all-ride-modes cheat have been enabled.
+    if (rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES)
+    {
         availableModes += 2;
     }
     return availableModes[0];

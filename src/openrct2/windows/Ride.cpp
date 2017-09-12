@@ -3154,11 +3154,14 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
     } while (*(mode++) != 255);
 
     // Hide the last operating mode if the vehicle is not intended for it.
-    if (rideEntry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE && !gCheatsShowAllOperatingModes)
+    if (rideEntry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
+    {
         numAvailableModes--;
+    }
 
     // If the vehicle is not intended for them, hide those two modes (these are usually (or perhaps always) both continuous circuit modes).
-    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gCheatsShowAllOperatingModes) {
+    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
+    {
         availableModes += 2;
         numAvailableModes -= 2;
     }
