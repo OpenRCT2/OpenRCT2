@@ -6242,24 +6242,24 @@ static void window_ride_customer_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_SHOW_GUESTS_THOUGHTS:
     {
         auto intent = Intent(WC_GUEST_LIST);
-        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_THINKING_ABOUT_RIDE);
-        intent.putExtra(INTENT_EXTRA_1, w->number);
+        intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_THINKING_ABOUT_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
         context_open_intent(&intent);
         break;
     }
     case WIDX_SHOW_GUESTS_ON_RIDE:
     {
         auto intent = Intent(WC_GUEST_LIST);
-        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_ON_RIDE);
-        intent.putExtra(INTENT_EXTRA_1, w->number);
+        intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_ON_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
         context_open_intent(&intent);
         break;
     }
     case WIDX_SHOW_GUESTS_QUEUING:
     {
         auto intent = Intent(WC_GUEST_LIST);
-        intent.putExtra(INTENT_EXTRA_0, GLFT_GUESTS_IN_QUEUE);
-        intent.putExtra(INTENT_EXTRA_1, w->number);
+        intent.putExtra(INTENT_EXTRA_GUEST_LIST_FILTER, GLFT_GUESTS_IN_QUEUE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, w->number);
         context_open_intent(&intent);
         break;
     }

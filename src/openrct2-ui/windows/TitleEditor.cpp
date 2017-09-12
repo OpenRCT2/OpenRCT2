@@ -331,8 +331,8 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
     case WIDX_TITLE_EDITOR_ADD_SAVE:
         if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen) {
             auto intent = Intent(WC_LOADSAVE);
-            intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent.putExtra(INTENT_EXTRA_6, (void *) window_title_editor_add_park_callback);
+            intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) window_title_editor_add_park_callback);
             context_open_intent(&intent);
         }
         break;

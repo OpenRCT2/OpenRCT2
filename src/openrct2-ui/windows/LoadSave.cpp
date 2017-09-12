@@ -835,7 +835,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     {
         save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
         auto intent = Intent(WC_INSTALL_TRACK);
-        intent.putExtra(INTENT_EXTRA_2, pathBuffer);
+        intent.putExtra(INTENT_EXTRA_PATH, pathBuffer);
         context_open_intent(&intent);
         window_close_by_class(WC_LOADSAVE);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);

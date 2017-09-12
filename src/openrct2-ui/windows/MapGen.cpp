@@ -1191,8 +1191,8 @@ static void window_mapgen_heightmap_mouseup(rct_window *w, rct_widgetindex widge
     case WIDX_HEIGHTMAP_SELECT:
     {
         auto intent = Intent(WC_LOADSAVE);
-        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE);
-        intent.putExtra(INTENT_EXTRA_6, (void *) window_mapgen_heightmap_loadsave_callback);
+        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_IMAGE);
+        intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) window_mapgen_heightmap_loadsave_callback);
         context_open_intent(&intent);
         return;
     }

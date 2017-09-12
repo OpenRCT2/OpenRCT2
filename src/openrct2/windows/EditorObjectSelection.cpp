@@ -812,7 +812,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         window_invalidate(w);
 
         auto intent = Intent(WC_LOADSAVE);
-        intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
+        intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK);
         context_open_intent(&intent);
         break;
     }

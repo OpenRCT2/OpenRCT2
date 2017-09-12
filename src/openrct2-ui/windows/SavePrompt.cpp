@@ -239,15 +239,15 @@ static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetInde
             if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
             {
                 intent = intent_create(WC_LOADSAVE);
-                intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                intent_set_string(intent, INTENT_EXTRA_5, gS6Info.name);
+                intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent_set_string(intent, INTENT_EXTRA_PATH, gS6Info.name);
             }
             else
             {
                 intent = (Intent *) create_save_game_as_intent();
             }
             window_close(w);
-            intent_set_pointer(intent, INTENT_EXTRA_6, (void *) window_save_prompt_callback);
+            intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, (void *) window_save_prompt_callback);
             context_open_intent(intent);
             intent_release(intent);
             break;

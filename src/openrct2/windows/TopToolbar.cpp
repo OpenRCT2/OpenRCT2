@@ -545,7 +545,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
         case DDIDX_NEW_GAME:
         {
             auto intent = Intent(WC_SCENARIO_SELECT);
-            intent.putExtra(INTENT_EXTRA_7, (void *) window_top_toolbar_scenarioselect_callback);
+            intent.putExtra(INTENT_EXTRA_CALLBACK, (void *) window_top_toolbar_scenarioselect_callback);
             context_open_intent(&intent);
             break;
         }
@@ -559,8 +559,8 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
         case DDIDX_SAVE_GAME_AS:
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
                 auto intent = Intent(WC_LOADSAVE);
-                intent.putExtra(INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                intent.putExtra(INTENT_EXTRA_5, gS6Info.name);
+                intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
+                intent.putExtra(INTENT_EXTRA_PATH, gS6Info.name);
                 context_open_intent(&intent);
             }
             else {

@@ -156,11 +156,11 @@ public:
     {
         switch(intent->GetWindowClass()) {
         case WC_FIRE_PROMPT:
-            return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_3));
+            return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
         case WC_INSTALL_TRACK:
-            return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_2));
+            return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH));
         case WC_GUEST_LIST:
-            return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_0), intent->GetSIntExtra(INTENT_EXTRA_1));
+            return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER), intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
 
         default:
             return nullptr;

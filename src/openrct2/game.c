@@ -919,7 +919,7 @@ static void game_load_or_quit(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx
 static void load_landscape()
 {
     Intent * intent = intent_create(WC_LOADSAVE);
-    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
+    intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE);
     context_open_intent(intent);
     intent_release(intent);
 }
@@ -1227,8 +1227,8 @@ void * create_save_game_as_intent()
     path_remove_extension(name);
 
     Intent * intent = intent_create(WC_LOADSAVE);
-    intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent_set_string(intent, INTENT_EXTRA_5, name);
+    intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
+    intent_set_string(intent, INTENT_EXTRA_PATH, name);
 
     return intent;
 }
@@ -1413,8 +1413,8 @@ void game_load_or_quit_no_save_prompt()
             load_landscape();
         } else {
             Intent * intent = intent_create(WC_LOADSAVE);
-            intent_set_uint(intent, INTENT_EXTRA_4, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent_set_pointer(intent, INTENT_EXTRA_6, game_load_or_quit_no_save_prompt_callback);
+            intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
+            intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, game_load_or_quit_no_save_prompt_callback);
             context_open_intent(intent);
             intent_release(intent);
         }
