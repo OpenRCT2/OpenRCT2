@@ -14,20 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../ride/TrackDesignRepository.h"
-#include "../core/Memory.hpp"
-#include "../core/Math.hpp"
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../cheats.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../ride/track.h"
-#include "../ride/track_data.h"
-#include "../sprites.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/cheats.h>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/ride/track_data.h>
+#include <openrct2/sprites.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -141,7 +142,7 @@ static void window_track_place_clear_mini_preview()
  *
  *  rct2: 0x006CFCA0
  */
-static void _window_track_place_open(const track_design_file_ref *tdFileRef)
+void window_track_place_open(const track_design_file_ref *tdFileRef)
 {
     rct_track_td6 *td6 = track_design_open(tdFileRef->path);
     if (td6 == nullptr) {
@@ -616,13 +617,4 @@ static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel)
 static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel)
 {
     return &_window_track_place_mini_preview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
-}
-
-
-extern "C"
-{
-    void window_track_place_open(const track_design_file_ref *tdFileRef)
-    {
-        _window_track_place_open(tdFileRef);
-    }
 }
