@@ -14,13 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../ride/TrackDesignRepository.h"
-#include "../core/Math.hpp"
+#include <openrct2/Context.h>
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2-ui/windows/Window.h>
 
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/util/util.h>
 
 #pragma region Widgets
 

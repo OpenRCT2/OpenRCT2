@@ -18,6 +18,7 @@
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/core/Memory.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/date.h>
