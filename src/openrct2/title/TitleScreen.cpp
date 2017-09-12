@@ -87,6 +87,7 @@ void TitleScreen::Load()
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
     gScreenAge = 0;
+    gCurrentLoadedPath[0] = '\0';
 
     network_close();
     audio_stop_all_music_and_sounds();
