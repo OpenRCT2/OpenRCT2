@@ -1001,8 +1001,6 @@ extern uint16 _previousTrackPieceX;
 extern uint16 _previousTrackPieceY;
 extern uint16 _previousTrackPieceZ;
 
-extern uint8 _currentlyShowingBrakeSpeed;
-extern uint8 _currentBrakeSpeed;
 extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 

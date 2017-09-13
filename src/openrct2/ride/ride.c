@@ -182,8 +182,6 @@ uint16 _previousTrackPieceX;
 uint16 _previousTrackPieceY;
 uint16 _previousTrackPieceZ;
 
-uint8 _currentlyShowingBrakeSpeed;
-uint8 _currentBrakeSpeed;
 uint8 _currentBrakeSpeed2;
 uint8 _currentSeatRotationAngle;
 
