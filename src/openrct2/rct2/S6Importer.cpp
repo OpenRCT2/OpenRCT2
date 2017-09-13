@@ -200,7 +200,7 @@ public:
         memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
 
         gNextFreeMapElementPointerIndex = _s6.next_free_map_element_pointer_index;
-        for (sint32 i = 0; i < MAX_SPRITES; i++)
+        for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));
         }

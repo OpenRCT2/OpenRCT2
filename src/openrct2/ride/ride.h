@@ -35,11 +35,12 @@
 #define MAX_CATEGORIES_PER_RIDE         2
 #define DOWNTIME_HISTORY_SIZE           8
 #define CUSTOMER_HISTORY_SIZE           10
-#define MAX_RIDES_IN_PARK               255
-#define MAX_STAFF                       200
-#define MAX_BANNERS_IN_PARK             250
 #define MAX_CARS_PER_TRAIN              32
 #define MAX_STATIONS                    4
+#define RIDE_MEASUREMENT_MAX_ITEMS      4800
+#define MAX_RIDES                       255
+#define RIDE_ID_NULL                    255
+
 
 #pragma pack(push, 1)
 
@@ -351,8 +352,6 @@ typedef struct Ride {
     uint8 pad_208[0x58];                                            // 0x208
 } Ride;
 assert_struct_size(Ride, 0x260);
-
-#define RIDE_MEASUREMENT_MAX_ITEMS 4800
 
 /**
  * Ride measurement structure.
@@ -678,7 +677,9 @@ enum {
     BREAKDOWN_DOORS_STUCK_OPEN,
     BREAKDOWN_VEHICLE_MALFUNCTION,
     BREAKDOWN_BRAKES_FAILURE,
-    BREAKDOWN_CONTROL_FAILURE
+    BREAKDOWN_CONTROL_FAILURE,
+
+    BREAKDOWN_COUNT
 };
 
 enum {
@@ -925,9 +926,6 @@ typedef struct rct_ride_properties {
 
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
-#define MAX_RIDES       255
-#define RIDE_ID_NULL    255
-
 #define RIDE_MODE_COUNT 37
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -962,10 +960,10 @@ extern money16 gTotalRideValue;
 extern uint32 gSamePriceThroughoutParkA;
 extern uint32 gSamePriceThroughoutParkB;
 
-extern const uint8 gRideClassifications[255];
+extern const uint8 gRideClassifications[MAX_RIDES];
 
 #ifdef NO_RCT2
-extern Ride gRideList[255];
+extern Ride gRideList[MAX_RIDES];
 #else
 extern Ride *gRideList;
 #endif

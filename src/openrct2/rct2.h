@@ -32,6 +32,8 @@
 #define RCT2_MAX_VEHICLES_PER_RIDE_ENTRY    4
 #define RCT2_DOWNTIME_HISTORY_SIZE          8
 #define RCT2_CUSTOMER_HISTORY_SIZE          10
+#define RCT2_MAX_SPRITES                    10000
+
 
 typedef struct rct2_install_info {
     uint32 installLevel;

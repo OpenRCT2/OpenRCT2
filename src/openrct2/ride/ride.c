@@ -7538,8 +7538,8 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
                 coloursExtended = ride->vehicle_colours_extended[i];
                 break;
             case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-                colours = ride->vehicle_colours[min(carIndex, RCT2_MAX_CARS_PER_TRAIN - 1)];
-                coloursExtended = ride->vehicle_colours_extended[min(carIndex, RCT2_MAX_CARS_PER_TRAIN - 1)];
+                colours = ride->vehicle_colours[min(carIndex, MAX_CARS_PER_TRAIN - 1)];
+                coloursExtended = ride->vehicle_colours_extended[min(carIndex, MAX_CARS_PER_TRAIN - 1)];
                 break;
             }
 

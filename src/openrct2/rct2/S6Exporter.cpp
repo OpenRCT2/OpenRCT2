@@ -193,7 +193,7 @@ void S6Exporter::Export()
     // compression ratios. Especially useful for multiplayer servers that
     // use zlib on the sent stream.
     sprite_clear_all_unused();
-    for (sint32 i = 0; i < MAX_SPRITES; i++)
+    for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
     {
         memcpy(&_s6.sprites[i], get_sprite(i), sizeof(rct_sprite));
     }

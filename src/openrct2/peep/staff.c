@@ -62,10 +62,10 @@ colour_t gStaffSecurityColour;
  */
 void staff_reset_modes()
 {
-    for (sint32 i = 0; i < 200; i++)
+    for (sint32 i = 0; i < STAFF_MAX_COUNT; i++)
         gStaffModes[i] = STAFF_MODE_NONE;
 
-    for (sint32 i = 200; i < 204; i++)
+    for (sint32 i = STAFF_MAX_COUNT; i < (STAFF_MAX_COUNT + STAFF_TYPE_COUNT); i++)
         gStaffModes[i] = STAFF_MODE_WALK;
 
     staff_update_greyed_patrol_areas();
