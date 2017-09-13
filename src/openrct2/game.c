@@ -1414,7 +1414,7 @@ void game_load_or_quit_no_save_prompt()
         } else {
             Intent * intent = intent_create(WC_LOADSAVE);
             intent_set_uint(intent, INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-            intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, game_load_or_quit_no_save_prompt_callback);
+            intent_set_pointer(intent, INTENT_EXTRA_CALLBACK, (void *) game_load_or_quit_no_save_prompt_callback);
             context_open_intent(intent);
             intent_release(intent);
         }
