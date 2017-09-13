@@ -4721,10 +4721,7 @@ STR_SCNR    :Geoffrey Gardens
 STR_PARK    :Geoffrey Gardens
 STR_DTLS    :A large garden park needs turning into a thriving theme park
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 4f24cbc... Add Arabic (Egypt) translation
 ## Loopy Landscapes
 <Iceberg Islands>
 STR_SCNR    :Iceberg Islands
