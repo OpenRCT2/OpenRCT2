@@ -446,15 +446,16 @@ rct_string_id RideConfigurationStringIds[] = {
 
 uint64 _enabledRidePieces;
 static bool     _trackPlaceCtrlState;
-static sint32       _trackPlaceCtrlZ;
+static sint32   _trackPlaceCtrlZ;
 static bool     _trackPlaceShiftState;
-static sint32       _trackPlaceShiftStartScreenX;
-static sint32       _trackPlaceShiftStartScreenY;
-static sint32       _trackPlaceShiftZ;
-static sint32       _trackPlaceZ;
+static sint32   _trackPlaceShiftStartScreenX;
+static sint32   _trackPlaceShiftStartScreenY;
+static sint32   _trackPlaceShiftZ;
+static sint32   _trackPlaceZ;
 static money32  _trackPlaceCost;
 static bool     _autoOpeningShop;
 static uint8    _rideConstructionState2;
+static uint8    _currentlyShowingBrakeOrBoosterSpeed;
 static bool     _boosterTrackSelected;
 
 static uint32   _currentDisabledSpecialTrackPieces;
@@ -600,14 +601,7 @@ rct_window *window_ride_construction_open()
 
     _currentTrackPrice = MONEY32_UNDEFINED;
     _currentBrakeSpeed2 = 8;
-    _currentBrakeSpeed = 18;
     _currentSeatRotationAngle = 4;
-
-    if (ride->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
-        _currentBrakeSpeed = 30;
-
-    if (ride->type == RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER)
-        _currentBrakeSpeed = 30;
 
     _currentTrackCurve = RideConstructionDefaultTrackType[ride->type] | 0x100;
     _currentTrackSlopeEnd = 0;
@@ -1268,7 +1262,7 @@ static void window_ride_construction_resize(rct_window *w)
             (1ULL << WIDX_LEFT_CURVE_LARGE) |
             (1ULL << WIDX_RIGHT_CURVE_LARGE);
     }
-    if (_currentlyShowingBrakeSpeed != 0) {
+    if (_currentlyShowingBrakeOrBoosterSpeed) {
         disabledWidgets &= ~(1ULL << WIDX_BANKING_GROUPBOX);
         disabledWidgets &= ~(1ULL << WIDX_BANK_LEFT);
         disabledWidgets &= ~(1ULL << WIDX_BANK_STRAIGHT);
@@ -1526,7 +1520,7 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
         break;
     case WIDX_BANK_LEFT:
         ride_construction_invalidate_current_track();
-        if (_currentlyShowingBrakeSpeed == 0) {
+        if (!_currentlyShowingBrakeOrBoosterSpeed) {
             _currentTrackBankEnd = TRACK_BANK_LEFT;
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
@@ -1534,17 +1528,13 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
         break;
     case WIDX_BANK_STRAIGHT:
         ride_construction_invalidate_current_track();
-        if (_currentlyShowingBrakeSpeed == 0) {
+        if (!_currentlyShowingBrakeOrBoosterSpeed) {
             _currentTrackBankEnd = TRACK_BANK_NONE;
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
         } else {
             uint8 *brakesSpeedPtr = &_currentBrakeSpeed2;
             uint8 maxBrakesSpeed = 30;
-            if (_currentlyShowingBrakeSpeed != 1) {
-                brakesSpeedPtr = &_currentBrakeSpeed;
-                maxBrakesSpeed = RideProperties[ride->type].max_brakes_speed;
-            }
             uint8 brakesSpeed = *brakesSpeedPtr + 2;
             if (brakesSpeed <= maxBrakesSpeed) {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
@@ -1558,15 +1548,12 @@ static void window_ride_construction_mousedown(rct_window *w, rct_widgetindex wi
         break;
     case WIDX_BANK_RIGHT:
         ride_construction_invalidate_current_track();
-        if (_currentlyShowingBrakeSpeed == 0) {
+        if (!_currentlyShowingBrakeOrBoosterSpeed) {
             _currentTrackBankEnd = TRACK_BANK_RIGHT;
             _currentTrackPrice = MONEY32_UNDEFINED;
             window_ride_construction_update_active_elements();
         } else {
             uint8 *brakesSpeedPtr = &_currentBrakeSpeed2;
-            if (_currentlyShowingBrakeSpeed != 1) {
-                brakesSpeedPtr = &_currentBrakeSpeed;
-            }
             uint8 brakesSpeed = *brakesSpeedPtr - 2;
             if (brakesSpeed >= 2) {
                 if (_rideConstructionState == RIDE_CONSTRUCTION_STATE_SELECTED) {
@@ -2178,7 +2165,7 @@ static void window_ride_construction_invalidate(rct_window *w)
     }
     set_format_arg(0, uint16, stringId);
 
-    if (_currentlyShowingBrakeSpeed == 1) {
+    if (_currentlyShowingBrakeOrBoosterSpeed) {
         uint16 brakeSpeed2 = ((_currentBrakeSpeed2 * 9) >> 2) & 0xFFFF;
         if (_boosterTrackSelected)
         {
@@ -2188,12 +2175,6 @@ static void window_ride_construction_invalidate(rct_window *w)
     }
 
     window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings[_currentSeatRotationAngle];
-
-    // TODO: Embed table
-    if (_currentlyShowingBrakeSpeed == 2) { // never gets set to 2
-        uint16 brakeSpeed = ((_currentBrakeSpeed * 9) / 4) & 0xFFFF;
-        set_format_arg(2, uint16, brakeSpeed);
-    }
 
     // Set window title arguments
     set_format_arg(4, rct_string_id, ride->name);
@@ -2963,7 +2944,7 @@ static void window_ride_construction_update_possible_ride_configurations()
 
     ride = get_ride(_currentRideIndex);
 
-    _currentlyShowingBrakeSpeed = 0;
+    _currentlyShowingBrakeOrBoosterSpeed = false;
     if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
         edi = RideData4[ride->type].alternate_type;
     else
@@ -3322,15 +3303,23 @@ static void window_ride_construction_update_widgets(rct_window *w)
         }
     } else {
         if (brakesSelected)
+        {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+        }
         else
+        {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
+            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+        }
 
-        _currentlyShowingBrakeSpeed = 1;
+        _currentlyShowingBrakeOrBoosterSpeed = true;
         window_ride_construction_widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+
         window_ride_construction_widgets[WIDX_BANK_LEFT].type = WWT_SPINNER;
         window_ride_construction_widgets[WIDX_BANK_LEFT].left = 12;
         window_ride_construction_widgets[WIDX_BANK_LEFT].right = 83;
@@ -3484,7 +3473,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
     }
     pressedWidgets |= (1ULL << widgetIndex);
 
-    if (_currentlyShowingBrakeSpeed == 0) {
+    if (!_currentlyShowingBrakeOrBoosterSpeed) {
         if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES)) {
             if (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_PIECES) {
                 w->pressed_widgets |= (1ULL << WIDX_O_TRACK);
