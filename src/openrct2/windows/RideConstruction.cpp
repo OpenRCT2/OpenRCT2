@@ -2732,11 +2732,17 @@ static void window_ride_construction_update_enabled_track_pieces()
 {
     Ride *ride = get_ride(_currentRideIndex);
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
+    sint32 rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
 
     if (rideEntry == nullptr)
         return;
 
-    sint32 rideType = (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? RideData4[ride->type].alternate_type : ride->type;
+    if (gCheatsEnableAllDrawableTrackPieces)
+    {
+        _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
+        return;
+    }
+
     if (!gConfigInterface.select_by_track_type)
     {
         _enabledRidePieces = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[rideType];

@@ -40,6 +40,7 @@ extern bool gCheatsDisableRideValueAging;
 extern bool gCheatsEnableChainLiftOnAllTrack;
 extern bool gCheatsAllowArbitraryRideTypeChanges;
 extern bool gCheatsIgnoreResearchStatus;
+extern bool gCheatsEnableAllDrawableTrackPieces;
 
 
 enum {
@@ -90,6 +91,7 @@ enum {
     CHEAT_OWNALLLAND,
     CHEAT_DISABLERIDEVALUEAGING,
     CHEAT_IGNORERESEARCHSTATUS,
+    CHEAT_ENABLEALLDRAWABLETRACKPIECES,
 };
 
 enum {
