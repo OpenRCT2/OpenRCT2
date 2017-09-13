@@ -21,7 +21,6 @@
 #include "peep.h"
 
 #define STAFF_MAX_COUNT        200
-#define STAFF_TYPE_COUNT       4
 // The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
 // Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
 #define STAFF_PATROL_AREA_SIZE 128
@@ -36,7 +35,9 @@ enum STAFF_TYPE {
     STAFF_TYPE_HANDYMAN,
     STAFF_TYPE_MECHANIC,
     STAFF_TYPE_SECURITY,
-    STAFF_TYPE_ENTERTAINER
+    STAFF_TYPE_ENTERTAINER,
+
+    STAFF_TYPE_COUNT
 };
 
 enum STAFF_ORDERS{

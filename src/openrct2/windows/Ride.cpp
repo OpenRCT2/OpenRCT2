@@ -3878,12 +3878,12 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
         else {
             sint32 j;
             for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                if (ride_type->ride_type[j] != 0xFF)
+                if (ride_type->ride_type[j] != RIDE_TYPE_NULL)
                     break;
             }
             sint32 i;
             sint32 num_items = 1;
-            for (i = 0; i < 8; i++) {
+            for (i = 0; i < BREAKDOWN_COUNT; i++) {
                 assert(j < (sint32)Util::CountOf(ride_type->ride_type));
                 if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
                     if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
@@ -4043,11 +4043,11 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
             stringId = STR_MEHCANIC_IS_FIXING_THE_RIDE;
             break;
         default:
-            stringId = 0;
+            stringId = STR_EMPTY;
             break;
         }
 
-        if (stringId != 0) {
+        if (stringId != STR_EMPTY) {
             if (stringId == STR_CALLING_MECHANIC || stringId == STR_NO_MECHANICS_ARE_HIRED_MESSAGE) {
                 gfx_draw_string_left_wrapped(dpi, nullptr, x + 4, y, 280, stringId, COLOUR_BLACK);
             } else {
