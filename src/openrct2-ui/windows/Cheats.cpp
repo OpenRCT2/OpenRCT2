@@ -144,6 +144,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES,
     WIDX_DISABLE_RIDE_VALUE_AGING,
     WIDX_IGNORE_RESEARCH_STATUS,
+    WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES,
 };
 
 #pragma region MEASUREMENTS
@@ -281,7 +282,8 @@ static rct_widget window_cheats_rides_widgets[] = {
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(13),        OHPL(13),       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,   STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP }, // Enable chain lift on all track
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(14),        OHPL(14),       STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP },  // Allow arbitrary ride type changes
     { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(15),        OHPL(15),       STR_CHEAT_DISABLE_RIDE_VALUE_AGING, STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP }, // Disable ride ageing
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_IGNORE_RESEARCH_STATUS, STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP}, // Ignore Research Status
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(16),        OHPL(16),       STR_CHEAT_IGNORE_RESEARCH_STATUS, STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP},    // Ignore Research Status
+    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(5),         OHPL(5),        STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP},    // Show all drawable track pieces
     { WIDGETS_END },
 };
 
@@ -459,7 +461,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
         (1ULL << WIDX_MAKE_DESTRUCTIBLE) | (1ULL << WIDX_FIX_ALL) | (1ULL << WIDX_FAST_LIFT_HILL) | (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
         (1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) | (1ULL << WIDX_BUILD_IN_PAUSE_MODE) | (1ULL << WIDX_RESET_CRASH_STATUS) | (1ULL << WIDX_10_MINUTE_INSPECTIONS) |
         (1ULL << WIDX_SHOW_ALL_OPERATING_MODES) | (1ULL << WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES) | (1ULL << WIDX_DISABLE_TRAIN_LENGTH_LIMITS) |
-        (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) | (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) | (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) | (1ULL << WIDX_IGNORE_RESEARCH_STATUS)
+        (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) | (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) | (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) | (1ULL << WIDX_IGNORE_RESEARCH_STATUS) | (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES)
 };
 
 static uint64 window_cheats_page_hold_down_widgets[] = {
@@ -837,6 +839,9 @@ static void window_cheats_rides_mouseup(rct_window *w, rct_widgetindex widgetInd
     case WIDX_IGNORE_RESEARCH_STATUS:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_IGNORERESEARCHSTATUS, !gCheatsIgnoreResearchStatus, GAME_COMMAND_CHEAT, 0, 0);
         break;
+    case WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES:
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ENABLEALLDRAWABLETRACKPIECES, !gCheatsEnableAllDrawableTrackPieces, GAME_COMMAND_CHEAT, 0, 0);
+        break;
     }
 }
 
@@ -921,6 +926,7 @@ static void window_cheats_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES, gCheatsAllowArbitraryRideTypeChanges);
         widget_set_checkbox_value(w, WIDX_DISABLE_RIDE_VALUE_AGING, gCheatsDisableRideValueAging);
         widget_set_checkbox_value(w, WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
+        widget_set_checkbox_value(w, WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
         break;
     }
 

@@ -3793,6 +3793,9 @@ enum {
 
     STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS = 6144,
 
+    STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES = 6146,
+    STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP = 6147,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

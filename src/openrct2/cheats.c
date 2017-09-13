@@ -52,6 +52,7 @@ bool gCheatsEnableChainLiftOnAllTrack = false;
 bool gCheatsAllowArbitraryRideTypeChanges = false;
 bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
+bool gCheatsEnableAllDrawableTrackPieces = false;
 
 sint32 park_rating_spinner_value;
 
@@ -532,6 +533,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
             case CHEAT_OWNALLLAND: cheat_own_all_land(); break;
             case CHEAT_DISABLERIDEVALUEAGING: gCheatsDisableRideValueAging = *edx != 0; break;
             case CHEAT_IGNORERESEARCHSTATUS: gCheatsIgnoreResearchStatus = *edx != 0; break;
+            case CHEAT_ENABLEALLDRAWABLETRACKPIECES: gCheatsEnableAllDrawableTrackPieces = *edx != 0; break;
         }
         if (network_get_mode() == NETWORK_MODE_NONE) {
             config_save_default();
@@ -771,6 +773,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         case CHEAT_OWNALLLAND: return language_get_string(STR_CHEAT_OWN_ALL_LAND);
         case CHEAT_DISABLERIDEVALUEAGING: return language_get_string(STR_CHEAT_DISABLE_RIDE_VALUE_AGING);
         case CHEAT_IGNORERESEARCHSTATUS: return language_get_string(STR_CHEAT_IGNORE_RESEARCH_STATUS);
+        case CHEAT_ENABLEALLDRAWABLETRACKPIECES: return language_get_string(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
     }
 
     return "";
