@@ -136,54 +136,49 @@ void RideObject::Load()
     _legacyType.vehicle_preset_list = &_presetColours;
 
     sint32 cur_vehicle_images_offset = _legacyType.images_offset + 3;
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
-            sint32 al = 1;
+            sint32 newVar03 = 1;
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
             {
-                al = 13;
-                if ((vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27)) != (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27))
+                newVar03 = 13;
+
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
                 {
-                    al = 7;
-                    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21))
+                    newVar03 = 5;
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
                     {
-                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-                        {
-                            al = 5;
-                            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
-                            {
-                                al = 3;
-                            }
-                        }
+                        newVar03 = 3;
                     }
                 }
+                else if ((vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27)) != (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27))
+                {
+                    newVar03 = 7;
+                }
             }
-            vehicleEntry->var_03 = al;
+            vehicleEntry->var_03 = newVar03;
             // 0x6DE90B
-            al = 0x20;
+            sint32 newVar02 = 32;
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
             {
-                al = 1;
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
+                newVar02 = 1;
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
                 {
-                    if (vehicleEntry->var_11 != 6)
+                    newVar02 = 2;
+                    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
                     {
-                        al = 2;
-                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
-                        {
-                            al = 4;
-                        }
+                        newVar02 = 4;
                     }
                 }
             }
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_12)
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
             {
-                al = vehicleEntry->special_frames;
+                newVar02 = vehicleEntry->special_frames;
             }
-            vehicleEntry->var_02 = al;
+            vehicleEntry->var_02 = newVar02;
             // 0x6DE946
 
             vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;

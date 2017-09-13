@@ -232,7 +232,7 @@ enum {
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
-    VEHICLE_ENTRY_FLAG_12 = 1 << 12,
+    VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->var_02 to vehicleEntry->special_frames, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
     VEHICLE_ENTRY_FLAG_14 = 1 << 14,
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,
