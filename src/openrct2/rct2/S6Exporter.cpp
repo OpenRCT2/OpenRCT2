@@ -431,9 +431,16 @@ void S6Exporter::ExportRides()
 {
     for (sint32 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
     {
-        if (gRideList[index].type != RIDE_TYPE_NULL)
+        auto src = get_ride(index);
+        auto dst = &_s6.rides[index];
+        Memory::Set(dst, 0, sizeof(rct2_ride));
+        if (src->type == RIDE_TYPE_NULL)
         {
-            ExportRide(&_s6.rides[index], get_ride(index));
+            dst->type = RIDE_TYPE_NULL;
+        }
+        else
+        {
+            ExportRide(dst, src);
         }
     }
 }

@@ -433,9 +433,16 @@ public:
     {
         for (uint16 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
         {
-            if (_s6.rides[index].type != RIDE_TYPE_NULL)
+            auto src = &_s6.rides[index];
+            auto dst = get_ride(index);
+            Memory::Set(dst, 0, sizeof(Ride));
+            if (src->type == RIDE_TYPE_NULL)
             {
-                ImportRide(get_ride(index), &_s6.rides[index]);
+                dst->type = RIDE_TYPE_NULL;
+            }
+            else
+            {
+                ImportRide(dst, src);
             }
         }
     }
