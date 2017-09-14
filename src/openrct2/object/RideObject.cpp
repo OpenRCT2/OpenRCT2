@@ -154,7 +154,7 @@ void RideObject::Load()
                         newVar03 = 3;
                     }
                 }
-                else if ((vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27)) != (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27))
+                else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
                 {
                     newVar03 = 7;
                 }
