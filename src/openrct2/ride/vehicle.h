@@ -74,7 +74,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 car_visual;               // 0x5D , 0x77
     uint8 effect_visual;
     uint8 draw_order;
-    uint8 special_frames;           // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES flag set.
+    uint8 special_frames;           // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES flag to be set.
     sint8* peep_loading_positions;  // 0x61 , 0x7B
 #ifdef NO_RCT2
     uint16 peep_loading_positions_count;
