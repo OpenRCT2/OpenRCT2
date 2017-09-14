@@ -302,76 +302,6 @@ void RideObject::Load()
     }
 }
 
-uint8 RideObject::CalculateVar02(rct_ride_entry_vehicle * vehicleEntry)
-{
-    // 0x6DE90B
-    uint8 newVar02;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
-    {
-        newVar02 = vehicleEntry->special_frames;
-    }
-    else
-    {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
-        {
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
-            {
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
-                {
-                    newVar02 = 4;
-                }
-                else
-                {
-                    newVar02 = 2;
-                }
-            }
-            else
-            {
-                newVar02 = 1;
-            }
-        }
-        else
-        {
-            newVar02 = 32;
-        }
-    }
-
-    return newVar02;
-}
-
-uint8 RideObject::CalculateVar03(rct_ride_entry_vehicle * vehicleEntry)
-{
-    uint8 newVar03;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
-    {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-        {
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
-            {
-                newVar03 = 3;
-            }
-            else
-            {
-                newVar03 = 5;
-            }
-        }
-        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-        {
-            newVar03 = 7;
-        }
-        else
-        {
-            newVar03 = 13;
-        }
-    }
-    else
-    {
-        newVar03 = 1;
-    }
-
-    return newVar03;
-}
-
 void RideObject::Unload()
 {
     language_free_object_string(_legacyType.name);
@@ -533,3 +463,74 @@ void RideObject::PerformFixes()
         _legacyType.enabledTrackPieces &= ~(1ULL << TRACK_SLOPE_STEEP);
     }
 }
+
+uint8 RideObject::CalculateVar02(const rct_ride_entry_vehicle * vehicleEntry)
+{
+    // 0x6DE90B
+    uint8 newVar02;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
+    {
+        newVar02 = vehicleEntry->special_frames;
+    }
+    else
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
+            {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
+                {
+                    newVar02 = 4;
+                }
+                else
+                {
+                    newVar02 = 2;
+                }
+            }
+            else
+            {
+                newVar02 = 1;
+            }
+        }
+        else
+        {
+            newVar02 = 32;
+        }
+    }
+
+    return newVar02;
+}
+
+uint8 RideObject::CalculateVar03(const rct_ride_entry_vehicle * vehicleEntry)
+{
+    uint8 newVar03;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
+            {
+                newVar03 = 3;
+            }
+            else
+            {
+                newVar03 = 5;
+            }
+        }
+        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            newVar03 = 7;
+        }
+        else
+        {
+            newVar03 = 13;
+        }
+    }
+    else
+    {
+        newVar03 = 1;
+    }
+
+    return newVar03;
+}
+
