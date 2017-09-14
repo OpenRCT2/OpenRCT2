@@ -4455,7 +4455,7 @@ STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_6144    :Show dirty visuals
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
-STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle support them.
+STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
 
 
 #############
