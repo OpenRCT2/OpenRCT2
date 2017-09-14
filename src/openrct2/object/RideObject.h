@@ -39,6 +39,8 @@ public:
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
     void Load() override;
+    uint8 CalculateVar02(rct_ride_entry_vehicle * vehicleEntry) override;
+    uint8 CalculateVar03(rct_ride_entry_vehicle * vehicleEntry) override;
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;

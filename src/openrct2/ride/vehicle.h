@@ -34,8 +34,8 @@ assert_struct_size(rct_vehicle_colour, 2);
  */
 typedef struct rct_ride_entry_vehicle {
     uint16 rotation_frame_mask;     // 0x00 , 0x1A
-    uint8 var_02;                   // 0x02 , 0x1C
-    uint8 var_03;                   // 0x03 , 0x1D
+    uint8 var_02;                   // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint8 var_03;                   // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint32 spacing;                 // 0x04 , 0x1E
     uint16 car_friction;            // 0x08 , 0x22
     sint8 tab_height;               // 0x0A , 0x24

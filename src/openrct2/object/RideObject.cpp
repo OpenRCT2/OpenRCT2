@@ -141,47 +141,11 @@ void RideObject::Load()
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
-            sint32 newVar03 = 1;
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
-            {
-                newVar03 = 13;
-
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-                {
-                    newVar03 = 5;
-                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
-                    {
-                        newVar03 = 3;
-                    }
-                }
-                else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-                {
-                    newVar03 = 7;
-                }
-            }
-            vehicleEntry->var_03 = newVar03;
-            // 0x6DE90B
-            sint32 newVar02 = 32;
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
-            {
-                newVar02 = 1;
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
-                {
-                    newVar02 = 2;
-                    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
-                    {
-                        newVar02 = 4;
-                    }
-                }
-            }
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
-            {
-                newVar02 = vehicleEntry->special_frames;
-            }
-            vehicleEntry->var_02 = newVar02;
+            // RCT2 calculates var_02 and var_03 and overwrites these properties on the vehicle entry.
+            // Immediately afterwards, the two were multiplied in order to calculate var_16 and were never used again.
+            // This has been changed to use the calculation results directly - var_02 and var_03 are no longer set.
             // 0x6DE946
-
-            vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;
+            vehicleEntry->var_16 = CalculateVar02(vehicleEntry) * CalculateVar03(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
             sint32 image_index = vehicleEntry->base_image_id;
 
@@ -336,6 +300,76 @@ void RideObject::Load()
 #endif
         }
     }
+}
+
+uint8 RideObject::CalculateVar02(rct_ride_entry_vehicle * vehicleEntry)
+{
+    // 0x6DE90B
+    uint8 newVar02;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
+    {
+        newVar02 = vehicleEntry->special_frames;
+    }
+    else
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
+            {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
+                {
+                    newVar02 = 4;
+                }
+                else
+                {
+                    newVar02 = 2;
+                }
+            }
+            else
+            {
+                newVar02 = 1;
+            }
+        }
+        else
+        {
+            newVar02 = 32;
+        }
+    }
+
+    return newVar02;
+}
+
+uint8 RideObject::CalculateVar03(rct_ride_entry_vehicle * vehicleEntry)
+{
+    uint8 newVar03;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
+            {
+                newVar03 = 3;
+            }
+            else
+            {
+                newVar03 = 5;
+            }
+        }
+        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            newVar03 = 7;
+        }
+        else
+        {
+            newVar03 = 13;
+        }
+    }
+    else
+    {
+        newVar03 = 1;
+    }
+
+    return newVar03;
 }
 
 void RideObject::Unload()
