@@ -51,4 +51,7 @@ public:
 private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
     void PerformFixes();
+
+    static uint8 CalculateVar02(const rct_ride_entry_vehicle * vehicleEntry);
+    static uint8 CalculateVar03(const rct_ride_entry_vehicle * vehicleEntry);
 };

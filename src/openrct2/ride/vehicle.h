@@ -34,8 +34,8 @@ assert_struct_size(rct_vehicle_colour, 2);
  */
 typedef struct rct_ride_entry_vehicle {
     uint16 rotation_frame_mask;     // 0x00 , 0x1A
-    uint8 var_02;                   // 0x02 , 0x1C
-    uint8 var_03;                   // 0x03 , 0x1D
+    uint8 var_02;                   // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint8 var_03;                   // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint32 spacing;                 // 0x04 , 0x1E
     uint16 car_friction;            // 0x08 , 0x22
     sint8 tab_height;               // 0x0A , 0x24
@@ -74,7 +74,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 car_visual;               // 0x5D , 0x77
     uint8 effect_visual;
     uint8 draw_order;
-    uint8 special_frames;           // 0x60 , 0x7A
+    uint8 special_frames;           // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES flag to be set.
     sint8* peep_loading_positions;  // 0x61 , 0x7B
 #ifdef NO_RCT2
     uint16 peep_loading_positions_count;
@@ -232,7 +232,7 @@ enum {
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
-    VEHICLE_ENTRY_FLAG_12 = 1 << 12,
+    VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->var_02 to vehicleEntry->special_frames, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
     VEHICLE_ENTRY_FLAG_14 = 1 << 14,
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,

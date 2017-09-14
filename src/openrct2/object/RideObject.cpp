@@ -136,57 +136,16 @@ void RideObject::Load()
     _legacyType.vehicle_preset_list = &_presetColours;
 
     sint32 cur_vehicle_images_offset = _legacyType.images_offset + 3;
-    for (sint32 i = 0; i < 4; i++)
+    for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
-            sint32 al = 1;
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
-            {
-                al = 13;
-                if ((vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27)) != (VEHICLE_ENTRY_FLAG_21 | VEHICLE_ENTRY_FLAG_27))
-                {
-                    al = 7;
-                    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21))
-                    {
-                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
-                        {
-                            al = 5;
-                            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
-                            {
-                                al = 3;
-                            }
-                        }
-                    }
-                }
-            }
-            vehicleEntry->var_03 = al;
-            // 0x6DE90B
-            al = 0x20;
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
-            {
-                al = 1;
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
-                {
-                    if (vehicleEntry->var_11 != 6)
-                    {
-                        al = 2;
-                        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
-                        {
-                            al = 4;
-                        }
-                    }
-                }
-            }
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_12)
-            {
-                al = vehicleEntry->special_frames;
-            }
-            vehicleEntry->var_02 = al;
+            // RCT2 calculates var_02 and var_03 and overwrites these properties on the vehicle entry.
+            // Immediately afterwards, the two were multiplied in order to calculate var_16 and were never used again.
+            // This has been changed to use the calculation results directly - var_02 and var_03 are no longer set.
             // 0x6DE946
-
-            vehicleEntry->var_16 = vehicleEntry->var_02 * vehicleEntry->var_03;
+            vehicleEntry->var_16 = CalculateVar02(vehicleEntry) * CalculateVar03(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
             sint32 image_index = vehicleEntry->base_image_id;
 
@@ -504,3 +463,74 @@ void RideObject::PerformFixes()
         _legacyType.enabledTrackPieces &= ~(1ULL << TRACK_SLOPE_STEEP);
     }
 }
+
+uint8 RideObject::CalculateVar02(const rct_ride_entry_vehicle * vehicleEntry)
+{
+    // 0x6DE90B
+    uint8 newVar02;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
+    {
+        newVar02 = vehicleEntry->special_frames;
+    }
+    else
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
+            {
+                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
+                {
+                    newVar02 = 4;
+                }
+                else
+                {
+                    newVar02 = 2;
+                }
+            }
+            else
+            {
+                newVar02 = 1;
+            }
+        }
+        else
+        {
+            newVar02 = 32;
+        }
+    }
+
+    return newVar02;
+}
+
+uint8 RideObject::CalculateVar03(const rct_ride_entry_vehicle * vehicleEntry)
+{
+    uint8 newVar03;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
+    {
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
+            {
+                newVar03 = 3;
+            }
+            else
+            {
+                newVar03 = 5;
+            }
+        }
+        else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
+        {
+            newVar03 = 7;
+        }
+        else
+        {
+            newVar03 = 13;
+        }
+    }
+    else
+    {
+        newVar03 = 1;
+    }
+
+    return newVar03;
+}
+
