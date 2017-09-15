@@ -4444,6 +4444,9 @@ STR_6141    :Untere Symbolleiste im RCT1-Stil
 STR_6142    :{WINDOW_COLOUR_2}Entwurfsname: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Bahntyp: {BLACK}{STRINGID}
 STR_6144    :Neu gezeichnete Kacheln markieren
+STR_6145    :{SMALLFONT}{BLACK}Geschwindigkeitsgrenze{NEWLINE}für Booster einstellen
+STR_6146    :Alle Streckenabschnitte ermöglichen
+STR_6147    :{SMALLFONT}{BLACK}Ermöglicht die Auswahl sämtlicher zum Bahntyp passenden Streckenabschnitte im Konstruktionsfenster unabhängig davon, ob das eingesetzte Fahrzeug diese unterstützt.
 
 #############
 # Scenarios #

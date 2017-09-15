@@ -4451,6 +4451,9 @@ STR_6141    :RCT1 하단 툴바
 STR_6142    :{WINDOW_COLOUR_2}트랙 이름: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}놀이기구 종류: {BLACK}{STRINGID}
 STR_6144    :시각적 업데이트 표시
+STR_6145    :{SMALLFONT}{BLACK}부스터 속도 제한 설정
+STR_6146    :모든 표시 가능한 트랙 조각 사용
+STR_6147    :{SMALLFONT}{BLACK}놀이기구 건설 창에서 해당 놀이기구가 지원하는 지의 여부와 관계 없이, 그 놀이기구에서 사용할 수 있는 모든 트랙 조각의 사용을 허용합니다.
 
 #############
 # Scenarios #

@@ -4446,6 +4446,10 @@ STR_6141    :Onderste werkbalk in RCT1-stijl
 STR_6142    :{WINDOW_COLOUR_2}Naam ontwerp: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Attractietype: {BLACK}{STRINGID}
 STR_6144    :Markeer opnieuw te tekenen blokken
+STR_6145    :{SMALLFONT}{BLACK}Snelheidslimiet voor turbo instellen
+STR_6146    :Alle tekenbare baanonderdelen tonen
+STR_6147    :{SMALLFONT}{BLACK}Toont tijdens het bouwen van attracties alle baanonderdelen die het attractietype kan tekenen, ongeacht of het voertuig deze onderdelen ondersteunt.
+
 
 #############
 # Scenarios #

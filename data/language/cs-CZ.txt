@@ -4454,6 +4454,9 @@ STR_6141    :RCT1 dolní nástrojová lišta
 STR_6142    :{WINDOW_COLOUR_2}Název trati: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Název atrakce: {BLACK}{STRINGID}
 STR_6144    :Zvýraznit znevalidované bloky pro vykreslení
+STR_6145    :{SMALLFONT}{BLACK}Nastavit rychlostní limit boosteru
+STR_6146    :Povolit všechny vykreslitelné části trati
+STR_6147    :{SMALLFONT}{BLACK}Povolí všechny části trati, které atrakce podporuje. Nezáleží, jestli je podporují i vozy.
 
 ###############################################################################
 ## RCT2 Objects
