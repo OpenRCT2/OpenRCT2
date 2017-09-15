@@ -42,6 +42,10 @@ enum {
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const money32 research_cost_table[4];
 extern const money32 wage_table[4];
 
@@ -87,5 +91,9 @@ money32 finance_get_current_cash();
 void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
 money32 finance_get_last_month_shop_profit();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

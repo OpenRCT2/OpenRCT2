@@ -924,8 +924,6 @@ typedef struct rct_ride_properties {
     sint8 booster_speed_factor; // The factor to shift the raw booster speed with
 } rct_ride_properties;
 
-extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
-
 #define RIDE_MODE_COUNT 37
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -946,6 +944,8 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 /** Helper macros until rides are stored in this module. */
 Ride *get_ride(sint32 index);

@@ -136,8 +136,16 @@ typedef struct rct_colour_map {
     uint8 colour_11;
 } rct_colour_map;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

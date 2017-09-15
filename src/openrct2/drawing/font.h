@@ -55,7 +55,14 @@ typedef struct  TTFFontSetDescriptor {
     TTFFontDescriptor size[FONT_SIZE_COUNT];
 } TTFFontSetDescriptor;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;
+#ifdef __cplusplus
+}
+#endif
+
 #endif // NO_TTF
 
 #ifdef __cplusplus

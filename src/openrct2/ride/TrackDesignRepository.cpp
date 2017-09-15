@@ -31,10 +31,7 @@
 #include "RideGroupManager.h"
 #include "TrackDesignRepository.h"
 
-extern "C"
-{
-    #include "TrackDesign.h"
-}
+#include "TrackDesign.h"
 
 using namespace OpenRCT2;
 

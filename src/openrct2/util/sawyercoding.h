@@ -27,7 +27,6 @@ typedef struct sawyercoding_chunk_header {
 assert_struct_size(sawyercoding_chunk_header, 5);
 #pragma pack(pop)
 
-extern bool gUseRLE;
 
 enum {
     CHUNK_ENCODING_NONE,
@@ -51,6 +50,8 @@ enum {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern bool gUseRLE;
 
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
 size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader, size_t dst_buffer_size);
