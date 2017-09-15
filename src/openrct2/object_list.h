@@ -8,6 +8,10 @@
 #include "world/scenery.h"
 #include "world/water.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef NO_RCT2
     extern rct_ride_entry               *gRideEntries[128];
     extern rct_small_scenery_entry      *gSmallSceneryEntries[252];
@@ -39,3 +43,7 @@
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex);
 const rct_object_entry * get_loaded_object_entry(size_t index);
 void * get_loaded_object_chunk(size_t index);
+
+#ifdef __cplusplus
+}
+#endif

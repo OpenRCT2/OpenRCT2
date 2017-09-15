@@ -17,10 +17,7 @@
 #include "../core/IStream.hpp"
 #include "StexObject.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-}
+#include "../localisation/localisation.h"
 
 void StexObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

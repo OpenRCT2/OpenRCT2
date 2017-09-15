@@ -19,12 +19,9 @@
 #include <string>
 #include "../common.h"
 
-extern "C"
-{
-    #include "../peep/peep.h"
-    #include "../world/map.h"
-    #include "../world/sprite.h"
-}
+#include "../peep/peep.h"
+#include "../world/map.h"
+#include "../world/sprite.h"
 
 class NetworkPacket;
 

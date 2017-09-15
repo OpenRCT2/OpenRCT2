@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../world/water.h"
-}
+#include "../world/water.h"
 
 class WaterObject final : public Object
 {

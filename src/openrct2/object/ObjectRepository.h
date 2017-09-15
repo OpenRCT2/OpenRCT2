@@ -22,15 +22,8 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "../object.h"
-    #include "../ride/ride.h"
-#ifdef __cplusplus
-}
-#endif
+#include "../object.h"
+#include "../ride/ride.h"
 
 #ifdef __cplusplus
     interface   IStream;

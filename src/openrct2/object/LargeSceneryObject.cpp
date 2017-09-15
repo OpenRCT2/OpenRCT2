@@ -18,11 +18,8 @@
 #include "../core/Memory.hpp"
 #include "LargeSceneryObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-}
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 
 LargeSceneryObject::~LargeSceneryObject()
 {

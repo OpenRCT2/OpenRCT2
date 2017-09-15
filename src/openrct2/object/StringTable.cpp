@@ -21,10 +21,7 @@
 #include "Object.h"
 #include "StringTable.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-}
+#include "../localisation/localisation.h"
 
 static bool StringIsBlank(utf8 * str)
 {

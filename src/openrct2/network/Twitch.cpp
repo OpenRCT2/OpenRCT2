@@ -16,10 +16,7 @@
 
 #ifdef DISABLE_TWITCH
 
-    extern "C"
-    {
-        #include "twitch.h"
-    }
+    #include "twitch.h"
 
     void twitch_update() { }
 

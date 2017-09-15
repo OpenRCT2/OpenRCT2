@@ -18,10 +18,7 @@
 #include "../OpenRCT2.h"
 #include "WaterObject.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-}
+#include "../localisation/localisation.h"
 
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

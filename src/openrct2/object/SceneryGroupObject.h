@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/scenery.h"
 
 struct ObjectRepositoryItem;
 

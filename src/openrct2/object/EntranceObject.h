@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../world/entrance.h"
-}
+#include "../world/entrance.h"
 
 class EntranceObject final : public Object
 {

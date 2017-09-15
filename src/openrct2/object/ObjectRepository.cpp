@@ -40,16 +40,13 @@
 #include "RideObject.h"
 #include "StexObject.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../localisation/localisation.h"
-    #include "../object.h"
-    #include "../object_list.h"
-    #include "../platform/platform.h"
-    #include "../util/sawyercoding.h"
-    #include "../util/util.h"
-}
+#include "../config/Config.h"
+#include "../localisation/localisation.h"
+#include "../object.h"
+#include "../object_list.h"
+#include "../platform/platform.h"
+#include "../util/sawyercoding.h"
+#include "../util/util.h"
 
 using namespace OpenRCT2;
 

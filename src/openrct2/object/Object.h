@@ -20,10 +20,7 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
-extern "C"
-{
-    #include "../object.h"
-}
+#include "../object.h"
 
 enum OBJ_STRING_ID
 {

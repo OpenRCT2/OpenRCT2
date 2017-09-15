@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../ride/ride.h"
-}
+#include "../ride/ride.h"
 
 class RideObject final : public Object
 {

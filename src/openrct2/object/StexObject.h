@@ -18,10 +18,7 @@
 
 #include "Object.h"
 
-extern "C"
-{
-    #include "../scenario/scenario.h"
-}
+#include "../scenario/scenario.h"
 
 class StexObject final : public Object
 {
