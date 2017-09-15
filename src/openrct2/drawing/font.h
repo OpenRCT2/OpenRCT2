@@ -58,6 +58,10 @@ typedef struct  TTFFontSetDescriptor {
 extern TTFFontSetDescriptor *gCurrentTTFFontSet;
 #endif // NO_TTF
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void font_sprite_initialise_characters();
 sint32 font_sprite_get_codepoint_offset(sint32 codepoint);
 sint32 font_sprite_get_codepoint_width(sint32 fontSpriteBase, sint32 codepoint);
@@ -68,5 +72,9 @@ sint32 font_get_line_height_small(sint32 fontSpriteBase);
 bool font_supports_string_sprite(const utf8 *text);
 bool font_supports_string_ttf(const utf8 *text, sint32 fontSize);
 bool font_supports_string(const utf8 *text, sint32 fontSize);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

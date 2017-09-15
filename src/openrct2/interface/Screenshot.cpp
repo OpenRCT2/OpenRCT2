@@ -23,17 +23,14 @@
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../intro.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-    #include "../windows/error.h"
-    #include "viewport.h"
-}
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../intro.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../util/util.h"
+#include "../windows/error.h"
+#include "viewport.h"
 
 using namespace OpenRCT2;
 

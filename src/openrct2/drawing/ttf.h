@@ -18,8 +18,16 @@
 
 #include "font.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool ttf_initialise();
 void ttf_dispose();
+
+#ifdef __cplusplus
+}
+#endif
 
 #ifndef NO_TTF
 
@@ -29,6 +37,10 @@ typedef struct TTFSurface {
     sint32          h;
     sint32          pitch;
 } TTFSurface;
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
 TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text);
@@ -44,5 +56,9 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h);
 TTFSurface * TTF_RenderUTF8_Solid(TTF_Font *font, const char *text, uint32 colour);
 void TTF_CloseFont(TTF_Font *font);
 void TTF_Quit(void);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // NO_TTF

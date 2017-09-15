@@ -24,10 +24,10 @@
 #include "../object/ObjectManager.h"
 #include "LanguagePack.h"
 
-extern "C" {
-
 #include "../platform/platform.h"
 #include "localisation.h"
+
+extern "C" {
 
 sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;
 bool gUseTrueTypeFont = false;

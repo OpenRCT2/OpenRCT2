@@ -698,6 +698,10 @@ enum {
     FOR_ALL_PEEPS(sprite_index, peep) \
         if (peep->type == PEEP_TYPE_STAFF)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 gGuestChangeModifier;
 extern uint16 gNumGuestsInPark;
 extern uint16 gNumGuestsInParkLastWeek;
@@ -791,5 +795,9 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

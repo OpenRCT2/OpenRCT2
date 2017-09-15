@@ -24,10 +24,7 @@
 #include "PlatformEnvironment.h"
 #include "Version.h"
 
-extern "C"
-{
-    #include "platform/platform.h"
-}
+#include "platform/platform.h"
 
 using namespace OpenRCT2;
 

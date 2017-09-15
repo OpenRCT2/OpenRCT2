@@ -943,6 +943,10 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 #define CONSTRUCTION_LIFT_HILL_SELECTED 1
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /** Helper macros until rides are stored in this module. */
 Ride *get_ride(sint32 index);
 rct_ride_entry *get_ride_entry(sint32 index);
@@ -1198,5 +1202,9 @@ bool ride_type_supports_boosters(uint8 rideType);
 sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

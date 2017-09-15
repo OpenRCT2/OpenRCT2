@@ -37,15 +37,9 @@ enum {
 #define NETWORK_DEFAULT_PORT 11753
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 #include "../common.h"
 #include "../game.h"
 #include "../localisation/string_ids.h"
-#ifdef __cplusplus
-}
-#endif // __cplusplus
 
 #include "../Version.h"
 #include "NetworkTypes.h"

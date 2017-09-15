@@ -21,10 +21,7 @@
 #include "../core/Memory.hpp"
 #include "../OpenRCT2.h"
 
-extern "C"
-{
-    #include "drawing.h"
-}
+#include "drawing.h"
 
 constexpr uint32 BASE_IMAGE_ID = 29294;
 constexpr uint32 MAX_IMAGES = 262144;

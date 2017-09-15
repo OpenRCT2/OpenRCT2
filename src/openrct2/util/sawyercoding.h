@@ -48,6 +48,10 @@ enum {
     FILE_TYPE_SC4 = (2 << 2)
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
 size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader, size_t dst_buffer_size);
 size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader);
@@ -60,5 +64,9 @@ sint32 sawyercoding_validate_track_checksum(const uint8* src, size_t length);
 
 sint32 sawyercoding_detect_file_type(const uint8 *src, size_t length);
 sint32 sawyercoding_detect_rct1_version(sint32 gameVersion);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -53,10 +53,18 @@ enum {
 
 #define MAX_ANIMATED_OBJECTS 2000
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint16 gNumMapAnimations;
 extern rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
 
 void map_animation_create(sint32 type, sint32 x, sint32 y, sint32 z);
 void map_animation_invalidate_all();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

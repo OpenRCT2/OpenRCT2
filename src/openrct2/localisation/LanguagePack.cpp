@@ -17,11 +17,8 @@
 #include <string>
 #include <vector>
 
-extern "C"
-{
-    #include "../common.h"
-    #include "localisation.h"
-}
+#include "../common.h"
+#include "localisation.h"
 
 #include "../core/FileStream.hpp"
 #include "../core/Math.hpp"

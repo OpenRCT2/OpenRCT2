@@ -16,13 +16,12 @@
 
 #pragma once
 
+#include "drawing.h"
+
 #ifdef __cplusplus
 extern "C"
 {
 #endif
-
-#include "drawing.h"
-
 extern rct_string_id DrawingEngineStringIds[3];
 
 sint32 drawing_engine_get_type();

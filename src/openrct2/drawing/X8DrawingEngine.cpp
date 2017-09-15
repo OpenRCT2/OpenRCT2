@@ -26,16 +26,13 @@
 #include "Rain.h"
 #include "X8DrawingEngine.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../intro.h"
-    #include "../platform/platform.h"
-    #include "drawing.h"
-    #include "lightfx.h"
-}
+#include "../game.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../intro.h"
+#include "../platform/platform.h"
+#include "drawing.h"
+#include "lightfx.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

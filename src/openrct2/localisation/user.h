@@ -14,4 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
+#ifndef USER_H
+#define USER_H
+
 void reset_user_strings();
+
+#endif // USER_H
