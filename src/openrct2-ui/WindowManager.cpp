@@ -16,6 +16,7 @@
 
 #include <openrct2/ui/WindowManager.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/core/Console.hpp>
 #include "input/input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
@@ -102,6 +103,7 @@ public:
         case WC_WATER:
             return window_water_open();
         default:
+            Console::Error::WriteLine("Unhandled window class (%d)", wc);
             return nullptr;
         }
     }
@@ -178,6 +180,7 @@ public:
         case WC_SCENARIO_SELECT:
             return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
         default:
+            Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
             return nullptr;
         }
     }
