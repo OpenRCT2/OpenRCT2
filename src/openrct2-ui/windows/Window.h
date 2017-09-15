@@ -21,6 +21,7 @@
 #include <openrct2/interface/window.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
+typedef void (*scenarioselect_callback)(const utf8 *path);
 
 rct_window * window_about_open();
 rct_window * window_changelog_open();
@@ -87,3 +88,5 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message);
 
 rct_window * window_loadsave_open(sint32 type, char *defaultName);
 void window_loadsave_set_loadsave_callback(loadsave_callback cb);
+rct_window * window_track_place_open(const struct track_design_file_ref *tdFileRef);
+rct_window * window_track_manage_open(struct track_design_file_ref *tdFileRef);

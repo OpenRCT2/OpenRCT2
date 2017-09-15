@@ -161,7 +161,22 @@ public:
             return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH));
         case WC_GUEST_LIST:
             return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER), intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+        case WC_LOADSAVE:
+        {
+            uint32 type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
+            utf8 *defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH)
+            loadsave_callback callback = static_cast<loadsave_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+            rct_window *w = window_loadsave_open(type, defaultName);
+            window_loadsave_set_loadsave_callback(callback);
 
+            return w;
+        }
+        case WC_MANAGE_TRACK_DESIGN:
+            return window_track_manage_open((track_design_file_ref *) intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+        case WC_TRACK_DESIGN_PLACE:
+            return window_track_place_open((track_design_file_ref *) intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+        case WC_SCENARIO_SELECT:
+            return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
         default:
             return nullptr;
         }
