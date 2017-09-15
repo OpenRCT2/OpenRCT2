@@ -604,7 +604,6 @@ typedef enum {
 } TOOL_IDX;
 
 typedef void (*modal_callback)(sint32 result);
-typedef void (*scenarioselect_callback)(const utf8 *path);
 
 typedef void (*close_callback)();
 
@@ -727,7 +726,6 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
 
 void window_maze_construction_update_pressed_widgets();
-void window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window *window_new_ride_open();
 rct_window *window_new_ride_open_research();
 void window_network_status_open(const char* text, close_callback onClose);
@@ -739,7 +737,6 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
 
 void window_scenery_open();
-void window_track_manage_open(struct track_design_file_ref *tdFileRef);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
