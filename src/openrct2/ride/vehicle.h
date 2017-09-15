@@ -34,8 +34,8 @@ assert_struct_size(rct_vehicle_colour, 2);
  */
 typedef struct rct_ride_entry_vehicle {
     uint16 rotation_frame_mask;     // 0x00 , 0x1A
-    uint8 var_02;                   // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
-    uint8 var_03;                   // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint8 num_vertical_frames;      // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint8 num_horizontal_frames;    // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint32 spacing;                 // 0x04 , 0x1E
     uint16 car_friction;            // 0x08 , 0x22
     sint8 tab_height;               // 0x0A , 0x24
@@ -46,7 +46,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 sprite_height_positive;   // 0x10 , 0x2A
     uint8 var_11;                   // 0x11 , 0x2B
     uint32 flags;                   // 0x12 , 0x2C
-    uint16 var_16;                  // 0x16 , 0x30
+    uint16 base_num_frames;         // 0x16 , 0x30, The number of sprites for a flat non-banked track piece.
     uint32 base_image_id;           // 0x18 , 0x32
     uint32 var_1C;                  // 0x1C , 0x36
     uint32 var_20;                  // 0x20 , 0x3A
@@ -74,7 +74,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 car_visual;               // 0x5D , 0x77
     uint8 effect_visual;
     uint8 draw_order;
-    uint8 special_frames;           // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES flag to be set.
+    uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     sint8* peep_loading_positions;  // 0x61 , 0x7B
 #ifdef NO_RCT2
     uint16 peep_loading_positions_count;
@@ -232,7 +232,7 @@ enum {
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
-    VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->var_02 to vehicleEntry->special_frames, rather than determining it itself.
+    VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
     VEHICLE_ENTRY_FLAG_14 = 1 << 14,
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,

@@ -940,7 +940,7 @@ static void vehicle_sprite_paint_6D51EB(paint_session * session, rct_vehicle *ve
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
         ebx = ebx / 8;
     }
-    ebx = (ebx * vehicleEntry->var_16) + vehicle->var_4A + vehicleEntry->base_image_id;
+    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->var_4A + vehicleEntry->base_image_id;
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
 
@@ -962,7 +962,7 @@ static void vehicle_sprite_paint_6D51DE(paint_session * session, rct_vehicle *ve
     sint32 ecx = ebx / 2;
     ebx = ebx / 8;
     ebx += ((vehicle->restraints_position - 64) / 64) * 4;
-    ebx *= vehicleEntry->var_16;
+    ebx *= vehicleEntry->base_num_frames;
     ebx += vehicleEntry->var_1C;
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
@@ -978,7 +978,7 @@ static void vehicle_sprite_0_1(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 4) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -990,7 +990,7 @@ static void vehicle_sprite_0_2(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = (imageDirection / 2) + 108;
-        sint32 ebx = ((imageDirection + 16) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1002,7 +1002,7 @@ static void vehicle_sprite_0_3(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1014,7 +1014,7 @@ static void vehicle_sprite_0_4(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 108;
-        sint32 ebx = ((imageDirection + 48) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1029,7 +1029,7 @@ static void vehicle_sprite_0_5(paint_session * session, rct_vehicle *vehicle, si
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = (imageDirection / 8) + 124;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1044,7 +1044,7 @@ static void vehicle_sprite_0_6(paint_session * session, rct_vehicle *vehicle, si
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = (imageDirection / 8) + 128;
-        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1059,7 +1059,7 @@ static void vehicle_sprite_0_7(paint_session * session, rct_vehicle *vehicle, si
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = (imageDirection / 8) + 132;
-        sint32 ebx = (((imageDirection / 8) + 16) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1074,7 +1074,7 @@ static void vehicle_sprite_0_8(paint_session * session, rct_vehicle *vehicle, si
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = (imageDirection / 8) + 136;
-        sint32 ebx = (((imageDirection / 8) + 24) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1089,7 +1089,7 @@ static void vehicle_sprite_0_9(paint_session * session, rct_vehicle *vehicle, si
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = (imageDirection / 8) + 140;
-        sint32 ebx = (((imageDirection / 8) + 32) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1104,7 +1104,7 @@ static void vehicle_sprite_0_10(paint_session * session, rct_vehicle *vehicle, s
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 124;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1119,7 +1119,7 @@ static void vehicle_sprite_0_11(paint_session * session, rct_vehicle *vehicle, s
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 128;
-        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1134,7 +1134,7 @@ static void vehicle_sprite_0_12(paint_session * session, rct_vehicle *vehicle, s
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 132;
-        sint32 ebx = (((imageDirection / 8) + 20) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1149,7 +1149,7 @@ static void vehicle_sprite_0_13(paint_session * session, rct_vehicle *vehicle, s
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 136;
-        sint32 ebx = (((imageDirection / 8) + 28) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1164,7 +1164,7 @@ static void vehicle_sprite_0_14(paint_session * session, rct_vehicle *vehicle, s
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 140;
-        sint32 ebx = (((imageDirection / 8) + 36) * vehicleEntry->var_16) + vehicleEntry->var_34;
+        sint32 ebx = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames) + vehicleEntry->var_34;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0_2(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1177,7 +1177,7 @@ static void vehicle_sprite_0_16(paint_session * session, rct_vehicle *vehicle, s
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 4) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1190,7 +1190,7 @@ static void vehicle_sprite_0_17(paint_session * session, rct_vehicle *vehicle, s
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = (imageDirection / 2) + 108;
-        sint32 ebx = ((imageDirection + 16) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1203,7 +1203,7 @@ static void vehicle_sprite_0_18(paint_session * session, rct_vehicle *vehicle, s
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1216,7 +1216,7 @@ static void vehicle_sprite_0_19(paint_session * session, rct_vehicle *vehicle, s
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 108;
-        sint32 ebx = ((imageDirection + 48) * vehicleEntry->var_16) + vehicleEntry->var_30;
+        sint32 ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->var_30;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1256,7 +1256,7 @@ static void vehicle_sprite_1_0(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1268,7 +1268,7 @@ static void vehicle_sprite_1_1(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (imageDirection * vehicleEntry->var_16) + vehicleEntry->var_38;
+        sint32 ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->var_38;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_1_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1280,7 +1280,7 @@ static void vehicle_sprite_1_2(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_48;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_48;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_1_1(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1292,7 +1292,7 @@ static void vehicle_sprite_1_3(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection + 32) * vehicleEntry->var_16) + vehicleEntry->var_38;
+        sint32 ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->var_38;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_1_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1304,7 +1304,7 @@ static void vehicle_sprite_1_4(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_48;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_48;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_1_3(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1345,11 +1345,11 @@ static void vehicle_sprite_2_0(paint_session * session, rct_vehicle *vehicle, si
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) {
             sint32 ecx = (imageDirection / 2) + 16;
-            sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
+            sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             sint32 ecx = (imageDirection / 2) + 16;
-            sint32 ebx = ((imageDirection + 8) * vehicleEntry->var_16) + vehicleEntry->var_20;
+            sint32 ebx = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1362,7 +1362,7 @@ static void vehicle_sprite_2_1(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = (imageDirection / 2) + 16;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_40;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_40;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_2_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1376,11 +1376,11 @@ static void vehicle_sprite_2_2(paint_session * session, rct_vehicle *vehicle, si
         sint32 ecx = imageDirection / 2;
         if (vehicleEntry->draw_order < 5) {
             ecx += 108;
-            sint32 ebx = (imageDirection * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             ecx += 16;
-            sint32 ebx = (imageDirection * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1393,7 +1393,7 @@ static void vehicle_sprite_2_3(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = (imageDirection / 2) + 16;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_40;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_40;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_2_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1407,11 +1407,11 @@ static void vehicle_sprite_2_4(paint_session * session, rct_vehicle *vehicle, si
         sint32 ecx = imageDirection / 2;
         if (vehicleEntry->draw_order < 5) {
             ecx = (ecx ^ 8) + 108;
-            sint32 ebx = ((imageDirection + 32) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             ecx += 16;
-            sint32 ebx = ((imageDirection + 32) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1454,7 +1454,7 @@ static void vehicle_sprite_3(paint_session * session, rct_vehicle *vehicle, sint
         vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);
     } else {
         sint32 ecx = (imageDirection / 4) + 32;
-        sint32 ebx = ((imageDirection / 4) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
 }
@@ -1466,7 +1466,7 @@ static void vehicle_sprite_4(paint_session * session, rct_vehicle *vehicle, sint
         vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);
     } else {
         sint32 ecx = (imageDirection / 2) + 40;
-        sint32 ebx = ((imageDirection + 16) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     }
 }
@@ -1476,7 +1476,7 @@ static void vehicle_sprite_5_0(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_20;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1488,7 +1488,7 @@ static void vehicle_sprite_5_1(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection + 64) * vehicleEntry->var_16) + vehicleEntry->var_38;
+        sint32 ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->var_38;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_5_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1500,7 +1500,7 @@ static void vehicle_sprite_5_2(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_48;
+        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_48;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_5_1(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1512,7 +1512,7 @@ static void vehicle_sprite_5_3(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection + 96) * vehicleEntry->var_16) + vehicleEntry->var_38;
+        sint32 ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->var_38;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_5_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1524,7 +1524,7 @@ static void vehicle_sprite_5_4(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_48;
+        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_48;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_5_3(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1565,11 +1565,11 @@ static void vehicle_sprite_6_0(paint_session * session, rct_vehicle *vehicle, si
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES) {
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) {
             sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
-            sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_20;
+            sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
-            sint32 ebx = ((imageDirection + 40) * vehicleEntry->var_16) + vehicleEntry->var_20;
+            sint32 ebx = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1582,7 +1582,7 @@ static void vehicle_sprite_6_1(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
-        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_40;
+        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_40;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1596,11 +1596,11 @@ static void vehicle_sprite_6_2(paint_session * session, rct_vehicle *vehicle, si
         sint32 ecx = imageDirection / 2;
         if (vehicleEntry->draw_order < 5) {
             ecx += 108;
-            sint32 ebx = ((imageDirection + 64) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             ecx = (ecx ^ 8) + 16;
-            sint32 ebx = ((imageDirection + 64) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1613,7 +1613,7 @@ static void vehicle_sprite_6_3(paint_session * session, rct_vehicle *vehicle, si
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
-        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_40;
+        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_40;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1627,11 +1627,11 @@ static void vehicle_sprite_6_4(paint_session * session, rct_vehicle *vehicle, si
         sint32 ecx = imageDirection / 2;
         if (vehicleEntry->draw_order < 5) {
             ecx = (ecx ^ 8) + 108;
-            sint32 ebx = ((imageDirection + 96) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         } else {
             ecx = (ecx ^ 8) + 16;
-            sint32 ebx = ((imageDirection + 96) * vehicleEntry->var_16) + vehicleEntry->var_44;
+            sint32 ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->var_44;
             vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
         }
     } else {
@@ -1672,7 +1672,7 @@ static void vehicle_sprite_7(paint_session * session, rct_vehicle *vehicle, sint
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
         sint32 ecx = ((imageDirection / 4) ^ 4) + 32;
-        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1684,7 +1684,7 @@ static void vehicle_sprite_8(paint_session * session, rct_vehicle *vehicle, sint
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 40;
-        sint32 ebx = ((imageDirection + 48) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1696,7 +1696,7 @@ static void vehicle_sprite_9(paint_session * session, rct_vehicle *vehicle, sint
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 56;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1708,7 +1708,7 @@ static void vehicle_sprite_10(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 2) + 60;
-        sint32 ebx = ((imageDirection + 8) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1720,7 +1720,7 @@ static void vehicle_sprite_11(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 76;
-        sint32 ebx = (((imageDirection / 8) + 72) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 72) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1732,7 +1732,7 @@ static void vehicle_sprite_12(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 80;
-        sint32 ebx = (((imageDirection / 8) + 80) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 80) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1744,7 +1744,7 @@ static void vehicle_sprite_13(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 84;
-        sint32 ebx = (((imageDirection / 8) + 88) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 88) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1756,7 +1756,7 @@ static void vehicle_sprite_14(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 88;
-        sint32 ebx = (((imageDirection / 8) + 96) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 96) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1768,7 +1768,7 @@ static void vehicle_sprite_15(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 92;
-        sint32 ebx = (((imageDirection / 8) + 104) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 104) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1780,7 +1780,7 @@ static void vehicle_sprite_16(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 96;
-        sint32 ebx = (((imageDirection / 8) + 112) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 112) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1798,7 +1798,7 @@ static void vehicle_sprite_17(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 56;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1817,7 +1817,7 @@ static void vehicle_sprite_18(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 60;
-        sint32 ebx = ((imageDirection + 40) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1832,7 +1832,7 @@ static void vehicle_sprite_19(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 76;
-        sint32 ebx = (((imageDirection / 8) + 76) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 76) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1847,7 +1847,7 @@ static void vehicle_sprite_20(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 80;
-        sint32 ebx = (((imageDirection / 8) + 84) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 84) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1862,7 +1862,7 @@ static void vehicle_sprite_21(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 84;
-        sint32 ebx = (((imageDirection / 8) + 92) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 92) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1877,7 +1877,7 @@ static void vehicle_sprite_22(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 88;
-        sint32 ebx = (((imageDirection / 8) + 100) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 100) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1892,7 +1892,7 @@ static void vehicle_sprite_23(paint_session * session, rct_vehicle *vehicle, sin
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 92;
-        sint32 ebx = (((imageDirection / 8) + 108) * vehicleEntry->var_16) + vehicleEntry->var_28;
+        sint32 ebx = (((imageDirection / 8) + 108) * vehicleEntry->base_num_frames) + vehicleEntry->var_28;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1908,7 +1908,7 @@ static void vehicle_sprite_24(paint_session * session, rct_vehicle *vehicle, sin
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS) {
         sint32 eax = ((vehicle->vehicle_sprite_type - 24) * 4);
         sint32 ecx = (imageDirection / 8) + eax + 144;
-        sint32 ebx = (((imageDirection / 8) + eax) * vehicleEntry->var_16) + vehicleEntry->var_4C;
+        sint32 ebx = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->var_4C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1920,7 +1920,7 @@ static void vehicle_sprite_50_0(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1932,7 +1932,7 @@ static void vehicle_sprite_50_1(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = ((imageDirection / 8) * vehicleEntry->var_16) + vehicleEntry->var_3C;
+        sint32 ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_3C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1944,7 +1944,7 @@ static void vehicle_sprite_50_3(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_3C;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_3C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_50_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1984,7 +1984,7 @@ static void vehicle_sprite_51(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 100;
-        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1996,7 +1996,7 @@ static void vehicle_sprite_52(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = (imageDirection / 8) + 104;
-        sint32 ebx = (((imageDirection / 8) + 16) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2008,7 +2008,7 @@ static void vehicle_sprite_53_0(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2020,7 +2020,7 @@ static void vehicle_sprite_53_1(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->var_16) + vehicleEntry->var_3C;
+        sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_3C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_53_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2032,7 +2032,7 @@ static void vehicle_sprite_53_3(paint_session * session, rct_vehicle *vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS) {
         sint32 ecx = imageDirection / 2;
-        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_3C;
+        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_3C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_53_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2072,7 +2072,7 @@ static void vehicle_sprite_54(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 100;
-        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2084,7 +2084,7 @@ static void vehicle_sprite_55(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES) {
         sint32 ecx = ((imageDirection / 8) ^ 2) + 104;
-        sint32 ebx = (((imageDirection / 8) + 20) * vehicleEntry->var_16) + vehicleEntry->var_2C;
+        sint32 ebx = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->var_2C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2104,7 +2104,7 @@ static void vehicle_sprite_57(paint_session * session, rct_vehicle *vehicle, sin
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
         sint32 ecx = ((imageDirection / 4) ^ 4) + 32;
-        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2117,7 +2117,7 @@ static void vehicle_sprite_58(paint_session * session, rct_vehicle *vehicle, sin
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES) {
         sint32 ecx = ((imageDirection / 2) ^ 8) + 40;
-        sint32 ebx = ((imageDirection + 48) * vehicleEntry->var_16) + vehicleEntry->var_24;
+        sint32 ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->var_24;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
@@ -2129,7 +2129,7 @@ static void vehicle_sprite_59(paint_session * session, rct_vehicle *vehicle, sin
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_14) {
         sint32 ecx = (imageDirection / 2) + 16;
-        sint32 ebx = (imageDirection * vehicleEntry->var_16) + vehicleEntry->var_4C;
+        sint32 ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->var_4C;
         vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
     } else {
         vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);

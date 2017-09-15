@@ -141,17 +141,18 @@ void RideObject::Load()
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
         {
-            // RCT2 calculates var_02 and var_03 and overwrites these properties on the vehicle entry.
-            // Immediately afterwards, the two were multiplied in order to calculate var_16 and were never used again.
-            // This has been changed to use the calculation results directly - var_02 and var_03 are no longer set.
+            // RCT2 calculates num_vertical_frames and num_horizontal_frames and overwrites these properties on the vehicle entry.
+            // Immediately afterwards, the two were multiplied in order to calculate base_num_frames and were never used again.
+            // This has been changed to use the calculation results directly -
+            // num_vertical_frames and num_horizontal_frames are no longer set on the vehicle entry.
             // 0x6DE946
-            vehicleEntry->var_16 = CalculateVar02(vehicleEntry) * CalculateVar03(vehicleEntry);
+            vehicleEntry->base_num_frames = CalculateNumVerticalFrames(vehicleEntry) * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
             sint32 image_index = vehicleEntry->base_image_id;
 
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                sint32 b = vehicleEntry->var_16 * 32;
+                sint32 b = vehicleEntry->base_num_frames * 32;
 
                 if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_11) b /= 2;
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) b /= 8;
@@ -162,10 +163,10 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
                 {
                     vehicleEntry->var_20 = image_index;
-                    b = vehicleEntry->var_16 * 72;
+                    b = vehicleEntry->base_num_frames * 72;
                     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
                     {
-                        b = vehicleEntry->var_16 * 16;
+                        b = vehicleEntry->base_num_frames * 16;
                     }
                     image_index += b;
                 }
@@ -174,7 +175,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
                 {
                     vehicleEntry->var_24 = image_index;
-                    b = vehicleEntry->var_16 * 80;
+                    b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
@@ -182,7 +183,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->var_28 = image_index;
-                    b = vehicleEntry->var_16 * 116;
+                    b = vehicleEntry->base_num_frames * 116;
                     image_index += b;
                 }
 
@@ -190,7 +191,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
                 {
                     vehicleEntry->var_2C = image_index;
-                    b = vehicleEntry->var_16 * 24;
+                    b = vehicleEntry->base_num_frames * 24;
                     image_index += b;
                 }
 
@@ -198,14 +199,14 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
                 {
                     vehicleEntry->var_30 = image_index;
-                    b = vehicleEntry->var_16 * 80;
+                    b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
                 {
                     vehicleEntry->var_34 = image_index;
-                    b = vehicleEntry->var_16 * 40;
+                    b = vehicleEntry->base_num_frames * 40;
                     image_index += b;
                 }
 
@@ -213,7 +214,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
                     vehicleEntry->var_38 = image_index;
-                    b = vehicleEntry->var_16 * 128;
+                    b = vehicleEntry->base_num_frames * 128;
                     image_index += b;
                 }
 
@@ -221,7 +222,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
                     vehicleEntry->var_3C = image_index;
-                    b = vehicleEntry->var_16 * 16;
+                    b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
@@ -229,28 +230,28 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
                     vehicleEntry->var_40 = image_index;
-                    b = vehicleEntry->var_16 * 16;
+                    b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
                 {
                     vehicleEntry->var_44 = image_index;
-                    b = vehicleEntry->var_16 * 128;
+                    b = vehicleEntry->base_num_frames * 128;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
                 {
                     vehicleEntry->var_48 = image_index;
-                    b = vehicleEntry->var_16 * 16;
+                    b = vehicleEntry->base_num_frames * 16;
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
                 {
                     vehicleEntry->var_4C = image_index;
-                    b = vehicleEntry->var_16 * 80;
+                    b = vehicleEntry->base_num_frames * 80;
                     image_index += b;
                 }
 
@@ -258,7 +259,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION)
                 {
                     vehicleEntry->var_1C = image_index;
-                    b = vehicleEntry->var_16 * 12;
+                    b = vehicleEntry->base_num_frames * 12;
                     image_index += b;
                 }
 
@@ -266,13 +267,13 @@ void RideObject::Load()
                 {
                     // Same offset as above???
                     vehicleEntry->var_4C = image_index;
-                    b = vehicleEntry->var_16 * 32;
+                    b = vehicleEntry->base_num_frames * 32;
                     image_index += b;
                 }
             }
             else
             {
-                image_index += vehicleEntry->var_16 * 36;
+                image_index += vehicleEntry->base_num_frames * 36;
             }
 
             // No vehicle images
@@ -387,8 +388,8 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
 void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle)
 {
     vehicle->rotation_frame_mask = stream->ReadValue<uint16>();
-    vehicle->var_02 = stream->ReadValue<uint8>();
-    vehicle->var_03 = stream->ReadValue<uint8>();
+    vehicle->num_vertical_frames = stream->ReadValue<uint8>();
+    vehicle->num_horizontal_frames = stream->ReadValue<uint8>();
     vehicle->spacing = stream->ReadValue<uint32>();
     vehicle->car_friction = stream->ReadValue<uint16>();
     vehicle->tab_height = stream->ReadValue<sint8>();
@@ -399,7 +400,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->sprite_height_positive = stream->ReadValue<uint8>();
     vehicle->var_11 = stream->ReadValue<uint8>();
     vehicle->flags = stream->ReadValue<uint32>();
-    vehicle->var_16 = stream->ReadValue<uint16>();
+    vehicle->base_num_frames = stream->ReadValue<uint16>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
     vehicle->var_1C = stream->ReadValue<uint32>();
     vehicle->var_20 = stream->ReadValue<uint32>();
@@ -427,7 +428,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->car_visual = stream->ReadValue<uint8>();
     vehicle->effect_visual = stream->ReadValue<uint8>();
     vehicle->draw_order = stream->ReadValue<uint8>();
-    vehicle->special_frames = stream->ReadValue<uint8>();
+    vehicle->num_vertical_frames_override = stream->ReadValue<uint8>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
 }
 
@@ -464,13 +465,13 @@ void RideObject::PerformFixes()
     }
 }
 
-uint8 RideObject::CalculateVar02(const rct_ride_entry_vehicle * vehicleEntry)
+uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry)
 {
     // 0x6DE90B
-    uint8 newVar02;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SPECIAL_FRAMES)
+    uint8 numVerticalFrames;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
     {
-        newVar02 = vehicleEntry->special_frames;
+        numVerticalFrames = vehicleEntry->num_vertical_frames_override;
     }
     else
     {
@@ -480,57 +481,57 @@ uint8 RideObject::CalculateVar02(const rct_ride_entry_vehicle * vehicleEntry)
             {
                 if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7))
                 {
-                    newVar02 = 4;
+                    numVerticalFrames = 4;
                 }
                 else
                 {
-                    newVar02 = 2;
+                    numVerticalFrames = 2;
                 }
             }
             else
             {
-                newVar02 = 1;
+                numVerticalFrames = 1;
             }
         }
         else
         {
-            newVar02 = 32;
+            numVerticalFrames = 32;
         }
     }
 
-    return newVar02;
+    return numVerticalFrames;
 }
 
-uint8 RideObject::CalculateVar03(const rct_ride_entry_vehicle * vehicleEntry)
+uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry)
 {
-    uint8 newVar03;
+    uint8 numHorizontalFrames;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
     {
         if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) && !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
         {
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25)
             {
-                newVar03 = 3;
+                numHorizontalFrames = 3;
             }
             else
             {
-                newVar03 = 5;
+                numHorizontalFrames = 5;
             }
         }
         else if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21) || !(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_27))
         {
-            newVar03 = 7;
+            numHorizontalFrames = 7;
         }
         else
         {
-            newVar03 = 13;
+            numHorizontalFrames = 13;
         }
     }
     else
     {
-        newVar03 = 1;
+        numHorizontalFrames = 1;
     }
 
-    return newVar03;
+    return numHorizontalFrames;
 }
 

@@ -35,7 +35,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3)) {
             baseImage_id /= 8;
             baseImage_id += ((vehicle->restraints_position - 64) / 64) * 4;
-            baseImage_id *= vehicleEntry->var_16;
+            baseImage_id *= vehicleEntry->base_num_frames;
             baseImage_id += vehicleEntry->var_1C;
         }
     } else {
@@ -45,7 +45,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
             baseImage_id /= 8;
         }
-        baseImage_id *= vehicleEntry->var_16;
+        baseImage_id *= vehicleEntry->base_num_frames;
         baseImage_id += vehicleEntry->base_image_id;
         baseImage_id += vehicle->var_4A;
     }

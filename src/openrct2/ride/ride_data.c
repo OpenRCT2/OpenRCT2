@@ -1586,8 +1586,8 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
 
 const rct_ride_entry_vehicle CableLiftVehicle = {
     .rotation_frame_mask = 31,
-    .var_02 = 0,
-    .var_03 = 0,
+    .num_vertical_frames = 0,
+    .num_horizontal_frames = 0,
     .spacing = 0,
     .car_friction = 0,
     .tab_height = 0,
@@ -1598,7 +1598,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     .sprite_height_positive = 0,
     .var_11 = 0,
     .flags = 0,
-    .var_16 = 1,
+    .base_num_frames = 1,
     .base_image_id = 29110,
     .var_1C = 0,
     .var_20 = 29142,
@@ -1626,7 +1626,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     .car_visual = 0,
     .effect_visual = 1,
     .draw_order = 14,
-    .special_frames = 0,
+    .num_vertical_frames_override = 0,
     .peep_loading_positions = NULL
 };
 
