@@ -19,14 +19,11 @@
 #include <vector>
 #include <jansson.h>
 
-extern "C"
-{
-    #include "../common.h"
-    #include "../config/Config.h"
-    #include "../platform/platform.h"
-    #include "themes.h"
-    #include "window.h"
-}
+#include "../common.h"
+#include "../config/Config.h"
+#include "../platform/platform.h"
+#include "themes.h"
+#include "window.h"
 
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"

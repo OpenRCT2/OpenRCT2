@@ -16,9 +16,7 @@
 
 #include <thread>
 
-extern "C" {
-    #include "http.h"
-}
+#include "http.h"
 
 #ifdef DISABLE_HTTP
 

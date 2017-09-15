@@ -59,6 +59,10 @@ typedef struct language_descriptor {
     uint8 rct2_original_id;
 } language_descriptor;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT];
 
 extern sint32 gCurrentLanguage;
@@ -89,5 +93,9 @@ bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_s
 rct_string_id language_allocate_object_string(const utf8 * target);
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_get_object_override_string_id(const char * identifier, uint8 index);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -256,6 +256,10 @@ typedef struct rct_size16
 
 #define MAX_SCROLLING_TEXT_MODES 38
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern sint16 gCurrentFontSpriteBase;
 extern uint16 gCurrentFontFlags;
 
@@ -368,6 +372,10 @@ void scrolling_text_initialise_bitmaps();
 sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uint16 scroll, uint16 scrollingMode);
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
+
+#ifdef __cplusplus
+}
+#endif
 
 #include "NewDrawing.h"
 

@@ -89,6 +89,10 @@ typedef struct viewport_interaction_info {
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 /**
  * A reference counter for whether something is forcing the grid lines to show. When the counter
  * is decremented to 0, the grid lines are hidden.
@@ -165,5 +169,9 @@ uint8 get_current_rotation();
 sint16 get_height_marker_offset();
 
 void viewport_set_saved_view();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

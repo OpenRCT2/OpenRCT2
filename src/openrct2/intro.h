@@ -34,9 +34,17 @@ enum INTRO_STATE {
     INTRO_STATE_FINISH              = 255,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 gIntroState;
 
 void intro_update();
 void intro_draw(rct_drawpixelinfo *dpi);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

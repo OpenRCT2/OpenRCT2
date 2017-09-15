@@ -34,21 +34,18 @@
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../interface/console.h"
-    #include "../localisation/localisation.h"
-    #include "../management/news_item.h"
-    #include "../peep/peep.h"
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-    #include "../world/sprite.h"
-    #include "http.h"
-    #include "twitch.h"
-}
+#include "../config/Config.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../interface/console.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../peep/peep.h"
+#include "../platform/platform.h"
+#include "../util/util.h"
+#include "../world/sprite.h"
+#include "http.h"
+#include "twitch.h"
 
 bool gTwitchEnable = false;
 

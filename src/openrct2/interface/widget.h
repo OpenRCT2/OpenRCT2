@@ -59,6 +59,11 @@ enum {
     SCROLL_BOTH = SCROLL_HORIZONTAL | SCROLL_VERTICAL
 };
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index);
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 
@@ -71,5 +76,10 @@ void widget_scroll_get_part(rct_window *w, rct_widget* widget, sint32 x, sint32 
 
 void widget_set_enabled(rct_window *w, rct_widgetindex widgetIndex, bool enabled);
 void widget_set_checkbox_value(rct_window *w, rct_widgetindex widgetIndex, sint32 value);
+
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -58,6 +58,10 @@ typedef struct NewsItem {
 
 #define MAX_NEWS_ITEMS 61
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
 void news_item_init_queue();
@@ -74,5 +78,9 @@ bool news_item_is_queue_empty();
 bool news_item_is_valid_idx(sint32 index);
 
 void news_item_add_to_queue_custom(NewsItem *newNewsItem);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

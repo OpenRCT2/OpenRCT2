@@ -55,6 +55,10 @@ enum
     EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
 
 void editor_load();
@@ -71,5 +75,9 @@ sint32 editor_check_object_selection();
 bool editor_check_object_group_at_least_one_selected(sint32 objectType);
 
 void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
