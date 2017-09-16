@@ -1,9 +1,7 @@
 // Make MSVC shut up about M_PI
 #include <cmath>
 
-extern "C" {
 #include "openrct2/util/sawyercoding.h"
-}
 
 #include <gtest/gtest.h>
 
