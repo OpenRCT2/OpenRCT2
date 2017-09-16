@@ -21,12 +21,9 @@
 #include <openrct2/core/String.hpp>
 #include "TextComposition.h"
 
-extern "C"
-{
-    #include <openrct2/interface/console.h>
-    #include <openrct2/interface/window.h>
-    #include <openrct2/localisation/localisation.h>
-}
+#include <openrct2/interface/console.h>
+#include <openrct2/interface/window.h>
+#include <openrct2/localisation/localisation.h>
 
 #ifdef __MACOSX__
     // macOS uses COMMAND rather than CTRL for many keyboard shortcuts

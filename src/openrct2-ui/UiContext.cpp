@@ -40,13 +40,10 @@
 #include "UiContext.h"
 #include "WindowManager.h"
 
-extern "C"
-{
-    #include <openrct2/input.h>
-    #include <openrct2/interface/console.h>
-    #include <openrct2/interface/window.h>
-    #include <openrct2/windows/error.h>
-}
+#include <openrct2/input.h>
+#include <openrct2/interface/console.h>
+#include <openrct2/interface/window.h>
+#include <openrct2/windows/error.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

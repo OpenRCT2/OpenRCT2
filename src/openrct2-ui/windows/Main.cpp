@@ -17,12 +17,9 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/world/footpath.h>
-}
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/world/footpath.h>
 
 rct_widget window_main_widgets[] = {
     { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, 0xFFFFFFFE, 0xFFFF },

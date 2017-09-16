@@ -18,11 +18,8 @@
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
-extern "C"
-{
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-}
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
 
 #define WW 420
 #define WH 280

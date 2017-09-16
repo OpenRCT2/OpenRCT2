@@ -16,15 +16,12 @@
 
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/audio/audio.h>
-    #include <openrct2/game.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/sprites.h>
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/interface/widget.h>
-}
+#include <openrct2/audio/audio.h>
+#include <openrct2/game.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
 
 #define INITIAL_WIDTH 500
 #define INITIAL_HEIGHT 350

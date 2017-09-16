@@ -31,12 +31,9 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/ui/UiContext.h>
 
-extern "C"
-{
-    #include <openrct2/interface/window.h>
-    #include <openrct2/intro.h>
-    #include <openrct2/drawing/drawing.h>
-}
+#include <openrct2/interface/window.h>
+#include <openrct2/intro.h>
+#include <openrct2/drawing/drawing.h>
 
 #include "../DrawingEngines.h"
 #include "GLSLTypes.h"

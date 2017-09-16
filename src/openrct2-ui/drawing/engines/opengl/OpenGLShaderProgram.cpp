@@ -24,10 +24,7 @@
 #include <openrct2/core/String.hpp>
 #include "OpenGLShaderProgram.h"
 
-extern "C"
-{
-    #include <openrct2/platform/platform.h>
-}
+#include <openrct2/platform/platform.h>
 
 OpenGLShader::OpenGLShader(const char * name, GLenum type)
 {
