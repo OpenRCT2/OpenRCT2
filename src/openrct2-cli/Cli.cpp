@@ -17,10 +17,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 
-extern "C"
-{
-    #include <openrct2/platform/platform.h>
-}
+#include <openrct2/platform/platform.h>
 
 using namespace OpenRCT2;
 
