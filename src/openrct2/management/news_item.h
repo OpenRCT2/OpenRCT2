@@ -41,8 +41,6 @@ enum {
     NEWS_FLAG_HAS_BUTTON = 1 << 0,
 };
 
-extern const uint8 news_type_properties[10];
-
 /**
  * A single news item / message.
  */
@@ -61,6 +59,8 @@ typedef struct NewsItem {
 #ifdef __cplusplus
 extern "C" {
 #endif
+
+extern const uint8 news_type_properties[10];
 
 extern NewsItem gNewsItems[MAX_NEWS_ITEMS];
 
