@@ -25,12 +25,9 @@
 #include "../Context.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
-}
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../util/util.h"
 
 #define WW 250
 #define WH 90

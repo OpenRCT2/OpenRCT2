@@ -18,19 +18,16 @@
 #include "../core/Memory.hpp"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/track.h"
-    #include "../ride/track_data.h"
-    #include "../sprites.h"
-}
+#include "../audio/audio.h"
+#include "../cheats.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
+#include "../sprites.h"
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78

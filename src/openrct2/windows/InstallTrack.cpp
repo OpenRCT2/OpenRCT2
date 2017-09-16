@@ -20,16 +20,13 @@
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "error.h"
-}
+#include "../audio/audio.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../sprites.h"
+#include "../util/util.h"
+#include "error.h"
 
 enum {
     WIDX_BACKGROUND,

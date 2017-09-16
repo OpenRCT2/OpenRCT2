@@ -63,6 +63,10 @@ enum
     FOOTPATH_CLEAR_DIRECTIONAL = (1 << 8),  // Flag set when direction is used.
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 gFootpathProvisionalFlags;
 extern rct_xyz16 gFootpathProvisionalPosition;
 extern uint8 gFootpathProvisionalType;
@@ -117,5 +121,9 @@ rct_footpath_entry *get_footpath_entry(sint32 entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(uint8 rideIndex);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

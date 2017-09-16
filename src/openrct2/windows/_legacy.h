@@ -16,5 +16,18 @@
 
 #include "../object.h"
 
+#ifndef _LEGACY_H
+#define _LEGACY_H
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const rct_object_entry RequiredSelectedObjects[7];
 extern const rct_object_entry DefaultSelectedObjects[26];
+
+#ifdef __cplusplus
+}
+#endif
+
+#endif // _LEGACY_H

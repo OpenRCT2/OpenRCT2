@@ -23,9 +23,6 @@
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
 
-// Global for paint clipping height.
-extern uint8 gClipHeight;
-
 
 typedef struct attached_paint_struct attached_paint_struct;
 typedef struct paint_struct paint_struct;
@@ -204,6 +201,13 @@ extern paint_session gPaintSession;
 #define gTrackColours               RCT2_ADDRESS(0x00F44198, uint32)
 #endif
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// Global for paint clipping height.
+extern uint8 gClipHeight;
+
 /** rct2: 0x00993CC4 */
 extern const uint32 construction_markers[];
 extern bool gShowDirtyVisuals;
@@ -244,6 +248,10 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 #else
     #define TESTPAINT_IGNORE(direction, trackSequence)
     #define TESTPAINT_IGNORE_ALL()
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

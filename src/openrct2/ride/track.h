@@ -512,6 +512,10 @@ typedef struct track_circuit_iterator {
     bool looped;
 } track_circuit_iterator;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const rct_trackdefinition FlatRideTrackDefinitions[256];
 extern const rct_trackdefinition TrackDefinitions[256];
 
@@ -549,4 +553,9 @@ void game_command_set_maze_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 void game_command_set_brakes_speed(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 bool track_element_is_booster(uint8 rideType, uint8 trackType);
 bool track_element_has_speed_setting(uint8 trackType);
+
+#ifdef __cplusplus
+}
+#endif
+
 #endif

@@ -19,16 +19,13 @@
 #include "../scenario/ScenarioSources.h"
 #include "../core/Memory.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../localisation/date.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../interface/widget.h"
-    #include "../interface/themes.h"
-    #include "../util/util.h"
-}
+#include "../audio/audio.h"
+#include "../localisation/date.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../interface/widget.h"
+#include "../interface/themes.h"
+#include "../util/util.h"
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 

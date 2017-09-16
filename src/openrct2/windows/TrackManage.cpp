@@ -18,13 +18,10 @@
 #include "../ride/TrackDesignRepository.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
-    #include "error.h"
-}
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../util/util.h"
+#include "error.h"
 
 #pragma region Widgets
 

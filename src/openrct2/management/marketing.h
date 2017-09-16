@@ -40,6 +40,10 @@ enum{
 
 #define CAMPAIGN_ACTIVE_FLAG (1 << 7)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const money16 AdvertisingCampaignPricePerWeek[ADVERTISING_CAMPAIGN_COUNT];
 extern uint8 gMarketingCampaignDaysLeft[20];
 extern uint8 gMarketingCampaignRideIndex[22];
@@ -51,5 +55,9 @@ void game_command_callback_marketing_start_campaign(sint32 eax, sint32 ebx, sint
 void marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks);
 void game_command_start_campaign(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 bool marketing_is_campaign_type_applicable(sint32 campaignType);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

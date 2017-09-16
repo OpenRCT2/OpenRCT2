@@ -29,6 +29,10 @@ typedef struct rct_entrance_type {
 assert_struct_size(rct_entrance_type, 8);
 #pragma pack(pop)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
 typedef struct rct_xyz16 rct_xyz16;
@@ -51,5 +55,9 @@ money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction
 void reset_park_entrance();
 void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_map_element *mapElement);
 void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_map_element *mapElement);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

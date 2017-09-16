@@ -17,12 +17,9 @@
 #include "../object/ObjectManager.h"
 #include "../core/Memory.hpp"
 
-extern "C"
-{
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-}
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
 
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,

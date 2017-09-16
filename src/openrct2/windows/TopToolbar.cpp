@@ -23,23 +23,20 @@
 #include "../core/Math.hpp"
 #include "../interface/Screenshot.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../editor.h"
-    #include "../input.h"
-    #include "../interface/console.h"
-    #include "../interface/land_tool.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../network/twitch.h"
-    #include "../peep/staff.h"
-    #include "../util/util.h"
-    #include "../world/footpath.h"
-    #include "../world/scenery.h"
-    #include "dropdown.h"
-}
+#include "../audio/audio.h"
+#include "../cheats.h"
+#include "../editor.h"
+#include "../input.h"
+#include "../interface/console.h"
+#include "../interface/land_tool.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../network/twitch.h"
+#include "../peep/staff.h"
+#include "../util/util.h"
+#include "../world/footpath.h"
+#include "../world/scenery.h"
+#include "dropdown.h"
 
 enum {
     WIDX_PAUSE,

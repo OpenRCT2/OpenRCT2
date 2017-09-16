@@ -17,13 +17,10 @@
 #include "../Context.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-    #include "../input.h"
-    #include "../interface/widget.h"
-    #include "tooltip.h"
-}
+#include "../localisation/localisation.h"
+#include "../input.h"
+#include "../interface/widget.h"
+#include "tooltip.h"
 
 enum {
     WIDX_BACKGROUND

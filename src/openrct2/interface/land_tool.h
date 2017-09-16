@@ -24,6 +24,10 @@
 // The highest tool size to have a sprite. Bigger tool sizes simply display a number.
 #define MAX_TOOL_SIZE_WITH_SPRITE 7
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint16 gLandToolSize;
 extern money32 gLandToolRaiseCost;
 extern money32 gLandToolLowerCost;
@@ -35,3 +39,7 @@ extern money32 gWaterToolLowerCost;
 uint32 land_tool_size_to_sprite_index(uint16 size);
 void land_tool_show_surface_style_dropdown(rct_window * w, rct_widget * widget, uint8 currentSurfaceType);
 void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uint8 currentEdgeType);
+
+#ifdef __cplusplus
+}
+#endif

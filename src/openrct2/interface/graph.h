@@ -20,7 +20,15 @@
 #include "../common.h"
 #include "../drawing/drawing.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY);
 void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

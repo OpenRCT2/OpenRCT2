@@ -18,18 +18,15 @@
 #include "../title/TitleScreen.h"
 #include "../core/Memory.hpp"
 
-extern "C"
-{
-    #include <time.h>
-    #include "../core/Guard.hpp"
-    #include "../editor.h"
-    #include "../game.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-    #include "../windows/error.h"
-}
+#include <time.h>
+#include "../core/Guard.hpp"
+#include "../editor.h"
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "../util/util.h"
+#include "../windows/error.h"
 
 #pragma region Widgets
 
