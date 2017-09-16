@@ -550,6 +550,8 @@ namespace Twitch
             buffer[0] = (utf8)(uint8)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
+	    utf8_remove_formatting(buffer, false);
+	    
             // TODO Create a new news item type for twitch which has twitch icon
             news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);
         }
