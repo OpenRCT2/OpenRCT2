@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 enum ADVERTISE_STATUS
@@ -34,3 +36,5 @@ interface INetworkServerAdvertiser
 };
 
 INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port);
+
+#endif

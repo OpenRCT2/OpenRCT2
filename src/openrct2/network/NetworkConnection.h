@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <list>
 #include <memory>
 #include <vector>
@@ -62,3 +64,5 @@ private:
 
     bool SendPacket(NetworkPacket &packet);
 };
+
+#endif

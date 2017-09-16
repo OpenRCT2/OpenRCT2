@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <vector>
 #include "../common.h"
 
@@ -38,3 +40,5 @@ public:
     const rct_g1_element *  GetImages() const { return _entries.data(); }
     uint32                  GetCount() const { return (uint32)_entries.size(); }
 };
+
+#endif

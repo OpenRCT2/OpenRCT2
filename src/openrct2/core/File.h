@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -31,3 +33,5 @@ namespace File
     std::vector<std::string> ReadAllLines(const std::string &path);
     uint64 GetLastModified(const std::string &path);
 }
+
+#endif

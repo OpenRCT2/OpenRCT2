@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
 #include "../scenario/scenario.h"
@@ -42,3 +44,5 @@ public:
     const utf8 * GetScenarioDetails() const;
     const utf8 * GetParkName() const;
 };
+
+#endif

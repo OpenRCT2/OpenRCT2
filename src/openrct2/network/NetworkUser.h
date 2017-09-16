@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 #include "../core/Nullable.hpp"
 
@@ -66,3 +68,5 @@ private:
     void DisposeUsers();
     static void GetStorePath(utf8 * buffer, size_t bufferSize);
 };
+
+#endif

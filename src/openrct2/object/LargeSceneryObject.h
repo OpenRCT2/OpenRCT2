@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "SceneryObject.h"
 
 #include "../world/scenery.h"
@@ -43,3 +45,5 @@ public:
 private:
     static rct_large_scenery_tile * ReadTiles(IStream * stream);
 };
+
+#endif

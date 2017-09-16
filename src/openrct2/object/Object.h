@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 #include "ImageTable.h"
 #include "StringTable.h"
@@ -91,3 +93,5 @@ enum OBJECT_ERROR : uint32
     OBJECT_ERROR_BAD_IMAGE_TABLE,
     OBJECT_ERROR_UNEXPECTED_EOF,
 };
+
+#endif

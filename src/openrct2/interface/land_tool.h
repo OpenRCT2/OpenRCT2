@@ -18,6 +18,7 @@
 
 #include "../common.h"
 #include "../sprites.h"
+#include "window.h"
 
 #define MINIMUM_TOOL_SIZE         1
 #define MAXIMUM_TOOL_SIZE         64

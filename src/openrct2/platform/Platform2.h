@@ -16,9 +16,13 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 namespace Platform
 {
     uint32 GetTicks();
 }
+
+#endif

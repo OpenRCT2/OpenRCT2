@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
 #include "../world/water.h"
@@ -36,3 +38,5 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 };
+
+#endif

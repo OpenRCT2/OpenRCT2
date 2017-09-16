@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <string>
 #include "../common.h"
 
@@ -65,3 +67,5 @@ namespace Path
      */
     void QueryDirectory(QueryDirectoryResult * result, const std::string &pattern);
 }
+
+#endif

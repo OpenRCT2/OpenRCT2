@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
 #include "../ride/ride.h"
@@ -52,3 +54,5 @@ private:
     static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
     static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
 };
+
+#endif

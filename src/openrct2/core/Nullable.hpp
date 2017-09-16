@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 template<typename T>
@@ -59,3 +61,5 @@ private:
     T       _value;
     bool    _hasValue;
 };
+
+#endif

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
 class SceneryObject : public Object
@@ -32,3 +34,5 @@ public:
 protected:
     void SetPrimarySceneryGroup(const rct_object_entry * entry) { _primarySceneryGroupEntry = *entry; }
 };
+
+#endif

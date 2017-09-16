@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 enum
@@ -56,3 +58,5 @@ namespace LanguagePackFactory
     ILanguagePack * FromFile(uint16 id, const utf8 * path);
     ILanguagePack * FromText(uint16 id, const utf8 * text);
 }
+
+#endif

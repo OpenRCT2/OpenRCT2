@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 #include "drawing.h"
@@ -40,3 +42,5 @@ namespace OpenRCT2 { namespace Drawing
         virtual void DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)                             abstract;
     };
 } }
+
+#endif
