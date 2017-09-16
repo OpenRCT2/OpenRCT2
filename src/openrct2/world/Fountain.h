@@ -18,15 +18,8 @@
 
 #include "../common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "map.h"
-    #include "sprite.h"
-#ifdef __cplusplus
-}
-#endif
+#include "map.h"
+#include "sprite.h"
 
 enum
 {

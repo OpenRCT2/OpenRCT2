@@ -18,15 +18,8 @@
 
 #include "common.h"
 
+#include "interface/window.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "interface/window.h"
-#ifdef __cplusplus
-}
-#endif
 
 typedef struct CursorState
 {
