@@ -24,6 +24,10 @@
 #include "../paint/paint.h"
 #include "../world/map.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const uint8 track_map_2x2[][4];
 extern const uint8 edges_2x2[];
 
@@ -383,5 +387,9 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(sint32 trackTy
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(sint32 trackType, sint32 direction);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

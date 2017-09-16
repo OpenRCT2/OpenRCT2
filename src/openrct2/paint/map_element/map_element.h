@@ -48,9 +48,6 @@ enum
     SEGMENT_C4 = (1 << 8), // 4
 };
 
-extern const sint32 SEGMENTS_ALL;
-extern const uint16 segment_offsets[9];
-
 enum
 {
     TUNNEL_0 = 0,
@@ -77,9 +74,16 @@ enum
     G141E9DB_FLAG_2 = 2,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 #ifdef __TESTPAINT__
 extern uint16 testPaintVerticalTunnelHeight;
 #endif
+
+extern const sint32 SEGMENTS_ALL;
+extern const uint16 segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;
 
@@ -104,5 +108,9 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
 void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* mapElement);
 void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
