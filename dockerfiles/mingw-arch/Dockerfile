@@ -30,6 +30,7 @@ RUN pacman -S --noconfirm --noprogressbar \
         fakeroot \
         file \
         patch \
+        ninja \
     && (echo -e "y\ny\n" | pacman -Scc)
 
 # Add mingw-repo

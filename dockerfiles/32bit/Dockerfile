@@ -3,7 +3,7 @@ FROM nfnty/arch-mini
 RUN echo -e "[archlinuxfr]\nSigLevel = Never\nServer = http://repo.archlinux.fr/\$arch" >> /etc/pacman.conf
 RUN sed -i '/#\[multilib\]/,/#Include = \/etc\/pacman.d\/mirrorlist/ s/#//' /etc/pacman.conf
 RUN pacman -Syyu --noconfirm
-RUN pacman -S --noconfirm git curl jshon expac yajl wget unzip cmake && pacman -Sc
+RUN pacman -S --noconfirm git curl jshon expac yajl wget unzip cmake ninja && pacman -Sc
 RUN yes | pacman -S gcc-multilib gcc-libs-multilib && pacman -Sc
 RUN pacman -S --noconfirm --needed make pkg-config patch yaourt grep file sudo gawk fakeroot gzip m4 which util-linux && pacman -Sc
 

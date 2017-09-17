@@ -1,7 +1,7 @@
 FROM nfnty/arch-mini
 
 RUN pacman -Syyu --noconfirm
-RUN pacman -S --noconfirm git curl jshon expac
+RUN pacman -S --noconfirm git curl jshon expac ninja
 RUN pacman -S --noconfirm --needed base-devel
 RUN pacman -S --noconfirm yajl
 
