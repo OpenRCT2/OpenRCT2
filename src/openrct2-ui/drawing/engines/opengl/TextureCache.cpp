@@ -41,27 +41,32 @@ void TextureCache::InvalidateImage(uint32 image)
         _atlases[kvp->second.index].Free(kvp->second);
         _imageTextureMap.erase(kvp);
     }
+    
 }
 
-CachedTextureInfo TextureCache::GetOrLoadImageTexture(uint32 image)
+const CachedTextureInfo* TextureCache::GetOrLoadImageTexture(uint32 image)
 {
     image &= 0x7FFFF;
+
     auto kvp = _imageTextureMap.find(image);
     if (kvp != _imageTextureMap.end())
     {
-        return kvp->second;
+        return &kvp->second;
     }
 
     auto cacheInfo = LoadImageTexture(image);
-    _imageTextureMap[image] = cacheInfo;
+    auto cacheItr = _imageTextureMap.insert(std::make_pair(image, cacheInfo));
 
-    return cacheInfo;
+    return &(cacheItr.first->second);
 }
 
-CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special)
+const CachedTextureInfo* TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special)
 {
     if ((image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT)) == 0)
-        return CachedTextureInfo{ 0 };
+    {
+        static CachedTextureInfo invalidEntry{ 0 };
+        return &invalidEntry;
+    }
 
     uint32 uniquePaletteId = image & (IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_TRANSPARENT);
     if (!(image & IMAGE_TYPE_REMAP_2_PLUS)) {
@@ -82,13 +87,13 @@ CachedTextureInfo TextureCache::GetOrLoadPaletteTexture(uint32 image, uint32 ter
     auto kvp = _paletteTextureMap.find(uniquePaletteId);
     if (kvp != _paletteTextureMap.end())
     {
-        return kvp->second;
+        return &kvp->second;
     }
 
     auto cacheInfo = LoadPaletteTexture(image, tertiaryColour, special);
-    _paletteTextureMap[uniquePaletteId] = cacheInfo;
+    auto cacheItr = _paletteTextureMap.insert(std::make_pair(uniquePaletteId, cacheInfo));
 
-    return cacheInfo;
+    return &(cacheItr.first->second);
 }
 
 CachedTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32 image, uint8 * palette)
@@ -172,6 +177,14 @@ CachedTextureInfo TextureCache::LoadImageTexture(uint32 image)
 
     DeleteDPI(dpi);
 
+    cacheInfo.computedBounds = 
+    {
+        cacheInfo.normalizedBounds.x,
+        cacheInfo.normalizedBounds.y,
+        (cacheInfo.normalizedBounds.z - cacheInfo.normalizedBounds.x) / (float)(cacheInfo.bounds.z - cacheInfo.bounds.x),
+        (cacheInfo.normalizedBounds.w - cacheInfo.normalizedBounds.y) / (float)(cacheInfo.bounds.w - cacheInfo.bounds.y)
+    };
+
     return cacheInfo;
 }
 
@@ -185,6 +198,14 @@ CachedTextureInfo TextureCache::LoadPaletteTexture(uint32 image, uint32 tertiary
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(GL_TEXTURE_2D_ARRAY, 0, cacheInfo.bounds.x, cacheInfo.bounds.y, cacheInfo.index, dpi.width, dpi.height, 1, GL_RED_INTEGER, GL_UNSIGNED_BYTE, dpi.bits);
+
+    cacheInfo.computedBounds =
+    {
+        cacheInfo.normalizedBounds.x,
+        cacheInfo.normalizedBounds.y,
+        (cacheInfo.normalizedBounds.z - cacheInfo.normalizedBounds.x) / (float)(cacheInfo.bounds.z - cacheInfo.bounds.x),
+        (cacheInfo.normalizedBounds.w - cacheInfo.normalizedBounds.y) / (float)(cacheInfo.bounds.w - cacheInfo.bounds.y)
+    };
 
     return cacheInfo;
 }
@@ -326,6 +347,7 @@ void TextureCache::FreeTextures()
 {
     // Free array texture
     glDeleteTextures(1, &_atlasesTexture);
+    _imageTextureMap.clear();
 }
 
 rct_drawpixelinfo * TextureCache::CreateDPI(sint32 width, sint32 height)

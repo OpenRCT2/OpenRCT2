@@ -83,7 +83,6 @@ void paint_session_free(paint_session * session)
 
 static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
 {
-    memset(session, 0, sizeof(paint_session));
     session->Unk140E9A8 = dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
@@ -97,6 +96,8 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->PSStringHead = NULL;
     session->LastPSString = NULL;
     session->WoodenSupportsPrependTo = NULL;
+    session->CurrentlyDrawnItem = NULL;
+    session->SurfaceElement = NULL;
 }
 
 static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, sint32 positionHash)

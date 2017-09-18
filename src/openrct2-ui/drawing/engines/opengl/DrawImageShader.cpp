@@ -35,17 +35,17 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, clip));
-    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourAtlas));
-    glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texColourBounds));
-    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskAtlas));
-    glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texMaskBounds));
-    glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteAtlas));
-    glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, texPaletteBounds));
-    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, flags));
-    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, colour));
-    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, bounds));
-    glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageInstance), (void*) offsetof(DrawImageInstance, mask));
+    glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, clip));
+    glVertexAttribIPointer(vTexColourAtlas, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texColourAtlas));
+    glVertexAttribPointer(vTexColourBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texColourBounds));
+    glVertexAttribIPointer(vTexMaskAtlas, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texMaskAtlas));
+    glVertexAttribPointer(vTexMaskBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texMaskBounds));
+    glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texPaletteAtlas));
+    glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texPaletteBounds));
+    glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, flags));
+    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, colour));
+    glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, bounds));
+    glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, mask));
 
     glEnableVertexAttribArray(vIndex);
     glEnableVertexAttribArray(vClip);
@@ -113,12 +113,12 @@ void DrawImageShader::SetPalette(const vec4f *glPalette)
     glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
 }
 
-void DrawImageShader::DrawInstances(const std::vector<DrawImageInstance>& instances)
+void DrawImageShader::DrawInstances(const ImageCommandBatch& instances)
 {
     glBindVertexArray(_vao);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(instances[0]) * instances.size(), instances.data(), GL_STREAM_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(DrawImageCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
     glDrawArraysInstanced(GL_TRIANGLES, 0, 6, (GLsizei)instances.size());
 }
