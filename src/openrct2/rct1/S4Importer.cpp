@@ -148,20 +148,21 @@ public:
     ParkLoadResult LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto result = LoadFromStream(&fs, false, skipObjectCheck);
-        _s4Path = path;
+        auto result = LoadFromStream(&fs, false, skipObjectCheck, path);
         return result;
     }
 
     ParkLoadResult LoadScenario(const utf8 * path, bool skipObjectCheck = false) override
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
-        auto result = LoadFromStream(&fs, true, skipObjectCheck);
-        _s4Path = path;
+        auto result = LoadFromStream(&fs, true, skipObjectCheck, path);
         return result;
     }
 
-    ParkLoadResult LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) override
+    ParkLoadResult LoadFromStream(IStream * stream,
+                                  bool isScenario,
+                                  bool skipObjectCheck = false,
+                                  const utf8 * path = String::Empty) override
     {
         size_t dataSize = stream->GetLength() - stream->GetPosition();
         std::unique_ptr<uint8> data = std::unique_ptr<uint8>(stream->ReadArray<uint8>(dataSize));
@@ -181,7 +182,11 @@ public:
         if (decodedSize == sizeof(rct1_s4))
         {
             Memory::Copy<void>(&_s4, decodedData.get(), sizeof(rct1_s4));
-            _s4Path = "";
+            if (_s4Path)
+            {
+                Memory::Free(_s4Path);
+            }
+            _s4Path = String::Duplicate(path);
 
             if (!skipObjectCheck)
             {
@@ -313,6 +318,8 @@ private:
 
         InitialiseEntryMaps();
         uint16 mapSize = _s4.map_size == 0 ? 128 : _s4.map_size;
+
+        String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s4Path));
 
         // Do map initialisation, same kind of stuff done when loading scenario editor
         GetObjectManager()->UnloadAll();
