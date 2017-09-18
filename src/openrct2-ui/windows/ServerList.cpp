@@ -21,17 +21,14 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/network/http.h>
-    #include <openrct2/sprites.h>
-    #include <openrct2/util/util.h>
-    #include <openrct2/windows/dropdown.h>
-    #include <openrct2/windows/tooltip.h>
-    #include <openrct2/windows/error.h>
-}
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/network/http.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/windows/tooltip.h>
+#include <openrct2/windows/error.h>
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300

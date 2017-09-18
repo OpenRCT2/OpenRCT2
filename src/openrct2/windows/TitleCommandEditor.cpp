@@ -18,17 +18,14 @@
 #include "../title/TitleSequence.h"
 #include "../core/Memory.hpp"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/themes.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
-    #include "dropdown.h"
-}
+#include "../game.h"
+#include "../input.h"
+#include "../interface/themes.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../util/util.h"
+#include "dropdown.h"
 
 typedef struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.

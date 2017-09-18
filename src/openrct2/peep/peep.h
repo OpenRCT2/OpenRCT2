@@ -649,8 +649,6 @@ typedef struct rct_peep_animation_entry {
     const rct_sprite_bounds *sprite_bounds;    // 0x04
 } rct_peep_animation_entry;
 
-// rct2: 0x00982708
-extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 
 enum {
     EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER,
@@ -697,6 +695,13 @@ enum {
 #define FOR_ALL_STAFF(sprite_index, peep) \
     FOR_ALL_PEEPS(sprite_index, peep) \
         if (peep->type == PEEP_TYPE_STAFF)
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+// rct2: 0x00982708
+extern rct_peep_animation_entry g_peep_animation_entries[PEEP_SPRITE_TYPE_COUNT];
 
 extern uint8 gGuestChangeModifier;
 extern uint16 gNumGuestsInPark;
@@ -791,5 +796,9 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

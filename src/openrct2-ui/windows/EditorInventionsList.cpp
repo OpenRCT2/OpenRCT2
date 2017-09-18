@@ -21,17 +21,14 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/editor.h>
-    #include <openrct2/input.h>
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/sprites.h>
-    #include <openrct2/util/util.h>
-    #include <openrct2/world/scenery.h>
-    #include <openrct2/windows/_legacy.h>
-}
+#include <openrct2/editor.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/world/scenery.h>
+#include <openrct2/windows/_legacy.h>
 
 #pragma region Widgets
 

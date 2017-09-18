@@ -16,16 +16,13 @@
 
 #include "../config/Config.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../localisation/localisation.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../world/scenery.h"
-    #include "dropdown.h"
-    #include "../sprites.h"
-}
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../world/scenery.h"
+#include "dropdown.h"
+#include "../sprites.h"
 
 #define WW 113
 #define WH 96

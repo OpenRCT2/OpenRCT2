@@ -24,10 +24,7 @@
 #include "../core/String.hpp"
 #include "NetworkUser.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 constexpr const utf8 * USER_STORE_FILENAME = "users.json";
 

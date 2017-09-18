@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
-extern "C"
-{
-    #include "../scenario/scenario.h"
-}
+#include "../scenario/scenario.h"
 
 class StexObject final : public Object
 {
@@ -45,3 +44,5 @@ public:
     const utf8 * GetScenarioDetails() const;
     const utf8 * GetParkName() const;
 };
+
+#endif

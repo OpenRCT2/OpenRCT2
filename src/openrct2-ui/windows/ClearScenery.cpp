@@ -18,12 +18,10 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Math.hpp>
 
-extern "C" {
-    #include <openrct2/interface/land_tool.h>
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/world/scenery.h>
-}
+#include <openrct2/interface/land_tool.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/world/scenery.h>
 
 enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
     WIDX_BACKGROUND,

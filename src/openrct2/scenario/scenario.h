@@ -360,6 +360,10 @@ enum {
 
 #define AUTOSAVE_PAUSE 0
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
 #if defined(NO_RCT2)
@@ -414,5 +418,9 @@ void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char *name);
 void scenario_autosave_check();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

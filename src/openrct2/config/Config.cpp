@@ -32,14 +32,11 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-extern "C"
-{
-    #include "../localisation/currency.h"
-    #include "../localisation/date.h"
-    #include "../localisation/language.h"
-    #include "../platform/platform.h"
-    #include "../scenario/scenario.h"
-}
+#include "../localisation/currency.h"
+#include "../localisation/date.h"
+#include "../localisation/language.h"
+#include "../platform/platform.h"
+#include "../scenario/scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

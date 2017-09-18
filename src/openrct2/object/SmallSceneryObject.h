@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "SceneryObject.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/scenery.h"
 
 class SmallSceneryObject final : public SceneryObject
 {
@@ -44,3 +43,5 @@ public:
 private:
     static uint8 * ReadFrameOffsets(IStream * stream);
 };
+
+#endif

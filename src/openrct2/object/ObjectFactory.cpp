@@ -35,11 +35,8 @@
 #include "WallObject.h"
 #include "WaterObject.h"
 
-extern "C"
-{
-    #include "../object.h"
-    #include "../util/sawyercoding.h"
-}
+#include "../object.h"
+#include "../util/sawyercoding.h"
 
 class ReadObjectContext : public IReadObjectContext
 {

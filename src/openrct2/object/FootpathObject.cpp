@@ -17,12 +17,9 @@
 #include "../core/IStream.hpp"
 #include "FootpathObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-    #include "../world/footpath.h"
-}
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
+#include "../world/footpath.h"
 
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

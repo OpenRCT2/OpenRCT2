@@ -19,11 +19,8 @@
 #include "core/FileStream.hpp"
 #include "OpenRCT2.h"
 
-extern "C"
-{
-    #include "audio/audio.h"
-    #include "platform/platform.h"
-}
+#include "audio/audio.h"
+#include "platform/platform.h"
 
 extern "C"
 {

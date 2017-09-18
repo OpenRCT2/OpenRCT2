@@ -17,12 +17,9 @@
 #include <openrct2/config/Config.h>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/localisation/localisation.h>
-}
+#include <openrct2/interface/widget.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/localisation/localisation.h>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_BACKGROUND,

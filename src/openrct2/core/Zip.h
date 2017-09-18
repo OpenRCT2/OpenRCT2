@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 /**
@@ -55,3 +57,5 @@ namespace Zip
     IZipArchive * Open(const utf8 * path, ZIP_ACCESS zipAccess);
     IZipArchive * TryOpen(const utf8 * path, ZIP_ACCESS zipAccess);
 }
+
+#endif

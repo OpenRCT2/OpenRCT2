@@ -18,13 +18,10 @@
 
 #include "../core/Guard.hpp"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../platform/crash.h"
-    #include "../platform/platform.h"
-    #include "../localisation/language.h"
-}
+#include "../config/Config.h"
+#include "../platform/crash.h"
+#include "../platform/platform.h"
+#include "../localisation/language.h"
 
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"

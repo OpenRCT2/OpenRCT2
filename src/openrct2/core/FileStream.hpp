@@ -21,10 +21,7 @@
 #include "Math.hpp"
 #include "String.hpp"
 
-extern "C"
-{
-    #include "../localisation/language.h"
-}
+#include "../localisation/language.h"
 
 enum
 {

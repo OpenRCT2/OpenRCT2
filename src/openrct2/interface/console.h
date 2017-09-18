@@ -31,6 +31,10 @@ typedef enum CONSOLE_INPUT
     CONSOLE_INPUT_SCROLL_NEXT,
 } CONSOLE_INPUT;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern bool gConsoleOpen;
 
 void console_open();
@@ -52,5 +56,9 @@ void console_clear();
 void console_clear_line();
 void console_refresh_caret();
 void console_scroll(sint32 delta);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

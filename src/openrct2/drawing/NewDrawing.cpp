@@ -25,13 +25,10 @@
 #include "IDrawingEngine.h"
 #include "NewDrawing.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../drawing/drawing.h"
-    #include "../localisation/string_ids.h"
-    #include "../platform/platform.h"
-}
+#include "../config/Config.h"
+#include "../drawing/drawing.h"
+#include "../localisation/string_ids.h"
+#include "../platform/platform.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

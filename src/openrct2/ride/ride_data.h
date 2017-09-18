@@ -134,6 +134,10 @@ typedef struct rct_shop_item_stats {
     uint16 cold_value;
 } rct_shop_item_stats;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const bool hasRunningTrack[RIDE_TYPE_COUNT];
 extern const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT];
 extern const uint8 costPerTrackPiece[RIDE_TYPE_COUNT];
@@ -176,5 +180,9 @@ extern const uint8 RideConstructionDefaultTrackType[RIDE_TYPE_COUNT];
 extern const track_colour_preset_list RideColourPresets[RIDE_TYPE_COUNT];
 
 extern const rct_string_id RideModeNames[RIDE_MODE_COUNT];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -29,14 +29,11 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
-extern "C"
-{
-    #include "../interface/viewport.h"
-    #include "../intro.h"
-    #include "../localisation/language.h"
-    #include "../ride/ride.h"
-    #include "../util/util.h"
-}
+#include "../interface/viewport.h"
+#include "../intro.h"
+#include "../localisation/language.h"
+#include "../ride/ride.h"
+#include "../util/util.h"
 
 using namespace OpenRCT2::Audio;
 

@@ -45,6 +45,10 @@ enum LIGHTFX_LIGHT_QUALIFIER {
     LIGHTFX_LIGHT_QUALIFIER_MAP         = 0x2
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void lightfx_init();
 
 void lightfx_update_buffers(rct_drawpixelinfo*);
@@ -74,6 +78,10 @@ void lightfx_render_to_texture(
     uint32 height,
     uint32 * palette,
     uint32 * lightPalette);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif // __ENABLE_LIGHTFX__
 

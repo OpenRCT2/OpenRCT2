@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <string>
 #include <vector>
 #include "../common.h"
@@ -145,3 +147,5 @@ namespace OpenRCT2
         IUiContext * CreateDummyUiContext();
     }
 }
+
+#endif

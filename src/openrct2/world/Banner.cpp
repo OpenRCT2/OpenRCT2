@@ -20,17 +20,14 @@
 #include "../core/String.hpp"
 #include "../network/network.h"
 
-extern "C"
-{
-    #include "banner.h"
-    #include "map.h"
-    #include "park.h"
-    #include "scenery.h"
-    #include "../game.h"
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/ride.h"
-}
+#include "banner.h"
+#include "map.h"
+#include "park.h"
+#include "scenery.h"
+#include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
 
 rct_banner gBanners[MAX_BANNERS];
 

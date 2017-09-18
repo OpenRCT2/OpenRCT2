@@ -19,6 +19,10 @@
 
 #include "common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern bool gCheatsSandboxMode;
 extern bool gCheatsDisableClearanceChecks;
 extern bool gCheatsDisableSupportLimits;
@@ -124,5 +128,9 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
 void cheats_reset();
 
 const char* cheats_get_cheat_string(int cheat, int edx, int edi);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

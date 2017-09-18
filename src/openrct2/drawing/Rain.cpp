@@ -14,13 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../interface/window.h"
-    #include "../world/Climate.h"
-    #include "drawing.h"
-    #include "../config/Config.h"
-}
+#include "../interface/window.h"
+#include "../world/Climate.h"
+#include "drawing.h"
+#include "../config/Config.h"
 
 #include "IDrawingEngine.h"
 #include "Rain.h"

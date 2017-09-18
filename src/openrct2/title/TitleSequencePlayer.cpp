@@ -31,14 +31,11 @@
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../management/news_item.h"
-    #include "../world/scenery.h"
-}
+#include "../game.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../management/news_item.h"
+#include "../world/scenery.h"
 
 using namespace OpenRCT2;
 

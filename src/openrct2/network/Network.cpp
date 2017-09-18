@@ -21,10 +21,8 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 
-extern "C" {
-    #include "../platform/platform.h"
-    #include "../util/sawyercoding.h"
-}
+#include "../platform/platform.h"
+#include "../util/sawyercoding.h"
 
 #include "network.h"
 

@@ -21,23 +21,20 @@
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/ride_data.h"
-    #include "../ride/track.h"
-    #include "../ride/track_data.h"
-    #include "../world/footpath.h"
-    #include "dropdown.h"
-    #include "../sprites.h"
-    #include "../world/entrance.h"
-}
+#include "../audio/audio.h"
+#include "../cheats.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride_data.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
+#include "../world/footpath.h"
+#include "dropdown.h"
+#include "../sprites.h"
+#include "../world/entrance.h"
 
 #pragma region Widgets
 

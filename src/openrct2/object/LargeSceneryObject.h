@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "SceneryObject.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/scenery.h"
 
 class LargeSceneryObject final : public SceneryObject
 {
@@ -46,3 +45,5 @@ public:
 private:
     static rct_large_scenery_tile * ReadTiles(IStream * stream);
 };
+
+#endif

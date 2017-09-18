@@ -238,6 +238,10 @@ enum {
 
 #define SCENERY_ENTRIES_BY_TAB 256
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 gWindowSceneryActiveTabIndex;
 extern uint16 gWindowSceneryTabSelections[20];
 extern uint8 gWindowSceneryClusterEnabled;
@@ -301,5 +305,9 @@ void scenery_small_set_primary_colour(rct_map_element *mapElement, uint32 colour
 void scenery_small_set_secondary_colour(rct_map_element *mapElement, uint32 colour);
 bool scenery_small_get_supports_needed(const rct_map_element *mapElement);
 void scenery_small_set_supports_needed(rct_map_element *mapElement);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

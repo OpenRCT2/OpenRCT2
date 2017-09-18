@@ -17,15 +17,7 @@
 #ifndef OPENRCT2_FONTS_H
 #define OPENRCT2_FONTS_H
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 #include "../drawing/font.h"
-
-#ifdef __cplusplus
-}
-#endif
 
 void TryLoadFonts();
 

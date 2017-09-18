@@ -16,16 +16,15 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <string>
 #include <vector>
 
 #include "../common.h"
 
-extern "C"
-{
-    #include "../scenario/scenario.h"
-    #include "../object_list.h"
-}
+#include "../scenario/scenario.h"
+#include "../object_list.h"
 
 interface   IStream;
 struct      ObjectRepositoryItem;
@@ -55,3 +54,5 @@ private:
     void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
 };
+
+#endif

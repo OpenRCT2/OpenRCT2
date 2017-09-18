@@ -26,16 +26,13 @@
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
-}
+#include "../audio/audio.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/viewport.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
 
 // TODO Remove when no longer required.
 static TitleScreen * _singleton = nullptr;

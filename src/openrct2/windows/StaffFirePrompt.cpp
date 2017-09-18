@@ -14,12 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-}
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
 
 #define WW 200
 #define WH 100

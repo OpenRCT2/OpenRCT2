@@ -17,8 +17,16 @@
 #ifndef _FORMAT_CODES_H_
 #define _FORMAT_CODES_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 uint32 format_get_code(const char *token);
 const char *format_get_token(uint32 code);
+
+#ifdef __cplusplus
+}
+#endif
 
 enum {
     // Font format codes

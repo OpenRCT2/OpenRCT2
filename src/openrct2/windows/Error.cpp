@@ -18,13 +18,10 @@
 #include "../OpenRCT2.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "error.h"
-}
+#include "../audio/audio.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "error.h"
 
 bool gDisableErrorWindowSound = false;
 
@@ -73,6 +70,8 @@ static rct_window_event_list window_error_events = {
 
 static char _window_error_text[512];
 static uint16 _window_error_num_lines;
+
+extern "C" {
 
 /**
  *
@@ -149,6 +148,8 @@ void window_error_open(rct_string_id title, rct_string_id message)
     if (!gDisableErrorWindowSound) {
         audio_play_sound(SOUND_ERROR, 0, w->x + (w->width / 2));
     }
+}
+
 }
 
 /**

@@ -20,16 +20,8 @@
     #include <vector>
 #endif
 
-
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "../common.h"
-    #include "../object.h"
-#ifdef __cplusplus
-}
-#endif
+#include "../common.h"
+#include "../object.h"
 
 #ifdef __cplusplus
 

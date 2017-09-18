@@ -25,12 +25,9 @@
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../interface/window.h"
-    #include "../OpenRCT2.h"
-}
+#include "../game.h"
+#include "../interface/window.h"
+#include "../OpenRCT2.h"
 
 static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);
 static const utf8 * GetFileTypeFriendlyName(uint32 fileType);

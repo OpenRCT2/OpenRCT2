@@ -17,17 +17,14 @@
 #include "../config/Config.h"
 #include "../network/network.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../input.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../util/util.h"
-    #include "dropdown.h"
-}
+#include "../game.h"
+#include "../input.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../util/util.h"
+#include "dropdown.h"
 
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,

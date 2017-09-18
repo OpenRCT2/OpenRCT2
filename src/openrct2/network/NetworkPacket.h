@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <memory>
 #include <vector>
 #include "NetworkTypes.h"
@@ -67,3 +69,5 @@ public:
         return *this;
     }
 };
+
+#endif

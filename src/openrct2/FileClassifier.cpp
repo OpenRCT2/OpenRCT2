@@ -19,11 +19,8 @@
 #include "FileClassifier.h"
 #include "rct12/SawyerChunkReader.h"
 
-extern "C"
-{
-    #include "scenario/scenario.h"
-    #include "util/sawyercoding.h"
-}
+#include "scenario/scenario.h"
+#include "util/sawyercoding.h"
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result);
 static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result);

@@ -14,19 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/track.h"
-    #include "../sprites.h"
-}
+#include "../audio/audio.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../ride/track.h"
+#include "../sprites.h"
 
 #pragma region Widgets
 

@@ -32,6 +32,10 @@ typedef enum CHAT_INPUT
     CHAT_INPUT_CLOSE,
 } CHAT_INPUT;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern bool gChatOpen;
 
 void chat_open();
@@ -47,5 +51,9 @@ void chat_input(CHAT_INPUT input);
 
 sint32 chat_string_wrapped_get_height(void *args, sint32 width);
 sint32 chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

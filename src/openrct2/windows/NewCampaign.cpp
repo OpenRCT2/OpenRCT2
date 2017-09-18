@@ -17,14 +17,11 @@
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../localisation/localisation.h"
-    #include "../interface/widget.h"
-    #include "../ride/ride_data.h"
-    #include "dropdown.h"
-}
+#include "../game.h"
+#include "../localisation/localisation.h"
+#include "../interface/widget.h"
+#include "../ride/ride_data.h"
+#include "dropdown.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 

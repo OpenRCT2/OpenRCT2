@@ -382,6 +382,10 @@ enum {
     MAP_SELECT_TYPE_EDGE_3,
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const rct_xy16 TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
@@ -597,5 +601,9 @@ void wall_element_set_secondary_colour(rct_map_element * wallElement, uint8 seco
 
 uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

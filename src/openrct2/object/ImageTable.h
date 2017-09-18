@@ -16,13 +16,12 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <vector>
 #include "../common.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-}
+#include "../drawing/drawing.h"
 
 interface IReadObjectContext;
 interface IStream;
@@ -41,3 +40,5 @@ public:
     const rct_g1_element *  GetImages() const { return _entries.data(); }
     uint32                  GetCount() const { return (uint32)_entries.size(); }
 };
+
+#endif

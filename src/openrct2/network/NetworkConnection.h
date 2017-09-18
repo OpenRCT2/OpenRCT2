@@ -16,6 +16,9 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
+#ifndef DISABLE_NETWORK
 #include <list>
 #include <memory>
 #include <vector>
@@ -62,3 +65,6 @@ private:
 
     bool SendPacket(NetworkPacket &packet);
 };
+
+#endif // DISABLE_NETWORK
+#endif

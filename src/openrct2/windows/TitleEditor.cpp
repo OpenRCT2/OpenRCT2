@@ -24,17 +24,14 @@
 #include "../title/TitleSequenceManager.h"
 #include "../title/TitleSequencePlayer.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-    #include "dropdown.h"
-    #include "error.h"
-}
+#include "../game.h"
+#include "../input.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../sprites.h"
+#include "../util/util.h"
+#include "dropdown.h"
+#include "error.h"
 
 enum WINDOW_TITLE_EDITOR_TAB {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,

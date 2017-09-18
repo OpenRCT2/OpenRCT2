@@ -19,9 +19,17 @@
 
 #include "../interface/window.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void window_tooltip_reset(sint32 x, sint32 y);
 void window_tooltip_show(rct_string_id id, sint32 x, sint32 y);
 void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 void window_tooltip_close();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -20,6 +20,10 @@
 #include "track.h"
 #include "track_paint.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // 0x009968BB, 0x009968BC, 0x009968BD, 0x009968BF, 0x009968C1, 0x009968C3
 extern const rct_track_coordinates TrackCoordinates[256];
 // 0x009972BB, 0x009972BC, 0x009972BD, 0x009972BF, 0x009972C1, 0x009972C3
@@ -87,3 +91,7 @@ extern const uint8 FlatRideTrackSequenceElementAllowedWallEdges[256][16];
 
 extern const uint16 FlatTrackFlags[256];
 extern const uint16 TrackFlags[256];
+
+#ifdef __cplusplus
+}
+#endif

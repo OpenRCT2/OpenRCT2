@@ -14,7 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
+#ifdef __cplusplus
+
+#include <ctime>
 #include "../common.h"
 
 struct rct_drawpixelinfo;
@@ -52,3 +54,5 @@ namespace OpenRCT2
         };
     }
 }
+
+#endif

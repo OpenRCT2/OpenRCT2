@@ -22,19 +22,16 @@
 #include "../core/Util.hpp"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../game.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../management/news_item.h"
-    #include "../rct1.h"
-    #include "../ride/ride_data.h"
-    #include "../ride/track_data.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-}
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../management/news_item.h"
+#include "../rct1.h"
+#include "../ride/ride_data.h"
+#include "../ride/track_data.h"
+#include "../sprites.h"
+#include "../util/util.h"
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];

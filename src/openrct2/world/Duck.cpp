@@ -18,14 +18,11 @@
 #include "../core/Util.hpp"
 #include "../sprites.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../game.h"
-    #include "../localisation/date.h"
-    #include "../scenario/scenario.h"
-    #include "sprite.h"
-}
+#include "../audio/audio.h"
+#include "../game.h"
+#include "../localisation/date.h"
+#include "../scenario/scenario.h"
+#include "sprite.h"
 
 enum DUCK_STATE
 {

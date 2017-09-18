@@ -33,9 +33,17 @@ typedef enum tile_inspector_page
     TILE_INSPECTOR_PAGE_CORRUPT
 } tile_inspector_page;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint32 windowTileInspectorTileX;
 extern uint32 windowTileInspectorTileY;
 extern sint32 windowTileInspectorElementCount;
 
 void window_tile_inspector_set_page(rct_window *w, const tile_inspector_page page);
 void window_tile_inspector_auto_set_buttons(rct_window *w);
+
+#ifdef __cplusplus
+}
+#endif

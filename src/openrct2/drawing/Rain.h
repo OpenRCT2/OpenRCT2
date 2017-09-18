@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "../common.h"
 
 namespace OpenRCT2 { namespace Drawing
@@ -24,3 +26,5 @@ namespace OpenRCT2 { namespace Drawing
 } }
 
 void DrawRain(rct_drawpixelinfo * dpi, OpenRCT2::Drawing::IRainDrawer * rainDrawer);
+
+#endif

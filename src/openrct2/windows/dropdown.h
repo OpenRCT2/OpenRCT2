@@ -31,6 +31,10 @@ enum
     DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern sint32 gAppropriateImageDropdownItemsPerRow[];
 
 extern sint32 gDropdownNumItems;
@@ -53,5 +57,9 @@ void window_dropdown_close();
 sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window* w);
 void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour);
 void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour, uint32 availableColours);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

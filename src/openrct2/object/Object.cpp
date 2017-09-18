@@ -18,10 +18,7 @@
 #include "../core/String.hpp"
 #include "Object.h"
 
-extern "C"
-{
-    #include "../localisation/localisation.h"
-}
+#include "../localisation/localisation.h"
 
 Object::Object(const rct_object_entry &entry)
 {

@@ -19,11 +19,8 @@
 #include "../core/Memory.hpp"
 #include "SmallSceneryObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-}
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 
 SmallSceneryObject::~SmallSceneryObject()
 {

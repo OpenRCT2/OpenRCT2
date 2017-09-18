@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <memory>
 #include "../common.h"
 #include "SawyerChunk.h"
@@ -68,3 +70,5 @@ public:
         return result;
     }
 };
+
+#endif

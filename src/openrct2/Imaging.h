@@ -18,14 +18,7 @@
 
 #include "common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "drawing/drawing.h"
-#ifdef __cplusplus
-}
-#endif
+#include "drawing/drawing.h"
 
 #ifdef __cplusplus
 

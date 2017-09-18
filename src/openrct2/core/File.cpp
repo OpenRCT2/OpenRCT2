@@ -26,11 +26,8 @@
 #include "FileStream.hpp"
 #include "String.hpp"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../util/util.h"
-}
+#include "../platform/platform.h"
+#include "../util/util.h"
 
 namespace File
 {

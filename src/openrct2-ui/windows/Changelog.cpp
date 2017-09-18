@@ -20,12 +20,10 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C" {
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/platform/platform.h>
-    #include <openrct2/util/util.h>
-}
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/util/util.h>
 
 enum {
     WIDX_BACKGROUND,

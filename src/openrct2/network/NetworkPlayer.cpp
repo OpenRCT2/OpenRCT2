@@ -19,11 +19,8 @@
 #include "NetworkPacket.h"
 #include "NetworkPlayer.h"
 
-extern "C"
-{
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
-}
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
 
 void NetworkPlayer::SetName(const std::string &name)
 {

@@ -19,19 +19,16 @@
 #include "../OpenRCT2.h"
 #include "Climate.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../audio/AudioMixer.h"
-    #include "../cheats.h"
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../interface/window.h"
-    #include "../localisation/date.h"
-    #include "../scenario/scenario.h"
-    #include "../sprites.h"
-    #include "../util/util.h"
-}
+#include "../audio/audio.h"
+#include "../audio/AudioMixer.h"
+#include "../cheats.h"
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../interface/window.h"
+#include "../localisation/date.h"
+#include "../scenario/scenario.h"
+#include "../sprites.h"
+#include "../util/util.h"
 
 constexpr sint32 MAX_THUNDER_INSTANCES = 2;
 

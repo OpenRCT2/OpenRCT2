@@ -91,9 +91,6 @@ typedef struct rct_object_entry_extended {
 } rct_object_entry_extended;
 assert_struct_size(rct_object_entry_extended, 0x14);
 
-extern sint32 object_entry_group_counts[];
-extern sint32 object_entry_group_encoding[];
-
 typedef struct rct_object_entry_group {
     void **chunks;
     rct_object_entry_extended *entries;
@@ -116,6 +113,13 @@ typedef struct rct_object_filters {
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern sint32 object_entry_group_counts[];
+extern sint32 object_entry_group_encoding[];
+
 extern const rct_object_entry_group object_entry_groups[];
 
 void object_list_load();
@@ -131,5 +135,9 @@ const rct_object_entry * object_list_find(rct_object_entry *entry);
 
 void object_entry_get_name(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -75,11 +75,11 @@ typedef enum {
     #define DEBUG_LEVEL_1 0
 #endif // defined(DEBUG)
 
-extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
-
 #ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
+
+extern bool _log_levels[DIAGNOSTIC_LEVEL_COUNT];
 
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...);
 void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...);

@@ -29,10 +29,7 @@
 #include "SmallSceneryObject.h"
 #include "WallObject.h"
 
-extern "C"
-{
-    #include "../object_list.h"
-}
+#include "../object_list.h"
 
 class ObjectManager final : public IObjectManager
 {

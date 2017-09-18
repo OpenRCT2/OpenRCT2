@@ -18,17 +18,14 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 
-extern "C"
-{
-    #include "../cheats.h"
-    #include "../game.h"
-    #include "../localisation/string_ids.h"
-    #include "../ride/track.h"
-    #include "../ride/track_data.h"
-    #include "map.h"
-    #include "park.h"
-    #include "scenery.h"
-}
+#include "../cheats.h"
+#include "../game.h"
+#include "../localisation/string_ids.h"
+#include "../ride/track.h"
+#include "../ride/track_data.h"
+#include "map.h"
+#include "park.h"
+#include "scenery.h"
 
 /**
  * Gets whether the given track type can have a wall placed on the edge of the given direction.

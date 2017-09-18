@@ -17,6 +17,8 @@
 #ifndef _HTTP_H_
 #define _HTTP_H_
 
+#ifdef __cplusplus
+
 #ifndef DISABLE_HTTP
 #include <jansson.h>
 #include "../common.h"
@@ -73,5 +75,7 @@ size_t http_download_park(const char * url, void * * outData);
 // These callbacks are defined anyway, but are dummy if HTTP is disabled
 void http_init();
 void http_dispose();
+
+#endif
 
 #endif

@@ -71,6 +71,10 @@ enum {
     RESEARCH_CATEGORY_SCENERYSET
 };
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern uint8 gResearchFundingLevel;
 extern uint8 gResearchPriorities;
 extern uint16 gResearchProgress;
@@ -114,5 +118,9 @@ bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_is_invented(uint16 sceneryItem);
 void reset_researched_scenery_items();
 void reset_researched_ride_types_and_entries();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

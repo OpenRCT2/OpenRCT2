@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "SceneryObject.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/scenery.h"
 
 class FootpathItemObject final : public SceneryObject
 {
@@ -39,3 +38,5 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 };
+
+#endif

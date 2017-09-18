@@ -16,13 +16,10 @@
 
 #include "../network/network.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../scenario/scenario.h"
-    #include "../util/util.h"
-    #include "sprite.h"
-}
+#include "../audio/audio.h"
+#include "../scenario/scenario.h"
+#include "../util/util.h"
+#include "sprite.h"
 
 bool rct_sprite::IsBalloon()
 {

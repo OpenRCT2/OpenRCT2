@@ -16,11 +16,8 @@
 
 #include "../core/Guard.hpp"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../OpenRCT2.h"
-}
+#include "../platform/platform.h"
+#include "../OpenRCT2.h"
 
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"

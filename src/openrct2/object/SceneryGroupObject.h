@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
-extern "C"
-{
-    #include "../world/scenery.h"
-}
+#include "../world/scenery.h"
 
 struct ObjectRepositoryItem;
 
@@ -50,3 +49,5 @@ public:
 private:
     void ReadItems(IStream * stream);
 };
+
+#endif

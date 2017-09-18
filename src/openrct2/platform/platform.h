@@ -80,6 +80,11 @@ typedef struct file_dialog_desc {
     } filters[8];
 } file_dialog_desc;
 
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // Platform shared definitions
 void platform_update_palette(const uint8 *colours, sint32 start_index, sint32 num_colours);
 void platform_toggle_windowed_mode();
@@ -168,6 +173,10 @@ void core_init();
 #if defined(__APPLE__) && defined(__MACH__)
     void macos_disallow_automatic_window_tabbing();
     utf8* macos_str_decomp_to_precomp(utf8 *input);
+#endif
+
+#ifdef __cplusplus
+}
 #endif
 
 #endif

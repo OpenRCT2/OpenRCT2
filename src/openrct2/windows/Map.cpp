@@ -20,21 +20,18 @@
 #include "../core/Memory.hpp"
 #include "../Context.h"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../cheats.h"
-    #include "../game.h"
-    #include "../input.h"
-    #include "../interface/land_tool.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../world/entrance.h"
-    #include "../world/footpath.h"
-    #include "../world/scenery.h"
-    #include "error.h"
-}
+#include "../audio/audio.h"
+#include "../cheats.h"
+#include "../game.h"
+#include "../input.h"
+#include "../interface/land_tool.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../world/entrance.h"
+#include "../world/footpath.h"
+#include "../world/scenery.h"
+#include "error.h"
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)

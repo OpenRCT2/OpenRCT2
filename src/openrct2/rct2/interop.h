@@ -17,8 +17,16 @@
 #ifndef _RCT2_INTEROP_H_
 #define _RCT2_INTEROP_H_
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool rct2_interop_setup_segment();
 void rct2_interop_setup_hooks();
 void rct2_interop_dispose();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

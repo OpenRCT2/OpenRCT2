@@ -19,11 +19,8 @@
 #include <algorithm>
 #include "NetworkAction.h"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../localisation/string_ids.h"
-}
+#include "../game.h"
+#include "../localisation/string_ids.h"
 
 sint32 NetworkActions::FindCommand(sint32 command)
 {

@@ -41,10 +41,7 @@
 #include "Path.hpp"
 #include "String.hpp"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 enum class DIRECTORY_CHILD_TYPE
 {

@@ -18,12 +18,9 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C"
-{
-    #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
-    #include <openrct2/sprites.h>
-}
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
 
 #define WW 400
 #define WH 350

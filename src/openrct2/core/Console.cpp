@@ -14,10 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 #include "Console.hpp"
 

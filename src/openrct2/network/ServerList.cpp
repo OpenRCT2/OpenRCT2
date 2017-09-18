@@ -19,10 +19,7 @@
 #include "../core/String.hpp"
 #include "ServerList.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-}
+#include "../platform/platform.h"
 
 extern "C"
 {

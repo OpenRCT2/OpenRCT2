@@ -31,13 +31,10 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../localisation/localisation.h"
-    #include "../platform/platform.h"
-    #include "scenario.h"
-}
+#include "../config/Config.h"
+#include "../localisation/localisation.h"
+#include "../platform/platform.h"
+#include "scenario.h"
 
 using namespace OpenRCT2;
 

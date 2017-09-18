@@ -24,6 +24,10 @@
 #include "string_ids.h"
 #include "../management/marketing.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 bool utf8_is_format_code(sint32 codepoint);
 bool utf8_is_colour_code(sint32 codepoint);
 bool utf8_should_use_sprite_for_codepoint(sint32 codepoint);
@@ -86,6 +90,10 @@ extern const rct_string_id PeepThoughts[174];
 extern const rct_string_id DateDayNames[31];
 extern const rct_string_id DateGameMonthNames[MONTH_COUNT];
 extern const rct_string_id DateGameShortMonthNames[MONTH_COUNT];
+
+#ifdef __cplusplus
+}
+#endif
 
 static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t value, size_t size)
 {

@@ -16,6 +16,8 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <vector>
 #include "../common.h"
 
@@ -41,3 +43,5 @@ public:
     void            Sort();
     const utf8 *    GetString(uint8 id) const;
 };
+
+#endif

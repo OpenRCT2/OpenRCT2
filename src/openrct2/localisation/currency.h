@@ -63,6 +63,10 @@ typedef struct currency_descriptor {
     rct_string_id stringId;
 } currency_descriptor;
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 // List of currency formats
 extern currency_descriptor CurrencyDescriptors[CURRENCY_END];
 
@@ -71,5 +75,9 @@ extern currency_descriptor CurrencyDescriptors[CURRENCY_END];
  * custom currency entry
  */
 void currency_load_custom_currency_config();
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

@@ -16,13 +16,10 @@
 
 #include "../Context.h"
 
-extern "C"
-{
-    #include "../input.h"
-    #include "../interface/themes.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-}
+#include "../input.h"
+#include "../interface/themes.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
 
 static rct_widget window_map_tooltip_widgets[] = {
     { WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },

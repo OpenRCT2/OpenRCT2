@@ -23,15 +23,12 @@
 #include "RideObject.h"
 #include "../ride/RideGroupManager.h"
 
-extern "C"
-{
-    #include "../config/Config.h"
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-    #include "../rct1.h"
-    #include "../ride/ride.h"
-    #include "../ride/track.h"
-}
+#include "../config/Config.h"
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
+#include "../ride/track.h"
 
 RideObject::~RideObject()
 {

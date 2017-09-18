@@ -18,18 +18,15 @@
 #include "../network/network.h"
 #include "../core/Math.hpp"
 
-extern "C"
-{
-    #include "../audio/audio.h"
-    #include "../input.h"
-    #include "../interface/viewport.h"
-    #include "../interface/widget.h"
-    #include "../localisation/localisation.h"
-    #include "../world/scenery.h"
-    #include "dropdown.h"
-    #include "error.h"
-    #include "../sprites.h"
-}
+#include "../audio/audio.h"
+#include "../input.h"
+#include "../interface/viewport.h"
+#include "../interface/widget.h"
+#include "../localisation/localisation.h"
+#include "../world/scenery.h"
+#include "dropdown.h"
+#include "error.h"
+#include "../sprites.h"
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180

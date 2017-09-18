@@ -17,13 +17,11 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-extern "C" {
-    #include <openrct2/interface/widget.h>
+#include <openrct2/interface/widget.h>
     #include <openrct2/localisation/localisation.h>
     #include <openrct2/paint/map_element/map_element.h>
     #include <openrct2/paint/paint.h>
     #include <openrct2/ride/track_paint.h>
-}
 
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {

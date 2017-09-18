@@ -18,14 +18,7 @@
 
 #include "common.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-#endif
-    #include "object.h"
-#ifdef __cplusplus
-}
-#endif
+#include "object.h"
 
 typedef enum PARK_LOAD_ERROR
 {

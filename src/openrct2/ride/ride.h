@@ -924,8 +924,6 @@ typedef struct rct_ride_properties {
     sint8 booster_speed_factor; // The factor to shift the raw booster speed with
 } rct_ride_properties;
 
-extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
-
 #define RIDE_MODE_COUNT 37
 
 #define MAX_RIDE_MEASUREMENTS 8
@@ -942,6 +940,12 @@ extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 #define TURN_MASK_4_PLUS_ELEMENTS 0xF800
 
 #define CONSTRUCTION_LIFT_HILL_SELECTED 1
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 /** Helper macros until rides are stored in this module. */
 Ride *get_ride(sint32 index);
@@ -1198,5 +1202,9 @@ bool ride_type_supports_boosters(uint8 rideType);
 sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry * rideEntry, uint8 category);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

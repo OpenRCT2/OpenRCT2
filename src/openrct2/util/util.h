@@ -20,6 +20,10 @@
 #include <time.h>
 #include "../common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres);
 sint32 metres_to_feet(sint32 metres);
 sint32 mph_to_kmph(sint32 mph);
@@ -64,5 +68,9 @@ sint32 add_clamp_sint32(sint32 value, sint32 value_to_add);
 money32 add_clamp_money32(money32 value, money32 value_to_add);
 
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

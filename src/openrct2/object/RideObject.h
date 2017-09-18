@@ -16,12 +16,11 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include "Object.h"
 
-extern "C"
-{
-    #include "../ride/ride.h"
-}
+#include "../ride/ride.h"
 
 class RideObject final : public Object
 {
@@ -55,3 +54,5 @@ private:
     static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
     static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
 };
+
+#endif

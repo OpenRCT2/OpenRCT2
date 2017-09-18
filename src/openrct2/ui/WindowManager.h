@@ -16,13 +16,12 @@
 
 #pragma once
 
+#ifdef __cplusplus
+
 #include <string>
 #include "../common.h"
 
-extern "C"
-{
-    #include "../interface/window.h"
-}
+#include "../interface/window.h"
 
 namespace OpenRCT2
 {
@@ -43,3 +42,5 @@ namespace OpenRCT2
         IWindowManager * CreateDummyWindowManager();
     }
 }
+
+#endif

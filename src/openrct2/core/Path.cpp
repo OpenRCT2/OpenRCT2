@@ -18,12 +18,9 @@
     #include <dirent.h>
 #endif
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../localisation/localisation.h"
-    #include "../util/util.h"
-}
+#include "../platform/platform.h"
+#include "../localisation/localisation.h"
+#include "../util/util.h"
 
 #include "File.h"
 #include "Math.hpp"

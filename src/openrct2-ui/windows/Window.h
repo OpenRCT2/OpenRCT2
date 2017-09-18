@@ -18,10 +18,7 @@
 
 #include <openrct2/common.h>
 
-extern "C"
-{
-    #include <openrct2/interface/window.h>
-}
+#include <openrct2/interface/window.h>
 
 rct_window * window_about_open();
 rct_window * window_changelog_open();

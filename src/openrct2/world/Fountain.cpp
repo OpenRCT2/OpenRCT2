@@ -16,17 +16,12 @@
 
 #include "Fountain.h"
 
-#ifdef __cplusplus
-extern "C"
-{
-    #include "../game.h"
-    #include "../scenario/scenario.h"
-    #include "footpath.h"
-    #include "map.h"
-    #include "scenery.h"
-    #include "sprite.h"
-}
-#endif
+#include "../game.h"
+#include "../scenario/scenario.h"
+#include "footpath.h"
+#include "map.h"
+#include "scenery.h"
+#include "sprite.h"
 
 enum class PATTERN
 {

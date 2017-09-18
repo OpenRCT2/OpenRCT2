@@ -18,11 +18,8 @@
 #include "../core/Memory.hpp"
 #include "BannerObject.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../localisation/localisation.h"
-}
+#include "../drawing/drawing.h"
+#include "../localisation/localisation.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
