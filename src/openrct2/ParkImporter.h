@@ -33,6 +33,7 @@ typedef enum PARK_LOAD_ERROR
 #include <string>
 #include <vector>
 #include "scenario/ScenarioRepository.h"
+#include "core/String.hpp"
 
 interface IObjectManager;
 interface IObjectRepository;
@@ -65,7 +66,10 @@ public:
     virtual ParkLoadResult  Load(const utf8 * path) abstract;
     virtual ParkLoadResult  LoadSavedGame(const utf8 * path, bool skipObjectCheck = false) abstract;
     virtual ParkLoadResult  LoadScenario(const utf8 * path, bool skipObjectCheck = false) abstract;
-    virtual ParkLoadResult  LoadFromStream(IStream * stream, bool isScenario, bool skipObjectCheck = false) abstract;
+    virtual ParkLoadResult  LoadFromStream(IStream * stream,
+                                           bool isScenario,
+                                           bool skipObjectCheck = false,
+                                           const utf8 * path = String::Empty) abstract;
 
     virtual void Import() abstract;
     virtual bool GetDetails(scenario_index_entry * dst) abstract;
