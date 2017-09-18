@@ -67,6 +67,7 @@ struct CachedTextureInfo
     GLuint slot;
     vec4i bounds;
     vec4f normalizedBounds;
+    vec4f computedBounds;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -195,8 +196,8 @@ private:
     GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;
 
-    std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
     std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+    std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
     std::unordered_map<uint32, CachedTextureInfo> _paletteTextureMap;
 
     SDL_Color _palette[256];
@@ -206,9 +207,9 @@ public:
     ~TextureCache();
     void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);
-    CachedTextureInfo GetOrLoadImageTexture(uint32 image);
+    const CachedTextureInfo* GetOrLoadImageTexture(uint32 image);
     CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
-    CachedTextureInfo GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
+    const CachedTextureInfo* GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
 
     GLuint GetAtlasesTexture();
 

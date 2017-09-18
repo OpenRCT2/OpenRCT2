@@ -17,9 +17,52 @@
 #pragma once
 
 #include <openrct2/common.h>
+#include <vector>
 #include "OpenGLAPI.h"
 #include "GLSLTypes.h"
 #include "TextureCache.h"
+
+template<typename T>
+class CommandBatch
+{
+private:
+    std::vector<T> _instances;
+    size_t _numInstances;
+
+public:
+    CommandBatch()
+        : _numInstances(0)
+    {
+    }
+    bool empty() const
+    {
+        return _numInstances == 0;
+    }
+    void reset()
+    {
+        _numInstances = 0;
+    }
+    T& allocate()
+    {
+        if (_numInstances + 1 > _instances.size())
+        {
+            _instances.resize((_numInstances + 1) << 1);
+        }
+        return _instances[_numInstances++];
+    }
+    size_t size() const
+    {
+        return _numInstances;
+    }
+    const T* data() const
+    {
+        return &_instances.at(0);
+    }
+    const T& operator[](size_t idx) const
+    {
+        return _instances.at(idx);
+    }
+};
 
 struct DrawRectCommand {
     uint32 flags;
@@ -35,4 +78,29 @@ struct DrawLineCommand {
     sint32 pos[4];
 };
 
-typedef DrawImageInstance DrawImageCommand;
+// Per-instance data for images
+struct DrawImageCommand {
+    vec4i clip;
+    sint32 texColourAtlas;
+    vec4f texColourBounds;
+    sint32 texMaskAtlas;
+    vec4f texMaskBounds;
+    sint32 texPaletteAtlas;
+    vec4f texPaletteBounds;
+    sint32 flags;
+    vec4f colour;
+    vec4i bounds;
+    sint32 mask;
+
+    enum
+    {
+        FLAG_COLOUR = (1 << 0),
+        FLAG_REMAP = (1 << 1),
+        FLAG_TRANSPARENT = (1 << 2),
+        FLAG_TRANSPARENT_SPECIAL = (1 << 3),
+    };
+};
+
+typedef CommandBatch<DrawImageCommand> ImageCommandBatch;
+typedef CommandBatch<DrawLineCommand> LineCommandBatch;
+typedef CommandBatch<DrawRectCommand> RectCommandBatch;

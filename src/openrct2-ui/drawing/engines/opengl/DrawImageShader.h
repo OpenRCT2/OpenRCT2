@@ -18,31 +18,9 @@
 
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+#include "DrawCommands.h"
 #include <SDL_pixels.h>
 #include <vector>
-
-// Per-instance data for images
-struct DrawImageInstance {
-    vec4i clip;
-    sint32 texColourAtlas;
-    vec4f texColourBounds;
-    sint32 texMaskAtlas;
-    vec4f texMaskBounds;
-    sint32 texPaletteAtlas;
-    vec4f texPaletteBounds;
-    sint32 flags;
-    vec4f colour;
-    vec4i bounds;
-    sint32 mask;
-
-    enum
-    {
-        FLAG_COLOUR              = (1 << 0),
-        FLAG_REMAP               = (1 << 1),
-        FLAG_TRANSPARENT         = (1 << 2),
-        FLAG_TRANSPARENT_SPECIAL = (1 << 3),
-    };
-};
 
 class DrawImageShader final : public OpenGLShaderProgram
 {
@@ -74,7 +52,7 @@ public:
 
     void SetScreenSize(sint32 width, sint32 height);
     void SetPalette(const vec4f *glPalette);
-    void DrawInstances(const std::vector<DrawImageInstance>& instances);
+    void DrawInstances(const ImageCommandBatch& instances);
 
 private:
     void GetLocations();
