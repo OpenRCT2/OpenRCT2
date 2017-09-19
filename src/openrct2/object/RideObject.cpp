@@ -127,8 +127,8 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 void RideObject::Load()
 {
     GetStringTable()->Sort();
-    _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.description = language_allocate_object_string(GetDescription());
+    _legacyType.naming.name = language_allocate_object_string(GetName());
+    _legacyType.naming.description = language_allocate_object_string(GetDescription());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
@@ -302,12 +302,12 @@ void RideObject::Load()
 
 void RideObject::Unload()
 {
-    language_free_object_string(_legacyType.name);
-    language_free_object_string(_legacyType.description);
+    language_free_object_string(_legacyType.naming.name);
+    language_free_object_string(_legacyType.naming.description);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 
-    _legacyType.name = 0;
-    _legacyType.description = 0;
+    _legacyType.naming.name = 0;
+    _legacyType.naming.description = 0;
     _legacyType.images_offset = 0;
 }
 

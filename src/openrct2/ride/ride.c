@@ -6258,9 +6258,9 @@ static void ride_set_name_to_vehicle_default(Ride * ride, rct_ride_entry * rideE
     ride_name_args name_args;
 
     ride->name = 1;
-    ride->name_arguments_type_name = rideEntry->name;
+    ride->name_arguments_type_name = rideEntry->naming.name;
     rct_string_id rideNameStringId = 0;
-    name_args.type_name = rideEntry->name;
+    name_args.type_name = rideEntry->naming.name;
     name_args.number = 0;
 
     do {
@@ -6276,27 +6276,6 @@ static void ride_set_name_to_vehicle_default(Ride * ride, rct_ride_entry * rideE
         ride->name = rideNameStringId;
     } else {
         ride_set_name_to_track_default(ride, rideEntry);
-    }
-}
-
-/**
- * This will return the name of the track type or ride group, as seen in the research window.
- */
-rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rideEntry)
-{
-    if (!gConfigInterface.select_by_track_type) {
-        if (trackType == RIDE_TYPE_TWISTER_ROLLER_COASTER) {
-            return STR_HYPER_TWISTER_GROUP;
-        } else {
-            return RideNaming[trackType].name;
-        }
-    } else {
-        if (ride_type_has_ride_groups(trackType)) {
-            const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
-            return rideGroup->naming.name;
-        } else {
-            return RideNaming[trackType].name;
-        }
     }
 }
 

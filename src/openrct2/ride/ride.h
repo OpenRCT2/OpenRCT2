@@ -95,13 +95,7 @@ assert_struct_size(rct_ride_name, 4);
  * size: unknown
  */
 typedef struct rct_ride_entry {
-    union {
-        rct_ride_name naming;
-        struct {
-            rct_string_id name;                         // 0x000
-            rct_string_id description;                  // 0x002
-        };
-    };
+    rct_ride_name naming;
     uint32 images_offset;                               // 0x004
     uint32 flags;                                       // 0x008
     uint8 ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];// 0x00C
@@ -1081,7 +1075,6 @@ void game_command_set_ride_setting(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32
 sint32 ride_get_refund_price(sint32 ride_id);
 bool shop_item_is_photo(sint32 shopItem);
 bool shop_item_has_common_price(sint32 shopItem);
-rct_string_id get_friendly_track_type_name(uint8 trackType, rct_ride_entry * rideEntry);
 rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry);
 void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);

@@ -349,19 +349,12 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     } else {
         // Research type
         stringId = STR_RESEARCH_UNKNOWN;
-        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH) {
+        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
+        {
             stringId = ResearchCategoryNames[gResearchNextCategory];
-            if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING) {
-                uint32 typeId = gResearchNextItem;
-                if (typeId >= 0x10000) {
-                    uint8 baseRideType = (typeId >> 8) & 0xFF;
-                    rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
-                    stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
-                        rideEntry->name :
-                        get_friendly_track_type_name(baseRideType, rideEntry); // Makes sure the correct track name is displayed, e.g. Hyper-Twister instead of Steel Twister.
-                } else {
-                    stringId = get_scenery_group_entry(typeId)->name;
-                }
+            if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
+            {
+                stringId = research_item_get_name(gResearchNextItem);
             }
         }
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
@@ -392,25 +385,11 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 
     uint32 typeId = gResearchLastItemSubject;
     rct_string_id lastDevelopmentFormat;
-    if (typeId != 0xFFFFFFFF) {
-        if (typeId >= 0x10000) {
-            rct_ride_entry *rideEntry = get_ride_entry(typeId & 0xFF);
-            if (rideEntry == nullptr) {
-                return;
-            }
-            stringId = (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) ?
-                rideEntry->name :
-                ((typeId >> 8) & 0xFF) + 2;
+    if (typeId != 0xFFFFFFFF)
+    {
+        stringId = research_item_get_name(typeId);
+        lastDevelopmentFormat = (typeId >= 0x10000) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
 
-            lastDevelopmentFormat = STR_RESEARCH_RIDE_LABEL;
-        } else {
-            rct_scenery_set_entry *sse = get_scenery_group_entry(typeId);
-            if (sse == nullptr) {
-                return;
-            }
-            stringId = sse->name;
-            lastDevelopmentFormat = STR_RESEARCH_SCENERY_LABEL;
-        }
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
 }

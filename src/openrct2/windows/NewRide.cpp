@@ -934,7 +934,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
     rct_ride_name rideNaming;
 
     // Ride name and description
-    rideNaming = get_ride_naming(item.type , rideEntry);
+    rideNaming = get_ride_naming(item.type, rideEntry);
     set_format_arg(0, rct_string_id, rideNaming.name);
     set_format_arg(2, rct_string_id, rideNaming.description);
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);

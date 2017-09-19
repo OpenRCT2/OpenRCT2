@@ -25,6 +25,7 @@
 #include <openrct2/input.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/management/research.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 #include <openrct2/world/scenery.h>
@@ -193,7 +194,8 @@ static void research_rides_setup(){
         gEditorSelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
     }
 
-    for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++){
+    for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++)
+    {
         if (research->entryIndex & RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED)
             continue;
 
@@ -201,15 +203,16 @@ static void research_rides_setup(){
         if ((research->entryIndex & 0xFFFFFF) < 0x10000)
             continue;
 
-        uint8 ride_base_type = (research->entryIndex >> 8) & 0xFF;
+        uint8 ride_base_type = research_get_ride_base_type(research->entryIndex);
 
         uint8 object_index = research->entryIndex & 0xFF;
         rct_ride_entry* ride_entry = get_ride_entry(object_index);
 
         bool master_found = false;
-        if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)){
-
-            for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++){
+        if (!(ride_entry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE))
+        {
+            for (uint8 rideType = 0; rideType < object_entry_group_counts[OBJECT_TYPE_RIDE]; rideType++)
+            {
                 rct_ride_entry* master_ride = get_ride_entry(rideType);
                 if (master_ride == nullptr || (intptr_t)master_ride == -1)
                     continue;
@@ -221,14 +224,17 @@ static void research_rides_setup(){
                 if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
                     continue;
 
-                for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                    if (master_ride->ride_type[j] == ride_base_type) {
+                for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                {
+                    if (master_ride->ride_type[j] == ride_base_type)
+                    {
                         master_found = true;
                         break;
                     }
                 }
 
-                if (master_found) {
+                if (master_found)
+                {
                     break;
                 }
             }
@@ -317,30 +323,6 @@ static void research_remove_flags()
             research->entryIndex &= 0x00FFFFFF;
         }
     }
-}
-
-/**
- *
- *  rct2: 0x0068563D
- */
-static rct_string_id research_item_get_name(uint32 researchItem)
-{
-    if (researchItem < 0x10000) {
-        rct_scenery_set_entry *sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
-        if (sceneryEntry == nullptr || sceneryEntry == (rct_scenery_set_entry*)-1)
-            return 0;
-
-        return sceneryEntry->name;
-    }
-
-    rct_ride_entry *rideEntry = get_ride_entry(researchItem & 0xFF);
-    if (rideEntry == nullptr || rideEntry == (rct_ride_entry*)-1)
-        return 0;
-
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
-        return rideEntry->name;
-
-    return ((researchItem >> 8) & 0xFF) + 2;
 }
 
 /**
