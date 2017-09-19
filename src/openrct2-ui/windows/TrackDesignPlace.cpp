@@ -142,11 +142,11 @@ static void window_track_place_clear_mini_preview()
  *
  *  rct2: 0x006CFCA0
  */
-void window_track_place_open(const track_design_file_ref *tdFileRef)
+rct_window * window_track_place_open(const track_design_file_ref *tdFileRef)
 {
     rct_track_td6 *td6 = track_design_open(tdFileRef->path);
     if (td6 == nullptr) {
-        return;
+        return nullptr;
     }
 
     window_close_construction_windows();
@@ -180,6 +180,8 @@ void window_track_place_open(const track_design_file_ref *tdFileRef)
     window_track_place_draw_mini_preview(td6);
 
     _trackDesign = td6;
+
+	return w;
 }
 
 /**

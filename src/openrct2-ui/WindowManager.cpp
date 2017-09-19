@@ -166,8 +166,8 @@ public:
         case WC_LOADSAVE:
         {
             uint32 type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
-            utf8 *defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH)
-            loadsave_callback callback = static_cast<loadsave_callback>(intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+            const utf8 *defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
+            loadsave_callback callback = (loadsave_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
             rct_window *w = window_loadsave_open(type, defaultName);
             window_loadsave_set_loadsave_callback(callback);
 

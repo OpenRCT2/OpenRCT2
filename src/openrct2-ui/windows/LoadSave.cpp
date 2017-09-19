@@ -161,7 +161,7 @@ static sint32 window_loadsave_get_dir(utf8 *last_save, char *path, const char *s
     return 1;
 }
 
-rct_window *window_loadsave_open(sint32 type, char *defaultName)
+rct_window *window_loadsave_open(sint32 type, const char *defaultName)
 {
     _loadSaveCallback = nullptr;
     _type = type;
