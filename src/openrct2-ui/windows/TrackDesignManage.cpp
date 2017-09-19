@@ -141,7 +141,7 @@ static void window_track_design_list_reload_tracks();
  *
  *  rct2: 0x006D348F
  */
-static void _window_track_manage_open(track_design_file_ref *tdFileRef)
+rct_window * window_track_manage_open(track_design_file_ref *tdFileRef)
 {
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
@@ -165,6 +165,8 @@ static void _window_track_manage_open(track_design_file_ref *tdFileRef)
     }
 
     _trackDesignFileReference = tdFileRef;
+
+    return w;
 }
 
 /**
@@ -319,13 +321,5 @@ static void window_track_design_list_reload_tracks()
     rct_window * trackListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
     if (trackListWindow != nullptr) {
         trackListWindow->track_list.reload_track_designs = true;
-    }
-}
-
-extern "C"
-{
-    void window_track_manage_open(track_design_file_ref *tdFileRef)
-    {
-        _window_track_manage_open(tdFileRef);
     }
 }
