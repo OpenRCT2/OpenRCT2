@@ -183,7 +183,7 @@ void research_finish_item(sint32 entryIndex)
 
     if (entryIndex >= 0x10000) {
         // Ride
-        sint32 base_ride_type = (entryIndex >> 8) & 0xFF;
+        sint32 base_ride_type = research_get_ride_base_type(entryIndex);
         sint32 rideEntryIndex = entryIndex & 0xFF;
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
@@ -232,13 +232,13 @@ void research_finish_item(sint32 entryIndex)
 
                 if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
                 {
-                    set_format_arg(0, rct_string_id, rideEntry->name);
+                    set_format_arg(0, rct_string_id, rideEntry->naming.name);
                 }
                 else
                 {
                     // Makes sure the correct track name is displayed,
                     // e.g. Hyper-Twister instead of Steel Twister.
-                    set_format_arg(0, rct_string_id, get_friendly_track_type_name(base_ride_type, rideEntry));
+                    set_format_arg(0, rct_string_id, research_get_friendly_base_ride_type_name(base_ride_type, rideEntry));
                 }
             }
             else
@@ -247,7 +247,7 @@ void research_finish_item(sint32 entryIndex)
                 if (!rideTypeShouldLoseSeparateFlag(rideEntry))
                 {
                     availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                    set_format_arg(0, rct_string_id, rideEntry->name);
+                    set_format_arg(0, rct_string_id, rideEntry->naming.name);
                 }
                 // If a vehicle is the first to be invented for its ride group, show the ride group name.
                 else if (!ride_type_was_invented_before || (ride_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
@@ -264,12 +264,14 @@ void research_finish_item(sint32 entryIndex)
                     rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
 
                     set_format_arg(0, rct_string_id, baseRideNaming.name);
-                    set_format_arg(2, rct_string_id, rideEntry->name);
+                    set_format_arg(2, rct_string_id, rideEntry->naming.name);
                 }
             }
 
-            if (!gSilentResearch) {
-                if (gConfigNotifications.ride_researched) {
+            if (!gSilentResearch)
+            {
+                if (gConfigNotifications.ride_researched)
+                {
                     news_item_add_to_queue(NEWS_ITEM_RESEARCH, availabilityString, entryIndex);
                 }
             }
@@ -440,7 +442,7 @@ void research_remove_non_separate_vehicle_types()
                         rideEntry = get_ride_entry(researchItem2->entryIndex & 0xFF);
                         if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
 
-                            if (((researchItem->entryIndex >> 8) & 0xFF) == ((researchItem2->entryIndex >> 8) & 0xFF)) {
+                            if (research_get_ride_base_type(researchItem->entryIndex) == research_get_ride_base_type(researchItem2->entryIndex)) {
                                 // Remove item
                                 researchItem2 = researchItem;
                                 do {
@@ -710,5 +712,78 @@ void reset_researched_ride_types_and_entries()
 
     for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_ENTRIES; i++) {
         gResearchedRideEntries[i] = 0xFFFFFFFF;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0068563D
+ */
+rct_string_id research_item_get_name(uint32 researchItem)
+{
+    if (researchItem >= 0x10000)
+    {
+        rct_ride_entry *rideEntry = get_ride_entry(researchItem & 0xFF);
+        if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1)
+        {
+            return 0;
+        }
+        else if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+        {
+            return rideEntry->naming.name;
+        }
+        else
+        {
+            uint8 baseRideType = research_get_ride_base_type(researchItem);
+            // Makes sure the correct track name is displayed, e.g. Hyper-Twister instead of Steel Twister.
+            return research_get_friendly_base_ride_type_name(baseRideType, rideEntry);
+        }
+    }
+    else
+    {
+        rct_scenery_set_entry *sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
+        if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry*)-1)
+        {
+            return 0;
+        }
+        else
+        {
+            return sceneryEntry->name;
+        }
+    }
+}
+
+uint8 research_get_ride_base_type(sint32 researchItem)
+{
+    return (researchItem >> 8) & 0xFF;
+}
+
+/**
+ * This will return the name of the base ride type or ride group, as seen in the research window.
+ */
+rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry)
+{
+    if (!gConfigInterface.select_by_track_type)
+    {
+        if (trackType == RIDE_TYPE_TWISTER_ROLLER_COASTER)
+        {
+            return STR_HYPER_TWISTER_GROUP;
+        }
+        else
+        {
+            return RideNaming[trackType].name;
+        }
+    }
+    else
+    {
+        if (ride_type_has_ride_groups(trackType))
+        {
+            const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
+            return rideGroup->naming.name;
+        }
+        else
+        {
+            return RideNaming[trackType].name;
+        }
     }
 }

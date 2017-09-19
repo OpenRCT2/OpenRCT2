@@ -2734,7 +2734,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                     selectedIndex = numItems;
 
                 gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->name;
+                gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->naming.name;
 
                 numItems++;
             }
@@ -2830,7 +2830,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
 
     // Vehicle type
-    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->name;
+    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.name;
     // Always show a dropdown button when changing subtypes is allowed
     if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
         window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
@@ -2922,7 +2922,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y = w->y + 64;
 
     // Description
-    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
+    y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
     y += 5;
 
     // Capacity
