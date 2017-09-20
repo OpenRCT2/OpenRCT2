@@ -7,28 +7,44 @@ Intent::Intent(rct_windowclass windowclass)
 
 Intent * Intent::putExtra(uint32 key, uint32 value)
 {
-    _UInts.insert(std::make_pair(key, value));
+    IntentData data = {};
+    data.uintVal = value;
+    data.type = IntentData::DT_UINT;
+
+    _Data.insert(std::make_pair(key, data));
 
     return this;
 }
 
 Intent * Intent::putExtra(uint32 key, void * value)
 {
-    _Pointers.insert(std::make_pair(key, (uintptr_t) value));
+    IntentData data = {};
+    data.pointerVal = value;
+    data.type = IntentData::DT_POINTER;
+
+    _Data.insert(std::make_pair(key, data));
 
     return this;
 }
 
 Intent * Intent::putExtra(uint32 key, sint32 value)
 {
-    _Pointers.insert(std::make_pair(key, value));
+    IntentData data = {};
+    data.sintVal = value;
+    data.type = IntentData::DT_SINT;
+
+    _Data.insert(std::make_pair(key, data));
 
     return this;
 }
 
 Intent * Intent::putExtra(uint32 key, utf8string value)
 {
-    _Strings.insert(std::make_pair(key, value));
+    IntentData data = {};
+    data.stringVal = value;
+    data.type = IntentData::DT_STRING;
+
+    _Data.insert(std::make_pair(key, data));
 
     return this;
 }
@@ -40,22 +56,26 @@ rct_windowclass Intent::GetWindowClass()
 
 void * Intent::GetPointerExtra(uint32 key)
 {
-    return (void *) _Pointers.at(key);
+    auto data =  _Data.at(key);
+    return (void *) data.pointerVal;
 }
 
 uint32 Intent::GetUIntExtra(uint32 key)
 {
-    return _UInts.at(key);
+    auto data =  _Data.at(key);
+    return data.uintVal;
 }
 
 sint32 Intent::GetSIntExtra(uint32 key)
 {
-    return _SInts.at(key);
+    auto data =  _Data.at(key);
+    return data.sintVal;
 }
 
 utf8string Intent::GetStringExtra(uint32 key)
 {
-    return _Strings.at(key);
+    auto data =  _Data.at(key);
+    return data.stringVal;
 }
 
 extern "C" {
