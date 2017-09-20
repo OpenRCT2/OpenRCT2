@@ -56,6 +56,8 @@ public:
             return window_finances_open();
         case WC_FOOTPATH:
             return window_footpath_open();
+        case WC_GUEST_LIST:
+            return window_guest_list_open();
         case WC_LAND:
             return window_land_open();
         case WC_LAND_RIGHTS:
