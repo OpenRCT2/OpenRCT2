@@ -15,14 +15,21 @@ extern "C" {
 
 #include <map>
 
+struct IntentData
+{
+    enum DATATYPE { DT_UINT, DT_SINT, DT_STRING, DT_POINTER } type;
+
+    uint32 uintVal;
+    sint32 sintVal;
+    utf8string stringVal;
+    void * pointerVal;
+};
+
 class Intent
 {
 private:
     rct_windowclass _Class;
-    std::map<uint32, uint32> _UInts;
-    std::map<uint32, sint32> _SInts;
-    std::map<uint32, utf8string> _Strings;
-    std::map<uint32, uintptr_t> _Pointers;
+    std::map<uint32, IntentData> _Data;
 public:
     explicit Intent(rct_windowclass windowclass);
     rct_windowclass GetWindowClass();
