@@ -3924,8 +3924,2483 @@ STR_5580    :Czech koruna (Kc)
 # Rides/attractions #
 #####################
 
+## Extracted from the TTP demo
+[4X4]
+STR_NAME    :Monster Trucks
+STR_DESC    :動力付きで、急斜面もものともしない巨大な四輪駆動車です
+STR_CPTY    :各車両2名
+
+[AML1]
+STR_NAME    :American Style Steam Trains
+STR_DESC    :レプリカの蒸気機関車と炭水車、布製の屋根の木製客車からなるミニチュア列車です
+STR_CPTY    :各客車6名
+
+[AMT1]
+STR_NAME    :Mine Train Coaster
+STR_DESC    :昔の線路のようなスチールのコースを走る、鉱山列車をイメージしたコースターです
+STR_CPTY    :各車両2名または4名
+
+[ARRSW1]
+STR_NAME    :Suspended Swinging Cars
+STR_DESC    :車両がコーナーを回る際、大きく揺れ動くようになっている吊り下げ式のローラーコースターです
+STR_CPTY    :各車両4名
+
+[ARRSW2]
+STR_NAME    :Suspended Swinging Aeroplane Cars
+STR_DESC    :ぶら下がった飛行機型の車両が、コーナーで大きく揺れ動くコースターです
+STR_CPTY    :各車両4名
+
+[ARRT1]
+STR_NAME    :Corkscrew Roller Coaster
+STR_DESC    :コークスクリューとループがあるスチールコースを持つ、コンパクトなローラーコースターです
+STR_CPTY    :各車両4名
+
+[ARRT2]
+STR_NAME    :Hypercoaster
+STR_DESC    :高低差もあり速度も速いですが、逆さにはならず膝にしか安全バーがないので、快適な車両です
+STR_CPTY    :各車両6名
+
+[ARRX]
+STR_NAME    :Multi-Dimension Coaster Train
+STR_DESC    :乗客を縦方向に逆さまにできる座席を備えた車両です
+STR_CPTY    :各車両4名
+
+[ATM1]
+STR_NAME    :Cash Machine
+STR_DESC    :所持金を使い果たした来園客が利用する、ATM(キャッシュディスペンサー)です
+
+[BALLN]
+STR_NAME    :Balloon Stall
+STR_DESC    :ヘリウムガスの入った風船を売る売店です
+
+[BATFL]
+STR_NAME    :Swinging Cars
+STR_DESC    :上部のレールからスイングする、小さい車両です
+STR_CPTY    :各車両2名
+
+[BBOAT]
+STR_NAME    :Bumper Boats
+STR_DESC    :丸い小型ボートで、乗客が操作する中央部のモーターで動きます
+STR_CPTY    :各ボート2名
+
+[BMAIR]
+STR_NAME    :Flying Roller Coaster
+STR_DESC    :コースの下にある快適な座席に座り、ひねったコースによって究極の飛行体験が楽しめるコースターです
+STR_CPTY    :各車両4名
+
+[BMFL]
+STR_NAME    :Floorless Roller Coaster
+STR_DESC    :床がない幅広のコースターで、コースにはひねりと複数の反転があり、あたかも空を飛んでいるような気分になります
+STR_CPTY    :各車両4名
+
+[BMRB]
+STR_NAME    :Hyper-Twister Trains (wide cars)
+STR_DESC    :?字型で高い座席のある幅広のコースターで、簡単な膝の安全バーを備えています
+STR_CPTY    :各車両4名
+
+[BMSD]
+STR_NAME    :Twister Roller Coaster
+STR_DESC    :さまざまな反転を持つスムーズなスチールコースを滑走する幅広のローラーコースターです
+STR_CPTY    :各車両4名
+
+[BMSU]
+STR_NAME    :Stand-up Twister Coaster
+STR_DESC    :特殊な安全装置の付いた幅広の立ち乗りコースターで、スムーズな降下や複数の反転のあるコースを疾走します
+STR_CPTY    :各車両4名
+
+[BMVD]
+STR_NAME    :Vertical Drop Roller Coaster
+STR_DESC    :超幅広の車両が垂直に切り立ったコースを降下する、究極のフリーフォール体験ができるコースターです
+STR_CPTY    :各車両6名
+
+[BNOODLES]
+STR_NAME    :Beef Noodles Stall
+STR_DESC    :中華風ビーフヌードルを売るお店です
+
+[BOB1]
+STR_NAME    :Bobsleigh Coaster
+STR_DESC    :半円形のコースを、カーブとバンクだけで支えられたボブスレー形の車両が疾走するコースターです
+STR_CPTY    :各車両2名
+
+[BURGB]
+STR_NAME    :Burger Bar
+STR_DESC    :ハンバーガー形をしたバーガーショップです
+
+[C3D]
+STR_NAME    :3D Cinema
+STR_DESC    :3D映画を上映する、球形の映画館です
+STR_CPTY    :定員20名
+
+[CBOAT]
+STR_NAME    :Canoes
+STR_DESC    :乗客自身が漕ぐロングカヌーです
+STR_CPTY    :各カヌー2名
+
+[CHBUILD]
+STR_NAME    :Crooked House
+STR_DESC    :中に入った人の方向感覚を失わせるために、ゆがんだ部屋と曲がった廊下がある建物です
+STR_CPTY    :定員5名
+
+[CHCKS]
+STR_NAME    :Fried Chicken Stall
+STR_DESC    :フライドチキンを売る売店です
+
+[CHKNUG]
+STR_NAME    :Chicken Nuggets Stall
+STR_DESC    :チキンナゲットを売る売店です
+
+[CHPSH]
+STR_NAME    :Chip Shop
+STR_DESC    :フライドポテトを売る小屋です
+
+[CHPSH2]
+STR_NAME    :Fries Stall
+STR_DESC    :フライドポテトを売る売店です
+
+[CINDR]
+STR_NAME    :Sujongkwa Stall
+STR_DESC    :韓国風の柿ジュースを売る売店です
+
+[CIRCUS1]
+STR_NAME    :Circus
+STR_DESC    :動物のサーカスショーをやっている大テントです
+STR_CPTY    :定員30名
+
+[CLIFT1]
+STR_NAME    :Chairlift Cars
+STR_DESC    :屋根のないリフトカーです
+STR_CPTY    :各車両2名
+
+[CLIFT2]
+STR_NAME    :Ski-lift Chairs
+STR_DESC    :屋根のないリフトカーです
+STR_CPTY    :各車両2名
+
+[CNDYF]
+STR_NAME    :Candyfloss Stall
+STR_DESC    :ピンク色の綿菓子を売る、綿菓子形の売店です
+
+[COFFS]
+STR_NAME    :Coffee Shop
+STR_DESC    :コーヒーを売るアールデコ風の売店です
+
+[COOKST]
+STR_NAME    :Cookie Shop
+STR_DESC    :巨大なクッキーを売る売店です
+
+[CSTBOAT]
+STR_NAME    :Coaster Boats
+STR_DESC    :ボート型の車両を持つローラーコースターです
+STR_CPTY    :各車両6名
+
+[CTCAR]
+STR_NAME    :Cheshire Cats
+STR_DESC    :決められたコースにしたがって走る、動力つきの猫型車両です
+STR_CPTY    :各車両2名
+
+[DING1]
+STR_NAME    :Dinghy Slide
+STR_DESC    :ねじれた半円形のコース、またはパイプの中を通るゴムボートです
+STR_CPTY    :各ボート2名
+
+[DODG1]
+STR_NAME    :Dodgems
+STR_DESC    :乗客が運転する、電動のバンパーカーです
+STR_CPTY    :各車両1名
+
+[DOUGH]
+STR_NAME    :Doughnut Shop
+STR_DESC    :リングドーナツを売る売店です
+
+[DRNKS]
+STR_NAME    :Drinks Stall
+STR_DESC    :炭酸飲料を売る、缶の形の売店です
+
+[ENTERP]
+STR_NAME    :Enterprise
+STR_DESC    :乗客の乗ったポッドがぶら下がった大きな輪が、回転しながら傾斜する乗物です
+STR_CPTY    :定員16名
+
+[FAID1]
+STR_NAME    :First Aid Room
+STR_DESC    :気分の悪くなった来園客がここに来ると、早く治すことができます
+
+[FRNOOD]
+STR_NAME    :Fried Rice Noodles Stall
+STR_DESC    :中華風の焼きビーフンを売る売店です
+
+[FSAUC]
+STR_NAME    :Flying Saucers
+STR_DESC    :自分で運転するホバークラフト車両です
+STR_CPTY    :各車両1名
+
+[FUNCAKE]
+STR_NAME    :Funnel Cake Shop
+STR_DESC    :ファネルケーキを売る売店です
+
+[FWH1]
+STR_NAME    :Ferris Wheel
+STR_DESC    :屋根のないイスが付いた、大きな観覧車です
+STR_CPTY    :定員32名
+
+[GDROP1]
+STR_NAME    :Roto-Drop
+STR_DESC    :円形の座席がゆっくりと回りながら高い塔の上まで上がり、落下して磁気ブレーキで?フトに止まります
+STR_CPTY    :定員16名
+
+[GOLF1]
+STR_NAME    :Mini Golf
+STR_DESC    :やさしいミニゴルフゲームです
+
+[GOLTR]
+STR_NAME    :Hyper-Twister Trains
+STR_DESC    :簡単な膝の安全バーだけが付いた、広々とした列車です
+STR_CPTY    :各車両6名
+
+[GTC]
+STR_NAME    :Ghost Train
+STR_DESC    :さまざまな特殊効果と薄気味悪い仕掛けを施した立体的コースを通る、モンスターの形をした動力付きの乗物です
+STR_CPTY    :各車両2名
+
+[HATST]
+STR_NAME    :Hat Stall
+STR_DESC    :フォームラバー製の大きな帽子を売る売店です
+
+[HCHOC]
+STR_NAME    :Hot Chocolate Stall
+STR_DESC    :ホットチョコレートを売る売店です
+
+[HELICAR]
+STR_NAME    :Mini Helicopters
+STR_DESC    :スチール製コースを走るヘリコプター型の動力付き車両で、乗客がペダルを使って操作します
+STR_CPTY    :各車両2名
+
+[HHBUILD]
+STR_NAME    :Haunted House
+STR_DESC    :不気味な廊下と薄気味悪い部屋を持つ、多層式の大きなお化け屋敷です
+STR_CPTY    :定員15名
+
+[HMAZE]
+STR_NAME    :Maze
+STR_DESC    :高さ6フィート(約1.8m)の生垣または壁を持つ迷路で、出口が見つからないと出られません
+
+[HMCAR]
+STR_NAME    :Haunted Mansion Ride
+STR_DESC    :特殊な仕掛けと景観が施された多層式のコースを、動力付きの車両が走行する乗物です
+STR_CPTY    :各車両2名
+
+[HOTDS]
+STR_NAME    :Hot Dog Stall
+STR_DESC    :ホットドッグを売る売店です
+
+[HSKELT]
+STR_NAME    :Spiral Slide
+STR_DESC    :木製の建物で、中には階段が、外にはらせん状の滑り台があり、マットを使って滑ります
+
+[ICECR1]
+STR_NAME    :Fruity Ices Stall
+STR_DESC    :フルーツアイスクリームを売る、テーマを持った売店です
+
+[ICECR2]
+STR_NAME    :Ice Cream Cone Stall
+STR_DESC    :アイスクリームを売る売店です
+
+[ICETST]
+STR_NAME    :Iced Tea Stall
+STR_DESC    :アイスティーを売る売店です
+
+[INFOK]
+STR_NAME    :Information Kiosk
+STR_DESC    :園内の案内図や傘を売る売店です
+
+[INTBOB]
+STR_NAME    :Flying Turns
+STR_DESC    :ひねりのある半円形のコースを、カーブとバンクだけで支えられた大きなボブスレー形の車両が疾走するコースターです
+STR_CPTY    :各車両6名
+
+[INTINV]
+STR_NAME    :Inverted Impulse Coaster
+STR_DESC    :逆向きのローラーコースターで、発着所から加速して発進し、垂直な絶壁を駆け上ると今度は後ろから発着所に戻り、もうひとつの絶壁を後ろ向きに登ります
+STR_CPTY    :各車両4名
+
+[INTST]
+STR_NAME    :Giga Coaster
+STR_DESC    :300フィート(約91m)もの高さの丘と、スムーズな降下がある巨大なスチール製のコースターです
+STR_CPTY    :各車両4名
+
+[IVMC1]
+STR_NAME    :Inverted Hairpin Coaster
+STR_DESC    :ジグザグのコースの下に個別の車両があり、ヘアピンや急降下を進むコースターです
+STR_CPTY    :各車両4名
+
+[JSKI]
+STR_NAME    :Jet Skis
+STR_DESC    :乗客が自分で操縦できる、ひとり乗りのジェットスキーです
+STR_CPTY    :各1名
+
+[JSTAR1]
+STR_NAME    :Toboggan Cars
+STR_DESC    :リュージュ形の座席が直列したローラーコースターです
+STR_CPTY    :各車両4名
+
+[KART1]
+STR_NAME    :Go Karts
+STR_DESC    :自分で操縦する、ガ?リンエンジンのゴーカートです
+STR_CPTY    :各車両1名
+
+[LEMST]
+STR_NAME    :Lemonade Stall
+STR_DESC    :レモネードを売る売店です
+
+[LFB1]
+STR_NAME    :Log Flume
+STR_DESC    :水路を進む丸太舟で、急傾斜から水に飛び込み、乗客はずぶぬれになります
+STR_CPTY    :各ボート4名
+
+[LIFT1]
+STR_NAME    :Elevator
+STR_DESC    :垂直なタワーの各階を移動する際のエレベーターです
+STR_CPTY    :定員16名
+
+[MBSOUP]
+STR_NAME    :Meatball Soup Stall
+STR_DESC    :中華風の肉だんごスープを売る売店です
+
+[MCARPET1]
+STR_NAME    :Magic Carpet
+STR_DESC    :4本のアームの端に大きな空飛ぶじゅうたんの車両が付き、上下しながら回転する乗物です
+STR_CPTY    :定員12名
+
+[MFT]
+STR_NAME    :Articulated Roller Coaster Trains
+STR_DESC    :前の空いた短い車両のローラーコースターです
+STR_CPTY    :各車両2名
+
+[MGR1]
+STR_NAME    :Merry-Go-Round
+STR_DESC    :昔ながらの木彫りの回転木馬です
+STR_CPTY    :定員16名
+
+[MONBK]
+STR_NAME    :Monorail Cycles
+STR_DESC    :乗客がペダルで漕ぐ、スチールのモノレールコースを走る特殊な自転車の乗物です
+STR_CPTY    :各車両1名
+
+[MONO1]
+STR_NAME    :Streamlined Monorail Trains
+STR_DESC    :流線型の先頭車と客車から成る、定員の多いモノレールです
+STR_CPTY    :各車両5名または10名
+
+[MONO2]
+STR_NAME    :Small Monorail Cars
+STR_DESC    :横の空いた小さなモノレールです
+STR_CPTY    :各車両4名
+
+[MONO3]
+STR_NAME    :Retro-style Monorail Trains
+STR_DESC    :オープンキャビンを持つモノレールです
+STR_CPTY    :各車両4名
+
+[NEMT]
+STR_NAME    :Inverted Roller Coaster
+STR_DESC    :コースの下にぶら下がった座席があり、コースには巨大ループ、ひねり、急降下があります
+STR_CPTY    :各車両4名
+
+[NRL]
+STR_NAME    :Steam Trains
+STR_DESC    :レプリカの蒸気機関車と炭水車、屋根なしの木製客車からなるミニチュア列車です
+STR_CPTY    :各車両6名
+
+[NRL2]
+STR_NAME    :Steam Trains with Covered Cars
+STR_DESC    :レプリカの蒸気機関車と炭水車、布製の屋根の木製客車からなるミニチュア列車です
+STR_CPTY    :各車両6名
+
+[OBS1]
+STR_NAME    :Observation Tower
+STR_DESC    :展望キャビンが回転しながら高い塔を登ります
+STR_CPTY    :定員20名
+
+[OBS2]
+STR_NAME    :Double-deck Observation Tower
+STR_DESC    :2階建ての展望キャビンが回転しながら高い塔を登ります
+STR_CPTY    :定員32名
+
+[PIZZS]
+STR_NAME    :Pizza Stall
+STR_DESC    :ピザを売る売店です
+
+[PMT1]
+STR_NAME    :Mine Ride
+STR_DESC    :動力付きの鉱山列車がスムーズでひねりのあるコースを進む乗物です
+STR_CPTY    :各車両2名または4名
+
+[POPCS]
+STR_NAME    :Popcorn Stall
+STR_DESC    :ポップコーンを売る売店です
+
+[PREMT1]
+STR_NAME    :LIM Launched Roller Coaster
+STR_DESC    :リニアモーターで急速発進するローラーコースターで、加速してひねりのある反転を走行します
+STR_CPTY    :各車両4名
+
+[PRETST]
+STR_NAME    :Pretzel Stall
+STR_DESC    :サクサクのプレッツェルを売る売店です
+
+[PTCT1]
+STR_NAME    :Wooden Roller Coaster Trains
+STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターです
+STR_CPTY    :各車両4名
+
+[PTCT2]
+STR_NAME    :Wooden Roller Coaster Trains (6 seater)
+STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターです
+STR_CPTY    :各車両6名
+
+[PTCT2R]
+STR_NAME    :Wooden Roller Coaster Trains (6 seater, Reversed)
+STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターで、座席が後ろ向きになっています
+STR_CPTY    :各車両6名
+
+[RAPBOAT]
+STR_NAME    :River Rapids
+STR_DESC    :円形のボートが、滝や急流のある幅の広い水路を曲がりながら流れて行くスリリングな乗物です
+STR_CPTY    :各ボート8名
+
+[RBOAT]
+STR_NAME    :Rowing Boats
+STR_DESC    :乗客が自分で漕ぐ手漕ぎボートです
+STR_CPTY    :各ボート2名
+
+[RCKC]
+STR_NAME    :Rocket Cars
+STR_DESC    :車両をロケットに見立てたローラーコースターです
+STR_CPTY    :各車両4名
+
+[RCR]
+STR_NAME    :Racing Cars
+STR_DESC    :レーシングカーの形をした、動力付きの車両です
+STR_CPTY    :各車両1名
+
+[REVCAR]
+STR_NAME    :Reverser Roller Coaster
+STR_DESC    :特殊な反転ターンがある木製のコースをボギー車両が走行するコースターです
+STR_CPTY    :各車両6名
+
+[REVF1]
+STR_NAME    :Reverse Freefall Car
+STR_DESC    :逆向きフリーフォールのある、大型コースターです
+STR_CPTY    :各車両8名
+
+[RFTBOAT]
+STR_NAME    :River Rafts
+STR_DESC    :いかだの形のボートが、ゆるやかに曲がりくねった川のコースを進む乗物です
+STR_CPTY    :各ボート4名
+
+[RSAUS]
+STR_NAME    :Roast Sausage Stall
+STR_DESC    :中華風のロースト?ーセージを売る売店です
+
+[SBOX]
+STR_NAME    :Soap Box Derby Racers
+STR_DESC    :石鹸入れの形をした車両の、シングルレールコースのローラーコースターです
+STR_CPTY    :各車両4名
+
+[SCHT1]
+STR_NAME    :Roller Coaster Trains
+STR_DESC    :垂直ループが可?な、膝の安全バーが付いたローラーコースターです
+STR_CPTY    :各車両4名
+
+[SFRIC1]
+STR_NAME    :Wooden Side-Friction Cars
+STR_DESC    :ベーシックな車両の、サイドフリクションローラーコースターです
+STR_CPTY    :各車両4名
+
+[SIMPOD]
+STR_NAME    :Motion Simulator
+STR_DESC    :映像に合わせて油圧可動式のポッドが動くシミュレーターです
+STR_CPTY    :定員8名
+
+[SKYTR]
+STR_NAME    :Mini Suspended Flying Coaster
+STR_DESC    :シングルレールコースの特殊なデザインの車両から乗客がうつぶせにぶら下がり、コーナーでは左右に振られるコースターです
+STR_CPTY    :各車両1名
+
+[SLCFO]
+STR_NAME    :Inverted Shuttle Coaster
+STR_DESC    :乗客は前後に向かい合って座り、きつい反転やループ、ひねりのあるコースを走行するコースターです
+STR_CPTY    :各車両4名
+
+[SLCT]
+STR_NAME    :Compact Inverted Coaster
+STR_DESC    :乗客はペアになってコースの下にぶら下がり、きつい反転やループ、ひねりのあるコースを走行するコースターです
+STR_CPTY    :各車両2名
+
+[SMC1]
+STR_NAME    :Mouse Cars
+STR_DESC    :各車両がネズミの形をした乗物です
+STR_CPTY    :各車両4名
+
+[SMC2]
+STR_NAME    :Mine Cars
+STR_DESC    :木製のトロッコ型の個別の車両です
+STR_CPTY    :各車両4名
+
+[SMONO]
+STR_NAME    :Suspended Monorail Trains
+STR_DESC    :大定員のモノレールです
+STR_CPTY    :各車両8名
+
+[SOUVS]
+STR_NAME    :Souvenir Stall
+STR_DESC    :ぬいぐるみや傘を売る売店です
+
+[SOYBEAN]
+STR_NAME    :Soybean Milk Stall
+STR_DESC    :パック入りの豆乳を売る売店です
+
+[SPBOAT]
+STR_NAME    :Splash Boats
+STR_DESC    :大定員のボートが幅の広い水路を進んでいき、ベルトコンベヤーで傾斜を上がると加速して一気に急傾斜を下り、水に突っ込んで乗客がずぶ濡れになる乗物です
+STR_CPTY    :定員16名
+
+[SPCAR]
+STR_NAME    :Sportscars
+STR_DESC    :スポーツカーの形をした、動力付きの車両です
+STR_CPTY    :各車両2名
+
+[SPDRCR]
+STR_NAME    :Spiral Roller Coaster
+STR_DESC    :スパイラルリフトヒルを持つスチール製のコースで、シートが直列しているローラーコースターです
+STR_CPTY    :各車両6名
+
+[SQDST]
+STR_NAME    :Sea Food Stall
+STR_DESC    :ゲ?揚げを売る売店です
+
+[SRINGS]
+STR_NAME    :Space Rings
+STR_DESC    :同軸のピボットリングで、全方向に回転する乗物です
+STR_CPTY    :各1名
+
+[SSC1]
+STR_NAME    :Launched Freefall
+STR_DESC    :圧搾空気により高いスチールの塔に上がった車両が、重力で下ってくる乗物です
+STR_CPTY    :定員8名
+
+[STARFRDR]
+STR_NAME    :Star Fruit Drink Stall
+STR_DESC    :スターフルーツの飲み物を売る売店です
+
+[STEEP1]
+STR_NAME    :Steeplechase
+STR_DESC    :シングルレールコースを馬の形の車両が走行する乗物です
+STR_CPTY    :各車両2名
+
+[STEEP2]
+STR_NAME    :Motorbike Races
+STR_DESC    :シングルレールコースをオートバイの形の車両が走行する乗物です
+STR_CPTY    :各車両2名
+
+[SUBMAR]
+STR_NAME    :Submarine Ride
+STR_DESC    :水中のコースを、潜水艦に乗り込んで進む乗物です
+STR_CPTY    :各鑑4名
+
+[SUBSTL]
+STR_NAME    :Sub Sandwich Stall
+STR_DESC    :新鮮なサブマリンサンドイッチを売る売店です
+
+[SUNGST]
+STR_NAME    :Sunglasses Stall
+STR_DESC    :いろいろな種類のサングラスを取りそろえた売店です
+
+[SWANS]
+STR_NAME    :Swans
+STR_DESC    :前席の乗客がペダルを漕いで進む、白鳥型のボートです
+STR_CPTY    :各ボート4名
+
+[SWSH1]
+STR_NAME    :Pirate Ship
+STR_DESC    :前後にスイングする大きなパイレーツです
+STR_CPTY    :定員16名
+
+[SWSH2]
+STR_NAME    :Swinging Inverter Ship
+STR_DESC    :アームの片側に船が、片側に重りが付いており、360度回転する乗物です
+STR_CPTY    :定員12名
+
+[THCAR]
+STR_NAME    :Air Powered Vertical Coaster
+STR_DESC    :空気圧で勢いよく発進した後、コースを垂直に駆け上り、また反対側を駆け下りて発着所に戻ってくるコースターです
+STR_CPTY    :各車両2名
+
+[TLT1]
+STR_NAME    :Toilets
+STR_DESC    :コンクリートのプレハブでできた、ベーシックなトイレです
+
+[TLT2]
+STR_NAME    :Toilets
+STR_DESC    :ログハウス風の建物のトイレです
+
+[TOFFS]
+STR_NAME    :Toffee Apple Stall
+STR_DESC    :棒にさしたリンゴアメを売る、リンゴ形の売店です
+
+[TOGST]
+STR_NAME    :Stand-up Roller Coaster
+STR_DESC    :立ち乗りの、ループローラーコースターです
+STR_CPTY    :各車両4名
+
+[TOPSP1]
+STR_NAME    :Top Spin
+STR_DESC    :大きな回転するアームからぶら下がったゴンドラが前後・上下に回転する乗物です
+STR_CPTY    :定員8名
+
+[TRAM1]
+STR_NAME    :Trams
+STR_DESC    :昔の路面電車のレプリカです
+STR_CPTY    :各車両10名
+
+[TRIKE]
+STR_NAME    :Water Tricycles
+STR_DESC    :浮力を持った車輪の、ペダル漕ぎ三輪車です
+STR_CPTY    :各車両2名
+
+[TRUCK1]
+STR_NAME    :Pickup Trucks
+STR_DESC    :ピックアップトラックの形をした、動力付きの乗物です
+STR_CPTY    :各車両1名
+
+[TSHRT]
+STR_NAME    :T-Shirt Stall
+STR_DESC    :記念のTシャツを売る売店です
+
+[TWIST1]
+STR_NAME    :Twist
+STR_DESC    :3本の回転する長いアームの先に、それぞれペアシートが付いた乗物です
+STR_CPTY    :定員18名
+
+[TWIST2]
+STR_NAME    :Snow Cups
+STR_DESC    :スノーマンが中心にいて、その周りをペアシートが回る乗物です
+STR_CPTY    :定員18名
+
+[UTCAR]
+STR_NAME    :Twister Cars
+STR_DESC    :ハート形のひねりを持つローラーコースターです
+STR_CPTY    :各車両4名
+
+[UTCARR]
+STR_NAME    :Twister Cars (starting reversed)
+STR_DESC    :ハート形のひねりを持つローラーコースター(逆向きスタート)です
+STR_CPTY    :各車両4名
+
+[VCR]
+STR_NAME    :Vintage Cars
+STR_DESC    :クラシックスタイルの動力付き車両が、あらかじめ決められたコースを進む乗物です
+STR_CPTY    :各車両2名
+
+[VEKDV]
+STR_NAME    :Inverted Vertical Shuttle
+STR_DESC    :乗客はコースの下にぶら下げられ、垂直なコースを後ろ向きに登って降下し、ループとひねり、きつい反転を走行します
+STR_CPTY    :各車両4名
+
+[VEKST]
+STR_NAME    :Lay-down Roller Coaster
+STR_DESC    :乗客は特別なハーネスにより寝た状態で固定され、ひねりのあるコースを地面に面したり反転したりして走行します
+STR_CPTY    :各車両4名
+
+[VEKVAMP]
+STR_NAME    :Swinging Floorless Cars
+STR_DESC    :チェアリフトタイプの座席に座ってぶら下がるローラーコースターで、コーナーで大きく揺れ動きます
+STR_CPTY    :各車両2名
+
+[VREEL]
+STR_NAME    :Virginia Reel
+STR_DESC    :円形の車両が木製のコース上を回転しながらジグザグに進んで行く乗物です
+STR_CPTY    :各車両4名
+
+[WCATC]
+STR_NAME    :Automobile Cars
+STR_DESC    :自動車の形をしたローラーコースターです
+STR_CPTY    :各車両4名
+
+[WMMINE]
+STR_NAME    :Wooden Wild Mine Ride
+STR_DESC    :小さなトロッコが木製のコースをジグザグに走り、危なっかしくヘアピンを曲がったり急降下したりするスリリングな乗物です
+STR_CPTY    :各車両2名
+
+[WMOUSE]
+STR_NAME    :Wooden Wild Mouse
+STR_DESC    :小さなネズミの形をした車両が木製のコースをちょこまかと走り回り、危なっかしくヘアピンを曲がったり急降下したりするスリリングな乗物です
+STR_CPTY    :各車両2名
+
+[WMSPIN]
+STR_NAME    :Spinning Wild Mouse
+STR_DESC    :ネズミの形をした車両がタイトコーナーや短い降下を走り回り、スピンして方向感覚が失われる乗物です
+STR_CPTY    :各車両4名
+
+[WONTON]
+STR_NAME    :Wonton Soup Stall
+STR_DESC    :ワンタンスープを売る売店です
+
+[ZLDB]
+STR_NAME    :Ladybird Trains
+STR_DESC    :てんとう虫形の車両のローラーコースターです
+STR_CPTY    :各車両2名
+
+[ZLOG]
+STR_NAME    :Log Trains
+STR_DESC    :丸太の形をした車両のローラーコースターです
+STR_CPTY    :各車両2名
+
 #WW
 [CONDORRD]
 STR_NAME    :Condor Ride
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 passengers per car
+
+### Footpaths
+[PATHASH]
+STR_NAME    :灰色の歩道
+
+[PATHCRZY]
+STR_NAME    :クレイジー敷石歩道
+
+[PATHDIRT]
+STR_NAME    :土の歩道
+
+[PATHSPCE]
+STR_NAME    :スペース風歩道
+
+[ROAD]
+STR_NAME    :道路
+
+[TARMAC]
+STR_NAME    :舗装歩道
+
+[TARMACB]
+STR_NAME    :茶色の舗装歩道
+
+[TARMACG]
+STR_NAME    :緑色の舗装歩道
+
+### Banners
+[BN1]
+STR_NAME    :看板
+
+[BN2]
+STR_NAME    :ジャングル風の看板
+
+[BN3]
+STR_NAME    :クラシカル風の看板
+
+[BN4]
+STR_NAME    :エジプト風の看板
+
+[BN5]
+STR_NAME    :木製の看板
+
+[BN6]
+STR_NAME    :ジュラシック風の看板
+
+[BN7]
+STR_NAME    :パゴダ風の看板
+
+[BN8]
+STR_NAME    :雪をかぶった看板
+
+[BN9]
+STR_NAME    :スペース風の看板
+
+### Path additions
+[BENCH1]
+STR_NAME    :ベンチ
+
+[BENCHLOG]
+STR_NAME    :ベンチ
+
+[BENCHPL]
+STR_NAME    :席
+
+[BENCHSPC]
+STR_NAME    :ベンチ
+
+[BENCHSTN]
+STR_NAME    :石のベンチ
+
+[JUMPFNT1]
+STR_NAME    :ジャンピング噴水
+
+[JUMPSNW1]
+STR_NAME    :ジャンピング雪玉
+
+[LAMP1]
+STR_NAME    :ランプ
+
+[LAMP2]
+STR_NAME    :ランプ
+
+[LAMP3]
+STR_NAME    :ランプ
+
+[LAMP4]
+STR_NAME    :ランプ
+
+[LAMPDSY]
+STR_NAME    :デイジーランプ
+
+[LAMPPIR]
+STR_NAME    :ランプ
+
+[LITTER1]
+STR_NAME    :ゴミ箱
+
+[LITTERMN]
+STR_NAME    :ゴミ箱
+
+[LITTERSP]
+STR_NAME    :ゴミ箱
+
+[LITTERWW]
+STR_NAME    :ゴミ箱
+
+[QTV1]
+STR_NAME    :行列テレビ
+
+### Park entrances
+[PKEMM]
+STR_NAME    :遊園地の入口のゲート
+
+[PKENT1]
+STR_NAME    :昔ながらの遊園地の入口
+
+[PKESFH]
+STR_NAME    :遊園地の入口の建物
+
+### Scenery groups
+[SCGABSTR]
+STR_NAME    :抽象派風のテーマ
+
+[SCGCANDY]
+STR_NAME    :巨大キャンディーのテーマ
+
+[SCGCLASS]
+STR_NAME    :クラシカル/ローマ風のテーマ
+
+[SCGEGYPT]
+STR_NAME    :エジプト風のテーマ
+
+[SCGFENCE]
+STR_NAME    :フェンスと壁
+
+[SCGGARDN]
+STR_NAME    :花壇
+
+[SCGGIANT]
+STR_NAME    :巨大花壇風のテーマ
+
+[SCGHALLO]
+STR_NAME    :不気味なテーマ
+
+[SCGINDUS]
+STR_NAME    :機械風のテーマ
+
+[SCGJUNGL]
+STR_NAME    :ジャングル風のテーマ
+
+[SCGJURAS]
+STR_NAME    :ジュラシック風のテーマ
+
+[SCGMART]
+STR_NAME    :火星人風のテーマ
+
+[SCGMEDIE]
+STR_NAME    :中世風のテーマ
+
+[SCGMINE]
+STR_NAME    :鉱山風のテーマ
+
+[SCGORIEN]
+STR_NAME    :パゴダ風のテーマ
+
+[SCGPATHX]
+STR_NAME    :歩道用の看板とアイテム
+
+[SCGPIRAT]
+STR_NAME    :海賊風のテーマ
+
+[SCGSHRUB]
+STR_NAME    :低木と装飾品
+
+[SCGSIXFL]
+STR_NAME    :シックスフラッグスのテーマ
+
+[SCGSNOW]
+STR_NAME    :雪と氷のテーマ
+
+[SCGSPACE]
+STR_NAME    :スペース風のテーマ
+
+[SCGSPOOK]
+STR_NAME    :薄気味悪いテーマ
+
+[SCGSPORT]
+STR_NAME    :スポーツ風のテーマ
+
+[SCGTREES]
+STR_NAME    :木
+
+[SCGURBAN]
+STR_NAME    :都会風のテーマ
+
+[SCGWALLS]
+STR_NAME    :壁と屋根
+
+[SCGWATER]
+STR_NAME    :水を使用したテーマ
+
+[SCGWOND]
+STR_NAME    :不思議の国のテーマ
+
+[SCGWWEST]
+STR_NAME    :大西部風テーマ
+
+### Large scenery
+[BADRACK]
+STR_NAME    :バドミントンラケット
+
+[GENSTORE]
+STR_NAME    :雑貨店
+
+[GLTHENT]
+STR_NAME    :「ゴリアテ」看板
+
+[MDSAENT]
+STR_NAME    :「メドゥーサ」看板
+
+[NITROENT]
+STR_NAME    :「ニトロ」看板
+
+[PRSHIP]
+STR_NAME    :海賊船
+
+[SAH]
+STR_NAME    :家
+
+[SAH2]
+STR_NAME    :家
+
+[SAH3]
+STR_NAME    :アパート
+
+[SALOON]
+STR_NAME    :酒場
+
+[SCLN]
+STR_NAME    :並木
+
+[SCOL]
+STR_NAME    :ローマのコロシアム
+
+[SCT]
+STR_NAME    :テント
+
+[SDN1]
+STR_NAME    :恐竜
+
+[SDN2]
+STR_NAME    :恐竜
+
+[SDN3]
+STR_NAME    :恐竜
+
+[SGP]
+STR_NAME    :巨大カボチャ
+
+[SHS1]
+STR_NAME    :テラスハウス
+
+[SHS2]
+STR_NAME    :家
+
+[SIP]
+STR_NAME    :氷の宮殿
+
+[SMB]
+STR_NAME    :火星風の建物
+
+[SMH1]
+STR_NAME    :採掘小屋
+
+[SMH2]
+STR_NAME    :採掘小屋
+
+[SMN1]
+STR_NAME    :採掘シャフト
+
+[SOB]
+STR_NAME    :雑居ビル
+
+[SOH1]
+STR_NAME    :家
+
+[SOH2]
+STR_NAME    :家
+
+[SOH3]
+STR_NAME    :家
+
+[SPG]
+STR_NAME    :パゴダ
+
+[SPS]
+STR_NAME    :ガ?リンスタンド
+
+[SPYR]
+STR_NAME    :ピラミッド
+
+[SSH]
+STR_NAME    :宇宙カプセル
+
+[SSIG1]
+STR_NAME    :スクロール看板
+
+[SSIG2]
+STR_NAME    :3D看板
+
+[SSIG3]
+STR_NAME    :縦の3D看板
+
+[SSIG4]
+STR_NAME    :3D看板
+
+[SSK1]
+STR_NAME    :骸骨
+
+[SSPX]
+STR_NAME    :スフィンクス
+
+[SSR]
+STR_NAME    :宇宙ロケット
+
+[SST]
+STR_NAME    :衛星
+
+[STB1]
+STR_NAME    :城の塔
+
+[STB2]
+STR_NAME    :城の塔
+
+[STG1]
+STR_NAME    :城の塔
+
+[STG2]
+STR_NAME    :城の塔
+
+[STH]
+STR_NAME    :公会堂
+
+[SVLC]
+STR_NAME    :火山
+
+[TAVERN]
+STR_NAME    :居酒屋
+
+[WWBANK]
+STR_NAME    :銀行
+
+### Small scenery
+[ALLSORT1]
+STR_NAME    :キャンディー
+
+[ALLSORT2]
+STR_NAME    :キャンディー
+
+[BADSHUT]
+STR_NAME    :シャトル
+
+[BADSHUT2]
+STR_NAME    :シャトル
+
+[BALL1]
+STR_NAME    :アメリカンフットボール
+
+[BALL2]
+STR_NAME    :アメリカンフットボール
+
+[BALL3]
+STR_NAME    :フットボール
+
+[BALL4]
+STR_NAME    :テニスボール
+
+[BEANST1]
+STR_NAME    :巨大豆
+
+[BEANST2]
+STR_NAME    :巨大豆
+
+[BRBASE]
+STR_NAME    :ベースブロック
+
+[BRBASE2]
+STR_NAME    :ベースブロック
+
+[BRBASE3]
+STR_NAME    :ベースブロック
+
+[BRCRRF1]
+STR_NAME    :カーブした屋根
+
+[BRCRRF2]
+STR_NAME    :カーブした屋根
+
+[BUTTFLY]
+STR_NAME    :ちょうちょ
+
+[CARROT]
+STR_NAME    :巨大ニンジン
+
+[CHBBASE]
+STR_NAME    :市松模様ブロック
+
+[CHEST1]
+STR_NAME    :宝箱
+
+[CHEST2]
+STR_NAME    :宝箱
+
+[CHOCROOF]
+STR_NAME    :板チョコ
+
+[CNBALLS]
+STR_NAME    :大砲の弾
+
+[CNDYRK1]
+STR_NAME    :キャンディースティック
+
+[COG1]
+STR_NAME    :はめ歯歯車
+
+[COG1R]
+STR_NAME    :はめ歯歯車
+
+[COG1U]
+STR_NAME    :はめ歯歯車
+
+[COG1UR]
+STR_NAME    :はめ歯歯車
+
+[COG2]
+STR_NAME    :小さいはめ歯歯車
+
+[COG2R]
+STR_NAME    :小さいはめ歯歯車
+
+[COG2U]
+STR_NAME    :小さいはめ歯歯車
+
+[COG2UR]
+STR_NAME    :小さいはめ歯歯車
+
+[COLAGUM]
+STR_NAME    :コーラキャンディー
+
+[CORROOF]
+STR_NAME    :スチール製波形屋根
+
+[CORROOF2]
+STR_NAME    :スチール製波形ベース
+
+[CWBCRV32]
+STR_NAME    :カーブした壁
+
+[CWBCRV33]
+STR_NAME    :カーブしたブロック
+
+[CWFCRV32]
+STR_NAME    :カーブした壁
+
+[CWFCRV33]
+STR_NAME    :カーブしたブロック
+
+[FERN1]
+STR_NAME    :巨大シダ
+
+[FIRE1]
+STR_NAME    :炎
+
+[GEOROOF1]
+STR_NAME    :ガラスの屋根
+
+[GEOROOF2]
+STR_NAME    :ガラスの屋根
+
+[GGRS1]
+STR_NAME    :巨大な草
+
+[HANG1]
+STR_NAME    :絞首台
+
+[HELMET1]
+STR_NAME    :アメリカンフットボールヘルメット
+
+[ICECUBE]
+STR_NAME    :アイスキューブ
+
+[IGROOF]
+STR_NAME    :イグルーの屋根
+
+[JBEAN1]
+STR_NAME    :ジェリービーン
+
+[JELBAB1]
+STR_NAME    :ジェリーベビー
+
+[JELDROP1]
+STR_NAME    :フルーツドロップ
+
+[JELDROP2]
+STR_NAME    :フルーツドロップ
+
+[JNGROOF1]
+STR_NAME    :屋根
+
+[LOLLY1]
+STR_NAME    :ロリポップ
+
+[MALLOW1]
+STR_NAME    :マシュマロ
+
+[MALLOW2]
+STR_NAME    :マシュマロ
+
+[MINROOF1]
+STR_NAME    :屋根
+
+[MINT1]
+STR_NAME    :ミント
+
+[MMENT1]
+STR_NAME    :装飾建造物
+
+[MMENT2]
+STR_NAME    :装飾建造物
+
+[MMENT3]
+STR_NAME    :装飾建造物
+
+[PAGROOF1]
+STR_NAME    :屋根
+
+[PIPE32]
+STR_NAME    :パイプ部分
+
+[PIPE32J]
+STR_NAME    :パイプ部分
+
+[PIPE8]
+STR_NAME    :パイプ部分
+
+[PIRFLAG]
+STR_NAME    :海賊の旗
+
+[PIRROOF1]
+STR_NAME    :屋根
+
+[PIRROOF2]
+STR_NAME    :屋根
+
+[PRCAN]
+STR_NAME    :大砲
+
+[ROMROOF1]
+STR_NAME    :屋根
+
+[ROMROOF2]
+STR_NAME    :台座
+
+[ROOF1]
+STR_NAME    :屋根
+
+[ROOF10]
+STR_NAME    :屋根
+
+[ROOF11]
+STR_NAME    :屋根
+
+[ROOF12]
+STR_NAME    :屋根
+
+[ROOF13]
+STR_NAME    :屋根
+
+[ROOF14]
+STR_NAME    :屋根
+
+[ROOF2]
+STR_NAME    :屋根
+
+[ROOF3]
+STR_NAME    :屋根
+
+[ROOF4]
+STR_NAME    :屋根
+
+[ROOF5]
+STR_NAME    :屋根
+
+[ROOF6]
+STR_NAME    :屋根
+
+[ROOF7]
+STR_NAME    :屋根
+
+[ROOF8]
+STR_NAME    :屋根
+
+[ROOF9]
+STR_NAME    :屋根
+
+[SKTBASE]
+STR_NAME    :ブロック
+
+[SKTBASET]
+STR_NAME    :ブロック
+
+[SKTDW]
+STR_NAME    :壁
+
+[SKTDW2]
+STR_NAME    :壁
+
+[SMSKULL]
+STR_NAME    :頭蓋骨
+
+[SNAIL]
+STR_NAME    :カタツムリ
+
+[SPCROOF1]
+STR_NAME    :屋根
+
+[SPIDER1]
+STR_NAME    :クモ
+
+[STBASE]
+STR_NAME    :スチールブロック
+
+[STLBASET]
+STR_NAME    :スチールブロック
+
+[STLDW]
+STR_NAME    :スチール壁
+
+[STLDW2]
+STR_NAME    :スチール壁
+
+[SUMRF]
+STR_NAME    :屋根
+
+[SUPPLEG1]
+STR_NAME    :ポール
+
+[SUPPLEG2]
+STR_NAME    :ポール
+
+[SUPPW1]
+STR_NAME    :支持?造物
+
+[SUPPW2]
+STR_NAME    :支持?造物
+
+[SUPPW3]
+STR_NAME    :支持?造物
+
+[TAC]
+STR_NAME    :アリゾナ糸杉
+
+[TAL]
+STR_NAME    :ワニの形の木
+
+[TAP]
+STR_NAME    :アレッポ松
+
+[TAS]
+STR_NAME    :ヤマナラシ
+
+[TAS1]
+STR_NAME    :キャンディーツリー
+
+[TAS2]
+STR_NAME    :キャンディーツリー
+
+[TAS3]
+STR_NAME    :キャンディーツリー
+
+[TAS4]
+STR_NAME    :キャンディー
+
+[TB1]
+STR_NAME    :ホワイトビショップ
+
+[TB2]
+STR_NAME    :ブラックビショップ
+
+[TBC]
+STR_NAME    :サボテン
+
+[TBN]
+STR_NAME    :骨
+
+[TBN1]
+STR_NAME    :骨
+
+[TBP]
+STR_NAME    :黒ポプラ
+
+[TBR]
+STR_NAME    :ガマ
+
+[TBR1]
+STR_NAME    :樽
+
+[TBR2]
+STR_NAME    :樽
+
+[TBR3]
+STR_NAME    :樽
+
+[TBR4]
+STR_NAME    :樽
+
+[TBW]
+STR_NAME    :壊れた車輪
+
+[TCB]
+STR_NAME    :クラブ形の木
+
+[TCC]
+STR_NAME    :中国杉
+
+[TCD]
+STR_NAME    :大釜
+
+[TCE]
+STR_NAME    :キャンパーダウンニレの木
+
+[TCF]
+STR_NAME    :カフカスモミの木
+
+[TCFS]
+STR_NAME    :雪をかぶったカフカスモミの木
+
+[TCJ]
+STR_NAME    :普通のネズの木
+
+[TCK]
+STR_NAME    :時計
+
+[TCL]
+STR_NAME    :レバノン杉
+
+[TCN]
+STR_NAME    :大砲
+
+[TCO]
+STR_NAME    :普通のカシの木
+
+[TCRP]
+STR_NAME    :コルシカ松
+
+[TCT]
+STR_NAME    :食用ヤシ
+
+[TCT1]
+STR_NAME    :城の塔
+
+[TCT2]
+STR_NAME    :城の塔
+
+[TCY]
+STR_NAME    :普通のイチイ
+
+[TDF]
+STR_NAME    :イルカの噴水
+
+[TDM]
+STR_NAME    :ダイヤモンド型の木
+
+[TDN4]
+STR_NAME    :恐竜
+
+[TDN5]
+STR_NAME    :恐竜
+
+[TDT1]
+STR_NAME    :枯れ木
+
+[TDT2]
+STR_NAME    :枯れ木
+
+[TDT3]
+STR_NAME    :枯れ木
+
+[TEEPEE1]
+STR_NAME    :テント小屋
+
+[TEF]
+STR_NAME    :ゾウの噴水
+
+[TEL]
+STR_NAME    :ヨーロッパカラマツ
+
+[TEN]
+STR_NAME    :クレオパトラの針
+
+[TEP]
+STR_NAME    :エジプト風の柱
+
+[TERB]
+STR_NAME    :石のブロック
+
+[TERS]
+STR_NAME    :壊れた像
+
+[TES1]
+STR_NAME    :エジプトの像
+
+[TF1]
+STR_NAME    :果物の木
+
+[TF2]
+STR_NAME    :果物の木
+
+[TG1]
+STR_NAME    :花壇
+
+[TG10]
+STR_NAME    :花壇
+
+[TG11]
+STR_NAME    :花壇
+
+[TG12]
+STR_NAME    :花壇
+
+[TG13]
+STR_NAME    :花壇
+
+[TG14]
+STR_NAME    :花壇
+
+[TG15]
+STR_NAME    :花壇
+
+[TG16]
+STR_NAME    :花壇
+
+[TG17]
+STR_NAME    :花壇
+
+[TG18]
+STR_NAME    :花壇
+
+[TG19]
+STR_NAME    :花壇
+
+[TG2]
+STR_NAME    :花壇
+
+[TG20]
+STR_NAME    :花壇
+
+[TG21]
+STR_NAME    :花壇
+
+[TG3]
+STR_NAME    :花壇
+
+[TG4]
+STR_NAME    :花壇
+
+[TG5]
+STR_NAME    :花壇
+
+[TG6]
+STR_NAME    :花壇
+
+[TG7]
+STR_NAME    :花壇
+
+[TG8]
+STR_NAME    :花壇
+
+[TG9]
+STR_NAME    :花壇
+
+[TGC1]
+STR_NAME    :彫刻
+
+[TGC2]
+STR_NAME    :彫刻
+
+[TGE1]
+STR_NAME    :幾何学的彫刻
+
+[TGE2]
+STR_NAME    :幾何学的彫刻
+
+[TGE3]
+STR_NAME    :幾何学的彫刻
+
+[TGE4]
+STR_NAME    :幾何学的彫刻
+
+[TGE5]
+STR_NAME    :幾何学的彫刻
+
+[TGG]
+STR_NAME    :ゴング
+
+[TGH1]
+STR_NAME    :像
+
+[TGH2]
+STR_NAME    :像
+
+[TGHC]
+STR_NAME    :ゴールデンヒノキ
+
+[TGHC2]
+STR_NAME    :ヒバ
+
+[TGS]
+STR_NAME    :キリンの像
+
+[TGS1]
+STR_NAME    :墓石
+
+[TGS2]
+STR_NAME    :墓石
+
+[TGS3]
+STR_NAME    :墓石
+
+[TGS4]
+STR_NAME    :墓石
+
+[TH1]
+STR_NAME    :カナリアヤシの木
+
+[TH2]
+STR_NAME    :ヤシの木
+
+[THL]
+STR_NAME    :アメリカサイカチ
+
+[THRS]
+STR_NAME    :騎手の像
+
+[THT]
+STR_NAME    :ハート形の木
+
+[TIC]
+STR_NAME    :オニヒバ
+
+[TIG]
+STR_NAME    :イグルー
+
+[TITC]
+STR_NAME    :イタリア糸杉
+
+[TJB1]
+STR_NAME    :低木
+
+[TJB2]
+STR_NAME    :低木
+
+[TJB3]
+STR_NAME    :低木
+
+[TJB4]
+STR_NAME    :低木
+
+[TJF]
+STR_NAME    :花
+
+[TJP1]
+STR_NAME    :植物
+
+[TJP2]
+STR_NAME    :植物
+
+[TJT1]
+STR_NAME    :木
+
+[TJT2]
+STR_NAME    :木
+
+[TJT3]
+STR_NAME    :木
+
+[TJT4]
+STR_NAME    :木
+
+[TJT5]
+STR_NAME    :木
+
+[TJT6]
+STR_NAME    :木
+
+[TK1]
+STR_NAME    :ホワイトナイト
+
+[TK2]
+STR_NAME    :ブラックナイト
+
+[TK3]
+STR_NAME    :ホワイトキング
+
+[TK4]
+STR_NAME    :ブラックキング
+
+[TL0]
+STR_NAME    :木
+
+[TL1]
+STR_NAME    :木
+
+[TL2]
+STR_NAME    :木
+
+[TL3]
+STR_NAME    :木
+
+[TLC]
+STR_NAME    :ロー?ン糸杉
+
+[TLP]
+STR_NAME    :セイヨウハコヤナギ
+
+[TLY]
+STR_NAME    :ユリ
+
+[TM0]
+STR_NAME    :木
+
+[TM1]
+STR_NAME    :木
+
+[TM2]
+STR_NAME    :木
+
+[TM3]
+STR_NAME    :木
+
+[TMBJ]
+STR_NAME    :マイヤーの青ネズの木
+
+[TMC]
+STR_NAME    :モンテレー糸杉
+
+[TMG]
+STR_NAME    :モクレン
+
+[TMJ]
+STR_NAME    :ジャンク
+
+[TML]
+STR_NAME    :丸太
+
+[TMM1]
+STR_NAME    :墓地モニュメント
+
+[TMM2]
+STR_NAME    :墓地モニュメント
+
+[TMM3]
+STR_NAME    :墓地モニュメント
+
+[TMO1]
+STR_NAME    :火星人のオブジェクト
+
+[TMO2]
+STR_NAME    :火星人のオブジェクト
+
+[TMO3]
+STR_NAME    :火星人のオブジェクト
+
+[TMO4]
+STR_NAME    :火星人のオブジェクト
+
+[TMO5]
+STR_NAME    :火星人のオブジェクト
+
+[TMP]
+STR_NAME    :モンキーパズルの木
+
+[TMS1]
+STR_NAME    :毒キノコ
+
+[TMW]
+STR_NAME    :車輪
+
+[TMZP]
+STR_NAME    :モンテスマ松
+
+[TNS]
+STR_NAME    :ドイツトウヒ
+
+[TNSS]
+STR_NAME    :雪をかぶったドイツトウヒ
+
+[TNTROOF1]
+STR_NAME    :キャンバス地の屋根
+
+[TOH1]
+STR_NAME    :家
+
+[TOH2]
+STR_NAME    :家
+
+[TOH3]
+STR_NAME    :建物
+
+[TORN1]
+STR_NAME    :装飾の木
+
+[TORN2]
+STR_NAME    :装飾の木
+
+[TOS]
+STR_NAME    :像
+
+[TOT1]
+STR_NAME    :木
+
+[TOT2]
+STR_NAME    :木
+
+[TOT3]
+STR_NAME    :木
+
+[TOT4]
+STR_NAME    :木
+
+[TOTEM1]
+STR_NAME    :トーテムポール
+
+[TP1]
+STR_NAME    :ホワイトポーン
+
+[TP2]
+STR_NAME    :ブラックポーン
+
+[TPM]
+STR_NAME    :ヤシの木
+
+[TQ1]
+STR_NAME    :ホワイトクイーン
+
+[TQ2]
+STR_NAME    :ブラッククイーン
+
+[TQF]
+STR_NAME    :キューピッドの噴水
+
+[TR1]
+STR_NAME    :ホワイトルーク
+
+[TR2]
+STR_NAME    :ブラックルーク
+
+[TRC]
+STR_NAME    :ローマの柱
+
+[TRF]
+STR_NAME    :米松
+
+[TRF2]
+STR_NAME    :米松
+
+[TRF3]
+STR_NAME    :雪をかぶった米松
+
+[TRFS]
+STR_NAME    :雪をかぶった米松
+
+[TRMS]
+STR_NAME    :ローマの像
+
+[TROPT1]
+STR_NAME    :木
+
+[TRWS]
+STR_NAME    :ローマの像
+
+[TS0]
+STR_NAME    :木
+
+[TS1]
+STR_NAME    :木
+
+[TS2]
+STR_NAME    :木
+
+[TS3]
+STR_NAME    :木
+
+[TS4]
+STR_NAME    :装飾用の木
+
+[TS5]
+STR_NAME    :装飾用の木
+
+[TS6]
+STR_NAME    :装飾用の木
+
+[TSB]
+STR_NAME    :シラカバ
+
+[TSC]
+STR_NAME    :サボテン
+
+[TSC2]
+STR_NAME    :建物
+
+[TSCP]
+STR_NAME    :宇宙カプセル
+
+[TSD]
+STR_NAME    :スペード型の木
+
+[TSF1]
+STR_NAME    :巨大な雪片
+
+[TSF2]
+STR_NAME    :巨大な雪片
+
+[TSF3]
+STR_NAME    :巨大な雪片
+
+[TSG]
+STR_NAME    :沼地のベトベト
+
+[TSH]
+STR_NAME    :馬の像
+
+[TSH0]
+STR_NAME    :低木
+
+[TSH1]
+STR_NAME    :灌木
+
+[TSH2]
+STR_NAME    :低木
+
+[TSH3]
+STR_NAME    :低木
+
+[TSH4]
+STR_NAME    :灌木
+
+[TSH5]
+STR_NAME    :低木
+
+[TSK]
+STR_NAME    :頭蓋骨
+
+[TSM]
+STR_NAME    :スノーマン
+
+[TSMP]
+STR_NAME    :カボチャ
+
+[TSNB]
+STR_NAME    :雪玉
+
+[TSNC]
+STR_NAME    :ログハウス
+
+[TSP]
+STR_NAME    :スコットランド松
+
+[TSP1]
+STR_NAME    :木
+
+[TSP2]
+STR_NAME    :木
+
+[TSPH]
+STR_NAME    :家
+
+[TSQ]
+STR_NAME    :リスの形の木
+
+[TST1]
+STR_NAME    :毒キノコ
+
+[TST2]
+STR_NAME    :毒キノコ
+
+[TST3]
+STR_NAME    :毒キノコ
+
+[TST4]
+STR_NAME    :毒キノコ
+
+[TST5]
+STR_NAME    :毒キノコ
+
+[TSTD]
+STR_NAME    :いるかの像
+
+[TT1]
+STR_NAME    :ローマ寺院
+
+[TTF]
+STR_NAME    :噴水
+
+[TTG]
+STR_NAME    :ターゲット
+
+[TUS]
+STR_NAME    :ユニコーン像
+
+[TVL]
+STR_NAME    :ボスキングサリ
+
+[TWF]
+STR_NAME    :幾何学的噴水
+
+[TWH1]
+STR_NAME    :家
+
+[TWH2]
+STR_NAME    :カボチャの家
+
+[TWN]
+STR_NAME    :クルミの木
+
+[TWP]
+STR_NAME    :ウラジロハコヤナギ
+
+[TWW]
+STR_NAME    :シダレヤナギ
+
+[WAG1]
+STR_NAME    :ワゴン
+
+[WAG2]
+STR_NAME    :ワゴン
+
+[WASP]
+STR_NAME    :スズメバチ
+
+[WDBASE]
+STR_NAME    :木製ブロック
+
+[WDIAG]
+STR_NAME    :噴水
+
+[WHORIZ]
+STR_NAME    :ウォータージェット
+
+[WSPOUT]
+STR_NAME    :排水管
+
+### Walls
+[WALLBADM]
+STR_NAME    :バドミントンのラケット
+
+[WALLBB16]
+STR_NAME    :壁
+
+[WALLBB32]
+STR_NAME    :壁
+
+[WALLBB33]
+STR_NAME    :壁
+
+[WALLBB34]
+STR_NAME    :石の壁
+
+[WALLBB8]
+STR_NAME    :壁
+
+[WALLBR16]
+STR_NAME    :壁
+
+[WALLBR32]
+STR_NAME    :壁
+
+[WALLBR8]
+STR_NAME    :壁
+
+[WALLBRDR]
+STR_NAME    :戸口
+
+[WALLBRWN]
+STR_NAME    :窓
+
+[WALLCB16]
+STR_NAME    :壁
+
+[WALLCB32]
+STR_NAME    :壁
+
+[WALLCB8]
+STR_NAME    :壁
+
+[WALLCBDR]
+STR_NAME    :戸口
+
+[WALLCBPC]
+STR_NAME    :落とし門のドア
+
+[WALLCBWN]
+STR_NAME    :窓
+
+[WALLCF16]
+STR_NAME    :壁
+
+[WALLCF32]
+STR_NAME    :壁
+
+[WALLCF8]
+STR_NAME    :壁
+
+[WALLCFAR]
+STR_NAME    :壁のアーチ
+
+[WALLCFDR]
+STR_NAME    :戸口
+
+[WALLCFPC]
+STR_NAME    :落とし門のドア
+
+[WALLCFWN]
+STR_NAME    :窓
+
+[WALLCO16]
+STR_NAME    :スチール製の波形の壁
+
+[WALLCW32]
+STR_NAME    :壁
+
+[WALLCX32]
+STR_NAME    :壁
+
+[WALLCY32]
+STR_NAME    :壁
+
+[WALLCZ32]
+STR_NAME    :壁
+
+[WALLGL16]
+STR_NAME    :ガラスの壁
+
+[WALLGL32]
+STR_NAME    :ガラスの壁
+
+[WALLGL8]
+STR_NAME    :ガラスの壁
+
+[WALLIG16]
+STR_NAME    :イグルーの壁
+
+[WALLIG24]
+STR_NAME    :イグルーの壁
+
+[WALLJB16]
+STR_NAME    :ジェリービーンの壁
+
+[WALLJN32]
+STR_NAME    :壁
+
+[WALLLT32]
+STR_NAME    :スチール製の格子
+
+[WALLMM16]
+STR_NAME    :ガードレール
+
+[WALLMM17]
+STR_NAME    :ガードレール
+
+[WALLMN32]
+STR_NAME    :壁
+
+[WALLNT32]
+STR_NAME    :テニスネットの壁
+
+[WALLNT33]
+STR_NAME    :テニスネットの壁
+
+[WALLPG32]
+STR_NAME    :壁
+
+[WALLPOST]
+STR_NAME    :柱
+
+[WALLPR32]
+STR_NAME    :索具
+
+[WALLPR33]
+STR_NAME    :壁
+
+[WALLPR34]
+STR_NAME    :壁
+
+[WALLPR35]
+STR_NAME    :壁
+
+[WALLRH32]
+STR_NAME    :壁
+
+[WALLRK32]
+STR_NAME    :岩の壁
+
+[WALLRS16]
+STR_NAME    :壁
+
+[WALLRS32]
+STR_NAME    :壁
+
+[WALLRS8]
+STR_NAME    :壁
+
+[WALLSC16]
+STR_NAME    :ガードレール
+
+[WALLSIGN]
+STR_NAME    :スクロール看板
+
+[WALLSK16]
+STR_NAME    :壁
+
+[WALLSK32]
+STR_NAME    :壁
+
+[WALLSP32]
+STR_NAME    :壁
+
+[WALLST16]
+STR_NAME    :スチール製の壁
+
+[WALLST32]
+STR_NAME    :スチール製の壁
+
+[WALLST8]
+STR_NAME    :スチール製の壁
+
+[WALLSTFN]
+STR_NAME    :スチール製のフェンス
+
+[WALLSTWN]
+STR_NAME    :スチール製の壁
+
+[WALLTN32]
+STR_NAME    :ポール
+
+[WALLTXGT]
+STR_NAME    :「テキサスジャイアント」看板
+
+[WALLU132]
+STR_NAME    :壁
+
+[WALLU232]
+STR_NAME    :壁
+
+[WALLWD16]
+STR_NAME    :木製の壁
+
+[WALLWD32]
+STR_NAME    :木製の壁
+
+[WALLWD33]
+STR_NAME    :木製の壁
+
+[WALLWD8]
+STR_NAME    :木製の壁
+
+[WALLWDPS]
+STR_NAME    :木製の柱の壁
+
+[WALLWF32]
+STR_NAME    :滝
+
+[WBR1]
+STR_NAME    :レンガの壁
+
+[WBR1A]
+STR_NAME    :レンガの壁
+
+[WBR2]
+STR_NAME    :石の壁
+
+[WBR2A]
+STR_NAME    :石の壁
+
+[WBR3]
+STR_NAME    :石の壁
+
+[WBRG]
+STR_NAME    :レンガの壁
+
+[WBW]
+STR_NAME    :骨のフェンス
+
+[WC1]
+STR_NAME    :城の壁
+
+[WC10]
+STR_NAME    :城の壁
+
+[WC11]
+STR_NAME    :城の壁
+
+[WC12]
+STR_NAME    :城の壁
+
+[WC13]
+STR_NAME    :城の壁
+
+[WC14]
+STR_NAME    :壁
+
+[WC15]
+STR_NAME    :壁
+
+[WC16]
+STR_NAME    :フェンス
+
+[WC17]
+STR_NAME    :木製のフェンス
+
+[WC18]
+STR_NAME    :木製の柱の壁
+
+[WC2]
+STR_NAME    :城の壁
+
+[WC3]
+STR_NAME    :ローマの柱の壁
+
+[WC4]
+STR_NAME    :城の壁
+
+[WC5]
+STR_NAME    :城の壁
+
+[WC6]
+STR_NAME    :城の壁
+
+[WC7]
+STR_NAME    :城の壁
+
+[WC8]
+STR_NAME    :城の壁
+
+[WC9]
+STR_NAME    :城の壁
+
+[WCH]
+STR_NAME    :針葉樹の生垣
+
+[WCHG]
+STR_NAME    :針葉樹の生垣
+
+[WCW1]
+STR_NAME    :トランプの壁
+
+[WCW2]
+STR_NAME    :トランプの壁
+
+[WEW]
+STR_NAME    :エジプト風の壁
+
+[WFW1]
+STR_NAME    :木製のフェンス
+
+[WFWG]
+STR_NAME    :木製のフェンス
+
+[WGW2]
+STR_NAME    :ガラスの壁
+
+[WHG]
+STR_NAME    :生垣
+
+[WHGG]
+STR_NAME    :生垣
+
+[WJF]
+STR_NAME    :ジャングル風のフェンス
+
+[WMF]
+STR_NAME    :メッシュのフェンス
+
+[WMFG]
+STR_NAME    :メッシュのフェンス
+
+[WMW]
+STR_NAME    :火星人風の壁
+
+[WMWW]
+STR_NAME    :木製のフェンス
+
+[WPF]
+STR_NAME    :フェンス
+
+[WPFG]
+STR_NAME    :フェンス
+
+[WPW1]
+STR_NAME    :木製の柱の壁
+
+[WPW2]
+STR_NAME    :木製の柱の壁
+
+[WPW3]
+STR_NAME    :木製のフェンス
+
+[WRW]
+STR_NAME    :ローマ風の壁
+
+[WRWA]
+STR_NAME    :ローマ風の壁
+
+[WSW]
+STR_NAME    :ガードレール
+
+[WSW1]
+STR_NAME    :ガードレール
+
+[WSW2]
+STR_NAME    :ガードレール
+
+[WSWG]
+STR_NAME    :ガードレール
+
+[WWTW]
+STR_NAME    :高い木製のフェンス
+
+[WWTWA]
+STR_NAME    :木製のフェンスの壁
+
+### Water
+[WTRCYAN]
+STR_NAME    :自然水
+
+[WTRGREEN]
+STR_NAME    :酸性の緑色の水
+
+[WTRGRN]
+STR_NAME    :緑色の水
+
+[WTRORNG]
+STR_NAME    :オレンジの水

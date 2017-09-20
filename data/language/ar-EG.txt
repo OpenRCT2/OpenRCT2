@@ -604,37 +604,37 @@ STR_0599    :A compact roller coaster with individual cars and smooth twisting d
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0601    :<removed string - do not use>
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :Guest {INT32}
-STR_0604    :Guest {INT32}
-STR_0605    :Guest {INT32}
-STR_0606    :Guest {INT32}
-STR_0607    :Guest {INT32}
-STR_0608    :Guest {INT32}
-STR_0609    :Guest {INT32}
-STR_0610    :Guest {INT32}
-STR_0611    :Guest {INT32}
-STR_0612    :Guest {INT32}
-STR_0613    :Guest {INT32}
-STR_0614    :Guest {INT32}
-STR_0615    :Guest {INT32}
-STR_0616    :Guest {INT32}
-STR_0617    :Guest {INT32}
-STR_0618    :Guest {INT32}
-STR_0619    :Guest {INT32}
-STR_0620    :Guest {INT32}
-STR_0621    :Guest {INT32}
-STR_0622    :Guest {INT32}
-STR_0623    :Guest {INT32}
-STR_0624    :Guest {INT32}
-STR_0625    :Guest {INT32}
-STR_0626    :Guest {INT32}
-STR_0627    :Guest {INT32}
-STR_0628    :Guest {INT32}
-STR_0629    :Guest {INT32}
-STR_0630    :Guest {INT32}
-STR_0631    :Guest {INT32}
-STR_0632    :Guest {INT32}
-STR_0633    :Guest {INT32}
+STR_0603    :ضيف {INT32}
+STR_0604    :ضيف {INT32}
+STR_0605    :ضيف {INT32}
+STR_0606    :ضيف {INT32}
+STR_0607    :ضيف {INT32}
+STR_0608    :ضيف {INT32}
+STR_0609    :ضيف {INT32}
+STR_0610    :ضيف {INT32}
+STR_0611    :ضيف {INT32}
+STR_0612    :ضيف {INT32}
+STR_0613    :ضيف {INT32}
+STR_0614    :ضيف {INT32}
+STR_0615    :ضيف {INT32}
+STR_0616    :ضيف {INT32}
+STR_0617    :ضيف {INT32}
+STR_0618    :ضيف {INT32}
+STR_0619    :ضيف {INT32}
+STR_0620    :ضيف {INT32}
+STR_0621    :ضيف {INT32}
+STR_0622    :ضيف {INT32}
+STR_0623    :ضيف {INT32}
+STR_0624    :ضيف {INT32}
+STR_0625    :ضيف {INT32}
+STR_0626    :ضيف {INT32}
+STR_0627    :ضيف {INT32}
+STR_0628    :ضيف {INT32}
+STR_0629    :ضيف {INT32}
+STR_0630    :ضيف {INT32}
+STR_0631    :ضيف {INT32}
+STR_0632    :ضيف {INT32}
+STR_0633    :ضيف {INT32}
 STR_0634    :Guest {INT32}
 STR_0635    :Guest {INT32}
 STR_0636    :Guest {INT32}
@@ -755,90 +755,90 @@ STR_0750    :Guest {INT32}
 STR_0751    :Guest {INT32}
 STR_0752    :Guest {INT32}
 STR_0753    :Guest {INT32}
-STR_0754    :Guest {INT32}
-STR_0755    :Guest {INT32}
-STR_0756    :Guest {INT32}
-STR_0757    :Guest {INT32}
-STR_0758    :Guest {INT32}
-STR_0759    :Guest {INT32}
-STR_0760    :Guest {INT32}
-STR_0761    :Guest {INT32}
-STR_0762    :Guest {INT32}
-STR_0763    :Guest {INT32}
-STR_0764    :Guest {INT32}
-STR_0765    :Guest {INT32}
-STR_0766    :Guest {INT32}
-STR_0767    :Guest {INT32}
-STR_0768    :Handyman {INT32}
-STR_0769    :Mechanic {INT32}
-STR_0770    :Security Guard {INT32}
-STR_0771    :Entertainer {INT32}
-STR_0772    :Unnamed park{POP16}{POP16}
-STR_0773    :Unnamed park{POP16}{POP16}
-STR_0774    :Unnamed park{POP16}{POP16}
-STR_0775    :Unnamed park{POP16}{POP16}
-STR_0776    :Unnamed park{POP16}{POP16}
-STR_0777    :Unnamed park{POP16}{POP16}
-STR_0778    :Sign
-STR_0779    :1st
-STR_0780    :2nd
-STR_0781    :3rd
-STR_0782    :4th
-STR_0783    :5th
-STR_0784    :6th
-STR_0785    :7th
-STR_0786    :8th
-STR_0787    :9th
-STR_0788    :10th
-STR_0789    :11th
-STR_0790    :12th
-STR_0791    :13th
-STR_0792    :14th
-STR_0793    :15th
-STR_0794    :16th
-STR_0795    :17th
-STR_0796    :18th
-STR_0797    :19th
-STR_0798    :20th
-STR_0799    :21st
-STR_0800    :22nd
-STR_0801    :23rd
-STR_0802    :24th
-STR_0803    :25th
-STR_0804    :26th
-STR_0805    :27th
-STR_0806    :28th
-STR_0807    :29th
-STR_0808    :30th
-STR_0809    :31st
-STR_0810    :Jan
-STR_0811    :Feb
-STR_0812    :Mar
-STR_0813    :Apr
-STR_0814    :May
-STR_0815    :Jun
-STR_0816    :Jul
-STR_0817    :Aug
-STR_0818    :Sep
-STR_0819    :Oct
-STR_0820    :Nov
-STR_0821    :Dec
-STR_0822    :Unable to access graphic data file
-STR_0823    :Missing or inaccessible data file
+STR_0754    :ضيف {INT32}
+STR_0755    :ضيف {INT32}
+STR_0756    :ضيف {INT32}
+STR_0757    :ضيف {INT32}
+STR_0758    :ضيف {INT32}
+STR_0759    :ضيف {INT32}
+STR_0760    :ضيف {INT32}
+STR_0761    :ضيف {INT32}
+STR_0762    :ضيف {INT32}
+STR_0763    :ضيف {INT32}
+STR_0764    :ضيف {INT32}
+STR_0765    :ضيف {INT32}
+STR_0766    :ضيف {INT32}
+STR_0767    :ضيف {INT32}
+STR_0768    :رجل مساعد {INT32}
+STR_0769    :ميكانيكي {INT32}
+STR_0770    :رجل الأمن {INT32}
+STR_0771    :المُرفه {INT32}
+STR_0772    :حديقة غير مسماة{POP16}{POP16}
+STR_0773    :حديقة غير مسماة{POP16}{POP16}
+STR_0774    :حديقة غير مسماة{POP16}{POP16}
+STR_0775    :حديقة غير مسماة{POP16}{POP16}
+STR_0776    :حديقة غير مسماة{POP16}{POP16}
+STR_0777    :خديقة غير مسماة{POP16}{POP16}
+STR_0778    :إشارة
+STR_0779    :الأولي
+STR_0780    :الثانية
+STR_0781    :الثالثة
+STR_0782    :الرابعة
+STR_0783    :الخامسة
+STR_0784    :السادسة
+STR_0785    :السابعة
+STR_0786    :الثامنة
+STR_0787    :التاسعة
+STR_0788    :العاشرة
+STR_0789    :الحادية عشر
+STR_0790    :الثانية عشر
+STR_0791    :الثالثة عشر
+STR_0792    :الرابعة عشر
+STR_0793    :الخامسة عشر
+STR_0794    :السادسة عشر
+STR_0795    :السابعة عشر
+STR_0796    :الثامنة عشر
+STR_0797    :التاسعة عشر
+STR_0798    :العشرون
+STR_0799    :الحادية والعشرون
+STR_0800    :الثانية والعشرون
+STR_0801    :الثالثة والعشرون
+STR_0802    :الرابعة والعشرون
+STR_0803    :الخامسة والعشرون
+STR_0804    :السادسة والعشرون
+STR_0805    :السابعة والعشرون
+STR_0806    :الثامنة والعشرون
+STR_0807    :التاسعة والعشرون
+STR_0808    :الثلاثون
+STR_0809    :الواحد وثلاثون
+STR_0810    :يناير
+STR_0811    :فبراير
+STR_0812    :مارس
+STR_0813    :إبريل
+STR_0814    :مايو
+STR_0815    :يونيو
+STR_0816    :يوليو
+STR_0817    :أغسطسس
+STR_0818    :سبتمبر
+STR_0819    :أكتوبر
+STR_0820    :نوفمبر
+STR_0821    :ديسمبر
+STR_0822    :غير قادر علي الوصول لملف بيانات الجرافيك
+STR_0823    :ملف البيانات مفقود أو لا يمكن الوصول إليه
 STR_0824    :{BLACK}{CROSS}
-STR_0825    :Chosen name in use already
+STR_0825    :الأسم المختار مستخدم مسبقاً
 STR_0826    :Too many names defined
-STR_0827    :Not enough cash - requires {CURRENCY2DP}
+STR_0827    :لا نقود كافية - يتطلب {CURRENCY2DP}
 STR_0828    :{SMALLFONT}{BLACK}Close window
 STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
 STR_0830    :{SMALLFONT}{BLACK}Zoom view in
 STR_0831    :{SMALLFONT}{BLACK}Zoom view out
 STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
-STR_0833    :{SMALLFONT}{BLACK}Pause game
-STR_0834    :{SMALLFONT}{BLACK}Disk and game options
-STR_0835    :Game initialisation failed
-STR_0836    :Unable to start game in a minimised state
-STR_0837    :Unable to initialise graphics system
+STR_0833    :{SMALLFONT}{BLACK}إيقاف اللعبة مؤقتاً
+STR_0834    :{SMALLFONT}{BLACK}إعدادات اللعبة والهارد
+STR_0835    :إطلاق اللعبة فشل
+STR_0836    :غير قادر علي إطلاق اللعبة في وضع التصغير
+STR_0837    :غير قادر علي إطلاق نظام الجرافيك
 STR_0838    :<removed string - do not use>
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
@@ -849,7 +849,7 @@ STR_0843    :<removed string - do not use>
 STR_0844    :<removed string - do not use>
 STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
-STR_0847    :About 'OpenRCT2'
+STR_0847    :عن 'OpenRCT2'
 STR_0848    :RollerCoaster Tycoon 2
 STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, all rights reserved
@@ -858,7 +858,7 @@ STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
 STR_0853    :{WINDOW_COLOUR_2}Sound and music by Allister Brimble
 STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}Thanks to:
+STR_0856    :{WINDOW_COLOUR_2}شكراً إلي:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, and John Wardley
 STR_0858    :<removed string - do not use>
 STR_0859    :<removed string - do not use>
@@ -879,27 +879,27 @@ STR_0873    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0874    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0875    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID}
 STR_0876    :{BLACK}{DOWN}
-STR_0877    :Too low !
-STR_0878    :Too high !
-STR_0879    :Can't lower land here...
-STR_0880    :Can't raise land here...
-STR_0881    :Object in the way
-STR_0882    :Load Game
-STR_0883    :Save Game
-STR_0884    :Load Landscape
-STR_0885    :Save Landscape
+STR_0877    :منخفض للغاية !
+STR_0878    :مرتفع للغاية !
+STR_0879    :لا يمكن تخفيض الأرض هنا...
+STR_0880    :لا يمكن رفع الأرض هنا...
+STR_0881    :عنصر في الطريق
+STR_0882    :تحميل اللعبة
+STR_0883    :حفظ اللعبة
+STR_0884    :تحميل مشهد
+STR_0885    :حفظ مشهد
 STR_0886    :<removed string - do not use>
-STR_0887    :Quit Scenario Editor
+STR_0887    :أخرج من مُعدل المشهد
 STR_0888    :Quit Track Designer
 STR_0889    :Quit Track Designs Manager
 STR_0890    :<removed string - do not use>
-STR_0891    :Screenshot
+STR_0891    :لقطة شاشة
 STR_0892    :Screenshot saved to disk as '{STRINGID}'
-STR_0893    :Screenshot failed !
+STR_0893    :فشل لقطة الشاشة !
 STR_0894    :Landscape data area full !
 STR_0895    :Can't build partly above and partly below ground
 STR_0896    :{POP16}{POP16}{STRINGID} Construction
-STR_0897    :Direction
+STR_0897    :الإتجاه
 STR_0898    :{SMALLFONT}{BLACK}Left-hand curve
 STR_0899    :{SMALLFONT}{BLACK}Right-hand curve
 STR_0900    :{SMALLFONT}{BLACK}Left-hand curve (small radius)
@@ -4233,7 +4233,7 @@ STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rende
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
 STR_5924    :Surface details
-STR_5925    :Path details
+STR_5925    :تفاصيل المسار
 STR_5926    :Track details
 STR_5927    :Scenery details
 STR_5928    :Entrance details
@@ -4273,7 +4273,7 @@ STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Collision detection:
 STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
-STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
+STR_5965    :{WINDOW_COLOUR_2}نوع المدخل: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
 STR_5967    :وسط
 STR_5968    :شمال
@@ -4292,24 +4292,24 @@ STR_5980    :{WINDOW_COLOUR_2}Banner text: {BLACK}{STRINGID}
 STR_5981    :{WINDOW_COLOUR_2}Not a banner
 STR_5982    :{WINDOW_COLOUR_2}Large scenery type: {BLACK}{COMMA16}
 STR_5983    :{WINDOW_COLOUR_2}Large scenery piece ID: {BLACK}{COMMA16}
-STR_5984    :Blocked paths:
-STR_5985    :New folder
-STR_5986    :Type the name of the new folder.
-STR_5987    :Unable to create folder
+STR_5984    :المسارات المقفلة:
+STR_5985    :مجلد جديد
+STR_5986    :أدخل الأسم للمجلد الجديد.
+STR_5987    :غير قادر علي إنشاء المجلد
 STR_5988    :{SMALLFONT}{BLACK}No remaining land rights for sale
 STR_5989    :{SMALLFONT}{BLACK}No remaining construction rights for sale
 STR_5990    :{SMALLFONT}{BLACK}No remaining land rights or construction rights for sale
-STR_5991    :Can't paste element...
-STR_5992    :The map elements limit has been reached
-STR_5993    :{SMALLFONT}{BLACK}Copy selected element
-STR_5994    :{SMALLFONT}{BLACK}Paste copied element
-STR_5995    :Booster
-STR_5996    :Booster speed
-STR_5997    :Add/set money
-STR_5998    :Add money
-STR_5999    :Set money
-STR_6000    :Enter new value
-STR_6001    :Enable lighting effects (experimental)
+STR_5991    :لا يمكن لصق العنصر...
+STR_5992    :حد العناصر في الخريطة قد وُصل
+STR_5993    :{SMALLFONT}{BLACK}نسخ العنصر المحدد
+STR_5994    :{SMALLFONT}{BLACK}لصق العنصر المنسوخ
+STR_5995    :المُسرع
+STR_5996    :سرعة المُسرع
+STR_5997    :أضف/حدد النقود
+STR_5998    :أضف نقود
+STR_5999    :حدد النقود
+STR_6000    :أدخل قيمة جديدة
+STR_6001    :تفعيل تأثيرات الضوء (تجريبي)
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
 STR_6003    :Cut-away View
 STR_6004    :Cut-away View
@@ -4318,14 +4318,14 @@ STR_6006    :{SMALLFONT}{BLACK}Cut-away view only displays map elements at or be
 STR_6007    :Cut height
 STR_6008    :{SMALLFONT}{BLACK}Click to toggle raw value<->value in measurement units
 STR_6009    :{SMALLFONT}{BLACK}Select cut height
-STR_6010    :{COMMA2DP32}m
-STR_6011    :{COMMA1DP16}ft
+STR_6010    :{COMMA2DP32}متر
+STR_6011    :{COMMA1DP16}قدم
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
 STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
 STR_6015    :Sloped
 STR_6016    :Modify Tile
-STR_6017    :Please slow down
+STR_6017    :من فضلك أبطئ
 STR_6018    :Ride construction - Turn left
 STR_6019    :Ride construction - Turn right
 STR_6020    :Ride construction - Use default track
@@ -4339,7 +4339,7 @@ STR_6027    :Ride construction - Next track
 STR_6028    :Ride construction - Build current
 STR_6029    :Ride construction - Demolish current
 STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
-STR_6031    :Server Description:
+STR_6031    :وصف السرفر:
 STR_6032    :Server Greeting:
 STR_6033    :Path to RCT1 installation:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
@@ -4348,8 +4348,8 @@ STR_6036    :{SMALLFONT}{BLACK}Clear
 STR_6037    :Please select a valid RCT1 directory
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
 STR_6039    :{SMALLFONT}{BLACK}Quick demolish ride
-STR_6040    :Edit Scenario Options
-STR_6041    :{BLACK}No mechanics are hired!
+STR_6040    :تغيير إعدادات المشهد
+STR_6041    :{BLACK}لا ميكانيكي مُؤجر!
 STR_6042    :Load height map
 STR_6043    :Select height map
 STR_6044    :Smooth height map
@@ -4364,7 +4364,7 @@ STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
 STR_6055    :OpenRCT2 Heightmap File
-STR_6056    :{SMALLFONT}{BLACK}Mute
+STR_6056    :{SMALLFONT}{BLACK}تصميت
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
 STR_6058    :تصميت
 STR_6059    :{RIGHTGUILLEMET}
@@ -4373,8 +4373,8 @@ STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests ma
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :إمتلك كل الأراضي
-STR_6065    :Log user actions
-STR_6066    :{SMALLFONT}{BLACK}Logs all user actions to files in your user directory.
+STR_6065    :تسجيل أفعال اللاعب
+STR_6066    :{SMALLFONT}{BLACK}يُسجل أفعال اللاعب بالكامل إلي ملف سجل في المستندات علي جهازك.
 STR_6067    :السرفر بدء.
 STR_6068    :السرفر أغلق.
 STR_6069    :{STRING} was kicked from the server by {STRING}.
@@ -4385,9 +4385,9 @@ STR_6073    :{STRING} edited permissions for player group '{String}'.
 STR_6074    :{STRING} changed player group name from '{String}' to '{String}'.
 STR_6075    :{STRING} changed the default player group to '{String}'.
 STR_6076    :{STRING} used/toggled cheat '{STRING}'.
-STR_6077    :Add Money
-STR_6078    :{STRING} created ride '{STRING}'.
-STR_6079    :{STRING} demolished ride '{STRING}'.
+STR_6077    :أضف نقود
+STR_6078    :{STRING} إصنع رحلة '{STRING}'.
+STR_6079    :{STRING} دمر الرحلة '{STRING}'.
 STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
 STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
 STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
@@ -4396,11 +4396,11 @@ STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
 STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
 STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
 STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
-STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
-STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6088    :{STRING} تم تغيير سعر الرحلة الثانوي من '{STRING}' إلي {STRING}
+STR_6089    :{STRING} تم تغيير أسم الحديقة من '{STRING}'إلي '{STRING}'.
 STR_6090    :{STRING} إفتح الحديقة.
 STR_6091    :{STRING} إغلاق الحديقة.
-STR_6092    :{STRING} changed the park entrance fee to {STRING}
+STR_6092    :{STRING} تم تغيير رسول دخول الحديقة إلي {STRING}
 STR_6093    :{STRING} placed new scenery.
 STR_6094    :{STRING} removed scenery.
 STR_6095    :{STRING} edited scenery.
@@ -4414,7 +4414,7 @@ STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so 
 STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
 STR_6104    :Corkscrew Roller Coaster
 STR_6105    :Hypercoaster
-STR_6106    :Car Ride
+STR_6106    :رحلة سيارة
 STR_6107    :Monster Trucks
 STR_6108    :Steel Twister
 STR_6109    :Hyper-Twister
@@ -4429,22 +4429,22 @@ STR_6117    :Sitting in comfortable trains with only simple lap restraints rider
 STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
-STR_6122    :There are not enough roller coasters in this scenario!
-STR_6123    :Error loading objects for park
+STR_6121    :{SMALLFONT}{BLACK}توسيع حدود الحديقة إلي اليسار بالكامل إلي حدود الخريطة
+STR_6122    :ليس هناك دوامات وملاهي كافية في هذا المشهد!
+STR_6123    :خطأ في تحميل العناصر للحديقة
 STR_6124    :أسم العنصر
 STR_6125    :نوع العنصر
 STR_6126    :نوع غير معروف
 STR_6127    :الملف: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
-STR_6129    :Copy selected item to clipboard
-STR_6130    :Copy entire list to clipboard
-STR_6131    :Object source
-STR_6132    :Ignore research status
+STR_6129    :إنسخ المحدد إلي الحافظة
+STR_6130    :إنسخ القائمة كاملة إلي الحافظة
+STR_6131    :مصدر العنصر
+STR_6132    :تجاهل حالة التطوير
 STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
-STR_6134    :Clear Scenery
-STR_6135    :Client sent invalid request
-STR_6136    :Server sent invalid request
+STR_6134    :إخلاء المشهد
+STR_6135    :العميل أرسل طلب خاطئ
+STR_6136    :السرفر أرسل طلب خاطئ
 STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {OPENQUOTES}contributors.md{ENDQUOTES}. For more information, visit http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
@@ -4453,7 +4453,9 @@ STR_6141    :RCT1 Bottom Toolbar
 STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
 STR_6144    :أظهر تأثيرات التراب
-
+STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
+STR_6146    :Enable all drawable track pieces
+STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
 
 #############
 # Scenarios #

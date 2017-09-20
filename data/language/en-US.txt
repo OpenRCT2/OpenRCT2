@@ -1,6 +1,8 @@
 # STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
+#
+# Vanilla strings. Only change strings that differ from UK English!
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Spiral Roller Coaster
