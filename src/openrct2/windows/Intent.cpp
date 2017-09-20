@@ -1,4 +1,5 @@
 #include "Intent.h"
+#include "../core/Guard.hpp"
 
 Intent::Intent(rct_windowclass windowclass)
 {
@@ -56,25 +57,29 @@ rct_windowclass Intent::GetWindowClass()
 
 void * Intent::GetPointerExtra(uint32 key)
 {
-    auto data =  _Data.at(key);
+    auto data = _Data.at(key);
+    openrct2_assert(data.type == IntentData::DT_POINTER, "Actual type doesn't match requested type");
     return (void *) data.pointerVal;
 }
 
 uint32 Intent::GetUIntExtra(uint32 key)
 {
-    auto data =  _Data.at(key);
+    auto data = _Data.at(key);
+    openrct2_assert(data.type == IntentData::DT_UINT, "Actual type doesn't match requested type");
     return data.uintVal;
 }
 
 sint32 Intent::GetSIntExtra(uint32 key)
 {
-    auto data =  _Data.at(key);
+    auto data = _Data.at(key);
+    openrct2_assert(data.type == IntentData::DT_SINT, "Actual type doesn't match requested type");
     return data.sintVal;
 }
 
 utf8string Intent::GetStringExtra(uint32 key)
 {
-    auto data =  _Data.at(key);
+    auto data = _Data.at(key);
+    openrct2_assert(data.type == IntentData::DT_STRING, "Actual type doesn't match requested type");
     return data.stringVal;
 }
 
