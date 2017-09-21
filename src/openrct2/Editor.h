@@ -35,6 +35,9 @@ namespace Editor
 
     bool CheckPark();
     sint32 CheckObjectSelection();
+
+    void OpenWindowsForCurrentStep();
+    void GameCommandEditScenarioOptions(sint32*, sint32*, sint32*, sint32*, sint32*, sint32*, sint32*);
 }
 
 bool editor_check_object_group_at_least_one_selected(sint32 objectType);
