@@ -3,26 +3,26 @@
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
-STR_0002    :دوامة حلزونية دائرية
-STR_0003    :دوامة حلزونية واقفة
-STR_0004    :دوامة دائرة معلقة
-STR_0005    :دوامة حلزونية معكوسة
-STR_0006    :دوامة حلزونية للصغار
+STR_0002    :أفعوانية حلزونية دائرية
+STR_0003    :أفعوانية حلزونية واقفة
+STR_0004    :أفعوانية دائرة معلقة
+STR_0005    :أفعوانية حلزونية معكوسة
+STR_0006    :أفعوانية حلزونية للصغار
 STR_0007    :قطار سكة حديدة مصغر
 STR_0008    :قطار معلق
-STR_0009    :دوامة حلزونية مصغرة
+STR_0009    :أفعوانية حلزونية مصغرة
 STR_0010    :تأجير القارب
-STR_0011    :دوامة صغيرة خشبية
+STR_0011    :أفعوانية صغيرة خشبية
 STR_0012    :سباق التتابع
 STR_0013    :قيادة السيارة
 STR_0014    :إطلاق السقوط الحر
-STR_0015    :دوامة طائرة خشبية
+STR_0015    :أفعوانية طائرة خشبية
 STR_0016    :برج المراقبة
-STR_0017    :الدوامة الحلزونية المتكررة
+STR_0017    :أفعوانية الحلزونية المتكررة
 STR_0018    :المنحد المتسلسل
-STR_0019    :دوامة قطار المغارة
+STR_0019    :أفعوانية قطار المغارة
 STR_0020    :مصعد هوائي
-STR_0021    :دوامة دائرية مميتة
+STR_0021    :أفعوانية دائرية مميتة
 STR_0022    :متاهة
 STR_0023    :زحليقة دائرية
 STR_0024    :هيا كارتس
@@ -36,7 +36,7 @@ STR_0031    :كشك غير معروف (1D)
 STR_0032    :كشك الشرب
 STR_0033    :كشك غير معروف (1F)
 STR_0034    :متجر
-STR_0035    :دوامة الخيل
+STR_0035    :أفعوانية الخيل
 STR_0036    :كشك غير معروف (22)
 STR_0037    :منصة المعلومات
 STR_0038    :غرفة الإستراحة
@@ -45,38 +45,38 @@ STR_0040    :محاكي الحركة
 STR_0041    :سينما ثري دي
 STR_0042    :الدوار الأفقي
 STR_0043    :دوائر الفضاء
-STR_0044    :دوامة سقوط حر عكسية
+STR_0044    :أفعوانية سقوط حر عكسية
 STR_0045    :المصعد
-STR_0046    :دوامة دوارة رأسية معكوسة
+STR_0046    :أفعوانية دوارة رأسية معكوسة
 STR_0047    :ألة سحب النقود
 STR_0048    :دوران
 STR_0049    :المنزل المسكون
 STR_0050    :غرفة إسعافات أولية
 STR_0051    :عرض السيرك
 STR_0052    :نفق الرعب
-STR_0053    :Steel Twister Roller Coaster
-STR_0054    :Wooden Roller Coaster
-STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
-STR_0057    :Multi-Dimension Roller Coaster
-STR_0058    :Unknown Ride (38)
-STR_0059    :Flying Roller Coaster
+STR_0053    :أفعوانية دوارة حديدية ملفوفة
+STR_0054    :أفعوانية دوارة خشبية
+STR_0055    :أفعوانية دوارة ذات جوانب
+STR_0056    :الفأر البري
+STR_0057    :أفعوانية دوارة ذات أبعاد مختلفة
+STR_0058    :رحلة غير معروفة (38)
+STR_0059    :أفعوانية دوارة طائرة
 STR_0060    :رحلة غير معروفة (3A)
-STR_0061    :Virginia Reel
-STR_0062    :Splash Boats
-STR_0063    :Mini Helicopters
-STR_0064    :Lay-down Roller Coaster
-STR_0065    :Suspended Monorail
-STR_0066    :Unknown Ride (40)
-STR_0067    :Reverser Roller Coaster
-STR_0068    :Heartline Twister Coaster
+STR_0061    :بكرة فرجينيا
+STR_0062    :قوارب السبلاش
+STR_0063    :هليكبوتر مصغرة
+STR_0064    :أفعوانية دوارة مستلقاة
+STR_0065    :خط أحادي مهجور
+STR_0066    :رحلة غير معروفة (40)
+STR_0067    :أفعوانية دوارة معكوسة
+STR_0068    :أفعوانية دوارة مقلوبة
 STR_0069    :جولف مصغر
-STR_0070    :Giga Coaster
-STR_0071    :Roto-Drop
-STR_0072    :Flying Saucers
-STR_0073    :Crooked House
-STR_0074    :Monorail Cycles
-STR_0075    :Compact Inverted Coaster
+STR_0070    :أفعوانية جيجا
+STR_0071    :إسقاط الروتو
+STR_0072    :الأطباق الطائرة
+STR_0073    :الفأر المعوج
+STR_0074    :منوريل دوائر
+STR_0075    :إفعوانية معكوسة مدمجة
 STR_0076    :دوامة مائية
 STR_0077    :دوامة معكوسة عاملة بالهواء
 STR_0078    :دوامة منعطف حاد معكوسة
@@ -93,7 +93,7 @@ STR_0088    :دوامة دافعة معكوسة
 STR_0089    :دوامة دائرية مصغرة
 STR_0090    :رحلة مصغرة
 STR_0091    :رحلة غير معروفة (59)
-STR_0092    :LIM Launched Roller Coaster
+STR_0092    :LIMأفعوانية مُطلقة بواسطة 
 STR_0093    :
 STR_0094    :
 STR_0095    :
@@ -635,28 +635,28 @@ STR_0630    :ضيف {INT32}
 STR_0631    :ضيف {INT32}
 STR_0632    :ضيف {INT32}
 STR_0633    :ضيف {INT32}
-STR_0634    :Guest {INT32}
-STR_0635    :Guest {INT32}
-STR_0636    :Guest {INT32}
-STR_0637    :Guest {INT32}
-STR_0638    :Guest {INT32}
-STR_0639    :Guest {INT32}
-STR_0640    :Guest {INT32}
-STR_0641    :Guest {INT32}
-STR_0642    :Guest {INT32}
-STR_0643    :Guest {INT32}
-STR_0644    :Guest {INT32}
-STR_0645    :Guest {INT32}
-STR_0646    :Guest {INT32}
-STR_0647    :Guest {INT32}
-STR_0648    :Guest {INT32}
-STR_0649    :Guest {INT32}
-STR_0650    :Guest {INT32}
-STR_0651    :Guest {INT32}
-STR_0652    :Guest {INT32}
-STR_0653    :Guest {INT32}
-STR_0654    :Guest {INT32}
-STR_0655    :Guest {INT32}
+STR_0634    :ضيف {INT32}
+STR_0635    :ضيف {INT32}
+STR_0636    :ضيف {INT32}
+STR_0637    :ضيف {INT32}
+STR_0638    :ضيف {INT32}
+STR_0639    :ضيف {INT32}
+STR_0640    :ضيف {INT32}
+STR_0641    :ضيف {INT32}
+STR_0642    :ضيف {INT32}
+STR_0643    :ضيف {INT32}
+STR_0644    :ضيف {INT32}
+STR_0645    :ضيف {INT32}
+STR_0646    :ضيف {INT32}
+STR_0647    :ضيف {INT32}
+STR_0648    :ضيف {INT32}
+STR_0649    :ضيف {INT32}
+STR_0650    :ضيف {INT32}
+STR_0651    :ضيف {INT32}
+STR_0652    :ضيف {INT32}
+STR_0653    :ضيف {INT32}
+STR_0654    :ضيف {INT32}
+STR_0655    :ضيف {INT32}
 STR_0656    :Guest {INT32}
 STR_0657    :Guest {INT32}
 STR_0658    :Guest {INT32}
@@ -727,34 +727,34 @@ STR_0722    :Guest {INT32}
 STR_0723    :Guest {INT32}
 STR_0724    :Guest {INT32}
 STR_0725    :Guest {INT32}
-STR_0726    :Guest {INT32}
-STR_0727    :Guest {INT32}
-STR_0728    :Guest {INT32}
-STR_0729    :Guest {INT32}
-STR_0730    :Guest {INT32}
-STR_0731    :Guest {INT32}
-STR_0732    :Guest {INT32}
-STR_0733    :Guest {INT32}
-STR_0734    :Guest {INT32}
-STR_0735    :Guest {INT32}
-STR_0736    :Guest {INT32}
-STR_0737    :Guest {INT32}
-STR_0738    :Guest {INT32}
-STR_0739    :Guest {INT32}
-STR_0740    :Guest {INT32}
-STR_0741    :Guest {INT32}
-STR_0742    :Guest {INT32}
-STR_0743    :Guest {INT32}
-STR_0744    :Guest {INT32}
-STR_0745    :Guest {INT32}
-STR_0746    :Guest {INT32}
-STR_0747    :Guest {INT32}
-STR_0748    :Guest {INT32}
-STR_0749    :Guest {INT32}
-STR_0750    :Guest {INT32}
-STR_0751    :Guest {INT32}
-STR_0752    :Guest {INT32}
-STR_0753    :Guest {INT32}
+STR_0726    :ضيف {INT32}
+STR_0727    :ضيف {INT32}
+STR_0728    :ضيف {INT32}
+STR_0729    :ضيف {INT32}
+STR_0730    :ضيف {INT32}
+STR_0731    :ضيف {INT32}
+STR_0732    :ضيف {INT32}
+STR_0733    :ضيف {INT32}
+STR_0734    :ضيف {INT32}
+STR_0735    :ضيف {INT32}
+STR_0736    :ضيف {INT32}
+STR_0737    :ضيف {INT32}
+STR_0738    :ضيف {INT32}
+STR_0739    :ضيف {INT32}
+STR_0740    :ضيف {INT32}
+STR_0741    :ضيق {INT32}
+STR_0742    :ضيف {INT32}
+STR_0743    :ضيف {INT32}
+STR_0744    :ضيف {INT32}
+STR_0745    :ضيف {INT32}
+STR_0746    :ضيف {INT32}
+STR_0747    :ضيف {INT32}
+STR_0748    :ضيف {INT32}
+STR_0749    :ضيف {INT32}
+STR_0750    :ضيف {INT32}
+STR_0751    :ضيف {INT32}
+STR_0752    :ضيف {INT32}
+STR_0753    :ضيف {INT32}
 STR_0754    :ضيف {INT32}
 STR_0755    :ضيف {INT32}
 STR_0756    :ضيف {INT32}
@@ -827,13 +827,13 @@ STR_0822    :غير قادر علي الوصول لملف بيانات الجر�
 STR_0823    :ملف البيانات مفقود أو لا يمكن الوصول إليه
 STR_0824    :{BLACK}{CROSS}
 STR_0825    :الأسم المختار مستخدم مسبقاً
-STR_0826    :Too many names defined
+STR_0826    :أسماء كثيرة جداً محددة
 STR_0827    :لا نقود كافية - يتطلب {CURRENCY2DP}
-STR_0828    :{SMALLFONT}{BLACK}Close window
-STR_0829    :{SMALLFONT}{BLACK}Window title - Drag this to move window
-STR_0830    :{SMALLFONT}{BLACK}Zoom view in
-STR_0831    :{SMALLFONT}{BLACK}Zoom view out
-STR_0832    :{SMALLFONT}{BLACK}Rotate view 90{DEGREE} clockwise
+STR_0828    :{SMALLFONT}{BLACK}أغلق النافذة
+STR_0829    :{SMALLFONT}{BLACK}عنوان النافذة - إسحب هذا لكي تحرك النافذة
+STR_0830    :{SMALLFONT}{BLACK}تكبير المشهد للداخل
+STR_0831    :{SMALLFONT}{BLACK}تصغير المشهد للخارج
+STR_0832    :{SMALLFONT}{BLACK}تدوير المشهد 90{DEGREE} بأتجاه عقارب الساعة
 STR_0833    :{SMALLFONT}{BLACK}إيقاف اللعبة مؤقتاً
 STR_0834    :{SMALLFONT}{BLACK}إعدادات اللعبة والهارد
 STR_0835    :إطلاق اللعبة فشل
@@ -890,11 +890,11 @@ STR_0884    :تحميل مشهد
 STR_0885    :حفظ مشهد
 STR_0886    :<removed string - do not use>
 STR_0887    :أخرج من مُعدل المشهد
-STR_0888    :Quit Track Designer
-STR_0889    :Quit Track Designs Manager
+STR_0888    :أخرج من مصمم المسار
+STR_0889    :أخرج من المدير مصمم المسار
 STR_0890    :<removed string - do not use>
 STR_0891    :لقطة شاشة
-STR_0892    :Screenshot saved to disk as '{STRINGID}'
+STR_0892    :لقطة شاشة حفظت للهارد بـ '{STRINGID}'
 STR_0893    :فشل لقطة الشاشة !
 STR_0894    :Landscape data area full !
 STR_0895    :Can't build partly above and partly below ground
@@ -949,13 +949,13 @@ STR_0943    :See-Through Scenery
 STR_0944    :Save
 STR_0945    :Don't Save
 STR_0946    :Cancel
-STR_0947    :Save this before loading ?
-STR_0948    :Save this before quitting ?
-STR_0949    :Save this before quitting ?
-STR_0950    :Load Game
-STR_0951    :Quit Game
-STR_0952    :Quit Game
-STR_0953    :Load Landscape
+STR_0947    :إحفظ هذا قبل التحميل ?
+STR_0948    :إحفظ هذا قبل الخروج ?
+STR_0949    :إحفظ هذا قبل الخروج ?
+STR_0950    :تحميل اللعبة
+STR_0951    :أخرج من اللعبة
+STR_0952    :أخرج من اللعبة
+STR_0953    :تحميل صورة طبيعية
 STR_0954    :
 STR_0955    :{SMALLFONT}{BLACK}Select seat rotation angle for this track section
 STR_0956    :-180{DEGREE}
@@ -974,8 +974,8 @@ STR_0968    :+360{DEGREE}
 STR_0969    :+405{DEGREE}
 STR_0970    :+450{DEGREE}
 STR_0971    :+495{DEGREE}
-STR_0972    :Cancel
-STR_0973    :OK
+STR_0972    :إلغاء
+STR_0973    :حسناً
 STR_0974    :Rides
 STR_0975    :Shops and Stalls
 STR_0976    :Toilets and Information Kiosks
@@ -985,7 +985,7 @@ STR_0979    :New Roller Coasters
 STR_0980    :New Thrill Rides
 STR_0981    :New Water Rides
 STR_0982    :New Shops & Stalls
-STR_0983    :Research & Development
+STR_0983    :البحث والتطوير
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
 STR_0986    :{BLACK}{CURRENCY2DP}
@@ -996,7 +996,7 @@ STR_0990    :{SMALLFONT}{BLACK}Construction
 STR_0991    :Station platform
 STR_0992    :{SMALLFONT}{BLACK}Demolish entire ride/attraction
 STR_0993    :Demolish ride/attraction
-STR_0994    :Demolish
+STR_0994    :تدمير
 STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
 STR_0996    :Overall view
 STR_0997    :{SMALLFONT}{BLACK}View selection
@@ -1013,10 +1013,10 @@ STR_1007    :Unable to create enough vehicles
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
 STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
 STR_1010    :{SMALLFONT}{BLACK}Open or close park
-STR_1011    :Close all
-STR_1012    :Open all
-STR_1013    :Close park
-STR_1014    :Open park
+STR_1011    :إغلاق الكل
+STR_1012    :إفتح الكل
+STR_1013    :أغلق الحديقة
+STR_1014    :إفتح الحديقة
 STR_1015    :Unable to operate with more than one station platform in this mode
 STR_1016    :Unable to operate with less than two stations in this mode
 STR_1017    :Can't change operating mode...
@@ -1038,11 +1038,11 @@ STR_1032    :Can only build this on water!
 STR_1033    :Can only build this above ground!
 STR_1034    :Can only build this on land!
 STR_1035    :Local authority won't allow construction above tree-height!
-STR_1036    :Load Game
+STR_1036    :تحميل اللعبة
 STR_1037    :Load Landscape
 STR_1038    :Convert saved game to scenario
 STR_1039    :Install new track design
-STR_1040    :Save Game
+STR_1040    :إحفظ اللعبة
 STR_1041    :Save Scenario
 STR_1042    :Save Landscape
 STR_1043    :OpenRCT2 Saved Game

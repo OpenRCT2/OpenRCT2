@@ -3463,12 +3463,6646 @@ STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
 
-#########
-# Rides #
-#########
+## DAT translations
 
-#WW
+## RCT2
+[4X4]
+STR_NAME    :Potworne pikapy
+STR_DESC    :Samochody na olbrzymich kołach z napędem 4 x 4, które mogą wjeżdżać na strome zbocza
+STR_CPTY    :2 pasażerów na samochód
+
+[AML1]
+STR_NAME    :Amerykańskie pociągi parowe
+STR_DESC    :Miniaturowe pociągi składające się z repliki parowozu i tendra, ciągnących drewniane wagony z płóciennymi dachami
+STR_CPTY    :6 pasażerów na wagon
+
+[AMT1]
+STR_NAME    :Kolejka kopalniana
+STR_DESC    :Kolejka górska w stylu górniczym, poruszająca się po stalowych szynach stylizowanych na stary tor kolejowy
+STR_CPTY    :2 lub 4 pasażerów na wagonik
+
+[ARRSW1]
+STR_NAME    :Swobodnie podwieszone wagoniki
+STR_DESC    :Kolejka górska z podwieszanymi wagonikami, które mogą się swobodnie kołysać podczas pokonywania zakrętów
+STR_CPTY    :4 pasażerów na wagonik
+
+[ARRSW2]
+STR_NAME    :Swobodnie podwieszone wagoniki samolotowe
+STR_DESC    :Kolejka górska z podwieszanymi wagonikami w kształcie samolotów, które mogą się swobodnie kołysać podczas pokonywania zakrętów
+STR_CPTY    :4 pasażerów na wagonik
+
+[ARRT1]
+STR_NAME    :Kolejka korkociągowa
+STR_DESC    :Zwarta przestrzennie kolejka ze stalowymi torami, w której wagoniki pokonują korkociągi i pętle
+STR_CPTY    :4 pasażerów na wagonik
+
+[ARRT2]
+STR_NAME    :Hiperjazda
+STR_DESC    :Wysoka, nieobrotowa szybka kolejka górska z dużymi zjazdami i wygodnymi wagonikami, wyposażonymi w zabezpieczenia obejmujące pasażerów jedynie w pasie
+STR_CPTY    :6 pasażerów na wagonik
+
+[ARRX]
+STR_NAME    :Kolejka wielowymiarowa
+STR_DESC    :Wagoniki z fotelami, które mogą obracać się do góry nogami
+STR_CPTY    :4 pasażerów na wagonik
+
+[ATM1]
+STR_NAME    :Bankomat
+STR_DESC    :Maszynka z pieniędzmi - dla gości, którzy wszystko już wydali
+
+[BALLN]
+STR_NAME    :Kiosk z balonami
+STR_DESC    :Stoisko z pamiątkami, w którym można kupić baloniki napełnione helem
+
+[BATFL]
+STR_NAME    :Dyndające wagoniki
+STR_DESC    :Wagoniki podwieszone na górnej szynie
+STR_CPTY    :2 pasażerów na wagonik
+
+[BBOAT]
+STR_NAME    :Gumołódki
+STR_DESC    :Małe okrągłe pontony napędzane silnikiem zamontowanym centralnie i sterowanym przez pasażerów
+STR_CPTY    :2 pasażerów na łódkę
+
+[BMAIR]
+STR_NAME    :Latająca kolejka
+STR_DESC    :Pasażerowie zasiadają w wygodnych fotelach zawieszonych pod torem i jadą zawiłą trasą, czując się, jakby potrafili latać
+STR_CPTY    :4 pasażerów na wagonik
+
+[BMFL]
+STR_NAME    :Kolejka bezpodłogowa
+STR_DESC    :Szerokie wagoniki pozbawione podłóg zapewniają pasażerom dobry widok podczas jazdy trasą z wieloma zakrętami
+STR_CPTY    :4 pasażerów na wagonik
+
+[BMRB]
+STR_NAME    :Hiperzwijka (szerokie wagoniki)
+STR_DESC    :Szerokie na 4 miejsca wagoniki z podniesionymi fotelami i prostymi zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :4 pasażerów na wagonik
+
+[BMSD]
+STR_NAME    :Zwijka
+STR_DESC    :Szerokie wagoniki suną po gładkim stalowym torze, pokonując liczne ostre zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[BMSU]
+STR_NAME    :Kolejka stojąca
+STR_DESC    :Pasażerowie jadą w pozycji stojącej w szerokich wagonikach ze specjalnie zaprojektowanymi zabezpieczeniami, pokonując gładkie spadki i liczne ostre zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[BMVD]
+STR_NAME    :Pionospadajka
+STR_DESC    :Bardzo szerokie wagoniki zjeżdżają po całkowicie pionowym torze, zapewniając pasażerom jedyne w swoim rodzaju wrażenie swobodnego spadania
+STR_CPTY    :6 pasażerów na wagonik
+
+[BNOODLES]
+STR_NAME    :Kiosk z wołowymi kluseczkami
+STR_DESC    :Stoisko sprzedające wołowe kluseczki w chińskim stylu
+
+[BOB1]
+STR_NAME    :Kolejka bobslejowa
+STR_DESC    :Pasażerowie zjeżdżają krętą trasą w wagonikach przypominających bobsleje, prowadzonych jedynie przez krzywizny i wychylenia półkolistego toru
+STR_CPTY    :2 pasażerów na wagonik
+
+[BURGB]
+STR_NAME    :Bar hamburger
+STR_DESC    :Budynek w kształcie hamburgera, w którym można kupić hamburgery
+
+[C3D]
+STR_NAME    :Kino trójwymiarowe
+STR_DESC    :Kino wyświetlające trójwymiarowe filmy na ekranie stanowiącym wewnętrzną ścianę kulistego budynku
+STR_CPTY    :20 widzów
+
+[CBOAT]
+STR_NAME    :Kajaki
+STR_DESC    :Długie kajaki, w których pasażerowie sami wiosłują
+STR_CPTY    :2 pasażerów na łódkę
+
+[CHBUILD]
+STR_NAME    :Krzywy dom
+STR_DESC    :Budynek z powykrzywianymi ścianami i zakręconymi korytarzami, dezorientujący ludzi, którzy do niego wejdą
+STR_CPTY    :5 widzów
+
+[CHCKS]
+STR_NAME    :Stoisko z kurczakami
+STR_DESC    :Stoisko sprzedające kubełki z pieczonym kurczakiem
+
+[CHKNUG]
+STR_NAME    :Kiosk z kotlecikami z kurczaka
+STR_DESC    :Stoisko sprzedające pieczone kotleciki z kurczaka
+
+[CHPSH]
+STR_NAME    :Sklepik z żetonami
+STR_DESC    :Można tu kupić żetony
+
+[CHPSH2]
+STR_NAME    :Kiosk z frytkami
+STR_DESC    :Stoisko sprzedające frytki
+
+[CINDR]
+STR_NAME    :Kiosk Sujongkwa
+STR_DESC    :Stoisko sprzedające koreańskie napoje Sujongkwa
+
+[CIRCUS1]
+STR_NAME    :Cyrk
+STR_DESC    :Cyrk ze zwierzętami występującymi w wielkim namiocie
+STR_CPTY    :30 widzów
+
+[CLIFT1]
+STR_NAME    :Latające krzesełka
+STR_DESC    :Kolejka krzesełkowa z otwartymi siedziskami
+STR_CPTY    :2 pasażerów na wagonik
+
+[CLIFT2]
+STR_NAME    :Podniebne krzesełka
+STR_DESC    :Kolejka krzesełkowa z otwartymi siedziskami
+STR_CPTY    :2 pasażerów na wagonik
+
+[CNDYF]
+STR_NAME    :Kiosk z watą cukrową
+STR_DESC    :Budynek w kształcie kłębu waty cukrowej, w którym można kupić różową watę cukrową
+
+[COFFS]
+STR_NAME    :Kawiarenka
+STR_DESC    :Stoisko w stylu art deco sprzedające kawę
+
+[COOKST]
+STR_NAME    :Kiosk z ciasteczkami
+STR_DESC    :Stoisko sprzedające olbrzymie ciastka
+
+[CSTBOAT]
+STR_NAME    :Kolejka łódkowa
+STR_DESC    :Wagoniki w kształcie łódek
+STR_CPTY    :6 pasażerów na łódkę
+
+[CTCAR]
+STR_NAME    :Koty z Cheshire
+STR_DESC    :Napędzane pojazdy w kształcie kotów podróżujące wyznaczoną trasą
+STR_CPTY    :2 pasażerów na kota
+
+[DING1]
+STR_NAME    :Ślizg pontonowy
+STR_DESC    :Pasażerowie podróżują w nadmuchiwanych pontonach po zawiłym półkolistym lub rurowym torze
+STR_CPTY    :2 pasażerów na ponton
+
+[DODG1]
+STR_NAME    :Unikajki
+STR_DESC    :Samochodziki z napędem elektrycznym
+STR_CPTY    :1 osoba na samochód
+
+[DOUGH]
+STR_NAME    :Sklepik z pączkami
+STR_DESC    :Stoisko sprzedające amerykańskie pączki, zwane też donatami
+
+[DRNKS]
+STR_NAME    :Kiosk z napojami
+STR_DESC    :Stoisko w kształcie puszki sprzedające napoje gazowane
+
+[ENTERP]
+STR_NAME    :Krynolina
+STR_DESC    :Obracające się koło z podwieszanymi wagonikami. Gdy się rozkręci, hydrauliczne ramię podnosi je do pionu
+STR_CPTY    :16 pasażerów
+
+[FAID1]
+STR_NAME    :Pierwsza pomoc
+STR_DESC    :Miejsce dla gości, którym zrobiło się niedobrze - tutaj szybciej oprzytomnieją
+
+[FRNOOD]
+STR_NAME    :Kiosk ze smażonym ryżem
+STR_DESC    :Stoisko sprzedające chińskie kluseczki ze smażonego ryżu
+
+[FSAUC]
+STR_NAME    :Latające spodki
+STR_DESC    :Poduszkowce z własnym napędem
+STR_CPTY    :1 osoba na samochód
+
+[FUNCAKE]
+STR_NAME    :Kiosk z makaronikami
+STR_DESC    :Stoisko sprzedające ciasteczka zwane makaronikami
+
+[FWH1]
+STR_NAME    :Diabelski młyn
+STR_DESC    :Wielkie obrotowe koło z otwartymi wagonikami
+STR_CPTY    :32 pasażerów
+
+[GDROP1]
+STR_NAME    :Obrotospad
+STR_DESC    :Pierścień z zamocowanymi fotelami jest wciągany na szczyt wysokiej wieży, obracając się powoli. Następnie spada swobodnie, wyhamowując delikatnie u dołu z użyciem hamulców magnetycznych
+STR_CPTY    :16 pasażerów
+
+[GOLF1]
+STR_NAME    :Minigolf
+STR_DESC    :Spokojna gra w miniaturowego golfa
+
+[GOLTR]
+STR_NAME    :Pociąg hiperzwijka
+STR_DESC    :Przestronne wagoniki z prostymi zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :6 pasażerów na wagonik
+
+[GTC]
+STR_NAME    :Pociąg widmo
+STR_DESC    :Napędzane wagoniki o potwornych kształtach jadą po wielopoziomowym torze wśród przerażających dekoracji i efektów specjalnych
+STR_CPTY    :2 pasażerów na wagonik
+
+[HATST]
+STR_NAME    :Stragan z kapeluszami
+STR_DESC    :Stoisko z pamiątkami sprzedające wielkie piankowe kapelusze
+
+[HCHOC]
+STR_NAME    :Stragan z grzaną czekoladą
+STR_DESC    :Stragan z czekoladą do picia.
+
+[HELICAR]
+STR_NAME    :Minihelikoptery
+STR_DESC    :Wagoniki w kształcie helikopterów jadące po stalowym torze, sterowane przez pedałujących pasażerów
+STR_CPTY    :2 pasażerów na wagonik
+
+[HHBUILD]
+STR_NAME    :Nawiedzony dom
+STR_DESC    :Wielki budynek mieszczący straszliwe korytarze i budzące dreszcz grozy pokoje
+STR_CPTY    :15 widzów
+
+[HMAZE]
+STR_NAME    :Labirynt
+STR_DESC    :Goście wędrują po labiryncie zbudowanym z dwumetrowych żywopłotów lub ścian
+
+[HMCAR]
+STR_NAME    :Przejażdżka po nawiedzonym domu
+STR_DESC    :Wagoniki z napędem jadą po wielopoziomowym torze wśród przerażających dekoracji i efektów specjalnych
+STR_CPTY    :2 pasażerów na wagonik
+
+[HOTDS]
+STR_NAME    :Kiosk z hotdogami
+STR_DESC    :Stoisko sprzedające parówki w bułeczkach
+
+[HSKELT]
+STR_NAME    :Spiralny zjazd
+STR_DESC    :Drewniany budynek ze schodami wewnątrz i spiralną zjeżdżalnią na zewnątrz. Goście zjeżdżają na matach
+
+[ICECR1]
+STR_NAME    :Kiosk z lodami owocowymi
+STR_DESC    :Stoisko sprzedające lody owocowe
+
+[ICECR2]
+STR_NAME    :Kiosk z rożkami
+STR_DESC    :Stoisko sprzedające lodowe rożki
+
+[ICETST]
+STR_NAME    :Kiosk z mrożoną herbatą
+STR_DESC    :Stoisko sprzedające mrożoną herbatę
+
+[INFOK]
+STR_NAME    :Kiosk informacyjny
+STR_DESC    :Tutaj goście mogą otrzymać mapy parku i zakupić parasole
+
+[INTBOB]
+STR_NAME    :Latające zakręty
+STR_DESC    :Pasażerowie zjeżdżają krętą trasą w wagonach przypominających bobsleje, prowadzonych jedynie przez krzywizny i wychylenia półkolistego toru
+STR_CPTY    :6 pasażerów na wagonik
+
+[INTINV]
+STR_NAME    :Kolejka zwrotna
+STR_DESC    :Wagoniki tego typu kolejki są wciągane ze stacji na pionowy odcinek toru, po czym zjeżdżają z niego, przejeżdżają z powrotem przez stację i wjeżdżają siłą rozpędu tyłem na drugi pionowy odcinek
+STR_CPTY    :4 pasażerów na wagonik
+
+[INTST]
+STR_NAME    :Gigajazda
+STR_DESC    :Wielka stalowa kolejka górska jeżdżąca po łagodnych spadkach i wzniesieniach o wysokości 100 m
+STR_CPTY    :4 pasażerów na wagonik
+
+[IVMC1]
+STR_NAME    :Kolejka serpentynowa
+STR_DESC    :Pojedyncze wagoniki jeżdżą podwieszone pod torem z ostrymi zakrętami i gwałtownymi spadkami
+STR_CPTY    :4 pasażerów na wagonik
+
+[JSKI]
+STR_NAME    :Skutery wodne
+STR_DESC    :Jednomiejscowe skutery, którymi pasażerowie mogą sami kierować
+STR_CPTY    :1 osoba na pojazd
+
+[JSTAR1]
+STR_NAME    :Na saneczki
+STR_DESC    :Kolejka górska z wagonikami w kształcie sanek, w których pasażerowie siedzą jeden za drugim
+STR_CPTY    :4 pasażerów na wagonik
+
+[KART1]
+STR_NAME    :Gokarty
+STR_DESC    :Samochodziki z napędem benzynowym
+STR_CPTY    :1 miejsce
+
+[LEMST]
+STR_NAME    :Kiosk z lemoniadą
+STR_DESC    :Stoisko sprzedające orzeţwiającą lemoniadę
+
+[LFB1]
+STR_NAME    :Jazda flisacka
+STR_DESC    :Łódki w kształcie pni płyną wodnym kanałem, spadając z pluskiem ze stromych spadków, aby zamoczyć pasażerów
+STR_CPTY    :4 pasażerów na łódkę
+
+[LIFT1]
+STR_NAME    :Winda
+STR_DESC    :Pasażerowie jeżdżą w dół lub w górę windą w wieży, aby przejść z jednego poziomu na drugi
+STR_CPTY    :16 pasażerów
+
+[MBSOUP]
+STR_NAME    :Kiosk z zupą klopsikową
+STR_DESC    :Stoisko sprzedające chińską zupę z klopsikami
+
+[MCARPET1]
+STR_NAME    :Latający dywan
+STR_DESC    :Wagony w kształcie latającego dywanu poruszające się na przemian w górę i w dół na końcach czterech ramion
+STR_CPTY    :12 pasażerów
+
+[MFT]
+STR_NAME    :Segmentowa kolejka górska
+STR_DESC    :Kolejka z krótkimi pojedynczymi wagonikami z otwartym przodem
+STR_CPTY    :2 pasażerów na wagonik
+
+[MGR1]
+STR_NAME    :Karuzela obrotowa
+STR_DESC    :Tradycyjna karuzela z drewnianymi konikami
+STR_CPTY    :16 pasażerów
+
+[MONBK]
+STR_NAME    :Rowery jednotorowe
+STR_DESC    :Specjalne rowery jadące po stalowej jednoszynowej trasie, napędzane przez pedałujących pasażerów
+STR_CPTY    :1 pasażer na rower
+
+[MONO1]
+STR_NAME    :Opływowa kolejka jednoszynowa
+STR_DESC    :Pojemne wagony jednoszynowe, opływowe na obu końcach
+STR_CPTY    :5 lub 10 pasażerów na wagonik
+
+[MONO2]
+STR_NAME    :Wagoniki jednoszynowe
+STR_DESC    :Wagoniki jednoszynowe z otwartymi bokami
+STR_CPTY    :4 pasażerów na wagonik
+
+[MONO3]
+STR_NAME    :Retrokolejka jednoszynowa
+STR_DESC    :Otwarte wagoniki jednoszynowe
+STR_CPTY    :4 pasażerów na wagonik
+
+[NEMT]
+STR_NAME    :Kolejka odwrotna
+STR_DESC    :Pasażerowie siedzą w fotelach podwieszonych pod torem, pokonując wielkie pętle, zakręty i zakręcone zjazdy
+STR_CPTY    :4 pasażerów na wagonik
+
+[NRL]
+STR_NAME    :Pociągi parowe
+STR_DESC    :Miniaturowe pociągi składające się z lokomotywy parowej i tendra, ciągnących otwarte drewniane wagoniki
+STR_CPTY    :6 pasażerów na wagon
+
+[NRL2]
+STR_NAME    :Pociągi parowe z krytymi wagonami
+STR_DESC    :Miniaturowe pociągi składające się z lokomotywy parowej i tendra, ciągnących drewniane wagoniki z płóciennymi daszkami
+STR_CPTY    :6 pasażerów na wagon
+
+[OBS1]
+STR_NAME    :Wieża obserwacyjna
+STR_DESC    :Obrotowa kabina obserwacyjna wjeżdżająca na wysoką wieżę
+STR_CPTY    :20 pasażerów
+
+[OBS2]
+STR_NAME    :Dwupiętrowa wieża obserwacyjna
+STR_DESC    :Obrotowa piętrowa kabina obserwacyjna wjeżdżająca na wysoką wieżę
+STR_CPTY    :32 pasażerów
+
+[PIZZS]
+STR_NAME    :Kiosk z pizzą
+STR_DESC    :Stoisko sprzedające porcje pizzy
+
+[PMT1]
+STR_NAME    :Przejażdżka kopalniana
+STR_DESC    :Napędzane wagoniki kopalniane jadą po gładkim i zakręconym torze
+STR_CPTY    :2 lub 4 pasażerów na wagonik
+
+[POPCS]
+STR_NAME    :Kiosk z popcornem
+STR_DESC    :Stoisko sprzedające wielkie pudełka popcornu
+
+[PREMT1]
+STR_NAME    :Kolejka z napędem liniowym
+STR_DESC    :Wagoniki są rozpędzane za pomocą magnetycznego silnika liniowego i podróżują tam i z powrotem po zakręconym torze
+STR_CPTY    :4 pasażerów na wagonik
+
+[PRETST]
+STR_NAME    :Kiosk z preclami
+STR_DESC    :Stoisko sprzedające chrupiące precle
+
+[PTCT1]
+STR_NAME    :Drewniana kolejka górska
+STR_DESC    :Drewniana kolejka górska z wyściełanymi siedzeniami i zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :4 pasażerów na wagonik
+
+[PTCT2]
+STR_NAME    :Drewniana kolejka górska (6 miejsc)
+STR_DESC    :Drewniana kolejka górska z wyściełanymi siedzeniami i zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :6 pasażerów na wagonik
+
+[PTCT2R]
+STR_NAME    :Drewniana kolejka górska (6 miejsc, odwrócona)
+STR_DESC    :Drewniana kolejka górska z wyściełanymi siedzeniami i zabezpieczeniami obejmującymi pasażerów w pasie, z fotelami ustawionymi tyłem do kierunku jazdy
+STR_CPTY    :6 pasażerów na wagonik
+
+[RAPBOAT]
+STR_NAME    :Przełomy Dunajca
+STR_DESC    :Okrągłe łódki pokonujące szeroki kanał wodny, spadające z wodospadów i przepływające przez spienione bystrzyny
+STR_CPTY    :8 pasażerów na łódkę
+
+[RBOAT]
+STR_NAME    :Łodzie wiosłowe
+STR_DESC    :Łodzie wiosłowe napędzane przez samych pasażerów
+STR_CPTY    :2 pasażerów na łódkę
+
+[RCKC]
+STR_NAME    :Samochody rakietowe
+STR_DESC    :Wagoniki w kształcie rakiet
+STR_CPTY    :4 pasażerów na wagonik
+
+[RCR]
+STR_NAME    :Wyścigówki
+STR_DESC    :Pojazdy z napędem mające kształt samochodów wyścigowych
+STR_CPTY    :1 pasażer na wagonik
+
+[REVCAR]
+STR_NAME    :Zawracajka
+STR_DESC    :Wózki kopalniane jeżdżące po drewnianych torach, zawracające na specjalnych obrotowych sekcjach
+STR_CPTY    :6 pasażerów na wagonik
+
+[REVF1]
+STR_NAME    :Wagonik
+STR_DESC    :Duży wagonik dla kolejki o swobodnym spadku
+STR_CPTY    :8 pasażerów
+
+[RFTBOAT]
+STR_NAME    :Tratwy rzeczne
+STR_DESC    :Tratwy manewrujące zręcznie po wodnym torze
+STR_CPTY    :4 pasażerów na tratwę
+
+[RSAUS]
+STR_NAME    :Kiosk z pieczonymi kiełbaskami
+STR_DESC    :Stoisko sprzedające chińskie pieczone kiełbaski
+
+[SBOX]
+STR_NAME    :Wyścigi mydelniczek
+STR_DESC    :Pasażerowie jadą wagonikami w kształcie mydelniczek po jednoszynowym torze kolejki
+STR_CPTY    :4 pasażerów na wagonik
+
+[SCHT1]
+STR_NAME    :Kolejka górska
+STR_DESC    :Wagoniki kolejki górskiej z zabezpieczeniami obejmującymi pasażerów w pasie, mogące pokonywać pionowe pętle
+STR_CPTY    :4 pasażerów na wagonik
+
+[SFRIC1]
+STR_NAME    :Drewniane wagoniki "Tarcie Boczne"
+STR_DESC    :Podstawowe wagoniki dla kolejki "Tarcie Boczne"
+STR_CPTY    :4 pasażerów na wagonik
+
+[SIMPOD]
+STR_NAME    :Symulator ruchu
+STR_DESC    :Pasażerowie oglądają film, siedząc w specjalnej kabinie, poruszanej i wstrząsanej przez siłowniki hydrauliczne
+STR_CPTY    :8 pasażerów
+
+[SKYTR]
+STR_NAME    :Podwieszana minikolejka
+STR_DESC    :Pasażerowie podróżują w pozycji leżącej, twarzą w dół, w specjalnych wagonikach podwieszonych pod pojedynczym torem, które bujają się swobodnie na zakrętach
+STR_CPTY    :1 pasażer na wagonik
+
+[SLCFO]
+STR_NAME    :Odwrócone kapsuły
+STR_DESC    :Pasażerowie siedzą naprzeciwko siebie, pokonując pętle i ostre zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[SLCT]
+STR_NAME    :Mała kolejka odwrócona
+STR_DESC    :Pasażerowie podróżują parami w fotelach podwieszonych pod torem, pokonując pętle i ostre zakręty
+STR_CPTY    :2 pasażerów na wagonik
+
+[SMC1]
+STR_NAME    :Myszochody
+STR_DESC    :Pojedyncze samochodziki w kształcie myszy
+STR_CPTY    :4 pasażerów na wagonik
+
+[SMC2]
+STR_NAME    :Wózki kopalniane
+STR_DESC    :Pojedyncze samochodziki w kształcie drewnianych wózków kopalnianych
+STR_CPTY    :4 pasażerów na wagonik
+
+[SMONO]
+STR_NAME    :Podwieszane wagoniki jednoszynowe
+STR_DESC    :Pojemne wagoniki jednoszynowe
+STR_CPTY    :8 pasażerów na wagonik
+
+[SOUVS]
+STR_NAME    :Kiosk z pamiątkami
+STR_DESC    :Stoisko sprzedające pamiątki, przytulanki i parasole
+
+[SOYBEAN]
+STR_NAME    :Kiosk z mlekiem sojowym
+STR_DESC    :Stoisko sprzedające kartoniki z mlekiem sojowym
+
+[SPBOAT]
+STR_NAME    :Pluskołódki
+STR_DESC    :Pojemne łodzie płynące szerokim kanałem, wciągane po nachyleniu przez pasy napędowe, zjeżdżające ze wzniesień i w wielkim plusku moczące pasażerów
+STR_CPTY    :16 pasażerów na łódkę
+
+[SPCAR]
+STR_NAME    :Wyścigówki
+STR_DESC    :Pojazdy z napędem w kształcie samochodów wyścigowych
+STR_CPTY    :2 pasażerów na wagonik
+
+[SPDRCR]
+STR_NAME    :Pajęcza jazda
+STR_DESC    :Kolejka ze stalowym torem, spiralnym podjazdem i siedzeniami jedno za drugim
+STR_CPTY    :6 pasażerów na wagonik
+
+[SQDST]
+STR_NAME    :Kiosk z owocami morza
+STR_DESC    :Stoisko sprzedające smażone macki
+
+[SRINGS]
+STR_NAME    :Kosmiczne pierścienie
+STR_DESC    :Koncentryczne obrotowe obręcze, umożliwiające swobodne kręcenie się we wszystkich kierunkach
+STR_CPTY    :1 osoba
+
+[SSC1]
+STR_NAME    :Wystrzałowa spadajka
+STR_DESC    :Wagonik jest wystrzeliwany pneumatycznie na szczyt wysokiej wieży, a potem swobodnie opada
+STR_CPTY    :8 pasażerów
+
+[STARFRDR]
+STR_NAME    :Kiosk z gwiezdnymi napojami
+STR_DESC    :Stoisko sprzedające gwiezdne napoje owocowe
+
+[STEEP1]
+STR_NAME    :Bieg z przeszkodami
+STR_DESC    :Pasażerowie jadą pojazdami w kształcie koni, poruszającymi się po jednoszynowym torze kolejki
+STR_CPTY    :2 pasażerów na konia
+
+[STEEP2]
+STR_NAME    :Wyścigi motocyklowe
+STR_DESC    :Pasażerowie jadą wagonikami w kształcie motocykli po jednoszynowym torze
+STR_CPTY    :2 pasażerów na motocykl
+
+[SUBMAR]
+STR_NAME    :Podwodna podróż
+STR_DESC    :Pasażerowie usadowieni w łodzi podwodnej podróżują podwodnym torem
+STR_CPTY    :4 pasażerów na łódţ podwodną
+
+[SUBSTL]
+STR_NAME    :Kiosk z kanapkami
+STR_DESC    :Stoisko sprzedające świeże kanapki
+
+[SUNGST]
+STR_NAME    :Kiosk z okularami
+STR_DESC    :Stoisko sprzedające okulary słoneczne
+
+[SWANS]
+STR_NAME    :Łabędzie
+STR_DESC    :Łodzie w kształcie łabędzi napędzane przez pedałujących pasażerów z przednich miejsc
+STR_CPTY    :4 pasażerów na łódkę
+
+[SWSH1]
+STR_NAME    :Okręt piracki
+STR_DESC    :Wielka huśtawka w kształcie statku
+STR_CPTY    :16 pasażerów
+
+[SWSH2]
+STR_NAME    :Morska huśtawka
+STR_DESC    :Statek przymocowany do ramienia z przeciwwagą wykonuje pełne obroty
+STR_CPTY    :12 pasażerów
+
+[THCAR]
+STR_NAME    :Pneumatyczna kolejka pionowa
+STR_DESC    :Po rozrywkowym starcie z wyrzutni pneumatycznej wagoniki wjeżdżają po pionowym torze, po czym wykonują pionowy zjazd w dół, z powrotem do stacji
+STR_CPTY    :2 pasażerów na wagonik
+
+[TLT1]
+STR_NAME    :Toalety
+STR_DESC    :Podstawowe toalety w budynku z prefabrykowanego betonu
+
+[TLT2]
+STR_NAME    :Toalety
+STR_DESC    :Toalety umieszczone w budynku typu chata z drewnianych bali
+
+[TOFFS]
+STR_NAME    :Kiosk z jabłkami w polewie
+STR_DESC    :Stoisko w kształcie jabłka, sprzedające jabłka oblane polewą toffi
+
+[TOGST]
+STR_NAME    :Stojąca kolejka
+STR_DESC    :Zapętlona kolejka, w której pasażerowie jadą w pozycji stojącej
+STR_CPTY    :4 pasażerów na wagonik
+
+[TOPSP1]
+STR_NAME    :Wirówka
+STR_DESC    :Pasażerowie podróżują w gondoli zawieszonej na wielkich obrotowych ramionach, która może huśtać się w przód i w tył, a także do góry nogami
+STR_CPTY    :8 pasażerów
+
+[TRAM1]
+STR_NAME    :Tramwaje
+STR_DESC    :Repliki staroświeckich tramwajów
+STR_CPTY    :10 pasażerów na wagonik
+
+[TRIKE]
+STR_NAME    :Rowery wodne
+STR_DESC    :Wodne pojazdy napędzane pedałami, z dużymi kołami-pływakami
+STR_CPTY    :2 pasażerów na rower
+
+[TRUCK1]
+STR_NAME    :Furgonetki
+STR_DESC    :Pojazdy z napędem mające kształt półciężarówek
+STR_CPTY    :1 pasażer na samochód
+
+[TSHRT]
+STR_NAME    :Kiosk z koszulkami
+STR_DESC    :Stoisko sprzedające pamiątkowe koszulki
+
+[TWIST1]
+STR_NAME    :Twist
+STR_DESC    :Pasażerowie jadą w parach siedzeń wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
+[TWIST2]
+STR_NAME    :Śnieżne filiżanki
+STR_DESC    :Pasażerowie jadą w parach foteli obracających się wokół centralnego bałwanka
+STR_CPTY    :18 pasażerów
+
+[UTCAR]
+STR_NAME    :Wagoniki zwijki
+STR_DESC    :Wagoniki kolejki górskiej wykonującej zabójcze zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[UTCARR]
+STR_NAME    :Wagoniki zwijki (ruszające tyłem)
+STR_DESC    :Wagoniki kolejki górskiej wykonującej zabójcze zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[VCR]
+STR_NAME    :Klasyczne wagoniki
+STR_DESC    :Pojazdy z napędem mające kształt klasycznych wagoników jadących po szynowym torze
+STR_CPTY    :2 pasażerów na wagonik
+
+[VEKDV]
+STR_NAME    :Odwrócony pionozjazd
+STR_DESC    :Pasażerowie siedzą w wagonikach podwieszonych pod torem, wciąganych tyłem na pionowy odcinek, a następnie pokonujących rozpędem pętle i ciasne zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[VEKST]
+STR_NAME    :Leżąca kolejka
+STR_DESC    :Pasażerowie wiszą w specjalnych uprzężach twarzą w dół, podróżując przez zakręcony tor albo na plecach, albo twarzą ku ziemi
+STR_CPTY    :4 pasażerów na wagonik
+
+[VEKVAMP]
+STR_NAME    :Dyndające krzesełka
+STR_DESC    :Kolejka górska z podwieszanymi fotelikami typu wyciągu krzesełkowego, które bujają się swobodnie na zakrętach
+STR_CPTY    :2 pasażerów na wagonik
+
+[VREEL]
+STR_NAME    :W koło Macieju
+STR_DESC    :Okrągłe wagoniki wirują, jadąc po zygzakowatym drewnianym torze
+STR_CPTY    :4 pasażerów na wagonik
+
+[WCATC]
+STR_NAME    :Czar automobilizmu
+STR_DESC    :Wagoniki kolejki górskiej w kształcie starych samochodów
+STR_CPTY    :4 pasażerów na wagonik
+
+[WMMINE]
+STR_NAME    :Zwariowana kopalnia
+STR_DESC    :Małe wózki kopalniane jadące po zygzakowatym drewnianym torze, przechylające się na ostrych zakrętach i zdradliwych zjazdach
+STR_CPTY    :2 pasażerów na wagonik
+
+[WMOUSE]
+STR_NAME    :Drewniana szalona mysz
+STR_DESC    :Wagoniki w kształcie myszy jadące po zygzakowatym drewnianym torze, przechylające się na ostrych zakrętach i zdradliwych zjazdach
+STR_CPTY    :2 pasażerów na wagonik
+
+[WMSPIN]
+STR_NAME    :Wirująca szalona mysz
+STR_DESC    :Wagoniki w kształcie myszy pokonujące ostre zakręty i krótkie zjazdy, wirujące łagodnie w celu zdezorientowania pasażerów
+STR_CPTY    :4 pasażerów na wagonik
+
+[WONTON]
+STR_NAME    :Kiosk z zupą wonton
+STR_DESC    :Stoisko sprzedające zupę z uszkami wonton
+
+[ZLDB]
+STR_NAME    :Jazda na biedronkach
+STR_DESC    :Kolejka górska z wagonikami w kształcie biedronek
+STR_CPTY    :2 pasażerów na wagonik
+
+[ZLOG]
+STR_NAME    :Pociąg drwali
+STR_DESC    :Kolejka górska z wagonikami w kształcie pni drzew
+STR_CPTY    :2 pasażerów na wagonik
+
+[ALLSORT1]
+STR_NAME    :Cukierek
+
+[ALLSORT2]
+STR_NAME    :Cukierek
+
+[BADSHUT]
+STR_NAME    :Lotka
+
+[BADSHUT2]
+STR_NAME    :Lotka
+
+[BALL1]
+STR_NAME    :Amerykańska piłka futbolowa
+
+[BALL2]
+STR_NAME    :Amerykańska piłka futbolowa
+
+[BALL3]
+STR_NAME    :Piłka futbolowa
+
+[BALL4]
+STR_NAME    :Piłka tenisowa
+
+[BEANST1]
+STR_NAME    :Łodyga olbrzymiej fasoli
+
+[BEANST2]
+STR_NAME    :Łodyga olbrzymiej fasoli
+
+[BRBASE]
+STR_NAME    :Blok podstawy
+
+[BRBASE2]
+STR_NAME    :Blok podstawy
+
+[BRBASE3]
+STR_NAME    :Blok podstawy
+
+[BRCRRF1]
+STR_NAME    :Zakrzywiony dach
+
+[BRCRRF2]
+STR_NAME    :Zakrzywiony dach
+
+[BUTTFLY]
+STR_NAME    :Motyl
+
+[CARROT]
+STR_NAME    :Olbrzymia marchew
+
+[CHBBASE]
+STR_NAME    :Blok szachownicy
+
+[CHEST1]
+STR_NAME    :Skrzynia ze skarbem
+
+[CHEST2]
+STR_NAME    :Skrzynia ze skarbem
+
+[CHOCROOF]
+STR_NAME    :Tabliczka czekolady
+
+[CNBALLS]
+STR_NAME    :Kule armatnie
+
+[CNDYRK1]
+STR_NAME    :Batonik
+
+[COG1]
+STR_NAME    :Koło zębate
+
+[COG1R]
+STR_NAME    :Koło zębate
+
+[COG1U]
+STR_NAME    :Koło zębate
+
+[COG1UR]
+STR_NAME    :Koło zębate
+
+[COG2]
+STR_NAME    :Kółko zębate
+
+[COG2R]
+STR_NAME    :Kółko zębate
+
+[COG2U]
+STR_NAME    :Kółko zębate
+
+[COG2UR]
+STR_NAME    :Kółko zębate
+
+[COLAGUM]
+STR_NAME    :Cola cukierek
+
+[CORROOF]
+STR_NAME    :Dach z blachy falistej
+
+[CORROOF2]
+STR_NAME    :Podstawa z blachy falistej
+
+[CWBCRV32]
+STR_NAME    :Zakrzywiona ściana
+
+[CWBCRV33]
+STR_NAME    :Zakrzywiony blok
+
+[CWFCRV32]
+STR_NAME    :Zakrzywiona ściana
+
+[CWFCRV33]
+STR_NAME    :Zakrzywiony blok
+
+[FERN1]
+STR_NAME    :Olbrzymia paproć
+
+[FIRE1]
+STR_NAME    :Płomienie
+
+[GEOROOF1]
+STR_NAME    :Szklany dach
+
+[GEOROOF2]
+STR_NAME    :Szklany dach
+
+[GGRS1]
+STR_NAME    :Olbrzymia trawa
+
+[HANG1]
+STR_NAME    :Szubienica
+
+[HELMET1]
+STR_NAME    :Hełm do futbolu amerykańskiego
+
+[ICECUBE]
+STR_NAME    :Kostka lodu
+
+[IGROOF]
+STR_NAME    :Dach igloo
+
+[JBEAN1]
+STR_NAME    :Řelka
+
+[JELBAB1]
+STR_NAME    :Gumiś
+
+[JELDROP1]
+STR_NAME    :Drops owocowy
+
+[JELDROP2]
+STR_NAME    :Drops owocowy
+
+[JNGROOF1]
+STR_NAME    :Dach
+
+[LOLLY1]
+STR_NAME    :Lizak
+
+[MALLOW1]
+STR_NAME    :Słoninka
+
+[MALLOW2]
+STR_NAME    :Słoninka
+
+[MINROOF1]
+STR_NAME    :Dach
+
+[MINT1]
+STR_NAME    :Miętówka
+
+[MMENT1]
+STR_NAME    :Obiekt dekoracyjny
+
+[MMENT2]
+STR_NAME    :Obiekt dekoracyjny
+
+[MMENT3]
+STR_NAME    :Obiekt dekoracyjny
+
+[PAGROOF1]
+STR_NAME    :Dach
+
+[PIPE32]
+STR_NAME    :Segment rury
+
+[PIPE32J]
+STR_NAME    :Segment rury
+
+[PIPE8]
+STR_NAME    :Segment rury
+
+[PIRFLAG]
+STR_NAME    :Piracka bandera
+
+[PIRROOF1]
+STR_NAME    :Dach
+
+[PIRROOF2]
+STR_NAME    :Dach
+
+[PRCAN]
+STR_NAME    :Armata
+
+[ROMROOF1]
+STR_NAME    :Dach
+
+[ROMROOF2]
+STR_NAME    :Cokół
+
+[ROOF1]
+STR_NAME    :Dach
+
+[ROOF10]
+STR_NAME    :Dach
+
+[ROOF11]
+STR_NAME    :Dach
+
+[ROOF12]
+STR_NAME    :Dach
+
+[ROOF13]
+STR_NAME    :Dach
+
+[ROOF14]
+STR_NAME    :Dach
+
+[ROOF2]
+STR_NAME    :Dach
+
+[ROOF3]
+STR_NAME    :Dach
+
+[ROOF4]
+STR_NAME    :Dach
+
+[ROOF5]
+STR_NAME    :Dach
+
+[ROOF6]
+STR_NAME    :Dach
+
+[ROOF7]
+STR_NAME    :Dach
+
+[ROOF8]
+STR_NAME    :Dach
+
+[ROOF9]
+STR_NAME    :Dach
+
+[SKTBASE]
+STR_NAME    :Blok
+
+[SKTBASET]
+STR_NAME    :Blok
+
+[SKTDW]
+STR_NAME    :Ściana
+
+[SKTDW2]
+STR_NAME    :Ściana
+
+[SMSKULL]
+STR_NAME    :Czaszka
+
+[SNAIL]
+STR_NAME    :Ślimak
+
+[SPCROOF1]
+STR_NAME    :Dach
+
+[SPIDER1]
+STR_NAME    :Pająk
+
+[STBASE]
+STR_NAME    :Stalowy blok
+
+[STLBASET]
+STR_NAME    :Stalowy blok
+
+[STLDW]
+STR_NAME    :Stalowa ściana
+
+[STLDW2]
+STR_NAME    :Stalowa ściana
+
+[SUMRF]
+STR_NAME    :Dach
+
+[SUPPLEG1]
+STR_NAME    :Słup
+
+[SUPPLEG2]
+STR_NAME    :Słup
+
+[SUPPW1]
+STR_NAME    :Podpora
+
+[SUPPW2]
+STR_NAME    :Podpora
+
+[SUPPW3]
+STR_NAME    :Podpora
+
+[TAC]
+STR_NAME    :Arizoński cyprys
+
+[TAL]
+STR_NAME    :Drzewo aligatorowe
+
+[TAP]
+STR_NAME    :Sosna z Aleppo
+
+[TAS]
+STR_NAME    :Osika
+
+[TAS1]
+STR_NAME    :Drzewo cukierkowe
+
+[TAS2]
+STR_NAME    :Drzewo cukierkowe
+
+[TAS3]
+STR_NAME    :Drzewo cukierkowe
+
+[TAS4]
+STR_NAME    :Cukierek
+
+[TB1]
+STR_NAME    :Biały goniec
+
+[TB2]
+STR_NAME    :Czarny goniec
+
+[TBC]
+STR_NAME    :Kaktus
+
+[TBN]
+STR_NAME    :Kość
+
+[TBN1]
+STR_NAME    :Kości
+
+[TBP]
+STR_NAME    :Czarna topola
+
+[TBR]
+STR_NAME    :Sitowie
+
+[TBR1]
+STR_NAME    :Beczułka
+
+[TBR2]
+STR_NAME    :Beczułka
+
+[TBR3]
+STR_NAME    :Beczułka
+
+[TBR4]
+STR_NAME    :Beczułka
+
+[TBW]
+STR_NAME    :Zepsute koło
+
+[TCB]
+STR_NAME    :Drzewko treflowe
+
+[TCC]
+STR_NAME    :Chiński cedr
+
+[TCD]
+STR_NAME    :Kocioł
+
+[TCE]
+STR_NAME    :Wiąz
+
+[TCF]
+STR_NAME    :Kaukaska jodła
+
+[TCFS]
+STR_NAME    :Ośnieżona kaukaska jodła
+
+[TCJ]
+STR_NAME    :Jałowiec
+
+[TCK]
+STR_NAME    :Zegar
+
+[TCL]
+STR_NAME    :Cedr libański
+
+[TCN]
+STR_NAME    :Armata
+
+[TCO]
+STR_NAME    :Dąb
+
+[TCRP]
+STR_NAME    :Korsykańska sosna
+
+[TCT]
+STR_NAME    :Drzewo kapuściane
+
+[TCT1]
+STR_NAME    :Wieża zamkowa
+
+[TCT2]
+STR_NAME    :Wieża zamkowa
+
+[TCY]
+STR_NAME    :Cis
+
+[TDF]
+STR_NAME    :Fontanna z delfinami
+
+[TDM]
+STR_NAME    :Drzewko karowe
+
+[TDN4]
+STR_NAME    :Dinozaur
+
+[TDN5]
+STR_NAME    :Dinozaur
+
+[TDT1]
+STR_NAME    :Uschłe drzewo
+
+[TDT2]
+STR_NAME    :Uschłe drzewo
+
+[TDT3]
+STR_NAME    :Uschłe drzewo
+
+[TEEPEE1]
+STR_NAME    :Tipi
+
+[TEF]
+STR_NAME    :Słoniowa fontanna
+
+[TEL]
+STR_NAME    :Europejski modrzew
+
+[TEN]
+STR_NAME    :Igła Kleopatry
+
+[TEP]
+STR_NAME    :Kolumna egipska
+
+[TERB]
+STR_NAME    :Blok kamienny
+
+[TERS]
+STR_NAME    :Zniszczony posąg
+
+[TES1]
+STR_NAME    :Egipski posąg
+
+[TF1]
+STR_NAME    :Drzewo owocowe
+
+[TF2]
+STR_NAME    :Drzewo owocowe
+
+[TG1]
+STR_NAME    :Klomb
+
+[TG10]
+STR_NAME    :Klomb
+
+[TG11]
+STR_NAME    :Klomb
+
+[TG12]
+STR_NAME    :Klomb
+
+[TG13]
+STR_NAME    :Klomb
+
+[TG14]
+STR_NAME    :Klomb
+
+[TG15]
+STR_NAME    :Klomb
+
+[TG16]
+STR_NAME    :Klomb
+
+[TG17]
+STR_NAME    :Klomb
+
+[TG18]
+STR_NAME    :Klomb
+
+[TG19]
+STR_NAME    :Klomb
+
+[TG2]
+STR_NAME    :Klomb
+
+[TG20]
+STR_NAME    :Klomb
+
+[TG21]
+STR_NAME    :Klomb
+
+[TG3]
+STR_NAME    :Klomb
+
+[TG4]
+STR_NAME    :Klomb
+
+[TG5]
+STR_NAME    :Klomb
+
+[TG6]
+STR_NAME    :Klomb
+
+[TG7]
+STR_NAME    :Klomb
+
+[TG8]
+STR_NAME    :Klomb
+
+[TG9]
+STR_NAME    :Klomb
+
+[TGC1]
+STR_NAME    :Rzeţba
+
+[TGC2]
+STR_NAME    :Rzeţba
+
+[TGE1]
+STR_NAME    :Rzeţba geometryczna
+
+[TGE2]
+STR_NAME    :Rzeţba geometryczna
+
+[TGE3]
+STR_NAME    :Rzeţba geometryczna
+
+[TGE4]
+STR_NAME    :Rzeţba geometryczna
+
+[TGE5]
+STR_NAME    :Rzeţba geometryczna
+
+[TGG]
+STR_NAME    :Gong
+
+[TGH1]
+STR_NAME    :Statua
+
+[TGH2]
+STR_NAME    :Statua
+
+[TGHC]
+STR_NAME    :Złoty cyprys hinoki
+
+[TGHC2]
+STR_NAME    :Hibiskus
+
+[TGS]
+STR_NAME    :Posąg żyrafy
+
+[TGS1]
+STR_NAME    :Nagrobek
+
+[TGS2]
+STR_NAME    :Nagrobek
+
+[TGS3]
+STR_NAME    :Nagrobek
+
+[TGS4]
+STR_NAME    :Nagrobek
+
+[TH1]
+STR_NAME    :Palma kanaryjska
+
+[TH2]
+STR_NAME    :Palma
+
+[THL]
+STR_NAME    :Iglicznia
+
+[THRS]
+STR_NAME    :Posąg jeţdţca
+
+[THT]
+STR_NAME    :Drzewo sercowe
+
+[TIC]
+STR_NAME    :Cedr wonny
+
+[TIG]
+STR_NAME    :Igloo
+
+[TITC]
+STR_NAME    :Włoski cyprys
+
+[TJB1]
+STR_NAME    :Krzak
+
+[TJB2]
+STR_NAME    :Krzak
+
+[TJB3]
+STR_NAME    :Krzak
+
+[TJB4]
+STR_NAME    :Krzak
+
+[TJF]
+STR_NAME    :Kwiat
+
+[TJP1]
+STR_NAME    :Roślina
+
+[TJP2]
+STR_NAME    :Roślina
+
+[TJT1]
+STR_NAME    :Drzewo
+
+[TJT2]
+STR_NAME    :Drzewo
+
+[TJT3]
+STR_NAME    :Drzewo
+
+[TJT4]
+STR_NAME    :Drzewo
+
+[TJT5]
+STR_NAME    :Drzewo
+
+[TJT6]
+STR_NAME    :Drzewo
+
+[TK1]
+STR_NAME    :Biały skoczek
+
+[TK2]
+STR_NAME    :Czarny skoczek
+
+[TK3]
+STR_NAME    :Biały król
+
+[TK4]
+STR_NAME    :Czarny król
+
+[TL0]
+STR_NAME    :Drzewo
+
+[TL1]
+STR_NAME    :Drzewo
+
+[TL2]
+STR_NAME    :Drzewo
+
+[TL3]
+STR_NAME    :Drzewo
+
+[TLC]
+STR_NAME    :Lawsonia
+
+[TLP]
+STR_NAME    :Topola lombardzka
+
+[TLY]
+STR_NAME    :Lilia
+
+[TM0]
+STR_NAME    :Drzewo
+
+[TM1]
+STR_NAME    :Drzewo
+
+[TM2]
+STR_NAME    :Drzewo
+
+[TM3]
+STR_NAME    :Drzewo
+
+[TMBJ]
+STR_NAME    :Błękitny jałowiec
+
+[TMC]
+STR_NAME    :Cyprys amerykański
+
+[TMG]
+STR_NAME    :Magnolia
+
+[TMJ]
+STR_NAME    :Śmieci
+
+[TML]
+STR_NAME    :Pnie
+
+[TMM1]
+STR_NAME    :Pomnik cmentarny
+
+[TMM2]
+STR_NAME    :Pomnik cmentarny
+
+[TMM3]
+STR_NAME    :Pomnik cmentarny
+
+[TMO1]
+STR_NAME    :Artefakt Marsjan
+
+[TMO2]
+STR_NAME    :Artefakt Marsjan
+
+[TMO3]
+STR_NAME    :Artefakt Marsjan
+
+[TMO4]
+STR_NAME    :Artefakt Marsjan
+
+[TMO5]
+STR_NAME    :Artefakt Marsjan
+
+[TMP]
+STR_NAME    :Araukaria
+
+[TMS1]
+STR_NAME    :Muchomor
+
+[TMW]
+STR_NAME    :Koła
+
+[TMZP]
+STR_NAME    :Sosna Montezumy
+
+[TNS]
+STR_NAME    :Świerk norweski
+
+[TNSS]
+STR_NAME    :Ośnieżony świerk norweski
+
+[TNTROOF1]
+STR_NAME    :Płócienny dach
+
+[TOH1]
+STR_NAME    :Dom
+
+[TOH2]
+STR_NAME    :Dom
+
+[TOH3]
+STR_NAME    :Budynek
+
+[TORN1]
+STR_NAME    :Drzewo ozdobne
+
+[TORN2]
+STR_NAME    :Drzewo ozdobne
+
+[TOS]
+STR_NAME    :Posąg
+
+[TOT1]
+STR_NAME    :Drzewo
+
+[TOT2]
+STR_NAME    :Drzewo
+
+[TOT3]
+STR_NAME    :Drzewo
+
+[TOT4]
+STR_NAME    :Drzewo
+
+[TOTEM1]
+STR_NAME    :Totem
+
+[TP1]
+STR_NAME    :Biały pionek
+
+[TP2]
+STR_NAME    :Czarny pionek
+
+[TPM]
+STR_NAME    :Palma
+
+[TQ1]
+STR_NAME    :Biała królowa
+
+[TQ2]
+STR_NAME    :Czarna królowa
+
+[TQF]
+STR_NAME    :Fontanna z Kupidynem
+
+[TR1]
+STR_NAME    :Biała wieża
+
+[TR2]
+STR_NAME    :Czarna wieża
+
+[TRC]
+STR_NAME    :Rzymska kolumna
+
+[TRF]
+STR_NAME    :Daglezja
+
+[TRF2]
+STR_NAME    :Daglezja
+
+[TRF3]
+STR_NAME    :Ośnieżona daglezja
+
+[TRFS]
+STR_NAME    :Ośnieżona daglezja
+
+[TRMS]
+STR_NAME    :Rzymski posąg
+
+[TROPT1]
+STR_NAME    :Drzewo
+
+[TRWS]
+STR_NAME    :Rzymski posąg
+
+[TS0]
+STR_NAME    :Drzewo
+
+[TS1]
+STR_NAME    :Drzewo
+
+[TS2]
+STR_NAME    :Drzewo
+
+[TS3]
+STR_NAME    :Drzewo
+
+[TS4]
+STR_NAME    :Drzewo ozdobne
+
+[TS5]
+STR_NAME    :Drzewo ozdobne
+
+[TS6]
+STR_NAME    :Drzewo ozdobne
+
+[TSB]
+STR_NAME    :Brzoza
+
+[TSC]
+STR_NAME    :Kaktus
+
+[TSC2]
+STR_NAME    :Budynek
+
+[TSCP]
+STR_NAME    :Kosmiczna kapsuła
+
+[TSD]
+STR_NAME    :Drzewo pikowe
+
+[TSF1]
+STR_NAME    :Wielka śnieżynka
+
+[TSF2]
+STR_NAME    :Wielka śnieżynka
+
+[TSF3]
+STR_NAME    :Wielka śnieżynka
+
+[TSG]
+STR_NAME    :Muł bagienny
+
+[TSH]
+STR_NAME    :Posąg konia
+
+[TSH0]
+STR_NAME    :Krzak
+
+[TSH1]
+STR_NAME    :Gąszcz
+
+[TSH2]
+STR_NAME    :Krzak
+
+[TSH3]
+STR_NAME    :Krzak
+
+[TSH4]
+STR_NAME    :Gąszcz
+
+[TSH5]
+STR_NAME    :Krzak
+
+[TSK]
+STR_NAME    :Czaszka
+
+[TSM]
+STR_NAME    :Bałwanek
+
+[TSMP]
+STR_NAME    :Dynia
+
+[TSNB]
+STR_NAME    :Śnieżka
+
+[TSNC]
+STR_NAME    :Chata z bali
+
+[TSP]
+STR_NAME    :Sosna
+
+[TSP1]
+STR_NAME    :Drzewo
+
+[TSP2]
+STR_NAME    :Drzewo
+
+[TSPH]
+STR_NAME    :Dom
+
+[TSQ]
+STR_NAME    :Drzewo wiewiórkowe
+
+[TST1]
+STR_NAME    :Muchomor
+
+[TST2]
+STR_NAME    :Muchomor
+
+[TST3]
+STR_NAME    :Muchomor
+
+[TST4]
+STR_NAME    :Muchomor
+
+[TST5]
+STR_NAME    :Muchomor
+
+[TSTD]
+STR_NAME    :Posąg z delfinami
+
+[TT1]
+STR_NAME    :Rzymska świątynia
+
+[TTF]
+STR_NAME    :Fontanna
+
+[TTG]
+STR_NAME    :Tarcza
+
+[TUS]
+STR_NAME    :Posąg jednorożca
+
+[TVL]
+STR_NAME    :Złotokap
+
+[TWF]
+STR_NAME    :Fontanna geometryczna
+
+[TWH1]
+STR_NAME    :Dom
+
+[TWH2]
+STR_NAME    :Dom dyniowy
+
+[TWN]
+STR_NAME    :Orzech włoski
+
+[TWP]
+STR_NAME    :Topola biała
+
+[TWW]
+STR_NAME    :Wierzba płacząca
+
+[WAG1]
+STR_NAME    :Wóz
+
+[WAG2]
+STR_NAME    :Wóz
+
+[WASP]
+STR_NAME    :Osa
+
+[WDBASE]
+STR_NAME    :Blok drewniany
+
+[WDIAG]
+STR_NAME    :Fontanna
+
+[WHORIZ]
+STR_NAME    :Armatka wodna
+
+[WSPOUT]
+STR_NAME    :×ródełko
+
+[BADRACK]
+STR_NAME    :Rakieta do badmintona
+
+[GENSTORE]
+STR_NAME    :Sklep wielobranżowy
+
+[GLTHENT]
+STR_NAME    :Napis Goliat
+
+[MDSAENT]
+STR_NAME    :Napis Meduza
+
+[NITROENT]
+STR_NAME    :Napis Nitro
+
+[PRSHIP]
+STR_NAME    :Okręt piracki
+
+[SAH]
+STR_NAME    :Dom
+
+[SAH2]
+STR_NAME    :Dom
+
+[SAH3]
+STR_NAME    :Czynszówka
+
+[SALOON]
+STR_NAME    :Saloon
+
+[SCLN]
+STR_NAME    :Kolumnada
+
+[SCOL]
+STR_NAME    :Koloseum
+
+[SCT]
+STR_NAME    :Namiot
+
+[SDN1]
+STR_NAME    :Dinozaur
+
+[SDN2]
+STR_NAME    :Dinozaur
+
+[SDN3]
+STR_NAME    :Dinozaur
+
+[SGP]
+STR_NAME    :Olbrzymia dynia
+
+[SHS1]
+STR_NAME    :Dom z tarasem
+
+[SHS2]
+STR_NAME    :Dom
+
+[SIP]
+STR_NAME    :Lodowy pałac
+
+[SMB]
+STR_NAME    :Budynek Marsjan
+
+[SMH1]
+STR_NAME    :Chatka górnicza
+
+[SMH2]
+STR_NAME    :Chatka górnicza
+
+[SMN1]
+STR_NAME    :Szyb kopalniany
+
+[SOB]
+STR_NAME    :Biurowiec
+
+[SOH1]
+STR_NAME    :Dom
+
+[SOH2]
+STR_NAME    :Dom
+
+[SOH3]
+STR_NAME    :Dom
+
+[SPG]
+STR_NAME    :Pagoda
+
+[SPS]
+STR_NAME    :Stacja benzynowa
+
+[SPYR]
+STR_NAME    :Piramida
+
+[SSH]
+STR_NAME    :Kosmiczna kapsuła
+
+[SSIG1]
+STR_NAME    :Znak przewijany
+
+[SSIG2]
+STR_NAME    :Znak 3D
+
+[SSIG3]
+STR_NAME    :Pionowy znak 3D
+
+[SSIG4]
+STR_NAME    :Znak 3D
+
+[SSK1]
+STR_NAME    :Szkielet
+
+[SSPX]
+STR_NAME    :Sfinks
+
+[SSR]
+STR_NAME    :Rakieta kosmiczna
+
+[SST]
+STR_NAME    :Satelita
+
+[STB1]
+STR_NAME    :Wieża zamkowa
+
+[STB2]
+STR_NAME    :Wieża zamkowa
+
+[STG1]
+STR_NAME    :Wieża zamkowa
+
+[STG2]
+STR_NAME    :Wieża zamkowa
+
+[STH]
+STR_NAME    :Ratusz
+
+[SVLC]
+STR_NAME    :Wulkan
+
+[TAVERN]
+STR_NAME    :Karczma
+
+[WWBANK]
+STR_NAME    :Bank
+
+[WALLBADM]
+STR_NAME    :Rakieta badmintonowa
+
+[WALLBB16]
+STR_NAME    :Ściana
+
+[WALLBB32]
+STR_NAME    :Ściana
+
+[WALLBB33]
+STR_NAME    :Ściana
+
+[WALLBB34]
+STR_NAME    :Ściana kamienna
+
+[WALLBB8]
+STR_NAME    :Ściana
+
+[WALLBR16]
+STR_NAME    :Ściana
+
+[WALLBR32]
+STR_NAME    :Ściana
+
+[WALLBR8]
+STR_NAME    :Ściana
+
+[WALLBRDR]
+STR_NAME    :Drzwi
+
+[WALLBRWN]
+STR_NAME    :Okno
+
+[WALLCB16]
+STR_NAME    :Ściana
+
+[WALLCB32]
+STR_NAME    :Ściana
+
+[WALLCB8]
+STR_NAME    :Ściana
+
+[WALLCBDR]
+STR_NAME    :Drzwi
+
+[WALLCBPC]
+STR_NAME    :Krata
+
+[WALLCBWN]
+STR_NAME    :Okno
+
+[WALLCF16]
+STR_NAME    :Ściana
+
+[WALLCF32]
+STR_NAME    :Ściana
+
+[WALLCF8]
+STR_NAME    :Ściana
+
+[WALLCFAR]
+STR_NAME    :Ściana łuk
+
+[WALLCFDR]
+STR_NAME    :Drzwi
+
+[WALLCFPC]
+STR_NAME    :Krata
+
+[WALLCFWN]
+STR_NAME    :Okno
+
+[WALLCO16]
+STR_NAME    :Ściana z blachy falistej
+
+[WALLCW32]
+STR_NAME    :Ściana
+
+[WALLCX32]
+STR_NAME    :Ściana
+
+[WALLCY32]
+STR_NAME    :Ściana
+
+[WALLCZ32]
+STR_NAME    :Ściana
+
+[WALLGL16]
+STR_NAME    :Szklana ściana
+
+[WALLGL32]
+STR_NAME    :Szklana ściana
+
+[WALLGL8]
+STR_NAME    :Szklana ściana
+
+[WALLIG16]
+STR_NAME    :Ściana igloo
+
+[WALLIG24]
+STR_NAME    :Ściana igloo
+
+[WALLJB16]
+STR_NAME    :Płot żelkowy
+
+[WALLJN32]
+STR_NAME    :Ściana
+
+[WALLLT32]
+STR_NAME    :Kratownica stalowa
+
+[WALLMM16]
+STR_NAME    :Płot
+
+[WALLMM17]
+STR_NAME    :Płot
+
+[WALLMN32]
+STR_NAME    :Ściana
+
+[WALLNT32]
+STR_NAME    :Ściana z siatki tenisowej
+
+[WALLNT33]
+STR_NAME    :Ściana z siatki tenisowej
+
+[WALLPG32]
+STR_NAME    :Ściana
+
+[WALLPOST]
+STR_NAME    :Słupek
+
+[WALLPR32]
+STR_NAME    :Olinowanie
+
+[WALLPR33]
+STR_NAME    :Ściana
+
+[WALLPR34]
+STR_NAME    :Ściana
+
+[WALLPR35]
+STR_NAME    :Ściana
+
+[WALLRH32]
+STR_NAME    :Ściana
+
+[WALLRK32]
+STR_NAME    :Ściana skalna
+
+[WALLRS16]
+STR_NAME    :Ściana
+
+[WALLRS32]
+STR_NAME    :Ściana
+
+[WALLRS8]
+STR_NAME    :Ściana
+
+[WALLSC16]
+STR_NAME    :Płot
+
+[WALLSIGN]
+STR_NAME    :Napis przewijany
+
+[WALLSK16]
+STR_NAME    :Ściana
+
+[WALLSK32]
+STR_NAME    :Ściana
+
+[WALLSP32]
+STR_NAME    :Ściana
+
+[WALLST16]
+STR_NAME    :Stalowa ściana
+
+[WALLST32]
+STR_NAME    :Stalowa ściana
+
+[WALLST8]
+STR_NAME    :Stalowa ściana
+
+[WALLSTFN]
+STR_NAME    :Stalowy płot
+
+[WALLSTWN]
+STR_NAME    :Stalowa ściana
+
+[WALLTN32]
+STR_NAME    :Słupy
+
+[WALLTXGT]
+STR_NAME    :Olbrzymi napis "Teksas"
+
+[WALLU132]
+STR_NAME    :Ściana
+
+[WALLU232]
+STR_NAME    :Ściana
+
+[WALLWD16]
+STR_NAME    :Ściana drewniana
+
+[WALLWD32]
+STR_NAME    :Ściana drewniana
+
+[WALLWD33]
+STR_NAME    :Ściana drewniana
+
+[WALLWD8]
+STR_NAME    :Ściana drewniana
+
+[WALLWDPS]
+STR_NAME    :Płotek drewniany
+
+[WALLWF32]
+STR_NAME    :Wodospad
+
+[WBR1]
+STR_NAME    :Ściana ceglana
+
+[WBR1A]
+STR_NAME    :Ściana ceglana
+
+[WBR2]
+STR_NAME    :Ściana kamienna
+
+[WBR2A]
+STR_NAME    :Ściana kamienna
+
+[WBR3]
+STR_NAME    :Ściana kamienna
+
+[WBRG]
+STR_NAME    :Ściana ceglana
+
+[WBW]
+STR_NAME    :Płot kościany
+
+[WC1]
+STR_NAME    :Mur zamkowy
+
+[WC10]
+STR_NAME    :Mur zamkowy
+
+[WC11]
+STR_NAME    :Mur zamkowy
+
+[WC12]
+STR_NAME    :Mur zamkowy
+
+[WC13]
+STR_NAME    :Mur zamkowy
+
+[WC14]
+STR_NAME    :Ściana
+
+[WC15]
+STR_NAME    :Ściana
+
+[WC16]
+STR_NAME    :Płot
+
+[WC17]
+STR_NAME    :Płot drewniany
+
+[WC18]
+STR_NAME    :Ściana z drewnianych słupków
+
+[WC2]
+STR_NAME    :Mur zamkowy
+
+[WC3]
+STR_NAME    :Ściana z rzymskich kolumn
+
+[WC4]
+STR_NAME    :Mur zamkowy
+
+[WC5]
+STR_NAME    :Mur zamkowy
+
+[WC6]
+STR_NAME    :Mur zamkowy
+
+[WC7]
+STR_NAME    :Mur zamkowy
+
+[WC8]
+STR_NAME    :Mur zamkowy
+
+[WC9]
+STR_NAME    :Mur zamkowy
+
+[WCH]
+STR_NAME    :Řywopłot iglasty
+
+[WCHG]
+STR_NAME    :Řywopłot iglasty
+
+[WCW1]
+STR_NAME    :Ściana z kart do gry
+
+[WCW2]
+STR_NAME    :Ściana z kart do gry
+
+[WEW]
+STR_NAME    :Ściana egipska
+
+[WFW1]
+STR_NAME    :Drewniany płot
+
+[WFWG]
+STR_NAME    :Drewniany płot
+
+[WGW2]
+STR_NAME    :Szklana ściana
+
+[WHG]
+STR_NAME    :Řywopłot
+
+[WHGG]
+STR_NAME    :Řywopłot
+
+[WJF]
+STR_NAME    :Płot tropikalny
+
+[WMF]
+STR_NAME    :Płot z siatki
+
+[WMFG]
+STR_NAME    :Płot z siatki
+
+[WMW]
+STR_NAME    :Ściana marsjańska
+
+[WMWW]
+STR_NAME    :Drewniany płot
+
+[WPF]
+STR_NAME    :Płot
+
+[WPFG]
+STR_NAME    :Płot
+
+[WPW1]
+STR_NAME    :Ściana z drewnianych słupków
+
+[WPW2]
+STR_NAME    :Ściana z drewnianych słupków
+
+[WPW3]
+STR_NAME    :Drewniany płot
+
+[WRW]
+STR_NAME    :Ściana rzymska
+
+[WRWA]
+STR_NAME    :Ściana rzymska
+
+[WSW]
+STR_NAME    :Płot z prętów
+
+[WSW1]
+STR_NAME    :Płot z prętów
+
+[WSW2]
+STR_NAME    :Płot z prętów
+
+[WSWG]
+STR_NAME    :Płot z prętów
+
+[WWTW]
+STR_NAME    :Wysoki drewniany płot
+
+[WWTWA]
+STR_NAME    :Ściana z desek
+
+[BN1]
+STR_NAME    :Drogowskaz
+
+[BN2]
+STR_NAME    :Drogowskaz z dżungli
+
+[BN3]
+STR_NAME    :Drogowskaz klasyczny
+
+[BN4]
+STR_NAME    :Drogowskaz egipski
+
+[BN5]
+STR_NAME    :Drogowskaz drewniany
+
+[BN6]
+STR_NAME    :Drogowskaz jurajski
+
+[BN7]
+STR_NAME    :Drogowskaz dalekowschodni
+
+[BN8]
+STR_NAME    :Drogowskaz ośnieżony
+
+[BN9]
+STR_NAME    :Drogowskaz kosmiczny
+
+[PATHASH]
+STR_NAME    :Dróżka żwirowa
+
+[PATHCRZY]
+STR_NAME    :Zwariowana dróżka
+
+[PATHDIRT]
+STR_NAME    :Dróżka ziemna
+
+[PATHSPCE]
+STR_NAME    :Dróżka kosmiczna
+
+[ROAD]
+STR_NAME    :Droga
+
+[TARMAC]
+STR_NAME    :Dróżka tłuczniowa
+
+[TARMACB]
+STR_NAME    :Brązowa dróżka tłuczniowa
+
+[TARMACG]
+STR_NAME    :Zielona dróżka tłuczniowa
+
+[BENCH1]
+STR_NAME    :Ławka
+
+[BENCHLOG]
+STR_NAME    :Ławka
+
+[BENCHPL]
+STR_NAME    :Siedzenia
+
+[BENCHSPC]
+STR_NAME    :Ławka
+
+[BENCHSTN]
+STR_NAME    :Kamienna ławka
+
+[JUMPFNT1]
+STR_NAME    :Skaczące fontanny
+
+[JUMPSNW1]
+STR_NAME    :Skaczące śnieżki
+
+[LAMP1]
+STR_NAME    :Lampa
+
+[LAMP2]
+STR_NAME    :Lampa
+
+[LAMP3]
+STR_NAME    :Lampa
+
+[LAMP4]
+STR_NAME    :Lampa
+
+[LAMPDSY]
+STR_NAME    :Lampa-stokrotka
+
+[LAMPPIR]
+STR_NAME    :Lampa
+
+[LITTER1]
+STR_NAME    :Kosz na śmieci
+
+[LITTERMN]
+STR_NAME    :Kosz na śmieci
+
+[LITTERSP]
+STR_NAME    :Kosz na śmieci
+
+[LITTERWW]
+STR_NAME    :Kosz na śmieci
+
+[QTV1]
+STR_NAME    :Telewizor kolejkowy
+
+[SCGABSTR]
+STR_NAME    :Wystrój abstrakcyjny
+
+[SCGCANDY]
+STR_NAME    :Wystrój cukierkowy
+
+[SCGCLASS]
+STR_NAME    :Wystrój klasyczny/rzymski
+
+[SCGEGYPT]
+STR_NAME    :Wystrój egipski
+
+[SCGFENCE]
+STR_NAME    :Płoty i ściany
+
+[SCGGARDN]
+STR_NAME    :Ogrody
+
+[SCGGIANT]
+STR_NAME    :Wystrój ogrodu olbrzymów
+
+[SCGHALLO]
+STR_NAME    :Wystrój niesamowity
+
+[SCGINDUS]
+STR_NAME    :Wystrój mechaniczny
+
+[SCGJUNGL]
+STR_NAME    :Wystrój tropikalny
+
+[SCGJURAS]
+STR_NAME    :Wystrój jurajski
+
+[SCGMART]
+STR_NAME    :Wystrój marsjański
+
+[SCGMEDIE]
+STR_NAME    :Wystrój średniowieczny
+
+[SCGMINE]
+STR_NAME    :Wystrój górniczy
+
+[SCGORIEN]
+STR_NAME    :Wystrój japoński
+
+[SCGPATHX]
+STR_NAME    :Znaki i elementy dróżek
+
+[SCGPIRAT]
+STR_NAME    :Wystrój piracki
+
+[SCGSHRUB]
+STR_NAME    :Krzewy i dekoracje
+
+[SCGSIXFL]
+STR_NAME    :Wystrój Sześciu Flag
+
+[SCGSNOW]
+STR_NAME    :Wystrój zimowy
+
+[SCGSPACE]
+STR_NAME    :Wystrój kosmiczny
+
+[SCGSPOOK]
+STR_NAME    :Wystrój straszliwy
+
+[SCGSPORT]
+STR_NAME    :Wystrój sportowy
+
+[SCGTREES]
+STR_NAME    :Drzewa
+
+[SCGURBAN]
+STR_NAME    :Wystrój miejski
+
+[SCGWALLS]
+STR_NAME    :Ściany i dachy
+
+[SCGWATER]
+STR_NAME    :Wystrój wodny
+
+[SCGWOND]
+STR_NAME    :Wystrój Krainy Czarów
+
+[SCGWWEST]
+STR_NAME    :Wystrój Dzikiego Zachodu
+
+[PKEMM]
+STR_NAME    :Wejście - brama
+
+[PKENT1]
+STR_NAME    :Tradycyjne wejście do parku
+
+[PKESFH]
+STR_NAME    :Wejście - budynek
+
+[WTRCYAN]
+STR_NAME    :Naturalna woda
+
+[WTRGREEN]
+STR_NAME    :Jaskrawozielona woda
+
+[WTRGRN]
+STR_NAME    :Zielona woda
+
+[WTRORNG]
+STR_NAME    :Pomarańczowa woda
+
+## WW
+[ANACONDA]
+STR_NAME    :Przejażdżka na anakondzie
+STR_DESC    :Przestronne pociągi z prostymi zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :6 pasażerów na wagonik
+
+[BLACKCAB]
+STR_NAME    :Przejażdżka londyńską taksówką
+STR_DESC    :Pojazdy z napędem zbudowane na wzór czarnych londyńskich taksówek
+STR_CPTY    :2 pasażerów na wagonik
+
+[BOMERANG]
+STR_NAME    :Bumerang
+STR_DESC    :Po rozrywkowym starcie z wyrzutni pneumatycznej wagoniki wjeżdżają po pionowym torze, po czym wykonują pionowy zjazd w dół, z powrotem do stacji
+STR_CPTY    :2 pasażerów na wagonik
+
+[BULLET]
+STR_NAME    :Japoński superpociąg
+STR_DESC    :Kolejka z wagonikami o kształcie nawiązującym do superszybkiego japońskiego ekspresu
+STR_CPTY    :4 pasażerów na wagonik
+
+[CADDILAC]
+STR_NAME    :Kolejka-limuzyna
+STR_DESC    :Kolejka górska z wagonikami w kształcie limuzyn
+STR_CPTY    :4 pasażerów na wagonik
+
+[COFFEECU]
+STR_NAME    :Filiżanki
+STR_DESC    :Pasażerowie jadą parami w wagonikach wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
 [CONDORRD]
-STR_NAME    :Condor Ride
-STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
-STR_CPTY    :4 passengers per car
+STR_NAME    :Lot kondora
+STR_DESC    :Pasażerowie podróżują w pozycji leżącej, twarzą w dół, w podwieszanych wagonikach w kształcie kondora, które bujają się swobodnie na zakrętach
+STR_CPTY    :1 pasażer na wagonik
+
+[CONGAEEL]
+STR_NAME    :Węgorz
+STR_DESC    :Niewielka kolejka górska ze stalowym torem. Zestaw wagoników w kształcie węgorza pokonuje liczne korkociągi i pętle
+STR_CPTY    :4 pasażerów na wagonik
+
+[CRNVBFLY]
+STR_NAME    :Parada na platformach - motyle
+STR_DESC    :Wagoniki w kształcie motylich platform
+STR_CPTY    :2 pasażerów na wagonik
+
+[CRNVFROG]
+STR_NAME    :Parada na platformach - żaby
+STR_DESC    :Wagoniki w kształcie żabich platform
+STR_CPTY    :2 pasażerów na wagonik
+
+[CRNVLZRD]
+STR_NAME    :Parada na platformach - jaszczurki
+STR_DESC    :Wagoniki w kształcie jaszczurczych platform
+STR_CPTY    :2 pasażerów na wagonik
+
+[CROCFLUM]
+STR_NAME    :Krokodyle
+STR_DESC    :Łódki w kształcie krokodyli podróżują kanałem, ześlizgując się ze stromych zjazdów, aby ochlapać pasażerów
+STR_CPTY    :4 pasażerów na łódkę
+
+[DHOWWATR]
+STR_NAME    :Przejażdżka na dawach
+STR_DESC    :Ozdobne arabskie łodzie rybackie, w których pasażerowie sami wiosłują
+STR_CPTY    :2 pasażerów na łódkę
+
+[DIAMONDR]
+STR_NAME    :Brylantowa karuzela
+STR_DESC    :Pasażerowie jadą w parach siedzisk wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
+[DOLPHINR]
+STR_NAME    :Przejażdżka na delfinach
+STR_DESC    :Jednomiejscowe pojazdy w kształcie delfinów, którymi pasażerowie mogą sami kierować
+STR_CPTY    :1 osoba na pojazd
+
+[DRAGDODG]
+STR_NAME    :Przejażdżka na chińskim smoku
+STR_DESC    :Samochodziki z napędem elektrycznym
+STR_CPTY    :1 osoba na samochód
+
+[DRAGON]
+STR_NAME    :Smocza kolejka
+STR_DESC    :Kolejka górska z wagonikami opartymi na motywie smoka
+STR_CPTY    :4 pasażerów na wagonik
+
+[FABERGE]
+STR_NAME    :Przejażdżka jajkami Faberge'a
+STR_DESC    :Pasażerowie jadą w parach siedzisk wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
+[FIGHTKIT]
+STR_NAME    :Bojowe latawce
+STR_DESC    :Pasażerowie jadą w parach siedzisk wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
+[FIRECRAK]
+STR_NAME    :Karuzela fajerwerków
+STR_DESC    :Obracające się koło z podwieszanymi wagonikami. Gdy się rozkręci, hydrauliczne ramię podnosi je do pionu
+STR_CPTY    :16 pasażerów
+
+[FOOTBALL]
+STR_NAME    :Kolejka futbolowa
+STR_DESC    :Kolejka górska z podwieszanymi wagonikami w kształcie piłek, które bujają się swobodnie na zakrętach
+STR_CPTY    :4 pasażerów na wagonik
+
+[GORILLA]
+STR_NAME    :Przejażdżka na gorylu
+STR_DESC    :Kolejka górska z podwieszanymi wagonikami w kształcie goryli, które bujają się swobodnie na zakrętach
+STR_CPTY    :4 pasażerów na wagonik
+
+[GRATWHTE]
+STR_NAME    :Wielki biały rekin
+STR_DESC    :Przestronne wagoniki z prostymi zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :6 pasażerów na wagonik
+
+[HIPPORID]
+STR_NAME    :Przejażdżka hipopotamem
+STR_DESC    :Pasażerowie podróżują podwodnym torem, usadowieni w łodzi podwodnej
+STR_CPTY    :5 pasażerów na wagonik
+
+[HUSKIE]
+STR_NAME    :Psi zaprzęg
+STR_DESC    :Pojazdy w kształcie sanek zaprzężonych w psy jadące po torze
+STR_CPTY    :2 pasażerów na wagonik
+
+[ITALYPOR]
+STR_NAME    :Karuzela karabinierów
+STR_DESC    :Pasażerowie jadą w parach siedzisk wirujących na końcach trzech obracających się ramion
+STR_CPTY    :18 pasażerów
+
+[JAGUARRD]
+STR_NAME    :Jaguar
+STR_DESC    :Niewielka kolejka górska z oddzielnymi wagonikami i gładkimi zakręconymi spadkami
+STR_CPTY    :4 pasażerów na wagonik
+
+[JUNKSWNG]
+STR_NAME    :Zakręcona dżonka
+STR_DESC    :Statek jest przymocowany do ramienia z przeciwwagą i wykonuje pełne obroty
+STR_CPTY    :12 pasażerów
+
+[KILLWHAL]
+STR_NAME    :Zabójczy wieloryb
+STR_DESC    :Pasażerowie podróżują podwodnym torem, usadowieni w łodzi podwodnej
+STR_CPTY    :5 pasażerów na wagonik
+
+[KOLARIDE]
+STR_NAME    :Koala
+STR_DESC    :Duży wagonik dla kolejki o swobodnym spadku
+STR_CPTY    :8 pasażerów na wagonik
+
+[LIONRIDE]
+STR_NAME    :Lwia przejażdżka
+STR_DESC    :Niewielka kolejka górska z pojedynczymi wagonikami i łagodnie zakręconymi spadkami
+STR_CPTY    :4 pasażerów na wagonik
+
+[LONDONBS]
+STR_NAME    :Londyński piętrus
+STR_DESC    :Wagoniki są replikami londyńskich autobusów
+STR_CPTY    :10 pasażerów na wagonik
+
+[MANDARIN]
+STR_NAME    :Kaczki-mandarynki
+STR_DESC    :Łódki w kształcie łabędzi napędzane przez pedałujących pasażerów z przednich miejsc
+STR_CPTY    :4 pasażerów na łódkę
+
+[MANTARAY]
+STR_NAME    :Wielka płaszczka
+STR_DESC    :Duże łódki płynące szerokim kanałem wodnym, wciągane na wzniesienia przez taśmę i zjeżdżające z nich z wielkim pluskiem, aby zamoczyć pasażerów
+STR_CPTY    :16 pasażerów na łódkę
+
+[MINECART]
+STR_NAME    :Wagoniki kopalniane
+STR_DESC    :Drewniane wagoniki z wyściełanymi siedzeniami i zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :4 pasażerów na wagonik
+
+[MINELIFT]
+STR_NAME    :Winda kopalniana
+STR_DESC    :Pasażerowie jeżdżą w dół lub w górę windą w wieży, aby przejść z jednego poziomu na drugi
+STR_CPTY    :16 pasażerów
+
+[OSTRICH]
+STR_NAME    :Ostrygowa jazda
+STR_DESC    :Kolejka górska, w której pasażerowie pokonują pętle, stojąc
+STR_CPTY    :4 pasażerów na wagonik
+
+[OUTRIGGR]
+STR_NAME    :Wiosła w dłoń
+STR_DESC    :Długie kanoe, w których pasażerowie sami wiosłują
+STR_CPTY    :2 pasażerów na kanoe
+
+[PENGUINB]
+STR_NAME    :Bobsleje-pingwiny
+STR_DESC    :Pasażerowie zjeżdżają krętą trasą w wagonikach o kształcie pingwinów, prowadzonych jedynie przez krzywizny i wychylenia półkolistego toru
+STR_CPTY    :2 pasażerów na wagonik
+
+[POLARBER]
+STR_NAME    :Niedţwiedţ polarny
+STR_DESC    :Pasażerowie siedzą naprzeciwko siebie, pokonując pętle i ostre zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[RHINORID]
+STR_NAME    :Nosorożcowa jazda
+STR_DESC    :Kolejka górska ze spiralnym wjazdem na wzniesienie i pasażerami siedzącymi jeden za drugim
+STR_CPTY    :6 pasażerów na wagonik
+
+[ROCKET]
+STR_NAME    :Rakietowy odlot
+STR_DESC    :Wagoniki tego typu kolejki są wciągane ze stacji na pionowy odcinek toru, po czym zjeżdżają z niego, przejeżdżają z powrotem przez stację i wjeżdżają siłą rozpędu tyłem na drugi pionowy odcinek
+STR_CPTY    :4 pasażerów na wagonik
+
+[RSSNCRRD]
+STR_NAME    :Rosyjskie samochody
+STR_DESC    :Wagoniki kolejki górskiej w kształcie dawnych samochodów
+STR_CPTY    :4 pasażerów na wagonik
+
+[SANFTRAM]
+STR_NAME    :Tramwaj z San Francisco
+STR_DESC    :Replika tramwaju
+STR_CPTY    :10 pasażerów na wagonik
+
+[SEALS]
+STR_NAME    :Focza kolejka
+STR_DESC    :Kolejka ze stalowymi torami układającymi się w korkociągi i pętle
+STR_CPTY    :4 pasażerów na wagonik
+
+[SKIDOO]
+STR_NAME    :Ślizgowe unikajki
+STR_DESC    :Samochodziki z napędem elektrycznym
+STR_CPTY    :1 osoba na samochód
+
+[SLOTH]
+STR_NAME    :Leniwa przejażdżka
+STR_DESC    :Kolejka górska z podwieszanymi wagonikami w kształcie leniwców, które bujają się swobodnie na zakrętach
+STR_CPTY    :4 pasażerów na wagonik
+
+[SPUTNIKR]
+STR_NAME    :Kolejka sputnikowa
+STR_DESC    :Pasażerowie podróżują w pozycji leżącej, twarzą w dół, w specjalnych wagonikach podwieszonych pod pojedynczym torem, które bujają się swobodnie na zakrętach
+STR_CPTY    :2 pasażerów na wagonik
+
+[STEAMTRN]
+STR_NAME    :Pociąg maharadży
+STR_DESC    :Miniaturowe pociągi składające się z lokomotywy parowej i tendra, ciągnących zadaszone drewniane wagoniki
+STR_CPTY    :6 pasażerów na wagon
+
+[STGCCSTR]
+STR_NAME    :Wędrówka pionierów
+STR_DESC    :Drewniana kolejka górska z wyściełanymi siedzeniami i zabezpieczeniami obejmującymi pasażerów w pasie
+STR_CPTY    :4 pasażerów na wagonik
+
+[SURFBRDC]
+STR_NAME    :Surfingowe szaleństwo
+STR_DESC    :Pasażerowie jadą w pozycji stojącej w szerokich wagonikach ze specjalnie zaprojektowanymi zabezpieczeniami, pokonując gładkie zjazdy i liczne ostre zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[TAXICSTR]
+STR_NAME    :Řółte taksówki
+STR_DESC    :Wielka stalowa kolejka górska jeżdżąca po łagodnych spadkach i wzniesieniach o wysokości 100 m
+STR_CPTY    :4 pasażerów na wagonik
+
+[TGVTRAIN]
+STR_NAME    :Pociąg TGV
+STR_DESC    :Wagoniki są rozpędzane za pomocą magnetycznego silnika liniowego i podróżują po zakręconym torze
+STR_CPTY    :4 pasażerów na wagonik
+
+[TIGRTWST]
+STR_NAME    :Tygrys bengalski
+STR_DESC    :Kolejka górska wykonująca zabójcze zakręty
+STR_CPTY    :4 pasażerów na wagonik
+
+[TUTLBOAT]
+STR_NAME    :Wyścigi żółwi
+STR_DESC    :Małe okrągłe pontony napędzane silnikiem zamontowanym centralnie i sterowanym przez pasażerów
+STR_CPTY    :2 pasażerów na łódkę
+
+[WHICGRUB]
+STR_NAME    :Jazda na larwach
+STR_DESC    :Kolejka górska z małymi wagonikami w kształcie larw
+STR_CPTY    :2 pasażerów na wagonik
+
+[1X1ATRE2]
+STR_NAME    :Drzewo z lianami
+
+[1X1ATREE]
+STR_NAME    :Niski krzak
+
+[1X1BRANG]
+STR_NAME    :Bumerang
+
+[1X1DIDGE]
+STR_NAME    :Digeridoo
+
+[1X1EMUXX]
+STR_NAME    :Emu
+
+[1X1JUGT2]
+STR_NAME    :Drzewko tropikalne 1
+
+[1X1JUGT3]
+STR_NAME    :Drzewko tropikalne 2
+
+[1X1KANGA]
+STR_NAME    :Kangur
+
+[1X1TERMM]
+STR_NAME    :Kopiec termitów
+
+[ADPANDA]
+STR_NAME    :Dorosła panda
+
+[ANTILOPF]
+STR_NAME    :Samica antylopy
+
+[ANTILOPM]
+STR_NAME    :Samiec antylopy
+
+[ANTILOPP]
+STR_NAME    :Para antylop
+
+[BABPANDA]
+STR_NAME    :Mała panda
+
+[BABYELE]
+STR_NAME    :Mały słoń indyjski
+
+[BALLLAN2]
+STR_NAME    :Latarnia balowa
+
+[BALLLANT]
+STR_NAME    :Latarnia balowa
+
+[BAMBOOBS]
+STR_NAME    :Krzak bambusowy
+
+[BAMBOOPL]
+STR_NAME    :Cokół bambusowy
+
+[BSTATUE1]
+STR_NAME    :Uszkodzony posąg
+
+[CAMPFANI]
+STR_NAME    :Ruchome ognisko
+
+[CONVEYR1]
+STR_NAME    :Pas transmisyjny - zakręt
+
+[CONVEYR2]
+STR_NAME    :Pas transmisyjny - wjazd
+
+[CONVEYR3]
+STR_NAME    :Pas transmisyjny - koniec
+
+[CONVEYR4]
+STR_NAME    :Pas transmisyjny - prosty
+
+[CONVEYR5]
+STR_NAME    :Pas transmisyjny - zakręt odwrotny
+
+[FISHHOLE]
+STR_NAME    :Przerębel
+
+[FLAMNGO1]
+STR_NAME    :Flaming żerujący
+
+[FLAMNGO2]
+STR_NAME    :Flaming patrzący
+
+[FLAMNGO3]
+STR_NAME    :Flaming muskający pióra
+
+[FOUNTARC]
+STR_NAME    :Australijska fontanna zestaw 2
+
+[FOUNTROW]
+STR_NAME    :Australijska fontanna zestaw 2
+
+[FSTATUE1]
+STR_NAME    :Statua
+
+[G1DANCER]
+STR_NAME    :Tancerka karnawałowa
+
+[G2DANCER]
+STR_NAME    :Tancerka karnawałowa
+
+[ICEBARL1]
+STR_NAME    :Oblodzone beczułki
+
+[ICEBARL2]
+STR_NAME    :Oblodzone beczułki
+
+[ICEBARL3]
+STR_NAME    :Oblodzone beczułki
+
+[INFLAG01]
+STR_NAME    :Indiańska jedwabna flaga
+
+[INFLAG02]
+STR_NAME    :Indiańska jedwabna flaga
+
+[INFLAG03]
+STR_NAME    :Indiańska jedwabna flaga
+
+[INFLAG04]
+STR_NAME    :Indiańska jedwabna flaga
+
+[INFLAG05]
+STR_NAME    :Indiańska jedwabna flaga
+
+[INUIT]
+STR_NAME    :Eskimos
+
+[INUIT2]
+STR_NAME    :Eskimos
+
+[JACHTREE]
+STR_NAME    :Japońskie drzewo wiśniowe
+
+[JAPCHBLO]
+STR_NAME    :Japońska kwitnąca wiśnia
+
+[JAPPINTR]
+STR_NAME    :Japońska sosna
+
+[JAPSNOTR]
+STR_NAME    :Japońskie ośnieżone drzewo
+
+[JPFLAG01]
+STR_NAME    :Japońska jedwabna flaga
+
+[JPFLAG02]
+STR_NAME    :Japońska jedwabna flaga
+
+[JPFLAG03]
+STR_NAME    :Japońska jedwabna flaga
+
+[JPFLAG04]
+STR_NAME    :Japońska jedwabna flaga
+
+[JPFLAG05]
+STR_NAME    :Japońska jedwabna flaga
+
+[JPFLAG06]
+STR_NAME    :Japońska jedwabna flaga
+
+[OILPUMP]
+STR_NAME    :Pompa naftowa
+
+[ORIEGONG]
+STR_NAME    :Gong azjatycki
+
+[PCG]
+STR_NAME    :Rura
+
+[PCO]
+STR_NAME    :Rura
+
+[PIPEBASE]
+STR_NAME    :Podstawa rury lodowej
+
+[PIPEVENT]
+STR_NAME    :Wylot rury lodowej
+
+[POSTBOX]
+STR_NAME    :Angielska skrzynka pocztowa
+
+[PST]
+STR_NAME    :Rura
+
+[PTJ]
+STR_NAME    :Rura
+
+[PTK]
+STR_NAME    :Rura
+
+[PVA]
+STR_NAME    :Rura
+
+[RBRICK01]
+STR_NAME    :Czerwona cegła - odwrócony segment dachu
+
+[RBRICK02]
+STR_NAME    :Czerwona cegła - narożny segment dachu
+
+[RBRICK03]
+STR_NAME    :Czerwona cegła - płaski skrajny segment dachu
+
+[RBRICK04]
+STR_NAME    :Czerwona cegła - płaski narożnik dachu
+
+[RBRICK05]
+STR_NAME    :Czerwona cegła - segment dachu 2
+
+[RBRICK07]
+STR_NAME    :Czerwona cegła - segment dachu 3
+
+[RBRICK08]
+STR_NAME    :Czerwona cegła - segment dachu 1
+
+[RCORR01]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR02]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR03]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR04]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR05]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR07]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR08]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR09]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR10]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RCORR11]
+STR_NAME    :Segment dachu z blachy falistej
+
+[RDRAB05]
+STR_NAME    :Płowa wieżyczka - podstawa minaretu
+
+[RDRAB06]
+STR_NAME    :Płowa wieżyczka - szczyt lub część środkowa
+
+[RDRAB07]
+STR_NAME    :Płowa wieżyczka - podstawa
+
+[RDRAB08]
+STR_NAME    :Płowy minaret fragment 1
+
+[RDRAB09]
+STR_NAME    :Płowy minaret fragment 2
+
+[RDRAB10]
+STR_NAME    :Płowy minaret fragment 3
+
+[RDRAB11]
+STR_NAME    :Płowy segment dachu 1
+
+[RDRAB12]
+STR_NAME    :Płowy segment dachu 2
+
+[RDRAB13]
+STR_NAME    :Płowy segment dachu 3
+
+[RDRAB14]
+STR_NAME    :Płowy segment dachu 4
+
+[RGEORG01]
+STR_NAME    :Georgiański końcowy segment dachu 1
+
+[RGEORG02]
+STR_NAME    :Georgiański końcowy segment dachu 2
+
+[RGEORG03]
+STR_NAME    :Georgiański segment dachu 1
+
+[RGEORG04]
+STR_NAME    :Georgiański segment dachu 2
+
+[RGEORG05]
+STR_NAME    :Georgiański segment dachu 3
+
+[RGEORG06]
+STR_NAME    :Georgiański segment dachu 4
+
+[RGEORG07]
+STR_NAME    :Georgiański segment dachu 5
+
+[RGEORG08]
+STR_NAME    :Georgiański segment ściany parteru 7
+
+[RGEORG09]
+STR_NAME    :Georgiański skraj płaskiego dachu 1
+
+[RGEORG10]
+STR_NAME    :Georgiański skraj płaskiego dachu 2
+
+[RGEORG11]
+STR_NAME    :Georgiański narożnik płaskiego dachu
+
+[RGEORG12]
+STR_NAME    :Georgiański segment dachu 7
+
+[RKREML01]
+STR_NAME    :Część wieżyczki kremlowskiej 1
+
+[RKREML02]
+STR_NAME    :Część wieżyczki kremlowskiej 2
+
+[RKREML03]
+STR_NAME    :Część wieżyczki kremlowskiej 3
+
+[RKREML04]
+STR_NAME    :Segment dachu kremlowskiego 1
+
+[RKREML05]
+STR_NAME    :Segment dachu kremlowskiego 2
+
+[RKREML06]
+STR_NAME    :Kremlowska wieżyczka - część środkowa
+
+[RKREML07]
+STR_NAME    :Kremlowska wieżyczka - podstawa
+
+[RKREML11]
+STR_NAME    :Kremlowska wieżyczka - podstawa minaretu
+
+[RLOG01]
+STR_NAME    :Chata z bali - segment dachu
+
+[RLOG02]
+STR_NAME    :Chata z bali - segment dachu
+
+[RLOG03]
+STR_NAME    :Chata z bali - segment ściany
+
+[RLOG04]
+STR_NAME    :Chata z bali - segment ściany
+
+[RLOG05]
+STR_NAME    :Chata z bali - segment dachu
+
+[RMARBLE1]
+STR_NAME    :Dach marmurowy
+
+[RMARBLE2]
+STR_NAME    :Dach marmurowy
+
+[RMARBLE3]
+STR_NAME    :Dach marmurowy
+
+[RMARBLE4]
+STR_NAME    :Dach marmurowy
+
+[RMUD01]
+STR_NAME    :Segment zakrzywionej ściany glinianej
+
+[RMUD02]
+STR_NAME    :Segment zakrzywionej ściany glinianej
+
+[RMUD03]
+STR_NAME    :Segment zakrzywionej ściany glinianej
+
+[RMUD05]
+STR_NAME    :Gliniany segment dachu
+
+[ROOFICE1]
+STR_NAME    :Lodowy dach
+
+[ROOFICE2]
+STR_NAME    :Lodowy dach
+
+[ROOFICE3]
+STR_NAME    :Lodowy dach
+
+[ROOFICE4]
+STR_NAME    :Lodowy dach
+
+[ROOFICE5]
+STR_NAME    :Lodowy dach
+
+[ROOFICE6]
+STR_NAME    :Lodowy dach
+
+[ROOFIG01]
+STR_NAME    :Ściana igloo
+
+[ROOFIG02]
+STR_NAME    :Ściana igloo
+
+[ROOFIG03]
+STR_NAME    :Ściana igloo
+
+[ROOFIG04]
+STR_NAME    :Ściana igloo
+
+[ROOFIG06]
+STR_NAME    :Ściana igloo
+
+[RSHOGI1]
+STR_NAME    :Dach japoński
+
+[RSHOGI2]
+STR_NAME    :Dach japoński
+
+[RSHOGI3]
+STR_NAME    :Dach japoński
+
+[RTUDOR01]
+STR_NAME    :Elżbietański segment dachu 1
+
+[RTUDOR02]
+STR_NAME    :Elżbietański segment dachu 1 przedłużenie
+
+[RTUDOR03]
+STR_NAME    :Elżbietański segment dachu 2
+
+[RWDAUB01]
+STR_NAME    :Dach z tynkowanej plecionki
+
+[RWDAUB02]
+STR_NAME    :Dach z tynkowanej plecionki
+
+[RWDAUB03]
+STR_NAME    :Dach z tynkowanej plecionki
+
+[SB1HSPB1]
+STR_NAME    :Most wiszący segment podstawy
+
+[SB1HSPB2]
+STR_NAME    :Most wiszący segment odstępnika
+
+[SB1HSPB3]
+STR_NAME    :Most wiszący segment środkowy
+
+[SB2PALM1]
+STR_NAME    :Wejście do budki
+
+[SB2SKY01]
+STR_NAME    :Kamienny wieżowiec - dół schodów
+
+[SBALLOON]
+STR_NAME    :Ruchome baloniki
+
+[SBH1TEPE]
+STR_NAME    :Tipi
+
+[SBH1WGWH]
+STR_NAME    :Koło wozu
+
+[SBH2SHLT]
+STR_NAME    :Reflektor
+
+[SBH3CAC1]
+STR_NAME    :Kaktus
+
+[SBH3CAC2]
+STR_NAME    :Kaktus
+
+[SBH3CAC3]
+STR_NAME    :Kaktus
+
+[SBH3CSKL]
+STR_NAME    :Czaszka bydlęca
+
+[SBH3OSCR]
+STR_NAME    :Pomnik nagrody kolejki górskiej
+
+[SBH3PLM1]
+STR_NAME    :Palma
+
+[SBH3PLM2]
+STR_NAME    :Palma
+
+[SBH3PLM3]
+STR_NAME    :Palma
+
+[SBH3RT66]
+STR_NAME    :Znak drogi 66
+
+[SBH4TOTM]
+STR_NAME    :Wielki totem
+
+[SBSKYS01]
+STR_NAME    :Kamienny wieżowiec - segment ściany
+
+[SBSKYS02]
+STR_NAME    :Kamienny wieżowiec - segment ściany
+
+[SBSKYS03]
+STR_NAME    :Drapacz chmur - segment windy
+
+[SBSKYS04]
+STR_NAME    :Drapacz chmur - segment windy
+
+[SBSKYS05]
+STR_NAME    :Drapacz chmur - zestaw metalowy 1 segment wypukły
+
+[SBSKYS06]
+STR_NAME    :Drapacz chmur - zestaw metalowy 1 segment wklęsły
+
+[SBSKYS07]
+STR_NAME    :Drapacz chmur - zestaw metalowy 2 segment wypukły
+
+[SBSKYS08]
+STR_NAME    :Drapacz chmur - zestaw metalowy 2 segment wklęsły
+
+[SBSKYS09]
+STR_NAME    :Drapacz chmur - zestaw metalowy 2 segment wklęsły
+
+[SBSKYS10]
+STR_NAME    :Drapacz chmur - segment wklęsły
+
+[SBSKYS11]
+STR_NAME    :Drapacz chmur - dach wklęsły
+
+[SBSKYS12]
+STR_NAME    :Drapacz chmur - segment wypukły
+
+[SBSKYS13]
+STR_NAME    :Drapacz chmur - dach wypukły
+
+[SBSKYS14]
+STR_NAME    :Drapacz chmur - segment dachu
+
+[SBSKYS15]
+STR_NAME    :Drapacz chmur - segment dachu
+
+[SBSKYS16]
+STR_NAME    :Drapacz chmur - segment dachu
+
+[SBSKYS17]
+STR_NAME    :Drapacz chmur - segment dachu
+
+[SBSKYS18]
+STR_NAME    :Drapacz chmur - segment dachu
+
+[SBWIND01]
+STR_NAME    :Zerodowany narożnik wklęsłej ściany
+
+[SBWIND02]
+STR_NAME    :Zerodowany narożnik wklęsłego dachu
+
+[SBWIND03]
+STR_NAME    :Zerodowany narożnik wklęsłej ściany
+
+[SBWIND04]
+STR_NAME    :Zerodowany narożnik wypukłej ściany
+
+[SBWIND05]
+STR_NAME    :Zerodowany narożnik wypukłego dachu
+
+[SBWIND06]
+STR_NAME    :Zerodowany narożnik wypukłej ściany
+
+[SBWIND07]
+STR_NAME    :Zerodowana podstawa formacji skalnej
+
+[SBWIND08]
+STR_NAME    :Zerodowana podstawa formacji skalnej
+
+[SBWIND09]
+STR_NAME    :Zerodowana środkowa część formacji skalnej
+
+[SBWIND10]
+STR_NAME    :Zerodowana środkowa część formacji skalnej
+
+[SBWIND11]
+STR_NAME    :Zerodowana środkowa część formacji skalnej
+
+[SBWIND12]
+STR_NAME    :Zerodowana środkowa część formacji skalnej
+
+[SBWIND13]
+STR_NAME    :Zerodowany szczyt formacji skalnej
+
+[SBWIND14]
+STR_NAME    :Zerodowany szczyt formacji skalnej
+
+[SBWIND15]
+STR_NAME    :Zerodowany segment płaskiego szczytu
+
+[SBWIND16]
+STR_NAME    :Zerodowany segment płaskiego szczytu
+
+[SBWIND17]
+STR_NAME    :Zerodowany segment płaskiego szczytu
+
+[SBWIND18]
+STR_NAME    :Zerodowany segment podstawy
+
+[SBWIND19]
+STR_NAME    :Zerodowany segment podstawy
+
+[SBWIND20]
+STR_NAME    :Zerodowany segment ściany
+
+[SBWIND21]
+STR_NAME    :Zerodowany segment ściany
+
+[SBWPLM01]
+STR_NAME    :Wierzch budki
+
+[SBWPLM02]
+STR_NAME    :Wejście do budki
+
+[SBWPLM03]
+STR_NAME    :Budka - segment dachu
+
+[SBWPLM04]
+STR_NAME    :Budka - segment dachu
+
+[SBWPLM05]
+STR_NAME    :Budka - segment dachu
+
+[SBWPLM06]
+STR_NAME    :Budka - segment ściany
+
+[SBWPLM07]
+STR_NAME    :Budka - segment ściany
+
+[SBWPLM08]
+STR_NAME    :Budka - segment ściany
+
+[SMALLGEO]
+STR_NAME    :Mała bryła
+
+[TALLLAN1]
+STR_NAME    :Wysoka latarnia
+
+[TALLLAN2]
+STR_NAME    :Wysoka latarnia
+
+[TERRARMY]
+STR_NAME    :Wojska z terakoty
+
+[TJBLOCK1]
+STR_NAME    :Element pałacu maharadży
+
+[TJBLOCK2]
+STR_NAME    :Element pałacu maharadży
+
+[TJBLOCK3]
+STR_NAME    :Element pałacu maharadży
+
+[TNT1]
+STR_NAME    :Stosik dynamitu
+
+[TNT2]
+STR_NAME    :Beczułki z dynamitem
+
+[TNT3]
+STR_NAME    :Detonator
+
+[TNT4]
+STR_NAME    :Skrzynie z dynamitem
+
+[TRCKPRT1]
+STR_NAME    :Wózek z diamentami
+
+[TRCKPRT2]
+STR_NAME    :Pusty wózek
+
+[TRCKPRT3]
+STR_NAME    :Szyb kopalni diamentów
+
+[TRCKPRT4]
+STR_NAME    :Szyb kopalniany
+
+[TRCKPRT5]
+STR_NAME    :Zakręt toru
+
+[TRCKPRT6]
+STR_NAME    :Zerwany tor
+
+[TRCKPRT7]
+STR_NAME    :Koniec toru
+
+[TRCKPRT8]
+STR_NAME    :Rozwidlenie toru
+
+[TRCKPRT9]
+STR_NAME    :Prosty tor
+
+[UKPHONE]
+STR_NAME    :Angielska budka telefoniczna
+
+[VERTPIPE]
+STR_NAME    :Segment rury lodowej
+
+[WABORG01]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG02]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG03]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG04]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG05]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG06]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG07]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WABORG08]
+STR_NAME    :Element dekoracji aborygeńskiej
+
+[WAZTEC01]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC02]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC03]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC04]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC05]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC06]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC07]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC08]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC09]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC10]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC11]
+STR_NAME    :Narożny segment ściany świątyni
+
+[WAZTEC12]
+STR_NAME    :Narożny segment ściany świątyni
+
+[WAZTEC13]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC14]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC15]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC16]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC17]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC18]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC19]
+STR_NAME    :Segment dachu świątyni
+
+[WAZTEC20]
+STR_NAME    :Segment schodów świątynnych
+
+[WAZTEC21]
+STR_NAME    :Segment schodów świątynnych
+
+[WAZTEC22]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC23]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC24]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC25]
+STR_NAME    :Segment ściany świątyni
+
+[WAZTEC26]
+STR_NAME    :Narożny segment ściany świątyni
+
+[WAZTEC27]
+STR_NAME    :Narożny segment ściany świątyni
+
+[WCUZCO01]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO02]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO03]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO04]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO05]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO06]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO07]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO08]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO09]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO10]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO11]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO12]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO13]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO14]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO15]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO16]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO17]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO18]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZCO19]
+STR_NAME    :Monumentalny segment schodów
+
+[WCUZCO20]
+STR_NAME    :Monumentalny segment schodów
+
+[WCUZCO21]
+STR_NAME    :Monumentalny narożnik ściany
+
+[WCUZCO22]
+STR_NAME    :Monumentalny narożnik ściany
+
+[WCUZCO23]
+STR_NAME    :Monumentalny narożnik ściany
+
+[WCUZCO24]
+STR_NAME    :Monumentalny narożnik ściany
+
+[WCUZCO25]
+STR_NAME    :Monumentalny segment schodów
+
+[WCUZCO26]
+STR_NAME    :Monumentalny segment schodów
+
+[WCUZCO27]
+STR_NAME    :Monumentalny segment ściany
+
+[WCUZCO28]
+STR_NAME    :Monumentalny uszkodzony segment ściany
+
+[WCUZFOUN]
+STR_NAME    :Monumentalna fontanna
+
+[WDRAB09]
+STR_NAME    :Płowy segment wznoszący 1
+
+[WDRAB10]
+STR_NAME    :Segment płowej ściany 9
+
+[WDRAB11]
+STR_NAME    :Segment płowej ściany 10
+
+[WDRAB12]
+STR_NAME    :Segment płowej ściany 11
+
+[WDRAB13]
+STR_NAME    :Płowy segment wznoszący 2
+
+[WGEORG07]
+STR_NAME    :Georgiański segment ściany parteru 4
+
+[WGEORG08]
+STR_NAME    :Georgiański segment ściany parteru 5
+
+[WGEORG09]
+STR_NAME    :Georgiański segment ściany parteru 6
+
+[WGEORG10]
+STR_NAME    :Georgiański segment ściany 4
+
+[WGEORG11]
+STR_NAME    :Georgiański segment ściany 5
+
+[WGEORG12]
+STR_NAME    :Georgiański segment ściany 6
+
+[WKREML01]
+STR_NAME    :Wznoszący się segment muru kremlowskiego 1
+
+[WKREML02]
+STR_NAME    :Wznoszący się segment muru kremlowskiego 2
+
+[WKREML03]
+STR_NAME    :Segment muru kremlowskiego 1
+
+[WKREML04]
+STR_NAME    :Segment muru kremlowskiego 2
+
+[WKREML05]
+STR_NAME    :Segment muru kremlowskiego 3
+
+[WKREML06]
+STR_NAME    :Segment muru kremlowskiego 4
+
+[WMAYAN01]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN02]
+STR_NAME    :Zaginione miasto - segment płaskiego dachu
+
+[WMAYAN03]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN04]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN05]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN06]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN07]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN08]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN09]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN10]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN11]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN12]
+STR_NAME    :Zaginione miasto - segment schodów
+
+[WMAYAN13]
+STR_NAME    :Zaginione miasto - segment schodów
+
+[WMAYAN14]
+STR_NAME    :Zaginione miasto - segment schodów
+
+[WMAYAN15]
+STR_NAME    :Zaginione miasto - segment schodów
+
+[WMAYAN16]
+STR_NAME    :Zaginione miasto - segment schodów
+
+[WMAYAN17]
+STR_NAME    :Zaginione miasto - część kolumny
+
+[WMAYAN18]
+STR_NAME    :Zaginione miasto - część kolumny
+
+[WMAYAN20]
+STR_NAME    :Zaginione miasto - segment ściany
+
+[WMAYAN21]
+STR_NAME    :Zaginione miasto - segment płaskiego dachu
+
+[WMAYAN22]
+STR_NAME    :Zaginione miasto - segment płaskiego dachu
+
+[WMAYAN23]
+STR_NAME    :Zaginione miasto - narożnik ściany
+
+[WMAYAN24]
+STR_NAME    :Zaginione miasto - narożnik ściany
+
+[WMAYAN25]
+STR_NAME    :Zaginione miasto - narożnik ściany
+
+[WMAYAN26]
+STR_NAME    :Zaginione miasto - narożnik ściany
+
+[WNAUTI01]
+STR_NAME    :Řeglarski segment dachu
+
+[WNAUTI02]
+STR_NAME    :Řeglarski segment dachu
+
+[WNAUTI03]
+STR_NAME    :Řeglarski segment dachu
+
+[WNAUTI04]
+STR_NAME    :Řeglarski segment dachu
+
+[WNAUTI05]
+STR_NAME    :Řeglarski segment dachu
+
+[WROPECOR]
+STR_NAME    :Narożnik poręczy dachu żeglarskiego
+
+[WROPESWA]
+STR_NAME    :Poręcz dachu żeglarskiego
+
+[WTUDOR12]
+STR_NAME    :Elżbietański segment ściany 4
+
+[WTUDOR13]
+STR_NAME    :Elżbietański segment ściany z balkonem
+
+[WTUDOR14]
+STR_NAME    :Elżbietański segment ściany parteru 1
+
+[WTUDOR15]
+STR_NAME    :Elżbietański segment ściany parteru 2
+
+[WTUDOR16]
+STR_NAME    :Elżbietański segment ściany parteru 3
+
+[WTUDOR17]
+STR_NAME    :Elżbietański segment ściany parteru 4
+
+[WTUDOR18]
+STR_NAME    :Elżbietański segment ściany parteru 5
+
+[1X2ABR01]
+STR_NAME    :Zwykły segment aborygeński
+
+[1X2ABR02]
+STR_NAME    :Dekoracja aborygeńska - wąż
+
+[1X2ABR03]
+STR_NAME    :Dekoracja aborygeńska - duch
+
+[1X2AZT01]
+STR_NAME    :Segment ściany świątynnej z głową
+
+[1X2AZT02]
+STR_NAME    :Uszkodzony segment ściany świątynnej z głową
+
+[1X2GLAMA]
+STR_NAME    :Złota lama
+
+[1X2LGCHM]
+STR_NAME    :Boczny komin chaty z bali
+
+[1X4BRG01]
+STR_NAME    :Most wiszący - początek strona 1
+
+[1X4BRG02]
+STR_NAME    :Most wiszący - początek strona 2
+
+[1X4BRG03]
+STR_NAME    :Most wiszący - wieża strona 1
+
+[1X4BRG04]
+STR_NAME    :Most wiszący - wieża strona 2
+
+[1X4BRG05]
+STR_NAME    :Most wiszący - część lin
+
+[3X3ALTRE]
+STR_NAME    :Drzewo z dżungli z panterami
+
+[3X3ATRE1]
+STR_NAME    :Drzewo z dżungli 2
+
+[3X3ATRE2]
+STR_NAME    :Drzewo z dżungli 1
+
+[3X3ATRE3]
+STR_NAME    :Drzewo z dżungli z lianami
+
+[3X3EUCAL]
+STR_NAME    :Eukaliptus
+
+[3X3HMSEN]
+STR_NAME    :HMS Endeavour
+
+[3X3MANTR]
+STR_NAME    :Mangrowiec
+
+[50ROCKET]
+STR_NAME    :Rakieta z lat 50.
+
+[ADULTELE]
+STR_NAME    :Dorosły słoń indyjski
+
+[AFRCLION]
+STR_NAME    :Lew
+
+[AFRRHINO]
+STR_NAME    :Nosorożec
+
+[AFRZEBRA]
+STR_NAME    :Zebra
+
+[ATOMIUM]
+STR_NAME    :Atomium
+
+[ATRACTOR]
+STR_NAME    :Ciągnik
+
+[BAMBORF1]
+STR_NAME    :Dach bambusowy
+
+[BAMBORF2]
+STR_NAME    :Dach bambusowy
+
+[BAMBORF3]
+STR_NAME    :Dach bambusowy
+
+[BIGBEN]
+STR_NAME    :Big Ben i Parlament Londyński
+
+[BIGDISH]
+STR_NAME    :Antena satelitarna
+
+[BIGGEOSP]
+STR_NAME    :Wielka bryła
+
+[CDRAGON]
+STR_NAME    :Chiński smok
+
+[CIRCUS]
+STR_NAME    :Cyrk
+
+[COWBOY01]
+STR_NAME    :Kowboj 1
+
+[COWBOY02]
+STR_NAME    :Kowboj 2
+
+[DAMTOWER]
+STR_NAME    :Dam Tower
+
+[EASERLND]
+STR_NAME    :Posąg z Wyspy Wielkanocnej
+
+[EIFFEL]
+STR_NAME    :Wieża Eiffela
+
+[EVILSAM]
+STR_NAME    :Zły samuraj
+
+[FATBUDDA]
+STR_NAME    :Gruby Budda
+
+[GDSTAUE1]
+STR_NAME    :Złoty posąg 1
+
+[GDSTAUE2]
+STR_NAME    :Złoty posąg 2
+
+[GEISHA]
+STR_NAME    :Gejsza
+
+[GIRAFFE1]
+STR_NAME    :Řyrafa 1
+
+[GIRAFFE2]
+STR_NAME    :Řyrafa 2
+
+[GOLDBUDA]
+STR_NAME    :Złoty Budda
+
+[GOODSAM]
+STR_NAME    :Dobry samuraj
+
+[GWOCTUR1]
+STR_NAME    :Wielki Mur Chiński - wieżyczka prosta
+
+[GWOCTUR2]
+STR_NAME    :Wielki Mur Chiński - wieżyczka narożna
+
+[HELIPAD]
+STR_NAME    :Lądowisko
+
+[HIPPO01]
+STR_NAME    :Hipopotam 1
+
+[HIPPO02]
+STR_NAME    :Hipopotam 2
+
+[ICEFOR01]
+STR_NAME    :Formacja lodowa
+
+[ICEFOR02]
+STR_NAME    :Formacja lodowa
+
+[INDIANST]
+STR_NAME    :Indianin
+
+[LARGEJU1]
+STR_NAME    :Wielkie drzewo tropikalne
+
+[LINCOLNS]
+STR_NAME    :Pomnik Waszyngtona
+
+[MBSKYR01]
+STR_NAME    :Segment dachu drapacza chmur
+
+[MBSKYR02]
+STR_NAME    :Koniuszek drapacza chmur
+
+[OVRGRWNT]
+STR_NAME    :Stare przerośnięte drzewo
+
+[PAGODAM]
+STR_NAME    :Pagoda
+
+[PAGODAS]
+STR_NAME    :Pagoda
+
+[PAGODATW]
+STR_NAME    :Dach pagody
+
+[POGODAL]
+STR_NAME    :Pagoda
+
+[RADAR]
+STR_NAME    :Antena radarowa
+
+[RDRAB01]
+STR_NAME    :Płowa wieża - część środkowa
+
+[RDRAB02]
+STR_NAME    :Płowa wieża - podstawa
+
+[RDRAB03]
+STR_NAME    :Płowa wieża - szczyt
+
+[RDRAB04]
+STR_NAME    :Płowa wieża - uszkodzona podstawa
+
+[REDWOOD]
+STR_NAME    :Sekwoja
+
+[RKREML08]
+STR_NAME    :Kremlowska wieża - podstawa
+
+[RKREML09]
+STR_NAME    :Kremlowska wieża - szczyt
+
+[RKREML10]
+STR_NAME    :Kremlowska wieża - część środkowa
+
+[RTUDOR05]
+STR_NAME    :Elżbietański segment dachu 3
+
+[RTUDOR06]
+STR_NAME    :Elżbietański segment dachu 4
+
+[SHIVA]
+STR_NAME    :Sziwa
+
+[SOFLIBRT]
+STR_NAME    :Statua Wolności
+
+[SPACEORB]
+STR_NAME    :Kosmiczne kule
+
+[SPUTNIK]
+STR_NAME    :Sputnik
+
+[SUNKEN]
+STR_NAME    :Zatopiony statek
+
+[TAJMCBSE]
+STR_NAME    :Pałac maharadży - podstawa wieży
+
+[TAJMCOLM]
+STR_NAME    :Pałac maharadży - korpus wieży
+
+[TAJMCTOP]
+STR_NAME    :Pałac maharadży - szczyt wieży
+
+[TAJMDOME]
+STR_NAME    :Pałac maharadży - kopuła
+
+[WINDMILL]
+STR_NAME    :Wiatrak
+
+[TMARCH1]
+STR_NAME    :Pałac maharadży łuk 1
+
+[TMARCH2]
+STR_NAME    :Pałac maharadży łuk 2
+
+[W2CORR01]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR02]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR03]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR04]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR05]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR06]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR07]
+STR_NAME    :Falisty segment ściany
+
+[W2CORR08]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR01]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR02]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR03]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR04]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR05]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR06]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR07]
+STR_NAME    :Falisty segment ściany
+
+[W3CORR08]
+STR_NAME    :Falisty segment ściany
+
+[WALLIC10]
+STR_NAME    :Ściana lodowa
+
+[WALLICE1]
+STR_NAME    :Ściana lodowa
+
+[WALLICE2]
+STR_NAME    :Ściana lodowa
+
+[WALLICE3]
+STR_NAME    :Ściana lodowa
+
+[WALLICE4]
+STR_NAME    :Ściana lodowa
+
+[WALLICE5]
+STR_NAME    :Ściana lodowa
+
+[WALLICE6]
+STR_NAME    :Ściana lodowa
+
+[WALLICE7]
+STR_NAME    :Ściana lodowa
+
+[WALLICE8]
+STR_NAME    :Ściana lodowa
+
+[WALLICE9]
+STR_NAME    :Ściana lodowa
+
+[WALLNA01]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA02]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA03]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA04]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA05]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA06]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA07]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA08]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA09]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA10]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA11]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA12]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA13]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WALLNA14]
+STR_NAME    :Segment ściany żeglarskiej
+
+[WBAMBO01]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO02]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO03]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO04]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO05]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO11]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO12]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO13]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO14]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO15]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBO21]
+STR_NAME    :Ściana bambusowa
+
+[WBAMBOPC]
+STR_NAME    :Ściana bambusowa
+
+[WBRICK01]
+STR_NAME    :Czerwona cegła - segment ściany 1
+
+[WBRICK02]
+STR_NAME    :Czerwona cegła - segment ściany 2
+
+[WBRICK03]
+STR_NAME    :Czerwona cegła - segment ściany 3
+
+[WBRICK04]
+STR_NAME    :Czerwona cegła - segment ściany 4
+
+[WBRICK05]
+STR_NAME    :Czerwona cegła - segment ściany 5
+
+[WBRICK08]
+STR_NAME    :Czerwona cegła - segment ściany 8
+
+[WBRICK11]
+STR_NAME    :Czerwona cegła - segment ściany 11
+
+[WBRICK12]
+STR_NAME    :Czerwona cegła - segment ściany 12
+
+[WBRICK13]
+STR_NAME    :Czerwona cegła - segment ściany 13
+
+[WCORR01]
+STR_NAME    :Falisty segment ściany
+
+[WCORR02]
+STR_NAME    :Falisty segment ściany
+
+[WCORR03]
+STR_NAME    :Falisty segment ściany
+
+[WCORR04]
+STR_NAME    :Falisty segment ściany
+
+[WCORR05]
+STR_NAME    :Falisty segment ściany
+
+[WCORR06]
+STR_NAME    :Falisty segment ściany
+
+[WCORR07]
+STR_NAME    :Falisty segment ściany
+
+[WCORR08]
+STR_NAME    :Falisty segment ściany
+
+[WCORR09]
+STR_NAME    :Falisty segment ściany
+
+[WCORR10]
+STR_NAME    :Falisty segment ściany
+
+[WCORR11]
+STR_NAME    :Falisty segment ściany
+
+[WCORR12]
+STR_NAME    :Falisty segment ściany
+
+[WCORR13]
+STR_NAME    :Falisty segment ściany
+
+[WCORR14]
+STR_NAME    :Falisty segment ściany
+
+[WCORR15]
+STR_NAME    :Falisty segment ściany
+
+[WCORR16]
+STR_NAME    :Falisty segment ściany
+
+[WDRAB01]
+STR_NAME    :Segment płowej ściany 1
+
+[WDRAB02]
+STR_NAME    :Segment płowej ściany 2
+
+[WDRAB03]
+STR_NAME    :Segment płowej ściany 3
+
+[WDRAB04]
+STR_NAME    :Segment płowej ściany 4
+
+[WDRAB05]
+STR_NAME    :Segment płowej ściany 5
+
+[WDRAB06]
+STR_NAME    :Segment płowej ściany 6
+
+[WDRAB07]
+STR_NAME    :Segment płowej ściany 7
+
+[WDRAB08]
+STR_NAME    :Segment płowej ściany 8
+
+[WGEORG01]
+STR_NAME    :Georgiański segment ściany 1
+
+[WGEORG02]
+STR_NAME    :Georgiański segment ściany parteru 1
+
+[WGEORG03]
+STR_NAME    :Georgiański segment ściany 2
+
+[WGEORG04]
+STR_NAME    :Georgiański segment ściany parteru 2
+
+[WGEORG05]
+STR_NAME    :Georgiański segment ściany 3
+
+[WGEORG06]
+STR_NAME    :Georgiański segment ściany parteru 3
+
+[WGWOC1]
+STR_NAME    :Wielki Mur Chiński - segment przedniej ściany
+
+[WGWOC2]
+STR_NAME    :Wielki Mur Chiński - segment tylnej ściany
+
+[WGWOC3]
+STR_NAME    :Wielki Mur Chiński - wznoszący segment ściany
+
+[WIGLOO1]
+STR_NAME    :Ściana igloo
+
+[WIGLOO2]
+STR_NAME    :Ściana igloo
+
+[WKREML07]
+STR_NAME    :Segment muru kremlowskiego 5
+
+[WKREML08]
+STR_NAME    :Segment muru kremlowskiego 6
+
+[WKREML09]
+STR_NAME    :Segment muru kremlowskiego 7
+
+[WKREML10]
+STR_NAME    :Segment muru kremlowskiego 8
+
+[WLOG01]
+STR_NAME    :Chata z bali - segment ściany
+
+[WLOG02]
+STR_NAME    :Chata z bali - segment ściany
+
+[WLOG03]
+STR_NAME    :Chata z bali - segment ściany
+
+[WLOG04]
+STR_NAME    :Chata z bali - segment ściany
+
+[WLOG05]
+STR_NAME    :Chata z bali - segment ściany
+
+[WLOG06]
+STR_NAME    :Chata z bali - segment ściany
+
+[WMARBLE1]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBLE2]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBLE3]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBLE4]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBLE5]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBLE6]
+STR_NAME    :Ozdobna ściana marmurowa
+
+[WMARBPL1]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL2]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL3]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL4]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL5]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL6]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMARBPL7]
+STR_NAME    :Zwykła ściana marmurowa
+
+[WMUD01]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD02]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD03]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD04]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD05]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD06]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD07]
+STR_NAME    :Segment glinianej ściany
+
+[WMUD08]
+STR_NAME    :Segment glinianej ściany
+
+[WPALM01]
+STR_NAME    :Segment ściany budki
+
+[WPALM02]
+STR_NAME    :Segment ściany budki
+
+[WPALM03]
+STR_NAME    :Segment ściany budki
+
+[WPALM04]
+STR_NAME    :Segment ściany budki
+
+[WPALM05]
+STR_NAME    :Segment ściany budki
+
+[WSHOGI01]
+STR_NAME    :Ściana japońska
+
+[WSHOGI02]
+STR_NAME    :Ściana japońska
+
+[WSHOGI03]
+STR_NAME    :Ściana japońska
+
+[WSHOGI04]
+STR_NAME    :Ściana japońska
+
+[WSHOGI05]
+STR_NAME    :Ściana japońska
+
+[WSHOGI06]
+STR_NAME    :Ściana japońska
+
+[WSHOGI07]
+STR_NAME    :Ściana japońska
+
+[WSHOGI08]
+STR_NAME    :Ściana japońska
+
+[WSHOGI09]
+STR_NAME    :Ściana japońska
+
+[WSHOGI10]
+STR_NAME    :Ściana japońska
+
+[WSHOGI11]
+STR_NAME    :Ściana japońska
+
+[WSHOGI12]
+STR_NAME    :Ściana japońska
+
+[WSHOGI13]
+STR_NAME    :Ściana japońska
+
+[WSHOGI14]
+STR_NAME    :Ściana japońska
+
+[WSHOGI15]
+STR_NAME    :Ściana japońska
+
+[WSHOGI16]
+STR_NAME    :Ściana japońska
+
+[WSHOGI17]
+STR_NAME    :Ściana japońska
+
+[WSKYSC01]
+STR_NAME    :Drapacz chmur - zestaw metalowy 2 segment ściany
+
+[WSKYSC02]
+STR_NAME    :Drapacz chmur - zestaw metalowy 2 segment ściany
+
+[WSKYSC03]
+STR_NAME    :Drapacz chmur - zestaw metalowy 1 segment ściany
+
+[WSKYSC04]
+STR_NAME    :Drapacz chmur - segment windy
+
+[WSKYSC05]
+STR_NAME    :Drapacz chmur - segment windy
+
+[WSKYSC06]
+STR_NAME    :Drapacz chmur - segment ściany
+
+[WSKYSC07]
+STR_NAME    :Drapacz chmur - segment windy
+
+[WSKYSC08]
+STR_NAME    :Drapacz chmur - segment ściany
+
+[WSKYSC09]
+STR_NAME    :Drapacz chmur - segment ściany
+
+[WSKYSC10]
+STR_NAME    :Kamienny wieżowiec - segment ściany
+
+[WSKYSC11]
+STR_NAME    :Kamienny wieżowiec - segment ściany
+
+[WSKYSC12]
+STR_NAME    :Kamienny wieżowiec - segment ściany
+
+[WTUDOR01]
+STR_NAME    :Elżbietański segment ściany parteru 1
+
+[WTUDOR02]
+STR_NAME    :Elżbietański segment ściany parteru 2
+
+[WTUDOR03]
+STR_NAME    :Elżbietański segment ściany parteru 3
+
+[WTUDOR04]
+STR_NAME    :Elżbietański segment ściany parteru 4
+
+[WTUDOR05]
+STR_NAME    :Elżbietański segment ściany parteru 5
+
+[WTUDOR06]
+STR_NAME    :Elżbietański segment ściany parteru 6
+
+[WTUDOR07]
+STR_NAME    :Elżbietański segment ściany parteru 7
+
+[WTUDOR08]
+STR_NAME    :Elżbietański segment ściany parteru 8
+
+[WTUDOR09]
+STR_NAME    :Elżbietański segment ściany 1
+
+[WTUDOR10]
+STR_NAME    :Elżbietański segment ściany 2
+
+[WTUDOR11]
+STR_NAME    :Elżbietański segment ściany 3
+
+[WWDAUB01]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB02]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB03]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB04]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB05]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB06]
+STR_NAME    :Ściana lepianki
+
+[WWDAUB07]
+STR_NAME    :Ściana lepianki
+
+[WWIND03]
+STR_NAME    :Zerodowany segment ściany
+
+[WWIND04]
+STR_NAME    :Zerodowany segment ściany
+
+[WWIND05]
+STR_NAME    :Zerodowany segment ściany
+
+[WWIND06]
+STR_NAME    :Zerodowany segment ściany
+
+[SCGAFRIC]
+STR_NAME    :Wystrój afrykański
+
+[SCGARTIC]
+STR_NAME    :Wystrój antarktyczny
+
+[SCGASIA]
+STR_NAME    :Wystrój azjatycki
+
+[SCGAUSTR]
+STR_NAME    :Wystrój australoazjatycki
+
+[SCGEUROP]
+STR_NAME    :Wystrój europejski
+
+[SCGNAMRC]
+STR_NAME    :Wystrój północnoamerykański
+
+[SCGSAMER]
+STR_NAME    :Wystrój południowoamerykański
+
+[AFRICENT]
+STR_NAME    :Wejście do parku safari
+
+[EUROENT]
+STR_NAME    :Wejście do europejskiego parku
+
+[ICEENT]
+STR_NAME    :Wejście do parku lodowego
+
+[JAPENT]
+STR_NAME    :Wejście do parku japońskiego
+
+[NAENT]
+STR_NAME    :Wejście do parku północnoamerykańskiego
+
+[OZENTRAN]
+STR_NAME    :Wejście do parku australoazjatyckiego
+
+[SAMERENT]
+STR_NAME    :Wejście do parku południowoamerykańskiego
+
+## TT
+[1920RACR]
+STR_NAME    :Wyścigówki z lat 20.
+STR_DESC    :Pasażerowie ścigają się w gokartach stylizowanych na samochody z lat 20.
+STR_CPTY    :Jednomiejscowe
+
+[1920SAND]
+STR_NAME    :Kiosk art deco
+STR_DESC    :Stoisko sprzedające ciasteczka i świeżą lemoniadę
+
+[1960TSRT]
+STR_NAME    :Koszulki dzieci-kwiatów
+STR_DESC    :Stoisko sprzedające koszulki z motywami kwiatowymi
+
+[BARNSTRM]
+STR_NAME    :Inwazja agrarna
+STR_DESC    :Pasażerowie jadą w podwieszanych wagonikach, pokonujących błyskawicznie wielkie pętle, wiraże i długie zjazdy
+STR_CPTY    :4 pasażerów na wagonik
+
+[BATTRRAM]
+STR_NAME    :Kolejka taranowa
+STR_DESC    :Zwarta przestrzennie kolejka ze stalowymi torami, spiralnym podjazdem i siedzeniami ustawionymi jedno za drugim
+STR_CPTY    :6 pasażerów na wagonik
+
+[BLCKDETH]
+STR_NAME    :Czarna śmierć
+STR_DESC    :Pasażerowie zjeżdżają krętym torem w wagonikach w kształcie szczurów, kierowanych jedynie krzywizną i nachyleniem półkolistego toru
+STR_CPTY    :2 pasażerów na wagonik
+
+[BMVOCTPS]
+STR_NAME    :Potwór z Kosmosu
+STR_DESC    :Obrotowa kosmiczna kabina obserwacyjna wjeżdżająca na wysoką wieżę
+STR_CPTY    :20 pasażerów
+
+[CAVMNCAR]
+STR_NAME    :Jaskiniowe samochodziki
+STR_DESC    :Pasażerowie ścigają się gokartami w stylu epoki kamiennej
+STR_CPTY    :Jednomiejscowe
+
+[CERBERUS]
+STR_NAME    :Cerber
+STR_DESC    :Pasażerowie jadą w wygodnych wagonikach z zabezpieczeniami obejmującymi w pasie, pokonując wielkie gładkie zjazdy i skomplikowane zakręty, a także liczne wzloty nad wzniesieniami
+STR_CPTY    :4 pasażerów na wagonik
+
+[CYCLOPSX]
+STR_NAME    :Cyklopowa jazda
+STR_DESC    :Pasażerowie podróżują w oczach wielkich cyklopów
+STR_CPTY    :1 osoba na wagonik
+
+[DINOEGGS]
+STR_NAME    :Jaja dinozaura
+STR_DESC    :Pasażerowie podróżują parami w stylizowanych siedziskach obracających się wokół ruchomej dinozaurowej mamy
+STR_CPTY    :18 pasażerów
+
+[DRAGNFLY]
+STR_NAME    :Ważka jazda
+STR_DESC    :Pasażerowie jadą w specjalnych wagonikach podwieszonych pod jednoszynowym torem, wychylając się swobodnie na zakrętach
+STR_CPTY    :2 pasażerów na wagonik
+
+[FIGTKNIT]
+STR_NAME    :Walczący rycerze
+STR_DESC    :Pasażerowie zderzają się samochodzikami w kształcie koni
+STR_CPTY    :1 osoba na samochodzik
+
+[FLALMACE]
+STR_NAME    :Jazda na maczudze
+STR_DESC    :Pasażerowie siedzą w stylizowanym wagoniku, przymocowanym do napędzanego obrotowego ramienia
+STR_CPTY    :1 osoba na wagonik
+
+[FLWRPOWR]
+STR_NAME    :Dzieci Kwiaty
+STR_DESC    :Małe pontony w kształcie kwiatów, napędzane centralnie montowanym silnikiem, którym sterują pasażerowie
+STR_CPTY    :1 osoba na ponton
+
+[FLYGBOAT]
+STR_NAME    :Latający Holender
+STR_DESC    :Wagoniki w kształcie latających łodzi jadą po torze z ostrymi zakrętami i stromymi zjazdami, wpadając w odcinki wodne spokojnie płynącej rzeki
+STR_CPTY    :16 pasażerów na łódkę
+
+[FUNHOUSE]
+STR_NAME    :Dziwaczny dom
+STR_DESC    :Budynek składający się z ruchomych ścian i podłóg, dezorientujących ludzi, którzy do niego wejdą
+STR_CPTY    :5 osób
+
+[GANSTRCR]
+STR_NAME    :Gangsterska kolejka
+STR_DESC    :Wagoniki stylizowane na gangsterskie samochody z lat 20. są wystrzeliwane ze stacji za pomocą silnika liniowego i suną po zawiłym torze
+STR_CPTY    :4 pasażerów na wagonik
+
+[GINTSPDR]
+STR_NAME    :Przejażdżka na olbrzymim pająku
+STR_DESC    :Pasażerowie podróżują parami w stylizowanych siedziskach, okrążających olbrzymiego pająka jak z kiepskiego dreszczowca
+STR_CPTY    :18 pasażerów
+
+[HALOFMRS]
+STR_NAME    :Gabinet luster
+STR_DESC    :Budynek z powykrzywianymi lustrami, zniekształcającymi odbicia gości
+STR_CPTY    :5 osób
+
+[HARPIESX]
+STR_NAME    :Przejażdżka z Harpiami
+STR_DESC    :Pasażerowie jadą w specjalnych uprzężach, pokonując zawiły tor i nawroty albo na plecach, albo wisząc twarzą w dół
+STR_CPTY    :4 pasażerów na wagonik
+
+[HOTRODXX]
+STR_NAME    :Podrasowane samochody
+STR_DESC    :Po ekscytującym starcie z pneumatycznej wyrzutni pociąg rozpędza się pod górę pionowego toru, pokonuje szczyt i spada pionowo z drugiej strony, by powrócić na stację
+STR_CPTY    :2 pasażerów na wagonik
+
+[HOVERBKE]
+STR_NAME    :Latające motocykle
+STR_DESC    :Pasażerowie podróżują na futurystycznych pojazdach w kształcie motocykli, jadących po jednoszynowym torze
+STR_CPTY    :2 pasażerów na pojazd
+
+[HOVERCAR]
+STR_NAME    :Latające samochody
+STR_DESC    :Technologia kolei magnetycznej umożliwiła stworzenie złudzenia futurystycznych latających samochodów
+STR_CPTY    :2 pasażerów na wagonik
+
+[HOVRBORD]
+STR_NAME    :Latająca deska
+STR_DESC    :Pasażerowie podróżują na futurystycznej latającej desce, wychylającej się swobodnie na zakrętach
+STR_CPTY    :2 pasażerów na wagonik
+
+[JETPACKX]
+STR_NAME    :Lot z plecakiem rakietowym
+STR_DESC    :Pasażerowie podróżują w pojeţdzie wystrzeliwanym na pionowy odcinek toru
+STR_CPTY    :8 pasażerów na pojazd
+
+[JETPLANE]
+STR_NAME    :Lot odrzutowcem
+STR_DESC    :Zwarta przestrzennie kolejka górska z oddzielnymi wagonikami i gładkimi, krętymi zjazdami
+STR_CPTY    :4 pasażerów na wagonik
+
+[JOUSTING]
+STR_NAME    :Turniej rycerski
+STR_DESC    :Pasażerowie podróżują wagonikami w kształcie koni, jadącymi po jednoszynowym torze
+STR_CPTY    :2 pasażerów na pojazd
+
+[MEDISOUP]
+STR_NAME    :Kocioł czarownic
+STR_DESC    :Stoisko sprzedające gęsty bulion
+
+[MGR2]
+STR_NAME    :Karuzela z konikami
+STR_DESC    :Tradycyjna zadaszona karuzela z drewnianymi konikami
+STR_CPTY    :32 pasażerów
+
+[MICROBUS]
+STR_NAME    :Przejażdżka mikrobusem
+STR_DESC    :Symulator ruchu, wewnątrz którego wyświetlany jest film, zaś pojazd jest wstrząsany i przechylany zgodnie z obrazem za pomocą siłownika hydraulicznego
+STR_CPTY    :8 pasażerów
+
+[MKTSTAL1]
+STR_NAME    :Stragan z jabłkami toffee
+STR_DESC    :Stylizowane stoisko sprzedające lepkie słodkie jabłka.
+
+[MKTSTAL2]
+STR_NAME    :Stragan z lemoniadą
+STR_DESC    :Stylizowane stoisko sprzedające staroświecką świeżą lemoniadę.
+
+[MOONJUCE]
+STR_NAME    :Sok z Księżyca
+STR_DESC    :Stoisko sprzedające najnowsze napoje bezalkoholowe
+
+[MYTHOSEA]
+STR_NAME    :Morskie jadło Neptuna
+STR_DESC    :Stoisko sprzedające słone smakołyki Neptuna
+
+[NEPTUNEX]
+STR_NAME    :Przejażdżka z Neptunem
+STR_DESC    :Pasażerowie podróżują parami w stylizowanych siedziskach obracających się wokół ruchomego posągu Neptuna.
+STR_CPTY    :18 pasażerów
+
+[OAKBAREL]
+STR_NAME    :Przejażdżka w dębowej beczce
+STR_DESC    :Dębowe beczki lawirują po szerokim kanale, spadając z pluskiem przez wodospady i śmigając przez spienione bystrzyny
+STR_CPTY    :8 pasażerów na łódkę
+
+[PEGASUSX]
+STR_NAME    :Przejażdżka na Pegazie
+STR_DESC    :Po torze jadą napędzane wagoniki w kształcie Pegaza ciągnącego wózek
+STR_CPTY    :2 pasażerów na wagonik
+
+[POLCHASE]
+STR_NAME    :Policyjny pościg
+STR_DESC    :Kolejka górska z pętlami, w której pasażerowie jadą na siedząco
+STR_CPTY    :4 pasażerów na wagonik
+
+[POLICECR]
+STR_NAME    :Gonitwa radiowozów
+STR_DESC    :Radiowozy w stylu lat 60. jadą po drewnianym torze, zawracając na specjalnych obrotowych odcinkach trasy
+STR_CPTY    :6 pasażerów na wagonik
+
+[PTERODAC]
+STR_NAME    :Pterodaktylot
+STR_DESC    :Pasażerowie podróżują w wygodnych siedziskach zawieszonych pod torem, pokonując zawiły tor w odjazdowym locie prehistorycznym
+STR_CPTY    :4 pasażerów na wagonik
+
+[RAPTORXX]
+STR_NAME    :Wyścigi raptorów
+STR_DESC    :Pasażerowie siedzą na grzbietach wagoników w kształcie raptorów, jadących po jednoszynowym torze
+STR_CPTY    :2 pasażerów na pojazd
+
+[RIVRSTYX]
+STR_NAME    :Rzeka Styks
+STR_DESC    :Łódki w kształcie tratw płyną spokojnie krętym torem rzecznym
+STR_CPTY    :4 pasażerów na tratwę
+
+[SCHOOLBS]
+STR_NAME    :Przejażdżka gimbusem
+STR_DESC    :Wagoniki w kształcie żółtych autobusów szkolnych
+STR_CPTY    :10 pasażerów na wagonik
+
+[SEAPLANE]
+STR_NAME    :Lot hydroplanem
+STR_DESC    :Podwieszana kolejka, której wagoniki mogą się swobodnie przechylać na zakrętach
+STR_CPTY    :4 pasażerów na wagonik
+
+[SOFTOYST]
+STR_NAME    :Kiosk z przytulankami
+STR_DESC    :Stoisko sprzedające mięciutkie dinozaury
+
+[SPOKPRSN]
+STR_NAME    :Nawiedzone kazamaty
+STR_DESC    :Budynek z lochami i manekinami przedstawiającymi więţniów, które mają straszyć odwiedzających
+STR_CPTY    :16 gości
+
+[STAMPHRD]
+STR_NAME    :Rozszalałe stado
+STR_DESC    :Kolejka górska z pętlami i wagonikami w kształcie rozszalałego stada dinozaurów.
+STR_CPTY    :4 pasażerów na wagonik
+
+[TELEPTER]
+STR_NAME    :Teleporter
+STR_DESC    :Goście są transportowani między poziomami w górę lub w dół
+STR_CPTY    :16 pasażerów
+
+[TIMEMACH]
+STR_NAME    :Wehikuł czasu
+STR_DESC    :Pasażer zasiada w specjalnej kuli, zapewniającej mu złudzenie podróżowania w czasie
+STR_CPTY    :Jednomiejscowe
+
+[TOMMYGUN]
+STR_NAME    :Wystrzałowa przejażdżka
+STR_DESC    :Pasażerowie podróżują parami w stylizowanych siedziskach, okrążających wielką replikę pistoletu maszynowego.
+STR_CPTY    :18 pasażerów
+
+[TREBUCHT]
+STR_NAME    :Trebuszowa jazda
+STR_DESC    :Pasażerowie jadą w wózku zawieszonym na dwóch wielkich ramionach. Atrakcja w stylu średniowiecznej broni oblężniczej
+STR_CPTY    :8 pasażerów
+
+[TRICATOP]
+STR_NAME    :Dinozaurowe samochodziki
+STR_DESC    :Pasażerowie jeżdżą samochodzikami w kształcie triceratopsów i atakują się ich rogami
+STR_CPTY    :Jednomiejscowe
+
+[TRILOBTE]
+STR_NAME    :Trylobitowe łódki
+STR_DESC    :Wagoniki w kształcie trylobitów jadą po torze, pokonując ostre zakręty i strome zjazdy, i wpadając od czasu do czasu w odcinki rzeczne
+STR_CPTY    :16 pasażerów na łódkę
+
+[VALKYRIE]
+STR_NAME    :Jazda z Walkiriami
+STR_DESC    :Bardzo szerokie wagoniki zjeżdżają z całkowicie pionowego toru, zapewniając pasażerom niesamowite wrażenie swobodnego spadku
+STR_CPTY    :6 pasażerów na wagonik
+
+[ZEPLELIN]
+STR_NAME    :Lotnicza kolejka jednoszynowa
+STR_DESC    :Stylizowana kolejka o dużej pojemności z opływowym pierwszym i ostatnim wagonikiem
+STR_CPTY    :5 lub 10 pasażerów na wagonik
+
+[1920SLMP]
+STR_NAME    :Stylowe lampy uliczne
+
+[ALENPLT1]
+STR_NAME    :Roślina kosmitów
+
+[ALENPLT2]
+STR_NAME    :Roślina kosmitów
+
+[ALENTRE1]
+STR_NAME    :Drzewo kosmitów
+
+[ALENTRE2]
+STR_NAME    :Drzewo kosmitów
+
+[ALLSEEYE]
+STR_NAME    :Mechaniczne wszystkowidzące oko
+
+[ALNSTR01]
+STR_NAME    :Mała budowla kosmitów
+
+[ALNSTR02]
+STR_NAME    :Mała budowla kosmitów
+
+[ALNSTR03]
+STR_NAME    :Mała budowla kosmitów
+
+[ALNSTR04]
+STR_NAME    :Mały lufcik kosmitów
+
+[ALNSTR05]
+STR_NAME    :Wieża kosmitów - dół
+
+[ALNSTR06]
+STR_NAME    :Wieża kosmitów - środek
+
+[ALNSTR07]
+STR_NAME    :Wieża kosmitów - góra
+
+[ARGONAU1]
+STR_NAME    :Mechaniczny argonauta
+
+[ARGONAU2]
+STR_NAME    :Mechaniczny argonauta
+
+[ARGONAU3]
+STR_NAME    :Mechaniczny argonauta
+
+[ARMRBODY]
+STR_NAME    :Czarodziejska zbroja
+
+[ARMRHELM]
+STR_NAME    :Czarodziejski hełm
+
+[ARMRSHLD]
+STR_NAME    :Czarodziejska tarcza
+
+[ARMRSWRD]
+STR_NAME    :Czarodziejski miecz
+
+[ARTDEC01]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC02]
+STR_NAME    :Odwrócony narożnik art deco
+
+[ARTDEC03]
+STR_NAME    :Ściana z drzwiami art deco
+
+[ARTDEC04]
+STR_NAME    :Ściana z oknami art deco
+
+[ARTDEC05]
+STR_NAME    :Ściana z oknami art deco
+
+[ARTDEC06]
+STR_NAME    :Część górna art deco
+
+[ARTDEC07]
+STR_NAME    :Narożnik art deco
+
+[ARTDEC08]
+STR_NAME    :Górny narożnik art deco
+
+[ARTDEC09]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC10]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC11]
+STR_NAME    :Narożnik z oknami art deco
+
+[ARTDEC12]
+STR_NAME    :Narożnik z balustradą art deco
+
+[ARTDEC13]
+STR_NAME    :Górny narożnik art deco
+
+[ARTDEC14]
+STR_NAME    :Narożnik z oknami art deco
+
+[ARTDEC15]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC16]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC17]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC18]
+STR_NAME    :Część górna art deco
+
+[ARTDEC19]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC20]
+STR_NAME    :Segment muru art deco
+
+[ARTDEC21]
+STR_NAME    :Mur z balustradą art deco
+
+[ARTDEC22]
+STR_NAME    :Mur z balustradą art deco
+
+[ARTDEC23]
+STR_NAME    :Mur z balustradą art deco
+
+[ARTDEC24]
+STR_NAME    :Mur z balustradą art deco
+
+[ARTDEC28]
+STR_NAME    :Segment dachu art deco
+
+[ARTDEC29]
+STR_NAME    :Odwrócony narożnik art deco
+
+[ASTRONGT]
+STR_NAME    :Mechaniczny kosmonauta
+
+[BIGBASSX]
+STR_NAME    :Olbrzymia gitara basowa
+
+[BIGGUTAR]
+STR_NAME    :Olbrzymia gitara
+
+[BKRGANG1]
+STR_NAME    :Kolarz
+
+[BOLPOT01]
+STR_NAME    :Kipiący garnek
+
+[CAGDSTAT]
+STR_NAME    :Mechaniczny orzeł na klatce
+
+[CAVEMENX]
+STR_NAME    :Mechaniczny jaskiniowiec rozpalający ogień
+
+[CHANMAID]
+STR_NAME    :Mechaniczna dziewoja
+
+[CHPRBKE1]
+STR_NAME    :Motocykl
+
+[CHPRBKE2]
+STR_NAME    :Motocykl
+
+[CLNSMEN1]
+STR_NAME    :Mechaniczny jaskiniowiec
+
+[COMPEYEX]
+STR_NAME    :Monitor superkomputera
+
+[COOKSPIT]
+STR_NAME    :Zwierzę na rożnie
+
+[DINSIGN1]
+STR_NAME    :Neon baru
+
+[DINSIGN2]
+STR_NAME    :Neon baru
+
+[DINSIGN3]
+STR_NAME    :Neon baru
+
+[DINSIGN4]
+STR_NAME    :Neon baru
+
+[DKFIGHT1]
+STR_NAME    :Mechaniczny rycerz
+
+[DKFIGHT2]
+STR_NAME    :Mechaniczny rycerz
+
+[DRGNATTK]
+STR_NAME    :Atakujący smok
+
+[ELECFEN1]
+STR_NAME    :Narożnik elektrycznego ogrodzenia
+
+[ELECFEN2]
+STR_NAME    :Elektryczne ogrodzenie
+
+[ELECFEN3]
+STR_NAME    :Elektryczne ogrodzenie z lampką
+
+[ELECFEN4]
+STR_NAME    :Zepsute elektryczne ogrodzenie
+
+[ELECFEN5]
+STR_NAME    :Odwrócony narożnik elektrycznego ogrodzenia
+
+[EVALIEN1]
+STR_NAME    :Mechaniczny zły kosmita
+
+[EVALIEN2]
+STR_NAME    :Mechaniczny zły kosmita
+
+[EVALIEN3]
+STR_NAME    :Mechaniczny zły kosmita
+
+[FIRCANON]
+STR_NAME    :Mechaniczna strzelająca armata
+
+[FIREMANX]
+STR_NAME    :Mechaniczny strażak
+
+[FLTSIGN1]
+STR_NAME    :Antygrawitacyjny ekran LCD
+
+[FLTSIGN2]
+STR_NAME    :Antygrawitacyjny ekran LCD
+
+[FRBEACON]
+STR_NAME    :Ognisty sygnał
+
+[FUROBOT1]
+STR_NAME    :Robot
+
+[FUROBOT2]
+STR_NAME    :Robot
+
+[FUTSKY01]
+STR_NAME    :Wieżowiec z piaskowca - chodnik
+
+[FUTSKY02]
+STR_NAME    :Wieżowiec z piaskowca - wypełnienie
+
+[FUTSKY03]
+STR_NAME    :Wieżowiec z piaskowca - dolny narożnik
+
+[FUTSKY04]
+STR_NAME    :Wieżowiec z piaskowca - górna pochyła krzywizna
+
+[FUTSKY05]
+STR_NAME    :Wieżowiec z piaskowca - górny narożnik
+
+[FUTSKY06]
+STR_NAME    :Wieżowiec z piaskowca - środkowa pochyła krzywizna
+
+[FUTSKY07]
+STR_NAME    :Wieżowiec z piaskowca - środkowy segment ściany
+
+[FUTSKY08]
+STR_NAME    :Wieżowiec z piaskowca - środkowy segment ściany
+
+[FUTSKY09]
+STR_NAME    :Wieżowiec z piaskowca - środkowy segment ściany
+
+[FUTSKY10]
+STR_NAME    :Wieżowiec z piaskowca - pochyła podstawa
+
+[FUTSKY11]
+STR_NAME    :Wieżowiec z piaskowca - środkowy narożnik
+
+[FUTSKY12]
+STR_NAME    :Wieżowiec z piaskowca - środkowy segment ściany
+
+[FUTSKY13]
+STR_NAME    :Wieżowiec z piaskowca - iglica dachowa
+
+[FUTSKY14]
+STR_NAME    :Wieżowiec z piaskowca - iglica dachowa
+
+[FUTSKY15]
+STR_NAME    :Wieżowiec z piaskowca - podjazd
+
+[FUTSKY16]
+STR_NAME    :Wieżowiec z piaskowca - środkowy pochyły narożnik
+
+[FUTSKY17]
+STR_NAME    :Wieżowiec z piaskowca - wypełnienie
+
+[FUTSKY18]
+STR_NAME    :Wieżowiec z piaskowca - wejście
+
+[FUTSKY19]
+STR_NAME    :Wieżowiec z piaskowca - dolny narożnik
+
+[FUTSKY21]
+STR_NAME    :Wieżowiec z piaskowca - środkowy segment ściany
+
+[FUTSKY23]
+STR_NAME    :Wieżowiec z piaskowca - górny odwrócony narożnik
+
+[FUTSKY29]
+STR_NAME    :Wieżowiec z piaskowca - pochyła zakrzywiona podstawa
+
+[FUTSKY33]
+STR_NAME    :Wieżowiec z piaskowca - chodnik
+
+[FUTSKY34]
+STR_NAME    :Wieżowiec z piaskowca - dach
+
+[FUTSKY35]
+STR_NAME    :Wieżowiec z piaskowca - środkowa pochyła krzywizna
+
+[FUTSKY36]
+STR_NAME    :Wieżowiec z obsydianu - segment drzwi
+
+[FUTSKY37]
+STR_NAME    :Wieżowiec z obsydianu - lekko nachylony narożnik
+
+[FUTSKY38]
+STR_NAME    :Wieżowiec z obsydianu - lekko nachylona ściana
+
+[FUTSKY39]
+STR_NAME    :Wieżowiec z obsydianu - lekko nachylony narożnik
+
+[FUTSKY40]
+STR_NAME    :Wieżowiec z obsydianu - mocno nachylona ściana
+
+[FUTSKY41]
+STR_NAME    :Wieżowiec z obsydianu - mocno nachylona ściana
+
+[FUTSKY42]
+STR_NAME    :Wieżowiec z piaskowca - górna pochyła krzywizna
+
+[FUTSKY44]
+STR_NAME    :Wieżowiec z obsydianu - mocno nachylona ściana
+
+[FUTSKY46]
+STR_NAME    :Wieżowiec z obsydianu - mocno nachylony narożnik
+
+[FUTSKY47]
+STR_NAME    :Wieżowiec z obsydianu - ściana
+
+[FUTSKY48]
+STR_NAME    :Wieżowiec z obsydianu - ściana z oknem
+
+[FUTSKY52]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY53]
+STR_NAME    :Wieżowiec z piaskowca - środkowy narożnik
+
+[FUTSKY54]
+STR_NAME    :Wieżowiec z obsydianu - segment dachu
+
+[FWRPRDC1]
+STR_NAME    :Stylowa tancerka
+
+[GANGSTER]
+STR_NAME    :Mechaniczny gangster
+
+[GDALIEN1]
+STR_NAME    :Mechaniczny dobry kosmita
+
+[GDALIEN2]
+STR_NAME    :Mechaniczny dobry kosmita
+
+[GDALIEN3]
+STR_NAME    :Mechaniczny dobry kosmita
+
+[GEYSERXX]
+STR_NAME    :Gejzery
+
+[GGNTOCTO]
+STR_NAME    :Olbrzymia ośmiornica z kiepskiego dreszczowca
+
+[GGNTSPID]
+STR_NAME    :Olbrzymi pająk z kiepskiego dreszczowca
+
+[GLDCHEST]
+STR_NAME    :Skrzynia ze skarbem
+
+[GOLDFLEC]
+STR_NAME    :Złote runo
+
+[GSCORPO2]
+STR_NAME    :Mechaniczny atakujący skorpion
+
+[GSCORPON]
+STR_NAME    :Mechaniczny atakujący skorpion
+
+[GUYQWIFX]
+STR_NAME    :Piosenkarz
+
+[HAYBAILS]
+STR_NAME    :Bela siana
+
+[HEVBTH01]
+STR_NAME    :Sadzawka niebiańskich łaţni
+
+[HEVBTH02]
+STR_NAME    :Narożnik sadzawki niebiańskich łaţni
+
+[HEVBTH03]
+STR_NAME    :Fontanna niebiańskich łaţni
+
+[HEVBTH04]
+STR_NAME    :Fontanna niebiańskich łaţni
+
+[HEVBTH05]
+STR_NAME    :Arkada niebiańskich łaţni
+
+[HEVBTH06]
+STR_NAME    :Arkada niebiańskich łaţni
+
+[HEVBTH07]
+STR_NAME    :Arkada niebiańskich łaţni
+
+[HEVBTH08]
+STR_NAME    :Schody niebiańskich łaţni
+
+[HEVBTH09]
+STR_NAME    :Schody niebiańskich łaţni
+
+[HEVBTH10]
+STR_NAME    :Architektura niebiańskich łaţni
+
+[HEVBTH11]
+STR_NAME    :Architektura niebiańskich łaţni
+
+[HEVBTH12]
+STR_NAME    :Architektura niebiańskich łaţni
+
+[HEVBTH13]
+STR_NAME    :Architektura niebiańskich łaţni
+
+[HEVBTH14]
+STR_NAME    :Okno niebiańskich łaţni
+
+[HEVBTH15]
+STR_NAME    :Posadzka niebiańskich łaţni
+
+[HEVBTH16]
+STR_NAME    :Schody do sadzawki niebiańskich łaţni
+
+[HEVBTH17]
+STR_NAME    :Brzeg sadzawki niebiańskich łaţni
+
+[HEVROF01]
+STR_NAME    :Dach niebiańskich łaţni
+
+[HEVROF02]
+STR_NAME    :Dach niebiańskich łaţni
+
+[HEVROF03]
+STR_NAME    :Dach niebiańskich łaţni
+
+[HEVROF04]
+STR_NAME    :Dach niebiańskich łaţni
+
+[HORSECRT]
+STR_NAME    :Koń
+
+[HOVRCAR1]
+STR_NAME    :Latający samochód na podeście
+
+[HOVRCAR2]
+STR_NAME    :Latający samochód na podeście
+
+[HOVRCAR3]
+STR_NAME    :Latający samochód
+
+[HOVRCAR4]
+STR_NAME    :Latający samochód
+
+[HRBWAL01]
+STR_NAME    :Mur przystani
+
+[HRBWAL02]
+STR_NAME    :Mur przystani ze sprzętem rybackim
+
+[HRBWAL03]
+STR_NAME    :Mur przystani z pomostem
+
+[HRBWAL04]
+STR_NAME    :Mur przystani z pomostem
+
+[HRBWAL05]
+STR_NAME    :Mur przystani z pomostem
+
+[HRBWAL06]
+STR_NAME    :Mur przystani z pomostem
+
+[HURCLULS]
+STR_NAME    :Herkules
+
+[HVRBIKE1]
+STR_NAME    :Latający motocykl na podeście
+
+[HVRBIKE2]
+STR_NAME    :Latający motocykl na podeście
+
+[HVRBIKE3]
+STR_NAME    :Latający motocykl
+
+[HVRBIKE4]
+STR_NAME    :Latający motocykl
+
+[INDWAL01]
+STR_NAME    :Element muru przemysłowego
+
+[INDWAL02]
+STR_NAME    :Element muru przemysłowego
+
+[INDWAL03]
+STR_NAME    :Element muru przemysłowego
+
+[INDWAL04]
+STR_NAME    :Element muru przemysłowego
+
+[INDWAL05]
+STR_NAME    :Narożnik dachu przemysłowego
+
+[INDWAL06]
+STR_NAME    :Narożnik dachu przemysłowego
+
+[INDWAL07]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL08]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL09]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL10]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL11]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL12]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL13]
+STR_NAME    :Mur przemysłowy z drzwiami
+
+[INDWAL14]
+STR_NAME    :Narożnik muru przemysłowego
+
+[INDWAL15]
+STR_NAME    :Narożnik muru przemysłowego
+
+[INDWAL16]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL17]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL18]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL19]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL20]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL21]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL22]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL23]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL24]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL25]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL26]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL27]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL28]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL29]
+STR_NAME    :Segment dachu przemysłowego
+
+[INDWAL30]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL31]
+STR_NAME    :Mur przemysłowy z oknem
+
+[INDWAL32]
+STR_NAME    :Mur przemysłowy z oknem
+
+[JAILXX01]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX02]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX03]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX04]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX05]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX06]
+STR_NAME    :Segment muru więziennego
+
+[JAILXX07]
+STR_NAME    :Dach muru więziennego
+
+[JAILXX08]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX09]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX10]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX11]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX12]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX13]
+STR_NAME    :Odwrócony segment więzienny
+
+[JAILXX14]
+STR_NAME    :Schody na strażnicę więzienną
+
+[JAILXX15]
+STR_NAME    :Schody na strażnicę więzienną
+
+[JAILXX16]
+STR_NAME    :Strażnica więzienna
+
+[JAILXX20]
+STR_NAME    :Narożnik muru więziennego
+
+[JAILXX21]
+STR_NAME    :Narożnik muru więziennego
+
+[JAZZMBR1]
+STR_NAME    :Muzyk jazzbandu
+
+[JAZZMBR2]
+STR_NAME    :Muzyk jazzbandu
+
+[JAZZMBR3]
+STR_NAME    :Muzyk jazzbandu
+
+[JAZZMBR4]
+STR_NAME    :Muzyk jazzbandu
+
+[KILLRVIN]
+STR_NAME    :Pnącze
+
+[KNFIGHT1]
+STR_NAME    :Mechaniczny rycerz ciemności
+
+[KNFIGHT2]
+STR_NAME    :Mechaniczny rycerz ciemności
+
+[LARGECPU]
+STR_NAME    :Olbrzymi procesor superkomputera
+
+[LASERX01]
+STR_NAME    :Ogrodzenie laserowe
+
+[LASERX02]
+STR_NAME    :Narożnik ogrodzenia laserowego
+
+[MAMTHW01]
+STR_NAME    :Wielki płot mamuci
+
+[MAMTHW02]
+STR_NAME    :Wielki płot mamuci
+
+[MAMTHW03]
+STR_NAME    :Wielki zakrzywiony płot mamuci
+
+[MAMTHW04]
+STR_NAME    :Wielki zakrzywiony płot mamuci
+
+[MAMTHW05]
+STR_NAME    :Mały zakrzywiony płot mamuci
+
+[MAMTHW06]
+STR_NAME    :Mały zakrzywiony płot mamuci
+
+[MCASTL02]
+STR_NAME    :Mur zamkowy
+
+[MCASTL03]
+STR_NAME    :Mur zamkowy
+
+[MCASTL04]
+STR_NAME    :Mur zamkowy
+
+[MCASTL05]
+STR_NAME    :Narożnik fortyfikacji zamkowej
+
+[MCASTL06]
+STR_NAME    :Fortyfikacja zamkowa
+
+[MCASTL07]
+STR_NAME    :Narożnik fortyfikacji zamkowej
+
+[MCASTL08]
+STR_NAME    :Odwrócony narożnik fortyfikacji zamkowej
+
+[MCASTL09]
+STR_NAME    :Narożnik zamkowy
+
+[MCASTL10]
+STR_NAME    :Narożnik fortyfikacji zamkowej
+
+[MCASTL19]
+STR_NAME    :Narożnik zamkowy
+
+[MDBUCKET]
+STR_NAME    :Kubeł
+
+[MDUSASTA]
+STR_NAME    :Mechaniczna meduza
+
+[MEDSTOOL]
+STR_NAME    :Stołek
+
+[MEDTOOLS]
+STR_NAME    :Narzędzia rolnicze
+
+[MEDTRGET]
+STR_NAME    :Tarcza łucznicza
+
+[METEORCR]
+STR_NAME    :Narożnik krateru po meteorycie
+
+[METEORST]
+STR_NAME    :Ściana krateru po meteorycie
+
+[METRCRS1]
+STR_NAME    :Ściana krateru po meteorycie z kryształami
+
+[METRCRS2]
+STR_NAME    :Ściana krateru po meteorycie z kryształami
+
+[MINOTAUR]
+STR_NAME    :Posąg minotaura
+
+[OLDNYK01]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK02]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK03]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK04]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK05]
+STR_NAME    :Segment dachu nowojorskiego
+
+[OLDNYK06]
+STR_NAME    :Wypełnienie narożnika nowojorskiego
+
+[OLDNYK07]
+STR_NAME    :Odwrócony narożnik nowojorski
+
+[OLDNYK08]
+STR_NAME    :Odwrócony narożnik nowojorski
+
+[OLDNYK09]
+STR_NAME    :Odwrócony narożnik nowojorski
+
+[OLDNYK10]
+STR_NAME    :Odwrócony narożnik nowojorski
+
+[OLDNYK11]
+STR_NAME    :Ściana nowojorska z liną
+
+[OLDNYK12]
+STR_NAME    :Ściana nowojorska z linią mycia
+
+[OLDNYK13]
+STR_NAME    :Ściana nowojorska z liną
+
+[OLDNYK14]
+STR_NAME    :Ściana nowojorska z linią mycia
+
+[OLDNYK15]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK16]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK17]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK18]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK19]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK31]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK33]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK34]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK35]
+STR_NAME    :Segment dachu nowojorskiego
+
+[PDFLAG02]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG03]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG04]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG05]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG06]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG08]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG13]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG14]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG15]
+STR_NAME    :Flaga z epoki
+
+[PDFLAG16]
+STR_NAME    :Flaga z epoki
+
+[POLWTBTN]
+STR_NAME    :Mechaniczny policjant
+
+[PRIMHEAD]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMHEAR]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMROOR]
+STR_NAME    :Drewniany płot z pnączami
+
+[PRIMROOT]
+STR_NAME    :Drewniany płot z pnączami
+
+[PRIMSCRN]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMST01]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMST02]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMST03]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMTALL]
+STR_NAME    :Drewniany płot z ludożerczą rośliną
+
+[PRIMWAL1]
+STR_NAME    :Drewniany płot z uschłymi pnączami
+
+[PRIMWAL2]
+STR_NAME    :Drewniany płot z uschłymi pnączami
+
+[PRIMWAL3]
+STR_NAME    :Drewniany płot z uschłymi pnączami
+
+[PSNTWL01]
+STR_NAME    :Miasteczko średniowieczne - dach z kominem
+
+[PSNTWL02]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL03]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL04]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL05]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL06]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL07]
+STR_NAME    :Miasteczko średniowieczne - segment dolnej ściany
+
+[PSNTWL08]
+STR_NAME    :Miasteczko średniowieczne - dolny narożnik
+
+[PSNTWL09]
+STR_NAME    :Miasteczko średniowieczne - segment górnej ściany
+
+[PSNTWL10]
+STR_NAME    :Miasteczko średniowieczne - segment górnej ściany
+
+[PSNTWL11]
+STR_NAME    :Miasteczko średniowieczne - segment górnej ściany
+
+[PSNTWL12]
+STR_NAME    :Miasteczko średniowieczne - segment górnej ściany
+
+[PSNTWL13]
+STR_NAME    :Miasteczko średniowieczne - segment górnej ściany
+
+[PSNTWL14]
+STR_NAME    :Miasteczko średniowieczne - segment dachu
+
+[PSNTWL15]
+STR_NAME    :Miasteczko średniowieczne - odwrócony segment dachu
+
+[PSNTWL16]
+STR_NAME    :Miasteczko średniowieczne - segment dachu
+
+[PSNTWL17]
+STR_NAME    :Miasteczko średniowieczne - segment dachu
+
+[PSNTWL20]
+STR_NAME    :Miasteczko średniowieczne - dach z lukarną
+
+[PSNTWL21]
+STR_NAME    :Miasteczko średniowieczne - dach z lukarną
+
+[PSNTWL23]
+STR_NAME    :Miasteczko średniowieczne - górny narożnik
+
+[PSNTWL24]
+STR_NAME    :Miasteczko średniowieczne - lukarna
+
+[PSNTWL25]
+STR_NAME    :Miasteczko średniowieczne - lukarna
+
+[PSNTWL29]
+STR_NAME    :Miasteczko średniowieczne - dach z lukarną
+
+[PSNTWL30]
+STR_NAME    :Miasteczko średniowieczne - dach z lukarną
+
+[PSNTWL31]
+STR_NAME    :Miasteczko średniowieczne - narożnik dachu
+
+[RCKNROLR]
+STR_NAME    :Fajny gostek
+
+[RDMETO03]
+STR_NAME    :Ściana czerwonego krateru po meteorycie
+
+[RDMETO04]
+STR_NAME    :Odwrócony narożnik czerwonego krateru po meteorycie
+
+[ROBNHOOD]
+STR_NAME    :Mechaniczny Robin Hood
+
+[RSWATRES]
+STR_NAME    :Kelnerka na wrotkach
+
+[RUNWAY01]
+STR_NAME    :Segment bieżni
+
+[RUNWAY02]
+STR_NAME    :Segment bieżni
+
+[RUNWAY03]
+STR_NAME    :Narożnik bieżni
+
+[RUNWAY04]
+STR_NAME    :Skraj bieżni
+
+[RUNWAY05]
+STR_NAME    :Segment bieżni
+
+[RUNWAY06]
+STR_NAME    :Odwrócony narożnik bieżni
+
+[SCHNBOST]
+STR_NAME    :Boja
+
+[SCHNBOUY]
+STR_NAME    :Boja
+
+[SCHNCRSH]
+STR_NAME    :Wrak hydroplanu
+
+[SCHNDRUM]
+STR_NAME    :Baryłka ropy
+
+[SCHNPL01]
+STR_NAME    :Hydroplan
+
+[SCHNPL02]
+STR_NAME    :Hydroplan
+
+[SCHNPL03]
+STR_NAME    :Hydroplan
+
+[SCHNPL04]
+STR_NAME    :Hydroplan
+
+[SCHNPL05]
+STR_NAME    :Hydroplan
+
+[SCHNPL06]
+STR_NAME    :Hydroplan
+
+[SCHNTNNY]
+STR_NAME    :Głośnik wyścigowy
+
+[SDRAGFLY]
+STR_NAME    :Mechaniczne ważki
+
+[SHWDFRST]
+STR_NAME    :Leśne drzewa
+
+[SKELETO1]
+STR_NAME    :Armia mechanicznych szkieletów
+
+[SKELETO2]
+STR_NAME    :Armia mechanicznych szkieletów
+
+[SKELETO3]
+STR_NAME    :Armia mechanicznych szkieletów
+
+[SMALLCPU]
+STR_NAME    :Mały procesor superkomputera
+
+[SMOKSK01]
+STR_NAME    :Wielki dymiący komin
+
+[SMOKSK02]
+STR_NAME    :Środkowa część komina
+
+[SMOKSK03]
+STR_NAME    :Podstawa komina
+
+[SOUPCRN2]
+STR_NAME    :Bulion pierwotny
+
+[SOUPCRNR]
+STR_NAME    :Bulion pierwotny
+
+[SOUPED01]
+STR_NAME    :Bulion pierwotny
+
+[SOUPED02]
+STR_NAME    :Bulion pierwotny
+
+[SOUPTL01]
+STR_NAME    :Bulion pierwotny
+
+[SOUPTL02]
+STR_NAME    :Bulion pierwotny
+
+[SPACRANG]
+STR_NAME    :Mechaniczny żołnierz Kosmosu
+
+[SPCSHP01]
+STR_NAME    :Statek kosmiczny - sekcja ładowni
+
+[SPCSHP02]
+STR_NAME    :Statek kosmiczny - sekcja łączności
+
+[SPCSHP03]
+STR_NAME    :Statek kosmiczny - sekcja baterii
+
+[SPCSHP04]
+STR_NAME    :Statek kosmiczny - baterie słoneczne
+
+[SPCSHP05]
+STR_NAME    :Statek kosmiczny - sekcja grawitacji
+
+[SPCSHP06]
+STR_NAME    :Statek kosmiczny - skrzyżowanie
+
+[SPCSHP07]
+STR_NAME    :Statek kosmiczny - sterownia
+
+[SPCSHP08]
+STR_NAME    :Statek kosmiczny - sekcja paliwowa
+
+[SPCSHP09]
+STR_NAME    :Statek kosmiczny - sekcja dokowania
+
+[SPCSHP10]
+STR_NAME    :Statek kosmiczny - sekcja silnikowa
+
+[SPCSHP11]
+STR_NAME    :Statek kosmiczny - sekcja mieszkalna
+
+[SPCSHP12]
+STR_NAME    :Statek kosmiczny - sekcja naukowa
+
+[SPEAKR01]
+STR_NAME    :Mały głośnik
+
+[SPEAKR02]
+STR_NAME    :Duży głośnik
+
+[SPIKTAIL]
+STR_NAME    :Mechaniczny stegozaur
+
+[SPTERDAC]
+STR_NAME    :Mechaniczny trzepoczący pterodaktyl
+
+[STGBAND1]
+STR_NAME    :Muzyk
+
+[STGBAND2]
+STR_NAME    :Muzyk
+
+[STGBAND3]
+STR_NAME    :Muzyk
+
+[STGBAND4]
+STR_NAME    :Muzyk
+
+[STMDRAN1]
+STR_NAME    :Parujący kanał
+
+[STNESTA1]
+STR_NAME    :Człowiek zamieniony w kamień
+
+[STNESTA2]
+STR_NAME    :Człowiek zamieniony w kamień
+
+[STNESTA3]
+STR_NAME    :Człowiek zamieniony w kamień
+
+[STNESTA4]
+STR_NAME    :Człowiek zamieniony w kamień
+
+[STOOLSET]
+STR_NAME    :Stołki
+
+[STRICTOP]
+STR_NAME    :Mechaniczny triceratops
+
+[SWAMPLT1]
+STR_NAME    :Roślina bagienna
+
+[SWAMPLT2]
+STR_NAME    :Paproć bagienna
+
+[SWAMPLT3]
+STR_NAME    :Paproć bagienna
+
+[SWAMPLT4]
+STR_NAME    :Roślina bagienna
+
+[SWAMPLT5]
+STR_NAME    :Roślina bagienna
+
+[SWAMPLT6]
+STR_NAME    :Paproć bagienna
+
+[SWAMPLT7]
+STR_NAME    :Paproć bagienna
+
+[SWAMPLT8]
+STR_NAME    :Paproć bagienna
+
+[SWAMPLT9]
+STR_NAME    :Paproć bagienna
+
+[SWRDSTNE]
+STR_NAME    :Miecz w kamieniu
+
+[TARPIT01]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT02]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT03]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT04]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT05]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT06]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT07]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT08]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT09]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT10]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT11]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT12]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT13]
+STR_NAME    :Bulgocząca smoła
+
+[TARPIT14]
+STR_NAME    :Bulgocząca smoła
+
+[TITANSTA]
+STR_NAME    :Posąg Atlasa
+
+[TYRANREX]
+STR_NAME    :Mechaniczny tyranozaur
+
+[VALKRI01]
+STR_NAME    :Walkiria
+
+[VALKRI02]
+STR_NAME    :Walkiria
+
+[VOLCVENT]
+STR_NAME    :Wylot aktywnego wulkanu
+
+[WAVEKING]
+STR_NAME    :Mechaniczny machający król
+
+[WDNCART2]
+STR_NAME    :Wóz drewniany
+
+[WEPNRACK]
+STR_NAME    :Zestaw broni
+
+[WHCCOLDS]
+STR_NAME    :Czarownicy przy kotle
+
+[WISKYBL1]
+STR_NAME    :Baryłka whisky
+
+[WISKYBL2]
+STR_NAME    :Baryłki whisky
+
+[YEWTREEX]
+STR_NAME    :Cis
+
+[ZEUSSTAT]
+STR_NAME    :Posąg Zeusa
+
+[1950SCAR]
+STR_NAME    :Samochód z lat 50.
+
+[4X4DINER]
+STR_NAME    :Stylowy bar
+
+[4X4GMANT]
+STR_NAME    :Wielki mangrowiec
+
+[4X4STNHN]
+STR_NAME    :Świątynia z epoki kamiennej
+
+[4X4TRPIT]
+STR_NAME    :Bulgocząca smoła
+
+[4X4VOLCA]
+STR_NAME    :Wulkan z drzewkami
+
+[ALENCRSH]
+STR_NAME    :Miejsce katastrofy UFO
+
+[ALNSTR08]
+STR_NAME    :Duża budowla kosmitów
+
+[ALNSTR09]
+STR_NAME    :Duża budowla kosmitów
+
+[ALNSTR10]
+STR_NAME    :Duża budowla kosmitów
+
+[ALNSTR11]
+STR_NAME    :Duży lufcik kosmitów
+
+[ARTDEC25]
+STR_NAME    :Narożnik z oknami art deco
+
+[ARTDEC26]
+STR_NAME    :Narożnik z balustradą art deco
+
+[ARTDEC27]
+STR_NAME    :Górny narożnik art deco
+
+[ASHNYMPH]
+STR_NAME    :Jesion z nimfami
+
+[BANDBUSX]
+STR_NAME    :Autobus zespołu rockowego
+
+[BIGDRUMS]
+STR_NAME    :Olbrzymia perkusja
+
+[CAVENTRA]
+STR_NAME    :Wejście do jaskini
+
+[CORNS2X2]
+STR_NAME    :Narożnik rzymskiego pałacu
+
+[CORVS2X2]
+STR_NAME    :Narożnik rzymskiego pałacu
+
+[CRATR2X2]
+STR_NAME    :Mały krater po meteorycie
+
+[CRATR4X4]
+STR_NAME    :Duży krater po meteorycie
+
+[CRSSS2X2]
+STR_NAME    :Skrzyżowanie rzymskiego pałacu
+
+[CRSVS2X2]
+STR_NAME    :Skrzyżowanie rzymskiego pałacu
+
+[CYCLOPSS]
+STR_NAME    :Posąg cyklopa
+
+[FEASTABL]
+STR_NAME    :Zastawiony stół
+
+[FOOTPRNT]
+STR_NAME    :Ślad olbrzymiego dinozaura
+
+[FORBIDFT]
+STR_NAME    :Rajska jabłoń
+
+[FUTSKY20]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY22]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY24]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY25]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY26]
+STR_NAME    :Wieżowiec z piaskowca - dolny odwrócony narożnik
+
+[FUTSKY28]
+STR_NAME    :Chodnik z piaskowca - skrzyżowanie T
+
+[FUTSKY30]
+STR_NAME    :Narożnik chodnika z piaskowca
+
+[FUTSKY31]
+STR_NAME    :Chodnik z piaskowca - skrzyżowanie
+
+[FUTSKY32]
+STR_NAME    :Chodnik z piaskowca - zakończenie
+
+[GBEETLEX]
+STR_NAME    :Samochód z lat 50.
+
+[GHOTROD1]
+STR_NAME    :Podrasowany wóz
+
+[GHOTROD2]
+STR_NAME    :Podrasowany wóz
+
+[GSCHLBUS]
+STR_NAME    :Gimbus
+
+[HADESXXX]
+STR_NAME    :Posąg Hadesa
+
+[HISTFIX1]
+STR_NAME    :Pradawne budowle kosmitów
+
+[HISTFIX2]
+STR_NAME    :Pradawne budowle kosmitów
+
+[HODSHUT1]
+STR_NAME    :Chatka Robin Hooda
+
+[HODSHUT2]
+STR_NAME    :Chatka Robin Hooda
+
+[HRBWAL07]
+STR_NAME    :Narożnik muru przystani
+
+[HRBWAL08]
+STR_NAME    :Narożnik muru przystani
+
+[HRBWAL09]
+STR_NAME    :Mur przystani z dokiem
+
+[HRBWAL11]
+STR_NAME    :Dok przystani
+
+[JAILXX17]
+STR_NAME    :Drzwi więzienne
+
+[JAILXX18]
+STR_NAME    :Więzienna wieża ciśnień
+
+[JETPLAN1]
+STR_NAME    :Odrzutowiec
+
+[JETPLAN2]
+STR_NAME    :Odrzutowiec
+
+[JETPLAN3]
+STR_NAME    :Odrzutowiec
+
+[MAJOROAK]
+STR_NAME    :Wielki dąb
+
+[MCASTL01]
+STR_NAME    :Zamkowy odwrócony narożnik
+
+[MCASTL11]
+STR_NAME    :Brama zamkowa
+
+[MCASTL12]
+STR_NAME    :Wejście do zamku
+
+[MCASTL13]
+STR_NAME    :Narożnik wieży zamkowej
+
+[MCASTL14]
+STR_NAME    :Narożnik wieży zamkowej
+
+[MCASTL15]
+STR_NAME    :Skrzyżowanie wieży zamkowej
+
+[MCASTL16]
+STR_NAME    :Prosty segment wieży zamkowej
+
+[MCASTL17]
+STR_NAME    :Segment T wieży zamkowej
+
+[MCASTL18]
+STR_NAME    :Segment T wieży zamkowej
+
+[MELMTREE]
+STR_NAME    :Duży wiąz
+
+[METOAN01]
+STR_NAME    :Narożnik krateru po meteorycie
+
+[METOAN02]
+STR_NAME    :Odwrócony narożnik krateru po meteorycie
+
+[OLDNYK20]
+STR_NAME    :Segment dachu nowojorskiego
+
+[OLDNYK21]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK22]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK23]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK24]
+STR_NAME    :Odwrócony narożnik dachu nowojorskiego
+
+[OLDNYK25]
+STR_NAME    :Segment dachu nowojorskiego
+
+[OLDNYK26]
+STR_NAME    :Wejście nowojorskie
+
+[OLDNYK27]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK28]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK29]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK30]
+STR_NAME    :Segment ściany nowojorskiej
+
+[OLDNYK32]
+STR_NAME    :Segment dachu nowojorskiego
+
+[PEASTHUT]
+STR_NAME    :Chałupa
+
+[PERAMOB1]
+STR_NAME    :Samochód z epoki
+
+[PERAMOB2]
+STR_NAME    :Samochód z epoki
+
+[PERDTK01]
+STR_NAME    :Ciężarówka z epoki
+
+[PERDTK02]
+STR_NAME    :Ciężarówka z epoki
+
+[PLOUGHXX]
+STR_NAME    :Pług
+
+[PRDYACHT]
+STR_NAME    :Jacht z epoki
+
+[PSNTWL26]
+STR_NAME    :Miasteczko średniowieczne - segment dachu
+
+[PSNTWL27]
+STR_NAME    :Miasteczko średniowieczne - narożnik dachu
+
+[PSNTWL28]
+STR_NAME    :Miasteczko średniowieczne - odwrócony segment dachu
+
+[RDMET2X2]
+STR_NAME    :Mały czerwony krater po meteorycie
+
+[RDMET4X4]
+STR_NAME    :Duży czerwony krater po meteorycie
+
+[RDMETO01]
+STR_NAME    :Narożnik czerwonego krateru po meteorycie
+
+[RDMETO02]
+STR_NAME    :Narożnik czerwonego krateru po meteorycie
+
+[ROBNCAMP]
+STR_NAME    :Obóz Robin Hooda
+
+[ROMNC2X2]
+STR_NAME    :Narożnik rzymskiego pałacu
+
+[ROMNE2X1]
+STR_NAME    :Segment końcowy rzymskiego pałacu
+
+[ROMNM2X2]
+STR_NAME    :Skrzyżowanie rzymskiego pałacu
+
+[ROMNS2X2]
+STR_NAME    :Prosty segment rzymskiego pałacu
+
+[ROMVC2X2]
+STR_NAME    :Narożnik rzymskiego pałacu
+
+[ROMVE2X1]
+STR_NAME    :Segment końcowy rzymskiego pałacu
+
+[ROMVM2X2]
+STR_NAME    :Skrzyżowanie rzymskiego pałacu
+
+[ROMVS2X2]
+STR_NAME    :Prosty segment rzymskiego pałacu
+
+[SCHNPIT2]
+STR_NAME    :Przystań hydroplanu
+
+[SCHNPITS]
+STR_NAME    :Przystań hydroplanu
+
+[SCHNTENT]
+STR_NAME    :Namiot
+
+[SHIPB4X4]
+STR_NAME    :Dziób luksusowego liniowca
+
+[SHIPM4X4]
+STR_NAME    :Segment środkowy luksusowego liniowca
+
+[SHIPS4X4]
+STR_NAME    :Rufa luksusowego liniowca
+
+[STRGS2X2]
+STR_NAME    :Prosty segment rzymskiego pałacu
+
+[STRVS2X2]
+STR_NAME    :Prosty segment rzymskiego pałacu
+
+[TAVERNXX]
+STR_NAME    :Karczma średniowieczna
+
+[TRAVLR01]
+STR_NAME    :Furgonetka mieszkalna
+
+[TRAVLR02]
+STR_NAME    :Mikrobus
+
+[JAILXX19]
+STR_NAME    :Więzienne ogrodzenie
+
+[MSPKWA01]
+STR_NAME    :Kolczaste ogrodzenie
+
+[1920PATH]
+STR_NAME    :Chodnik uliczny
+
+[FUTRPAT2]
+STR_NAME    :Podniebna dróżka
+
+[FUTRPATH]
+STR_NAME    :Dróżka obwodowa
+
+[JURRPATH]
+STR_NAME    :Kamienista dróżka
+
+[MEDIPATH]
+STR_NAME    :Drewniany chodnik
+
+[MYTHPATH]
+STR_NAME    :Chodnik mozaikowy
+
+[RANBPATH]
+STR_NAME    :Tęczowy chodnik
+
+[FIRHYDRT]
+STR_NAME    :Hydrant
+
+[MEDBENCH]
+STR_NAME    :Ławki
+
+[SCG1920S]
+STR_NAME    :Wystrój Ryczących Dwudziestek
+
+[SCG1920W]
+STR_NAME    :Zestawy ścian dla Ryczących Dwudziestek
+
+[SCG1960S]
+STR_NAME    :Wystrój rockandrollowy
+
+[SCGFUTUR]
+STR_NAME    :Wystrój przyszłościowy
+
+[SCGJURRA]
+STR_NAME    :Wystrój prehistoryczny
+
+[SCGMEDIV]
+STR_NAME    :Wystrój średniowieczny
+
+[SCGMYTHO]
+STR_NAME    :Wystrój mitologiczny
+
+[1920SENT]
+STR_NAME    :Wejście do parku "Ryczące dwudziestki"
+
+[FUTURENT]
+STR_NAME    :Wejście do parku futurystycznego
+
+[GLDYRENT]
+STR_NAME    :Wejście do parku rockandrollowego
+
+[JURASENT]
+STR_NAME    :Wejście do parku prehistorycznego
+
+[MEDIENTR]
+STR_NAME    :Wejście do parku Mrocznych Wieków
+
+[MYTHENTR]
+STR_NAME    :Wejście do parku mitologicznego
+
