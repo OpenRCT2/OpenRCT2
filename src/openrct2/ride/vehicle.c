@@ -18,7 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"

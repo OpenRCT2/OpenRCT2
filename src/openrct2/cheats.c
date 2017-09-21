@@ -16,7 +16,7 @@
 
 #include "cheats.h"
 #include "config/Config.h"
-#include "editor.h"
+#include "Editor.h"
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"

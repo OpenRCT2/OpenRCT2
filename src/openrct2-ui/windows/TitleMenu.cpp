@@ -19,7 +19,7 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/editor.h>
+#include <openrct2/Editor.h>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/widget.h>
@@ -198,16 +198,16 @@ static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetInde
     if (widgetIndex == WIDX_GAME_TOOLS) {
         switch (dropdownIndex) {
         case 0:
-            editor_load();
+            Editor::Load();
             break;
         case 1:
-            editor_convert_save_to_scenario();
+            Editor::ConvertSaveToScenario();
             break;
         case 2:
-            trackdesigner_load();
+            Editor::LoadTrackDesigner();
             break;
         case 3:
-            trackmanager_load();
+            Editor::LoadTrackManager();
             break;
         }
     }

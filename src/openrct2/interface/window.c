@@ -19,7 +19,7 @@
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/Cursors.h"

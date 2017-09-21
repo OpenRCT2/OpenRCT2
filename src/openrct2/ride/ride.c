@@ -20,7 +20,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"

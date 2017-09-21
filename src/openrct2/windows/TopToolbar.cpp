@@ -25,7 +25,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../input.h"
 #include "../interface/console.h"
 #include "../interface/land_tool.h"

@@ -38,7 +38,7 @@ extern "C"
 {
     #include "../audio/audio.h"
     #include "../cheats.h"
-    #include "../editor.h"
+    #include "../Editor.h"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../localisation/date.h"
