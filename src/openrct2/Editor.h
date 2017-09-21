@@ -17,6 +17,7 @@
 #ifndef _EDITOR_H_
 #define _EDITOR_H_
 
+#ifdef __cplusplus
 #include "object.h"
 
 typedef enum {
@@ -55,10 +56,6 @@ enum
     EDIT_SCENARIOOPTIONS_SETGUESTGENERATIONHIGHERDIFFICULTLEVEL,
 };
 
-#ifdef __cplusplus
-extern "C" {
-#endif
-
 extern uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
 
 void editor_load();
@@ -67,15 +64,16 @@ void trackdesigner_load();
 void trackmanager_load();
 bool editor_load_landscape(const utf8 *path);
 
-void editor_open_windows_for_current_step();
-
 bool editor_check_park();
 sint32 editor_check_object_selection();
-
 bool editor_check_object_group_at_least_one_selected(sint32 objectType);
 
-void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 
+extern "C" {
+#endif
+void editor_open_windows_for_current_step(); // C Trans
+
+void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp); // C Trans
 #ifdef __cplusplus
 }
 #endif

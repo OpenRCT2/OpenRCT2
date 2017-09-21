@@ -21,19 +21,31 @@
 #include "util/sawyercoding.h"
 #include "util/util.h"
 
+#define MAX_RIDE_OBJECTS          128
+#define MAX_SMALL_SCENERY_OBJECTS 252
+#define MAX_LARGE_SCENERY_OBJECTS 128
+#define MAX_WALL_SCENERY_OBJECTS  128
+#define MAX_BANNER_OBJECTS         32
+#define MAX_PATH_OBJECTS           16
+#define MAX_PATH_ADDITION_OBJECTS  15
+#define MAX_SCENERY_GROUP_OBJECTS  19
+#define MAX_PARK_ENTRANCE_OBJECTS   1
+#define MAX_WATER_OBJECTS           1
+#define MAX_SCENARIO_TEXT_OBJECTS   1
+
 // 98DA00
 sint32 object_entry_group_counts[] = {
-    128,    // rides
-    252,    // small scenery
-    128,    // large scenery
-    128,    // walls
-    32,     // banners
-    16,     // paths
-    15,     // path bits
-    19,     // scenery sets
-    1,      // park entrance
-    1,      // water
-    1       // scenario text
+    MAX_RIDE_OBJECTS,          // rides
+    MAX_SMALL_SCENERY_OBJECTS, // small scenery
+    MAX_LARGE_SCENERY_OBJECTS, // large scenery
+    MAX_WALL_SCENERY_OBJECTS,  // walls
+    MAX_BANNER_OBJECTS,        // banners
+    MAX_PATH_OBJECTS,          // paths
+    MAX_PATH_ADDITION_OBJECTS, // path bits
+    MAX_SCENERY_GROUP_OBJECTS, // scenery sets
+    MAX_PARK_ENTRANCE_OBJECTS, // park entrance
+    MAX_WATER_OBJECTS,         // water
+    MAX_SCENARIO_TEXT_OBJECTS  // scenario text
 };
 
 // 98DA2C
