@@ -181,7 +181,7 @@ static bool rct2_language_is_multibyte_charset(sint32 languageId)
     case RCT2_LANGUAGE_ID_KOREAN:
     case RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL:
     case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
-    case RCT2_LANGUAGE_ID_8:
+    case RCT2_LANGUAGE_ID_JAPANESE:
         return true;
     default:
         return false;
