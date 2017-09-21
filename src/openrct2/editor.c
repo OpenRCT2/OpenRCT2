@@ -77,10 +77,10 @@ uint8 * gEditorSelectedObjects[OBJECT_ENTRY_GROUP_COUNT] = {
 
 static void editor_convert_save_to_scenario_callback(sint32 result, const utf8 * path);
 static void set_all_land_owned();
-static sint32 editor_load_landscape_from_sv4(const char *path);
-static sint32 editor_load_landscape_from_sc4(const char *path);
+static bool editor_load_landscape_from_sv4(const char *path);
+static bool editor_load_landscape_from_sc4(const char *path);
 static void editor_finalise_main_view();
-static sint32 editor_read_s6(const char *path);
+static bool editor_read_s6(const char *path);
 static void editor_clear_map_for_editing(bool fromSave);
 
 /**
@@ -224,7 +224,7 @@ bool editor_load_landscape(const utf8 *path)
         case FILE_EXTENSION_SV4:
             return editor_load_landscape_from_sv4(path);
         default:
-            return 0;
+            return false;
     }
 }
 
@@ -232,7 +232,7 @@ bool editor_load_landscape(const utf8 *path)
  *
  *  rct2: 0x006A2B02
  */
-static sint32 editor_load_landscape_from_sv4(const char *path)
+static bool editor_load_landscape_from_sv4(const char *path)
 {
     load_from_sv4(path);
     editor_clear_map_for_editing(true);
@@ -243,10 +243,10 @@ static sint32 editor_load_landscape_from_sv4(const char *path)
     viewport_init_all();
     window_editor_main_open();
     editor_finalise_main_view();
-    return 1;
+    return true;
 }
 
-static sint32 editor_load_landscape_from_sc4(const char *path)
+static bool editor_load_landscape_from_sc4(const char *path)
 {
     load_from_sc4(path);
     editor_clear_map_for_editing(false);
@@ -257,14 +257,14 @@ static sint32 editor_load_landscape_from_sc4(const char *path)
     viewport_init_all();
     window_editor_main_open();
     editor_finalise_main_view();
-    return 1;
+    return true;
 }
 
 /**
  *
  *  rct2: 0x006758FE
  */
-static sint32 editor_read_s6(const char *path)
+static bool editor_read_s6(const char *path)
 {
     ParkLoadResult * loadResult = NULL;
     const char *extension = path_get_extension(path);
@@ -275,7 +275,7 @@ static sint32 editor_read_s6(const char *path)
     }
     if (ParkLoadResult_GetError(loadResult) != PARK_LOAD_ERROR_OK) {
         ParkLoadResult_Delete(loadResult);
-        return 0;
+        return false;
     }
     ParkLoadResult_Delete(loadResult);
 
@@ -287,7 +287,7 @@ static sint32 editor_read_s6(const char *path)
     viewport_init_all();
     window_editor_main_open();
     editor_finalise_main_view();
-    return 1;
+    return true;
 }
 
 static void editor_clear_map_for_editing(bool fromSave)
