@@ -2735,9 +2735,4 @@ extern "C"
         }
         return result;
     }
-
-    colour_t rct1_get_colour(colour_t colour)
-    {
-        return RCT1::GetColour(colour);
-    }
 }

@@ -1225,8 +1225,6 @@ bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
 
-colour_t rct1_get_colour(colour_t colour);
-
 #ifdef __cplusplus
 }
 #endif
