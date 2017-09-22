@@ -798,7 +798,19 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                         if (info->flags & TEXT_DRAW_FLAG_INSET) {
                             *(dst + width + dstScanSkip + 1) = info->palette[3];
                         }
-                        *dst = colour;
+
+                        if (*src > 180)
+                        {
+                            // Centre of the glyph: use full colour.
+                            *dst = colour;
+                        }
+                        else if (*src > 70)
+                        {
+                            // Simulate font hinting by shading the background colour instead.
+                            // uint8 hinting = floor(*src / 12);
+                            // *dst = *dst - (*dst % 12) + hinting;
+                            *dst = *dst + 2;
+                        }
                     }
                     src++;
                     dst++;

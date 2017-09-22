@@ -276,7 +276,7 @@ static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * outWidth, 
 
 static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text)
 {
-    return TTF_RenderUTF8_Solid(font, text, 0x000000FF);
+    return TTF_RenderUTF8_Shaded(font, text, 0x000000FF, 0x000000FF);
 }
 
 void ttf_free_surface(TTFSurface * surface)
