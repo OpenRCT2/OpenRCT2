@@ -191,6 +191,7 @@ typedef struct FontConfiguration
     sint32      height_small;
     sint32      height_medium;
     sint32      height_big;
+    bool        enable_hinting;
 } FontConfiguration;
 
 enum SORT

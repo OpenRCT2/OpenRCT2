@@ -493,6 +493,7 @@ namespace Config
             model->height_small = reader->GetSint32("height_small", false);
             model->height_medium = reader->GetSint32("height_medium", false);
             model->height_big = reader->GetSint32("height_big", false);
+            model->enable_hinting = reader->GetBoolean("enable_hinting", true);
         }
     }
 
@@ -512,6 +513,7 @@ namespace Config
         writer->WriteSint32("height_small", model->height_small);
         writer->WriteSint32("height_medium", model->height_medium);
         writer->WriteSint32("height_big", model->height_big);
+        writer->WriteBoolean("enable_hinting", model->enable_hinting);
     }
 
     static bool SetDefaults()
