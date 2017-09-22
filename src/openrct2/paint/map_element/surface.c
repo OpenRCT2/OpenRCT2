@@ -1341,33 +1341,16 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         tunnel_entry backupLeftTunnels[TUNNEL_MAX_COUNT];
         tunnel_entry backupRightTunnels[TUNNEL_MAX_COUNT];
 
-#ifdef __MINGW32__
-        // The other code crashes mingw 4.8.2, as available on Travis
-        for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            backupLeftTunnels[i] = session->LeftTunnels[i];
-            backupRightTunnels[i] = session->RightTunnels[i];
-        }
-#else
         memcpy(backupLeftTunnels, session->LeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
         memcpy(backupRightTunnels, session->RightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-#endif
 
         viewport_surface_draw_land_side_top(session, EDGE_TOPLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_draw_land_side_top(session, EDGE_TOPRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMLEFT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[1]);
         viewport_surface_draw_land_side_bottom(session, EDGE_BOTTOMRIGHT, height / 16, eax / 32, tileDescriptors[0], tileDescriptors[2]);
 
-
-#ifdef __MINGW32__
-        // The other code crashes mingw 4.8.2, as available on Travis
-        for (sint32 i = 0; i < TUNNEL_MAX_COUNT; i++) {
-            session->LeftTunnels[i] = backupLeftTunnels[i];
-            session->RightTunnels[i] = backupRightTunnels[i];
-        }
-#else
         memcpy(session->LeftTunnels, backupLeftTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
         memcpy(session->RightTunnels, backupRightTunnels, sizeof(tunnel_entry) * TUNNEL_MAX_COUNT);
-#endif
     }
 
     if (map_get_water_height(mapElement) > 0)
