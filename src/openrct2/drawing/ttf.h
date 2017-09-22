@@ -54,6 +54,7 @@ TTF_Font * TTF_OpenFont(const char *file, int ptsize);
 int TTF_GlyphIsProvided(const TTF_Font *font, codepoint_t ch);
 int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h);
 TTFSurface * TTF_RenderUTF8_Solid(TTF_Font *font, const char *text, uint32 colour);
+TTFSurface * TTF_RenderUTF8_Shaded(TTF_Font *font, const char *text, uint32 fg, uint32 bg);
 void TTF_CloseFont(TTF_Font *font);
 void TTF_Quit(void);
 
