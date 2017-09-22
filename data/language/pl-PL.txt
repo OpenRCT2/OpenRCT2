@@ -4339,7 +4339,7 @@ STR_NAME    :Kostka lodu
 STR_NAME    :Dach igloo
 
 [JBEAN1]
-STR_NAME    :Řelka
+STR_NAME    :Żelka
 
 [JELBAB1]
 STR_NAME    :Gumiś
@@ -5635,10 +5635,10 @@ STR_NAME    :Mur zamkowy
 STR_NAME    :Mur zamkowy
 
 [WCH]
-STR_NAME    :Řywopłot iglasty
+STR_NAME    :Żywopłot iglasty
 
 [WCHG]
-STR_NAME    :Řywopłot iglasty
+STR_NAME    :Żywopłot iglasty
 
 [WCW1]
 STR_NAME    :Ściana z kart do gry
@@ -5659,10 +5659,10 @@ STR_NAME    :Drewniany płot
 STR_NAME    :Szklana ściana
 
 [WHG]
-STR_NAME    :Řywopłot
+STR_NAME    :Żywopłot
 
 [WHGG]
-STR_NAME    :Řywopłot
+STR_NAME    :Żywopłot
 
 [WJF]
 STR_NAME    :Płot tropikalny
@@ -6188,7 +6188,7 @@ STR_DESC    :Pasażerowie jadą w pozycji stojącej w szerokich wagonikach ze sp
 STR_CPTY    :4 pasażerów na wagonik
 
 [TAXICSTR]
-STR_NAME    :Řółte taksówki
+STR_NAME    :Żółte taksówki
 STR_DESC    :Wielka stalowa kolejka górska jeżdżąca po łagodnych spadkach i wzniesieniach o wysokości 100 m
 STR_CPTY    :4 pasażerów na wagonik
 
@@ -7233,19 +7233,19 @@ STR_NAME    :Zaginione miasto - narożnik ściany
 STR_NAME    :Zaginione miasto - narożnik ściany
 
 [WNAUTI01]
-STR_NAME    :Řeglarski segment dachu
+STR_NAME    :Żeglarski segment dachu
 
 [WNAUTI02]
-STR_NAME    :Řeglarski segment dachu
+STR_NAME    :Żeglarski segment dachu
 
 [WNAUTI03]
-STR_NAME    :Řeglarski segment dachu
+STR_NAME    :Żeglarski segment dachu
 
 [WNAUTI04]
-STR_NAME    :Řeglarski segment dachu
+STR_NAME    :Żeglarski segment dachu
 
 [WNAUTI05]
-STR_NAME    :Řeglarski segment dachu
+STR_NAME    :Żeglarski segment dachu
 
 [WROPECOR]
 STR_NAME    :Narożnik poręczy dachu żeglarskiego
@@ -7407,10 +7407,10 @@ STR_NAME    :Złoty posąg 2
 STR_NAME    :Gejsza
 
 [GIRAFFE1]
-STR_NAME    :Řyrafa 1
+STR_NAME    :Żyrafa 1
 
 [GIRAFFE2]
-STR_NAME    :Řyrafa 2
+STR_NAME    :Żyrafa 2
 
 [GOLDBUDA]
 STR_NAME    :Złoty Budda
