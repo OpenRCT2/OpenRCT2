@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
@@ -799,7 +800,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                             *(dst + width + dstScanSkip + 1) = info->palette[3];
                         }
 
-                        if (*src > 180)
+                        if (*src > 180 || !gConfigFonts.enable_hinting)
                         {
                             // Centre of the glyph: use full colour.
                             *dst = colour;

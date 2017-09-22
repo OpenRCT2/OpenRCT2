@@ -19,6 +19,7 @@
 #include <ft2build.h>
 #include FT_FREETYPE_H
 
+#include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
@@ -276,7 +277,14 @@ static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * outWidth, 
 
 static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text)
 {
-    return TTF_RenderUTF8_Shaded(font, text, 0x000000FF, 0x000000FF);
+    if (gConfigFonts.enable_hinting)
+    {
+        return TTF_RenderUTF8_Shaded(font, text, 0x000000FF, 0x000000FF);
+    }
+    else
+    {
+        return TTF_RenderUTF8_Solid(font, text, 0x000000FF);
+    }
 }
 
 void ttf_free_surface(TTFSurface * surface)
