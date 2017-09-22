@@ -18,7 +18,7 @@
 #include "cheats.h"
 #include "config/Config.h"
 #include "Context.h"
-#include "editor.h"
+#include "Editor.h"
 #include "FileClassifier.h"
 #include "game.h"
 #include "input.h"

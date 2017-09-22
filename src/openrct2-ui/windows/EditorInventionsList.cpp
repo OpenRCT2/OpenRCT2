@@ -21,7 +21,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/editor.h>
+#include <openrct2/Editor.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
@@ -181,7 +181,7 @@ static sint32 research_item_is_always_researched(rct_research_item *researchItem
 static void research_rides_setup(){
     // Reset all objects to not required
     for (uint8 object_type = OBJECT_TYPE_RIDE; object_type < 11; object_type++){
-        uint8* in_use = gEditorSelectedObjects[object_type];
+        uint8* in_use = Editor::SelectedObjects[object_type];
         for (uint8 num_objects = object_entry_group_counts[object_type]; num_objects != 0; num_objects--){
             *in_use++ = 0;
         }
@@ -191,7 +191,7 @@ static void research_rides_setup(){
     for (uint16 rideIndex = 0; rideIndex < 255; rideIndex++){
         Ride * ride = get_ride(rideIndex);
         if (ride->type == RIDE_TYPE_NULL)continue;
-        gEditorSelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
+        Editor::SelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= 1;
     }
 
     for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++)
@@ -221,7 +221,7 @@ static void research_rides_setup(){
                     continue;
 
                 // If master ride not in use
-                if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
+                if (!(Editor::SelectedObjects[OBJECT_TYPE_RIDE][rideType] & (1 << 0)))
                     continue;
 
                 for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
@@ -242,7 +242,7 @@ static void research_rides_setup(){
 
         if (!master_found){
             // If not in use
-            if (!(gEditorSelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0))) {
+            if (!(Editor::SelectedObjects[OBJECT_TYPE_RIDE][object_index] & (1 << 0))) {
                 continue;
             }
 

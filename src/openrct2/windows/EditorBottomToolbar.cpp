@@ -19,7 +19,7 @@
 
 #include "../audio/audio.h"
 #include "../game.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../input.h"
 #include "../sprites.h"
 #include "../localisation/localisation.h"
@@ -197,7 +197,7 @@ static bool window_editor_bottom_toolbar_check_object_selection()
 {
     rct_window *w;
 
-    sint32 missingObjectType = editor_check_object_selection();
+    sint32 missingObjectType = Editor::CheckObjectSelection();
     if (missingObjectType < 0) {
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         return true;
@@ -239,12 +239,16 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 *
 *  rct2: 0x0066F758
 */
-void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
-    if (editor_check_park()) {
+void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up()
+{
+    if (Editor::CheckPark())
+    {
         window_close_all();
         context_open_window(WC_EDITOR_INVENTION_LIST);
         gS6Info.editor_step = EDITOR_STEP_INVENTIONS_LIST_SET_UP;
-    } else {
+    }
+    else
+    {
         window_error_open(STR_CANT_ADVANCE_TO_NEXT_EDITOR_STAGE, gGameCommandErrorText);
     }
 
@@ -255,7 +259,8 @@ void window_editor_bottom_toolbar_jump_forward_to_invention_list_set_up() {
 *
 *  rct2: 0x0066f790
 */
-void window_editor_bottom_toolbar_jump_forward_to_options_selection() {
+void window_editor_bottom_toolbar_jump_forward_to_options_selection()
+{
     window_close_all();
     context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
     gS6Info.editor_step = EDITOR_STEP_OPTIONS_SELECTION;

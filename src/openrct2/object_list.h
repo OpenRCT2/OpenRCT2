@@ -12,18 +12,30 @@
 extern "C" {
 #endif
 
+#define MAX_RIDE_OBJECTS          128
+#define MAX_SMALL_SCENERY_OBJECTS 252
+#define MAX_LARGE_SCENERY_OBJECTS 128
+#define MAX_WALL_SCENERY_OBJECTS  128
+#define MAX_BANNER_OBJECTS         32
+#define MAX_PATH_OBJECTS           16
+#define MAX_PATH_ADDITION_OBJECTS  15
+#define MAX_SCENERY_GROUP_OBJECTS  19
+#define MAX_PARK_ENTRANCE_OBJECTS   1
+#define MAX_WATER_OBJECTS           1
+#define MAX_SCENARIO_TEXT_OBJECTS   1
+
 #ifdef NO_RCT2
-    extern rct_ride_entry               *gRideEntries[128];
-    extern rct_small_scenery_entry      *gSmallSceneryEntries[252];
-    extern rct_large_scenery_entry      *gLargeSceneryEntries[128];
-    extern rct_wall_scenery_entry       *gWallSceneryEntries[128];
-    extern rct_banner                   *gBannerSceneryEntries[32];
-    extern rct_footpath_entry           *gFootpathEntries[16];
-    extern rct_path_bit_scenery_entry   *gFootpathAdditionEntries[15];
-    extern rct_scenery_set_entry        *gSceneryGroupEntries[19];
-    extern rct_entrance_type            *gParkEntranceEntries[1];
-    extern rct_water_type               *gWaterEntries[1];
-    extern rct_stex_entry               *gStexEntries[1];
+    extern rct_ride_entry               *gRideEntries[MAX_RIDE_OBJECTS];
+    extern rct_small_scenery_entry      *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
+    extern rct_large_scenery_entry      *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
+    extern rct_wall_scenery_entry       *gWallSceneryEntries[MAX_WALL_SCENERY_OBJECTS];
+    extern rct_banner                   *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
+    extern rct_footpath_entry           *gFootpathEntries[MAX_PATH_OBJECTS];
+    extern rct_path_bit_scenery_entry   *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
+    extern rct_scenery_set_entry        *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
+    extern rct_entrance_type            *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
+    extern rct_water_type               *gWaterEntries[MAX_WATER_OBJECTS];
+    extern rct_stex_entry               *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
 #else
 
 

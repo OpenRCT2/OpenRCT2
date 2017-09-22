@@ -38,7 +38,7 @@ extern "C"
 {
     #include "../audio/audio.h"
     #include "../cheats.h"
-    #include "../editor.h"
+    #include "../Editor.h"
     #include "../game.h"
     #include "../interface/window.h"
     #include "../localisation/date.h"
@@ -2734,10 +2734,5 @@ extern "C"
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
         }
         return result;
-    }
-
-    colour_t rct1_get_colour(colour_t colour)
-    {
-        return RCT1::GetColour(colour);
     }
 }

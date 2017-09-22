@@ -20,7 +20,7 @@
 
 #include <time.h>
 #include "../core/Guard.hpp"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
@@ -785,7 +785,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
         break;
     case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE) :
         save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
-        if (editor_load_landscape(pathBuffer)) {
+        if (Editor::LoadLandscape(pathBuffer)) {
             safe_strcpy(gCurrentLoadedPath, pathBuffer, MAX_PATH);
             gfx_invalidate_screen();
             window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);

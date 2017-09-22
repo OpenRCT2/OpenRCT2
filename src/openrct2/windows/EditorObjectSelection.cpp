@@ -25,7 +25,7 @@
 #include <ctype.h>
 #include "../audio/audio.h"
 #include "../game.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../object_list.h"
@@ -503,14 +503,14 @@ static void setup_in_use_selection_flags()
 {
     for (uint8 object_type = 0; object_type < 11; object_type++){
         for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-            gEditorSelectedObjects[object_type][i] = 0;
+            Editor::SelectedObjects[object_type][i] = 0;
         }
     }
 
     for (uint8 object_type = 0; object_type < 11; object_type++){
         for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
             if (object_entry_groups[object_type].chunks[i] != (uint8*)-1) {
-                gEditorSelectedObjects[object_type][i] |= (1 << 1);
+                Editor::SelectedObjects[object_type][i] |= (1 << 1);
             }
         }
     }
@@ -530,43 +530,43 @@ static void setup_in_use_selection_flags()
             type = iter.element->properties.path.type;
             type >>= 4;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
 
             if (footpath_element_has_path_scenery(iter.element)) {
                 uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
-                gEditorSelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
+                Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
             }
             break;
         case MAP_ELEMENT_TYPE_SCENERY:
             type = iter.element->properties.scenery.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
-            gEditorSelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
             break;
         case MAP_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 break;
 
-            gEditorSelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
 
             type = iter.element->properties.entrance.path_type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            gEditorSelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
             break;
         case MAP_ELEMENT_TYPE_WALL:
             type = iter.element->properties.wall.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
-            gEditorSelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
             break;
         case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
             type = iter.element->properties.scenerymultiple.type & 0x3FF;
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
-            gEditorSelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
             break;
         case MAP_ELEMENT_TYPE_BANNER:
             banner = &gBanners[iter.element->properties.banner.index];
             type = banner->type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-            gEditorSelectedObjects[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
             break;
         }
     } while (map_element_iterator_next(&iter));
@@ -575,7 +575,7 @@ static void setup_in_use_selection_flags()
         Ride* ride = get_ride(ride_index);
         if (ride->type != RIDE_TYPE_NULL) {
             uint8 type = ride->subtype;
-            gEditorSelectedObjects[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_RIDE][type] |= (1 << 0);
         }
     }
 
@@ -588,12 +588,12 @@ static void setup_in_use_selection_flags()
 
         uint8 entryType, entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
-            if (gEditorSelectedObjects[entryType][entryIndex] & (1 << 0)) {
+            if (Editor::SelectedObjects[entryType][entryIndex] & (1 << 0)) {
                 *selectionFlags |=
                     OBJECT_SELECTION_FLAG_IN_USE |
                     OBJECT_SELECTION_FLAG_SELECTED;
             }
-            if (gEditorSelectedObjects[entryType][entryIndex] & (1 << 1)) {
+            if (Editor::SelectedObjects[entryType][entryIndex] & (1 << 1)) {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
             }
         }

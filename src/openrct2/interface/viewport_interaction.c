@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../cheats.h"
-#include "../editor.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"

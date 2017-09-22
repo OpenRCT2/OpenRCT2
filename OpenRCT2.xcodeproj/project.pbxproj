@@ -200,7 +200,7 @@
 		F76C86021EC4E88300FA49E2 /* scrolling_text.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */; };
 		F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */; };
 		F76C86041EC4E88300FA49E2 /* string.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B01EC4E7CC00FA49E2 /* string.c */; };
-		F76C86051EC4E88300FA49E2 /* editor.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* editor.c */; };
+		F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */; };
 		F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */; };
 		F76C86091EC4E88300FA49E2 /* game.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B51EC4E7CC00FA49E2 /* game.c */; };
 		F76C860B1EC4E88300FA49E2 /* Imaging.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83B71EC4E7CC00FA49E2 /* Imaging.cpp */; };
@@ -978,8 +978,8 @@
 		F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scrolling_text.c; sourceTree = "<group>"; };
 		F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
 		F76C83B01EC4E7CC00FA49E2 /* string.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = string.c; sourceTree = "<group>"; };
-		F76C83B11EC4E7CC00FA49E2 /* editor.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = editor.c; sourceTree = "<group>"; };
-		F76C83B21EC4E7CC00FA49E2 /* editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = editor.h; sourceTree = "<group>"; };
+		F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */ = {isa = PBXFileReference; explicitFileType = sourcecode.cpp.cpp; path = Editor.cpp; sourceTree = "<group>"; };
+		F76C83B21EC4E7CC00FA49E2 /* Editor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Editor.h; sourceTree = "<group>"; };
 		F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileClassifier.cpp; sourceTree = "<group>"; };
 		F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FileClassifier.h; sourceTree = "<group>"; };
 		F76C83B51EC4E7CC00FA49E2 /* game.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = game.c; sourceTree = "<group>"; };
@@ -1791,8 +1791,8 @@
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
 				F76C839B1EC4E7CC00FA49E2 /* diagnostic.c */,
 				F76C839C1EC4E7CC00FA49E2 /* diagnostic.h */,
-				F76C83B11EC4E7CC00FA49E2 /* editor.c */,
-				F76C83B21EC4E7CC00FA49E2 /* editor.h */,
+				F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */,
+				F76C83B21EC4E7CC00FA49E2 /* Editor.h */,
 				F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */,
 				F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */,
 				F76C83B51EC4E7CC00FA49E2 /* game.c */,
@@ -3148,7 +3148,7 @@
 				C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
 				F76C86041EC4E88300FA49E2 /* string.c in Sources */,
-				F76C86051EC4E88300FA49E2 /* editor.c in Sources */,
+				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
 				F76C86071EC4E88300FA49E2 /* FileClassifier.cpp in Sources */,
 				F76C86091EC4E88300FA49E2 /* game.c in Sources */,
 				F76C860B1EC4E88300FA49E2 /* Imaging.cpp in Sources */,

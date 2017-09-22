@@ -50,7 +50,7 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "drawing/lightfx.h"
-#include "editor.h"
+#include "Editor.h"
 #include "game.h"
 #include "input.h"
 #include "interface/chat.h"
@@ -512,9 +512,9 @@ namespace OpenRCT2
             case STARTUP_ACTION_EDIT:
                 if (String::SizeOf(gOpenRCT2StartupActionPath) == 0)
                 {
-                    editor_load();
+                    Editor::Load();
                 }
-                else if (!editor_load_landscape(gOpenRCT2StartupActionPath))
+                else if (!Editor::LoadLandscape(gOpenRCT2StartupActionPath))
                 {
                     title_load();
                 }

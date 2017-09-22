@@ -16,7 +16,7 @@
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/editor.h>
+#include <openrct2/Editor.h>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/chat.h>
