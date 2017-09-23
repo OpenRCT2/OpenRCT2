@@ -1857,15 +1857,18 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
     }
 }
 
-static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
+static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y)
+{
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
     LocationXY16 mapTile = { 0 };
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
-    if (mapTile.x == LOCATION_NULL) {
-        if (gClearSceneryCost != MONEY32_UNDEFINED) {
+    if (mapTile.x == LOCATION_NULL)
+    {
+        if (gClearSceneryCost != MONEY32_UNDEFINED)
+        {
             gClearSceneryCost = MONEY32_UNDEFINED;
             window_invalidate_by_class(WC_CLEAR_SCENERY);
         }
@@ -1874,12 +1877,14 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 
     uint8 state_changed = 0;
 
-    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
+    if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+    {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         state_changed++;
     }
 
-    if (gMapSelectType != MAP_SELECT_TYPE_FULL) {
+    if (gMapSelectType != MAP_SELECT_TYPE_FULL)
+    {
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         state_changed++;
     }
@@ -1893,12 +1898,14 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
     mapTile.x &= 0xFFE0;
     mapTile.y &= 0xFFE0;
 
-    if (gMapSelectPositionA.x != mapTile.x){
+    if (gMapSelectPositionA.x != mapTile.x)
+    {
         gMapSelectPositionA.x = mapTile.x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y){
+    if (gMapSelectPositionA.y != mapTile.y)
+    {
         gMapSelectPositionA.y = mapTile.y;
         state_changed++;
     }
@@ -1906,12 +1913,14 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
     mapTile.x += tool_length;
     mapTile.y += tool_length;
 
-    if (gMapSelectPositionB.x != mapTile.x){
+    if (gMapSelectPositionB.x != mapTile.x)
+    {
         gMapSelectPositionB.x = mapTile.x;
         state_changed++;
     }
 
-    if (gMapSelectPositionB.y != mapTile.y){
+    if (gMapSelectPositionB.y != mapTile.y)
+    {
         gMapSelectPositionB.y = mapTile.y;
         state_changed++;
     }
@@ -1925,18 +1934,22 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
 *
 *  rct2: 0x00664280
 */
-static void top_toolbar_tool_update_land(sint16 x, sint16 y){
+static void top_toolbar_tool_update_land(sint16 x, sint16 y)
+{
+    const bool mapCtrlPressed = input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z);
+
     map_invalidate_selection_rect();
 
-    if (gCurrentToolId == TOOL_UP_DOWN_ARROW){
+    if (gCurrentToolId == TOOL_UP_DOWN_ARROW)
+    {
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
             return;
 
         money32 lower_cost = selection_lower_land(0);
         money32 raise_cost = selection_raise_land(0);
 
-        if (gLandToolRaiseCost != raise_cost ||
-            gLandToolLowerCost != lower_cost){
+        if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+        {
             gLandToolRaiseCost = raise_cost;
             gLandToolLowerCost = lower_cost;
             window_invalidate_by_class(WC_LAND);
@@ -1944,20 +1957,26 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
         return;
     }
 
-    sint16 tool_size = gLandToolSize;
-    LocationXY16 mapTile = { x, y };
+    sint16       tool_size = gLandToolSize;
+    LocationXY16 mapTile;
+    uint8        side;
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-    if (tool_size == 1){
-        sint32 direction;
-        screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
+    if (tool_size == 1)
+    {
+        sint32 selectionType;
+        // Get selection type and map coordinates from mouse x,y position
+        mapTile = { x, y };
+        screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &selectionType);
+        screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
 
-        if (mapTile.x == LOCATION_NULL) {
+        if (mapTile.x == LOCATION_NULL)
+        {
             money32 lower_cost = MONEY32_UNDEFINED;
             money32 raise_cost = MONEY32_UNDEFINED;
 
-            if (gLandToolRaiseCost != raise_cost ||
-                gLandToolLowerCost != lower_cost){
+            if (gLandToolRaiseCost != raise_cost || gLandToolLowerCost != lower_cost)
+            {
                 gLandToolRaiseCost = raise_cost;
                 gLandToolLowerCost = lower_cost;
                 window_invalidate_by_class(WC_LAND);
@@ -1967,33 +1986,44 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 
         uint8 state_changed = 0;
 
-        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)) {
+        if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+        {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             state_changed++;
         }
 
-        if (gMapSelectType != direction) {
-            gMapSelectType = direction;
+        if (gMapSelectType != selectionType)
+        {
+            gMapSelectType = selectionType;
             state_changed++;
         }
 
+        if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+        {
+            gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+            state_changed++;
+        }
 
-        if (gMapSelectPositionA.x != mapTile.x){
+        if (gMapSelectPositionA.x != mapTile.x)
+        {
             gMapSelectPositionA.x = mapTile.x;
             state_changed++;
         }
 
-        if (gMapSelectPositionA.y != mapTile.y){
+        if (gMapSelectPositionA.y != mapTile.y)
+        {
             gMapSelectPositionA.y = mapTile.y;
             state_changed++;
         }
 
-        if (gMapSelectPositionB.x != mapTile.x){
+        if (gMapSelectPositionB.x != mapTile.x)
+        {
             gMapSelectPositionB.x = mapTile.x;
             state_changed++;
         }
 
-        if (gMapSelectPositionB.y != mapTile.y){
+        if (gMapSelectPositionB.y != mapTile.y)
+        {
             gMapSelectPositionB.y = mapTile.y;
             state_changed++;
         }
@@ -2014,7 +2044,8 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
         return;
     }
 
-    screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
+    // Get map coordinates and the side of the tile that is being hovered over
+    screen_get_map_xy_side(x, y, &mapTile.x, &mapTile.y, &side);
 
     if (mapTile.x == LOCATION_NULL) {
         money32 lower_cost = MONEY32_UNDEFINED;
@@ -2041,30 +2072,74 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
         state_changed++;
     }
 
+    if ((gMapSelectType != MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF)) && mapCtrlPressed)
+    {
+        gMapSelectType = MAP_SELECT_TYPE_EDGE_0 + (side & 0xFF);
+        state_changed++;
+    }
 
     if (tool_size == 0)
         tool_size = 1;
 
     sint16 tool_length = (tool_size - 1) * 32;
 
-    // Move to tool bottom left
-    mapTile.x -= (tool_size - 1) * 16;
-    mapTile.y -= (tool_size - 1) * 16;
-    mapTile.x &= 0xFFE0;
-    mapTile.y &= 0xFFE0;
+    // Decide on shape of the brush for bigger selection size
+    switch (gMapSelectType)
+    {
+    case MAP_SELECT_TYPE_EDGE_0:
+    case MAP_SELECT_TYPE_EDGE_2:
+        // Line
+        mapTile.y -= (tool_size - 1) * 16;
+        mapTile.y &= 0xFFE0;
+        break;
+    case MAP_SELECT_TYPE_EDGE_1:
+    case MAP_SELECT_TYPE_EDGE_3:
+        // Line
+        mapTile.x -= (tool_size - 1) * 16;
+        mapTile.x &= 0xFFE0;
+        break;
+    default:
+        // Move to tool bottom left
+        mapTile.x -= (tool_size - 1) * 16;
+        mapTile.y -= (tool_size - 1) * 16;
+        mapTile.x &= 0xFFE0;
+        mapTile.y &= 0xFFE0;
+        break;
+    }
 
-    if (gMapSelectPositionA.x != mapTile.x){
+    if (gMapSelectPositionA.x != mapTile.x)
+    {
         gMapSelectPositionA.x = mapTile.x;
         state_changed++;
     }
 
-    if (gMapSelectPositionA.y != mapTile.y){
+    if (gMapSelectPositionA.y != mapTile.y)
+    {
         gMapSelectPositionA.y = mapTile.y;
         state_changed++;
     }
 
-    mapTile.x += tool_length;
-    mapTile.y += tool_length;
+    // Go to other side
+    switch (gMapSelectType)
+    {
+    case MAP_SELECT_TYPE_EDGE_0:
+    case MAP_SELECT_TYPE_EDGE_2:
+        // Line
+        mapTile.y += tool_length;
+        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        break;
+    case MAP_SELECT_TYPE_EDGE_1:
+    case MAP_SELECT_TYPE_EDGE_3:
+        // Line
+        mapTile.x += tool_length;
+        gMapSelectType = MAP_SELECT_TYPE_FULL;
+        break;
+    default:
+        mapTile.x += tool_length;
+        mapTile.y += tool_length;
+        break;
+    }
+    
 
     if (gMapSelectPositionB.x != mapTile.x){
         gMapSelectPositionB.x = mapTile.x;
@@ -2425,7 +2500,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
     money32 cost = 0;
 
     switch (scenery_type){
-    case 0:
+    case SCENERY_TYPE_SMALL:
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         if (gWindowSceneryClusterEnabled) {
             gMapSelectPositionA.x = mapTile.x - (8 << 5);
@@ -2487,7 +2562,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
         gSceneryPlaceCost = cost;
         break;
-    case 1:
+    case SCENERY_TYPE_PATH_ITEM:
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectPositionA.x = mapTile.x;
         gMapSelectPositionA.y = mapTile.y;
@@ -2516,7 +2591,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
         gSceneryPlaceCost = cost;
         break;
-    case 2:
+    case SCENERY_TYPE_WALL:
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectPositionA.x = mapTile.x;
         gMapSelectPositionA.y = mapTile.y;
@@ -2564,7 +2639,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
         gSceneryPlaceCost = cost;
         break;
-    case 3:
+    case SCENERY_TYPE_LARGE:
     {
         scenery = get_large_scenery_entry(selected_scenery);
         LocationXY16* selectedTile = gMapSelectionTiles;
@@ -2623,7 +2698,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         gSceneryPlaceCost = cost;
         break;
     }
-    case 4:
+    case SCENERY_TYPE_BANNER:
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectPositionA.x = mapTile.x;
         gMapSelectPositionA.y = mapTile.y;
@@ -2798,6 +2873,7 @@ static void window_top_toolbar_land_tool_drag(sint16 x, sint16 y)
     sint16 tile_height = -16 / (1 << viewport->zoom);
 
     sint32 y_diff = y - gInputDragLastY;
+
     if (y_diff <= tile_height) {
         gInputDragLastY += tile_height;
 
