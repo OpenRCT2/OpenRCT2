@@ -35,7 +35,7 @@ typedef struct TITLE_COMMAND_ORDER {
     rct_string_id descStringId;
 } TITLE_COMMAND_ORDER;
 
-static TITLE_COMMAND_ORDER window_title_command_editor_orders[] = {
+static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_LOAD,        STR_TITLE_EDITOR_ACTION_LOAD, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
     { TITLE_SCRIPT_LOCATION,    STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
     { TITLE_SCRIPT_ROTATE,      STR_TITLE_EDITOR_COMMAND_TYPE_ROTATE, STR_TITLE_EDITOR_ARGUMENT_ROTATIONS },
@@ -148,7 +148,7 @@ static rct_window_event_list window_title_command_editor_events = {
 static sint32 get_command_info_index(sint32 index)
 {
     for (sint32 i = 0; i < NUM_COMMANDS; i++) {
-        if (window_title_command_editor_orders[i].command == index)
+        if (_window_title_command_editor_orders[i].command == index)
             return i;
     }
     return 0;
@@ -157,10 +157,10 @@ static sint32 get_command_info_index(sint32 index)
 static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 {
     for (sint32 i = 0; i < NUM_COMMANDS; i++) {
-        if (window_title_command_editor_orders[i].command == index)
-            return window_title_command_editor_orders[i];
+        if (_window_title_command_editor_orders[i].command == index)
+            return _window_title_command_editor_orders[i];
     }
-    return window_title_command_editor_orders[0];
+    return _window_title_command_editor_orders[0];
 }
 
 static rct_xy16 get_location()
@@ -319,7 +319,7 @@ static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex
         sint32 numItems = NUM_COMMANDS;
         for (sint32 i = 0; i < numItems; i++) {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[i] = window_title_command_editor_orders[i].nameStringId;
+            gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
         }
 
         window_dropdown_show_text_custom_width(
@@ -387,7 +387,7 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
         if (dropdownIndex == get_command_info_index(command.Type)) {
             break;
         }
-        command.Type = window_title_command_editor_orders[dropdownIndex].command;
+        command.Type = _window_title_command_editor_orders[dropdownIndex].command;
         switch (command.Type) {
         case TITLE_SCRIPT_LOCATION:
         {

@@ -95,7 +95,7 @@ static rct_window_event_list window_object_load_error_events = {
     window_object_load_error_scrollpaint
 };
 
-static rct_object_entry * invalid_entries = nullptr;
+static rct_object_entry * _invalid_entries = nullptr;
 static sint32 highlighted_index = -1;
 static utf8* file_path = nullptr;
 
@@ -172,7 +172,7 @@ static utf8* combine_object_names(rct_window *w)
     for (uint16 i = 0; i < w->no_list_items; i++) {
         cur_len += (8 + line_sep_len);
         assert(cur_len < buffer_len);
-        strncat(buffer, invalid_entries[i].name, 8);
+        strncat(buffer, _invalid_entries[i].name, 8);
         strncat(buffer, PLATFORM_NEWLINE, line_sep_len);
     }
     return buffer;
@@ -181,8 +181,8 @@ static utf8* combine_object_names(rct_window *w)
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects)
 {
     size_t missingObjectsSize = numMissingObjects * sizeof(rct_object_entry);
-    invalid_entries = Memory::AllocateArray<rct_object_entry>(numMissingObjects);
-    memcpy(invalid_entries, missingObjects, missingObjectsSize);
+    _invalid_entries = Memory::AllocateArray<rct_object_entry>(numMissingObjects);
+    memcpy(_invalid_entries, missingObjects, missingObjectsSize);
 
     // Check if window is already open
     rct_window * window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);
@@ -214,7 +214,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 
 static void window_object_load_error_close(rct_window *w)
 {
-    SafeFree(invalid_entries);
+    SafeFree(_invalid_entries);
 }
 
 static void window_object_load_error_update(rct_window *w)
@@ -236,7 +236,7 @@ static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widg
             break;
         case WIDX_COPY_CURRENT:
             if (w->selected_list_item > -1) {
-                selected_name = strndup(invalid_entries[w->selected_list_item].name, 8);
+                selected_name = strndup(_invalid_entries[w->selected_list_item].name, 8);
                 platform_place_string_on_clipboard(selected_name);
                 SafeFree(selected_name);
             }
@@ -321,14 +321,14 @@ static void window_object_load_error_scrollpaint(rct_window *w, rct_drawpixelinf
             gfx_fill_rect(dpi, 0, y, list_width, y + LIST_ITEM_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         // Draw the actual object entry's name...
-        gfx_draw_string(dpi, strndup(invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT, y);
+        gfx_draw_string(dpi, strndup(_invalid_entries[i].name, 8), COLOUR_DARK_GREEN, NAME_COL_LEFT, y);
 
         // ... source game ...
-        rct_string_id sourceStringId = object_manager_get_source_game_string(&invalid_entries[i]);
+        rct_string_id sourceStringId = object_manager_get_source_game_string(&_invalid_entries[i]);
         gfx_draw_string_left(dpi, sourceStringId, nullptr, COLOUR_DARK_GREEN, SOURCE_COL_LEFT, y);
 
         // ... and type
-        rct_string_id type = get_object_type_string(&invalid_entries[i]);
+        rct_string_id type = get_object_type_string(&_invalid_entries[i]);
         gfx_draw_string_left(dpi, type, nullptr, COLOUR_DARK_GREEN, TYPE_COL_LEFT, y);
     }
 }
