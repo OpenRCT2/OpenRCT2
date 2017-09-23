@@ -890,7 +890,7 @@ STR_0884    :景色をロードする
 STR_0885    :景色をセーブする
 STR_0886    :ゲームを閉じる
 STR_0887    :Scenario Editorを閉じる
-STR_0888    :Roller Coaster Designerを閉じる
+STR_0888    :トラックデザイナーを閉める
 STR_0889    :Track Designs Managerを閉じる
 STR_0890    :<removed string - do not use>
 STR_0891    :スクリーンショット
@@ -1402,8 +1402,8 @@ STR_1396    :{SMALLFONT}{BLACK}Colour scheme options
 STR_1397    :{SMALLFONT}{BLACK}Sound & music options
 STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
-STR_1400    :Entrance
-STR_1401    :Exit
+STR_1400    :入口
+STR_1401    :出口
 STR_1402    :{SMALLFONT}{BLACK}Build or move entrance to ride/attraction
 STR_1403    :{SMALLFONT}{BLACK}Build or move exit from ride/attraction
 STR_1404    :{SMALLFONT}{BLACK}Rotate 90{DEGREE}
@@ -2745,7 +2745,7 @@ STR_2735    :{COMMA16}km/h
 STR_2736    :{MONTH} {COMMA16}年
 STR_2737    :{STRINGID} {MONTH} {COMMA16}年
 STR_2738    :Title screen music:
-STR_2739    :None
+STR_2739    :なし
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
@@ -3214,7 +3214,7 @@ STR_3203    :Invention List Set Up
 STR_3204    :Options Selection
 STR_3205    :Objective Selection
 STR_3206    :Save Scenario
-STR_3207    :Roller Coaster Designer
+STR_3207    :トラックデザイナー
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
@@ -3342,8 +3342,8 @@ STR_3331    :Path from park entrance to map edge either not complete or too comp
 STR_3332    :Park entrance is the wrong way round or has no path leading to the map edge
 STR_3333    :Export plug-in objects with saved games
 STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in object data required (add-in data not supplied with the main product) in saved game or scenario files, allowing them to be loaded by someone who doesn't have the additional object data
-STR_3335    :Roller Coaster Designer - Select Ride Types & Vehicles
-STR_3336    :Track Designs Manager - Select Ride Type
+STR_3335    :トラックデザイナー・乗り型と乗り物選択
+STR_3336    :トラックデザインマネージャー・乗り型を選ぶ
 STR_3337    :<not used anymore>
 STR_3338    :{BLACK}Custom-designed layout
 STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
 STR_3341    :{SMALLFONT}{BLACK}Game tools
 STR_3342    :Scenario Editor
 STR_3343    :Convert Saved Game to Scenario
-STR_3344    :Roller Coaster Designer
+STR_3344    :トラックデザイナー
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
@@ -3835,12 +3835,12 @@ STR_5493    :Send Message
 STR_5494    :<not used anymore>
 STR_5495    :プレーヤー 名鑑
 STR_5496    :プレーヤー:
-STR_5497    :Ping:
-STR_5498    :Server List
+STR_5497    :ピング:
+STR_5498    :サーバリスト
 STR_5499    :プレーヤー 名:
-STR_5500    :Add Server
-STR_5501    :Start Server
-STR_5502    :Multiplayer
+STR_5500    :新しいサーバ
+STR_5501    :サーバをスタートする
+STR_5502    :マルチプレイ
 STR_5503    :ホスト名またはIPアドレスを入力してください:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :サーバーに接続できない
@@ -3905,20 +3905,29 @@ STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :パスワード:
-STR_5567    :Advertise
+STR_5567    :発表する
 STR_5568    :パスワードが必要
 STR_5569    :このサーバーはパスワードが必要
-STR_5570    :Fetch Servers
+STR_5570    :リストを更新する
 STR_5571    :Join Game
 STR_5572    :Add To Favourites
 STR_5573    :Remove From Favourites
-STR_5574    :Server Name:
-STR_5575    :Max Players:
-STR_5576    :Port:
-STR_5577    :South Korean Won (W)
-STR_5578    :Russian Rouble (R)
+STR_5574    :サーバーの名前:
+STR_5575    :プレーヤーの制限:
+STR_5576    :ポート:
+STR_5577    :大韓民国ウォン (₩)
+STR_5578    :ロシア・ルーブル (₽)
 STR_5579    :Window scale factor:
-STR_5580    :Czech koruna (Kc)
+STR_5580    :チェコ・コルナ (Kc)
+STR_5619    :ローラーコースタータイクーン
+STR_5620    :追加アトラクションキット ～遊園地再生計画～
+STR_5621    :おもしろ景観キット
+STR_5622    :ローラーコースタータイクーン 2
+STR_5623    :Wacky Worlds
+STR_5624    :Time Twister
+STR_5760    :香港ドル (HK$)
+STR_5761    :ニュー台湾ドル (NT$)
+STR_5762    :人民元 (CN{YEN})
 
 #####################
 # Rides/attractions #
