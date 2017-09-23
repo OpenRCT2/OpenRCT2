@@ -57,6 +57,11 @@ rct_windowclass Intent::GetWindowClass()
 
 void * Intent::GetPointerExtra(uint32 key)
 {
+    if (_Data.count(key) == 0)
+    {
+        return nullptr;
+    }
+
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_POINTER, "Actual type doesn't match requested type");
     return (void *) data.pointerVal;
@@ -64,6 +69,11 @@ void * Intent::GetPointerExtra(uint32 key)
 
 uint32 Intent::GetUIntExtra(uint32 key)
 {
+    if (_Data.count(key) == 0)
+    {
+        return 0;
+    }
+
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_UINT, "Actual type doesn't match requested type");
     return data.uintVal;
@@ -71,6 +81,11 @@ uint32 Intent::GetUIntExtra(uint32 key)
 
 sint32 Intent::GetSIntExtra(uint32 key)
 {
+    if (_Data.count(key) == 0)
+    {
+        return 0;
+    }
+
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_SINT, "Actual type doesn't match requested type");
     return data.sintVal;
@@ -78,6 +93,11 @@ sint32 Intent::GetSIntExtra(uint32 key)
 
 utf8string Intent::GetStringExtra(uint32 key)
 {
+    if (_Data.count(key) == 0)
+    {
+        return nullptr;
+    }
+
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_STRING, "Actual type doesn't match requested type");
     return data.stringVal;
