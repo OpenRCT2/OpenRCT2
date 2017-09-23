@@ -37,7 +37,8 @@ public:
     Intent * putExtra(uint32 key, utf8string value);
 };
 #else
-typedef void Intent;
+// Allow C code to use `Intent *`
+typedef struct Intent Intent;
 #endif
 
 
