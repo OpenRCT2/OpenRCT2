@@ -181,7 +181,7 @@ rct_window * window_track_place_open(const track_design_file_ref *tdFileRef)
 
     _trackDesign = td6;
 
-	return w;
+    return w;
 }
 
 /**

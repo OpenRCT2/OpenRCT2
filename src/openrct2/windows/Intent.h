@@ -2,19 +2,13 @@
 #define OPENRCT2_INTENT_H
 
 #include "../common.h"
-#ifdef __cplusplus
-extern "C" {
-#endif // __cplusplus
 #include "../interface/window.h"
 #ifdef __cplusplus
-}
+#include <map>
 #endif // __cplusplus
 
 
 #ifdef __cplusplus
-
-#include <map>
-
 struct IntentData
 {
     enum DATATYPE { DT_UINT, DT_SINT, DT_STRING, DT_POINTER } type;
@@ -42,14 +36,14 @@ public:
     Intent * putExtra(uint32 key, sint32 value);
     Intent * putExtra(uint32 key, utf8string value);
 };
+#else
+typedef void Intent;
+#endif
 
 
+#ifdef __cplusplus
 extern "C" {
 #endif // __cplusplus
-
-#ifndef __cplusplus
-    typedef int Intent;
-#endif // !__cplusplus
 
     enum
     {
