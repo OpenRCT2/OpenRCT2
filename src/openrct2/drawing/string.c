@@ -808,9 +808,19 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                         else if (*src > 70)
                         {
                             // Simulate font hinting by shading the background colour instead.
-                            // uint8 hinting = floor(*src / 12);
-                            // *dst = *dst - (*dst % 12) + hinting;
-                            *dst = *dst + 2;
+                            if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
+                            {
+                                // As outlines are black, these texts should always use a darker shade
+                                // of the foreground colour for font hinting.
+                                *dst = colour - 4;
+                            }
+                            else
+                            {
+                                // For other texts, hinting direction depends on the intensity of the
+                                // foreground colour.
+                                bool intensive = colour % 12 > 4 && colour % 12 < 10;
+                                *dst += intensive ? 2 : -3;
+                            }
                         }
                     }
                     src++;
