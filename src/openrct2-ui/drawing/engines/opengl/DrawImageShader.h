@@ -27,7 +27,6 @@ class DrawImageShader final : public OpenGLShaderProgram
 private:
     GLuint uScreenSize;
     GLuint uTexture;
-    GLuint uPalette;
 
     GLuint vIndex;
     GLuint vClip;
@@ -51,7 +50,6 @@ public:
     ~DrawImageShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void SetPalette(const vec4f *glPalette);
     void DrawInstances(const ImageCommandBatch& instances);
 
 private:

@@ -50,6 +50,7 @@ void CopyFramebufferShader::GetLocations()
     uBounds             = GetUniformLocation("uBounds");
     uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
+    uPalette            = GetUniformLocation("uPalette");
 
     vIndex              = GetAttributeLocation("vIndex");
 }
@@ -72,6 +73,10 @@ void CopyFramebufferShader::SetTextureCoordinates(sint32 left, sint32 top, sint3
 void CopyFramebufferShader::SetTexture(GLuint texture)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
+}
+
+void CopyFramebufferShader::SetPalette(const vec4f * glPalette) {
+    glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
 }
 
 void CopyFramebufferShader::Draw()

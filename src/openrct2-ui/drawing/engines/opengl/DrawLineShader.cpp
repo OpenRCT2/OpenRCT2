@@ -68,9 +68,9 @@ void DrawLineShader::SetBounds(sint32 x0, sint32 y0, sint32 x1, sint32 y1)
     glUniform4i(uBounds, x0, y0, x1, y1);
 }
 
-void DrawLineShader::SetColour(vec4f colour)
+void DrawLineShader::SetColour(uint8 colour)
 {
-    glUniform4f(uColour, colour.r, colour.g, colour.b, colour.a);
+    glUniform1ui(uColour, colour);
 }
 
 void DrawLineShader::Draw(sint32 x0, sint32 y0, sint32 x1, sint32 y1)

@@ -186,9 +186,6 @@ public:
 
         _drawingContext->Initialise();
 
-        glEnable(GL_BLEND);
-        glBlendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ONE);
-
         _copyFramebufferShader = new CopyFramebufferShader();
     }
 
@@ -215,6 +212,9 @@ public:
                              colour.b / 255.0f,
                              colour.a / 255.0f };
         }
+
+        _copyFramebufferShader->Use();
+        _copyFramebufferShader->SetPalette(GLPalette);
         _drawingContext->ResetPalette();
     }
 
@@ -267,10 +267,8 @@ public:
     {
         const OpenGLFramebuffer * framebuffer = _swapFramebuffer->GetTargetFramebuffer();
         framebuffer->Bind();
-        void * pixels = framebuffer->GetPixels();
-
-        sint32 result = screenshot_dump_png_32bpp(_width, _height, pixels);
-        Memory::Free(pixels);
+        framebuffer->GetPixels(_bitsDPI);
+        sint32 result = screenshot_dump_png(&_bitsDPI);
         return result;
     }
 
@@ -442,13 +440,9 @@ void OpenGLDrawingContext::Resize(sint32 width, sint32 height)
 
 void OpenGLDrawingContext::ResetPalette()
 {
-    FlushCommandBuffers();
+    //FlushCommandBuffers();
 
     _textureCache->SetPalette(_engine->Palette);
-    _drawImageShader->Use();
-    _drawImageShader->SetPalette(_engine->GLPalette);
-    _fillRectShader->Use();
-    _fillRectShader->SetPalette(_engine->GLPalette);
 }
 
 void OpenGLDrawingContext::Clear(uint8 paletteIndex)
@@ -548,11 +542,9 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
     x2 += _offsetX;
     y2 += _offsetY;
 
-    vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
-
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    command.colour = paletteColour;
+    command.colour = colour & 0xFF;
 
     command.clip[0] = _clipLeft;
     command.clip[1] = _clipTop;
@@ -672,7 +664,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f };
     command.texPaletteAtlas = texture2->index;
     command.texPaletteBounds = texture2->computedBounds;
-    command.colour = { 0.0f, 0.0f, 0.0f };
+    command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
     command.flags = 0;
@@ -746,15 +738,13 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     command.texPaletteAtlas = 0;
     command.texPaletteBounds = {0.0f, 0.0f, 0.0f};
     command.flags = 0;
-    command.colour = {0.0f, 0.0f, 0.0f};
+    command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.mask = 1;
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
 {
-    vec4f paletteColour = _engine->GLPalette[colour & 0xFF];
-
     sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
@@ -794,7 +784,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     command.texPaletteAtlas = texture->index;
     command.texPaletteBounds = texture->computedBounds;
     command.flags = DrawImageCommand::FLAG_COLOUR;
-    command.colour = paletteColour;
+    command.colour = colour & 0xFF;
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
 }
@@ -840,7 +830,7 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     command.texPaletteAtlas = 0;
     command.texPaletteBounds = { 0.0f, 0.0f, 0.0f};
     command.flags = 0;
-    command.colour = { 0.0f, 0.0f, 0.0f };
+    command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.mask = 0;
 }

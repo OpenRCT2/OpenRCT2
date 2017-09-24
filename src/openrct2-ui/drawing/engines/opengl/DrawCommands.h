@@ -69,11 +69,11 @@ struct DrawRectCommand {
     GLuint sourceFramebuffer;
     sint32 clip[4];
     sint32 bounds[4];
-    GLint paletteRemap[256];
+    GLuint paletteRemap[256];
 };
 
 struct DrawLineCommand {
-    vec4f colour;
+    uint8 colour;
     sint32 clip[4];
     sint32 pos[4];
 };
@@ -88,7 +88,7 @@ struct DrawImageCommand {
     sint32 texPaletteAtlas;
     vec4f texPaletteBounds;
     sint32 flags;
-    vec4f colour;
+    uint8 colour;
     vec4i bounds;
     sint32 mask;
 
