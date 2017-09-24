@@ -1566,8 +1566,12 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap,
             if (scrollPosition > -1) {
                 uint8 *dst = &bitmap[scrollPosition];
 
-                for (sint32 y = 0; y < height; y++) {
-                    if (src[y * pitch + x] != 0) *dst = colour;
+                for (sint32 y = 0; y < height; y++)
+                {
+                    if (src[y * pitch + x] > 92 || (src[y * pitch + x] != 0 && !gConfigFonts.enable_hinting))
+                    {
+                        *dst = colour;
+                    }
 
                     // Jump to next row
                     dst += 64;
