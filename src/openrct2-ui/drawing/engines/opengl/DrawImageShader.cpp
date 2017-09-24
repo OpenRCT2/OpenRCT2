@@ -43,7 +43,7 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vTexPaletteAtlas, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texPaletteAtlas));
     glVertexAttribPointer(vTexPaletteBounds, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, texPaletteBounds));
     glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, flags));
-    glVertexAttribPointer(vColour, 4, GL_FLOAT, GL_FALSE, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, colour));
+    glVertexAttribIPointer(vColour, 1, GL_UNSIGNED_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, colour));
     glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, bounds));
     glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, mask));
 
@@ -87,7 +87,6 @@ void DrawImageShader::GetLocations()
 {
     uScreenSize         = GetUniformLocation("uScreenSize");
     uTexture            = GetUniformLocation("uTexture");
-    uPalette            = GetUniformLocation("uPalette");
 
     vIndex              = GetAttributeLocation("vIndex");
     vClip               = GetAttributeLocation("ivClip");
@@ -106,11 +105,6 @@ void DrawImageShader::GetLocations()
 void DrawImageShader::SetScreenSize(sint32 width, sint32 height)
 {
     glUniform2i(uScreenSize, width, height);
-}
-
-void DrawImageShader::SetPalette(const vec4f *glPalette)
-{
-    glUniform4fv(uPalette, 256, (const GLfloat *) glPalette);
 }
 
 void DrawImageShader::DrawInstances(const ImageCommandBatch& instances)

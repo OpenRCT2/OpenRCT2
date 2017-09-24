@@ -39,7 +39,7 @@ public:
     void SetScreenSize(sint32 width, sint32 height);
     void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetBounds(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
-    void SetColour(vec4f colour);
+    void SetColour(uint8 colour);
 
     void Draw(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
 

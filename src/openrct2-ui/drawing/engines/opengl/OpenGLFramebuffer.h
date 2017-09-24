@@ -17,7 +17,10 @@
 #pragma once
 
 #include <openrct2/common.h>
+#include <openrct2/drawing/drawing.h>
 #include "OpenGLAPI.h"
+
+#include <vector>
 
 struct SDL_Window;
 
@@ -39,5 +42,7 @@ public:
     GLuint GetTexture() const { return _texture; }
 
     void Bind() const;
-    void * GetPixels() const;
+    void BindDraw() const;
+    void BindRead() const;
+    void GetPixels(rct_drawpixelinfo &dpi) const;
 };

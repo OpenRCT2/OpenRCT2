@@ -41,7 +41,6 @@ void TextureCache::InvalidateImage(uint32 image)
         _atlases[kvp->second.index].Free(kvp->second);
         _imageTextureMap.erase(kvp);
     }
-    
 }
 
 const CachedTextureInfo* TextureCache::GetOrLoadImageTexture(uint32 image)
@@ -153,7 +152,10 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
 
     // Retrieve current array data
     auto oldPixels = std::vector<char>(_atlasesTextureDimensions * _atlasesTextureDimensions * _atlasesTextureIndices);
-    glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+    if (oldPixels.size() > 0)
+    {
+        glGetTexImage(GL_TEXTURE_2D_ARRAY, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, oldPixels.data());
+    }
 
     // Delete old texture, allocate a new one, then define the new format on the newly created texture
     glDeleteTextures(1, &_atlasesTexture);

@@ -10,17 +10,16 @@ in vec4  ivTexMaskBounds;
 in int   ivTexPaletteAtlas;
 in vec4  ivTexPaletteBounds;
 in int   ivFlags;
-in vec4  ivColour;
+in uint  ivColour;
 in ivec4 ivBounds;
 in int   ivMask;
 
 in uint vIndex;
 
-out vec2       fTextureCoordinate;
 out vec2       fPosition;
 flat out ivec4 fClip;
 flat out int   fFlags;
-out vec4       fColour;
+flat out uint  fColour;
 flat out int   fTexColourAtlas;
 out vec2       fTexColourCoords;
 flat out int   fTexMaskAtlas;

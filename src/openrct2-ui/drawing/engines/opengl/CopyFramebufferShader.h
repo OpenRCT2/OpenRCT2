@@ -26,6 +26,7 @@ private:
     GLuint uBounds;
     GLuint uTextureCoordinates;
     GLuint uTexture;
+    GLuint uPalette;
 
     GLuint vIndex;
 
@@ -40,6 +41,7 @@ public:
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTexture(GLuint texture);
+    void SetPalette(const vec4f * glPalette);
 
     void Draw();
 
