@@ -4450,6 +4450,9 @@ STR_6141    :RCT1-bottens Verktygsfält
 STR_6142    :{WINDOW_COLOUR_2}Namn: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Typ: {BLACK}{STRINGID}
 STR_6144    :Visa visuella-uppdateringar
+STR_6145    :{SMALLFONT}{BLACK}Sätt hastighetsgräns för boosters
+STR_6146    :Aktivera alla ritbara spår på berg- och dalbanor
+STR_6147    :{SMALLFONT}{BLACK}Aktiverar alla spår attraktionstypen är tillgänglig att visa i konstruktionsfönstret, oavsett om fordonet har en ritbar version av spåret.
 
 #############
 # Scenarion #
