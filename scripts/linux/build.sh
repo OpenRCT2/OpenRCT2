@@ -27,21 +27,21 @@ pushd build
 		chmod a+rwx "$(pwd)"
 		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ninja test ARGS=\"-V\""
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:64bit-only bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS && ctest --output-on-failure"
 	elif [[ $TARGET == "ubuntu_i686" ]]
 	then
 		PARENT=$(readlink -f ../)
 		chmod a+rwx "$(pwd)"
 		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ninja test ARGS=\"-V\" && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ctest --output-on-failure && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
 	elif [[ $TARGET == "ubuntu_amd64" ]]
 	then
 		PARENT=$(readlink -f ../)
 		chmod a+rwx "$(pwd)"
 		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ninja test ARGS=\"-V\""
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_amd64 bash -c "cmake ../ -DWITH_TESTS=on $OPENRCT2_CMAKE_OPTS && ninja $OPENRCT_MAKE_OPTS install && ctest --output-on-failure"
 	elif [[ $TARGET == "windows" ]]
 	then
 		PARENT=$(readlink -f ../)
