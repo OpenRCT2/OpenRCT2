@@ -2332,6 +2332,10 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
  */
 static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
 {
+        // make sure we are in map bounds
+    if (x < 0 || y < 0 || (x>>5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || (y>>5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+        return false;
+
     rct_map_element *mapElement = get_station_platform(x, y, z, 2);
     if (mapElement == NULL) {
         /* No station platform element found,
@@ -2432,9 +2436,12 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        if (!try_add_synchronised_station(x, y, z) && spaceBetween-- == 0) {
-            break;
+        if (try_add_synchronised_station(x, y, z)) {
+            spaceBetween = maxSearchDistance;
+            continue;
         }
+        if (spaceBetween-- == 0)
+            break;
     }
 
     // Reset back to starting tile.
@@ -2447,9 +2454,12 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        if (!try_add_synchronised_station(x, y, z) && spaceBetween-- == 0) {
-            break;
+        if (try_add_synchronised_station(x, y, z)) {
+            spaceBetween = maxSearchDistance;
+            continue;
         }
+        if (spaceBetween-- == 0)
+            break;
     }
 
     if (_lastSynchronisedVehicle == _synchronisedVehicles) {
