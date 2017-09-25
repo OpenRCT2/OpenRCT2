@@ -40,8 +40,7 @@
 #define RIDE_MEASUREMENT_MAX_ITEMS      4800
 #define MAX_RIDES                       255
 #define RIDE_ID_NULL                    255
-
-static const uint8      ride_adjacent_station_max_distance  = 5;
+#define RIDE_ADJACENCY_CHECK_DISTANCE   5
 
 #pragma pack(push, 1)
 

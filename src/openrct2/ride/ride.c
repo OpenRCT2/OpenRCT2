@@ -8480,7 +8480,7 @@ static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direc
     bool found = false;
     sint32 adjX = x;
     sint32 adjY = y;
-    for (int i = 0; i < ride_adjacent_station_max_distance; i++) {
+    for (int i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++) {
         adjX += TileDirectionDelta[direction].x;
         adjY += TileDirectionDelta[direction].y;
         rct_map_element *stationElement = get_station_platform(adjX, adjY, z, 2);
