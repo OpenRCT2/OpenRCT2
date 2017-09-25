@@ -9,8 +9,8 @@ Intent::Intent(rct_windowclass windowclass)
 Intent * Intent::putExtra(uint32 key, uint32 value)
 {
     IntentData data = {};
-    data.uintVal = value;
-    data.type = IntentData::DT_UINT;
+    data.intVal.unsignedInt = value;
+    data.type = IntentData::DT_INT;
 
     _Data.insert(std::make_pair(key, data));
 
@@ -31,8 +31,8 @@ Intent * Intent::putExtra(uint32 key, void * value)
 Intent * Intent::putExtra(uint32 key, sint32 value)
 {
     IntentData data = {};
-    data.sintVal = value;
-    data.type = IntentData::DT_SINT;
+    data.intVal.signedInt = value;
+    data.type = IntentData::DT_INT;
 
     _Data.insert(std::make_pair(key, data));
 
@@ -75,8 +75,8 @@ uint32 Intent::GetUIntExtra(uint32 key)
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DT_UINT, "Actual type doesn't match requested type");
-    return data.uintVal;
+    openrct2_assert(data.type == IntentData::DT_INT, "Actual type doesn't match requested type");
+    return data.intVal.unsignedInt;
 }
 
 sint32 Intent::GetSIntExtra(uint32 key)
@@ -87,8 +87,8 @@ sint32 Intent::GetSIntExtra(uint32 key)
     }
 
     auto data = _Data.at(key);
-    openrct2_assert(data.type == IntentData::DT_SINT, "Actual type doesn't match requested type");
-    return data.sintVal;
+    openrct2_assert(data.type == IntentData::DT_INT, "Actual type doesn't match requested type");
+    return data.intVal.signedInt;
 }
 
 utf8string Intent::GetStringExtra(uint32 key)
