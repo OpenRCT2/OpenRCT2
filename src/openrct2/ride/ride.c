@@ -8478,14 +8478,18 @@ rct_map_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tol
  */
 static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direction) {
     bool found = false;
-    sint32 adjX = x + TileDirectionDelta[direction].x;
-    sint32 adjY = y + TileDirectionDelta[direction].y;
-    rct_map_element *stationElement = get_station_platform(adjX, adjY, z, 2);
-    if (stationElement != NULL) {
-        sint32 rideIndex = stationElement->properties.track.ride_index;
-        Ride *ride = get_ride(rideIndex);
-        if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
-            found = true;
+    sint32 adjX = x;
+    sint32 adjY = y;
+    for (int i = 0; i < ride_adjacent_station_max_distance; i++) {
+        adjX += TileDirectionDelta[direction].x;
+        adjY += TileDirectionDelta[direction].y;
+        rct_map_element *stationElement = get_station_platform(adjX, adjY, z, 2);
+        if (stationElement != NULL) {
+            sint32 rideIndex = stationElement->properties.track.ride_index;
+            Ride *ride = get_ride(rideIndex);
+            if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
+                found = true;
+            }
         }
     }
     return found;
