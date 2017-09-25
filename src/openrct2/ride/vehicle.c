@@ -2425,19 +2425,17 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     _lastSynchronisedVehicle = _synchronisedVehicles;
 
     // Search for stations to sync in both directions from the current tile.
-    
-    static const sint32 maxSearchDistance = 5;    //  How many tiles we are allowed to search
 
     // First search direction.
     sint32 direction = (mapElement->type + 1) & 3;
     sint32 spaceBetween;
 
-    spaceBetween = maxSearchDistance;
+    spaceBetween = ride_adjacent_station_max_distance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z)) {
-            spaceBetween = maxSearchDistance;
+            spaceBetween = ride_adjacent_station_max_distance;
             continue;
         }
         if (spaceBetween-- == 0)
@@ -2450,12 +2448,12 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 
     // Other search direction.
     direction = (direction ^ 2) & 3;
-    spaceBetween = maxSearchDistance;
+    spaceBetween = ride_adjacent_station_max_distance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         if (try_add_synchronised_station(x, y, z)) {
-            spaceBetween = maxSearchDistance;
+            spaceBetween = ride_adjacent_station_max_distance;
             continue;
         }
         if (spaceBetween-- == 0)
