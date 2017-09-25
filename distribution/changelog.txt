@@ -4,6 +4,7 @@
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Feature: [#6181] Map generator now allows adjusting random terrain and tree placement in Simplex Noise tab.
 - Feature: [#6235] Add drawing debug option for showing visuals when and where blocks of the screen are painted.
+- Feature: [#6292] Allow building queue lines in the Scenario Editor.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn

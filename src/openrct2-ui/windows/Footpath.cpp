@@ -24,22 +24,26 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/object_list.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/footpath.h>
 #include <openrct2/windows/dropdown.h>
 
-enum {
+enum
+{
     PATH_CONSTRUCTION_MODE_LAND,
     PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL,
     PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
 };
 
-enum {
+enum
+{
     SELECTED_PATH_TYPE_NORMAL,
     SELECTED_PATH_TYPE_QUEUE
 };
 
-enum WINDOW_FOOTPATH_WIDGET_IDX {
+enum WINDOW_FOOTPATH_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -67,47 +71,57 @@ enum WINDOW_FOOTPATH_WIDGET_IDX {
 };
 
 static rct_widget window_footpath_widgets[] = {
-    { WWT_FRAME,    0,      0,      105,    0,      380,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_CAPTION,  0,      1,      104,    1,      14,     STR_FOOTPATHS,                      STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX, 0,      93,     103,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
+    {WWT_FRAME,    0, 0,  105, 0,   380, 0xFFFFFFFF,                        STR_NONE},
+    {WWT_CAPTION,  0, 1,  104, 1,   14,  STR_FOOTPATHS,                     STR_WINDOW_TITLE_TIP},
+    {WWT_CLOSEBOX, 0, 93, 103, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP},
     // Type group
-    { WWT_GROUPBOX, 0,      3,      102,    17,     71,     STR_TYPE,                           STR_NONE },
-    { WWT_FLATBTN,  1,      6,      52,     30,     65,     0xFFFFFFFF,                         STR_FOOTPATH_TIP },
-    { WWT_FLATBTN,  1,      53,     99,     30,     65,     0xFFFFFFFF,                         STR_QUEUE_LINE_PATH_TIP },
+    {WWT_GROUPBOX, 0, 3,  102, 17,  71,  STR_TYPE,                          STR_NONE},
+    {WWT_FLATBTN,  1, 6,  52,  30,  65,  0xFFFFFFFF,                        STR_FOOTPATH_TIP},
+    {WWT_FLATBTN,  1, 53, 99,  30,  65,  0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP},
 
     // Direction group
-    { WWT_GROUPBOX, 0,      3,      102,    75,     151,    STR_DIRECTION,                      STR_NONE },
-    { WWT_FLATBTN,  1,      53,     97,     87,     115,    SPR_CONSTRUCTION_DIRECTION_NE,      STR_DIRECTION_TIP },
-    { WWT_FLATBTN,  1,      53,     97,     116,    144,    SPR_CONSTRUCTION_DIRECTION_SE,      STR_DIRECTION_TIP },
-    { WWT_FLATBTN,  1,      8,      52,     116,    144,    SPR_CONSTRUCTION_DIRECTION_SW,      STR_DIRECTION_TIP },
-    { WWT_FLATBTN,  1,      8,      52,     87,     115,    SPR_CONSTRUCTION_DIRECTION_NW,      STR_DIRECTION_TIP },
+    {WWT_GROUPBOX, 0, 3,  102, 75,  151, STR_DIRECTION,                     STR_NONE},
+    {WWT_FLATBTN,  1, 53, 97,  87,  115, SPR_CONSTRUCTION_DIRECTION_NE,     STR_DIRECTION_TIP},
+    {WWT_FLATBTN,  1, 53, 97,  116, 144, SPR_CONSTRUCTION_DIRECTION_SE,     STR_DIRECTION_TIP},
+    {WWT_FLATBTN,  1, 8,  52,  116, 144, SPR_CONSTRUCTION_DIRECTION_SW,     STR_DIRECTION_TIP},
+    {WWT_FLATBTN,  1, 8,  52,  87,  115, SPR_CONSTRUCTION_DIRECTION_NW,     STR_DIRECTION_TIP},
 
     // Slope group
-    { WWT_GROUPBOX, 0,      3,      102,    155,    195,    STR_SLOPE,                          STR_NONE },
-    { WWT_FLATBTN,  1,      17,     40,     167,    190,    SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,   STR_SLOPE_DOWN_TIP },
-    { WWT_FLATBTN,  1,      41,     64,     167,    190,    SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL,  STR_LEVEL_TIP },
-    { WWT_FLATBTN,  1,      65,     88,     167,    190,    SPR_RIDE_CONSTRUCTION_SLOPE_UP,     STR_SLOPE_UP_TIP },
-    { WWT_FLATBTN,  1,      8,      97,     202,    291,    0xFFFFFFFF,                         STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP },
-    { WWT_FLATBTN,  1,      30,     75,     295,    318,    SPR_DEMOLISH_CURRENT_SECTION,       STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP },
+    {WWT_GROUPBOX, 0, 3,  102, 155, 195, STR_SLOPE,                         STR_NONE},
+    {WWT_FLATBTN,  1, 17, 40,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP},
+    {WWT_FLATBTN,  1, 41, 64,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP},
+    {WWT_FLATBTN,  1, 65, 88,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP},
+    {WWT_FLATBTN,  1, 8,  97,  202, 291, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP},
+    {WWT_FLATBTN,  1, 30, 75,  295, 318, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP},
 
     // Mode group
-    { WWT_GROUPBOX, 0,      3,      102,    321,    374,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_FLATBTN,  1,      13,     48,     332,    367,    SPR_CONSTRUCTION_FOOTPATH_LAND,     STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP },
-    { WWT_FLATBTN,  1,      57,     92,     332,    367,    SPR_CONSTRUCTION_FOOTPATH_BRIDGE,   STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP },
-    { WIDGETS_END },
+    {WWT_GROUPBOX, 0, 3,  102, 321, 374, 0xFFFFFFFF,                        STR_NONE},
+    {WWT_FLATBTN,  1, 13, 48,  332, 367, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP},
+    {WWT_FLATBTN,  1, 57, 92,  332, 367, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP},
+    {WIDGETS_END},
 };
 
-static void window_footpath_close(rct_window *w);
-static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
-static void window_footpath_update(rct_window *w);
-static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
-static void window_footpath_invalidate(rct_window *w);
-static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void window_footpath_close(rct_window * w);
+
+static void window_footpath_mouseup(rct_window * w, rct_widgetindex widgetIndex);
+
+static void window_footpath_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
+
+static void window_footpath_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+
+static void window_footpath_update(rct_window * w);
+
+static void window_footpath_toolupdate(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+
+static void window_footpath_tooldown(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+
+static void window_footpath_tooldrag(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+
+static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+
+static void window_footpath_invalidate(rct_window * w);
+
+static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi);
 
 static rct_window_event_list window_footpath_events = {
     window_footpath_close,
@@ -141,15 +155,15 @@ static rct_window_event_list window_footpath_events = {
 };
 
 static money32 _window_footpath_cost;
-static sint8 _window_footpath_provisional_path_arrow_timer;
-static uint8 _lastUpdatedCameraRotation = UINT8_MAX;
-static bool _footpathErrorOccured;
+static sint8   _window_footpath_provisional_path_arrow_timer;
+static uint8   _lastUpdatedCameraRotation           = UINT8_MAX;
+static bool    _footpathErrorOccured;
 
 
 enum
 {
     FOOTHPATH_IS_SLOPED = (1 << 2),
-    IRREGULAR_SLOPE = (1 << 3),
+    IRREGULAR_SLOPE     = (1 << 3),
 };
 
 /** rct2: 0x0098D8B4 */
@@ -196,16 +210,27 @@ static uint8 footpath_construction_preview_images[][4] = {
 };
 
 static void window_footpath_mousedown_direction(sint32 direction);
+
 static void window_footpath_mousedown_slope(sint32 slope);
-static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, sint32 showQueues);
+
+static void window_footpath_show_footpath_types_dialog(rct_window * w, rct_widget * widget, bool showQueues);
+
 static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y);
+
 static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, sint32 screenY);
+
 static void window_footpath_place_path_at_point(sint32 x, sint32 y);
+
 static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY);
+
 static void window_footpath_construct();
+
 static void window_footpath_remove();
+
 static void window_footpath_set_enabled_and_pressed_widgets();
-static void footpath_get_next_path_info(sint32 *type, sint32 *x, sint32 *y, sint32 *z, sint32 *slope);
+
+static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, sint32 * z, sint32 * slope);
+
 static bool footpath_select_default();
 
 /**
@@ -215,23 +240,29 @@ static bool footpath_select_default();
 rct_window * window_footpath_open()
 {
     // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
-    rct_footpath_entry *pathEntry = get_footpath_entry(gFootpathSelectedId);
-    if (pathEntry != (rct_footpath_entry*)-1 && (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
-        pathEntry = (rct_footpath_entry*)-1;
+    rct_footpath_entry * pathEntry = get_footpath_entry(gFootpathSelectedId);
+    if (pathEntry != (rct_footpath_entry *) -1 &&
+        (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    {
+        pathEntry = (rct_footpath_entry *) -1;
     }
 
     // Select the default path if we don't have one
-    if (pathEntry == (rct_footpath_entry*)-1) {
-        if (!footpath_select_default()) {
+    if (pathEntry == (rct_footpath_entry *) -1)
+    {
+        if (!footpath_select_default())
+        {
             // No path objects to select from, don't open window
             return nullptr;
         }
     }
 
     // Check if window is already open
-    rct_window *window = window_bring_to_front_by_class(WC_FOOTPATH);
+    rct_window * window = window_bring_to_front_by_class(WC_FOOTPATH);
     if (window != nullptr)
+    {
         return window;
+    }
 
     window = window_create(
         0,
@@ -277,7 +308,7 @@ rct_window * window_footpath_open()
  *
  *  rct2: 0x006A852F
  */
-static void window_footpath_close(rct_window *w)
+static void window_footpath_close(rct_window * w)
 {
     footpath_provisional_update();
     viewport_set_visibility(0);
@@ -291,9 +322,10 @@ static void window_footpath_close(rct_window *w)
  *
  *  rct2: 0x006A7E92
  */
-static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_footpath_mouseup(rct_window * w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
@@ -305,9 +337,11 @@ static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_CONSTRUCT_ON_LAND:
         if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
+        {
             break;
+        }
 
-        _window_footpath_cost = MONEY32_UNDEFINED;
+        _window_footpath_cost     = MONEY32_UNDEFINED;
         tool_cancel();
         footpath_provisional_update();
         map_invalidate_map_selection_tiles();
@@ -320,9 +354,11 @@ static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL:
         if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
+        {
             break;
+        }
 
-        _window_footpath_cost = MONEY32_UNDEFINED;
+        _window_footpath_cost     = MONEY32_UNDEFINED;
         tool_cancel();
         footpath_provisional_update();
         map_invalidate_map_selection_tiles();
@@ -340,14 +376,15 @@ static void window_footpath_mouseup(rct_window *w, rct_widgetindex widgetIndex)
  *
  *  rct2: 0x006A7EC5
  */
-static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_footpath_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_FOOTPATH_TYPE:
-        window_footpath_show_footpath_types_dialog(w, widget, 0);
+        window_footpath_show_footpath_types_dialog(w, widget, false);
         break;
     case WIDX_QUEUELINE_TYPE:
-        window_footpath_show_footpath_types_dialog(w, widget, 1);
+        window_footpath_show_footpath_types_dialog(w, widget, true);
         break;
     case WIDX_DIRECTION_NW:
         window_footpath_mousedown_direction(0);
@@ -377,37 +414,48 @@ static void window_footpath_mousedown(rct_window *w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006A7F18
  */
-static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_footpath_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
     if (widgetIndex == WIDX_FOOTPATH_TYPE)
+    {
         gFootpathSelectedType = SELECTED_PATH_TYPE_NORMAL;
+    }
     else if (widgetIndex == WIDX_QUEUELINE_TYPE)
+    {
         gFootpathSelectedType = SELECTED_PATH_TYPE_QUEUE;
+    }
     else
+    {
         return;
+    }
 
     // Get path id
     sint32 pathId = dropdownIndex;
-    if (pathId == -1) {
+    if (pathId == -1)
+    {
         pathId = gFootpathSelectedId;
-    } else {
-        sint32 flags = 4;
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
-            flags = 0;
+    }
+    else
+    {
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
         sint32 i = 0, j = 0;
-        for (; i < 16; i++) {
-            rct_footpath_entry *pathType = get_footpath_entry(i);
-            if (pathType == (rct_footpath_entry*)-1)
+        for (; i < MAX_PATH_OBJECTS; i++)
+        {
+            rct_footpath_entry * pathType = get_footpath_entry(i);
+            if (pathType == (rct_footpath_entry *) -1)
+            {
                 continue;
-            if (pathType->flags & flags)
+            }
+            if ((pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+            {
                 continue;
-            // Skip queue lines of scenario editor-only paths (only applicable when the game is in sandbox mode)
-            if(widgetIndex == WIDX_QUEUELINE_TYPE && (pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
-                continue;
+            }
 
             if (j == pathId)
+            {
                 break;
+            }
             j++;
         }
         pathId = i;
@@ -424,11 +472,14 @@ static void window_footpath_dropdown(rct_window *w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8032
  */
-static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolupdate(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
-    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+    {
         window_footpath_set_provisional_path_at_point(x, y);
-    } else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL) {
+    }
+    else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+    {
         window_footpath_set_selection_start_bridge_at_point(x, y);
     }
 }
@@ -437,21 +488,26 @@ static void window_footpath_toolupdate(rct_window* w, rct_widgetindex widgetInde
  *
  *  rct2: 0x006A8047
  */
-static void window_footpath_tooldown(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldown(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+    {
         window_footpath_place_path_at_point(x, y);
+    }
     else if (widgetIndex == WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+    {
         window_footpath_start_bridge_at_point(x, y);
+    }
 }
 
 /**
  *
  *  rct2: 0x006A8067
  */
-static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_footpath_tooldrag(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
-    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+    {
         window_footpath_place_path_at_point(x, y);
     }
 }
@@ -460,9 +516,10 @@ static void window_footpath_tooldrag(rct_window* w, rct_widgetindex widgetIndex,
  *
  *  rct2: 0x006A8066
  */
-static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+static void window_footpath_toolup(rct_window * w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
-    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND) {
+    if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
+    {
         _footpathErrorOccured = false;
     }
 }
@@ -471,28 +528,33 @@ static void window_footpath_toolup(rct_window* w, rct_widgetindex widgetIndex, s
  *
  *  rct2: 0x006A7760
  */
-static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *w)
+static void window_footpath_update_provisional_path_for_bridge_mode(rct_window * w)
 {
     sint32 type, x, y, z, slope;
 
     if (gFootpathConstructionMode != PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+    {
         return;
+    }
 
     // Recheck area for construction. Set by ride_construction window
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_2) {
+    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_2)
+    {
         footpath_provisional_remove();
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_2;
     }
 
     // Update provisional bridge mode path
-    if (!(gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)) {
+    if (!(gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1))
+    {
         footpath_get_next_path_info(&type, &x, &y, &z, &slope);
         _window_footpath_cost = footpath_provisional_set(type, x, y, z, slope);
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
     // Update little directional arrow on provisional bridge mode path
-    if (--_window_footpath_provisional_path_arrow_timer < 0) {
+    if (--_window_footpath_provisional_path_arrow_timer < 0)
+    {
         _window_footpath_provisional_path_arrow_timer = 5;
         gFootpathProvisionalFlags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         footpath_get_next_path_info(&type, &x, &y, &z, &slope);
@@ -501,9 +563,13 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *
         gMapSelectArrowPosition.z = z * 8;
         gMapSelectArrowDirection = gFootpathConstructDirection;
         if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_SHOW_ARROW)
+        {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
+        }
         else
+        {
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        }
         map_invalidate_tile_full(x, y);
     }
 }
@@ -512,33 +578,49 @@ static void window_footpath_update_provisional_path_for_bridge_mode(rct_window *
  *
  *  rct2: 0x006A84BB
  */
-static void window_footpath_update(rct_window *w)
+static void window_footpath_update(rct_window * w)
 {
     widget_invalidate(w, WIDX_CONSTRUCT);
     window_footpath_update_provisional_path_for_bridge_mode(w);
 
     // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
     uint8 currentRotation = get_current_rotation();
-    if (_lastUpdatedCameraRotation != currentRotation) {
+    if (_lastUpdatedCameraRotation != currentRotation)
+    {
         _lastUpdatedCameraRotation = currentRotation;
         window_footpath_set_enabled_and_pressed_widgets();
     }
 
     // Check tool
-    if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND) {
+    if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_LAND)
+    {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        {
             window_close(w);
+        }
         else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        {
             window_close(w);
+        }
         else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
+        {
             window_close(w);
-    } else if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL) {
+        }
+    }
+    else if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
+    {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+        {
             window_close(w);
+        }
         else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
+        {
             window_close(w);
+        }
         else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
+        {
             window_close(w);
+        }
     }
 }
 
@@ -546,70 +628,69 @@ static void window_footpath_update(rct_window *w)
  *
  *  rct2: 0x006A7D1C
  */
-static void window_footpath_invalidate(rct_window *w)
+static void window_footpath_invalidate(rct_window * w)
 {
     sint32 selectedPath;
-    rct_footpath_entry *pathType;
+    rct_footpath_entry * pathType;
 
     // Press / unpress footpath and queue type buttons
     w->pressed_widgets &= ~(1 << WIDX_FOOTPATH_TYPE);
     w->pressed_widgets &= ~(1 << WIDX_QUEUELINE_TYPE);
     w->pressed_widgets |= gFootpathSelectedType == SELECTED_PATH_TYPE_NORMAL ?
-        (1 << WIDX_FOOTPATH_TYPE) :
-        (1 << WIDX_QUEUELINE_TYPE);
+                          (1 << WIDX_FOOTPATH_TYPE) :
+                          (1 << WIDX_QUEUELINE_TYPE);
 
     // Enable / disable construct button
     window_footpath_widgets[WIDX_CONSTRUCT].type =
         gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL ?
-            WWT_IMGBTN : WWT_EMPTY;
+        WWT_IMGBTN : WWT_EMPTY;
 
     // Set footpath and queue type button images
     selectedPath = gFootpathSelectedId;
-    pathType = get_footpath_entry(selectedPath);
+    pathType     = get_footpath_entry(selectedPath);
 
     // TODO: Should probably add constants for object sprites
     sint32 pathImage = 71 + pathType->image;
-    window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-
-    // Disable queue line button when the path is scenario editor-only (and therefore usually shouldn't have one)
-    if(!(pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)) {
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = pathImage + 1;
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_FLATBTN;
-    } else {
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
-    }
-
-    // Disable queue line button if in Scenario Editor
-    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].type = WWT_EMPTY;
+    // Editor-only paths might lack a queue image
+    sint32 queueImage = (pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) ? pathImage : pathImage + 1;
+    window_footpath_widgets[WIDX_FOOTPATH_TYPE].image  = pathImage;
+    window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
 }
 
 /**
  *
  *  rct2: 0x006A7D8B
  */
-static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi)
 {
     window_draw_widgets(w, dpi);
 
-    if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT))) {
+    if (!(w->disabled_widgets & (1 << WIDX_CONSTRUCT)))
+    {
         // Get construction image
         uint8 direction = (gFootpathConstructDirection + get_current_rotation()) % 4;
-        uint8 slope = 0;
+        uint8 slope     = 0;
         if (gFootpathConstructSlope == 2)
+        {
             slope = 1;
+        }
         else if (gFootpathConstructSlope == 6)
+        {
             slope = 2;
+        }
         sint32 image = footpath_construction_preview_images[slope][direction];
 
         sint32 selectedPath = gFootpathSelectedId;
-        rct_footpath_entry *pathType = get_footpath_entry(selectedPath);
+        rct_footpath_entry * pathType = get_footpath_entry(selectedPath);
         image += pathType->image;
         if (gFootpathSelectedType != SELECTED_PATH_TYPE_NORMAL)
+        {
             image += 51;
+        }
 
         // Draw construction image
-        sint32 x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+        sint32 x = w->x +
+                   (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
         sint32 y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60;
         gfx_draw_sprite(dpi, image, x, y, 0);
 
@@ -620,41 +701,52 @@ static void window_footpath_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
 
     // Draw cost
-    sint32 x = w->x + (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
+    sint32 x = w->x +
+               (window_footpath_widgets[WIDX_CONSTRUCT].left + window_footpath_widgets[WIDX_CONSTRUCT].right) / 2;
     sint32 y = w->y + window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12;
     if (_window_footpath_cost != MONEY32_UNDEFINED)
+    {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+        {
             gfx_draw_string_centred(dpi, STR_COST_LABEL, x, y, COLOUR_BLACK, &_window_footpath_cost);
+        }
+    }
 }
 
 /**
  *
  *  rct2: 0x006A7F88
  */
-static void window_footpath_show_footpath_types_dialog(rct_window *w, rct_widget *widget, sint32 showQueues)
+static void window_footpath_show_footpath_types_dialog(rct_window * w, rct_widget * widget, bool showQueues)
 {
-    sint32 i, flags, numPathTypes, image;
-    rct_footpath_entry *pathType;
+    sint32 i, numPathTypes, image;
+    rct_footpath_entry * pathType;
 
     numPathTypes = 0;
-    flags = FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
-    // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor, but not their queues (since these usually shouldn't have one)
-    if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || (gCheatsSandboxMode && !showQueues))
-        flags = 0;
+    // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
 
-    for (i = 0; i < 16; i++) {
+    for (i = 0; i < MAX_PATH_OBJECTS; i++)
+    {
         pathType = get_footpath_entry(i);
-        if (pathType == (rct_footpath_entry*)-1)
+        if (pathType == (rct_footpath_entry *) -1)
+        {
             continue;
-        if (pathType->flags & flags)
+        }
+        if ((pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+        {
             continue;
+        }
 
         image = pathType->image + 71;
-        if (showQueues)
+        // Editor-only paths usually lack queue images. In this case, use the main path image
+        if (showQueues && !(pathType->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+        {
             image++;
+        }
 
         gDropdownItemsFormat[numPathTypes] = -1;
-        gDropdownItemsArgs[numPathTypes] = image;
+        gDropdownItemsArgs[numPathTypes]   = image;
         numPathTypes++;
     }
 
@@ -677,7 +769,7 @@ static void window_footpath_mousedown_direction(sint32 direction)
 {
     footpath_provisional_update();
     gFootpathConstructDirection = (direction - get_current_rotation()) & 3;
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _window_footpath_cost       = MONEY32_UNDEFINED;
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
@@ -689,7 +781,7 @@ static void window_footpath_mousedown_slope(sint32 slope)
 {
     footpath_provisional_update();
     gFootpathConstructSlope = slope;
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _window_footpath_cost   = MONEY32_UNDEFINED;
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
@@ -703,23 +795,28 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     sint32 interactionType;
-    rct_map_element *mapElement;
-    rct_xy16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
+    rct_map_element * mapElement;
+    rct_xy16 mapCoord = {0};
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
+                                 &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
+    if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         footpath_provisional_update();
-    } else {
+    }
+    else
+    {
         // Check for change
         if (
             (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) &&
             gFootpathProvisionalPosition.x == x &&
             gFootpathProvisionalPosition.y == y &&
             gFootpathProvisionalPosition.z == mapElement->base_height
-        ) {
+            )
+        {
             return;
         }
 
@@ -736,7 +833,9 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
         // Set provisional path
         sint32 slope = default_path_slope[mapElement->properties.surface.slope & 0x1F];
         if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+        {
             slope = mapElement->properties.surface.slope & 7;
+        }
         sint32 pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
         _window_footpath_cost = footpath_provisional_set(pathType, x, y, mapElement->base_height, slope);
@@ -751,7 +850,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
 static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, sint32 screenY)
 {
     sint32 x, y, direction;
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -759,7 +858,9 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 
     footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
     if (x == MAP_LOCATION_NULL)
+    {
         return;
+    }
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -775,10 +876,13 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 
     sint32 z = mapElement->base_height;
 
-    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
+    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE)
+    {
         uint8 slope = mapElement->properties.surface.slope;
         if (slope & 0xf)
-            z += 2; // Add 2 for a slope
+        {
+            z += 2;
+        } // Add 2 for a slope
         if (slope & 0x10)
             z += 2; // Add another 2 for a steep slope
     }
@@ -795,35 +899,45 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 static void window_footpath_place_path_at_point(sint32 x, sint32 y)
 {
     sint32 interactionType, presentType, selectedType, z, cost;
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     if (_footpathErrorOccured)
+    {
         return;
+    }
 
     footpath_provisional_update();
 
-    rct_xy16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
+    rct_xy16 mapCoord = {0};
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
+                                 &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE)
+    {
         return;
+    }
 
     // Set path
-    presentType = default_path_slope[mapElement->properties.path.type & 0x1F];
+    presentType  = default_path_slope[mapElement->properties.path.type & 0x1F];
     if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+    {
         presentType = mapElement->properties.path.type & 7;
-    z = mapElement->base_height;
+    }
+    z            = mapElement->base_height;
     selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
     // Try and place path
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    cost = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
+    cost                   = footpath_place(selectedType, x, y, z, presentType, GAME_COMMAND_FLAG_APPLY);
 
-    if (cost == MONEY32_UNDEFINED) {
+    if (cost == MONEY32_UNDEFINED)
+    {
         _footpathErrorOccured = true;
-    } else if (gFootpathPrice != 0) {
+    }
+    else if (gFootpathPrice != 0)
+    {
         // bp = RCT2_ADDRESS_COMMAND_MAP_Z
         // dx = RCT2_ADDRESS_COMMAND_MAP_Y
         // cx = RCT2_ADDRESS_COMMAND_MAP_X
@@ -838,30 +952,42 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
 static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY)
 {
     sint32 x, y, z, direction;
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
     if (x == MAP_LOCATION_NULL)
+    {
         return;
+    }
 
-    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
+    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE)
+    {
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
         uint8 slope = mapElement->properties.surface.slope;
         z = mapElement->base_height;
-        if (slope & 0x10) {
+        if (slope & 0x10)
+        {
             // Steep diagonal slope
             z += 4;
-        } else if (slope & 0x0f) {
+        }
+        else if (slope & 0x0f)
+        {
             // Normal slope
             z += 2;
         }
-    } else {
+    }
+    else
+    {
         z = mapElement->base_height;
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-            if (mapElement->properties.path.type & 4) {
+        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
+        {
+            if (mapElement->properties.path.type & 4)
+            {
                 if (direction == (mapElement->properties.path.type & 3))
+                {
                     z += 2;
+                }
             }
         }
     }
@@ -870,12 +996,12 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
     gFootpathConstructFromPosition.x = x;
     gFootpathConstructFromPosition.y = y;
     gFootpathConstructFromPosition.z = z * 8;
-    gFootpathConstructDirection = direction;
-    gFootpathProvisionalFlags = 0;
+    gFootpathConstructDirection                   = direction;
+    gFootpathProvisionalFlags                     = 0;
     _window_footpath_provisional_path_arrow_timer = 0;
-    gFootpathConstructSlope = 0;
-    gFootpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
-    gFootpathConstructValidDirections = 255;
+    gFootpathConstructSlope                       = 0;
+    gFootpathConstructionMode                     = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL;
+    gFootpathConstructValidDirections             = 255;
     window_footpath_set_enabled_and_pressed_widgets();
 }
 
@@ -892,9 +1018,11 @@ static void window_footpath_construct()
     footpath_get_next_path_info(&type, &x, &y, &z, &slope);
 
     gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-    money32 cost = footpath_place_remove_intersecting(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY, gFootpathConstructDirection);
+    money32 cost = footpath_place_remove_intersecting(type, x, y, z, slope, GAME_COMMAND_FLAG_APPLY,
+                                                      gFootpathConstructDirection);
 
-    if (cost != MONEY32_UNDEFINED) {
+    if (cost != MONEY32_UNDEFINED)
+    {
         audio_play_sound_at_location(
             SOUND_PLACE_ITEM,
             gFootpathConstructFromPosition.x,
@@ -902,20 +1030,27 @@ static void window_footpath_construct()
             gFootpathConstructFromPosition.z
         );
 
-        if (gFootpathConstructSlope == 0) {
+        if (gFootpathConstructSlope == 0)
+        {
             gFootpathConstructValidDirections = 0xFF;
-        } else {
+        }
+        else
+        {
             gFootpathConstructValidDirections = gFootpathConstructDirection;
         }
 
         if (gFootpathGroundFlags & ELEMENT_IS_UNDERGROUND)
+        {
             viewport_set_visibility(1);
+        }
 
         // If we have just built an upwards slope, the next path to construct is
         // a bit higher. Note that the z returned by footpath_get_next_path_info
         // already is lowered if we are building a downwards slope.
         if (gFootpathConstructSlope == 2)
+        {
             z += 2;
+        }
 
         gFootpathConstructFromPosition.x = x;
         gFootpathConstructFromPosition.y = y;
@@ -929,29 +1064,37 @@ static void window_footpath_construct()
  *
  *  rct2: 0x006A78EF
  */
-static void footpath_remove_map_element(rct_map_element *mapElement)
+static void footpath_remove_map_element(rct_map_element * mapElement)
 {
     sint32 x, y, z;
 
     z = mapElement->base_height;
     sint32 pathType = mapElement->properties.path.type;
-    if (pathType & 4) {
+    if (pathType & 4)
+    {
         pathType &= 3;
         pathType ^= 2;
         if (pathType == gFootpathConstructDirection)
+        {
             z += 2;
+        }
     }
 
     // Find a connected edge
-    sint32 edge = gFootpathConstructDirection ^ 2;
-    if (!(mapElement->properties.path.edges & (1 << edge))) {
+    sint32 edge = gFootpathConstructDirection ^2;
+    if (!(mapElement->properties.path.edges & (1 << edge)))
+    {
         edge = (edge + 1) & 3;
-        if (!(mapElement->properties.path.edges & (1 << edge))) {
+        if (!(mapElement->properties.path.edges & (1 << edge)))
+        {
             edge = (edge + 2) & 3;
-            if (!(mapElement->properties.path.edges & (1 << edge))) {
+            if (!(mapElement->properties.path.edges & (1 << edge)))
+            {
                 edge = (edge - 1) & 3;
                 if (!(mapElement->properties.path.edges & (1 << edge)))
+                {
                     edge ^= 2;
+                }
             }
         }
     }
@@ -967,12 +1110,12 @@ static void footpath_remove_map_element(rct_map_element *mapElement)
 
     // Move selection
     edge ^= 2;
-    x = gFootpathConstructFromPosition.x - TileDirectionDelta[edge].x;
-    y = gFootpathConstructFromPosition.y - TileDirectionDelta[edge].y;
+    x                      = gFootpathConstructFromPosition.x - TileDirectionDelta[edge].x;
+    y                      = gFootpathConstructFromPosition.y - TileDirectionDelta[edge].y;
     gFootpathConstructFromPosition.x = x;
     gFootpathConstructFromPosition.y = y;
     gFootpathConstructFromPosition.z = z << 3;
-    gFootpathConstructDirection = edge;
+    gFootpathConstructDirection       = edge;
     gFootpathConstructValidDirections = 255;
 }
 
@@ -980,37 +1123,53 @@ static void footpath_remove_map_element(rct_map_element *mapElement)
  *
  *  rct2: 0x006A7873
  */
-static rct_map_element *footpath_get_map_element_to_remove()
+static rct_map_element * footpath_get_map_element_to_remove()
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
     sint32 x, y, z, zLow;
 
     x = gFootpathConstructFromPosition.x / 32;
     y = gFootpathConstructFromPosition.y / 32;
     if (x >= 256 || y >= 256)
+    {
         return nullptr;
+    }
 
-    z = (gFootpathConstructFromPosition.z >> 3) & 0xFF;
+    z    = (gFootpathConstructFromPosition.z >> 3) & 0xFF;
     zLow = z - 2;
 
     mapElement = map_get_first_element_at(x, y);
-    do {
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
-            if (mapElement->base_height == z) {
+    do
+    {
+        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
+        {
+            if (mapElement->base_height == z)
+            {
                 if (mapElement->properties.path.type & 4)
+                {
                     if (((mapElement->properties.path.type & 3) ^ 2) != gFootpathConstructDirection)
+                    {
                         continue;
+                    }
+                }
 
                 return mapElement;
-            } else if (mapElement->base_height == zLow) {
+            }
+            else if (mapElement->base_height == zLow)
+            {
                 if (!(mapElement->properties.path.type & 4))
+                {
                     if ((mapElement->properties.path.type & 3) == gFootpathConstructDirection)
+                    {
                         continue;
+                    }
+                }
 
                 return mapElement;
             }
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    }
+    while (!map_element_is_last_for_tile(mapElement++));
 
     return nullptr;
 }
@@ -1021,14 +1180,16 @@ static rct_map_element *footpath_get_map_element_to_remove()
  */
 static void window_footpath_remove()
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     _window_footpath_cost = MONEY32_UNDEFINED;
     footpath_provisional_update();
 
     mapElement = footpath_get_map_element_to_remove();
     if (mapElement != nullptr)
+    {
         footpath_remove_map_element(mapElement);
+    }
 
     window_footpath_set_enabled_and_pressed_widgets();
 }
@@ -1039,11 +1200,14 @@ static void window_footpath_remove()
  */
 static void window_footpath_set_enabled_and_pressed_widgets()
 {
-    rct_window *w = window_find_by_class(WC_FOOTPATH);
+    rct_window * w = window_find_by_class(WC_FOOTPATH);
     if (w == nullptr)
+    {
         return;
+    }
 
-    if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+    if (gFootpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+    {
         map_invalidate_map_selection_tiles();
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags |= MAP_SELECT_FLAG_GREEN;
@@ -1055,18 +1219,19 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         map_invalidate_map_selection_tiles();
     }
 
-    uint64 pressedWidgets = w->pressed_widgets & ~(
-            (1LL << WIDX_DIRECTION_NW) |
-            (1LL << WIDX_DIRECTION_NE) |
-            (1LL << WIDX_DIRECTION_SW) |
-            (1LL << WIDX_DIRECTION_SE) |
-            (1LL << WIDX_SLOPEDOWN) |
-            (1LL << WIDX_LEVEL) |
-            (1LL << WIDX_SLOPEUP)
+    uint64 pressedWidgets  = w->pressed_widgets & ~(
+        (1LL << WIDX_DIRECTION_NW) |
+        (1LL << WIDX_DIRECTION_NE) |
+        (1LL << WIDX_DIRECTION_SW) |
+        (1LL << WIDX_DIRECTION_SE) |
+        (1LL << WIDX_SLOPEDOWN) |
+        (1LL << WIDX_LEVEL) |
+        (1LL << WIDX_SLOPEUP)
     );
     uint64 disabledWidgets = 0;
     sint32 currentRotation = get_current_rotation();
-    if (gFootpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL) {
+    if (gFootpathConstructionMode >= PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
+    {
         // Set pressed directional widget
         sint32 direction = (gFootpathConstructDirection + currentRotation) & 3;
         pressedWidgets |= (1LL << (WIDX_DIRECTION_NW + direction));
@@ -1074,15 +1239,22 @@ static void window_footpath_set_enabled_and_pressed_widgets()
         // Set pressed slope widget
         sint32 slope = gFootpathConstructSlope;
         if (slope == 6)
+        {
             pressedWidgets |= (1 << WIDX_SLOPEDOWN);
+        }
         else if (slope == 0)
+        {
             pressedWidgets |= (1 << WIDX_LEVEL);
+        }
         else
+        {
             pressedWidgets |= (1 << WIDX_SLOPEUP);
+        }
 
         // Enable / disable directional widgets
         direction = gFootpathConstructValidDirections;
-        if (direction != 255) {
+        if (direction != 255)
+        {
             disabledWidgets |=
                 (1 << WIDX_DIRECTION_NW) |
                 (1 << WIDX_DIRECTION_NE) |
@@ -1092,7 +1264,9 @@ static void window_footpath_set_enabled_and_pressed_widgets()
             direction = (direction + currentRotation) & 3;
             disabledWidgets &= ~(1 << (WIDX_DIRECTION_NW + direction));
         }
-    } else {
+    }
+    else
+    {
         // Disable all bridge mode widgets
         disabledWidgets |=
             (1 << WIDX_DIRECTION_GROUP) |
@@ -1108,7 +1282,7 @@ static void window_footpath_set_enabled_and_pressed_widgets()
             (1 << WIDX_REMOVE);
     }
 
-    w->pressed_widgets = pressedWidgets;
+    w->pressed_widgets  = pressedWidgets;
     w->disabled_widgets = disabledWidgets;
     window_invalidate(w);
 }
@@ -1117,19 +1291,21 @@ static void window_footpath_set_enabled_and_pressed_widgets()
  *
  *  rct2: 0x006A7B20
  */
-static void footpath_get_next_path_info(sint32 *type, sint32 *x, sint32 *y, sint32 *z, sint32 *slope)
+static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, sint32 * z, sint32 * slope)
 {
     sint32 direction;
 
     direction = gFootpathConstructDirection;
-    *x = gFootpathConstructFromPosition.x + TileDirectionDelta[direction].x;
-    *y = gFootpathConstructFromPosition.y + TileDirectionDelta[direction].y;
-    *z = gFootpathConstructFromPosition.z / 8;
-    *type = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
+    *x     = gFootpathConstructFromPosition.x + TileDirectionDelta[direction].x;
+    *y     = gFootpathConstructFromPosition.y + TileDirectionDelta[direction].y;
+    *z     = gFootpathConstructFromPosition.z / 8;
+    *type  = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
     *slope = 0;
-    if (gFootpathConstructSlope != 0) {
+    if (gFootpathConstructSlope != 0)
+    {
         *slope = gFootpathConstructDirection | 4;
-        if (gFootpathConstructSlope != 2) {
+        if (gFootpathConstructSlope != 2)
+        {
             *z -= 2;
             *slope ^= 2;
         }
@@ -1139,21 +1315,27 @@ static void footpath_get_next_path_info(sint32 *type, sint32 *x, sint32 *y, sint
 static bool footpath_select_default()
 {
     // Select first available footpath
-    sint32 footpathId = -1;
-    for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++) {
-        rct_footpath_entry *pathEntry = get_footpath_entry(i);
-        if (pathEntry != (rct_footpath_entry*)-1) {
+    sint32      footpathId = -1;
+    for (sint32 i          = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++)
+    {
+        rct_footpath_entry * pathEntry = get_footpath_entry(i);
+        if (pathEntry != (rct_footpath_entry *) -1)
+        {
             footpathId = i;
 
             // Prioritise non-restricted path
-            if (!(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR)) {
+            if (!(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+            {
                 break;
             }
         }
     }
-    if (footpathId == -1) {
+    if (footpathId == -1)
+    {
         return false;
-    } else {
+    }
+    else
+    {
         gFootpathSelectedId = footpathId;
         return true;
     }
