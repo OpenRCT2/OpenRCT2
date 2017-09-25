@@ -11,10 +11,12 @@
 #ifdef __cplusplus
 struct IntentData
 {
-    enum DATATYPE { DT_UINT, DT_SINT, DT_STRING, DT_POINTER } type;
+    enum DATATYPE { DT_INT, DT_STRING, DT_POINTER } type;
 
-    uint32 uintVal;
-    sint32 sintVal;
+    union {
+        uint32 unsignedInt;
+        sint32 signedInt;
+    } intVal;
     utf8string stringVal;
     void * pointerVal;
 };
