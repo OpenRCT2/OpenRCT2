@@ -49,6 +49,9 @@ enum LIGHTFX_LIGHT_QUALIFIER {
 extern "C" {
 #endif
 
+void lightfx_set_available(bool available);
+bool lightfx_is_available();
+
 void lightfx_init();
 
 void lightfx_update_buffers(rct_drawpixelinfo*);

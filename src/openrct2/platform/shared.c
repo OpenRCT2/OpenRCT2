@@ -91,7 +91,7 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
         uint8 b = colours[0];
 
 #ifdef __ENABLE_LIGHTFX__
-        if (gConfigGeneral.enable_light_fx)
+        if (lightfx_is_available())
         {
             lightfx_apply_palette_filter(i, &r, &g, &b);
         }

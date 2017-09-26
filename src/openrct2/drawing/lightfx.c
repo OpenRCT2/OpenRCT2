@@ -22,6 +22,7 @@
 #include "../interface/window.h"
 #include "../paint/map_element/map_element.h"
 #include "../world/Climate.h"
+#include "../config/Config.h"
 #include "drawing.h"
 #include "lightfx.h"
 
@@ -34,6 +35,7 @@ static uint8 _bakedLightTexture_spot_1[64 * 64];
 static uint8 _bakedLightTexture_spot_2[128 * 128];
 static uint8 _bakedLightTexture_spot_3[256 * 256];
 static rct_drawpixelinfo    _pixelInfo;
+static bool _lightfxAvailable = false;
 
 static void* _light_rendered_buffer_back = NULL;
 static void* _light_rendered_buffer_front = NULL;
@@ -108,6 +110,16 @@ static void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetW
         }
         parcerRead += targetWidth * 2;
     }
+}
+
+void lightfx_set_available(bool available)
+{
+    _lightfxAvailable = available;
+}
+
+bool lightfx_is_available()
+{
+    return _lightfxAvailable && gConfigGeneral.enable_light_fx != 0;
 }
 
 void lightfx_init()

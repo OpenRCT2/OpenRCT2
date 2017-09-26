@@ -776,7 +776,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
     }
 
 #ifdef __ENABLE_LIGHTFX__
-    if (gConfigGeneral.enable_light_fx) {
+    if (lightfx_is_available()) {
         if (footpath_element_has_path_scenery(map_element) && !(map_element->flags & MAP_ELEMENT_FLAG_BROKEN)) {
             rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {

@@ -29,7 +29,7 @@
 void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
-    if (gConfigGeneral.enable_light_fx) {
+    if (lightfx_is_available()) {
         if (peep->type == PEEP_TYPE_STAFF) {
             sint16 peep_x, peep_y, peep_z;
 

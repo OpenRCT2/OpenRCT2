@@ -138,6 +138,7 @@ X8DrawingEngine::X8DrawingEngine(Ui::IUiContext * uiContext)
 {
     _drawingContext = new X8DrawingContext(this);
 #ifdef __ENABLE_LIGHTFX__
+    lightfx_set_available(true);
     _lastLightFXenabled = (gConfigGeneral.enable_light_fx != 0);
 #endif
 }
@@ -359,7 +360,7 @@ void X8DrawingEngine::ConfigureBits(uint32 width, uint32 height, uint32 pitch)
     ConfigureDirtyGrid();
 
 #ifdef __ENABLE_LIGHTFX__
-        if (gConfigGeneral.enable_light_fx)
+        if (lightfx_is_available())
         {
             lightfx_update_buffers(dpi);
         }

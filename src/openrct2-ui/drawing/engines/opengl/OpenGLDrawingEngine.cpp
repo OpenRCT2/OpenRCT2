@@ -34,6 +34,7 @@
 #include <openrct2/interface/window.h>
 #include <openrct2/intro.h>
 #include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/lightfx.h>
 
 #include "../DrawingEngines.h"
 #include "GLSLTypes.h"
@@ -145,6 +146,9 @@ public:
     {
         _window = (SDL_Window *)_uiContext->GetWindow();
         _drawingContext = new OpenGLDrawingContext(this);
+#ifdef __ENABLE_LIGHTFX__
+        lightfx_set_available(false);
+#endif
     }
 
     ~OpenGLDrawingEngine() override
