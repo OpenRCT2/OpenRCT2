@@ -43,7 +43,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
 
 #ifdef __ENABLE_LIGHTFX__
-    if (gConfigGeneral.enable_light_fx) {
+    if (lightfx_is_available()) {
         if (!is_exit) {
             lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
@@ -190,7 +190,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
         return;
 
 #ifdef __ENABLE_LIGHTFX__
-    if (gConfigGeneral.enable_light_fx) {
+    if (lightfx_is_available()) {
         lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, 155, LIGHTFX_LIGHT_TYPE_LANTERN_3);
     }
 #endif
