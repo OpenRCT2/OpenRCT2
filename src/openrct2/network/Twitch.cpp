@@ -544,18 +544,8 @@ namespace Twitch
             buffer[0] = (utf8)(uint8)FORMAT_TOPAZ;
             safe_strcpy(buffer + 1, message, sizeof(buffer) - 1);
 
-            // Remove unsupported characters
-            // TODO allow when OpenRCT2 gains unicode support
-            char * ch = buffer + 1;
-            while (ch[0] != '\0')
-            {
-                if ((uint8)ch[0] < 32 || (uint8)ch[0] > 122)
-                {
-                    ch[0] = ' ';
-                }
-                ch++;
-            }
-
+	    utf8_remove_formatting(buffer, false);
+	    
             // TODO Create a new news item type for twitch which has twitch icon
             news_item_add_to_queue_raw(NEWS_ITEM_BLANK, buffer, 0);
         }
