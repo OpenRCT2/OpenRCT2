@@ -205,7 +205,7 @@ static void ride_call_closest_mechanic(sint32 rideIndex);
 static void ride_call_mechanic(sint32 rideIndex, rct_peep *mechanic, sint32 forInspection);
 static void ride_chairlift_update(Ride *ride);
 static void ride_entrance_exit_connected(Ride* ride, sint32 ride_idx);
-static void ride_set_name_to_vehicle_default(rct_ride * ride, rct_ride_entry * rideEntry);
+static void ride_set_name_to_vehicle_default(Ride * ride, rct_ride_entry * rideEntry);
 static sint32 ride_get_new_breakdown_problem(Ride *ride);
 static void ride_inspection_update(Ride *ride);
 static void ride_mechanic_status_update(sint32 rideIndex, sint32 mechanicStatus);

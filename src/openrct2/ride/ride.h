@@ -1097,6 +1097,7 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 money32 ride_create_command(sint32 type, sint32 subType, sint32 flags, uint8 *outRideIndex, uint8 *outRideColour);
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry);
 
+void ride_set_name_to_track_default(Ride *ride, rct_ride_entry * rideEntry);
 void ride_clear_for_construction(sint32 rideIndex);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();
