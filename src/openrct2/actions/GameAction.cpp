@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
@@ -21,13 +22,10 @@
 #include "../network/network.h"
 #include "GameAction.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../localisation/localisation.h"
-    #include "../windows/error.h"
-    #include "../world/park.h"
-}
+#include "../platform/platform.h"
+#include "../localisation/localisation.h"
+#include "../windows/error.h"
+#include "../world/park.h"
 
 GameActionResult::GameActionResult()
 {
@@ -201,7 +199,7 @@ namespace GameActions
         {
             // Show the error box
             Memory::Copy(gCommonFormatArgs, result->ErrorMessageArgs, sizeof(result->ErrorMessageArgs));
-            window_error_open(result->ErrorTitle, result->ErrorMessage);
+            context_show_error(result->ErrorTitle, result->ErrorMessage);
         }
         return result;
     }
