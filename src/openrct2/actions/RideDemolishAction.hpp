@@ -54,7 +54,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        rct_ride *ride = get_ride(_rideIndex);
+        Ride *ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
@@ -72,7 +72,7 @@ public:
 
     GameActionResult::Ptr Execute() const override
     {
-        rct_ride *ride = get_ride(_rideIndex);
+        Ride *ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);

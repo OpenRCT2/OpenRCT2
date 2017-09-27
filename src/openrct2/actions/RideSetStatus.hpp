@@ -69,7 +69,7 @@ public:
         GameActionResult::Ptr res = std::make_unique<GameActionResult>();
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
-        rct_ride *ride = get_ride(_rideIndex);
+        Ride *ride = get_ride(_rideIndex);
 
         if (ride->type == RIDE_TYPE_NULL)
         {

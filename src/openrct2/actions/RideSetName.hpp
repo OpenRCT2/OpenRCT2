@@ -56,7 +56,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        rct_ride *ride = get_ride(_rideIndex);
+        Ride *ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
@@ -83,7 +83,7 @@ public:
     {
         rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
 
-        rct_ride *ride = get_ride(_rideIndex);
+        Ride *ride = get_ride(_rideIndex);
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
