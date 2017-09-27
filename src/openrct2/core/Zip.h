@@ -45,7 +45,7 @@ interface IZipArchive
     virtual void DeleteFile(const utf8 * path) abstract;
     virtual void RenameFile(const utf8 * path, const utf8 * newPath) abstract;
 
-	virtual bool TryWriteClose() abstract;
+    virtual bool TryWriteClose() abstract;
 };
 
 enum ZIP_ACCESS

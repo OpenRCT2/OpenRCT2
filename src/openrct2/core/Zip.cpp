@@ -47,20 +47,20 @@ public:
 
     ~ZipArchive() override
     {
-		if (_zip != nullptr) zip_discard(_zip);
+        if (_zip != nullptr) zip_discard(_zip);
     }
 
-	bool TryWriteClose() override
-	{
+    bool TryWriteClose() override
+    {
         //If not open, cannot write
-		if (_zip == nullptr) return false;
-		//zip_close tries to write out the file, and returns zero on success.
-		//If it fails, return is non-zero and _zip is NOT closed.
-		if (zip_close(_zip) != 0) return false;
+        if (_zip == nullptr) return false;
+        //zip_close tries to write out the file, and returns zero on success.
+        //If it fails, return is non-zero and _zip is NOT closed.
+        if (zip_close(_zip) != 0) return false;
 
-		_zip = nullptr;
-		return true;
-	}
+        _zip = nullptr;
+        return true;
+    }
 
     size_t GetNumFiles() const override
     {
