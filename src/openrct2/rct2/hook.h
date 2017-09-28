@@ -33,7 +33,15 @@ enum {
 
 typedef uint8 (hook_function)(registers *regs);
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void addhook(uintptr_t address, hook_function *function);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
 

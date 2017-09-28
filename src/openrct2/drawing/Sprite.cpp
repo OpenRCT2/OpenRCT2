@@ -28,13 +28,10 @@
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 
-extern "C"
-{
-    #include "../platform/platform.h"
-    #include "../rct2/addresses.h"
-    #include "../util/util.h"
-    #include "drawing.h"
-}
+#include "../platform/platform.h"
+#include "../rct2/addresses.h"
+#include "../util/util.h"
+#include "drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

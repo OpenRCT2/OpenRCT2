@@ -19,9 +19,7 @@
 #include <openrct2/core/Util.hpp>
 #include "FunctionCall.hpp"
 
-extern "C" {
 #include <openrct2/sprites.h>
-}
 
 namespace Printer {
 

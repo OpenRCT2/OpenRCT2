@@ -26,16 +26,13 @@
 #include "String.hpp"
 #include "Utils.hpp"
 
-extern "C"
-{
-    #include "data.h"
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/rct2.h>
-    #include <openrct2/ride/ride.h>
-    #include <openrct2/ride/ride_data.h>
-    #include <openrct2/ride/track.h>
-    #include <openrct2/ride/track_data.h>
-}
+#include "data.h"
+#include <openrct2/interface/viewport.h>
+#include <openrct2/rct2.h>
+#include <openrct2/ride/ride.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/ride/track_data.h>
 
 class PaintCodeGenerator
 {

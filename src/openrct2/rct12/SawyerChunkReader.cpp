@@ -19,10 +19,7 @@
 #include "../core/Math.hpp"
 #include "SawyerChunkReader.h"
 
-extern "C"
-{
-    #include "../util/sawyercoding.h"
-}
+#include "../util/sawyercoding.h"
 
 // Allow chunks to be uncompressed to a maximum of 16 MiB
 constexpr size_t MAX_UNCOMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;

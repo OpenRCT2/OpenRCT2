@@ -16,11 +16,9 @@
 
 #include "Utils.hpp"
 
-extern "C" {
-    #include <openrct2/ride/ride.h>
-    #include <openrct2/ride/track.h>
-    #include <openrct2/ride/track_data.h>
-}
+#include <openrct2/ride/ride.h>
+#include <openrct2/ride/track.h>
+#include <openrct2/ride/track_data.h>
 
 namespace Utils {
     int getTrackSequenceCount(uint8 rideType, uint8 trackType) {

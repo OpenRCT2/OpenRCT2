@@ -23,13 +23,11 @@
 #include "TestPaint.hpp"
 #include "Utils.hpp"
 
-extern "C" {
-    #include <openrct2/paint/paint.h>
-    #include <openrct2/paint/supports.h>
-    #include <openrct2/ride/track_data.h>
-    #include <openrct2/interface/viewport.h>
-    #include <openrct2/rct2/hook.h>
-}
+#include <openrct2/paint/paint.h>
+#include <openrct2/paint/supports.h>
+#include <openrct2/ride/track_data.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/rct2/hook.h>
 
 namespace TestPaint
 {

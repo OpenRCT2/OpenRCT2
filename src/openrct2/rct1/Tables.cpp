@@ -19,12 +19,9 @@
 #include "../core/Util.hpp"
 #include "Tables.h"
 
-extern "C"
-{
-    #include "../interface/colour.h"
-    #include "../rct1.h"
-    #include "../ride/ride.h"
-}
+#include "../interface/colour.h"
+#include "../rct1.h"
+#include "../ride/ride.h"
 
 namespace RCT1
 {

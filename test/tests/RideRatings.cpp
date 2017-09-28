@@ -8,11 +8,8 @@
 #include <openrct2/OpenRCT2.h>
 #include "TestData.h"
 
-extern "C"
-{
-    #include <openrct2/platform/platform.h>
-    #include <openrct2/game.h>
-}
+#include <openrct2/platform/platform.h>
+#include <openrct2/game.h>
 
 using namespace OpenRCT2;
 

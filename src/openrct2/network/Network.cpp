@@ -53,7 +53,6 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 #include "../ParkImporter.h"
 #include "../rct2/S6Exporter.h"
 
-extern "C" {
 #include "../config/Config.h"
 #include "../game.h"
 #include "../interface/chat.h"
@@ -69,7 +68,6 @@ extern "C" {
 #include "NetworkAction.h"
 
 #include <openssl/evp.h> // just for OpenSSL_add_all_algorithms()
-}
 
 #pragma comment(lib, "Ws2_32.lib")
 

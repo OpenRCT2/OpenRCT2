@@ -20,15 +20,12 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 
-extern "C"
-{
-    #include "../localisation/string_ids.h"
-    #include "../management/research.h"
-    #include "ride.h"
-    #include "ride_data.h"
-    #include "track.h"
-    #include "track_data.h"
-}
+#include "../localisation/string_ids.h"
+#include "../management/research.h"
+#include "ride.h"
+#include "ride_data.h"
+#include "track.h"
+#include "track_data.h"
 
 class RideGroupManager final : public IRideGroupManager
 {
