@@ -33,6 +33,7 @@
 #include "../ride/station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
+#include "../object_list.h"
 
 extern "C"
 {
@@ -114,8 +115,8 @@ private:
     EntryList _waterEntry;
 
     // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
-    uint8 _rideTypeToRideEntryMap[96];
-    uint8 _vehicleTypeToRideEntryMap[96];
+    uint8 _rideTypeToRideEntryMap[RCT1_RIDE_TYPE_COUNT];
+    uint8 _vehicleTypeToRideEntryMap[RCT1_VEHICLE_TYPE_COUNT];
     uint8 _smallSceneryTypeToEntryMap[256];
     uint8 _largeSceneryTypeToEntryMap[256];
     uint8 _wallTypeToEntryMap[256];
@@ -124,8 +125,8 @@ private:
     uint8 _sceneryThemeTypeToEntryMap[24];
 
     // Research
-    uint8 _researchRideEntryUsed[128];
-    uint8 _researchRideTypeUsed[128];
+    uint8 _researchRideEntryUsed[MAX_RIDE_OBJECTS];
+    uint8 _researchRideTypeUsed[RCT1_RIDE_TYPE_COUNT];
 
 public:
     ParkLoadResult Load(const utf8 * path) override
@@ -665,9 +666,9 @@ private:
         else
         {
             const char * entryName = RCT1::GetSceneryGroupObject(sceneryThemeType);
-            if (_sceneryGroupEntries.GetCount() >= 19)
+            if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
             {
-                Console::WriteLine("Warning: More than 19 (max scenery groups) in RCT1 park.");
+                Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
                 Console::WriteLine("         [%s] scenery group not added.", entryName);
             }
             else
@@ -2017,6 +2018,9 @@ private:
         gResearchNextCategory = _s4.next_research_category;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
+
+        // This is needed to fix Research. Not sure why.
+        research_reset_current_item();
     }
 
     void InsertResearchVehicle(const rct1_research_item * researchItem, bool researched)

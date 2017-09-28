@@ -1085,7 +1085,7 @@ void game_fix_save_vars()
             break;
         }
         if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2) break;
-        if (researchItem->entryIndex & 0x10000) {
+        if (researchItem->entryIndex & RESEARCH_ENTRY_RIDE_MASK) {
             uint8 entryIndex = researchItem->entryIndex & 0xFF;
             rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
             if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1) {

@@ -47,6 +47,8 @@ enum{
 #define MAX_RESEARCHED_RIDE_ENTRIES 8
 #define MAX_RESEARCHED_TRACK_TYPES 128
 
+#define RESEARCH_ENTRY_RIDE_MASK 0x10000
+
 enum {
     RESEARCH_FUNDING_NONE,
     RESEARCH_FUNDING_MINIMUM,
@@ -122,6 +124,7 @@ void reset_researched_ride_types_and_entries();
 rct_string_id research_item_get_name(uint32 researchItem);
 uint8 research_get_ride_base_type(sint32 researchItem);
 rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry);
+void research_remove_flags();
 
 #ifdef __cplusplus
 }
