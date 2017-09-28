@@ -1877,3 +1877,41 @@ bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
     }
     return false;
 }
+
+sint32 editor_remove_unused_objects()
+{
+	bool selectionFlagsExist = _objectSelectionFlags != nullptr;
+	if (!selectionFlagsExist)
+	{
+		if (!sub_6AB211())
+			return 0;
+	}
+
+	setup_in_use_selection_flags();
+
+	sint32 numObjects = (sint32)object_repository_get_items_count();
+	const ObjectRepositoryItem * items = object_repository_get_items();
+
+	sint32 numUnselectedObjects = 0;
+	for (sint32 i = 0; i < numObjects; i++) {
+		if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE) && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED)) {
+			const ObjectRepositoryItem * item = &items[i];
+			uint8 object_type = item->ObjectEntry.flags & 0xF;
+
+			if (object_type == OBJECT_TYPE_PARK_ENTRANCE || object_type == OBJECT_TYPE_SCENARIO_TEXT || object_type == OBJECT_TYPE_WATER || object_type == OBJECT_TYPE_SCENERY_SETS)
+				continue;
+
+			_numSelectedObjectsForType[object_type]--;
+			_objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
+			numUnselectedObjects++;
+		}
+	}
+	unload_unselected_objects();
+
+	if (!selectionFlagsExist)
+	{
+		editor_object_flags_free();
+	}
+
+	return numUnselectedObjects;
+}
