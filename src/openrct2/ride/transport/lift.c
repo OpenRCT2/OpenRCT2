@@ -18,28 +18,27 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
-enum {
-    SPR_LIFT_CAGE_BACK = 14994,
-    SPR_LIFT_CAGE_FRONT = 14995,
-    SPR_LIFT_CAGE_NE_BACK = 14996,
+enum
+{
+    SPR_LIFT_CAGE_BACK     = 14994,
+    SPR_LIFT_CAGE_FRONT    = 14995,
+    SPR_LIFT_CAGE_NE_BACK  = 14996,
     SPR_LIFT_CAGE_NE_FRONT = 14997,
-    SPR_LIFT_CAGE_SE_BACK = 14998,
+    SPR_LIFT_CAGE_SE_BACK  = 14998,
     SPR_LIFT_CAGE_SE_FRONT = 14999,
-    SPR_LIFT_CAGE_SW_BACK = 15000,
+    SPR_LIFT_CAGE_SW_BACK  = 15000,
     SPR_LIFT_CAGE_SW_FRONT = 15001,
-    SPR_LIFT_CAGE_NW_BACK = 15002,
+    SPR_LIFT_CAGE_NW_BACK  = 15002,
     SPR_LIFT_CAGE_NW_FRONT = 15003,
 };
 
 static const uint32 lift_cage_sprites[][2] = {
-    {SPR_LIFT_CAGE_BACK,    SPR_LIFT_CAGE_FRONT},
-    {SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT},
-    {SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT},
-    {SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT},
-    {SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT},
+    { SPR_LIFT_CAGE_BACK, SPR_LIFT_CAGE_FRONT },       { SPR_LIFT_CAGE_NE_BACK, SPR_LIFT_CAGE_NE_FRONT },
+    { SPR_LIFT_CAGE_SE_BACK, SPR_LIFT_CAGE_SE_FRONT }, { SPR_LIFT_CAGE_SW_BACK, SPR_LIFT_CAGE_SW_FRONT },
+    { SPR_LIFT_CAGE_NW_BACK, SPR_LIFT_CAGE_NW_FRONT },
 };
 
 static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourFlags, sint32 height, uint8 rotation)
@@ -54,11 +53,13 @@ static void paint_lift_cage(paint_session * session, sint8 index, uint32 colourF
 }
 
 /** rct2: 0x0076C6CC */
-static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                            rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
-    if (trackSequence == 0) {
+    if (trackSequence == 0)
+    {
         paint_lift_cage(session, direction, session->TrackColours[SCHEME_TRACK], height, get_current_rotation());
 
         paint_lift_cage(session, -1, session->TrackColours[SCHEME_TRACK], height + 32, get_current_rotation());
@@ -77,25 +78,43 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
         return;
     }
 
-    sint32 edges = edges_3x3[trackSequence];
-    Ride * ride = get_ride(rideIndex);
+    sint32   edges    = edges_3x3[trackSequence];
+    Ride *   ride     = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
-        sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
+    sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-        track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height,
+                                  fenceSpritesMetalB, get_current_rotation());
 
     sint32 blockedSegments = 0;
-    switch (trackSequence) {
-        case 1: blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
-        case 2: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC; break;
-        case 3: blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
-        case 4: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8; break;
-        case 5: blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0; break;
-        case 6: blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
-        case 7: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC; break;
-        case 8: blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0; break;
+    switch (trackSequence)
+    {
+    case 1:
+        blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+        break;
+    case 2:
+        blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
+        break;
+    case 3:
+        blockedSegments = SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+        break;
+    case 4:
+        blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8;
+        break;
+    case 5:
+        blockedSegments = SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0;
+        break;
+    case 6:
+        blockedSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+        break;
+    case 7:
+        blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC;
+        break;
+    case 8:
+        blockedSegments = SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0;
+        break;
     }
     paint_util_set_segment_support_height(session, blockedSegments, 0xFFFF, 0);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~blockedSegments, height + 2, 0x20);
@@ -103,9 +122,11 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
 }
 
 /** rct2: 0x0076C6DC */
-static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
+                                     sint32 height, rct_map_element * mapElement)
 {
-    if (trackSequence == 1) {
+    if (trackSequence == 1)
+    {
         return;
     }
 
@@ -122,12 +143,13 @@ static void paint_lift_tower_section(paint_session * session, uint8 rideIndex, u
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_lift(sint32 trackType, sint32 direction)
 {
-    switch (trackType) {
-        case TRACK_ELEM_TOWER_BASE:
-            return paint_lift_base;
+    switch (trackType)
+    {
+    case TRACK_ELEM_TOWER_BASE:
+        return paint_lift_base;
 
-        case TRACK_ELEM_TOWER_SECTION:
-            return paint_lift_tower_section;
+    case TRACK_ELEM_TOWER_SECTION:
+        return paint_lift_tower_section;
     }
 
     return NULL;

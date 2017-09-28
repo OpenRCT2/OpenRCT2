@@ -22,7 +22,7 @@
 
 utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
 
-static bool user_string_exists(const utf8 *text);
+static bool user_string_exists(const utf8 * text);
 
 /**
  *
@@ -37,18 +37,20 @@ void user_string_clear_all()
  *
  *  rct2: 0x006C421D
  */
-rct_string_id user_string_allocate(sint32 base, const utf8 *text)
+rct_string_id user_string_allocate(sint32 base, const utf8 * text)
 {
-    sint32 highBits = (base & 0x7F) << 9;
-    bool allowDuplicates = base & 0x80;
+    sint32 highBits        = (base & 0x7F) << 9;
+    bool   allowDuplicates = base & 0x80;
 
-    if (!allowDuplicates && user_string_exists(text)) {
+    if (!allowDuplicates && user_string_exists(text))
+    {
         gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
         return 0;
     }
 
-    char *userString = gUserStrings;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+    char * userString = gUserStrings;
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
         if (userString[0] != 0)
             continue;
 
@@ -72,10 +74,11 @@ void user_string_free(rct_string_id id)
     gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
 }
 
-static bool user_string_exists(const utf8 *text)
+static bool user_string_exists(const utf8 * text)
 {
-    char *userString = gUserStrings;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+    char * userString = gUserStrings;
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
         if (userString[0] == 0)
             continue;
 
@@ -92,9 +95,10 @@ bool is_user_string_id(rct_string_id stringId)
 
 void reset_user_strings()
 {
-    char *userString = gUserStrings;
+    char * userString = gUserStrings;
 
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH)
+    {
         userString[0] = 0;
     }
 

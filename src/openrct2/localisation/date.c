@@ -25,19 +25,11 @@ uint16 gDateMonthsElapsed;
 // rct2: 0x00993988
 const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
-const rct_string_id DateFormatStringIds[] = {
-    STR_DATE_FORMAT_DAY_MONTH_YEAR,
-    STR_DATE_FORMAT_MONTH_DAY_YEAR,
-    STR_DATE_FORMAT_YEAR_MONTH_DAY,
-    STR_DATE_FORMAT_YEAR_DAY_MONTH
-};
+const rct_string_id DateFormatStringIds[] = { STR_DATE_FORMAT_DAY_MONTH_YEAR, STR_DATE_FORMAT_MONTH_DAY_YEAR,
+                                              STR_DATE_FORMAT_YEAR_MONTH_DAY, STR_DATE_FORMAT_YEAR_DAY_MONTH };
 
-const rct_string_id DateFormatStringFormatIds[] = {
-    STR_DATE_FORMAT_DMY,
-    STR_DATE_FORMAT_MDY,
-    STR_DATE_FORMAT_YMD,
-    STR_DATE_FORMAT_YDM
-};
+const rct_string_id DateFormatStringFormatIds[] = { STR_DATE_FORMAT_DMY, STR_DATE_FORMAT_MDY, STR_DATE_FORMAT_YMD,
+                                                    STR_DATE_FORMAT_YDM };
 
 openrct_timeofday gRealTimeOfDay;
 
@@ -63,16 +55,16 @@ sint32 date_get_total_months(sint32 month, sint32 year)
 void date_reset()
 {
     gDateMonthsElapsed = 0;
-    gDateMonthTicks = 0;
-    gCurrentTicks = 0;
+    gDateMonthTicks    = 0;
+    gCurrentTicks      = 0;
 }
 
 void date_update_real_time_of_day()
 {
-    time_t timestamp = time(0);
-    struct tm *now = localtime(&timestamp);
+    time_t      timestamp = time(0);
+    struct tm * now       = localtime(&timestamp);
 
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;
-    gRealTimeOfDay.hour = now->tm_hour;
+    gRealTimeOfDay.hour   = now->tm_hour;
 }

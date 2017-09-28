@@ -19,23 +19,24 @@
 #include "../world/sprite.h"
 #include "station.h"
 
-static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex);
-static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex);
-static void ride_update_station_normal(Ride *ride, sint32 stationIndex);
-static void ride_update_station_race(Ride *ride, sint32 stationIndex);
-static void ride_race_init_vehicle_speeds(Ride *ride);
-static void ride_invalidate_station_start(Ride *ride, sint32 stationIndex, bool greenLight);
+static void ride_update_station_blocksection(Ride * ride, sint32 stationIndex);
+static void ride_update_station_bumpercar(Ride * ride, sint32 stationIndex);
+static void ride_update_station_normal(Ride * ride, sint32 stationIndex);
+static void ride_update_station_race(Ride * ride, sint32 stationIndex);
+static void ride_race_init_vehicle_speeds(Ride * ride);
+static void ride_invalidate_station_start(Ride * ride, sint32 stationIndex, bool greenLight);
 
 /**
  *
  *  rct2: 0x006ABFFB
  */
-void ride_update_station(Ride *ride, sint32 stationIndex)
+void ride_update_station(Ride * ride, sint32 stationIndex)
 {
     if (ride->station_starts[stationIndex].xy == RCT_XY8_UNDEFINED)
         return;
 
-    switch (ride->mode) {
+    switch (ride->mode)
+    {
     case RIDE_MODE_RACE:
         ride_update_station_race(ride, stationIndex);
         break;
@@ -56,22 +57,29 @@ void ride_update_station(Ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC0A1
  */
-static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex)
+static void ride_update_station_blocksection(Ride * ride, sint32 stationIndex)
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
-    if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20)) {
+    if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != NULL && mapElement->flags & 0x20))
+    {
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
 
-        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) || (mapElement != NULL && map_element_get_green_light(mapElement)))
+        if ((ride->station_depart[stationIndex] & STATION_DEPART_FLAG) ||
+            (mapElement != NULL && map_element_get_green_light(mapElement)))
             ride_invalidate_station_start(ride, stationIndex, false);
-    } else {
-        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
+    }
+    else
+    {
+        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+        {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
-        } else if (mapElement != NULL && map_element_get_green_light(mapElement)) {
+        }
+        else if (mapElement != NULL && map_element_get_green_light(mapElement))
+        {
             ride_invalidate_station_start(ride, stationIndex, true);
         }
     }
@@ -81,24 +89,24 @@ static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC12B
  */
-static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex)
+static void ride_update_station_bumpercar(Ride * ride, sint32 stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
-    if (
-        ride->status == RIDE_STATUS_CLOSED ||
-        (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-    ) {
+    if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    {
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
         return;
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    {
         sint32 dx = ride->time_limit * 32;
         sint32 dl = dx & 0xFF;
         sint32 dh = (dx >> 8) & 0xFF;
-        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            rct_vehicle *vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+        for (sint32 i = 0; i < ride->num_vehicles; i++)
+        {
+            rct_vehicle * vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
             if (vehicle->var_CE < dh || (vehicle->var_CE < dh && vehicle->sub_state > dl))
                 continue;
 
@@ -110,11 +118,15 @@ static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex)
 
         // Continue match
         ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-    } else {
+    }
+    else
+    {
         // Check if all vehicles are ready to go
-        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            rct_vehicle *vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) {
+        for (sint32 i = 0; i < ride->num_vehicles; i++)
+        {
+            rct_vehicle * vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
+            {
                 ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
                 return;
             }
@@ -131,25 +143,29 @@ static void ride_update_station_bumpercar(Ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC02C
  */
-static void ride_update_station_normal(Ride *ride, sint32 stationIndex)
+static void ride_update_station_normal(Ride * ride, sint32 stationIndex)
 {
     sint32 time;
 
     time = ride->station_depart[stationIndex] & STATION_DEPART_MASK;
-    if (
-        (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))  ||
-        (ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0)
-    ) {
+    if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) ||
+        (ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0))
+    {
         if (time != 0 && time != 127 && !(gCurrentTicks & 7))
             time--;
 
         ride->station_depart[stationIndex] = time;
         ride_invalidate_station_start(ride, stationIndex, false);
-    } else {
-        if (time == 0) {
+    }
+    else
+    {
+        if (time == 0)
+        {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
-        } else {
+        }
+        else
+        {
             if (time != 127 && !(gCurrentTicks & 31))
                 time--;
 
@@ -163,34 +179,38 @@ static void ride_update_station_normal(Ride *ride, sint32 stationIndex)
  *
  *  rct2: 0x006AC1DF
  */
-static void ride_update_station_race(Ride *ride, sint32 stationIndex)
+static void ride_update_station_race(Ride * ride, sint32 stationIndex)
 {
-    if (
-        ride->status == RIDE_STATUS_CLOSED ||
-        (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-    ) {
-        if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
+    if (ride->status == RIDE_STATUS_CLOSED || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
+    {
+        if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+        {
             ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, false);
         }
         return;
     }
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) {
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
+    {
         sint32 numLaps = ride->num_laps;
-        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            rct_vehicle *vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps) {
+        for (sint32 i = 0; i < ride->num_vehicles; i++)
+        {
+            rct_vehicle * vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->num_laps >= numLaps)
+            {
                 // Found a winner
-                if (vehicle->num_peeps != 0) {
-                    rct_peep *peep = &(get_sprite(vehicle->peep[0])->peep);
+                if (vehicle->num_peeps != 0)
+                {
+                    rct_peep * peep   = &(get_sprite(vehicle->peep[0])->peep);
                     ride->race_winner = peep->sprite_index;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
                 }
 
                 // Race is over
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
+                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+                {
                     ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
@@ -200,12 +220,17 @@ static void ride_update_station_race(Ride *ride, sint32 stationIndex)
 
         // Continue racing
         ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
-    } else {
+    }
+    else
+    {
         // Check if all vehicles are ready to go
-        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-            rct_vehicle *vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
-            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING) {
-                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG){
+        for (sint32 i = 0; i < ride->num_vehicles; i++)
+        {
+            rct_vehicle * vehicle = &(get_sprite(ride->vehicles[i])->vehicle);
+            if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART && vehicle->status != VEHICLE_STATUS_DEPARTING)
+            {
+                if (ride->station_depart[stationIndex] & STATION_DEPART_FLAG)
+                {
                     ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
@@ -216,7 +241,8 @@ static void ride_update_station_race(Ride *ride, sint32 stationIndex)
         // Begin the race
         ride_race_init_vehicle_speeds(ride);
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)){
+        if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+        {
             ride->station_depart[stationIndex] |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
@@ -230,20 +256,23 @@ static void ride_update_station_race(Ride *ride, sint32 stationIndex)
  * set the speed of the go kart type vehicle at the start to a random value or alter if peep name is an easter egg
  * @param ride (esi)
  */
-static void ride_race_init_vehicle_speeds(Ride *ride)
+static void ride_race_init_vehicle_speeds(Ride * ride)
 {
-    for (sint32 i = 0; i < ride->num_vehicles; i++) {
-        rct_vehicle *vehicle = &get_sprite(ride->vehicles[i])->vehicle;
+    for (sint32 i = 0; i < ride->num_vehicles; i++)
+    {
+        rct_vehicle * vehicle = &get_sprite(ride->vehicles[i])->vehicle;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_6;
 
-        rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
+        rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
 
         vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
-        if (vehicle->num_peeps != 0) {
-            rct_peep *peep = &get_sprite(vehicle->peep[0])->peep;
+        if (vehicle->num_peeps != 0)
+        {
+            rct_peep * peep = &get_sprite(vehicle->peep[0])->peep;
 
-            switch (peep_get_easteregg_name_id(peep)) {
+            switch (peep_get_easteregg_name_id(peep))
+            {
             case EASTEREGG_PEEP_NAME_MICHAEL_SCHUMACHER:
                 vehicle->speed += 35;
                 break;
@@ -268,13 +297,13 @@ static void ride_race_init_vehicle_speeds(Ride *ride)
  *
  *  rct2: 0x006AC2C7
  */
-static void ride_invalidate_station_start(Ride *ride, sint32 stationIndex, bool greenLight)
+static void ride_invalidate_station_start(Ride * ride, sint32 stationIndex, bool greenLight)
 {
-    sint32 x, y;
-    rct_map_element *mapElement;
+    sint32            x, y;
+    rct_map_element * mapElement;
 
-    x = ride->station_starts[stationIndex].x * 32;
-    y = ride->station_starts[stationIndex].y * 32;
+    x          = ride->station_starts[stationIndex].x * 32;
+    y          = ride->station_starts[stationIndex].y * 32;
     mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -287,10 +316,10 @@ static void ride_invalidate_station_start(Ride *ride, sint32 stationIndex, bool 
     map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
-rct_map_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex)
+rct_map_element * ride_get_station_start_track_element(Ride * ride, sint32 stationIndex)
 {
-    sint32 x, y, z;
-    rct_map_element *mapElement;
+    sint32            x, y, z;
+    rct_map_element * mapElement;
 
     x = ride->station_starts[stationIndex].x;
     y = ride->station_starts[stationIndex].y;
@@ -298,7 +327,8 @@ rct_map_element *ride_get_station_start_track_element(Ride *ride, sint32 station
 
     // Find the station track element
     mapElement = map_get_first_element_at(x, y);
-    do {
+    do
+    {
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK && z == mapElement->base_height)
             return mapElement;
 
@@ -307,13 +337,14 @@ rct_map_element *ride_get_station_start_track_element(Ride *ride, sint32 station
     return NULL;
 }
 
-rct_map_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z)
+rct_map_element * ride_get_station_exit_element(Ride * ride, sint32 x, sint32 y, sint32 z)
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement;
 
     // Find the station track element
     mapElement = map_get_first_element_at(x, y);
-    do {
+    do
+    {
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE && z == mapElement->base_height)
             return mapElement;
     } while (!map_element_is_last_for_tile(mapElement++));
@@ -333,7 +364,7 @@ sint32 ride_get_first_valid_station_exit(Ride * ride)
     return -1;
 }
 
-sint8 ride_get_first_valid_station_start(const Ride *ride)
+sint8 ride_get_first_valid_station_start(const Ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {
@@ -345,7 +376,7 @@ sint8 ride_get_first_valid_station_start(const Ride *ride)
     return -1;
 }
 
-sint8 ride_get_first_empty_station_start(const Ride *ride)
+sint8 ride_get_first_empty_station_start(const Ride * ride)
 {
     for (sint32 i = 0; i < MAX_STATIONS; i++)
     {

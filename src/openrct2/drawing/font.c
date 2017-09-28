@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
+#include "../rct2/addresses.h"
 #include "../sprites.h"
 #include "drawing.h"
 #include "font.h"
@@ -26,11 +26,11 @@ static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 #ifdef NO_RCT2
 static uint8 _spriteFontCharacterWidths[896];
 #else
-static uint8 *_spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
+static uint8 * _spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
 #endif
 
 #ifndef NO_TTF
-TTFFontSetDescriptor *gCurrentTTFFontSet;
+TTFFontSetDescriptor * gCurrentTTFFontSet;
 #endif // NO_TTF
 
 /**
@@ -39,14 +39,17 @@ TTFFontSetDescriptor *gCurrentTTFFontSet;
  */
 void font_sprite_initialise_characters()
 {
-    uint8* pCharacterWidth = _spriteFontCharacterWidths;
-    for (sint32 fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
+    uint8 * pCharacterWidth = _spriteFontCharacterWidths;
+    for (sint32 fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++)
+    {
         sint32 glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
-        for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
+        for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++)
+        {
             rct_g1_element g1 = g1Elements[glyphIndex + SPR_CHAR_START + glyphOffset];
 
             sint32 width = fontSize == FONT_SIZE_BIG ? g1.width + 1 : g1.width - 1;
-            if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
+            if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32))
+            {
                 width = 0;
             }
             *pCharacterWidth++ = (uint8)width;
@@ -58,44 +61,72 @@ void font_sprite_initialise_characters()
 
 sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
 {
-    switch (codepoint) {
-    case FORMAT_ENDQUOTES: return 34 - 32;
+    switch (codepoint)
+    {
+    case FORMAT_ENDQUOTES:
+        return 34 - 32;
 
-    case FORMAT_AMINUSCULE: return 159 - 32;
-    case FORMAT_UP: return 160 - 32;
-    case FORMAT_SYMBOL_i: return 160 - 32;
-    case FORMAT_CENT: return 162 - 32;
-    case FORMAT_POUND: return 163 - 32;
+    case FORMAT_AMINUSCULE:
+        return 159 - 32;
+    case FORMAT_UP:
+        return 160 - 32;
+    case FORMAT_SYMBOL_i:
+        return 160 - 32;
+    case FORMAT_CENT:
+        return 162 - 32;
+    case FORMAT_POUND:
+        return 163 - 32;
 
-    case FORMAT_YEN: return 165 - 32;
+    case FORMAT_YEN:
+        return 165 - 32;
 
+    case FORMAT_COPYRIGHT:
+        return 169 - 32;
+    case FORMAT_DOWN:
+        return 170 - 32;
+    case FORMAT_LEFTGUILLEMET:
+        return 171 - 32;
+    case FORMAT_TICK:
+        return 172 - 32;
+    case FORMAT_CROSS:
+        return 173 - 32;
 
+    case FORMAT_RIGHT:
+        return 175 - 32;
+    case FORMAT_DEGREE:
+        return 176 - 32;
+    case FORMAT_SYMBOL_RAILWAY:
+        return 177 - 32;
+    case FORMAT_SQUARED:
+        return 178 - 32;
 
-    case FORMAT_COPYRIGHT: return 169 - 32;
-    case FORMAT_DOWN: return 170 - 32;
-    case FORMAT_LEFTGUILLEMET: return 171 - 32;
-    case FORMAT_TICK: return 172 - 32;
-    case FORMAT_CROSS: return 173 - 32;
-
-    case FORMAT_RIGHT: return 175 - 32;
-    case FORMAT_DEGREE: return 176 - 32;
-    case FORMAT_SYMBOL_RAILWAY: return 177 - 32;
-    case FORMAT_SQUARED: return 178 - 32;
-
-    case FORMAT_OPENQUOTES: return 180 - 32;
-    case FORMAT_EURO: return 181 - 32;
-    case FORMAT_SYMBOL_ROAD: return 182 - 32;
-    case FORMAT_SYMBOL_FLAG: return 183 - 32;
-    case FORMAT_APPROX: return 184 - 32;
-    case FORMAT_POWERNEGATIVEONE: return 185 - 32;
-    case FORMAT_BULLET: return 186 - 32;
-    case FORMAT_RIGHTGUILLEMET: return 187 - 32;
-    case FORMAT_SMALLUP: return 188 - 32;
-    case FORMAT_SMALLDOWN: return 189 - 32;
-    case FORMAT_LEFT: return 190 - 32;
-    case FORMAT_INVERTEDQUESTION: return 191 - 32;
+    case FORMAT_OPENQUOTES:
+        return 180 - 32;
+    case FORMAT_EURO:
+        return 181 - 32;
+    case FORMAT_SYMBOL_ROAD:
+        return 182 - 32;
+    case FORMAT_SYMBOL_FLAG:
+        return 183 - 32;
+    case FORMAT_APPROX:
+        return 184 - 32;
+    case FORMAT_POWERNEGATIVEONE:
+        return 185 - 32;
+    case FORMAT_BULLET:
+        return 186 - 32;
+    case FORMAT_RIGHTGUILLEMET:
+        return 187 - 32;
+    case FORMAT_SMALLUP:
+        return 188 - 32;
+    case FORMAT_SMALLDOWN:
+        return 189 - 32;
+    case FORMAT_LEFT:
+        return 190 - 32;
+    case FORMAT_INVERTEDQUESTION:
+        return 191 - 32;
     default:
-        if (codepoint < 32 || codepoint >= 256) codepoint = '?';
+        if (codepoint < 32 || codepoint >= 256)
+            codepoint = '?';
         return codepoint - 32;
     }
 }
@@ -112,7 +143,8 @@ sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint)
 
 sint32 font_get_size_from_sprite_base(uint16 spriteBase)
 {
-    switch (spriteBase) {
+    switch (spriteBase)
+    {
     case FONT_SPRITE_BASE_TINY:
         return 0;
     case FONT_SPRITE_BASE_SMALL:
@@ -129,9 +161,12 @@ sint32 font_get_line_height(sint32 fontSpriteBase)
 {
     sint32 fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
-    if (gUseTrueTypeFont) {
+    if (gUseTrueTypeFont)
+    {
         return gCurrentTTFFontSet->size[fontSize].line_height;
-    } else {
+    }
+    else
+    {
 #endif // NO_TTF
         return SpriteFontLineHeight[fontSize];
 #ifndef NO_TTF
@@ -144,14 +179,16 @@ sint32 font_get_line_height_small(sint32 fontSpriteBase)
     return font_get_line_height(fontSpriteBase) / 2;
 }
 
-bool font_supports_string_sprite(const utf8 *text)
+bool font_supports_string_sprite(const utf8 * text)
 {
-    const utf8 *src = text;
+    const utf8 * src = text;
 
     uint32 codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0) {
+    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    {
         bool supported = false;
-        switch (codepoint) {
+        switch (codepoint)
+        {
         case FORMAT_ENDQUOTES:
         case FORMAT_AMINUSCULE:
         case FORMAT_UP:
@@ -183,31 +220,36 @@ bool font_supports_string_sprite(const utf8 *text)
             supported = true;
             break;
         default:
-            if (codepoint >= 32 && codepoint < 256) {
+            if (codepoint >= 32 && codepoint < 256)
+            {
                 supported = true;
             }
             break;
         }
-        if (!supported) {
+        if (!supported)
+        {
             return false;
         }
     }
     return true;
 }
 
-bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
+bool font_supports_string_ttf(const utf8 * text, sint32 fontSize)
 {
 #ifndef NO_TTF
-    const utf8 *src = text;
-    const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
-    if (font == NULL) {
+    const utf8 *     src  = text;
+    const TTF_Font * font = gCurrentTTFFontSet->size[fontSize].font;
+    if (font == NULL)
+    {
         return false;
     }
 
     uint32 codepoint;
-    while ((codepoint = utf8_get_next(src, &src)) != 0) {
+    while ((codepoint = utf8_get_next(src, &src)) != 0)
+    {
         bool supported = ttf_provides_glyph(font, codepoint);
-        if (!supported) {
+        if (!supported)
+        {
             return false;
         }
     }
@@ -217,11 +259,14 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 #endif // NO_TTF
 }
 
-bool font_supports_string(const utf8 *text, sint32 fontSize)
+bool font_supports_string(const utf8 * text, sint32 fontSize)
 {
-    if (gUseTrueTypeFont) {
+    if (gUseTrueTypeFont)
+    {
         return font_supports_string_ttf(text, fontSize);
-    } else {
+    }
+    else
+    {
         return font_supports_string_sprite(text);
     }
 }

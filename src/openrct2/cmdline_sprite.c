@@ -17,11 +17,11 @@
 #pragma warning(disable : 4706) // assignment within conditional expression
 
 #include <jansson.h>
+#include "Imaging.h"
+#include "OpenRCT2.h"
 #include "cmdline_sprite.h"
 #include "drawing/drawing.h"
-#include "Imaging.h"
 #include "localisation/localisation.h"
-#include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/util.h"
 
@@ -33,18 +33,21 @@ extern sint32 gSpriteMode;
 
 #pragma pack(push, 1)
 
-typedef struct rct_sprite_file_header {
+typedef struct rct_sprite_file_header
+{
     uint32 num_entries;
     uint32 total_size;
 } rct_sprite_file_header;
 
 assert_struct_size(rct_sprite_file_header, 8);
 
-typedef struct rct_sprite_file_palette_entry {
+typedef struct rct_sprite_file_palette_entry
+{
     uint8 b, g, r, a;
 } rct_sprite_file_palette_entry;
 
-typedef struct rle_code {
+typedef struct rle_code
+{
     uint8 num_pixels;
     uint8 offset_x;
 } rle_code;
@@ -55,12 +58,12 @@ assert_struct_size(rle_code, 2);
 
 assert_struct_size(rct_sprite_file_palette_entry, 4);
 
-rct_sprite_file_palette_entry spriteFilePalette[256];
+rct_sprite_file_palette_entry        spriteFilePalette[256];
 static rct_sprite_file_palette_entry _standardPalette[256];
 
 rct_sprite_file_header spriteFileHeader;
-rct_g1_element *spriteFileEntries;
-uint8 *spriteFileData;
+rct_g1_element *       spriteFileEntries;
+uint8 *                spriteFileData;
 
 #ifdef _WIN32
 
@@ -68,7 +71,7 @@ static FILE * fopen_utf8(const char * path, const char * mode)
 {
     wchar_t * pathW = utf8_to_widechar(path);
     wchar_t * modeW = utf8_to_widechar(mode);
-    FILE * file = _wfopen(pathW, modeW);
+    FILE *    file  = _wfopen(pathW, modeW);
     free(pathW);
     free(modeW);
     return file;
@@ -80,11 +83,12 @@ static FILE * fopen_utf8(const char * path, const char * mode)
 
 static void sprite_file_load_palette(sint32 spriteIndex)
 {
-    rct_g1_element *g1 = &spriteFileEntries[spriteIndex];
-    sint32 numPaletteEntries = g1->width;
-    uint8* src = g1->offset;
-    rct_sprite_file_palette_entry *destPaletteEntry = &spriteFilePalette[g1->x_offset];
-    for (; numPaletteEntries > 0; numPaletteEntries--) {
+    rct_g1_element *                g1                = &spriteFileEntries[spriteIndex];
+    sint32                          numPaletteEntries = g1->width;
+    uint8 *                         src               = g1->offset;
+    rct_sprite_file_palette_entry * destPaletteEntry  = &spriteFilePalette[g1->x_offset];
+    for (; numPaletteEntries > 0; numPaletteEntries--)
+    {
         destPaletteEntry->b = src[0];
         destPaletteEntry->g = src[1];
         destPaletteEntry->r = src[2];
@@ -105,33 +109,38 @@ static void sprite_entries_make_relative()
         spriteFileEntries[i].offset -= (uintptr_t)spriteFileData;
 }
 
-static bool sprite_file_open(const utf8 *path)
+static bool sprite_file_open(const utf8 * path)
 {
     FILE * file = fopen(path, "rb");
     if (file == NULL)
         return false;
 
-    if (fread(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1) {
+    if (fread(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1)
+    {
         fclose(file);
         return false;
     }
 
-    if (spriteFileHeader.num_entries > 0) {
-        sint32 openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit * openElements = (rct_g1_element_32bit *)malloc(openEntryTableSize);
-        if (openElements == NULL) {
+    if (spriteFileHeader.num_entries > 0)
+    {
+        sint32                 openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+        rct_g1_element_32bit * openElements       = (rct_g1_element_32bit *)malloc(openEntryTableSize);
+        if (openElements == NULL)
+        {
             fclose(file);
             return false;
         }
 
-        if (fread(openElements, openEntryTableSize, 1, file) != 1) {
+        if (fread(openElements, openEntryTableSize, 1, file) != 1)
+        {
             free(openElements);
             fclose(file);
             return false;
         }
 
         spriteFileData = malloc(spriteFileHeader.total_size);
-        if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1) {
+        if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
+        {
             free(spriteFileData);
             free(openElements);
             fclose(file);
@@ -139,17 +148,18 @@ static bool sprite_file_open(const utf8 *path)
         }
 
         sint32 entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
-        spriteFileEntries = malloc(entryTableSize);
-        for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
-            rct_g1_element_32bit * inElement = &openElements[i];
-            rct_g1_element * outElement = &spriteFileEntries[i];
+        spriteFileEntries     = malloc(entryTableSize);
+        for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
+        {
+            rct_g1_element_32bit * inElement  = &openElements[i];
+            rct_g1_element *       outElement = &spriteFileEntries[i];
 
-            outElement->offset = (uint8*)((uintptr_t)inElement->offset + (uintptr_t)spriteFileData);
-            outElement->width = inElement->width;
-            outElement->height = inElement->height;
-            outElement->x_offset = inElement->x_offset;
-            outElement->y_offset = inElement->y_offset;
-            outElement->flags = inElement->flags;
+            outElement->offset        = (uint8 *)((uintptr_t)inElement->offset + (uintptr_t)spriteFileData);
+            outElement->width         = inElement->width;
+            outElement->height        = inElement->height;
+            outElement->x_offset      = inElement->x_offset;
+            outElement->y_offset      = inElement->y_offset;
+            outElement->flags         = inElement->flags;
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
@@ -160,46 +170,52 @@ static bool sprite_file_open(const utf8 *path)
     return true;
 }
 
-static bool sprite_file_save(const char *path)
+static bool sprite_file_save(const char * path)
 {
     FILE * file = fopen(path, "wb");
     if (file == NULL)
         return false;
 
-    if (fwrite(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1) {
+    if (fwrite(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1)
+    {
         fclose(file);
         return false;
     }
 
-    if (spriteFileHeader.num_entries > 0) {
-        sint32 saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
-        rct_g1_element_32bit * saveElements = (rct_g1_element_32bit *)malloc(saveEntryTableSize);
-        if (saveElements == NULL) {
+    if (spriteFileHeader.num_entries > 0)
+    {
+        sint32                 saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
+        rct_g1_element_32bit * saveElements       = (rct_g1_element_32bit *)malloc(saveEntryTableSize);
+        if (saveElements == NULL)
+        {
             fclose(file);
             return false;
         }
 
-        for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
-            rct_g1_element * inElement = &spriteFileEntries[i];
+        for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
+        {
+            rct_g1_element *       inElement  = &spriteFileEntries[i];
             rct_g1_element_32bit * outElement = &saveElements[i];
 
-            outElement->offset = (uint32)((uintptr_t)inElement->offset - (uintptr_t)spriteFileData);
-            outElement->width = inElement->width;
-            outElement->height = inElement->height;
-            outElement->x_offset = inElement->x_offset;
-            outElement->y_offset = inElement->y_offset;
-            outElement->flags = inElement->flags;
+            outElement->offset        = (uint32)((uintptr_t)inElement->offset - (uintptr_t)spriteFileData);
+            outElement->width         = inElement->width;
+            outElement->height        = inElement->height;
+            outElement->x_offset      = inElement->x_offset;
+            outElement->y_offset      = inElement->y_offset;
+            outElement->flags         = inElement->flags;
             outElement->zoomed_offset = inElement->zoomed_offset;
         }
 
-        if (fwrite(saveElements, saveEntryTableSize, 1, file) != 1) {
+        if (fwrite(saveElements, saveEntryTableSize, 1, file) != 1)
+        {
             free(saveElements);
             fclose(file);
             return false;
         }
         free(saveElements);
 
-        if (fwrite(spriteFileData, spriteFileHeader.total_size, 1, file) != 1) {
+        if (fwrite(spriteFileData, spriteFileHeader.total_size, 1, file) != 1)
+        {
             fclose(file);
             return false;
         }
@@ -215,48 +231,58 @@ static void sprite_file_close()
     SafeFree(spriteFileData);
 }
 
-static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
+static bool sprite_file_export(sint32 spriteIndex, const char * outPath)
 {
-    rct_g1_element *spriteHeader;
+    rct_g1_element *  spriteHeader;
     rct_drawpixelinfo dpi;
-    uint8 *pixels;
-    sint32 pixelBufferSize;
+    uint8 *           pixels;
+    sint32            pixelBufferSize;
 
-    spriteHeader = &spriteFileEntries[spriteIndex];
+    spriteHeader    = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
-    pixels = malloc(pixelBufferSize);
+    pixels          = malloc(pixelBufferSize);
     memset(pixels, 0, pixelBufferSize);
 
-    dpi.bits = pixels;
-    dpi.x = 0;
-    dpi.y = 0;
-    dpi.width = spriteHeader->width;
-    dpi.height = spriteHeader->height;
-    dpi.pitch = 0;
+    dpi.bits       = pixels;
+    dpi.x          = 0;
+    dpi.y          = 0;
+    dpi.width      = spriteHeader->width;
+    dpi.height     = spriteHeader->height;
+    dpi.pitch      = 0;
     dpi.zoom_level = 0;
 
     memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 
-    if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
-        gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
-    } else {
-        gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, NULL, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
+    if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION)
+    {
+        gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8 *)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0,
+                                 spriteHeader->height, 0, spriteHeader->width);
+    }
+    else
+    {
+        gfx_bmp_sprite_to_buffer((uint8 *)spriteFilePalette, NULL, spriteHeader->offset, pixels, spriteHeader, &dpi,
+                                 spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
-    if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
+    if (image_io_png_write(&dpi, (rct_palette *)spriteFilePalette, outPath))
+    {
         return true;
-    } else {
+    }
+    else
+    {
         fprintf(stderr, "Error writing PNG");
         return false;
     }
 }
 
-static bool is_transparent_pixel(sint16 *colour){
+static bool is_transparent_pixel(sint16 * colour)
+{
     return colour[3] < 128;
 }
 
 // Returns true if pixel index is an index not used for remapping
-static bool is_changable_pixel(sint32 palette_index) {
+static bool is_changable_pixel(sint32 palette_index)
+{
     if (palette_index == -1)
         return true;
     if (palette_index == 0)
@@ -272,19 +298,22 @@ static bool is_changable_pixel(sint32 palette_index) {
     return true;
 }
 
-static sint32 get_closest_palette_index(sint16 *colour){
+static sint32 get_closest_palette_index(sint16 * colour)
+{
     uint32 smallest_error = -1;
-    sint32 best_match = -1;
+    sint32 best_match     = -1;
 
-    for (sint32 x = 0; x < 256; x++){
-        if (is_changable_pixel(x)){
-            uint32 error =
-                ((sint16)(spriteFilePalette[x].r) - colour[0]) * ((sint16)(spriteFilePalette[x].r) - colour[0]) +
-                ((sint16)(spriteFilePalette[x].g) - colour[1]) * ((sint16)(spriteFilePalette[x].g) - colour[1]) +
-                ((sint16)(spriteFilePalette[x].b) - colour[2]) * ((sint16)(spriteFilePalette[x].b) - colour[2]);
+    for (sint32 x = 0; x < 256; x++)
+    {
+        if (is_changable_pixel(x))
+        {
+            uint32 error = ((sint16)(spriteFilePalette[x].r) - colour[0]) * ((sint16)(spriteFilePalette[x].r) - colour[0]) +
+                           ((sint16)(spriteFilePalette[x].g) - colour[1]) * ((sint16)(spriteFilePalette[x].g) - colour[1]) +
+                           ((sint16)(spriteFilePalette[x].b) - colour[2]) * ((sint16)(spriteFilePalette[x].b) - colour[2]);
 
-            if (smallest_error == -1 || smallest_error > error){
-                best_match = x;
+            if (smallest_error == -1 || smallest_error > error)
+            {
+                best_match     = x;
                 smallest_error = error;
             }
         }
@@ -292,32 +321,38 @@ static sint32 get_closest_palette_index(sint16 *colour){
     return best_match;
 }
 
-static sint32 get_palette_index(sint16 *colour)
+static sint32 get_palette_index(sint16 * colour)
 {
     if (is_transparent_pixel(colour))
         return -1;
 
-    for (sint32 i = 0; i < 256; i++) {
-        if ((sint16)(spriteFilePalette[i].r) != colour[0]) continue;
-        if ((sint16)(spriteFilePalette[i].g) != colour[1]) continue;
-        if ((sint16)(spriteFilePalette[i].b) != colour[2]) continue;
+    for (sint32 i = 0; i < 256; i++)
+    {
+        if ((sint16)(spriteFilePalette[i].r) != colour[0])
+            continue;
+        if ((sint16)(spriteFilePalette[i].g) != colour[1])
+            continue;
+        if ((sint16)(spriteFilePalette[i].b) != colour[2])
+            continue;
         return i;
     }
 
     return -1;
 }
 
-
-static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offset, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
+static bool sprite_file_import(const char * path, sint16 x_offset, sint16 y_offset, rct_g1_element * outElement,
+                               uint8 ** outBuffer, int * outBufferLength, sint32 mode)
 {
-    uint8 *pixels;
-    uint32 width, height;
-    if (!image_io_png_read(&pixels, &width, &height, path)) {
+    uint8 * pixels;
+    uint32  width, height;
+    if (!image_io_png_read(&pixels, &width, &height, path))
+    {
         fprintf(stderr, "Error reading PNG");
         return false;
     }
 
-    if (width > 256 || height > 256) {
+    if (width > 256 || height > 256)
+    {
         fprintf(stderr, "Only images 256x256 or less are supported.");
         free(pixels);
         return false;
@@ -325,46 +360,51 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 
     memcpy(spriteFilePalette, _standardPalette, 256 * 4);
 
-    uint8 *buffer = malloc((height * 2) + (width * height * 16));
+    uint8 * buffer = malloc((height * 2) + (width * height * 16));
     memset(buffer, 0, (height * 2) + (width * height * 16));
-    uint16 *yOffsets = (uint16*)buffer;
+    uint16 * yOffsets = (uint16 *)buffer;
 
     // A larger range is needed for proper dithering
-    sint16 *src = malloc(height * width * 4 * 2);
-    sint16 *src_orig = src;
-    for (uint32 x = 0; x < height * width * 4; x++){
-        src[x] = (sint16) pixels[x];
+    sint16 * src      = malloc(height * width * 4 * 2);
+    sint16 * src_orig = src;
+    for (uint32 x = 0; x < height * width * 4; x++)
+    {
+        src[x] = (sint16)pixels[x];
     }
 
-    uint8 *dst = buffer + (height * 2);
+    uint8 * dst = buffer + (height * 2);
 
-    for (uint32 y = 0; y < height; y++) {
+    for (uint32 y = 0; y < height; y++)
+    {
         rle_code *previousCode, *currentCode;
 
         yOffsets[y] = (uint16)(dst - buffer);
 
         previousCode = NULL;
-        currentCode = (rle_code*)dst;
+        currentCode  = (rle_code *)dst;
         dst += 2;
-        sint32 startX = 0;
+        sint32 startX  = 0;
         sint32 npixels = 0;
-        bool pushRun = false;
-        for (uint32 x = 0; x < width; x++) {
+        bool   pushRun = false;
+        for (uint32 x = 0; x < width; x++)
+        {
             sint32 paletteIndex = get_palette_index(src);
 
             if (mode == MODE_CLOSEST || mode == MODE_DITHERING)
                 if (paletteIndex == -1 && !is_transparent_pixel(src))
                     paletteIndex = get_closest_palette_index(src);
 
-
             if (mode == MODE_DITHERING)
-                if (!is_transparent_pixel(src) && is_changable_pixel(get_palette_index(src))){
+                if (!is_transparent_pixel(src) && is_changable_pixel(get_palette_index(src)))
+                {
                     sint16 dr = src[0] - (sint16)(spriteFilePalette[paletteIndex].r);
                     sint16 dg = src[1] - (sint16)(spriteFilePalette[paletteIndex].g);
                     sint16 db = src[2] - (sint16)(spriteFilePalette[paletteIndex].b);
 
-                    if (x + 1 < width){
-                        if (!is_transparent_pixel(src + 4) && is_changable_pixel(get_palette_index(src + 4))){
+                    if (x + 1 < width)
+                    {
+                        if (!is_transparent_pixel(src + 4) && is_changable_pixel(get_palette_index(src + 4)))
+                        {
                             // Right
                             src[4] += dr * 7 / 16;
                             src[5] += dg * 7 / 16;
@@ -372,9 +412,13 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                         }
                     }
 
-                    if (y + 1 < height){
-                        if (x > 0){
-                            if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(src + 4 * (width - 1)))){
+                    if (y + 1 < height)
+                    {
+                        if (x > 0)
+                        {
+                            if (!is_transparent_pixel(src + 4 * (width - 1)) &&
+                                is_changable_pixel(get_palette_index(src + 4 * (width - 1))))
+                            {
                                 // Bottom left
                                 src[4 * (width - 1)] += dr * 3 / 16;
                                 src[4 * (width - 1) + 1] += dg * 3 / 16;
@@ -383,14 +427,18 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                         }
 
                         // Bottom
-                        if (!is_transparent_pixel(src + 4 * width) && is_changable_pixel(get_palette_index(src + 4 * width))){
+                        if (!is_transparent_pixel(src + 4 * width) && is_changable_pixel(get_palette_index(src + 4 * width)))
+                        {
                             src[4 * width] += dr * 5 / 16;
                             src[4 * width + 1] += dg * 5 / 16;
                             src[4 * width + 2] += db * 5 / 16;
                         }
 
-                        if (x + 1 < width){
-                            if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(src + 4 * (width + 1)))){
+                        if (x + 1 < width)
+                        {
+                            if (!is_transparent_pixel(src + 4 * (width - 1)) &&
+                                is_changable_pixel(get_palette_index(src + 4 * (width + 1))))
+                            {
                                 // Bottom right
                                 src[4 * (width + 1)] += dr * 1 / 16;
                                 src[4 * (width + 1) + 1] += dg * 1 / 16;
@@ -401,13 +449,17 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                 }
 
             src += 4;
-            if (paletteIndex == -1) {
-                if (npixels != 0) {
+            if (paletteIndex == -1)
+            {
+                if (npixels != 0)
+                {
                     x--;
                     src -= 4;
                     pushRun = true;
                 }
-            } else {
+            }
+            else
+            {
                 if (npixels == 0)
                     startX = x;
                 npixels++;
@@ -416,27 +468,34 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
             if (npixels == 127 || x == width - 1)
                 pushRun = true;
 
-            if (pushRun) {
-                if (npixels > 0) {
-                    previousCode = currentCode;
+            if (pushRun)
+            {
+                if (npixels > 0)
+                {
+                    previousCode            = currentCode;
                     currentCode->num_pixels = npixels;
-                    currentCode->offset_x = startX;
+                    currentCode->offset_x   = startX;
 
                     if (x == width - 1)
                         currentCode->num_pixels |= 0x80;
 
-                    currentCode = (rle_code*)dst;
+                    currentCode = (rle_code *)dst;
                     dst += 2;
-                } else {
-                    if (previousCode == NULL) {
+                }
+                else
+                {
+                    if (previousCode == NULL)
+                    {
                         currentCode->num_pixels = 0x80;
-                        currentCode->offset_x = 0;
-                    } else {
+                        currentCode->offset_x   = 0;
+                    }
+                    else
+                    {
                         previousCode->num_pixels |= 0x80;
                         dst -= 2;
                     }
                 }
-                startX = 0;
+                startX  = 0;
                 npixels = 0;
                 pushRun = false;
             }
@@ -446,35 +505,40 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
     free(src_orig);
 
     sint32 bufferLength = (sint32)(dst - buffer);
-    buffer = realloc(buffer, bufferLength);
+    buffer              = realloc(buffer, bufferLength);
 
-    outElement->offset = buffer;
-    outElement->width = width;
-    outElement->height = height;
-    outElement->flags = G1_FLAG_RLE_COMPRESSION;
-    outElement->x_offset = x_offset;
-    outElement->y_offset = y_offset;
+    outElement->offset        = buffer;
+    outElement->width         = width;
+    outElement->height        = height;
+    outElement->flags         = G1_FLAG_RLE_COMPRESSION;
+    outElement->x_offset      = x_offset;
+    outElement->y_offset      = y_offset;
     outElement->zoomed_offset = 0;
 
-    *outBuffer = buffer;
+    *outBuffer       = buffer;
     *outBufferLength = bufferLength;
     return true;
 }
 
-sint32 cmdline_for_sprite(const char **argv, sint32 argc)
+sint32 cmdline_for_sprite(const char ** argv, sint32 argc)
 {
     gOpenRCT2Headless = true;
     if (argc == 0)
         return -1;
 
-    if (_strcmpi(argv[0], "details") == 0) {
-        if (argc < 2) {
+    if (_strcmpi(argv[0], "details") == 0)
+    {
+        if (argc < 2)
+        {
             fprintf(stdout, "usage: sprite details <spritefile> [idx]\n");
             return -1;
-        } else if (argc == 2) {
-            const char *spriteFilePath = argv[1];
+        }
+        else if (argc == 2)
+        {
+            const char * spriteFilePath = argv[1];
 
-            if (!sprite_file_open(spriteFilePath)) {
+            if (!sprite_file_open(spriteFilePath))
+            {
                 fprintf(stderr, "Unable to open input sprite file.\n");
                 return -1;
             }
@@ -484,22 +548,26 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
             sprite_file_close();
             return 1;
-        } else {
-            const char *spriteFilePath = argv[1];
-            sint32 spriteIndex = atoi(argv[2]);
+        }
+        else
+        {
+            const char * spriteFilePath = argv[1];
+            sint32       spriteIndex    = atoi(argv[2]);
 
-            if (!sprite_file_open(spriteFilePath)) {
+            if (!sprite_file_open(spriteFilePath))
+            {
                 fprintf(stderr, "Unable to open input sprite file.\n");
                 return -1;
             }
 
-            if (spriteIndex < 0 || spriteIndex >= (sint32)spriteFileHeader.num_entries) {
+            if (spriteIndex < 0 || spriteIndex >= (sint32)spriteFileHeader.num_entries)
+            {
                 sprite_file_close();
                 fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
                 return -1;
             }
 
-            rct_g1_element *g1 = &spriteFileEntries[spriteIndex];
+            rct_g1_element * g1 = &spriteFileEntries[spriteIndex];
             printf("width: %d\n", g1->width);
             printf("height: %d\n", g1->height);
             printf("x offset: %d\n", g1->x_offset);
@@ -509,27 +577,33 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
             sprite_file_close();
             return 1;
         }
-    } else if (_strcmpi(argv[0], "export") == 0) {
-        if (argc < 4) {
+    }
+    else if (_strcmpi(argv[0], "export") == 0)
+    {
+        if (argc < 4)
+        {
             fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
             return -1;
         }
 
-        const char *spriteFilePath = argv[1];
-        sint32 spriteIndex = atoi(argv[2]);
-        const char *outputPath = argv[3];
+        const char * spriteFilePath = argv[1];
+        sint32       spriteIndex    = atoi(argv[2]);
+        const char * outputPath     = argv[3];
 
-        if (!sprite_file_open(spriteFilePath)) {
+        if (!sprite_file_open(spriteFilePath))
+        {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
         }
 
-        if (spriteIndex < 0 || spriteIndex >= (sint32)spriteFileHeader.num_entries) {
+        if (spriteIndex < 0 || spriteIndex >= (sint32)spriteFileHeader.num_entries)
+        {
             fprintf(stderr, "Sprite #%d does not exist in sprite file.\n", spriteIndex);
             return -1;
         }
 
-        if (!sprite_file_export(spriteIndex, outputPath)) {
+        if (!sprite_file_export(spriteIndex, outputPath))
+        {
             fprintf(stderr, "Could not export\n");
             sprite_file_close();
             return -1;
@@ -537,16 +611,20 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         sprite_file_close();
         return 1;
-    } else if (_strcmpi(argv[0], "exportall") == 0) {
-        if (argc < 3) {
+    }
+    else if (_strcmpi(argv[0], "exportall") == 0)
+    {
+        if (argc < 3)
+        {
             fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
             return -1;
         }
 
-        const char *spriteFilePath = argv[1];
-        char outputPath[MAX_PATH];
+        const char * spriteFilePath = argv[1];
+        char         outputPath[MAX_PATH];
 
-        if (!sprite_file_open(spriteFilePath)) {
+        if (!sprite_file_open(spriteFilePath))
+        {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
         }
@@ -554,42 +632,49 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         safe_strcpy(outputPath, argv[2], MAX_PATH);
         path_end_with_separator(outputPath, MAX_PATH);
 
-        if (!platform_ensure_directory_exists(outputPath)){
+        if (!platform_ensure_directory_exists(outputPath))
+        {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
         }
 
         sint32 maxIndex = (sint32)spriteFileHeader.num_entries;
-        sint32 numbers = (sint32)floor(log(maxIndex));
-        size_t pathLen = strlen(outputPath);
+        sint32 numbers  = (sint32)floor(log(maxIndex));
+        size_t pathLen  = strlen(outputPath);
 
-        if (pathLen >= (size_t)(MAX_PATH - numbers - 5)) {
+        if (pathLen >= (size_t)(MAX_PATH - numbers - 5))
+        {
             fprintf(stderr, "Path too long.\n");
             return -1;
         }
 
-        for (sint32 x = 0; x < numbers; x++){
+        for (sint32 x = 0; x < numbers; x++)
+        {
             outputPath[pathLen + x] = '0';
         }
         safe_strcpy(outputPath + pathLen + numbers, ".png", MAX_PATH - pathLen - numbers);
 
-        for (sint32 spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++){
+        for (sint32 spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
+        {
 
-            if (spriteIndex % 100 == 99){
+            if (spriteIndex % 100 == 99)
+            {
                 // Status indicator
                 printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
             }
 
             // Add to the index at the end of the file name
-            char *counter = outputPath + pathLen + numbers - 1;
+            char * counter = outputPath + pathLen + numbers - 1;
             (*counter)++;
-            while (*counter > '9'){
+            while (*counter > '9')
+            {
                 *counter = '0';
                 counter--;
                 (*counter)++;
             }
 
-            if (!sprite_file_export(spriteIndex, outputPath)) {
+            if (!sprite_file_export(spriteIndex, outputPath))
+            {
                 fprintf(stderr, "Could not export\n");
                 sprite_file_close();
                 return -1;
@@ -598,36 +683,40 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         sprite_file_close();
         return 1;
-
-    } else if (_strcmpi(argv[0], "create") == 0) {
-        if (argc < 2) {
+    }
+    else if (_strcmpi(argv[0], "create") == 0)
+    {
+        if (argc < 2)
+        {
             fprintf(stderr, "usage: sprite create <spritefile>\n");
             return -1;
         }
 
-        const char *spriteFilePath = argv[1];
+        const char * spriteFilePath = argv[1];
 
         spriteFileHeader.num_entries = 0;
-        spriteFileHeader.total_size = 0;
+        spriteFileHeader.total_size  = 0;
         sprite_file_save(spriteFilePath);
 
         sprite_file_close();
         return 1;
-    } else if (_strcmpi(argv[0], "append") == 0) {
-        if (argc != 3 && argc != 5) {
+    }
+    else if (_strcmpi(argv[0], "append") == 0)
+    {
+        if (argc != 3 && argc != 5)
+        {
             fprintf(stderr, "usage: sprite append <spritefile> <input> [<x offset> <y offset>]\n");
             return -1;
         }
 
-
-        const char *spriteFilePath = argv[1];
-        const char *imagePath = argv[2];
-        sint16 x_offset = 0;
-        sint16 y_offset = 0;
+        const char * spriteFilePath = argv[1];
+        const char * imagePath      = argv[2];
+        sint16       x_offset       = 0;
+        sint16       y_offset       = 0;
 
         if (argc == 5)
         {
-            char *endptr;
+            char * endptr;
 
             x_offset = strtol(argv[3], &endptr, 0);
             if (*endptr != 0)
@@ -645,14 +734,15 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         }
 
         rct_g1_element spriteElement;
-        uint8 *buffer;
+        uint8 *        buffer;
 
         sint32 bufferLength;
         if (!sprite_file_import(imagePath, x_offset, y_offset, &spriteElement, &buffer, &bufferLength, gSpriteMode))
 
             return -1;
 
-        if (!sprite_file_open(spriteFilePath)) {
+        if (!sprite_file_open(spriteFilePath))
+        {
             fprintf(stderr, "Unable to open input sprite file.\n");
             return -1;
         }
@@ -667,29 +757,34 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
         memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
-        spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
+        spriteFileEntries[spriteFileHeader.num_entries - 1].offset =
+            spriteFileData + (spriteFileHeader.total_size - bufferLength);
 
         free(buffer);
         if (!sprite_file_save(spriteFilePath))
             return -1;
 
         return 1;
-    } else if (_strcmpi(argv[0], "build") == 0) {
-        if (argc < 3) {
+    }
+    else if (_strcmpi(argv[0], "build") == 0)
+    {
+        if (argc < 3)
+        {
             fprintf(stdout, "usage: sprite build <spritefile> <sprite description file> [silent]\n");
             return -1;
         }
 
-        const char *spriteFilePath = argv[1];
-        const char *spriteDescriptionPath = argv[2];
-        char* directoryPath = path_get_directory(spriteDescriptionPath);
+        const char * spriteFilePath        = argv[1];
+        const char * spriteDescriptionPath = argv[2];
+        char *       directoryPath         = path_get_directory(spriteDescriptionPath);
 
         json_error_t error;
-        json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
+        json_t *     sprite_list = json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
 
         if (sprite_list == NULL)
         {
-            fprintf(stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line, error.column);
+            fprintf(stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line,
+                    error.column);
             return -1;
         }
 
@@ -703,43 +798,44 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         bool silent = (argc >= 4 && strcmp(argv[3], "silent") == 0);
 
         spriteFileHeader.num_entries = 0;
-        spriteFileHeader.total_size = 0;
+        spriteFileHeader.total_size  = 0;
         sprite_file_save(spriteFilePath);
 
         fprintf(stdout, "Building: %s\n", spriteFilePath);
 
-        size_t i;
-        json_t* sprite_description;
+        size_t   i;
+        json_t * sprite_description;
 
         json_array_foreach(sprite_list, i, sprite_description)
         {
-            if(!json_is_object(sprite_description))
+            if (!json_is_object(sprite_description))
             {
                 fprintf(stderr, "Error: expected object for sprite %lu\n", (unsigned long)i);
                 json_decref(sprite_list);
                 return -1;
             }
 
-            json_t* path = json_object_get(sprite_description,"path");
-            if(!path || !json_is_string(path))
+            json_t * path = json_object_get(sprite_description, "path");
+            if (!path || !json_is_string(path))
             {
                 fprintf(stderr, "Error: no path provided for sprite %lu\n", (unsigned long)i);
                 json_decref(sprite_list);
                 return -1;
             }
             // Get x and y offsets, if present
-            json_t* x_offset = json_object_get(sprite_description, "x_offset");
-            json_t* y_offset = json_object_get(sprite_description, "y_offset");
-
+            json_t * x_offset = json_object_get(sprite_description, "x_offset");
+            json_t * y_offset = json_object_get(sprite_description, "y_offset");
 
             // Resolve absolute sprite path
-            char *imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
+            char * imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
 
             rct_g1_element spriteElement;
-            uint8 *buffer;
-            int bufferLength;
+            uint8 *        buffer;
+            int            bufferLength;
 
-            if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength, gSpriteMode))
+            if (!sprite_file_import(imagePath, x_offset == NULL ? 0 : json_integer_value(x_offset),
+                                    y_offset == NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength,
+                                    gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
                 json_decref(sprite_list);
@@ -765,7 +861,8 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
             spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
             memcpy(spriteFileData + (spriteFileHeader.total_size - bufferLength), buffer, bufferLength);
-            spriteFileEntries[spriteFileHeader.num_entries - 1].offset = spriteFileData + (spriteFileHeader.total_size - bufferLength);
+            spriteFileEntries[spriteFileHeader.num_entries - 1].offset =
+                spriteFileData + (spriteFileHeader.total_size - bufferLength);
 
             free(buffer);
 
@@ -782,7 +879,6 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
             free(imagePath);
             sprite_file_close();
-
         }
 
         json_decref(sprite_list);
@@ -790,13 +886,13 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         fprintf(stdout, "Finished\n");
         return 1;
-    } else {
+    }
+    else
+    {
         fprintf(stderr, "Unknown sprite command.\n");
         return 1;
     }
 }
-
-
 
 static rct_sprite_file_palette_entry _standardPalette[256] = {
     // 0 (unused)

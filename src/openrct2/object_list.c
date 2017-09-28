@@ -16,8 +16,8 @@
 
 #include "game.h"
 #include "object.h"
-#include "object_list.h"
 #include "object/ObjectRepository.h"
+#include "object_list.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 
@@ -37,84 +37,86 @@ sint32 object_entry_group_counts[] = {
 };
 
 // 98DA2C
-sint32 object_entry_group_encoding[] = {
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_RLE,
-    CHUNK_ENCODING_ROTATE
-};
+sint32 object_entry_group_encoding[] = { CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,   CHUNK_ENCODING_RLE,
+                                         CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE,   CHUNK_ENCODING_RLE,
+                                         CHUNK_ENCODING_RLE, CHUNK_ENCODING_RLE, CHUNK_ENCODING_ROTATE };
 
 #ifdef NO_RCT2
-    rct_ride_entry              *gRideEntries[MAX_RIDE_OBJECTS];
-    rct_small_scenery_entry     *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
-    rct_large_scenery_entry     *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
-    rct_wall_scenery_entry      *gWallSceneryEntries[MAX_WALL_SCENERY_OBJECTS];
-    rct_banner                  *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
-    rct_footpath_entry          *gFootpathEntries[MAX_PATH_OBJECTS];
-    rct_path_bit_scenery_entry  *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
-    rct_scenery_set_entry       *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
-    rct_entrance_type           *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
-    rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
-    rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
+rct_ride_entry *             gRideEntries[MAX_RIDE_OBJECTS];
+rct_small_scenery_entry *    gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
+rct_large_scenery_entry *    gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
+rct_wall_scenery_entry *     gWallSceneryEntries[MAX_WALL_SCENERY_OBJECTS];
+rct_banner *                 gBannerSceneryEntries[MAX_BANNER_OBJECTS];
+rct_footpath_entry *         gFootpathEntries[MAX_PATH_OBJECTS];
+rct_path_bit_scenery_entry * gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
+rct_scenery_set_entry *      gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
+rct_entrance_type *          gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
+rct_water_type *             gWaterEntries[MAX_WATER_OBJECTS];
+rct_stex_entry *             gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
 #endif
 
 #ifdef NO_RCT2
-    rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
-    rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
-    rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
-    rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
-    rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
+rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
+rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
+rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
+rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
+rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
+rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
+rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
+rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
+rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
+rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
+rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
 #else
-    #define _objectEntriesRides             RCT2_ADDRESS(0x00F3F03C             ,rct_object_entry_extended)
-    #define _objectEntriesSmallScenery      RCT2_ADDRESS(0x00F3F03C + (128 * 20),rct_object_entry_extended)
-    #define _objectEntriesLargeScenery      RCT2_ADDRESS(0x00F3F03C + (380 * 20),rct_object_entry_extended)
-    #define _objectEntriesWalls             RCT2_ADDRESS(0x00F3F03C + (508 * 20),rct_object_entry_extended)
-    #define _objectEntriesBanners           RCT2_ADDRESS(0x00F3F03C + (636 * 20),rct_object_entry_extended)
-    #define _objectEntriesFootpaths         RCT2_ADDRESS(0x00F3F03C + (668 * 20),rct_object_entry_extended)
-    #define _objectEntriesFootpathAdditions RCT2_ADDRESS(0x00F3F03C + (684 * 20),rct_object_entry_extended)
-    #define _objectEntriesSceneryGroups     RCT2_ADDRESS(0x00F3F03C + (699 * 20),rct_object_entry_extended)
-    #define _objectEntriesParkEntrances     RCT2_ADDRESS(0x00F3F03C + (718 * 20),rct_object_entry_extended)
-    #define _objectEntriesWaters            RCT2_ADDRESS(0x00F3F03C + (719 * 20),rct_object_entry_extended)
-    #define _objectEntriesStexs             RCT2_ADDRESS(0x00F3F03C + (720 * 20),rct_object_entry_extended)
+#define _objectEntriesRides RCT2_ADDRESS(0x00F3F03C, rct_object_entry_extended)
+#define _objectEntriesSmallScenery RCT2_ADDRESS(0x00F3F03C + (128 * 20), rct_object_entry_extended)
+#define _objectEntriesLargeScenery RCT2_ADDRESS(0x00F3F03C + (380 * 20), rct_object_entry_extended)
+#define _objectEntriesWalls RCT2_ADDRESS(0x00F3F03C + (508 * 20), rct_object_entry_extended)
+#define _objectEntriesBanners RCT2_ADDRESS(0x00F3F03C + (636 * 20), rct_object_entry_extended)
+#define _objectEntriesFootpaths RCT2_ADDRESS(0x00F3F03C + (668 * 20), rct_object_entry_extended)
+#define _objectEntriesFootpathAdditions RCT2_ADDRESS(0x00F3F03C + (684 * 20), rct_object_entry_extended)
+#define _objectEntriesSceneryGroups RCT2_ADDRESS(0x00F3F03C + (699 * 20), rct_object_entry_extended)
+#define _objectEntriesParkEntrances RCT2_ADDRESS(0x00F3F03C + (718 * 20), rct_object_entry_extended)
+#define _objectEntriesWaters RCT2_ADDRESS(0x00F3F03C + (719 * 20), rct_object_entry_extended)
+#define _objectEntriesStexs RCT2_ADDRESS(0x00F3F03C + (720 * 20), rct_object_entry_extended)
 #endif // NO_RCT2
-
 
 // 0x98D97C chunk address', 0x98D980 object_entries
 const rct_object_entry_group object_entry_groups[] = {
-    (void**)(gRideEntries               ), _objectEntriesRides, // rides
-    (void**)(gSmallSceneryEntries       ), _objectEntriesSmallScenery,  // small scenery    0x009AD1A4, 0xF2FA3C
-    (void**)(gLargeSceneryEntries       ), _objectEntriesLargeScenery,  // large scenery    0x009AD594, 0xF40DEC
-    (void**)(gWallSceneryEntries        ), _objectEntriesWalls, // walls            0x009AD794, 0xF417EC
-    (void**)(gBannerSceneryEntries      ), _objectEntriesBanners,   // banners          0x009AD994, 0xF421EC
-    (void**)(gFootpathEntries           ), _objectEntriesFootpaths, // paths            0x009ADA14, 0xF4246C
-    (void**)(gFootpathAdditionEntries   ), _objectEntriesFootpathAdditions, // path bits        0x009ADA54, 0xF425AC
-    (void**)(gSceneryGroupEntries       ), _objectEntriesSceneryGroups, // scenery sets     0x009ADA90, 0xF426D8
-    (void**)(gParkEntranceEntries       ), _objectEntriesParkEntrances, // park entrance    0x009ADADC, 0xF42854
-    (void**)(gWaterEntries              ), _objectEntriesWaters,    // water            0x009ADAE0, 0xF42868
-    (void**)(gStexEntries               ), _objectEntriesStexs, // scenario text    0x009ADAE4, 0xF4287C
+    (void **)(gRideEntries),
+    _objectEntriesRides, // rides
+    (void **)(gSmallSceneryEntries),
+    _objectEntriesSmallScenery, // small scenery    0x009AD1A4, 0xF2FA3C
+    (void **)(gLargeSceneryEntries),
+    _objectEntriesLargeScenery, // large scenery    0x009AD594, 0xF40DEC
+    (void **)(gWallSceneryEntries),
+    _objectEntriesWalls, // walls            0x009AD794, 0xF417EC
+    (void **)(gBannerSceneryEntries),
+    _objectEntriesBanners, // banners          0x009AD994, 0xF421EC
+    (void **)(gFootpathEntries),
+    _objectEntriesFootpaths, // paths            0x009ADA14, 0xF4246C
+    (void **)(gFootpathAdditionEntries),
+    _objectEntriesFootpathAdditions, // path bits        0x009ADA54, 0xF425AC
+    (void **)(gSceneryGroupEntries),
+    _objectEntriesSceneryGroups, // scenery sets     0x009ADA90, 0xF426D8
+    (void **)(gParkEntranceEntries),
+    _objectEntriesParkEntrances, // park entrance    0x009ADADC, 0xF42854
+    (void **)(gWaterEntries),
+    _objectEntriesWaters, // water            0x009ADAE0, 0xF42868
+    (void **)(gStexEntries),
+    _objectEntriesStexs, // scenario text    0x009ADAE4, 0xF4287C
 };
 
-bool object_entry_is_empty(const rct_object_entry *entry)
+bool object_entry_is_empty(const rct_object_entry * entry)
 {
     uint64 a, b;
     memcpy(&a, (uint8 *)entry, 8);
     memcpy(&b, (uint8 *)entry + 8, 8);
 
-    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF) return true;
-    if (a == 0 && b == 0) return true;
+    if (a == 0xFFFFFFFFFFFFFFFF && b == 0xFFFFFFFFFFFFFFFF)
+        return true;
+    if (a == 0 && b == 0)
+        return true;
     return false;
 }
 
@@ -122,7 +124,7 @@ bool object_entry_is_empty(const rct_object_entry *entry)
  *
  *  rct2: 0x006AB344
  */
-void object_create_identifier_name(char* string_buffer, size_t size, const rct_object_entry* object)
+void object_create_identifier_name(char * string_buffer, size_t size, const rct_object_entry * object)
 {
     snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
 }
@@ -133,42 +135,51 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
-    if ((entry->flags & 0xF) >= countof(object_entry_groups)) {
+sint32 find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_type, uint8 * entry_index)
+{
+    if ((entry->flags & 0xF) >= countof(object_entry_groups))
+    {
         return 0;
     }
-    *entry_type = entry->flags & 0xF;
+    *entry_type                        = entry->flags & 0xF;
     rct_object_entry_group entry_group = object_entry_groups[*entry_type];
-    for (*entry_index = 0;
-        *entry_index < object_entry_group_counts[*entry_type];
-        ++(*entry_index),
-        entry_group.chunks++,
-        entry_group.entries++){
+    for (*entry_index = 0; *entry_index < object_entry_group_counts[*entry_type];
+         ++(*entry_index), entry_group.chunks++, entry_group.entries++)
+    {
 
-        if (*entry_group.chunks == (uint8*)-1) continue;
+        if (*entry_group.chunks == (uint8 *)-1)
+            continue;
 
-        if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
+        if (object_entry_compare((rct_object_entry *)entry_group.entries, entry))
+            break;
     }
 
-    if (*entry_index == object_entry_group_counts[*entry_type])return 0;
+    if (*entry_index == object_entry_group_counts[*entry_type])
+        return 0;
     return 1;
 }
 
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
 {
     uint8 objectType = OBJECT_TYPE_RIDE;
-    for (size_t i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++) {
+    for (size_t i = 0; i < OBJECT_ENTRY_GROUP_COUNT; i++)
+    {
         size_t groupCount = object_entry_group_counts[i];
-        if (index >= groupCount) {
+        if (index >= groupCount)
+        {
             index -= groupCount;
             objectType++;
-        } else {
+        }
+        else
+        {
             break;
         }
     }
 
-    if (outObjectType != NULL) *outObjectType = objectType;
-    if (outEntryIndex != NULL) *outEntryIndex = (uint8)index;
+    if (outObjectType != NULL)
+        *outObjectType = objectType;
+    if (outEntryIndex != NULL)
+        *outEntryIndex = (uint8)index;
 }
 
 const rct_object_entry * get_loaded_object_entry(size_t index)
@@ -185,14 +196,14 @@ void * get_loaded_object_chunk(size_t index)
     uint8 objectType, entryIndex;
     get_type_entry_index(index, &objectType, &entryIndex);
 
-    void *entry = object_entry_groups[objectType].chunks[entryIndex];
+    void * entry = object_entry_groups[objectType].chunks[entryIndex];
     return entry;
 }
 
 void object_entry_get_name(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
 {
-    size_t nameLength = 8;
-    const char * end = memchr(entry->name, ' ', 8);
+    size_t       nameLength = 8;
+    const char * end        = memchr(entry->name, ' ', 8);
     if (end != NULL)
     {
         nameLength = (size_t)(end - entry->name);
