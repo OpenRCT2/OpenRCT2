@@ -2714,7 +2714,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
                 // Skip if vehicle wants to be separate, unless subtype switching is enabled
-                if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
+                if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
                     continue;
 
                 // Skip if vehicle type is not invented yet

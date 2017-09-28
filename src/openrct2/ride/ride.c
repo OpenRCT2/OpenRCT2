@@ -6004,7 +6004,7 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
                 continue;
             }
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
                 subType = *rei;
                 goto foundRideEntry;
             }
@@ -6216,7 +6216,7 @@ foundRideEntry:
 
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         ride_set_name_to_track_default(ride, rideEntry);
     } else {
         ride_set_name_to_vehicle_default(ride, rideEntry);
@@ -6292,7 +6292,7 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
         const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
         return rideGroup->naming;
     }
-    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         return RideNaming[rideType];
     }
     else {
@@ -8476,16 +8476,24 @@ rct_map_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tol
 /**
  * Check for an adjacent station to x,y,z in direction.
  */
-static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direction) {
+static bool check_for_adjacent_station(sint32 x, sint32 y, sint32 z, uint8 direction)
+{
     bool found = false;
-    sint32 adjX = x + TileDirectionDelta[direction].x;
-    sint32 adjY = y + TileDirectionDelta[direction].y;
-    rct_map_element *stationElement = get_station_platform(adjX, adjY, z, 2);
-    if (stationElement != NULL) {
-        sint32 rideIndex = stationElement->properties.track.ride_index;
-        Ride *ride = get_ride(rideIndex);
-        if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS) {
-            found = true;
+    sint32 adjX = x;
+    sint32 adjY = y;
+    for (uint32 i = 0; i <= RIDE_ADJACENCY_CHECK_DISTANCE; i++)
+    {
+        adjX += TileDirectionDelta[direction].x;
+        adjY += TileDirectionDelta[direction].y;
+        rct_map_element * stationElement = get_station_platform(adjX, adjY, z, 2);
+        if (stationElement != NULL)
+        {
+            sint32 rideIndex = stationElement->properties.track.ride_index;
+            Ride * ride = get_ride(rideIndex);
+            if (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
+            {
+                found = true;
+            }
         }
     }
     return found;
