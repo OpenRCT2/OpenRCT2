@@ -8090,7 +8090,7 @@ sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType)
                 continue;
             }
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry))
+            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
             {
                 subType = *rideEntryIndex;
                 break;
