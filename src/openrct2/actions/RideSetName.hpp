@@ -105,7 +105,7 @@ public:
         res->Position.y = ride->overall_view.y * 32 + 16;
         res->Position.z = map_element_height(res->Position.x, res->Position.y);
 
-        return std::move(res);
+        return res;
     }
 };
 
