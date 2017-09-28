@@ -28,14 +28,12 @@
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
-extern "C" {
 #include "data.h"
 #include <openrct2/rct2.h>
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/track.h>
 #include <openrct2/ride/track_data.h>
-}
 
 typedef struct {
     uint8 rideType;

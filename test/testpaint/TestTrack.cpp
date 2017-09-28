@@ -29,13 +29,11 @@
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
-extern "C" {
 #include <openrct2/paint/map_element/map_element.h>
 #include <openrct2/paint/supports.h>
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/track.h>
 #include <openrct2/ride/track_data.h>
-}
 
 interface ITestTrackFilter {
 public:

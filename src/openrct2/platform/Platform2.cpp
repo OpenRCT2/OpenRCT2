@@ -16,10 +16,7 @@
 
 #include "Platform2.h"
 
-extern "C"
-{
-    #include "platform.h"
-}
+#include "platform.h"
 
 namespace Platform
 {

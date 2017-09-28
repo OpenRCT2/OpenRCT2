@@ -27,10 +27,8 @@
     #include <sys/stat.h>
     #include <unistd.h>
 #elif defined(_WIN32)
-    extern "C" {
-        // Windows needs this for widechar <-> utf8 conversion utils
-        #include "../localisation/language.h"
-    }
+    // Windows needs this for widechar <-> utf8 conversion utils
+    #include "../localisation/language.h"
 #endif
 
 #include <stack>

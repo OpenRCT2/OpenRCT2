@@ -21,15 +21,12 @@
 #include "../ui/UiContext.h"
 #include "Painter.h"
 
-extern "C"
-{
-    #include "../drawing/drawing.h"
-    #include "../game.h"
-    #include "../interface/chat.h"
-    #include "../interface/console.h"
-    #include "../intro.h"
-    #include "../localisation/localisation.h"
-}
+#include "../drawing/drawing.h"
+#include "../game.h"
+#include "../interface/chat.h"
+#include "../interface/console.h"
+#include "../intro.h"
+#include "../localisation/localisation.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

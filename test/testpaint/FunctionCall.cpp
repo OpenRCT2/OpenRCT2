@@ -16,9 +16,7 @@
 
 #include "FunctionCall.hpp"
 
-extern "C" {
 #include <openrct2/sprites.h>
-}
 
 enum SpriteGroup {
     SPRITEGROUP_NONE,
