@@ -109,6 +109,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
 void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tileElement);
 void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement);
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *tileElement);
+void virtual_floor_paint(paint_session * session);
 
 #ifdef __cplusplus
 }

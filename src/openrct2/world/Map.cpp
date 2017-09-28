@@ -25,6 +25,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../Input.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
@@ -84,6 +85,9 @@ LocationXY16        gMapSelectPositionA;
 LocationXY16        gMapSelectPositionB;
 LocationXYZ16       gMapSelectArrowPosition;
 uint8           gMapSelectArrowDirection;
+
+uint16          gMapVirtualFloorBaseSize = 5*32;
+uint16          gMapVirtualFloorHeight;
 
 uint8 gMapGroundFlags;
 
@@ -4728,4 +4732,18 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
     default:
         return 0xFF;
     }
+}
+
+void map_set_virtual_floor_height(sint16 height)
+{
+    if (gMapVirtualFloorHeight != height && input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    {
+        map_invalidate_virtual_floor_tiles();
+    }
+
+    gMapVirtualFloorHeight      = height;
+}
+
+void map_invalidate_virtual_floor_tiles()
+{
 }
