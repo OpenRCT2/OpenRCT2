@@ -383,6 +383,9 @@ extern LocationXY16     gMapSelectPositionB;
 extern LocationXYZ16    gMapSelectArrowPosition;
 extern uint8        gMapSelectArrowDirection;
 
+extern uint16       gMapVirtualFloorHeight;
+extern uint16       gMapVirtualFloorBaseSize;
+
 extern uint8 gMapGroundFlags;
 
 extern rct_tile_element gTileElements[];
@@ -456,6 +459,8 @@ void map_reorganise_elements();
 bool map_check_free_elements_and_reorganise(sint32 num_elements);
 rct_tile_element *tile_element_insert(sint32 x, sint32 y, sint32 z, sint32 flags);
 bool tile_element_check_address(const rct_tile_element * const element);
+void map_set_virtual_floor_height(sint16 height);
+void map_invalidate_virtual_floor_tiles();
 
 typedef sint32 (CLEAR_FUNC)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
