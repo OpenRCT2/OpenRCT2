@@ -80,7 +80,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
     static constexpr uint16 VERSION = 15;
-    static constexpr auto PATTERN = "*.dat";
+    static constexpr auto PATTERN = "*.dat;*.pob";
 
 public:
     ObjectFileIndex(IPlatformEnvironment * env) :
@@ -125,7 +125,7 @@ protected:
         switch (item.ObjectEntry.flags & 0x0F) {
         case OBJECT_TYPE_RIDE:
             stream->WriteValue<uint8>(item.RideFlags);
-            for (sint32 i = 0; i < 2; i++)
+            for (sint32 i = 0; i < MAX_CATEGORIES_PER_RIDE; i++)
             {
                 stream->WriteValue<uint8>(item.RideCategory[i]);
             }
