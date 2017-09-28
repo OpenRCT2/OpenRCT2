@@ -2333,19 +2333,23 @@ static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
 static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
 {
         // make sure we are in map bounds
-    if (x < 0 || y < 0 || (x>>5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || (y>>5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (x < 0 || y < 0 || (x >> 5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1) || (y >> 5) > (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    {
         return false;
+    }
 
-    rct_map_element *mapElement = get_station_platform(x, y, z, 2);
-    if (mapElement == NULL) {
+    rct_map_element * mapElement = get_station_platform(x, y, z, 2);
+    if (mapElement == NULL)
+    {
         /* No station platform element found,
          * so no station to synchronise */
         return false;
     }
 
     sint32 rideIndex = mapElement->properties.track.ride_index;
-    Ride *ride = get_ride(rideIndex);
-    if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)) {
+    Ride * ride = get_ride(rideIndex);
+    if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
+    {
         /* Ride is not set to synchronise with adjacent stations. */
         return false;
     }
@@ -2356,7 +2360,7 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
 
     sint32 stationIndex = map_element_get_station(mapElement);
 
-    rct_synchronised_vehicle *sv = _lastSynchronisedVehicle;
+    rct_synchronised_vehicle * sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
     sv->station_id = stationIndex;
     sv->vehicle_id = SPRITE_INDEX_NULL;
@@ -2365,26 +2369,44 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
     /* Ride vehicles are not on the track (e.g. ride is/was under
      * construction), so just return; vehicle_id for this station
      * is SPRITE_INDEX_NULL. */
-    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)) {
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    {
         return true;
     }
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG)) {
+    if (!(ride->station_depart[stationIndex] & STATION_DEPART_FLAG))
+    {
         return true;
     }
 
     // Look for a vehicle on this station waiting to depart.
-    for (sint32 i = 0; i < ride->num_vehicles; i++) {
+    for (sint32 i = 0; i < ride->num_vehicles; i++)
+    {
         uint16 spriteIndex = ride->vehicles[i];
-        if (spriteIndex == SPRITE_INDEX_NULL) continue;
+        if (spriteIndex == SPRITE_INDEX_NULL)
+        {
+            continue;
+        }
 
-        rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
-        if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART) continue;
-        if (vehicle->sub_state != 0) continue;
-        if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT)) continue;
-        if (vehicle->current_station != stationIndex) continue;
+        rct_vehicle * vehicle = GET_VEHICLE(spriteIndex);
+        if (vehicle->status != VEHICLE_STATUS_WAITING_TO_DEPART)
+        {
+            continue;
+        }
+        if (vehicle->sub_state != 0)
+        {
+            continue;
+        }
+        if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT))
+        {
+            continue;
+        }
+        if (vehicle->current_station != stationIndex)
+        {
+            continue;
+        }
 
         sv->vehicle_id = spriteIndex;
         return true;
@@ -2409,15 +2431,15 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
  */
 static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 {
-    Ride *ride = get_ride(vehicle->ride);
+    Ride * ride = get_ride(vehicle->ride);
     sint32 station = vehicle->current_station;
     rct_xy8 location = ride->station_starts[station];
     sint32 x = location.x * 32;
     sint32 y = location.y * 32;
     sint32 z = ride->station_heights[station];
 
-    rct_map_element *mapElement = map_get_track_element_at(x, y, z);
-    if (mapElement == NULL) {
+    rct_map_element * mapElement = map_get_track_element_at(x, y, z);
+    if (mapElement == NULL){
         return false;
     }
 
@@ -2434,15 +2456,19 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     sint32 maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
 
     spaceBetween = maxCheckDistance;
-    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
+    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
+    {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z)) {
+        if (try_add_synchronised_station(x, y, z))
+        {
             spaceBetween = maxCheckDistance;
             continue;
         }
         if (spaceBetween-- == 0)
+        {
             break;
+        }
     }
 
     // Reset back to starting tile.
@@ -2452,36 +2478,49 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     // Other search direction.
     direction = (direction ^ 2) & 3;
     spaceBetween = maxCheckDistance;
-    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1]) {
+    while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
+    {
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        if (try_add_synchronised_station(x, y, z)) {
+        if (try_add_synchronised_station(x, y, z))
+        {
             spaceBetween = maxCheckDistance;
             continue;
         }
         if (spaceBetween-- == 0)
+        {
             break;
+        }
     }
 
-    if (_lastSynchronisedVehicle == _synchronisedVehicles) {
+    if (_lastSynchronisedVehicle == _synchronisedVehicles)
+    {
         // No adjacent stations, allow depart
         return true;
     }
 
-    for (rct_synchronised_vehicle *sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++) {
-        Ride *sv_ride = get_ride(sv->ride_id);
+    for (rct_synchronised_vehicle * sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
+    {
+        Ride * sv_ride = get_ride(sv->ride_id);
 
-        if (!(sv_ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)) {
-            if (sv_ride->status != RIDE_STATUS_CLOSED) {
-                if (ride_is_block_sectioned(sv_ride)) {
-                    if (!(sv_ride->station_depart[sv->station_id] & STATION_DEPART_FLAG)) {
+        if (!(sv_ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
+        {
+            if (sv_ride->status != RIDE_STATUS_CLOSED)
+            {
+                if (ride_is_block_sectioned(sv_ride))
+                {
+                    if (!(sv_ride->station_depart[sv->station_id] & STATION_DEPART_FLAG))
+                    {
                         sv = _synchronisedVehicles;
                         uint8 rideId = 0xFF;
-                        for (; sv < _lastSynchronisedVehicle; sv++) {
-                            if (rideId == 0xFF) {
+                        for (; sv < _lastSynchronisedVehicle; sv++)
+                        {
+                            if (rideId == 0xFF)
+                            {
                                 rideId = sv->ride_id;
                             }
-                            if (rideId != sv->ride_id) {
+                            if (rideId != sv->ride_id)
+                            {
                                 // Here the sync-ed stations are not all from the same ride.
                                 return false;
                             }
@@ -2489,9 +2528,11 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 
                         /* Here all the of sync-ed stations are from the same ride */
                         ride = get_ride(rideId);
-                        for (sint32 i = 0; i < ride->num_vehicles; i++) {
-                            rct_vehicle *v = GET_VEHICLE(ride->vehicles[i]);
-                            if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0) {
+                        for (sint32 i = 0; i < ride->num_vehicles; i++)
+                        {
+                            rct_vehicle * v = GET_VEHICLE(ride->vehicles[i]);
+                            if (v->status != VEHICLE_STATUS_WAITING_TO_DEPART && v->velocity != 0)
+                            {
                                 // Here at least one vehicle on the ride is moving.
                                 return false;
                             }
@@ -2502,15 +2543,18 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
                     }
                 }
                 // There is no vehicle waiting at this station to sync with.
-                if (sv->vehicle_id == SPRITE_INDEX_NULL) {
+                if (sv->vehicle_id == SPRITE_INDEX_NULL)
+                {
                     // Check conditions for departing without all stations being in sync.
-                    if (_lastSynchronisedVehicle > &_synchronisedVehicles[1]) {
+                    if (_lastSynchronisedVehicle > &_synchronisedVehicles[1])
+                    {
                         // Sync condition: there are at least 3 stations to sync
                         return false;
                     }
                     uint8 someRideIndex = _synchronisedVehicles[0].ride_id;
                     // uint8 currentStation = _synchronisedVehicles[0].station_id
-                    if (someRideIndex != vehicle->ride) {
+                    if (someRideIndex != vehicle->ride)
+                    {
                         // Sync condition: the first station to sync is a different ride
                         return false;
                     }
@@ -2518,33 +2562,42 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
                     sint32 numTrainsAtStation = 0;
                     sint32 numTravelingTrains = 0;
                     sint32 currentStation = sv->station_id;
-                    for (sint32 i = 0; i < sv_ride->num_vehicles; i++) {
+                    for (sint32 i = 0; i < sv_ride->num_vehicles; i++)
+                    {
                         uint16 spriteIndex = sv_ride->vehicles[i];
-                        if (spriteIndex != SPRITE_INDEX_NULL) {
+                        if (spriteIndex != SPRITE_INDEX_NULL)
+                        {
                             rct_vehicle *otherVehicle = GET_VEHICLE(spriteIndex);
-                            if (otherVehicle->status != VEHICLE_STATUS_TRAVELLING) {
-                                if (currentStation == otherVehicle->current_station) {
+                            if (otherVehicle->status != VEHICLE_STATUS_TRAVELLING)
+                            {
+                                if (currentStation == otherVehicle->current_station)
+                                {
                                     if (otherVehicle->status == VEHICLE_STATUS_WAITING_TO_DEPART ||
-                                        otherVehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION
-                                    ) {
+                                        otherVehicle->status == VEHICLE_STATUS_MOVING_TO_END_OF_STATION)
+                                    {
                                         numTrainsAtStation++;
                                     }
                                 }
-                            } else {
+                            }
+                            else
+                            {
                                 numTravelingTrains++;
                             }
                         }
                     }
 
                     sint32 totalTrains = numTrainsAtStation + numTravelingTrains;
-                    if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2) {
+                    if (totalTrains != sv_ride->num_vehicles || numTravelingTrains >= sv_ride->num_vehicles / 2)
+                    {
                     //if (numArrivingTrains > 0 || numTravelingTrains >= sv_ride->num_vehicles / 2) {
                         /* Sync condition: If there are trains arriving at the
                          * station or half or more of the ride trains are
                          * travelling, this station must be sync-ed before the
                          * trains can depart! */
                         return false;
-                    } else {
+                    }
+                    else
+                    {
                         /* Sync exception - train is not arriving at the station
                          * and there are less than half the trains for the ride
                          * travelling. */
@@ -2556,8 +2609,10 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
     }
 
     // At this point all vehicles in _snychronisedVehicles can depart.
-    for (rct_synchronised_vehicle *sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++) {
-        if (sv->vehicle_id != SPRITE_INDEX_NULL) {
+    for (rct_synchronised_vehicle *sv = _synchronisedVehicles; sv < _lastSynchronisedVehicle; sv++)
+    {
+        if (sv->vehicle_id != SPRITE_INDEX_NULL)
+        {
             rct_vehicle *v = GET_VEHICLE(sv->vehicle_id);
             v->update_flags &= ~VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT;
         }
