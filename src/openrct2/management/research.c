@@ -181,7 +181,8 @@ void research_finish_item(sint32 entryIndex)
     gResearchLastItemSubject = (uint32)entryIndex;
     research_invalidate_related_windows();
 
-    if (entryIndex >= 0x10000) {
+    if (entryIndex >= RESEARCH_ENTRY_RIDE_MASK)
+    {
         // Ride
         sint32 base_ride_type = research_get_ride_base_type(entryIndex);
         sint32 rideEntryIndex = entryIndex & 0xFF;
@@ -428,7 +429,7 @@ void research_remove_non_separate_vehicle_types()
             researchItem != gResearchItems &&
             researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
             researchItem->entryIndex != RESEARCHED_ITEMS_END &&
-            researchItem->entryIndex >= 0x10000
+            researchItem->entryIndex >= RESEARCH_ENTRY_RIDE_MASK
         ) {
             rct_ride_entry *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
             if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
@@ -437,7 +438,7 @@ void research_remove_non_separate_vehicle_types()
                 do {
                     if (
                         researchItem2->entryIndex != RESEARCHED_ITEMS_SEPARATOR &&
-                        researchItem2->entryIndex >= 0x10000
+                        researchItem2->entryIndex >= RESEARCH_ENTRY_RIDE_MASK
                     ) {
                         rideEntry = get_ride_entry(researchItem2->entryIndex & 0xFF);
                         if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
@@ -555,7 +556,7 @@ void research_populate_list_random()
         for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
             sint32 rideType = rideEntry->ride_type[j];
             if (rideType != RIDE_TYPE_NULL)
-                research_insert(researched, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
+                research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
         }
     }
 
@@ -581,7 +582,7 @@ void research_populate_list_researched()
         for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
             sint32 rideType = rideEntry->ride_type[j];
             if (rideType != RIDE_TYPE_NULL)
-                research_insert(true, 0x10000 | (rideType << 8) | i, rideEntry->category[0]);
+                research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
         }
     }
 
@@ -640,10 +641,12 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 {
     rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
     uint8 category = rideEntry->category[0];
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++) {
+    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    {
         uint8 rideType = rideEntry->ride_type[i];
-        if (rideType != RIDE_TYPE_NULL) {
-            research_insert(researched, 0x10000 | (rideType << 8) | entryIndex, category);
+        if (rideType != RIDE_TYPE_NULL)
+        {
+            research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, category);
         }
     }
 }
@@ -721,7 +724,7 @@ void reset_researched_ride_types_and_entries()
  */
 rct_string_id research_item_get_name(uint32 researchItem)
 {
-    if (researchItem >= 0x10000)
+    if (researchItem >= RESEARCH_ENTRY_RIDE_MASK)
     {
         rct_ride_entry *rideEntry = get_ride_entry(researchItem & 0xFF);
         if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1)
@@ -784,6 +787,23 @@ rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_rid
         else
         {
             return RideNaming[trackType].name;
+        }
+    }
+}
+
+/**
+ *
+ *  rct2: 0x00685A79
+ *  Do not use the research list outside of the inventions list window with the flags
+ */
+void research_remove_flags()
+{
+    for (rct_research_item * research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END_2; research++)
+    {
+        // Clear the always researched flags.
+        if (research->entryIndex > RESEARCHED_ITEMS_SEPARATOR)
+        {
+            research->entryIndex &= 0x00FFFFFF;
         }
     }
 }

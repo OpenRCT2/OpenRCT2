@@ -307,23 +307,7 @@ static void research_always_researched_setup()
     research_scenery_sets_setup();
 }
 
-/**
- *
- *  rct2: 0x00685A79
- *  Do not use the research list outside of the inventions list window with the flags
- */
-static void research_remove_flags()
-{
-    for (rct_research_item* research = gResearchItems;
-        research->entryIndex != RESEARCHED_ITEMS_END_2;
-        research++){
 
-        // Clear the always researched flags.
-        if (research->entryIndex > RESEARCHED_ITEMS_SEPARATOR){
-            research->entryIndex &= 0x00FFFFFF;
-        }
-    }
-}
 
 /**
  *
