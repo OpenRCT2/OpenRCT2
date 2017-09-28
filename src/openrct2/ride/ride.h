@@ -444,7 +444,7 @@ enum {
     RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE         = 1 << 9,
     RIDE_ENTRY_FLAG_COVERED_RIDE                    = 1 << 10,
     RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS             = 1 << 11,
-    RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME              = 1 << 12,
+    RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME_DEPRECATED   = 1 << 12, // Always set with SEPARATE_RIDE, and deprecated in favour of it.
     RIDE_ENTRY_FLAG_SEPARATE_RIDE                   = 1 << 13,
     RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN               = 1 << 14,
     RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE          = 1 << 15,

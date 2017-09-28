@@ -231,7 +231,7 @@ void research_finish_item(sint32 entryIndex)
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
 
-                if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+                if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
                 {
                     set_format_arg(0, rct_string_id, rideEntry->naming.name);
                 }
@@ -432,7 +432,7 @@ void research_remove_non_separate_vehicle_types()
             researchItem->entryIndex >= RESEARCH_ENTRY_RIDE_MASK
         ) {
             rct_ride_entry *rideEntry = get_ride_entry(researchItem->entryIndex & 0xFF);
-            if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
+            if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE))) {
                 // Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
                 researchItem2 = researchItem - 1;
                 do {
@@ -441,7 +441,7 @@ void research_remove_non_separate_vehicle_types()
                         researchItem2->entryIndex >= RESEARCH_ENTRY_RIDE_MASK
                     ) {
                         rideEntry = get_ride_entry(researchItem2->entryIndex & 0xFF);
-                        if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE | RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME))) {
+                        if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE))) {
 
                             if (research_get_ride_base_type(researchItem->entryIndex) == research_get_ride_base_type(researchItem2->entryIndex)) {
                                 // Remove item
@@ -731,7 +731,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
         {
             return 0;
         }
-        else if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME)
+        else if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
         {
             return rideEntry->naming.name;
         }

@@ -6004,7 +6004,7 @@ static money32 ride_create(sint32 type, sint32 subType, sint32 flags, sint32 *ou
                 continue;
             }
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
                 subType = *rei;
                 goto foundRideEntry;
             }
@@ -6216,7 +6216,7 @@ foundRideEntry:
 
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         ride_set_name_to_track_default(ride, rideEntry);
     } else {
         ride_set_name_to_vehicle_default(ride, rideEntry);
@@ -6292,7 +6292,7 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
         const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
         return rideGroup->naming;
     }
-    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE_NAME) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         return RideNaming[rideType];
     }
     else {
