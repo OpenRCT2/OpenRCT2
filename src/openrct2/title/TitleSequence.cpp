@@ -193,8 +193,8 @@ extern "C"
         {
             IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
             zip->SetFileData("script.txt", script, String::SizeOf(script));
+            success = zip->TryWriteClose();
             delete zip;
-            success = true;
         }
         else
         {
@@ -248,12 +248,19 @@ extern "C"
                 IZipArchive * zip = Zip::TryOpen(seq->Path, ZIP_ACCESS_WRITE);
                 if (zip == nullptr)
                 {
+                    Memory::Free(fdata);
                     Console::Error::WriteLine("Unable to open '%s'", seq->Path);
                     return false;
                 }
                 zip->SetFileData(name, fdata, fsize);
+                bool ok = zip->TryWriteClose();
                 delete zip;
                 Memory::Free(fdata);
+                if (!ok)
+                {
+                    Console::Error::WriteLine("Unable to write '%s'", seq->Path);
+                    return false;
+                }
             }
             catch (const Exception &ex)
             {
@@ -289,7 +296,13 @@ extern "C"
                 return false;
             }
             zip->RenameFile(oldRelativePath, name);
+            bool ok = zip->TryWriteClose();
             delete zip;
+            if (!ok)
+            {
+                Console::Error::WriteLine("Unable to write '%s'", seq->Path);
+                return false;
+            }
         }
         else
         {
@@ -326,7 +339,13 @@ extern "C"
                 return false;
             }
             zip->DeleteFile(relativePath);
+            bool ok = zip->TryWriteClose();
             delete zip;
+            if (!ok)
+            {
+                Console::Error::WriteLine("Unable to write '%s'", seq->Path);
+                return false;
+            }
         }
         else
         {

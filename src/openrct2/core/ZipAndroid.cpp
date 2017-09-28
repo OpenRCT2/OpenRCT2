@@ -46,13 +46,18 @@ public:
     ~ZipArchive() override {
         // retrieve the JNI environment.
         JNIEnv *env = (JNIEnv *) SDL_AndroidGetJNIEnv();
-
+        
         jclass zipClass = env->GetObjectClass(_zip);
         jmethodID closeMethod = env->GetMethodID(zipClass, "close", "()V");
-
+        
         env->CallVoidMethod(_zip, closeMethod);
-
+        
         env->DeleteGlobalRef(_zip);
+    }
+
+    bool TryWriteClose() override {
+        //Cannot write, always return false
+        return false
     }
 
     size_t GetNumFiles() const override {
