@@ -1655,6 +1655,7 @@ void ride_select_next_section()
         if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
             x = outputElement.x;
             y = outputElement.y;
+            map_set_virtual_floor_height(tileElement->base_height << 3);
             tileElement = outputElement.element;
         } else {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_FRONT;
@@ -1713,6 +1714,7 @@ void ride_select_previous_section()
             _currentTrackPieceType = track_element_get_type(trackBeginEnd.begin_element);
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
+            map_set_virtual_floor_height(trackBeginEnd.end_element->base_height << 3);
             window_ride_construction_update_active_elements();
         } else {
             _rideConstructionState = RIDE_CONSTRUCTION_STATE_BACK;
