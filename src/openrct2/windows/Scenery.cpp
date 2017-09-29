@@ -27,11 +27,13 @@
 #include "dropdown.h"
 #include "error.h"
 #include "../sprites.h"
+#include "../object_list.h"
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180
 #define SCENERY_BUTTON_WIDTH    66
 #define SCENERY_BUTTON_HEIGHT   80
+#define SCENERY_WINDOW_TABS     MAX_SCENERY_GROUP_OBJECTS + 1   // The + 1 is for the 'Miscellaneous' tab
 
 enum {
     WINDOW_SCENERY_TAB_1,
@@ -178,7 +180,7 @@ static rct_widget window_scenery_widgets[] = {
 };
 
 // rct2: 0x00F64F2C
-sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
+sint16 window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
 
 void window_scenery_update_scroll(rct_window *w);
 
@@ -200,7 +202,7 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, ui
             }
         }
 
-        for (sint32 i = 0; i < 19; i++) {
+        for (sint32 i = 0; i < SCENERY_WINDOW_TABS - 1; i++) {
             sint32 counter = 0;
 
             while (window_scenery_tab_entries[i][counter] != -1)
@@ -214,10 +216,10 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, ui
         }
 
         for (sint32 i = 0; i < SCENERY_ENTRIES_BY_TAB; i++) {
-            if (window_scenery_tab_entries[19][i] == -1)
+            if (window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] == -1)
             {
-                window_scenery_tab_entries[19][i] = index;
-                window_scenery_tab_entries[19][i + 1] = -1;
+                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i] = index;
+                window_scenery_tab_entries[SCENERY_WINDOW_TABS - 1][i + 1] = -1;
                 break;
             }
         }
@@ -230,11 +232,11 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, ui
  */
 void init_scenery()
 {
-    bool enabledScenerySets[20] = { false };
+    bool enabledScenerySets[SCENERY_WINDOW_TABS] = { false };
 
-    for (sint32 scenerySetIndex = 0; scenerySetIndex < 20; scenerySetIndex++) {
+    for (sint32 scenerySetIndex = 0; scenerySetIndex < SCENERY_WINDOW_TABS; scenerySetIndex++) {
         window_scenery_tab_entries[scenerySetIndex][0] = -1;
-        if (scenerySetIndex == 19)
+        if (scenerySetIndex == MAX_SCENERY_GROUP_OBJECTS)
             continue;
 
         rct_scenery_set_entry* scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
@@ -309,11 +311,11 @@ void init_scenery()
     for (rct_widgetindex widgetIndex = WIDX_SCENERY_TAB_1; widgetIndex < WIDX_SCENERY_LIST; widgetIndex++)
         window_scenery_widgets[widgetIndex].type = WWT_EMPTY;
 
-    uint8 tabIndexes[20];
-    uint8 order[20];
+    uint8 tabIndexes[SCENERY_WINDOW_TABS];
+    uint8 order[SCENERY_WINDOW_TABS];
     sint32 usedValues = 0;
 
-    for (sint32 scenerySetId = 0; scenerySetId < 19; scenerySetId++) {
+    for (sint32 scenerySetId = 0; scenerySetId < MAX_SCENERY_GROUP_OBJECTS; scenerySetId++) {
         rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
         if (sceneryEntry == (rct_scenery_set_entry *)-1)
             continue;
@@ -342,7 +344,7 @@ void init_scenery()
             break;
     }
 
-    tabIndexes[usedValues] = 19;
+    tabIndexes[usedValues] = SCENERY_WINDOW_TABS - 1;
     usedValues++;
 
     uint16 left = 3;
@@ -350,7 +352,7 @@ void init_scenery()
         uint32 tabIndex = tabIndexes[i];
         rct_widget* tabWidget = &window_scenery_widgets[tabIndex + WIDX_SCENERY_TAB_1];
 
-        if (left != 3 || tabIndex != 19) {
+        if (left != 3 || tabIndex != SCENERY_WINDOW_TABS - 1) {
             if (window_scenery_tab_entries[tabIndex][0] == -1)
                 continue;
 
@@ -363,7 +365,7 @@ void init_scenery()
         tabWidget->right = left + 0x1E;
         left += 0x1F;
 
-        if (tabIndex >= 19)
+        if (tabIndex >= SCENERY_WINDOW_TABS - 1)
             continue;
 
         tabWidget->image = get_scenery_group_entry(tabIndex)->image | IMAGE_TYPE_REMAP;
@@ -384,10 +386,10 @@ void scenery_set_default_placement_configuration()
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
     init_scenery();
 
-    for (sint32 i = 0; i < 20; i++)
+    for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++)
         gWindowSceneryTabSelections[i] = -1;
 
-    for (sint32 i = 0; i < 20; i++) {
+    for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++) {
         if (window_scenery_tab_entries[i][0] != -1) {
             gWindowSceneryActiveTabIndex = i;
             return;
@@ -897,7 +899,7 @@ void window_scenery_invalidate(rct_window *w)
 {
     uint16 tabIndex = gWindowSceneryActiveTabIndex;
     uint32 titleStringId = STR_MISCELLANEOUS;
-    if (tabIndex < 19) {
+    if (tabIndex < SCENERY_WINDOW_TABS - 1) {
         rct_scenery_set_entry * sgEntry = get_scenery_group_entry(tabIndex);
         if (sgEntry != nullptr && sgEntry != (rct_scenery_set_entry *)-1) {
             titleStringId = sgEntry->name;
@@ -1231,7 +1233,7 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
 
 static sint32 window_scenery_find_tab_with_scenery_id(sint32 sceneryId)
 {
-    for (sint32 i = 0; i < 20; i++) {
+    for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++) {
         for (sint32 j = 0; j < SCENERY_ENTRIES_BY_TAB; j++) {
             sint16 entry = window_scenery_tab_entries[i][j];
             if (entry == -1) break;

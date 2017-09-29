@@ -33,6 +33,7 @@
 #define RCT2_DOWNTIME_HISTORY_SIZE          8
 #define RCT2_CUSTOMER_HISTORY_SIZE          10
 #define RCT2_MAX_SPRITES                    10000
+#define RCT2_MAX_MAP_ELEMENTS               0x30000
 
 
 typedef struct rct2_install_info {

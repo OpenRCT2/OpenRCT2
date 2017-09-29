@@ -109,7 +109,7 @@ typedef struct rct_s6_data {
     uint32 scenario_srand_1;
 
     // SC6[5]
-    rct_map_element map_elements[0x30000];
+    rct_map_element map_elements[RCT2_MAX_MAP_ELEMENTS];
 
     // SC6[6]
     uint32 next_free_map_element_pointer_index;
