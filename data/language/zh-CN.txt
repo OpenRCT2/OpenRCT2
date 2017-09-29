@@ -4460,6 +4460,9 @@ STR_6141    :RCT1式底部工具栏
 STR_6142    :{WINDOW_COLOUR_2}轨道名称: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}游乐设施类型: {BLACK}{STRINGID}
 STR_6144    :显示无效块
+STR_6145    :{SMALLFONT}{BLACK}设置加速器的速度限制
+STR_6146    :启用所有可喷涂的轨道部件
+STR_6147    :{SMALLFONT}{BLACK}不管车辆是否支持, 在建造窗口中启用游乐设施支持的所有类型的轨道部件.
 
 #############
 # Scenarios #
