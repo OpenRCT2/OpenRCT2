@@ -719,6 +719,9 @@ enum {
 
     SPR_NEW_RIDE_MASK = 29013,
 
+    SPR_G1_END = 29294,
+    SPR_RCTC_G1_END = 29357, // The number of elements in RCTC's g1.dat file
+
     SPR_G2_BEGIN = 324288,
     SPR_G2_LOGO = SPR_G2_BEGIN + 0,
     SPR_G2_TITLE = SPR_G2_BEGIN + 1,
