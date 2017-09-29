@@ -19,6 +19,7 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../drawing/drawing.h"
+#include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
@@ -1206,6 +1207,13 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
     return 0;
 }
 
+static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc) 
+{
+    sint32 result = editor_remove_unused_objects();
+    console_printf("%d unused object entries have been removed.", result);
+    return 0;
+}
+
 
 typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
 typedef struct console_command {
@@ -1280,6 +1288,7 @@ console_command console_command_table[] = {
     { "reset_user_strings", cc_reset_user_strings, "Resets all user-defined strings, to fix incorrectly occurring 'Chosen name in use already' errors.", "reset_user_strings" },
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
+    { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {
