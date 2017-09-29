@@ -36,6 +36,89 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
+static inline uint32 rctc_to_rct2_index(uint32 image)
+{
+    if      (                  image <  1575) return image;
+    else if (image >=  1607 && image <  4983) return image - 32;
+    else if (image >=  4986 && image < 17189) return image - 35;
+    else if (image >= 17191 && image < 18121) return image - 37;
+    else if (image >= 18123 && image < 23800) return image - 39;
+    else if (image >= 23804 && image < 24670) return image - 43;
+    else if (image >= 24674 && image < 28244) return image - 47;
+    else if (image >= 28246                 ) return image - 49;
+    else throw Exception("Invalid RCTC g1.dat file");
+}
+
+static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc, rct_g1_element *elements)
+{
+    auto g1Elements32 = stream->ReadArray<rct_g1_element_32bit>(count);
+    if (is_rctc)
+    {
+        // Process RCTC's g1.dat file
+        uint32 rctc = 0;
+        for (size_t i = 0; i < SPR_G1_END; ++i)
+        {
+            // RCTC's g1.dat has a number of additional elements
+            // added between the RCT2 elements. This switch
+            // statement skips over the elements we don't want.
+            switch (i)
+            {
+            case 1575:
+                rctc += 32; break;
+            case 23761:
+            case 24627:
+                rctc += 4; break;
+            case 4951:
+                rctc += 3; break;
+            case 17154:
+            case 18084:
+            case 28197:
+                rctc += 2; break;
+            }
+
+            const rct_g1_element_32bit &src = g1Elements32[rctc];
+
+            // Double cast to silence compiler warning about casting to
+            // pointer from integer of mismatched length.
+            elements[i].offset        = (uint8*)(uintptr_t)src.offset;
+            elements[i].width         = src.width;
+            elements[i].height        = src.height;
+            elements[i].x_offset      = src.x_offset;
+            elements[i].y_offset      = src.y_offset;
+            elements[i].flags         = src.flags;
+
+            if (src.flags & G1_FLAG_HAS_ZOOM_SPRITE)
+            {
+                elements[i].zoomed_offset = (uint16) (i - rctc_to_rct2_index(rctc - src.zoomed_offset));
+            }
+            else
+            {
+                elements[i].zoomed_offset = src.zoomed_offset;
+            }
+
+            ++rctc;
+        }
+    }
+    else
+    {
+        for (size_t i = 0; i < count; i++)
+        {
+            const rct_g1_element_32bit &src = g1Elements32[i];
+
+            // Double cast to silence compiler warning about casting to
+            // pointer from integer of mismatched length.
+            elements[i].offset        = (uint8*)(uintptr_t)src.offset;
+            elements[i].width         = src.width;
+            elements[i].height        = src.height;
+            elements[i].x_offset      = src.x_offset;
+            elements[i].y_offset      = src.y_offset;
+            elements[i].flags         = src.flags;
+            elements[i].zoomed_offset = src.zoomed_offset;
+        }
+    }
+    Memory::Free(g1Elements32);
+}
+
 extern "C"
 {
     static void *   _g1Buffer = nullptr;
@@ -48,27 +131,6 @@ extern "C"
     #else
         rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
-
-    static void read_and_convert_gxdat(IStream * stream, size_t count, rct_g1_element *elements)
-    {
-        auto g1Elements32 = stream->ReadArray<rct_g1_element_32bit>(count);
-        for (size_t i = 0; i < count; i++)
-        {
-            const auto src = &g1Elements32[i];
-
-            /* Double cast to silence compiler warning about casting to
-             * pointer from integer of mismatched length.
-             */
-            elements[i].offset        = (uint8*)(uintptr_t)src->offset;
-            elements[i].width         = src->width;
-            elements[i].height        = src->height;
-            elements[i].x_offset      = src->x_offset;
-            elements[i].y_offset      = src->y_offset;
-            elements[i].flags         = src->flags;
-            elements[i].zoomed_offset = src->zoomed_offset;
-        }
-        Memory::Free(g1Elements32);
-    }
 
     /**
      *
@@ -85,17 +147,16 @@ extern "C"
             auto fs = FileStream(path, FILE_MODE_OPEN);
             rct_g1_header header = fs.ReadValue<rct_g1_header>();
 
-            /* number of elements is stored in g1.dat, but because the entry
-             * headers are static, this can't be variable until made into a
-             * dynamic array.
-             */
-            header.num_entries = 29294;
+            if (header.num_entries < SPR_G1_END)
+            {
+                throw Exception("Not enough elements in g1.dat");
+            }
 
             // Read element headers
 #ifdef NO_RCT2
             g1Elements = Memory::AllocateArray<rct_g1_element>(324206);
 #endif
-            read_and_convert_gxdat(&fs, header.num_entries, g1Elements);
+            read_and_convert_gxdat(&fs, header.num_entries, header.num_entries == SPR_RCTC_G1_END, g1Elements);
 
             // Read element data
             _g1Buffer = fs.ReadArray<uint8>(header.total_size);
@@ -154,7 +215,7 @@ extern "C"
 
             // Read element headers
             _g2.elements = Memory::AllocateArray<rct_g1_element>(_g2.header.num_entries);
-            read_and_convert_gxdat(&fs, _g2.header.num_entries, _g2.elements);
+            read_and_convert_gxdat(&fs, _g2.header.num_entries, false, _g2.elements);
 
             // Read element data
             _g2.data = fs.ReadArray<uint8>(_g2.header.total_size);
@@ -240,7 +301,7 @@ extern "C"
 
             // Read element headers
             _csg.elements = Memory::AllocateArray<rct_g1_element>(_csg.header.num_entries);
-            read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, _csg.elements);
+            read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements);
 
             // Read element data
             _csg.data = fileData.ReadArray<uint8>(_csg.header.total_size);
