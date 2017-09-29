@@ -288,6 +288,7 @@ namespace TitleSequenceManager
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize)
     {
         platform_get_user_directory(buffer, "title sequences", bufferSize);
+        platform_ensure_directory_exists(buffer);
     }
 }
 
