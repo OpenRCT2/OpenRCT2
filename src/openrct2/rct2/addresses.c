@@ -19,11 +19,11 @@
 #include "addresses.h"
 
 #if defined(__GNUC__)
-    #ifdef __clang__
-        #define DISABLE_OPT __attribute__((noinline,optnone))
-    #else
-        #define DISABLE_OPT __attribute__((noinline,optimize("O0")))
-    #endif // __clang__
+#ifdef __clang__
+#define DISABLE_OPT __attribute__((noinline, optnone))
+#else
+#define DISABLE_OPT __attribute__((noinline, optimize("O0")))
+#endif // __clang__
 #else
 #define DISABLE_OPT
 #endif // defined(__GNUC__)
@@ -32,12 +32,13 @@
 // When switching to original code, stack frame pointer is modified and prevents breakpad from providing stack trace.
 volatile sint32 _originalAddress = 0;
 
-sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi, sint32 _ebp)
+sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sint32 _ecx, sint32 _edx, sint32 _esi, sint32 _edi,
+                                   sint32 _ebp)
 {
-    sint32 result = 0;
+    sint32 result    = 0;
     _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-    #ifdef _MSC_VER
+#ifdef _MSC_VER
     __asm {
         push ebp
         push address
@@ -52,11 +53,11 @@ sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sin
         lahf
         pop ebp
         pop ebp
-        /* Load result with flags */
+            /* Load result with flags */
         mov result, eax
     }
-    #else
-    __asm__ volatile ( "\
+#else
+    __asm__ volatile("\
         \n\
         push %%ebx \n\
         push %%ebp \n\
@@ -75,31 +76,33 @@ sint32 DISABLE_OPT RCT2_CALLPROC_X(sint32 address, sint32 _eax, sint32 _ebx, sin
         pop %%ebx \n\
         /* Load result with flags */ \n\
         mov %%eax, %[result] \n\
-        " : [address] "+m" (address), [eax] "+m" (_eax), [ebx] "+m" (_ebx), [ecx] "+m" (_ecx), [edx] "+m" (_edx), [esi] "+m" (_esi), [edi] "+m" (_edi), [ebp] "+m" (_ebp), [result] "+m" (result)
-        :
-        : "eax","ecx","edx","esi","edi","memory"
-    );
-    #endif
+        "
+                     : [address] "+m"(address), [eax] "+m"(_eax), [ebx] "+m"(_ebx), [ecx] "+m"(_ecx), [edx] "+m"(_edx),
+                       [esi] "+m"(_esi), [edi] "+m"(_edi), [ebp] "+m"(_ebp), [result] "+m"(result)
+                     :
+                     : "eax", "ecx", "edx", "esi", "edi", "memory");
+#endif
 #endif // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest
     return result & 0xFF00;
 }
 
-sint32 DISABLE_OPT RCT2_CALLFUNC_X(sint32 address, sint32 *_eax, sint32 *_ebx, sint32 *_ecx, sint32 *_edx, sint32 *_esi, sint32 *_edi, sint32 *_ebp)
+sint32 DISABLE_OPT RCT2_CALLFUNC_X(sint32 address, sint32 * _eax, sint32 * _ebx, sint32 * _ecx, sint32 * _edx, sint32 * _esi,
+                                   sint32 * _edi, sint32 * _ebp)
 {
-    sint32 result = 0;
+    sint32 result    = 0;
     _originalAddress = address;
 #if defined(PLATFORM_X86) && !defined(NO_RCT2)
-    #ifdef _MSC_VER
+#ifdef _MSC_VER
     __asm {
         // Store C's base pointer
         push ebp
         push ebx
-        // Store address to call
+            // Store address to call
         push address
 
-        // Set all registers to the input values
+                // Set all registers to the input values
         mov eax, [_eax]
         mov eax, [eax]
         mov ebx, [_ebx]
@@ -136,33 +139,33 @@ sint32 DISABLE_OPT RCT2_CALLFUNC_X(sint32 address, sint32 *_eax, sint32 *_ebx, s
         mov eax, [_ecx]
         mov [eax], ecx
 
-        // Pop ebx reg into ecx
+            // Pop ebx reg into ecx
         pop ecx
         mov eax, [_ebx]
         mov[eax], ecx
 
-        // Pop ebp reg into ecx
+            // Pop ebp reg into ecx
         pop ecx
         mov eax, [_ebp]
         mov[eax], ecx
 
         pop eax
-        // Get resulting eax register
+                // Get resulting eax register
         mov ecx, [_eax]
         mov [ecx], eax
 
-        // Save flags as return in eax
+            // Save flags as return in eax
         lahf
-        // Pop address
+                // Pop address
         pop ebp
 
         pop ebx
         pop ebp
-        /* Load result with flags */
+                        /* Load result with flags */
         mov result, eax
     }
-    #else
-    __asm__ volatile ( "\
+#else
+    __asm__ volatile("\
         \n\
         /* Store C's base pointer*/     \n\
         push %%ebp        \n\
@@ -229,12 +232,13 @@ sint32 DISABLE_OPT RCT2_CALLFUNC_X(sint32 address, sint32 *_eax, sint32 *_ebx, s
         pop %%ebp \n\
         /* Load result with flags */ \n\
         mov %%eax, %[result] \n\
-        " : [address] "+m" (address), [_eax] "+m" (_eax), [_ebx] "+m" (_ebx), [_ecx] "+m" (_ecx), [_edx] "+m" (_edx), [_esi] "+m" (_esi), [_edi] "+m" (_edi), [_ebp] "+m" (_ebp), [result] "+m" (result)
+        "
+                     : [address] "+m"(address), [_eax] "+m"(_eax), [_ebx] "+m"(_ebx), [_ecx] "+m"(_ecx), [_edx] "+m"(_edx),
+                       [_esi] "+m"(_esi), [_edi] "+m"(_edi), [_ebp] "+m"(_ebp), [result] "+m"(result)
 
-        :
-        : "eax","ecx","edx","esi","edi","memory"
-    );
-    #endif
+                     :
+                     : "eax", "ecx", "edx", "esi", "edi", "memory");
+#endif
 #endif // PLATFORM_X86
     _originalAddress = 0;
     // lahf only modifies ah, zero out the rest

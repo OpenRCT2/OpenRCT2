@@ -29,15 +29,18 @@
 void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
 {
 #ifdef __ENABLE_LIGHTFX__
-    if (lightfx_is_available()) {
-        if (peep->type == PEEP_TYPE_STAFF) {
+    if (lightfx_is_available())
+    {
+        if (peep->type == PEEP_TYPE_STAFF)
+        {
             sint16 peep_x, peep_y, peep_z;
 
             peep_x = peep->x;
             peep_y = peep->y;
             peep_z = peep->z;
 
-            switch (peep->sprite_direction) {
+            switch (peep->sprite_direction)
+            {
             case 0:
                 peep_x -= 10;
                 break;
@@ -54,47 +57,55 @@ void peep_paint(paint_session * session, rct_peep * peep, sint32 imageDirection)
                 return;
             };
 
-            lightfx_add_3d_light(peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z, LIGHTFX_LIGHT_TYPE_SPOT_1);
+            lightfx_add_3d_light(peep->sprite_index, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, peep_x, peep_y, peep_z,
+                                 LIGHTFX_LIGHT_TYPE_SPOT_1);
         }
     }
 #endif
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
-    if (dpi->zoom_level > 2) {
+    if (dpi->zoom_level > 2)
+    {
         return;
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    {
         return;
     }
 
     rct_peep_animation_entry sprite = g_peep_animation_entries[peep->sprite_type];
 
-    uint8 spriteType = peep->action_sprite_type;
+    uint8 spriteType  = peep->action_sprite_type;
     uint8 imageOffset = peep->action_sprite_image_offset;
 
-    if (peep->action == PEEP_ACTION_NONE_1) {
-        spriteType = peep->next_action_sprite_type;
+    if (peep->action == PEEP_ACTION_NONE_1)
+    {
+        spriteType  = peep->next_action_sprite_type;
         imageOffset = 0;
     }
 
     uint32 baseImageId = (imageDirection >> 3) + sprite.sprite_animation[spriteType].base_image + imageOffset * 4;
-    uint32 imageId = baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    uint32 imageId =
+        baseImageId | peep->tshirt_colour << 19 | peep->trousers_colour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     sub_98197C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
 
-    if (baseImageId >= 10717 && baseImageId < 10749) {
+    if (baseImageId >= 10717 && baseImageId < 10749)
+    {
         imageId = (baseImageId + 32) | peep->hat_colour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
         return;
     }
 
-    if (baseImageId >= 10781 && baseImageId < 10813) {
+    if (baseImageId >= 10781 && baseImageId < 10813)
+    {
         imageId = (baseImageId + 32) | peep->balloon_colour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
         return;
     }
 
-    if (baseImageId >= 11197 && baseImageId < 11229) {
+    if (baseImageId >= 11197 && baseImageId < 11229)
+    {
         imageId = (baseImageId + 32) | peep->umbrella_colour << 19 | IMAGE_TYPE_REMAP;
         sub_98199C(session, imageId, 0, 0, 1, 1, 11, peep->z, 0, 0, peep->z + 3, get_current_rotation());
         return;

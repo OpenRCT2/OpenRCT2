@@ -24,31 +24,33 @@
 
 #ifdef _WIN32
 
-#include <windows.h>
 #include <lmcons.h>
 #include <psapi.h>
 #include <shlobj.h>
 #include <sys/stat.h>
+#include <windows.h>
 
+#include "../OpenRCT2.h"
+#include "../Version.h"
 #include "../config/Config.h"
 #include "../localisation/date.h"
 #include "../localisation/language.h"
-#include "../OpenRCT2.h"
 #include "../rct2.h"
 #include "../util/util.h"
-#include "../Version.h"
 #include "platform.h"
 
 // Native resource IDs
 #include "../../../resources/resource.h"
 
 // Enable visual styles
-#pragma comment(linker, "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+#pragma comment(                                                                                                               \
+    linker,                                                                                                                    \
+    "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
 
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static utf8 _userDataDirectoryPath[MAX_PATH]    = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
@@ -57,52 +59,53 @@ static HMODULE _dllModule = NULL;
 
 static HMODULE plaform_get_dll_module()
 {
-    if (_dllModule == NULL) {
+    if (_dllModule == NULL)
+    {
         _dllModule = GetModuleHandle(NULL);
     }
     return _dllModule;
 }
 
-void platform_get_date_local(rct2_date *out_date)
+void platform_get_date_local(rct2_date * out_date)
 {
     assert(out_date != NULL);
     SYSTEMTIME systime;
 
     GetLocalTime(&systime);
-    out_date->day = systime.wDay;
-    out_date->month = systime.wMonth;
-    out_date->year = systime.wYear;
+    out_date->day         = systime.wDay;
+    out_date->month       = systime.wMonth;
+    out_date->year        = systime.wYear;
     out_date->day_of_week = systime.wDayOfWeek;
 }
 
-void platform_get_time_local(rct2_time *out_time)
+void platform_get_time_local(rct2_time * out_time)
 {
     assert(out_time != NULL);
     SYSTEMTIME systime;
     GetLocalTime(&systime);
-    out_time->hour = systime.wHour;
+    out_time->hour   = systime.wHour;
     out_time->minute = systime.wMinute;
     out_time->second = systime.wSecond;
 }
 
-bool platform_file_exists(const utf8 *path)
+bool platform_file_exists(const utf8 * path)
 {
-    wchar_t *wPath = utf8_to_widechar(path);
-    DWORD result = GetFileAttributesW(wPath);
-    DWORD error = GetLastError();
+    wchar_t * wPath  = utf8_to_widechar(path);
+    DWORD     result = GetFileAttributesW(wPath);
+    DWORD     error  = GetLastError();
     free(wPath);
     return !(result == INVALID_FILE_ATTRIBUTES && (error == ERROR_FILE_NOT_FOUND || error == ERROR_PATH_NOT_FOUND));
 }
 
-bool platform_directory_exists(const utf8 *path)
+bool platform_directory_exists(const utf8 * path)
 {
-    wchar_t *wPath = utf8_to_widechar(path);
-    DWORD dwAttrib = GetFileAttributesW(wPath);
+    wchar_t * wPath    = utf8_to_widechar(path);
+    DWORD     dwAttrib = GetFileAttributesW(wPath);
     free(wPath);
     return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-bool platform_original_game_data_exists(const utf8 *path)
+bool platform_original_game_data_exists(const utf8 * path)
 {
     utf8 checkPath[MAX_PATH];
     safe_strcpy(checkPath, path, MAX_PATH);
@@ -111,22 +114,22 @@ bool platform_original_game_data_exists(const utf8 *path)
     return platform_file_exists(checkPath);
 }
 
-bool platform_ensure_directory_exists(const utf8 *path)
+bool platform_ensure_directory_exists(const utf8 * path)
 {
     if (platform_directory_exists(path))
         return 1;
 
-    wchar_t *wPath = utf8_to_widechar(path);
-    BOOL success = CreateDirectoryW(wPath, NULL);
+    wchar_t * wPath   = utf8_to_widechar(path);
+    BOOL      success = CreateDirectoryW(wPath, NULL);
     free(wPath);
     return success == TRUE;
 }
 
-bool platform_directory_delete(const utf8 *path)
+bool platform_directory_delete(const utf8 * path)
 {
     wchar_t pszFrom[MAX_PATH];
 
-    wchar_t *wPath = utf8_to_widechar(path);
+    wchar_t * wPath = utf8_to_widechar(path);
     wcsncpy(pszFrom, wPath, MAX_PATH);
 
     // Needs to be double-null terminated for some weird reason
@@ -134,11 +137,11 @@ bool platform_directory_delete(const utf8 *path)
     free(wPath);
 
     SHFILEOPSTRUCTW fileop;
-    fileop.hwnd   = NULL;    // no status display
-    fileop.wFunc  = FO_DELETE;  // delete operation
-    fileop.pFrom  = pszFrom;  // source file name as double null terminated string
-    fileop.pTo    = NULL;    // no destination needed
-    fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT;  // do not prompt the user
+    fileop.hwnd   = NULL;                            // no status display
+    fileop.wFunc  = FO_DELETE;                       // delete operation
+    fileop.pFrom  = pszFrom;                         // source file name as double null terminated string
+    fileop.pTo    = NULL;                            // no destination needed
+    fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT; // do not prompt the user
 
     fileop.fAnyOperationsAborted = FALSE;
     fileop.lpszProgressTitle     = NULL;
@@ -154,42 +157,48 @@ bool platform_lock_single_instance()
 
     // Check if operating system mutex exists
     mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
-    if (mutex == NULL) {
+    if (mutex == NULL)
+    {
         // Create new mutex
         status = CreateMutex(NULL, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (status == NULL)
             log_error("unable to create mutex\n");
 
         return true;
-    } else {
+    }
+    else
+    {
         // Already running
         CloseHandle(mutex);
         return false;
     }
 }
 
-typedef struct {
-    bool active;
-    wchar_t pattern[MAX_PATH];
-    HANDLE handle;
+typedef struct
+{
+    bool             active;
+    wchar_t          pattern[MAX_PATH];
+    HANDLE           handle;
     WIN32_FIND_DATAW data;
-    utf8 *outFilename;
+    utf8 *           outFilename;
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
-sint32 platform_enumerate_files_begin(const utf8 *pattern)
+sint32 platform_enumerate_files_begin(const utf8 * pattern)
 {
-    sint32 i;
-    enumerate_file_info *enumFileInfo;
+    sint32                i;
+    enumerate_file_info * enumFileInfo;
 
-    wchar_t *wPattern = utf8_to_widechar(pattern);
+    wchar_t * wPattern = utf8_to_widechar(pattern);
 
-    for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+    for (i = 0; i < countof(_enumerateFileInfoList); i++)
+    {
         enumFileInfo = &_enumerateFileInfoList[i];
-        if (!enumFileInfo->active) {
+        if (!enumFileInfo->active)
+        {
             wcsncpy(enumFileInfo->pattern, wPattern, MAX_PATH);
-            enumFileInfo->handle = NULL;
-            enumFileInfo->active = true;
+            enumFileInfo->handle      = NULL;
+            enumFileInfo->active      = true;
             enumFileInfo->outFilename = NULL;
 
             free(wPattern);
@@ -206,30 +215,38 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
  * specified. This will verify if a filename does indeed match the pattern we asked for.
  * @remarks Based on algorithm (http://xoomer.virgilio.it/acantato/dev/wildcard/wildmatch.html)
  */
-static bool match_wildcard(const wchar_t *fileName, const wchar_t *pattern)
+static bool match_wildcard(const wchar_t * fileName, const wchar_t * pattern)
 {
-    while (*fileName != '\0') {
-        switch (*pattern) {
+    while (*fileName != '\0')
+    {
+        switch (*pattern)
+        {
         case '?':
-            if (*fileName == '.') {
+            if (*fileName == '.')
+            {
                 return false;
             }
             break;
         case '*':
-            do {
+            do
+            {
                 pattern++;
             } while (*pattern == '*');
-            if (*pattern == '\0') {
+            if (*pattern == '\0')
+            {
                 return false;
             }
-            while (*fileName != '\0') {
-                if (match_wildcard(fileName++, pattern)) {
+            while (*fileName != '\0')
+            {
+                if (match_wildcard(fileName++, pattern))
+                {
                     return true;
                 }
             }
             return false;
         default:
-            if (toupper(*fileName) != toupper(*pattern)) {
+            if (toupper(*fileName) != toupper(*pattern))
+            {
                 return false;
             }
             break;
@@ -237,58 +254,74 @@ static bool match_wildcard(const wchar_t *fileName, const wchar_t *pattern)
         pattern++;
         fileName++;
     }
-    while (*pattern == '*') {
+    while (*pattern == '*')
+    {
         ++fileName;
     }
     return *pattern == '\0';
 }
 
-bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo)
+bool platform_enumerate_files_next(sint32 handle, file_info * outFileInfo)
 {
-    bool result;
-    enumerate_file_info *enumFileInfo;
-    HANDLE findFileHandle;
+    bool                  result;
+    enumerate_file_info * enumFileInfo;
+    HANDLE                findFileHandle;
 
     enumFileInfo = &_enumerateFileInfoList[handle];
 
     // Get pattern (just filename part)
-    const wchar_t *patternWithoutDirectory = wcsrchr(enumFileInfo->pattern, '\\');
-    if (patternWithoutDirectory == NULL) {
+    const wchar_t * patternWithoutDirectory = wcsrchr(enumFileInfo->pattern, '\\');
+    if (patternWithoutDirectory == NULL)
+    {
         patternWithoutDirectory = enumFileInfo->pattern;
-    } else {
+    }
+    else
+    {
         patternWithoutDirectory++;
     }
 
-    do {
-        if (enumFileInfo->handle == NULL) {
+    do
+    {
+        if (enumFileInfo->handle == NULL)
+        {
             findFileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
-            if (findFileHandle != INVALID_HANDLE_VALUE) {
+            if (findFileHandle != INVALID_HANDLE_VALUE)
+            {
                 enumFileInfo->handle = findFileHandle;
-                result = true;
-            } else {
+                result               = true;
+            }
+            else
+            {
                 result = false;
             }
-        } else {
+        }
+        else
+        {
             result = FindNextFileW(enumFileInfo->handle, &enumFileInfo->data);
         }
     } while (result && !match_wildcard(enumFileInfo->data.cFileName, patternWithoutDirectory));
 
-    if (result) {
+    if (result)
+    {
         outFileInfo->path = enumFileInfo->outFilename = widechar_to_utf8(enumFileInfo->data.cFileName);
         outFileInfo->size = ((uint64)enumFileInfo->data.nFileSizeHigh << 32ULL) | (uint64)enumFileInfo->data.nFileSizeLow;
-        outFileInfo->last_modified = ((uint64)enumFileInfo->data.ftLastWriteTime.dwHighDateTime << 32ULL) | (uint64)enumFileInfo->data.ftLastWriteTime.dwLowDateTime;
+        outFileInfo->last_modified = ((uint64)enumFileInfo->data.ftLastWriteTime.dwHighDateTime << 32ULL) |
+                                     (uint64)enumFileInfo->data.ftLastWriteTime.dwLowDateTime;
         return true;
-    } else {
+    }
+    else
+    {
         return false;
     }
 }
 
 void platform_enumerate_files_end(sint32 handle)
 {
-    enumerate_file_info *enumFileInfo;
+    enumerate_file_info * enumFileInfo;
 
     enumFileInfo = &_enumerateFileInfoList[handle];
-    if (enumFileInfo->handle != NULL) {
+    if (enumFileInfo->handle != NULL)
+    {
         FindClose(enumFileInfo->handle);
         enumFileInfo->handle = NULL;
     }
@@ -296,33 +329,37 @@ void platform_enumerate_files_end(sint32 handle)
     SafeFree(enumFileInfo->outFilename);
 }
 
-sint32 platform_enumerate_directories_begin(const utf8 *directory)
+sint32 platform_enumerate_directories_begin(const utf8 * directory)
 {
-    sint32 i;
-    enumerate_file_info *enumFileInfo;
+    sint32                i;
+    enumerate_file_info * enumFileInfo;
 
-    wchar_t *wDirectory = utf8_to_widechar(directory);
+    wchar_t * wDirectory = utf8_to_widechar(directory);
 
-    if (wcslen(wDirectory) + 3 >= MAX_PATH) {
+    if (wcslen(wDirectory) + 3 >= MAX_PATH)
+    {
         free(wDirectory);
         return INVALID_HANDLE;
     }
 
-    for (i = 0; i < countof(_enumerateFileInfoList); i++) {
+    for (i = 0; i < countof(_enumerateFileInfoList); i++)
+    {
         enumFileInfo = &_enumerateFileInfoList[i];
-        if (!enumFileInfo->active) {
+        if (!enumFileInfo->active)
+        {
             wcsncpy(enumFileInfo->pattern, wDirectory, MAX_PATH);
 
             // Ensure pattern ends with a slash
-            sint32 patternLength = lstrlenW(enumFileInfo->pattern);
-            wchar_t lastChar = enumFileInfo->pattern[patternLength - 1];
-            if (lastChar != '\\' && lastChar != '/') {
+            sint32  patternLength = lstrlenW(enumFileInfo->pattern);
+            wchar_t lastChar      = enumFileInfo->pattern[patternLength - 1];
+            if (lastChar != '\\' && lastChar != '/')
+            {
                 wcsncat(enumFileInfo->pattern, L"\\", MAX_PATH);
             }
 
             wcsncat(enumFileInfo->pattern, L"*", MAX_PATH);
-            enumFileInfo->handle = NULL;
-            enumFileInfo->active = true;
+            enumFileInfo->handle      = NULL;
+            enumFileInfo->active      = true;
             enumFileInfo->outFilename = NULL;
 
             free(wDirectory);
@@ -334,36 +371,43 @@ sint32 platform_enumerate_directories_begin(const utf8 *directory)
     return INVALID_HANDLE;
 }
 
-bool platform_enumerate_directories_next(sint32 handle, utf8 *path)
+bool platform_enumerate_directories_next(sint32 handle, utf8 * path)
 {
-    enumerate_file_info *enumFileInfo;
-    HANDLE fileHandle;
+    enumerate_file_info * enumFileInfo;
+    HANDLE                fileHandle;
 
     enumFileInfo = &_enumerateFileInfoList[handle];
 
-    if (enumFileInfo->handle == NULL) {
+    if (enumFileInfo->handle == NULL)
+    {
         fileHandle = FindFirstFileW(enumFileInfo->pattern, &enumFileInfo->data);
-        if (fileHandle != INVALID_HANDLE_VALUE) {
+        if (fileHandle != INVALID_HANDLE_VALUE)
+        {
             enumFileInfo->handle = fileHandle;
-        } else {
+        }
+        else
+        {
             return false;
         }
-    } else {
-        if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+    }
+    else
+    {
+        if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data))
+        {
             return false;
         }
     }
 
-    while (
-        (enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ||
-        wcschr(enumFileInfo->data.cFileName, '.') != NULL
-    ) {
-        if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data)) {
+    while ((enumFileInfo->data.dwFileAttributes & FILE_ATTRIBUTE_DIRECTORY) == 0 ||
+           wcschr(enumFileInfo->data.cFileName, '.') != NULL)
+    {
+        if (!FindNextFileW(enumFileInfo->handle, &enumFileInfo->data))
+        {
             return false;
         }
     }
 
-    utf8 *filename = widechar_to_utf8(enumFileInfo->data.cFileName);
+    utf8 * filename = widechar_to_utf8(enumFileInfo->data.cFileName);
     safe_strcpy(path, filename, MAX_PATH);
     path_end_with_separator(path, MAX_PATH);
     free(filename);
@@ -372,10 +416,11 @@ bool platform_enumerate_directories_next(sint32 handle, utf8 *path)
 
 void platform_enumerate_directories_end(sint32 handle)
 {
-    enumerate_file_info *enumFileInfo;
+    enumerate_file_info * enumFileInfo;
 
     enumFileInfo = &_enumerateFileInfoList[handle];
-    if (enumFileInfo->handle != NULL) {
+    if (enumFileInfo->handle != NULL)
+    {
         FindClose(enumFileInfo->handle);
         enumFileInfo->handle = NULL;
     }
@@ -387,30 +432,30 @@ sint32 platform_get_drives()
     return GetLogicalDrives();
 }
 
-bool platform_file_copy(const utf8 *srcPath, const utf8 *dstPath, bool overwrite)
+bool platform_file_copy(const utf8 * srcPath, const utf8 * dstPath, bool overwrite)
 {
-    wchar_t *wSrcPath = utf8_to_widechar(srcPath);
-    wchar_t *wDstPath = utf8_to_widechar(dstPath);
-    BOOL success = CopyFileW(wSrcPath, wDstPath, overwrite ? FALSE : TRUE);
+    wchar_t * wSrcPath = utf8_to_widechar(srcPath);
+    wchar_t * wDstPath = utf8_to_widechar(dstPath);
+    BOOL      success  = CopyFileW(wSrcPath, wDstPath, overwrite ? FALSE : TRUE);
     free(wSrcPath);
     free(wDstPath);
     return success == TRUE;
 }
 
-bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath)
+bool platform_file_move(const utf8 * srcPath, const utf8 * dstPath)
 {
-    wchar_t *wSrcPath = utf8_to_widechar(srcPath);
-    wchar_t *wDstPath = utf8_to_widechar(dstPath);
-    BOOL success = MoveFileW(wSrcPath, wDstPath);
+    wchar_t * wSrcPath = utf8_to_widechar(srcPath);
+    wchar_t * wDstPath = utf8_to_widechar(dstPath);
+    BOOL      success  = MoveFileW(wSrcPath, wDstPath);
     free(wSrcPath);
     free(wDstPath);
     return success == TRUE;
 }
 
-bool platform_file_delete(const utf8 *path)
+bool platform_file_delete(const utf8 * path)
 {
-    wchar_t *wPath = utf8_to_widechar(path);
-    BOOL success = DeleteFileW(wPath);
+    wchar_t * wPath   = utf8_to_widechar(path);
+    BOOL      success = DeleteFileW(wPath);
     free(wPath);
     return success == TRUE;
 }
@@ -419,13 +464,15 @@ void platform_resolve_openrct_data_path()
 {
     wchar_t wOutPath[MAX_PATH];
 
-    if (gCustomOpenrctDataPath[0] != 0) {
-        wchar_t *customOpenrctDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
-        if (GetFullPathNameW(customOpenrctDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+    if (gCustomOpenrctDataPath[0] != 0)
+    {
+        wchar_t * customOpenrctDataPathW = utf8_to_widechar(gCustomOpenrctDataPath);
+        if (GetFullPathNameW(customOpenrctDataPathW, countof(wOutPath), wOutPath, NULL) == 0)
+        {
             log_fatal("Unable to resolve path '%s'.", gCustomOpenrctDataPath);
             exit(-1);
         }
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+        utf8 * outPathTemp = widechar_to_utf8(wOutPath);
         safe_strcpy(_openrctDataDirectoryPath, outPathTemp, sizeof(_openrctDataDirectoryPath));
         free(outPathTemp);
         free(customOpenrctDataPathW);
@@ -443,18 +490,20 @@ void platform_resolve_openrct_data_path()
         _openrctDataDirectoryPath[0] = '\0';
         safe_strcpy(_openrctDataDirectoryPath, buffer, sizeof(_openrctDataDirectoryPath));
         return;
-    } else {
+    }
+    else
+    {
         log_fatal("Unable to resolve openrct data path.");
         exit(-1);
     }
 }
 
-void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
+void platform_get_openrct_data_path(utf8 * outPath, size_t outSize)
 {
     safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
 }
 
-void platform_get_changelog_path(utf8 *outPath, size_t outSize)
+void platform_get_changelog_path(utf8 * outPath, size_t outSize)
 {
     safe_strcpy(outPath, gExePath, outSize);
     safe_strcat_path(outPath, "changelog.txt", outSize);
@@ -469,13 +518,15 @@ void platform_resolve_user_data_path()
 {
     wchar_t wOutPath[MAX_PATH];
 
-    if (gCustomUserDataPath[0] != 0) {
-        wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
-        if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
+    if (gCustomUserDataPath[0] != 0)
+    {
+        wchar_t * customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
+        if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0)
+        {
             log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
             exit(-1);
         }
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+        utf8 * outPathTemp = widechar_to_utf8(wOutPath);
         safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
         free(outPathTemp);
         free(customUserDataPathW);
@@ -484,23 +535,27 @@ void platform_resolve_user_data_path()
         return;
     }
 
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
+    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath)))
+    {
+        utf8 * outPathTemp = widechar_to_utf8(wOutPath);
         safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
         free(outPathTemp);
 
         safe_strcat_path(_userDataDirectoryPath, "OpenRCT2", sizeof(_userDataDirectoryPath));
         path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
-    } else {
+    }
+    else
+    {
         log_fatal("Unable to resolve user data path.");
         exit(-1);
     }
 }
 
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize)
+void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
 {
     safe_strcpy(outPath, _userDataDirectoryPath, outSize);
-    if (subDirectory != NULL && subDirectory[0] != 0) {
+    if (subDirectory != NULL && subDirectory[0] != 0)
+    {
         safe_strcat_path(outPath, subDirectory, outSize);
         path_end_with_separator(outPath, outSize);
     }
@@ -510,10 +565,10 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
  *
  *  rct2: 0x00407978
  */
-sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *source, char *font, uint8 charset)
+sint32 windows_get_registry_install_info(rct2_install_info * installInfo, char * source, char * font, uint8 charset)
 {
-    char subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
-    HKEY hKey;
+    char  subkeyInfogrames[MAX_PATH], subkeyFishTechGroup[MAX_PATH], keyName[100];
+    HKEY  hKey;
     DWORD type, size;
 
     safe_strcpy(subkeyInfogrames, "Software\\Infogrames\\", sizeof(subkeyInfogrames));
@@ -527,7 +582,6 @@ sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *s
     if (RegOpenKeyA(HKEY_LOCAL_MACHINE, subkeyFishTechGroup, &hKey) != ERROR_SUCCESS)
         return 0;
 
-
     size = 260;
     RegQueryValueExA(hKey, "Title", 0, &type, (LPBYTE)installInfo->title, &size);
 
@@ -538,7 +592,8 @@ sint32 windows_get_registry_install_info(rct2_install_info *installInfo, char *s
 
     size = 4;
     RegQueryValueExA(hKey, "InstallLevel", 0, &type, (LPBYTE)&installInfo->installLevel, &size);
-    for (sint32 i = 0; i <= 15; i++) {
+    for (sint32 i = 0; i <= 15; i++)
+    {
         snprintf(keyName, 100, "AddonPack%d", i);
         size = sizeof(installInfo->expansionPackNames[i]);
         if (RegQueryValueExA(hKey, keyName, 0, &type, (LPBYTE)installInfo->expansionPackNames[i], &size) == ERROR_SUCCESS)
@@ -553,69 +608,83 @@ uint16 platform_get_locale_language()
 {
     CHAR langCode[4];
 
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-        LOCALE_SABBREVLANGNAME,
-        (LPSTR)&langCode,
-        sizeof(langCode)) == 0){
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, (LPSTR)&langCode, sizeof(langCode)) == 0)
+    {
         return LANGUAGE_UNDEFINED;
     }
 
-    if (strcmp(langCode, "ENG") == 0){
+    if (strcmp(langCode, "ENG") == 0)
+    {
         return LANGUAGE_ENGLISH_UK;
     }
-    else if (strcmp(langCode, "ENU") == 0){
+    else if (strcmp(langCode, "ENU") == 0)
+    {
         return LANGUAGE_ENGLISH_US;
     }
-    else if (strcmp(langCode, "DEU") == 0){
+    else if (strcmp(langCode, "DEU") == 0)
+    {
         return LANGUAGE_GERMAN;
     }
-    else if (strcmp(langCode, "NLD") == 0){
+    else if (strcmp(langCode, "NLD") == 0)
+    {
         return LANGUAGE_DUTCH;
     }
-    else if (strcmp(langCode, "FRA") == 0){
+    else if (strcmp(langCode, "FRA") == 0)
+    {
         return LANGUAGE_FRENCH;
     }
-    else if (strcmp(langCode, "HUN") == 0){
+    else if (strcmp(langCode, "HUN") == 0)
+    {
         return LANGUAGE_HUNGARIAN;
     }
-    else if (strcmp(langCode, "PLK") == 0){
+    else if (strcmp(langCode, "PLK") == 0)
+    {
         return LANGUAGE_POLISH;
     }
-    else if (strcmp(langCode, "ESP") == 0){
+    else if (strcmp(langCode, "ESP") == 0)
+    {
         return LANGUAGE_SPANISH;
     }
-    else if (strcmp(langCode, "SVE") == 0){
+    else if (strcmp(langCode, "SVE") == 0)
+    {
         return LANGUAGE_SWEDISH;
     }
-    else if (strcmp(langCode, "ITA") == 0){
+    else if (strcmp(langCode, "ITA") == 0)
+    {
         return LANGUAGE_ITALIAN;
     }
-    else if (strcmp(langCode, "POR") == 0){
+    else if (strcmp(langCode, "POR") == 0)
+    {
         return LANGUAGE_PORTUGUESE_BR;
     }
-    else if (strcmp(langCode, "FIN") == 0){
+    else if (strcmp(langCode, "FIN") == 0)
+    {
         return LANGUAGE_FINNISH;
     }
-    else if (strcmp(langCode, "NOR") == 0){
+    else if (strcmp(langCode, "NOR") == 0)
+    {
         return LANGUAGE_NORWEGIAN;
     }
     return LANGUAGE_UNDEFINED;
 }
 
-time_t platform_file_get_modified_time(const utf8* path)
+time_t platform_file_get_modified_time(const utf8 * path)
 {
     WIN32_FILE_ATTRIBUTE_DATA data;
 
-    wchar_t *wPath = utf8_to_widechar(path);
-    BOOL result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
+    wchar_t * wPath  = utf8_to_widechar(path);
+    BOOL      result = GetFileAttributesExW(wPath, GetFileExInfoStandard, &data);
     free(wPath);
 
-    if (result) {
+    if (result)
+    {
         ULARGE_INTEGER ull;
-        ull.LowPart = data.ftLastWriteTime.dwLowDateTime;
+        ull.LowPart  = data.ftLastWriteTime.dwLowDateTime;
         ull.HighPart = data.ftLastWriteTime.dwHighDateTime;
         return ull.QuadPart / 10000000ULL - 11644473600ULL;
-    } else {
+    }
+    else
+    {
         return 0;
     }
 }
@@ -623,11 +692,8 @@ time_t platform_file_get_modified_time(const utf8* path)
 uint8 platform_get_locale_currency()
 {
     CHAR currCode[4];
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-        LOCALE_SINTLSYMBOL,
-        (LPSTR)&currCode,
-        sizeof(currCode)) == 0
-    ) {
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, (LPSTR)&currCode, sizeof(currCode)) == 0)
+    {
         return platform_get_currency_value(NULL);
     }
 
@@ -637,15 +703,14 @@ uint8 platform_get_locale_currency()
 uint8 platform_get_locale_measurement_format()
 {
     UINT measurement_system;
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-        LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-        (LPSTR)&measurement_system,
-        sizeof(measurement_system)) == 0
-    ) {
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&measurement_system,
+                      sizeof(measurement_system)) == 0)
+    {
         return MEASUREMENT_FORMAT_METRIC;
     }
 
-    switch (measurement_system) {
+    switch (measurement_system)
+    {
     case 1:
         return MEASUREMENT_FORMAT_IMPERIAL;
     case 0:
@@ -660,16 +725,13 @@ uint8 platform_get_locale_temperature_format()
 
     // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
     // uses the United States measurement system or 0 otherwise.
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT,
-        LOCALE_IMEASURE | LOCALE_RETURN_NUMBER,
-        (LPSTR)&fahrenheit,
-        sizeof(fahrenheit)) == 0
-    ) {
+    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, (LPSTR)&fahrenheit, sizeof(fahrenheit)) == 0)
+    {
         // Assume celsius by default if function call fails
         return TEMPERATURE_FORMAT_C;
     }
 
-    if(fahrenheit)
+    if (fahrenheit)
         return TEMPERATURE_FORMAT_F;
     else
         return TEMPERATURE_FORMAT_C;
@@ -692,7 +754,8 @@ uint8 platform_get_locale_date_format()
     //
     wchar_t first[sizeof(dateFormat)];
     wchar_t second[sizeof(dateFormat)];
-    if (swscanf(dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, second) != 2) {
+    if (swscanf(dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, second) != 2)
+    {
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
 
@@ -706,10 +769,12 @@ uint8 platform_get_locale_date_format()
     }
     else if (wcsncmp(L"y", first, 1) == 0)
     {
-        if (wcsncmp(L"d", second, 1) == 0) {
+        if (wcsncmp(L"d", second, 1) == 0)
+        {
             return DATE_FORMAT_YEAR_DAY_MONTH;
         }
-        else {
+        else
+        {
             // Closest possible option
             return DATE_FORMAT_YEAR_MONTH_DAY;
         }
@@ -719,43 +784,43 @@ uint8 platform_get_locale_date_format()
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
-char *strndup(const char *src, size_t size)
+char * strndup(const char * src, size_t size)
 {
     size_t len = strnlen(src, size);
-    char *dst = (char *)malloc(len + 1);
+    char * dst = (char *)malloc(len + 1);
 
     if (dst == NULL)
     {
         return NULL;
     }
 
-    dst = memcpy(dst, src, len);
+    dst      = memcpy(dst, src, len);
     dst[len] = '\0';
     return (char *)dst;
 }
 
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
+void platform_get_exe_path(utf8 * outPath, size_t outSize)
 {
-    wchar_t exePath[MAX_PATH];
-    wchar_t tempPath[MAX_PATH];
-    wchar_t *exeDelimiter;
+    wchar_t   exePath[MAX_PATH];
+    wchar_t   tempPath[MAX_PATH];
+    wchar_t * exeDelimiter;
 
     GetModuleFileNameW(NULL, exePath, MAX_PATH);
-    exeDelimiter = wcsrchr(exePath, *PATH_SEPARATOR);
+    exeDelimiter  = wcsrchr(exePath, *PATH_SEPARATOR);
     *exeDelimiter = L'\0';
     wcscpy_s(tempPath, MAX_PATH, exePath);
     _wfullpath(exePath, tempPath, MAX_PATH);
-    WideCharToMultiByte(CP_UTF8, 0, exePath, MAX_PATH, outPath, (sint32) outSize, NULL, NULL);
+    WideCharToMultiByte(CP_UTF8, 0, exePath, MAX_PATH, outPath, (sint32)outSize, NULL, NULL);
 }
 
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
+bool platform_get_font_path(TTFFontDescriptor * font, utf8 * buffer, size_t size)
 {
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-    wchar_t *fontFolder;
+    wchar_t * fontFolder;
     if (SUCCEEDED(SHGetKnownFolderPath(&FOLDERID_Fonts, 0, NULL, &fontFolder)))
     {
         // Convert wchar to utf8, then copy the font folder path to the buffer.
-        utf8 *outPathTemp = widechar_to_utf8(fontFolder);
+        utf8 * outPathTemp = widechar_to_utf8(fontFolder);
         safe_strcpy(buffer, outPathTemp, size);
         free(outPathTemp);
 
@@ -784,8 +849,8 @@ utf8 * platform_get_absolute_path(const utf8 * relativePath, const utf8 * basePa
     safe_strcat_path(path, relativePath, sizeof(path));
 
     wchar_t * pathW = utf8_to_widechar(path);
-    wchar_t fullPathW[MAX_PATH];
-    DWORD fullPathLen = GetFullPathNameW(pathW, countof(fullPathW), fullPathW, NULL);
+    wchar_t   fullPathW[MAX_PATH];
+    DWORD     fullPathLen = GetFullPathNameW(pathW, countof(fullPathW), fullPathW, NULL);
 
     free(pathW);
 
@@ -810,12 +875,13 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-utf8* platform_get_username()
+utf8 * platform_get_username()
 {
     static char username[UNLEN + 1];
 
     DWORD usernameLength = UNLEN + 1;
-    if (!GetUserName(username, &usernameLength)) {
+    if (!GetUserName(username, &usernameLength))
+    {
         return NULL;
     }
 
@@ -824,46 +890,45 @@ utf8* platform_get_username()
 
 bool platform_process_is_elevated()
 {
-    BOOL isElevated = FALSE;
-    HANDLE hToken = NULL;
-    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken)) {
+    BOOL   isElevated = FALSE;
+    HANDLE hToken     = NULL;
+    if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken))
+    {
         TOKEN_ELEVATION Elevation;
-        DWORD tokenSize = sizeof(TOKEN_ELEVATION);
-        if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &tokenSize)) {
+        DWORD           tokenSize = sizeof(TOKEN_ELEVATION);
+        if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &tokenSize))
+        {
             isElevated = Elevation.TokenIsElevated;
         }
     }
-    if (hToken) {
+    if (hToken)
+    {
         CloseHandle(hToken);
     }
     return isElevated;
 }
 
-///////////////////////////////////////////////////////////////////////////////
-// File association setup
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
+    // File association setup
+    ///////////////////////////////////////////////////////////////////////////////
 
-#define SOFTWARE_CLASSES    L"Software\\Classes"
-#define MUI_CACHE           L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
+#define SOFTWARE_CLASSES L"Software\\Classes"
+#define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
 
-static void get_progIdName(wchar_t *dst, const utf8 *extension)
+static void get_progIdName(wchar_t * dst, const utf8 * extension)
 {
     utf8 progIdName[128];
     safe_strcpy(progIdName, OPENRCT2_NAME, sizeof(progIdName));
     safe_strcat(progIdName, extension, sizeof(progIdName));
 
-    wchar_t *progIdNameW = utf8_to_widechar(progIdName);
+    wchar_t * progIdNameW = utf8_to_widechar(progIdName);
     lstrcpyW(dst, progIdNameW);
     free(progIdNameW);
 }
 
-static bool windows_setup_file_association(
-    const utf8 * extension,
-    const utf8 * fileTypeText,
-    const utf8 * commandText,
-    const utf8 * commandArgs,
-    const uint32 iconIndex
-) {
+static bool windows_setup_file_association(const utf8 * extension, const utf8 * fileTypeText, const utf8 * commandText,
+                                           const utf8 * commandArgs, const uint32 iconIndex)
+{
     wchar_t exePathW[MAX_PATH];
     wchar_t dllPathW[MAX_PATH];
 
@@ -872,34 +937,38 @@ static bool windows_setup_file_association(
     GetModuleFileNameW(NULL, exePathW, sizeof(exePathW));
     GetModuleFileNameW(plaform_get_dll_module(), dllPathW, sizeof(dllPathW));
 
-    wchar_t *extensionW = utf8_to_widechar(extension);
-    wchar_t *fileTypeTextW = utf8_to_widechar(fileTypeText);
-    wchar_t *commandTextW = utf8_to_widechar(commandText);
-    wchar_t *commandArgsW = utf8_to_widechar(commandArgs);
+    wchar_t * extensionW    = utf8_to_widechar(extension);
+    wchar_t * fileTypeTextW = utf8_to_widechar(fileTypeText);
+    wchar_t * commandTextW  = utf8_to_widechar(commandText);
+    wchar_t * commandArgsW  = utf8_to_widechar(commandArgs);
 
     wchar_t progIdNameW[128];
     get_progIdName(progIdNameW, extension);
 
-    bool result = false;
-    HKEY hKey = NULL;
+    bool result   = false;
+    HKEY hKey     = NULL;
     HKEY hRootKey = NULL;
 
     // [HKEY_CURRENT_USER\Software\Classes]
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS) {
+    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
     // [hRootKey\.ext]
-    if (RegSetValueW(hRootKey, extensionW, REG_SZ, progIdNameW, 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hRootKey, extensionW, REG_SZ, progIdNameW, 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
-    if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS) {
+    if (RegCreateKeyW(hRootKey, progIdNameW, &hKey) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
     // [hRootKey\OpenRCT2.ext]
-    if (RegSetValueW(hKey, NULL, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hKey, NULL, REG_SZ, fileTypeTextW, 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
     // [hRootKey\OpenRCT2.ext\DefaultIcon]
@@ -907,17 +976,20 @@ static bool windows_setup_file_association(
     printResult = swprintf_s(szIconW, MAX_PATH, L"\"%s\",%d", dllPathW, iconIndex);
     assert(printResult >= 0);
     UNUSED(printResult);
-    if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hKey, L"DefaultIcon", REG_SZ, szIconW, 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
     // [hRootKey\OpenRCT2.sv6\shell]
-    if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hKey, L"shell", REG_SZ, L"open", 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
     // [hRootKey\OpenRCT2.sv6\shell\open]
-    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW, 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hKey, L"shell\\open", REG_SZ, commandTextW, 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
@@ -926,7 +998,8 @@ static bool windows_setup_file_association(
     printResult = swprintf_s(szCommandW, MAX_PATH, L"\"%s\" %s", exePathW, commandArgsW);
     UNUSED(printResult);
     assert(printResult >= 0);
-    if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS) {
+    if (RegSetValueW(hKey, L"shell\\open\\command", REG_SZ, szCommandW, 0) != ERROR_SUCCESS)
+    {
         goto fail;
     }
 
@@ -945,7 +1018,8 @@ static void windows_remove_file_association(const utf8 * extension)
 {
     // [HKEY_CURRENT_USER\Software\Classes]
     HKEY hRootKey;
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS) {
+    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
+    {
         // [hRootKey\.ext]
         RegDeleteTreeA(hRootKey, extension);
 
@@ -961,10 +1035,10 @@ static void windows_remove_file_association(const utf8 * extension)
 void platform_setup_file_associations()
 {
     // Setup file extensions
-    windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)",     "Play",    "\"%1\"", 0);
-    windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)",     "Play",    "\"%1\"", 0);
-    windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)",   "Play",    "\"%1\"", 0);
-    windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)",   "Play",    "\"%1\"", 0);
+    windows_setup_file_association(".sc4", "RCT1 Scenario (.sc4)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
+    windows_setup_file_association(".sv6", "RCT2 Saved Game (.sv6)", "Play", "\"%1\"", 0);
     windows_setup_file_association(".td4", "RCT1 Track Design (.td4)", "Install", "\"%1\"", 0);
     windows_setup_file_association(".td6", "RCT2 Track Design (.td6)", "Install", "\"%1\"", 0);
 
@@ -998,23 +1072,29 @@ bool platform_setup_uri_protocol()
 
     // [HKEY_CURRENT_USER\Software\Classes]
     HKEY hRootKey;
-    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS) {
+    if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
+    {
         // [hRootKey\openrct2]
         HKEY hClassKey;
-        if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS) {
-            if (RegSetValueA(hClassKey, NULL, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS) {
-                if (RegSetKeyValueA(hClassKey, NULL, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS) {
+        if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS)
+        {
+            if (RegSetValueA(hClassKey, NULL, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
+            {
+                if (RegSetKeyValueA(hClassKey, NULL, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
+                {
                     // [hRootKey\openrct2\shell\open\command]
                     wchar_t exePath[MAX_PATH];
                     GetModuleFileNameW(NULL, exePath, MAX_PATH);
 
                     wchar_t buffer[512];
                     swprintf_s(buffer, sizeof(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
-                    if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS) {
+                    if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS)
+                    {
                         // Not compulsory, but gives the application a nicer name
                         // [HKEY_CURRENT_USER\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache]
                         HKEY hMuiCacheKey;
-                        if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS) {
+                        if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS)
+                        {
                             swprintf_s(buffer, sizeof(buffer), L"%s.FriendlyAppName", exePath);
                             // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
                             // You need at least mingw-w64 5.0 including this commit:
@@ -1034,6 +1114,6 @@ bool platform_setup_uri_protocol()
     return false;
 }
 
-///////////////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////////////////
 
 #endif

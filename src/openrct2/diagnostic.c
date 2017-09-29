@@ -23,20 +23,15 @@
 #include <android/log.h>
 #endif
 
-static bool _log_location_enabled = true;
-bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
+static bool _log_location_enabled               = true;
+bool        _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
-const char * _level_strings[] = {
-    "FATAL",
-    "ERROR",
-    "WARNING",
-    "VERBOSE",
-    "INFO"
-};
+const char * _level_strings[] = { "FATAL", "ERROR", "WARNING", "VERBOSE", "INFO" };
 
 static FILE * diagnostic_get_stream(DiagnosticLevel level)
 {
-    switch (level) {
+    switch (level)
+    {
     case DIAGNOSTIC_LEVEL_VERBOSE:
     case DIAGNOSTIC_LEVEL_INFORMATION:
         return stdout;
@@ -47,9 +42,10 @@ static FILE * diagnostic_get_stream(DiagnosticLevel level)
 
 #ifdef __ANDROID__
 
-int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT] = {ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN, ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO};
+int _android_log_priority[DIAGNOSTIC_LEVEL_COUNT] = { ANDROID_LOG_FATAL, ANDROID_LOG_ERROR, ANDROID_LOG_WARN,
+                                                      ANDROID_LOG_VERBOSE, ANDROID_LOG_INFO };
 
-void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
+void diagnostic_log(DiagnosticLevel diagnosticLevel, const char * format, ...)
 {
     va_list args;
 
@@ -61,10 +57,11 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
     va_end(args);
 }
 
-void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
+void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char * file, const char * function, sint32 line,
+                                  const char * format, ...)
 {
     va_list args;
-    char buf[1024];
+    char    buf[1024];
 
     if (!_log_levels[diagnosticLevel])
         return;
@@ -79,7 +76,7 @@ void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *f
 
 #else
 
-void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
+void diagnostic_log(DiagnosticLevel diagnosticLevel, const char * format, ...)
 {
     va_list args;
 
@@ -100,7 +97,8 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
     fprintf(stream, "\n");
 }
 
-void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *file, const char *function, sint32 line, const char *format, ...)
+void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char * file, const char * function, sint32 line,
+                                  const char * format, ...)
 {
     va_list args;
 

@@ -14,10 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../Context.h"
+#include "../FileClassifier.h"
+#include "../OpenRCT2.h"
+#include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
-#include "../FileClassifier.h"
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
@@ -30,8 +33,6 @@
 #include "../network/network.h"
 #include "../object.h"
 #include "../object_list.h"
-#include "../OpenRCT2.h"
-#include "../ParkImporter.h"
 #include "../peep/staff.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
@@ -47,28 +48,22 @@
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
 #include "scenario.h"
-#include "../Context.h"
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
-    STR_BEGINNER_PARKS,
-    STR_CHALLENGING_PARKS,
-    STR_EXPERT_PARKS,
-    STR_REAL_PARKS,
-    STR_OTHER_PARKS,
+    STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
 
-    STR_DLC_PARKS,
-    STR_BUILD_YOUR_OWN_PARKS,
+    STR_DLC_PARKS,      STR_BUILD_YOUR_OWN_PARKS,
 };
 
 rct_s6_info gS6Info;
-char gScenarioName[64];
-char gScenarioDetails[256];
-char gScenarioCompletedBy[32];
-char gScenarioSavePath[MAX_PATH];
-char gScenarioExpansionPacks[3256];
-bool gFirstTimeSaving = true;
-uint16 gSavedAge;
-uint32 gLastAutoSaveUpdate = 0;
+char        gScenarioName[64];
+char        gScenarioDetails[256];
+char        gScenarioCompletedBy[32];
+char        gScenarioSavePath[MAX_PATH];
+char        gScenarioExpansionPacks[3256];
+bool        gFirstTimeSaving = true;
+uint16      gSavedAge;
+uint32      gLastAutoSaveUpdate = 0;
 
 #if defined(NO_RCT2)
 uint32 gScenarioTicks;
@@ -76,19 +71,19 @@ uint32 gScenarioTicks;
 uint32 gScenarioSrand0;
 uint32 gScenarioSrand1;
 
-uint8 gScenarioObjectiveType;
-uint8 gScenarioObjectiveYear;
-uint16 gScenarioObjectiveNumGuests;
+uint8   gScenarioObjectiveType;
+uint8   gScenarioObjectiveYear;
+uint16  gScenarioObjectiveNumGuests;
 money32 gScenarioObjectiveCurrency;
 
-uint16 gScenarioParkRatingWarningDays;
+uint16  gScenarioParkRatingWarningDays;
 money32 gScenarioCompletedCompanyValue;
 money32 gScenarioCompanyValueRecord;
 
 char gScenarioFileName[MAX_PATH];
 
 static sint32 scenario_create_ducks();
-static void scenario_objective_check();
+static void   scenario_objective_check();
 
 void scenario_begin()
 {
@@ -97,7 +92,6 @@ void scenario_begin()
     // Set the scenario pseudo-random seeds
     gScenarioSrand0 ^= platform_get_ticks();
     gScenarioSrand1 ^= platform_get_ticks();
-
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
     if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
@@ -108,11 +102,11 @@ void scenario_begin()
     if (gScenarioObjectiveType != OBJECTIVE_NONE)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
-    gParkRating = calculate_park_rating();
-    gParkValue = calculate_park_value();
-    gCompanyValue = calculate_company_value();
+    gParkRating       = calculate_park_rating();
+    gParkValue        = calculate_park_value();
+    gCompanyValue     = calculate_company_value();
     gHistoricalProfit = gInitialCash - gBankLoan;
-    gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+    gCashEncrypted    = ENCRYPT_MONEY(gInitialCash);
 
     safe_strcpy(gScenarioDetails, gS6Info.details, 256);
     safe_strcpy(gScenarioName, gS6Info.name, 64);
@@ -122,21 +116,27 @@ void scenario_begin()
         scenario_normalise_name(normalisedName, sizeof(normalisedName), gS6Info.name);
 
         rct_string_id localisedStringIds[3];
-        if (language_get_localised_scenario_strings(normalisedName, localisedStringIds)) {
-            if (localisedStringIds[0] != STR_NONE) {
+        if (language_get_localised_scenario_strings(normalisedName, localisedStringIds))
+        {
+            if (localisedStringIds[0] != STR_NONE)
+            {
                 safe_strcpy(gScenarioName, language_get_string(localisedStringIds[0]), 32);
             }
-            if (localisedStringIds[1] != STR_NONE) {
+            if (localisedStringIds[1] != STR_NONE)
+            {
                 park_set_name(language_get_string(localisedStringIds[1]));
             }
-            if (localisedStringIds[2] != STR_NONE) {
+            if (localisedStringIds[2] != STR_NONE)
+            {
                 safe_strcpy(gScenarioDetails, language_get_string(localisedStringIds[2]), 256);
             }
         }
-        else {
-            rct_stex_entry* stex = g_stexEntries[0];
-            if ((intptr_t)stex != -1) {
-                char *buffer = gCommonStringFormatBuffer;
+        else
+        {
+            rct_stex_entry * stex = g_stexEntries[0];
+            if ((intptr_t)stex != -1)
+            {
+                char * buffer = gCommonStringFormatBuffer;
 
                 // Set localised park name
                 format_string(buffer, 256, stex->park_name, 0);
@@ -161,13 +161,13 @@ void scenario_begin()
     safe_strcat_path(gScenarioSavePath, parkName, sizeof(gScenarioSavePath));
     path_append_extension(gScenarioSavePath, ".sv6", sizeof(gScenarioSavePath));
 
-    gCurrentExpenditure = 0;
-    gCurrentProfit = 0;
-    gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    gCurrentExpenditure            = 0;
+    gCurrentProfit                 = 0;
+    gWeeklyProfitAverageDividend   = 0;
+    gWeeklyProfitAverageDivisor    = 0;
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
-    gTotalAdmissions = 0;
-    gTotalIncomeFromAdmissions = 0;
+    gTotalAdmissions               = 0;
+    gTotalIncomeFromAdmissions     = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
     park_reset_history();
     finance_reset_history();
@@ -183,7 +183,8 @@ void scenario_begin()
     gParkRatingCasualtyPenalty = 0;
 
     // Open park with free entry when there is no money
-    if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
         gParkEntranceFee = 0;
     }
@@ -195,10 +196,11 @@ void scenario_begin()
 
 static void scenario_end()
 {
-    rct_window* w;
+    rct_window * w;
     window_close_by_class(WC_DROPDOWN);
 
-    for (w = g_window_list; w < gWindowNextSlot; w++){
+    for (w = g_window_list; w < gWindowNextSlot; w++)
+    {
         if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
             window_close(w);
     }
@@ -239,7 +241,7 @@ void scenario_success()
  *
  *  rct2: 0x006695E8
  */
-void scenario_success_submit_name(const char *name)
+void scenario_success_submit_name(const char * name)
 {
     if (scenario_repository_try_record_highscore(gScenarioFileName, gScenarioCompanyValueRecord, name))
     {
@@ -254,18 +256,21 @@ void scenario_success_submit_name(const char *name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    uint16 x = 0, y = 0;
+    uint16  x = 0, y = 0;
     money16 totalRideValue = gTotalRideValue;
-    money16 max_fee = totalRideValue + (totalRideValue / 2);
+    money16 max_fee        = totalRideValue + (totalRideValue / 2);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee) {
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != SPRITE_LOCATION_NULL; i++) {
+    if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
+    {
+        for (sint32 i = 0; i < MAX_PARK_ENTRANCES && gParkEntrances[i].x != SPRITE_LOCATION_NULL; i++)
+        {
             x = gParkEntrances[i].x + 16;
             y = gParkEntrances[i].y + 16;
         }
 
         uint32 packed_xy = (y << 16) | x;
-        if (gConfigNotifications.park_warnings) {
+        if (gConfigNotifications.park_warnings)
+        {
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_ENTRANCE_FEE_TOO_HI, packed_xy);
         }
     }
@@ -273,13 +278,15 @@ static void scenario_entrance_fee_too_high_check()
 
 void scenario_autosave_check()
 {
-    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE) return;
+    if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
+        return;
 
     // Milliseconds since last save
     uint32 timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
-    switch (gConfigGeneral.autosave_frequency) {
+    switch (gConfigGeneral.autosave_frequency)
+    {
     case AUTOSAVE_EVERY_MINUTE:
         shouldSave = timeSinceSave >= 1 * 60 * 1000;
         break;
@@ -297,7 +304,8 @@ void scenario_autosave_check()
         break;
     }
 
-    if (shouldSave) {
+    if (shouldSave)
+    {
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         game_autosave();
     }
@@ -307,7 +315,8 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-    switch (gScenarioObjectiveType) {
+    switch (gScenarioObjectiveType)
+    {
     case OBJECTIVE_10_ROLLERCOASTERS:
     case OBJECTIVE_GUESTS_AND_RATING:
     case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
@@ -319,7 +328,7 @@ static void scenario_day_update()
 
     // Lower the casualty penalty
     uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gParkRatingCasualtyPenalty = max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
+    gParkRatingCasualtyPenalty     = max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
 }
@@ -336,11 +345,13 @@ static void scenario_week_update()
     ride_check_all_reachable();
     ride_update_favourited_stat();
 
-    rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
+    rct_water_type * water_type = (rct_water_type *)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-    if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
+    if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->flags & WATER_FLAGS_ALLOW_DUCKS)
+    {
         // 100 attempts at finding some water to create a few ducks at
-        for (sint32 i = 0; i < 100; i++) {
+        for (sint32 i = 0; i < 100; i++)
+        {
             if (scenario_create_ducks())
                 break;
         }
@@ -365,25 +376,36 @@ static void scenario_month_update()
 static void scenario_update_daynight_cycle()
 {
     float currentDayNightCycle = gDayNightCycle;
-    gDayNightCycle = 0;
+    gDayNightCycle             = 0;
 
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle) {
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING && gConfigGeneral.day_night_cycle)
+    {
         float monthFraction = gDateMonthTicks / (float)0x10000;
-        if (monthFraction < (1 / 8.0f)) {
+        if (monthFraction < (1 / 8.0f))
+        {
             gDayNightCycle = 0.0f;
-        } else if (monthFraction < (3 / 8.0f)) {
+        }
+        else if (monthFraction < (3 / 8.0f))
+        {
             gDayNightCycle = (monthFraction - (1 / 8.0f)) / (2 / 8.0f);
-        } else if (monthFraction < (5 / 8.0f)) {
+        }
+        else if (monthFraction < (5 / 8.0f))
+        {
             gDayNightCycle = 1.0f;
-        } else if (monthFraction < (7 / 8.0f)) {
+        }
+        else if (monthFraction < (7 / 8.0f))
+        {
             gDayNightCycle = 1.0f - ((monthFraction - (5 / 8.0f)) / (2 / 8.0f));
-        } else {
+        }
+        else
+        {
             gDayNightCycle = 0.0f;
         }
     }
 
     // Only update palette if day / night cycle has changed
-    if (gDayNightCycle != currentDayNightCycle) {
+    if (gDayNightCycle != currentDayNightCycle)
+    {
         platform_update_palette(gGamePalette, 10, 236);
     }
 }
@@ -394,24 +416,29 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
-    if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
-        uint32 currentMonthTick = floor2(gDateMonthTicks, 4);
-        uint32 nextMonthTick = currentMonthTick + 4;
-        uint8 currentMonth = gDateMonthsElapsed & 7;
-        uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
+    if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING))
+    {
+        uint32 currentMonthTick   = floor2(gDateMonthTicks, 4);
+        uint32 nextMonthTick      = currentMonthTick + 4;
+        uint8  currentMonth       = gDateMonthsElapsed & 7;
+        uint8  currentDaysInMonth = (uint8)days_in_month[currentMonth];
 
-        if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
+        if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16)
+        {
             scenario_day_update();
         }
-        if (nextMonthTick % 0x4000 == 0) {
+        if (nextMonthTick % 0x4000 == 0)
+        {
             scenario_week_update();
         }
-        if (nextMonthTick % 0x8000 == 0) {
+        if (nextMonthTick % 0x8000 == 0)
+        {
             scenario_fortnight_update();
         }
 
         gDateMonthTicks = (uint16)nextMonthTick;
-        if (nextMonthTick >= 0x10000) {
+        if (nextMonthTick >= 0x10000)
+        {
             gDateMonthsElapsed++;
             scenario_month_update();
         }
@@ -444,9 +471,11 @@ static sint32 scenario_create_ducks()
     // Check 7x7 area around centre tile
     x2 = x - (32 * 3);
     y2 = y - (32 * 3);
-    c = 0;
-    for (i = 0; i < 7; i++) {
-        for (j = 0; j < 7; j++) {
+    c  = 0;
+    for (i = 0; i < 7; i++)
+    {
+        for (j = 0; j < 7; j++)
+        {
             waterZ = (map_element_height(x2, y2) >> 16) & 0xFFFF;
             if (waterZ == centreWaterZ)
                 c++;
@@ -465,8 +494,9 @@ static sint32 scenario_create_ducks()
     x += 16;
     y += 16;
     c = (scenario_rand() & 3) + 2;
-    for (i = 0; i < c; i++) {
-        r = scenario_rand();
+    for (i = 0; i < c; i++)
+    {
+        r  = scenario_rand();
         x2 = (r >> 16) & 0x7F;
         y2 = (r & 0xFFFF) & 0x7F;
         create_duck(x + x2 - 64, y + y2 - 64);
@@ -484,10 +514,10 @@ static sint32 scenario_create_ducks()
 #ifndef DEBUG_DESYNC
 uint32 scenario_rand()
 #else
-static FILE *fp = NULL;
-static const char *realm = "LC";
+static FILE *       fp    = NULL;
+static const char * realm = "LC";
 
-uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 line, const void *data)
+uint32 dbg_scenario_rand(const char * file, const char * function, const uint32 line, const void * data)
 #endif
 {
     uint32 originalSrand0 = gScenarioSrand0;
@@ -499,19 +529,19 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
     {
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
-            fp = fopen("server_rand.txt", "wt");
+            fp    = fopen("server_rand.txt", "wt");
             realm = "SV";
         }
         else if (network_get_mode() == NETWORK_MODE_CLIENT)
         {
-            fp = fopen("client_rand.txt", "wt");
+            fp    = fopen("client_rand.txt", "wt");
             realm = "CL";
         }
         else
         {
             if (fp)
                 fclose(fp);
-            fp = NULL;
+            fp    = NULL;
             realm = "LC";
         }
     }
@@ -519,7 +549,8 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
     {
         fprintf(fp, "Tick: %d, Rand: %08X - REF: %s:%u %s (%p)\n", gCurrentTicks, gScenarioSrand1, file, line, function, data);
     }
-    if (!gInUpdateCode && !gInMapInitCode) {
+    if (!gInUpdateCode && !gInMapInitCode)
+    {
         log_warning("scenario_rand called from outside game update");
         assert(false);
     }
@@ -529,18 +560,18 @@ uint32 dbg_scenario_rand(const char *file, const char *function, const uint32 li
 }
 
 #ifdef DEBUG_DESYNC
-void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char *clientHash, const char *serverHash)
+void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const char * clientHash, const char * serverHash)
 {
     if (fp == NULL)
     {
         if (network_get_mode() == NETWORK_MODE_SERVER)
         {
-            fp = fopen("server_rand.txt", "wt");
+            fp    = fopen("server_rand.txt", "wt");
             realm = "SV";
         }
         else if (network_get_mode() == NETWORK_MODE_CLIENT)
         {
-            fp = fopen("client_rand.txt", "wt");
+            fp    = fopen("client_rand.txt", "wt");
             realm = "CL";
         }
     }
@@ -548,12 +579,8 @@ void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const c
     {
         const bool sprites_mismatch = serverHash[0] != '\0' && strcmp(clientHash, serverHash);
 
-        fprintf(fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n", realm,
-                tick,
-                clientHash,
-                ( (serverHash[0] != '\0') ? serverHash : "<NONE:0>" ),
-                srand0,
-                server_srand0,
+        fprintf(fp, "[%s] !! DESYNC !! Tick: %d, Client Hash: %s, Server Hash: %s, Client Rand: %08X, Server Rand: %08X - %s\n",
+                realm, tick, clientHash, ((serverHash[0] != '\0') ? serverHash : "<NONE:0>"), srand0, server_srand0,
                 (sprites_mismatch ? "Sprite hash mismatch" : "scenario rand mismatch"));
     }
 }
@@ -561,11 +588,13 @@ void dbg_report_desync(uint32 tick, uint32 srand0, uint32 server_srand0, const c
 
 uint32 scenario_rand_max(uint32 max)
 {
-    if (max < 2) return 0;
+    if (max < 2)
+        return 0;
     if ((max & (max - 1)) == 0)
         return scenario_rand() & (max - 1);
     uint32 rand, cap = ~((uint32)0) - (~((uint32)0) % max) - 1;
-    do {
+    do
+    {
         rand = scenario_rand();
     } while (rand > cap);
     return rand % max;
@@ -580,17 +609,15 @@ static bool scenario_prepare_rides_for_save()
     sint32 isFiveCoasterObjective = gScenarioObjectiveType == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     sint32 i;
     Ride * ride;
-    uint8 rcs = 0;
+    uint8  rcs = 0;
 
     FOR_ALL_RIDES(i, ride)
     {
         const rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-        
+
         // If there are more than 5 roller coasters, only mark the first five.
-        if (isFiveCoasterObjective &&
-            rideEntry != NULL &&
-            (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
-             rcs < 5))
+        if (isFiveCoasterObjective && rideEntry != NULL &&
+            (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
         {
             ride->lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
             rcs++;
@@ -607,7 +634,7 @@ static bool scenario_prepare_rides_for_save()
         return false;
     }
 
-    bool markTrackAsIndestructible;
+    bool                 markTrackAsIndestructible;
     map_element_iterator it;
     map_element_iterator_begin(&it);
     do
@@ -636,8 +663,7 @@ static bool scenario_prepare_rides_for_save()
                 it.element->flags &= ~MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
             }
         }
-    }
-    while (map_element_iterator_next(&it));
+    } while (map_element_iterator_next(&it));
 
     return true;
 }
@@ -650,8 +676,9 @@ bool scenario_prepare_for_save()
 {
     gS6Info.entry.flags = 255;
 
-    rct_stex_entry* stex = g_stexEntries[0];
-    if ((intptr_t)stex != -1) {
+    rct_stex_entry * stex = g_stexEntries[0];
+    if ((intptr_t)stex != -1)
+    {
         char buffer[256];
         format_string(buffer, 256, stex->scenario_name, NULL);
         safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
@@ -662,7 +689,7 @@ bool scenario_prepare_for_save()
     if (gS6Info.name[0] == 0)
         format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
 
-    gS6Info.objective_type = gScenarioObjectiveType;
+    gS6Info.objective_type  = gScenarioObjectiveType;
     gS6Info.objective_arg_1 = gScenarioObjectiveYear;
     gS6Info.objective_arg_2 = gScenarioObjectiveCurrency;
     gS6Info.objective_arg_3 = gScenarioObjectiveNumGuests;
@@ -686,31 +713,37 @@ bool scenario_prepare_for_save()
  *
  *  rct2: 0x006AA039
  */
-static sint32 scenario_write_available_objects(FILE *file)
+static sint32 scenario_write_available_objects(FILE * file)
 {
     const sint32 totalEntries = OBJECT_ENTRY_COUNT;
     const sint32 bufferLength = totalEntries * sizeof(rct_object_entry);
 
     // Initialise buffers
-    uint8 *buffer = malloc(bufferLength);
-    if (buffer == NULL) {
+    uint8 * buffer = malloc(bufferLength);
+    if (buffer == NULL)
+    {
         log_error("out of memory");
         return 0;
     }
-    uint8 *dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
-    if (dstBuffer == NULL) {
+    uint8 * dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
+    if (dstBuffer == NULL)
+    {
         free(buffer);
         log_error("out of memory");
         return 0;
     }
 
     // Write entries
-    rct_object_entry *dstEntry = (rct_object_entry*)buffer;
-    for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-        void *entryData = get_loaded_object_chunk(i);
-        if (entryData == (void*)-1) {
+    rct_object_entry * dstEntry = (rct_object_entry *)buffer;
+    for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++)
+    {
+        void * entryData = get_loaded_object_chunk(i);
+        if (entryData == (void *)-1)
+        {
             memset(dstEntry, 0xFF, sizeof(rct_object_entry));
-        } else {
+        }
+        else
+        {
             *dstEntry = *get_loaded_object_entry(i);
         }
         dstEntry++;
@@ -719,7 +752,7 @@ static sint32 scenario_write_available_objects(FILE *file)
     // Write chunk
     sawyercoding_chunk_header chunkHeader;
     chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-    chunkHeader.length = bufferLength;
+    chunkHeader.length   = bufferLength;
     size_t encodedLength = sawyercoding_write_chunk_buffer(dstBuffer, buffer, chunkHeader);
     fwrite(dstBuffer, encodedLength, 1, file);
 
@@ -732,26 +765,34 @@ static sint32 scenario_write_available_objects(FILE *file)
 /**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
-void scenario_fix_ghosts(rct_s6_data *s6)
+void scenario_fix_ghosts(rct_s6_data * s6)
 {
     // Remove all ghost elements
-    rct_map_element *destinationElement = s6->map_elements;
+    rct_map_element * destinationElement = s6->map_elements;
 
-    for (sint32 y = 0; y < 256; y++) {
-        for (sint32 x = 0; x < 256; x++) {
-            rct_map_element *originalElement = map_get_first_element_at(x, y);
-            do {
-                if (originalElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+    for (sint32 y = 0; y < 256; y++)
+    {
+        for (sint32 x = 0; x < 256; x++)
+        {
+            rct_map_element * originalElement = map_get_first_element_at(x, y);
+            do
+            {
+                if (originalElement->flags & MAP_ELEMENT_FLAG_GHOST)
+                {
                     sint32 bannerIndex = map_element_get_banner_index(originalElement);
-                    if (bannerIndex != -1) {
-                        rct_banner *banner = &s6->banners[bannerIndex];
-                        if (banner->type != BANNER_NULL) {
+                    if (bannerIndex != -1)
+                    {
+                        rct_banner * banner = &s6->banners[bannerIndex];
+                        if (banner->type != BANNER_NULL)
+                        {
                             banner->type = BANNER_NULL;
                             if (is_user_string_id(banner->string_idx))
                                 s6->custom_strings[(banner->string_idx % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
                         }
                     }
-                } else {
+                }
+                else
+                {
                     *destinationElement++ = *originalElement;
                 }
             } while (!map_element_is_last_for_tile(originalElement++));
@@ -762,19 +803,22 @@ void scenario_fix_ghosts(rct_s6_data *s6)
     }
 }
 
-void scenario_remove_trackless_rides(rct_s6_data *s6)
+void scenario_remove_trackless_rides(rct_s6_data * s6)
 {
     bool rideHasTrack[MAX_RIDES];
     ride_all_has_any_track_elements(rideHasTrack);
-    for (sint32 i = 0; i < RCT2_MAX_RIDES_IN_PARK; i++) {
+    for (sint32 i = 0; i < RCT2_MAX_RIDES_IN_PARK; i++)
+    {
         rct2_ride * ride = &s6->rides[i];
 
-        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL) {
+        if (rideHasTrack[i] || ride->type == RIDE_TYPE_NULL)
+        {
             continue;
         }
 
         ride->type = RIDE_TYPE_NULL;
-        if (is_user_string_id(ride->name)) {
+        if (is_user_string_id(ride->name))
+        {
             s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
         }
     }
@@ -782,13 +826,14 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
 
 static void scenario_objective_check_guests_by()
 {
-    uint8 objectiveYear = gScenarioObjectiveYear;
-    sint16 parkRating = gParkRating;
-    sint16 guestsInPark = gNumGuestsInPark;
-    sint16 objectiveGuests = gScenarioObjectiveNumGuests;
+    uint8  objectiveYear    = gScenarioObjectiveYear;
+    sint16 parkRating       = gParkRating;
+    sint16 guestsInPark     = gNumGuestsInPark;
+    sint16 objectiveGuests  = gScenarioObjectiveNumGuests;
     sint16 currentMonthYear = gDateMonthsElapsed;
 
-    if (currentMonthYear == 8 * objectiveYear){
+    if (currentMonthYear == 8 * objectiveYear)
+    {
         if (parkRating >= 600 && guestsInPark >= objectiveGuests)
             scenario_success();
         else
@@ -798,12 +843,13 @@ static void scenario_objective_check_guests_by()
 
 static void scenario_objective_check_park_value_by()
 {
-    uint8 objectiveYear = gScenarioObjectiveYear;
-    sint16 currentMonthYear = gDateMonthsElapsed;
+    uint8   objectiveYear      = gScenarioObjectiveYear;
+    sint16  currentMonthYear   = gDateMonthsElapsed;
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
-    money32 parkValue = gParkValue;
+    money32 parkValue          = gParkValue;
 
-    if (currentMonthYear == 8 * objectiveYear) {
+    if (currentMonthYear == 8 * objectiveYear)
+    {
         if (parkValue >= objectiveParkValue)
             scenario_success();
         else
@@ -812,29 +858,30 @@ static void scenario_objective_check_park_value_by()
 }
 
 /**
-* Checks if there are 10 rollercoasters of different subtype with
-* excitement >= 600 .
-* rct2:
-**/
+ * Checks if there are 10 rollercoasters of different subtype with
+ * excitement >= 600 .
+ * rct2:
+ **/
 static void scenario_objective_check_10_rollercoasters()
 {
     sint32 i, rcs = 0;
-    uint8 type_already_counted[256];
-    Ride* ride;
+    uint8  type_already_counted[256];
+    Ride * ride;
 
     memset(type_already_counted, 0, 256);
 
-    FOR_ALL_RIDES(i, ride) {
-        uint8 subtype_id = ride->subtype;
-        rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == NULL) {
+    FOR_ALL_RIDES(i, ride)
+    {
+        uint8            subtype_id = ride->subtype;
+        rct_ride_entry * rideEntry  = get_ride_entry(subtype_id);
+        if (rideEntry == NULL)
+        {
             continue;
         }
 
-        if (rideEntry != NULL &&
-            ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
-            ride->status == RIDE_STATUS_OPEN &&
-            ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
+        if (rideEntry != NULL && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
+            ride->status == RIDE_STATUS_OPEN && ride->excitement >= RIDE_RATING(6, 00) && type_already_counted[subtype_id] == 0)
+        {
             type_already_counted[subtype_id]++;
             rcs++;
         }
@@ -850,31 +897,47 @@ static void scenario_objective_check_10_rollercoasters()
  */
 static void scenario_objective_check_guests_and_rating()
 {
-    if (gParkRating < 700 && gDateMonthsElapsed >= 1) {
+    if (gParkRating < 700 && gDateMonthsElapsed >= 1)
+    {
         gScenarioParkRatingWarningDays++;
-        if (gScenarioParkRatingWarningDays == 1) {
-            if (gConfigNotifications.park_rating_warnings) {
+        if (gScenarioParkRatingWarningDays == 1)
+        {
+            if (gConfigNotifications.park_rating_warnings)
+            {
                 news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0);
             }
-        } else if (gScenarioParkRatingWarningDays == 8) {
-            if (gConfigNotifications.park_rating_warnings) {
+        }
+        else if (gScenarioParkRatingWarningDays == 8)
+        {
+            if (gConfigNotifications.park_rating_warnings)
+            {
                 news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0);
             }
-        } else if (gScenarioParkRatingWarningDays == 15) {
-            if (gConfigNotifications.park_rating_warnings) {
+        }
+        else if (gScenarioParkRatingWarningDays == 15)
+        {
+            if (gConfigNotifications.park_rating_warnings)
+            {
                 news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0);
             }
-        } else if (gScenarioParkRatingWarningDays == 22) {
-            if (gConfigNotifications.park_rating_warnings) {
+        }
+        else if (gScenarioParkRatingWarningDays == 22)
+        {
+            if (gConfigNotifications.park_rating_warnings)
+            {
                 news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0);
             }
-        } else if (gScenarioParkRatingWarningDays == 29) {
+        }
+        else if (gScenarioParkRatingWarningDays == 29)
+        {
             news_item_add_to_queue(NEWS_ITEM_GRAPH, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0);
             gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
             scenario_failure();
             gGuestInitialHappiness = 50;
         }
-    } else if (gScenarioCompletedCompanyValue != 0x80000001) {
+    }
+    else if (gScenarioCompletedCompanyValue != 0x80000001)
+    {
         gScenarioParkRatingWarningDays = 0;
     }
 
@@ -885,9 +948,10 @@ static void scenario_objective_check_guests_and_rating()
 
 static void scenario_objective_check_monthly_ride_income()
 {
-    money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
-    money32 lastMonthRideIncome = expenditureLastMonth[RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
-    if (lastMonthRideIncome >= gScenarioObjectiveCurrency) {
+    money32 * expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+    money32   lastMonthRideIncome  = expenditureLastMonth[RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
+    if (lastMonthRideIncome >= gScenarioObjectiveCurrency)
+    {
         scenario_success();
     }
 }
@@ -900,23 +964,26 @@ static void scenario_objective_check_monthly_ride_income()
 static void scenario_objective_check_10_rollercoasters_length()
 {
     sint32 i, rcs = 0;
-    uint8 type_already_counted[256];
+    uint8  type_already_counted[256];
     sint16 objective_length = gScenarioObjectiveNumGuests;
-    Ride* ride;
+    Ride * ride;
 
     memset(type_already_counted, 0, 256);
 
-    FOR_ALL_RIDES(i, ride) {
-        uint8 subtype_id = ride->subtype;
-        rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == NULL) {
+    FOR_ALL_RIDES(i, ride)
+    {
+        uint8            subtype_id = ride->subtype;
+        rct_ride_entry * rideEntry  = get_ride_entry(subtype_id);
+        if (rideEntry == NULL)
+        {
             continue;
         }
-        if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
-            ride->status == RIDE_STATUS_OPEN &&
-            ride->excitement >= RIDE_RATING(7,00) && type_already_counted[subtype_id] == 0){
+        if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && ride->status == RIDE_STATUS_OPEN &&
+            ride->excitement >= RIDE_RATING(7, 00) && type_already_counted[subtype_id] == 0)
+        {
 
-            if ((ride_get_total_length(ride) >> 16) > objective_length) {
+            if ((ride_get_total_length(ride) >> 16) > objective_length)
+            {
                 type_already_counted[subtype_id]++;
                 rcs++;
             }
@@ -944,8 +1011,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
             continue;
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED &&
-            ride->excitement >= objectiveRideExcitement &&
+        if (ride->status != RIDE_STATUS_CLOSED && ride->excitement >= objectiveRideExcitement &&
             (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK) && // Set on partially finished coasters
             ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
             rcs++;
@@ -958,8 +1024,8 @@ static void scenario_objective_check_finish_5_rollercoasters()
 static void scenario_objective_check_replay_loan_and_park_value()
 {
     money32 objectiveParkValue = gScenarioObjectiveCurrency;
-    money32 parkValue = gParkValue;
-    money32 currentLoan = gBankLoan;
+    money32 parkValue          = gParkValue;
+    money32 currentLoan        = gBankLoan;
 
     if (currentLoan <= 0 && parkValue >= objectiveParkValue)
         scenario_success();
@@ -967,14 +1033,13 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-    money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
-    sint32 lastMonthProfit =
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+    money32 * expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+    sint32    lastMonthProfit =
+        expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] + expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
+        expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] + expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
 
-    if (lastMonthProfit >= gScenarioObjectiveCurrency) {
+    if (lastMonthProfit >= gScenarioObjectiveCurrency)
+    {
         scenario_success();
     }
 }
@@ -985,11 +1050,13 @@ static void scenario_objective_check_monthly_food_income()
  */
 static void scenario_objective_check()
 {
-    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED) {
+    if (gScenarioCompletedCompanyValue != MONEY32_UNDEFINED)
+    {
         return;
     }
 
-    switch (gScenarioObjectiveType) {
+    switch (gScenarioObjectiveType)
+    {
     case OBJECTIVE_GUESTS_BY:
         scenario_objective_check_guests_by();
         break;

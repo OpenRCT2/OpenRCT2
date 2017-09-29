@@ -22,10 +22,12 @@
  */
 sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-    sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+    sint32           i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
     rct_map_element *mapElement, *mapElement2;
-    for (y = t; y < b; y++) {
-        for (x = l; x < r; x++) {
+    for (y = t; y < b; y++)
+    {
+        for (x = l; x < r; x++)
+        {
             mapElement = map_get_surface_element_at(x, y);
             mapElement->properties.surface.slope &= ~0x1F;
 
@@ -35,67 +37,70 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
             highest = max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
             highest = max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
             highest = max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
-            if (mapElement->base_height < highest - 2) {
-                raisedLand = 1;
+            if (mapElement->base_height < highest - 2)
+            {
+                raisedLand              = 1;
                 mapElement->base_height = mapElement->clearance_height = highest - 2;
             }
 
             // Check corners
-            doubleCorner = -1;
+            doubleCorner     = -1;
             cornerHeights[0] = map_get_surface_element_at(x - 1, y - 1)->base_height;
             cornerHeights[1] = map_get_surface_element_at(x + 1, y - 1)->base_height;
             cornerHeights[2] = map_get_surface_element_at(x + 1, y + 1)->base_height;
             cornerHeights[3] = map_get_surface_element_at(x - 1, y + 1)->base_height;
-            highest = mapElement->base_height;
+            highest          = mapElement->base_height;
             for (i = 0; i < 4; i++)
                 highest = max(highest, cornerHeights[i]);
 
-            if (highest >= mapElement->base_height + 4) {
-                count = 0;
+            if (highest >= mapElement->base_height + 4)
+            {
+                count                = 0;
                 sint32 canCompensate = 1;
                 for (i = 0; i < 4; i++)
-                    if (cornerHeights[i] == highest){
+                    if (cornerHeights[i] == highest)
+                    {
                         count++;
 
                         // Check if surrounding corners aren't too high. The current tile
                         // can't compensate for all the height differences anymore if it has
                         // the extra height slope.
                         sint32 highestOnLowestSide;
-                        switch (i){
+                        switch (i)
+                        {
                         default:
                         case 0:
-                            highestOnLowestSide = max(
-                                map_get_surface_element_at(x + 1, y)->base_height,
-                                map_get_surface_element_at(x, y + 1)->base_height);
+                            highestOnLowestSide = max(map_get_surface_element_at(x + 1, y)->base_height,
+                                                      map_get_surface_element_at(x, y + 1)->base_height);
                             break;
                         case 1:
-                            highestOnLowestSide = max(
-                                map_get_surface_element_at(x - 1, y)->base_height,
-                                map_get_surface_element_at(x, y + 1)->base_height);
+                            highestOnLowestSide = max(map_get_surface_element_at(x - 1, y)->base_height,
+                                                      map_get_surface_element_at(x, y + 1)->base_height);
                             break;
                         case 2:
-                            highestOnLowestSide = max(
-                                map_get_surface_element_at(x - 1, y)->base_height,
-                                map_get_surface_element_at(x, y - 1)->base_height);
+                            highestOnLowestSide = max(map_get_surface_element_at(x - 1, y)->base_height,
+                                                      map_get_surface_element_at(x, y - 1)->base_height);
                             break;
                         case 3:
-                            highestOnLowestSide = max(
-                                map_get_surface_element_at(x + 1, y)->base_height,
-                                map_get_surface_element_at(x, y - 1)->base_height);
+                            highestOnLowestSide = max(map_get_surface_element_at(x + 1, y)->base_height,
+                                                      map_get_surface_element_at(x, y - 1)->base_height);
                             break;
                         }
 
-                        if (highestOnLowestSide > mapElement->base_height){
+                        if (highestOnLowestSide > mapElement->base_height)
+                        {
                             mapElement->base_height = mapElement->clearance_height = highestOnLowestSide;
-                            raisedLand = 1;
-                            canCompensate = 0;
+                            raisedLand                                             = 1;
+                            canCompensate                                          = 0;
                         }
                     }
 
-                if (count == 1 && canCompensate) {
-                    if (mapElement->base_height < highest - 4) {
+                if (count == 1 && canCompensate)
+                {
+                    if (mapElement->base_height < highest - 4)
+                    {
                         mapElement->base_height = mapElement->clearance_height = highest - 4;
-                        raisedLand = 1;
+                        raisedLand                                             = 1;
                     }
                     if (cornerHeights[0] == highest && cornerHeights[2] <= cornerHeights[0] - 4)
                         doubleCorner = 0;
@@ -105,17 +110,22 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
                         doubleCorner = 2;
                     else if (cornerHeights[3] == highest && cornerHeights[1] <= cornerHeights[3] - 4)
                         doubleCorner = 3;
-                } else {
-                    if (mapElement->base_height < highest - 2) {
+                }
+                else
+                {
+                    if (mapElement->base_height < highest - 2)
+                    {
                         mapElement->base_height = mapElement->clearance_height = highest - 2;
-                        raisedLand = 1;
+                        raisedLand                                             = 1;
                     }
                 }
             }
 
-            if (doubleCorner != -1) {
+            if (doubleCorner != -1)
+            {
                 mapElement->properties.surface.slope |= 16;
-                switch (doubleCorner) {
+                switch (doubleCorner)
+                {
                 case 0:
                     mapElement->properties.surface.slope |= 2 | 4 | 8;
                     break;
@@ -129,7 +139,9 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
                     mapElement->properties.surface.slope |= 1 | 4 | 8;
                     break;
                 }
-            } else {
+            }
+            else
+            {
                 // Corners
                 mapElement2 = map_get_surface_element_at(x + 1, y + 1);
                 if (mapElement2->base_height > mapElement->base_height)
@@ -165,7 +177,8 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
                     mapElement->properties.surface.slope |= 1 | 8;
 
                 // Raise
-                if (mapElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
+                if (mapElement->properties.surface.slope == (1 | 2 | 4 | 8))
+                {
                     mapElement->properties.surface.slope &= ~0x1F;
                     mapElement->base_height = mapElement->clearance_height += 2;
                 }
@@ -178,18 +191,24 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 
 static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
 {
-    rct_map_element *mapElement = map_get_surface_element_at(x, y);
-    sint32 baseHeight = mapElement->base_height;
-    sint32 slope = mapElement->properties.surface.slope;
-    sint32 doubleCorner = slope & 16;
-    if (doubleCorner) {
-        if (!(slope & 1)) doubleCorner = 4;
-        else if (!(slope & 2)) doubleCorner = 8;
-        else if (!(slope & 4)) doubleCorner = 1;
-        else if (!(slope & 8)) doubleCorner = 2;
+    rct_map_element * mapElement   = map_get_surface_element_at(x, y);
+    sint32            baseHeight   = mapElement->base_height;
+    sint32            slope        = mapElement->properties.surface.slope;
+    sint32            doubleCorner = slope & 16;
+    if (doubleCorner)
+    {
+        if (!(slope & 1))
+            doubleCorner = 4;
+        else if (!(slope & 2))
+            doubleCorner = 8;
+        else if (!(slope & 4))
+            doubleCorner = 1;
+        else if (!(slope & 8))
+            doubleCorner = 2;
     }
 
-    switch (corner) {
+    switch (corner)
+    {
     case 0:
         return baseHeight + ((slope & 1) ? (doubleCorner == 1 ? 4 : 2) : 0);
     case 1:
@@ -208,10 +227,12 @@ static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
  */
 static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 {
-    sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
-    rct_map_element *mapElement;
-    for (y = t; y < b; y++) {
-        for (x = l; x < r; x++) {
+    sint32            i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
+    rct_map_element * mapElement;
+    for (y = t; y < b; y++)
+    {
+        for (x = l; x < r; x++)
+        {
             mapElement = map_get_surface_element_at(x, y);
             mapElement->properties.surface.slope &= ~0x1F;
 
@@ -221,31 +242,39 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
             highest = max(highest, map_get_surface_element_at(x + 1, y + 0)->base_height);
             highest = max(highest, map_get_surface_element_at(x + 0, y - 1)->base_height);
             highest = max(highest, map_get_surface_element_at(x + 0, y + 1)->base_height);
-            if (mapElement->base_height < highest - 2) {
-                raisedLand = 1;
+            if (mapElement->base_height < highest - 2)
+            {
+                raisedLand              = 1;
                 mapElement->base_height = mapElement->clearance_height = highest - 2;
             }
 
             // Check corners
-            doubleCorner = -1;
-            cornerHeights[0] = max(map_get_corner_height(x - 1, y - 1, 0), max(map_get_corner_height(x + 1, y + 0, 1), map_get_corner_height(x + 0, y + 1, 2)));
-            cornerHeights[1] = max(map_get_corner_height(x + 1, y - 1, 1), max(map_get_corner_height(x - 1, y + 0, 0), map_get_corner_height(x + 0, y + 1, 3)));
-            cornerHeights[2] = max(map_get_corner_height(x + 1, y + 1, 3), max(map_get_corner_height(x + 1, y + 0, 3), map_get_corner_height(x + 0, y - 1, 0)));
-            cornerHeights[3] = max(map_get_corner_height(x - 1, y + 1, 2), max(map_get_corner_height(x - 1, y + 0, 2), map_get_corner_height(x + 0, y - 1, 1)));
-            highest = mapElement->base_height;
+            doubleCorner     = -1;
+            cornerHeights[0] = max(map_get_corner_height(x - 1, y - 1, 0),
+                                   max(map_get_corner_height(x + 1, y + 0, 1), map_get_corner_height(x + 0, y + 1, 2)));
+            cornerHeights[1] = max(map_get_corner_height(x + 1, y - 1, 1),
+                                   max(map_get_corner_height(x - 1, y + 0, 0), map_get_corner_height(x + 0, y + 1, 3)));
+            cornerHeights[2] = max(map_get_corner_height(x + 1, y + 1, 3),
+                                   max(map_get_corner_height(x + 1, y + 0, 3), map_get_corner_height(x + 0, y - 1, 0)));
+            cornerHeights[3] = max(map_get_corner_height(x - 1, y + 1, 2),
+                                   max(map_get_corner_height(x - 1, y + 0, 2), map_get_corner_height(x + 0, y - 1, 1)));
+            highest          = mapElement->base_height;
             for (i = 0; i < 4; i++)
                 highest = max(highest, cornerHeights[i]);
 
-            if (highest >= mapElement->base_height + 4) {
+            if (highest >= mapElement->base_height + 4)
+            {
                 count = 0;
                 for (i = 0; i < 4; i++)
                     if (cornerHeights[i] == highest)
                         count++;
 
-                if (count == 1) {
-                    if (mapElement->base_height < highest - 4) {
+                if (count == 1)
+                {
+                    if (mapElement->base_height < highest - 4)
+                    {
                         mapElement->base_height = mapElement->clearance_height = highest - 4;
-                        raisedLand = 1;
+                        raisedLand                                             = 1;
                     }
                     if (cornerHeights[0] == highest && cornerHeights[2] <= cornerHeights[0] - 4)
                         doubleCorner = 0;
@@ -255,17 +284,22 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
                         doubleCorner = 2;
                     else if (cornerHeights[3] == highest && cornerHeights[1] <= cornerHeights[3] - 4)
                         doubleCorner = 3;
-                } else {
-                    if (mapElement->base_height < highest - 2) {
+                }
+                else
+                {
+                    if (mapElement->base_height < highest - 2)
+                    {
                         mapElement->base_height = mapElement->clearance_height = highest - 2;
-                        raisedLand = 1;
+                        raisedLand                                             = 1;
                     }
                 }
             }
 
-            if (doubleCorner != -1) {
+            if (doubleCorner != -1)
+            {
                 mapElement->properties.surface.slope |= 16;
-                switch (doubleCorner) {
+                switch (doubleCorner)
+                {
                 case 0:
                     mapElement->properties.surface.slope |= 2 | 4 | 8;
                     break;
@@ -279,38 +313,33 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
                     mapElement->properties.surface.slope |= 1 | 4 | 8;
                     break;
                 }
-            } else {
+            }
+            else
+            {
                 // Corners
-                if (
-                    map_get_corner_height(x + 1, y + 1, 3) > mapElement->base_height ||
+                if (map_get_corner_height(x + 1, y + 1, 3) > mapElement->base_height ||
                     map_get_corner_height(x + 1, y + 0, 1) > mapElement->base_height ||
-                    map_get_corner_height(x + 0, y + 1, 2) > mapElement->base_height
-                )
+                    map_get_corner_height(x + 0, y + 1, 2) > mapElement->base_height)
                     mapElement->properties.surface.slope |= 1;
 
-                if (
-                    map_get_corner_height(x - 1, y + 1, 2) > mapElement->base_height ||
+                if (map_get_corner_height(x - 1, y + 1, 2) > mapElement->base_height ||
                     map_get_corner_height(x - 1, y + 0, 0) > mapElement->base_height ||
-                    map_get_corner_height(x + 0, y + 1, 3) > mapElement->base_height
-                )
+                    map_get_corner_height(x + 0, y + 1, 3) > mapElement->base_height)
                     mapElement->properties.surface.slope |= 8;
 
-                if (
-                    map_get_corner_height(x + 1, y - 1, 1) > mapElement->base_height ||
+                if (map_get_corner_height(x + 1, y - 1, 1) > mapElement->base_height ||
                     map_get_corner_height(x + 1, y + 0, 3) > mapElement->base_height ||
-                    map_get_corner_height(x + 0, y - 1, 0) > mapElement->base_height
-                )
+                    map_get_corner_height(x + 0, y - 1, 0) > mapElement->base_height)
                     mapElement->properties.surface.slope |= 2;
 
-                if (
-                    map_get_corner_height(x - 1, y - 1, 0) > mapElement->base_height ||
+                if (map_get_corner_height(x - 1, y - 1, 0) > mapElement->base_height ||
                     map_get_corner_height(x - 1, y + 0, 2) > mapElement->base_height ||
-                    map_get_corner_height(x + 0, y - 1, 1) > mapElement->base_height
-                )
+                    map_get_corner_height(x + 0, y - 1, 1) > mapElement->base_height)
                     mapElement->properties.surface.slope |= 4;
 
                 // Raise
-                if (mapElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
+                if (mapElement->properties.surface.slope == (1 | 2 | 4 | 8))
+                {
                     mapElement->properties.surface.slope &= ~0x1F;
                     mapElement->base_height = mapElement->clearance_height += 2;
                 }
@@ -328,7 +357,7 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
  */
 sint32 tile_smooth(sint32 x, sint32 y)
 {
-    rct_map_element *const surfaceElement = map_get_surface_element_at(x, y);
+    rct_map_element * const surfaceElement = map_get_surface_element_at(x, y);
 
     // +-----+-----+-----+
     // | NW  |  N  | NE  |
@@ -340,10 +369,12 @@ sint32 tile_smooth(sint32 x, sint32 y)
     // | SW  |  S  | SE  |
     // |  7  |  6  |  5  |
     // +-----+-----+-----+
-    union
-    {
+    union {
         sint32 baseheight[8];
-        struct { sint32 NE, N, NW, E, W, SE, S, SW; };
+        struct
+        {
+            sint32 NE, N, NW, E, W, SE, S, SW;
+        };
     } neighbourHeightOffset = { 0 };
 
     // Find the neighbour base heights
@@ -356,8 +387,9 @@ sint32 tile_smooth(sint32 x, sint32 y)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            rct_map_element *neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
-            neighbourHeightOffset.baseheight[index] = neighbour_element ? neighbour_element->base_height : surfaceElement->base_height;
+            rct_map_element * neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
+            neighbourHeightOffset.baseheight[index] =
+                neighbour_element ? neighbour_element->base_height : surfaceElement->base_height;
 
             // Make the height relative to the current surface element
             neighbourHeightOffset.baseheight[index] -= surfaceElement->base_height;
@@ -367,10 +399,14 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Count number from the three tiles that is currently higher
-    sint8 thresholdNW = clamp(neighbourHeightOffset.W, 0, 1) + clamp(neighbourHeightOffset.NW, 0, 1) + clamp(neighbourHeightOffset.N, 0, 1);
-    sint8 thresholdNE = clamp(neighbourHeightOffset.N, 0, 1) + clamp(neighbourHeightOffset.NE, 0, 1) + clamp(neighbourHeightOffset.E, 0, 1);
-    sint8 thresholdSE = clamp(neighbourHeightOffset.E, 0, 1) + clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1);
-    sint8 thresholdSW = clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1);
+    sint8 thresholdNW =
+        clamp(neighbourHeightOffset.W, 0, 1) + clamp(neighbourHeightOffset.NW, 0, 1) + clamp(neighbourHeightOffset.N, 0, 1);
+    sint8 thresholdNE =
+        clamp(neighbourHeightOffset.N, 0, 1) + clamp(neighbourHeightOffset.NE, 0, 1) + clamp(neighbourHeightOffset.E, 0, 1);
+    sint8 thresholdSE =
+        clamp(neighbourHeightOffset.E, 0, 1) + clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1);
+    sint8 thresholdSW =
+        clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1);
 
     uint8 slope = 0;
     slope |= (thresholdNW >= 1) ? (1 << 1) : 0;
@@ -398,7 +434,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
     {
         // All corners are raised, raise the entire tile instead.
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
-        uint8 waterHeight = map_get_water_height(surfaceElement) * 2;
+        uint8 waterHeight           = map_get_water_height(surfaceElement) * 2;
         if (waterHeight <= surfaceElement->base_height)
         {
             surfaceElement->properties.surface.terrain &= ~MAP_ELEMENT_WATER_HEIGHT_MASK;

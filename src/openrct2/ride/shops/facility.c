@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../paint/supports.h"
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
 #include "../../sprites.h"
 #include "../../world/map.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 /**
  *
@@ -29,13 +29,14 @@
  *  rct2: 0x00762F50
  *  rct2: 0x007630DE
  */
-static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                                 rct_map_element * mapElement)
 {
     bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], NULL);
 
-    Ride *ride = get_ride(rideIndex);
-    rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle *firstVehicleEntry = &rideEntry->vehicles[0];
+    Ride *                   ride              = get_ride(rideIndex);
+    rct_ride_entry *         rideEntry         = get_ride_entry(ride->subtype);
+    rct_ride_entry_vehicle * firstVehicleEntry = &rideEntry->vehicles[0];
 
     if (rideEntry == NULL || firstVehicleEntry == NULL)
     {
@@ -48,24 +49,34 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
     imageId += (direction + 2) & 3;
 
     sint32 rotation = get_current_rotation();
-    sint32 lengthX = (direction & 1) == 0 ? 28 : 2;
-    sint32 lengthY = (direction & 1) == 0 ? 2 : 28;
-    if (hasSupports) {
-        uint32 foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_3];
-        sub_98197C(session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+    sint32 lengthX  = (direction & 1) == 0 ? 28 : 2;
+    sint32 lengthY  = (direction & 1) == 0 ? 2 : 28;
+    if (hasSupports)
+    {
+        uint32 foundationImageId =
+            ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_3];
+        sub_98197C(session, foundationImageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2,
+                   direction == 0 ? 28 : 2, height, rotation);
 
         // Door image or base
-        sub_98199C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
-    } else {
+        sub_98199C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
+                   height, rotation);
+    }
+    else
+    {
         // Door image or base
-        sub_98197C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height, rotation);
+        sub_98197C(session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2,
+                   height, rotation);
     }
 
     // Base image if door was drawn
-    if (direction == 1) {
+    if (direction == 1)
+    {
         imageId += 2;
         sub_98197C(session, imageId, 0, 0, 2, 28, 29, height, 28, 2, height, rotation);
-    } else if (direction == 2) {
+    }
+    else if (direction == 2)
+    {
         imageId += 4;
         sub_98197C(session, imageId, 0, 0, 28, 2, 29, height, 2, 28, height, rotation);
     }
@@ -77,8 +88,10 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
 /* 0x00762D44 */
 TRACK_PAINT_FUNCTION get_track_paint_function_facility(sint32 trackType, sint32 direction)
 {
-    switch (trackType) {
-    case FLAT_TRACK_ELEM_1_X_1_A: return facility_paint_setup;
+    switch (trackType)
+    {
+    case FLAT_TRACK_ELEM_1_X_1_A:
+        return facility_paint_setup;
     }
     return NULL;
 }

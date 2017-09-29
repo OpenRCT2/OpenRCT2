@@ -19,17 +19,17 @@
 #include "../common.h"
 
 #if defined(_WIN32)
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
 #endif
 
 #if defined(__unix__) || defined(__APPLE__)
-    #include <sys/mman.h>
-    #include <errno.h>
-    #include <fcntl.h>
-    #include <sys/types.h>
-    #include <sys/stat.h>
-    #include <unistd.h>
+#include <errno.h>
+#include <fcntl.h>
+#include <sys/mman.h>
+#include <sys/stat.h>
+#include <sys/types.h>
+#include <unistd.h>
 #endif // defined(__unix__) || defined(__APPLE__)
 
 #include "../OpenRCT2.h"
@@ -41,10 +41,10 @@
 #include "interop.h"
 
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
-    static sint32 fdData = -1;
+static sint32 fdData = -1;
 #endif
 #if !defined(NO_RCT2)
-    static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
+static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
 #endif
 
 static void rct2_interop_get_segment_data_path(char * buffer, size_t bufferSize)
@@ -70,8 +70,8 @@ bool rct2_interop_setup_segment()
     UNUSED(segments);
 #endif
 #if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
-    #define RDATA_OFFSET 0x004A4000
-    #define DATASEG_OFFSET 0x005E2000
+#define RDATA_OFFSET 0x004A4000
+#define DATASEG_OFFSET 0x005E2000
 
     // Using PE-bear I was able to figure out all the needed addresses to be filled.
     // There are three sections to be loaded: .rdata, .data and .text, plus another
@@ -100,7 +100,7 @@ bool rct2_interop_setup_segment()
     // could have already taken the space we need.
 
     // TODO: UGLY, UGLY HACK!
-    //off_t file_size = 6750208;
+    // off_t file_size = 6750208;
 
     utf8 segmentDataPath[MAX_PATH];
     rct2_interop_get_segment_data_path(segmentDataPath, sizeof(segmentDataPath));
@@ -113,18 +113,19 @@ bool rct2_interop_setup_segment()
     log_warning("%p", GOOD_PLACE_FOR_DATA_SEGMENT);
     segments = mmap((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, PROT_EXEC | PROT_READ | PROT_WRITE, MAP_PRIVATE, fdData, 0);
     log_warning("%p", segments);
-    if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
+    if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT)
+    {
         perror("mmap");
         return false;
     }
 #endif // defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__))
 
 #if defined(__unix__) && !defined(NO_RCT2)
-    sint32 pageSize = getpagesize();
-    sint32 numPages = (len + pageSize - 1) / pageSize;
-    uint8 *dummy = malloc(numPages);
+    sint32  pageSize = getpagesize();
+    sint32  numPages = (len + pageSize - 1) / pageSize;
+    uint8 * dummy    = malloc(numPages);
 
-    err = mincore((void *)segments, len, dummy);
+    err               = mincore((void *)segments, len, dummy);
     bool pagesMissing = false;
     if (err != 0)
     {
@@ -140,14 +141,16 @@ bool rct2_interop_setup_segment()
         pagesMissing = true;
         perror("mincore");
 #endif // __linux__
-    } else {
+    }
+    else
+    {
         for (sint32 i = 0; i < numPages; i++)
         {
             if (dummy[i] != 1)
             {
                 pagesMissing = true;
-                void *start = (void *)segments + i * pageSize;
-                void *end = (void *)segments + (i + 1) * pageSize - 1;
+                void * start = (void *)segments + i * pageSize;
+                void * end   = (void *)segments + (i + 1) * pageSize - 1;
                 log_warning("required page %p - %p is not in memory!", start, end);
             }
         }
@@ -175,7 +178,8 @@ bool rct2_interop_setup_segment()
 
 #if defined(USE_MMAP) && defined(_WIN32)
     segments = VirtualAlloc((void *)(GOOD_PLACE_FOR_DATA_SEGMENT), len, MEM_COMMIT | MEM_RESERVE, PAGE_READWRITE);
-    if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT) {
+    if ((uintptr_t)segments != GOOD_PLACE_FOR_DATA_SEGMENT)
+    {
         log_error("VirtualAlloc, segments = %p, GetLastError = 0x%x", segments, GetLastError());
         return false;
     }
@@ -191,7 +195,8 @@ bool rct2_interop_setup_segment()
         log_error("failed to load file");
         return false;
     }
-    if (fread(segments, len, 1, file) != 1) {
+    if (fread(segments, len, 1, file) != 1)
+    {
         log_error("Unable to read chunk header!");
         return false;
     }
@@ -202,11 +207,14 @@ bool rct2_interop_setup_segment()
     // Check that the expected data is at various addresses.
     // Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
     // calls, which can be changed by windows/wine loader.
-    const uint32 c1 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)), 0x009E0000 - 0x009A6000);
-    const uint32 c2 = sawyercoding_calculate_checksum((const uint8*)(segments + (uintptr_t)(0x01428000 - 0x8a4000)), 0x014282BC - 0x01428000);
+    const uint32 c1     = sawyercoding_calculate_checksum((const uint8 *)(segments + (uintptr_t)(0x009A6000 - 0x8a4000)),
+                                                      0x009E0000 - 0x009A6000);
+    const uint32 c2     = sawyercoding_calculate_checksum((const uint8 *)(segments + (uintptr_t)(0x01428000 - 0x8a4000)),
+                                                      0x014282BC - 0x01428000);
     const uint32 exp_c1 = 10114815;
     const uint32 exp_c2 = 23564;
-    if (c1 != exp_c1 || c2 != exp_c2) {
+    if (c1 != exp_c1 || c2 != exp_c2)
+    {
         log_warning("c1 = %u, expected %u, match %d", c1, exp_c1, c1 == exp_c1);
         log_warning("c2 = %u, expected %u, match %d", c2, exp_c2, c2 == exp_c2);
         return false;

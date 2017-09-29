@@ -19,35 +19,35 @@
 #ifndef NO_RCT2
 
 #ifdef _WIN32
-    #include <windows.h>
+#include <windows.h>
 #else
-    #include <sys/mman.h>
+#include <sys/mman.h>
 #endif // _WIN32
 
 #include "../platform/platform.h"
 #include "hook.h"
 
-void* _hookTableAddress = 0;
-sint32 _hookTableOffset = 0;
-sint32 _maxHooks = 1000;
+void * _hookTableAddress = 0;
+sint32 _hookTableOffset  = 0;
+sint32 _maxHooks         = 1000;
 #define HOOK_BYTE_COUNT (140)
 
-registers gHookRegisters = {0};
+registers gHookRegisters = { 0 };
 
 // This macro writes a little-endian 4-byte long value into *data
 // It is used to avoid type punning.
-#define write_address_strictalias(data, addr) \
-    *(data + 0) = ((addr) & 0x000000ff) >> 0; \
-    *(data + 1) = ((addr) & 0x0000ff00) >> 8; \
-    *(data + 2) = ((addr) & 0x00ff0000) >> 16; \
-    *(data + 3) = ((addr) & 0xff000000) >> 24;
+#define write_address_strictalias(data, addr)                                                                                  \
+    *(data + 0) = ((addr)&0x000000ff) >> 0;                                                                                    \
+    *(data + 1) = ((addr)&0x0000ff00) >> 8;                                                                                    \
+    *(data + 2) = ((addr)&0x00ff0000) >> 16;                                                                                   \
+    *(data + 3) = ((addr)&0xff000000) >> 24;
 
 static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 {
-    sint32 i = 0;
-    uint8 data[HOOK_BYTE_COUNT] = {0};
+    sint32 i                     = 0;
+    uint8  data[HOOK_BYTE_COUNT] = { 0 };
 
-    uintptr_t registerAddress = (uintptr_t) &gHookRegisters;
+    uintptr_t registerAddress = (uintptr_t)&gHookRegisters;
 
     data[i++] = 0x89; // mov [gHookRegisters], eax
     data[i++] = (0b000 << 3) | 0b101;
@@ -98,7 +98,6 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 
     write_address_strictalias(&data[i], hookAddress - address - i - 4);
     i += 4;
-
 
     data[i++] = 0x83; // add esp, 4
     data[i++] = 0xC4;
@@ -162,9 +161,10 @@ static void hookfunc(uintptr_t address, uintptr_t hookAddress, sint32 stacksize)
 #endif // _WIN32
 }
 
-void addhook(uintptr_t address, hook_function *function)
+void addhook(uintptr_t address, hook_function * function)
 {
-    if (!_hookTableAddress) {
+    if (!_hookTableAddress)
+    {
         size_t size = _maxHooks * HOOK_BYTE_COUNT;
 #ifdef _WIN32
         _hookTableAddress = VirtualAllocEx(GetCurrentProcess(), NULL, size, MEM_COMMIT, PAGE_EXECUTE_READWRITE);
@@ -177,12 +177,13 @@ void addhook(uintptr_t address, hook_function *function)
         }
 #endif // _WIN32
     }
-    if (_hookTableOffset > _maxHooks) {
+    if (_hookTableOffset > _maxHooks)
+    {
         return;
     }
     uint32 hookaddress = (uint32)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
-    uint8 data[9];
-    sint32 i = 0;
+    uint8  data[9];
+    sint32 i  = 0;
     data[i++] = 0xE9; // jmp
 
     write_address_strictalias(&data[i], hookaddress - address - i - 4);

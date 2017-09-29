@@ -16,53 +16,58 @@
 
 #ifdef __ANDROID__
 
-#include "platform.h"
+#include <SDL.h>
+#include <jni.h>
+#include <wchar.h>
 #include "../config/Config.h"
 #include "../localisation/language.h"
 #include "../util/util.h"
-#include <wchar.h>
-#include <jni.h>
-#include <SDL.h>
+#include "platform.h"
 
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
+void platform_get_exe_path(utf8 * outPath, size_t outSize)
 {
     safe_strcpy(outPath, "/sdcard/openrct2", outSize);
 }
 
-void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
+void platform_posix_sub_user_data_path(char * buffer, size_t size, const char * homedir)
+{
     safe_strcpy(buffer, "/sdcard/openrct2-user/", size);
 }
 
 #ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
+bool platform_get_font_path(TTFFontDescriptor * font, utf8 * buffer, size_t size)
 {
     STUB();
     return false;
 }
 #endif
 
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
+void platform_posix_sub_resolve_openrct_data_path(utf8 * out, size_t size)
+{
     safe_strcpy(out, "/sdcard/openrct2", size);
 }
 
-
-uint16 platform_get_locale_language() {
+uint16 platform_get_locale_language()
+{
     return LANGUAGE_ENGLISH_UK;
 }
 
-uint8 platform_get_locale_currency() {
+uint8 platform_get_locale_currency()
+{
     return platform_get_currency_value(NULL);
 }
 
-uint8 platform_get_locale_measurement_format() {
+uint8 platform_get_locale_measurement_format()
+{
     return MEASUREMENT_FORMAT_METRIC;
 }
 
-float platform_get_default_scale() {
-    JNIEnv *env = SDL_AndroidGetJNIEnv();
+float platform_get_default_scale()
+{
+    JNIEnv * env = SDL_AndroidGetJNIEnv();
 
-    jobject *activity = (jobject *) SDL_AndroidGetActivity();
-    jclass *activityClass = (*env)->GetObjectClass(env, activity);
+    jobject * activity        = (jobject *)SDL_AndroidGetActivity();
+    jclass *  activityClass   = (*env)->GetObjectClass(env, activity);
     jmethodID getDefaultScale = (*env)->GetMethodID(env, activityClass, "getDefaultScale", "()F");
 
     jfloat displayScale = (*env)->CallFloatMethod(env, activity, getDefaultScale);
@@ -73,7 +78,7 @@ float platform_get_default_scale() {
     return displayScale;
 }
 
-void platform_get_changelog_path(utf8 *outPath, size_t outSize)
+void platform_get_changelog_path(utf8 * outPath, size_t outSize)
 {
     STUB();
 }
