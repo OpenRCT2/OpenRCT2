@@ -1878,10 +1878,14 @@ bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
     return false;
 }
 
+/**
+* Removes all unused objects from the object selection.
+* @return The number of removed objects.
+*/
 sint32 editor_remove_unused_objects()
 {
-    bool selectionFlagsExist = _objectSelectionFlags != nullptr;
-    if (!selectionFlagsExist)
+    bool createSelectionFlags = (_objectSelectionFlags == nullptr);
+    if (createSelectionFlags)
     {
         if (!sub_6AB211())
         {
@@ -1914,7 +1918,7 @@ sint32 editor_remove_unused_objects()
     }
     unload_unselected_objects();
 
-    if (!selectionFlagsExist)
+    if (createSelectionFlags)
     {
         editor_object_flags_free();
     }
