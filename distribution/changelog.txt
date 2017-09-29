@@ -18,6 +18,7 @@
 - Fix: [#6193] All rings in Space Rings use the same secondary colour
 - Fix: [#6198] You cannot cancel RCT1 directory selection
 - Fix: [#6271] Wrong booster speed tooltip text
+- Fix: [#6320] Crash when CSS1.DAT is absent
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
