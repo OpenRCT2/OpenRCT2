@@ -113,7 +113,7 @@ typedef struct rct_s6_data {
 
     // SC6[6]
     uint32 next_free_map_element_pointer_index;
-    rct_sprite sprites[10000];
+    rct_sprite sprites[RCT2_MAX_SPRITES];
     uint16 sprite_lists_head[6];
     uint16 sprite_lists_count[6];
     rct_string_id park_name;

@@ -338,7 +338,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
         context_open_window(WC_FINANCES);
         break;
     case NEWS_ITEM_RESEARCH:
-        if (subject >= 0x10000) {
+        if (subject >= RESEARCH_ENTRY_RIDE_MASK) {
             // Open ride list window
             window_new_ride_open();
 
