@@ -1878,19 +1878,12 @@ bool editor_check_object_group_at_least_one_selected(sint32 checkObjectType)
     return false;
 }
 
-/**
-* Removes all unused objects from the object selection.
-* @return The number of removed objects.
-*/
 sint32 editor_remove_unused_objects()
 {
     bool createSelectionFlags = (_objectSelectionFlags == nullptr);
-    if (createSelectionFlags)
+    if (createSelectionFlags && !sub_6AB211())
     {
-        if (!sub_6AB211())
-        {
-            return 0;
-        }
+        return 0;
     }
 
     setup_in_use_selection_flags();
@@ -1904,14 +1897,14 @@ sint32 editor_remove_unused_objects()
         if (!(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_IN_USE) && !(_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
         {
             const ObjectRepositoryItem * item = &items[i];
-            uint8 object_type = item->ObjectEntry.flags & 0xF;
+            uint8 objectType = item->ObjectEntry.flags & 0xF;
 
-            if (object_type == OBJECT_TYPE_PARK_ENTRANCE || object_type == OBJECT_TYPE_SCENARIO_TEXT || object_type == OBJECT_TYPE_WATER || object_type == OBJECT_TYPE_SCENERY_SETS)
+            if (objectType == OBJECT_TYPE_PARK_ENTRANCE || objectType == OBJECT_TYPE_SCENARIO_TEXT || objectType == OBJECT_TYPE_WATER || objectType == OBJECT_TYPE_SCENERY_SETS)
             {
                 continue;
             }
 
-            _numSelectedObjectsForType[object_type]--;
+            _numSelectedObjectsForType[objectType]--;
             _objectSelectionFlags[i] &= ~OBJECT_SELECTION_FLAG_SELECTED;
             numUnselectedObjects++;
         }
