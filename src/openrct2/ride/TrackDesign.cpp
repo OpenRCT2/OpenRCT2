@@ -1132,7 +1132,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                     continue;
                     break;
                 }
-                add_clamp_money32(_trackDesignPlaceCost, cost);
+                _trackDesignPlaceCost = add_clamp_money32(_trackDesignPlaceCost, cost);
                 if (_trackDesignPlaceOperation != PTD_OPERATION_2)
                 {
                     if (cost == MONEY32_UNDEFINED)
