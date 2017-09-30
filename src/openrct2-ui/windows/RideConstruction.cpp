@@ -3140,6 +3140,13 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
 static void window_ride_construction_select_map_tiles(Ride *ride, sint32 trackType, sint32 trackDirection, sint32 x, sint32 y)
 {
+    // If the scenery tool is active, we do not display our tiles as it
+    // will conflict with larger scenery objects selecting tiles
+    if (scenery_tool_is_active())
+    {
+        return;
+    }
+
     const rct_preview_track *trackBlock;
     sint32 offsetX, offsetY;
 
