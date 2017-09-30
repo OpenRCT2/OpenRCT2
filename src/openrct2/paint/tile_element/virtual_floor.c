@@ -31,70 +31,98 @@ static const rct_xy_element offsets[4] =
 
 void virtual_floor_paint(paint_session * session)
 {
+        // We only show when the placement modifier keys are active
     if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
     {
         return;
     }
 
-    bool    showFade = false;
-    bool    showLit = false;
+    LocationXY16 * tile;
 
+    bool    show        = false;
+    bool    weAreLit    = false;
+
+        // Check if map selection (usually single tiles) are enabled
+        //  and if the current tile is near or on them
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) &&
         session->MapPosition.x >= gMapSelectPositionA.x - gMapVirtualFloorBaseSize &&
         session->MapPosition.y >= gMapSelectPositionA.y - gMapVirtualFloorBaseSize &&
         session->MapPosition.x <= gMapSelectPositionB.x + gMapVirtualFloorBaseSize &&
         session->MapPosition.y <= gMapSelectPositionB.y + gMapVirtualFloorBaseSize)
     {
-        showFade = true;
+        show = true;
         if (session->MapPosition.x >= gMapSelectPositionA.x &&
             session->MapPosition.y >= gMapSelectPositionA.y &&
             session->MapPosition.x <= gMapSelectPositionB.x &&
             session->MapPosition.y <= gMapSelectPositionB.y)
         {
-            showLit = true;
+            weAreLit = true;
         }
     }
 
-    if (!showFade && !(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
+    if (!show)
     {
-        return;
-    }
-
-    LocationXY16 * tile;
-    for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
-        if (session->MapPosition.x >= tile->x - gMapVirtualFloorBaseSize &&
-            session->MapPosition.y >= tile->y - gMapVirtualFloorBaseSize &&
-            session->MapPosition.x <= tile->x + gMapVirtualFloorBaseSize &&
-            session->MapPosition.y <= tile->y + gMapVirtualFloorBaseSize)
+            // Check if we are anywhere near the selection tiles (larger scenery / rides)
+        if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
         {
-            showFade = true;
+            for (tile = gMapSelectionTiles; tile->x != -1; tile++)
+            {
+                if (session->MapPosition.x >= tile->x - gMapVirtualFloorBaseSize &&
+                    session->MapPosition.y >= tile->y - gMapVirtualFloorBaseSize &&
+                    session->MapPosition.x <= tile->x + gMapVirtualFloorBaseSize &&
+                    session->MapPosition.y <= tile->y + gMapVirtualFloorBaseSize)
+                {
+                    show = true;
+                    break;
+                }
+            }
+            if (!show)
+            {
+                return;
+            }
+        }
+        else
+        {
+            return;
         }
     }
 
-    if (!showFade)
+        // See if we are on top of the selectiontiles
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        return;
+        for (tile = gMapSelectionTiles; tile->x != -1; tile++)
+        {
+            if (session->MapPosition.x == tile->x &&
+                session->MapPosition.y == tile->y &&
+                session->MapPosition.x == tile->x &&
+                session->MapPosition.y == tile->y)
+            {
+                weAreLit = true;
+                break;
+            }
+        }
     }
 
+        // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
     sint16 virtualFloorClipHeight = gMapVirtualFloorHeight / 8;
     uint8 occupiedEdges = 0;
+    uint8 litEdges = 0;
 
         // Check for occupation and walls
 
     bool    weAreOccupied       = false;
     bool    weAreBelowGround    = false;
 
+        // Iterate through the map elements of the current tile to find:
+        //  * Surfaces, which may put us underground
+        //  * Walls / banners, which are displayed as occupied edges
+        //  * Ghost objects, which are displayed as lit squares
     rct_tile_element * tileElement = map_get_first_element_at(session->MapPosition.x >> 5, session->MapPosition.y >> 5);
     do
     {
         sint32 elementType = tile_element_get_type(tileElement);
-
-        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
-        {
-            continue;
-        }
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {
@@ -124,10 +152,18 @@ void virtual_floor_paint(paint_session * session)
             continue;
         }
 
+        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        {
+            weAreLit = true;
+            continue;
+        }
+
         weAreOccupied = true;
     }
     while (!tile_element_is_last_for_tile(tileElement++));
 
+        // Try the four tiles next to us for the same parameters as above,
+        //  if our parameters differ we set an edge towards that tile
     for (uint8 i = 0; i < 4; i++)
     {
         uint8 effectiveRotation = (4 + i - get_current_rotation()) % 4;
@@ -136,15 +172,34 @@ void virtual_floor_paint(paint_session * session)
 
         bool theyAreOccupied        = false;
         bool theyAreBelowGround     = false;
+        bool theyAreLit             = false;
+
+        if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) &&
+            theirLocationX >= gMapSelectPositionA.x &&
+            theirLocationY >= gMapSelectPositionA.y &&
+            theirLocationX <= gMapSelectPositionB.x &&
+            theirLocationY <= gMapSelectPositionB.y)
+        {
+            theyAreLit = true;
+        }
+        if (!theyAreLit)
+        {
+            if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+            {
+                for (tile = gMapSelectionTiles; tile->x != -1; tile++)
+                {
+                    if (theirLocationX == tile->x &&
+                        theirLocationY == tile->y)
+                    {
+                        theyAreLit = true;
+                    }
+                }
+            }
+        }
 
         tileElement = map_get_first_element_at(theirLocationX >> 5, theirLocationY >> 5);
         do
         {
-            if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
-            {
-                continue;
-            }
-
             sint32 elementType = tile_element_get_type(tileElement);
 
             if (elementType == TILE_ELEMENT_TYPE_SURFACE)
@@ -179,36 +234,56 @@ void virtual_floor_paint(paint_session * session)
                 continue;
             }
 
-            theyAreOccupied = true;
+            if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
+            {
+                theyAreLit = true;
+            }
+            else
+            {
+                theyAreOccupied = true;
+            }
         }
+
         while (!tile_element_is_last_for_tile(tileElement++));
 
-        if (weAreOccupied != theyAreOccupied ||
-            weAreBelowGround != theyAreBelowGround)
+        if (weAreLit != theyAreLit)
+        {
+            litEdges        |= 1 << i;
+        }
+        else if (weAreOccupied != theyAreOccupied ||
+                 weAreBelowGround != theyAreBelowGround)
         {
             occupiedEdges   |= 1 << i;
-            continue;
         }
     }
 
     uint32 remap_base = COLOUR_DARK_PURPLE << 19 | IMAGE_TYPE_REMAP;
     uint32 remap_edge = COLOUR_WHITE << 19 | IMAGE_TYPE_REMAP;
+    uint32 remap_lit  = COLOUR_DARK_BROWN << 19 | IMAGE_TYPE_REMAP;
 
-    if (weAreOccupied)
-    {
-        remap_base = COLOUR_BLACK << 19 | IMAGE_TYPE_REMAP;
-    }
-    if (showLit)
-    {
-        remap_base = COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP;
-        if (weAreOccupied)
-        {
-            remap_base = COLOUR_DARK_YELLOW << 19 | IMAGE_TYPE_REMAP;
-        }
-    }
+        // Edges which are internal to objects (i.e., the tile on both sides
+        //  is occupied/lit) are not rendered to provide visual clarity.
+    uint8 dullEdges = 0xF & ~occupiedEdges & ~litEdges;
+    uint8 paintEdges = (weAreOccupied || weAreLit)? ~dullEdges : 0xF;
 
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_NW | ((occupiedEdges & 0x8)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5, 16, gMapVirtualFloorHeight + 0, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_SW | ((occupiedEdges & 0x4)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 27, 16, gMapVirtualFloorHeight + 0, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_NE | ((occupiedEdges & 0x1)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16,  5, gMapVirtualFloorHeight + 0, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_SE | ((occupiedEdges & 0x2)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16, 27, gMapVirtualFloorHeight + 0, get_current_rotation());
+    if (paintEdges & 0x8)
+    {
+        sub_98197C(session, SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8)? ((litEdges & 0x8)? remap_lit : remap_base) : remap_edge),
+            0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x8)? -2 : 0), get_current_rotation());
+    }
+    if (paintEdges & 0x4)
+    {
+        sub_98197C(session, SPR_G2_SELECTION_EDGE_SW | (!(occupiedEdges & 0x4)? ((litEdges & 0x4)? remap_lit : remap_base) : remap_edge),
+            0, 0, 1, 1, 1, gMapVirtualFloorHeight, 27, 16, gMapVirtualFloorHeight + ((dullEdges & 0x4)? -2 : 0), get_current_rotation());
+    }
+    if (paintEdges & 0x1)
+    {
+        sub_98197C(session, SPR_G2_SELECTION_EDGE_NE | (!(occupiedEdges & 0x1)? ((litEdges & 0x1)? remap_lit : remap_base) : remap_edge),
+            0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x1)? -2 : 0), get_current_rotation());
+    }
+    if (paintEdges & 0x2)
+    {
+        sub_98197C(session, SPR_G2_SELECTION_EDGE_SE | (!(occupiedEdges & 0x2)? ((litEdges & 0x2)? remap_lit : remap_base) : remap_edge),
+            0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16, 27, gMapVirtualFloorHeight + ((dullEdges & 0x2)? -2 : 0), get_current_rotation());
+    }
 }
