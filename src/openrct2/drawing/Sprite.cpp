@@ -168,6 +168,7 @@ extern "C"
     #else
         rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
+    bool gTinyFontAntiAliased = false;
 
     /**
      *
@@ -193,7 +194,9 @@ extern "C"
 #ifdef NO_RCT2
             g1Elements = Memory::AllocateArray<rct_g1_element>(324206);
 #endif
-            read_and_convert_gxdat(&fs, header.num_entries, header.num_entries == SPR_RCTC_G1_END, g1Elements);
+            bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
+            read_and_convert_gxdat(&fs, header.num_entries, is_rctc, g1Elements);
+            gTinyFontAntiAliased = is_rctc;
 
             // Read element data
             _g1Buffer = fs.ReadArray<uint8>(header.total_size);

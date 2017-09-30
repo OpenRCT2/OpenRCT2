@@ -281,6 +281,7 @@ extern sint32 gPickupPeepX;
 extern sint32 gPickupPeepY;
 
 extern rct_g1_element *g1Elements;
+extern bool gTinyFontAntiAliased;
 
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
