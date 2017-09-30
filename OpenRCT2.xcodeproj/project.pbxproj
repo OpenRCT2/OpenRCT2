@@ -272,7 +272,7 @@
 		F76C868E1EC4E88400FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84421EC4E7CC00FA49E2 /* scenery.c */; };
 		F76C868F1EC4E88400FA49E2 /* scenery_multiple.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84431EC4E7CC00FA49E2 /* scenery_multiple.c */; };
 		F76C86901EC4E88400FA49E2 /* surface.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84441EC4E7CC00FA49E2 /* surface.c */; };
-		F76C86921EC4E88400FA49E2 /* paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84461EC4E7CC00FA49E2 /* paint.c */; };
+		F76C86921EC4E88400FA49E2 /* Paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84461EC4E7CC00FA49E2 /* Paint.cpp */; };
 		F76C86941EC4E88400FA49E2 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */; };
 		F76C86951EC4E88400FA49E2 /* litter.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844A1EC4E7CC00FA49E2 /* litter.c */; };
 		F76C86961EC4E88400FA49E2 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844B1EC4E7CC00FA49E2 /* misc.c */; };
@@ -1119,7 +1119,7 @@
 		F76C84431EC4E7CC00FA49E2 /* scenery_multiple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery_multiple.c; sourceTree = "<group>"; };
 		F76C84441EC4E7CC00FA49E2 /* surface.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = surface.c; sourceTree = "<group>"; };
 		F76C84451EC4E7CC00FA49E2 /* surface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
-		F76C84461EC4E7CC00FA49E2 /* paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = paint.c; sourceTree = "<group>"; };
+		F76C84461EC4E7CC00FA49E2 /* Paint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.cpp; sourceTree = "<group>"; };
 		F76C84471EC4E7CC00FA49E2 /* paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = paint.h; sourceTree = "<group>"; };
 		F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
 		F76C844A1EC4E7CC00FA49E2 /* litter.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = litter.c; sourceTree = "<group>"; };
@@ -2096,7 +2096,7 @@
 			children = (
 				F76C843B1EC4E7CC00FA49E2 /* map_element */,
 				F76C84491EC4E7CC00FA49E2 /* sprite */,
-				F76C84461EC4E7CC00FA49E2 /* paint.c */,
+				F76C84461EC4E7CC00FA49E2 /* Paint.cpp */,
 				F76C84471EC4E7CC00FA49E2 /* paint.h */,
 				4CF788BE1F1B787700C611BF /* Painter.cpp */,
 				4CF788BF1F1B787700C611BF /* Painter.h */,
@@ -3247,7 +3247,7 @@
 				F76C86901EC4E88400FA49E2 /* surface.c in Sources */,
 				C666EE2D1F33E3800061AA04 /* NetworkStatus.cpp in Sources */,
 				C666EE271F33E3800061AA04 /* Map.cpp in Sources */,
-				F76C86921EC4E88400FA49E2 /* paint.c in Sources */,
+				F76C86921EC4E88400FA49E2 /* Paint.cpp in Sources */,
 				F76C86941EC4E88400FA49E2 /* paint_helpers.c in Sources */,
 				F76C86951EC4E88400FA49E2 /* litter.c in Sources */,
 				C666EE141F33E3800061AA04 /* Dropdown.cpp in Sources */,
