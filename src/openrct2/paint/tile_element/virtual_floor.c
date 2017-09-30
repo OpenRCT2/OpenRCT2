@@ -98,7 +98,12 @@ void virtual_floor_paint(paint_session * session)
 
         if (elementType == TILE_ELEMENT_TYPE_SURFACE)
         {
-            if (virtualFloorClipHeight < tileElement->base_height)
+            if (virtualFloorClipHeight < tileElement->clearance_height)
+            {
+                weAreBelowGround    = true;
+            }
+            else if (virtualFloorClipHeight < tileElement->base_height + 2 &&
+                 tileElement->properties.surface.slope != 0)
             {
                 weAreBelowGround    = true;
             }
@@ -144,7 +149,12 @@ void virtual_floor_paint(paint_session * session)
 
             if (elementType == TILE_ELEMENT_TYPE_SURFACE)
             {
-                if (virtualFloorClipHeight < tileElement->base_height)
+                if (virtualFloorClipHeight < tileElement->clearance_height)
+                {
+                    theyAreBelowGround    = true;
+                }
+                else if (virtualFloorClipHeight < tileElement->base_height + 2 &&
+                     tileElement->properties.surface.slope != 0)
                 {
                     theyAreBelowGround    = true;
                 }
@@ -197,8 +207,8 @@ void virtual_floor_paint(paint_session * session)
         }
     }
 
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_NW | ((occupiedEdges & 0x8)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5, 16, gMapVirtualFloorHeight + 1, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_SW | ((occupiedEdges & 0x4)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 27, 16, gMapVirtualFloorHeight + 1, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_NE | ((occupiedEdges & 0x1)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16,  5, gMapVirtualFloorHeight + 1, get_current_rotation());
-    sub_98197C(session, SPR_G2_SELECTION_EDGE_SE | ((occupiedEdges & 0x2)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16, 27, gMapVirtualFloorHeight + 1, get_current_rotation());
+    sub_98197C(session, SPR_G2_SELECTION_EDGE_NW | ((occupiedEdges & 0x8)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5, 16, gMapVirtualFloorHeight + 0, get_current_rotation());
+    sub_98197C(session, SPR_G2_SELECTION_EDGE_SW | ((occupiedEdges & 0x4)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 27, 16, gMapVirtualFloorHeight + 0, get_current_rotation());
+    sub_98197C(session, SPR_G2_SELECTION_EDGE_NE | ((occupiedEdges & 0x1)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16,  5, gMapVirtualFloorHeight + 0, get_current_rotation());
+    sub_98197C(session, SPR_G2_SELECTION_EDGE_SE | ((occupiedEdges & 0x2)? remap_edge : remap_base), 0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16, 27, gMapVirtualFloorHeight + 0, get_current_rotation());
 }
