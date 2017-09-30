@@ -23,11 +23,8 @@
 #include "../core/DataSerialiser.h"
 #include "../core/IStream.hpp"
 
-extern "C"
-{
-    #include "../game.h"
-    #include "../world/map.h"
-}
+#include "../game.h"
+#include "../world/map.h"
 
 /**
  * Common error codes for game actions.
@@ -123,7 +120,7 @@ public:
     virtual uint16 GetActionFlags() const
     {
         // Make sure we execute some things only on the client.
-        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 || 
+        if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) != 0 ||
             (GetFlags() & GAME_COMMAND_FLAG_5) != 0)
         {
             return GA_FLAGS::CLIENT_ONLY;

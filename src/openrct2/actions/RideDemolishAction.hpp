@@ -19,19 +19,16 @@
 #include "../core/MemoryStream.h"
 #include "GameAction.h"
 
-extern "C"
-{
-    #include "../cheats.h"
-    #include "../interface/window.h"
-    #include "../localisation/localisation.h"
-    #include "../ride/ride.h"
-    #include "../world/park.h"
-}
+#include "../cheats.h"
+#include "../interface/window.h"
+#include "../localisation/localisation.h"
+#include "../ride/ride.h"
+#include "../world/park.h"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
 private:
-    sint32 _rideIndex;
+    sint32 _rideIndex = -1;
 
 public:
     RideDemolishAction() {}
@@ -91,7 +88,7 @@ public:
         for (sint32 i = 0; i < MAX_BANNERS; i++) 
         {
             rct_banner *banner = &gBanners[i];
-            if (banner->type != BANNER_NULL && 
+            if (banner->type != BANNER_NULL &&
                 banner->flags & BANNER_FLAG_LINKED_TO_RIDE &&
                 banner->colour == _rideIndex)
             {
@@ -125,7 +122,7 @@ public:
             // remove any free voucher for this ride from peep
             if (peep->item_standard_flags & PEEP_ITEM_VOUCHER)
             {
-                if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE && 
+                if (peep->voucher_type == VOUCHER_TYPE_RIDE_FREE &&
                     peep->voucher_arguments == _rideIndex)
                 {
                     peep->item_standard_flags &= ~(PEEP_ITEM_VOUCHER);
@@ -198,7 +195,7 @@ public:
 
             res->Position = { x, y, z };
         }
-        
+
         window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
         window_close_by_number(WC_RIDE, _rideIndex);
         window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
@@ -209,4 +206,3 @@ public:
         return res;
     }
 };
-
