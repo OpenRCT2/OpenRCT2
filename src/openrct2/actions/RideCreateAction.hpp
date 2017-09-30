@@ -73,6 +73,13 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        sint32 rideIndex = ride_get_empty_slot();
+        if (rideIndex == -1)
+        {
+            // No more free slots available.
+            return std::make_unique<RideCreateGameActionResult>(GA_ERROR::NO_FREE_ELEMENTS, STR_NONE);
+        }
+
         if (_rideType >= RIDE_TYPE_COUNT)
         {
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
