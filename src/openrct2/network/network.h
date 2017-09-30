@@ -214,12 +214,12 @@ private:
         {
         }
 
-        uint32 tick;
-        uint32 eax, ebx, ecx, edx, esi, edi, ebp;
+        uint32 tick = 0;
+        uint32 eax = 0, ebx = 0, ecx = 0, edx = 0, esi = 0, edi = 0, ebp = 0;
         GameAction::Ptr action;
-        uint8 playerid;
-        uint8 callback;
-        uint32 commandIndex;
+        uint8 playerid = 0;
+        uint8 callback = 0;
+        uint32 commandIndex = 0;
         bool operator<(const GameCommand& comp) const {
             return tick < comp.tick && commandIndex < comp.commandIndex;
         }
