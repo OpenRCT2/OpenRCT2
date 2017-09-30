@@ -176,8 +176,10 @@ namespace GameActions
                     uint32 playerId = action->GetPlayer();
 
                     network_set_player_last_action(network_get_player_index(playerId), action->GetType());
-                    if(result->Cost != 0)
+                    if (result->Cost != 0)
+                    {
                         network_add_player_money_spent(playerId, result->Cost);
+                    }
                 }
             }
 

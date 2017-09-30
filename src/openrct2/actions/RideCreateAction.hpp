@@ -21,17 +21,14 @@
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
 
-extern "C"
-{
-    #include "../localisation/date.h"
-    #include "../cheats.h"
-    #include "../interface/window.h"
-    #include "../world/park.h"
-    #include "../rct1.h"
-    #include "../ride/ride_data.h"
-    #include "../ride/ride.h"
-    #include "../ride/station.h"
-}
+#include "../localisation/date.h"
+#include "../cheats.h"
+#include "../interface/window.h"
+#include "../world/park.h"
+#include "../rct1.h"
+#include "../ride/ride_data.h"
+#include "../ride/ride.h"
+#include "../ride/station.h"
 
 struct RideCreateGameActionResult : public GameActionResult
 {
@@ -308,5 +305,5 @@ public:
         res->Position.x = (uint16)0x8000;
 
         return std::move(res);
-    }  
+    }
 };

@@ -14,20 +14,17 @@
 *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../core/MemoryStream.h"
 #include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
 #include "GameAction.h"
 
-#pragma once
-
-extern "C"
-{
-    #include "../cheats.h"
-    #include "../world/entrance.h"
-    #include "../world/park.h"
-    #include "../world/footpath.h"
-}
+#include "../cheats.h"
+#include "../world/entrance.h"
+#include "../world/park.h"
+#include "../world/footpath.h"
 
 struct PlaceParkEntranceGameActionResult : public GameActionResult
 {

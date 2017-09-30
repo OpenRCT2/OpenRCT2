@@ -20,19 +20,16 @@
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
 
-extern "C"
-{
-    #include "../cheats.h"
-    #include "../interface/window.h"
-    #include "../world/park.h"
-    #include "../ride/ride.h"
-}
+#include "../cheats.h"
+#include "../interface/window.h"
+#include "../world/park.h"
+#include "../ride/ride.h"
 
 struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {
 private:
-    uint8 _rideIndex;
-    uint8 _status;
+    sint32 _rideIndex = -1;
+    uint8 _status = RIDE_STATUS_CLOSED;
 
 public:
     RideSetStatusAction() {}
@@ -56,7 +53,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
-        if (_rideIndex >= MAX_RIDES)
+        if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
