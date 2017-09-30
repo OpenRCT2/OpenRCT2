@@ -38,7 +38,7 @@ struct RideCreateGameActionResult : public GameActionResult
     RideCreateGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
-    sint32 rideIndex;
+    sint32 rideIndex = -1;
 };
 
 struct RideCreateAction : public GameActionBase<GAME_COMMAND_CREATE_RIDE, RideCreateGameActionResult>
