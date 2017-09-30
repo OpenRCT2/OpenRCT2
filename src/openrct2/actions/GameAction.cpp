@@ -43,7 +43,7 @@ namespace GameActions
 
     GameActionFactory Register(uint32 id, GameActionFactory factory)
     {
-        Guard::Assert(id < sizeof(_actions));
+        Guard::Assert(id < Util::CountOf(_actions));
         Guard::ArgumentNotNull(factory);
 
         _actions[id] = factory;
