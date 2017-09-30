@@ -804,9 +804,9 @@ enum {
 
     SPR_G2_MINI_RC_BOOSTER_NE_SW = SPR_G2_BEGIN + 91,
     SPR_G2_MINI_RC_BOOSTER_NW_SE = SPR_G2_BEGIN + 92,
-        
+
     SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3 = SPR_G2_BEGIN + 93,
-        
+
     SPR_G2_MINIATURE_RAILWAY_BEGIN              = SPR_G2_BEGIN + 94,
     SPR_G2_MINIATURE_RAILWAY_GRAVEL_SW_NE       = SPR_G2_MINIATURE_RAILWAY_BEGIN + 0,
     SPR_G2_MINIATURE_RAILWAY_GRAVEL_NW_SE       = SPR_G2_MINIATURE_RAILWAY_BEGIN + 1,
@@ -823,6 +823,11 @@ enum {
     SPR_G2_MINIATURE_RAILWAY_LAST               = SPR_G2_BEGIN + 105,
 
     SPR_G2_SEARCH = SPR_G2_BEGIN + 106,
+
+    SPR_G2_SELECTION_EDGE_NW = SPR_G2_BEGIN + 107,
+    SPR_G2_SELECTION_EDGE_NE = SPR_G2_BEGIN + 108,
+    SPR_G2_SELECTION_EDGE_SW = SPR_G2_BEGIN + 109,
+    SPR_G2_SELECTION_EDGE_SE = SPR_G2_BEGIN + 110,
 
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.
