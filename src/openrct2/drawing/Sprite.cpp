@@ -36,10 +36,35 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
+constexpr struct
+{
+    int start;
+    sint32 x_offset;
+    sint32 y_offset;
+}
+sprite_peep_pickup_starts[15] =
+{
+    {SPR_PEEP_PICKUP_GUEST_START, 0, 15},
+    {SPR_PEEP_PICKUP_HANDYMAN_START, 1, 18},
+    {SPR_PEEP_PICKUP_MECHANIC_START, 3, 22},
+    {SPR_PEEP_PICKUP_GUARD_START, 3, 15},
+    {SPR_PEEP_PICKUP_PANDA_START, -1, 19},
+    {SPR_PEEP_PICKUP_TIGER_START, -1, 17},
+    {SPR_PEEP_PICKUP_ELEPHANT_START, -1, 17},
+    {SPR_PEEP_PICKUP_GORILLA_START, 0, 17},
+    {SPR_PEEP_PICKUP_SNOWMAN_START, -1, 16},
+    {SPR_PEEP_PICKUP_KNIGHT_START, -2, 17},
+    {SPR_PEEP_PICKUP_BANDIT_START, 0, 16},
+    {SPR_PEEP_PICKUP_PIRATE_START, 0, 16},
+    {SPR_PEEP_PICKUP_SHERIFF_START, 0, 16},
+    {SPR_PEEP_PICKUP_ASTRONAUT_START, 0, 16},
+    {SPR_PEEP_PICKUP_ROMAN_START, -1, 17},
+};
+
 static inline uint32 rctc_to_rct2_index(uint32 image)
 {
-    if      (                  image <  1575) return image;
-    else if (image >=  1607 && image <  4983) return image - 32;
+    if      (                  image <  1542) return image;
+    else if (image >=  1574 && image <  4983) return image - 32;
     else if (image >=  4986 && image < 17189) return image - 35;
     else if (image >= 17191 && image < 18121) return image - 37;
     else if (image >= 18123 && image < 23800) return image - 39;
@@ -63,7 +88,7 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
             // statement skips over the elements we don't want.
             switch (i)
             {
-            case 1575:
+            case 1542:
                 rctc += 32; break;
             case 23761:
             case 24627:
@@ -98,6 +123,18 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
 
             ++rctc;
         }
+
+        // The pincer graphic for picking up peeps is different in
+        // RCTC, and the sprites have different offsets to accommodate
+        // the change. This reverts the offsets to their RCT2 values.
+        for (const auto &animation : sprite_peep_pickup_starts)
+        {
+            for (int i=0; i < SPR_PEEP_PICKUP_COUNT; ++i)
+            {
+                elements[animation.start + i].x_offset -= animation.x_offset;
+                elements[animation.start + i].y_offset -= animation.y_offset;
+            }
+        }
     }
     else
     {
@@ -131,6 +168,7 @@ extern "C"
     #else
         rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
+    bool gTinyFontAntiAliased = false;
 
     /**
      *
@@ -156,7 +194,9 @@ extern "C"
 #ifdef NO_RCT2
             g1Elements = Memory::AllocateArray<rct_g1_element>(324206);
 #endif
-            read_and_convert_gxdat(&fs, header.num_entries, header.num_entries == SPR_RCTC_G1_END, g1Elements);
+            bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
+            read_and_convert_gxdat(&fs, header.num_entries, is_rctc, g1Elements);
+            gTinyFontAntiAliased = is_rctc;
 
             // Read element data
             _g1Buffer = fs.ReadArray<uint8>(header.total_size);

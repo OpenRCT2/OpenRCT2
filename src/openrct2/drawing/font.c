@@ -45,7 +45,8 @@ void font_sprite_initialise_characters()
         for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
             rct_g1_element g1 = g1Elements[glyphIndex + SPR_CHAR_START + glyphOffset];
 
-            sint32 width = fontSize == FONT_SIZE_BIG ? g1.width + 1 : g1.width - 1;
+            sint32 width = g1.width + 2 * g1.x_offset;
+            width += fontSize == FONT_SIZE_BIG ? 1 : -1;
             if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
                 width = 0;
             }

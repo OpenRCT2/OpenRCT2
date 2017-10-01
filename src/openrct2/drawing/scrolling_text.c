@@ -68,7 +68,8 @@ void scrolling_text_initialise_bitmaps()
             uint8 val = 0;
             for (sint32 y = 0; y < 8; y++) {
                 val >>= 1;
-                if (dpi.bits[x + y * 8] == 1) {
+                uint8 pixel = dpi.bits[x + y * 8];
+                if (pixel == 1 || (gTinyFontAntiAliased && pixel == 2)) {
                     val |= 0x80;
                 }
             }
