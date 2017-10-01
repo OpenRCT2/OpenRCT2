@@ -19,7 +19,7 @@
 #include <type_traits>
 #include "DataSerialiserTraits.h"
 
-class DataSerialiser 
+class DataSerialiser
 {
 private:
     MemoryStream _stream;
@@ -37,17 +37,17 @@ public:
         _activeStream = &stream;
     }
 
-    bool IsSaving() const 
+    bool IsSaving() const
     {
         return _isSaving;
     }
 
-    bool IsLoading() const 
+    bool IsLoading() const
     {
         return !_isSaving;
     }
 
-    MemoryStream& GetStream() 
+    MemoryStream& GetStream()
     {
         return _stream;
     }
