@@ -664,8 +664,7 @@ static void window_ride_construction_close(rct_window *w)
         sint32 eax = gGamePaused;
 
         gGamePaused = 0;
-        game_do_command(0, 9, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
-
+        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
         gGamePaused = eax;
     }
 }
