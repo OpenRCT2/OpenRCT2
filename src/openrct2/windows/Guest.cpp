@@ -1147,9 +1147,8 @@ void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
         return;
 
     gGameCommandErrorTitle = STR_CANT_NAME_GUEST;
-    game_do_command(1, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 0)), GAME_COMMAND_SET_GUEST_NAME, *((sint32*)(text + 8)), *((sint32*)(text + 4)));
-    game_do_command(2, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 12)), GAME_COMMAND_SET_GUEST_NAME, *((sint32*)(text + 20)), *((sint32*)(text + 16)));
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, w->number, *((sint32*)(text + 24)), GAME_COMMAND_SET_GUEST_NAME, *((sint32*)(text + 32)), *((sint32*)(text + 28)));
+
+	guest_set_name(w->number, text);
 }
 
 /**
