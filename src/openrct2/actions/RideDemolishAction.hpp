@@ -196,7 +196,10 @@ public:
             res->Position = { x, y, z };
         }
 
-        window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
+        if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
+        {
+            window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
+        }
         window_close_by_number(WC_RIDE, _rideIndex);
         window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
         window_close_by_class(WC_NEW_CAMPAIGN);

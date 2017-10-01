@@ -181,7 +181,7 @@ static void window_maze_construction_close(rct_window *w)
     if (ride->overall_view.xy == RCT_XY8_UNDEFINED) {
         sint32 savedPausedState = gGamePaused;
         gGamePaused = 0;
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED, 0, rideIndex, GAME_COMMAND_DEMOLISH_RIDE, 0, 0);
+        ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
     } else {
         window_ride_main_open(rideIndex);
