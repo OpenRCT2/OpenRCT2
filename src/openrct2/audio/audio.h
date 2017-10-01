@@ -48,10 +48,9 @@ typedef struct rct_ride_music
 
 typedef struct rct_ride_music_info
 {
-    uint32 length;
-    uint32 offset;
     uint8 path_id;
-    uint8 var_9;
+    uint32 offset;
+    uint32 length;
 } rct_ride_music_info;
 
 typedef struct rct_ride_music_params
