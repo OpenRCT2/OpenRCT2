@@ -355,7 +355,7 @@ void audio_init_ride_sounds_and_info()
 
     for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++)
     {
-        rct_ride_music_info *rideMusicInfo = gRideMusicInfoList[m];
+        rct_ride_music_info * rideMusicInfo = gRideMusicInfoList[m];
         const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
         if (File::Exists(path))
         {
@@ -367,11 +367,9 @@ void audio_init_ride_sounds_and_info()
                 {
                     rideMusicInfo->length = 0;
                 }
-                // FIX: Custom ones have no length set and while populating the combo box
-                //      they are ignored if 0.
-                if ((m == 36 || m == 37) && rideMusicInfo->length == 0)
+                // The length used to be hardcoded, but we stopped doing that to allow replacement.
+                if (rideMusicInfo->length == 0)
                 {
-                    // Try to get it.
                     rideMusicInfo->length = fs.GetLength();
                 }
             }
