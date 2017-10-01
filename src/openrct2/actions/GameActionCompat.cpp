@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "GameAction.h"
+#include "GuestSetNameAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
 #include "RideCreateAction.hpp"
@@ -199,6 +200,20 @@ extern "C"
     {
         Guard::Assert(false, "GAME_COMMAND_DEMOLISH_RIDE DEPRECATED");
     }
+#pragma endregion
+
+#pragma region GuestSetName
+
+	void guest_set_name(uint16 spriteIndex, const char *name)
+	{
+		auto gameAction = GuestSetNameAction(spriteIndex, name);
+		GameActions::Execute(&gameAction);
+	}
+
+	void game_command_set_guest_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
+		Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
+	}
+
 #pragma endregion
 
 }

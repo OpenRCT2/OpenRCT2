@@ -769,6 +769,8 @@ void peep_update_name_sort(rct_peep *peep);
 void peep_sort();
 void peep_update_names(bool realNames);
 
+void guest_set_name(uint16 spriteIndex, const char *name);
+void peep_handle_easteregg_name(rct_peep* peep);
 money32 set_peep_name(sint32 flags, sint32 state, uint16 sprite_index, uint8* text_1, uint8* text_2, uint8* text_3);
 void game_command_set_guest_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
