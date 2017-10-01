@@ -20,12 +20,9 @@
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
 
-extern "C"
-{
-    #include "../cheats.h"
-    #include "../interface/window.h"
-    #include "../world/park.h"
-}
+#include "../cheats.h"
+#include "../interface/window.h"
+#include "../world/park.h"
 
 struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>
 {
