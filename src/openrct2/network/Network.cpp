@@ -2133,12 +2133,17 @@ void Network::Client_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     }
     action->Serialise(ds);
 
-    auto itr = _gameActionCallbacks.find(action->GetNetworkId());
-    if (itr != _gameActionCallbacks.end())
+    if (player_id == action->GetPlayer())
     {
-        action->SetCallback(itr->second);
+        // Only execute callbacks that belong to us, 
+        // clients can have identical network ids assigned.
+        auto itr = _gameActionCallbacks.find(action->GetNetworkId());
+        if (itr != _gameActionCallbacks.end())
+        {
+            action->SetCallback(itr->second);
 
-        _gameActionCallbacks.erase(itr);
+            _gameActionCallbacks.erase(itr);
+        }
     }
 
     game_command_queue.emplace(tick, std::move(action), _commandId++);
