@@ -37,7 +37,9 @@ enum{
     VOUCHER_TYPE_FOOD_OR_DRINK_FREE,
 };
 
-#define CAMPAIGN_ACTIVE_FLAG (1 << 7)
+enum {
+    CAMPAIGN_ACTIVE_FLAG = (1 << 7)
+};
 
 #ifdef __cplusplus
 extern "C" {
