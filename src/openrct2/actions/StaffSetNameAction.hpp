@@ -25,15 +25,15 @@
 #include "../localisation/localisation.h"
 #include "../world/park.h"
 
-struct GuestSetNameAction : public GameActionBase<GAME_COMMAND_SET_GUEST_NAME, GameActionResult>
+struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
 {
 private:
 	uint16 _spriteIndex;
 	std::string _name;
 
 public:
-	GuestSetNameAction() {}
-	GuestSetNameAction(uint16 spriteIndex, const std::string& name)
+	StaffSetNameAction() {}
+	StaffSetNameAction(uint16 spriteIndex, const std::string& name)
 		: _spriteIndex(spriteIndex),
 		_name(name)
 	{
@@ -53,18 +53,18 @@ public:
 
 	GameActionResult::Ptr Query() const override
 	{
-		if (_spriteIndex >= MAX_SPRITES) 
+		if (_spriteIndex >= MAX_SPRITES)
 		{
 			return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
 		}
 
 		if (_name.empty())
 		{
-			return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_INVALID_NAME_FOR_GUEST);
+			return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER);
 		}
 
 		rct_peep *peep = GET_PEEP(_spriteIndex);
-		if (peep->type != PEEP_TYPE_GUEST) 
+		if (peep->type != PEEP_TYPE_STAFF)
 		{
 			log_warning("Invalid game command for sprite %u", _spriteIndex);
 			return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -86,7 +86,7 @@ public:
 		rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
 
 		rct_peep *peep = GET_PEEP(_spriteIndex);
-		if (peep->type != PEEP_TYPE_GUEST) 
+		if (peep->type != PEEP_TYPE_STAFF)
 		{
 			log_warning("Invalid game command for sprite %u", _spriteIndex);
 			return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -112,7 +112,7 @@ public:
 		gfx_invalidate_screen();
 
 		// Force guest list window refresh
-		rct_window *w = window_find_by_class(WC_GUEST_LIST);
+		rct_window *w = window_find_by_class(WC_STAFF_LIST);
 		if (w != NULL)
 		{
 			w->no_list_items = 0;

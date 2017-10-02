@@ -1514,29 +1514,6 @@ sint32 staff_path_finding(rct_peep* peep) {
     }
 }
 
-void game_command_set_staff_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
-    uint16 sprite_index = *ecx & 0xFFFF;
-
-    if (sprite_index >= MAX_SPRITES) {
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-    rct_peep *peep = GET_PEEP(sprite_index);
-    if (peep->type != PEEP_TYPE_STAFF) {
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
-
-    *ebx = set_peep_name(
-        *ebx & 0xFF,
-        *eax & 0xFFFF,
-        sprite_index,
-        (uint8*)edx,
-        (uint8*)ebp,
-        (uint8*)edi
-    );
-}
-
 void game_command_pickup_staff(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
 {
     sint32 peepnum = *eax;

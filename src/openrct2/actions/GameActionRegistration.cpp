@@ -15,8 +15,10 @@
 #pragma endregion
 
 #include "GameAction.h"
+#include "GuestSetNameAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
+#include "StaffSetNameAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
@@ -32,5 +34,7 @@ namespace GameActions
         Register<RideSetStatusAction>();
         Register<RideSetNameAction>();
         Register<RideDemolishAction>();
+		Register<GuestSetNameAction>();
+		Register<StaffSetNameAction>();
     }
 }

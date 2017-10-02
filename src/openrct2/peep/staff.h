@@ -89,6 +89,7 @@ void game_command_pickup_staff(sint32* eax, sint32* ebx, sint32* ecx, sint32* ed
 
 void staff_reset_modes();
 void update_staff_colour(uint8 staffType, uint16 colour);
+void staff_set_name(uint16 spriteIndex, const char *name);
 uint16 hire_new_staff_member(uint8 staffType);
 void staff_update_greyed_patrol_areas();
 sint32 staff_is_location_in_patrol(rct_peep *mechanic, sint32 x, sint32 y);
