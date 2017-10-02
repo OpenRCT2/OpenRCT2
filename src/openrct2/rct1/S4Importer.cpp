@@ -237,48 +237,53 @@ public:
 
     bool GetDetails(scenario_index_entry * dst) override
     {
-        bool result = false;
         Memory::Set(dst, 0, sizeof(scenario_index_entry));
 
         source_desc desc;
-        if (ScenarioSources::TryGetById(_s4.scenario_slot_index, &desc))
+        // If no entry is found, this is a custom scenario.
+        bool isOfficial = ScenarioSources::TryGetById(_s4.scenario_slot_index, &desc);
+
+        dst->category = desc.category;
+        dst->source_game = desc.source;
+        dst->source_index = desc.index;
+        dst->sc_id = desc.id;
+
+        dst->objective_type = _s4.scenario_objective_type;
+        dst->objective_arg_1 = _s4.scenario_objective_years;
+        // RCT1 used another way of calculating park value.
+        if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
+            dst->objective_arg_2 = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
+        else
+            dst->objective_arg_2 = _s4.scenario_objective_currency;
+        dst->objective_arg_3 = _s4.scenario_objective_num_guests;
+
+        std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
+        std::string details;
+
+        // TryGetById won't set this property if the scenario is not recognised,
+        // but localisation needs it.
+        if (!isOfficial)
         {
-            dst->category = desc.category;
-            dst->source_game = desc.source;
-            dst->source_index = desc.index;
-            dst->sc_id = desc.id;
-
-            dst->objective_type = _s4.scenario_objective_type;
-            dst->objective_arg_1 = _s4.scenario_objective_years;
-            // RCT1 used another way of calculating park value.
-            if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
-                dst->objective_arg_2 = CorrectRCT1ParkValue(_s4.scenario_objective_currency);
-            else
-                dst->objective_arg_2 = _s4.scenario_objective_currency;
-            dst->objective_arg_3 = _s4.scenario_objective_num_guests;
-
-            std::string name = std::string(_s4.scenario_name, sizeof(_s4.scenario_name));
-            std::string details;
-            rct_string_id localisedStringIds[3];
-            if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
-            {
-                if (localisedStringIds[0] != STR_NONE)
-                {
-                    name = String::ToStd(language_get_string(localisedStringIds[0]));
-                }
-                if (localisedStringIds[2] != STR_NONE)
-                {
-                    details = String::ToStd(language_get_string(localisedStringIds[2]));
-                }
-            }
-
-            String::Set(dst->name, sizeof(dst->name), name.c_str());
-            String::Set(dst->details, sizeof(dst->details), details.c_str());
-
-            result = true;
+            desc.title = name.c_str();
         }
 
-        return result;
+        rct_string_id localisedStringIds[3];
+        if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
+        {
+            if (localisedStringIds[0] != STR_NONE)
+            {
+                name = String::ToStd(language_get_string(localisedStringIds[0]));
+            }
+            if (localisedStringIds[2] != STR_NONE)
+            {
+                details = String::ToStd(language_get_string(localisedStringIds[2]));
+            }
+        }
+
+        String::Set(dst->name, sizeof(dst->name), name.c_str());
+        String::Set(dst->details, sizeof(dst->details), details.c_str());
+
+        return true;
     }
 
     sint32 CorrectRCT1ParkValue(money32 oldParkValue)
