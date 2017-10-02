@@ -2404,7 +2404,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         map_invalidate_selection_rect();
 
         // If no change in ghost placement
-        if ((gSceneryGhostType & (1 << 0)) &&
+        if ((gSceneryGhostType & SCENERY_GHOST_FLAG_0) &&
             mapTile.x == gSceneryGhostPosition.x &&
             mapTile.y == gSceneryGhostPosition.y &&
             (parameter2 & 0xFF) == _unkF64F0E &&
@@ -2451,7 +2451,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         map_invalidate_selection_rect();
 
         // If no change in ghost placement
-        if ((gSceneryGhostType & (1 << 1)) &&
+        if ((gSceneryGhostType & SCENERY_GHOST_FLAG_1) &&
             mapTile.x == gSceneryGhostPosition.x &&
             mapTile.y == gSceneryGhostPosition.y &&
             (sint16)(parameter2 & 0xFF) == gSceneryGhostPosition.z){
@@ -2480,7 +2480,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         map_invalidate_selection_rect();
 
         // If no change in ghost placement
-        if ((gSceneryGhostType & (1 << 2)) &&
+        if ((gSceneryGhostType & SCENERY_GHOST_FLAG_2) &&
             mapTile.x == gSceneryGhostPosition.x &&
             mapTile.y == gSceneryGhostPosition.y &&
             (parameter2 & 0xFF) == gSceneryGhostWallRotation &&
@@ -2540,7 +2540,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         map_invalidate_map_selection_tiles();
 
         // If no change in ghost placement
-        if ((gSceneryGhostType & (1 << 3)) &&
+        if ((gSceneryGhostType & SCENERY_GHOST_FLAG_3) &&
             mapTile.x == gSceneryGhostPosition.x &&
             mapTile.y == gSceneryGhostPosition.y &&
             gSceneryPlaceZ == _unkF64F0A &&
@@ -2587,7 +2587,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         map_invalidate_selection_rect();
 
         // If no change in ghost placement
-        if ((gSceneryGhostType & (1 << 4)) &&
+        if ((gSceneryGhostType & SCENERY_GHOST_FLAG_4) &&
             mapTile.x == gSceneryGhostPosition.x &&
             mapTile.y == gSceneryGhostPosition.y &&
             (sint16)(parameter2 & 0xFF) == gSceneryGhostPosition.z &&

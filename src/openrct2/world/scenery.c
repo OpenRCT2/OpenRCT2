@@ -191,8 +191,8 @@ void scenery_remove_ghost_tool_placement(){
     y = gSceneryGhostPosition.y;
     z = gSceneryGhostPosition.z;
 
-    if (gSceneryGhostType & (1 << 0)){
-        gSceneryGhostType &= ~(1 << 0);
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_0){
+        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_0;
         game_do_command(
             x,
             105 | (gSceneryTileElementType << 8),
@@ -203,11 +203,13 @@ void scenery_remove_ghost_tool_placement(){
             0);
     }
 
-    if (gSceneryGhostType & (1 << 1)){
-        gSceneryGhostType &= ~(1 << 1);
-        rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_1)
+    {
+        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_1;
+        rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
 
-        do{
+        do
+        {
             if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
@@ -226,8 +228,8 @@ void scenery_remove_ghost_tool_placement(){
         } while (!tile_element_is_last_for_tile(tile_element++));
     }
 
-    if (gSceneryGhostType & (1 << 2)){
-        gSceneryGhostType &= ~(1 << 2);
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2){
+        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
         game_do_command(
             x,
             105 | (gSceneryTileElementType << 8),
@@ -238,8 +240,8 @@ void scenery_remove_ghost_tool_placement(){
             0);
     }
 
-    if (gSceneryGhostType & (1 << 3)){
-        gSceneryGhostType &= ~(1 << 3);
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3){
+        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_3;
         game_do_command(
             x,
             105 | (gSceneryPlaceRotation << 8),
@@ -250,8 +252,8 @@ void scenery_remove_ghost_tool_placement(){
             0);
     }
 
-    if (gSceneryGhostType & (1 << 4)){
-        gSceneryGhostType &= ~(1 << 4);
+    if (gSceneryGhostType & SCENERY_ENTRY_FLAG_4){
+        gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_4;
         game_do_command(
             x,
             105,
