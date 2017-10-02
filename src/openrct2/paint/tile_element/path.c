@@ -87,7 +87,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
 
     uint32 imageId;
 
-    if (!(edges & (1 << 0))) {
+    if (!(edges & PATH_EDGE_FLAG_0)) {
         imageId = pathBitEntry->image + 1;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -97,7 +97,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
 
         sub_98197C(session, imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2, get_current_rotation());
     }
-    if (!(edges & (1 << 1))) {
+    if (!(edges & PATH_EDGE_FLAG_1)) {
         imageId = pathBitEntry->image + 2;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -108,7 +108,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
         sub_98197C(session, imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 2))) {
+    if (!(edges & PATH_EDGE_FLAG_2)) {
         imageId = pathBitEntry->image + 3;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -119,7 +119,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
         sub_98197C(session, imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 3))) {
+    if (!(edges & PATH_EDGE_FLAG_3)) {
         imageId = pathBitEntry->image + 4;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -138,7 +138,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
     uint32 imageId;
 
-    if (!(edges & (1 << 0))) {
+    if (!(edges & PATH_EDGE_FLAG_0)) {
         imageId = pathBitEntry->image + 5;
 
         imageId |= pathBitImageFlags;
@@ -155,7 +155,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
         sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
     }
-    if (!(edges & (1 << 1))) {
+    if (!(edges & PATH_EDGE_FLAG_1)) {
         imageId = pathBitEntry->image + 6;
 
         imageId |= pathBitImageFlags;
@@ -173,7 +173,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
         sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 2))) {
+    if (!(edges & PATH_EDGE_FLAG_2)) {
         imageId = pathBitEntry->image + 7;
 
         imageId |= pathBitImageFlags;
@@ -191,7 +191,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
         sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 3))) {
+    if (!(edges & PATH_EDGE_FLAG_3)) {
         imageId = pathBitEntry->image + 8;
 
         imageId |= pathBitImageFlags;
@@ -214,7 +214,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     uint32 imageId;
 
-    if (!(edges & (1 << 0))) {
+    if (!(edges & PATH_EDGE_FLAG_0)) {
         imageId = pathBitEntry->image + 1;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -224,7 +224,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
 
         sub_98197C(session, imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2, get_current_rotation());
     }
-    if (!(edges & (1 << 1))) {
+    if (!(edges & PATH_EDGE_FLAG_1)) {
         imageId = pathBitEntry->image + 2;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -235,7 +235,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
         sub_98197C(session, imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 2))) {
+    if (!(edges & PATH_EDGE_FLAG_2)) {
         imageId = pathBitEntry->image + 3;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -246,7 +246,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
         sub_98197C(session, imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2, get_current_rotation());
     }
 
-    if (!(edges & (1 << 3))) {
+    if (!(edges & PATH_EDGE_FLAG_3)) {
         imageId = pathBitEntry->image + 4;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -775,16 +775,16 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         if (footpath_element_has_path_scenery(tile_element) && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)) {
             rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
-                if (!(tile_element->properties.path.edges & (1 << 0))) {
+                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_0)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & (1 << 1))) {
+                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_1)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & (1 << 2))) {
+                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_2)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & (1 << 3))) {
+                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_3)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
             }
