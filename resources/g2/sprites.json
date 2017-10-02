@@ -353,5 +353,25 @@
     },
     {
         "path": "icons/search.png"
+    },
+    {
+        "path": "surface/selection_edge_nw.png",
+        "x_offset": -32,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_ne.png",
+        "x_offset": 0,
+        "y_offset": -1
+    },
+    {
+        "path": "surface/selection_edge_sw.png",
+        "x_offset": -32,
+        "y_offset": 15
+    },
+    {
+        "path": "surface/selection_edge_se.png",
+        "x_offset": 0,
+        "y_offset": 15
     }
 ]
