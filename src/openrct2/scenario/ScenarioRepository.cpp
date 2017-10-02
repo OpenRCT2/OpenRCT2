@@ -460,28 +460,36 @@ private:
     void AddScenario(const scenario_index_entry &entry)
     {
         auto filename = Path::GetFileName(entry.path);
-        auto existingEntry = GetByFilename(filename);
-        if (existingEntry != nullptr)
-        {
-            std::string conflictPath;
-            if (existingEntry->timestamp > entry.timestamp)
-            {
-                // Existing entry is more recent
-                conflictPath = String::ToStd(existingEntry->path);
 
-                // Overwrite existing entry with this one
-                *existingEntry = entry;
+        if (!String::Equals(filename, ""))
+        {
+            auto existingEntry = GetByFilename(filename);
+            if (existingEntry != nullptr)
+            {
+                std::string conflictPath;
+                if (existingEntry->timestamp > entry.timestamp)
+                {
+                    // Existing entry is more recent
+                    conflictPath = String::ToStd(existingEntry->path);
+
+                    // Overwrite existing entry with this one
+                    *existingEntry = entry;
+                }
+                else
+                {
+                    // This entry is more recent
+                    conflictPath = entry.path;
+                }
+                Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
             }
             else
             {
-                // This entry is more recent
-                conflictPath = entry.path;
+                _scenarios.push_back(entry);
             }
-            Console::WriteLine("Scenario conflict: '%s' ignored because it is newer.", conflictPath.c_str());
         }
         else
         {
-            _scenarios.push_back(entry);
+            log_error("Tried to add scenario with an empty filename!");
         }
     }
 
