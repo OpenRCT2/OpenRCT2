@@ -19,7 +19,6 @@
 #include <speex/speex_resampler.h>
 #include <list>
 #include <openrct2/Context.h>
-#include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/core/Util.hpp>
@@ -31,9 +30,7 @@
 #include "AudioFormat.h"
 
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/localisation.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/platform/platform.h>
 
 namespace OpenRCT2 { namespace Audio
 {

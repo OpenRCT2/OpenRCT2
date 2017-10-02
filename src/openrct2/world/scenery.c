@@ -15,18 +15,11 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../common.h"
 #include "../localisation/localisation.h"
-#include "../scenario/scenario.h"
-#include "../cheats.h"
 #include "../network/network.h"
 #include "../object_list.h"
 #include "Climate.h"
 #include "Fountain.h"
-#include "map.h"
-#include "park.h"
-#include "scenery.h"
-#include "footpath.h"
 
 uint8 gWindowSceneryActiveTabIndex;
 uint16 gWindowSceneryTabSelections[20];

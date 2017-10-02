@@ -16,9 +16,7 @@
 
 #include "../localisation/localisation.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
 #include "../OpenRCT2.h"
-#include "sprite.h"
 
 static const rct_xy16 _moneyEffectMoveOffset[] = {
     {  1, -1 },

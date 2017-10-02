@@ -20,15 +20,9 @@
 #include "../../localisation/localisation.h"
 #include "../../object_list.h"
 #include "../../peep/staff.h"
-#include "../../ride/track.h"
 #include "../../ride/track_paint.h"
-#include "../../world/footpath.h"
-#include "../../world/scenery.h"
-#include "../paint.h"
 #include "../supports.h"
-#include "map_element.h"
 #include "surface.h"
-#include "../../world/map.h"
 #include "../../drawing/lightfx.h"
 
 // #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup

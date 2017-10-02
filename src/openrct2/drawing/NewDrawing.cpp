@@ -23,12 +23,9 @@
 #include "../paint/Painter.h"
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
-#include "NewDrawing.h"
 
 #include "../config/Config.h"
-#include "../drawing/drawing.h"
 #include "../localisation/string_ids.h"
-#include "../platform/platform.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

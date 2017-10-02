@@ -15,10 +15,9 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "../core/Memory.hpp"
 #include "LargeSceneryObject.h"
+#include "../core/Memory.hpp"
 
-#include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 
 LargeSceneryObject::~LargeSceneryObject()

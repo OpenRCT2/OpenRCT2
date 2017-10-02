@@ -17,20 +17,7 @@
 #include "../paint.h"
 #include "../../interface/viewport.h"
 #include "map_element.h"
-#include "../../drawing/drawing.h"
-#include "../../ride/ride_data.h"
-#include "../../ride/track_data.h"
-#include "../../ride/track_paint.h"
-#include "../../config/Config.h"
-#include "../../world/sprite.h"
-#include "../../world/banner.h"
 #include "../../world/entrance.h"
-#include "../../world/footpath.h"
-#include "../../world/scenery.h"
-#include "../../sprites.h"
-#include "../../localisation/localisation.h"
-#include "../../game.h"
-#include "../supports.h"
 
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;

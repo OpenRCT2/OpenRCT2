@@ -17,14 +17,8 @@
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
 #include "../../paint/map_element/map_element.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
 #include "../track_data.h"
-#include "../track_paint.h"
 
 enum {
     SPR_WOODEN_WILD_MOUSE_FLAT_SW_NE = 28535,

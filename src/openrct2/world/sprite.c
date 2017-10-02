@@ -18,13 +18,9 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../interface/viewport.h"
-#include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../rct2/addresses.h"
-#include "../scenario/scenario.h"
 #include "Fountain.h"
-#include "sprite.h"
 
 #ifdef NO_RCT2
 uint16 gSpriteListHead[6];

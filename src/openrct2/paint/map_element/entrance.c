@@ -21,7 +21,6 @@
 #include "../../ride/ride_data.h"
 #include "../../world/entrance.h"
 #include "../../world/footpath.h"
-#include "../paint.h"
 #include "../supports.h"
 #include "map_element.h"
 #include "../../drawing/lightfx.h"

@@ -19,7 +19,6 @@
 #include <png.h>
 #include "core/Exception.hpp"
 #include "core/FileStream.hpp"
-#include "core/Guard.hpp"
 #include "core/Memory.hpp"
 
 #include "Imaging.h"

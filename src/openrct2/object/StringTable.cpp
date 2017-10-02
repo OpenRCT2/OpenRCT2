@@ -19,7 +19,6 @@
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Object.h"
-#include "StringTable.h"
 
 #include "../localisation/localisation.h"
 

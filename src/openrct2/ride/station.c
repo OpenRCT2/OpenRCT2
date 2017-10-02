@@ -15,8 +15,6 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../scenario/scenario.h"
-#include "../world/sprite.h"
 #include "station.h"
 
 static void ride_update_station_blocksection(Ride *ride, sint32 stationIndex);

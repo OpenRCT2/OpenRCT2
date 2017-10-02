@@ -19,12 +19,7 @@
 
 #include "entrance.h"
 #include "footpath.h"
-#include "map.h"
-#include "park.h"
 #include "../cheats.h"
-#include "../game.h"
-#include "../localisation/string_ids.h"
-#include "../management/finance.h"
 #include "../ride/track.h"
 
 bool gParkEntranceGhostExists = false;

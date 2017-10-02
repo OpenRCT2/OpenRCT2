@@ -18,10 +18,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../OpenRCT2.h"
-#include "../world/map.h"
-#include "ride.h"
 #include "ride_data.h"
-#include "ride_ratings.h"
 #include "station.h"
 #include "track.h"
 

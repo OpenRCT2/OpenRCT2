@@ -19,9 +19,7 @@
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/date.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../../world/map.h"
 #include "../../world/scenery.h"
 
 static const rct_xy16 offsets[] = {

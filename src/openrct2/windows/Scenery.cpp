@@ -25,7 +25,6 @@
 #include "../localisation/localisation.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
-#include "error.h"
 #include "../sprites.h"
 #include "../object_list.h"
 

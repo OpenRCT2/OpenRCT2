@@ -27,7 +27,6 @@ void http_dispose() { }
 
 #include "../core/Console.hpp"
 #include "../core/Math.hpp"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../Version.h"
 

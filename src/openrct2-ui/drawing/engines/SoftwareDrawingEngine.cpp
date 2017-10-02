@@ -17,14 +17,11 @@
 #include <openrct2/common.h>
 #include <SDL.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/drawing/X8DrawingEngine.h>
 #include <openrct2/ui/UiContext.h>
 #include "DrawingEngines.h"
-
-#include <openrct2/game.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

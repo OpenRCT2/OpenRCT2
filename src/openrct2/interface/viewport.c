@@ -16,25 +16,13 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
-#include "../game.h"
 #include "../input.h"
-#include "../localisation/localisation.h"
 #include "../paint/paint.h"
 #include "../paint/supports.h"
 #include "../peep/staff.h"
-#include "../ride/ride_data.h"
 #include "../ride/track_data.h"
-#include "../world/banner.h"
 #include "../world/Climate.h"
 #include "../world/entrance.h"
-#include "../world/footpath.h"
-#include "../world/map.h"
-#include "../world/scenery.h"
-#include "../world/sprite.h"
-#include "colour.h"
-#include "viewport.h"
-#include "window.h"
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;

@@ -23,9 +23,7 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__))
     #include <dirent.h>
-    #include <sys/types.h>
     #include <sys/stat.h>
-    #include <unistd.h>
 #elif defined(_WIN32)
     // Windows needs this for widechar <-> utf8 conversion utils
     #include "../localisation/language.h"

@@ -21,13 +21,9 @@
 #include "../core/Memory.hpp"
 #include "../localisation/string_ids.h"
 #include "FootpathItemObject.h"
-#include "LargeSceneryObject.h"
-#include "Object.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
-#include "SmallSceneryObject.h"
-#include "WallObject.h"
 
 #include "../object_list.h"
 

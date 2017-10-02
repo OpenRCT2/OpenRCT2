@@ -15,14 +15,10 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
 #include "../interface/viewport.h"
-#include "map_animation.h"
-#include "map.h"
 #include "scenery.h"
-#include "sprite.h"
 
 typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
 

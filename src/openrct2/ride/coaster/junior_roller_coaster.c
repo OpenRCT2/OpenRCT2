@@ -17,16 +17,8 @@
 #include "junior_roller_coaster.h"
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../interface/window.h"
-#include "../../localisation/localisation.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
 #include "../track_data.h"
-#include "../track_paint.h"
 
 enum {
     SPR_JUNIOR_RC_FLAT_SW_NE = 27807,

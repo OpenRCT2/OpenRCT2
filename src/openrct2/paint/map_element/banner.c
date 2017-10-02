@@ -20,7 +20,6 @@
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../paint/map_element/map_element.h"
-#include "../../world/banner.h"
 #include "../../world/scenery.h"
 
 /** rct2: 0x0098D884 */

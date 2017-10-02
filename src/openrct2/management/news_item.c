@@ -17,13 +17,10 @@
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../input.h"
-#include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride.h"
 #include "../util/util.h"
-#include "../world/sprite.h"
 #include "news_item.h"
 
 NewsItem gNewsItems[MAX_NEWS_ITEMS];

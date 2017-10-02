@@ -15,15 +15,7 @@
 #pragma endregion
 
 #include "../../paint/supports.h"
-#include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../localisation/localisation.h"
-#include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
 #include "../track_data.h"
-#include "../track_paint.h"
 
 /** rct2: 0x014280BC */
 static sint16 TopSpinSeatHeightOffset[] = {

@@ -18,12 +18,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../peep/peep.h"
-#include "../ride/ride.h"
 #include "../util/util.h"
-#include "../world/park.h"
-#include "../world/sprite.h"
-#include "finance.h"
 
 /**
  * Monthly staff wages

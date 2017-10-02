@@ -23,22 +23,15 @@
 #include "../rct1/Tables.h"
 #include "TrackDesignRepository.h"
 
-#include "../audio/audio.h"
 #include "../cheats.h"
-#include "../game.h"
 #include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
-#include "../management/finance.h"
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "ride.h"
-#include "ride_data.h"
 #include "track.h"
 #include "track_data.h"
-#include "TrackDesign.h"
 
 typedef struct map_backup
 {

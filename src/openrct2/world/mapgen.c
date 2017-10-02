@@ -15,17 +15,13 @@
 #pragma endregion
 
 #include "../common.h"
-#include <math.h>
 
 #include "../Context.h"
 #include "../Imaging.h"
 #include "../core/Guard.hpp"
-#include "../game.h"
 #include "../localisation/string_ids.h"
-#include "../object.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "map.h"
 #include "map_helpers.h"
 #include "mapgen.h"
 #include "scenery.h"

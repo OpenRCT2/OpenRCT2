@@ -17,12 +17,8 @@
 #include "../../common.h"
 #include "../track_paint.h"
 #include "../track.h"
-#include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../ride_data.h"
-#include "../../world/map.h"
 
 enum {
     SPR_CAR_RIDE_FLAT_SW_NE = 28773,

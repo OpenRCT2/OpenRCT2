@@ -19,10 +19,7 @@
 
 #include "footpath.h"
 #include "scenery.h"
-#include "map.h"
-#include "park.h"
 #include "../cheats.h"
-#include "../ride/TrackDesign.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {

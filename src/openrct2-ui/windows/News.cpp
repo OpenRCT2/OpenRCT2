@@ -21,7 +21,6 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/management/news_item.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/world/sprite.h>
 #include <openrct2/peep/staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/interface/widget.h>

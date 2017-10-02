@@ -15,10 +15,7 @@
 #pragma endregion
 
 #include "../windows/dropdown.h"
-#include "../world/map.h"
 #include "land_tool.h"
-#include "widget.h"
-#include "window.h"
 
 static uint16 toolSizeSpriteIndices[] =
 {

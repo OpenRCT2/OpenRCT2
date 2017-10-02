@@ -18,11 +18,8 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Context.h>
-#include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <time.h>
-#include <openrct2/core/Guard.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/game.h>
 #include <openrct2/interface/widget.h>

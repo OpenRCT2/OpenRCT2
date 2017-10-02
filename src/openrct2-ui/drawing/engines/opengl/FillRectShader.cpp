@@ -17,7 +17,6 @@
 #ifndef DISABLE_OPENGL
 
 #include "FillRectShader.h"
-#include "OpenGLFramebuffer.h"
 
 FillRectShader::FillRectShader() : OpenGLShaderProgram("fillrect")
 {

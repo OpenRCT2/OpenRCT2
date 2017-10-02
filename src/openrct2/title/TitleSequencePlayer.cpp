@@ -25,7 +25,6 @@
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
@@ -33,7 +32,6 @@
 
 #include "../game.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
 #include "../management/news_item.h"
 #include "../world/scenery.h"
 

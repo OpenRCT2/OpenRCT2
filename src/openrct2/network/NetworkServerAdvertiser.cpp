@@ -21,15 +21,11 @@
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "network.h"
-#include "NetworkServerAdvertiser.h"
 
 #include "../config/Config.h"
 #include "../localisation/date.h"
-#include "../management/finance.h"
-#include "../peep/peep.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "../world/map.h"
 #include "../world/park.h"
 #include "http.h"
 

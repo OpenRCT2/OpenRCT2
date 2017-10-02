@@ -18,7 +18,6 @@
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "drawing.h"
-#include "font.h"
 #include "ttf.h"
 
 static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };

@@ -19,19 +19,14 @@
 #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
-#else
-    #include <unistd.h>
 #endif
 
-#include <stdlib.h>
 #include <time.h>
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
 #include "../game.h"
 #include "../localisation/currency.h"
-#include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "../world/Climate.h"

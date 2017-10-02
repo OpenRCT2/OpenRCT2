@@ -22,16 +22,13 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
-#include "../core/Util.hpp"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 
 #include "../platform/platform.h"
-#include "../rct2/addresses.h"
 #include "../util/util.h"
-#include "drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

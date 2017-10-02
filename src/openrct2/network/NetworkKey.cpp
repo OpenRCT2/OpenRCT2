@@ -22,7 +22,6 @@
 #include <openssl/rsa.h>
 
 #include "../core/IStream.hpp"
-#include "../diagnostic.h"
 #include "NetworkKey.h"
 
 #define KEY_TYPE EVP_PKEY_RSA

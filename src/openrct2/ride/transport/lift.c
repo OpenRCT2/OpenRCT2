@@ -16,8 +16,6 @@
 
 #include "../../common.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
 #include "../track_paint.h"
 #include "../track.h"
 

@@ -19,11 +19,8 @@
 #include "../common.h"
 #include "../game.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
-#include "../paint/map_element/map_element.h"
 #include "../world/Climate.h"
 #include "../config/Config.h"
-#include "drawing.h"
 #include "lightfx.h"
 
 static uint8 _bakedLightTexture_lantern_0[32*32];
