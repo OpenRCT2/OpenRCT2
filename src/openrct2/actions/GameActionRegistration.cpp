@@ -34,7 +34,7 @@ namespace GameActions
         Register<RideSetStatusAction>();
         Register<RideSetNameAction>();
         Register<RideDemolishAction>();
-		Register<GuestSetNameAction>();
-		Register<StaffSetNameAction>();
+        Register<GuestSetNameAction>();
+        Register<StaffSetNameAction>();
     }
 }

@@ -12638,129 +12638,129 @@ static bool peep_heading_for_ride_or_park_exit(rct_peep *peep)
 
 void peep_handle_easteregg_name(rct_peep* peep)
 {
-	peep->peep_flags &= ~PEEP_FLAGS_WAVING;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_WAVING;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_WAVING;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_BRAYSHAW, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_WAVING;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_PHOTO;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CHRIS_SAWYER, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_PHOTO;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_PHOTO;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CHRIS_SAWYER, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_PHOTO;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_PAINTING;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_SIMON_FOSTER, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_PAINTING;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_PAINTING;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_SIMON_FOSTER, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_PAINTING;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_WOW;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOHN_WARDLEY, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_WOW;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_WOW;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOHN_WARDLEY, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_WOW;
+    }
 
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MELANIE_WARN, peep))
-	{
-		peep->happiness = 250;
-		peep->happiness_target = 250;
-		peep->energy = 127;
-		peep->energy_target = 127;
-		peep->nausea = 0;
-		peep->nausea_target = 0;
-	}
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MELANIE_WARN, peep))
+    {
+        peep->happiness = 250;
+        peep->happiness_target = 250;
+        peep->energy = 127;
+        peep->energy_target = 127;
+        peep->nausea = 0;
+        peep->nausea_target = 0;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_LITTER;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_LISA_STIRLING, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_LITTER;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_LITTER;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_LISA_STIRLING, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_LITTER;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_LOST;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DONALD_MACRAE, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_LOST;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_LOST;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DONALD_MACRAE, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_LOST;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_HUNGER;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_HUNGER;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_HUNGER;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATHERINE_MCGOWAN, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_HUNGER;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_BATHROOM;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_BATHROOM;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_BATHROOM;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FRANCES_MCGOWAN, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_BATHROOM;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_CROWDED;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CORINA_MASSOURA, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_CROWDED;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_CROWDED;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CORINA_MASSOURA, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_CROWDED;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_HAPPINESS;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CAROL_YOUNG, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_HAPPINESS;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_HAPPINESS;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_CAROL_YOUNG, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_HAPPINESS;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_NAUSEA;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MIA_SHERIDAN, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_NAUSEA;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_NAUSEA;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_MIA_SHERIDAN, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_NAUSEA;
+    }
 
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_RODGER, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_LEAVING_PARK;
-		peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
-	}
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_RODGER, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_LEAVING_PARK;
+        peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_PURPLE;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_PURPLE;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_PURPLE;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EMMA_GARRELL, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_PURPLE;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_PIZZA;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOANNE_BARTON, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_PIZZA;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_PIZZA;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_JOANNE_BARTON, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_PIZZA;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_CONTAGIOUS;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_CONTAGIOUS;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_CONTAGIOUS;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_FELICITY_ANDERSON, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_CONTAGIOUS;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_JOY;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_SMITH, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_JOY;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_JOY;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_KATIE_SMITH, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_JOY;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EILIDH_BELL, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_ANGRY;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_ANGRY;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_EILIDH_BELL, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_ANGRY;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_ICE_CREAM;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_ICE_CREAM;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_NANCY_STILLWAGON, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_ICE_CREAM;
+    }
 
-	peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
-	if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep))
-	{
-		peep->peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
-	}
+    peep->peep_flags &= ~PEEP_FLAGS_HERE_WE_ARE;
+    if (peep_check_easteregg_name(EASTEREGG_PEEP_NAME_DAVID_ELLIS, peep))
+    {
+        peep->peep_flags |= PEEP_FLAGS_HERE_WE_ARE;
+    }
 }
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
