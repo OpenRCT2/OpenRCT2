@@ -18,6 +18,7 @@
 #include "GuestSetNameAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
 #include "SetParkEntranceFeeAction.hpp"
+#include "StaffSetNameAction.hpp"
 #include "RideCreateAction.hpp"
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
@@ -210,8 +211,26 @@ extern "C"
 		GameActions::Execute(&gameAction);
 	}
 
+	/**
+	*
+	*  rct2: 0x00698D6C
+	*/
 	void game_command_set_guest_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
 		Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
+	}
+
+#pragma endregion
+
+#pragma region GuestSetName
+
+	void staff_set_name(uint16 spriteIndex, const char *name)
+	{
+		auto gameAction = StaffSetNameAction(spriteIndex, name);
+		GameActions::Execute(&gameAction);
+	}
+
+	void game_command_set_staff_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
+		Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
 	}
 
 #pragma endregion
