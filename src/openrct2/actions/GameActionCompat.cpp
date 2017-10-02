@@ -221,7 +221,7 @@ extern "C"
 
 #pragma endregion
 
-#pragma region GuestSetName
+#pragma region StaffSetName
 
 	void staff_set_name(uint16 spriteIndex, const char *name)
 	{
