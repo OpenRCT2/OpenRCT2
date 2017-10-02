@@ -5565,6 +5565,23 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
     sint32 edges = map_element->properties.path.edges & 0xF;
     if (edges == 0xF) return;
 
+    uint16 sprite_id = sprite_get_first_in_quadrant(peep->x, peep->y);
+
+    // Check if a peep is already sitting on the bench. If so, do not vandalise it.
+    for (rct_sprite * sprite; sprite_id != SPRITE_INDEX_NULL; sprite_id = sprite->unknown.next_in_quadrant) 
+    {
+        sprite = get_sprite(sprite_id);
+
+        if ((sprite->unknown.linked_list_type_offset != SPRITE_LIST_PEEP * 2) ||
+            (sprite->peep.state != PEEP_STATE_SITTING) ||
+            (peep->z != sprite->peep.z))
+        {
+            continue;
+        }
+
+        return;
+    }
+
     rct_peep* inner_peep;
     uint16 sprite_index;
 
