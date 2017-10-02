@@ -285,9 +285,8 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 
 
         const utf8 *ch = text;
         const utf8 *nextCh = 0;
-        sint32 codepoint = 0;
 
-        while ((codepoint = utf8_get_next(ch, (const utf8**)&nextCh)) != 0) {
+        while ((utf8_get_next(ch, &nextCh)) != 0) {
             ch = nextCh;
         }
         text = (char*)(ch + 1);

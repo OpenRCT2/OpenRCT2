@@ -263,7 +263,7 @@ namespace Editor
      */
     static bool ReadS6(const char * path)
     {
-        ParkLoadResult * loadResult = NULL;
+        ParkLoadResult * loadResult = nullptr;
         const char     * extension  = path_get_extension(path);
         if (_stricmp(extension, ".sc6") == 0)
         {

@@ -51,9 +51,9 @@ bool gTestColor = true;
 Verbosity _verbosity = NORMAL;
 
 static bool CStringEquals(const char *lhs, const char *rhs) {
-    if (lhs == NULL) return rhs == NULL;
+    if (lhs == nullptr) return rhs == nullptr;
 
-    if (rhs == NULL) return false;
+    if (rhs == nullptr) return false;
 
     return strcmp(lhs, rhs) == 0;
 }

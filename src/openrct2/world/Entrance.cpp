@@ -511,9 +511,9 @@ extern "C"
 
     void reset_park_entrance()
     {
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
+        for (auto &parkEntrance : gParkEntrances)
         {
-            gParkEntrances[i].x = LOCATION_NULL;
+            parkEntrance.x = LOCATION_NULL;
         }
     }
 

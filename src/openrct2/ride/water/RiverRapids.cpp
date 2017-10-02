@@ -234,7 +234,7 @@ void vehicle_visual_river_rapids(paint_session * session, sint32 x, sint32 image
     if (session->Unk140E9A8->zoom_level < 2 && vehicle->num_peeps > 0)
     {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but
-        // thats how the original does it...)
+        // that's how the original does it...)
         sint32 peeps = ((ecx / 8) + 0) & 3;
         image_id     = (baseImage_id + ((peeps + 1) * 72)) |
                    SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);

@@ -26,9 +26,9 @@ sint32 NetworkActions::FindCommand(sint32 command)
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&command](NetworkAction const &action)
     {
-        for (auto it2 = action.Commands.begin(); it2 != action.Commands.end(); it2++)
+        for (int currentCommand : action.Commands)
         {
-            if ((*it2) == command)
+            if (currentCommand == command)
             {
                 return true;
             }
@@ -46,11 +46,7 @@ sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission
 {
     auto it = std::find_if(Actions.begin(), Actions.end(), [&permission_name](NetworkAction const &action)
     {
-        if (action.PermissionName == permission_name)
-        {
-            return true;
-        }
-        return false;
+        return action.PermissionName == permission_name;
     });
     if (it != Actions.end())
     {

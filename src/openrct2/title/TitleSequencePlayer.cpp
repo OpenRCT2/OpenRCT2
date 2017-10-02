@@ -58,7 +58,7 @@ private:
     LocationXY32    _viewCentreLocation = { 0 };
 
 public:
-    TitleSequencePlayer(IScenarioRepository * scenarioRepository)
+    explicit TitleSequencePlayer(IScenarioRepository * scenarioRepository)
     {
         Guard::ArgumentNotNull(scenarioRepository);
 

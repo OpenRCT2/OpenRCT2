@@ -655,7 +655,7 @@ void window_guest_set_page(rct_window* w, sint32 page){
     w->selected_list_item = -1;
 
     rct_viewport* viewport = w->viewport;
-    w->viewport = 0;
+    w->viewport = nullptr;
     if (viewport){
         viewport->width = 0;
     }
@@ -748,7 +748,7 @@ void window_guest_viewport_init(rct_window* w){
 
         viewport_flags = w->viewport->flags;
         w->viewport->width = 0;
-        w->viewport = 0;
+        w->viewport = nullptr;
 
         viewport_update_pointers();
     }

@@ -235,8 +235,7 @@ void screenshot_giant()
 
     // Get a free screenshot path
     char path[MAX_PATH];
-    sint32 index;
-    if ((index = screenshot_get_next_path(path, MAX_PATH)) == -1) {
+    if (screenshot_get_next_path(path, MAX_PATH) == -1) {
         log_error("Giant screenshot failed, unable to find a suitable destination path.");
         context_show_error(STR_SCREENSHOT_FAILED, STR_NONE);
         return;

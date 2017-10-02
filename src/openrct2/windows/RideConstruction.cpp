@@ -470,7 +470,7 @@ static void window_ride_construction_exit_click(rct_window *w);
 
 static void window_ride_construction_draw_track_piece(
     rct_window *w, rct_drawpixelinfo *dpi,
-    sint32 rideIndex, sint32 trackType, sint32 trackRotation, sint32 unknown,
+    sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 unknown,
     sint32 width, sint32 height
 );
 static void window_ride_construction_update_enabled_track_pieces();
@@ -1679,7 +1679,7 @@ static void window_ride_construction_construct(rct_window *w)
     );
     if (_trackPlaceCost == MONEY32_UNDEFINED) {
         if (network_get_mode() == NETWORK_MODE_CLIENT)
-            game_command_callback = 0; // don't do callback if we can't afford the track piece
+            game_command_callback = nullptr; // don't do callback if we can't afford the track piece
         window_ride_construction_update_active_elements();
         return;
     }
@@ -2495,8 +2495,7 @@ static bool sub_6CA2DF_get_track_element(uint8 *trackElement) {
     }
 
     if (curve <= 8) {
-        for (sint32 i = 0; i < (sint32)Util::CountOf(gTrackDescriptors); i++) {
-            track_descriptor trackDescriptor = gTrackDescriptors[i];
+        for (auto trackDescriptor : gTrackDescriptors) {
             if (trackDescriptor.track_curve != curve) continue;
             if (trackDescriptor.starts_diagonal != startsDiagonal) continue;
             if (trackDescriptor.slope_start != startSlope) continue;

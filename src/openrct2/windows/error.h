@@ -23,7 +23,7 @@
 extern "C" {
 #endif
 
-void window_error_open(rct_string_id title, rct_string_id message);
+rct_window * window_error_open(rct_string_id title, rct_string_id message);
 
 #ifdef __cplusplus
 }

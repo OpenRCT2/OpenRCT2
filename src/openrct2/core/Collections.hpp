@@ -77,43 +77,21 @@ namespace Collections
     template<typename TCollection>
     static bool Contains(TCollection &collection, const char * item, bool ignoreCase = false)
     {
-        if (ignoreCase)
-        {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
-        }
-        else
-        {
-            return Contains(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
-        }
+        return Contains(collection, item,
+            [ignoreCase](const char * a, const char * b)
+            {
+                return String::Equals(a, b, ignoreCase);
+            });
     }
 
     template<typename TCollection>
     static size_t IndexOf(TCollection &collection, const char * item, bool ignoreCase = false)
     {
-        if (ignoreCase)
-        {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, true);
-                });
-        }
-        else
-        {
-            return IndexOf(collection, item,
-                [](const char * a, const char * b)
-                {
-                    return String::Equals(a, b, false);
-                });
-        }
+        return IndexOf(collection, item,
+            [ignoreCase](const char * a, const char * b)
+            {
+                return String::Equals(a, b, ignoreCase);
+            });
     }
 
     template<typename TCollection>

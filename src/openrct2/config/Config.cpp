@@ -594,17 +594,17 @@ namespace Config
 
         static const utf8 * searchLocations[] =
         {
-            "C:\\GOG Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
-            "C:\\Program Files\\Atari\\RollerCoaster Tycoon 2",
-            "C:\\Program Files\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
-            "C:\\Program Files\\Infogrames\\RollerCoaster Tycoon 2",
-            "C:\\Program Files\\Infogrames Interactive\\RollerCoaster Tycoon 2",
-            "C:\\Program Files\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2",
-            "C:\\Program Files (x86)\\Atari\\RollerCoaster Tycoon 2",
-            "C:\\Program Files (x86)\\GalaxyClient\\Games\\RollerCoaster Tycoon 2 Triple Thrill Pack",
-            "C:\\Program Files (x86)\\Infogrames\\RollerCoaster Tycoon 2",
-            "C:\\Program Files (x86)\\Infogrames Interactive\\RollerCoaster Tycoon 2",
-            "C:\\Program Files (x86)\\Steam\\steamapps\\common\\Rollercoaster Tycoon 2"
+            R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Infogrames Interactive\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Atari\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\GalaxyClient\Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
+            R"(C:\Program Files (x86)\Infogrames\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
+            R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)"
         };
 
         for (const utf8 * location : searchLocations)
@@ -715,11 +715,7 @@ extern "C"
     {
         utf8 path[MAX_PATH];
         config_get_default_path(path, sizeof(path));
-        if (config_save(path))
-        {
-            return true;
-        }
-        return false;
+        return config_save(path);
     }
 
     bool config_find_or_browse_install_directory()

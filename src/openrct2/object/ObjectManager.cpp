@@ -425,7 +425,7 @@ private:
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
                     case OBJECT_TYPE_SCENERY_SETS:
-                        auto sgObject = static_cast<SceneryGroupObject *>(loadedObject);
+                        auto sgObject = dynamic_cast<SceneryGroupObject *>(loadedObject);
                         sgObject->UpdateEntryIndexes();
                         break;
                     }
@@ -440,7 +440,7 @@ private:
 
     uint8 GetPrimarySceneryGroupEntryIndex(Object * loadedObject)
     {
-        auto sceneryObject = static_cast<SceneryObject *>(loadedObject);
+        auto sceneryObject = dynamic_cast<SceneryObject *>(loadedObject);
         const rct_object_entry * primarySGEntry = sceneryObject->GetPrimarySceneryGroup();
         Object * sgObject = GetLoadedObject(primarySGEntry);
 

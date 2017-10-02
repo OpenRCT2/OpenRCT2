@@ -435,12 +435,12 @@ void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sin
     _dragWidget.widget_index = widgetIndex;
 }
 
-static void input_window_position_continue(rct_window *w, sint32 wdx, sint32 wdy, sint32 x, sint32 y)
+static void input_window_position_continue(rct_window *w, sint32 lastX, sint32 lastY, sint32 newX, sint32 newY)
 {
     sint32 snapProximity;
 
     snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
-    window_move_and_snap(w, x - wdx, y - wdy, snapProximity);
+    window_move_and_snap(w, newX - lastX, newY - lastY, snapProximity);
 }
 
 static void input_window_position_end(rct_window *w, sint32 x, sint32 y)

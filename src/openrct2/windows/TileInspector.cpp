@@ -1713,7 +1713,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             // Path connections
             x = w->x + w->widgets[WIDX_GROUPBOX_DETAILS].left + 7;
             y = w->y + w->widgets[WIDX_PATH_CHECK_EDGE_W].top;
-            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONECTED_EDGES, nullptr, COLOUR_DARK_GREEN, x, y);
+            gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, nullptr, COLOUR_DARK_GREEN, x, y);
             break;
         }
 

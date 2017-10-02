@@ -35,7 +35,7 @@ private:
     IStream * const _stream = nullptr;
 
 public:
-    SawyerChunkReader(IStream * stream);
+    explicit SawyerChunkReader(IStream * stream);
 
     /**
      * Skips the next chunk in the stream without decoding or reading its data

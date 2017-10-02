@@ -289,8 +289,6 @@ static size_t encode_chunk_rle(const uint8 *src_buffer, uint8 *dst_buffer, size_
         *dst++ = count - 1;
         memcpy(dst, src_norm_start, count);
         dst += count;
-        src_norm_start += count;
-        count = 0;
     }
     return dst - dst_buffer;
 }

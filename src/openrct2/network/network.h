@@ -140,7 +140,6 @@ public:
 
     void Client_Send_TOKEN();
     void Client_Send_AUTH(const char* name, const char* password, const char *pubkey, const char *sig, size_t sigsize);
-    void Client_Send_AUTH(const char* name, const char* password, const char *pubkey);
     void Server_Send_AUTH(NetworkConnection& connection);
     void Server_Send_TOKEN(NetworkConnection& connection);
     void Server_Send_MAP(NetworkConnection* connection = nullptr);
@@ -186,7 +185,7 @@ private:
     void RemoveClient(std::unique_ptr<NetworkConnection>& connection);
     NetworkPlayer* AddPlayer(const utf8 *name, const std::string &keyhash);
     std::string MakePlayerNameUnique(const std::string &name);
-    void PrintError();
+
     const char* GetMasterServerUrl();
     std::string GenerateAdvertiseKey();
     void SetupDefaultGroups();

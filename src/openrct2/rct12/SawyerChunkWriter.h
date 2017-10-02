@@ -34,7 +34,7 @@ private:
     IStream * const _stream = nullptr;
 
 public:
-    SawyerChunkWriter(IStream * stream);
+    explicit SawyerChunkWriter(IStream * stream);
 
     /**
      * Writes a chunk to the stream.

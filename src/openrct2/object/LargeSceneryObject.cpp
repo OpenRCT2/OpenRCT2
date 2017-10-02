@@ -116,8 +116,7 @@ rct_large_scenery_tile * LargeSceneryObject::ReadTiles(IStream * stream)
 {
     auto tiles = std::vector<rct_large_scenery_tile>();
 
-    uint16 tilesEndMarker;
-    while ((tilesEndMarker = stream->ReadValue<uint16>()) != 0xFFFF)
+    while (stream->ReadValue<uint16>() != 0xFFFF)
     {
         stream->Seek(-2, STREAM_SEEK_CURRENT);
         auto tile = stream->ReadValue<rct_large_scenery_tile>();

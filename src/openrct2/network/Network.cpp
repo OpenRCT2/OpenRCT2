@@ -29,7 +29,7 @@
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY  20
 #define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE  1000
 
-static rct_peep* _pickup_peep = 0;
+static rct_peep* _pickup_peep = nullptr;
 static sint32 _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
@@ -94,7 +94,7 @@ Network::Network()
     last_ping_sent_time = 0;
     _commandId = 0;
     _actionId = 0;
-    client_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
+    client_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     client_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Client_Handle_AUTH;
     client_command_handlers[NETWORK_COMMAND_MAP] = &Network::Client_Handle_MAP;
     client_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Client_Handle_CHAT;
@@ -111,7 +111,7 @@ Network::Network()
     client_command_handlers[NETWORK_COMMAND_GAMEINFO] = &Network::Client_Handle_GAMEINFO;
     client_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Client_Handle_TOKEN;
     client_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Client_Handle_OBJECTS;
-    server_command_handlers.resize(NETWORK_COMMAND_MAX, 0);
+    server_command_handlers.resize(NETWORK_COMMAND_MAX, nullptr);
     server_command_handlers[NETWORK_COMMAND_AUTH] = &Network::Server_Handle_AUTH;
     server_command_handlers[NETWORK_COMMAND_CHAT] = &Network::Server_Handle_CHAT;
     server_command_handlers[NETWORK_COMMAND_GAMECMD] = &Network::Server_Handle_GAMECMD;
@@ -593,17 +593,16 @@ const char* Network::FormatChat(NetworkPlayer* fromplayer, const char* text)
 
 void Network::SendPacketToClients(NetworkPacket& packet, bool front, bool gameCmd)
 {
-    for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-
+    for (auto &client_connection : client_connection_list) {
         if (gameCmd) {
             // If marked as game command we can not send the packet to connections that are not fully connected.
             // Sending the packet would cause the client to store a command that is behind the tick where he starts,
             // which would be essentially never executed. The clients do not require commands before the server has not sent the map data.
-            if ((*it)->Player == nullptr) {
+            if (client_connection->Player == nullptr) {
                 continue;
             }
         }
-        (*it)->QueuePacket(NetworkPacket::Duplicate(packet), front);
+        client_connection->QueuePacket(NetworkPacket::Duplicate(packet), front);
     }
 }
 
@@ -657,14 +656,14 @@ void Network::CheckDesynchronizaton()
 
 void Network::KickPlayer(sint32 playerId)
 {
-    for(auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-        if ((*it)->Player->Id == playerId) {
+    for (auto &client_connection : client_connection_list) {
+        if (client_connection->Player->Id == playerId) {
             // Disconnect the client gracefully
-            (*it)->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
+            client_connection->SetLastDisconnectReason(STR_MULTIPLAYER_KICKED);
             char str_disconnect_msg[256];
             format_string(str_disconnect_msg, 256, STR_MULTIPLAYER_KICKED_REASON, nullptr);
-            Server_Send_SETDISCONNECTMSG(*(*it), str_disconnect_msg);
-            (*it)->Socket->Disconnect();
+            Server_Send_SETDISCONNECTMSG(*client_connection, str_disconnect_msg);
+            client_connection->Socket->Disconnect();
             break;
         }
     }
@@ -780,8 +779,8 @@ void Network::SaveGroups()
 
         json_t * jsonGroupsCfg = json_object();
         json_t * jsonGroups = json_array();
-        for (auto it = group_list.begin(); it != group_list.end(); it++) {
-            json_array_append_new(jsonGroups, (*it)->ToJson());
+        for (auto &group : group_list) {
+            json_array_append_new(jsonGroups, group->ToJson());
         }
         json_object_set_new(jsonGroupsCfg, "default_group", json_integer(default_group));
         json_object_set_new(jsonGroupsCfg, "groups", jsonGroups);
@@ -941,7 +940,7 @@ void Network::BeginServerLog()
 void Network::AppendServerLog(const std::string &s)
 {
     if (gConfigNetwork.log_server_actions) {
-        AppendLog(_serverLogPath.c_str(), s);
+        AppendLog(_serverLogPath, s);
     }
 }
 
@@ -986,10 +985,10 @@ void Network::Client_Send_OBJECTS(const std::vector<std::string> &objects)
     log_verbose("client requests %u objects", uint32(objects.size()));
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
-    for (uint32 i = 0; i < objects.size(); i++)
+    for (const auto &object : objects)
     {
-        log_verbose("client requests object %s", objects[i].c_str());
-        packet->Write((const uint8 *)objects[i].c_str(), 8);
+        log_verbose("client requests object %s", object.c_str());
+        packet->Write((const uint8 *) object.c_str(), 8);
     }
     server_connection->QueuePacket(std::move(packet));
 }
@@ -1007,11 +1006,10 @@ void Network::Server_Send_OBJECTS(NetworkConnection& connection, const std::vect
     log_verbose("Server sends objects list with %u items", objects.size());
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_OBJECTS << (uint32)objects.size();
-    for (size_t i = 0; i < objects.size(); i++)
-    {
-        log_verbose("Object %.8s (checksum %x)", objects[i]->ObjectEntry.name, objects[i]->ObjectEntry.checksum);
-        packet->Write((const uint8 *)objects[i]->ObjectEntry.name, 8);
-        *packet << objects[i]->ObjectEntry.checksum << objects[i]->ObjectEntry.flags;
+    for (auto object : objects) {
+        log_verbose("Object %.8s (checksum %x)", object->ObjectEntry.name, object->ObjectEntry.checksum);
+        packet->Write((const uint8 *) object->ObjectEntry.name, 8);
+        *packet << object->ObjectEntry.checksum << object->ObjectEntry.flags;
     }
     connection.QueuePacket(std::move(packet));
 }
@@ -1215,8 +1213,8 @@ void Network::Server_Send_PLAYERLIST()
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_PLAYERLIST << (uint8)player_list.size();
-    for (uint32 i = 0; i < player_list.size(); i++) {
-        player_list[i]->Write(*packet);
+    for (auto &player : player_list) {
+        player->Write(*packet);
     }
     SendPacketToClients(*packet);
 }
@@ -1233,8 +1231,8 @@ void Network::Server_Send_PING()
     last_ping_sent_time = platform_get_ticks();
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_PING;
-    for (auto it = client_connection_list.begin(); it != client_connection_list.end(); it++) {
-        (*it)->PingTime = platform_get_ticks();
+    for (auto &client_connection : client_connection_list) {
+        client_connection->PingTime = platform_get_ticks();
     }
     SendPacketToClients(*packet, true);
 }
@@ -1243,8 +1241,8 @@ void Network::Server_Send_PINGLIST()
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_PINGLIST << (uint8)player_list.size();
-    for (size_t i = 0; i < player_list.size(); i++) {
-        *packet << player_list[i]->Id << player_list[i]->Ping;
+    for (auto &player : player_list) {
+        *packet << player->Id << player->Ping;
     }
     SendPacketToClients(*packet);
 }
@@ -1297,8 +1295,8 @@ void Network::Server_Send_GROUPLIST(NetworkConnection& connection)
 {
     std::unique_ptr<NetworkPacket> packet(NetworkPacket::Allocate());
     *packet << (uint32)NETWORK_COMMAND_GROUPLIST << (uint8)group_list.size() << default_group;
-    for (uint32 i = 0; i < group_list.size(); i++) {
-        group_list[i]->Write(*packet);
+    for (auto &group : group_list) {
+        group->Write(*packet);
     }
     connection.QueuePacket(std::move(packet));
 }
@@ -1485,7 +1483,7 @@ void Network::EnqueueGameAction(const GameAction *action)
 
 void Network::AddClient(ITcpSocket * socket)
 {
-    auto connection = std::unique_ptr<NetworkConnection>(new NetworkConnection);  // change to make_unique in c++14
+    auto connection = std::make_unique<NetworkConnection>();
     connection->Socket = socket;
     char addr[128];
     snprintf(addr, sizeof(addr), "Client joined from %s", socket->GetHostName());
@@ -1552,7 +1550,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
             // Check if the key is registered
             const NetworkUser * networkUser = _userManager.GetUserByHash(keyhash);
 
-            player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
+            player = std::make_unique<NetworkPlayer>();
             player->Id = newid;
             player->KeyHash = keyhash;
             if (networkUser == nullptr) {
@@ -1565,7 +1563,7 @@ NetworkPlayer* Network::AddPlayer(const utf8 *name, const std::string &keyhash)
                 player->SetName(networkUser->Name);
             }
         } else {
-            player = std::unique_ptr<NetworkPlayer>(new NetworkPlayer); // change to make_unique in c++14
+            player = std::make_unique<NetworkPlayer>();
             player->Id = newid;
             player->Group = GetDefaultGroup();
             player->SetName(String::Trim(std::string(name)));

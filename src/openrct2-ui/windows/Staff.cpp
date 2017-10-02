@@ -399,7 +399,7 @@ void window_staff_set_page(rct_window* w, sint32 page)
     w->frame_no = 0;
 
     rct_viewport* viewport = w->viewport;
-    w->viewport = 0;
+    w->viewport = nullptr;
     if (viewport){
         viewport->width = 0;
     }
@@ -1219,7 +1219,7 @@ void window_staff_viewport_init(rct_window* w){
 
         viewport_flags = w->viewport->flags;
         w->viewport->width = 0;
-        w->viewport = 0;
+        w->viewport = nullptr;
 
         viewport_update_pointers();
     }

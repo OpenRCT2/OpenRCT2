@@ -368,7 +368,7 @@ namespace OpenRCT2
 #endif
             }
             gScenarioTicks = 0;
-            util_srand((uint32)time(0));
+            util_srand((uint32)time(nullptr));
             input_reset_place_obj_modifier();
             viewport_init_all();
             game_init_all(150);

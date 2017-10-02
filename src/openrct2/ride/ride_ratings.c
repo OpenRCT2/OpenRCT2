@@ -80,7 +80,7 @@ static void ride_ratings_update_state_5();
 static void ride_ratings_begin_proximity_loop();
 static void ride_ratings_calculate(Ride *ride);
 static void ride_ratings_calculate_value(Ride *ride);
-static void ride_ratings_score_close_proximity(rct_tile_element *tileElement);
+static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElement);
 
 static void ride_ratings_add(rating_tuple * rating, sint32 excitement, sint32 intensity, sint32 nausea);
 
