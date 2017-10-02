@@ -74,6 +74,13 @@ enum
     G141E9DB_FLAG_2 = 2,
 };
 
+enum {
+    PATH_EDGE_FLAG_0 = (1 << 0),
+    PATH_EDGE_FLAG_1 = (1 << 1),
+    PATH_EDGE_FLAG_2 = (1 << 2),
+    PATH_EDGE_FLAG_3 = (1 << 3)
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
