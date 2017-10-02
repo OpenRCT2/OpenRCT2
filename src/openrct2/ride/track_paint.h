@@ -228,6 +228,25 @@ enum {
     STATION_VARIANT_TALL,
 };
 
+enum {
+    MAZE_ENTRY_FLAG_0 = (1 << 0),
+    MAZE_ENTRY_FLAG_1 = (1 << 1),
+    MAZE_ENTRY_FLAG_2 = (1 << 2),
+    MAZE_ENTRY_FLAG_3 = (1 << 3),
+    MAZE_ENTRY_FLAG_4 = (1 << 4),
+    MAZE_ENTRY_FLAG_5 = (1 << 5),
+    MAZE_ENTRY_FLAG_6 = (1 << 6),
+    MAZE_ENTRY_FLAG_7 = (1 << 7),
+    MAZE_ENTRY_FLAG_8 = (1 << 8),
+    MAZE_ENTRY_FLAG_9 = (1 << 10),
+    MAZE_ENTRY_FLAG_10 = (1 << 10),
+    MAZE_ENTRY_FLAG_11 = (1 << 11),
+    MAZE_ENTRY_FLAG_12 = (1 << 12),
+    MAZE_ENTRY_FLAG_13 = (1 << 13),
+    MAZE_ENTRY_FLAG_14 = (1 << 14),
+    MAZE_ENTRY_FLAG_15 = (1 << 15),
+};
+
 extern const uint32 floorSpritesCork[];
 
 extern const uint32 fenceSpritesRope[];
