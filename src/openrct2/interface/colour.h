@@ -119,10 +119,13 @@ enum
 #define TEXT_COLOUR_254         (254)
 #define TEXT_COLOUR_255         (255)
 
-#define COLOUR_FLAG_OUTLINE     (1 << 5)
-#define COLOUR_FLAG_INSET       (1 << 6) // 64, 0x40
-#define COLOUR_FLAG_TRANSLUCENT (1 << 7)
-#define COLOUR_FLAG_8           (1 << 8)
+enum {
+    COLOUR_FLAG_OUTLINE     = (1 << 5),
+    COLOUR_FLAG_INSET       = (1 << 6), // 64, 0x40
+    COLOUR_FLAG_TRANSLUCENT = (1 << 7),
+    COLOUR_FLAG_8           = (1 << 8)
+};
+
 #define TRANSLUCENT(x) ((x) | COLOUR_FLAG_TRANSLUCENT)
 #define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
 #define BASE_COLOUR(x)          ((x) & 0x1F)
