@@ -22,7 +22,7 @@
 
 #ifdef __cplusplus
 extern "C" {
-#endif 
+#endif
 
     typedef struct paint_session paint_session;
 
@@ -34,6 +34,6 @@ extern "C" {
 
 #ifdef __cplusplus
 }
-#endif 
+#endif
 
 #endif

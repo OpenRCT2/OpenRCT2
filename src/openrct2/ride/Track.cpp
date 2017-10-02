@@ -1944,8 +1944,7 @@ void game_command_remove_track(sint32 * eax,
         *edi & 0xFFFF,
         (*ebx >> 8) & 0xFF,
         *ebx & 0xFF
-    );
-    return;
+        );
 }
 
 static uint8 maze_element_get_segment_bit(uint16 x, uint16 y)

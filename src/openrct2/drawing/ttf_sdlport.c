@@ -868,7 +868,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
 
             /* The pixmap is a little hard, we have to add and clamp */
             for (row = dst->rows - 1; row >= 0; --row) {
-                pixmap = (uint8*)dst->buffer + row * dst->pitch;
+                pixmap = dst->buffer + row * dst->pitch;
                 for (offset = 1; offset <= font->glyph_overhang; ++offset) {
                     for (col = dst->width - 1; col > 0; --col) {
                         if (mono) {

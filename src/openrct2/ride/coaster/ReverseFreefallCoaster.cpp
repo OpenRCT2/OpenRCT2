@@ -225,12 +225,7 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
                                               sint32 height, rct_tile_element * tileElement)
 {
     Ride *                               ride          = get_ride(rideIndex);
-    const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    uint32                               imageId       = entranceStyle->base_image_id;
-    if (!(session->TrackColours[SCHEME_MISC] & (1 << 29)))
-    {
-        imageId &= 0x7FFFF;
-    }
+    uint32                               imageId;
 
     if (direction == 0 || direction == 2)
     {

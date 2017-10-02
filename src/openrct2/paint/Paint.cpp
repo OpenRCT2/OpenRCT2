@@ -74,19 +74,19 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->Unk140E9A8 = dpi;
     session->EndOfPaintStructArray = &session->PaintStructs[4000 - 1];
     session->NextFreePaintStruct = session->PaintStructs;
-    session->UnkF1AD28 = NULL;
-    session->UnkF1AD2C = NULL;
+    session->UnkF1AD28 = nullptr;
+    session->UnkF1AD2C = nullptr;
     for (sint32 i = 0; i < MAX_PAINT_QUADRANTS; i++)
     {
-        session->Quadrants[i] = NULL;
+        session->Quadrants[i] = nullptr;
     }
     session->QuadrantBackIndex = -1;
     session->QuadrantFrontIndex = 0;
-    session->PSStringHead = NULL;
-    session->LastPSString = NULL;
-    session->WoodenSupportsPrependTo = NULL;
-    session->CurrentlyDrawnItem = NULL;
-    session->SurfaceElement = NULL;
+    session->PSStringHead = nullptr;
+    session->LastPSString = nullptr;
+    session->WoodenSupportsPrependTo = nullptr;
+    session->CurrentlyDrawnItem = nullptr;
+    session->SurfaceElement = nullptr;
 }
 
 static void paint_session_add_ps_to_quadrant(paint_session * session, paint_struct * ps, sint32 positionHash)
@@ -105,7 +105,7 @@ static void paint_session_add_ps_to_quadrant(paint_session * session, paint_stru
 */
 static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, LocationXYZ16 offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset, uint8 rotation)
 {
-    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return NULL;
+    if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return nullptr;
     paint_struct * ps = &session->NextFreePaintStruct->basic;
 
     ps->image_id = image_id;
@@ -144,10 +144,10 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (right <= dpi->x)return NULL;
-    if (top <= dpi->y)return NULL;
-    if (left >= dpi->x + dpi->width)return NULL;
-    if (bottom >= dpi->y + dpi->height)return NULL;
+    if (right <= dpi->x)return nullptr;
+    if (top <= dpi->y)return nullptr;
+    if (left >= dpi->x + dpi->width)return nullptr;
+    if (bottom >= dpi->y + dpi->height)return nullptr;
 
 
     // This probably rotates the variables so they're relative to rotation 0.
@@ -182,8 +182,8 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
     ps->flags = 0;
     ps->bound_box_x = boundBoxOffset.x + session->SpritePosition.x;
     ps->bound_box_y = boundBoxOffset.y + session->SpritePosition.y;
-    ps->attached_ps = NULL;
-    ps->var_20 = NULL;
+    ps->attached_ps = nullptr;
+    ps->var_20 = nullptr;
     ps->sprite_type = session->InteractionType;
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
@@ -342,7 +342,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
     {
         ps = ps_next;
         ps_next = ps_next->next_quadrant_ps;
-        if (ps_next == NULL) return ps;
+        if (ps_next == nullptr) return ps;
     } while (quadrantIndex > ps_next->quadrant_index);
 
     // Cache the last visited node so we don't have to walk the whole list again
@@ -351,7 +351,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
     ps_temp = ps;
     do {
         ps = ps->next_quadrant_ps;
-        if (ps == NULL) break;
+        if (ps == nullptr) break;
 
         if (ps->quadrant_index > quadrantIndex + 1)
         {
@@ -374,7 +374,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
         while (true)
         {
             ps_next = ps->next_quadrant_ps;
-            if (ps_next == NULL) return ps_cache;
+            if (ps_next == nullptr) return ps_cache;
             if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) return ps_cache;
             if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_IDENTICAL) break;
             ps = ps_next;
@@ -398,7 +398,7 @@ paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadr
         {
             ps = ps_next;
             ps_next = ps_next->next_quadrant_ps;
-            if (ps_next == NULL) break;
+            if (ps_next == nullptr) break;
             if (ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_BIGGER) break;
             if (!(ps_next->quadrant_flags & PAINT_QUADRANT_FLAG_NEXT)) continue;
 
@@ -436,21 +436,21 @@ paint_struct paint_session_arrange(paint_session * session)
 {
     paint_struct psHead = { 0 };
     paint_struct * ps = &psHead;
-    ps->next_quadrant_ps = NULL;
+    ps->next_quadrant_ps = nullptr;
     uint32 quadrantIndex = session->QuadrantBackIndex;
     if (quadrantIndex != UINT32_MAX)
     {
         do
         {
             paint_struct * ps_next = session->Quadrants[quadrantIndex];
-            if (ps_next != NULL)
+            if (ps_next != nullptr)
             {
                 ps->next_quadrant_ps = ps_next;
                 do
                 {
                     ps = ps_next;
                     ps_next = ps_next->next_quadrant_ps;
-                } while (ps_next != NULL);
+                } while (ps_next != nullptr);
             }
         } while (++quadrantIndex <= session->QuadrantFrontIndex);
 
@@ -739,7 +739,7 @@ extern "C"
     * @param bound_box_length_z (ah)
     * @param z_offset (dx)
     * @param rotation (ebp)
-    * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
+    * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
     */
     paint_struct * sub_98196C(
             paint_session * session,
@@ -752,12 +752,12 @@ extern "C"
         assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
         assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
 
-        session->UnkF1AD28 = 0;
-        session->UnkF1AD2C = NULL;
+        session->UnkF1AD28 = nullptr;
+        session->UnkF1AD2C = nullptr;
 
         if (session->NextFreePaintStruct >= session->EndOfPaintStructArray)
         {
-            return NULL;
+            return nullptr;
         }
 
         paint_struct *ps = &session->NextFreePaintStruct->basic;
@@ -833,16 +833,16 @@ extern "C"
 
         rct_drawpixelinfo *dpi = session->Unk140E9A8;
 
-        if (right <= dpi->x) return NULL;
-        if (top <= dpi->y) return NULL;
-        if (left >= (dpi->x + dpi->width)) return NULL;
-        if (bottom >= (dpi->y + dpi->height)) return NULL;
+        if (right <= dpi->x) return nullptr;
+        if (top <= dpi->y) return nullptr;
+        if (left >= (dpi->x + dpi->width)) return nullptr;
+        if (bottom >= (dpi->y + dpi->height)) return nullptr;
 
         ps->flags = 0;
         ps->bound_box_x = coord_3d.x;
         ps->bound_box_y = coord_3d.y;
-        ps->attached_ps = NULL;
-        ps->var_20 = NULL;
+        ps->attached_ps = nullptr;
+        ps->var_20 = nullptr;
         ps->sprite_type = session->InteractionType;
         ps->var_29 = 0;
         ps->map_x = session->MapPosition.x;
@@ -888,7 +888,7 @@ extern "C"
     * @param bound_box_offset_y (0x009DEA54)
     * @param bound_box_offset_z (0x009DEA56)
     * @param rotation (ebp)
-    * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
+    * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
     */
     paint_struct * sub_98197C(
             paint_session * session,
@@ -899,16 +899,16 @@ extern "C"
             sint16 bound_box_offset_x, sint16 bound_box_offset_y, sint16 bound_box_offset_z,
             uint32 rotation)
     {
-        session->UnkF1AD28 = 0;
-        session->UnkF1AD2C = NULL;
+        session->UnkF1AD28 = nullptr;
+        session->UnkF1AD2C = nullptr;
 
         LocationXYZ16 offset = { x_offset, y_offset, z_offset };
         LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
         LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
-        if (ps == NULL) {
-            return NULL;
+        if (ps == nullptr) {
+            return nullptr;
         }
 
         session->UnkF1AD28 = ps;
@@ -955,7 +955,7 @@ extern "C"
     * @param bound_box_offset_y (0x009DEA54)
     * @param bound_box_offset_z (0x009DEA56)
     * @param rotation (ebp)
-    * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
+    * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
     */
     paint_struct * sub_98198C(
             paint_session * session,
@@ -969,16 +969,16 @@ extern "C"
         assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
         assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
 
-        session->UnkF1AD28 = 0;
-        session->UnkF1AD2C = NULL;
+        session->UnkF1AD28 = nullptr;
+        session->UnkF1AD2C = nullptr;
 
         LocationXYZ16 offset = { x_offset, y_offset, z_offset };
         LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
         LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
-        if (ps == NULL) {
-            return NULL;
+        if (ps == nullptr) {
+            return nullptr;
         }
 
         session->UnkF1AD28 = ps;
@@ -1001,7 +1001,7 @@ extern "C"
     * @param bound_box_offset_y (0x009DEA54)
     * @param bound_box_offset_z (0x009DEA56)
     * @param rotation (ebp)
-    * @return (ebp) paint_struct on success (CF == 0), NULL on failure (CF == 1)
+    * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
     */
     paint_struct * sub_98199C(
             paint_session * session,
@@ -1015,7 +1015,7 @@ extern "C"
         assert((uint16)bound_box_length_x == (sint16)bound_box_length_x);
         assert((uint16)bound_box_length_y == (sint16)bound_box_length_y);
 
-        if (session->UnkF1AD28 == NULL)
+        if (session->UnkF1AD28 == nullptr)
         {
             return sub_98197C(session,
                 image_id,
@@ -1032,9 +1032,9 @@ extern "C"
         LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset, rotation);
 
-        if (ps == NULL)
+        if (ps == nullptr)
         {
-            return NULL;
+            return nullptr;
         }
 
         paint_struct *old_ps = session->UnkF1AD28;
@@ -1055,7 +1055,7 @@ extern "C"
     */
     bool paint_attach_to_previous_attach(paint_session * session, uint32 image_id, uint16 x, uint16 y)
     {
-        if (session->UnkF1AD2C == NULL)
+        if (session->UnkF1AD2C == nullptr)
         {
             return paint_attach_to_previous_ps(session, image_id, x, y);
         }
@@ -1072,7 +1072,7 @@ extern "C"
 
         attached_paint_struct * ebx = session->UnkF1AD2C;
 
-        ps->next = NULL;
+        ps->next = nullptr;
         ebx->next = ps;
 
         session->UnkF1AD2C = ps;
@@ -1104,7 +1104,7 @@ extern "C"
         ps->flags = 0;
 
         paint_struct * masterPs = session->UnkF1AD28;
-        if (masterPs == NULL)
+        if (masterPs == nullptr)
         {
             return false;
         }
@@ -1160,7 +1160,7 @@ extern "C"
 
         session->NextFreePaintStruct++;
 
-        if (session->LastPSString == NULL)
+        if (session->LastPSString == nullptr)
         {
             session->PSStringHead = ps;
         }
@@ -1195,7 +1195,7 @@ extern "C"
             }
 
             gfx_draw_string_with_y_offsets(&dpi2, buffer, COLOUR_BLACK, ps->x, ps->y, (sint8 *)ps->y_offsets, forceSpriteFont);
-        } while ((ps = ps->next) != NULL);
+        } while ((ps = ps->next) != nullptr);
     }
 
 }

@@ -151,7 +151,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
             break;
         } while (!tile_element_is_last_for_tile(tileElement++));
 
-        if (found == false)
+        if (!found)
         {
             return MONEY32_UNDEFINED;
         }
@@ -208,7 +208,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         break;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    if (pathFound == false)
+    if (!pathFound)
     {
         gGameCommandErrorText = STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS;
         return MONEY32_UNDEFINED;
@@ -378,7 +378,7 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
     sint32 colourCodepoint = FORMAT_COLOUR_CODE_START + banner->text_colour;
 
     utf8 buffer[256];
-    format_string(buffer, 256, banner->string_idx, 0);
+    format_string(buffer, 256, banner->string_idx, nullptr);
     sint32 firstCodepoint = utf8_get_next(buffer, nullptr);
     if (firstCodepoint >= FORMAT_COLOUR_CODE_START && firstCodepoint <= FORMAT_COLOUR_CODE_END)
     {
@@ -430,9 +430,8 @@ extern "C"
      */
     void banner_init()
     {
-        for (sint32 i = 0; i < MAX_BANNERS; i++)
-        {
-            gBanners[i].type = BANNER_NULL;
+        for (auto &banner : gBanners) {
+            banner.type = BANNER_NULL;
         }
     }
 

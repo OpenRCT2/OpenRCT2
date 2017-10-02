@@ -23,7 +23,7 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "GBP",  10,     CURRENCY_PREFIX,    "\xC2\xA3",     CURRENCY_SUFFIX,    "GBP",  STR_POUNDS          },  // British Pound
     {   "USD",  10,     CURRENCY_PREFIX,    "$",            CURRENCY_PREFIX,    "$",    STR_DOLLARS         },  // US Dollar
     {   "FRF",  10,     CURRENCY_SUFFIX,    "F",            CURRENCY_SUFFIX,    "F",    STR_FRANC           },  // French Franc
-    {   "DEM",  10,     CURRENCY_PREFIX,    "DM",           CURRENCY_PREFIX,    "DM",   STR_DEUTSCHMARK     },  // Deutschmark
+    {   "DEM",  10,     CURRENCY_PREFIX,    "DM",           CURRENCY_PREFIX,    "DM",   STR_DEUTSCHE_MARK   },  // Deutsche Mark
     {   "JPY",  1000,   CURRENCY_PREFIX,    "\xC2\xA5",     CURRENCY_SUFFIX,    "YEN",  STR_YEN             },  // Japanese Yen
     {   "ESP",  10,     CURRENCY_SUFFIX,    "Pts",          CURRENCY_SUFFIX,    "Pts",  STR_PESETA          },  // Spanish Peseta
     {   "ITL",  1000,   CURRENCY_PREFIX,    "L",            CURRENCY_PREFIX,    "L",    STR_LIRA            },  // Italian Lira

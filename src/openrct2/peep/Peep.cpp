@@ -1642,7 +1642,7 @@ static void peep_check_cant_find_ride(rct_peep * peep)
  *
  *  rct2: 0x69C2D0
  * Check if cant find exit.
- */
+ */ 
 static void peep_check_cant_find_exit(rct_peep * peep)
 {
     if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
@@ -2790,10 +2790,10 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
     money16 ridePrice = ride_get_price(ride);
     if (ridePrice != 0)
     {
-        if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) || !(peep->voucher_type == VOUCHER_TYPE_RIDE_FREE) ||
-            !(peep->voucher_arguments == peep->current_ride))
+        if (!(peep->item_standard_flags & PEEP_ITEM_VOUCHER) ||
+            peep->voucher_type != VOUCHER_TYPE_RIDE_FREE ||
+            peep->voucher_arguments != peep->current_ride)
         {
-
             if (peep->cash_in_pocket <= 0)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
@@ -3087,7 +3087,6 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
     }
 
     peep->sub_state = 4;
-    return;
 }
 
 /**
@@ -3136,8 +3135,7 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
     peep->destination_tolerence = 2;
 
     peep->sprite_direction = exit_direction * 8;
-    peep->sub_state        = 8;
-    return;
+    peep->sub_state = 8;
 }
 
 /**
@@ -6181,8 +6179,6 @@ static void peep_update_walking_break_scenery(rct_peep * peep)
     map_invalidate_tile_zoom1(peep->next_x, peep->next_y, (tile_element->base_height << 3) + 32, tile_element->base_height << 3);
 
     peep->angriness = 16;
-
-    return;
 }
 
 /**
@@ -10540,8 +10536,6 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
     }
-
-    return;
 }
 
 /**

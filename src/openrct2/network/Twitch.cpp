@@ -75,7 +75,7 @@ namespace Twitch
 
         static AudienceMember FromJson(json_t * json)
         {
-            AudienceMember member = { 0 };
+            AudienceMember member = { nullptr };
 
             if (!json_is_object(json)) return member;
             json_t * name = json_object_get(json, "name");
@@ -461,7 +461,7 @@ namespace Twitch
         }
 
         // Rename non-named peeps to followers that aren't currently in the park.
-        if (members.size() > 0)
+        if (!members.empty())
         {
             size_t memberIndex = SIZE_MAX;
             FOR_ALL_GUESTS(spriteIndex, peep)

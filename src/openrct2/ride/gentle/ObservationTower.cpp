@@ -122,9 +122,6 @@ static void paint_observation_tower_base(paint_session * session, uint8 rideInde
     sint32 blockedSegments = 0;
     switch (trackSequence)
     {
-    case 0:
-        blockedSegments = SEGMENTS_ALL;
-        break;
     case 1:
         blockedSegments = SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC;
         break;

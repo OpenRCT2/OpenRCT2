@@ -47,7 +47,7 @@ struct HttpRequest2
     size_t          Size = 0;
     union
     {
-        char *      Buffer = 0;
+        char *      Buffer = nullptr;
         json_t *    Json;
     } Body;
 
@@ -151,7 +151,7 @@ static http_response_t *http_request(const HttpRequest2 &request)
     CURL *curl;
     CURLcode curlResult;
     http_response_t *response;
-    read_buffer readBuffer = { 0 };
+    read_buffer readBuffer = { nullptr };
     write_buffer writeBuffer;
 
     curl = curl_easy_init();

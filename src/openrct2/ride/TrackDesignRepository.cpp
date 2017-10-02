@@ -65,7 +65,7 @@ private:
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:
-    TrackDesignFileIndex(IPlatformEnvironment * env) :
+    explicit TrackDesignFileIndex(IPlatformEnvironment * env) :
         FileIndex("track design index",
             MAGIC_NUMBER,
             VERSION,
@@ -141,16 +141,14 @@ private:
     std::vector<TrackRepositoryItem> _items;
 
 public:
-    TrackDesignRepository(IPlatformEnvironment * env)
+    explicit TrackDesignRepository(IPlatformEnvironment * env)
         : _env(env),
           _fileIndex(env)
     {
         Guard::ArgumentNotNull(env);
     }
 
-    virtual ~TrackDesignRepository() final
-    {
-    }
+    ~TrackDesignRepository() = default;
 
     size_t GetCount() const override
     {
@@ -291,7 +289,7 @@ public:
     {
         _items.clear();
         auto trackDesigns = _fileIndex.LoadOrBuild();
-        for (auto td : trackDesigns)
+        for (const auto &td : trackDesigns)
         {
             _items.push_back(td);
         }

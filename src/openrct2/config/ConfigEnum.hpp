@@ -17,6 +17,7 @@
 #pragma once
 
 #include <initializer_list>
+#include <utility>
 #include <vector>
 #include "../core/String.hpp"
 
@@ -26,8 +27,8 @@ struct ConfigEnumEntry
     std::string Key;
     T           Value;
 
-    ConfigEnumEntry(const std::string &key, T value)
-        : Key(key),
+    ConfigEnumEntry(std::string key, T value)
+        : Key(std::move(key)),
           Value(value)
     {
     }

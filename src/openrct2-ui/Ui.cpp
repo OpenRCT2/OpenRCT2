@@ -30,7 +30,7 @@ using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::Ui;
 
 /**
- * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
+ * Main entry point for non-Windows systems. Windows instead uses its own DLL proxy.
  */
 #ifdef _MSC_VER
 int NormalisedMain(int argc, const char * * argv)

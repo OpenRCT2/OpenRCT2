@@ -94,7 +94,7 @@ rct_track_td6 * track_design_open(const utf8 * path)
         {
             log_error("Track checksum failed. %s", path);
             free(buffer);
-            return NULL;
+            return nullptr;
         }
 
         // Decode the track data
@@ -102,7 +102,7 @@ rct_track_td6 * track_design_open(const utf8 * path)
         size_t decodedLength = sawyercoding_decode_td6(buffer, decoded, bufferLength);
         free(buffer);
         decoded = (uint8 *) realloc(decoded, decodedLength);
-        if (decoded == NULL)
+        if (decoded == nullptr)
         {
             log_error("failed to realloc");
         }
@@ -111,24 +111,24 @@ rct_track_td6 * track_design_open(const utf8 * path)
             rct_track_td6 * td6 = track_design_open_from_buffer(decoded, decodedLength);
             free(decoded);
 
-            if (td6 != NULL)
+            if (td6 != nullptr)
             {
                 td6->name = track_repository_get_name_from_path(path);
                 return td6;
             }
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
 {
     rct_track_td4 * td4 = (rct_track_td4 *) calloc(1, sizeof(rct_track_td4));
-    if (td4 == NULL)
+    if (td4 == nullptr)
     {
         log_error("Unable to allocate memory for TD4 data.");
         SafeFree(td4);
-        return NULL;
+        return nullptr;
     }
 
     uint8 version = (src[7] >> 2) & 3;
@@ -137,11 +137,11 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
         memcpy(td4, src, 0x38);
         td4->elementsSize = srcLength - 0x38;
         td4->elements     = malloc(td4->elementsSize);
-        if (td4->elements == NULL)
+        if (td4->elements == nullptr)
         {
             log_error("Unable to allocate memory for TD4 element data.");
             SafeFree(td4);
-            return NULL;
+            return nullptr;
         }
         memcpy(td4->elements, src + 0x38, td4->elementsSize);
     }
@@ -150,11 +150,11 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
         memcpy(td4, src, 0xC4);
         td4->elementsSize = srcLength - 0xC4;
         td4->elements     = malloc(td4->elementsSize);
-        if (td4->elements == NULL)
+        if (td4->elements == nullptr)
         {
             log_error("Unable to allocate memory for TD4 element data.");
             SafeFree(td4);
-            return NULL;
+            return nullptr;
         }
         memcpy(td4->elements, src + 0xC4, td4->elementsSize);
     }
@@ -162,15 +162,15 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     {
         log_error("Unsupported track design.");
         SafeFree(td4);
-        return NULL;
+        return nullptr;
     }
 
     rct_track_td6 * td6 = (rct_track_td6 *) calloc(1, sizeof(rct_track_td6));
-    if (td6 == NULL)
+    if (td6 == nullptr)
     {
         log_error("Unable to allocate memory for TD6 data.");
         SafeFree(td4);
-        return NULL;
+        return nullptr;
     }
 
     td6->type = RCT1::GetRideType(td4->type);
@@ -188,13 +188,13 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     if (td4->type == RIDE_TYPE_MAZE)
     {
         const char * name = RCT1::GetRideTypeObject(td4->type);
-        assert(name != NULL);
+        assert(name != nullptr);
         memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
     }
     else
     {
         const char * name = RCT1::GetVehicleObject(td4->vehicle_type);
-        assert(name != NULL);
+        assert(name != nullptr);
         memcpy(vehicleObject.name, name, Math::Min(String::SizeOf(name), (size_t)8));
     }
     memcpy(&td6->vehicle_object, &vehicleObject, sizeof(rct_object_entry));
@@ -336,23 +336,23 @@ static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLeng
     else if (version != 2)
     {
         log_error("Unsupported track design.");
-        return NULL;
+        return nullptr;
     }
 
     rct_track_td6 * td6 = (rct_track_td6 *) calloc(1, sizeof(rct_track_td6));
-    if (td6 == NULL)
+    if (td6 == nullptr)
     {
         log_error("Unable to allocate memory for TD6 data.");
-        return NULL;
+        return nullptr;
     }
     memcpy(td6, src, 0xA3);
     td6->elementsSize = srcLength - 0xA3;
     td6->elements     = malloc(td6->elementsSize);
-    if (td6->elements == NULL)
+    if (td6->elements == nullptr)
     {
         free(td6);
         log_error("Unable to allocate memory for TD6 element data.");
-        return NULL;
+        return nullptr;
     }
     memcpy(td6->elements, src + 0xA3, td6->elementsSize);
 
@@ -393,7 +393,7 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
     uintptr_t sceneryElementsStart;
     if (td6->type == RIDE_TYPE_MAZE)
     {
-        td6->track_elements = NULL;
+        td6->track_elements = nullptr;
         td6->maze_elements  = (rct_td6_maze_element *) td6->elements;
 
         rct_td6_maze_element * maze = td6->maze_elements;
@@ -404,7 +404,7 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
     }
     else
     {
-        td6->maze_elements  = NULL;
+        td6->maze_elements  = nullptr;
         td6->track_elements = (rct_td6_track_element *) td6->elements;
 
         rct_td6_track_element * track = td6->track_elements;
@@ -427,7 +427,7 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
 
 void track_design_dispose(rct_track_td6 * td6)
 {
-    if (td6 != NULL)
+    if (td6 != nullptr)
     {
         free(td6->elements);
         free(td6->name);
@@ -1104,7 +1104,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
 
                         rct_tile_element * tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
 
-                        if (tile_element == NULL)
+                        if (tile_element == nullptr)
                         {
                             continue;
                         }
@@ -1479,7 +1479,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                 }
 
                 rct_tile_element * tileElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
-                if (tileElement == NULL)
+                if (tileElement == nullptr)
                 {
                     return false;
                 }
@@ -1691,7 +1691,7 @@ sint32 place_virtual_track(rct_track_td6 * td6, uint8 ptdOperation, bool placeSc
 
     // Scenery elements
     rct_td6_scenery_element * scenery = td6->scenery_elements;
-    if (track_place_success && scenery != NULL)
+    if (track_place_success && scenery != nullptr)
     {
         if (!track_design_place_scenery(
             scenery,
@@ -1837,7 +1837,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     }
 
     rct_track_td6 * td6 = gActiveTrackDesign;
-    if (td6 == NULL)
+    if (td6 == nullptr)
     {
         return MONEY32_UNDEFINED;
     }
@@ -1858,7 +1858,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     if (RideGroupManager::RideTypeHasRideGroups(td6->type) && entryIndex == 0xFF)
     {
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
-        if (ori != NULL)
+        if (ori != nullptr)
         {
             uint8             rideGroupIndex = ori->RideGroupIndex;
             const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
@@ -2178,7 +2178,7 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
 {
     // Make a copy of the map
     map_backup * mapBackup = track_design_preview_backup_map();
-    if (mapBackup == NULL)
+    if (mapBackup == nullptr)
     {
         return;
     }
@@ -2282,7 +2282,7 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
 static map_backup * track_design_preview_backup_map()
 {
     map_backup * backup = (map_backup *) malloc(sizeof(map_backup));
-    if (backup != NULL)
+    if (backup != nullptr)
     {
         memcpy(
             backup->tile_elements,

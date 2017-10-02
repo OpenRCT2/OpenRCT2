@@ -150,7 +150,6 @@ void reset_sprite_list()
         }
         _spriteFlashingList[i] = false;
         previous_spr = spr;
-        spr++;
     }
 
     gSpriteListCount[SPRITE_LIST_NULL] = MAX_SPRITES;

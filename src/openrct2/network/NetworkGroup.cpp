@@ -126,7 +126,7 @@ bool NetworkGroup::CanPerformAction(size_t index) const
     {
         return false;
     }
-    return (ActionsAllowed[byte] & (1 << bit)) ? true : false;
+    return (ActionsAllowed[byte] & (1 << bit)) != 0;
 }
 
 bool NetworkGroup::CanPerformCommand(sint32 command) const

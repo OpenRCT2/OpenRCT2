@@ -149,7 +149,7 @@ protected:
 private:
     ScanResult Scan() const
     {
-        DirectoryStats stats;
+        DirectoryStats stats {};
         std::vector<std::string> files;
         for (const auto directory : SearchPaths)
         {

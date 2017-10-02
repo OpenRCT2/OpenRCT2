@@ -152,12 +152,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
     trackBlock = &TrackBlocks[trackType][sequence];
     z = TrackCoordinates[trackType].z_end;
     z = trackElement->base_height + ((z - trackBlock->z) * 8);
-    if (z != z0)
-    {
-        return false;
-    }
-
-    return true;
+    return z == z0;
 }
 
 /**

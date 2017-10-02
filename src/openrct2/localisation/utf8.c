@@ -107,11 +107,10 @@ sint32 utf8_get_codepoint_length(sint32 codepoint)
  */
 sint32 utf8_length(const utf8 *text)
 {
-    sint32 codepoint;
     const utf8 *ch = text;
 
     sint32 count = 0;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
+    while (utf8_get_next(ch, &ch) != 0) {
         count++;
     }
     return count;

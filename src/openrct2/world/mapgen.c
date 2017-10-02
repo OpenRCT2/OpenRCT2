@@ -87,7 +87,7 @@ static const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_L
 #define BLOB_HEIGHT 255
 
 static void mapgen_place_trees();
-static void mapgen_set_water_level(sint32 height);
+static void mapgen_set_water_level(sint32 waterLevel);
 static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight);
 static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height);
 static void mapgen_smooth_height(sint32 iterations);

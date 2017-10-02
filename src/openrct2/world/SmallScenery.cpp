@@ -93,7 +93,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
         break;
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    if (sceneryFound == false)
+    if (!sceneryFound)
     {
         return 0;
     }

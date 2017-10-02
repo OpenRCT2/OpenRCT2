@@ -118,8 +118,7 @@ void SceneryGroupObject::ReadItems(IStream * stream)
 {
     auto items = std::vector<rct_object_entry>();
 
-    uint8 endMarker;
-    while ((endMarker = stream->ReadValue<uint8>()) != 0xFF)
+    while (stream->ReadValue<uint8>() != 0xFF)
     {
         stream->Seek(-1, STREAM_SEEK_CURRENT);
         rct_object_entry entry = stream->ReadValue<rct_object_entry>();

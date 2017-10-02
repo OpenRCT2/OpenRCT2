@@ -54,7 +54,7 @@ public:
     static ParkLoadResult CreateUnsupportedRCTCflag(uint8 classic_flag);
 
 private:
-    ParkLoadResult(PARK_LOAD_ERROR error);
+    explicit ParkLoadResult(PARK_LOAD_ERROR error);
     ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects);
     ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag);
 };
