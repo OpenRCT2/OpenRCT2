@@ -41,6 +41,14 @@ typedef struct mapgen_settings {
     bool smooth_height_map;
     uint32 smooth_strength;
     bool normalize_height;
+
+    // Simplex tree algorithm
+    bool trees_place;
+    sint32 trees_low;
+    sint32 trees_high;
+    float trees_base_freq;
+    sint32 trees_octaves;
+
 } mapgen_settings;
 
 #ifdef __cplusplus
