@@ -134,6 +134,7 @@ void virtual_floor_paint(paint_session * session)
                  tileElement->properties.surface.slope != 0)
             {
                 weAreBelowGround    = true;
+                weAreOccupied       = true;
             }
             continue;
         }
@@ -212,6 +213,7 @@ void virtual_floor_paint(paint_session * session)
                      tileElement->properties.surface.slope != 0)
                 {
                     theyAreBelowGround    = true;
+                    theyAreOccupied       = true;
                 }
                 continue;
             }
