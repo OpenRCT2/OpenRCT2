@@ -68,7 +68,7 @@ namespace Path
             String::LastIndexOf(path, *PREFERRED_PATH_SEPARATOR),
             String::LastIndexOf(path, '/')
         );
-        if (lastPathSepIndex == SIZE_MAX)
+        if (lastPathSepIndex < 0)
         {
             return String::Set(buffer, bufferSize, String::Empty);
         }
