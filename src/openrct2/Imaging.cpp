@@ -32,7 +32,7 @@ namespace Imaging
     static void PngWarning(png_structp png_ptr, const char * b);
     static void PngError(png_structp png_ptr, const char * b);
 
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
+    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path)
     {
         png_structp png_ptr;
         png_infop info_ptr;
@@ -68,8 +68,13 @@ namespace Imaging
             png_set_read_fn(png_ptr, &fs, PngReadData);
             png_set_sig_bytes(png_ptr, sig_read);
 
-            // To simplify the reading process, convert 4-16 bit data to 24-32 bit data
-            png_read_png(png_ptr, info_ptr, PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING | PNG_TRANSFORM_EXPAND | PNG_TRANSFORM_GRAY_TO_RGB, nullptr);
+            uint32 readFlags = PNG_TRANSFORM_STRIP_16 | PNG_TRANSFORM_PACKING;
+            if (expand)
+            {
+                // If we expand the resulting image always be full RGBA
+                readFlags |= PNG_TRANSFORM_GRAY_TO_RGB | PNG_TRANSFORM_EXPAND;
+            }
+            png_read_png(png_ptr, info_ptr, readFlags, nullptr);
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
@@ -95,6 +100,16 @@ namespace Imaging
                         *dst++ = *src++;
                         *dst++ = 255;
                     }
+                }
+            }
+            else if (bitDepth == 8 && !expand)
+            {
+                // 8-bit paletted
+                Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
+                for (png_uint_32 i = 0; i < pngHeight; i++)
+                {
+                    Memory::Copy(dst, rowPointers[i], rowBytes);
+                    dst += rowBytes;
                 }
             }
             else
@@ -287,9 +302,9 @@ namespace Imaging
 
 extern "C"
 {
-    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, const utf8 * path)
+    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path)
     {
-        return Imaging::PngRead(pixels, width, height, path);
+        return Imaging::PngRead(pixels, width, height, expand, path);
     }
 
     bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)
