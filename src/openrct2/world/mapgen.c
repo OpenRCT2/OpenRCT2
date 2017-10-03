@@ -790,7 +790,7 @@ bool mapgen_load_heightmap(const utf8 *path)
     uint32 width, height;
 
     if (strcicmp(extension, ".png") == 0) {
-        if (!image_io_png_read(&pixels, &width, &height, path)) {
+        if (!image_io_png_read(&pixels, &width, &height, true, path)) {
             log_warning("Error reading PNG");
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_READING_PNG);
             return false;
