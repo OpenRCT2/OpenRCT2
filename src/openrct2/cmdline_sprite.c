@@ -24,6 +24,7 @@
 #include "OpenRCT2.h"
 #include "platform/platform.h"
 #include "util/util.h"
+#include "png.h"
 
 #define MODE_DEFAULT 0
 #define MODE_CLOSEST 1
@@ -306,16 +307,18 @@ static sint32 get_palette_index(sint16 *colour)
 }
 
 
-static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offset, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
+static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offset, bool keep_palette, rct_g1_element *outElement, uint8 **outBuffer, int *outBufferLength, sint32 mode)
 {
     uint8 *pixels;
     uint32 width, height;
-    if (!image_io_png_read(&pixels, &width, &height, path)) {
+    if (!image_io_png_read(&pixels, &width, &height, !keep_palette, path))
+    {
         fprintf(stderr, "Error reading PNG");
         return false;
     }
 
-    if (width > 256 || height > 256) {
+    if (width > 256 || height > 256)
+    {
         fprintf(stderr, "Only images 256x256 or less are supported.");
         free(pixels);
         return false;
@@ -328,10 +331,14 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
     uint16 *yOffsets = (uint16*)buffer;
 
     // A larger range is needed for proper dithering
-    sint16 *src = malloc(height * width * 4 * 2);
-    sint16 *src_orig = src;
-    for (uint32 x = 0; x < height * width * 4; x++){
-        src[x] = (sint16) pixels[x];
+    uint8 *palettedSrc = pixels;
+    sint16 *rgbaSrc = keep_palette? 0 : malloc(height * width * 4 * 2);
+    sint16 *rgbaSrc_orig = rgbaSrc;
+    if (!keep_palette)
+    {
+        for (uint32 x = 0; x < height * width * 4; x++){
+            rgbaSrc[x] = (sint16) pixels[x];
+        }
     }
 
     uint8 *dst = buffer + (height * 2);
@@ -348,92 +355,128 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
         sint32 npixels = 0;
         bool pushRun = false;
         for (uint32 x = 0; x < width; x++) {
-            sint32 paletteIndex = get_palette_index(src);
+            sint32 paletteIndex;
 
-            if (mode == MODE_CLOSEST || mode == MODE_DITHERING)
-                if (paletteIndex == -1 && !is_transparent_pixel(src))
-                    paletteIndex = get_closest_palette_index(src);
+            if (keep_palette)
+            {
+                paletteIndex = *palettedSrc;
+            }
+            else
+            {
+                paletteIndex = get_palette_index(rgbaSrc);
 
-
-            if (mode == MODE_DITHERING)
-                if (!is_transparent_pixel(src) && is_changable_pixel(get_palette_index(src))){
-                    sint16 dr = src[0] - (sint16)(spriteFilePalette[paletteIndex].r);
-                    sint16 dg = src[1] - (sint16)(spriteFilePalette[paletteIndex].g);
-                    sint16 db = src[2] - (sint16)(spriteFilePalette[paletteIndex].b);
-
-                    if (x + 1 < width){
-                        if (!is_transparent_pixel(src + 4) && is_changable_pixel(get_palette_index(src + 4))){
-                            // Right
-                            src[4] += dr * 7 / 16;
-                            src[5] += dg * 7 / 16;
-                            src[6] += db * 7 / 16;
-                        }
+                if (mode == MODE_CLOSEST || mode == MODE_DITHERING)
+                {
+                    if (paletteIndex == -1 && !is_transparent_pixel(rgbaSrc))
+                    {
+                        paletteIndex = get_closest_palette_index(rgbaSrc);
                     }
+                }
 
-                    if (y + 1 < height){
-                        if (x > 0){
-                            if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(src + 4 * (width - 1)))){
-                                // Bottom left
-                                src[4 * (width - 1)] += dr * 3 / 16;
-                                src[4 * (width - 1) + 1] += dg * 3 / 16;
-                                src[4 * (width - 1) + 2] += db * 3 / 16;
-                            }
-                        }
-
-                        // Bottom
-                        if (!is_transparent_pixel(src + 4 * width) && is_changable_pixel(get_palette_index(src + 4 * width))){
-                            src[4 * width] += dr * 5 / 16;
-                            src[4 * width + 1] += dg * 5 / 16;
-                            src[4 * width + 2] += db * 5 / 16;
-                        }
+                if (mode == MODE_DITHERING)
+                {
+                    if (!is_transparent_pixel(rgbaSrc) && is_changable_pixel(get_palette_index(rgbaSrc))){
+                        sint16 dr = rgbaSrc[0] - (sint16)(spriteFilePalette[paletteIndex].r);
+                        sint16 dg = rgbaSrc[1] - (sint16)(spriteFilePalette[paletteIndex].g);
+                        sint16 db = rgbaSrc[2] - (sint16)(spriteFilePalette[paletteIndex].b);
 
                         if (x + 1 < width){
-                            if (!is_transparent_pixel(src + 4 * (width - 1)) && is_changable_pixel(get_palette_index(src + 4 * (width + 1)))){
-                                // Bottom right
-                                src[4 * (width + 1)] += dr * 1 / 16;
-                                src[4 * (width + 1) + 1] += dg * 1 / 16;
-                                src[4 * (width + 1) + 2] += db * 1 / 16;
+                            if (!is_transparent_pixel(rgbaSrc + 4) && is_changable_pixel(get_palette_index(rgbaSrc + 4))){
+                                // Right
+                                rgbaSrc[4] += dr * 7 / 16;
+                                rgbaSrc[5] += dg * 7 / 16;
+                                rgbaSrc[6] += db * 7 / 16;
+                            }
+                        }
+
+                        if (y + 1 < height){
+                            if (x > 0){
+                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width - 1)))){
+                                    // Bottom left
+                                    rgbaSrc[4 * (width - 1)] += dr * 3 / 16;
+                                    rgbaSrc[4 * (width - 1) + 1] += dg * 3 / 16;
+                                    rgbaSrc[4 * (width - 1) + 2] += db * 3 / 16;
+                                }
+                            }
+
+                            // Bottom
+                            if (!is_transparent_pixel(rgbaSrc + 4 * width) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * width))){
+                                rgbaSrc[4 * width] += dr * 5 / 16;
+                                rgbaSrc[4 * width + 1] += dg * 5 / 16;
+                                rgbaSrc[4 * width + 2] += db * 5 / 16;
+                            }
+
+                            if (x + 1 < width){
+                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width + 1)))){
+                                    // Bottom right
+                                    rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
+                                    rgbaSrc[4 * (width + 1) + 1] += dg * 1 / 16;
+                                    rgbaSrc[4 * (width + 1) + 2] += db * 1 / 16;
+                                }
                             }
                         }
                     }
                 }
+            }
 
-            src += 4;
-            if (paletteIndex == -1) {
-                if (npixels != 0) {
+            rgbaSrc += 4;
+            palettedSrc += 1;
+
+            if (paletteIndex == -1)
+            {
+                if (npixels != 0)
+                {
                     x--;
-                    src -= 4;
+                    rgbaSrc -= 4;
+                    palettedSrc -= 1;
                     pushRun = true;
                 }
-            } else {
+            }
+            else
+            {
                 if (npixels == 0)
+                {
                     startX = x;
+                }
+
                 npixels++;
                 *dst++ = (uint8)paletteIndex;
             }
             if (npixels == 127 || x == width - 1)
+            {
                 pushRun = true;
+            }
 
-            if (pushRun) {
-                if (npixels > 0) {
+            if (pushRun)
+            {
+                if (npixels > 0)
+                {
                     previousCode = currentCode;
                     currentCode->num_pixels = npixels;
                     currentCode->offset_x = startX;
 
                     if (x == width - 1)
+                    {
                         currentCode->num_pixels |= 0x80;
+                    }
 
                     currentCode = (rle_code*)dst;
                     dst += 2;
-                } else {
-                    if (previousCode == NULL) {
+                }
+                else
+                {
+                    if (previousCode == NULL)
+                    {
                         currentCode->num_pixels = 0x80;
                         currentCode->offset_x = 0;
-                    } else {
+                    }
+                    else
+                    {
                         previousCode->num_pixels |= 0x80;
                         dst -= 2;
                     }
                 }
+
                 startX = 0;
                 npixels = 0;
                 pushRun = false;
@@ -441,7 +484,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
         }
     }
     free(pixels);
-    free(src_orig);
+    free(rgbaSrc_orig);
 
     sint32 bufferLength = (sint32)(dst - buffer);
     buffer = realloc(buffer, bufferLength);
@@ -649,8 +692,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         uint8 *buffer;
 
         sint32 bufferLength;
-        if (!sprite_file_import(imagePath, x_offset, y_offset, &spriteElement, &buffer, &bufferLength, gSpriteMode))
-
+        if (!sprite_file_import(imagePath, x_offset, y_offset, false, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             return -1;
 
         if (!sprite_file_open(spriteFilePath)) {
@@ -732,6 +774,17 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
             json_t* x_offset = json_object_get(sprite_description, "x_offset");
             json_t* y_offset = json_object_get(sprite_description, "y_offset");
 
+            // Get palette option, if present
+            bool keep_palette = false;
+            json_t* palette = json_object_get(sprite_description, "palette");
+            if (palette && json_is_string(palette))
+            {
+                const char *option = json_string_value(palette);
+                if (strncmp(option, "keep", 4) == 0)
+                {
+                    keep_palette = true;
+                }
+            }
 
             // Resolve absolute sprite path
             char *imagePath = platform_get_absolute_path(json_string_value(path), directoryPath);
@@ -740,7 +793,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
             uint8 *buffer;
             int bufferLength;
 
-            if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), &spriteElement, &buffer, &bufferLength, gSpriteMode))
+            if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), keep_palette, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
                 json_decref(sprite_list);
