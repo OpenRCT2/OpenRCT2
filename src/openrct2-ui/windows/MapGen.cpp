@@ -917,6 +917,12 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.simplex_base_freq = ((float)_simplex_base_freq) / 100.00f;
         mapgenSettings.simplex_octaves = _simplex_octaves;
 
+        mapgenSettings.trees_place = true;
+        mapgenSettings.trees_low = 0;
+        mapgenSettings.trees_high = 10;
+        mapgenSettings.trees_base_freq = ((float)60) / 100.00f;
+        mapgenSettings.trees_octaves = 4;
+
         mapgen_generate(&mapgenSettings);
         gfx_invalidate_screen();
         break;
