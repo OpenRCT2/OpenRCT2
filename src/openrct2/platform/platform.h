@@ -32,10 +32,10 @@ typedef struct rct2_install_info rct2_install_info;
 #define TOUCH_DOUBLE_TIMEOUT 300
 
 #ifdef _WIN32
-#define PATH_SEPARATOR "\\"
+#define PREFERRED_PATH_SEPARATOR "\\"
 #define PLATFORM_NEWLINE "\r\n"
 #else
-#define PATH_SEPARATOR "/"
+#define PREFERRED_PATH_SEPARATOR "/"
 #define PLATFORM_NEWLINE "\n"
 #endif
 

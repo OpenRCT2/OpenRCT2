@@ -741,7 +741,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
     wchar_t *exeDelimiter;
 
     GetModuleFileNameW(NULL, exePath, MAX_PATH);
-    exeDelimiter = wcsrchr(exePath, *PATH_SEPARATOR);
+    exeDelimiter = wcsrchr(exePath, *PREFERRED_PATH_SEPARATOR);
     *exeDelimiter = L'\0';
     wcscpy_s(tempPath, MAX_PATH, exePath);
     _wfullpath(exePath, tempPath, MAX_PATH);

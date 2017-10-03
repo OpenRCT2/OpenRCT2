@@ -620,7 +620,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 // If the drive exists, list it
                 loadsave_list_item *listItem = &_listItems[_listItemsCount];
 
-                snprintf(listItem->path, sizeof(listItem->path), "%c:" PATH_SEPARATOR, 'A' + x);
+                snprintf(listItem->path, sizeof(listItem->path), "%c:" PREFERRED_PATH_SEPARATOR, 'A' + x);
                 safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
                 listItem->type = TYPE_DIRECTORY;
 
@@ -632,11 +632,11 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
         // Remove the separator at the end of the path, if present
         safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
-        if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR)
+        if (_parentDirectory[strlen(_parentDirectory) - 1] == *PREFERRED_PATH_SEPARATOR)
             _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
 
         // Remove everything past the now last separator
-        char *ch = strrchr(_parentDirectory, *PATH_SEPARATOR);
+        char *ch = strrchr(_parentDirectory, *PREFERRED_PATH_SEPARATOR);
         if (ch != nullptr) {
             *(ch + 1) = '\0';
         } else if (drives) {
@@ -644,7 +644,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             _parentDirectory[0] = '\0';
         } else {
             // Else, go to the root directory
-            snprintf(_parentDirectory, MAX_PATH, "%c", *PATH_SEPARATOR);
+            snprintf(_parentDirectory, MAX_PATH, "%c", *PREFERRED_PATH_SEPARATOR);
         }
 
         // Disable the Up button if the current directory is the root directory

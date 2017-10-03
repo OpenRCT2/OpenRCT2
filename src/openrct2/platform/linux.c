@@ -65,7 +65,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 #else
 #error "Platform does not support full path exe retrieval"
 #endif
-    char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
+    char *exeDelimiter = strrchr(exePath, *PREFERRED_PATH_SEPARATOR);
     if (exeDelimiter == NULL)
     {
         log_error("should never happen here");

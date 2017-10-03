@@ -332,7 +332,7 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
     enumerate_file_info *enumFileInfo;
     log_verbose("begin file search, pattern: %s", npattern);
 
-    char *file_name = strrchr(npattern, *PATH_SEPARATOR);
+    char *file_name = strrchr(npattern, *PREFERRED_PATH_SEPARATOR);
     char *dir_name;
     if (file_name != NULL)
     {
