@@ -824,10 +824,12 @@ enum {
 
     SPR_G2_SEARCH = SPR_G2_BEGIN + 106,
 
-    SPR_G2_SELECTION_EDGE_NW = SPR_G2_BEGIN + 107,
-    SPR_G2_SELECTION_EDGE_NE = SPR_G2_BEGIN + 108,
-    SPR_G2_SELECTION_EDGE_SW = SPR_G2_BEGIN + 109,
-    SPR_G2_SELECTION_EDGE_SE = SPR_G2_BEGIN + 110,
+    SPR_G2_SURFACE_GLASSY_RECOLOURABLE = SPR_G2_BEGIN + 107,
+
+    SPR_G2_SELECTION_EDGE_NW = SPR_G2_BEGIN + 108,
+    SPR_G2_SELECTION_EDGE_NE = SPR_G2_BEGIN + 109,
+    SPR_G2_SELECTION_EDGE_SW = SPR_G2_BEGIN + 110,
+    SPR_G2_SELECTION_EDGE_SE = SPR_G2_BEGIN + 111,
 
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.
