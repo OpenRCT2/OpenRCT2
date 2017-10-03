@@ -3382,7 +3382,7 @@ STR_3372    :{BLACK}= A.T.M.
 STR_3373    :{BLACK}= Servizi igien.
 STR_3374    :Attenzione: hai selezionato troppi oggetti!
 STR_3375    :Non è stato possibile selezionare tutti gli oggetti di questo gruppo di scenari
-STR_3376    :Installa un nuovo...
+STR_3376    :Installa nuovo
 STR_3377    :{SMALLFONT}{BLACK}Installa un nuovo file di progetti di percorso
 STR_3378    :Installa
 STR_3379    :Annulla
@@ -4452,13 +4452,13 @@ STR_6137    :OpenRCT2, un clone libero e open-source di Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 è frutto del lavoro di molti autori, una lista completa si può trovare nel file {OPENQUOTES}contributors.md{ENDQUOTES}. Per ulteriori informazioni, visitare http://github.com/OpenRCT2/OpenRCT2
 STR_6139    :Tutti i nomi di prodotti e aziende appartengono ai rispettivi proprietari. Il loro uso non implica alcuna affiliazione o approvazione da parte di essi.
 STR_6140    :Storico delle modifiche...
-STR_6141    :RCT1 Barra degli strumenti in basso
-STR_6142    :{WINDOW_COLOUR_2}Nome traccia: {BLACK}{STRING}
-STR_6143    :{WINDOW_COLOUR_2}Tipo corsa: {BLACK}{STRINGID}
+STR_6141    :Barra degli strumenti inferiore alla RCT1
+STR_6142    :{WINDOW_COLOUR_2}Nome percorso: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Tipo attrazione: {BLACK}{STRINGID}
 STR_6144    :Mostra visuali sporche
-STR_6145    :{SMALLFONT}{BLACK}Imposta limite velocità per gli impulsi
+STR_6145    :{SMALLFONT}{BLACK}Imposta limite di velocità per gli acceleratori
 STR_6146    :Abilita tutti i pezzi disegnabili del percorso
-STR_6147    :{SMALLFONT}{BLACK}Abilita tutti i pezzi della corsa nella finestra di construzione, ignorando i veicoli supportati.
+STR_6147    :{SMALLFONT}{BLACK}Abilita nella finestra di costruzione tutti i pezzi che l'attrazione è in grado di supportare, a prescindere dal fatto che il veicolo li supporti o meno.
 
 
 #############
