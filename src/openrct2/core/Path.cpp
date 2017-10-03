@@ -64,7 +64,7 @@ namespace Path
 
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
-        size_t lastPathSepIndex = std::max(
+        auto lastPathSepIndex = Math::Max(
             String::LastIndexOf(path, *PREFERRED_PATH_SEPARATOR),
             String::LastIndexOf(path, '/')
         );
@@ -73,7 +73,7 @@ namespace Path
             return String::Set(buffer, bufferSize, String::Empty);
         }
 
-        size_t copyLength = Math::Min(lastPathSepIndex, bufferSize - 1);
+        size_t copyLength = Math::Min(lastPathSepIndex, static_cast<ptrdiff_t>(bufferSize - 1));
         Memory::Copy(buffer, path, copyLength);
         buffer[copyLength] = '\0';
         return buffer;
