@@ -271,7 +271,7 @@ void virtual_floor_paint(paint_session * session)
     if (paintEdges & 0x8)
     {
         sub_98197C(session, SPR_G2_SELECTION_EDGE_NW | (!(occupiedEdges & 0x8)? ((litEdges & 0x8)? remap_lit : remap_base) : remap_edge),
-            0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x8)? -2 : 0), get_current_rotation());
+            0, 0, 0, 0, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x8)? -2 : 0), get_current_rotation());
     }
     if (paintEdges & 0x4)
     {
@@ -281,11 +281,17 @@ void virtual_floor_paint(paint_session * session)
     if (paintEdges & 0x1)
     {
         sub_98197C(session, SPR_G2_SELECTION_EDGE_NE | (!(occupiedEdges & 0x1)? ((litEdges & 0x1)? remap_lit : remap_base) : remap_edge),
-            0, 0, 1, 1, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x1)? -2 : 0), get_current_rotation());
+            0, 0, 0, 0, 1, gMapVirtualFloorHeight,  5,  5, gMapVirtualFloorHeight + ((dullEdges & 0x1)? -2 : 0), get_current_rotation());
     }
     if (paintEdges & 0x2)
     {
         sub_98197C(session, SPR_G2_SELECTION_EDGE_SE | (!(occupiedEdges & 0x2)? ((litEdges & 0x2)? remap_lit : remap_base) : remap_edge),
             0, 0, 1, 1, 1, gMapVirtualFloorHeight, 16, 27, gMapVirtualFloorHeight + ((dullEdges & 0x2)? -2 : 0), get_current_rotation());
+    }
+
+    if (!weAreOccupied && !weAreLit)
+    {
+        sint32 imageColourFlats = SPR_G2_SURFACE_GLASSY_RECOLOURABLE | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
+        sub_98197C(session, imageColourFlats, 0, 0, 30, 30, 0, gMapVirtualFloorHeight, 2, 2, gMapVirtualFloorHeight - 3, get_current_rotation());
     }
 }
