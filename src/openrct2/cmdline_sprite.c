@@ -360,6 +360,11 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
             if (keep_palette)
             {
                 paletteIndex = *palettedSrc;
+                // The 1st index is always transparent
+                if (paletteIndex == 0)
+                {
+                    paletteIndex = -1;
+                }
             }
             else
             {
