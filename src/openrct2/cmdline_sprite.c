@@ -575,24 +575,27 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         for (sint32 spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++){
 
-            if (spriteIndex % 100 == 99){
+            if (spriteIndex % 100 == 99)
+            {
                 // Status indicator
                 printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
+            }
+
+            if (!sprite_file_export(spriteIndex, outputPath))
+            {
+                fprintf(stderr, "Could not export\n");
+                sprite_file_close();
+                return -1;
             }
 
             // Add to the index at the end of the file name
             char *counter = outputPath + pathLen + numbers - 1;
             (*counter)++;
-            while (*counter > '9'){
+            while (*counter > '9')
+            {
                 *counter = '0';
                 counter--;
                 (*counter)++;
-            }
-
-            if (!sprite_file_export(spriteIndex, outputPath)) {
-                fprintf(stderr, "Could not export\n");
-                sprite_file_close();
-                return -1;
             }
         }
 
