@@ -4744,6 +4744,16 @@ void map_set_virtual_floor_height(sint16 height)
     gMapVirtualFloorHeight      = height;
 }
 
+void map_remove_virtual_floor()
+{
+    if (gMapVirtualFloorHeight != 0)
+    {
+        map_invalidate_virtual_floor_tiles();
+        gMapVirtualFloorHeight      = 0;
+    }
+}
+
 void map_invalidate_virtual_floor_tiles()
 {
+    // TODO: invalidate tiles covered by the current virtual floor
 }
