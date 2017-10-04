@@ -22,16 +22,12 @@
 #include "../OpenRCT2.h"
 #include "../scenario/ScenarioRepository.h"
 #include "TitleScreen.h"
-#include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
 #include "../audio/audio.h"
-#include "../drawing/drawing.h"
-#include "../game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
-#include "../interface/window.h"
 #include "../localisation/localisation.h"
 
 // TODO Remove when no longer required.

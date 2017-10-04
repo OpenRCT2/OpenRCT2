@@ -20,16 +20,10 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"
-#include "../scenario/scenario.h"
-#include "../world/banner.h"
 #include "../world/footpath.h"
-#include "../world/map.h"
 #include "../world/scenery.h"
-#include "../world/sprite.h"
-#include "viewport.h"
 #include "../Context.h"
 
 static void viewport_interaction_remove_scenery(rct_map_element *mapElement, sint32 x, sint32 y);

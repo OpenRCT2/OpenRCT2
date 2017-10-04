@@ -16,12 +16,8 @@
 
 #include "../track_paint.h"
 #include "../track.h"
-#include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../ride_data.h"
-#include "../../world/map.h"
 
 enum
 {

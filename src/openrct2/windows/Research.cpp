@@ -19,7 +19,6 @@
 #include "../interface/widget.h"
 #include "../management/news_item.h"
 #include "../sprites.h"
-#include "../world/scenery.h"
 #include "dropdown.h"
 
 enum {

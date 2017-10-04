@@ -16,14 +16,12 @@
 
 #include <chrono>
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../Imaging.h"
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 
-#include "../drawing/drawing.h"
 #include "../game.h"
 #include "../intro.h"
 #include "../localisation/localisation.h"

@@ -18,21 +18,15 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
-#include "../drawing/drawing.h"
 #include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/Cursors.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
-#include "../platform/platform.h"
-#include "../world/map.h"
-#include "../world/sprite.h"
 #include "viewport.h"
 #include "widget.h"
-#include "window.h"
 
 #define RCT2_FIRST_WINDOW       (g_window_list)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)

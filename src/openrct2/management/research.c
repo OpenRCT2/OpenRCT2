@@ -20,18 +20,12 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../localisation/string_ids.h"
-#include "../management/finance.h"
 #include "../OpenRCT2.h"
-#include "../scenario/scenario.h"
 #include "../rct1.h"
-#include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
-#include "news_item.h"
-#include "research.h"
 
 const sint32 _researchRate[] = { 0, 160, 250, 400 };
 

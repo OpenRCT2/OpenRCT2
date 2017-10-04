@@ -17,7 +17,6 @@
 #include "../config/Config.h"
 #include "../network/network.h"
 
-#include "../game.h"
 #include "../input.h"
 #include "../management/marketing.h"
 #include "../peep/staff.h"

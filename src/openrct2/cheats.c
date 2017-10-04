@@ -20,16 +20,11 @@
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
-#include "management/finance.h"
 #include "network/network.h"
-#include "ride/station.h"
 #include "util/util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
-#include "world/map.h"
-#include "world/park.h"
 #include "world/scenery.h"
-#include "world/sprite.h"
 
 bool gCheatsSandboxMode = false;
 bool gCheatsDisableClearanceChecks = false;

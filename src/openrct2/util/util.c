@@ -17,11 +17,8 @@
 #include <ctype.h>
 #include <time.h>
 #include "../common.h"
-#include "../core/Guard.hpp"
-#include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
-#include "../title/TitleScreen.h"
 #include "util.h"
 #include "zlib.h"
 

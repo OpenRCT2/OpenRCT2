@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../Context.h"
-#include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../ui/UiContext.h"

@@ -18,7 +18,6 @@
 #include "../network/network.h"
 #include "../core/Util.hpp"
 
-#include "../game.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "../interface/widget.h"

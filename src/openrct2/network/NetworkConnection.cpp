@@ -17,7 +17,6 @@
 #ifndef DISABLE_NETWORK
 
 #include "network.h"
-#include "NetworkConnection.h"
 #include "../core/String.hpp"
 
 #include "../localisation/localisation.h"

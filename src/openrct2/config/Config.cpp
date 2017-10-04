@@ -22,9 +22,7 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
-#include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
-#include "../interface/window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ui/UiContext.h"
@@ -34,9 +32,7 @@
 
 #include "../localisation/currency.h"
 #include "../localisation/date.h"
-#include "../localisation/language.h"
 #include "../platform/platform.h"
-#include "../scenario/scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

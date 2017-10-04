@@ -16,7 +16,6 @@
 
 #include <openrct2/common.h>
 #include <cmath>
-#include <SDL.h>
 #include <speex/speex_resampler.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/audio/AudioChannel.h>

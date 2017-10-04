@@ -18,7 +18,6 @@
 #include "../../interface/viewport.h"
 #include "../track_paint.h"
 #include "../../paint/supports.h"
-#include "../../paint/paint.h"
 #include "../track.h"
 
 enum

@@ -16,8 +16,6 @@
 
 #include <time.h>
 
-#include "../core/Guard.hpp"
-
 #include "../config/Config.h"
 #include "../platform/crash.h"
 #include "../platform/platform.h"
@@ -31,7 +29,6 @@
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
-#include "../Version.h"
 #include "CommandLine.hpp"
 
 #ifdef USE_BREAKPAD

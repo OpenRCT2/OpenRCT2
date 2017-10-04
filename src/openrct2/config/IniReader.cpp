@@ -22,7 +22,6 @@
 #include <vector>
 #include "../common.h"
 #include "../core/FileStream.hpp"
-#include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "IniReader.hpp"
 

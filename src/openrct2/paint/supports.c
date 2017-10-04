@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../interface/viewport.h"
-#include "../paint/paint.h"
 #include "supports.h"
 #include "map_element/map_element.h"
 

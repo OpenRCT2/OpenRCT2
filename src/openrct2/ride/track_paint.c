@@ -17,17 +17,8 @@
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../paint/supports.h"
-#include "../interface/viewport.h"
-#include "../paint/paint.h"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../world/map.h"
-#include "../world/sprite.h"
 #include "ride_data.h"
 #include "track_data.h"
-#include "track_paint.h"
-#include "../paint/map_element/map_element.h"
 
 /* rct2: 0x007667AC */
 static rct_xy16 loc_7667AC[] = {

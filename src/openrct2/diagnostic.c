@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
 #include "diagnostic.h"

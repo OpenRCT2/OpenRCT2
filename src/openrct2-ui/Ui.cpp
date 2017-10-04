@@ -20,7 +20,6 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/ui/UiContext.h>
 #include "audio/AudioContext.h"
-#include "Ui.h"
 #include "UiContext.h"
 
 #include <openrct2/platform/platform.h>

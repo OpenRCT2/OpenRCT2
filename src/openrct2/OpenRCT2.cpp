@@ -15,12 +15,7 @@
 #pragma endregion
 
 #include "core/Console.hpp"
-#include "core/File.h"
-#include "core/FileStream.hpp"
 #include "OpenRCT2.h"
-
-#include "audio/audio.h"
-#include "platform/platform.h"
 
 extern "C"
 {

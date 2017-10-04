@@ -18,9 +18,7 @@
 #include "../track.h"
 #include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../ride_data.h"
 
 #ifndef NO_VEHICLES
 /**

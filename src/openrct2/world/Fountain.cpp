@@ -17,11 +17,8 @@
 #include "Fountain.h"
 
 #include "../game.h"
-#include "../scenario/scenario.h"
 #include "footpath.h"
-#include "map.h"
 #include "scenery.h"
-#include "sprite.h"
 
 enum class PATTERN
 {

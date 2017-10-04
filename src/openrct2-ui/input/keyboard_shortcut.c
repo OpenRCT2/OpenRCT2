@@ -25,13 +25,10 @@
 #include <openrct2/network/network.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/ride/track.h>
 #include <openrct2/ride/track_paint.h>
 #include <openrct2/title/TitleScreen.h>
-#include <openrct2/util/util.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/interface/window.h>
 #include <openrct2/Context.h>
 #include "KeyboardShortcuts.h"
 

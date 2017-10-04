@@ -16,12 +16,8 @@
 
 #include "../track_paint.h"
 #include "../track.h"
-#include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../ride_data.h"
-#include "../../world/map.h"
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)

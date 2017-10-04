@@ -19,13 +19,10 @@
 #include "../../drawing/drawing.h"
 #include "../../world/scenery.h"
 #include "../../game.h"
-#include "../../ride/track.h"
 #include "../../config/Config.h"
 #include "../../localisation/localisation.h"
-#include "../../interface/colour.h"
 #include "../../interface/viewport.h"
 #include "../../paint/map_element/map_element.h"
-#include "../paint.h"
 
 const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,

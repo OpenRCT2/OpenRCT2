@@ -16,8 +16,6 @@
 
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/audio/audio.h>
-#include <openrct2/game.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/interface/viewport.h>

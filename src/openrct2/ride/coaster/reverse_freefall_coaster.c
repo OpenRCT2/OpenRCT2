@@ -16,15 +16,9 @@
 
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
-#include "../../interface/viewport.h"
 #include "../../paint/map_element/map_element.h"
-#include "../../paint/paint.h"
-#include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
 #include "../ride_data.h"
 #include "../track_data.h"
-#include "../track_paint.h"
 
 enum {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE = 22162,

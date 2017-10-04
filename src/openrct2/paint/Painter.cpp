@@ -21,7 +21,6 @@
 #include "../ui/UiContext.h"
 #include "Painter.h"
 
-#include "../drawing/drawing.h"
 #include "../game.h"
 #include "../interface/chat.h"
 #include "../interface/console.h"

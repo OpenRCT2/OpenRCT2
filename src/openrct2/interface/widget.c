@@ -18,13 +18,9 @@
 #include "../input.h"
 #include "../sprites.h"
 #include "widget.h"
-#include "window.h"
-#include "../platform/platform.h"
 #include "../localisation/localisation.h"
 #include "../util/util.h"
 #include "../Context.h"
-
-#include <math.h>
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);

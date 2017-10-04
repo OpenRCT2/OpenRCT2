@@ -19,7 +19,6 @@
 #include "../track.h"
 #include "../vehicle_paint.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../../paint/supports.h"
 
 // 0x009927E6:

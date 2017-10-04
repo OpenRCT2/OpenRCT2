@@ -16,15 +16,8 @@
 
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
-#include "../../interface/viewport.h"
 #include "../../paint/map_element/map_element.h"
-#include "../../paint/paint.h"
-#include "../../sprites.h"
-#include "../../world/map.h"
-#include "../../world/sprite.h"
-#include "../ride_data.h"
 #include "../track_data.h"
-#include "../track_paint.h"
 
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void lim_launched_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)

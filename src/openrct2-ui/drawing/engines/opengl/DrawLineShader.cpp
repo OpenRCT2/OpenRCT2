@@ -17,7 +17,6 @@
 #ifndef DISABLE_OPENGL
 
 #include "DrawLineShader.h"
-#include "OpenGLFramebuffer.h"
 
 DrawLineShader::DrawLineShader() : OpenGLShaderProgram("drawline")
 {

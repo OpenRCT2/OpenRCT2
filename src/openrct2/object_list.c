@@ -15,11 +15,8 @@
 #pragma endregion
 
 #include "game.h"
-#include "object.h"
 #include "object_list.h"
-#include "object/ObjectRepository.h"
 #include "util/sawyercoding.h"
-#include "util/util.h"
 
 // 98DA00
 sint32 object_entry_group_counts[] = {

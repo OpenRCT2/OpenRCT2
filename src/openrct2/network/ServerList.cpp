@@ -16,7 +16,6 @@
 
 #include "../core/FileStream.hpp"
 #include "../core/Path.hpp"
-#include "../core/String.hpp"
 #include "ServerList.h"
 
 #include "../platform/platform.h"

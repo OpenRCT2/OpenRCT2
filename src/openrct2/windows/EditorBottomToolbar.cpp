@@ -17,7 +17,6 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 
-#include "../audio/audio.h"
 #include "../game.h"
 #include "../Editor.h"
 #include "../input.h"

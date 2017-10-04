@@ -24,7 +24,6 @@
 #include "Console.hpp"
 #include "File.h"
 #include "FileStream.hpp"
-#include "String.hpp"
 
 #include "../platform/platform.h"
 #include "../util/util.h"

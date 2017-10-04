@@ -22,7 +22,6 @@
 #include <openrct2/input.h>
 #include <openrct2/interface/chat.h>
 #include <openrct2/interface/console.h>
-#include <openrct2/interface/window.h>
 #include <openrct2/OpenRCT2.h>
 #include "input.h"
 #include "KeyboardShortcuts.h"

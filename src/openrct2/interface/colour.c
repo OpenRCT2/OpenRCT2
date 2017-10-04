@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../drawing/drawing.h"
-#include "colour.h"
 #include "../sprites.h"
 
 rct_colour_map ColourMapA[32] = { 0 };

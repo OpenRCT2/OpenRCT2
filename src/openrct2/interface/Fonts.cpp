@@ -20,7 +20,6 @@
 #include "../localisation/LanguagePack.h"
 #include "Fonts.h"
 
-#include "../drawing/drawing.h"
 #include "../drawing/ttf.h"
 #include "../localisation/language.h"
 

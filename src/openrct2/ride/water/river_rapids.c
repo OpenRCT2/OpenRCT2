@@ -16,14 +16,10 @@
 
 #include "../../config/Config.h"
 #include "../../interface/viewport.h"
-#include "../../world/sprite.h"
-#include "../../paint/paint.h"
 #include "../vehicle_paint.h"
-#include "../../game.h"
 #include "../track_paint.h"
 #include "../track.h"
 #include "../../paint/supports.h"
-#include "../../world/map.h"
 
 #ifndef NO_VEHICLES
 // 0x0099279E:

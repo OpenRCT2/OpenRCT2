@@ -17,13 +17,9 @@
 #include "../common.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
-#include "../interface/window.h"
-#include "../localisation/localisation.h"
-#include "../object.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../world/water.h"
-#include "drawing.h"
 
 // HACK These were originally passed back through registers
 sint32 gLastDrawStringX;

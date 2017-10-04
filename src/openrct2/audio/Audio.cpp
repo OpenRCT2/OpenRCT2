@@ -20,7 +20,6 @@
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
-#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
@@ -31,8 +30,6 @@
 
 #include "../interface/viewport.h"
 #include "../intro.h"
-#include "../localisation/language.h"
-#include "../ride/ride.h"
 #include "../util/util.h"
 
 using namespace OpenRCT2::Audio;

@@ -18,11 +18,7 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
-#include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../cheats.h"
-#include "marketing.h"
 #include "news_item.h"
 
 const money16 AdvertisingCampaignPricePerWeek[] = {

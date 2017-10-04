@@ -21,7 +21,6 @@
 #include "../ride/track.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
-#include "map.h"
 #include "tile_inspector.h"
 
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)

@@ -37,10 +37,8 @@
 #include "../interface/console.h"
 #include "../localisation/localisation.h"
 #include "../management/news_item.h"
-#include "../peep/peep.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
-#include "../world/sprite.h"
 #include "http.h"
 #include "twitch.h"
 

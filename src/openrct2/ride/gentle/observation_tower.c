@@ -16,10 +16,8 @@
 
 #include "../../common.h"
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
 #include "../track_paint.h"
 #include "../track.h"
-#include "../../world/map.h"
 #include "../../paint/supports.h"
 #include "../vehicle_paint.h"
 
