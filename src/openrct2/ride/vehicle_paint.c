@@ -899,7 +899,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
     {
         baseImage_id += (vehicle->var_BA / 8) & 31;
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7 || vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SEAT_ROTATION)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
     {
         baseImage_id += vehicle->var_C5;
     }
