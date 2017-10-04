@@ -283,7 +283,7 @@ void RideObject::Load()
             if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_10))
             {
                 sint32 num_images = cur_vehicle_images_offset - vehicleEntry->base_image_id;
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_13)
+                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_SEAT_ROTATION)
                 {
                     num_images *= 2;
                 }

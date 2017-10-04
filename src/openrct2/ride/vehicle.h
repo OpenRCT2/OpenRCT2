@@ -232,8 +232,8 @@ enum {
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
-    VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
-    VEHICLE_ENTRY_FLAG_13 = 1 << 13,
+    VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,  // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
+    VEHICLE_ENTRY_FLAG_HAS_SEAT_ROTATION = 1 << 13,             // Used on vehicles that use a seat rotation, i.e. the Flying and Multi-dimension RCs.
     VEHICLE_ENTRY_FLAG_14 = 1 << 14,
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 16,

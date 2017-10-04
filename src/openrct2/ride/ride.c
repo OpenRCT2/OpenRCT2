@@ -7156,7 +7156,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, sint
 
     // Moved from object paint
 
-    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_13){
+    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_HAS_SEAT_ROTATION){
         bl += 16;
     }
 
