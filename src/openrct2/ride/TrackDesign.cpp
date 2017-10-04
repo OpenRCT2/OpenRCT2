@@ -1419,10 +1419,14 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
 
             //di
             sint16 tempZ = z - trackCoordinates->z_begin;
+            uint32 trackColour = (track->flags >> 4) & 0x3;
+            uint32 brakeSpeed = (track->flags & 0x0F) * 2;
+            uint32 seatRotation = track->flags & 0x0F;
+
             uint32 edi   =
-                       ((track->flags & 0x0F) << 17) |
-                       ((uint32) (track->flags & 0x0F) << 28) |
-                       (((track->flags >> 4) & 0x03) << 24) |
+                       (brakeSpeed << 16) |
+                       (seatRotation << 28) |
+                       (trackColour << 24) |
                        (tempZ & 0xFFFF);
 
             sint32 edx = _currentRideIndex | (trackType << 8);

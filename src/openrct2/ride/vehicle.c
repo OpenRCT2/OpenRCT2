@@ -7504,8 +7504,10 @@ loc_6DB358:
     // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
     sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-        if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    {
+        if (track_element_is_inverted(mapElement))
+        {
             vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         }
     }
@@ -7555,7 +7557,7 @@ loc_6DB41D:
     trackType = mapElement->properties.track.type;
     rideType = get_ride(mapElement->properties.track.ride_index)->type;
     if (trackType != TRACK_ELEM_BRAKES) {
-        vehicle->target_seat_rotation = mapElement->properties.track.colour >> 4;
+        vehicle->target_seat_rotation = track_element_get_seat_rotation(mapElement);
     }
     vehicle->track_direction = regs.bl & 3;
     vehicle->track_type |= trackType << 2;
@@ -7854,8 +7856,10 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 
         // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-            if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        {
+            if (track_element_is_inverted(mapElement))
+            {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
         }
@@ -7929,7 +7933,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle *veh
 
     trackType = mapElement->properties.track.type;
     if (trackType != TRACK_ELEM_BRAKES) {
-        vehicle->target_seat_rotation = mapElement->properties.track.colour >> 4;
+        vehicle->target_seat_rotation = track_element_get_seat_rotation(mapElement);
     }
     direction &= 3;
     vehicle->track_type = trackType << 2;
@@ -8222,8 +8226,10 @@ loc_6DC476:
 
     sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-        if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    {
+        if (track_element_is_inverted(mapElement))
+        {
             vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         }
     }
@@ -8439,8 +8445,10 @@ loc_6DCA9A:
 
     rideType = get_ride(mapElement->properties.track.ride_index)->type;
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
-    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-        if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+    if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+    {
+        if (track_element_is_inverted(mapElement))
+        {
             vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         }
     }

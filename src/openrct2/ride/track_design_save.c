@@ -1008,18 +1008,21 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         }
 
         uint8 bh;
-        if (track_element_has_speed_setting(track->type)) {
+        if (track_element_has_speed_setting(track->type))
+        {
             bh = map_element_get_brake_booster_speed(trackElement.element) >> 1;
-        } else {
-            bh = trackElement.element->properties.track.colour >> 4;
+        }
+        else
+        {
+            bh = track_element_get_seat_rotation(trackElement.element);
         }
 
         uint8 flags = (trackElement.element->type & (1 << 7)) | bh;
-        flags |= (trackElement.element->properties.track.colour & 3) << 4;
+        flags |= track_element_get_colour_scheme(trackElement.element) << 4;
         if (
             RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE &&
-            trackElement.element->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED
-        ) {
+            track_element_is_inverted(trackElement.element))
+        {
             flags |= TRACK_ELEMENT_FLAG_INVERTED;
         }
 
@@ -1027,7 +1030,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         track++;
         numTrackElements++;
 
-        if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL)) {
+        if (!track_block_get_next(&trackElement, &trackElement, NULL, NULL))
+        {
             break;
         }
 
@@ -1035,10 +1039,13 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         direction = map_element_get_direction(trackElement.element);
         track_type = trackElement.element->properties.track.type;
 
-        if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0)) {
+        if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
+        {
             break;
         }
-    } while (trackElement.element != initialMap);
+    }
+    while (trackElement.element != initialMap);
+
     td6->track_elements = realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
     *((uint8*)&td6->track_elements[numTrackElements]) = 0xFF;
 

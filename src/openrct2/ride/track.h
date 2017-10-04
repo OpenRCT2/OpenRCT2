@@ -541,7 +541,8 @@ bool track_element_is_lift_hill(rct_map_element *trackElement);
 bool track_element_is_cable_lift(rct_map_element *trackElement);
 void track_element_set_cable_lift(rct_map_element *trackElement);
 void track_element_clear_cable_lift(rct_map_element *trackElement);
-bool track_element_is_inverted(rct_map_element *trackElement);
+bool track_element_is_inverted(rct_map_element * mapElement);
+void track_element_set_inverted(rct_map_element * mapElement, bool inverted);
 
 sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank);
 sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank);
@@ -553,6 +554,10 @@ void game_command_set_maze_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 void game_command_set_brakes_speed(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 bool track_element_is_booster(uint8 rideType, uint8 trackType);
 bool track_element_has_speed_setting(uint8 trackType);
+uint8 track_element_get_seat_rotation(const rct_map_element * mapElement);
+void track_element_set_seat_rotation(rct_map_element * mapElement, uint8 seatRotation);
+uint8 track_element_get_colour_scheme(const rct_map_element * mapElement);
+void track_element_set_colour_scheme(rct_map_element * mapElement, uint8 colourScheme);
 
 #ifdef __cplusplus
 }

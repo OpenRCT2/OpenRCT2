@@ -1330,36 +1330,39 @@ sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type
                 successMapElement = mapElement;
                 break;
             }
-        } while (!map_element_is_last_for_tile(mapElement++));
+        }
+        while (!map_element_is_last_for_tile(mapElement++));
 
-        if (successMapElement == NULL) {
+        if (successMapElement == NULL)
+        {
             return 1;
         }
-        if (i == 0 && output_element != NULL) {
+        if (i == 0 && output_element != NULL)
+        {
             *output_element = mapElement;
         }
-        if (flags & (1 << 0)) {
-            // Switch highlight off
+        if (flags & (1 << 0))
+        {
             mapElement->type &= ~MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT;
         }
-        if (flags & (1 << 1)) {
-            // Switch highlight on
+        if (flags & (1 << 1))
+        {
             mapElement->type |= MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT;
         }
-        if (flags & (1 << 2)) {
-            mapElement->properties.track.colour &= 0xFC;
-            mapElement->properties.track.colour |= extra_params & 0xFF;
+        if (flags & (1 << 2))
+        {
+            track_element_set_colour_scheme(mapElement, (uint8)(extra_params & 0xFF));
         }
-        if (flags & (1 << 5)) {
-            // Seat rotation
-            mapElement->properties.track.colour &= 0x0F;
-            mapElement->properties.track.colour |= (extra_params & 0xFF) << 4;
+        if (flags & (1 << 5))
+        {
+            track_element_set_seat_rotation(mapElement, (uint8)(extra_params & 0xFF));
         }
 
         if (flags & (1 << 3)) {
             track_element_set_cable_lift(mapElement);
         }
-        if (flags & (1 << 4)) {
+        if (flags & (1 << 4))
+        {
             track_element_clear_cable_lift(mapElement);
         }
     }
@@ -1546,8 +1549,10 @@ void ride_construction_set_default_next_piece()
 
         // Set whether track is covered
         _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-            if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        {
+            if (track_element_is_inverted(mapElement))
+            {
                 _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
             }
         }
@@ -1601,17 +1606,22 @@ void ride_construction_set_default_next_piece()
 
         // Set whether track is covered
         _currentTrackAlternative &= ~RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
-        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE) {
-            if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+        if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
+        {
+            if (track_element_is_inverted(mapElement))
+            {
                 _currentTrackAlternative |= RIDE_TYPE_ALTERNATIVE_TRACK_TYPE;
             }
         }
 
-        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
+        if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
             curve = gFlatRideTrackCurveChain[trackType].previous;
             bank = FlatRideTrackDefinitions[trackType].bank_start;
             slope = FlatRideTrackDefinitions[trackType].vangle_start;
-        } else {
+        }
+        else
+        {
             if (track_element_is_booster(ride->type, trackType)) {
                 curve = 0x100 | TRACK_ELEM_BOOSTER;
             } else {
@@ -4656,8 +4666,10 @@ static rct_vehicle *vehicle_create_car(
             vehicle->track_progress = 15;
         }
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_1;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET) {
-            if (mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED) {
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        {
+            if (track_element_is_inverted(mapElement))
+            {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
         }
