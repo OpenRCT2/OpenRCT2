@@ -232,7 +232,7 @@ enum {
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
     VEHICLE_ENTRY_FLAG_10 = 1 << 10,
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
-    VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,            // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
+    VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,  // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
     VEHICLE_ENTRY_FLAG_14 = 1 << 14,
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,
@@ -243,7 +243,7 @@ enum {
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
     VEHICLE_ENTRY_FLAG_21 = 1 << 21,
     VEHICLE_ENTRY_FLAG_22 = 1 << 22,
-    VEHICLE_ENTRY_FLAG_23 = 1 << 23,
+    VEHICLE_ENTRY_FLAG_23 = 1 << 23,                            // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_24 = 1 << 24,
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
     VEHICLE_ENTRY_FLAG_26 = 1 << 26,

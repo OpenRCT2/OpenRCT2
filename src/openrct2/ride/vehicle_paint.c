@@ -895,25 +895,32 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
 
     sint32 baseImage_id = ebx;
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) {
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) 
+    {
         baseImage_id += (vehicle->var_BA / 8) & 31;
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7) {
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
+    {
         baseImage_id += vehicle->var_C5;
     }
     uint32 rotation = get_current_rotation();
     sint32 image_id = baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct* ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
-    if (ps != NULL) {
+    if (ps != NULL) 
+    {
         ps->tertiary_colour = vehicle->colours_extended;
     }
     rct_drawpixelinfo* dpi = session->Unk140E9A8;
-    if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0) {
+    if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0) 
+    {
         baseImage_id += vehicleEntry->no_vehicle_images;
-        for (sint32 i = 0; i < 8; i++){
-            if (vehicle->num_peeps > (i * 2) && vehicleEntry->no_seating_rows > i) {
+        for (sint32 i = 0; i < 8; i++)
+        {
+            if (vehicle->num_peeps > (i * 2) && vehicleEntry->no_seating_rows > i)
+            {
                 image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i * 2], vehicle->peep_tshirt_colours[(i * 2) + 1]);
-                if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24) {
+                if (i == 0 && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_24) 
+                {
                     image_id += (vehicleEntry->no_vehicle_images * vehicle->var_C5);
                 }
                 sub_98199C(session, image_id, 0, 0,  bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y, bb.offset_z + z, rotation);
