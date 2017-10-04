@@ -14,6 +14,7 @@
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
+- Fix: [#5609] Vehicle switching may cause '0 cars per train' to be set
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6115] Random title screen music not random on launch.
