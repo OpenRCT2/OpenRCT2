@@ -1165,6 +1165,10 @@ void game_load_init()
         }
         mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
         mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
+
+        // Make sure the viewport has correct coordinates set.
+        viewport_update_position(mainWindow);
+
         window_invalidate(mainWindow);
     }
 
