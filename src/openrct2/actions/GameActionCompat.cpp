@@ -205,7 +205,7 @@ extern "C"
 
 #pragma region GuestSetName
 
-    void guest_set_name(uint16 spriteIndex, const char *name)
+    void guest_set_name(uint16 spriteIndex, const char * name)
     {
         auto gameAction = GuestSetNameAction(spriteIndex, name);
         GameActions::Execute(&gameAction);
@@ -215,7 +215,8 @@ extern "C"
     *
     *  rct2: 0x00698D6C
     */
-    void game_command_set_guest_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
+    void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp) 
+    {
         Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
     }
 
@@ -223,13 +224,14 @@ extern "C"
 
 #pragma region StaffSetName
 
-    void staff_set_name(uint16 spriteIndex, const char *name)
+    void staff_set_name(uint16 spriteIndex, const char * name)
     {
         auto gameAction = StaffSetNameAction(spriteIndex, name);
         GameActions::Execute(&gameAction);
     }
 
-    void game_command_set_staff_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp) {
+    void game_command_set_staff_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp) 
+    {
         Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
     }
 

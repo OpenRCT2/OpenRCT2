@@ -53,6 +53,7 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        
         if (_spriteIndex >= MAX_SPRITES)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
@@ -63,7 +64,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_ERR_INVALID_NAME_FOR_GUEST);
         }
 
-        rct_peep *peep = GET_PEEP(_spriteIndex);
+        rct_peep * peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -74,7 +75,7 @@ public:
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
         }
         user_string_free(newUserStringId);
 
@@ -84,8 +85,13 @@ public:
     GameActionResult::Ptr Execute() const override
     {
         rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
-
-        rct_peep *peep = GET_PEEP(_spriteIndex);
+        if (newUserStringId == 0)
+        {
+            // TODO: Probably exhausted, introduce new error.
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+        }
+        
+        rct_peep * peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_GUEST)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
@@ -93,7 +99,7 @@ public:
         }
 
         set_format_arg(0, uint32, peep->id);
-        utf8* curName = gCommonStringFormatBuffer;
+        utf8 * curName = gCommonStringFormatBuffer;
         rct_string_id curId = peep->name_string_idx;
         format_string(curName, 256, curId, gCommonFormatArgs);
 
@@ -112,7 +118,7 @@ public:
         gfx_invalidate_screen();
 
         // Force guest list window refresh
-        rct_window *w = window_find_by_class(WC_GUEST_LIST);
+        rct_window * w = window_find_by_class(WC_GUEST_LIST);
         if (w != NULL)
         {
             w->no_list_items = 0;
