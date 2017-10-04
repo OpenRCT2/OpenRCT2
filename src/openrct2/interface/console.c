@@ -1336,7 +1336,7 @@ console_command console_command_table[] = {
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "show_limits", cc_show_limits, "Shows the map data counts and limits..", "show_limits" },
+    { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {
