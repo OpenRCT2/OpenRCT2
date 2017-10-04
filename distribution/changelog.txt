@@ -5,6 +5,7 @@
 - Feature: [#6181] Map generator now allows adjusting random terrain and tree placement in Simplex Noise tab.
 - Feature: [#6235] Add drawing debug option for showing visuals when and where blocks of the screen are painted.
 - Feature: [#6292] Allow building queue lines in the Scenario Editor.
+- Feature: [#6324] Add command to deselect unused objects from the object selection.
 - Feature: [#6325] Allow using g1.dat from RCT Classic.
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
 - Feature: Allow using object files from RCT Classic.
@@ -24,6 +25,7 @@
 - Fix: [#6271] Wrong booster speed tooltip text.
 - Fix: [#6308] Cannot create title sequence if title sequences folder does not exist.
 - Fix: [#6320] Crash when CSS1.DAT is absent.
+- Fix: [#6331] Scenery costs nothing in track designs.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
