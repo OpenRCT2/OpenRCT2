@@ -240,3 +240,8 @@ bool is_csg_loaded()
 {
     return false;
 }
+
+uint8 track_element_get_colour_scheme(const rct_map_element * mapElement)
+{
+    return mapElement->properties.track.colour & 0x3;
+}
