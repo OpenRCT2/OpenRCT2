@@ -3383,7 +3383,7 @@ STR_3372    :{BLACK}= Caixa Eletrônico
 STR_3373    :{BLACK}= Banheiro
 STR_3374    :Aviso: Muitos objetos selecionados!
 STR_3375    :Nem todos os objetos neste grupo de cenário podem ser selecionado
-STR_3376    :Instalar um novo projeto de pista...
+STR_3376    :Instalar novo
 STR_3377    :{SMALLFONT}{BLACK}Instalar um novo arquivo de projeto de pista
 STR_3378    :Instalar
 STR_3379    :Cancelar
@@ -4452,6 +4452,10 @@ STR_6140    :Changelog...
 STR_6141    :Barra de ferramentas Inferior do RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nome da pista: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}Tipo de atração: {BLACK}{STRINGID}
+STR_6144    :Mostrar sujeira visual
+STR_6145    :{SMALLFONT}{BLACK}Define limite de velocidade para aceleradores
+STR_6146    :Habilitar todas peças de pista desenháveis
+STR_6147    :{SMALLFONT}{BLACK}Habilita todas as peças de pista que o tipo de atração é capaz na janela de construção, independentemente do veículo suportá-los ou não.
 
 #############
 # Scenarios #
