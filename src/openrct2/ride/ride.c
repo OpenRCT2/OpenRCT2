@@ -7950,8 +7950,8 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
         ride->vehicle_change_timeout = 100;
 
         invalidate_test_results(rideIndex);
-        rideEntry = get_ride_entry(ride->subtype);
         ride->subtype = value;
+        rideEntry = get_ride_entry(ride->subtype);
 
         uint8 preset = ex;
         if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
