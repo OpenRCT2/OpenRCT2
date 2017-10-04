@@ -866,8 +866,11 @@ static void get_arguments_from_peep(rct_peep *peep, uint32 *argument_1, uint32* 
     }
 }
 
-/* Force an evaluation of the Guest List*/
-void window_guest_list_find_groups_force_refresh() {
+/**
+ * Force a refresh, called after renaming a ride.
+ */
+void window_guest_list_find_groups_force_refresh()
+{
 	_window_guest_list_last_find_groups_wait = 0;
 	_window_guest_list_last_find_groups_tick = 0;
 	window_guest_list_find_groups();
