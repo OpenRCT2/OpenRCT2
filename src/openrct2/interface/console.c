@@ -1214,7 +1214,7 @@ static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc)
     return 0;
 }
 
-static sint32 cc_object_limits(const utf8 ** argv, sint32 argc)
+static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
 {
     map_reorganise_elements();
     sint32 mapElementCount = gNextFreeMapElement - gMapElements - 1;
@@ -1336,7 +1336,7 @@ console_command console_command_table[] = {
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
-    { "object_limits", cc_object_limits, "Shows the number of objects placed on the map compared to the object limits.", "object_limits" },
+    { "show_limits", cc_show_limits, "Shows the map data counts and limits..", "show_limits" },
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {
