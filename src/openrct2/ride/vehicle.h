@@ -243,7 +243,7 @@ enum {
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
     VEHICLE_ENTRY_FLAG_21 = 1 << 21,
     VEHICLE_ENTRY_FLAG_22 = 1 << 22,
-    VEHICLE_ENTRY_FLAG_23 = 1 << 23,
+    VEHICLE_ENTRY_FLAG_23 = 1 << 23,                            // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_24 = 1 << 24,
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,
     VEHICLE_ENTRY_FLAG_26 = 1 << 26,
