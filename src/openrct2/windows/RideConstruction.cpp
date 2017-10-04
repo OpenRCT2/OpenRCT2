@@ -2407,8 +2407,12 @@ static void sub_6CBCE2(
         _tempTrackMapElement.clearance_height = clearanceZ;
         _tempTrackMapElement.properties.track.type = trackType;
         map_element_set_track_sequence(&_tempTrackMapElement, trackBlock->index);
-        _tempTrackMapElement.properties.track.colour = (edx & 0x20000) ? 4 : 0;
+        _tempTrackMapElement.properties.track.colour = 0;
         _tempTrackMapElement.properties.track.ride_index = rideIndex;
+        if (edx & 0x20000)
+        {
+            track_element_set_inverted(&_tempTrackMapElement, true);
+        }
 
         // Draw this map tile
         sub_68B2B7(session, x, y);
@@ -2460,7 +2464,7 @@ void window_ride_construction_update_active_elements()
             _selectedTrackType = mapElement->properties.track.type;
             if (track_element_has_speed_setting(mapElement->properties.track.type))
                 _currentBrakeSpeed2 = map_element_get_brake_booster_speed(mapElement);
-            _currentSeatRotationAngle = mapElement->properties.track.colour >> 4;
+            _currentSeatRotationAngle = track_element_get_seat_rotation(mapElement);
         }
     }
 

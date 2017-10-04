@@ -1754,7 +1754,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
         sint32 trackSequence = map_element_get_track_sequence(mapElement);
-        sint32 trackColourScheme = mapElement->properties.track.colour & 3;
+        sint32 trackColourScheme = track_element_get_colour_scheme(mapElement);
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;

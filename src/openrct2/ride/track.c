@@ -37,6 +37,7 @@
 #include "station.h"
 #include "track.h"
 #include "track_data.h"
+#include "../world/map.h"
 
 uint8 gTrackGroundFlags;
 
@@ -897,7 +898,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
     return true;
 }
 
-static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 properties_1, sint32 properties_2, sint32 properties_3, sint32 liftHillAndAlternativeState, sint32 flags)
+static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 brakeSpeed, sint32 colour, sint32 seatRotation, sint32 liftHillAndAlternativeState, sint32 flags)
 {
     Ride *ride = get_ride(rideIndex);
     if (ride == NULL)
@@ -1330,7 +1331,8 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         mapElement->properties.track.ride_index = rideIndex;
         mapElement->properties.track.type = type;
         mapElement->properties.track.colour = 0;
-        if (flags & GAME_COMMAND_FLAG_GHOST){
+        if (flags & GAME_COMMAND_FLAG_GHOST)
+        {
             mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
         }
 
@@ -1348,18 +1350,20 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
             map_animation_create(MAP_ANIMATION_TYPE_TRACK_SPINNINGTUNNEL, x, y, mapElement->base_height);
             break;
         }
-        if (track_element_has_speed_setting(type)) {
-            map_element_set_brake_booster_speed(mapElement, properties_1);
+        if (track_element_has_speed_setting(type))
+        {
+            map_element_set_brake_booster_speed(mapElement, brakeSpeed);
         }
-        else {
-            mapElement->properties.track.colour = properties_3 << 4;
+        else
+        {
+            track_element_set_seat_rotation(mapElement, seatRotation);
         }
 
-        uint8 colour = properties_2;
-        if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE){
-            colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        if (liftHillAndAlternativeState & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE)
+        {
+            track_element_set_inverted(mapElement, true);
         }
-        mapElement->properties.track.colour |= colour;
+        track_element_set_colour_scheme(mapElement, colour);
 
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
             entranceDirections = FlatRideTrackSequenceProperties[type][0];
@@ -2173,9 +2177,21 @@ void track_element_clear_cable_lift(rct_map_element *trackElement) {
     trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
-bool track_element_is_inverted(rct_map_element *trackElement)
+bool track_element_is_inverted(rct_map_element * mapElement)
 {
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    return mapElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+}
+
+void track_element_set_inverted(rct_map_element * mapElement, bool inverted)
+{
+    if (inverted)
+    {
+        mapElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        mapElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
 }
 
 sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank)
@@ -2268,4 +2284,26 @@ bool track_element_has_speed_setting(uint8 trackType)
         return true;
     }
     return false;
+}
+
+uint8 track_element_get_seat_rotation(const rct_map_element * mapElement)
+{
+    return mapElement->properties.track.colour >> 4;
+}
+
+void track_element_set_seat_rotation(rct_map_element * mapElement, uint8 seatRotation)
+{
+    mapElement->properties.track.colour &= 0x0F;
+    mapElement->properties.track.colour |= (seatRotation << 4);
+}
+
+uint8 track_element_get_colour_scheme(const rct_map_element * mapElement)
+{
+    return mapElement->properties.track.colour & 0x3;
+}
+
+void track_element_set_colour_scheme(rct_map_element * mapElement, uint8 colourScheme)
+{
+    mapElement->properties.track.colour &= ~0x3;
+    mapElement->properties.track.colour |= (colourScheme & 0x3);
 }

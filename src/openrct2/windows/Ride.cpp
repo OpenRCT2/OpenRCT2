@@ -4113,7 +4113,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
         return;
     if (mapElement->properties.track.ride_index != w->number)
         return;
-    if ((mapElement->properties.track.colour & 3) == newColourScheme)
+    if (track_element_get_colour_scheme(mapElement) == newColourScheme)
         return;
 
     z = mapElement->base_height * 8;
