@@ -1614,23 +1614,15 @@ sint16 get_height_marker_offset()
 
 void viewport_set_saved_view()
 {
-    sint16 viewX = 0;
-    sint16 viewY = 0;
-    uint8 viewZoom = 0;
-    uint8 viewRotation = 0;
-
     rct_window * w = window_get_main();
-    if (w != NULL) {
+    if (w != NULL) 
+    {
         rct_viewport *viewport = w->viewport;
 
-        viewX = viewport->view_width / 2 + viewport->view_x;
-        viewY = viewport->view_height / 2 + viewport->view_y;
-        viewZoom = viewport->zoom;
-        viewRotation = get_current_rotation();
-    }
+        gSavedViewX = viewport->view_width / 2 + viewport->view_x;
+        gSavedViewY = viewport->view_height / 2 + viewport->view_y;
 
-    gSavedViewX = viewX;
-    gSavedViewY = viewY;
-    gSavedViewZoom = viewZoom;
-    gSavedViewRotation = viewRotation;
+        gSavedViewZoom = viewport->zoom;
+        gSavedViewRotation = get_current_rotation();
+    }
 }
