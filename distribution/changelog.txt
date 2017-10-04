@@ -25,7 +25,7 @@
 - Fix: [#6271] Wrong booster speed tooltip text.
 - Fix: [#6308] Cannot create title sequence if title sequences folder does not exist.
 - Fix: [#6320] Crash when CSS1.DAT is absent.
-- Fix: [#6331] Scenery cost nothing in track designs.
+- Fix: [#6331] Scenery costs nothing in track designs.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
