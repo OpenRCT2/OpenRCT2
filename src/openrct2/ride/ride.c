@@ -631,8 +631,13 @@ bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, sint32 
     OriginZ -= trackBlock->z;
     OriginZ += trackCoordinate->z_end;
 
-    uint8 directionStart = ((trackCoordinate->rotation_end + rotation) & MAP_ELEMENT_DIRECTION_MASK) |
-        (trackCoordinate->rotation_end & (1 << 2));
+    // Prevent direction always falling back to 0 if ride has no tracks.
+    uint8 directionStart = (uint8)(direction ? *direction : 0);
+    if(ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        directionStart = ((trackCoordinate->rotation_end + rotation) & MAP_ELEMENT_DIRECTION_MASK) |
+            (trackCoordinate->rotation_end & (1 << 2));
+    }
 
     return track_block_get_next_from_zero(x, y, OriginZ, rideIndex, directionStart, output, z, direction);
 }
@@ -1941,8 +1946,6 @@ sint32 ride_initialise_construction_window(sint32 rideIndex)
 
     _previousTrackBankEnd = 0;
     _previousTrackSlopeEnd = 0;
-
-    _currentTrackPieceDirection = 0;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
