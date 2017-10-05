@@ -805,6 +805,11 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                             // Centre of the glyph: use full colour.
                             *dst = colour;
                         }
+                        else if (*dst < 10 && *src > 50)
+                        {
+                            // For black backgrounds, hint using grey pixels.
+                            *dst = 13;
+                        }
                         else if (*src > 70)
                         {
                             // Simulate font hinting by shading the background colour instead.
