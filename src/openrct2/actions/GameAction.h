@@ -56,11 +56,18 @@ namespace GA_FLAGS
     constexpr uint16 EDITOR_ONLY        = 1 << 2;
 }
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 /**
  * Represents the result of a game action query or execution.
  */
-struct GameActionResult
+class GameActionResult
 {
+public:
     typedef std::unique_ptr<GameActionResult> Ptr;
 
     GA_ERROR        Error = GA_ERROR::OK;
@@ -74,13 +81,8 @@ struct GameActionResult
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
     GameActionResult(const GameActionResult&) = delete;
+    virtual ~GameActionResult() {};
 };
-
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
 
 struct GameAction
 {
