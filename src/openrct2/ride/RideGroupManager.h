@@ -58,7 +58,6 @@ extern "C"
 #endif
     const RideGroup * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry);
     bool ride_type_has_ride_groups(uint8 rideType);
-    bool ride_group_is_invented(const RideGroup * rideGroup);
 #ifdef __cplusplus
 }
 #endif

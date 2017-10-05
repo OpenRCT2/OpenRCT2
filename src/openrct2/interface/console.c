@@ -25,7 +25,7 @@
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"
 #include "../management/finance.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
 #include "../object.h"

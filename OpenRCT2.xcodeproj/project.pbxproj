@@ -26,6 +26,7 @@
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
 		4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */; };
+		4C93F1141F86728F00A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1121F86728F00A9330D /* Research.cpp */; };
 		4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A51EFBDCCE00B88761 /* land_tool.c */; };
 		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
@@ -250,7 +251,6 @@
 		F76C863D1EC4E88300FA49E2 /* finance.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83ED1EC4E7CC00FA49E2 /* finance.c */; };
 		F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83EF1EC4E7CC00FA49E2 /* marketing.c */; };
 		F76C86411EC4E88300FA49E2 /* news_item.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F11EC4E7CC00FA49E2 /* news_item.c */; };
-		F76C86431EC4E88300FA49E2 /* research.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F31EC4E7CC00FA49E2 /* research.c */; };
 		F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* Http.cpp */; };
 		F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F81EC4E7CC00FA49E2 /* Network.cpp */; };
 		F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83FA1EC4E7CC00FA49E2 /* NetworkAction.cpp */; };
@@ -618,6 +618,8 @@
 		4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = X8DrawingEngine.h; sourceTree = "<group>"; };
 		4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HardwareDisplayDrawingEngine.cpp; sourceTree = "<group>"; };
 		4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
+		4C93F1121F86728F00A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
+		4C93F1131F86728F00A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
 		4CB832A51EFBDCCE00B88761 /* land_tool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = land_tool.c; sourceTree = "<group>"; };
 		4CB832A61EFBDCCE00B88761 /* land_tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_tool.h; sourceTree = "<group>"; };
 		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
@@ -1079,8 +1081,6 @@
 		F76C83F01EC4E7CC00FA49E2 /* marketing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = marketing.h; sourceTree = "<group>"; };
 		F76C83F11EC4E7CC00FA49E2 /* news_item.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = news_item.c; sourceTree = "<group>"; };
 		F76C83F21EC4E7CC00FA49E2 /* news_item.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = news_item.h; sourceTree = "<group>"; };
-		F76C83F31EC4E7CC00FA49E2 /* research.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = research.c; sourceTree = "<group>"; };
-		F76C83F41EC4E7CC00FA49E2 /* research.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = research.h; sourceTree = "<group>"; };
 		F76C83F61EC4E7CC00FA49E2 /* Http.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Http.cpp; sourceTree = "<group>"; };
 		F76C83F71EC4E7CC00FA49E2 /* http.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = http.h; sourceTree = "<group>"; };
 		F76C83F81EC4E7CC00FA49E2 /* Network.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Network.cpp; sourceTree = "<group>"; };
@@ -2079,8 +2079,8 @@
 				F76C83F01EC4E7CC00FA49E2 /* marketing.h */,
 				F76C83F11EC4E7CC00FA49E2 /* news_item.c */,
 				F76C83F21EC4E7CC00FA49E2 /* news_item.h */,
-				F76C83F31EC4E7CC00FA49E2 /* research.c */,
-				F76C83F41EC4E7CC00FA49E2 /* research.h */,
+				4C93F1121F86728F00A9330D /* Research.cpp */,
+				4C93F1131F86728F00A9330D /* Research.h */,
 			);
 			path = management;
 			sourceTree = "<group>";
@@ -3134,6 +3134,7 @@
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
 				4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
+				4C93F1141F86728F00A9330D /* Research.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
@@ -3279,7 +3280,6 @@
 				C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */,
 				F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */,
 				F76C86411EC4E88300FA49E2 /* news_item.c in Sources */,
-				F76C86431EC4E88300FA49E2 /* research.c in Sources */,
 				F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */,
 				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,

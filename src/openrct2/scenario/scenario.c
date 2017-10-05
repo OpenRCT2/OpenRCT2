@@ -26,7 +26,7 @@
 #include "../management/finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "../network/network.h"
 #include "../object.h"
 #include "../object_list.h"

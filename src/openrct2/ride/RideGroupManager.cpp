@@ -21,7 +21,7 @@
 #include "../core/String.hpp"
 
 #include "../localisation/string_ids.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "track.h"
@@ -327,10 +327,5 @@ extern "C"
     bool ride_type_has_ride_groups(uint8 rideType)
     {
         return RideGroupManager::RideTypeHasRideGroups(rideType);
-    }
-
-    bool ride_group_is_invented(const RideGroup * rideGroup)
-    {
-        return RideGroupManager::RideGroupIsInvented(rideGroup);
     }
 }

@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../drawing/drawing.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "../peep/peep.h"
 #include "../ride/ride.h"
 #include "../ride/TrackDesign.h"

@@ -19,7 +19,7 @@
 
 #include "management/award.h"
 #include "management/news_item.h"
-#include "management/research.h"
+#include "management/Research.h"
 #include "rct12.h"
 #include "ride/ride.h"
 #include "world/banner.h"

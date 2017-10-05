@@ -25,7 +25,7 @@
 #include <openrct2/input.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/management/research.h>
+#include <openrct2/management/Research.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 #include <openrct2/world/scenery.h>
