@@ -22,7 +22,8 @@
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
-enum {
+enum
+{
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_WHITE,
@@ -62,12 +63,14 @@ enum {
 /**
  * These colours change depending on the current water colours.
  */
-enum {
+enum
+{
     COLOUR_DARK_WATER = 9,
     COLOUR_LIGHT_WATER = 10
 };
 
-enum {
+enum
+{
     PALETTE_INDEX_0 = 0,        //
     PALETTE_INDEX_10 = 10,      // Black (0-dark), Dark gray (0)
     PALETTE_INDEX_11 = 11,      // Black (middark)
@@ -121,7 +124,8 @@ enum {
 #define NOT_TRANSLUCENT(x) ((x) & ~COLOUR_FLAG_TRANSLUCENT)
 #define BASE_COLOUR(x)          ((x) & 0x1F)
 
-typedef struct rct_colour_map {
+typedef struct rct_colour_map
+{
     uint8 colour_0;
     uint8 colour_1;
     uint8 darkest;

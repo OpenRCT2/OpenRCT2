@@ -18,7 +18,7 @@
 #include "colour.h"
 #include "../sprites.h"
 
-rct_colour_map ColourMapA[32] = { 0 };
+rct_colour_map ColourMapA[COLOUR_COUNT] = { 0 };
 
 enum
 {
@@ -38,12 +38,14 @@ enum
 
 void colours_init_maps()
 {
-    if (g1Elements == NULL) {
+    if (g1Elements == NULL)
+    {
         return;
     }
 
     // Get colour maps from g1
-    for (sint32 i = 0; i < 32; i++) {
+    for (sint32 i = 0; i < COLOUR_COUNT; i++)
+    {
         rct_g1_element *g1Element = &g1Elements[SPR_PALETTE_2_START + i];
 
         ColourMapA[i].colour_0 = g1Element->offset[INDEX_COLOUR_0];
