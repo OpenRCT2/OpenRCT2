@@ -1214,6 +1214,53 @@ static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc)
     return 0;
 }
 
+static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
+{
+    map_reorganise_elements();
+    sint32 mapElementCount = gNextFreeMapElement - gMapElements - 1;
+
+    sint32 rideCount = 0;
+    for (sint32 i = 0; i < MAX_RIDES; ++i) 
+    {
+        Ride * ride = get_ride(i);
+        if (ride->type != RIDE_TYPE_NULL) 
+        {
+            rideCount++;
+        }
+    }
+
+    sint32 spriteCount = 0;
+    for (sint32 i = 1; i < NUM_SPRITE_LISTS; ++i)
+    {
+        spriteCount += gSpriteListCount[i];
+    }
+
+    sint32 staffCount = 0;
+    for (sint32 i = 0; i < STAFF_MAX_COUNT; ++i) 
+    {
+        if (gStaffModes[i] & 1)
+        {
+            staffCount++;
+        }
+    }
+
+    sint32 bannerCount = 0;
+    for (sint32 i = 0; i < MAX_BANNERS; ++i)
+    {
+        if (gBanners[i].type != BANNER_NULL)
+        {
+            bannerCount++;
+        }
+    }
+
+    console_printf("Sprites: %d/%d", spriteCount, MAX_SPRITES);
+    console_printf("Map Elements: %d/%d", mapElementCount, MAX_MAP_ELEMENTS);
+    console_printf("Banners: %d/%d", bannerCount, MAX_BANNERS);
+    console_printf("Rides: %d/%d", rideCount, MAX_RIDES);
+    console_printf("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);
+    return 0;
+}
+
 
 typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
 typedef struct console_command {
@@ -1289,6 +1336,7 @@ console_command console_command_table[] = {
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
+    { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {
