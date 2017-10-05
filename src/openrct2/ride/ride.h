@@ -428,7 +428,7 @@ enum {
     RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19 // Not used anymore
 };
 
-// Constants used by the RideType->flags property at 0x008
+// Constants used by the ride_type->flags property at 0x008
 enum {
     RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF          = 1 << 0,
     RIDE_ENTRY_FLAG_NO_INVERSIONS                   = 1 << 1,
