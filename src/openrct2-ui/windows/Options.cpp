@@ -309,8 +309,8 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  155,    299,    244,        255,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
     { WWT_CHECKBOX,         2,  10,     185,    259,        270,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
     { WWT_CHECKBOX,         2,  10,     299,    279,        285,    STR_SELECT_BY_TRACK_TYPE,               STR_SELECT_BY_TRACK_TYPE_TIP },             // Select by track type
-    { WWT_DROPDOWN,         2,  155,    299,    294,        305,    STR_NONE,                               STR_NONE },                                 // Scenario select mode
-    { WWT_DROPDOWN_BUTTON,  2,  288,    298,    295,        304,    STR_DROPDOWN_GLYPH,                     STR_SCENARIO_GROUPING_TIP },
+    { WWT_DROPDOWN,         1,  155,    299,    294,        305,    STR_NONE,                               STR_NONE },                                 // Scenario select mode
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    295,        304,    STR_DROPDOWN_GLYPH,                     STR_SCENARIO_GROUPING_TIP },
     { WWT_CHECKBOX,         2,  18,     299,    309,        320,    STR_OPTIONS_SCENARIO_UNLOCKING,         STR_SCENARIO_UNLOCKING_TIP },               // Unlocking of scenarios
     { WIDGETS_END },
 };
