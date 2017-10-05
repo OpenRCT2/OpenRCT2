@@ -58,6 +58,26 @@ public:
             log_warning("Invalid game command for ride %u", _rideIndex);
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
         }
+
+        Ride *ride = get_ride(_rideIndex);
+
+        if (((_status == RIDE_STATUS_OPEN) || (_status == RIDE_STATUS_TESTING)) &&
+            _status != ride->status)
+        {
+            if (_status == RIDE_STATUS_TESTING)
+            {
+                if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+                {
+                    log_warning("Ride %u not valid for test", _rideIndex);
+                    return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
+                }
+            }
+            else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+            {
+                log_warning("Ride %u not valid for open", _rideIndex);
+                return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
+            }
+        }
         return std::make_unique<GameActionResult>();
     }
 
@@ -117,16 +137,16 @@ public:
 
                 if (_status == RIDE_STATUS_TESTING)
                 {
-                    if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
+                    if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
                     {
-                        //*ebx = MONEY32_UNDEFINED;
-                        return res;
+                        log_warning("Ride %u not valid for test", _rideIndex);
+                        return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
                     }
                 }
-                else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
+                else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
                 {
-                    //*ebx = MONEY32_UNDEFINED;
-                    return res;
+                    log_warning("Ride %u not valid for open", _rideIndex);
+                    return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorTitle, gGameCommandErrorText, gCommonFormatArgs);
                 }
 
                 ride->race_winner = SPRITE_INDEX_NULL;
