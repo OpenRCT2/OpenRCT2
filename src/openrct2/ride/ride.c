@@ -5702,6 +5702,15 @@ void game_command_set_ride_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
     }
 
     *ebx = 0;
+
+    // Force a refresh of any open Guests windows to make them pick up the new name
+    rct_window* window;
+
+    window = window_find_by_class(WC_GUEST_LIST);
+    if (window != NULL)
+    {
+        window_guest_list_find_groups_force_refresh();
+    }
 }
 
 /**

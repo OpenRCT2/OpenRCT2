@@ -708,6 +708,7 @@ void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_track_list_open(ride_list_item item);
+void window_guest_list_find_groups_force_refresh();
 void window_map_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
