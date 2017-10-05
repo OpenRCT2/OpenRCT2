@@ -102,7 +102,8 @@ namespace OpenRCT2 { namespace Ui
                 panel.title = [NSString stringWithUTF8String:desc.Title.c_str()];
                 panel.allowedFileTypes = extensions;
                 panel.directoryURL = [NSURL fileURLWithPath:directory];
-                if ([panel runModal] == NSFileHandlingPanelCancelButton){
+                if ([panel runModal] == NSModalResponseCancel)
+                {
                     return std::string();
                 } else {
                     return panel.URL.path.UTF8String;
@@ -118,7 +119,7 @@ namespace OpenRCT2 { namespace Ui
                 panel.canChooseFiles = false;
                 panel.canChooseDirectories = true;
                 panel.allowsMultipleSelection = false;
-                if ([panel runModal] == NSFileHandlingPanelOKButton)
+                if ([panel runModal] == NSModalResponseOK)
                 {
                     NSString *selectedPath = panel.URL.path;
                     const char *path = selectedPath.UTF8String;
