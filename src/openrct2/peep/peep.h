@@ -31,8 +31,9 @@
 #define PEEP_NOEXIT_WARNING_THRESHOLD 8
 #define PEEP_LOST_WARNING_THRESHOLD 8
 
-#define PEEP_MAX_HAPPINESS 255
-#define PEEP_MAX_ENERGY    128
+#define PEEP_MAX_HAPPINESS     255
+#define PEEP_MAX_ENERGY        128
+#define PEEP_MAX_ENERGY_TARGET 255 // Oddly, this differs from max energy!
 
 enum PEEP_TYPE {
     PEEP_TYPE_GUEST,

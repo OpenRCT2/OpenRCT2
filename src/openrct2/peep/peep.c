@@ -675,10 +675,11 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
  *  rct2: 0x0068F9A9
  */
 static void peep_update_hunger(rct_peep *peep){
-    if (peep->hunger >= 3){
+    if (peep->hunger >= 3)
+    {
         peep->hunger -= 2;
-        // Originally capped at 255 instead of 128 (the actual max value), like a mistake since most other values do max out at 255.
-        peep->energy_target = min(peep->energy_target + 2, PEEP_MAX_ENERGY);
+
+        peep->energy_target = min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
         peep->bathroom = min(peep->bathroom + 1, 255);
     }
 }
@@ -1206,7 +1207,8 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 
         peep->nausea_target = max(peep->nausea_target - 2, 0);
 
-        if (peep->energy <= 50){
+        if (peep->energy <= 50)
+        {
             peep->energy = max(peep->energy - 2, 0);
         }
 
@@ -1292,25 +1294,28 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     }
 
     uint8 energy = peep->energy;
-    uint8 energy_growth = peep->energy_target;
-    if (energy >= energy_growth){
+    uint8 energy_target = peep->energy_target;
+    if (energy >= energy_target)
+    {
         energy -= 2;
-        if (energy < energy_growth)
-            energy = energy_growth;
+        if (energy < energy_target)
+            energy = energy_target;
     }
-    else{
-        energy = min(255, energy + 4);
-        if (energy > energy_growth)
-            energy = energy_growth;
+    else
+    {
+        energy = min(PEEP_MAX_ENERGY_TARGET, energy + 4);
+        if (energy > energy_target)
+            energy = energy_target;
     }
 
     if (energy < 32)
         energy = 32;
 
     /* Previous code here suggested maximum energy is 128. */
-    energy = max(PEEP_MAX_ENERGY, energy);
+    energy = min(PEEP_MAX_ENERGY, energy);
 
-    if (energy != peep->energy){
+    if (energy != peep->energy)
+    {
         peep->energy = energy;
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_2;
     }
