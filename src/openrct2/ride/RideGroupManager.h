@@ -43,13 +43,13 @@ class RideGroupManager
 {
     public:
     static const RideGroup * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry);
-    static const bool RideTypeHasRideGroups(uint8 trackType);
+    static bool RideTypeHasRideGroups(uint8 trackType);
     static const RideGroup * RideGroupFind(uint8 rideType, uint8 index);
-    static const bool RideGroupsAreEqual(const RideGroup * a, const RideGroup * b);
-    static const bool RideGroupIsInvented(const RideGroup * rideGroup);
+    static bool RideGroupsAreEqual(const RideGroup * a, const RideGroup * b);
+    static bool RideGroupIsInvented(const RideGroup * rideGroup);
 
     static const std::vector<const char *> GetPreferredRideEntryOrder(uint8 rideType);
-    static const sint32 VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b);
+    static sint32 VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b);
 };
 
 

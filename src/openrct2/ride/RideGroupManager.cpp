@@ -116,7 +116,7 @@ const RideGroup * RideGroupManager::GetRideGroup(uint8 rideType, rct_ride_entry 
     }
 }
 
-const bool RideGroupManager::RideTypeHasRideGroups(uint8 rideType)
+bool RideGroupManager::RideTypeHasRideGroups(uint8 rideType)
 {
     if (!gConfigInterface.select_by_track_type) {
         return false;
@@ -159,7 +159,7 @@ const RideGroup * RideGroupManager::RideGroupFind(uint8 rideType, uint8 index)
     return rideGroup;
 }
 
-const bool RideGroupManager::RideGroupsAreEqual(const RideGroup * a, const RideGroup * b)
+bool RideGroupManager::RideGroupsAreEqual(const RideGroup * a, const RideGroup * b)
 {
     if (a != nullptr && b != nullptr && (a->Naming.name == b->Naming.name && a->Naming.description == b->Naming.description))
     {
@@ -168,7 +168,7 @@ const bool RideGroupManager::RideGroupsAreEqual(const RideGroup * a, const RideG
     return false;
 }
 
-const bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
+bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
 {
     if (!ride_type_is_invented(rideGroup->RideType))
         return false;
@@ -300,7 +300,7 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(uin
  * which picture is shown on the new ride tab and which train type is selected
  * by default.
  */
-const sint32 RideGroupManager::VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b)
+sint32 RideGroupManager::VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b)
 {
     std::vector<const char *> rideEntryOrder = RideGroupManager::GetPreferredRideEntryOrder(rideType);
     for (const char * object : rideEntryOrder)
