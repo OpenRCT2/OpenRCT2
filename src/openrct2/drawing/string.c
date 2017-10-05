@@ -819,6 +819,16 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                                 // of the foreground colour for font hinting.
                                 *dst = colour - 4;
                             }
+                            else if (colour == 153)
+                            {
+                                // Exception: theme window text colour.
+                                *dst = 151;
+                            }
+                            else if (colour == 173)
+                            {
+                                // Exception: losses in finance window.
+                                *dst = 175;
+                            }
                             else
                             {
                                 // For other texts, hinting direction depends on the intensity of the
