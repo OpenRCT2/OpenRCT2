@@ -36,6 +36,7 @@
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: Load/save window now refreshes list if native file dialog is closed/cancelled.
+- Technical: [#6384] On macOS, address NSFileHandlingPanel deprecation by using NSModalResponse instead.
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------
