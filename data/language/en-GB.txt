@@ -4456,7 +4456,11 @@ STR_6144    :Show dirty visuals
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-
+STR_6148    :Connecting to master server...
+STR_6149    :Unable to connect to master server
+STR_6150    :Invalid response from master server (no JSON number)
+STR_6151    :Master server failed to return servers
+STR_6152    :Invalid response from master server (no JSON array)
 
 #############
 # Scenarios #

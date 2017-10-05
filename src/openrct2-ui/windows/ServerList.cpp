@@ -40,6 +40,7 @@ static server_entry *_serverEntries = nullptr;
 static sint32 _numServerEntries = 0;
 static std::mutex _mutex;
 static uint32 _numPlayersOnline = 0;
+static rct_string_id status_text = STR_SERVER_LIST_CONNECTING;
 
 enum {
     WIDX_BACKGROUND,
@@ -396,7 +397,7 @@ static void window_server_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     const char * version = NETWORK_STREAM_ID;
     gfx_draw_string_left(dpi, STR_NETWORK_VERSION, (void*)&version, COLOUR_WHITE, w->x + 324, w->y + w->widgets[WIDX_START_SERVER].top);
 
-    gfx_draw_string_left(dpi, STR_X_PLAYERS_ONLINE, (void*)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
+    gfx_draw_string_left(dpi, status_text, (void *)&_numPlayersOnline, COLOUR_WHITE, w->x + 8, w->y + w->height - 15);
 }
 
 static void window_server_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
@@ -687,6 +688,7 @@ static void fetch_servers()
     request.method = HTTP_METHOD_GET;
     request.body = nullptr;
     request.type = HTTP_DATA_JSON;
+    status_text = STR_SERVER_LIST_CONNECTING;
     http_request_async(&request, fetch_servers_callback);
 #endif
 }
@@ -695,6 +697,8 @@ static void fetch_servers()
 static void fetch_servers_callback(http_response_t* response)
 {
     if (response == nullptr) {
+        status_text = STR_SERVER_LIST_NO_CONNECTION;
+        window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Unable to connect to master server");
         return;
     }
@@ -702,6 +706,8 @@ static void fetch_servers_callback(http_response_t* response)
     json_t *jsonStatus = json_object_get(response->root, "status");
     if (!json_is_number(jsonStatus)) {
         http_request_dispose(response);
+        status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_NUMBER;
+        window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Invalid response from master server");
         return;
     }
@@ -709,6 +715,8 @@ static void fetch_servers_callback(http_response_t* response)
     sint32 status = (sint32)json_integer_value(jsonStatus);
     if (status != 200) {
         http_request_dispose(response);
+        status_text = STR_SERVER_LIST_MASTER_SERVER_FAILED;
+        window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Master server failed to return servers");
         return;
     }
@@ -716,6 +724,8 @@ static void fetch_servers_callback(http_response_t* response)
     json_t *jsonServers = json_object_get(response->root, "servers");
     if (!json_is_array(jsonServers)) {
         http_request_dispose(response);
+        status_text = STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY;
+        window_invalidate_by_class(WC_SERVER_LIST);
         log_warning("Invalid response from master server");
         return;
     }
@@ -766,9 +776,7 @@ static void fetch_servers_callback(http_response_t* response)
     sort_servers();
     _numPlayersOnline = get_total_player_count();
 
-    rct_window *window = window_find_by_class(WC_SERVER_LIST);
-    if (window != nullptr) {
-        window_invalidate(window);
-    }
+    status_text = STR_X_PLAYERS_ONLINE;
+    window_invalidate_by_class(WC_SERVER_LIST);
 }
 #endif
