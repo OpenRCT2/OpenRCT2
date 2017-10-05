@@ -808,7 +808,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                         else if (*dst < 10 && *src > 50)
                         {
                             // For black backgrounds, hint using grey pixels.
-                            *dst = 13;
+                            *dst = ColourMapA[COLOUR_WHITE].colour_0;
                         }
                         else if (*src > 70)
                         {
@@ -817,17 +817,17 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                             {
                                 // As outlines are black, these texts should always use a darker shade
                                 // of the foreground colour for font hinting.
-                                *dst = colour - 4;
+                                *dst = ColourMapA[COLOUR_WHITE].colour_1;
                             }
-                            else if (colour == 153)
+                            else if (colour == ColourMapA[COLOUR_DARK_GREEN].colour_11)
                             {
                                 // Exception: theme window text colour.
-                                *dst = 151;
+                                *dst = ColourMapA[COLOUR_DARK_GREEN].lightest;
                             }
-                            else if (colour == 173)
+                            else if (colour == ColourMapA[COLOUR_BRIGHT_RED].light)
                             {
                                 // Exception: losses in finance window.
-                                *dst = 175;
+                                *dst = ColourMapA[COLOUR_BRIGHT_RED].lightest;
                             }
                             else
                             {
