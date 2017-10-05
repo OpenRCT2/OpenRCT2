@@ -26,8 +26,9 @@
 #include "../world/park.h"
 #include "../world/footpath.h"
 
-struct PlaceParkEntranceGameActionResult : public GameActionResult
+class PlaceParkEntranceGameActionResult final : public GameActionResult
 {
+public:
     PlaceParkEntranceGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     PlaceParkEntranceGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message)
     {

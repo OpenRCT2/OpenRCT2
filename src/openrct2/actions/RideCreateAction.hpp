@@ -30,8 +30,9 @@
 #include "../ride/ride.h"
 #include "../ride/station.h"
 
-struct RideCreateGameActionResult : public GameActionResult
+class RideCreateGameActionResult final : public GameActionResult
 {
+public:
     RideCreateGameActionResult() : GameActionResult(GA_ERROR::OK, 0) {}
     RideCreateGameActionResult(GA_ERROR error, rct_string_id message) : GameActionResult(error, message) {}
 
