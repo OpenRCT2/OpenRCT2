@@ -41,13 +41,13 @@ interface ITrackDesignRepository
 
     virtual size_t GetCount() const abstract;
     virtual size_t GetCountForObjectEntry(uint8 rideType, const std::string &entry) const abstract;
-    virtual size_t GetCountForRideGroup(uint8 rideType, const ride_group * rideGroup) const abstract;
+    virtual size_t GetCountForRideGroup(uint8 rideType, const RideGroup * rideGroup) const abstract;
     virtual size_t GetItemsForObjectEntry(track_design_file_ref * * outRefs,
                                           uint8 rideType,
                                           const std::string &entry) const abstract;
     virtual size_t GetItemsForRideGroup(track_design_file_ref **outRefs,
                                         uint8 rideType,
-                                        const ride_group * rideGroup) const abstract;
+                                        const RideGroup * rideGroup) const abstract;
 
     virtual void Scan() abstract;
     virtual bool Delete(const std::string &path) abstract;
@@ -66,9 +66,9 @@ extern "C"
 #endif
     void    track_repository_scan();
     size_t  track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry);
-    size_t  track_repository_get_count_for_ride_group(uint8 rideType, const ride_group * rideGroup);
+    size_t  track_repository_get_count_for_ride_group(uint8 rideType, const RideGroup * rideGroup);
     size_t  track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry);
-    size_t  track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const ride_group * rideGroup);
+    size_t  track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const RideGroup * rideGroup);
     utf8 *  track_repository_get_name_from_path(const utf8 *path);
     bool    track_repository_delete(const utf8 *path);
     bool    track_repository_rename(const utf8 *path, const utf8 *newName);

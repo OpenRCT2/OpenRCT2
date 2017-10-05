@@ -1229,8 +1229,8 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
                 uint16 maxHeight;
                 if (gConfigInterface.select_by_track_type) {
                     if (ride_type_has_ride_groups(ride->type)) {
-                        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
-                        maxHeight = rideGroup->maximum_height;
+                        const RideGroup * rideGroup = get_ride_group(ride->type, rideEntry);
+                        maxHeight = rideGroup->MaximumHeight;
                     } else {
                         maxHeight = RideData5[ride->type].max_height;
                     }

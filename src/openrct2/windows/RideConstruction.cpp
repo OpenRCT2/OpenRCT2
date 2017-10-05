@@ -2730,10 +2730,10 @@ static void window_ride_construction_update_enabled_track_pieces()
     }
     else
     {
-        if (ride_type_has_ride_groups(rideType))
+        if (RideGroupManager::RideTypeHasRideGroups(rideType))
         {
-            const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
-            _enabledRidePieces = rideGroup->available_track_pieces;
+            const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
+            _enabledRidePieces = rideGroup->AvailableTrackPieces;
         }
         else
         {

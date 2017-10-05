@@ -1855,14 +1855,14 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
     }
 
     // The rest of the cases are handled by the code in ride_create()
-    if (ride_type_has_ride_groups(td6->type) && entryIndex == 0xFF)
+    if (RideGroupManager::RideTypeHasRideGroups(td6->type) && entryIndex == 0xFF)
     {
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(rideEntryObject->name);
         if (ori != NULL)
         {
-            uint8          rideGroupIndex = ori->RideGroupIndex;
-            ride_group     * td6RideGroup = ride_group_find(td6->type, rideGroupIndex);
-            rct_ride_entry * ire;
+            uint8             rideGroupIndex = ori->RideGroupIndex;
+            const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
+            rct_ride_entry  * ire;
 
             uint8      * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
             for (uint8 * rei                  = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
@@ -1874,8 +1874,8 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
                     continue;
                 }
 
-                const ride_group * irg = get_ride_group(td6->type, ire);
-                if (ride_groups_are_equal(td6RideGroup, irg))
+                const RideGroup * irg = RideGroupManager::GetRideGroup(td6->type, ire);
+                if (RideGroupManager::RideGroupsAreEqual(td6RideGroup, irg))
                 {
                     entryIndex = *rei;
                     break;

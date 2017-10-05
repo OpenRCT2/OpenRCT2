@@ -2676,7 +2676,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
     rct_widget *dropdownWidget = widget - 1;
     Ride *ride;
     rct_ride_entry *rideEntry, *currentRideEntry;
-    const ride_group * rideGroup, * currentRideGroup;
+    const RideGroup * rideGroup, * currentRideGroup;
     sint32 numItems, rideEntryIndex, selectedIndex, rideTypeIterator, rideTypeIteratorMax;
     uint8 *rideEntryIndexPtr;
     bool selectionShouldBeExpanded;
@@ -2722,12 +2722,12 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                     continue;
 
                 // Skip if vehicle does not belong to the same ride group
-                if (ride_type_has_ride_groups(ride->type) && !selectionShouldBeExpanded)
+                if (RideGroupManager::RideTypeHasRideGroups(ride->type) && !selectionShouldBeExpanded)
                 {
-                    rideGroup = get_ride_group(ride->type, rideEntry);
-                    currentRideGroup = get_ride_group(ride->type, currentRideEntry);
+                    rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
+                    currentRideGroup = RideGroupManager::GetRideGroup(ride->type, currentRideEntry);
 
-                    if (!ride_groups_are_equal(rideGroup, currentRideGroup))
+                    if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
                         continue;
                 }
 
