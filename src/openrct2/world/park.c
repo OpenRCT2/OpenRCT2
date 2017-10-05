@@ -24,7 +24,7 @@
 #include "../management/finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../peep/peep.h"

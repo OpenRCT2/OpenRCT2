@@ -41,11 +41,11 @@ enum{
 // Extra end of list entry. Unsure why?
 #define RESEARCHED_ITEMS_END_2 -3
 
-#define MAX_RESEARCH_ITEMS 500
-#define MAX_RESEARCHED_SCENERY_ITEMS 56
-#define MAX_RESEARCHED_RIDE_TYPES 8
-#define MAX_RESEARCHED_RIDE_ENTRIES 8
-#define MAX_RESEARCHED_TRACK_TYPES 128
+#define MAX_RESEARCH_ITEMS           500
+#define MAX_RESEARCHED_SCENERY_ITEMS  56
+#define MAX_RESEARCHED_RIDE_TYPES      8 // Really 256, since there are 32 bits per uint32.
+#define MAX_RESEARCHED_RIDE_ENTRIES    8 // Really 256, since there are 32 bits per uint32.
+#define MAX_RESEARCHED_TRACK_TYPES   128
 
 #define RESEARCH_ENTRY_RIDE_MASK 0x10000
 
@@ -92,8 +92,6 @@ extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
 extern uint32 gResearchedRideTypes[MAX_RESEARCHED_RIDE_TYPES];
 extern uint32 gResearchedRideEntries[MAX_RESEARCHED_RIDE_ENTRIES];
-extern uint32 gResearchedTrackTypesA[MAX_RESEARCHED_TRACK_TYPES];
-extern uint32 gResearchedTrackTypesB[MAX_RESEARCHED_TRACK_TYPES];
 extern uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 extern bool gSilentResearch;
 
@@ -108,7 +106,7 @@ void research_populate_list_researched();
 void research_set_funding(sint32 amount);
 void research_set_priority(sint32 activeCategories);
 void game_command_set_research_funding(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
-void research_finish_item(sint32 entryIndex);
+void research_finish_item(uint32 entryIndex);
 void research_insert(sint32 researched, sint32 entryIndex, sint32 category);
 void research_remove(sint32 entryIndex);
 

@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../management/finance.h"
-#include "../management/research.h"
+#include "../management/Research.h"
 #include "../object.h"
 #include "../rct12.h"
 #include "../rct2.h"
