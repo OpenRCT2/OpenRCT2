@@ -14,23 +14,24 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../OpenRCT2.h"
-#include "../core/Math.hpp"
-#include "../core/Util.hpp"
-#include "../core/Memory.hpp"
-#include "../Context.h"
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/Context.h>
+#include <openrct2/audio/audio.h>
+#include <openrct2/cheats.h>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/land_tool.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/world/entrance.h>
+#include <openrct2/world/footpath.h>
+#include <openrct2/world/scenery.h>
 
-#include "../audio/audio.h"
-#include "../cheats.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/land_tool.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../world/entrance.h"
-#include "../world/footpath.h"
-#include "../world/scenery.h"
+#include <openrct2-ui/windows/Window.h>
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)
 #define MAP_COLOUR(colour) MAP_COLOUR_2(colour, colour)
@@ -203,7 +204,7 @@ static void map_window_screen_to_map(sint32 screenX, sint32 screenY, sint32 *map
 *
 *  rct2: 0x0068C88A
 */
-void window_map_open()
+rct_window * window_map_open()
 {
     rct_window *w;
 
@@ -212,12 +213,12 @@ void window_map_open()
     if (w != nullptr) {
         w->selected_tab = 0;
         w->list_information_type = 0;
-        return;
+        return w;
     }
 
     _mapImageData = Memory::Allocate<uint8[MAP_WINDOW_MAP_SIZE][MAP_WINDOW_MAP_SIZE]>();
     if (_mapImageData == nullptr) {
-        return;
+        return nullptr;
     }
 
     w = window_create_auto_pos(245, 259, &window_map_events, WC_MAP, WF_10);
@@ -258,6 +259,8 @@ void window_map_open()
 
     // Reset land tool size
     gLandToolSize = 1;
+
+    return w;
 }
 
 void window_map_reset()

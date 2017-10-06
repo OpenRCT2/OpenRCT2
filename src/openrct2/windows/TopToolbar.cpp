@@ -617,7 +617,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
     case WIDX_MAP:
         switch (dropdownIndex) {
         case 0:
-            window_map_open();
+            context_open_window(WC_MAP);
             break;
         case 1:
             context_open_window(WC_VIEWPORT);

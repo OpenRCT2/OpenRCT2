@@ -162,7 +162,7 @@ void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
     reset_researched_scenery_items();
     scenery_set_default_placement_configuration();
     gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-    window_map_open();
+    context_open_window(WC_MAP);
     gfx_invalidate_screen();
 }
 
@@ -229,7 +229,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
         reset_researched_scenery_items();
         scenery_set_default_placement_configuration();
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
-        window_map_open();
+        context_open_window(WC_MAP);
         gfx_invalidate_screen();
     }
 }

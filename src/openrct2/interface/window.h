@@ -708,7 +708,6 @@ void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_track_list_open(ride_list_item item);
-void window_map_open();
 void window_guest_open(rct_peep* peep);
 rct_window *window_staff_open(rct_peep* peep);
 rct_window *window_ride_main_open(sint32 rideIndex);
@@ -755,7 +754,6 @@ void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgeti
 void window_new_ride_init_vars();
 void window_new_ride_focus(ride_list_item rideItem);
 
-void window_map_reset();
 void window_map_tooltip_update_visibility();
 
 void window_staff_list_init_vars();

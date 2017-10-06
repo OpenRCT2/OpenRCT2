@@ -1016,6 +1016,12 @@ extern "C"
         return windowManager->OpenIntent(intent);
     }
 
+    void context_broadcast_intent(Intent * intent)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(intent);
+    }
+
     rct_window * context_show_error(rct_string_id title, rct_string_id message)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

@@ -229,7 +229,7 @@ static void window_staff_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
         }
         break;
     case WIDX_STAFF_LIST_MAP:
-        window_map_open();
+        context_open_window(WC_MAP);
         break;
     case WIDX_STAFF_LIST_QUICK_FIRE:
         _quick_fire_mode ^= 1;

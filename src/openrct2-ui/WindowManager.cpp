@@ -64,6 +64,8 @@ public:
             return window_land_rights_open();
         case WC_MAIN_WINDOW:
             return window_main_open();
+        case WC_MAP:
+            return window_map_open();
         case WC_MAPGEN:
             return window_mapgen_open();
         case WC_MULTIPLAYER:
@@ -184,6 +186,15 @@ public:
         default:
             Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
             return nullptr;
+        }
+    }
+
+    void BroadcastIntent(Intent * intent) override
+    {
+        switch (intent->GetWindowClass()) {
+        case INTENT_ACTION_MAP:
+            window_map_reset();
+            break;
         }
     }
 

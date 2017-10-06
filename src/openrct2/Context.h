@@ -206,6 +206,7 @@ extern "C"
     rct_window * context_open_window_view(uint8 view);
     rct_window * context_show_error(rct_string_id title, rct_string_id message);
     rct_window * context_open_intent(Intent * intent);
+    void context_broadcast_intent(Intent * intent);
     void context_input_handle_keyboard(bool isTitle);
     bool context_read_bmp(void * * outPixels, uint32 * outWidth, uint32 * outHeight, const utf8 * path);
     void context_quit();

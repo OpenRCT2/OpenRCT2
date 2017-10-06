@@ -22,6 +22,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
+#include <openrct2/Context.h>
 
 enum {
     PAGE_INDIVIDUAL,
@@ -298,7 +299,7 @@ static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
         window_close(w);
         break;
     case WIDX_MAP:
-        window_map_open();
+        context_open_window(WC_MAP);
         break;
     case WIDX_TRACKING:
         _window_guest_list_tracking_only = !_window_guest_list_tracking_only;
