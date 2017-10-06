@@ -446,7 +446,11 @@ void window_staff_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
             if (_quick_fire_mode)
                 game_do_command(peep->x, 1, peep->y, spriteIndex, GAME_COMMAND_FIRE_STAFF_MEMBER, 0, 0);
             else
-                window_staff_open(peep);
+            {
+                auto intent = Intent(WC_PEEP);
+                intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                context_open_intent(&intent);
+            }
             break;
         }
 

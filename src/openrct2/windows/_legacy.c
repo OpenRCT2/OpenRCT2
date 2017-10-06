@@ -15,6 +15,10 @@
 #pragma endregion
 
 #include "_legacy.h"
+#include "../interface/window.h"
+#include "../peep/staff.h"
+#include "Intent.h"
+#include "../Context.h"
 
 #pragma warning(disable : 4295) // 'identifier': array is too small to include a terminating null character
 
@@ -63,3 +67,69 @@ const rct_object_entry DefaultSelectedObjects[26] = {
         { 0x00000087, { "SCGSNOW " }, 0 },      // Snow and Ice Theming
         { 0x00000087, { "SCGWATER" }, 0 }       // Water Feature Theming
 };
+
+void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+{
+    switch (ecx)
+    {
+    case 0:
+    {
+        sint32 peepnum = eax;
+        rct_window * w = window_find_by_number(WC_PEEP, peepnum);
+        if (w)
+        {
+            tool_set(w, WC_PEEP__WIDX_PICKUP, TOOL_PICKER);
+        }
+    }
+        break;
+    case 2:
+        if (ebx == 0)
+        {
+            tool_cancel();
+            gPickupPeepImage = UINT32_MAX;
+        }
+        break;
+    }
+}
+
+void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+{
+    sint32 sprite_index = edi;
+    if (sprite_index == SPRITE_INDEX_NULL)
+    {
+        rct_window * window = window_find_by_class(WC_STAFF_LIST);
+        window_invalidate(window);
+    }
+    else
+    {
+        rct_peep * peep = &get_sprite(sprite_index)->peep;
+        Intent * intent = intent_create(WC_PEEP);
+        intent_set_pointer(intent, INTENT_EXTRA_PEEP, peep);
+        context_open_intent(intent);
+        intent_release(intent);
+    }
+}
+
+void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+{
+    switch (ecx)
+    {
+    case 0:
+    {
+        sint32 peepnum = eax;
+        rct_window * w = window_find_by_number(WC_PEEP, peepnum);
+        if (w)
+        {
+            tool_set(w, WC_STAFF__WIDX_PICKUP, TOOL_PICKER);
+        }
+    }
+        break;
+    case 2:
+        if (ebx == 0)
+        {
+            tool_cancel();
+            gPickupPeepImage = UINT32_MAX;
+        }
+        break;
+    }
+}

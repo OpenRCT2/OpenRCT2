@@ -14,20 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "Intent.h"
-#include "../Context.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../peep/staff.h"
-#include "../sprites.h"
-#include "../world/footpath.h"
-#include "../input.h"
-#include "dropdown.h"
-#include "../interface/themes.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/Context.h>
+
+#include <openrct2/game.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/peep/staff.h>
+#include <openrct2/sprites.h>
+#include <openrct2/world/footpath.h>
+#include <openrct2/input.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/interface/themes.h>
 
 #define WW 190
 #define WH 180
@@ -64,6 +66,7 @@ enum WINDOW_STAFF_WIDGET_IDX {
 };
 
 validate_global_widx(WC_PEEP, WIDX_PATROL);
+validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 static rct_widget window_staff_overview_widgets[] = {
     { WWT_FRAME,    0, 0,       WW - 1,     0,          WH - 1, 0xFFFFFFFF,             STR_NONE },             // Panel / Background
@@ -417,25 +420,6 @@ void window_staff_set_page(rct_window* w, sint32 page)
     window_invalidate(w);
 
     if (listen && w->viewport) w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-}
-
-void game_command_callback_pickup_staff(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
-{
-    switch(ecx){
-    case 0:{
-        sint32 peepnum = eax;
-        rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-        if (w) {
-            tool_set(w, WIDX_PICKUP, TOOL_PICKER);
-        }
-        }break;
-    case 2:
-        if (ebx == 0) {
-            tool_cancel();
-            gPickupPeepImage = UINT32_MAX;
-        }
-        break;
-    }
 }
 
 /**

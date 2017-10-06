@@ -331,9 +331,15 @@ void news_item_open_subject(sint32 type, sint32 subject)
         break;
     case NEWS_ITEM_PEEP_ON_RIDE:
     case NEWS_ITEM_PEEP:
+    {
         peep = GET_PEEP(subject);
-        window_guest_open(peep);
+
+        Intent * intent = intent_create(WC_PEEP);
+        intent_set_pointer(intent, INTENT_EXTRA_PEEP, peep);
+        context_open_intent(intent);
+        intent_release(intent);
         break;
+    }
     case NEWS_ITEM_MONEY:
         context_open_window(WC_FINANCES);
         break;
