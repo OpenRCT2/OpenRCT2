@@ -1,39 +1,3 @@
-# Needed for linking with non-broken OpenSSL on Apple platforms
-if(APPLE)
-    set(ENV{PKG_CONFIG_PATH} "$ENV{PKG_CONFIG_PATH}:/usr/local/opt/openssl/lib/pkgconfig")
-endif()
-
-# Third party libraries
-# PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.5)
-# PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
-# PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
-
-# PKG_CHECK_MODULES(PNG libpng>=1.6)
-# if (NOT PNG_FOUND)
-#     PKG_CHECK_MODULES(PNG libpng16)
-#     if (NOT PNG_FOUND)
-#         PKG_CHECK_MODULES(PNG libpng>=1.2)
-#         if (NOT PNG_FOUND)
-#             PKG_CHECK_MODULES(PNG REQUIRED libpng12)
-#         endif ()
-#     endif ()
-# endif ()
-
-# Third party libraries (optional)
-# if (NOT DISABLE_HTTP_TWITCH OR NOT DISABLE_NETWORK)
-#     PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)
-# endif ()
-# if (NOT DISABLE_NETWORK)
-#     find_package(OpenSSL 1.0.0 REQUIRED)
-# endif ()
-
-# if (NOT DISABLE_TTF)
-#     if (UNIX AND NOT APPLE)
-#         PKG_CHECK_MODULES(FONTCONFIG REQUIRED fontconfig)
-#     endif ()
-#     PKG_CHECK_MODULES(FREETYPE REQUIRED freetype2)
-# endif ()
-
 # Sources
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
@@ -47,7 +11,7 @@ endif ()
 # Handle creating the rct2 text and data files on macOS and Linux
 # See details in src/openrct2/rct2/interop.c:rct2_interop_setup_segment for how the values
 # were derived.
-if (NOT DISABLE_RCT2 AND UNIX)
+if (ENABLE_RCT2 AND UNIX)
     set(OPENRCT2_EXE "${PROJECT_SOURCE_DIR}/openrct2.exe")
     add_custom_command(
         OUTPUT openrct2_text
@@ -104,7 +68,6 @@ endif ()
 add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 target_link_libraries(libopenrct2 PUBLIC openrct2::flags)
 target_include_directories(libopenrct2 PUBLIC ${OPENRCT2_SOURCE_DIR})
-add_dependencies(libopenrct2 OpenRCT2-Deps)
 # Don't add a redundant library prefix
 set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 
@@ -117,74 +80,6 @@ if (ENABLE_RCT2)
         set_target_properties(libopenrct2 PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
     endif()
 endif()
-
-# Libraries
-if (STATIC)
-    target_link_libraries(libopenrct2 ${JANSSON_STATIC_LIBRARIES}
-                                     ${PNG_STATIC_LIBRARIES}
-                                     ${ZLIB_STATIC_LIBRARIES}
-                                     ${LIBZIP_STATIC_LIBRARIES})
-else ()
-    target_link_libraries(libopenrct2 ${JANSSON_LIBRARIES}
-                                     ${PNG_LIBRARIES}
-                                     ${ZLIB_LIBRARIES}
-                                     ${LIBZIP_LIBRARIES})
-endif ()
-
-if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
-    # Include libdl for dlopen
-    target_link_libraries(libopenrct2 dl)
-endif ()
-
-if (ENABLE_NETWORK)
-    # our HTTP implementation requires use of threads
-    set(THREADS_PREFER_PTHREAD_FLAG ON)
-    find_package(Threads REQUIRED)
-    target_link_libraries(libopenrct2 PUBLIC Threads::Threads)
-    if (STATIC)
-        target_link_libraries(libopenrct2 PUBLIC ${LIBCURL_STATIC_LIBRARIES}
-                                         ${SSL_STATIC_LIBRARIES})
-    else ()
-        target_link_libraries(libopenrct2 PUBLIC ${LIBCURL_LIBRARIES})
-    endif ()
-endif ()
-
-if (NOT DISABLE_TTF)
-    if (STATIC)
-        target_link_libraries(libopenrct2 ${FREETYPE_STATIC_LIBRARIES})
-        if (UNIX AND NOT APPLE)
-            target_link_libraries(libopenrct2 ${FONTCONFIG_STATIC_LIBRARIES})
-        endif ()
-    else ()
-        target_link_libraries(libopenrct2 ${FREETYPE_LIBRARIES})
-        if (UNIX AND NOT APPLE)
-            target_link_libraries(libopenrct2 ${FONTCONFIG_LIBRARIES})
-        endif ()
-    endif ()
-endif ()
-
-if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
-    find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
-    target_link_libraries(libopenrct2 ${ICONV_LIBRARIES})
-endif()
-
-# Includes
-target_include_directories(libopenrct2 SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
-target_include_directories(libopenrct2 PUBLIC ${JANSSON_INCLUDE_DIRS})
-target_include_directories(libopenrct2 PRIVATE ${PNG_INCLUDE_DIRS}
-                                              ${ZLIB_INCLUDE_DIRS})
-if (NOT DISABLE_HTTP_TWITCH OR NOT DISABLE_NETWORK)
-    target_include_directories(libopenrct2 PRIVATE ${LIBCURL_INCLUDE_DIRS})
-endif ()
-if (NOT DISABLE_NETWORK)
-    # target_include_directories(libopenrct2 PUBLIC ${OPENSSL_INCLUDE_DIR})
-endif ()
-if (NOT DISABLE_TTF)
-    target_include_directories(libopenrct2 PRIVATE ${FREETYPE_INCLUDE_DIRS})
-    if (UNIX AND NOT APPLE)
-        target_include_directories(libopenrct2 PRIVATE ${FONTCONFIG_INCLUDE_DIRS})
-    endif ()
-endif ()
 
 if (APPLE AND NOT USE_MMAP)
     set(PIE_FLAG "-fno-pie")

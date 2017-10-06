@@ -5,18 +5,6 @@ if (PORTABLE)
     set(CMAKE_INSTALL_RPATH "$ORIGIN")
 endif ()
 
-# Third party libraries
-# PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
-# PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
-# if (NOT DISABLE_OPENGL)
-#     # GL doesn't work nicely with macOS, while find_package doesn't work with multiarch on Ubuntu.
-#     if (APPLE)
-#         find_package(OpenGL REQUIRED)
-#     elseif (NOT WIN32)
-#         PKG_CHECK_MODULES(GL REQUIRED gl)
-#     endif ()
-# endif ()
-
 # Sources
 file(GLOB_RECURSE OPENRCT2_UI_SOURCES
     "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
@@ -41,16 +29,6 @@ target_link_libraries(openrct2-ui PUBLIC "libopenrct2"
 
 if (APPLE)
     target_link_libraries(openrct2-ui "-framework Cocoa")
-endif ()
-
-if (NOT DISABLE_OPENGL)
-    if (WIN32)
-        target_link_libraries(openrct2-ui PUBLIC opengl32)
-    elseif (APPLE)
-        target_link_libraries(openrct2-ui ${OPENGL_LIBRARY})
-    else ()
-        target_link_libraries(openrct2-ui ${GL_LIBRARIES})
-    endif ()
 endif ()
 
 # Includes

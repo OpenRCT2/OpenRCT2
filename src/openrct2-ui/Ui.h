@@ -14,6 +14,4 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifdef _MSC_VER
-    int NormalisedMain(int argc, char * * argv);
-#endif
+int NormalisedMain(int argc, char * * argv);

@@ -32,19 +32,58 @@ if(MSVC)
         INTERFACE_INCLUDE_DIRECTORIES "${includes}"
         )
     target_link_libraries(openrct2-deps-iface INTERFACE openrct2-deps-static)
+else()
+    if(ENABLE_OPENGL)
+        find_package(OpenGL REQUIRED)
+        find_package(EXPAT REQUIRED)
+        target_link_libraries(openrct2-deps-iface INTERFACE OpenGL::GL EXPAT::EXPAT)
+    endif()
+    find_package(SDL2 REQUIRED)
+    find_package(SpeexDSP REQUIRED)
+    find_package(jansson REQUIRED)
+    find_package(PNG REQUIRED)
+    find_package(ZLIB REQUIRED)
+    find_package(libzip REQUIRED)
+    target_link_libraries(openrct2-deps-iface
+        INTERFACE
+            SDL2::SDL
+            SpeexDSP::SpeexDSP
+            jansson::jansson
+            PNG::PNG
+            ZLIB::ZLIB
+            libzip::libzip
+        )
+    set(optional_libs)
+    if(ENABLE_NETWORK OR ENABLE_HTTP_TWITCH)
+        find_package(CURL REQUIRED)
+        list(APPEND optional_libs curl::curl)
+    endif()
+    if(ENABLE_TTF)
+        if(UNIX AND NOT APPLE)
+            # Link with fontconfig too. It must come first in the link line!
+            find_library(FONTCONFIG_LIBRARY NAMES libfontconfig.a fontconfig)
+            list(APPEND optional_libs "${FONTCONFIG_LIBRARY}")
+        endif()
+        find_package(Freetype REQUIRED)
+        list(APPEND optional_libs Freetype::Freetype)
+    endif()
+    target_link_libraries(openrct2-deps-iface INTERFACE ${optional_libs})
 endif()
 
 if(ENABLE_NETWORK OR ENABLE_HTTP_TWITCH)
+    # Link in libraries required for networking
     if(NOT MSVC)
         find_package(OpenSSL REQUIRED)
         target_link_libraries(openrct2-flags-iface INTERFACE
             OpenSSL::SSL
             OpenSSL::Crypto
             )
+        target_compile_definitions(openrct2-flags-iface INTERFACE OPENGL_NO_LINK)
     endif()
     if(WIN32)
         target_link_libraries(openrct2-deps-iface INTERFACE ws2_32)
     endif()
 endif()
 
+# Add all deps to the global flags interface
 target_link_libraries(openrct2-flags-iface INTERFACE openrct2-deps-iface)

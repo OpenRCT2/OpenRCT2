@@ -1,38 +1,15 @@
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
-include(CMakeDependentOption)
 
-if(WIN32)
-    set(is_windows TRUE)
-else()
-    set(is_windows FALSE)
+# 32-bit forcing
+if(NOT MSVC AND FORCE_32BIT)
+    target_compile_definitions(openrct2-flags-iface INTERFACE -m32)
+    target_link_libraries(openrct2-flags-iface INTERFACE -m32)
 endif()
 
-# Various build options
-set(DEBUG_LEVEL 0 CACHE INT "Select debug level for compilation. Use value in range 0–3.")
-set_property(CACHE DEBUG_LEVEL PROPERTY STRINGS 0 1 2 3)
-option(STATIC_LINK_EXECUTABLE "Link dependent libraries into the executable statically" ON)
-
-if(NOT MSVC)
-    option(FORCE_32BIT "Force compile for 32-bit architectures" NO)
-    if(FORCE_32BIT)
-        target_compile_definitions(openrct2-flags-iface INTERFACE -m32)
-        target_link_libraries(openrct2-flags-iface INTERFACE -m32)
-    endif()
-endif()
-
-# Options for using original rct2 binaries
-option(ENABLE_RTC2 "Build a standalone without using code and data segments from the original executable" OFF)
-cmake_dependent_option(USE_MMAP_FOR_RCT2 "Use mmap to load rct2's data segment into memory" ON "ENABLE_RCT2" OFF)
-
-# Features
-option(ENABLE_HTTP_TWITCH "Disable HTTP and Twitch support." ON)
-option(ENABLE_TTF "Enable support for TTF provided by freetype2" ON)
-option(ENABLE_LIGHTFX "Enable lighting effects" ON)
-option(ENABLE_NETWORK "Enable multiplayer networking functionality." ON)
-
-# Check the options we have set
+# Validate
 if(ENABLE_RCT2)
+    # We require certain settings for using the original executable
     if(WIN32)
         message(SEND_ERROR "ENABLE_RCT2 is not supported on Windows")
     endif()
@@ -41,23 +18,9 @@ if(ENABLE_RCT2)
     endif()
 endif()
 
-# Build an interface target to set all these options
+# Build an interface target to set all the compile options
 add_library(openrct2-flags-iface INTERFACE)
 add_library(openrct2::flags ALIAS openrct2-flags-iface)
-
-if(NOT MSVC)
-    # Check for GCC-ish flags
-    foreach(flag IN ITEMS -Wno-error=date-time)
-        string(MAKE_C_IDENTIFIER "SUPPORT_FLAG_${flag}" ident)
-        string(TOUPPER "${ident}" flagvar)
-        check_c_compiler_flag(${flag} ${flagvar})
-        if("${flagvar}")
-            message(STATUS "Adding flag ${flag}")
-            target_compile_options(openrct2-flags-iface INTERFACE ${flag})
-        endif()
-    endforeach()
-else()
-endif()
 
 # Check for required compilation flags
 if(NOT MSVC)
@@ -136,7 +99,6 @@ endif()
 
 if(MSVC)
     target_compile_definitions(openrct2-flags-iface INTERFACE
-        OPENGL_NO_LINK
         _CRT_SECURE_NO_WARNINGS
         _USE_MATH_DEFINES
         _WINSOCK_DEPRECATED_NO_WARNINGS
@@ -156,13 +118,6 @@ if(MSVC)
         )
 endif()
 
-if(WIN32)
-    target_compile_definitions(openrct2-flags-iface INTERFACE
-        # _UNICODE
-        # UNICODE
-        )
-endif()
-
 # Set the debug level macro
 target_compile_definitions(openrct2-flags-iface INTERFACE DEBUG=${DEBUG_LEVEL})
 
@@ -171,16 +126,31 @@ set_property(TARGET openrct2-flags-iface PROPERTY INTERFACE_POSITION_INDEPENDENT
 
 if(NOT MSVC)
     # Ensure we have compiler version flags set
+    # (CMake has trouble with the meta-features on MSVC)
     set(comp_features
         c_std_11 # C code should be compiled as C11
-        c_std_14 # C++ code as C++14
+        cxx_std_14 # C++ code as C++14
         )
     set_target_properties(openrct2-flags-iface PROPERTIES
-        INTERFACE_POSITION_INDEPENDENT_CODE TRUE # Set -fPIC when required
         INTERFACE_COMPILE_FEATURES "${comp_features}"
         )
 endif()
 
 if(APPLE)
     target_compile_options(openrtc2-flags INTERFACE -Wno-error=obj-method-access)
+endif()
+
+# Enable dlopen on Unix systems
+if(UNIX AND NOT CMAKE_SYSTEM_NAME MATCHES BSD)
+    target_link_libraries(openrct2-flags-iface INTERFACE dl)
+endif()
+
+# Enable multithreading
+set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+find_package(Threads REQUIRED)
+target_link_libraries(openrct2-flags-iface INTERFACE Threads::Threads)
+
+if(APPLE OR CMAEK_SYSTEM_NAME MATCHES "BSD")
+    find_library(ICONV_LIBRARY NAMES libiconv.a iconv libiconv libiconv-2)
+    target_link_libraries(openrct2-flags-iface INTERFACE "${ICONV_LIBRARY}")
 endif()

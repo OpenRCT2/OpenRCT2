@@ -32,11 +32,7 @@ using namespace OpenRCT2::Ui;
 /**
  * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
  */
-#ifdef _MSC_VER
 int NormalisedMain(int argc, char * * argv)
-#else
-int main(int argc, char * * argv)
-#endif
 {
     core_init();
     int runGame = cmdline_run((const char * *)argv, argc);
