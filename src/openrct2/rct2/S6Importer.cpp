@@ -358,7 +358,11 @@ public:
         gSavedViewY        = _s6.saved_view_y;
         gSavedViewZoom     = _s6.saved_view_zoom;
         gSavedViewRotation = _s6.saved_view_rotation;
-        memcpy(gAnimatedObjects, _s6.map_animations, sizeof(_s6.map_animations));
+
+        for (size_t i = 0; i < RCT2_MAX_ANIMATED_OBJECTS; i++)
+        {
+            gAnimatedObjects[i] = _s6.map_animations[i];
+        }
         gNumMapAnimations = _s6.num_map_animations;
         // pad_0138B582
 
