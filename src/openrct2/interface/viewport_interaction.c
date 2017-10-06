@@ -131,8 +131,13 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
             window_ride_open_vehicle(info.vehicle);
             break;
         case SPRITE_IDENTIFIER_PEEP:
-            window_guest_open(info.peep);
+        {
+            Intent * intent = intent_create(WC_PEEP);
+            intent_set_pointer(intent, INTENT_EXTRA_PEEP, info.peep);
+            context_open_intent(intent);
+            intent_release(intent);
             break;
+        }
         case SPRITE_IDENTIFIER_MISC:
             if (game_is_not_paused()) {
                 switch (info.sprite->unknown.misc_identifier) {

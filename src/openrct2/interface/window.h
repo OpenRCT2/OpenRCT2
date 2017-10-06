@@ -533,6 +533,7 @@ enum {
 #define WC_WATER__WIDX_PREVIEW                          3
 #define WC_PEEP__WIDX_PATROL                            11
 #define WC_PEEP__WIDX_ACTION_LBL                        12
+#define WC_PEEP__WIDX_PICKUP                            13
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE               5
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE              3
 #define WC_MAP__WIDX_LAND_TOOL                          13
@@ -540,6 +541,7 @@ enum {
 #define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1          4
 #define WC_CLEAR_SCENERY__WIDX_PREVIEW                  3
 #define WC_LAND_RIGHTS__WIDX_PREVIEW                    3
+#define WC_STAFF__WIDX_PICKUP                           10
 
 enum PROMPT_MODE {
     PM_SAVE_BEFORE_LOAD = 0,
@@ -708,8 +710,6 @@ void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_track_list_open(ride_list_item item);
-void window_guest_open(rct_peep* peep);
-rct_window *window_staff_open(rct_peep* peep);
 rct_window *window_ride_main_open(sint32 rideIndex);
 rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex);
 rct_window *window_ride_open_track(rct_map_element *mapElement);

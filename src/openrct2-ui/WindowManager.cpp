@@ -161,6 +161,8 @@ public:
     rct_window * OpenIntent(Intent * intent) override
     {
         switch(intent->GetWindowClass()) {
+        case WC_PEEP:
+            return window_guest_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
         case WC_FIRE_PROMPT:
             return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
         case WC_INSTALL_TRACK:

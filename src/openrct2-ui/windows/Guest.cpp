@@ -14,20 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../input.h"
-#include "../management/marketing.h"
-#include "../peep/staff.h"
-#include "../ride/ride_data.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../util/util.h"
-#include "../world/footpath.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/management/marketing.h>
+#include <openrct2/peep/staff.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/util/util.h>
+#include <openrct2/world/footpath.h>
 
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
@@ -62,6 +63,7 @@ enum WINDOW_GUEST_WIDGET_IDX {
 };
 
 validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
+validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static rct_widget window_guest_overview_widgets[] = {
     {WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
@@ -473,11 +475,10 @@ static const uint32 window_guest_page_enabled_widgets[] = {
  *  rct2: 0x006989E9
  *
  */
-void window_guest_open(rct_peep* peep){
+rct_window * window_guest_open(rct_peep* peep){
 
     if (peep->type == PEEP_TYPE_STAFF){
-        window_staff_open(peep);
-        return;
+        return window_staff_open(peep);
     }
 
     rct_window* window;
@@ -517,6 +518,8 @@ void window_guest_open(rct_peep* peep){
     window_guest_disable_widgets(window);
     window_init_scroll_widgets(window);
     window_guest_viewport_init(window);
+
+    return window;
 }
 
 /**
@@ -584,25 +587,6 @@ void window_guest_overview_resize(rct_window *w){
         view->view_height = view->height / zoom_amount;
     }
     window_guest_viewport_init(w);
-}
-
-void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
-{
-    switch(ecx){
-    case 0:{
-        sint32 peepnum = eax;
-        rct_window* w = window_find_by_number(WC_PEEP, peepnum);
-        if (w) {
-            tool_set(w, WIDX_PICKUP, TOOL_PICKER);
-        }
-        }break;
-    case 2:
-        if (ebx == 0) {
-            tool_cancel();
-            gPickupPeepImage = UINT32_MAX;
-        }
-        break;
-    }
 }
 
 /**

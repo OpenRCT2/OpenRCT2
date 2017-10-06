@@ -367,21 +367,6 @@ void game_command_hire_new_staff_member(sint32* eax, sint32* ebx, sint32* ecx, s
                                        edi);
 }
 
-void game_command_callback_hire_new_staff_member(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
-{
-    sint32 sprite_index = edi;
-    if (sprite_index == SPRITE_INDEX_NULL)
-    {
-        rct_window *window = window_find_by_class(WC_STAFF_LIST);
-        window_invalidate(window);
-    }
-    else
-    {
-        rct_peep *peep = &get_sprite(sprite_index)->peep;
-        window_staff_open(peep);
-    }
-}
-
 /** rct2: 0x00982134 */
 static const bool peep_slow_walking_types[] = {
     false,  // PEEP_SPRITE_TYPE_NORMAL

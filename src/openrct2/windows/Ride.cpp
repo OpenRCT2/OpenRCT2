@@ -1665,7 +1665,9 @@ rct_window *window_ride_open_vehicle(rct_vehicle *vehicle)
                 rct_window *w2 = window_find_by_number(WC_PEEP, peepSpriteIndex);
                 if (w2 == nullptr) {
                     rct_peep *peep = &(get_sprite(peepSpriteIndex)->peep);
-                    window_guest_open(peep);
+                    auto intent = Intent(WC_PEEP);
+                    intent.putExtra(INTENT_EXTRA_PEEP, peep);
+                    context_open_intent(&intent);
                     openedPeepWindow = 1;
 
                     break;
@@ -3655,7 +3657,11 @@ static void window_ride_locate_mechanic(rct_window *w)
     if (mechanic == nullptr)
         context_show_error(STR_UNABLE_TO_LOCATE_MECHANIC, STR_NONE);
     else
-        window_staff_open(mechanic);
+    {
+        auto intent = Intent(WC_PEEP);
+        intent.putExtra(INTENT_EXTRA_PEEP, mechanic);
+        context_open_intent(&intent);
+    }
 }
 
 /**
