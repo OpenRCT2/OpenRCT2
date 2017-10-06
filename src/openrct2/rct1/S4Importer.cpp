@@ -42,7 +42,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../management/marketing.h"
 #include "../object.h"
 #include "../object/ObjectManager.h"

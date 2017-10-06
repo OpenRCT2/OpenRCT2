@@ -19,47 +19,50 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/peep.h"
+#include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "../world/park.h"
 #include "../world/sprite.h"
-#include "finance.h"
+#include "Finance.h"
 
 /**
  * Monthly staff wages
  *
  * rct2: 0x00992A00
  */
-const money32 wage_table[4] = {
-    MONEY(50,00),       // Handyman
-    MONEY(80,00),       // Mechanic
-    MONEY(60,00),       // Security guard
-    MONEY(55,00)        // Entertainer
+const money32 wage_table[STAFF_TYPE_COUNT] =
+{
+    MONEY(50, 00),       // Handyman
+    MONEY(80, 00),       // Mechanic
+    MONEY(60, 00),       // Security guard
+    MONEY(55, 00)        // Entertainer
 };
 
 // Monthly research funding costs
-const money32 research_cost_table[4] = {
-    MONEY(  0,00),      // No funding
-    MONEY(100,00),      // Minimum funding
-    MONEY(200,00),      // Normal funding
-    MONEY(400,00)       // Maximum funding
+const money32 research_cost_table[RESEARCH_FUNDING_COUNT] =
+{
+    MONEY(0, 00),      // No funding
+    MONEY(100, 00),      // Minimum funding
+    MONEY(200, 00),      // Normal funding
+    MONEY(400, 00)       // Maximum funding
 };
 
-sint32 dword_988E60[] = { 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0 };
+sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
 
 money32 gInitialCash;
 money32 gCashEncrypted;
 money32 gBankLoan;
-uint8 gBankLoanInterestRate;
+uint8   gBankLoanInterestRate;
 money32 gMaxBankLoan;
 money32 gCurrentExpenditure;
 money32 gCurrentProfit;
 money32 gHistoricalProfit;
 money32 gWeeklyProfitAverageDividend;
-uint16 gWeeklyProfitAverageDivisor;
-money32 gCashHistory[128];
-money32 gWeeklyProfitHistory[128];
-money32 gParkValueHistory[128];
+uint16  gWeeklyProfitAverageDivisor;
+money32 gCashHistory[FINANCE_GRAPH_SIZE];
+money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
 
 uint8 gCommandExpenditureType;
@@ -81,7 +84,10 @@ void finance_payment(money32 amount, rct_expenditure_type type)
     gCashEncrypted = ENCRYPT_MONEY(new_money);
     gExpenditureTable[type] -= amount;
     if (dword_988E60[type] & 1)
-        gCurrentExpenditure -= amount; // Cumulative amount of money spent this day
+    {
+        // Cumulative amount of money spent this day
+        gCurrentExpenditure -= amount;
+    }
 
 
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
@@ -94,14 +100,18 @@ void finance_payment(money32 amount, rct_expenditure_type type)
  */
 void finance_pay_wages()
 {
-    rct_peep* peep;
+    rct_peep * peep;
     uint16 spriteIndex;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
         return;
+    }
 
     FOR_ALL_STAFF(spriteIndex, peep)
+    {
         finance_payment(wage_table[peep->staff_type] / 4, RCT_EXPENDITURE_TYPE_WAGES);
+    }
 }
 
 /**
@@ -113,7 +123,9 @@ void finance_pay_research()
     uint8 level;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
         return;
+    }
 
     level = gResearchFundingLevel;
     finance_payment(research_cost_table[level] / 4, RCT_EXPENDITURE_TYPE_RESEARCH);
@@ -127,12 +139,14 @@ void finance_pay_interest()
 {
     // This variable uses the 64-bit type as the computation below can involve multiplying very large numbers
     // that will overflow money32 if the loan is greater than (1 << 31) / (5 * current_interest_rate)
-    money64 current_loan = gBankLoan;
-    uint8 current_interest_rate = gBankLoanInterestRate;
+    money64 current_loan          = gBankLoan;
+    uint8   current_interest_rate = gBankLoanInterestRate;
     money32 interest_to_pay;
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
         return;
+    }
 
     interest_to_pay = (current_loan * 5 * current_interest_rate) >> 14;
 
@@ -146,24 +160,29 @@ void finance_pay_interest()
 void finance_pay_ride_upkeep()
 {
     sint32 i;
-    Ride* ride;
+    Ride * ride;
 
-    FOR_ALL_RIDES(i, ride) {
-        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)) {
-            ride->build_date = gDateMonthsElapsed;
+    FOR_ALL_RIDES(i, ride)
+    {
+        if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
+        {
+            ride->build_date  = gDateMonthsElapsed;
             ride->reliability = RIDE_INITIAL_RELIABILITY;
         }
 
-        if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+        if (ride->status != RIDE_STATUS_CLOSED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        {
             sint16 upkeep = ride->upkeep_cost;
-            if (upkeep != -1) {
+            if (upkeep != -1)
+            {
                 ride->total_profit -= upkeep;
                 ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
                 finance_payment(upkeep, RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS);
             }
         }
 
-        if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE) {
+        if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
+        {
             ride->last_crash_type--;
         }
     }
@@ -171,10 +190,11 @@ void finance_pay_ride_upkeep()
 
 void finance_reset_history()
 {
-    for (sint32 i = 0; i < 128; i++) {
-        gCashHistory[i] = MONEY32_UNDEFINED;
+    for (sint32 i = 0; i < FINANCE_GRAPH_SIZE; i++)
+    {
+        gCashHistory[i]         = MONEY32_UNDEFINED;
         gWeeklyProfitHistory[i] = MONEY32_UNDEFINED;
-        gParkValueHistory[i] = MONEY32_UNDEFINED;
+        gParkValueHistory[i]    = MONEY32_UNDEFINED;
     }
 }
 
@@ -182,33 +202,34 @@ void finance_reset_history()
 *
 *  rct2: 0x0069DEFB
 */
-void finance_init() {
-
+void finance_init()
+{
     // It only initialises the first month
-    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
+    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    {
         gExpenditureTable[i] = 0;
     }
 
     gCurrentExpenditure = 0;
-    gCurrentProfit = 0;
+    gCurrentProfit      = 0;
 
     gWeeklyProfitAverageDividend = 0;
-    gWeeklyProfitAverageDivisor = 0;
+    gWeeklyProfitAverageDivisor  = 0;
 
-    gInitialCash = MONEY(10000,00); // Cheat detection
+    gInitialCash = MONEY(10000, 00); // Cheat detection
 
-    gCashEncrypted = ENCRYPT_MONEY(MONEY(10000,00));
-    gBankLoan = MONEY(10000,00);
-    gMaxBankLoan = MONEY(20000,00);
+    gCashEncrypted = ENCRYPT_MONEY(MONEY(10000, 00));
+    gBankLoan      = MONEY(10000, 00);
+    gMaxBankLoan   = MONEY(20000, 00);
 
     gHistoricalProfit = 0;
 
-    gBankLoanInterestRate = 10;
-    gParkValue = 0;
-    gCompanyValue = 0;
+    gBankLoanInterestRate          = 10;
+    gParkValue                     = 0;
+    gCompanyValue                  = 0;
     gScenarioCompletedCompanyValue = MONEY32_UNDEFINED;
-    gTotalAdmissions = 0;
-    gTotalIncomeFromAdmissions = 0;
+    gTotalAdmissions               = 0;
+    gTotalIncomeFromAdmissions     = 0;
     safe_strcpy(gScenarioCompletedBy, "?", sizeof(gScenarioCompletedBy));
 }
 
@@ -218,7 +239,7 @@ void finance_init() {
 */
 void finance_update_daily_profit()
 {
-    gCurrentProfit = 7 * gCurrentExpenditure;
+    gCurrentProfit      = 7 * gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 
     money32 current_profit = 0;
@@ -227,9 +248,10 @@ void finance_update_daily_profit()
     {
         // Staff costs
         uint16 sprite_index;
-        rct_peep *peep;
+        rct_peep * peep;
 
-        FOR_ALL_STAFF(sprite_index, peep) {
+        FOR_ALL_STAFF(sprite_index, peep)
+        {
             current_profit -= wage_table[peep->staff_type];
         }
 
@@ -242,10 +264,12 @@ void finance_update_daily_profit()
         current_profit -= current_loan / 600;
 
         // Ride costs
-        Ride *ride;
+        Ride * ride;
         sint32 i;
-        FOR_ALL_RIDES(i, ride) {
-            if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1) {
+        FOR_ALL_RIDES(i, ride)
+        {
+            if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1)
+            {
                 current_profit -= 2 * ride->upkeep_cost;
             }
         }
@@ -292,34 +316,40 @@ money32 finance_get_current_cash()
  *
  *  rct2: 0x0069DFB3
  */
-void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp)
+void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     money32 money, loanDifference, currentLoan;
     money32 newLoan = *edx;
 
-    currentLoan = gBankLoan;
-    money = DECRYPT_MONEY(gCashEncrypted);
+    currentLoan    = gBankLoan;
+    money          = DECRYPT_MONEY(gCashEncrypted);
     loanDifference = currentLoan - newLoan;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
-    if (newLoan > currentLoan) {
-        if (newLoan > gMaxBankLoan) {
+    if (newLoan > currentLoan)
+    {
+        if (newLoan > gMaxBankLoan)
+        {
             gGameCommandErrorText = STR_BANK_REFUSES_TO_INCREASE_LOAN;
             *ebx = MONEY32_UNDEFINED;
             return;
         }
-    } else {
-        if (loanDifference > money) {
+    }
+    else
+    {
+        if (loanDifference > money)
+        {
             gGameCommandErrorText = STR_NOT_ENOUGH_CASH_AVAILABLE;
             *ebx = MONEY32_UNDEFINED;
             return;
         }
     }
 
-    if (*ebx & GAME_COMMAND_FLAG_APPLY) {
+    if (*ebx & GAME_COMMAND_FLAG_APPLY)
+    {
         money -= loanDifference;
-        gBankLoan = newLoan;
-        gInitialCash = money;
+        gBankLoan      = newLoan;
+        gInitialCash   = money;
         gCashEncrypted = ENCRYPT_MONEY(money);
 
         window_invalidate_by_class(WC_FINANCES);
@@ -337,21 +367,25 @@ void game_command_set_current_loan(sint32* eax, sint32* ebx, sint32* ecx, sint32
 void finance_shift_expenditure_table()
 {
     // If EXPENDITURE_TABLE_MONTH_COUNT months have passed then is full, sum the oldest month
-    if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT) {
+    if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
+    {
         money32 sum = 0;
-        for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++) {
+        for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++)
+        {
             sum += gExpenditureTable[i];
         }
         gHistoricalProfit += sum;
     }
 
     // Shift the table
-    for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--) {
+    for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--)
+    {
         gExpenditureTable[i] = gExpenditureTable[i - RCT_EXPENDITURE_TYPE_COUNT];
     }
 
     // Zero the beginning of the table, which is the new month
-    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
+    for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
+    {
         gExpenditureTable[i] = 0;
     }
 
@@ -373,8 +407,9 @@ void finance_reset_cash_to_initial()
 money32 finance_get_last_month_shop_profit()
 {
     money32 profit = 0;
-    if (gDateMonthsElapsed != 0) {
-        money32 * lastMonthExpenditure = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
+    if (gDateMonthsElapsed != 0)
+    {
+        money32 * lastMonthExpenditure = &gExpenditureTable[RCT_EXPENDITURE_TYPE_COUNT];
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES];
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK];
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES];

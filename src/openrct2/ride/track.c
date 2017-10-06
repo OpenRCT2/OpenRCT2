@@ -20,7 +20,7 @@
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../rct1.h"

@@ -18,6 +18,8 @@
 #define _FINANCE_H_
 
 #include "../common.h"
+#include "../peep/staff.h"
+#include "Research.h"
 
 typedef sint32 rct_expenditure_type;
 
@@ -41,13 +43,14 @@ enum {
 
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
 #define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
+#define FINANCE_GRAPH_SIZE 128
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-extern const money32 research_cost_table[4];
-extern const money32 wage_table[4];
+extern const money32 wage_table[STAFF_TYPE_COUNT];
+extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money32 gInitialCash;
 extern money32 gCashEncrypted;
@@ -65,9 +68,9 @@ extern money32 gHistoricalProfit;
 
 extern money32 gWeeklyProfitAverageDividend;
 extern uint16 gWeeklyProfitAverageDivisor;
-extern money32 gCashHistory[128];
-extern money32 gWeeklyProfitHistory[128];
-extern money32 gParkValueHistory[128];
+extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
+extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
+extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
 extern money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
 
 extern uint8 gCommandExpenditureType;

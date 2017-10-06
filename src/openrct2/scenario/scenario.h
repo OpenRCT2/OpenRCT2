@@ -18,7 +18,7 @@
 #define _SCENARIO_H_
 
 #include "../common.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object.h"
 #include "../rct12.h"

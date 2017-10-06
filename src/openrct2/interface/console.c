@@ -24,7 +24,7 @@
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../network/twitch.h"

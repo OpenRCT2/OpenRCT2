@@ -35,7 +35,7 @@
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../management/marketing.h"
 #include "../management/news_item.h"
 #include "../management/Research.h"
