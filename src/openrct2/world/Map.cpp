@@ -4760,8 +4760,7 @@ void map_invalidate_virtual_floor_tiles()
 
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
 {
-    // We only show when the placement modifier keys are active
-    if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    if (gMapVirtualFloorHeight == 0)
     {
         return false;
     }
