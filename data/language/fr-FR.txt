@@ -852,7 +852,7 @@ STR_0846    :<not used anymore>
 #end
 STR_0847    :A propos d'OpenRCT2
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Version 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer, tous droits réservés
 STR_0851    :{WINDOW_COLOUR_2}Conçu et programmé par Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphismes : Simon Foster
@@ -861,13 +861,13 @@ STR_0854    :{WINDOW_COLOUR_2}Enregistrement sons additionnels : David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Représentation : Jacqui Lyons, Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Remerciements :
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth, et John Wardley
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -2868,7 +2868,7 @@ STR_2856    :{WINDOW_COLOUR_2}Didacticiel
 STR_2857    :{WINDOW_COLOUR_2}(Appuyez sur une touche ou un bouton de la souris pour essayer vous-même)
 STR_2858    :Impossible de commencer campagne marketing...
 STR_2859    :Une session de RollerCoaster Tycoon 2 est déjà ouverte
-STR_2860    :Crédits Infogrames Interactive...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Sous licence d'Infogrames Interactive Inc.
 STR_2862    :Remerciements musique...
 STR_2863    :Remerciements musique
@@ -2916,29 +2916,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic :   (Allister Brimble) copyright {C
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture :   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams :   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor :   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Producteur en chef :  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Producteur exécutif :  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Chef produit marketing senior :  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}Vice-Président développement produit :  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}Directeur général :  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Directeur assurance qualité :  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Directeur certification AQ :  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Responsable certification AQ :  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Testeurs :  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Directeur marketing :  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Responsable services création :  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Responsable services rédaction & documentation :  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Infographiste :  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Rédacteur publicitaire :  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Remerciements à :  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Ingénieur :  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Responsable services ingénierie : Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Responsable compatibilité :  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Analystes compatibilité :  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Responsable tests :  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Testeur senior :  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3384,7 +3384,7 @@ STR_3372    :{BLACK}= D.A.B.
 STR_3373    :{BLACK}= Toilettes
 STR_3374    :Attention : Trop d'objets sélectionnés !
 STR_3375    :Certains objets dans ce groupe de décor n'ont pas pu être sélectionnés
-STR_3376    :Installer un nouveau modèle de circuit...
+STR_3376    :Installer nouveau...
 STR_3377    :{SMALLFONT}{BLACK}Installe un fichier qui contient un nouveau modèle de circuit
 STR_3378    :Installer
 STR_3379    :Annuler
@@ -4432,6 +4432,12 @@ STR_6117    :Les visiteurs sont assis dans des trains confortables avec des cein
 STR_6118    :Des montagnes russes calmes pour les gens qui n'ont pas le courage de parcourir les plus imposants
 STR_6119    :Des montagnes russes peu cher et facile à construire, mais avec une hauteur limitée
 STR_6120    :{BABYBLUE}Nouveau véhicule disponible pour {STRINGID}:{NEWLINE}{STRINGID}
+STR_6135    :Le client a envoyé une requête invalide
+STR_6136    :Le serveur a envoyé une requête invalide
+STR_6137    :OpenRCT2, un client gratuit et open source de RollerCoaster Tycoon 2.
+STR_6138    :OpenRCT2 est le fruit du travail de plusieurs d'auteurs, une liste complète est disponible dans le fichier {OPENQUOTES}contributors.md{ENDQUOTES}. Pour plus d'informations, visitez http://github.com/OpenRCT2/OpenRCT2
+STR_6139    :Tous les noms des produits et entreprises appartiennent à leurs propriétaires respectifs. L'utilisation de ces derniers n'implique pas d'affiliation ou d'approbation par eux.
+STR_6140    :Journal des changements...
 
 STR_6121    :{SMALLFONT}{BLACK}Etend les droits de propriété du parc jusqu'aux bords de la carte
 STR_6122    :Il n'y a pas assez de montagnes russes dans ce scénario !
@@ -4447,6 +4453,13 @@ STR_6131    :Source de l'objet
 STR_6132    :Ignorer le status de la recherche
 STR_6133    :{SMALLFONT}{BLACK}Accéder au décor et aux attractions qui ne sont pas encore inventés
 STR_6134    :Effacer le décor
+STR_6141    :Barre d'outils RCT1 en bas
+STR_6142    :{WINDOW_COLOUR_2}Nom du tracé : {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}Type d'attraction : {BLACK}{STRINGID}
+STR_6144    :Afficher visuels non valides (re-dessinés)
+STR_6145    :{SMALLFONT}{BLACK}Définir la limite de vitesse pour les propulseurs
+STR_6146    :Activer tous les pièces du tracé qui peuvent être dessinés
+STR_6147    :{SMALLFONT}{BLACK}Active toutes les pièces du tracé auquel le type d'attraction est capable dans la fenêtre de construction, peu importe que le véhicule les supportent ou non.
 
 #############
 # Scenarios #
