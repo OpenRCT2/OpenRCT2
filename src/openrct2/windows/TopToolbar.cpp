@@ -343,7 +343,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         toggle_footpath_window();
         break;
     case WIDX_CONSTRUCT_RIDE:
-        window_new_ride_open();
+        context_open_window(WC_CONSTRUCT_RIDE);
         break;
     case WIDX_RIDES:
         window_ride_list_open();
@@ -361,7 +361,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         context_open_window(WC_FINANCES);
         break;
     case WIDX_RESEARCH:
-        window_research_open();
+        context_open_window(WC_RESEARCH);
         break;
     case WIDX_NEWS:
         context_open_window(WC_RECENT_NEWS);

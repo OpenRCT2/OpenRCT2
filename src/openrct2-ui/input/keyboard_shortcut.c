@@ -373,7 +373,7 @@ static void shortcut_build_new_ride()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)) {
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-            window_new_ride_open();
+            context_open_window(WC_CONSTRUCT_RIDE);
         }
     }
 }
@@ -394,10 +394,7 @@ static void shortcut_show_research_information()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-        if (gConfigInterface.toolbar_show_research)
-            window_research_open();
-        else
-            window_new_ride_open_research();
+        context_open_window_view(WV_RIDE_RESEARCH);
     }
 }
 

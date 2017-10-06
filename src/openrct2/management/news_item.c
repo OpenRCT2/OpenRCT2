@@ -345,14 +345,11 @@ void news_item_open_subject(sint32 type, sint32 subject)
         break;
     case NEWS_ITEM_RESEARCH:
         if (subject >= RESEARCH_ENTRY_RIDE_MASK) {
-            // Open ride list window
-            window_new_ride_open();
-
-            // Switch to right tab and scroll to ride location
-            ride_list_item rideItem;
-            rideItem.type = subject >> 8;
-            rideItem.entry_index = subject & 0xFF;
-            window_new_ride_focus(rideItem);
+            Intent * intent = intent_create(INTENT_ACTION_NEW_RIDE_OF_TYPE);
+            intent_set_sint(intent, INTENT_EXTRA_RIDE_TYPE, subject >> 8);
+            intent_set_sint(intent, INTENT_EXTRA_RIDE_ENTRY_INDEX, subject & 0xFF);
+            context_open_intent(intent);
+            intent_release(intent);
             break;
         }
 

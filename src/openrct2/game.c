@@ -1191,7 +1191,11 @@ void game_load_init()
     }
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();
-    window_new_ride_init_vars();
+
+    Intent * intent = intent_create(INTENT_ACTION_REFRESH_NEW_RIDES);
+    context_broadcast_intent(intent);
+    intent_release(intent);
+
     gWindowUpdateTicks = 0;
 
     load_palette();
@@ -1477,7 +1481,6 @@ void game_init_all(sint32 mapSize)
     gNextGuestNumber = 1;
 
     context_init();
-    window_new_ride_init_vars();
     scenery_set_default_placement_configuration();
     window_tile_inspector_clear_clipboard();
     load_palette();

@@ -469,7 +469,10 @@ namespace Editor
         window_invalidate(w);
         reset_all_sprite_quadrant_placements();
         scenery_set_default_placement_configuration();
-        window_new_ride_init_vars();
+
+        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+        context_broadcast_intent(&intent);
+
         gWindowUpdateTicks = 0;
         load_palette();
         window_tile_inspector_clear_clipboard();

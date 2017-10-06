@@ -14,13 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../game.h"
-#include "../localisation/localisation.h"
-#include "../interface/widget.h"
-#include "../management/news_item.h"
-#include "../sprites.h"
-#include "../world/scenery.h"
-#include "dropdown.h"
+#include <openrct2-ui/windows/Window.h>
+
+#include <openrct2/game.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/management/news_item.h>
+#include <openrct2/sprites.h>
+#include <openrct2/world/scenery.h>
+#include <openrct2/windows/dropdown.h>
 
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,
@@ -228,7 +230,7 @@ static void window_research_set_page(rct_window *w, sint32 page);
 static void window_research_set_pressed_tab(rct_window *w);
 static void window_research_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w);
 
-void window_research_open()
+rct_window * window_research_open()
 {
     rct_window *w;
 
@@ -257,6 +259,8 @@ void window_research_open()
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
     window_init_scroll_widgets(w);
+
+    return w;
 }
 
 #pragma region Development page

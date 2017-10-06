@@ -1148,7 +1148,10 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             gSilentResearch = false;
         }
         scenery_set_default_placement_configuration();
-        window_new_ride_init_vars();
+
+        Intent * intent = intent_create(INTENT_ACTION_REFRESH_NEW_RIDES);
+        context_broadcast_intent(intent);
+        intent_release(intent);
 
         gWindowUpdateTicks = 0;
         gfx_invalidate_screen();
