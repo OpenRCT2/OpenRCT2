@@ -227,11 +227,13 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     max_height *= 8;
 
+#ifndef __TESTPAINT__
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
         max_height = Math::Max(max_height, gMapVirtualFloorHeight);
     }
+#endif // __TESTPAINT__
 
     dx -= max_height + 32;
 
@@ -328,10 +330,12 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->MapPosition = dword_9DE574;
     } while (!tile_element_is_last_for_tile(tile_element++));
 
+#ifndef __TESTPAINT__
     if (partOfVirtualFloor)
     {
         virtual_floor_paint(session);
     }
+#endif // __TESTPAINT__
 
     if (!gShowSupportSegmentHeights) {
         return;
