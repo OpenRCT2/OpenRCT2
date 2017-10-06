@@ -4736,12 +4736,17 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
 
 void map_set_virtual_floor_height(sint16 height)
 {
-    if (gMapVirtualFloorHeight != height && input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
     {
-        map_invalidate_virtual_floor_tiles();
+        // If the modifiers are not set we do not actually care as the floor is invisible.
+        return;
     }
 
-    gMapVirtualFloorHeight      = height;
+    if (gMapVirtualFloorHeight != height)
+    {
+        map_invalidate_virtual_floor_tiles();
+        gMapVirtualFloorHeight      = height;
+    }
 }
 
 void map_remove_virtual_floor()
