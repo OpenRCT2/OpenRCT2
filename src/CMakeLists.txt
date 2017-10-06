@@ -1,0 +1,9 @@
+set(OPENRCT2_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}")
+
+add_subdirectory(openrct2)
+add_subdirectory(openrct2-cli)
+add_subdirectory(openrct2-ui)
+if(WIN32)
+    add_subdirectory(openrct2-dll)
+    add_subdirectory(openrct2-win)
+endif()

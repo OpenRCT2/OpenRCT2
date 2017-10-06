@@ -4,18 +4,21 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
     message(FATAL_ERROR "Building in-source is not supported! Create a build dir and remove ${CMAKE_SOURCE_DIR}/CMakeCache.txt")
 endif()
 
-project(openrct2)
+project(openrct2 VERSION 0.1.5 LANGUAGES C CXX)
 
-include(FindPkgConfig)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+file(COPY data DESTINATION bin)
+
+if(NOT WIN32)
+    find_package(PkgConfig)
+endif()
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 
-set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 set(CMAKE_MACOSX_RPATH 1)
 
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip")
-set(TITLE_SEQUENCE_SHA1 "b587d83de508d0b104d14c599b76f8565900fce0")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -25,7 +28,7 @@ option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." 
 # Define current git branch
 execute_process(
     COMMAND git rev-parse --abbrev-ref HEAD
-    WORKING_DIRECTORY ${ROOT_DIR}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_VARIABLE OPENRCT2_BRANCH
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
@@ -35,7 +38,7 @@ add_definitions(-DOPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
 # Define commit hash
 execute_process(
     COMMAND git rev-parse HEAD
-    WORKING_DIRECTORY ${ROOT_DIR}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_VARIABLE OPENRCT2_COMMIT_SHA1
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
@@ -45,7 +48,7 @@ add_definitions(-DOPENRCT2_COMMIT_SHA1="${OPENRCT2_COMMIT_SHA1}")
 # Define short commit hash
 execute_process(
     COMMAND git rev-parse --short HEAD
-    WORKING_DIRECTORY ${ROOT_DIR}
+    WORKING_DIRECTORY ${PROJECT_SOURCE_DIR}
     OUTPUT_VARIABLE OPENRCT2_COMMIT_SHA1_SHORT
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
@@ -65,29 +68,30 @@ function (ADD_CHECK_C_COMPILER_FLAG _CFLAGS _CACHE_VAR _FLAG)
     endif ()
 endfunction ()
 
-function (ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
+function(ADD_CHECK_CXX_COMPILER_FLAG _CXXFLAGS _CACHE_VAR _FLAG)
     CHECK_CXX_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
     if (${_CACHE_VAR})
         set(${_CXXFLAGS} "${${_CXXFLAGS}} ${_FLAG}" PARENT_SCOPE)
     else ()
         message(STATUS "Unsupported CXXFLAG: ${_FLAG}")
     endif ()
-endfunction ()
+endfunction()
+
+include(flags.cmake)
+include(extern.cmake)
 
 # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
-ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
-ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
-if (MINGW)
+# ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wsuggest-override)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_DUPLICATED_COND -Wduplicated-cond)
+# ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NON_VIRTUAL_DTOR -Wnon-virtual-dtor)
+if(MINGW)
     ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_OVERRIDE -Wno-error=redundant-decls)
-endif ()
+endif()
 
 # Items below are not supported by ICC
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_REDUNDANT_DECLS -Wredundant-decls)
@@ -104,32 +108,39 @@ ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-ov
 
 
 # Include sub-projects
-include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
-include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
-include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
+add_subdirectory(src)
+# include("${PROJECT_SOURCE_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
+# include("${PROJECT_SOURCE_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
+# include("${PROJECT_SOURCE_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 
 # g2
+set(g2_dat "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/g2.dat")
 add_custom_command(
-    OUTPUT g2.dat
-    COMMAND ./openrct2 sprite build ${CMAKE_BINARY_DIR}/g2.dat ${ROOT_DIR}/resources/g2/sprites.json
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
-)
-add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
+    OUTPUT "${g2_dat}"
+    COMMAND $<TARGET_FILE:openrct2-cli> sprite build
+        "${g2_dat}"
+        ${PROJECT_SOURCE_DIR}/resources/g2/sprites.json
+    DEPENDS
+        openrct2-cli
+        resources/g2/sprites.json
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
+    )
+add_custom_target(g2 ALL DEPENDS ${PROJECT} "${g2_dat}")
 
 # Include tests
 if (WITH_TESTS)
     enable_testing()
     if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
-        include("${ROOT_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
+        include("${PROJECT_SOURCE_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
     endif ()
-    include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
+    include("${PROJECT_SOURCE_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
 endif ()
 
 # Install
 # Don't recurse, grab all *.txt and *.md files
-file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
-list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
-                      "${ROOT_DIR}/licence.txt")
+file(GLOB DOC_FILES "${PROJECT_SOURCE_DIR}/distribution/*.txt")
+list(APPEND DOC_FILES "${PROJECT_SOURCE_DIR}/contributors.md"
+                      "${PROJECT_SOURCE_DIR}/licence.txt")
 
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
@@ -139,6 +150,7 @@ IF (DOWNLOAD_TITLE_SEQUENCES)
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
     install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)")
 endif ()
+return()
 if (WIN32)
     install(TARGETS "libopenrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
                                   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")

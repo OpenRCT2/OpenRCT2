@@ -63,24 +63,23 @@ else (SYSTEM_GTEST)
         add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
         set(GTEST_LIBRARIES gtest gtest_main pthread)
-
 endif (SYSTEM_GTEST)
 
 include_directories(SYSTEM ${GTEST_INCLUDE_DIRS})
-include_directories("${ROOT_DIR}/src")
+include_directories("${PROJECT_SOURCE_DIR}/src")
 include_directories(${SDL2_INCLUDE_DIRS})
 
 # Some most common files required in tests
 set(COMMON_TEST_SOURCES
-    "${ROOT_DIR}/src/openrct2/core/Console.cpp"
-    "${ROOT_DIR}/src/openrct2/core/Diagnostics.cpp"
-    "${ROOT_DIR}/src/openrct2/core/Guard.cpp"
-    "${ROOT_DIR}/src/openrct2/core/String.cpp"
-    "${ROOT_DIR}/src/openrct2/diagnostic.c"
-    "${ROOT_DIR}/src/openrct2/localisation/format_codes.c"
-    "${ROOT_DIR}/src/openrct2/localisation/utf8.c"
-    "${ROOT_DIR}/src/openrct2/util/util.c"
-    "${ROOT_DIR}/src/openrct2/Version.cpp"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/core/Console.cpp"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/core/Diagnostics.cpp"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/core/Guard.cpp"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/core/String.cpp"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/diagnostic.c"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/localisation/format_codes.c"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/localisation/utf8.c"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/util/util.c"
+    "${PROJECT_SOURCE_DIR}/src/openrct2/Version.cpp"
     )
 
 # Create a re-usable library to save some compilation time
@@ -102,9 +101,9 @@ endif ()
 
 set(SAWYERCODING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/sawyercoding_test.cpp"
-        "${ROOT_DIR}/src/openrct2/diagnostic.c"
-        "${ROOT_DIR}/src/openrct2/util/sawyercoding.c"
-        "${ROOT_DIR}/src/openrct2/localisation/utf8.c"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/diagnostic.c"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/util/sawyercoding.c"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/localisation/utf8.c"
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES})
@@ -113,7 +112,7 @@ add_test(NAME sawyercoding COMMAND test_sawyercoding)
 # LanguagePack test
 set(LANGUAGEPACK_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/LanguagePackTest.cpp"
-        "${ROOT_DIR}/src/openrct2/localisation/LanguagePack.cpp"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/localisation/LanguagePack.cpp"
         )
 add_executable(test_languagepack ${LANGUAGEPACK_TEST_SOURCES})
 if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
@@ -127,10 +126,10 @@ add_test(NAME languagepack COMMAND test_languagepack)
 set(INI_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/IniWriterTest.cpp"
         "${CMAKE_CURRENT_LIST_DIR}/IniReaderTest.cpp"
-        "${ROOT_DIR}/src/openrct2/config/IniReader.cpp"
-        "${ROOT_DIR}/src/openrct2/config/IniWriter.cpp"
-        "${ROOT_DIR}/src/openrct2/core/IStream.cpp"
-        "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/config/IniReader.cpp"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/config/IniWriter.cpp"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/core/IStream.cpp"
+        "${PROJECT_SOURCE_DIR}/src/openrct2/core/MemoryStream.cpp"
         )
 add_executable(test_ini ${INI_TEST_SOURCES})
 target_link_libraries(test_ini ${GTEST_LIBRARIES} test-common ${LDL} z)
@@ -156,7 +155,7 @@ set(MULTILAUNCH_TEST_SOURCES "${CMAKE_CURRENT_LIST_DIR}/MultiLaunch.cpp"
                              "${CMAKE_CURRENT_LIST_DIR}/TestData.cpp")
 add_executable(test_multilaunch ${MULTILAUNCH_TEST_SOURCES})
 target_link_libraries(test_multilaunch ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
-    
+
 if (NOT DISABLE_RCT2_TESTS)
     add_test(NAME ride_ratings COMMAND test_ride_ratings)
     add_test(NAME multilaunch COMMAND test_multilaunch)
