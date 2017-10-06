@@ -39,6 +39,7 @@ namespace OpenRCT2
             virtual rct_window * OpenView(uint8 view) abstract;
             virtual rct_window * OpenDetails(uint8 type, sint32 id) abstract;
             virtual rct_window * OpenIntent(Intent * intent) abstract;
+            virtual void BroadcastIntent(Intent * intent) abstract;
             virtual rct_window * ShowError(rct_string_id title, rct_string_id message) abstract;
 
             virtual void HandleKeyboard(bool isTitle) abstract;

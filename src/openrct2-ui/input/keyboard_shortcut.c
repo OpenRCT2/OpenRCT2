@@ -457,7 +457,7 @@ static void shortcut_show_map()
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)
         if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
-            window_map_open();
+            context_open_window(WC_MAP);
 }
 
 static void shortcut_screenshot()

@@ -420,7 +420,10 @@ void map_init(sint32 size)
     map_update_tile_pointers();
     map_remove_out_of_range_elements();
 
-    window_map_reset();
+
+    Intent * intent = intent_create(INTENT_ACTION_MAP);
+    context_broadcast_intent(intent);
+    intent_release(intent);
 }
 
 /**

@@ -60,6 +60,10 @@ extern "C" {
         INTENT_EXTRA_TRACK_DESIGN,
     };
 
+    enum {
+        INTENT_ACTION_MAP,
+    };
+
     Intent *intent_create(rct_windowclass clss);
     void intent_release(Intent * intent);
     void intent_set_string(Intent *, uint32 key, utf8string value);

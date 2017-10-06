@@ -90,3 +90,6 @@ rct_window * window_loadsave_open(sint32 type, const char *defaultName);
 void window_loadsave_set_loadsave_callback(loadsave_callback cb);
 rct_window * window_track_place_open(const struct track_design_file_ref *tdFileRef);
 rct_window * window_track_manage_open(struct track_design_file_ref *tdFileRef);
+
+rct_window * window_map_open();
+void window_map_reset();
