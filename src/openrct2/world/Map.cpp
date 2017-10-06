@@ -4757,3 +4757,39 @@ void map_invalidate_virtual_floor_tiles()
 {
     // TODO: invalidate tiles covered by the current virtual floor
 }
+
+bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
+{
+    // We only show when the placement modifier keys are active
+    if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    {
+        return false;
+    }
+
+    // Check if map selection (usually single tiles) are enabled
+    //  and if the current tile is near or on them
+    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) &&
+        x >= gMapSelectPositionA.x - gMapVirtualFloorBaseSize &&
+        y >= gMapSelectPositionA.y - gMapVirtualFloorBaseSize &&
+        x <= gMapSelectPositionB.x + gMapVirtualFloorBaseSize &&
+        y <= gMapSelectPositionB.y + gMapVirtualFloorBaseSize)
+    {
+        return true;
+    }
+    else if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    {
+        // Check if we are anywhere near the selection tiles (larger scenery / rides)
+        for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
+        {
+            if (x >= tile->x - gMapVirtualFloorBaseSize &&
+                y >= tile->y - gMapVirtualFloorBaseSize &&
+                x <= tile->x + gMapVirtualFloorBaseSize &&
+                y <= tile->y + gMapVirtualFloorBaseSize)
+            {
+                return true;
+            }
+        }
+    }
+
+    return false;
+}

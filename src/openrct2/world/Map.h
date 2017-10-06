@@ -462,6 +462,7 @@ bool tile_element_check_address(const rct_tile_element * const element);
 void map_set_virtual_floor_height(sint16 height);
 void map_remove_virtual_floor();
 void map_invalidate_virtual_floor_tiles();
+bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y);
 
 typedef sint32 (CLEAR_FUNC)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);

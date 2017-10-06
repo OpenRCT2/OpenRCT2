@@ -152,6 +152,11 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8 rotation = get_current_rotation();
 
+    bool partOfVirtualFloor = false;
+#ifndef __TESTPAINT__
+    partOfVirtualFloor = map_tile_is_part_of_virtual_floor(session->MapPosition.x, session->MapPosition.y);
+#endif // __TESTPAINT__
+
     /* Check if the first (lowest) tile_element is below the clip
      * height. */
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) {
@@ -221,6 +226,12 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     }
 
     max_height *= 8;
+
+    if (partOfVirtualFloor)
+    {
+        // We must pretend this tile is at least as tall as the virtual floor
+        max_height = Math::Max(max_height, gMapVirtualFloorHeight);
+    }
 
     dx -= max_height + 32;
 
@@ -317,7 +328,10 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->MapPosition = dword_9DE574;
     } while (!tile_element_is_last_for_tile(tile_element++));
 
-    virtual_floor_paint(session);
+    if (partOfVirtualFloor)
+    {
+        virtual_floor_paint(session);
+    }
 
     if (!gShowSupportSegmentHeights) {
         return;
