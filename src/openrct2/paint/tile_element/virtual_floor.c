@@ -113,46 +113,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
 
 void virtual_floor_paint(paint_session * session)
 {
-    // We only show when the placement modifier keys are active
-    if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
-    {
-        return;
-    }
-
     uint8   direction   = get_current_rotation();
-
-    bool    show        = false;
-
-    // Check if map selection (usually single tiles) are enabled
-    //  and if the current tile is near or on them
-    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) &&
-        session->MapPosition.x >= gMapSelectPositionA.x - gMapVirtualFloorBaseSize &&
-        session->MapPosition.y >= gMapSelectPositionA.y - gMapVirtualFloorBaseSize &&
-        session->MapPosition.x <= gMapSelectPositionB.x + gMapVirtualFloorBaseSize &&
-        session->MapPosition.y <= gMapSelectPositionB.y + gMapVirtualFloorBaseSize)
-    {
-        show = true;
-    }
-    else if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
-    {
-        // Check if we are anywhere near the selection tiles (larger scenery / rides)
-        for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
-        {
-            if (session->MapPosition.x >= tile->x - gMapVirtualFloorBaseSize &&
-                session->MapPosition.y >= tile->y - gMapVirtualFloorBaseSize &&
-                session->MapPosition.x <= tile->x + gMapVirtualFloorBaseSize &&
-                session->MapPosition.y <= tile->y + gMapVirtualFloorBaseSize)
-            {
-                show = true;
-                break;
-            }
-        }
-    }
-
-    if (!show)
-    {
-        return;
-    }
 
     // This is a virtual floor, so no interactions
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
