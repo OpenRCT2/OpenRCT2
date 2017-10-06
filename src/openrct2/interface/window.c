@@ -38,6 +38,9 @@
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
 #define RCT2_NEW_WINDOW         (gWindowNextSlot)
 
+// The amount of pixels to scroll per wheel click
+#define WINDOW_SCROLL_PIXELS    17
+
 rct_window g_window_list[WINDOW_LIMIT_MAX + WINDOW_LIMIT_RESERVED];
 rct_window * gWindowFirst;
 rct_window * gWindowNextSlot = NULL;
@@ -78,6 +81,8 @@ float window_scroll_locations[][2] = {
     {0.125f,    0.875f},
     {0.125f,    0.125f},
 };
+
+static sint32 _previousAbsoluteWheel = 0;
 
 static bool window_fits_between_others(sint32 x, sint32 y, sint32 width, sint32 height);
 static void window_all_wheel_input();
@@ -298,28 +303,13 @@ static bool window_other_wheel_input(rct_window *w, rct_widgetindex widgetIndex,
 static void window_all_wheel_input()
 {
     // Get wheel value
-    sint32 raw = context_get_cursor_state()->wheel;
-    sint32 wheel = 0;
-    while (1) {
-        raw -= 120;
-        if (raw < 0)
-            break;
-        wheel -= 17;
-    }
-    raw += 120;
-    while (1) {
-        raw += 120;
-        if (raw > 0)
-            break;
-        wheel += 17;
-    }
-    raw -= 120;
-
-    // TODO do something about this hack
     CursorState * cursorState = (CursorState *)context_get_cursor_state();
-    cursorState->wheel = raw;
+    sint32 absolute_wheel = cursorState->wheel;
+    sint32 relative_wheel = absolute_wheel - _previousAbsoluteWheel;
+    sint32 pixel_scroll = relative_wheel * WINDOW_SCROLL_PIXELS;
+    _previousAbsoluteWheel = absolute_wheel;
 
-    if (wheel == 0)
+    if (relative_wheel == 0)
         return;
 
     // Check window cursor is over
@@ -328,7 +318,7 @@ static void window_all_wheel_input()
         if (w != NULL) {
             // Check if main window
             if (w->classification == WC_MAIN_WINDOW || w->classification == WC_VIEWPORT) {
-                window_viewport_wheel_input(w, wheel);
+                window_viewport_wheel_input(w, relative_wheel);
                 return;
             }
 
@@ -340,17 +330,17 @@ static void window_all_wheel_input()
                     sint32 scrollIndex = window_get_scroll_index(w, widgetIndex);
                     rct_scroll *scroll =  &w->scrolls[scrollIndex];
                     if (scroll->flags & (HSCROLLBAR_VISIBLE | VSCROLLBAR_VISIBLE)) {
-                        window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), wheel);
+                        window_scroll_wheel_input(w, window_get_scroll_index(w, widgetIndex), pixel_scroll);
                         return;
                     }
                 } else {
-                    if (window_other_wheel_input(w, widgetIndex, wheel)) {
+                    if (window_other_wheel_input(w, widgetIndex, pixel_scroll)) {
                         return;
                     }
                 }
 
                 // Check other scroll views on window
-                if (window_wheel_input(w, wheel))
+                if (window_wheel_input(w, pixel_scroll))
                     return;
             }
         }

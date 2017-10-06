@@ -343,7 +343,7 @@ public:
                     console_scroll(e.wheel.y * 3); // Scroll 3 lines at a time
                     break;
                 }
-                _cursorState.wheel += e.wheel.y * 128;
+                _cursorState.wheel -= e.wheel.y;
                 break;
             case SDL_MOUSEBUTTONDOWN:
             {
