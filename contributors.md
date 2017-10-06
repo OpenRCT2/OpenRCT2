@@ -91,6 +91,7 @@ The following people are not part of the project team, but have been contributin
 * Matthias Moninger (Zeh Matt)
 * Tomas Dittmann (Chaosmeister)
 * William Wallace (Willox)
+* Christian Friedrich Coors (ccoors)
 
 ## Toolchain
 * (Balletie) - macOS
