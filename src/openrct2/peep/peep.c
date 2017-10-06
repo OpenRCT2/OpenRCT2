@@ -7873,7 +7873,7 @@ void peep_set_map_tooltip(rct_peep *peep)
         set_map_tooltip_format_arg(6, rct_string_id, peep->name_string_idx);
         set_map_tooltip_format_arg(8, uint32, peep->id);
 
-        uint32 arg0, arg1;
+        uint32 arg0 = 0, arg1 = 0;
         get_arguments_from_action(peep, &arg0, &arg1);
         set_map_tooltip_format_arg(12, uint32, arg0);
         set_map_tooltip_format_arg(16, uint32, arg1);
@@ -7882,7 +7882,7 @@ void peep_set_map_tooltip(rct_peep *peep)
         set_map_tooltip_format_arg(2, rct_string_id, peep->name_string_idx);
         set_map_tooltip_format_arg(4, uint32, peep->id);
 
-        uint32 arg0, arg1;
+        uint32 arg0 = 0, arg1 = 0;
         get_arguments_from_action(peep, &arg0, &arg1);
         set_map_tooltip_format_arg(8, uint32, arg0);
         set_map_tooltip_format_arg(12, uint32, arg1);
