@@ -24,7 +24,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/ride_data.h"

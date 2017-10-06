@@ -27,6 +27,7 @@
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
 		4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */; };
 		4C93F1141F86728F00A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1121F86728F00A9330D /* Research.cpp */; };
+		4C93F1171F881F9C00A9330D /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1151F881F9C00A9330D /* Finance.cpp */; };
 		4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A51EFBDCCE00B88761 /* land_tool.c */; };
 		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
@@ -248,7 +249,6 @@
 		F76C86381EC4E88300FA49E2 /* user.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83E71EC4E7CC00FA49E2 /* user.c */; };
 		F76C863A1EC4E88300FA49E2 /* utf8.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83E91EC4E7CC00FA49E2 /* utf8.c */; };
 		F76C863B1EC4E88300FA49E2 /* award.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83EB1EC4E7CC00FA49E2 /* award.c */; };
-		F76C863D1EC4E88300FA49E2 /* finance.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83ED1EC4E7CC00FA49E2 /* finance.c */; };
 		F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83EF1EC4E7CC00FA49E2 /* marketing.c */; };
 		F76C86411EC4E88300FA49E2 /* news_item.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F11EC4E7CC00FA49E2 /* news_item.c */; };
 		F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83F61EC4E7CC00FA49E2 /* Http.cpp */; };
@@ -620,6 +620,8 @@
 		4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Screenshot.cpp; sourceTree = "<group>"; };
 		4C93F1121F86728F00A9330D /* Research.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
 		4C93F1131F86728F00A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
+		4C93F1151F881F9C00A9330D /* Finance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Finance.cpp; sourceTree = "<group>"; };
+		4C93F1161F881F9C00A9330D /* Finance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Finance.h; sourceTree = "<group>"; };
 		4CB832A51EFBDCCE00B88761 /* land_tool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = land_tool.c; sourceTree = "<group>"; };
 		4CB832A61EFBDCCE00B88761 /* land_tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_tool.h; sourceTree = "<group>"; };
 		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
@@ -1075,8 +1077,6 @@
 		F76C83E91EC4E7CC00FA49E2 /* utf8.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = utf8.c; sourceTree = "<group>"; };
 		F76C83EB1EC4E7CC00FA49E2 /* award.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = award.c; sourceTree = "<group>"; };
 		F76C83EC1EC4E7CC00FA49E2 /* award.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = award.h; sourceTree = "<group>"; };
-		F76C83ED1EC4E7CC00FA49E2 /* finance.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = finance.c; sourceTree = "<group>"; };
-		F76C83EE1EC4E7CC00FA49E2 /* finance.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = finance.h; sourceTree = "<group>"; };
 		F76C83EF1EC4E7CC00FA49E2 /* marketing.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = marketing.c; sourceTree = "<group>"; };
 		F76C83F01EC4E7CC00FA49E2 /* marketing.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = marketing.h; sourceTree = "<group>"; };
 		F76C83F11EC4E7CC00FA49E2 /* news_item.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = news_item.c; sourceTree = "<group>"; };
@@ -2073,8 +2073,8 @@
 			children = (
 				F76C83EB1EC4E7CC00FA49E2 /* award.c */,
 				F76C83EC1EC4E7CC00FA49E2 /* award.h */,
-				F76C83ED1EC4E7CC00FA49E2 /* finance.c */,
-				F76C83EE1EC4E7CC00FA49E2 /* finance.h */,
+				4C93F1151F881F9C00A9330D /* Finance.cpp */,
+				4C93F1161F881F9C00A9330D /* Finance.h */,
 				F76C83EF1EC4E7CC00FA49E2 /* marketing.c */,
 				F76C83F01EC4E7CC00FA49E2 /* marketing.h */,
 				F76C83F11EC4E7CC00FA49E2 /* news_item.c */,
@@ -3105,6 +3105,7 @@
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
+				4C93F1171F881F9C00A9330D /* Finance.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */,
 				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
@@ -3276,7 +3277,6 @@
 				F76C86381EC4E88300FA49E2 /* user.c in Sources */,
 				F76C863A1EC4E88300FA49E2 /* utf8.c in Sources */,
 				F76C863B1EC4E88300FA49E2 /* award.c in Sources */,
-				F76C863D1EC4E88300FA49E2 /* finance.c in Sources */,
 				C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */,
 				F76C863F1EC4E88300FA49E2 /* marketing.c in Sources */,
 				F76C86411EC4E88300FA49E2 /* news_item.c in Sources */,

@@ -22,7 +22,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../network/network.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"

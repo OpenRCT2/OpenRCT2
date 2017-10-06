@@ -22,7 +22,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
-#include "../management/finance.h"
+#include "../object_list.h"
 #include "../OpenRCT2.h"
 #include "../scenario/scenario.h"
 #include "../rct1.h"
@@ -32,8 +32,8 @@
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
 #include "news_item.h"
+#include "Finance.h"
 #include "Research.h"
-#include "../object_list.h"
 
 const sint32 _researchRate[] = {0, 160, 250, 400};
 

@@ -20,7 +20,7 @@
 #include "game.h"
 #include "interface/window.h"
 #include "localisation/localisation.h"
-#include "management/finance.h"
+#include "management/Finance.h"
 #include "network/network.h"
 #include "ride/station.h"
 #include "util/util.h"

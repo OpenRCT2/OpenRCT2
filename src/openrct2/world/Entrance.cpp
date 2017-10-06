@@ -24,7 +24,7 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../localisation/string_ids.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../ride/track.h"
 
 bool gParkEntranceGhostExists = false;

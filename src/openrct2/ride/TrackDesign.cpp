@@ -28,7 +28,7 @@
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
-#include "../management/finance.h"
+#include "../management/Finance.h"
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
