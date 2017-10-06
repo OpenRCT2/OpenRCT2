@@ -729,7 +729,9 @@ static void window_editor_object_selection_close(rct_window *w)
         gSilentResearch = false;
     }
     research_remove_non_separate_vehicle_types();
-    window_new_ride_init_vars();
+
+    auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+    context_broadcast_intent(&intent);
 
     visible_list_dispose();
 }

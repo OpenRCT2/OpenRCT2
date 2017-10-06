@@ -499,7 +499,8 @@ enum {
     WV_PARK_RATING,
     WV_PARK_OBJECTIVE,
     WV_PARK_GUESTS,
-    WV_FINANCES_RESEARCH
+    WV_FINANCES_RESEARCH,
+    WV_RIDE_RESEARCH,
 
 };
 
@@ -725,15 +726,9 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
 
 void window_maze_construction_update_pressed_widgets();
-rct_window *window_new_ride_open();
-rct_window *window_new_ride_open_research();
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();
-
-void window_research_open();
-void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
-void window_research_funding_page_paint(rct_window *w, rct_drawpixelinfo *dpi, rct_widgetindex baseWidgetIndex);
 
 void window_scenery_open();
 void window_tile_inspector_open();
@@ -750,9 +745,6 @@ void window_editor_object_selection_open();
 void window_bubble_list_item(rct_window* w, sint32 item_position);
 
 void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );
-
-void window_new_ride_init_vars();
-void window_new_ride_focus(ride_list_item rideItem);
 
 void window_map_tooltip_update_visibility();
 

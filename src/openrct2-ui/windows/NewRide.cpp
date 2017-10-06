@@ -14,25 +14,26 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
-#include "../OpenRCT2.h"
-#include "../ride/RideGroupManager.h"
-#include "../ride/TrackDesignRepository.h"
-#include "../core/Util.hpp"
-#include "../core/Math.hpp"
-#include "../Context.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../game.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../management/news_item.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
-#include "../ride/track_data.h"
-#include "../sprites.h"
-#include "../util/util.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/network/network.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/Context.h>
+#include <openrct2/audio/audio.h>
+#include <openrct2/game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/management/news_item.h>
+#include <openrct2/rct1.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/track_data.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];

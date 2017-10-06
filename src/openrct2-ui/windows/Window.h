@@ -95,3 +95,12 @@ rct_window * window_track_manage_open(struct track_design_file_ref *tdFileRef);
 
 rct_window * window_map_open();
 void window_map_reset();
+
+rct_window * window_research_open();
+void window_research_development_page_paint(rct_window * w, rct_drawpixelinfo * dpi, rct_widgetindex baseWidgetIndex);
+void window_research_funding_page_paint(rct_window * w, rct_drawpixelinfo * dpi, rct_widgetindex baseWidgetIndex);
+
+rct_window * window_new_ride_open();
+rct_window * window_new_ride_open_research();
+void window_new_ride_init_vars();
+void window_new_ride_focus(ride_list_item rideItem);

@@ -430,7 +430,8 @@ private:
         window_invalidate(w);
         reset_sprite_spatial_index();
         reset_all_sprite_quadrant_placements();
-        window_new_ride_init_vars();
+        auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
+        context_broadcast_intent(&intent);
         scenery_set_default_placement_configuration();
         news_item_init_queue();
         load_palette();

@@ -222,7 +222,7 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
         reset_researched_ride_types_and_entries();
-        window_new_ride_open();
+        context_open_window(WC_CONSTRUCT_RIDE);
         gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
         gfx_invalidate_screen();
     } else {

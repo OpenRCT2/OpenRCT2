@@ -58,10 +58,14 @@ extern "C" {
         INTENT_EXTRA_LOADSAVE_TYPE,
         INTENT_EXTRA_CALLBACK,
         INTENT_EXTRA_TRACK_DESIGN,
+        INTENT_EXTRA_RIDE_TYPE,
+        INTENT_EXTRA_RIDE_ENTRY_INDEX,
     };
 
     enum {
         INTENT_ACTION_MAP,
+        INTENT_ACTION_NEW_RIDE_OF_TYPE,
+        INTENT_ACTION_REFRESH_NEW_RIDES,
     };
 
     Intent *intent_create(rct_windowclass clss);
