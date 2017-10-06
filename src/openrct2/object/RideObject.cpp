@@ -359,18 +359,18 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     // Determines the ride group. Will fall back to 0 if there is none found.
     uint8 rideGroupIndex = 0;
 
-    const ride_group * rideGroup = get_ride_group(rideTypeIdx, (rct_ride_entry *)&_legacyType);
+    const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideTypeIdx, (rct_ride_entry *)&_legacyType);
 
     // If the ride group is nullptr, the track type does not have ride groups.
     if (rideGroup != nullptr)
     {
         for (uint8 i = rideGroupIndex + 1; i < MAX_RIDE_GROUPS_PER_RIDE_TYPE; i++)
         {
-            ride_group * irg = ride_group_find(rideTypeIdx, i);
+            const RideGroup * irg = RideGroupManager::RideGroupFind(rideTypeIdx, i);
 
             if (irg != nullptr)
             {
-                if (ride_groups_are_equal(irg, rideGroup))
+                if (RideGroupManager::RideGroupsAreEqual(irg, rideGroup))
                 {
                     rideGroupIndex = i;
                     break;

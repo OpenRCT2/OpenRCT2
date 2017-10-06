@@ -5742,8 +5742,8 @@ void ride_set_name_to_track_default(Ride *ride, rct_ride_entry * rideEntry)
         name_args.type_name = STR_HYPER_TWISTER_GROUP;
     }
     else if (ride_type_has_ride_groups(ride->type)) {
-        const ride_group * rideGroup = get_ride_group(ride->type, rideEntry);
-        name_args.type_name = rideGroup->naming.name;
+        const RideGroup * rideGroup = get_ride_group(ride->type, rideEntry);
+        name_args.type_name = rideGroup->Naming.name;
     } else {
         name_args.type_name = RideNaming[ride->type].name;
     }
@@ -5796,8 +5796,8 @@ rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
     }
 
     if (ride_type_has_ride_groups(rideType)) {
-        const ride_group * rideGroup = get_ride_group(rideType, rideEntry);
-        return rideGroup->naming;
+        const RideGroup * rideGroup = get_ride_group(rideType, rideEntry);
+        return rideGroup->Naming;
     }
     else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         return RideNaming[rideType];

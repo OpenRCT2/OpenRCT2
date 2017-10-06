@@ -192,7 +192,7 @@ public:
         return count;
     }
 
-    size_t GetCountForRideGroup(uint8 rideType, const ride_group * rideGroup) const override
+    size_t GetCountForRideGroup(uint8 rideType, const RideGroup * rideGroup) const override
     {
         size_t count = 0;
         const IObjectRepository * repo = GetObjectRepository();
@@ -206,9 +206,9 @@ public:
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
             uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
-            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+            const RideGroup * itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
-            if (itemRideGroup != nullptr && ride_groups_are_equal(itemRideGroup, rideGroup))
+            if (itemRideGroup != nullptr && RideGroupManager::RideGroupsAreEqual(itemRideGroup, rideGroup))
             {
                 count++;
             }
@@ -258,7 +258,7 @@ public:
         return refs.size();
     }
 
-    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, const ride_group * rideGroup) const override
+    size_t GetItemsForRideGroup(track_design_file_ref **outRefs, uint8 rideType, const RideGroup * rideGroup) const override
     {
         std::vector<track_design_file_ref> refs;
         const IObjectRepository * repo = GetObjectRepository();
@@ -272,9 +272,9 @@ public:
 
             const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
             uint8 rideGroupIndex = (ori != nullptr) ? ori->RideGroupIndex : 0;
-            ride_group * itemRideGroup = ride_group_find(rideType, rideGroupIndex);
+            const RideGroup * itemRideGroup = RideGroupManager::RideGroupFind(rideType, rideGroupIndex);
 
-            if (itemRideGroup != nullptr && ride_groups_are_equal(itemRideGroup, rideGroup))
+            if (itemRideGroup != nullptr && RideGroupManager::RideGroupsAreEqual(itemRideGroup, rideGroup))
             {
                 track_design_file_ref ref;
                 ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
@@ -426,7 +426,7 @@ extern "C"
         return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
     }
 
-    size_t track_repository_get_count_for_ride_group(uint8 rideType, const ride_group * rideGroup)
+    size_t track_repository_get_count_for_ride_group(uint8 rideType, const RideGroup * rideGroup)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetCountForRideGroup(rideType, rideGroup);
@@ -438,7 +438,7 @@ extern "C"
         return repo->GetItemsForObjectEntry(outRefs, rideType, String::ToStd(entry));
     }
 
-    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const ride_group * rideGroup)
+    size_t track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const RideGroup * rideGroup)
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         return repo->GetItemsForRideGroup(outRefs, rideType, rideGroup);

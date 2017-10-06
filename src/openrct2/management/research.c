@@ -197,7 +197,7 @@ void research_finish_item(sint32 entryIndex)
             // Determine if the ride group this entry belongs to was invented before.
             if (gConfigInterface.select_by_track_type && ride_type_has_ride_groups(base_ride_type))
             {
-                const ride_group * rideGroup = get_ride_group(base_ride_type, rideEntry);
+                const RideGroup * rideGroup = get_ride_group(base_ride_type, rideEntry);
 
                 if (ride_group_is_invented(rideGroup))
                 {
@@ -781,8 +781,8 @@ rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_rid
     {
         if (ride_type_has_ride_groups(trackType))
         {
-            const ride_group * rideGroup = get_ride_group(trackType, rideEntry);
-            return rideGroup->naming.name;
+            const RideGroup * rideGroup = get_ride_group(trackType, rideEntry);
+            return rideGroup->Naming.name;
         }
         else
         {
