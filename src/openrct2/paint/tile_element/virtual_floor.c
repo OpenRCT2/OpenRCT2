@@ -96,7 +96,7 @@ static void virtual_floor_get_tile_properties(sint16 x, sint16 y, sint16 height,
             elementType == TILE_ELEMENT_TYPE_BANNER)
         {
             sint32 direction = tile_element_get_direction(tileElement);
-            *outOccupiedEdges   |= 1 << ((direction + get_current_rotation()) % 4);
+            *outOccupiedEdges   |= 1 << direction;
             continue;
         }
 
@@ -129,6 +129,11 @@ void virtual_floor_paint(paint_session * session)
 
     virtual_floor_get_tile_properties(session->MapPosition.x, session->MapPosition.y, virtualFloorClipHeight, &weAreOccupied, &occupiedEdges, &weAreBelowGround, &weAreLit);
 
+    // Move the bits around to match the current rotation
+    occupiedEdges |= occupiedEdges << 4;
+    occupiedEdges >>= (4 - direction);
+    occupiedEdges &= 0x0F;
+
     // Try the four tiles next to us for the same parameters as above,
     //  if our parameters differ we set an edge towards that tile
     for (uint8 i = 0; i < 4; i++)
@@ -144,7 +149,7 @@ void virtual_floor_paint(paint_session * session)
 
         virtual_floor_get_tile_properties(theirLocationX, theirLocationY, virtualFloorClipHeight, &theyAreOccupied, &theirOccupiedEdges, &theyAreBelowGround, &theyAreLit);
 
-        if (theirOccupiedEdges & (1 << (effectiveRotation + 2) % 4))
+        if (theirOccupiedEdges & (1 << ((effectiveRotation + 2) % 4)))
         {
             occupiedEdges   |= 1 << i;
         }
