@@ -25,6 +25,7 @@
 #include "world/banner.h"
 #include "world/map.h"
 #include "world/sprite.h"
+#include "world/map_animation.h"
 
 #define RCT1_MAX_MAP_ELEMENTS         0xC000
 #define RCT1_MAX_SPRITES              5000
@@ -33,6 +34,7 @@
 #define RCT1_MAX_RIDES_IN_PARK        128
 #define RCT1_MAX_STAFF                116
 #define RCT1_RESEARCH_FLAGS_SEPARATOR 0xFF
+#define RCT1_MAX_ANIMATED_OBJECTS     1000
 
 typedef struct ParkLoadResult ParkLoadResult;
 
@@ -712,7 +714,7 @@ typedef struct rct1_s4 {
     uint16 view_y;
     uint8 view_zoom;
     uint8 view_rotation;
-    uint8 map_animations[6000];
+    rct_map_animation map_animations[RCT1_MAX_ANIMATED_OBJECTS];
     uint32 num_map_animations;
     uint8 unk_1CADBC[12];
     uint16 scrolling_text_step;
