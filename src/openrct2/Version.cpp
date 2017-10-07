@@ -25,12 +25,8 @@
 extern "C" {
 const char gVersionInfoFull[] =
     OPENRCT2_NAME ", v" OPENRCT2_VERSION
-#ifdef OPENRCT2_BRANCH
     "-" OPENRCT2_BRANCH
-#endif
-#ifdef OPENRCT2_COMMIT_SHA1_SHORT
     " build " OPENRCT2_COMMIT_SHA1_SHORT
-#endif
 #ifdef OPENRCT2_BUILD_SERVER
     " provided by " OPENRCT2_BUILD_SERVER
 #endif

@@ -103,3 +103,8 @@ if (CXX_WARN_SUGGEST_FINAL_METHODS)
     # Disable -Wsuggest-final-methods via pragmas where due.
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
+
+set_property(SOURCE Version.cpp APPEND PROPERTY COMPILE_DEFINITIONS
+    OPENRCT2_BRANCH=\"${OPENRCT2_BRANCH}\"
+    OPENRCT2_COMMIT_SHA1_SHORT=\"${OPENRCT2_SHA1_SHORT}\"
+    )
