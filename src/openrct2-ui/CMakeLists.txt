@@ -17,7 +17,7 @@ add_library(openrct2::ui ALIAS openrct2-ui)
 target_link_libraries(openrct2-ui PUBLIC openrct2::core)
 
 if(APPLE)
-    target_link_libraries(openrct2-ui "-framework Cocoa")
+    target_link_libraries(openrct2-ui PUBLIC "-framework Cocoa")
 endif()
 
 # Compiler flags
