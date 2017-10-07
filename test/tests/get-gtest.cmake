@@ -20,7 +20,9 @@ ExternalProject_Add(
     DEPENDS googletest-distribution
     DOWNLOAD_COMMAND ""
     SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
-    CMAKE_ARGS "-DCMAKE_CXX_FLAGS=${TARGET_M}"
+    CMAKE_ARGS
+        "-DCMAKE_CXX_FLAGS=${TARGET_M}"
+        "-Dgtest_force_shared_crt=TRUE"
     BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
     BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
     # Disable install step
@@ -48,4 +50,4 @@ set_property(TARGET ${GTEST_MAIN_LIBRARY} PROPERTY IMPORTED_LOCATION ${GTEST_MAI
 add_dependencies(${GTEST_LIBRARY} googletest)
 add_dependencies(${GTEST_MAIN_LIBRARY} ${GTEST_LIBRARY})
 
-set(GTEST_LIBRARIES gtest gtest_main pthread)
+set(GTEST_LIBRARIES gtest gtest_main Threads::Threads)

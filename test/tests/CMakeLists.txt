@@ -19,6 +19,7 @@ endif()
 function(add_orct2_test name)
     add_executable(test-${name} ${ARGN})
     target_link_libraries(test-${name} PRIVATE openrct2::core ${GTEST_LIBRARIES})
+    target_compile_definitions(test-${name} PRIVATE GTEST_LANG_CXX11)
     add_test(NAME ${name} COMMAND test-${name})
 endfunction()
 
