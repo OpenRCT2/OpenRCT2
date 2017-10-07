@@ -1,7 +1,7 @@
 include(FindPackageHandleStandardArgs)
 
 find_library(SPEEXDSP_LIBRARY NAMES libspeexdsp.a speexdsp)
-find_path(SPEEXDSP_INCLUDE_DIR speex/speex.h)
+find_path(SPEEXDSP_INCLUDE_DIR speex/speex_resampler.h)
 
 add_library(SpeexDSP::SpeexDSP IMPORTED UNKNOWN)
 
