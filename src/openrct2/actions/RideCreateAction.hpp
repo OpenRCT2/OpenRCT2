@@ -99,8 +99,8 @@ public:
 
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
         vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
-        if ((presetList->count == 255 && _colour2 != 255) ||
-            (presetList->count != 255 && _colour2 >= presetList->count))
+        if ((presetList->count > 0 && presetList->count != 255) &&
+            _colour2 >= presetList->count)
         {
             // FIXME: Add new error string.
             return std::make_unique<RideCreateGameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_TYPE);
