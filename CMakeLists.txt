@@ -31,26 +31,10 @@ include(git.cmake)
 include(options.cmake)
 include(flags.cmake)
 include(extern.cmake)
+include(sprites.cmake)
 
 # Include sub-projects
 add_subdirectory(src)
-# include("${PROJECT_SOURCE_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
-# include("${PROJECT_SOURCE_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
-# include("${PROJECT_SOURCE_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
-
-# g2
-set(g2_dat "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/g2.dat")
-add_custom_command(
-    OUTPUT "${g2_dat}"
-    COMMAND $<TARGET_FILE:openrct2-cli> sprite build
-        "${g2_dat}"
-        ${PROJECT_SOURCE_DIR}/resources/g2/sprites.json
-    DEPENDS
-        openrct2-cli
-        resources/g2/sprites.json
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
-    )
-add_custom_target(g2 ALL DEPENDS ${PROJECT} "${g2_dat}")
 
 # Include tests
 if (WITH_TESTS)
