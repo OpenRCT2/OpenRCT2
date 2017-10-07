@@ -175,7 +175,7 @@ if(NOT MSVC)
 endif()
 
 if(APPLE)
-    target_compile_options(openrtc2-flags INTERFACE -Wno-error=obj-method-access)
+    target_compile_options(openrtc2-flags-iface INTERFACE -Wno-error=obj-method-access)
 endif()
 
 # Enable dlopen on Unix systems
