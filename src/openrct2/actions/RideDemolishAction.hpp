@@ -76,6 +76,8 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
         }
 
+        // FIXME: ride_get_refund_price is a misleading name.
+        // It will remove all tracks and accumulates the refund price.
         sint32 refundPrice = ride_get_refund_price(_rideIndex);
 
         ride_clear_for_construction(_rideIndex);
