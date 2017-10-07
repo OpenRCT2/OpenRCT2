@@ -31,6 +31,7 @@
 - Fix: [#6331] Scenery costs nothing in track designs.
 - Fix: [#6360] Off-by-one filenames when exporting all sprites.
 - Fix: [#5585] Inconsistent zooming with mouse wheel.
+- Fix: [#6358] HTTP requests can point to invalid URL string.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
