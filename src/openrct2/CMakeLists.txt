@@ -66,6 +66,7 @@ endif ()
 
 # Outputs
 add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(openrct2::core ALIAS libopenrct2)
 target_link_libraries(libopenrct2 PUBLIC openrct2::flags)
 target_include_directories(libopenrct2 PUBLIC ${OPENRCT2_SOURCE_DIR})
 # Don't add a redundant library prefix
