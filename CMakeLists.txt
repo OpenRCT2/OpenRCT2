@@ -16,8 +16,6 @@ include(GNUInstallDirs)
 
 set(CMAKE_MACOSX_RPATH 1)
 
-set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip")
-
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
