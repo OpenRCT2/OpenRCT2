@@ -176,9 +176,6 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
         w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
-        w->colours[0] = COLOUR_LIGHT_BLUE;
-        w->colours[1] = COLOUR_LIGHT_BLUE;
-        w->colours[2] = COLOUR_LIGHT_BLUE;
     }
 
     w->no_list_items = 0;
