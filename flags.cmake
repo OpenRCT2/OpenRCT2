@@ -39,6 +39,21 @@ if(NOT MSVC)
         -Wmissing-declarations
         -Wnonnull
         -Wimplicit
+        -fstrict-overflow
+        )
+    set(maybe_flags
+        -Wno-error=date-time  # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
+        -Wno-error=write-strings
+        -Wno-error=redundant-decls
+        -Wredundant-decls
+        -Wignored-qualifiers
+        -Wnull-dereference
+        -Wsuggest-final-types
+        -Wsuggest-final-methods
+        -Wsuggest-override
+        -Wduplicated-cond
+        -Wnon-virtual-dtor
+        -Wstrict-overflow=1
         )
 else()
     set(required_flags
@@ -62,6 +77,7 @@ else()
         # Misc
         /utf-8
         )
+    set(maybe_flags)
 endif()
 
 foreach(flag IN LISTS required_flags)
@@ -74,6 +90,28 @@ foreach(flag IN LISTS required_flags)
     if(NOT "${${var}}")
         message(SEND_ERROR "Your compiler does not support compile flag: ${flag}")
     else()
+        target_compile_options(openrct2-flags-iface INTERFACE ${flag})
+    endif()
+endforeach()
+
+foreach(flag IN LISTS maybe_flags)
+    string(MAKE_C_IDENTIFIER "HAVE_FLAG_${flag}" var)
+    set(CMAKE_REQUIRED_QUIET TRUE)
+    set(first_check FALSE)
+    if(NOT DEFINED "${var}")
+        set(first_check TRUE)
+        set(msg "Checking support for compile flag: ${flag}")
+        message(STATUS "${msg}")
+    endif()
+    check_cxx_compiler_flag("${flag}" "${var}")
+    if(first_check)
+        if(NOT "${${var}}")
+            message(STATUS "${msg} - No")
+        else()
+            message(STATUS "${msg} - Yes")
+        endif()
+    endif()
+    if("${${var}}")
         target_compile_options(openrct2-flags-iface INTERFACE ${flag})
     endif()
 endforeach()
