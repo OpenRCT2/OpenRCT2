@@ -5457,6 +5457,10 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
  */
 sint32 ride_get_refund_price(sint32 ride_id)
 {
+    // NOTE: Currently only referenced by RideDemolishAction so we add the network flag
+    // to prevent another round trip from within the game action. This function can
+    // be replaced once we have game actions for track removal.
+
     uint8 oldpaused = gGamePaused;
     gGamePaused = 0;
     money32 refundPrice = 0;
@@ -5480,7 +5484,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
         if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
             money32 removePrice = game_do_command(
                 x,
-                GAME_COMMAND_FLAG_APPLY | (rotation << 8),
+                GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_NETWORKED | (rotation << 8),
                 y,
                 type | (map_element_get_track_sequence(it.element) << 8),
                 GAME_COMMAND_REMOVE_TRACK,
@@ -5498,7 +5502,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
         // Using GAME_COMMAND_FLAG_2 for below commands as a HACK to stop fences from being removed
         refundPrice += game_do_command(
             x,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (0 << 8),
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | GAME_COMMAND_FLAG_NETWORKED | (0 << 8),
             y,
             ride_id | (2 << 8),
             GAME_COMMAND_SET_MAZE_TRACK,
@@ -5507,7 +5511,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
 
         refundPrice += game_do_command(
             x,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | GAME_COMMAND_FLAG_NETWORKED | (1 << 8),
             y + 16,
             ride_id | (2 << 8),
             GAME_COMMAND_SET_MAZE_TRACK,
@@ -5516,7 +5520,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
 
         refundPrice += game_do_command(
             x + 16,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | GAME_COMMAND_FLAG_NETWORKED | (2 << 8),
             y + 16,
             ride_id | (2 << 8),
             GAME_COMMAND_SET_MAZE_TRACK,
@@ -5525,7 +5529,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
 
         refundPrice += game_do_command(
             x + 16,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | GAME_COMMAND_FLAG_NETWORKED | (3 << 8),
             y,
             ride_id | (2 << 8),
             GAME_COMMAND_SET_MAZE_TRACK,
