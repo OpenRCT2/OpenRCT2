@@ -96,7 +96,7 @@ std::string Intent::GetStringExtra(uint32 key)
 {
     if (_Data.count(key) == 0)
     {
-        return nullptr;
+        return std::string {};
     }
 
     auto data = _Data.at(key);
