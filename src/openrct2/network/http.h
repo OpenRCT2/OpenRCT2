@@ -20,6 +20,7 @@
 #ifdef __cplusplus
 
 #ifndef DISABLE_HTTP
+#include <string>
 #include <jansson.h>
 #include "../common.h"
 
@@ -31,8 +32,8 @@ typedef enum http_data_type_T {
 
 typedef struct http_request_t {
     void *tag;
-    const char *method;
-    const char *url;
+    std::string method;
+    std::string url;
     http_data_type type = HTTP_DATA_NONE;
     size_t size;
     union {
