@@ -31,6 +31,7 @@ if(MSVC)
         IMPORTED_LOCATION "${lib_file}"
         INTERFACE_INCLUDE_DIRECTORIES "${includes}"
         )
+    add_dependencies(openrct2-deps-static get-deps)
     target_link_libraries(openrct2-deps-iface INTERFACE openrct2-deps-static)
 else()
     if(ENABLE_OPENGL)
