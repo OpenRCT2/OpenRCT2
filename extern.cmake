@@ -74,6 +74,11 @@ endif()
 if(ENABLE_NETWORK OR ENABLE_HTTP_TWITCH)
     # Link in libraries required for networking
     if(NOT MSVC)
+        if(APPLE)
+            # We have an alternative installation of OpenSSL for Apple, since
+            # CMake won't find it otherwise
+            set(OPENSSL_ROOT_DIR /usr/local/opt/openssl)
+        endif()
         find_package(OpenSSL REQUIRED)
         target_link_libraries(openrct2-flags-iface INTERFACE
             OpenSSL::SSL
