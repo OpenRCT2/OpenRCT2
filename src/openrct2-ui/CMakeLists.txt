@@ -11,7 +11,7 @@ if(APPLE)
     set_source_files_properties(${OPENRCT2_UI_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
 endif()
 
-# Outputs
+# Generate a static library with the UI code that can be linkined into a DLL or executable
 add_library(openrct2-ui STATIC ${OPENRCT2_UI_SOURCES} ${OPENRCT2_UI_M_SOURCES} ${OPENRCT2_UI_MM_SOURCES})
 add_library(openrct2::ui ALIAS openrct2-ui)
 target_link_libraries(openrct2-ui PUBLIC openrct2::core)
