@@ -8,7 +8,9 @@ project(openrct2 VERSION 0.1.5 LANGUAGES C CXX)
 
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 
+# Put all runtime binaries in <build>/bin
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
+# Copy data into the bin dir. This permits running easily out of the build directory.
 file(COPY data DESTINATION bin)
 
 include(CTest)
@@ -21,8 +23,12 @@ option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 
 if(DOWNLOAD_TITLE_SEQUENCES)
+    # Store the downloaded title sequences in the build dir. This lets us see
+    # the title sequences from a build-dir run as well.
     set(title_seq_dir "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/title")
+    # Just name one of the files that gets placed down
     set(sequence_file "${title_seq_dir}/openrct2.parkseq")
+    # Download is done in an external CMake script which we invoke
     add_custom_command(
         OUTPUT "${sequence_file}"
         COMMAND "${CMAKE_COMMAND}"
@@ -33,6 +39,7 @@ if(DOWNLOAD_TITLE_SEQUENCES)
         USES_TERMINAL
     )
     add_custom_target(get-title-sequences ALL DEPENDS "${sequence_file}")
+    # Install the directory we created during the download
     install(DIRECTORY "${title_seq_dir}" DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
 endif()
 
@@ -42,7 +49,7 @@ include(flags.cmake)
 include(extern.cmake)
 include(sprites.cmake)
 
-# Include sub-projects
+# Include the actual source directories
 add_subdirectory(src)
 
 # Include tests
@@ -54,7 +61,7 @@ if(BUILD_TESTING)
     add_subdirectory(test/tests)
 endif()
 
-# Install
+# Various files to install
 # Don't recurse, grab all *.txt and *.md files
 file(GLOB DOC_FILES "${PROJECT_SOURCE_DIR}/distribution/*.txt")
 list(APPEND DOC_FILES "${PROJECT_SOURCE_DIR}/contributors.md"
