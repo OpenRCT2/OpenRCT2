@@ -11,12 +11,7 @@ list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_LIST_DIR}/cmake")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 file(COPY data DESTINATION bin)
 
-if(NOT WIN32)
-    find_package(PkgConfig)
-endif()
 include(CTest)
-include(CheckCCompilerFlag)
-include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
 
 set(CMAKE_MACOSX_RPATH 1)
@@ -26,6 +21,22 @@ set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/do
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
+
+if(DOWNLOAD_TITLE_SEQUENCES)
+    set(title_seq_dir "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data/title")
+    set(sequence_file "${title_seq_dir}/openrct2.parkseq")
+    add_custom_command(
+        OUTPUT "${sequence_file}"
+        COMMAND "${CMAKE_COMMAND}"
+            "-DSCRATCH_DIR=${CMAKE_CURRENT_BINARY_DIR}"
+            "-DDEST=${title_seq_dir}"
+            -P "${PROJECT_SOURCE_DIR}/get-title-sequences.cmake"
+        COMMENT "Downloading title sequences"
+        USES_TERMINAL
+    )
+    add_custom_target(get-title-sequences ALL DEPENDS "${sequence_file}")
+    install(DIRECTORY "${title_seq_dir}" DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
+endif()
 
 include(git.cmake)
 include(options.cmake)
@@ -39,7 +50,7 @@ add_subdirectory(src)
 # Include tests
 if(BUILD_TESTING)
     enable_testing()
-    if(UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
+    if(UNIX AND NOT USE_MMAP AND ENABLE_RCT2)
         add_subdirectory(test/testpaint)
     endif()
     add_subdirectory(test/tests)
@@ -50,34 +61,10 @@ endif()
 file(GLOB DOC_FILES "${PROJECT_SOURCE_DIR}/distribution/*.txt")
 list(APPEND DOC_FILES "${PROJECT_SOURCE_DIR}/contributors.md"
                       "${PROJECT_SOURCE_DIR}/licence.txt")
-
-# CMake does not allow specifying a dependency chain which includes built-in
-# targets, like `install`, so we have to trick it and execute dependency ourselves.
-install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
-if(DOWNLOAD_TITLE_SEQUENCES)
-    install(CODE "file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)")
-    install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
-    install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)")
-endif()
-return()
-
-if(WIN32)
-    install(TARGETS "libopenrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                                  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-else()
-    if(PORTABLE)
-        install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                                      ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    else()
-        install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-                                      ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    endif()
-endif()
-install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
-install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
-install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
 install(FILES ${DOC_FILES} DESTINATION "${CMAKE_INSTALL_DOCDIR}")
+
+install(DIRECTORY "data/" DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")
+
 install(FILES "distribution/linux/openrct2.appdata.xml" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/metainfo")
 install(FILES "resources/logo/icon_x16.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/16x16/apps" RENAME "openrct2.png")
 install(FILES "resources/logo/icon_x24.png" DESTINATION "${CMAKE_INSTALL_DATAROOTDIR}/icons/hicolor/24x24/apps" RENAME "openrct2.png")

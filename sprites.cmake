@@ -13,3 +13,4 @@ add_custom_command(
     COMMENT "Generating g2.dat"
     )
 add_custom_target(g2 ALL DEPENDS ${PROJECT} "${g2_dat}")
+install(FILES "${g2_dat}" DESTINATION "${CMAKE_INSTALL_DATADIR}/${PROJECT_NAME}")

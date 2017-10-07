@@ -65,7 +65,7 @@ elseif (USE_MMAP)
 endif ()
 
 # Outputs
-add_library(libopenrct2 ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
+add_library(libopenrct2 STATIC ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${RCT2_SECTIONS})
 add_library(openrct2::core ALIAS libopenrct2)
 target_link_libraries(libopenrct2 PUBLIC openrct2::flags)
 target_include_directories(libopenrct2 PUBLIC ${OPENRCT2_SOURCE_DIR})
@@ -107,5 +107,5 @@ endif ()
 
 set_property(SOURCE Version.cpp APPEND PROPERTY COMPILE_DEFINITIONS
     OPENRCT2_BRANCH=\"${OPENRCT2_BRANCH}\"
-    OPENRCT2_COMMIT_SHA1_SHORT=\"${OPENRCT2_SHA1_SHORT}\"
+    OPENRCT2_COMMIT_SHA1_SHORT=\"${OPENRCT2_COMMIT_SHA1_SHORT}\"
     )
