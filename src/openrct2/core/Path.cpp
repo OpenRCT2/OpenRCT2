@@ -65,7 +65,7 @@ namespace Path
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
         auto lastPathSepIndex = Math::Max(
-            String::LastIndexOf(path, *PREFERRED_PATH_SEPARATOR),
+            String::LastIndexOf(path, *PATH_SEPARATOR),
             String::LastIndexOf(path, '/')
         );
         if (lastPathSepIndex < 0)
@@ -89,7 +89,7 @@ namespace Path
         const utf8 * lastPathSeperator = nullptr;
         for (const utf8 * ch = path; *ch != '\0'; ch++)
         {
-            if (*ch == *PREFERRED_PATH_SEPARATOR || *ch == '/')
+            if (*ch == *PATH_SEPARATOR || *ch == '/')
             {
                 lastPathSeperator = ch;
             }

@@ -743,7 +743,7 @@ extern "C"
                         return true;
                     }
 
-                    std::string message = String::StdFormat("Could not find %s" PREFERRED_PATH_SEPARATOR "Data" PREFERRED_PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
+                    std::string message = String::StdFormat("Could not find %s" PATH_SEPARATOR "Data" PATH_SEPARATOR "g1.dat at this path", installPath.c_str());
                     uiContext->ShowMessageBox(message);
                 }
             }

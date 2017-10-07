@@ -184,11 +184,11 @@ const char * PlatformEnvironment::FileNames[] =
     "objects.idx",          // CACHE_OBJECTS
     "tracks.idx",           // CACHE_TRACKS
     "scenarios.idx",        // CACHE_SCENARIOS
-    "RCTdeluxe_install" PREFERRED_PATH_SEPARATOR "Data" PREFERRED_PATH_SEPARATOR "mp.dat", // MP_DAT
+    "RCTdeluxe_install" PATH_SEPARATOR "Data" PATH_SEPARATOR "mp.dat", // MP_DAT
     "groups.json",          // NETWORK_GROUPS
     "servers.cfg",          // NETWORK_SERVERS
     "users.json",           // NETWORK_USERS
     "highscores.dat",       // SCORES
     "scores.dat",           // SCORES (LEGACY)
-    "Saved Games" PREFERRED_PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
+    "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
 };

@@ -43,7 +43,7 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
         log_fatal("failed to get path");
     }
     exePath[MAX_PATH - 1] = '\0';
-    char *exeDelimiter = strrchr(exePath, *PREFERRED_PATH_SEPARATOR);
+    char *exeDelimiter = strrchr(exePath, *PATH_SEPARATOR);
     if (exeDelimiter == NULL)
     {
         log_error("should never happen here");
