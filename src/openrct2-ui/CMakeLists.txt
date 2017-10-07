@@ -24,7 +24,7 @@ endif()
 if(WIN32)
     # mingw complains about "%zu" not being a valid format specifier for printf, unless we
     # tell it that it is
-    target_compile_definitions(openrct2-ui __USE_MINGW_ANSI_STDIO=1)
+    target_compile_definitions(openrct2-ui PUBLIC __USE_MINGW_ANSI_STDIO=1)
 endif()
 
 # Defines
