@@ -160,7 +160,17 @@ namespace OpenRCT2 { namespace Ui
                 std::string output;
                 if (Execute(cmd, &output) == 0)
                 {
-                    result = output;
+                	std::string pattern = desc.Filters[0].Pattern;
+                	std::string extension = pattern.substr(pattern.find_last_of('.'));	// Derive the extension from the first filter's pattern
+                	int dotPosition = output.size()-extension.size();					// Compute where the dot of the extension is supposed to be
+					if (output.substr(dotPosition, extension.size()).compare(extension) == 0)	// Check if the extension is present
+					{
+						result = output;												// If it is, the path is complete
+					}
+					else
+					{
+						result = output.append(extension);								// If not, append the extension
+					}
                 }
                 break;
             }
