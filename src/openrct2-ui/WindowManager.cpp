@@ -162,15 +162,15 @@ public:
         case WC_FIRE_PROMPT:
             return window_staff_fire_prompt_open((rct_peep*)intent->GetPointerExtra(INTENT_EXTRA_PEEP));
         case WC_INSTALL_TRACK:
-            return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH));
+            return window_install_track_open(intent->GetStringExtra(INTENT_EXTRA_PATH).c_str());
         case WC_GUEST_LIST:
             return window_guest_list_open_with_filter(intent->GetSIntExtra(INTENT_EXTRA_GUEST_LIST_FILTER), intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
         case WC_LOADSAVE:
         {
             uint32 type = intent->GetUIntExtra(INTENT_EXTRA_LOADSAVE_TYPE);
-            const utf8 *defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
+            std::string defaultName = intent->GetStringExtra(INTENT_EXTRA_PATH);
             loadsave_callback callback = (loadsave_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK);
-            rct_window *w = window_loadsave_open(type, defaultName);
+            rct_window *w = window_loadsave_open(type, defaultName.c_str());
             window_loadsave_set_loadsave_callback(callback);
 
             return w;

@@ -1,5 +1,6 @@
-#include "Intent.h"
+#include <utility>
 #include "../core/Guard.hpp"
+#include "Intent.h"
 
 Intent::Intent(rct_windowclass windowclass)
 {
@@ -39,10 +40,10 @@ Intent * Intent::putExtra(uint32 key, sint32 value)
     return this;
 }
 
-Intent * Intent::putExtra(uint32 key, utf8string value)
+Intent * Intent::putExtra(uint32 key, std::string value)
 {
     IntentData data = {};
-    data.stringVal = value;
+    data.stringVal = std::move(value);
     data.type = IntentData::DT_STRING;
 
     _Data.insert(std::make_pair(key, data));
@@ -91,7 +92,7 @@ sint32 Intent::GetSIntExtra(uint32 key)
     return data.intVal.signedInt;
 }
 
-utf8string Intent::GetStringExtra(uint32 key)
+std::string Intent::GetStringExtra(uint32 key)
 {
     if (_Data.count(key) == 0)
     {
@@ -121,7 +122,8 @@ extern "C" {
 
     void intent_set_string(Intent *intent, uint32 key, utf8string value)
     {
-        intent->putExtra(key, value);
+        std::string str { value };
+        intent->putExtra(key, str);
     }
 
     void intent_set_pointer(Intent *intent, uint32 key, void *value)
