@@ -33,6 +33,7 @@
 - Fix: [#5585] Inconsistent zooming with mouse wheel.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
+- Fix: Clear IME buffer after committing composed text.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: Load/save window now refreshes list if native file dialog is closed/cancelled.

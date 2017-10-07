@@ -80,6 +80,7 @@ void TextComposition::HandleMessage(const SDL_Event * e)
     case SDL_TEXTINPUT:
         // will receive an `SDL_TEXTINPUT` event when a composition is committed
         _imeActive = false;
+        _imeBuffer[0] = '\0';
         if (_session.Buffer != nullptr)
         {
             // HACK ` will close console, so don't input any text
