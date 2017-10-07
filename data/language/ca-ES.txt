@@ -851,7 +851,7 @@ STR_0845    :<removed string - do not use>
 STR_0846    :<removed string - do not use>
 STR_0847    :Quant a l'{LEFTGUILLEMET}OpenRCT2{RIGHTGUILLEMET}
 STR_0848    :RollerCoaster Tycoon 2
-STR_0849    :{WINDOW_COLOUR_2}Versió 2.01.028
+STR_0849    :<removed string - do not use>
 STR_0850    :{WINDOW_COLOUR_2}Copyright {COPYRIGHT} 2002 Chris Sawyer. Tots els drets reservats.
 STR_0851    :{WINDOW_COLOUR_2}Dissenyat i programat per en Chris Sawyer.
 STR_0852    :{WINDOW_COLOUR_2}Gràfics d'en Simon Foster.
@@ -860,13 +860,13 @@ STR_0854    :{WINDOW_COLOUR_2}Sons addicionals gravats pel David Ellis.
 STR_0855    :{WINDOW_COLOUR_2}Representació per la Jacqui Lyons de Marjacq Ltd.
 STR_0856    :{WINDOW_COLOUR_2}Agraïments:
 STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock, Joe Booth i John Wardley.
-STR_0858    :{WINDOW_COLOUR_2}
-STR_0859    :{WINDOW_COLOUR_2}
-STR_0860    :{WINDOW_COLOUR_2}
-STR_0861    :
-STR_0862    :
-STR_0863    :
-STR_0864    :
+STR_0858    :<removed string - do not use>
+STR_0859    :<removed string - do not use>
+STR_0860    :<removed string - do not use>
+STR_0861    :<removed string - do not use>
+STR_0862    :<removed string - do not use>
+STR_0863    :<removed string - do not use>
+STR_0864    :<removed string - do not use>
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -890,8 +890,8 @@ STR_0884    :Carrega un paisatge
 STR_0885    :Desa un paisatge
 STR_0886    :<removed string - do not use>
 STR_0887    :Surt de l'editor d'escenaris
-STR_0888    :Surt de l'editor de muntanyes russes
-STR_0889    :Surt de l'administrador de dissenys de vies
+STR_0888    :Surt de l'editor de circuits
+STR_0889    :Surt de l'administrador de circuits
 STR_0890    :<removed string - do not use>
 STR_0891    :Captura de pantalla
 STR_0892    :S'ha desat la captura de pantalla com a {LEFTGUILLEMET}{STRINGID}{RIGHTGUILLEMET}.
@@ -2867,7 +2867,7 @@ STR_2856    :{WINDOW_COLOUR_2}Tutorial
 STR_2857    :{WINDOW_COLOUR_2}(Premeu una tecla o feu clic per prendre'n el control)
 STR_2858    :No es pot començar la campanya de màrqueting...
 STR_2859    :Ja s'està executant una altra instància de l'OpenRCT2.
-STR_2860    :Crèdits d'Infogrames Interactive...
+STR_2860    :<removed string - do not use>
 STR_2861    :{WINDOW_COLOUR_2}Sota llicència d'Infogrames Interactive Inc.
 STR_2862    :Agraïments per la música...
 STR_2863    :Agraïments per la música
@@ -2915,29 +2915,29 @@ STR_2904    :{WINDOW_COLOUR_2}Manic Mechanic:   (Allister Brimble) copyright {CO
 STR_2905    :{WINDOW_COLOUR_2}Techno Torture:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2906    :{WINDOW_COLOUR_2}Sweat Dreams:   (Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
 STR_2907    :{WINDOW_COLOUR_2}What shall we do with the Drunken Sailor:   (Anon/Allister Brimble) copyright {COPYRIGHT} Chris Sawyer
-STR_2908    :{WINDOW_COLOUR_2}Infogrames Interactive
-STR_2909    :{WINDOW_COLOUR_2}Productor:  Thomas J. Zahorik
-STR_2910    :{WINDOW_COLOUR_2}Productor executiu:  Bill Levay
-STR_2911    :{WINDOW_COLOUR_2}Director de màrqueting de productes:  Scott Triola
-STR_2912    :{WINDOW_COLOUR_2}VP de desenvolupament de productes:  Scott Walker
-STR_2913    :{WINDOW_COLOUR_2}Director general:  John Hurlbut
-STR_2914    :{WINDOW_COLOUR_2}Mànager de qualitat:  Michael Craighead
-STR_2915    :{WINDOW_COLOUR_2}Cap de certificació Q.A.:  Kurt Boutin
-STR_2916    :{WINDOW_COLOUR_2}Cap de certificació Q.A.:  Mark Huggins
-STR_2917    :{WINDOW_COLOUR_2}Equip de proves:  Dena Irene Fitzgerald, Scott Rollins, Christopher McPhail
-STR_2918    :{WINDOW_COLOUR_2}Clif McClure, Erik Maramaldi, Erik Jeffery
-STR_2919    :{WINDOW_COLOUR_2}Director de màrqueting:  Ann Marie Bland
-STR_2920    :{WINDOW_COLOUR_2}Mànager de serveis creatius:  Steve Martin
-STR_2921    :{WINDOW_COLOUR_2}Mànager de serveis editorials i creatius:  Elizabeth Mackney
-STR_2922    :{WINDOW_COLOUR_2}Dissenyador gràfic:  Paul Anselmi
-STR_2923    :{WINDOW_COLOUR_2}Redactor creatiu:  Kurt Carlson
-STR_2924    :{WINDOW_COLOUR_2}Agraïments especials:  Peter Matiss
-STR_2925    :{WINDOW_COLOUR_2}Especialista en enginyeria:  Ken Edwards
-STR_2926    :{WINDOW_COLOUR_2}Mànager del servei d'enginyeria:  Luis Rivas
-STR_2927    :{WINDOW_COLOUR_2}Analista de compatibilitat en cap:  Geoffrey Smith
-STR_2928    :{WINDOW_COLOUR_2}Analistes de compatibilitat:  Jason Cordero, Burke McQuinn, Kim Jardin 
-STR_2929    :{WINDOW_COLOUR_2}Cap de proves:  Daniel Frisoli
-STR_2930    :{WINDOW_COLOUR_2}Director de proves:  Matt Pantaleoni
+STR_2908    :<removed string - do not use>
+STR_2909    :<removed string - do not use>
+STR_2910    :<removed string - do not use>
+STR_2911    :<removed string - do not use>
+STR_2912    :<removed string - do not use>
+STR_2913    :<removed string - do not use>
+STR_2914    :<removed string - do not use>
+STR_2915    :<removed string - do not use>
+STR_2916    :<removed string - do not use>
+STR_2917    :<removed string - do not use>
+STR_2918    :<removed string - do not use>
+STR_2919    :<removed string - do not use>
+STR_2920    :<removed string - do not use>
+STR_2921    :<removed string - do not use>
+STR_2922    :<removed string - do not use>
+STR_2923    :<removed string - do not use>
+STR_2924    :<removed string - do not use>
+STR_2925    :<removed string - do not use>
+STR_2926    :<removed string - do not use>
+STR_2927    :<removed string - do not use>
+STR_2928    :<removed string - do not use>
+STR_2929    :<removed string - do not use>
+STR_2930    :<removed string - do not use>
 STR_2931    :{WINDOW_COLOUR_2}
 STR_2932    :{WINDOW_COLOUR_2}
 STR_2933    :{WINDOW_COLOUR_2}
@@ -3214,7 +3214,7 @@ STR_3203    :Configuració de recerques
 STR_3204    :Opcions
 STR_3205    :Selecció dels objectius
 STR_3206    :Desa l'escenari
-STR_3207    :Dissenyador de muntanyes russes
+STR_3207    :Dissenyador de circuits
 STR_3208    :Gestor dels dissenys de via
 STR_3209    :Torna al pas anterior:
 STR_3210    :Avança al pas següent:
@@ -3342,7 +3342,7 @@ STR_3331    :El camí de l'entrada al parc a la vora del mapa no els connecta o 
 STR_3332    :L'entrada al parc està a l'inrevés o bé no disposa de camí fins a la vora del mapa.
 STR_3333    :Exporta els complements a les desades
 STR_3334    :{SMALLFONT}{BLACK}Seleccioneu si cal desar els complements addicionals (els que no s'inclouen al producte principal) a les partides o escenaris desats, permetent que puguin ser carregats per algú que no disposi de les dades addicionals.
-STR_3335    :Dissenyador de muntanyes russes - Seleccioneu els vehicles i tipus d'atracció
+STR_3335    :Dissenyador de circuits - Seleccioneu els vehicles i tipus d'atracció
 STR_3336    :Gestor dels dissenys de vies - Seleccioneu el tipus d'atracció
 STR_3337    :<removed string - do not use>
 STR_3338    :{BLACK}Recorregut personalitzat
@@ -3351,7 +3351,7 @@ STR_3340    :{BLACK}{COMMA16} dissenys disponibles o recorreguts personalitzats
 STR_3341    :{SMALLFONT}{BLACK}Eines del joc
 STR_3342    :Editor d'escenaris
 STR_3343    :Conversió de partides a escenaris
-STR_3344    :Dissenyador de muntanyes russes
+STR_3344    :Dissenyador de circuits
 STR_3345    :Gestor de dissenys de via
 STR_3346    :El disseny de via no es pot desar...
 STR_3347    :L'atracció és massa gran, conté massa elements o bé el decorat està massa dispers.
