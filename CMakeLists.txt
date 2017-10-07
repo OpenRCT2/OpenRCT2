@@ -14,6 +14,7 @@ file(COPY data DESTINATION bin)
 if(NOT WIN32)
     find_package(PkgConfig)
 endif()
+include(CTest)
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 include(GNUInstallDirs)
@@ -23,7 +24,6 @@ set(CMAKE_MACOSX_RPATH 1)
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.0/title-sequence-v0.1.0.zip")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
-option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 
@@ -37,13 +37,13 @@ include(sprites.cmake)
 add_subdirectory(src)
 
 # Include tests
-if (WITH_TESTS)
+if(BUILD_TESTING)
     enable_testing()
-    if (UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
-        include("${PROJECT_SOURCE_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
-    endif ()
-    include("${PROJECT_SOURCE_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
-endif ()
+    if(UNIX AND (NOT USE_MMAP) AND (NOT DISABLE_RCT2) AND (FORCE32))
+        add_subdirectory(test/testpaint)
+    endif()
+    add_subdirectory(test/tests)
+endif()
 
 # Install
 # Don't recurse, grab all *.txt and *.md files
@@ -54,24 +54,25 @@ list(APPEND DOC_FILES "${PROJECT_SOURCE_DIR}/contributors.md"
 # CMake does not allow specifying a dependency chain which includes built-in
 # targets, like `install`, so we have to trick it and execute dependency ourselves.
 install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" --build \"${CMAKE_CURRENT_BINARY_DIR}\" --target g2)")
-IF (DOWNLOAD_TITLE_SEQUENCES)
+if(DOWNLOAD_TITLE_SEQUENCES)
     install(CODE "file(DOWNLOAD ${TITLE_SEQUENCE_URL} \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip EXPECTED_HASH SHA1=${TITLE_SEQUENCE_SHA1} SHOW_PROGRESS)")
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
     install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)")
-endif ()
+endif()
 return()
-if (WIN32)
+
+if(WIN32)
     install(TARGETS "libopenrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
                                   ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-else ()
-    if (PORTABLE)
+else()
+    if(PORTABLE)
         install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
                                       ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    else ()
+    else()
         install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
                                       ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    endif ()
-endif ()
+    endif()
+endif()
 install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
