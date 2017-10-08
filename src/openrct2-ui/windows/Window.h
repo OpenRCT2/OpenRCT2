@@ -104,3 +104,6 @@ rct_window * window_new_ride_open();
 rct_window * window_new_ride_open_research();
 void window_new_ride_init_vars();
 void window_new_ride_focus(ride_list_item rideItem);
+
+rct_window * window_ride_list_open();
+void window_ride_list_refresh_list(rct_window * w);

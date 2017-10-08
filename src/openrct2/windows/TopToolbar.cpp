@@ -346,7 +346,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
         context_open_window(WC_CONSTRUCT_RIDE);
         break;
     case WIDX_RIDES:
-        window_ride_list_open();
+        context_open_window(WC_RIDE_LIST);
         break;
     case WIDX_PARK:
         context_open_window(WC_PARK_INFORMATION);
