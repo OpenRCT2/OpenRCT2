@@ -64,13 +64,16 @@ namespace Path
 
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path)
     {
-        size_t lastPathSepIndex = String::LastIndexOf(path, *PATH_SEPARATOR);
-        if (lastPathSepIndex == SIZE_MAX)
+        auto lastPathSepIndex = Math::Max(
+            String::LastIndexOf(path, *PATH_SEPARATOR),
+            String::LastIndexOf(path, '/')
+        );
+        if (lastPathSepIndex < 0)
         {
             return String::Set(buffer, bufferSize, String::Empty);
         }
 
-        size_t copyLength = Math::Min(lastPathSepIndex, bufferSize - 1);
+        size_t copyLength = Math::Min(lastPathSepIndex, static_cast<ptrdiff_t>(bufferSize - 1));
         Memory::Copy(buffer, path, copyLength);
         buffer[copyLength] = '\0';
         return buffer;
@@ -86,17 +89,10 @@ namespace Path
         const utf8 * lastPathSeperator = nullptr;
         for (const utf8 * ch = path; *ch != '\0'; ch++)
         {
-            if (*ch == *PATH_SEPARATOR)
+            if (*ch == *PATH_SEPARATOR || *ch == '/')
             {
                 lastPathSeperator = ch;
             }
-#ifdef _WIN32
-            // Windows also allows forward slashes in paths
-            else if (*ch == '/')
-            {
-                lastPathSeperator = ch;
-            }
-#endif
         }
 
         return lastPathSeperator == nullptr ?

@@ -157,7 +157,7 @@ namespace String
         return SIZE_MAX;
     }
 
-    size_t LastIndexOf(const utf8 * str, utf8 match)
+    ptrdiff_t LastIndexOf(const utf8 * str, utf8 match)
     {
         const utf8 * lastOccurance = nullptr;
         const utf8 * ch = str;
@@ -171,11 +171,11 @@ namespace String
 
         if (lastOccurance == nullptr)
         {
-            return SIZE_MAX;
+            return -1;
         }
         else
         {
-            return (size_t)(lastOccurance - str);
+            return lastOccurance - str;
         }
     }
 

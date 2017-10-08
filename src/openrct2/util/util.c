@@ -66,10 +66,13 @@ utf8 *path_get_directory(const utf8 *path)
 {
     // Find the last slash or backslash in the path
     char *filename = strrchr(path, *PATH_SEPARATOR);
+    char *filename_posix = strrchr(path, '/');
+    filename = filename < filename_posix ? filename_posix : filename;
 
     // If the path is invalid (e.g. just a file name), return NULL
-    if (filename == NULL)
+    if (filename == NULL) {
         return NULL;
+    }
 
     char *directory = _strdup(path);
     safe_strtrunc(directory, strlen(path) - strlen(filename) + 2);
@@ -81,6 +84,8 @@ const char *path_get_filename(const utf8 *path)
 {
     // Find last slash or backslash in the path
     char *filename = strrchr(path, *PATH_SEPARATOR);
+    char *filename_posix = strchr(path, '/');
+    filename = filename < filename_posix ? filename_posix : filename;
 
     // Checks if the path is valid (e.g. not just a file name)
     if (filename == NULL)
@@ -145,8 +150,9 @@ void path_end_with_separator(utf8 *path, size_t size) {
     size_t length = strnlen(path, size);
     if (length >= size - 1) return;
 
-    if ((length == 0) || (path[length - 1] != *PATH_SEPARATOR))
+    if ((length == 0) || ((path[length - 1] != *PATH_SEPARATOR) && path[length - 1] != '/')) {
         safe_strcat(path, PATH_SEPARATOR, size);
+    }
 }
 
 sint32 bitscanforward(sint32 source)

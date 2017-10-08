@@ -38,7 +38,7 @@ namespace String
     bool   StartsWith(const utf8 * str, const utf8 * match, bool ignoreCase = false);
     bool   StartsWith(const std::string &str, const std::string &match, bool ignoreCase = false);
     size_t IndexOf(const utf8 * str, utf8 match, size_t startIndex = 0);
-    size_t LastIndexOf(const utf8 * str, utf8 match);
+    ptrdiff_t LastIndexOf(const utf8 * str, utf8 match);
 
     /**
      * Gets the length of the given string in codepoints.

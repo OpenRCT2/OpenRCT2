@@ -629,11 +629,14 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
 
         // Remove the separator at the end of the path, if present
         safe_strcpy(_parentDirectory, directory, sizeof(_parentDirectory));
-        if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR)
+        if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
+            || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
             _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
 
         // Remove everything past the now last separator
         char *ch = strrchr(_parentDirectory, *PATH_SEPARATOR);
+        char *posix_ch = strrchr(_parentDirectory, '/');
+        ch = ch < posix_ch ? posix_ch : ch;
         if (ch != nullptr) {
             *(ch + 1) = '\0';
         } else if (drives) {

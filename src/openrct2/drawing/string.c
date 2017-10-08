@@ -1129,7 +1129,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     // Count path separators
     sint32 path_separators = 0;
     for (size_t x = 0; x < length; x++) {
-        if (path[x] == *PATH_SEPARATOR) {
+        if (path[x] == *PATH_SEPARATOR || path[x] == '/') {
             path_separators++;
         }
     }
@@ -1142,7 +1142,7 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     for (sint32 x = 0; x < path_separators; x++){
         do {
             begin++;
-        } while (path[begin] != *PATH_SEPARATOR);
+        } while (path[begin] != *PATH_SEPARATOR && path[begin] != '/');
 
         safe_strcpy(buffer + 3, path + begin, bufferSize - 3);
         if (gfx_get_string_width(buffer) <= availableWidth) {
