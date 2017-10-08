@@ -4710,10 +4710,12 @@ static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z
     }
 
     // Link the first train and last train together
-    assert(firstTrain.head != NULL);
-    firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
-    assert(lastTrain.tail != NULL);
-    lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
+    if(firstTrain.head != NULL && lastTrain.tail != NULL) {
+        firstTrain.head->prev_vehicle_on_ride = lastTrain.tail->sprite_index;
+        lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
+    } else {
+        abort();
+    }
 }
 
 static void vehicle_unset_var_48_b1(rct_vehicle *head)
