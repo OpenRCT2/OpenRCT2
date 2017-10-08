@@ -57,19 +57,19 @@ public:
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
         if (_name.empty())
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_RIDE_ATTRACTION_NAME);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_INVALID_RIDE_ATTRACTION_NAME);
         }
 
         rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
         user_string_free(newUserStringId);
 
@@ -84,7 +84,7 @@ public:
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
         }
 
         user_string_free(ride->name);
