@@ -1,5 +1,6 @@
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
+include(CMakePushCheckState)
 
 # Validate
 if(ENABLE_RCT2)
@@ -15,6 +16,8 @@ endif()
 # Build an interface target to set all the compile options
 add_library(openrct2-flags-iface INTERFACE)
 add_library(openrct2::flags ALIAS openrct2-flags-iface)
+
+cmake_push_check_state(RESET)
 
 # Check for required compilation flags
 if(NOT MSVC)
@@ -118,6 +121,8 @@ foreach(flag IN LISTS maybe_flags)
         target_compile_options(openrct2-flags-iface INTERFACE ${flag})
     endif()
 endforeach()
+
+cmake_pop_check_state()
 
 if(NOT ENABLE_RCT2)
     target_compile_definitions(openrct2-flags-iface INTERFACE NO_RCT2)

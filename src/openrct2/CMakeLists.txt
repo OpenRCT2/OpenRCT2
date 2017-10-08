@@ -97,13 +97,13 @@ if(ENABLE_RCT2)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/rct2/addresses.c PROPERTIES COMPILE_FLAGS -O0)
 endif()
 
-check_cxx_compiler_flag(HAVE_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+check_cxx_compiler_flag(-Wsuggest-final-types HAVE_WARN_SUGGEST_FINAL_TYPES)
 if(HAVE_WARN_SUGGEST_FINAL_TYPES)
     # Disable -Wsuggest-final-types via pragmas where due.
     add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
 endif()
 
-check_cxx_compiler_flag(HAVE_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
+check_cxx_compiler_flag(-Wsuggest-final-methods HAVE_WARN_SUGGEST_FINAL_METHODS)
 if(HAVE_WARN_SUGGEST_FINAL_METHODS)
     # Disable -Wsuggest-final-methods via pragmas where due.
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
