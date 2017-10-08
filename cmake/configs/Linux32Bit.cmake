@@ -1,1 +1,1 @@
-set(CMAKE_TOOLCHAIN_FILE "${CMAKE_SOURCE_DIR}/cmake/toolchains/gcc-32bit.cmake" CACHE STRING "32-bit toolchain")
+set(CMAKE_TOOLCHAIN_FILE "${CMAKE_CURRENT_LIST_DIR}/../toolchains/gcc-32bit.cmake" CACHE STRING "32-bit toolchain")
