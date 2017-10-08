@@ -17,10 +17,11 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
-enum {
+enum
+{
     SPR_MOTION_SIMULATOR_STAIRS_R0      = 22154,
     SPR_MOTION_SIMULATOR_STAIRS_R1      = 22155,
     SPR_MOTION_SIMULATOR_STAIRS_R2      = 22156,
@@ -35,28 +36,35 @@ enum {
  *
  *  rct2: 0x0076522A
  */
-static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height, rct_map_element* mapElement)
+static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height,
+                                          rct_map_element * mapElement)
 {
-    Ride *ride = get_ride(mapElement->properties.track.ride_index);
-    rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
+    Ride *           ride      = get_ride(mapElement->properties.track.ride_index);
+    rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
 
     rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
-    rct_vehicle *vehicle = NULL;
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {
+    rct_vehicle * vehicle = NULL;
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    {
         uint16 spriteIndex = ride->vehicles[0];
-        if (spriteIndex != SPRITE_INDEX_NULL) {
-            vehicle = GET_VEHICLE(spriteIndex);
-            session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        if (spriteIndex != SPRITE_INDEX_NULL)
+        {
+            vehicle                     = GET_VEHICLE(spriteIndex);
+            session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
             session->CurrentlyDrawnItem = vehicle;
         }
     }
 
     uint32 simulatorImageId = rideEntry->vehicles[0].base_image_id + direction;
-    if (vehicle != NULL) {
-        if (vehicle->restraints_position >= 64) {
+    if (vehicle != NULL)
+    {
+        if (vehicle->restraints_position >= 64)
+        {
             simulatorImageId += (vehicle->restraints_position >> 6) << 2;
-        } else {
+        }
+        else
+        {
             simulatorImageId += vehicle->vehicle_sprite_type * 4;
         }
     }
@@ -64,14 +72,16 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
     uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
     if (imageColourFlags == IMAGE_TYPE_REMAP)
     {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageColourFlags =
+            SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
     simulatorImageId |= imageColourFlags;
 
     sint16 offsetZ = height + 2;
     uint32 imageId;
-    uint8 currentRotation = get_current_rotation();
-    switch (direction) {
+    uint8  currentRotation = get_current_rotation();
+    switch (direction)
+    {
     case 0:
         // Simulator
         imageId = simulatorImageId;
@@ -119,26 +129,36 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
     }
 
     session->CurrentlyDrawnItem = savedMapElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A85C4 */
-static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                                  rct_map_element * mapElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
-    sint32 edges = edges_2x2[trackSequence];
-    Ride *ride = get_ride(rideIndex);
+    sint32   edges    = edges_2x2[trackSequence];
+    Ride *   ride     = get_ride(rideIndex);
     rct_xy16 position = { session->MapPosition.x, session->MapPosition.y };
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
+                                 get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+                                  fenceSpritesRope, get_current_rotation());
 
-    switch (trackSequence) {
-    case 1: paint_motionsimulator_vehicle(session,  16, -16, direction, height, mapElement); break;
-    case 2: paint_motionsimulator_vehicle(session, -16,  16, direction, height, mapElement); break;
-    case 3: paint_motionsimulator_vehicle(session, -16, -16, direction, height, mapElement); break;
+    switch (trackSequence)
+    {
+    case 1:
+        paint_motionsimulator_vehicle(session, 16, -16, direction, height, mapElement);
+        break;
+    case 2:
+        paint_motionsimulator_vehicle(session, -16, 16, direction, height, mapElement);
+        break;
+    case 3:
+        paint_motionsimulator_vehicle(session, -16, -16, direction, height, mapElement);
+        break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -151,8 +171,10 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(sint32 trackType, sint32 direction)
 {
-    switch (trackType) {
-    case FLAT_TRACK_ELEM_2_X_2: return paint_motionsimulator;
+    switch (trackType)
+    {
+    case FLAT_TRACK_ELEM_2_X_2:
+        return paint_motionsimulator;
     }
     return NULL;
 }

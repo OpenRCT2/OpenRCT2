@@ -17,12 +17,12 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 enum
 {
-    SPR_FLYING_SAUCERS_FLOOR = 21920,
+    SPR_FLYING_SAUCERS_FLOOR    = 21920,
     SPR_FLYING_SAUCERS_FENCE_NE = 21921,
     SPR_FLYING_SAUCERS_FENCE_SE = 21922,
     SPR_FLYING_SAUCERS_FENCE_SW = 21923,
@@ -39,12 +39,13 @@ static const uint32 flying_saucers_fence_sprites[] = {
 /**
  * rct2: 0x008873D8
  */
-static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                                 rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_4x4[direction][trackSequence];
 
-    sint32 edges = edges_4x4[relativeTrackSequence];
-    Ride * ride = get_ride(rideIndex);
+    sint32   edges    = edges_4x4[relativeTrackSequence];
+    Ride *   ride     = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
@@ -52,7 +53,8 @@ static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8
     uint32 imageId = SPR_FLYING_SAUCERS_FLOOR | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 30, 30, 1, height, 1, 1, height, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height, flying_saucers_fence_sprites, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height,
+                                  flying_saucers_fence_sprites, get_current_rotation());
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -63,7 +65,8 @@ static void paint_flying_saucers(paint_session * session, uint8 rideIndex, uint8
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_flying_saucers(sint32 trackType, sint32 direction)
 {
-    if (trackType != FLAT_TRACK_ELEM_4_X_4) {
+    if (trackType != FLAT_TRACK_ELEM_4_X_4)
+    {
         return NULL;
     }
 

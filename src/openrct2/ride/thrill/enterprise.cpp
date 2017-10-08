@@ -16,37 +16,41 @@
 
 #include "../../common.h"
 #include "../../interface/viewport.h"
-#include "../track_paint.h"
-#include "../../paint/supports.h"
 #include "../../paint/paint.h"
+#include "../../paint/supports.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 /** rct2: 0x008A2ABC */
-static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height, rct_map_element * mapElement)
+static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height,
+                                       rct_map_element * mapElement)
 {
     height += 7;
 
     rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
-    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle * vehicle = NULL;
+    rct_ride_entry *  rideEntry       = get_ride_entry(ride->subtype);
+    rct_vehicle *     vehicle         = NULL;
 
     uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
-        && ride->vehicles[0] != SPRITE_INDEX_NULL) {
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
-        vehicle = GET_VEHICLE(ride->vehicles[0]);
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    {
+        session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        vehicle                     = GET_VEHICLE(ride->vehicles[0]);
         session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 imageOffset = map_element_get_direction_with_offset(mapElement, get_current_rotation());
-    if (vehicle != NULL) {
+    if (vehicle != NULL)
+    {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
     }
 
     uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP) {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    {
+        imageColourFlags =
+            SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     uint32 imageId = (baseImageId + imageOffset) | imageColourFlags;
@@ -54,69 +58,105 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (dpi->zoom_level == 0
-        && imageOffset < 12
-        && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
-        && vehicle != NULL) {
-        for (sint32 i = 0; i < 15; i++) {
-            if (vehicle->num_peeps <= i) {
+    if (dpi->zoom_level == 0 && imageOffset < 12 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != NULL)
+    {
+        for (sint32 i = 0; i < 15; i++)
+        {
+            if (vehicle->num_peeps <= i)
+            {
                 break;
             }
 
             uint32 peepFrameOffset = ((imageOffset % 4) * 4 + (i * 4) % 15) & 0x0F;
-            uint32 ax = (imageOffset & 0xFFFFFFFC) << 2;
+            uint32 ax              = (imageOffset & 0xFFFFFFFC) << 2;
             imageId = (baseImageId + 196 + peepFrameOffset + ax) | SPRITE_ID_PALETTE_COLOUR_1(vehicle->peep_tshirt_colours[i]);
             sub_98199C(session, imageId, xOffset, yOffset, 24, 24, 48, height, 0, 0, height, get_current_rotation());
         }
     }
 
     session->CurrentlyDrawnItem = savedMapElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A1584 */
-static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                             rct_map_element * mapElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];
 
-    sint32 edges = edges_4x4[trackSequence];
-    Ride * ride = get_ride(rideIndex);
+    sint32   edges    = edges_4x4[trackSequence];
+    Ride *   ride     = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
+                                 get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height,
+                                  fenceSpritesRope, get_current_rotation());
 
-    switch (trackSequence) {
-        case 5: paint_enterprise_structure(session, ride, 16, 16, height, mapElement); break;
-        case 6: paint_enterprise_structure(session, ride, 16, -16, height, mapElement); break;
-        case 10: paint_enterprise_structure(session, ride, -16, -16, height, mapElement); break;
-        case 9: paint_enterprise_structure(session, ride, -16, 16, height, mapElement); break;
+    switch (trackSequence)
+    {
+    case 5:
+        paint_enterprise_structure(session, ride, 16, 16, height, mapElement);
+        break;
+    case 6:
+        paint_enterprise_structure(session, ride, 16, -16, height, mapElement);
+        break;
+    case 10:
+        paint_enterprise_structure(session, ride, -16, -16, height, mapElement);
+        break;
+    case 9:
+        paint_enterprise_structure(session, ride, -16, 16, height, mapElement);
+        break;
 
-        case 0: paint_enterprise_structure(session, ride, 48, 48, height, mapElement); break;
-        case 3: paint_enterprise_structure(session, ride, 48, -48, height, mapElement); break;
-        case 15: paint_enterprise_structure(session, ride, -48, -48, height, mapElement); break;
-        case 12: paint_enterprise_structure(session, ride, -48, 48, height, mapElement); break;
+    case 0:
+        paint_enterprise_structure(session, ride, 48, 48, height, mapElement);
+        break;
+    case 3:
+        paint_enterprise_structure(session, ride, 48, -48, height, mapElement);
+        break;
+    case 15:
+        paint_enterprise_structure(session, ride, -48, -48, height, mapElement);
+        break;
+    case 12:
+        paint_enterprise_structure(session, ride, -48, 48, height, mapElement);
+        break;
 
-        case 7: paint_enterprise_structure(session, ride, 16, -48, height, mapElement); break;
-        case 11: paint_enterprise_structure(session, ride, -16, -48, height, mapElement); break;
-        case 14: paint_enterprise_structure(session, ride, -48, -16, height, mapElement); break;
-        case 13: paint_enterprise_structure(session, ride, -48, 16, height, mapElement); break;
+    case 7:
+        paint_enterprise_structure(session, ride, 16, -48, height, mapElement);
+        break;
+    case 11:
+        paint_enterprise_structure(session, ride, -16, -48, height, mapElement);
+        break;
+    case 14:
+        paint_enterprise_structure(session, ride, -48, -16, height, mapElement);
+        break;
+    case 13:
+        paint_enterprise_structure(session, ride, -48, 16, height, mapElement);
+        break;
     }
 
     sint32 cornerSegments = 0;
-    switch (trackSequence) {
-        case 0: cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC; break;
-        case 3: cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4; break;
-        case 12: cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0; break;
-        case 15: cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4; break;
+    switch (trackSequence)
+    {
+    case 0:
+        cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
+        break;
+    case 3:
+        cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
+        break;
+    case 12:
+        cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
+        break;
+    case 15:
+        cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
+        break;
     }
     paint_util_set_segment_support_height(session, cornerSegments, height + 2, 0x20);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~cornerSegments, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 160, 0x20);
-
 }
 
 /**
@@ -124,7 +164,8 @@ static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 tra
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_enterprise(sint32 trackType, sint32 direction)
 {
-    if (trackType != FLAT_TRACK_ELEM_4_X_4) {
+    if (trackType != FLAT_TRACK_ELEM_4_X_4)
+    {
         return NULL;
     }
 

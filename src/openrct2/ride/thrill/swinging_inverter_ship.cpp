@@ -17,18 +17,14 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 /** rct2: 0x01428010 */
-static const uint32 swinging_inverter_ship_base_sprite_offset[] = {
-    0,16,0,16
-};
+static const uint32 swinging_inverter_ship_base_sprite_offset[] = { 0, 16, 0, 16 };
 
 /** rct2: 0x01428020 */
-static const uint32 swinging_inverter_ship_animating_base_sprite_offset[] = {
-    32,33,32,33
-};
+static const uint32 swinging_inverter_ship_animating_base_sprite_offset[] = { 32, 33, 32, 33 };
 
 typedef struct swinging_inverter_ship_bound_box
 {
@@ -40,54 +36,56 @@ typedef struct swinging_inverter_ship_bound_box
 
 /** rct2: 0x01428020 */
 static const swinging_inverter_ship_bound_box swinging_inverter_ship_bounds[] = {
-    {32, 16, 0, 8},
-    {16, 32, 8, 0},
-    {32, 16, 0, 8},
-    {16, 32, 8, 0}
+    { 32, 16, 0, 8 }, { 16, 32, 8, 0 }, { 32, 16, 0, 8 }, { 16, 32, 8, 0 }
 };
 
-enum {
+enum
+{
     SPR_SWINGING_INVERTER_SHIP_FRAME_0 = 21998,
     SPR_SWINGING_INVERTER_SHIP_FRAME_1 = 21999,
     SPR_SWINGING_INVERTER_SHIP_FRAME_2 = 22000,
     SPR_SWINGING_INVERTER_SHIP_FRAME_3 = 22001,
 };
 
-static const uint32 swinging_inverter_ship_frame_sprites[] = {
-    SPR_SWINGING_INVERTER_SHIP_FRAME_0,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_1,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_2,
-    SPR_SWINGING_INVERTER_SHIP_FRAME_3
-};
+static const uint32 swinging_inverter_ship_frame_sprites[] = { SPR_SWINGING_INVERTER_SHIP_FRAME_0,
+                                                               SPR_SWINGING_INVERTER_SHIP_FRAME_1,
+                                                               SPR_SWINGING_INVERTER_SHIP_FRAME_2,
+                                                               SPR_SWINGING_INVERTER_SHIP_FRAME_3 };
 
-static void paint_swinging_inverter_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_swinging_inverter_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset,
+                                                   uint16 height)
 {
     rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
-    rct_vehicle * vehicle = NULL;
+    rct_vehicle *    vehicle  = NULL;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
-        && ride->vehicles[0] != SPRITE_INDEX_NULL) {
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 vehicleImageId = rideType->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
-    if (vehicle != NULL) {
-        sint32 rotation = (sint8) vehicle->vehicle_sprite_type;
-        if (rotation != 0) {
-            vehicleImageId = rideType->vehicles[0].base_image_id + swinging_inverter_ship_animating_base_sprite_offset[direction];
+    if (vehicle != NULL)
+    {
+        sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
+        if (rotation != 0)
+        {
+            vehicleImageId =
+                rideType->vehicles[0].base_image_id + swinging_inverter_ship_animating_base_sprite_offset[direction];
 
-            if (direction & 2) {
+            if (direction & 2)
+            {
                 rotation = -rotation;
             }
-            if (rotation < 0) {
+            if (rotation < 0)
+            {
                 rotation += 72;
             }
 
@@ -96,28 +94,37 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
     }
 
     uint32 colourFlags = session->TrackColours[SCHEME_MISC];
-    if (colourFlags == IMAGE_TYPE_REMAP) {
+    if (colourFlags == IMAGE_TYPE_REMAP)
+    {
         colourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     swinging_inverter_ship_bound_box boundBox = swinging_inverter_ship_bounds[direction];
-    vehicleImageId = vehicleImageId | colourFlags;
+    vehicleImageId                            = vehicleImageId | colourFlags;
     uint32 frameImageId = swinging_inverter_ship_frame_sprites[direction] | session->TrackColours[SCHEME_TRACK];
 
-    if (direction & 2) {
-        sub_98197C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
-        sub_98199C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
-    } else {
-        sub_98197C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
-        sub_98199C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+    if (direction & 2)
+    {
+        sub_98197C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
+                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98199C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
+                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+    }
+    else
+    {
+        sub_98197C(session, frameImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
+                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+        sub_98199C(session, vehicleImageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height,
+                   boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }
 
     session->CurrentlyDrawnItem = savedMapElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00760260 */
-static void paint_swinging_inverter_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_swinging_inverter_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
+                                         sint32 height, rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
@@ -125,11 +132,15 @@ static void paint_swinging_inverter_ship(paint_session * session, uint8 rideInde
 
     uint32 imageId;
 
-    if (relativeTrackSequence != 1 && relativeTrackSequence != 3) {
-        if (direction & 1) {
+    if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
+    {
+        if (direction & 1)
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        } else {
+        }
+        else
+        {
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
@@ -137,44 +148,54 @@ static void paint_swinging_inverter_ship(paint_session * session, uint8 rideInde
         imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
         sub_98196C(session, imageId, 0, 0, 32, 32, 1, height, get_current_rotation());
 
-        switch (direction) {
-            case 0:
-                imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
-                break;
-            case 1:
-                imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
-                break;
-            case 2:
-                imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
-                sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height, get_current_rotation());
-                break;
-            case 3:
-                imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
-                sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height, get_current_rotation());
-                break;
+        switch (direction)
+        {
+        case 0:
+            imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
+            sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
+            break;
+        case 1:
+            imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
+            sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
+            break;
+        case 2:
+            imageId = SPR_STATION_PLATFORM_SW_NE | session->TrackColours[SCHEME_TRACK];
+            sub_98199C(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height, get_current_rotation());
+            break;
+        case 3:
+            imageId = SPR_STATION_PLATFORM_NW_SE | session->TrackColours[SCHEME_TRACK];
+            sub_98199C(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height, get_current_rotation());
+            break;
         }
     }
 
-    switch (relativeTrackSequence) {
-        case 1: paint_swinging_inverter_ship_structure(session, ride, direction, 48, height + 7); break;
-        case 2: paint_swinging_inverter_ship_structure(session, ride, direction, 16, height + 7); break;
-        case 0: paint_swinging_inverter_ship_structure(session, ride, direction, -16, height + 7); break;
-        case 3: paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7); break;
+    switch (relativeTrackSequence)
+    {
+    case 1:
+        paint_swinging_inverter_ship_structure(session, ride, direction, 48, height + 7);
+        break;
+    case 2:
+        paint_swinging_inverter_ship_structure(session, ride, direction, 16, height + 7);
+        break;
+    case 0:
+        paint_swinging_inverter_ship_structure(session, ride, direction, -16, height + 7);
+        break;
+    case 3:
+        paint_swinging_inverter_ship_structure(session, ride, direction, -48, height + 7);
+        break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
-
 /**
  * rct2: 0x00760070
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(sint32 trackType, sint32 direction)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_4_B) {
+    if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
+    {
         return NULL;
     }
 

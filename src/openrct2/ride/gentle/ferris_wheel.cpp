@@ -17,8 +17,8 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
-#include "../track_paint.h"
 #include "../track.h"
+#include "../track_paint.h"
 
 static const uint8 edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,
@@ -44,25 +44,25 @@ typedef struct ferris_wheel_bound_box
 
 /** rct2: 0x008A8CA8 */
 static ferris_wheel_bound_box ferris_wheel_data[] = {
-    {31, 16, 1, 8},
-    {16, 31, 8, 1},
-    {31, 16, 1, 8},
-    {16, 31, 8, 1},
+    { 31, 16, 1, 8 },
+    { 16, 31, 8, 1 },
+    { 31, 16, 1, 8 },
+    { 16, 31, 8, 1 },
 };
-
 
 /**
  * rct2: 0x004C3874
  */
-static void paint_ferris_wheel_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 axisOffset, uint16 height)
+static void paint_ferris_wheel_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 axisOffset,
+                                         uint16 height)
 {
     uint32 imageId, baseImageId;
 
     rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
-    Ride * ride = get_ride(rideIndex);
+    Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle * vehicle = NULL;
+    rct_vehicle *    vehicle   = NULL;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
@@ -71,107 +71,134 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
 
     baseImageId = rideEntry->vehicles[0].base_image_id;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
-        && ride->vehicles[0] != SPRITE_INDEX_NULL) {
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
 
-        session->InteractionType = VIEWPORT_INTERACTION_ITEM_SPRITE;
+        session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
         session->CurrentlyDrawnItem = vehicle;
     }
 
     uint32 imageOffset = 0;
-    if (vehicle != NULL) {
+    if (vehicle != NULL)
+    {
         imageOffset = vehicle->vehicle_sprite_type % 8;
     }
 
     uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP) {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    {
+        imageColourFlags =
+            SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
     }
 
     ferris_wheel_bound_box boundBox = ferris_wheel_data[direction];
 
     imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
-    sub_98197C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+    sub_98197C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+               boundBox.offset_y, height, get_current_rotation());
 
     imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
-    sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+    sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+               boundBox.offset_y, height, get_current_rotation());
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK
-        && ride->vehicles[0] != SPRITE_INDEX_NULL) {
+    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    {
         vehicle = GET_VEHICLE(ride->vehicles[0]);
-        for (sint32 i = 0; i < 32; i += 2) {
-            if (vehicle->peep[i] == SPRITE_INDEX_NULL) {
+        for (sint32 i = 0; i < 32; i += 2)
+        {
+            if (vehicle->peep[i] == SPRITE_INDEX_NULL)
+            {
                 continue;
             }
 
             rct_peep * peep = GET_PEEP(vehicle->peep[i]);
-            if (peep->state != PEEP_STATE_ON_RIDE) {
+            if (peep->state != PEEP_STATE_ON_RIDE)
+            {
                 continue;
             }
 
-            sint32 frameNum = (vehicle->vehicle_sprite_type + i * 4) % 128;
+            sint32 frameNum  = (vehicle->vehicle_sprite_type + i * 4) % 128;
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
-            imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
-            sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+            imageId          = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
+            sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+                       boundBox.offset_y, height, get_current_rotation());
         }
     }
 
     imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
-    sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
+    sub_98199C(session, imageId, xOffset, yOffset, boundBox.length_x, boundBox.length_y, 127, height, boundBox.offset_x,
+               boundBox.offset_y, height, get_current_rotation());
 
     session->CurrentlyDrawnItem = savedMapElement;
-    session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
+    session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
-
 
 /**
  * rct2: 0x008A8EC4
  */
-static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
+                               rct_map_element * mapElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 
     sint32 edges;
-    if (direction & 1) {
+    if (direction & 1)
+    {
         edges = edges_1x4_nw_se[relativeTrackSequence];
-    } else {
+    }
+    else
+    {
         edges = edges_1x4_ne_sw[relativeTrackSequence];
     }
 
-    Ride * ride = get_ride(rideIndex);
+    Ride *   ride     = get_ride(rideIndex);
     rct_xy16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
+    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
+                                 get_current_rotation());
 
     uint32 imageId;
-    uint8 rotation = get_current_rotation();
+    uint8  rotation    = get_current_rotation();
     uint32 colourFlags = session->TrackColours[SCHEME_MISC];
-    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, rotation)) {
+    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, rotation))
+    {
         imageId = SPR_FENCE_ROPE_NW | colourFlags;
         sub_98199C(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2, rotation);
     }
-    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, rotation)) {
+    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, rotation))
+    {
         imageId = SPR_FENCE_ROPE_NE | colourFlags;
         sub_98199C(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2, rotation);
     }
-    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, rotation)) {
+    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, rotation))
+    {
         // Bound box is slightly different from track_paint_util_paint_fences
         imageId = SPR_FENCE_ROPE_SE | colourFlags;
         sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 3, rotation);
     }
-    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, rotation)) {
+    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, rotation))
+    {
         imageId = SPR_FENCE_ROPE_SW | colourFlags;
         sub_98197C(session, imageId, 0, 0, 1, 32, 7, height, 30, 0, height + 2, rotation);
     }
 
-    switch (relativeTrackSequence) {
-        case 1: paint_ferris_wheel_structure(session, rideIndex, direction, 48, height); break;
-        case 2: paint_ferris_wheel_structure(session, rideIndex, direction, 16, height); break;
-        case 0: paint_ferris_wheel_structure(session, rideIndex, direction, -16, height); break;
-        case 3: paint_ferris_wheel_structure(session, rideIndex, direction, -48, height); break;
+    switch (relativeTrackSequence)
+    {
+    case 1:
+        paint_ferris_wheel_structure(session, rideIndex, direction, 48, height);
+        break;
+    case 2:
+        paint_ferris_wheel_structure(session, rideIndex, direction, 16, height);
+        break;
+    case 0:
+        paint_ferris_wheel_structure(session, rideIndex, direction, -16, height);
+        break;
+    case 3:
+        paint_ferris_wheel_structure(session, rideIndex, direction, -48, height);
+        break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -183,7 +210,8 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
  */
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(sint32 trackType, sint32 direction)
 {
-    if (trackType != FLAT_TRACK_ELEM_1_X_4_C) {
+    if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
+    {
         return NULL;
     }
 
