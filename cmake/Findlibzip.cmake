@@ -1,7 +1,9 @@
 include(FindPackageHandleStandardArgs)
 include(CMakeFindDependencyMacro)
 
-find_dependency(BZip2)
+if(APPLE)
+    find_dependency(BZip2)
+endif()
 
 find_library(LIBZIP_LIBRARY NAMES libzip.a zip)
 find_path(LIBZIP_INCLUDE_DIR zip.h)
@@ -17,8 +19,11 @@ add_library(libzip::libzip IMPORTED UNKNOWN)
 set_target_properties(libzip::libzip PROPERTIES
     IMPORTED_LOCATION "${LIBZIP_LIBRARY}"
     INTERFACE_INCLUDE_DIRECTORIES "${LIBZIP_INCLUDE_DIR};${LIBZIP_ZIPCONF_INCLUDE_DIR}"
-    INTERFACE_LINK_LIBRARIES "BZip2::BZip2"
     )
+
+if(APPLE)
+    set_property(TARGET libzip::libzip APPEND PROPERTY INTERFACE_LINK_LIBRARIES BZip2::BZip2)
+endif()
 
 find_package_handle_standard_args(libzip
     "Unable to find required libzip library"
