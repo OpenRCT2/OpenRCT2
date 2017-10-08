@@ -1,4 +1,4 @@
-# TODO: This module can be deleted with CMake 3.9, which supports import targets
+# TODO: This module can be deleted with CMake 3.10, which supports import targets
 # for Freetype
 
 include(FindPackageHandleStandardArgs)
