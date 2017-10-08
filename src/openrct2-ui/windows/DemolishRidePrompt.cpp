@@ -18,6 +18,8 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/Context.h>
 
 #define WW 200
 #define WH 100
@@ -100,20 +102,17 @@ rct_window * window_ride_demolish_prompt_open(sint32 rideIndex)
 */
 static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    rct_window* window;
     switch (widgetIndex) {
     case WIDX_DEMOLISH:
+    {
         gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         ride_demolish(w->number, GAME_COMMAND_FLAG_APPLY);
 
         // Prevents demolished rides sticking around in the ride list window
-        window = window_find_by_class(WC_RIDE_LIST);
-        if (window != nullptr)
-        {
-            window_ride_list_refresh_list(window);
-        }
-
+        auto intent = Intent(INTENT_ACTION_REFRESH_RIDE_LIST);
+        context_broadcast_intent(&intent);
         break;
+    }
     case WIDX_CANCEL:
     case WIDX_CLOSE:
         window_close(w);

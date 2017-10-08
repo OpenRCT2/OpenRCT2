@@ -404,7 +404,7 @@ static void shortcut_show_rides_list()
         return;
 
     if (!(gScreenFlags & (SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
-        window_ride_list_open();
+        context_open_window(WC_RIDE_LIST);
     }
 }
 

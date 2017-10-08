@@ -54,6 +54,7 @@
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C6136C551E21893500F3ED2B /* view_clipping.c in Sources */ = {isa = PBXBuildFile; fileRef = C6136C541E21893500F3ED2B /* view_clipping.c */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
+		C632C81F1F8A445700781F6D /* RideList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C632C81E1F8A445700781F6D /* RideList.cpp */; };
 		C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B811F477022006CCEE3 /* DataSerialiser.h */; };
 		C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */; };
 		C6352B861F477022006CCEE3 /* Endianness.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B831F477022006CCEE3 /* Endianness.h */; };
@@ -124,7 +125,6 @@
 		C666EE321F33E3800061AA04 /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */; };
 		C666EE381F33E3800061AA04 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA51F33E3520061AA04 /* Ride.cpp */; };
 		C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA61F33E3520061AA04 /* RideConstruction.cpp */; };
-		C666EE3A1F33E3800061AA04 /* RideList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA71F33E3520061AA04 /* RideList.cpp */; };
 		C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA91F33E3520061AA04 /* Scenery.cpp */; };
 		C666EE431F33E3800061AA04 /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB01F33E3520061AA04 /* TextInput.cpp */; };
 		C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB21F33E3520061AA04 /* TileInspector.cpp */; };
@@ -664,6 +664,7 @@
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C6136C541E21893500F3ED2B /* view_clipping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = view_clipping.c; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
+		C632C81E1F8A445700781F6D /* RideList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RideList.cpp; sourceTree = "<group>"; };
 		C6352B811F477022006CCEE3 /* DataSerialiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiser.h; sourceTree = "<group>"; };
 		C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiserTraits.h; sourceTree = "<group>"; };
 		C6352B831F477022006CCEE3 /* Endianness.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Endianness.h; sourceTree = "<group>"; };
@@ -722,7 +723,6 @@
 		C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
 		C666EDA51F33E3520061AA04 /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
 		C666EDA61F33E3520061AA04 /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideConstruction.cpp; sourceTree = "<group>"; };
-		C666EDA71F33E3520061AA04 /* RideList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideList.cpp; sourceTree = "<group>"; };
 		C666EDA91F33E3520061AA04 /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C666EDB01F33E3520061AA04 /* TextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
 		C666EDB21F33E3520061AA04 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
@@ -2535,7 +2535,6 @@
 				C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */,
 				C666EDA51F33E3520061AA04 /* Ride.cpp */,
 				C666EDA61F33E3520061AA04 /* RideConstruction.cpp */,
-				C666EDA71F33E3520061AA04 /* RideList.cpp */,
 				C666EDA91F33E3520061AA04 /* Scenery.cpp */,
 				C666EDB01F33E3520061AA04 /* TextInput.cpp */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
@@ -2721,6 +2720,7 @@
 				C654DF241F69C0430040F43D /* Park.cpp */,
 				C654DF251F69C0430040F43D /* Player.cpp */,
 				C685E5181F8907840090598F /* Research.cpp */,
+				C632C81E1F8A445700781F6D /* RideList.cpp */,
 				C666EE611F37ACB10061AA04 /* SavePrompt.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
 				C666EE631F37ACB10061AA04 /* ServerStart.cpp */,
@@ -3134,6 +3134,7 @@
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
+				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
 				4C93F1171F881F9C00A9330D /* Finance.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */,
@@ -3342,7 +3343,6 @@
 				F76C86791EC4E88400FA49E2 /* SmallSceneryObject.cpp in Sources */,
 				F76C867B1EC4E88400FA49E2 /* StexObject.cpp in Sources */,
 				F76C867D1EC4E88400FA49E2 /* StringTable.cpp in Sources */,
-				C666EE3A1F33E3800061AA04 /* RideList.cpp in Sources */,
 				F76C867F1EC4E88400FA49E2 /* WallObject.cpp in Sources */,
 				F76C86811EC4E88400FA49E2 /* WaterObject.cpp in Sources */,
 				F76C86841EC4E88400FA49E2 /* object_list.c in Sources */,

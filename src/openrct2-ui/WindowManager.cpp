@@ -83,6 +83,8 @@ public:
             return window_news_open();
         case WC_RESEARCH:
             return window_research_open();
+        case WC_RIDE_LIST:
+            return window_ride_list_open();
         case WC_NOTIFICATION_OPTIONS:
             return window_news_options_open();
         case WC_OPTIONS:
@@ -234,6 +236,17 @@ public:
         case INTENT_ACTION_REFRESH_NEW_RIDES:
             window_new_ride_init_vars();
             break;
+
+        case INTENT_ACTION_REFRESH_RIDE_LIST:
+        {
+            auto window = window_find_by_class(WC_RIDE_LIST);
+            if (window != nullptr)
+            {
+                window_ride_list_refresh_list(window);
+            }
+
+            break;
+        }
         }
     }
 
