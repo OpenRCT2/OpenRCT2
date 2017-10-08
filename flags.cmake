@@ -38,7 +38,6 @@ if(NOT MSVC)
         -Wshadow
         -Wmissing-declarations
         -Wnonnull
-        -Wimplicit
         -fstrict-overflow
         )
     set(maybe_flags
@@ -54,6 +53,7 @@ if(NOT MSVC)
         -Wduplicated-cond
         -Wnon-virtual-dtor
         -Wstrict-overflow=1
+        -Wimplicit
         )
 else()
     set(required_flags
