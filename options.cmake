@@ -18,7 +18,7 @@ if(NOT MSVC)
 endif()
 
 # Options for using original rct2 binaries
-option(ENABLE_RCT2 "Use code and data segments from the original executable binayr" OFF)
+option(ENABLE_RCT2 "Use code and data segments from the original executable binary" OFF)
 cmake_dependent_option(USE_MMAP_FOR_RCT2 "Use mmap to load rct2's data segment into memory" ON "ENABLE_RCT2" OFF)
 
 # Features

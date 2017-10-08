@@ -188,7 +188,7 @@ set(THREADS_PREFER_PTHREAD_FLAG TRUE)
 find_package(Threads REQUIRED)
 target_link_libraries(openrct2-flags-iface INTERFACE Threads::Threads)
 
-if(APPLE OR CMAEK_SYSTEM_NAME MATCHES "BSD")
+if(APPLE OR CMAKE_SYSTEM_NAME MATCHES "BSD")
     find_library(ICONV_LIBRARY NAMES libiconv.a iconv libiconv libiconv-2)
     target_link_libraries(openrct2-flags-iface INTERFACE "${ICONV_LIBRARY}")
 endif()
