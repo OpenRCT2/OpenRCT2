@@ -1,3 +1,5 @@
+include(CheckCXXCompilerFlag)
+
 # Sources
 file(GLOB_RECURSE OPENRCT2_CORE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c"
                                         "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
@@ -95,12 +97,14 @@ if(ENABLE_RCT2)
     set_source_files_properties(${CMAKE_CURRENT_LIST_DIR}/rct2/addresses.c PROPERTIES COMPILE_FLAGS -O0)
 endif()
 
-if(CXX_WARN_SUGGEST_FINAL_TYPES)
+check_cxx_compiler_flag(HAVE_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)
+if(HAVE_WARN_SUGGEST_FINAL_TYPES)
     # Disable -Wsuggest-final-types via pragmas where due.
-   add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
+    add_definitions(-D__WARN_SUGGEST_FINAL_TYPES__)
 endif()
 
-if(CXX_WARN_SUGGEST_FINAL_METHODS)
+check_cxx_compiler_flag(HAVE_WARN_SUGGEST_FINAL_METHODS -Wsuggest-final-methods)
+if(HAVE_WARN_SUGGEST_FINAL_METHODS)
     # Disable -Wsuggest-final-methods via pragmas where due.
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif()
