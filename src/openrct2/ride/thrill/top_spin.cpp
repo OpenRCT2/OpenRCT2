@@ -52,7 +52,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     // As we will be drawing a vehicle we need to backup the mapElement that
     // is assigned to the drawings.
-    rct_map_element* curMapElement = session->CurrentlyDrawnItem;
+    rct_map_element* curMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     height += 3;
 
@@ -141,12 +141,12 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     rct_xyz16 seatCoords = {
         .x = al,
         .y = cl,
-        .z = height
+        .z = static_cast<sint16>(height)
     };
 
     seatCoords.z += TopSpinSeatHeightOffset[armRotation];
 
-    assert(armRotation < sizeof(TopSpinSeatPositionOffset));
+    assert(armRotation < static_cast<sint8>(sizeof(TopSpinSeatPositionOffset)));
     switch (direction) {
     case 0:
         seatCoords.x -= TopSpinSeatPositionOffset[armRotation];

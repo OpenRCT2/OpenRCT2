@@ -24,7 +24,7 @@
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(paint_session * session, Ride * ride, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;

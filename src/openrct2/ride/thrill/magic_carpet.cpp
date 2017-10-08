@@ -154,7 +154,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, Ride *ride, uint
 /** rct2: 0x00899104 */
 static void paint_magic_carpet_structure(paint_session * session, Ride *ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
     rct_vehicle *vehicle = get_first_vehicle(ride);
 
     uint32 swingImageId = 0;

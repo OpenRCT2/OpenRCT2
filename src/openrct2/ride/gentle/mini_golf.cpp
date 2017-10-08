@@ -23,6 +23,7 @@
 #include "../track_paint.h"
 #include "../../world/map.h"
 #include "../vehicle_paint.h"
+#include "../../core/Util.hpp"
 
 enum {
     SPR_MINI_GOLF_FLAT_SW_NE = 14404,
@@ -413,15 +414,15 @@ static const uint8 * mini_golf_peep_animation_frames[] = {
 };
 
 const uint8 mini_golf_peep_animation_lengths[] = {
-    countof(mini_golf_peep_animation_frames_walk),
-    countof(mini_golf_peep_animation_frames_place_ball_downwards),
-    countof(mini_golf_peep_animation_frames_swing_left),
-    countof(mini_golf_peep_animation_frames_place_ball_upwards),
-    countof(mini_golf_peep_animation_frames_jump),
-    countof(mini_golf_peep_animation_frames_pickup_ball),
-    countof(mini_golf_peep_animation_frames_put_left),
-    countof(mini_golf_peep_animation_frames_swing),
-    countof(mini_golf_peep_animation_frames_put),
+    Util::CountOf(mini_golf_peep_animation_frames_walk),
+    Util::CountOf(mini_golf_peep_animation_frames_place_ball_downwards),
+    Util::CountOf(mini_golf_peep_animation_frames_swing_left),
+    Util::CountOf(mini_golf_peep_animation_frames_place_ball_upwards),
+    Util::CountOf(mini_golf_peep_animation_frames_jump),
+    Util::CountOf(mini_golf_peep_animation_frames_pickup_ball),
+    Util::CountOf(mini_golf_peep_animation_frames_put_left),
+    Util::CountOf(mini_golf_peep_animation_frames_swing),
+    Util::CountOf(mini_golf_peep_animation_frames_put),
 };
 
 static paint_struct * mini_golf_paint_util_7c(

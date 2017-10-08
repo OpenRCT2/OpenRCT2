@@ -40,7 +40,7 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
     Ride *ride = get_ride(mapElement->properties.track.ride_index);
     rct_ride_entry *rideEntry = get_ride_entry_by_ride(ride);
 
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     rct_vehicle *vehicle = NULL;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK) {

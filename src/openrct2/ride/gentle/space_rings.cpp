@@ -39,7 +39,7 @@ static const uint32 space_rings_fence_sprites[] = {
 /** rct2: 0x00768A3B */
 static void paint_space_rings_structure(paint_session * session, Ride * ride, uint8 direction,  uint32 segment, sint32 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     uint32 vehicleIndex = (segment - direction) & 0x3;
 

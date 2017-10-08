@@ -116,10 +116,14 @@ static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideInd
 
             sint32 offset = SPIRAL_SLIDE_PEEP + 46 * direction;
             rct_xyz8 boundingBox = {
+                .x = 0,
+                .y = 0,
                 .z = 108
             };
             rct_xyz16 boundingBoxOffset = {
-                .z = height + 3
+                .x = 0,
+                .y = 0,
+                .z = static_cast<sint16>(height + 3)
             };
 
             if (direction == 0) {

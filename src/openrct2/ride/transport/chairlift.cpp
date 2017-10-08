@@ -73,7 +73,7 @@ enum
     SPR_CHAIRLIFT_STATION_END_CAP_SE,
     SPR_CHAIRLIFT_STATION_END_CAP_SW,
     SPR_CHAIRLIFT_STATION_END_CAP_NW,
-} SPR_CHAIRLIFT;
+};
 
 const uint32 chairlift_bullwheel_frames[] = {
     SPR_CHAIRLIFT_BULLWHEEL_FRAME_1,
@@ -138,8 +138,8 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_e
 
     rct_xy16 delta = TileDirectionDelta[map_element_get_direction(mapElement)];
     rct_xy16 newPos = {
-        .x = pos.x - delta.x,
-        .y = pos.y - delta.y,
+        .x = static_cast<sint16>(pos.x - delta.x),
+        .y = static_cast<sint16>(pos.y - delta.y),
     };
 
     rct_map_element * nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);
@@ -155,8 +155,8 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 
     rct_xy16 delta = TileDirectionDelta[map_element_get_direction(mapElement)];
     rct_xy16 newPos = {
-        .x = pos.x + delta.x,
-        .y = pos.y + delta.y,
+        .x = static_cast<sint16>(pos.x + delta.x),
+        .y = static_cast<sint16>(pos.y + delta.y),
     };
 
     rct_map_element * nextTrack = chairlift_paint_util_map_get_track_element_at_from_ride_fuzzy(newPos.x, newPos.y, mapElement->base_height, rideIndex);

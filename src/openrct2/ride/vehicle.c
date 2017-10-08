@@ -8076,8 +8076,6 @@ loc_6DBE7F:
     return false;
 }
 
-extern const uint8 mini_golf_peep_animation_lengths[];
-
 /**
  *  rct2: 0x006DC3A7
  *

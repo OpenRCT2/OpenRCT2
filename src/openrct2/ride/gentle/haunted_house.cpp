@@ -44,7 +44,7 @@ static haunted_house_bound_box haunted_house_data[] = {
  */
 static void paint_haunted_house_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint8 part, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     uint8 frameNum = 0;
 

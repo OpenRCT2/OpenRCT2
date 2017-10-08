@@ -58,7 +58,7 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
 {
     uint32 imageId, baseImageId;
 
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     Ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);

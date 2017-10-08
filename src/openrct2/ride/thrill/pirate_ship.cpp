@@ -70,7 +70,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 {
     uint32 imageId, baseImageId;
 
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;

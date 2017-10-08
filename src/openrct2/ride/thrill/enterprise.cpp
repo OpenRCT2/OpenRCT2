@@ -26,7 +26,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
 {
     height += 7;
 
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;
 

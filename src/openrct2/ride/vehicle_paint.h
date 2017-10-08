@@ -19,6 +19,10 @@
 
 #include "vehicle.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 typedef struct vehicle_boundbox {
     sint8 offset_x;
     sint8 offset_y;
@@ -44,5 +48,9 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
 void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry);
 void vehicle_visual_mini_golf_player(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle);
 void vehicle_visual_mini_golf_ball(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle);
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif

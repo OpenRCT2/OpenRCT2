@@ -62,7 +62,7 @@ static const uint32 swinging_inverter_ship_frame_sprites[] = {
 
 static void paint_swinging_inverter_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideType = get_ride_entry(ride->subtype);
     rct_vehicle * vehicle = NULL;

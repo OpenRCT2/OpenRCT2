@@ -35,7 +35,7 @@ static const uint16 merry_go_round_breakdown_vibration[] = {
  */
 static void paint_merry_go_round_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
     height += 7;
 
     Ride * ride = get_ride(rideIndex);

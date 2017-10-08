@@ -21,11 +21,11 @@
 #include "../track.h"
 
 /**
- * rct2: 0x007664C2
+ * rct2: 0x0077084A
  */
-static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset, sint8 yOffset, uint16 height)
+static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uint8 direction, sint8 al, sint8 cl, uint16 height)
 {
-    rct_map_element * savedMapElement = session->CurrentlyDrawnItem;
+    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
     Ride * ride = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -37,22 +37,21 @@ static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, 
     }
 
     uint32 imageColourFlags = session->TrackColours[SCHEME_MISC];
+    uint32 imageId = rideEntry->vehicles[0].base_image_id;
     if (imageColourFlags == IMAGE_TYPE_REMAP) {
         imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].body_colour, ride->vehicle_colours[0].trim_colour);
+        imageId += direction;
     }
 
-    uint32 imageId = (rideEntry->vehicles[0].base_image_id + direction) | imageColourFlags;
-    sub_98197C(session, imageId, xOffset, yOffset, 24, 24, 47, height + 3, xOffset + 16, yOffset + 16, height + 3, get_current_rotation());
+    sub_98197C(session, imageId | imageColourFlags, al, cl, 24, 24, 47, height + 3, al + 16, cl + 16, height + 3, get_current_rotation());
 
     session->CurrentlyDrawnItem = savedMapElement;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
-
-
 /**
- * rct2: 0x0076574C
+ * rct2: 0x0076FAD4
  */
-static void paint_3d_cinema(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
+static void paint_circus_show(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -64,34 +63,33 @@ static void paint_3d_cinema(paint_session * session, uint8 rideIndex, uint8 trac
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope, get_current_rotation());
+    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height, fenceSpritesRope, get_current_rotation());
 
-
-    switch(trackSequence) {
-        case 1: paint_3d_cinema_structure(session, rideIndex, direction, 32, 32, height); break;
-        case 3: paint_3d_cinema_structure(session, rideIndex, direction, 32, -32, height); break;
-        case 5: paint_3d_cinema_structure(session, rideIndex, direction, 0, -32, height); break;
-        case 6: paint_3d_cinema_structure(session, rideIndex, direction, -32, 32, height); break;
-        case 7: paint_3d_cinema_structure(session, rideIndex, direction, -32, -32, height); break;
-        case 8: paint_3d_cinema_structure(session, rideIndex, direction, -32, 0, height); break;
+    switch (trackSequence) {
+        case 1: paint_circus_show_tent(session, rideIndex, direction, 32, 32, height); break;
+        case 3: paint_circus_show_tent(session, rideIndex, direction, 32, -32, height); break;
+        case 5: paint_circus_show_tent(session, rideIndex, direction, 0, -32, height); break;
+        case 6: paint_circus_show_tent(session, rideIndex, direction, -32, 32, height); break;
+        case 7: paint_circus_show_tent(session, rideIndex, direction, -32, -32, height); break;
+        case 8: paint_circus_show_tent(session, rideIndex, direction, -32, 0, height); break;
     }
 
     sint32 cornerSegments = 0;
     switch (trackSequence) {
         case 1:
-            // top
+            // Top
             cornerSegments = SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC;
             break;
         case 3:
-            // right
+            // Right
             cornerSegments = SEGMENT_CC | SEGMENT_BC | SEGMENT_D4;
             break;
         case 6:
-            // left
+            // Left
             cornerSegments = SEGMENT_C8 | SEGMENT_B8 | SEGMENT_D0;
             break;
         case 7:
-            // bottom
+            // Bottom
             cornerSegments = SEGMENT_D0 | SEGMENT_C0 | SEGMENT_D4;
             break;
     }
@@ -101,12 +99,14 @@ static void paint_3d_cinema(paint_session * session, uint8 rideIndex, uint8 trac
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-/* 0x0076554C */
-TRACK_PAINT_FUNCTION get_track_paint_function_3d_cinema(sint32 trackType, sint32 direction)
+/**
+ * rct2: 0x0076F8D4
+ */
+TRACK_PAINT_FUNCTION get_track_paint_function_circus_show(sint32 trackType, sint32 direction)
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3) {
         return NULL;
     }
 
-    return paint_3d_cinema;
+    return paint_circus_show;
 }
