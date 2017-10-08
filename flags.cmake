@@ -41,14 +41,15 @@ if(NOT MSVC)
         -Wredundant-decls
         -Wignored-qualifiers
         -Wnull-dereference
-        -Wsuggest-final-types
-        -Wsuggest-final-methods
-        -Wsuggest-override
+        $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-final-types>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-final-methods>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wsuggest-override>
+        $<$<COMPILE_LANGUAGE:CXX>:-Wnon-virtual-dtor>
         -Wduplicated-cond
-        -Wnon-virtual-dtor
         -Wstrict-overflow=1
         -Wimplicit
         )
+    set(maybe_cxx_flags)
 else()
     set(required_flags
         # Enable warnings
@@ -75,29 +76,37 @@ else()
 endif()
 
 foreach(flag IN LISTS required_flags)
-    string(MAKE_C_IDENTIFIER "HAVE_FLAG_${flag}" var)
+    set(stripped_flag "${flag}")
+    if(flag MATCHES ".<.<COMPILE_LANGUAGE:[A-Z]+>:(.*)>")
+        set(stripped_flag "${CMAKE_MATCH_1}")
+    endif()
+    string(MAKE_C_IDENTIFIER "HAVE_FLAG_${stripped_flag}" var)
     set(CMAKE_REQUIRED_QUIET TRUE)
     if(NOT DEFINED "${var}")
-        message(STATUS "Checking support for required compile flag: ${flag}")
+        message(STATUS "Checking support for required compile flag: ${stripped_flag}")
     endif()
-    check_cxx_compiler_flag("${flag}" "${var}")
+    check_cxx_compiler_flag("${stripped_flag}" "${var}")
     if(NOT "${${var}}")
-        message(SEND_ERROR "Your compiler does not support compile flag: ${flag}")
+        message(SEND_ERROR "Your compiler does not support compile flag: ${stripped_flag}")
     else()
         target_compile_options(openrct2-flags-iface INTERFACE ${flag})
     endif()
 endforeach()
 
 foreach(flag IN LISTS maybe_flags)
-    string(MAKE_C_IDENTIFIER "HAVE_FLAG_${flag}" var)
+    set(stripped_flag "${flag}")
+    if(flag MATCHES ".<.<COMPILE_LANGUAGE:[A-Z]+>:(.*)>")
+        set(stripped_flag "${CMAKE_MATCH_1}")
+    endif()
+    string(MAKE_C_IDENTIFIER "HAVE_FLAG_${stripped_flag}" var)
     set(CMAKE_REQUIRED_QUIET TRUE)
     set(first_check FALSE)
     if(NOT DEFINED "${var}")
         set(first_check TRUE)
-        set(msg "Checking support for compile flag: ${flag}")
+        set(msg "Checking support for compile flag: ${stripped_flag}")
         message(STATUS "${msg}")
     endif()
-    check_cxx_compiler_flag("${flag}" "${var}")
+    check_cxx_compiler_flag("${stripped_flag}" "${var}")
     if(first_check)
         if(NOT "${${var}}")
             message(STATUS "${msg} - No")
