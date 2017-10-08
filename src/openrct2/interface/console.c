@@ -1217,6 +1217,24 @@ static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc)
     return 0;
 }
 
+static sint32 cc_remove_park_fences(const utf8 **argv, sint32 argc)
+{
+    map_element_iterator it;
+    map_element_iterator_begin(&it);
+    do
+    {
+        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SURFACE)
+        {
+            // Remove all park fence flags
+            it.element->properties.surface.ownership &= 0xF0;
+        }
+    }
+    while (map_element_iterator_next(&it));
+
+    console_printf("Park fences have been removed.");
+    return 0;
+}
+
 static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
 {
     map_reorganise_elements();
@@ -1339,6 +1357,7 @@ console_command console_command_table[] = {
     { "rides", cc_rides, "Ride management.", "rides <subcommand>" },
     { "staff", cc_staff, "Staff management.", "staff <subcommand>"},
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
+    { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
 };
 
