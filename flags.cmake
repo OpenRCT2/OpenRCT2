@@ -1,20 +1,14 @@
 include(CheckCCompilerFlag)
 include(CheckCXXCompilerFlag)
 
-# 32-bit forcing
-if(NOT MSVC AND FORCE_32BIT)
-    target_compile_definitions(openrct2-flags-iface INTERFACE -m32)
-    target_link_libraries(openrct2-flags-iface INTERFACE -m32)
-endif()
-
 # Validate
 if(ENABLE_RCT2)
     # We require certain settings for using the original executable
     if(WIN32)
         message(SEND_ERROR "ENABLE_RCT2 is not supported on Windows")
     endif()
-    if(NOT FORCE_32BIT)
-        message(SEND_ERROR "ENABLE_RCT2 requires FORCE_32BIT")
+    if(NOT CMAKE_SIZEOF_VOID_P EQUAL 4)
+        message(SEND_ERROR "ENABLE_RCT2 requires 32-bit compiler")
     endif()
 endif()
 

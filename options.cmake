@@ -13,10 +13,6 @@ set(DEBUG_LEVEL 0 CACHE INT "Select debug level for compilation. Use value in ra
 set_property(CACHE DEBUG_LEVEL PROPERTY STRINGS 0 1 2 3)
 option(STATIC_LINK_EXECUTABLE "Link dependent libraries into the executable statically" ON)
 
-if(NOT MSVC)
-    option(FORCE_32BIT "Force compile for 32-bit architectures" NO)
-endif()
-
 # Options for using original rct2 binaries
 option(ENABLE_RCT2 "Use code and data segments from the original executable binary" OFF)
 cmake_dependent_option(USE_MMAP_FOR_RCT2 "Use mmap to load rct2's data segment into memory" ON "ENABLE_RCT2" OFF)
