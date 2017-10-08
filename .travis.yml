@@ -73,11 +73,11 @@ matrix:
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_NETWORK=NO -DENABLE_HTTP_TWITCH=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_TTF=NO -DENABLE_NETWORK=NO -DENABLE_HTTP_TWITCH=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_OPENGL=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_TTF=NO -DENABLE_OPENGL=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
           services:
             - docker
         - os: osx
