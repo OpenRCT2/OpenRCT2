@@ -6,6 +6,7 @@ add_custom_command(
     COMMAND $<TARGET_FILE:openrct2-cli> sprite build
         "${g2_dat}"
         ${PROJECT_SOURCE_DIR}/resources/g2/sprites.json
+        silent
     DEPENDS
         openrct2-cli
         "${PROJECT_SOURCE_DIR}/resources/g2/sprites.json"
