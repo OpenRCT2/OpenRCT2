@@ -494,9 +494,13 @@ void mapgen_generate_trees(mapgen_settings * settings)
         if (!pos->tree)
             continue;
 
-        sint32 nearbyTrees = 0;
+        // Store number of nearby trees. Will never exceed 4.
+        sint32 nearbyTrees = 0,
+               keymap = 0;
 
-        sint32 keymap = 0;
+        // _, _, _,
+        // X, T, _,
+        // _, _, _,
         sint32 x2 = clamp(0, pos->x - 1, gMapSize - 2);
         keymap = x2 + (pos->y * (gMapSize - 2));
         if (availablePositionsKeymap[keymap] != -1) {
@@ -506,6 +510,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
             }
         }
 
+        // _, _, _,
+        // _, T, X,
+        // _, _, _,
         x2 = clamp(0, pos->x + 1, gMapSize - 2);
         keymap = x2 + (pos->y * (gMapSize - 2));
         if (availablePositionsKeymap[keymap] != -1) {
@@ -515,6 +522,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
             }
         }
 
+        // _, X, _,
+        // _, T, _,
+        // _, _, _,
         sint32 y2 = clamp(0, pos->y - 1, gMapSize - 2);
         keymap = pos->x + (y2 * (gMapSize - 2));
         if (availablePositionsKeymap[keymap] != -1) {
@@ -524,6 +534,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
             }
         }
 
+        // _, _, _,
+        // _, T, _,
+        // _, X, _,
         y2 = clamp(0, pos->y + 1, gMapSize - 2);
         keymap = pos->x + (y2 * (gMapSize - 2));
         if (availablePositionsKeymap[keymap] != -1) {
@@ -533,11 +546,13 @@ void mapgen_generate_trees(mapgen_settings * settings)
             }
         }
 
-
+        // Using a increment-based approach reduces util_rand() calls to one, increasing speed.
         rand = (rand + randIncrement) % 100;
         
         if (
+            // Set probability of removing to number of nearby trees required.
             ((nearbyTrees >= 4) && (rand > 30)) ||
+            ((nearbyTrees >= 3) && (rand < 50)) ||
             ((nearbyTrees >= 2) && (rand > 60))
         ) {
             pos->tree = false;
@@ -547,7 +562,7 @@ void mapgen_generate_trees(mapgen_settings * settings)
 
     log_info("%d trees were removed due to neighboring positions", treesRemoved);
 
-    // Shuffle list
+    // Shuffle list, to evenly distribute the next portions probability ratio.
     for (sint32 i = 0; i < availablePositionsCount; i++) {
         sint32 rindex = util_rand() % availablePositionsCount;
         if (rindex == i)
@@ -559,6 +574,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
     }
 
     // Place trees
+
+    // choose number of trees by applying a random ratio (between 0.60f and 0.80f)
+    // to the number of availablePositionsCount. if lower than 4, 4 is used.
     float treeToLandRatio = (60 + (util_rand() % 20)) / 100.0f;
     sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
 
@@ -596,6 +614,8 @@ void mapgen_generate_trees(mapgen_settings * settings)
             if (numDesertTreeIds == 0)
                 break;
 
+            // Because deserts have less trees than forests, apply a 1/3rd chance 
+            // of tree being placed.
             if (util_rand() % 3 == 0)
                 type = desertTreeIds[util_rand() % numDesertTreeIds];
             break;
