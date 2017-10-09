@@ -28,6 +28,79 @@
 		4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42731EEB1B6F00F015CA /* Screenshot.cpp */; };
 		4C93F1141F86728F00A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1121F86728F00A9330D /* Research.cpp */; };
 		4C93F1171F881F9C00A9330D /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1151F881F9C00A9330D /* Finance.cpp */; };
+		4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */; };
+		4C93F13B1F8B744400A9330D /* BobsleighCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */; };
+		4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */; };
+		4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */; };
+		4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */; };
+		4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */; };
+		4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */; };
+		4C93F1411F8B744400A9330D /* HeartlineTwisterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */; };
+		4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */; };
+		4C93F1431F8B744400A9330D /* InvertedImpulseCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */; };
+		4C93F1441F8B744400A9330D /* InvertedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */; };
+		4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */; };
+		4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */; };
+		4C93F1471F8B744400A9330D /* LimLaunchedRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */; };
+		4C93F1481F8B744400A9330D /* LoopingRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1281F8B744400A9330D /* LoopingRollerCoaster.cpp */; };
+		4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1291F8B744400A9330D /* MineRide.cpp */; };
+		4C93F14A1F8B744400A9330D /* MineTrainCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12A1F8B744400A9330D /* MineTrainCoaster.cpp */; };
+		4C93F14B1F8B744400A9330D /* MiniRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12B1F8B744400A9330D /* MiniRollerCoaster.cpp */; };
+		4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12C1F8B744400A9330D /* MiniSuspendedCoaster.cpp */; };
+		4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp */; };
+		4C93F14E1F8B744400A9330D /* ReverseFreefallCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */; };
+		4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */; };
+		4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */; };
+		4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */; };
+		4C93F1521F8B744400A9330D /* Steeplechase.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1321F8B744400A9330D /* Steeplechase.cpp */; };
+		4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */; };
+		4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1341F8B744400A9330D /* TwisterRollerCoaster.cpp */; };
+		4C93F1551F8B744400A9330D /* VerticalDropRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1351F8B744400A9330D /* VerticalDropRollerCoaster.cpp */; };
+		4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1361F8B744400A9330D /* VirginiaReel.cpp */; };
+		4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1371F8B744400A9330D /* WildMouse.cpp */; };
+		4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */; };
+		4C93F1591F8B744400A9330D /* WoodenWildMouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */; };
+		4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15A1F8B745700A9330D /* CarRide.cpp */; };
+		4C93F16B1F8B745700A9330D /* CircusShow.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15B1F8B745700A9330D /* CircusShow.cpp */; };
+		4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */; };
+		4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15D1F8B745700A9330D /* Dodgems.cpp */; };
+		4C93F16E1F8B745700A9330D /* FerrisWheel.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */; };
+		4C93F16F1F8B745700A9330D /* FlyingSaucers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F15F1F8B745700A9330D /* FlyingSaucers.cpp */; };
+		4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1601F8B745700A9330D /* GhostTrain.cpp */; };
+		4C93F1711F8B745700A9330D /* HauntedHouse.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1611F8B745700A9330D /* HauntedHouse.cpp */; };
+		4C93F1721F8B745700A9330D /* Maze.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1621F8B745700A9330D /* Maze.cpp */; };
+		4C93F1731F8B745700A9330D /* MerryGoRound.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1631F8B745700A9330D /* MerryGoRound.cpp */; };
+		4C93F1741F8B745700A9330D /* MiniGolf.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1641F8B745700A9330D /* MiniGolf.cpp */; };
+		4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1651F8B745700A9330D /* MiniHelicopters.cpp */; };
+		4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1661F8B745700A9330D /* MonorailCycles.cpp */; };
+		4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1671F8B745700A9330D /* ObservationTower.cpp */; };
+		4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1681F8B745700A9330D /* SpaceRings.cpp */; };
+		4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1691F8B745700A9330D /* SpiralSlide.cpp */; };
+		4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17A1F8B747300A9330D /* Facility.cpp */; };
+		4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17B1F8B747300A9330D /* Shop.cpp */; };
+		4C93F1891F8B747A00A9330D /* 3dCinema.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17E1F8B747A00A9330D /* 3dCinema.cpp */; };
+		4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F17F1F8B747A00A9330D /* Enterprise.cpp */; };
+		4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1801F8B747A00A9330D /* GoKarts.cpp */; };
+		4C93F18C1F8B747A00A9330D /* LaunchedFreefall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */; };
+		4C93F18D1F8B747A00A9330D /* MagicCarpet.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */; };
+		4C93F18E1F8B747A00A9330D /* MotionSimulator.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */; };
+		4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1841F8B747A00A9330D /* PirateShip.cpp */; };
+		4C93F1901F8B747A00A9330D /* RotoDrop.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1851F8B747A00A9330D /* RotoDrop.cpp */; };
+		4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */; };
+		4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1871F8B747A00A9330D /* TopSpin.cpp */; };
+		4C93F1931F8B747A00A9330D /* Twist.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1881F8B747A00A9330D /* Twist.cpp */; };
+		4C93F1991F8B748200A9330D /* Chairlift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1941F8B748200A9330D /* Chairlift.cpp */; };
+		4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1951F8B748200A9330D /* Lift.cpp */; };
+		4C93F19B1F8B748200A9330D /* MiniatureRailway.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */; };
+		4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1971F8B748200A9330D /* Monorail.cpp */; };
+		4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */; };
+		4C93F1A51F8B748900A9330D /* BoatRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19E1F8B748900A9330D /* BoatRide.cpp */; };
+		4C93F1A61F8B748900A9330D /* DingySlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19F1F8B748900A9330D /* DingySlide.cpp */; };
+		4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A01F8B748900A9330D /* LogFlume.cpp */; };
+		4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A11F8B748900A9330D /* RiverRapids.cpp */; };
+		4C93F1A91F8B748900A9330D /* SplashBoats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A21F8B748900A9330D /* SplashBoats.cpp */; };
+		4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */; };
+		4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */; };
 		4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A51EFBDCCE00B88761 /* land_tool.c */; };
 		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
@@ -323,91 +396,19 @@
 		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
 		F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84841EC4E7CC00FA49E2 /* cable_lift.c */; };
-		F76C86CA1EC4E88400FA49E2 /* air_powered_vertical_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84871EC4E7CC00FA49E2 /* air_powered_vertical_coaster.c */; };
-		F76C86CB1EC4E88400FA49E2 /* bobsleigh_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84881EC4E7CC00FA49E2 /* bobsleigh_coaster.c */; };
-		F76C86CC1EC4E88400FA49E2 /* bolliger_mabillard_track.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84891EC4E7CC00FA49E2 /* bolliger_mabillard_track.c */; };
-		F76C86CE1EC4E88400FA49E2 /* compact_inverted_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C848B1EC4E7CC00FA49E2 /* compact_inverted_coaster.c */; };
-		F76C86CF1EC4E88400FA49E2 /* corkscrew_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C848C1EC4E7CC00FA49E2 /* corkscrew_roller_coaster.c */; };
-		F76C86D01EC4E88400FA49E2 /* flying_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C848D1EC4E7CC00FA49E2 /* flying_roller_coaster.c */; };
-		F76C86D11EC4E88400FA49E2 /* giga_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C848E1EC4E7CC00FA49E2 /* giga_coaster.c */; };
-		F76C86D21EC4E88400FA49E2 /* heartline_twister_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C848F1EC4E7CC00FA49E2 /* heartline_twister_coaster.c */; };
-		F76C86D31EC4E88400FA49E2 /* inverted_hairpin_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84901EC4E7CC00FA49E2 /* inverted_hairpin_coaster.c */; };
-		F76C86D41EC4E88400FA49E2 /* inverted_impulse_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84911EC4E7CC00FA49E2 /* inverted_impulse_coaster.c */; };
-		F76C86D51EC4E88400FA49E2 /* inverted_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84921EC4E7CC00FA49E2 /* inverted_roller_coaster.c */; };
-		F76C86D61EC4E88400FA49E2 /* junior_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84931EC4E7CC00FA49E2 /* junior_roller_coaster.c */; };
-		F76C86D91EC4E88400FA49E2 /* lim_launched_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84961EC4E7CC00FA49E2 /* lim_launched_roller_coaster.c */; };
-		F76C86DA1EC4E88400FA49E2 /* looping_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84971EC4E7CC00FA49E2 /* looping_roller_coaster.c */; };
-		F76C86DB1EC4E88400FA49E2 /* mine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84981EC4E7CC00FA49E2 /* mine_ride.c */; };
-		F76C86DC1EC4E88400FA49E2 /* mine_train_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84991EC4E7CC00FA49E2 /* mine_train_coaster.c */; };
-		F76C86DD1EC4E88400FA49E2 /* mini_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849A1EC4E7CC00FA49E2 /* mini_roller_coaster.c */; };
-		F76C86DE1EC4E88400FA49E2 /* mini_suspended_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849B1EC4E7CC00FA49E2 /* mini_suspended_coaster.c */; };
-		F76C86DF1EC4E88400FA49E2 /* multi_dimension_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849C1EC4E7CC00FA49E2 /* multi_dimension_roller_coaster.c */; };
-		F76C86E01EC4E88400FA49E2 /* reverse_freefall_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849D1EC4E7CC00FA49E2 /* reverse_freefall_coaster.c */; };
-		F76C86E11EC4E88400FA49E2 /* reverser_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849E1EC4E7CC00FA49E2 /* reverser_roller_coaster.c */; };
-		F76C86E21EC4E88400FA49E2 /* side_friction_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C849F1EC4E7CC00FA49E2 /* side_friction_roller_coaster.c */; };
-		F76C86E31EC4E88400FA49E2 /* stand_up_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A01EC4E7CC00FA49E2 /* stand_up_roller_coaster.c */; };
-		F76C86E41EC4E88400FA49E2 /* steeplechase.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A11EC4E7CC00FA49E2 /* steeplechase.c */; };
-		F76C86E51EC4E88400FA49E2 /* suspended_swinging_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A21EC4E7CC00FA49E2 /* suspended_swinging_coaster.c */; };
-		F76C86E61EC4E88400FA49E2 /* twister_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A31EC4E7CC00FA49E2 /* twister_roller_coaster.c */; };
-		F76C86E71EC4E88400FA49E2 /* vertical_drop_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A41EC4E7CC00FA49E2 /* vertical_drop_roller_coaster.c */; };
-		F76C86E81EC4E88400FA49E2 /* virginia_reel.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A51EC4E7CC00FA49E2 /* virginia_reel.c */; };
-		F76C86E91EC4E88400FA49E2 /* wild_mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A61EC4E7CC00FA49E2 /* wild_mouse.c */; };
-		F76C86EA1EC4E88400FA49E2 /* wooden_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A71EC4E7CC00FA49E2 /* wooden_roller_coaster.c */; };
-		F76C86EB1EC4E88400FA49E2 /* wooden_wild_mouse.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84A81EC4E7CC00FA49E2 /* wooden_wild_mouse.c */; };
-		F76C86EC1EC4E88400FA49E2 /* car_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AA1EC4E7CC00FA49E2 /* car_ride.c */; };
-		F76C86ED1EC4E88400FA49E2 /* circus_show.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AB1EC4E7CC00FA49E2 /* circus_show.c */; };
-		F76C86EE1EC4E88400FA49E2 /* crooked_house.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AC1EC4E7CC00FA49E2 /* crooked_house.c */; };
-		F76C86EF1EC4E88400FA49E2 /* dodgems.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AD1EC4E7CC00FA49E2 /* dodgems.c */; };
-		F76C86F01EC4E88400FA49E2 /* ferris_wheel.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AE1EC4E7CC00FA49E2 /* ferris_wheel.c */; };
-		F76C86F11EC4E88400FA49E2 /* flying_saucers.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84AF1EC4E7CC00FA49E2 /* flying_saucers.c */; };
-		F76C86F21EC4E88400FA49E2 /* ghost_train.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B01EC4E7CC00FA49E2 /* ghost_train.c */; };
-		F76C86F31EC4E88400FA49E2 /* haunted_house.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B11EC4E7CC00FA49E2 /* haunted_house.c */; };
-		F76C86F41EC4E88400FA49E2 /* maze.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B21EC4E7CC00FA49E2 /* maze.c */; };
-		F76C86F51EC4E88400FA49E2 /* merry_go_round.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B31EC4E7CC00FA49E2 /* merry_go_round.c */; };
-		F76C86F61EC4E88400FA49E2 /* mini_golf.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B41EC4E7CC00FA49E2 /* mini_golf.c */; };
-		F76C86F71EC4E88400FA49E2 /* mini_helicopters.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B51EC4E7CC00FA49E2 /* mini_helicopters.c */; };
-		F76C86F81EC4E88400FA49E2 /* monorail_cycles.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B61EC4E7CC00FA49E2 /* monorail_cycles.c */; };
-		F76C86F91EC4E88400FA49E2 /* observation_tower.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B71EC4E7CC00FA49E2 /* observation_tower.c */; };
-		F76C86FA1EC4E88400FA49E2 /* space_rings.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B81EC4E7CC00FA49E2 /* space_rings.c */; };
-		F76C86FB1EC4E88400FA49E2 /* spiral_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84B91EC4E7CC00FA49E2 /* spiral_slide.c */; };
 		F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BA1EC4E7CC00FA49E2 /* ride.c */; };
 		F76C86FE1EC4E88400FA49E2 /* ride_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */; };
 		F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */; };
-		F76C87021EC4E88400FA49E2 /* facility.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C11EC4E7CC00FA49E2 /* facility.c */; };
-		F76C87041EC4E88400FA49E2 /* shop.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C31EC4E7CC00FA49E2 /* shop.c */; };
 		F76C87051EC4E88400FA49E2 /* station.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C41EC4E7CC00FA49E2 /* station.c */; };
-		F76C87071EC4E88400FA49E2 /* 3d_cinema.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C71EC4E7CC00FA49E2 /* 3d_cinema.c */; };
-		F76C87081EC4E88400FA49E2 /* enterprise.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C81EC4E7CC00FA49E2 /* enterprise.c */; };
-		F76C87091EC4E88400FA49E2 /* go_karts.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84C91EC4E7CC00FA49E2 /* go_karts.c */; };
-		F76C870A1EC4E88400FA49E2 /* launched_freefall.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CA1EC4E7CC00FA49E2 /* launched_freefall.c */; };
-		F76C870B1EC4E88400FA49E2 /* magic_carpet.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CB1EC4E7CC00FA49E2 /* magic_carpet.c */; };
-		F76C870C1EC4E88400FA49E2 /* motion_simulator.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CC1EC4E7CC00FA49E2 /* motion_simulator.c */; };
-		F76C870D1EC4E88400FA49E2 /* pirate_ship.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CD1EC4E7CC00FA49E2 /* pirate_ship.c */; };
-		F76C870E1EC4E88400FA49E2 /* roto_drop.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CE1EC4E7CC00FA49E2 /* roto_drop.c */; };
-		F76C870F1EC4E88400FA49E2 /* swinging_inverter_ship.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84CF1EC4E7CC00FA49E2 /* swinging_inverter_ship.c */; };
-		F76C87101EC4E88400FA49E2 /* top_spin.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D01EC4E7CC00FA49E2 /* top_spin.c */; };
-		F76C87111EC4E88400FA49E2 /* twist.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D11EC4E7CC00FA49E2 /* twist.c */; };
 		F76C87121EC4E88400FA49E2 /* track.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D21EC4E7CC00FA49E2 /* track.c */; };
 		F76C87141EC4E88400FA49E2 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D41EC4E7CC00FA49E2 /* track_data.c */; };
 		F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */; };
 		F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */; };
 		F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
-		F76C871E1EC4E88400FA49E2 /* chairlift.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DF1EC4E7CD00FA49E2 /* chairlift.c */; };
-		F76C871F1EC4E88400FA49E2 /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E01EC4E7CD00FA49E2 /* lift.c */; };
-		F76C87201EC4E88400FA49E2 /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E11EC4E7CD00FA49E2 /* miniature_railway.c */; };
-		F76C87211EC4E88400FA49E2 /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E21EC4E7CD00FA49E2 /* monorail.c */; };
-		F76C87221EC4E88400FA49E2 /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E31EC4E7CD00FA49E2 /* suspended_monorail.c */; };
 		F76C87231EC4E88400FA49E2 /* vehicle.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E41EC4E7CD00FA49E2 /* vehicle.c */; };
 		F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */; };
 		F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */; };
-		F76C87291EC4E88400FA49E2 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84EB1EC4E7CD00FA49E2 /* boat_ride.c */; };
-		F76C872A1EC4E88400FA49E2 /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84EC1EC4E7CD00FA49E2 /* dingy_slide.c */; };
-		F76C872B1EC4E88400FA49E2 /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84ED1EC4E7CD00FA49E2 /* log_flume.c */; };
-		F76C872D1EC4E88400FA49E2 /* river_rapids.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84EF1EC4E7CD00FA49E2 /* river_rapids.c */; };
-		F76C872E1EC4E88400FA49E2 /* splash_boats.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F01EC4E7CD00FA49E2 /* splash_boats.c */; };
-		F76C872F1EC4E88400FA49E2 /* submarine_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F11EC4E7CD00FA49E2 /* submarine_ride.c */; };
-		F76C87301EC4E88400FA49E2 /* water_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F21EC4E7CD00FA49E2 /* water_coaster.c */; };
 		F76C87311EC4E88400FA49E2 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F41EC4E7CD00FA49E2 /* scenario.c */; };
 		F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */; };
 		F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F81EC4E7CD00FA49E2 /* ScenarioSources.cpp */; };
@@ -492,7 +493,6 @@
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
-		F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */; };
 		F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */ = {isa = PBXBuildFile; fileRef = F7D7747E1EC61E5100BE6EBC /* UiContext.macOS.mm */; };
 		F7D7748D1EC66F8600BE6EBC /* libopenrct2.a in Frameworks */ = {isa = PBXBuildFile; fileRef = F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */; };
 		F7D7748E1EC66FA000BE6EBC /* libiconv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B741C1C210A7A0080A7B9 /* libiconv.tbd */; };
@@ -622,6 +622,81 @@
 		4C93F1131F86728F00A9330D /* Research.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Research.h; sourceTree = "<group>"; };
 		4C93F1151F881F9C00A9330D /* Finance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Finance.cpp; sourceTree = "<group>"; };
 		4C93F1161F881F9C00A9330D /* Finance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Finance.h; sourceTree = "<group>"; };
+		4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AirPoweredVerticalCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BobsleighCoaster.cpp; sourceTree = "<group>"; };
+		4C93F11A1F8B744400A9330D /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
+		4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BolligerMabillardTrack.cpp; sourceTree = "<group>"; };
+		4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompactInvertedCoaster.cpp; sourceTree = "<group>"; };
+		4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CorkscrewRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlyingRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GigaCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HeartlineTwisterCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedHairpinCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedImpulseCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1241F8B744400A9330D /* junior_roller_coaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = junior_roller_coaster.h; sourceTree = "<group>"; };
+		4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JuniorRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayDownRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LimLaunchedRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1281F8B744400A9330D /* LoopingRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LoopingRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1291F8B744400A9330D /* MineRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MineRide.cpp; sourceTree = "<group>"; };
+		4C93F12A1F8B744400A9330D /* MineTrainCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MineTrainCoaster.cpp; sourceTree = "<group>"; };
+		4C93F12B1F8B744400A9330D /* MiniRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F12C1F8B744400A9330D /* MiniSuspendedCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniSuspendedCoaster.cpp; sourceTree = "<group>"; };
+		4C93F12D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MultiDimensionRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReverseFreefallCoaster.cpp; sourceTree = "<group>"; };
+		4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ReverserRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SideFrictionRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StandUpRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1321F8B744400A9330D /* Steeplechase.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Steeplechase.cpp; sourceTree = "<group>"; };
+		4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuspendedSwingingCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1341F8B744400A9330D /* TwisterRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TwisterRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1351F8B744400A9330D /* VerticalDropRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VerticalDropRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1361F8B744400A9330D /* VirginiaReel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VirginiaReel.cpp; sourceTree = "<group>"; };
+		4C93F1371F8B744400A9330D /* WildMouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WildMouse.cpp; sourceTree = "<group>"; };
+		4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WoodenRollerCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WoodenWildMouse.cpp; sourceTree = "<group>"; };
+		4C93F15A1F8B745700A9330D /* CarRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CarRide.cpp; sourceTree = "<group>"; };
+		4C93F15B1F8B745700A9330D /* CircusShow.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CircusShow.cpp; sourceTree = "<group>"; };
+		4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CrookedHouse.cpp; sourceTree = "<group>"; };
+		4C93F15D1F8B745700A9330D /* Dodgems.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dodgems.cpp; sourceTree = "<group>"; };
+		4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FerrisWheel.cpp; sourceTree = "<group>"; };
+		4C93F15F1F8B745700A9330D /* FlyingSaucers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = FlyingSaucers.cpp; sourceTree = "<group>"; };
+		4C93F1601F8B745700A9330D /* GhostTrain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GhostTrain.cpp; sourceTree = "<group>"; };
+		4C93F1611F8B745700A9330D /* HauntedHouse.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = HauntedHouse.cpp; sourceTree = "<group>"; };
+		4C93F1621F8B745700A9330D /* Maze.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Maze.cpp; sourceTree = "<group>"; };
+		4C93F1631F8B745700A9330D /* MerryGoRound.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MerryGoRound.cpp; sourceTree = "<group>"; };
+		4C93F1641F8B745700A9330D /* MiniGolf.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniGolf.cpp; sourceTree = "<group>"; };
+		4C93F1651F8B745700A9330D /* MiniHelicopters.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniHelicopters.cpp; sourceTree = "<group>"; };
+		4C93F1661F8B745700A9330D /* MonorailCycles.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MonorailCycles.cpp; sourceTree = "<group>"; };
+		4C93F1671F8B745700A9330D /* ObservationTower.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObservationTower.cpp; sourceTree = "<group>"; };
+		4C93F1681F8B745700A9330D /* SpaceRings.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpaceRings.cpp; sourceTree = "<group>"; };
+		4C93F1691F8B745700A9330D /* SpiralSlide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SpiralSlide.cpp; sourceTree = "<group>"; };
+		4C93F17A1F8B747300A9330D /* Facility.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Facility.cpp; sourceTree = "<group>"; };
+		4C93F17B1F8B747300A9330D /* Shop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Shop.cpp; sourceTree = "<group>"; };
+		4C93F17E1F8B747A00A9330D /* 3dCinema.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = 3dCinema.cpp; sourceTree = "<group>"; };
+		4C93F17F1F8B747A00A9330D /* Enterprise.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Enterprise.cpp; sourceTree = "<group>"; };
+		4C93F1801F8B747A00A9330D /* GoKarts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GoKarts.cpp; sourceTree = "<group>"; };
+		4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LaunchedFreefall.cpp; sourceTree = "<group>"; };
+		4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MagicCarpet.cpp; sourceTree = "<group>"; };
+		4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MotionSimulator.cpp; sourceTree = "<group>"; };
+		4C93F1841F8B747A00A9330D /* PirateShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PirateShip.cpp; sourceTree = "<group>"; };
+		4C93F1851F8B747A00A9330D /* RotoDrop.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RotoDrop.cpp; sourceTree = "<group>"; };
+		4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SwingingInverterShip.cpp; sourceTree = "<group>"; };
+		4C93F1871F8B747A00A9330D /* TopSpin.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopSpin.cpp; sourceTree = "<group>"; };
+		4C93F1881F8B747A00A9330D /* Twist.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Twist.cpp; sourceTree = "<group>"; };
+		4C93F1941F8B748200A9330D /* Chairlift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Chairlift.cpp; sourceTree = "<group>"; };
+		4C93F1951F8B748200A9330D /* Lift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Lift.cpp; sourceTree = "<group>"; };
+		4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniatureRailway.cpp; sourceTree = "<group>"; };
+		4C93F1971F8B748200A9330D /* Monorail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Monorail.cpp; sourceTree = "<group>"; };
+		4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuspendedMonorail.cpp; sourceTree = "<group>"; };
+		4C93F19E1F8B748900A9330D /* BoatRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatRide.cpp; sourceTree = "<group>"; };
+		4C93F19F1F8B748900A9330D /* DingySlide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DingySlide.cpp; sourceTree = "<group>"; };
+		4C93F1A01F8B748900A9330D /* LogFlume.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogFlume.cpp; sourceTree = "<group>"; };
+		4C93F1A11F8B748900A9330D /* RiverRapids.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RiverRapids.cpp; sourceTree = "<group>"; };
+		4C93F1A21F8B748900A9330D /* SplashBoats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashBoats.cpp; sourceTree = "<group>"; };
+		4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubmarineRide.cpp; sourceTree = "<group>"; };
+		4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterCoaster.cpp; sourceTree = "<group>"; };
 		4CB832A51EFBDCCE00B88761 /* land_tool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = land_tool.c; sourceTree = "<group>"; };
 		4CB832A61EFBDCCE00B88761 /* land_tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_tool.h; sourceTree = "<group>"; };
 		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
@@ -1213,78 +1288,14 @@
 		F76C84811EC4E7CC00FA49E2 /* rct2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct2.h; sourceTree = "<group>"; };
 		F76C84841EC4E7CC00FA49E2 /* cable_lift.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cable_lift.c; sourceTree = "<group>"; };
 		F76C84851EC4E7CC00FA49E2 /* cable_lift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cable_lift.h; sourceTree = "<group>"; };
-		F76C84871EC4E7CC00FA49E2 /* air_powered_vertical_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = air_powered_vertical_coaster.c; sourceTree = "<group>"; };
-		F76C84881EC4E7CC00FA49E2 /* bobsleigh_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bobsleigh_coaster.c; sourceTree = "<group>"; };
-		F76C84891EC4E7CC00FA49E2 /* bolliger_mabillard_track.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = bolliger_mabillard_track.c; sourceTree = "<group>"; };
-		F76C848A1EC4E7CC00FA49E2 /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
-		F76C848B1EC4E7CC00FA49E2 /* compact_inverted_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = compact_inverted_coaster.c; sourceTree = "<group>"; };
-		F76C848C1EC4E7CC00FA49E2 /* corkscrew_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = corkscrew_roller_coaster.c; sourceTree = "<group>"; };
-		F76C848D1EC4E7CC00FA49E2 /* flying_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = flying_roller_coaster.c; sourceTree = "<group>"; };
-		F76C848E1EC4E7CC00FA49E2 /* giga_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = giga_coaster.c; sourceTree = "<group>"; };
-		F76C848F1EC4E7CC00FA49E2 /* heartline_twister_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = heartline_twister_coaster.c; sourceTree = "<group>"; };
-		F76C84901EC4E7CC00FA49E2 /* inverted_hairpin_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = inverted_hairpin_coaster.c; sourceTree = "<group>"; };
-		F76C84911EC4E7CC00FA49E2 /* inverted_impulse_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = inverted_impulse_coaster.c; sourceTree = "<group>"; };
-		F76C84921EC4E7CC00FA49E2 /* inverted_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = inverted_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84931EC4E7CC00FA49E2 /* junior_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = junior_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84941EC4E7CC00FA49E2 /* junior_roller_coaster.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = junior_roller_coaster.h; sourceTree = "<group>"; };
-		F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lay_down_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84961EC4E7CC00FA49E2 /* lim_launched_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lim_launched_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84971EC4E7CC00FA49E2 /* looping_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = looping_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84981EC4E7CC00FA49E2 /* mine_ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mine_ride.c; sourceTree = "<group>"; };
-		F76C84991EC4E7CC00FA49E2 /* mine_train_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mine_train_coaster.c; sourceTree = "<group>"; };
-		F76C849A1EC4E7CC00FA49E2 /* mini_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mini_roller_coaster.c; sourceTree = "<group>"; };
-		F76C849B1EC4E7CC00FA49E2 /* mini_suspended_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mini_suspended_coaster.c; sourceTree = "<group>"; };
-		F76C849C1EC4E7CC00FA49E2 /* multi_dimension_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = multi_dimension_roller_coaster.c; sourceTree = "<group>"; };
-		F76C849D1EC4E7CC00FA49E2 /* reverse_freefall_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = reverse_freefall_coaster.c; sourceTree = "<group>"; };
-		F76C849E1EC4E7CC00FA49E2 /* reverser_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = reverser_roller_coaster.c; sourceTree = "<group>"; };
-		F76C849F1EC4E7CC00FA49E2 /* side_friction_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = side_friction_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84A01EC4E7CC00FA49E2 /* stand_up_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = stand_up_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84A11EC4E7CC00FA49E2 /* steeplechase.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = steeplechase.c; sourceTree = "<group>"; };
-		F76C84A21EC4E7CC00FA49E2 /* suspended_swinging_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = suspended_swinging_coaster.c; sourceTree = "<group>"; };
-		F76C84A31EC4E7CC00FA49E2 /* twister_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twister_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84A41EC4E7CC00FA49E2 /* vertical_drop_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vertical_drop_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84A51EC4E7CC00FA49E2 /* virginia_reel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = virginia_reel.c; sourceTree = "<group>"; };
-		F76C84A61EC4E7CC00FA49E2 /* wild_mouse.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wild_mouse.c; sourceTree = "<group>"; };
-		F76C84A71EC4E7CC00FA49E2 /* wooden_roller_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wooden_roller_coaster.c; sourceTree = "<group>"; };
-		F76C84A81EC4E7CC00FA49E2 /* wooden_wild_mouse.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = wooden_wild_mouse.c; sourceTree = "<group>"; };
-		F76C84AA1EC4E7CC00FA49E2 /* car_ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = car_ride.c; sourceTree = "<group>"; };
-		F76C84AB1EC4E7CC00FA49E2 /* circus_show.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = circus_show.c; sourceTree = "<group>"; };
-		F76C84AC1EC4E7CC00FA49E2 /* crooked_house.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = crooked_house.c; sourceTree = "<group>"; };
-		F76C84AD1EC4E7CC00FA49E2 /* dodgems.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dodgems.c; sourceTree = "<group>"; };
-		F76C84AE1EC4E7CC00FA49E2 /* ferris_wheel.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ferris_wheel.c; sourceTree = "<group>"; };
-		F76C84AF1EC4E7CC00FA49E2 /* flying_saucers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = flying_saucers.c; sourceTree = "<group>"; };
-		F76C84B01EC4E7CC00FA49E2 /* ghost_train.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ghost_train.c; sourceTree = "<group>"; };
-		F76C84B11EC4E7CC00FA49E2 /* haunted_house.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = haunted_house.c; sourceTree = "<group>"; };
-		F76C84B21EC4E7CC00FA49E2 /* maze.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = maze.c; sourceTree = "<group>"; };
-		F76C84B31EC4E7CC00FA49E2 /* merry_go_round.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = merry_go_round.c; sourceTree = "<group>"; };
-		F76C84B41EC4E7CC00FA49E2 /* mini_golf.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mini_golf.c; sourceTree = "<group>"; };
-		F76C84B51EC4E7CC00FA49E2 /* mini_helicopters.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mini_helicopters.c; sourceTree = "<group>"; };
-		F76C84B61EC4E7CC00FA49E2 /* monorail_cycles.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = monorail_cycles.c; sourceTree = "<group>"; };
-		F76C84B71EC4E7CC00FA49E2 /* observation_tower.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = observation_tower.c; sourceTree = "<group>"; };
-		F76C84B81EC4E7CC00FA49E2 /* space_rings.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = space_rings.c; sourceTree = "<group>"; };
-		F76C84B91EC4E7CC00FA49E2 /* spiral_slide.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = spiral_slide.c; sourceTree = "<group>"; };
 		F76C84BA1EC4E7CC00FA49E2 /* ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride.c; sourceTree = "<group>"; };
 		F76C84BB1EC4E7CC00FA49E2 /* ride.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride.h; sourceTree = "<group>"; };
 		F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_data.c; sourceTree = "<group>"; };
 		F76C84BD1EC4E7CC00FA49E2 /* ride_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_data.h; sourceTree = "<group>"; };
 		F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_ratings.c; sourceTree = "<group>"; };
 		F76C84BF1EC4E7CC00FA49E2 /* ride_ratings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_ratings.h; sourceTree = "<group>"; };
-		F76C84C11EC4E7CC00FA49E2 /* facility.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = facility.c; sourceTree = "<group>"; };
-		F76C84C21EC4E7CC00FA49E2 /* misc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = misc.c; sourceTree = "<group>"; };
-		F76C84C31EC4E7CC00FA49E2 /* shop.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shop.c; sourceTree = "<group>"; };
 		F76C84C41EC4E7CC00FA49E2 /* station.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = station.c; sourceTree = "<group>"; };
 		F76C84C51EC4E7CC00FA49E2 /* station.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = station.h; sourceTree = "<group>"; };
-		F76C84C71EC4E7CC00FA49E2 /* 3d_cinema.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = 3d_cinema.c; sourceTree = "<group>"; };
-		F76C84C81EC4E7CC00FA49E2 /* enterprise.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = enterprise.c; sourceTree = "<group>"; };
-		F76C84C91EC4E7CC00FA49E2 /* go_karts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = go_karts.c; sourceTree = "<group>"; };
-		F76C84CA1EC4E7CC00FA49E2 /* launched_freefall.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = launched_freefall.c; sourceTree = "<group>"; };
-		F76C84CB1EC4E7CC00FA49E2 /* magic_carpet.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = magic_carpet.c; sourceTree = "<group>"; };
-		F76C84CC1EC4E7CC00FA49E2 /* motion_simulator.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = motion_simulator.c; sourceTree = "<group>"; };
-		F76C84CD1EC4E7CC00FA49E2 /* pirate_ship.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = pirate_ship.c; sourceTree = "<group>"; };
-		F76C84CE1EC4E7CC00FA49E2 /* roto_drop.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = roto_drop.c; sourceTree = "<group>"; };
-		F76C84CF1EC4E7CC00FA49E2 /* swinging_inverter_ship.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = swinging_inverter_ship.c; sourceTree = "<group>"; };
-		F76C84D01EC4E7CC00FA49E2 /* top_spin.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = top_spin.c; sourceTree = "<group>"; };
-		F76C84D11EC4E7CC00FA49E2 /* twist.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = twist.c; sourceTree = "<group>"; };
 		F76C84D21EC4E7CC00FA49E2 /* track.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track.c; sourceTree = "<group>"; };
 		F76C84D31EC4E7CC00FA49E2 /* track.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track.h; sourceTree = "<group>"; };
 		F76C84D41EC4E7CC00FA49E2 /* track_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_data.c; sourceTree = "<group>"; };
@@ -1295,25 +1306,12 @@
 		F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
 		F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignRepository.cpp; sourceTree = "<group>"; };
 		F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackDesignRepository.h; sourceTree = "<group>"; };
-		F76C84DF1EC4E7CD00FA49E2 /* chairlift.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = chairlift.c; sourceTree = "<group>"; };
-		F76C84E01EC4E7CD00FA49E2 /* lift.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = lift.c; sourceTree = "<group>"; };
-		F76C84E11EC4E7CD00FA49E2 /* miniature_railway.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = miniature_railway.c; sourceTree = "<group>"; };
-		F76C84E21EC4E7CD00FA49E2 /* monorail.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = monorail.c; sourceTree = "<group>"; };
-		F76C84E31EC4E7CD00FA49E2 /* suspended_monorail.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = suspended_monorail.c; sourceTree = "<group>"; };
 		F76C84E41EC4E7CD00FA49E2 /* vehicle.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle.c; sourceTree = "<group>"; };
 		F76C84E51EC4E7CD00FA49E2 /* vehicle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle.h; sourceTree = "<group>"; };
 		F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		F76C84E71EC4E7CD00FA49E2 /* vehicle_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle_paint.c; sourceTree = "<group>"; };
 		F76C84E91EC4E7CD00FA49E2 /* vehicle_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle_paint.h; sourceTree = "<group>"; };
-		F76C84EB1EC4E7CD00FA49E2 /* boat_ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
-		F76C84EC1EC4E7CD00FA49E2 /* dingy_slide.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = dingy_slide.c; sourceTree = "<group>"; };
-		F76C84ED1EC4E7CD00FA49E2 /* log_flume.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = log_flume.c; sourceTree = "<group>"; };
-		F76C84EE1EC4E7CD00FA49E2 /* river_rafts.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = river_rafts.c; sourceTree = "<group>"; };
-		F76C84EF1EC4E7CD00FA49E2 /* river_rapids.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = river_rapids.c; sourceTree = "<group>"; };
-		F76C84F01EC4E7CD00FA49E2 /* splash_boats.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = splash_boats.c; sourceTree = "<group>"; };
-		F76C84F11EC4E7CD00FA49E2 /* submarine_ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = submarine_ride.c; sourceTree = "<group>"; };
-		F76C84F21EC4E7CD00FA49E2 /* water_coaster.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = water_coaster.c; sourceTree = "<group>"; };
 		F76C84F41EC4E7CD00FA49E2 /* scenario.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenario.c; sourceTree = "<group>"; };
 		F76C84F51EC4E7CD00FA49E2 /* scenario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scenario.h; sourceTree = "<group>"; };
 		F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioRepository.cpp; sourceTree = "<group>"; };
@@ -2350,40 +2348,40 @@
 		F76C84861EC4E7CC00FA49E2 /* coaster */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84871EC4E7CC00FA49E2 /* air_powered_vertical_coaster.c */,
-				F76C84881EC4E7CC00FA49E2 /* bobsleigh_coaster.c */,
-				F76C84891EC4E7CC00FA49E2 /* bolliger_mabillard_track.c */,
-				F76C848A1EC4E7CC00FA49E2 /* bolliger_mabillard_track.h */,
-				F76C848B1EC4E7CC00FA49E2 /* compact_inverted_coaster.c */,
-				F76C848C1EC4E7CC00FA49E2 /* corkscrew_roller_coaster.c */,
-				F76C848D1EC4E7CC00FA49E2 /* flying_roller_coaster.c */,
-				F76C848E1EC4E7CC00FA49E2 /* giga_coaster.c */,
-				F76C848F1EC4E7CC00FA49E2 /* heartline_twister_coaster.c */,
-				F76C84901EC4E7CC00FA49E2 /* inverted_hairpin_coaster.c */,
-				F76C84911EC4E7CC00FA49E2 /* inverted_impulse_coaster.c */,
-				F76C84921EC4E7CC00FA49E2 /* inverted_roller_coaster.c */,
-				F76C84931EC4E7CC00FA49E2 /* junior_roller_coaster.c */,
-				F76C84941EC4E7CC00FA49E2 /* junior_roller_coaster.h */,
-				F76C84951EC4E7CC00FA49E2 /* lay_down_roller_coaster.c */,
-				F76C84961EC4E7CC00FA49E2 /* lim_launched_roller_coaster.c */,
-				F76C84971EC4E7CC00FA49E2 /* looping_roller_coaster.c */,
-				F76C84981EC4E7CC00FA49E2 /* mine_ride.c */,
-				F76C84991EC4E7CC00FA49E2 /* mine_train_coaster.c */,
-				F76C849A1EC4E7CC00FA49E2 /* mini_roller_coaster.c */,
-				F76C849B1EC4E7CC00FA49E2 /* mini_suspended_coaster.c */,
-				F76C849C1EC4E7CC00FA49E2 /* multi_dimension_roller_coaster.c */,
-				F76C849D1EC4E7CC00FA49E2 /* reverse_freefall_coaster.c */,
-				F76C849E1EC4E7CC00FA49E2 /* reverser_roller_coaster.c */,
-				F76C849F1EC4E7CC00FA49E2 /* side_friction_roller_coaster.c */,
-				F76C84A01EC4E7CC00FA49E2 /* stand_up_roller_coaster.c */,
-				F76C84A11EC4E7CC00FA49E2 /* steeplechase.c */,
-				F76C84A21EC4E7CC00FA49E2 /* suspended_swinging_coaster.c */,
-				F76C84A31EC4E7CC00FA49E2 /* twister_roller_coaster.c */,
-				F76C84A41EC4E7CC00FA49E2 /* vertical_drop_roller_coaster.c */,
-				F76C84A51EC4E7CC00FA49E2 /* virginia_reel.c */,
-				F76C84A61EC4E7CC00FA49E2 /* wild_mouse.c */,
-				F76C84A71EC4E7CC00FA49E2 /* wooden_roller_coaster.c */,
-				F76C84A81EC4E7CC00FA49E2 /* wooden_wild_mouse.c */,
+				4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */,
+				4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */,
+				4C93F11A1F8B744400A9330D /* bolliger_mabillard_track.h */,
+				4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */,
+				4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */,
+				4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */,
+				4C93F11E1F8B744400A9330D /* FlyingRollerCoaster.cpp */,
+				4C93F11F1F8B744400A9330D /* GigaCoaster.cpp */,
+				4C93F1201F8B744400A9330D /* HeartlineTwisterCoaster.cpp */,
+				4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */,
+				4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */,
+				4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */,
+				4C93F1241F8B744400A9330D /* junior_roller_coaster.h */,
+				4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */,
+				4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */,
+				4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */,
+				4C93F1281F8B744400A9330D /* LoopingRollerCoaster.cpp */,
+				4C93F1291F8B744400A9330D /* MineRide.cpp */,
+				4C93F12A1F8B744400A9330D /* MineTrainCoaster.cpp */,
+				4C93F12B1F8B744400A9330D /* MiniRollerCoaster.cpp */,
+				4C93F12C1F8B744400A9330D /* MiniSuspendedCoaster.cpp */,
+				4C93F12D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp */,
+				4C93F12E1F8B744400A9330D /* ReverseFreefallCoaster.cpp */,
+				4C93F12F1F8B744400A9330D /* ReverserRollerCoaster.cpp */,
+				4C93F1301F8B744400A9330D /* SideFrictionRollerCoaster.cpp */,
+				4C93F1311F8B744400A9330D /* StandUpRollerCoaster.cpp */,
+				4C93F1321F8B744400A9330D /* Steeplechase.cpp */,
+				4C93F1331F8B744400A9330D /* SuspendedSwingingCoaster.cpp */,
+				4C93F1341F8B744400A9330D /* TwisterRollerCoaster.cpp */,
+				4C93F1351F8B744400A9330D /* VerticalDropRollerCoaster.cpp */,
+				4C93F1361F8B744400A9330D /* VirginiaReel.cpp */,
+				4C93F1371F8B744400A9330D /* WildMouse.cpp */,
+				4C93F1381F8B744400A9330D /* WoodenRollerCoaster.cpp */,
+				4C93F1391F8B744400A9330D /* WoodenWildMouse.cpp */,
 			);
 			path = coaster;
 			sourceTree = "<group>";
@@ -2391,22 +2389,22 @@
 		F76C84A91EC4E7CC00FA49E2 /* gentle */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84AA1EC4E7CC00FA49E2 /* car_ride.c */,
-				F76C84AB1EC4E7CC00FA49E2 /* circus_show.c */,
-				F76C84AC1EC4E7CC00FA49E2 /* crooked_house.c */,
-				F76C84AD1EC4E7CC00FA49E2 /* dodgems.c */,
-				F76C84AE1EC4E7CC00FA49E2 /* ferris_wheel.c */,
-				F76C84AF1EC4E7CC00FA49E2 /* flying_saucers.c */,
-				F76C84B01EC4E7CC00FA49E2 /* ghost_train.c */,
-				F76C84B11EC4E7CC00FA49E2 /* haunted_house.c */,
-				F76C84B21EC4E7CC00FA49E2 /* maze.c */,
-				F76C84B31EC4E7CC00FA49E2 /* merry_go_round.c */,
-				F76C84B41EC4E7CC00FA49E2 /* mini_golf.c */,
-				F76C84B51EC4E7CC00FA49E2 /* mini_helicopters.c */,
-				F76C84B61EC4E7CC00FA49E2 /* monorail_cycles.c */,
-				F76C84B71EC4E7CC00FA49E2 /* observation_tower.c */,
-				F76C84B81EC4E7CC00FA49E2 /* space_rings.c */,
-				F76C84B91EC4E7CC00FA49E2 /* spiral_slide.c */,
+				4C93F15A1F8B745700A9330D /* CarRide.cpp */,
+				4C93F15B1F8B745700A9330D /* CircusShow.cpp */,
+				4C93F15C1F8B745700A9330D /* CrookedHouse.cpp */,
+				4C93F15D1F8B745700A9330D /* Dodgems.cpp */,
+				4C93F15E1F8B745700A9330D /* FerrisWheel.cpp */,
+				4C93F15F1F8B745700A9330D /* FlyingSaucers.cpp */,
+				4C93F1601F8B745700A9330D /* GhostTrain.cpp */,
+				4C93F1611F8B745700A9330D /* HauntedHouse.cpp */,
+				4C93F1621F8B745700A9330D /* Maze.cpp */,
+				4C93F1631F8B745700A9330D /* MerryGoRound.cpp */,
+				4C93F1641F8B745700A9330D /* MiniGolf.cpp */,
+				4C93F1651F8B745700A9330D /* MiniHelicopters.cpp */,
+				4C93F1661F8B745700A9330D /* MonorailCycles.cpp */,
+				4C93F1671F8B745700A9330D /* ObservationTower.cpp */,
+				4C93F1681F8B745700A9330D /* SpaceRings.cpp */,
+				4C93F1691F8B745700A9330D /* SpiralSlide.cpp */,
 			);
 			path = gentle;
 			sourceTree = "<group>";
@@ -2414,9 +2412,8 @@
 		F76C84C01EC4E7CC00FA49E2 /* shops */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84C11EC4E7CC00FA49E2 /* facility.c */,
-				F76C84C21EC4E7CC00FA49E2 /* misc.c */,
-				F76C84C31EC4E7CC00FA49E2 /* shop.c */,
+				4C93F17A1F8B747300A9330D /* Facility.cpp */,
+				4C93F17B1F8B747300A9330D /* Shop.cpp */,
 			);
 			path = shops;
 			sourceTree = "<group>";
@@ -2424,17 +2421,17 @@
 		F76C84C61EC4E7CC00FA49E2 /* thrill */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84C71EC4E7CC00FA49E2 /* 3d_cinema.c */,
-				F76C84C81EC4E7CC00FA49E2 /* enterprise.c */,
-				F76C84C91EC4E7CC00FA49E2 /* go_karts.c */,
-				F76C84CA1EC4E7CC00FA49E2 /* launched_freefall.c */,
-				F76C84CB1EC4E7CC00FA49E2 /* magic_carpet.c */,
-				F76C84CC1EC4E7CC00FA49E2 /* motion_simulator.c */,
-				F76C84CD1EC4E7CC00FA49E2 /* pirate_ship.c */,
-				F76C84CE1EC4E7CC00FA49E2 /* roto_drop.c */,
-				F76C84CF1EC4E7CC00FA49E2 /* swinging_inverter_ship.c */,
-				F76C84D01EC4E7CC00FA49E2 /* top_spin.c */,
-				F76C84D11EC4E7CC00FA49E2 /* twist.c */,
+				4C93F17E1F8B747A00A9330D /* 3dCinema.cpp */,
+				4C93F17F1F8B747A00A9330D /* Enterprise.cpp */,
+				4C93F1801F8B747A00A9330D /* GoKarts.cpp */,
+				4C93F1811F8B747A00A9330D /* LaunchedFreefall.cpp */,
+				4C93F1821F8B747A00A9330D /* MagicCarpet.cpp */,
+				4C93F1831F8B747A00A9330D /* MotionSimulator.cpp */,
+				4C93F1841F8B747A00A9330D /* PirateShip.cpp */,
+				4C93F1851F8B747A00A9330D /* RotoDrop.cpp */,
+				4C93F1861F8B747A00A9330D /* SwingingInverterShip.cpp */,
+				4C93F1871F8B747A00A9330D /* TopSpin.cpp */,
+				4C93F1881F8B747A00A9330D /* Twist.cpp */,
 			);
 			path = thrill;
 			sourceTree = "<group>";
@@ -2442,11 +2439,11 @@
 		F76C84DE1EC4E7CD00FA49E2 /* transport */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84DF1EC4E7CD00FA49E2 /* chairlift.c */,
-				F76C84E01EC4E7CD00FA49E2 /* lift.c */,
-				F76C84E11EC4E7CD00FA49E2 /* miniature_railway.c */,
-				F76C84E21EC4E7CD00FA49E2 /* monorail.c */,
-				F76C84E31EC4E7CD00FA49E2 /* suspended_monorail.c */,
+				4C93F1941F8B748200A9330D /* Chairlift.cpp */,
+				4C93F1951F8B748200A9330D /* Lift.cpp */,
+				4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */,
+				4C93F1971F8B748200A9330D /* Monorail.cpp */,
+				4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */,
 			);
 			path = transport;
 			sourceTree = "<group>";
@@ -2454,14 +2451,13 @@
 		F76C84EA1EC4E7CD00FA49E2 /* water */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84EB1EC4E7CD00FA49E2 /* boat_ride.c */,
-				F76C84EC1EC4E7CD00FA49E2 /* dingy_slide.c */,
-				F76C84ED1EC4E7CD00FA49E2 /* log_flume.c */,
-				F76C84EE1EC4E7CD00FA49E2 /* river_rafts.c */,
-				F76C84EF1EC4E7CD00FA49E2 /* river_rapids.c */,
-				F76C84F01EC4E7CD00FA49E2 /* splash_boats.c */,
-				F76C84F11EC4E7CD00FA49E2 /* submarine_ride.c */,
-				F76C84F21EC4E7CD00FA49E2 /* water_coaster.c */,
+				4C93F19E1F8B748900A9330D /* BoatRide.cpp */,
+				4C93F19F1F8B748900A9330D /* DingySlide.cpp */,
+				4C93F1A01F8B748900A9330D /* LogFlume.cpp */,
+				4C93F1A11F8B748900A9330D /* RiverRapids.cpp */,
+				4C93F1A21F8B748900A9330D /* SplashBoats.cpp */,
+				4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */,
+				4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */,
 			);
 			path = water;
 			sourceTree = "<group>";
@@ -3121,54 +3117,92 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				4C93F1931F8B747A00A9330D /* Twist.cpp in Sources */,
+				4C93F14A1F8B744400A9330D /* MineTrainCoaster.cpp in Sources */,
+				4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */,
 				F74789551EEDEA0D009E50E7 /* input.c in Sources */,
+				4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
+				4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
+				4C93F1891F8B747A00A9330D /* 3dCinema.cpp in Sources */,
 				C666EE7C1F37ACB10061AA04 /* TitleLogo.cpp in Sources */,
 				4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */,
+				4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */,
 				F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */,
 				C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */,
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
+				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
+				4C93F1A51F8B748900A9330D /* BoatRide.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
+				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
+				4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
+				4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */,
 				4C93F1171F881F9C00A9330D /* Finance.cpp in Sources */,
+				4C93F1731F8B745700A9330D /* MerryGoRound.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
+				4C93F1591F8B744400A9330D /* WoodenWildMouse.cpp in Sources */,
 				4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */,
+				4C93F14E1F8B744400A9330D /* ReverseFreefallCoaster.cpp in Sources */,
 				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
 				C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */,
+				4C93F1411F8B744400A9330D /* HeartlineTwisterCoaster.cpp in Sources */,
 				C666EE791F37ACB10061AA04 /* ServerStart.cpp in Sources */,
 				C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */,
 				4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
+				4C93F1431F8B744400A9330D /* InvertedImpulseCoaster.cpp in Sources */,
+				4C93F1481F8B744400A9330D /* LoopingRollerCoaster.cpp in Sources */,
+				4C93F1551F8B744400A9330D /* VerticalDropRollerCoaster.cpp in Sources */,
 				F76C887B1EC5324E00FA49E2 /* FileAudioSource.cpp in Sources */,
+				4C93F18D1F8B747A00A9330D /* MagicCarpet.cpp in Sources */,
 				C64644FD1F3FA4120026AC2D /* Land.cpp in Sources */,
 				4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */,
 				C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */,
 				C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */,
+				4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */,
 				C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */,
+				4C93F1441F8B744400A9330D /* InvertedRollerCoaster.cpp in Sources */,
 				C64644FC1F3FA4120026AC2D /* Footpath.cpp in Sources */,
 				F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
+				4C93F14B1F8B744400A9330D /* MiniRollerCoaster.cpp in Sources */,
 				C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */,
+				4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */,
+				4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
 				4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
+				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
+				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
+				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
+				4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
+				4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */,
+				4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */,
+				4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
+				4C93F16F1F8B745700A9330D /* FlyingSaucers.cpp in Sources */,
 				4CF788C01F1B787700C611BF /* Painter.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
 				C654DF341F69C0430040F43D /* NewCampaign.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
+				4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */,
+				4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */,
+				4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */,
 				4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */,
+				4C93F1541F8B744400A9330D /* TwisterRollerCoaster.cpp in Sources */,
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
 				4C93F1141F86728F00A9330D /* Research.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
+				4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
 				C654DF401F69C18C0040F43D /* Intent.cpp in Sources */,
@@ -3177,50 +3211,85 @@
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
 				4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */,
+				4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
+				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
+				4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
+				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
+				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
+				4C93F13B1F8B744400A9330D /* BobsleighCoaster.cpp in Sources */,
+				4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */,
+				4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */,
+				4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */,
+				4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
+				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
+				4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
+				4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */,
+				4C93F18C1F8B747A00A9330D /* LaunchedFreefall.cpp in Sources */,
+				4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
+				4C93F1901F8B747A00A9330D /* RotoDrop.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
 				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
 				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
+				4C93F1521F8B744400A9330D /* Steeplechase.cpp in Sources */,
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
+				4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */,
+				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
 				F7CB86491EEDA1330030C877 /* keyboard_shortcut.c in Sources */,
+				4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
+				4C93F1711F8B745700A9330D /* HauntedHouse.cpp in Sources */,
 				F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */,
+				4C93F1471F8B744400A9330D /* LimLaunchedRollerCoaster.cpp in Sources */,
 				C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */,
+				4C93F18E1F8B747A00A9330D /* MotionSimulator.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
+				4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
+				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
 				F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */,
 				F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */,
+				4C93F1A61F8B748900A9330D /* DingySlide.cpp in Sources */,
 				F76C88891EC5324E00FA49E2 /* SoftwareDrawingEngine.cpp in Sources */,
+				4C93F1A91F8B748900A9330D /* SplashBoats.cpp in Sources */,
+				4C93F1721F8B745700A9330D /* Maze.cpp in Sources */,
 				C64644FA1F3FA4120026AC2D /* EditorObjectiveOptions.cpp in Sources */,
 				4CFBCD5E1F27CD8000D74FB6 /* SmallScenery.cpp in Sources */,
 				C666EE741F37ACB10061AA04 /* News.cpp in Sources */,
 				F76C888A1EC5324E00FA49E2 /* TextComposition.cpp in Sources */,
+				4C93F1741F8B745700A9330D /* MiniGolf.cpp in Sources */,
+				4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */,
+				4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */,
+				4C93F1991F8B748200A9330D /* Chairlift.cpp in Sources */,
 				C64644FE1F3FA4120026AC2D /* Main.cpp in Sources */,
+				4C93F16B1F8B745700A9330D /* CircusShow.cpp in Sources */,
+				4C93F19B1F8B748200A9330D /* MiniatureRailway.cpp in Sources */,
 				F76C888B1EC5324E00FA49E2 /* Ui.cpp in Sources */,
 				C685E51A1F8907850090598F /* Staff.cpp in Sources */,
 				F76C888C1EC5324E00FA49E2 /* UiContext.cpp in Sources */,
 				C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */,
 				F76C888D1EC5324E00FA49E2 /* UiContext.Linux.cpp in Sources */,
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
+				4C93F16E1F8B745700A9330D /* FerrisWheel.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3232,7 +3301,6 @@
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
 				C6352B931F477032006CCEE3 /* GameActionRegistration.cpp in Sources */,
-				F7D7747B1EC5EB6D00BE6EBC /* lay_down_roller_coaster.c in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
 				C666EE2A1F33E3800061AA04 /* MazeConstruction.cpp in Sources */,
@@ -3389,99 +3457,27 @@
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */,
-				F76C86CA1EC4E88400FA49E2 /* air_powered_vertical_coaster.c in Sources */,
-				F76C86CB1EC4E88400FA49E2 /* bobsleigh_coaster.c in Sources */,
-				F76C86CC1EC4E88400FA49E2 /* bolliger_mabillard_track.c in Sources */,
-				F76C86CE1EC4E88400FA49E2 /* compact_inverted_coaster.c in Sources */,
-				F76C86CF1EC4E88400FA49E2 /* corkscrew_roller_coaster.c in Sources */,
-				F76C86D01EC4E88400FA49E2 /* flying_roller_coaster.c in Sources */,
-				F76C86D11EC4E88400FA49E2 /* giga_coaster.c in Sources */,
 				C666EE4E1F33E3800061AA04 /* TopToolbar.cpp in Sources */,
-				F76C86D21EC4E88400FA49E2 /* heartline_twister_coaster.c in Sources */,
-				F76C86D31EC4E88400FA49E2 /* inverted_hairpin_coaster.c in Sources */,
-				F76C86D41EC4E88400FA49E2 /* inverted_impulse_coaster.c in Sources */,
 				C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */,
-				F76C86D51EC4E88400FA49E2 /* inverted_roller_coaster.c in Sources */,
-				F76C86D61EC4E88400FA49E2 /* junior_roller_coaster.c in Sources */,
-				F76C86D91EC4E88400FA49E2 /* lim_launched_roller_coaster.c in Sources */,
-				F76C86DA1EC4E88400FA49E2 /* looping_roller_coaster.c in Sources */,
-				F76C86DB1EC4E88400FA49E2 /* mine_ride.c in Sources */,
-				F76C86DC1EC4E88400FA49E2 /* mine_train_coaster.c in Sources */,
-				F76C86DD1EC4E88400FA49E2 /* mini_roller_coaster.c in Sources */,
-				F76C86DE1EC4E88400FA49E2 /* mini_suspended_coaster.c in Sources */,
-				F76C86DF1EC4E88400FA49E2 /* multi_dimension_roller_coaster.c in Sources */,
-				F76C86E01EC4E88400FA49E2 /* reverse_freefall_coaster.c in Sources */,
-				F76C86E11EC4E88400FA49E2 /* reverser_roller_coaster.c in Sources */,
-				F76C86E21EC4E88400FA49E2 /* side_friction_roller_coaster.c in Sources */,
-				F76C86E31EC4E88400FA49E2 /* stand_up_roller_coaster.c in Sources */,
-				F76C86E41EC4E88400FA49E2 /* steeplechase.c in Sources */,
-				F76C86E51EC4E88400FA49E2 /* suspended_swinging_coaster.c in Sources */,
-				F76C86E61EC4E88400FA49E2 /* twister_roller_coaster.c in Sources */,
-				F76C86E71EC4E88400FA49E2 /* vertical_drop_roller_coaster.c in Sources */,
-				F76C86E81EC4E88400FA49E2 /* virginia_reel.c in Sources */,
-				F76C86E91EC4E88400FA49E2 /* wild_mouse.c in Sources */,
 				C666EE381F33E3800061AA04 /* Ride.cpp in Sources */,
-				F76C86EA1EC4E88400FA49E2 /* wooden_roller_coaster.c in Sources */,
-				F76C86EB1EC4E88400FA49E2 /* wooden_wild_mouse.c in Sources */,
-				F76C86EC1EC4E88400FA49E2 /* car_ride.c in Sources */,
-				F76C86ED1EC4E88400FA49E2 /* circus_show.c in Sources */,
-				F76C86EE1EC4E88400FA49E2 /* crooked_house.c in Sources */,
-				F76C86EF1EC4E88400FA49E2 /* dodgems.c in Sources */,
-				F76C86F01EC4E88400FA49E2 /* ferris_wheel.c in Sources */,
-				F76C86F11EC4E88400FA49E2 /* flying_saucers.c in Sources */,
-				F76C86F21EC4E88400FA49E2 /* ghost_train.c in Sources */,
-				F76C86F31EC4E88400FA49E2 /* haunted_house.c in Sources */,
 				C6352B921F477032006CCEE3 /* GameActionCompat.cpp in Sources */,
-				F76C86F41EC4E88400FA49E2 /* maze.c in Sources */,
-				F76C86F51EC4E88400FA49E2 /* merry_go_round.c in Sources */,
-				F76C86F61EC4E88400FA49E2 /* mini_golf.c in Sources */,
-				F76C86F71EC4E88400FA49E2 /* mini_helicopters.c in Sources */,
-				F76C86F81EC4E88400FA49E2 /* monorail_cycles.c in Sources */,
-				F76C86F91EC4E88400FA49E2 /* observation_tower.c in Sources */,
-				F76C86FA1EC4E88400FA49E2 /* space_rings.c in Sources */,
-				F76C86FB1EC4E88400FA49E2 /* spiral_slide.c in Sources */,
 				F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */,
 				F76C86FE1EC4E88400FA49E2 /* ride_data.c in Sources */,
 				F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */,
-				F76C87021EC4E88400FA49E2 /* facility.c in Sources */,
 				C666EE161F33E3800061AA04 /* EditorBottomToolbar.cpp in Sources */,
-				F76C87041EC4E88400FA49E2 /* shop.c in Sources */,
 				C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */,
 				C666EE291F33E3800061AA04 /* MapTooltip.cpp in Sources */,
 				F76C87051EC4E88400FA49E2 /* station.c in Sources */,
-				F76C87071EC4E88400FA49E2 /* 3d_cinema.c in Sources */,
-				F76C87081EC4E88400FA49E2 /* enterprise.c in Sources */,
-				F76C87091EC4E88400FA49E2 /* go_karts.c in Sources */,
-				F76C870A1EC4E88400FA49E2 /* launched_freefall.c in Sources */,
-				F76C870B1EC4E88400FA49E2 /* magic_carpet.c in Sources */,
-				F76C870C1EC4E88400FA49E2 /* motion_simulator.c in Sources */,
-				F76C870D1EC4E88400FA49E2 /* pirate_ship.c in Sources */,
-				F76C870E1EC4E88400FA49E2 /* roto_drop.c in Sources */,
-				F76C870F1EC4E88400FA49E2 /* swinging_inverter_ship.c in Sources */,
-				F76C87101EC4E88400FA49E2 /* top_spin.c in Sources */,
-				F76C87111EC4E88400FA49E2 /* twist.c in Sources */,
 				F76C87121EC4E88400FA49E2 /* track.c in Sources */,
 				F76C87141EC4E88400FA49E2 /* track_data.c in Sources */,
 				F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */,
 				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
-				F76C871E1EC4E88400FA49E2 /* chairlift.c in Sources */,
-				F76C871F1EC4E88400FA49E2 /* lift.c in Sources */,
-				F76C87201EC4E88400FA49E2 /* miniature_railway.c in Sources */,
-				F76C87211EC4E88400FA49E2 /* monorail.c in Sources */,
-				F76C87221EC4E88400FA49E2 /* suspended_monorail.c in Sources */,
 				F76C87231EC4E88400FA49E2 /* vehicle.c in Sources */,
 				F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */,
 				F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */,
 				C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */,
-				F76C87291EC4E88400FA49E2 /* boat_ride.c in Sources */,
-				F76C872A1EC4E88400FA49E2 /* dingy_slide.c in Sources */,
-				F76C872B1EC4E88400FA49E2 /* log_flume.c in Sources */,
-				F76C872D1EC4E88400FA49E2 /* river_rapids.c in Sources */,
-				F76C872E1EC4E88400FA49E2 /* splash_boats.c in Sources */,
-				F76C872F1EC4E88400FA49E2 /* submarine_ride.c in Sources */,
-				F76C87301EC4E88400FA49E2 /* water_coaster.c in Sources */,
 				F76C87311EC4E88400FA49E2 /* scenario.c in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
