@@ -554,7 +554,6 @@ static sint32 _waterLevel = 6;
 static sint32 _floorTexture = TERRAIN_GRASS;
 static sint32 _wallTexture = TERRAIN_EDGE_ROCK;
 static bool _randomTerrain = true;
-static bool _placeTrees = true;
 
 static sint32 _simplex_low = 6;
 static sint32 _simplex_high = 10;
@@ -568,6 +567,8 @@ static bool _heightmapNormalize = false;
 static bool _heightmapSmoothTiles = true;
 static sint32 _heightmapLow = 2;
 static sint32 _heightmapHigh = 70;
+
+static bool _treesPlace = false;
 
 rct_window *window_mapgen_open()
 {
@@ -838,7 +839,7 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         mapgenSettings.simplex_base_freq = 1.75f;
         mapgenSettings.simplex_octaves = 6;
 
-        mapgenSettings.trees_place = _placeTrees;
+        mapgenSettings.trees_place = _treesPlace;
         mapgenSettings.trees_low = 0;
         mapgenSettings.trees_high = 10;
         mapgenSettings.trees_base_freq = ((float)60) / 100.00f;
@@ -852,7 +853,7 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         window_invalidate(w);
         break;
     case WIDX_RANDOM_PLACE_TREES:
-        _placeTrees = !_placeTrees;
+        _treesPlace = !_treesPlace;
         window_invalidate(w);
         break;
     }
@@ -881,7 +882,7 @@ static void window_mapgen_random_invalidate(rct_window *w)
     w->pressed_widgets = 0;
     if (_randomTerrain)
         w->pressed_widgets |= 1 << WIDX_RANDOM_TERRAIN;
-    if (_placeTrees)
+    if (_treesPlace)
         w->pressed_widgets |= 1 << WIDX_RANDOM_PLACE_TREES;
 
     window_mapgen_set_pressed_tab(w);
@@ -923,7 +924,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.simplex_base_freq = ((float)_simplex_base_freq) / 100.00f;
         mapgenSettings.simplex_octaves = _simplex_octaves;
 
-        mapgenSettings.trees_place = _placeTrees;
+        mapgenSettings.trees_place = _treesPlace;
         mapgenSettings.trees_low = 0;
         mapgenSettings.trees_high = 10;
         mapgenSettings.trees_base_freq = ((float)60) / 100.00f;
@@ -997,7 +998,7 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
         break;
     case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
-        _placeTrees = !_placeTrees;
+        _treesPlace = !_treesPlace;
         window_invalidate(w);
         break;
     }
@@ -1064,7 +1065,7 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = SPR_WALL_TEXTURE_ROCK + _wallTexture;
     
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
-    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees);
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _treesPlace);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain) {
