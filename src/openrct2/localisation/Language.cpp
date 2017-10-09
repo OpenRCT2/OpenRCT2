@@ -27,6 +27,31 @@
 #include "../platform/platform.h"
 #include "localisation.h"
 
+const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
+    { "",       "",                     "",                      FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_UNDEFINED
+    { "ar-EG", "Arabic (experimental)", "Arabic (experimental)", FONT(&TTFFontArial),    RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_ARABIC
+    { "ca-ES", "Catalan",               u8"Català",              FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH },             // LANGUAGE_CATALAN
+    { "zh-CN", "Chinese (Simplified)",  "Chinese (Simplified)",  FONT(&TTFFontSimSun),   RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED },  // LANGUAGE_CHINESE_SIMPLIFIED
+    { "zh-TW", "Chinese (Traditional)", "Chinese (Traditional)", FONT(&TTFFontMingLiu),  RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL }, // LANGUAGE_CHINESE_TRADITIONAL
+    { "cs-CZ", "Czech",                 "Czech",                 FONT(&TTFFontArial),    RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_CZECH
+    { "de-DE", "German",                "Deutsch",               FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_GERMAN },              // LANGUAGE_GERMAN
+    { "en-GB", "English (UK)",          "English (UK)",          FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_ENGLISH_UK
+    { "en-US", "English (US)",          "English (US)",          FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_US },          // LANGUAGE_ENGLISH_US
+    { "es-ES", "Spanish",               u8"Español",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH },             // LANGUAGE_SPANISH
+    { "fr-FR", "French",                u8"Français",            FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_FRENCH },              // LANGUAGE_FRENCH
+    { "it-IT", "Italian",               "Italiano",              FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
+    { "ja-JP", "Japanese",              "Japanese",              FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_JAPANESE
+    { "ko-KR", "Korean",                "Korean",                FONT(&TTFFontGulim),    RCT2_LANGUAGE_ID_KOREAN },              // LANGUAGE_KOREAN
+    { "hu-HU", "Hungarian",             "Magyar",                FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
+    { "nl-NL", "Dutch",                 "Nederlands",            FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
+    { "nb-NO", "Norwegian",             "Norsk",                 FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_NORWEGIAN
+    { "pl-PL", "Polish",                "Polski",                FONT(&TTFFontArial),    RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_POLISH
+    { "pt-BR", "Portuguese (BR)",       u8"Português (BR)",      FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_PORTUGUESE },          // LANGUAGE_PORTUGUESE_BR
+    { "ru-RU", "Russian",               "Russian",               FONT(&TTFFontArial),    RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_RUSSIAN
+    { "fi-FI", "Finnish",               "Suomi",                 FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_FINNISH
+    { "sv-SE", "Swedish",               "Svenska",               FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SWEDISH },             // LANGUAGE_SWEDISH
+};
+
 extern "C" {
 
 sint32 gCurrentLanguage = LANGUAGE_UNDEFINED;
