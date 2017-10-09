@@ -466,6 +466,233 @@
         "forceBmp": true
     },
     {
+        "path": "font/cyrillic/U1041-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1043-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1044-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1046-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1047-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1048-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1049-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1051-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1055-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1059-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1060-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1062-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1063-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1064-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1065-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1066-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1067-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1068-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1069-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1070-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1071-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1073-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1074-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1075-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1076-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1078-small.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1079-small.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1080-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1081-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1082-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1083-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1084-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1085-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1087-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1090-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1092-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1094-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1095-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1096-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1097-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1099-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1100-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1101-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1102-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1103-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -488,6 +715,233 @@
         "path": "font/o-stroke-bold.png",
         "x_offset": 0,
         "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1041-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1043-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1044-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1046-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1047-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1048-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1049-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1051-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1055-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1059-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1060-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1062-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1063-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1064-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1065-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1066-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1067-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1068-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1069-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1070-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1071-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1073-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1074-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1075-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1076-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1078-bold.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1079-bold.png",
+        "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1080-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1081-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1082-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1083-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1084-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1085-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1087-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1090-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1092-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1094-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1095-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1096-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1097-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1099-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1100-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1101-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1102-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/cyrillic/U1103-bold.png",
         "palette": "keep",
         "forceBmp": true
     },
