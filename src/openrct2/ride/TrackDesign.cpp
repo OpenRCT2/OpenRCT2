@@ -1213,7 +1213,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 {
                     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                     {
-                        flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                     }
                     else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                     {
@@ -1245,7 +1245,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 {
                     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                     {
-                        flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                        flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                     }
                     else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                     {
@@ -1265,7 +1265,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
                 if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                 {
-                    flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
+                    flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
                 }
                 else if (_trackDesignPlaceOperation == PTD_OPERATION_4)
                 {
