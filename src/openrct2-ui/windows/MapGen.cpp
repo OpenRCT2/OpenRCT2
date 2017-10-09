@@ -88,6 +88,7 @@ enum {
     WIDX_SIMPLEX_FLOOR_TEXTURE,
     WIDX_SIMPLEX_WALL_TEXTURE,
     WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
+    WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX,
 
     WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
     WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
@@ -187,6 +188,7 @@ static rct_widget SimplexWidgets[] = {
     { WWT_FLATBTN,          1,  150,    196,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
 
     { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    { WWT_CHECKBOX,         1,  104,    198,    252,    263,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX
 
     { WIDGETS_END },
 };
@@ -451,7 +453,8 @@ static uint64 PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX) |
     (1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
     (1ULL << WIDX_SIMPLEX_WALL_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
+    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX) |
+    (1ULL << WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX),
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
@@ -560,6 +563,7 @@ static sint32 _simplex_low = 6;
 static sint32 _simplex_high = 10;
 static sint32 _simplex_base_freq = 60;
 static sint32 _simplex_octaves = 4;
+static bool _placeSimplexTrees = false;
 
 static bool _heightmapLoaded = false;
 static bool _heightmapSmoothMap = false;
@@ -917,7 +921,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.simplex_base_freq = ((float)_simplex_base_freq) / 100.00f;
         mapgenSettings.simplex_octaves = _simplex_octaves;
 
-        mapgenSettings.trees_place = true;
+        mapgenSettings.trees_place = _placeSimplexTrees;
         mapgenSettings.trees_low = 0;
         mapgenSettings.trees_high = 10;
         mapgenSettings.trees_base_freq = ((float)60) / 100.00f;
@@ -992,6 +996,14 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         break;
     case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
         _placeTrees ^= 1;
+        if (_placeTrees != 0)
+            _placeSimplexTrees = false;
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX:
+        _placeSimplexTrees = !_placeSimplexTrees;
+        if (_placeSimplexTrees)
+            _placeTrees = 0;
         window_invalidate(w);
         break;
     }
@@ -1059,6 +1071,7 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX, _placeSimplexTrees != 0);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain) {
@@ -1095,6 +1108,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_octaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
     gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_SIMPLEX_CHECKBOX].top + 1);
 
     // The practical map size is 2 lower than the technical map size
     rct_xy16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);
