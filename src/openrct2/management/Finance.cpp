@@ -48,7 +48,7 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] =
     MONEY(400, 00)       // Maximum funding
 };
 
-sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
+static const sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
 
 money32 gInitialCash;
 money32 gCashEncrypted;

@@ -47,7 +47,7 @@ namespace TitleSequenceManager
         { "*OPENRCT2",  "openrct2.parkseq",     STR_TITLE_SEQUENCE_OPENRCT2 },
     };
 
-    std::vector<TitleSequenceManagerItem> _items;
+    static std::vector<TitleSequenceManagerItem> _items;
 
     static std::string GetNewTitleSequencePath(const std::string &name, bool isZip);
     static size_t FindItemIndexByPath(const utf8 * path);

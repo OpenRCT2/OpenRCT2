@@ -34,7 +34,7 @@ enum WINDOW_CUSTOM_CURRENCY_WIDGET_IDX {
     WIDX_AFFIX_DROPDOWN_BUTTON,
 };
 
-rct_widget window_custom_currency_widgets[] = {
+static rct_widget window_custom_currency_widgets[] = {
     { WWT_FRAME,            0,  0,      399,    0,      99, 0xFFFFFFFF,                         STR_NONE },
     { WWT_CAPTION,          0,  1,      398,    1,      14, STR_CUSTOM_CURRENCY_WINDOW_TITLE,   STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0,  387,    397,    2,      13, STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },

@@ -1291,7 +1291,7 @@ typedef struct console_command {
     utf8 *usage;
 } console_command;
 
-utf8* console_variable_table[] = {
+static const utf8* console_variable_table[] = {
     "park_rating",
     "money",
     "scenario_initial_cash",
@@ -1328,7 +1328,7 @@ utf8* console_variable_table[] = {
     "cheat_disable_clearance_checks",
     "cheat_disable_support_limits",
 };
-utf8* console_window_table[] = {
+static const utf8* console_window_table[] = {
     "object_selection",
     "inventions_list",
     "scenario_options",
@@ -1337,7 +1337,7 @@ utf8* console_window_table[] = {
     "title_sequences"
 };
 
-console_command console_command_table[] = {
+static const console_command console_command_table[] = {
     { "clear", cc_clear, "Clears the console.", "clear"},
     { "hide", cc_hide, "Hides the console.", "hide"},
     { "echo", cc_echo, "Echoes the text to the console.", "echo <text>" },

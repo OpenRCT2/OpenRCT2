@@ -37,7 +37,7 @@ enum class DISPLAY_TYPE {
     DISPLAY_UNITS
 };
 
-DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+static DISPLAY_TYPE gClipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
 
 #pragma region Widgets
 

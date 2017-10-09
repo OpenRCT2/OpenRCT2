@@ -89,6 +89,8 @@ extern bool gShowSupportSegmentHeights;
 
 extern const rct_xy16 BannerBoundBoxes[][2];
 
+extern const uint8 byte_98D800[4];
+
 void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type);
 void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type);
 void paint_util_set_vertical_tunnel(paint_session * session, uint16 height);

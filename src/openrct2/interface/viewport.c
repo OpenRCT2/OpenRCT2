@@ -44,7 +44,7 @@ uint8 gShowConstuctionRightsRefCount;
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
 
-rct_map_element *_interaction_element = NULL;
+static rct_map_element *_interaction_element = NULL;
 
 sint16 gSavedViewX;
 sint16 gSavedViewY;
@@ -57,7 +57,7 @@ uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
 #endif
 
-uint32 gCurrentImageType;
+static uint32 _currentImageType;
 
 static rct_drawpixelinfo _viewportDpi1;
 static rct_drawpixelinfo _viewportDpi2;
@@ -1230,7 +1230,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     }
 
     uint8 *offset = image->offset + (yStartPoint * image->width) + xStartPoint;
-    uint32 imageType = gCurrentImageType;
+    uint32 imageType = _currentImageType;
 
     if (!(image->flags & G1_FLAG_1)) {
         return pixel_is_present_bmp(imageType, image, offset, palette);
@@ -1289,7 +1289,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
     uint8 *palette = NULL;
     imageId &= 0xBFFFFFFF;
     if (imageId & IMAGE_TYPE_REMAP) {
-        gCurrentImageType = IMAGE_TYPE_REMAP;
+        _currentImageType = IMAGE_TYPE_REMAP;
         sint32 index = (imageId >> 19) & 0x7F;
         if (imageId & IMAGE_TYPE_REMAP_2_PLUS) {
             index &= 0x1F;
@@ -1297,7 +1297,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
         sint32 g1Index = palette_to_g1_offset[index];
         palette = g1Elements[g1Index].offset;
     } else {
-        gCurrentImageType = 0;
+        _currentImageType = 0;
     }
     return sub_679074(dpi, imageId, x, y, palette);
 }

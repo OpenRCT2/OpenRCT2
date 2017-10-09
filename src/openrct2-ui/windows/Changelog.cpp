@@ -38,7 +38,7 @@ enum {
 #define MIN_WW 300
 #define MIN_WH 200
 
-rct_widget window_changelog_widgets[] = {
+static rct_widget window_changelog_widgets[] = {
     { WWT_FRAME,            0,  0,          WW - 1, 0,      WH - 1,     0xFFFFFFFF,                     STR_NONE },             // panel / background
     { WWT_CAPTION,          0,  1,          WW - 2, 1,      14,         STR_CHANGELOG_TITLE,            STR_WINDOW_TITLE_TIP }, // title bar
     { WWT_CLOSEBOX,         0,  WW - 13,    WW - 3, 2,      13,         STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP }, // close x button

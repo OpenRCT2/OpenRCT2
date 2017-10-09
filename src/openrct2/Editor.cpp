@@ -35,17 +35,17 @@
 
 namespace Editor
 {
-    uint8 _editorSelectedRides[MAX_RIDE_OBJECTS];
-    uint8 _editorSelectedSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    uint8 _editorSelectedLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    uint8 _editorSelectedWalls[MAX_WALL_SCENERY_OBJECTS];
-    uint8 _editorSelectedBanners[MAX_BANNER_OBJECTS];
-    uint8 _editorSelectedFootpaths[MAX_PATH_OBJECTS];
-    uint8 _editorSelectedFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    uint8 _editorSelectedSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    uint8 _editorSelectedParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    uint8 _editorSelectedWaters[MAX_WATER_OBJECTS];
-    uint8 _editorSelectedStexs[MAX_SCENARIO_TEXT_OBJECTS];
+    static uint8 _editorSelectedRides[MAX_RIDE_OBJECTS];
+    static uint8 _editorSelectedSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
+    static uint8 _editorSelectedLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
+    static uint8 _editorSelectedWalls[MAX_WALL_SCENERY_OBJECTS];
+    static uint8 _editorSelectedBanners[MAX_BANNER_OBJECTS];
+    static uint8 _editorSelectedFootpaths[MAX_PATH_OBJECTS];
+    static uint8 _editorSelectedFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
+    static uint8 _editorSelectedSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
+    static uint8 _editorSelectedParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
+    static uint8 _editorSelectedWaters[MAX_WATER_OBJECTS];
+    static uint8 _editorSelectedStexs[MAX_SCENARIO_TEXT_OBJECTS];
 
     uint8 * SelectedObjects[OBJECT_ENTRY_GROUP_COUNT] =
     {

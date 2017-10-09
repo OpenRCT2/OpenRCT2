@@ -25,6 +25,7 @@ extern "C"
 #endif
 
 sint32 cmdline_for_sprite(const char **argv, sint32 argc);
+extern sint32 gSpriteMode;
 
 #ifdef __cplusplus
 }

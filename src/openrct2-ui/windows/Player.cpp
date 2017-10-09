@@ -57,7 +57,7 @@ enum WINDOW_PLAYER_WIDGET_IDX {
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE },             /* Tab 1                */      \
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE }              /* Tab 2                */
 
-rct_widget window_player_overview_widgets[] = {
+static rct_widget window_player_overview_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     { WWT_DROPDOWN,         1,  3,      177,    46,     57,     0xFFFFFFFF,         STR_NONE },                 // Permission group
     { WWT_DROPDOWN_BUTTON,  1,  167,    177,    47,     56,     STR_DROPDOWN_GLYPH, STR_NONE },                 //
@@ -67,12 +67,12 @@ rct_widget window_player_overview_widgets[] = {
     { WIDGETS_END },
 };
 
-rct_widget window_player_statistics_widgets[] = {
+static rct_widget window_player_statistics_widgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     { WIDGETS_END },
 };
 
-rct_widget *window_player_page_widgets[] = {
+static rct_widget *window_player_page_widgets[] = {
     window_player_overview_widgets,
     window_player_statistics_widgets
 };
@@ -171,7 +171,7 @@ static void window_player_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 static void window_player_update_viewport(rct_window *w, bool scroll);
 static void window_player_update_title(rct_window* w);
 
-uint32 window_player_page_enabled_widgets[] = {
+static uint32 window_player_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |

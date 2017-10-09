@@ -1694,7 +1694,7 @@ void track_paint_util_onride_photo_paint(paint_session * session, uint8 directio
     }
 }
 
-uint16 RightVerticalLoopSegments[] ={
+static const uint16 RightVerticalLoopSegments[] ={
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,

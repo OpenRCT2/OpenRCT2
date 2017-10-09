@@ -76,6 +76,7 @@ endfunction ()
 
 # Launchpad turns on -Wdate-time for compilers that support it, this shouldn't break our build
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_WRITE_STRINGS -Wno-error=date-time)
+ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_MISSING_VARIABLE_DECLARATIONS -Wmissing-variable-declarations)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_WRITE_STRINGS -Wno-error=date-time)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_NULL_DEREFERENCE -Wnull-dereference)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_SUGGEST_FINAL_TYPES -Wsuggest-final-types)

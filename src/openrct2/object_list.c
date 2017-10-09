@@ -66,17 +66,17 @@ sint32 object_entry_group_encoding[] = {
 #endif
 
 #ifdef NO_RCT2
-    rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
-    rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
-    rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
-    rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
-    rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
-    rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
-    rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
-    rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
-    rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
+    static rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
+    static rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
+    static rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
+    static rct_object_entry_extended _objectEntriesWalls[MAX_WALL_SCENERY_OBJECTS];
+    static rct_object_entry_extended _objectEntriesBanners[MAX_BANNER_OBJECTS];
+    static rct_object_entry_extended _objectEntriesFootpaths[MAX_PATH_OBJECTS];
+    static rct_object_entry_extended _objectEntriesFootpathAdditions[MAX_PATH_ADDITION_OBJECTS];
+    static rct_object_entry_extended _objectEntriesSceneryGroups[MAX_SCENERY_GROUP_OBJECTS];
+    static rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
+    static rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
+    static rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
 #else
     #define _objectEntriesRides             RCT2_ADDRESS(0x00F3F03C             ,rct_object_entry_extended)
     #define _objectEntriesSmallScenery      RCT2_ADDRESS(0x00F3F03C + (128 * 20),rct_object_entry_extended)

@@ -62,7 +62,7 @@ colour_t gCurrentWindowColours[4];
 
 // converted from uint16 values at 0x009A41EC - 0x009A4230
 // these are percentage coordinates of the viewport to centre to, if a window is obscuring a location, the next is tried
-float window_scroll_locations[][2] = {
+static const float window_scroll_locations[][2] = {
     {0.5f,      0.5f},
     {0.75f,     0.5f},
     {0.25f,     0.5f},

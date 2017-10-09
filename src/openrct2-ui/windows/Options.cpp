@@ -353,7 +353,7 @@ static rct_widget window_options_twitch_widgets[] = {
     { WIDGETS_END },
 };
 
-rct_widget *window_options_page_widgets[] = {
+static rct_widget *window_options_page_widgets[] = {
     window_options_display_widgets,
     window_options_rendering_widgets,
     window_options_culture_widgets,

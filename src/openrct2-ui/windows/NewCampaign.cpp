@@ -93,8 +93,8 @@ static rct_window_event_list window_new_campaign_events = {
     nullptr
 };
 
-uint8 window_new_campaign_rides[MAX_RIDES];
-uint8 window_new_campaign_shop_items[64];
+static uint8 window_new_campaign_rides[MAX_RIDES];
+static uint8 window_new_campaign_shop_items[64];
 
 static sint32 ride_value_compare(const void *a, const void *b)
 {

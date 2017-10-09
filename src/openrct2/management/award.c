@@ -521,7 +521,7 @@ static sint32 award_is_deserved_best_custom_designed_rides(sint32 awardType, sin
 }
 
 /** At least 5 colourful rides and more than half of the rides are colourful. */
-const uint8 dazzling_ride_colours[] = { 5, 14, 20, 30 };
+static const uint8 dazzling_ride_colours[] = { 5, 14, 20, 30 };
 static sint32 award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint32 activeAwardTypes)
 {
     sint32 i, j, countedRides, colourfulRides;
@@ -606,7 +606,7 @@ static sint32 award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activ
 
 typedef sint32 (*award_deserved_check)(sint32, sint32);
 
-award_deserved_check _awardChecks[] = {
+static const award_deserved_check _awardChecks[] = {
     award_is_deserved_most_untidy,
     award_is_deserved_most_tidy,
     award_is_deserved_best_rollercoasters,

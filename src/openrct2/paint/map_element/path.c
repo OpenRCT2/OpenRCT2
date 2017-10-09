@@ -31,16 +31,11 @@
 #include "../../world/map.h"
 #include "../../drawing/lightfx.h"
 
-// #3628: Until path_paint is implemented, this variable is used by scrolling_text_setup
-//        to use the old string arguments array. Remove when scrolling_text_setup is no
-//        longer hooked.
-bool TempForScrollText = false;
-
 const uint8 byte_98D800[] = {
     12, 9, 3, 6
 };
 
-const uint8 byte_98D6E0[] = {
+static const uint8 byte_98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9, 10, 11, 12, 13, 33, 37,
@@ -59,7 +54,7 @@ const uint8 byte_98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 50
 };
 
-const sint16 stru_98D804[][4] = {
+static const sint16 stru_98D804[][4] = {
     {3, 3, 26, 26},
     {0, 3, 29, 26},
     {3, 3, 26, 29},
@@ -78,7 +73,7 @@ const sint16 stru_98D804[][4] = {
     {0, 0, 32, 32},
 };
 
-const uint8 byte_98D8A4[] = {
+static const uint8 byte_98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 

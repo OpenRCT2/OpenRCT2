@@ -29,8 +29,8 @@
 #define ACTION_COOLDOWN_TIME_PLACE_SCENERY  20
 #define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE  1000
 
-rct_peep* _pickup_peep = 0;
-sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
+static rct_peep* _pickup_peep = 0;
+static sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
 
@@ -74,7 +74,7 @@ sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
 
 using namespace OpenRCT2;
 
-Network gNetwork;
+static Network gNetwork;
 
 enum {
     SERVER_EVENT_PLAYER_JOINED,

@@ -21,7 +21,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/world/footpath.h>
 
-rct_widget window_main_widgets[] = {
+static rct_widget window_main_widgets[] = {
     { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, 0xFFFFFFFE, 0xFFFF },
     { WIDGETS_END },
 };

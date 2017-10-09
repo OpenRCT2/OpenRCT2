@@ -135,7 +135,7 @@ enum {
     DROPDOWN_LIST_COUNT
 };
 
-rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -159,7 +159,7 @@ static const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
-bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false,
     false,
     false,

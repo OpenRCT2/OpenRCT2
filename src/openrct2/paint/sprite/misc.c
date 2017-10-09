@@ -22,13 +22,13 @@
 #include "../../localisation/string_ids.h"
 
 /** rct2: 0x0097EDA4 */
-const sint8 money_wave[] = {
+static const sint8 money_wave[] = {
     0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
     0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1
 };
 
 /** rct2: 0x0097ED90 */
-const uint32 vehicle_particle_base_sprites[] = {
+static const uint32 vehicle_particle_base_sprites[] = {
     22577, 22589, 22601, 22613, 22625
 };
 

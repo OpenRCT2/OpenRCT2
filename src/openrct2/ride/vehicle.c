@@ -98,13 +98,13 @@ uint8 _vehicleF64E2C;
 rct_vehicle * _vehicleFrontVehicle;
 rct_xyz16 unk_F64E20;
 
-const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
-const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
-const uint8 byte_9A3A18[] = {
+static const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
+static const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
+static const uint8 byte_9A3A18[] = {
     SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
     SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
 };
-const uint8 _soundParams[SOUND_MAXID][2] = {
+static const uint8 _soundParams[SOUND_MAXID][2] = {
     { 1, 0 },   // SOUND_LIFT_1
     { 1, 0 },   // SOUND_TRACK_FRICTION_1
     { 1, 0 },   // SOUND_LIFT_2
@@ -597,12 +597,12 @@ uint16 vehicle_get_move_info_size(sint32 cd, sint32 typeAndDirection)
     return gTrackVehicleInfo[cd][typeAndDirection]->size;
 }
 
-const uint8 DoorOpenSoundIds[] = {
+static const uint8 DoorOpenSoundIds[] = {
     SOUND_DOOR_OPEN,
     SOUND_62
 };
 
-const uint8 DoorCloseSoundIds[] = {
+static const uint8 DoorCloseSoundIds[] = {
     SOUND_DOOR_CLOSE,
     SOUND_62
 };
@@ -2321,7 +2321,7 @@ assert_struct_size(rct_synchronised_vehicle, 4);
 #define SYNCHRONISED_VEHICLE_COUNT 16
 
 // Synchronised vehicle info
-rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
+static rct_synchronised_vehicle _synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT] = { 0 };
 
 static rct_synchronised_vehicle* _lastSynchronisedVehicle = NULL;
 

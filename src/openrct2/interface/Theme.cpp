@@ -110,7 +110,7 @@ struct WindowThemeDesc
 
 #define THEME_WC(wc) wc, #wc
 
-WindowThemeDesc WindowThemeDescriptors[] =
+static const WindowThemeDesc WindowThemeDescriptors[] =
 {
     // WindowClass, WindowClassSZ                  WindowName                                        NumColours, DefaultTheme
     { THEME_WC(WC_TOP_TOOLBAR),                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
@@ -180,7 +180,7 @@ WindowThemeDesc WindowThemeDescriptors[] =
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
+static const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 {
     { WC_TOP_TOOLBAR,              COLOURS_RCT1(COLOUR_GREY,               COLOUR_GREY,                COLOUR_GREY,                COLOUR_GREY,     COLOUR_BLACK,    COLOUR_BLACK)    },
     { WC_BOTTOM_TOOLBAR,           COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,               COLOUR_YELLOW,   COLOUR_BLACK,    COLOUR_BLACK)    },
@@ -203,7 +203,7 @@ UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     THEME_DEF_END
 };
 
-UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
+static const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
 {
     THEME_DEF_END
 };
@@ -217,7 +217,7 @@ const UITheme PredefinedThemeRCT1 = UITheme::CreatePredefined(
 const UITheme PredefinedThemeRCT2 = UITheme::CreatePredefined(
     "RCT2", PredefinedThemeRCT2_Entries, 0);
 
-const UITheme * PredefinedThemes[] = {
+static const UITheme * PredefinedThemes[] = {
     &PredefinedThemeRCT1,
     &PredefinedThemeRCT2,
     nullptr
@@ -515,11 +515,11 @@ namespace ThemeManager
         utf8 Name[96];
     };
 
-    utf8 *                      CurrentThemePath;
-    UITheme *                   CurrentTheme;
-    std::vector<AvailableTheme> AvailableThemes;
-    size_t                      ActiveAvailableThemeIndex = SIZE_MAX;
-    size_t                      NumPredefinedThemes = 0;
+    static utf8 *                      CurrentThemePath;
+    static UITheme *                   CurrentTheme;
+    static std::vector<AvailableTheme> AvailableThemes;
+    static size_t                      ActiveAvailableThemeIndex = SIZE_MAX;
+    static size_t                      NumPredefinedThemes = 0;
 
     void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name);
     bool EnsureThemeDirectoryExists();

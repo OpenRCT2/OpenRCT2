@@ -29,8 +29,6 @@
 #define MODE_CLOSEST 1
 #define MODE_DITHERING 2
 
-extern sint32 gSpriteMode;
-
 #pragma pack(push, 1)
 
 typedef struct rct_sprite_file_header {
@@ -55,12 +53,12 @@ assert_struct_size(rle_code, 2);
 
 assert_struct_size(rct_sprite_file_palette_entry, 4);
 
-rct_sprite_file_palette_entry spriteFilePalette[256];
+static rct_sprite_file_palette_entry spriteFilePalette[256];
 static rct_sprite_file_palette_entry _standardPalette[256];
 
-rct_sprite_file_header spriteFileHeader;
-rct_g1_element *spriteFileEntries;
-uint8 *spriteFileData;
+static rct_sprite_file_header spriteFileHeader;
+static rct_g1_element *spriteFileEntries;
+static uint8 *spriteFileData;
 
 #ifdef _WIN32
 

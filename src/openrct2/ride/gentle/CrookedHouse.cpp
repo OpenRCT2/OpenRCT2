@@ -28,7 +28,7 @@ typedef struct rct_crooked_house_bound_box
     sint16 length_y;
 } rct_crooked_house_bound_box;
 
-rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24 },
+static const rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24 },
                                                      { 0, 0, 0, 0 },
                                                      { -16, -16, 32, 32 },
                                                      { 0, 0, 0, 0 }, // Unused

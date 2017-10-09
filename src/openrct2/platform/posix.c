@@ -43,8 +43,8 @@
 
 #define FILE_BUFFER_SIZE 4096
 
-utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
-utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
+static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
+static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 void platform_get_date_utc(rct2_date *out_date)
 {
@@ -303,7 +303,7 @@ typedef struct enumerate_file_info {
 } enumerate_file_info;
 static enumerate_file_info _enumerateFileInfoList[8] = { 0 };
 
-char *g_file_pattern;
+static char *_file_pattern;
 
 static sint32 winfilter(const struct dirent *d)
 {
@@ -319,7 +319,7 @@ static sint32 winfilter(const struct dirent *d)
         name_upper[i] = (char)toupper(d->d_name[i]);
     }
     name_upper[entry_length] = '\0';
-    bool match = fnmatch(g_file_pattern, name_upper, FNM_PATHNAME) == 0;
+    bool match = fnmatch(_file_pattern, name_upper, FNM_PATHNAME) == 0;
     //log_verbose("trying matching filename %s, result = %d", name_upper, match);
     free(name_upper);
     return match;
@@ -345,12 +345,12 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
 
 
     sint32 pattern_length = strlen(file_name);
-    g_file_pattern = strndup(file_name, pattern_length);
+    _file_pattern = strndup(file_name, pattern_length);
     for (sint32 j = 0; j < pattern_length; j++)
     {
-        g_file_pattern[j] = (char)toupper(g_file_pattern[j]);
+        _file_pattern[j] = (char)toupper(_file_pattern[j]);
     }
-    log_verbose("looking for file matching %s", g_file_pattern);
+    log_verbose("looking for file matching %s", _file_pattern);
     sint32 cnt;
     for (sint32 i = 0; i < countof(_enumerateFileInfoList); i++) {
         enumFileInfo = &_enumerateFileInfoList[i];
@@ -393,15 +393,15 @@ sint32 platform_enumerate_files_begin(const utf8 *pattern)
             enumFileInfo->handle = 0;
             enumFileInfo->active = 1;
             free(dir_name);
-            free(g_file_pattern);
-            g_file_pattern = NULL;
+            free(_file_pattern);
+            _file_pattern = NULL;
             return i;
         }
     }
 
     free(dir_name);
-    free(g_file_pattern);
-    g_file_pattern = NULL;
+    free(_file_pattern);
+    _file_pattern = NULL;
     return -1;
 }
 

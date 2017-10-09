@@ -180,7 +180,7 @@ static rct_window_event_list window_ride_construction_events = {
 #pragma region RideConfigurationStringIds
 
 // rct2: 0x00999492
-rct_string_id RideConfigurationStringIds[] = {
+static const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 0
     STR_STATION_PLATFORM,                   // 1
     0,                                      // 2
@@ -441,7 +441,7 @@ rct_string_id RideConfigurationStringIds[] = {
 
 #pragma endregion
 
-uint64 _enabledRidePieces;
+static uint64   _enabledRidePieces;
 static bool     _trackPlaceCtrlState;
 static sint32   _trackPlaceCtrlZ;
 static bool     _trackPlaceShiftState;

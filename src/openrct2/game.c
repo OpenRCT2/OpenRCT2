@@ -80,7 +80,7 @@ uint32 gCurrentTicks;
 #endif
 
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_table[] = {
+static GAME_COMMAND_CALLBACK_POINTER* const game_command_callback_table[] = {
     0,
     0,
     game_command_callback_ride_construct_placed_front,

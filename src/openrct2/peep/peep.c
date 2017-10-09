@@ -67,7 +67,6 @@ uint8 gPeepWarningThrottle[16];
 rct_xyz16 gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
 uint8 gPeepPathFindQueueRideIndex;
-bool gPeepPathFindSingleChoiceSection;
 // uint32 gPeepPathFindAltStationNum;
 static bool _peepPathFindIsStaff;
 static sint8 _peepPathFindNumJunctions;
@@ -105,11 +104,6 @@ enum {
     PATH_SEARCH_OTHER,
     PATH_SEARCH_FAILED
 };
-
-// Some text descriptions corresponding to the above enum for understandable debug messages
-const char *gPathFindSearchText[] = {"DeadEnd", "Wide", "Thin", "Junction", "RideQueue", "RideEntrance", "RideExit", "ParkEntryExit", "ShopEntrance", "LimitReached", "PathLoop", "Other", "Failed"};
-
-
 
 enum {
     F1EE18_DESTINATION_REACHED  = 1 << 0,
@@ -181,7 +175,7 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 #define peep_rand() scenario_rand()
 #endif
 
-const char *gPeepEasterEggNames[] = {
+static const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",
     "JACQUES VILLENEUVE",
     "DAMON HILL",
@@ -1538,7 +1532,7 @@ static void peep_check_cant_find_exit(rct_peep* peep){
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-const rct_xy16 word_981D7C[4] = {
+static const rct_xy16 word_981D7C[4] = {
     { -2,  0 },
     {  0,  2 },
     {  2,  0 },
@@ -1700,7 +1694,7 @@ typedef struct item_pref_t {
     uint8 sprite_type;
 } item_pref_t;
 
-item_pref_t item_order_preference[] = {
+static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
         { 0, PEEP_ITEM_CHIPS, PEEP_SPRITE_TYPE_CHIPS },
         { 0, PEEP_ITEM_PIZZA, PEEP_SPRITE_TYPE_PIZZA },
@@ -7533,7 +7527,7 @@ enum{
     PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
 };
 
-const sint32 face_sprite_small[] = {
+static const sint32 face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_ANGRY,
     SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
     SPR_PEEP_SMALL_FACE_VERY_SICK,
@@ -7549,7 +7543,7 @@ const sint32 face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
 };
 
-const sint32 face_sprite_large[] = {
+static const sint32 face_sprite_large[] = {
     SPR_PEEP_LARGE_FACE_ANGRY_0,
     SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
     SPR_PEEP_LARGE_FACE_VERY_SICK_0,

@@ -67,6 +67,7 @@ extern "C"
     extern bool gOpenRCT2Headless;
     extern bool gOpenRCT2NoGraphics;
     extern bool gOpenRCT2ShowChangelog;
+    extern bool gOpenRCT2SilentBreakpad;
 
 #ifndef DISABLE_NETWORK
     extern EVP_MD_CTX * gHashCTX;

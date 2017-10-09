@@ -23,7 +23,7 @@
 #include "map_element.h"
 #include "surface.h"
 
-const uint8 byte_97B444[] = {
+static const uint8 byte_97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
     5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
     0, 0, 0, 17, 0, 0, 0, 16, 0, 18,
@@ -31,7 +31,7 @@ const uint8 byte_97B444[] = {
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-const rct_xy16 viewport_surface_paint_data[][4] = {
+static const rct_xy16 viewport_surface_paint_data[][4] = {
     {
         {32,  0},
         {-32, 32},
@@ -79,7 +79,7 @@ struct corner_height
 /**
  * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
  */
-const corner_height corner_heights[] = {
+static const corner_height corner_heights[] = {
 //   T  R  B  L
     {0, 0, 0, 0},
     {0, 0, 1, 0},
@@ -116,30 +116,30 @@ const corner_height corner_heights[] = {
 };
 
 // bottom left tint
-const uint8 byte_97B524[] = {
+static const uint8 byte_97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
     1, 2, 1, 3, 0, 3, 1, 5, 0
 };
 
 // top left tint
-const uint32 byte_97B537[] = {
+static const uint32 byte_97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
     3, 2, 1, 2, 0, 3, 1, 5, 0
 };
 
 // top right tint
-const uint8 byte_97B54A[] = {
+static const uint8 byte_97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
     3, 5, 1, 2, 2, 3, 1, 5, 0
 };
 
 // bottom right tint
-const uint8 byte_97B55D[] = {
+static const uint8 byte_97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
     1, 5, 1, 3, 2, 3, 1, 5, 0
 };
 
-const uint8 stru_97B570[][2] = {
+static const uint8 stru_97B570[][2] = {
     {2, 2},
     {3, 3},
     {3, 5},
@@ -158,7 +158,7 @@ const uint8 stru_97B570[][2] = {
     {3, 4}
 };
 
-const sint16 word_97B590[] = {
+static const sint16 word_97B590[] = {
     0,
     0,
     -32,
@@ -178,7 +178,7 @@ const sint16 word_97B590[] = {
 };
 
 // tunnel offset
-const uint8 byte_97B5B0[] = {
+static const uint8 byte_97B5B0[] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6,
     10, 11, 12, 13, 14, 14
 };
@@ -222,12 +222,12 @@ static const uint32 _terrainEdgeTunnelSpriteIds[][16] = {
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-const uint8 byte_97B740[] = {
+static const uint8 byte_97B740[] = {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
     0, 3, 0, 1, 4, 0
 };
 
-const uint32 dword_97B750[][2] = {
+static const uint32 dword_97B750[][2] = {
     {SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID},
     {SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID},
     {SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID},
@@ -245,7 +245,7 @@ const uint32 dword_97B750[][2] = {
     {SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
 };
 
-const uint32 dword_97B7C8[] = {
+static const uint32 dword_97B7C8[] = {
     SPR_TERRAIN_GRASS_UNDERGROUND,
     SPR_TERRAIN_SAND_YELLOW_UNDERGROUND,
     SPR_TERRAIN_DIRT_UNDERGROUND,
@@ -263,7 +263,7 @@ const uint32 dword_97B7C8[] = {
     SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
 };
 
-const uint32 dword_97B804[] = {
+static const uint32 dword_97B804[] = {
     SPR_TERRAIN_PATTERN_GRASS,
     SPR_TERRAIN_PATTERN_SAND_YELLOW,
     SPR_TERRAIN_PATTERN_DIRT,
@@ -286,7 +286,7 @@ enum
     FLAG_DONT_SMOOTHEN_SELF = (1 << 1),
 };
 
-const uint8 byte_97B83C[] = {
+static const uint8 byte_97B83C[] = {
     0, // GRASS
     0, // SAND (YELLOW)
     0, // DIRT
@@ -303,26 +303,26 @@ const uint8 byte_97B83C[] = {
     0  // SAND
 };
 
-const uint8 byte_97B84A[] = {
+static const uint8 byte_97B84A[] = {
     0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
     10, 11, 12, 13
 };
 
-const uint32 dword_97B858[][2] = {
+static const uint32 dword_97B858[][2] = {
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID},
 };
 
-const uint32 dword_97B878[][2] = {
+static const uint32 dword_97B878[][2] = {
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID},
 };
 
-const uint32 dword_97B898[][2] = {
+static const uint32 dword_97B898[][2] = {
     {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
     {SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID},
     {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},

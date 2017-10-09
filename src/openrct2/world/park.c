@@ -57,7 +57,7 @@ uint8 gParkRatingHistory[32];
 uint8 gGuestsInParkHistory[32];
 
 // If this value is more than or equal to 0, the park rating is forced to this value. Used for cheat
-sint32 gForcedParkRating = -1;
+static sint32 _forcedParkRating = -1;
 
 /**
  * In a difficult guest generation scenario, no guests will be generated if over this value.
@@ -186,8 +186,8 @@ sint32 park_calculate_size()
  */
 sint32 calculate_park_rating()
 {
-    if (gForcedParkRating >= 0)
-        return gForcedParkRating;
+    if (_forcedParkRating >= 0)
+        return _forcedParkRating;
 
     sint32 result;
 
@@ -1039,14 +1039,14 @@ void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
 
 
 void set_forced_park_rating(sint32 rating){
-    gForcedParkRating = rating;
+    _forcedParkRating = rating;
     gParkRating = calculate_park_rating();
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
     window_invalidate_by_class(WC_PARK_INFORMATION);
 }
 
 sint32 get_forced_park_rating(){
-    return gForcedParkRating;
+    return _forcedParkRating;
 }
 
 money16 park_get_entrance_fee()

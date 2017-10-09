@@ -24,7 +24,7 @@
 
 extern "C"
 {
-    sint32 gSpriteMode = 0;
+sint32 gSpriteMode = 0;
 }
 
 static const char * _mode;

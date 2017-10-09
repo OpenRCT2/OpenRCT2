@@ -26,7 +26,7 @@
 static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
-const char * _level_strings[] = {
+static const char * _level_strings[] = {
     "FATAL",
     "ERROR",
     "WARNING",

@@ -2730,7 +2730,7 @@ rct_peep *ride_get_assigned_mechanic(Ride *ride)
 #define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
 
 // 0x009AEF28
-uint8 *ride_music_style_tuneids[] = {
+static uint8 *ride_music_style_tuneids[] = {
     MAKE_TUNEID_LIST(13), // MUSIC_STYLE_DODGEMS_BEAT
     MAKE_TUNEID_LIST(0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12), // MUSIC_STYLE_FAIRGROUND_ORGAN
     MAKE_TUNEID_LIST(15), // MUSIC_STYLE_ROMAN_FANFARE
@@ -4454,14 +4454,14 @@ static sint32 count_free_misc_sprite_slots()
     return max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
-const rct_xy16 word_9A3AB4[4] = {
+static const rct_xy16 word_9A3AB4[4] = {
     {   0,   0 },
     {   0, -96 },
     { -96, -96 },
     { -96,   0 },
 };
 
-const rct_xy16 word_9A2A60[] = {
+static const rct_xy16 word_9A2A60[] = {
     {   0,  16 },
     {  16,  31 },
     {  31,  16 },

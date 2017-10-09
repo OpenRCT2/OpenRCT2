@@ -25,8 +25,6 @@
 
 namespace RCT1
 {
-    const char * DefaultParkEntranceObject = "PKENT1  ";
-
     colour_t GetColour(colour_t colour)
     {
         static const uint8 map[] =

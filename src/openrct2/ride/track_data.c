@@ -6484,7 +6484,7 @@ const track_descriptor gTrackDescriptors[142] = {
     {   false,  TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_CURVE_RIGHT_SMALL,        TRACK_SLOPE_UP_90,      TRACK_BANK_NONE,    TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_UP                  },
 };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BE57A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BE57A = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -6495,7 +6495,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BE57A = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BE69C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BE69C = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -6506,7 +6506,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BE69C = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BE7BE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BE7BE = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -6517,7 +6517,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BE7BE = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BE8E0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BE8E0 = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -6528,7 +6528,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BE8E0 = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C232A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C232A = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    1,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    2,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    4,  0,  2,  0 }, {     23,   16,    4,  0,  2,  0 }, {     22,   16,    5,  0,  2,  0 },
@@ -6539,7 +6539,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C232A = {
     {      1,   16,   15,  0,  2,  0 }, {      0,   16,   16,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C244C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C244C = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  2,  0 }, {     16,    9,    4,  8,  2,  0 },
@@ -6550,7 +6550,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C244C = {
     {     16,   30,   15,  8,  2,  0 }, {     16,   31,   15,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C256E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C256E = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  2,  0 }, {      9,   16,    4, 16,  2,  0 },
@@ -6561,7 +6561,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C256E = {
     {     30,   16,   15, 16,  2,  0 }, {     31,   16,   15, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C2690 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C2690 = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    1, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    2, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    4, 24,  2,  0 }, {     16,   23,    4, 24,  2,  0 }, {     16,   22,    5, 24,  2,  0 },
@@ -6572,7 +6572,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C2690 = {
     {     16,    1,   15, 24,  2,  0 }, {     16,    0,   16, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF312 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF312 = {
     64, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     29,   16,    4,  0,  4,  0 },
     {     29,   16,    5,  0,  4,  0 }, {     28,   16,    6,  0,  4,  0 }, {     28,   16,    7,  0,  4,  0 }, {     27,   16,    8,  0,  4,  0 }, {     27,   16,    9,  0,  4,  0 },
@@ -6589,7 +6589,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF312 = {
     {      1,   16,   60,  0,  4,  0 }, {      1,   16,   61,  0,  4,  0 }, {      0,   16,   62,  0,  4,  0 }, {      0,   16,   63,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF554 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF554 = {
     64, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    2,    5,  8,  4,  0 }, {     16,    3,    6,  8,  4,  0 }, {     16,    3,    7,  8,  4,  0 }, {     16,    4,    8,  8,  4,  0 }, {     16,    4,    9,  8,  4,  0 },
@@ -6606,7 +6606,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF554 = {
     {     16,   30,   60,  8,  4,  0 }, {     16,   30,   61,  8,  4,  0 }, {     16,   31,   62,  8,  4,  0 }, {     16,   31,   63,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF796 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF796 = {
     64, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      2,   16,    5, 16,  4,  0 }, {      3,   16,    6, 16,  4,  0 }, {      3,   16,    7, 16,  4,  0 }, {      4,   16,    8, 16,  4,  0 }, {      4,   16,    9, 16,  4,  0 },
@@ -6623,7 +6623,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF796 = {
     {     30,   16,   60, 16,  4,  0 }, {     30,   16,   61, 16,  4,  0 }, {     31,   16,   62, 16,  4,  0 }, {     31,   16,   63, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF9D8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF9D8 = {
     64, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 24,  4,  0 },
     {     16,   29,    5, 24,  4,  0 }, {     16,   28,    6, 24,  4,  0 }, {     16,   28,    7, 24,  4,  0 }, {     16,   27,    8, 24,  4,  0 }, {     16,   27,    9, 24,  4,  0 },
@@ -6640,7 +6640,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF9D8 = {
     {     16,    1,   60, 24,  4,  0 }, {     16,    1,   61, 24,  4,  0 }, {     16,    0,   62, 24,  4,  0 }, {     16,    0,   63, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BFC1A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BFC1A = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  1,  0 }, {     22,   16,    0,  0,  1,  0 },
@@ -6651,7 +6651,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BFC1A = {
     {      1,   16,    7,  0,  2,  0 }, {      0,   16,    8,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BFD3C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BFD3C = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  1,  0 }, {     16,    9,    0,  8,  1,  0 },
@@ -6662,7 +6662,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BFD3C = {
     {     16,   30,    7,  8,  2,  0 }, {     16,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BFE5E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BFE5E = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  1,  0 }, {      9,   16,    0, 16,  1,  0 },
@@ -6673,7 +6673,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BFE5E = {
     {     30,   16,    7, 16,  2,  0 }, {     31,   16,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BFF80 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BFF80 = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  1,  0 }, {     16,   22,    0, 24,  1,  0 },
@@ -6684,7 +6684,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BFF80 = {
     {     16,    1,    7, 24,  2,  0 }, {     16,    0,    8, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0E3A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0E3A = {
     37, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    4,  0,  2,  0 }, {     23,   16,    5,  0,  2,  0 }, {     22,   16,    5,  0,  2,  0 },
@@ -6696,7 +6696,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0E3A = {
     {      0,   16,   30,  0,  4,  0 }, {      0,   16,   31,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0F89 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0F89 = {
     37, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    3,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    4,  8,  2,  0 }, {     16,    8,    5,  8,  2,  0 }, {     16,    9,    5,  8,  2,  0 },
@@ -6708,7 +6708,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0F89 = {
     {     16,   31,   30,  8,  4,  0 }, {     16,   31,   31,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C10D8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C10D8 = {
     37, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    3, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    4, 16,  2,  0 }, {      8,   16,    5, 16,  2,  0 }, {      9,   16,    5, 16,  2,  0 },
@@ -6720,7 +6720,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C10D8 = {
     {     31,   16,   30, 16,  4,  0 }, {     31,   16,   31, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1227 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1227 = {
     37, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    4, 24,  2,  0 }, {     16,   23,    5, 24,  2,  0 }, {     16,   22,    5, 24,  2,  0 },
@@ -6732,7 +6732,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1227 = {
     {     16,    0,   30, 24,  4,  0 }, {     16,    0,   31, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1376 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1376 = {
     37, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     29,   16,    4,  0,  4,  0 },
     {     28,   16,    5,  0,  4,  0 }, {     28,   16,    6,  0,  4,  0 }, {     27,   16,    7,  0,  4,  0 }, {     26,   16,    8,  0,  4,  0 }, {     26,   16,    9,  0,  4,  0 },
@@ -6744,7 +6744,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1376 = {
     {      1,   16,   31,  0,  2,  0 }, {      0,   16,   31,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C14C5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C14C5 = {
     37, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    3,    5,  8,  4,  0 }, {     16,    3,    6,  8,  4,  0 }, {     16,    4,    7,  8,  4,  0 }, {     16,    5,    8,  8,  4,  0 }, {     16,    5,    9,  8,  4,  0 },
@@ -6756,7 +6756,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C14C5 = {
     {     16,   30,   31,  8,  2,  0 }, {     16,   31,   31,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1614 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1614 = {
     37, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      3,   16,    5, 16,  4,  0 }, {      3,   16,    6, 16,  4,  0 }, {      4,   16,    7, 16,  4,  0 }, {      5,   16,    8, 16,  4,  0 }, {      5,   16,    9, 16,  4,  0 },
@@ -6768,7 +6768,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1614 = {
     {     30,   16,   31, 16,  2,  0 }, {     31,   16,   31, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1763 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1763 = {
     37, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 24,  4,  0 },
     {     16,   28,    5, 24,  4,  0 }, {     16,   28,    6, 24,  4,  0 }, {     16,   27,    7, 24,  4,  0 }, {     16,   26,    8, 24,  4,  0 }, {     16,   26,    9, 24,  4,  0 },
@@ -6780,7 +6780,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1763 = {
     {     16,    1,   31, 24,  2,  0 }, {     16,    0,   31, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C00A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C00A2 = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    1,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    2,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  1,  0 }, {     22,   16,    4,  0,  1,  0 },
@@ -6791,7 +6791,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C00A2 = {
     {      1,   16,    8,  0,  0,  0 }, {      0,   16,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C01C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C01C4 = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  1,  0 }, {     16,    9,    4,  8,  1,  0 },
@@ -6802,7 +6802,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C01C4 = {
     {     16,   30,    8,  8,  0,  0 }, {     16,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C02E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C02E6 = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  1,  0 }, {      9,   16,    4, 16,  1,  0 },
@@ -6813,7 +6813,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C02E6 = {
     {     30,   16,    8, 16,  0,  0 }, {     31,   16,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0408 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0408 = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    1, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    2, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  1,  0 }, {     16,   22,    4, 24,  1,  0 },
@@ -6824,7 +6824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0408 = {
     {     16,    1,    8, 24,  0,  0 }, {     16,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C27B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C27B2 = {
     32, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  0,  6,  0 },
     {     26,   16,   13,  0,  6,  0 }, {     25,   16,   12,  0,  6,  0 }, {     24,   16,   12,  0,  6,  0 }, {     23,   16,   11,  0,  6,  0 }, {     22,   16,   11,  0,  6,  0 },
@@ -6835,7 +6835,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C27B2 = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C28D4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C28D4 = {
     32, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   14,  8,  6,  0 }, {     16,    2,   14,  8,  6,  0 }, {     16,    3,   13,  8,  6,  0 }, {     16,    4,   13,  8,  6,  0 },
     {     16,    5,   12,  8,  6,  0 }, {     16,    6,   12,  8,  6,  0 }, {     16,    7,   11,  8,  6,  0 }, {     16,    8,   11,  8,  6,  0 }, {     16,    9,   10,  8,  6,  0 },
@@ -6846,7 +6846,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C28D4 = {
     {     16,   30,    0,  8,  6,  0 }, {     16,   31,   -1,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C29F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C29F6 = {
     32, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   14, 16,  6,  0 }, {      2,   16,   14, 16,  6,  0 }, {      3,   16,   13, 16,  6,  0 }, {      4,   16,   13, 16,  6,  0 },
     {      5,   16,   12, 16,  6,  0 }, {      6,   16,   12, 16,  6,  0 }, {      7,   16,   11, 16,  6,  0 }, {      8,   16,   11, 16,  6,  0 }, {      9,   16,   10, 16,  6,  0 },
@@ -6857,7 +6857,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C29F6 = {
     {     30,   16,    0, 16,  6,  0 }, {     31,   16,   -1, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C2B18 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C2B18 = {
     32, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 24,  6,  0 },
     {     16,   26,   13, 24,  6,  0 }, {     16,   25,   12, 24,  6,  0 }, {     16,   24,   12, 24,  6,  0 }, {     16,   23,   11, 24,  6,  0 }, {     16,   22,   11, 24,  6,  0 },
@@ -6868,7 +6868,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C2B18 = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C2C3A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C2C3A = {
     64, {
     {     31,   16,   63,  0,  8,  0 }, {     31,   16,   62,  0,  8,  0 }, {     30,   16,   61,  0,  8,  0 }, {     30,   16,   60,  0,  8,  0 }, {     29,   16,   59,  0,  8,  0 },
     {     29,   16,   58,  0,  8,  0 }, {     28,   16,   57,  0,  8,  0 }, {     28,   16,   56,  0,  8,  0 }, {     27,   16,   55,  0,  8,  0 }, {     27,   16,   54,  0,  8,  0 },
@@ -6885,7 +6885,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C2C3A = {
     {      1,   16,    3,  0,  8,  0 }, {      1,   16,    2,  0,  8,  0 }, {      0,   16,    1,  0,  8,  0 }, {      0,   16,    0,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C2E7C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C2E7C = {
     64, {
     {     16,    0,   63,  8,  8,  0 }, {     16,    0,   62,  8,  8,  0 }, {     16,    1,   61,  8,  8,  0 }, {     16,    1,   60,  8,  8,  0 }, {     16,    2,   59,  8,  8,  0 },
     {     16,    2,   58,  8,  8,  0 }, {     16,    3,   57,  8,  8,  0 }, {     16,    3,   56,  8,  8,  0 }, {     16,    4,   55,  8,  8,  0 }, {     16,    4,   54,  8,  8,  0 },
@@ -6902,7 +6902,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C2E7C = {
     {     16,   30,    3,  8,  8,  0 }, {     16,   30,    2,  8,  8,  0 }, {     16,   31,    1,  8,  8,  0 }, {     16,   31,    0,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C30BE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C30BE = {
     64, {
     {      0,   16,   63, 16,  8,  0 }, {      0,   16,   62, 16,  8,  0 }, {      1,   16,   61, 16,  8,  0 }, {      1,   16,   60, 16,  8,  0 }, {      2,   16,   59, 16,  8,  0 },
     {      2,   16,   58, 16,  8,  0 }, {      3,   16,   57, 16,  8,  0 }, {      3,   16,   56, 16,  8,  0 }, {      4,   16,   55, 16,  8,  0 }, {      4,   16,   54, 16,  8,  0 },
@@ -6919,7 +6919,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C30BE = {
     {     30,   16,    3, 16,  8,  0 }, {     30,   16,    2, 16,  8,  0 }, {     31,   16,    1, 16,  8,  0 }, {     31,   16,    0, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3300 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3300 = {
     64, {
     {     16,   31,   63, 24,  8,  0 }, {     16,   31,   62, 24,  8,  0 }, {     16,   30,   61, 24,  8,  0 }, {     16,   30,   60, 24,  8,  0 }, {     16,   29,   59, 24,  8,  0 },
     {     16,   29,   58, 24,  8,  0 }, {     16,   28,   57, 24,  8,  0 }, {     16,   28,   56, 24,  8,  0 }, {     16,   27,   55, 24,  8,  0 }, {     16,   27,   54, 24,  8,  0 },
@@ -6936,7 +6936,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3300 = {
     {     16,    1,    3, 24,  8,  0 }, {     16,    1,    2, 24,  8,  0 }, {     16,    0,    1, 24,  8,  0 }, {     16,    0,    0, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C09B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C09B2 = {
     32, {
     {     31,   16,    8,  0,  0,  0 }, {     30,   16,    8,  0,  0,  0 }, {     29,   16,    8,  0,  0,  0 }, {     28,   16,    8,  0,  0,  0 }, {     27,   16,    8,  0,  0,  0 },
     {     26,   16,    8,  0,  0,  0 }, {     25,   16,    8,  0,  0,  0 }, {     24,   16,    8,  0,  0,  0 }, {     23,   16,    7,  0,  5,  0 }, {     22,   16,    7,  0,  5,  0 },
@@ -6947,7 +6947,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C09B2 = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0AD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0AD4 = {
     32, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    1,    8,  8,  0,  0 }, {     16,    2,    8,  8,  0,  0 }, {     16,    3,    8,  8,  0,  0 }, {     16,    4,    8,  8,  0,  0 },
     {     16,    5,    8,  8,  0,  0 }, {     16,    6,    8,  8,  0,  0 }, {     16,    7,    8,  8,  0,  0 }, {     16,    8,    7,  8,  5,  0 }, {     16,    9,    7,  8,  5,  0 },
@@ -6958,7 +6958,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0AD4 = {
     {     16,   30,    1,  8,  6,  0 }, {     16,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0BF6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0BF6 = {
     32, {
     {      0,   16,    8, 16,  0,  0 }, {      1,   16,    8, 16,  0,  0 }, {      2,   16,    8, 16,  0,  0 }, {      3,   16,    8, 16,  0,  0 }, {      4,   16,    8, 16,  0,  0 },
     {      5,   16,    8, 16,  0,  0 }, {      6,   16,    8, 16,  0,  0 }, {      7,   16,    8, 16,  0,  0 }, {      8,   16,    7, 16,  5,  0 }, {      9,   16,    7, 16,  5,  0 },
@@ -6969,7 +6969,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0BF6 = {
     {     30,   16,    1, 16,  6,  0 }, {     31,   16,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0D18 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0D18 = {
     32, {
     {     16,   31,    8, 24,  0,  0 }, {     16,   30,    8, 24,  0,  0 }, {     16,   29,    8, 24,  0,  0 }, {     16,   28,    8, 24,  0,  0 }, {     16,   27,    8, 24,  0,  0 },
     {     16,   26,    8, 24,  0,  0 }, {     16,   25,    8, 24,  0,  0 }, {     16,   24,    8, 24,  0,  0 }, {     16,   23,    7, 24,  5,  0 }, {     16,   22,    7, 24,  5,  0 },
@@ -6980,7 +6980,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0D18 = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1DEE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1DEE = {
     37, {
     {     31,   16,   31,  0,  6,  0 }, {     30,   16,   31,  0,  6,  0 }, {     29,   16,   30,  0,  6,  0 }, {     28,   16,   30,  0,  6,  0 }, {     27,   16,   29,  0,  6,  0 },
     {     26,   16,   28,  0,  6,  0 }, {     25,   16,   28,  0,  6,  0 }, {     24,   16,   27,  0,  6,  0 }, {     23,   16,   26,  0,  6,  0 }, {     22,   16,   26,  0,  6,  0 },
@@ -6992,7 +6992,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1DEE = {
     {      0,   16,    0,  0,  8,  0 }, {      0,   16,   -1,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1F3D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1F3D = {
     37, {
     {     16,    0,   31,  8,  6,  0 }, {     16,    1,   31,  8,  6,  0 }, {     16,    2,   30,  8,  6,  0 }, {     16,    3,   30,  8,  6,  0 }, {     16,    4,   29,  8,  6,  0 },
     {     16,    5,   28,  8,  6,  0 }, {     16,    6,   28,  8,  6,  0 }, {     16,    7,   27,  8,  6,  0 }, {     16,    8,   26,  8,  6,  0 }, {     16,    9,   26,  8,  6,  0 },
@@ -7004,7 +7004,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1F3D = {
     {     16,   31,    0,  8,  8,  0 }, {     16,   31,   -1,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C208C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C208C = {
     37, {
     {      0,   16,   31, 16,  6,  0 }, {      1,   16,   31, 16,  6,  0 }, {      2,   16,   30, 16,  6,  0 }, {      3,   16,   30, 16,  6,  0 }, {      4,   16,   29, 16,  6,  0 },
     {      5,   16,   28, 16,  6,  0 }, {      6,   16,   28, 16,  6,  0 }, {      7,   16,   27, 16,  6,  0 }, {      8,   16,   26, 16,  6,  0 }, {      9,   16,   26, 16,  6,  0 },
@@ -7016,7 +7016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C208C = {
     {     31,   16,    0, 16,  8,  0 }, {     31,   16,   -1, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C21DB = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C21DB = {
     37, {
     {     16,   31,   31, 24,  6,  0 }, {     16,   30,   31, 24,  6,  0 }, {     16,   29,   30, 24,  6,  0 }, {     16,   28,   30, 24,  6,  0 }, {     16,   27,   29, 24,  6,  0 },
     {     16,   26,   28, 24,  6,  0 }, {     16,   25,   28, 24,  6,  0 }, {     16,   24,   27, 24,  6,  0 }, {     16,   23,   26, 24,  6,  0 }, {     16,   22,   26, 24,  6,  0 },
@@ -7028,7 +7028,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C21DB = {
     {     16,    0,    0, 24,  8,  0 }, {     16,    0,   -1, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C18B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C18B2 = {
     37, {
     {     31,   16,   31,  0,  8,  0 }, {     31,   16,   30,  0,  8,  0 }, {     30,   16,   29,  0,  8,  0 }, {     30,   16,   28,  0,  8,  0 }, {     29,   16,   27,  0,  8,  0 },
     {     28,   16,   26,  0,  8,  0 }, {     28,   16,   25,  0,  8,  0 }, {     27,   16,   24,  0,  8,  0 }, {     26,   16,   23,  0,  8,  0 }, {     26,   16,   22,  0,  8,  0 },
@@ -7040,7 +7040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C18B2 = {
     {      0,   16,    0,  0,  6,  0 }, {     -1,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1A01 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1A01 = {
     37, {
     {     16,    0,   31,  8,  8,  0 }, {     16,    0,   30,  8,  8,  0 }, {     16,    1,   29,  8,  8,  0 }, {     16,    1,   28,  8,  8,  0 }, {     16,    2,   27,  8,  8,  0 },
     {     16,    3,   26,  8,  8,  0 }, {     16,    3,   25,  8,  8,  0 }, {     16,    4,   24,  8,  8,  0 }, {     16,    5,   23,  8,  8,  0 }, {     16,    5,   22,  8,  8,  0 },
@@ -7052,7 +7052,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1A01 = {
     {     16,   31,    0,  8,  6,  0 }, {     16,   32,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1B50 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1B50 = {
     37, {
     {      0,   16,   31, 16,  8,  0 }, {      0,   16,   30, 16,  8,  0 }, {      1,   16,   29, 16,  8,  0 }, {      1,   16,   28, 16,  8,  0 }, {      2,   16,   27, 16,  8,  0 },
     {      3,   16,   26, 16,  8,  0 }, {      3,   16,   25, 16,  8,  0 }, {      4,   16,   24, 16,  8,  0 }, {      5,   16,   23, 16,  8,  0 }, {      5,   16,   22, 16,  8,  0 },
@@ -7064,7 +7064,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1B50 = {
     {     31,   16,    0, 16,  6,  0 }, {     32,   16,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C1C9F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C1C9F = {
     37, {
     {     16,   31,   31, 24,  8,  0 }, {     16,   31,   30, 24,  8,  0 }, {     16,   30,   29, 24,  8,  0 }, {     16,   30,   28, 24,  8,  0 }, {     16,   29,   27, 24,  8,  0 },
     {     16,   28,   26, 24,  8,  0 }, {     16,   28,   25, 24,  8,  0 }, {     16,   27,   24, 24,  8,  0 }, {     16,   26,   23, 24,  8,  0 }, {     16,   26,   22, 24,  8,  0 },
@@ -7076,7 +7076,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C1C9F = {
     {     16,    0,    0, 24,  6,  0 }, {     16,   -1,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C052A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C052A = {
     32, {
     {     31,   16,    7,  0,  6,  0 }, {     30,   16,    7,  0,  6,  0 }, {     29,   16,    6,  0,  6,  0 }, {     28,   16,    6,  0,  6,  0 }, {     27,   16,    5,  0,  6,  0 },
     {     26,   16,    5,  0,  6,  0 }, {     25,   16,    4,  0,  6,  0 }, {     24,   16,    4,  0,  6,  0 }, {     23,   16,    4,  0,  5,  0 }, {     22,   16,    3,  0,  5,  0 },
@@ -7087,7 +7087,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C052A = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C064C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C064C = {
     32, {
     {     16,    0,    8,  8,  6,  0 }, {     16,    1,    7,  8,  6,  0 }, {     16,    2,    7,  8,  6,  0 }, {     16,    3,    6,  8,  6,  0 }, {     16,    4,    6,  8,  6,  0 },
     {     16,    5,    5,  8,  6,  0 }, {     16,    6,    5,  8,  6,  0 }, {     16,    7,    4,  8,  6,  0 }, {     16,    8,    4,  8,  5,  0 }, {     16,    9,    3,  8,  5,  0 },
@@ -7098,7 +7098,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C064C = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C076E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C076E = {
     32, {
     {      0,   16,    8, 16,  6,  0 }, {      1,   16,    7, 16,  6,  0 }, {      2,   16,    7, 16,  6,  0 }, {      3,   16,    6, 16,  6,  0 }, {      4,   16,    6, 16,  6,  0 },
     {      5,   16,    5, 16,  6,  0 }, {      6,   16,    5, 16,  6,  0 }, {      7,   16,    4, 16,  6,  0 }, {      8,   16,    4, 16,  5,  0 }, {      9,   16,    3, 16,  5,  0 },
@@ -7109,7 +7109,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C076E = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C0890 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C0890 = {
     32, {
     {     16,   31,    7, 24,  6,  0 }, {     16,   30,    7, 24,  6,  0 }, {     16,   29,    6, 24,  6,  0 }, {     16,   28,    6, 24,  6,  0 }, {     16,   27,    5, 24,  6,  0 },
     {     16,   26,    5, 24,  6,  0 }, {     16,   25,    4, 24,  6,  0 }, {     16,   24,    4, 24,  6,  0 }, {     16,   23,    4, 24,  5,  0 }, {     16,   22,    3, 24,  5,  0 },
@@ -7120,7 +7120,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C0890 = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C8092 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C8092 = {
     114, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0, 31,  0,  0 }, {     23,   15,    0, 31,  0,  0 }, {     22,   15,    0, 31,  0,  0 },
@@ -7147,7 +7147,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C8092 = {
     {    -48,  -61,    0, 24,  0,  0 }, {    -48,  -62,    0, 24,  0,  0 }, {    -48,  -63,    0, 24,  0,  0 }, {    -48,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C8496 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C8496 = {
     115, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  7,  0,  0 }, {     15,    9,    0,  7,  0,  0 },
@@ -7174,7 +7174,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C8496 = {
     {    -60,   80,    0,  0,  0,  0 }, {    -61,   80,    0,  0,  0,  0 }, {    -62,   80,    0,  0,  0,  0 }, {    -63,   80,    0,  0,  0,  0 }, {    -64,   80,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C88A3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C88A3 = {
     114, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 15,  0,  0 }, {      9,   17,    0, 15,  0,  0 },
@@ -7201,7 +7201,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C88A3 = {
     {     80,   92,    0,  8,  0,  0 }, {     80,   93,    0,  8,  0,  0 }, {     80,   94,    0,  8,  0,  0 }, {     80,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C8CA7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C8CA7 = {
     113, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 23,  0,  0 }, {     17,   23,    0, 23,  0,  0 }, {     17,   22,    0, 23,  0,  0 },
@@ -7228,7 +7228,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C8CA7 = {
     {     93,  -48,    0, 16,  0,  0 }, {     94,  -48,    0, 16,  0,  0 }, {     95,  -48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C90A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C90A2 = {
     113, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  1,  0,  0 }, {     23,   17,    0,  1,  0,  0 }, {     22,   17,    0,  1,  0,  0 },
@@ -7255,7 +7255,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C90A2 = {
     {    -48,   93,    0,  8,  0,  0 }, {    -48,   94,    0,  8,  0,  0 }, {    -48,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C949D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C949D = {
     114, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  9,  0,  0 }, {     17,    9,    0,  9,  0,  0 },
@@ -7282,7 +7282,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C949D = {
     {     92,   80,    0, 16,  0,  0 }, {     93,   80,    0, 16,  0,  0 }, {     94,   80,    0, 16,  0,  0 }, {     95,   80,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C98A1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C98A1 = {
     115, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 17,  0,  0 }, {      9,   15,    0, 17,  0,  0 },
@@ -7309,7 +7309,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C98A1 = {
     {     80,  -60,    0, 24,  0,  0 }, {     80,  -61,    0, 24,  0,  0 }, {     80,  -62,    0, 24,  0,  0 }, {     80,  -63,    0, 24,  0,  0 }, {     80,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C9CAE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C9CAE = {
     114, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 25,  0,  0 }, {     15,   23,    0, 25,  0,  0 }, {     15,   22,    0, 25,  0,  0 },
@@ -7336,7 +7336,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C9CAE = {
     {    -61,  -48,    0,  0,  0,  0 }, {    -62,  -48,    0,  0,  0,  0 }, {    -63,  -48,    0,  0,  0,  0 }, {    -64,  -48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3542 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3542 = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  1 }, {     22,   16,    0,  0,  0,  1 },
@@ -7347,7 +7347,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3542 = {
     {      1,   16,    0,  0,  0,  2 }, {      0,   16,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3664 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3664 = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  1 }, {     16,    9,    0,  8,  0,  1 },
@@ -7358,7 +7358,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3664 = {
     {     16,   30,    0,  8,  0,  2 }, {     16,   31,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3786 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3786 = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  1 }, {      9,   16,    0, 16,  0,  1 },
@@ -7369,7 +7369,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3786 = {
     {     30,   16,    0, 16,  0,  2 }, {     31,   16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C38A8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C38A8 = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  1 }, {     16,   22,    0, 24,  0,  1 },
@@ -7380,7 +7380,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C38A8 = {
     {     16,    1,    0, 24,  0,  2 }, {     16,    0,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C39CA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C39CA = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  3 }, {     22,   16,    0,  0,  0,  3 },
@@ -7391,7 +7391,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C39CA = {
     {      1,   16,    0,  0,  0,  4 }, {      0,   16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3AEC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3AEC = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  3 }, {     16,    9,    0,  8,  0,  3 },
@@ -7402,7 +7402,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3AEC = {
     {     16,   30,    0,  8,  0,  4 }, {     16,   31,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3C0E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3C0E = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  3 }, {      9,   16,    0, 16,  0,  3 },
@@ -7413,7 +7413,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3C0E = {
     {     30,   16,    0, 16,  0,  4 }, {     31,   16,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3D30 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3D30 = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  3 }, {     16,   22,    0, 24,  0,  3 },
@@ -7424,7 +7424,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3D30 = {
     {     16,    1,    0, 24,  0,  4 }, {     16,    0,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3E52 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3E52 = {
     32, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0,  0,  0,  2 }, {     23,   16,    0,  0,  0,  1 }, {     22,   16,    0,  0,  0,  1 },
@@ -7435,7 +7435,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3E52 = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C3F74 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C3F74 = {
     32, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  8,  0,  1 }, {     16,    9,    0,  8,  0,  1 },
@@ -7446,7 +7446,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C3F74 = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4096 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4096 = {
     32, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 16,  0,  1 }, {      9,   16,    0, 16,  0,  1 },
@@ -7457,7 +7457,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4096 = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C41B8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C41B8 = {
     32, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 24,  0,  2 }, {     16,   23,    0, 24,  0,  1 }, {     16,   22,    0, 24,  0,  1 },
@@ -7468,7 +7468,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C41B8 = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C42DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C42DA = {
     32, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  0,  0,  4 }, {     23,   16,    0,  0,  0,  3 }, {     22,   16,    0,  0,  0,  3 },
@@ -7479,7 +7479,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C42DA = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C43FC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C43FC = {
     32, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  8,  0,  3 }, {     16,    9,    0,  8,  0,  3 },
@@ -7490,7 +7490,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C43FC = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C451E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C451E = {
     32, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 16,  0,  3 }, {      9,   16,    0, 16,  0,  3 },
@@ -7501,7 +7501,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C451E = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4640 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4640 = {
     32, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 24,  0,  4 }, {     16,   23,    0, 24,  0,  3 }, {     16,   22,    0, 24,  0,  3 },
@@ -7512,7 +7512,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4640 = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CA0B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CA0B2 = {
     114, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0, 31,  0,  2 }, {     23,   15,    0, 31,  0,  2 }, {     22,   15,    0, 31,  0,  2 },
@@ -7539,7 +7539,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CA0B2 = {
     {    -48,  -61,    0, 24,  0,  2 }, {    -48,  -62,    0, 24,  0,  2 }, {    -48,  -63,    0, 24,  0,  2 }, {    -48,  -64,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CA4B6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CA4B6 = {
     115, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  7,  0,  2 }, {     15,    9,    0,  7,  0,  2 },
@@ -7566,7 +7566,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CA4B6 = {
     {    -60,   80,    0,  0,  0,  2 }, {    -61,   80,    0,  0,  0,  2 }, {    -62,   80,    0,  0,  0,  2 }, {    -63,   80,    0,  0,  0,  2 }, {    -64,   80,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CA8C3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CA8C3 = {
     114, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 15,  0,  2 }, {      9,   17,    0, 15,  0,  2 },
@@ -7593,7 +7593,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CA8C3 = {
     {     80,   92,    0,  8,  0,  2 }, {     80,   93,    0,  8,  0,  2 }, {     80,   94,    0,  8,  0,  2 }, {     80,   95,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CACC7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CACC7 = {
     113, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 23,  0,  2 }, {     17,   23,    0, 23,  0,  2 }, {     17,   22,    0, 23,  0,  2 },
@@ -7620,7 +7620,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CACC7 = {
     {     93,  -48,    0, 16,  0,  2 }, {     94,  -48,    0, 16,  0,  2 }, {     95,  -48,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CB0C2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CB0C2 = {
     113, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  1,  0,  4 }, {     23,   17,    0,  1,  0,  4 }, {     22,   17,    0,  1,  0,  4 },
@@ -7647,7 +7647,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CB0C2 = {
     {    -48,   93,    0,  8,  0,  4 }, {    -48,   94,    0,  8,  0,  4 }, {    -48,   95,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CB4BD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CB4BD = {
     114, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  9,  0,  4 }, {     17,    9,    0,  9,  0,  4 },
@@ -7674,7 +7674,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CB4BD = {
     {     92,   80,    0, 16,  0,  4 }, {     93,   80,    0, 16,  0,  4 }, {     94,   80,    0, 16,  0,  4 }, {     95,   80,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CB8C1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CB8C1 = {
     115, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 17,  0,  4 }, {      9,   15,    0, 17,  0,  4 },
@@ -7701,7 +7701,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CB8C1 = {
     {     80,  -60,    0, 24,  0,  4 }, {     80,  -61,    0, 24,  0,  4 }, {     80,  -62,    0, 24,  0,  4 }, {     80,  -63,    0, 24,  0,  4 }, {     80,  -64,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CBCCE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CBCCE = {
     114, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 25,  0,  4 }, {     15,   23,    0, 25,  0,  4 }, {     15,   22,    0, 25,  0,  4 },
@@ -7728,7 +7728,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CBCCE = {
     {    -61,  -48,    0,  0,  0,  4 }, {    -62,  -48,    0,  0,  0,  4 }, {    -63,  -48,    0,  0,  0,  4 }, {    -64,  -48,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4762 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4762 = {
     32, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0,  0,  0,  2 }, {     23,   16,    0,  0,  1,  1 }, {     22,   16,    0,  0,  1,  1 },
@@ -7739,7 +7739,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4762 = {
     {      1,   16,    7,  0,  2,  0 }, {      0,   16,    7,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4884 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4884 = {
     32, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  8,  1,  1 }, {     16,    9,    0,  8,  1,  1 },
@@ -7750,7 +7750,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4884 = {
     {     16,   30,    7,  8,  2,  0 }, {     16,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C49A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C49A6 = {
     32, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 16,  1,  1 }, {      9,   16,    0, 16,  1,  1 },
@@ -7761,7 +7761,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C49A6 = {
     {     30,   16,    7, 16,  2,  0 }, {     31,   16,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4AC8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4AC8 = {
     32, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 24,  0,  2 }, {     16,   23,    0, 24,  1,  1 }, {     16,   22,    0, 24,  1,  1 },
@@ -7772,7 +7772,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4AC8 = {
     {     16,    1,    7, 24,  2,  0 }, {     16,    0,    7, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4BEA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4BEA = {
     32, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  0,  0,  4 }, {     23,   16,    0,  0,  1,  3 }, {     22,   16,    0,  0,  1,  3 },
@@ -7783,7 +7783,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4BEA = {
     {      1,   16,    7,  0,  2,  0 }, {      0,   16,    7,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4D0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4D0C = {
     32, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  8,  1,  3 }, {     16,    9,    0,  8,  1,  3 },
@@ -7794,7 +7794,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4D0C = {
     {     16,   30,    7,  8,  2,  0 }, {     16,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4E2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4E2E = {
     32, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 16,  1,  3 }, {      9,   16,    0, 16,  1,  3 },
@@ -7805,7 +7805,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4E2E = {
     {     30,   16,    7, 16,  2,  0 }, {     31,   16,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C4F50 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C4F50 = {
     32, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 24,  0,  4 }, {     16,   23,    0, 24,  1,  3 }, {     16,   22,    0, 24,  1,  3 },
@@ -7816,7 +7816,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C4F50 = {
     {     16,    1,    7, 24,  2,  0 }, {     16,    0,    7, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5072 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5072 = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  1,  1 }, {     22,   16,    4,  0,  1,  1 },
@@ -7827,7 +7827,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5072 = {
     {      1,   16,    8,  0,  0,  2 }, {      0,   16,    8,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C51A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C51A6 = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  1,  1 }, {     16,    9,    4,  8,  1,  1 },
@@ -7838,7 +7838,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C51A6 = {
     {     16,   30,    8,  8,  0,  2 }, {     16,   31,    8,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C52DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C52DA = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  1,  1 }, {      9,   16,    4, 16,  1,  1 },
@@ -7849,7 +7849,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C52DA = {
     {     30,   16,    8, 16,  0,  2 }, {     31,   16,    8, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C540E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C540E = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  1,  1 }, {     16,   22,    4, 24,  1,  1 },
@@ -7860,7 +7860,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C540E = {
     {     16,    1,    8, 24,  0,  2 }, {     16,    0,    8, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5542 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5542 = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  1,  3 }, {     22,   16,    4,  0,  1,  3 },
@@ -7871,7 +7871,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5542 = {
     {      1,   16,    8,  0,  0,  4 }, {      0,   16,    8,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5676 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5676 = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  1,  3 }, {     16,    9,    4,  8,  1,  3 },
@@ -7882,7 +7882,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5676 = {
     {     16,   30,    8,  8,  0,  4 }, {     16,   31,    8,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C57AA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C57AA = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  1,  3 }, {      9,   16,    4, 16,  1,  3 },
@@ -7893,7 +7893,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C57AA = {
     {     30,   16,    8, 16,  0,  4 }, {     31,   16,    8, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C58DE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C58DE = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  1,  3 }, {     16,   22,    4, 24,  1,  3 },
@@ -7904,7 +7904,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C58DE = {
     {     16,    1,    8, 24,  0,  4 }, {     16,    0,    8, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6322 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6322 = {
     32, {
     {     31,   16,    8,  0,  0,  2 }, {     30,   16,    8,  0,  0,  2 }, {     29,   16,    8,  0,  0,  2 }, {     28,   16,    8,  0,  0,  2 }, {     27,   16,    8,  0,  0,  2 },
     {     26,   16,    8,  0,  0,  2 }, {     25,   16,    8,  0,  0,  2 }, {     24,   16,    8,  0,  0,  2 }, {     23,   16,    7,  0,  5,  1 }, {     22,   16,    7,  0,  5,  1 },
@@ -7915,7 +7915,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6322 = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6444 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6444 = {
     32, {
     {     16,    0,    8,  8,  0,  2 }, {     16,    1,    8,  8,  0,  2 }, {     16,    2,    8,  8,  0,  2 }, {     16,    3,    8,  8,  0,  2 }, {     16,    4,    8,  8,  0,  2 },
     {     16,    5,    8,  8,  0,  2 }, {     16,    6,    8,  8,  0,  2 }, {     16,    7,    8,  8,  0,  2 }, {     16,    8,    7,  8,  5,  1 }, {     16,    9,    7,  8,  5,  1 },
@@ -7926,7 +7926,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6444 = {
     {     16,   30,    0,  8,  6,  0 }, {     16,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6566 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6566 = {
     32, {
     {      0,   16,    8, 16,  0,  2 }, {      1,   16,    8, 16,  0,  2 }, {      2,   16,    8, 16,  0,  2 }, {      3,   16,    8, 16,  0,  2 }, {      4,   16,    8, 16,  0,  2 },
     {      5,   16,    8, 16,  0,  2 }, {      6,   16,    8, 16,  0,  2 }, {      7,   16,    8, 16,  0,  2 }, {      8,   16,    7, 16,  5,  1 }, {      9,   16,    7, 16,  5,  1 },
@@ -7937,7 +7937,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6566 = {
     {     30,   16,    0, 16,  6,  0 }, {     31,   16,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6688 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6688 = {
     32, {
     {     16,   31,    8, 24,  0,  2 }, {     16,   30,    8, 24,  0,  2 }, {     16,   29,    8, 24,  0,  2 }, {     16,   28,    8, 24,  0,  2 }, {     16,   27,    8, 24,  0,  2 },
     {     16,   26,    8, 24,  0,  2 }, {     16,   25,    8, 24,  0,  2 }, {     16,   24,    8, 24,  0,  2 }, {     16,   23,    7, 24,  5,  1 }, {     16,   22,    7, 24,  5,  1 },
@@ -7948,7 +7948,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6688 = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C67AA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C67AA = {
     32, {
     {     31,   16,    8,  0,  0,  4 }, {     30,   16,    8,  0,  0,  4 }, {     29,   16,    8,  0,  0,  4 }, {     28,   16,    8,  0,  0,  4 }, {     27,   16,    8,  0,  0,  4 },
     {     26,   16,    8,  0,  0,  4 }, {     25,   16,    8,  0,  0,  4 }, {     24,   16,    8,  0,  0,  4 }, {     23,   16,    7,  0,  5,  3 }, {     22,   16,    7,  0,  5,  3 },
@@ -7959,7 +7959,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C67AA = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C68CC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C68CC = {
     32, {
     {     16,    0,    8,  8,  0,  4 }, {     16,    1,    8,  8,  0,  4 }, {     16,    2,    8,  8,  0,  4 }, {     16,    3,    8,  8,  0,  4 }, {     16,    4,    8,  8,  0,  4 },
     {     16,    5,    8,  8,  0,  4 }, {     16,    6,    8,  8,  0,  4 }, {     16,    7,    8,  8,  0,  4 }, {     16,    8,    7,  8,  5,  3 }, {     16,    9,    7,  8,  5,  3 },
@@ -7970,7 +7970,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C68CC = {
     {     16,   30,    0,  8,  6,  0 }, {     16,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C69EE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C69EE = {
     32, {
     {      0,   16,    8, 16,  0,  4 }, {      1,   16,    8, 16,  0,  4 }, {      2,   16,    8, 16,  0,  4 }, {      3,   16,    8, 16,  0,  4 }, {      4,   16,    8, 16,  0,  4 },
     {      5,   16,    8, 16,  0,  4 }, {      6,   16,    8, 16,  0,  4 }, {      7,   16,    8, 16,  0,  4 }, {      8,   16,    7, 16,  5,  3 }, {      9,   16,    7, 16,  5,  3 },
@@ -7981,7 +7981,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C69EE = {
     {     30,   16,    0, 16,  6,  0 }, {     31,   16,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6B10 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6B10 = {
     32, {
     {     16,   31,    8, 24,  0,  4 }, {     16,   30,    8, 24,  0,  4 }, {     16,   29,    8, 24,  0,  4 }, {     16,   28,    8, 24,  0,  4 }, {     16,   27,    8, 24,  0,  4 },
     {     16,   26,    8, 24,  0,  4 }, {     16,   25,    8, 24,  0,  4 }, {     16,   24,    8, 24,  0,  4 }, {     16,   23,    7, 24,  5,  3 }, {     16,   22,    7, 24,  5,  3 },
@@ -7992,7 +7992,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6B10 = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5A12 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5A12 = {
     32, {
     {     31,   16,    7,  0,  6,  0 }, {     30,   16,    7,  0,  6,  0 }, {     29,   16,    6,  0,  6,  0 }, {     28,   16,    6,  0,  6,  0 }, {     27,   16,    5,  0,  6,  0 },
     {     26,   16,    5,  0,  6,  0 }, {     25,   16,    4,  0,  6,  0 }, {     24,   16,    4,  0,  6,  0 }, {     23,   16,    4,  0,  5,  1 }, {     22,   16,    3,  0,  5,  1 },
@@ -8003,7 +8003,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5A12 = {
     {      1,   16,    0,  0,  0,  2 }, {      0,   16,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5B34 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5B34 = {
     32, {
     {     16,    0,    7,  8,  6,  0 }, {     16,    1,    7,  8,  6,  0 }, {     16,    2,    6,  8,  6,  0 }, {     16,    3,    6,  8,  6,  0 }, {     16,    4,    5,  8,  6,  0 },
     {     16,    5,    5,  8,  6,  0 }, {     16,    6,    4,  8,  6,  0 }, {     16,    7,    4,  8,  6,  0 }, {     16,    8,    4,  8,  5,  1 }, {     16,    9,    3,  8,  5,  1 },
@@ -8014,7 +8014,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5B34 = {
     {     16,   30,    0,  8,  0,  2 }, {     16,   31,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5C56 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5C56 = {
     32, {
     {      0,   16,    7, 16,  6,  0 }, {      1,   16,    7, 16,  6,  0 }, {      2,   16,    6, 16,  6,  0 }, {      3,   16,    6, 16,  6,  0 }, {      4,   16,    5, 16,  6,  0 },
     {      5,   16,    5, 16,  6,  0 }, {      6,   16,    4, 16,  6,  0 }, {      7,   16,    4, 16,  6,  0 }, {      8,   16,    4, 16,  5,  1 }, {      9,   16,    3, 16,  5,  1 },
@@ -8025,7 +8025,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5C56 = {
     {     30,   16,    0, 16,  0,  2 }, {     31,   16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5D78 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5D78 = {
     32, {
     {     16,   31,    7, 24,  6,  0 }, {     16,   30,    7, 24,  6,  0 }, {     16,   29,    6, 24,  6,  0 }, {     16,   28,    6, 24,  6,  0 }, {     16,   27,    5, 24,  6,  0 },
     {     16,   26,    5, 24,  6,  0 }, {     16,   25,    4, 24,  6,  0 }, {     16,   24,    4, 24,  6,  0 }, {     16,   23,    4, 24,  5,  1 }, {     16,   22,    3, 24,  5,  1 },
@@ -8036,7 +8036,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5D78 = {
     {     16,    1,    0, 24,  0,  2 }, {     16,    0,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5E9A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5E9A = {
     32, {
     {     31,   16,    7,  0,  6,  0 }, {     30,   16,    7,  0,  6,  0 }, {     29,   16,    6,  0,  6,  0 }, {     28,   16,    6,  0,  6,  0 }, {     27,   16,    5,  0,  6,  0 },
     {     26,   16,    5,  0,  6,  0 }, {     25,   16,    4,  0,  6,  0 }, {     24,   16,    4,  0,  6,  0 }, {     23,   16,    4,  0,  5,  3 }, {     22,   16,    3,  0,  5,  3 },
@@ -8047,7 +8047,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5E9A = {
     {      1,   16,    0,  0,  0,  4 }, {      0,   16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C5FBC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C5FBC = {
     32, {
     {     16,    0,    7,  8,  6,  0 }, {     16,    1,    7,  8,  6,  0 }, {     16,    2,    6,  8,  6,  0 }, {     16,    3,    6,  8,  6,  0 }, {     16,    4,    5,  8,  6,  0 },
     {     16,    5,    5,  8,  6,  0 }, {     16,    6,    4,  8,  6,  0 }, {     16,    7,    4,  8,  6,  0 }, {     16,    8,    4,  8,  5,  3 }, {     16,    9,    3,  8,  5,  3 },
@@ -8058,7 +8058,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C5FBC = {
     {     16,   30,    0,  8,  0,  4 }, {     16,   31,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C60DE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C60DE = {
     32, {
     {      0,   16,    7, 16,  6,  0 }, {      1,   16,    7, 16,  6,  0 }, {      2,   16,    6, 16,  6,  0 }, {      3,   16,    6, 16,  6,  0 }, {      4,   16,    5, 16,  6,  0 },
     {      5,   16,    5, 16,  6,  0 }, {      6,   16,    4, 16,  6,  0 }, {      7,   16,    4, 16,  6,  0 }, {      8,   16,    4, 16,  5,  3 }, {      9,   16,    3, 16,  5,  3 },
@@ -8069,7 +8069,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C60DE = {
     {     30,   16,    0, 16,  0,  4 }, {     31,   16,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6200 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6200 = {
     32, {
     {     16,   31,    7, 24,  6,  0 }, {     16,   30,    7, 24,  6,  0 }, {     16,   29,    6, 24,  6,  0 }, {     16,   28,    6, 24,  6,  0 }, {     16,   27,    5, 24,  6,  0 },
     {     16,   26,    5, 24,  6,  0 }, {     16,   25,    4, 24,  6,  0 }, {     16,   24,    4, 24,  6,  0 }, {     16,   23,    4, 24,  5,  3 }, {     16,   22,    3, 24,  5,  3 },
@@ -8080,7 +8080,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6200 = {
     {     16,    1,    0, 24,  0,  4 }, {     16,    0,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BEA02 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BEA02 = {
     32, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0,  0,  0,  2 }, {     23,   16,    0,  0,  0,  2 }, {     22,   16,    0,  0,  0,  2 },
@@ -8091,7 +8091,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BEA02 = {
     {      1,   16,    0,  0,  0,  2 }, {      0,   16,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BEB24 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BEB24 = {
     32, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  8,  0,  2 }, {     16,    9,    0,  8,  0,  2 },
@@ -8102,7 +8102,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BEB24 = {
     {     16,   30,    0,  8,  0,  2 }, {     16,   31,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BEC46 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BEC46 = {
     32, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 16,  0,  2 }, {      9,   16,    0, 16,  0,  2 },
@@ -8113,7 +8113,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BEC46 = {
     {     30,   16,    0, 16,  0,  2 }, {     31,   16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BED68 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BED68 = {
     32, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 24,  0,  2 }, {     16,   23,    0, 24,  0,  2 }, {     16,   22,    0, 24,  0,  2 },
@@ -8124,7 +8124,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BED68 = {
     {     16,    1,    0, 24,  0,  2 }, {     16,    0,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BEE8A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BEE8A = {
     32, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  0,  0,  4 }, {     23,   16,    0,  0,  0,  4 }, {     22,   16,    0,  0,  0,  4 },
@@ -8135,7 +8135,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BEE8A = {
     {      1,   16,    0,  0,  0,  4 }, {      0,   16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BEFAC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BEFAC = {
     32, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  8,  0,  4 }, {     16,    9,    0,  8,  0,  4 },
@@ -8146,7 +8146,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BEFAC = {
     {     16,   30,    0,  8,  0,  4 }, {     16,   31,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF0CE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF0CE = {
     32, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 16,  0,  4 }, {      9,   16,    0, 16,  0,  4 },
@@ -8157,7 +8157,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF0CE = {
     {     30,   16,    0, 16,  0,  4 }, {     31,   16,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8BF1F0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8BF1F0 = {
     32, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 24,  0,  4 }, {     16,   23,    0, 24,  0,  4 }, {     16,   22,    0, 24,  0,  4 },
@@ -8168,7 +8168,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8BF1F0 = {
     {     16,    1,    0, 24,  0,  4 }, {     16,    0,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D047E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D047E = {
     114, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3, 31,  2,  0 }, {     23,   15,    4, 31,  2,  0 }, {     22,   15,    4, 31,  2,  0 },
@@ -8195,7 +8195,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D047E = {
     {    -48,  -61,   62, 24,  2,  0 }, {    -48,  -62,   62, 24,  2,  0 }, {    -48,  -63,   63, 24,  2,  0 }, {    -48,  -64,   64, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D0882 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D0882 = {
     115, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    0,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    1,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    2,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    3,  7,  2,  0 }, {     15,    9,    4,  7,  2,  0 },
@@ -8222,7 +8222,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D0882 = {
     {    -60,   80,   61,  0,  2,  0 }, {    -61,   80,   62,  0,  2,  0 }, {    -62,   80,   62,  0,  2,  0 }, {    -63,   80,   63,  0,  2,  0 }, {    -64,   80,   64,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D0C8F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D0C8F = {
     114, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    0, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    1, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    2, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    3, 15,  2,  0 }, {      9,   17,    4, 15,  2,  0 },
@@ -8249,7 +8249,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D0C8F = {
     {     80,   92,   62,  8,  2,  0 }, {     80,   93,   62,  8,  2,  0 }, {     80,   94,   63,  8,  2,  0 }, {     80,   95,   63,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D1093 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D1093 = {
     113, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 23,  2,  0 }, {     17,   23,    4, 23,  2,  0 }, {     17,   22,    5, 23,  2,  0 },
@@ -8276,7 +8276,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D1093 = {
     {     93,  -48,   62, 16,  2,  0 }, {     94,  -48,   63, 16,  2,  0 }, {     95,  -48,   63, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D148E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D148E = {
     113, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  1,  2,  0 }, {     23,   17,    4,  1,  2,  0 }, {     22,   17,    5,  1,  2,  0 },
@@ -8303,7 +8303,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D148E = {
     {    -48,   93,   62,  8,  2,  0 }, {    -48,   94,   63,  8,  2,  0 }, {    -48,   95,   63,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D1889 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D1889 = {
     114, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    0,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    1,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    2,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    3,  9,  2,  0 }, {     17,    9,    4,  9,  2,  0 },
@@ -8330,7 +8330,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D1889 = {
     {     92,   80,   62, 16,  2,  0 }, {     93,   80,   62, 16,  2,  0 }, {     94,   80,   63, 16,  2,  0 }, {     95,   80,   63, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D1C8D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D1C8D = {
     115, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    0, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    1, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    2, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    3, 17,  2,  0 }, {      9,   15,    4, 17,  2,  0 },
@@ -8357,7 +8357,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D1C8D = {
     {     80,  -60,   61, 24,  2,  0 }, {     80,  -61,   62, 24,  2,  0 }, {     80,  -62,   62, 24,  2,  0 }, {     80,  -63,   63, 24,  2,  0 }, {     80,  -64,   64, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D209A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D209A = {
     114, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 25,  2,  0 }, {     15,   23,    4, 25,  2,  0 }, {     15,   22,    4, 25,  2,  0 },
@@ -8384,7 +8384,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D209A = {
     {    -61,  -48,   62,  0,  2,  0 }, {    -62,  -48,   62,  0,  2,  0 }, {    -63,  -48,   63,  0,  2,  0 }, {    -64,  -48,   64,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D249E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D249E = {
     114, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  0,  6,  0 },
     {     26,   16,   13,  0,  6,  0 }, {     25,   16,   12,  0,  6,  0 }, {     24,   16,   12, 31,  6,  0 }, {     23,   15,   11, 31,  6,  0 }, {     22,   15,   11, 31,  6,  0 },
@@ -8411,7 +8411,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D249E = {
     {    -48,  -61,  -47, 24,  6,  0 }, {    -48,  -62,  -47, 24,  6,  0 }, {    -48,  -63,  -48, 24,  6,  0 }, {    -48,  -64,  -49, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D28A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D28A2 = {
     115, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   15,  8,  6,  0 }, {     16,    2,   15,  8,  6,  0 }, {     16,    3,   14,  8,  6,  0 }, {     16,    4,   14,  8,  6,  0 },
     {     16,    5,   13,  8,  6,  0 }, {     16,    6,   13,  8,  6,  0 }, {     16,    7,   12,  8,  6,  0 }, {     16,    8,   12,  7,  6,  0 }, {     15,    9,   11,  7,  6,  0 },
@@ -8438,7 +8438,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D28A2 = {
     {    -60,   80,  -46,  0,  6,  0 }, {    -61,   80,  -47,  0,  6,  0 }, {    -62,   80,  -47,  0,  6,  0 }, {    -63,   80,  -48,  0,  6,  0 }, {    -64,   80,  -49,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D2CAF = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D2CAF = {
     114, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   15, 16,  6,  0 }, {      2,   16,   15, 16,  6,  0 }, {      3,   16,   14, 16,  6,  0 }, {      4,   16,   14, 16,  6,  0 },
     {      5,   16,   13, 16,  6,  0 }, {      6,   16,   13, 16,  6,  0 }, {      7,   16,   12, 16,  6,  0 }, {      8,   16,   12, 15,  6,  0 }, {      9,   17,   11, 15,  6,  0 },
@@ -8465,7 +8465,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D2CAF = {
     {     80,   92,  -47,  8,  6,  0 }, {     80,   93,  -47,  8,  6,  0 }, {     80,   94,  -48,  8,  6,  0 }, {     80,   95,  -48,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D30B3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D30B3 = {
     113, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 24,  6,  0 },
     {     16,   26,   13, 24,  6,  0 }, {     16,   25,   12, 24,  6,  0 }, {     16,   24,   12, 23,  6,  0 }, {     17,   23,   11, 23,  6,  0 }, {     17,   22,   10, 23,  6,  0 },
@@ -8492,7 +8492,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D30B3 = {
     {     93,  -48,  -47, 16,  6,  0 }, {     94,  -48,  -48, 16,  6,  0 }, {     95,  -48,  -48, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D34AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D34AE = {
     113, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  0,  6,  0 },
     {     26,   16,   13,  0,  6,  0 }, {     25,   16,   12,  0,  6,  0 }, {     24,   16,   12,  1,  6,  0 }, {     23,   17,   11,  1,  6,  0 }, {     22,   17,   10,  1,  6,  0 },
@@ -8519,7 +8519,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D34AE = {
     {    -48,   93,  -47,  8,  6,  0 }, {    -48,   94,  -48,  8,  6,  0 }, {    -48,   95,  -48,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D38A9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D38A9 = {
     114, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   15,  8,  6,  0 }, {     16,    2,   15,  8,  6,  0 }, {     16,    3,   14,  8,  6,  0 }, {     16,    4,   14,  8,  6,  0 },
     {     16,    5,   13,  8,  6,  0 }, {     16,    6,   13,  8,  6,  0 }, {     16,    7,   12,  8,  6,  0 }, {     16,    8,   12,  9,  6,  0 }, {     17,    9,   11,  9,  6,  0 },
@@ -8546,7 +8546,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D38A9 = {
     {     92,   80,  -47, 16,  6,  0 }, {     93,   80,  -47, 16,  6,  0 }, {     94,   80,  -48, 16,  6,  0 }, {     95,   80,  -48, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D3CAD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D3CAD = {
     115, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   15, 16,  6,  0 }, {      2,   16,   15, 16,  6,  0 }, {      3,   16,   14, 16,  6,  0 }, {      4,   16,   14, 16,  6,  0 },
     {      5,   16,   13, 16,  6,  0 }, {      6,   16,   13, 16,  6,  0 }, {      7,   16,   12, 16,  6,  0 }, {      8,   16,   12, 17,  6,  0 }, {      9,   15,   11, 17,  6,  0 },
@@ -8573,7 +8573,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D3CAD = {
     {     80,  -60,  -46, 24,  6,  0 }, {     80,  -61,  -47, 24,  6,  0 }, {     80,  -62,  -47, 24,  6,  0 }, {     80,  -63,  -48, 24,  6,  0 }, {     80,  -64,  -49, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D40BA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D40BA = {
     114, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 24,  6,  0 },
     {     16,   26,   13, 24,  6,  0 }, {     16,   25,   12, 24,  6,  0 }, {     16,   24,   12, 25,  6,  0 }, {     15,   23,   11, 25,  6,  0 }, {     15,   22,   11, 25,  6,  0 },
@@ -8600,7 +8600,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D40BA = {
     {    -61,  -48,  -47,  0,  6,  0 }, {    -62,  -48,  -47,  0,  6,  0 }, {    -63,  -48,  -48,  0,  6,  0 }, {    -64,  -48,  -49,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CC0D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CC0D2 = {
     96, {
     {     32,   16,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 },
     {     27,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0, 31,  0,  0 }, {     23,   15,    0, 31,  0,  0 },
@@ -8624,7 +8624,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CC0D2 = {
     {    -63,  -16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CC434 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CC434 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  7,  0,  0 }, {     15,    9,    0,  7,  0,  0 },
@@ -8648,7 +8648,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CC434 = {
     {    -16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CC796 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CC796 = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 15,  0,  0 }, {      9,   17,    0, 15,  0,  0 },
@@ -8672,7 +8672,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CC796 = {
     {     95,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CCAF8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CCAF8 = {
     96, {
     {     16,   32,    0, 24,  0,  0 }, {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 },
     {     16,   27,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 23,  0,  0 }, {     17,   23,    0, 23,  0,  0 },
@@ -8696,7 +8696,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CCAF8 = {
     {     48,  -63,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CCE5A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CCE5A = {
     96, {
     {     32,   16,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 },
     {     27,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  1,  0,  0 }, {     23,   17,    0,  1,  0,  0 },
@@ -8720,7 +8720,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CCE5A = {
     {    -63,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CD1BC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CD1BC = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  9,  0,  0 }, {     17,    9,    0,  9,  0,  0 },
@@ -8744,7 +8744,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CD1BC = {
     {     48,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CD51E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CD51E = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 17,  0,  0 }, {      9,   15,    0, 17,  0,  0 },
@@ -8768,7 +8768,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CD51E = {
     {     95,  -16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CD880 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CD880 = {
     96, {
     {     16,   32,    0, 24,  0,  0 }, {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 },
     {     16,   27,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 25,  0,  0 }, {     15,   23,    0, 25,  0,  0 },
@@ -8792,7 +8792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CD880 = {
     {    -16,  -63,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D44BE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D44BE = {
     310, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   15,    0,  0,  2,  0 }, {     29,   15,    1,  0,  2,  0 }, {     28,   15,    1,  0,  2,  0 }, {     27,   15,    2,  0,  2,  0 },
     {     26,   15,    2,  0,  2,  0 }, {     25,   15,    3,  0,  2,  0 }, {     24,   15,    3,  0,  2,  0 }, {     23,   15,    3,  0,  2,  0 }, {     22,   15,    4,  0,  2,  0 },
@@ -8858,7 +8858,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D44BE = {
     {    -28,  -15,    2,  0,  6,  0 }, {    -29,  -15,    1,  0,  6,  0 }, {    -30,  -15,    1,  0,  6,  0 }, {    -31,  -15,    0,  0,  6,  0 }, {    -32,  -16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D4FA6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D4FA6 = {
     310, {
     {     16,    0,    0,  8,  2,  0 }, {     15,    1,    0,  8,  2,  0 }, {     15,    2,    1,  8,  2,  0 }, {     15,    3,    1,  8,  2,  0 }, {     15,    4,    2,  8,  2,  0 },
     {     15,    5,    2,  8,  2,  0 }, {     15,    6,    3,  8,  2,  0 }, {     15,    7,    3,  8,  2,  0 }, {     15,    8,    3,  8,  2,  0 }, {     15,    9,    4,  8,  2,  0 },
@@ -8924,7 +8924,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D4FA6 = {
     {    -15,   59,    2,  8,  6,  0 }, {    -15,   60,    1,  8,  6,  0 }, {    -15,   61,    1,  8,  6,  0 }, {    -15,   62,    0,  8,  6,  0 }, {    -16,   63,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D5A8E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D5A8E = {
     310, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    3, 16,  2,  0 }, {      9,   16,    4, 16,  2,  0 },
@@ -8990,7 +8990,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D5A8E = {
     {     59,   47,    2, 16,  6,  0 }, {     60,   47,    1, 16,  6,  0 }, {     61,   47,    1, 16,  6,  0 }, {     62,   47,    0, 16,  6,  0 }, {     63,   48,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D6576 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D6576 = {
     310, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    3, 24,  2,  0 }, {     16,   22,    4, 24,  2,  0 },
@@ -9056,7 +9056,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D6576 = {
     {     47,  -28,    2, 24,  6,  0 }, {     47,  -29,    1, 24,  6,  0 }, {     47,  -30,    1, 24,  6,  0 }, {     47,  -31,    0, 24,  6,  0 }, {     48,  -32,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D705E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D705E = {
     310, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    3,  0,  2,  0 }, {     22,   16,    4,  0,  2,  0 },
@@ -9122,7 +9122,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D705E = {
     {    -28,   47,    2,  0,  6,  0 }, {    -29,   47,    1,  0,  6,  0 }, {    -30,   47,    1,  0,  6,  0 }, {    -31,   47,    0,  0,  6,  0 }, {    -32,   48,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D7B46 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D7B46 = {
     310, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    3,  8,  2,  0 }, {     16,    9,    4,  8,  2,  0 },
@@ -9188,7 +9188,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D7B46 = {
     {     47,   59,    2,  8,  6,  0 }, {     47,   60,    1,  8,  6,  0 }, {     47,   61,    1,  8,  6,  0 }, {     47,   62,    0,  8,  6,  0 }, {     48,   63,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D862E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D862E = {
     310, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   15,    0, 16,  2,  0 }, {      2,   15,    1, 16,  2,  0 }, {      3,   15,    1, 16,  2,  0 }, {      4,   15,    2, 16,  2,  0 },
     {      5,   15,    2, 16,  2,  0 }, {      6,   15,    3, 16,  2,  0 }, {      7,   15,    3, 16,  2,  0 }, {      8,   15,    3, 16,  2,  0 }, {      9,   15,    4, 16,  2,  0 },
@@ -9254,7 +9254,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D862E = {
     {     59,  -15,    2, 16,  6,  0 }, {     60,  -15,    1, 16,  6,  0 }, {     61,  -15,    1, 16,  6,  0 }, {     62,  -15,    0, 16,  6,  0 }, {     63,  -16,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D9116 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D9116 = {
     310, {
     {     16,   31,    0, 24,  2,  0 }, {     15,   30,    0, 24,  2,  0 }, {     15,   29,    1, 24,  2,  0 }, {     15,   28,    1, 24,  2,  0 }, {     15,   27,    2, 24,  2,  0 },
     {     15,   26,    2, 24,  2,  0 }, {     15,   25,    3, 24,  2,  0 }, {     15,   24,    3, 24,  2,  0 }, {     15,   23,    3, 24,  2,  0 }, {     15,   22,    4, 24,  2,  0 },
@@ -9320,7 +9320,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D9116 = {
     {    -15,  -28,    2, 24,  6,  0 }, {    -15,  -29,    1, 24,  6,  0 }, {    -15,  -30,    1, 24,  6,  0 }, {    -15,  -31,    0, 24,  6,  0 }, {    -16,  -32,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DED2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DED2E = {
     68, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0, 31,  0,  0 },
     {     26,   16,    0, 31,  0,  0 }, {     25,   15,    0, 31,  0,  0 }, {     24,   15,    0, 31,  0,  0 }, {     23,   15,    0, 31,  0,  0 }, {     22,   15,    0, 31,  0,  0 },
@@ -9338,7 +9338,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DED2E = {
     {    -16,  -29,    0, 24,  0,  0 }, {    -16,  -30,    0, 24,  0,  0 }, {    -16,  -31,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DEF94 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DEF94 = {
     69, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  7,  0,  0 }, {     16,    6,    0,  7,  0,  0 }, {     15,    7,    0,  7,  0,  0 }, {     15,    8,    0,  7,  0,  0 }, {     15,    9,    0,  7,  0,  0 },
@@ -9356,7 +9356,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DEF94 = {
     {    -28,   48,    0,  0,  0,  0 }, {    -29,   48,    0,  0,  0,  0 }, {    -30,   48,    0,  0,  0,  0 }, {    -31,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DF203 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DF203 = {
     68, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 15,  0,  0 }, {      6,   16,    0, 15,  0,  0 }, {      7,   17,    0, 15,  0,  0 }, {      8,   17,    0, 15,  0,  0 }, {      9,   17,    0, 15,  0,  0 },
@@ -9374,7 +9374,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DF203 = {
     {     48,   60,    0,  8,  0,  0 }, {     48,   61,    0,  8,  0,  0 }, {     48,   62,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DF469 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DF469 = {
     67, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 23,  0,  0 },
     {     16,   26,    0, 23,  0,  0 }, {     17,   25,    0, 23,  0,  0 }, {     17,   24,    0, 23,  0,  0 }, {     17,   23,    0, 23,  0,  0 }, {     17,   22,    0, 23,  0,  0 },
@@ -9392,7 +9392,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DF469 = {
     {     61,  -16,    0, 16,  0,  0 }, {     62,  -16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DF6C6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DF6C6 = {
     67, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  1,  0,  0 },
     {     26,   16,    0,  1,  0,  0 }, {     25,   17,    0,  1,  0,  0 }, {     24,   17,    0,  1,  0,  0 }, {     23,   17,    0,  1,  0,  0 }, {     22,   17,    0,  1,  0,  0 },
@@ -9410,7 +9410,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DF6C6 = {
     {    -16,   61,    0,  8,  0,  0 }, {    -16,   62,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DF923 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DF923 = {
     68, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  9,  0,  0 }, {     16,    6,    0,  9,  0,  0 }, {     17,    7,    0,  9,  0,  0 }, {     17,    8,    0,  9,  0,  0 }, {     17,    9,    0,  9,  0,  0 },
@@ -9428,7 +9428,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DF923 = {
     {     60,   48,    0, 16,  0,  0 }, {     61,   48,    0, 16,  0,  0 }, {     62,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DFB89 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DFB89 = {
     69, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 17,  0,  0 }, {      6,   16,    0, 17,  0,  0 }, {      7,   15,    0, 17,  0,  0 }, {      8,   15,    0, 17,  0,  0 }, {      9,   15,    0, 17,  0,  0 },
@@ -9446,7 +9446,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DFB89 = {
     {     48,  -28,    0, 24,  0,  0 }, {     48,  -29,    0, 24,  0,  0 }, {     48,  -30,    0, 24,  0,  0 }, {     48,  -31,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DFDF8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DFDF8 = {
     68, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 25,  0,  0 },
     {     16,   26,    0, 25,  0,  0 }, {     15,   25,    0, 25,  0,  0 }, {     15,   24,    0, 25,  0,  0 }, {     15,   23,    0, 25,  0,  0 }, {     15,   22,    0, 25,  0,  0 },
@@ -9464,7 +9464,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DFDF8 = {
     {    -29,  -16,    0,  0,  0,  0 }, {    -30,  -16,    0,  0,  0,  0 }, {    -31,  -16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E005E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E005E = {
     68, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0, 31,  0,  2 },
     {     26,   16,    0, 31,  0,  2 }, {     25,   15,    0, 31,  0,  2 }, {     24,   15,    0, 31,  0,  2 }, {     23,   15,    0, 31,  0,  2 }, {     22,   15,    0, 31,  0,  2 },
@@ -9482,7 +9482,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E005E = {
     {    -16,  -29,    0, 24,  0,  2 }, {    -16,  -30,    0, 24,  0,  2 }, {    -16,  -31,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E02C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E02C4 = {
     69, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  7,  0,  2 }, {     16,    6,    0,  7,  0,  2 }, {     15,    7,    0,  7,  0,  2 }, {     15,    8,    0,  7,  0,  2 }, {     15,    9,    0,  7,  0,  2 },
@@ -9500,7 +9500,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E02C4 = {
     {    -28,   48,    0,  0,  0,  2 }, {    -29,   48,    0,  0,  0,  2 }, {    -30,   48,    0,  0,  0,  2 }, {    -31,   48,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E0533 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E0533 = {
     68, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 15,  0,  2 }, {      6,   16,    0, 15,  0,  2 }, {      7,   17,    0, 15,  0,  2 }, {      8,   17,    0, 15,  0,  2 }, {      9,   17,    0, 15,  0,  2 },
@@ -9518,7 +9518,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E0533 = {
     {     48,   60,    0,  8,  0,  2 }, {     48,   61,    0,  8,  0,  2 }, {     48,   62,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E0799 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E0799 = {
     67, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 23,  0,  2 },
     {     16,   26,    0, 23,  0,  2 }, {     17,   25,    0, 23,  0,  2 }, {     17,   24,    0, 23,  0,  2 }, {     17,   23,    0, 23,  0,  2 }, {     17,   22,    0, 23,  0,  2 },
@@ -9536,7 +9536,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E0799 = {
     {     61,  -16,    0, 16,  0,  2 }, {     62,  -16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E09F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E09F6 = {
     67, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  1,  0,  4 },
     {     26,   16,    0,  1,  0,  4 }, {     25,   17,    0,  1,  0,  4 }, {     24,   17,    0,  1,  0,  4 }, {     23,   17,    0,  1,  0,  4 }, {     22,   17,    0,  1,  0,  4 },
@@ -9554,7 +9554,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E09F6 = {
     {    -16,   61,    0,  8,  0,  4 }, {    -16,   62,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E0C53 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E0C53 = {
     68, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  9,  0,  4 }, {     16,    6,    0,  9,  0,  4 }, {     17,    7,    0,  9,  0,  4 }, {     17,    8,    0,  9,  0,  4 }, {     17,    9,    0,  9,  0,  4 },
@@ -9572,7 +9572,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E0C53 = {
     {     60,   48,    0, 16,  0,  4 }, {     61,   48,    0, 16,  0,  4 }, {     62,   48,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E0EB9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E0EB9 = {
     69, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 17,  0,  4 }, {      6,   16,    0, 17,  0,  4 }, {      7,   15,    0, 17,  0,  4 }, {      8,   15,    0, 17,  0,  4 }, {      9,   15,    0, 17,  0,  4 },
@@ -9590,7 +9590,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E0EB9 = {
     {     48,  -28,    0, 24,  0,  4 }, {     48,  -29,    0, 24,  0,  4 }, {     48,  -30,    0, 24,  0,  4 }, {     48,  -31,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E1128 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E1128 = {
     68, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 25,  0,  4 },
     {     16,   26,    0, 25,  0,  4 }, {     15,   25,    0, 25,  0,  4 }, {     15,   24,    0, 25,  0,  4 }, {     15,   23,    0, 25,  0,  4 }, {     15,   22,    0, 25,  0,  4 },
@@ -9608,7 +9608,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E1128 = {
     {    -29,  -16,    0,  0,  0,  4 }, {    -30,  -16,    0,  0,  0,  4 }, {    -31,  -16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E26BE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E26BE = {
     68, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2, 31,  2,  0 },
     {     26,   16,    2, 31,  2,  0 }, {     25,   15,    2, 31,  2,  0 }, {     24,   15,    3, 31,  2,  0 }, {     23,   15,    3, 31,  2,  0 }, {     22,   15,    4, 31,  2,  0 },
@@ -9626,7 +9626,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E26BE = {
     {    -16,  -29,   30, 24,  2,  0 }, {    -16,  -30,   31, 24,  2,  0 }, {    -16,  -31,   31, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E2924 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E2924 = {
     69, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    0,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    1,  8,  2,  0 },
     {     16,    5,    2,  7,  2,  0 }, {     16,    6,    2,  7,  2,  0 }, {     15,    7,    2,  7,  2,  0 }, {     15,    8,    3,  7,  2,  0 }, {     15,    9,    3,  7,  2,  0 },
@@ -9644,7 +9644,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E2924 = {
     {    -28,   48,   30,  0,  2,  0 }, {    -29,   48,   30,  0,  2,  0 }, {    -30,   48,   31,  0,  2,  0 }, {    -31,   48,   31,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E2B93 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E2B93 = {
     68, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    0, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    1, 16,  2,  0 },
     {      5,   16,    2, 15,  2,  0 }, {      6,   16,    2, 15,  2,  0 }, {      7,   17,    2, 15,  2,  0 }, {      8,   17,    3, 15,  2,  0 }, {      9,   17,    3, 15,  2,  0 },
@@ -9662,7 +9662,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E2B93 = {
     {     48,   60,   30,  8,  2,  0 }, {     48,   61,   31,  8,  2,  0 }, {     48,   62,   31,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E2DF9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E2DF9 = {
     67, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 23,  2,  0 },
     {     16,   26,    2, 23,  2,  0 }, {     17,   25,    2, 23,  2,  0 }, {     17,   24,    3, 23,  2,  0 }, {     17,   23,    3, 23,  2,  0 }, {     17,   22,    4, 23,  2,  0 },
@@ -9680,7 +9680,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E2DF9 = {
     {     61,  -16,   31, 16,  2,  0 }, {     62,  -16,   31, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3056 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3056 = {
     67, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  1,  2,  0 },
     {     26,   16,    2,  1,  2,  0 }, {     25,   17,    2,  1,  2,  0 }, {     24,   17,    3,  1,  2,  0 }, {     23,   17,    3,  1,  2,  0 }, {     22,   17,    4,  1,  2,  0 },
@@ -9698,7 +9698,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3056 = {
     {    -16,   61,   31,  8,  2,  0 }, {    -16,   62,   31,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E32B3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E32B3 = {
     68, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    0,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    1,  8,  2,  0 },
     {     16,    5,    2,  9,  2,  0 }, {     16,    6,    2,  9,  2,  0 }, {     17,    7,    2,  9,  2,  0 }, {     17,    8,    3,  9,  2,  0 }, {     17,    9,    3,  9,  2,  0 },
@@ -9716,7 +9716,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E32B3 = {
     {     60,   48,   30, 16,  2,  0 }, {     61,   48,   31, 16,  2,  0 }, {     62,   48,   31, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3519 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3519 = {
     69, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    0, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    1, 16,  2,  0 },
     {      5,   16,    2, 17,  2,  0 }, {      6,   16,    2, 17,  2,  0 }, {      7,   15,    2, 17,  2,  0 }, {      8,   15,    3, 17,  2,  0 }, {      9,   15,    3, 17,  2,  0 },
@@ -9734,7 +9734,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3519 = {
     {     48,  -28,   30, 24,  2,  0 }, {     48,  -29,   30, 24,  2,  0 }, {     48,  -30,   31, 24,  2,  0 }, {     48,  -31,   31, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3788 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3788 = {
     68, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 25,  2,  0 },
     {     16,   26,    2, 25,  2,  0 }, {     15,   25,    2, 25,  2,  0 }, {     15,   24,    3, 25,  2,  0 }, {     15,   23,    3, 25,  2,  0 }, {     15,   22,    4, 25,  2,  0 },
@@ -9752,7 +9752,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3788 = {
     {    -29,  -16,   30,  0,  2,  0 }, {    -30,  -16,   31,  0,  2,  0 }, {    -31,  -16,   31,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E138E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E138E = {
     68, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13, 31,  6,  0 },
     {     26,   16,   13, 31,  6,  0 }, {     25,   15,   13, 31,  6,  0 }, {     24,   15,   12, 31,  6,  0 }, {     23,   15,   12, 31,  6,  0 }, {     22,   15,   11, 31,  6,  0 },
@@ -9770,7 +9770,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E138E = {
     {    -16,  -29,  -15, 24,  6,  0 }, {    -16,  -30,  -16, 24,  6,  0 }, {    -16,  -31,  -17, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E15F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E15F4 = {
     69, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   15,  8,  6,  0 }, {     16,    2,   15,  8,  6,  0 }, {     16,    3,   14,  8,  6,  0 }, {     16,    4,   14,  8,  6,  0 },
     {     16,    5,   13,  7,  6,  0 }, {     16,    6,   13,  7,  6,  0 }, {     15,    7,   13,  7,  6,  0 }, {     15,    8,   12,  7,  6,  0 }, {     15,    9,   12,  7,  6,  0 },
@@ -9788,7 +9788,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E15F4 = {
     {    -28,   48,  -15,  0,  6,  0 }, {    -29,   48,  -15,  0,  6,  0 }, {    -30,   48,  -16,  0,  6,  0 }, {    -31,   48,  -17,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E1863 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E1863 = {
     68, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   15, 16,  6,  0 }, {      2,   16,   15, 16,  6,  0 }, {      3,   16,   14, 16,  6,  0 }, {      4,   16,   14, 16,  6,  0 },
     {      5,   16,   13, 15,  6,  0 }, {      6,   16,   13, 15,  6,  0 }, {      7,   17,   13, 15,  6,  0 }, {      8,   17,   12, 15,  6,  0 }, {      9,   17,   12, 15,  6,  0 },
@@ -9806,7 +9806,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E1863 = {
     {     48,   60,  -15,  8,  6,  0 }, {     48,   61,  -16,  8,  6,  0 }, {     48,   62,  -16,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E1AC9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E1AC9 = {
     67, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 23,  6,  0 },
     {     16,   26,   13, 23,  6,  0 }, {     17,   25,   13, 23,  6,  0 }, {     17,   24,   12, 23,  6,  0 }, {     17,   23,   12, 23,  6,  0 }, {     17,   22,   11, 23,  6,  0 },
@@ -9824,7 +9824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E1AC9 = {
     {     61,  -16,  -16, 16,  6,  0 }, {     62,  -16,  -16, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E1D26 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E1D26 = {
     67, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  1,  6,  0 },
     {     26,   16,   13,  1,  6,  0 }, {     25,   17,   13,  1,  6,  0 }, {     24,   17,   12,  1,  6,  0 }, {     23,   17,   12,  1,  6,  0 }, {     22,   17,   11,  1,  6,  0 },
@@ -9842,7 +9842,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E1D26 = {
     {    -16,   61,  -16,  8,  6,  0 }, {    -16,   62,  -16,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E1F83 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E1F83 = {
     68, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   15,  8,  6,  0 }, {     16,    2,   15,  8,  6,  0 }, {     16,    3,   14,  8,  6,  0 }, {     16,    4,   14,  8,  6,  0 },
     {     16,    5,   13,  9,  6,  0 }, {     16,    6,   13,  9,  6,  0 }, {     17,    7,   13,  9,  6,  0 }, {     17,    8,   12,  9,  6,  0 }, {     17,    9,   12,  9,  6,  0 },
@@ -9860,7 +9860,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E1F83 = {
     {     60,   48,  -15, 16,  6,  0 }, {     61,   48,  -16, 16,  6,  0 }, {     62,   48,  -16, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E21E9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E21E9 = {
     69, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   15, 16,  6,  0 }, {      2,   16,   15, 16,  6,  0 }, {      3,   16,   14, 16,  6,  0 }, {      4,   16,   14, 16,  6,  0 },
     {      5,   16,   13, 17,  6,  0 }, {      6,   16,   13, 17,  6,  0 }, {      7,   15,   13, 17,  6,  0 }, {      8,   15,   12, 17,  6,  0 }, {      9,   15,   12, 17,  6,  0 },
@@ -9878,7 +9878,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E21E9 = {
     {     48,  -28,  -15, 24,  6,  0 }, {     48,  -29,  -15, 24,  6,  0 }, {     48,  -30,  -16, 24,  6,  0 }, {     48,  -31,  -16, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E2458 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E2458 = {
     68, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 25,  6,  0 },
     {     16,   26,   13, 25,  6,  0 }, {     15,   25,   13, 25,  6,  0 }, {     15,   24,   12, 25,  6,  0 }, {     15,   23,   12, 25,  6,  0 }, {     15,   22,   11, 25,  6,  0 },
@@ -9896,7 +9896,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E2458 = {
     {    -29,  -16,  -15,  0,  6,  0 }, {    -30,  -16,  -16,  0,  6,  0 }, {    -31,  -16,  -16,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E39EE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E39EE = {
     22, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0, 31,  0,  0 }, {     28,   15,    0, 31,  0,  0 }, {     27,   15,    0, 30,  0,  0 },
     {     26,   15,    0, 30,  0,  0 }, {     25,   14,    0, 30,  0,  0 }, {     24,   14,    0, 29,  0,  0 }, {     23,   13,    0, 29,  0,  0 }, {     22,   12,    0, 28,  0,  0 },
@@ -9905,7 +9905,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E39EE = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3AB6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3AB6 = {
     23, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  7,  0,  0 }, {     15,    4,    0,  7,  0,  0 },
     {     15,    5,    0,  6,  0,  0 }, {     15,    6,    0,  6,  0,  0 }, {     14,    7,    0,  6,  0,  0 }, {     14,    8,    0,  5,  0,  0 }, {     13,    9,    0,  5,  0,  0 },
@@ -9914,7 +9914,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3AB6 = {
     {      2,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3B87 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3B87 = {
     22, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 15,  0,  0 }, {      4,   17,    0, 15,  0,  0 },
     {      5,   17,    0, 14,  0,  0 }, {      6,   17,    0, 14,  0,  0 }, {      7,   18,    0, 14,  0,  0 }, {      8,   18,    0, 13,  0,  0 }, {      9,   19,    0, 13,  0,  0 },
@@ -9923,7 +9923,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3B87 = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3C4F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3C4F = {
     21, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 23,  0,  0 }, {     17,   28,    0, 23,  0,  0 }, {     17,   27,    0, 22,  0,  0 },
     {     17,   26,    0, 22,  0,  0 }, {     18,   25,    0, 22,  0,  0 }, {     18,   24,    0, 21,  0,  0 }, {     19,   23,    0, 21,  0,  0 }, {     20,   22,    0, 20,  0,  0 },
@@ -9932,7 +9932,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3C4F = {
     {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3D0E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3D0E = {
     21, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  1,  0,  0 }, {     28,   17,    0,  1,  0,  0 }, {     27,   17,    0,  2,  0,  0 },
     {     26,   17,    0,  2,  0,  0 }, {     25,   18,    0,  2,  0,  0 }, {     24,   18,    0,  3,  0,  0 }, {     23,   19,    0,  3,  0,  0 }, {     22,   20,    0,  4,  0,  0 },
@@ -9941,7 +9941,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3D0E = {
     {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3DCD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3DCD = {
     22, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  9,  0,  0 }, {     17,    4,    0,  9,  0,  0 },
     {     17,    5,    0, 10,  0,  0 }, {     17,    6,    0, 10,  0,  0 }, {     18,    7,    0, 10,  0,  0 }, {     18,    8,    0, 11,  0,  0 }, {     19,    9,    0, 11,  0,  0 },
@@ -9950,7 +9950,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3DCD = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3E95 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3E95 = {
     23, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 17,  0,  0 }, {      4,   15,    0, 17,  0,  0 },
     {      5,   15,    0, 18,  0,  0 }, {      6,   15,    0, 18,  0,  0 }, {      7,   14,    0, 18,  0,  0 }, {      8,   14,    0, 19,  0,  0 }, {      9,   13,    0, 19,  0,  0 },
@@ -9959,7 +9959,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3E95 = {
     {     16,    2,    0, 24,  0,  0 }, {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E3F66 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E3F66 = {
     22, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 25,  0,  0 }, {     15,   28,    0, 25,  0,  0 }, {     15,   27,    0, 26,  0,  0 },
     {     15,   26,    0, 26,  0,  0 }, {     14,   25,    0, 26,  0,  0 }, {     14,   24,    0, 27,  0,  0 }, {     13,   23,    0, 27,  0,  0 }, {     12,   22,    0, 28,  0,  0 },
@@ -9968,7 +9968,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E3F66 = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D9BFE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D9BFE = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  1 }, {     25,   16,    0,  0,  0,  1 }, {     24,   16,    0,  0,  0,  1 }, {     23,   16,    0,  0,  0,  1 }, {     22,   16,    0,  0,  0,  1 },
@@ -9992,7 +9992,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D9BFE = {
     {    -64,   16,    0, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D9F60 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D9F60 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  1 }, {     16,    6,    0,  8,  0,  1 }, {     16,    7,    0,  8,  0,  1 }, {     16,    8,    0,  8,  0,  1 }, {     16,    9,    0,  8,  0,  1 },
@@ -10016,7 +10016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D9F60 = {
     {     16,   95,    0, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DA2C2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DA2C2 = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  1 }, {      6,   16,    0, 16,  0,  1 }, {      7,   16,    0, 16,  0,  1 }, {      8,   16,    0, 16,  0,  1 }, {      9,   16,    0, 16,  0,  1 },
@@ -10040,7 +10040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DA2C2 = {
     {     95,   16,    0,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DA624 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DA624 = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  1 }, {     16,   25,    0, 24,  0,  1 }, {     16,   24,    0, 24,  0,  1 }, {     16,   23,    0, 24,  0,  1 }, {     16,   22,    0, 24,  0,  1 },
@@ -10064,7 +10064,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DA624 = {
     {     16,  -64,    0,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DA986 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DA986 = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  3 }, {     25,   16,    0,  0,  0,  3 }, {     24,   16,    0,  0,  0,  3 }, {     23,   16,    0,  0,  0,  3 }, {     22,   16,    0,  0,  0,  3 },
@@ -10088,7 +10088,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DA986 = {
     {    -64,   16,    0, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DACE8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DACE8 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  3 }, {     16,    6,    0,  8,  0,  3 }, {     16,    7,    0,  8,  0,  3 }, {     16,    8,    0,  8,  0,  3 }, {     16,    9,    0,  8,  0,  3 },
@@ -10112,7 +10112,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DACE8 = {
     {     16,   95,    0, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DB04A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DB04A = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  3 }, {      6,   16,    0, 16,  0,  3 }, {      7,   16,    0, 16,  0,  3 }, {      8,   16,    0, 16,  0,  3 }, {      9,   16,    0, 16,  0,  3 },
@@ -10136,7 +10136,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DB04A = {
     {     95,   16,    0,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DB3AC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DB3AC = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  3 }, {     16,   25,    0, 24,  0,  3 }, {     16,   24,    0, 24,  0,  3 }, {     16,   23,    0, 24,  0,  3 }, {     16,   22,    0, 24,  0,  3 },
@@ -10160,7 +10160,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DB3AC = {
     {     16,  -64,    0,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DB70E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DB70E = {
     96, {
     {     31,   16,  -16, 16, 16,  0 }, {     30,   16,  -16, 16, 16,  0 }, {     29,   16,  -16, 16, 16,  0 }, {     28,   16,  -16, 16, 16,  0 }, {     27,   16,  -16, 16, 16,  0 },
     {     26,   16,  -16,  0,  0, 14 }, {     25,   16,  -16,  0,  0, 14 }, {     24,   16,  -16,  0,  0, 14 }, {     23,   16,  -16,  0,  0, 14 }, {     22,   16,  -16,  0,  0, 14 },
@@ -10184,7 +10184,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DB70E = {
     {    -64,   16,  -16,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DBA70 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DBA70 = {
     96, {
     {     16,    0,  -16, 24, 16,  0 }, {     16,    1,  -16, 24, 16,  0 }, {     16,    2,  -16, 24, 16,  0 }, {     16,    3,  -16, 24, 16,  0 }, {     16,    4,  -16, 24, 16,  0 },
     {     16,    5,  -16,  8,  0, 14 }, {     16,    6,  -16,  8,  0, 14 }, {     16,    7,  -16,  8,  0, 14 }, {     16,    8,  -16,  8,  0, 14 }, {     16,    9,  -16,  8,  0, 14 },
@@ -10208,7 +10208,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DBA70 = {
     {     16,   95,  -16,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DBDD2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DBDD2 = {
     96, {
     {      0,   16,  -16,  0, 16,  0 }, {      1,   16,  -16,  0, 16,  0 }, {      2,   16,  -16,  0, 16,  0 }, {      3,   16,  -16,  0, 16,  0 }, {      4,   16,  -16,  0, 16,  0 },
     {      5,   16,  -16, 16,  0, 14 }, {      6,   16,  -16, 16,  0, 14 }, {      7,   16,  -16, 16,  0, 14 }, {      8,   16,  -16, 16,  0, 14 }, {      9,   16,  -16, 16,  0, 14 },
@@ -10232,7 +10232,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DBDD2 = {
     {     95,   16,  -16, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DC134 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DC134 = {
     96, {
     {     16,   31,  -16,  8, 16,  0 }, {     16,   30,  -16,  8, 16,  0 }, {     16,   29,  -16,  8, 16,  0 }, {     16,   28,  -16,  8, 16,  0 }, {     16,   27,  -16,  8, 16,  0 },
     {     16,   26,  -16, 24,  0, 14 }, {     16,   25,  -16, 24,  0, 14 }, {     16,   24,  -16, 24,  0, 14 }, {     16,   23,  -16, 24,  0, 14 }, {     16,   22,  -16, 24,  0, 14 },
@@ -10256,7 +10256,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DC134 = {
     {     16,  -64,  -16, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DC496 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DC496 = {
     96, {
     {     31,   16,  -16, 16, 16,  0 }, {     30,   16,  -16, 16, 16,  0 }, {     29,   16,  -16, 16, 16,  0 }, {     28,   16,  -16, 16, 16,  0 }, {     27,   16,  -16, 16, 16,  0 },
     {     26,   16,  -16,  0,  0,  9 }, {     25,   16,  -16,  0,  0,  9 }, {     24,   16,  -16,  0,  0,  9 }, {     23,   16,  -16,  0,  0,  9 }, {     22,   16,  -16,  0,  0,  9 },
@@ -10280,7 +10280,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DC496 = {
     {    -64,   16,  -16,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DC7F8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DC7F8 = {
     96, {
     {     16,    0,  -16, 24, 16,  0 }, {     16,    1,  -16, 24, 16,  0 }, {     16,    2,  -16, 24, 16,  0 }, {     16,    3,  -16, 24, 16,  0 }, {     16,    4,  -16, 24, 16,  0 },
     {     16,    5,  -16,  8,  0,  9 }, {     16,    6,  -16,  8,  0,  9 }, {     16,    7,  -16,  8,  0,  9 }, {     16,    8,  -16,  8,  0,  9 }, {     16,    9,  -16,  8,  0,  9 },
@@ -10304,7 +10304,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DC7F8 = {
     {     16,   95,  -16,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DCB5A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DCB5A = {
     96, {
     {      0,   16,  -16,  0, 16,  0 }, {      1,   16,  -16,  0, 16,  0 }, {      2,   16,  -16,  0, 16,  0 }, {      3,   16,  -16,  0, 16,  0 }, {      4,   16,  -16,  0, 16,  0 },
     {      5,   16,  -16, 16,  0,  9 }, {      6,   16,  -16, 16,  0,  9 }, {      7,   16,  -16, 16,  0,  9 }, {      8,   16,  -16, 16,  0,  9 }, {      9,   16,  -16, 16,  0,  9 },
@@ -10328,7 +10328,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DCB5A = {
     {     95,   16,  -16, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DCEBC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DCEBC = {
     96, {
     {     16,   31,  -16,  8, 16,  0 }, {     16,   30,  -16,  8, 16,  0 }, {     16,   29,  -16,  8, 16,  0 }, {     16,   28,  -16,  8, 16,  0 }, {     16,   27,  -16,  8, 16,  0 },
     {     16,   26,  -16, 24,  0,  9 }, {     16,   25,  -16, 24,  0,  9 }, {     16,   24,  -16, 24,  0,  9 }, {     16,   23,  -16, 24,  0,  9 }, {     16,   22,  -16, 24,  0,  9 },
@@ -10352,7 +10352,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DCEBC = {
     {     16,  -64,  -16, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E644E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E644E = {
     160, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    3,  0,  2,  0 }, {     22,   16,    4,  0,  2,  0 },
@@ -10388,7 +10388,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E644E = {
     {     -6,   16,  136,  0, 16,  0 }, {     -5,   16,  136,  0, 16,  0 }, {     -4,   16,  136,  0, 16,  0 }, {     -3,   16,  136,  0, 16,  0 }, {     -2,   16,  136,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E69F9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E69F9 = {
     160, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    3,  8,  2,  0 }, {     16,    9,    4,  8,  2,  0 },
@@ -10424,7 +10424,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E69F9 = {
     {     16,   37,  136,  8, 16,  0 }, {     16,   36,  136,  8, 16,  0 }, {     16,   35,  136,  8, 16,  0 }, {     16,   34,  136,  8, 16,  0 }, {     16,   33,  136,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E6FA4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E6FA4 = {
     160, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    3, 16,  2,  0 }, {      9,   16,    4, 16,  2,  0 },
@@ -10460,7 +10460,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E6FA4 = {
     {     37,   16,  136, 16, 16,  0 }, {     36,   16,  136, 16, 16,  0 }, {     35,   16,  136, 16, 16,  0 }, {     34,   16,  136, 16, 16,  0 }, {     33,   16,  136, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E754F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E754F = {
     160, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    3, 24,  2,  0 }, {     16,   22,    4, 24,  2,  0 },
@@ -10496,7 +10496,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E754F = {
     {     16,   -6,  136, 24, 16,  0 }, {     16,   -5,  136, 24, 16,  0 }, {     16,   -4,  136, 24, 16,  0 }, {     16,   -3,  136, 24, 16,  0 }, {     16,   -2,  136, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E7AFA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E7AFA = {
     160, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 23,  0 }, {     25,   16,   15, 16, 23,  0 }, {     24,   16,   15, 16, 23,  0 }, {     23,   16,   15, 16, 23,  0 }, {     22,   16,   14, 16, 23,  0 },
@@ -10532,7 +10532,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E7AFA = {
     {     58,   16, -118, 16,  6,  0 }, {     59,   16, -118, 16,  6,  0 }, {     60,   16, -119, 16,  6,  0 }, {     61,   16, -119, 16,  6,  0 }, {     62,   16, -120, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E80A5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E80A5 = {
     160, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 23,  0 }, {     16,    6,   15, 24, 23,  0 }, {     16,    7,   15, 24, 23,  0 }, {     16,    8,   15, 24, 23,  0 }, {     16,    9,   14, 24, 23,  0 },
@@ -10568,7 +10568,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E80A5 = {
     {     16,  -27, -118, 24,  6,  0 }, {     16,  -28, -118, 24,  6,  0 }, {     16,  -29, -119, 24,  6,  0 }, {     16,  -30, -119, 24,  6,  0 }, {     16,  -31, -120, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E8650 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E8650 = {
     160, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 23,  0 }, {      6,   16,   15,  0, 23,  0 }, {      7,   16,   15,  0, 23,  0 }, {      8,   16,   15,  0, 23,  0 }, {      9,   16,   14,  0, 23,  0 },
@@ -10604,7 +10604,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E8650 = {
     {    -27,   16, -118,  0,  6,  0 }, {    -28,   16, -118,  0,  6,  0 }, {    -29,   16, -119,  0,  6,  0 }, {    -30,   16, -119,  0,  6,  0 }, {    -31,   16, -120,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E8BFB = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E8BFB = {
     160, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 23,  0 }, {     16,   25,   15,  8, 23,  0 }, {     16,   24,   15,  8, 23,  0 }, {     16,   23,   15,  8, 23,  0 }, {     16,   22,   14,  8, 23,  0 },
@@ -10640,7 +10640,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E8BFB = {
     {     16,   58, -118,  8,  6,  0 }, {     16,   59, -118,  8,  6,  0 }, {     16,   60, -119,  8,  6,  0 }, {     16,   61, -119,  8,  6,  0 }, {     16,   62, -120,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EA852 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EA852 = {
     97, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    1,  0,  0,  0 }, {     24,   16,    1,  0,  0,  0 }, {     23,   16,    1,  0, 34,  0 }, {     22,   16,    1,  0, 34,  0 },
@@ -10664,7 +10664,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EA852 = {
     {    -17,  -31,   64,  8, 16,  0 }, {    -17,  -32,   64,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EABBD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EABBD = {
     97, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    1,  8,  0,  0 }, {     16,    7,    1,  8,  0,  0 }, {     16,    8,    1,  8, 34,  0 }, {     16,    9,    1,  8, 34,  0 },
@@ -10688,7 +10688,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EABBD = {
     {    -31,   48,   64, 16, 16,  0 }, {    -32,   48,   64, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EAF28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EAF28 = {
     97, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    1, 16,  0,  0 }, {      7,   16,    1, 16,  0,  0 }, {      8,   16,    1, 16, 34,  0 }, {      9,   16,    1, 16, 34,  0 },
@@ -10712,7 +10712,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EAF28 = {
     {     48,   63,   64, 24, 16,  0 }, {     48,   64,   64, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EB293 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EB293 = {
     97, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    1, 24,  0,  0 }, {     16,   24,    1, 24,  0,  0 }, {     16,   23,    1, 24, 34,  0 }, {     16,   22,    1, 24, 34,  0 },
@@ -10736,7 +10736,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EB293 = {
     {     63,  -17,   64,  0, 16,  0 }, {     64,  -17,   64,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EB5FE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EB5FE = {
     97, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    1,  0,  0,  0 }, {     24,   16,    1,  0,  0,  0 }, {     23,   16,    1,  0, 24,  0 }, {     22,   16,    1,  0, 24,  0 },
@@ -10760,7 +10760,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EB5FE = {
     {    -17,   63,   64, 24, 16,  0 }, {    -17,   64,   64, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EB969 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EB969 = {
     97, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    1,  8,  0,  0 }, {     16,    7,    1,  8,  0,  0 }, {     16,    8,    1,  8, 24,  0 }, {     16,    9,    1,  8, 24,  0 },
@@ -10784,7 +10784,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EB969 = {
     {     63,   48,   64,  0, 16,  0 }, {     64,   48,   64,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EBCD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EBCD4 = {
     97, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    1, 16,  0,  0 }, {      7,   16,    1, 16,  0,  0 }, {      8,   16,    1, 16, 24,  0 }, {      9,   16,    1, 16, 24,  0 },
@@ -10808,7 +10808,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EBCD4 = {
     {     48,  -31,   64,  8, 16,  0 }, {     48,  -32,   64,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EC03F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EC03F = {
     97, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    1, 24,  0,  0 }, {     16,   24,    1, 24,  0,  0 }, {     16,   23,    1, 24, 24,  0 }, {     16,   22,    1, 24, 24,  0 },
@@ -10832,7 +10832,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EC03F = {
     {    -31,  -17,   64, 16, 16,  0 }, {    -32,  -17,   64, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EC3AA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EC3AA = {
     97, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 16,  0 }, {     25,   16,   15, 16, 16,  0 }, {     24,   16,   15, 16, 16,  0 }, {     23,   16,   15, 24, 33,  0 }, {     22,   16,   15, 24, 33,  0 },
@@ -10856,7 +10856,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EC3AA = {
     {    -17,  -31,  -48, 24,  0,  0 }, {    -17,  -32,  -48, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EC715 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EC715 = {
     97, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 16,  0 }, {     16,    6,   15, 24, 16,  0 }, {     16,    7,   15, 24, 16,  0 }, {     16,    8,   15,  0, 33,  0 }, {     16,    9,   15,  0, 33,  0 },
@@ -10880,7 +10880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EC715 = {
     {    -31,   48,  -48,  0,  0,  0 }, {    -32,   48,  -48,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8ECA80 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8ECA80 = {
     97, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 16,  0 }, {      6,   16,   15,  0, 16,  0 }, {      7,   16,   15,  0, 16,  0 }, {      8,   16,   15,  8, 33,  0 }, {      9,   16,   15,  8, 33,  0 },
@@ -10904,7 +10904,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8ECA80 = {
     {     48,   63,  -48,  8,  0,  0 }, {     48,   64,  -48,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8ECDEB = {
+static const rct_vehicle_info_list TrackVehicleInfo_8ECDEB = {
     97, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 16,  0 }, {     16,   25,   15,  8, 16,  0 }, {     16,   24,   15,  8, 16,  0 }, {     16,   23,   15, 16, 33,  0 }, {     16,   22,   15, 16, 33,  0 },
@@ -10928,7 +10928,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8ECDEB = {
     {     63,  -17,  -48, 16,  0,  0 }, {     64,  -17,  -48, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8ED156 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8ED156 = {
     97, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 16,  0 }, {     25,   16,   15, 16, 16,  0 }, {     24,   16,   15, 16, 16,  0 }, {     23,   16,   15,  8, 43,  0 }, {     22,   16,   15,  8, 43,  0 },
@@ -10952,7 +10952,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8ED156 = {
     {    -17,   63,  -48,  8,  0,  0 }, {    -17,   64,  -48,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8ED4C1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8ED4C1 = {
     97, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 16,  0 }, {     16,    6,   15, 24, 16,  0 }, {     16,    7,   15, 24, 16,  0 }, {     16,    8,   15, 16, 43,  0 }, {     16,    9,   15, 16, 43,  0 },
@@ -10976,7 +10976,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8ED4C1 = {
     {     63,   48,  -48, 16,  0,  0 }, {     64,   48,  -48, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8ED82C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8ED82C = {
     97, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 16,  0 }, {      6,   16,   15,  0, 16,  0 }, {      7,   16,   15,  0, 16,  0 }, {      8,   16,   15, 24, 43,  0 }, {      9,   16,   15, 24, 43,  0 },
@@ -11000,7 +11000,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8ED82C = {
     {     48,  -31,  -48, 24,  0,  0 }, {     48,  -32,  -48, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EDB97 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EDB97 = {
     97, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 16,  0 }, {     16,   25,   15,  8, 16,  0 }, {     16,   24,   15,  8, 16,  0 }, {     16,   23,   15,  0, 43,  0 }, {     16,   22,   15,  0, 43,  0 },
@@ -11024,7 +11024,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EDB97 = {
     {    -31,  -17,  -48,  0,  0,  0 }, {    -32,  -17,  -48,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6C32 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6C32 = {
     36, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    1,  0,  0,  0 },
     {     26,   16,    1,  0,  1,  0 }, {     25,   16,    1,  0,  1,  0 }, {     24,   16,    2,  0,  1,  0 }, {     23,   16,    2,  0,  1,  0 }, {     22,   16,    2,  0,  1,  0 },
@@ -11036,7 +11036,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6C32 = {
     {      0,   16,   23,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6D78 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6D78 = {
     36, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    1,  8,  0,  0 },
     {     16,    5,    1,  8,  1,  0 }, {     16,    6,    1,  8,  1,  0 }, {     16,    7,    2,  8,  1,  0 }, {     16,    8,    2,  8,  1,  0 }, {     16,    9,    2,  8,  1,  0 },
@@ -11048,7 +11048,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6D78 = {
     {     16,   31,   23,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C6EBE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C6EBE = {
     36, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    1, 16,  0,  0 },
     {      5,   16,    1, 16,  1,  0 }, {      6,   16,    1, 16,  1,  0 }, {      7,   16,    2, 16,  1,  0 }, {      8,   16,    2, 16,  1,  0 }, {      9,   16,    2, 16,  1,  0 },
@@ -11060,7 +11060,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C6EBE = {
     {     31,   16,   23, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7004 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7004 = {
     36, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    1, 24,  0,  0 },
     {     16,   26,    1, 24,  1,  0 }, {     16,   25,    1, 24,  1,  0 }, {     16,   24,    2, 24,  1,  0 }, {     16,   23,    2, 24,  1,  0 }, {     16,   22,    2, 24,  1,  0 },
@@ -11072,7 +11072,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7004 = {
     {     16,    0,   23, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C714A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C714A = {
     36, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     29,   16,    4,  0,  4,  0 },
     {     29,   16,    5,  0,  4,  0 }, {     28,   16,    6,  0,  4,  0 }, {     27,   16,    7,  0,  3,  0 }, {     27,   16,    8,  0,  3,  0 }, {     26,   16,    9,  0,  3,  0 },
@@ -11084,7 +11084,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C714A = {
     {      0,   16,   23,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7290 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7290 = {
     36, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    2,    5,  8,  4,  0 }, {     16,    3,    6,  8,  4,  0 }, {     16,    4,    7,  8,  3,  0 }, {     16,    4,    8,  8,  3,  0 }, {     16,    5,    9,  8,  3,  0 },
@@ -11096,7 +11096,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7290 = {
     {     16,   31,   23,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C73D6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C73D6 = {
     36, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      2,   16,    5, 16,  4,  0 }, {      3,   16,    6, 16,  4,  0 }, {      4,   16,    7, 16,  3,  0 }, {      4,   16,    8, 16,  3,  0 }, {      5,   16,    9, 16,  3,  0 },
@@ -11108,7 +11108,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C73D6 = {
     {     31,   16,   23, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C751C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C751C = {
     36, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 24,  4,  0 },
     {     16,   29,    5, 24,  4,  0 }, {     16,   28,    6, 24,  4,  0 }, {     16,   27,    7, 24,  3,  0 }, {     16,   27,    8, 24,  3,  0 }, {     16,   26,    9, 24,  3,  0 },
@@ -11120,7 +11120,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C751C = {
     {     16,    0,   23, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7662 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7662 = {
     36, {
     {     31,   16,   23,  0,  0,  0 }, {     30,   16,   23,  0,  0,  0 }, {     29,   16,   23,  0,  0,  0 }, {     28,   16,   23,  0,  0,  0 }, {     27,   16,   22,  0,  0,  0 },
     {     26,   16,   22,  0,  5,  0 }, {     25,   16,   22,  0,  5,  0 }, {     24,   16,   21,  0,  5,  0 }, {     23,   16,   21,  0,  5,  0 }, {     22,   16,   21,  0,  5,  0 },
@@ -11132,7 +11132,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7662 = {
     {      0,   16,    0,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C77A8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C77A8 = {
     36, {
     {     16,    0,   23,  8,  0,  0 }, {     16,    1,   23,  8,  0,  0 }, {     16,    2,   23,  8,  0,  0 }, {     16,    3,   23,  8,  0,  0 }, {     16,    4,   22,  8,  0,  0 },
     {     16,    5,   22,  8,  5,  0 }, {     16,    6,   22,  8,  5,  0 }, {     16,    7,   21,  8,  5,  0 }, {     16,    8,   21,  8,  5,  0 }, {     16,    9,   21,  8,  5,  0 },
@@ -11144,7 +11144,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C77A8 = {
     {     16,   31,    0,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C78EE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C78EE = {
     36, {
     {      0,   16,   23, 16,  0,  0 }, {      1,   16,   23, 16,  0,  0 }, {      2,   16,   23, 16,  0,  0 }, {      3,   16,   23, 16,  0,  0 }, {      4,   16,   22, 16,  0,  0 },
     {      5,   16,   22, 16,  5,  0 }, {      6,   16,   22, 16,  5,  0 }, {      7,   16,   21, 16,  5,  0 }, {      8,   16,   21, 16,  5,  0 }, {      9,   16,   21, 16,  5,  0 },
@@ -11156,7 +11156,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C78EE = {
     {     31,   16,    0, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7A34 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7A34 = {
     36, {
     {     16,   31,   23, 24,  0,  0 }, {     16,   30,   23, 24,  0,  0 }, {     16,   29,   23, 24,  0,  0 }, {     16,   28,   23, 24,  0,  0 }, {     16,   27,   22, 24,  0,  0 },
     {     16,   26,   22, 24,  5,  0 }, {     16,   25,   22, 24,  5,  0 }, {     16,   24,   21, 24,  5,  0 }, {     16,   23,   21, 24,  5,  0 }, {     16,   22,   21, 24,  5,  0 },
@@ -11168,7 +11168,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7A34 = {
     {     16,    0,    0, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7B7A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7B7A = {
     36, {
     {     31,   16,   23,  0,  8,  0 }, {     31,   16,   22,  0,  8,  0 }, {     30,   16,   21,  0,  8,  0 }, {     30,   16,   20,  0,  8,  0 }, {     29,   16,   19,  0,  8,  0 },
     {     29,   16,   18,  0,  8,  0 }, {     28,   16,   17,  0,  8,  0 }, {     27,   16,   16,  0,  7,  0 }, {     27,   16,   15,  0,  7,  0 }, {     26,   16,   14,  0,  7,  0 },
@@ -11180,7 +11180,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7B7A = {
     {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7CC0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7CC0 = {
     36, {
     {     16,    0,   23,  8,  8,  0 }, {     16,    0,   22,  8,  8,  0 }, {     16,    1,   21,  8,  8,  0 }, {     16,    1,   20,  8,  8,  0 }, {     16,    2,   19,  8,  8,  0 },
     {     16,    2,   18,  8,  8,  0 }, {     16,    3,   17,  8,  8,  0 }, {     16,    4,   16,  8,  7,  0 }, {     16,    4,   15,  8,  7,  0 }, {     16,    5,   14,  8,  7,  0 },
@@ -11192,7 +11192,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7CC0 = {
     {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7E06 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7E06 = {
     36, {
     {      0,   16,   23, 16,  8,  0 }, {      0,   16,   22, 16,  8,  0 }, {      1,   16,   21, 16,  8,  0 }, {      1,   16,   20, 16,  8,  0 }, {      2,   16,   19, 16,  8,  0 },
     {      2,   16,   18, 16,  8,  0 }, {      3,   16,   17, 16,  8,  0 }, {      4,   16,   16, 16,  7,  0 }, {      4,   16,   15, 16,  7,  0 }, {      5,   16,   14, 16,  7,  0 },
@@ -11204,7 +11204,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7E06 = {
     {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8C7F4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8C7F4C = {
     36, {
     {     16,   31,   23, 24,  8,  0 }, {     16,   31,   22, 24,  8,  0 }, {     16,   30,   21, 24,  8,  0 }, {     16,   30,   20, 24,  8,  0 }, {     16,   29,   19, 24,  8,  0 },
     {     16,   29,   18, 24,  8,  0 }, {     16,   28,   17, 24,  8,  0 }, {     16,   27,   16, 24,  7,  0 }, {     16,   27,   15, 24,  7,  0 }, {     16,   26,   14, 24,  7,  0 },
@@ -11216,7 +11216,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8C7F4C = {
     {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EFA5A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EFA5A = {
     94, {
     {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 }, {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 },
     {     16,   16,    7,  0, 10,  0 }, {     16,   16,    8,  0, 10,  0 }, {     16,   16,    9,  0, 10,  0 }, {     16,   16,   10,  0, 10,  0 }, {     16,   16,   11,  0, 10,  0 },
@@ -11239,7 +11239,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EFA5A = {
     {     16,   16,   92,  0, 10,  0 }, {     16,   16,   93,  0, 10,  0 }, {     16,   16,   94,  0, 10,  0 }, {     16,   16,   95,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EFDAA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EFDAA = {
     94, {
     {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 }, {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  8, 10,  0 },
     {     16,   16,    7,  8, 10,  0 }, {     16,   16,    8,  8, 10,  0 }, {     16,   16,    9,  8, 10,  0 }, {     16,   16,   10,  8, 10,  0 }, {     16,   16,   11,  8, 10,  0 },
@@ -11262,7 +11262,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EFDAA = {
     {     16,   16,   92,  8, 10,  0 }, {     16,   16,   93,  8, 10,  0 }, {     16,   16,   94,  8, 10,  0 }, {     16,   16,   95,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F00FA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F00FA = {
     94, {
     {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 }, {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 16, 10,  0 },
     {     16,   16,    7, 16, 10,  0 }, {     16,   16,    8, 16, 10,  0 }, {     16,   16,    9, 16, 10,  0 }, {     16,   16,   10, 16, 10,  0 }, {     16,   16,   11, 16, 10,  0 },
@@ -11285,7 +11285,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F00FA = {
     {     16,   16,   92, 16, 10,  0 }, {     16,   16,   93, 16, 10,  0 }, {     16,   16,   94, 16, 10,  0 }, {     16,   16,   95, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F044A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F044A = {
     94, {
     {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 }, {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 },
     {     16,   16,    7, 24, 10,  0 }, {     16,   16,    8, 24, 10,  0 }, {     16,   16,    9, 24, 10,  0 }, {     16,   16,   10, 24, 10,  0 }, {     16,   16,   11, 24, 10,  0 },
@@ -11308,7 +11308,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F044A = {
     {     16,   16,   92, 24, 10,  0 }, {     16,   16,   93, 24, 10,  0 }, {     16,   16,   94, 24, 10,  0 }, {     16,   16,   95, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F079A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F079A = {
     32, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 }, {     16,   16,    7,  0, 10,  0 }, {     16,   16,    8,  0, 10,  0 }, {     16,   16,    9,  0, 10,  0 },
@@ -11319,7 +11319,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F079A = {
     {     16,   16,   30,  0, 10,  0 }, {     16,   16,   31,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F08BC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F08BC = {
     32, {
     {     16,   16,    0,  8, 10,  0 }, {     16,   16,    1,  8, 10,  0 }, {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 },
     {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  8, 10,  0 }, {     16,   16,    7,  8, 10,  0 }, {     16,   16,    8,  8, 10,  0 }, {     16,   16,    9,  8, 10,  0 },
@@ -11330,7 +11330,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F08BC = {
     {     16,   16,   30,  8, 10,  0 }, {     16,   16,   31,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F09DE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F09DE = {
     32, {
     {     16,   16,    0, 16, 10,  0 }, {     16,   16,    1, 16, 10,  0 }, {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 },
     {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 16, 10,  0 }, {     16,   16,    7, 16, 10,  0 }, {     16,   16,    8, 16, 10,  0 }, {     16,   16,    9, 16, 10,  0 },
@@ -11341,7 +11341,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F09DE = {
     {     16,   16,   30, 16, 10,  0 }, {     16,   16,   31, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F0B00 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F0B00 = {
     32, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 }, {     16,   16,    7, 24, 10,  0 }, {     16,   16,    8, 24, 10,  0 }, {     16,   16,    9, 24, 10,  0 },
@@ -11352,7 +11352,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F0B00 = {
     {     16,   16,   30, 24, 10,  0 }, {     16,   16,   31, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F8C82 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F8C82 = {
     135, {
     {     31,   16,    0,  0, 45,  2 }, {     30,   16,    0,  0, 45,  2 }, {     29,   16,    0,  0, 45,  2 }, {     28,   16,    0,  0, 45,  2 }, {     27,   16,    0, 31, 45,  2 },
     {     26,   16,    0, 31, 45,  2 }, {     25,   15,    0, 31, 45,  2 }, {     24,   15,    0, 31, 45,  2 }, {     23,   15,    1, 31, 45,  2 }, {     22,   15,    1, 31, 45,  2 },
@@ -11383,7 +11383,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F8C82 = {
     {     26,  -80,   15, 17, 45,  2 }, {     27,  -80,   15, 17, 45,  2 }, {     28,  -80,   15, 16, 45,  2 }, {     29,  -80,   15, 16, 45,  2 }, {     30,  -80,   16, 16, 45,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F9143 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F9143 = {
     137, {
     {     16,    0,    0,  8, 45,  2 }, {     16,    1,    0,  8, 45,  2 }, {     16,    2,    0,  8, 45,  2 }, {     16,    3,    0,  8, 45,  2 }, {     16,    4,    0,  8, 45,  2 },
     {     16,    5,    0,  7, 45,  2 }, {     16,    6,    0,  7, 45,  2 }, {     15,    7,    0,  7, 45,  2 }, {     15,    8,    0,  7, 45,  2 }, {     15,    9,    1,  7, 45,  2 },
@@ -11415,7 +11415,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F9143 = {
     {    -80,    2,   15, 24, 45,  2 }, {    -80,    1,   16, 24, 45,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F9616 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F9616 = {
     137, {
     {      0,   16,    0, 16, 45,  2 }, {      1,   16,    0, 16, 45,  2 }, {      2,   16,    0, 16, 45,  2 }, {      3,   16,    0, 16, 45,  2 }, {      4,   16,    0, 16, 45,  2 },
     {      5,   16,    0, 15, 45,  2 }, {      6,   16,    0, 15, 45,  2 }, {      7,   17,    0, 15, 45,  2 }, {      8,   17,    0, 15, 45,  2 }, {      9,   17,    1, 15, 45,  2 },
@@ -11447,7 +11447,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F9616 = {
     {      2,  112,   15,  0, 45,  2 }, {      1,  112,   15,  0, 45,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F9AE9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F9AE9 = {
     135, {
     {     16,   31,    0, 24, 45,  2 }, {     16,   30,    0, 24, 45,  2 }, {     16,   29,    0, 24, 45,  2 }, {     16,   28,    0, 24, 45,  2 }, {     16,   27,    0, 23, 45,  2 },
     {     16,   26,    0, 23, 45,  2 }, {     17,   25,    0, 23, 45,  2 }, {     17,   24,    0, 23, 45,  2 }, {     17,   23,    1, 23, 45,  2 }, {     17,   22,    1, 23, 45,  2 },
@@ -11478,7 +11478,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F9AE9 = {
     {    112,   26,   15,  9, 45,  2 }, {    112,   27,   15,  9, 45,  2 }, {    112,   28,   15,  8, 45,  2 }, {    112,   29,   15,  8, 45,  2 }, {    112,   30,   15,  8, 45,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F9FAA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F9FAA = {
     135, {
     {     31,   16,    0,  0, 45,  4 }, {     30,   16,    0,  0, 45,  4 }, {     29,   16,    0,  0, 45,  4 }, {     28,   16,    0,  0, 45,  4 }, {     27,   16,    0,  1, 45,  4 },
     {     26,   16,    0,  1, 45,  4 }, {     25,   17,    0,  1, 45,  4 }, {     24,   17,    0,  1, 45,  4 }, {     23,   17,    1,  1, 45,  4 }, {     22,   17,    1,  1, 45,  4 },
@@ -11509,7 +11509,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F9FAA = {
     {     26,  112,   15, 15, 45,  4 }, {     27,  112,   15, 15, 45,  4 }, {     28,  112,   15, 16, 45,  4 }, {     29,  112,   15, 16, 45,  4 }, {     30,  112,   15, 16, 45,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FA46B = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FA46B = {
     137, {
     {     16,    0,    0,  8, 45,  4 }, {     16,    1,    0,  8, 45,  4 }, {     16,    2,    0,  8, 45,  4 }, {     16,    3,    0,  8, 45,  4 }, {     16,    4,    0,  8, 45,  4 },
     {     16,    5,    0,  9, 45,  4 }, {     16,    6,    0,  9, 45,  4 }, {     17,    7,    0,  9, 45,  4 }, {     17,    8,    0,  9, 45,  4 }, {     17,    9,    1,  9, 45,  4 },
@@ -11541,7 +11541,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FA46B = {
     {    112,    2,   15, 24, 45,  4 }, {    112,    1,   15, 24, 45,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FA93E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FA93E = {
     137, {
     {      0,   16,    0, 16, 45,  4 }, {      1,   16,    0, 16, 45,  4 }, {      2,   16,    0, 16, 45,  4 }, {      3,   16,    0, 16, 45,  4 }, {      4,   16,    0, 16, 45,  4 },
     {      5,   16,    0, 17, 45,  4 }, {      6,   16,    0, 17, 45,  4 }, {      7,   15,    0, 17, 45,  4 }, {      8,   15,    0, 17, 45,  4 }, {      9,   15,    1, 17, 45,  4 },
@@ -11573,7 +11573,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FA93E = {
     {      2,  -80,   15,  0, 45,  4 }, {      1,  -80,   16,  0, 45,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FAE11 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FAE11 = {
     135, {
     {     16,   31,    0, 24, 45,  4 }, {     16,   30,    0, 24, 45,  4 }, {     16,   29,    0, 24, 45,  4 }, {     16,   28,    0, 24, 45,  4 }, {     16,   27,    0, 25, 45,  4 },
     {     16,   26,    0, 25, 45,  4 }, {     15,   25,    0, 25, 45,  4 }, {     15,   24,    0, 25, 45,  4 }, {     15,   23,    1, 25, 45,  4 }, {     15,   22,    1, 25, 45,  4 },
@@ -11604,7 +11604,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FAE11 = {
     {    -80,   26,   15,  7, 45,  4 }, {    -80,   27,   15,  7, 45,  4 }, {    -80,   28,   15,  8, 45,  4 }, {    -80,   29,   15,  8, 45,  4 }, {    -80,   30,   16,  8, 45,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FB2D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FB2D2 = {
     135, {
     {     31,   16,    8,  0, 47,  2 }, {     30,   16,    8,  0, 47,  2 }, {     29,   16,    8,  0, 47,  2 }, {     28,   16,    8,  0, 47,  2 }, {     27,   16,    8, 31, 47,  2 },
     {     26,   16,    8, 31, 47,  2 }, {     25,   15,    8, 31, 47,  2 }, {     24,   15,    8, 31, 47,  2 }, {     23,   15,    7, 31, 47,  2 }, {     22,   15,    7, 31, 47,  2 },
@@ -11635,7 +11635,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FB2D2 = {
     {     26,  -80,   -7, 17, 47,  2 }, {     27,  -80,   -7, 17, 47,  2 }, {     28,  -80,   -7, 16, 47,  2 }, {     29,  -80,   -7, 16, 47,  2 }, {     30,  -80,   -8, 16, 47,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FB793 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FB793 = {
     137, {
     {     16,    0,    8,  8, 47,  2 }, {     16,    1,    8,  8, 47,  2 }, {     16,    2,    8,  8, 47,  2 }, {     16,    3,    8,  8, 47,  2 }, {     16,    4,    8,  8, 47,  2 },
     {     16,    5,    8,  7, 47,  2 }, {     16,    6,    8,  7, 47,  2 }, {     15,    7,    8,  7, 47,  2 }, {     15,    8,    8,  7, 47,  2 }, {     15,    9,    7,  7, 47,  2 },
@@ -11667,7 +11667,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FB793 = {
     {    -80,    2,   -7, 24, 47,  2 }, {    -80,    1,   -8, 24, 47,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FBC66 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FBC66 = {
     137, {
     {      0,   16,    8, 16, 47,  2 }, {      1,   16,    8, 16, 47,  2 }, {      2,   16,    8, 16, 47,  2 }, {      3,   16,    8, 16, 47,  2 }, {      4,   16,    8, 16, 47,  2 },
     {      5,   16,    8, 15, 47,  2 }, {      6,   16,    8, 15, 47,  2 }, {      7,   17,    8, 15, 47,  2 }, {      8,   17,    8, 15, 47,  2 }, {      9,   17,    7, 15, 47,  2 },
@@ -11699,7 +11699,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FBC66 = {
     {      2,  112,   -7,  0, 47,  2 }, {      1,  112,   -7,  0, 47,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FC139 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FC139 = {
     135, {
     {     16,   31,    8, 24, 47,  2 }, {     16,   30,    8, 24, 47,  2 }, {     16,   29,    8, 24, 47,  2 }, {     16,   28,    8, 24, 47,  2 }, {     16,   27,    8, 23, 47,  2 },
     {     16,   26,    8, 23, 47,  2 }, {     17,   25,    8, 23, 47,  2 }, {     17,   24,    8, 23, 47,  2 }, {     17,   23,    7, 23, 47,  2 }, {     17,   22,    7, 23, 47,  2 },
@@ -11730,7 +11730,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FC139 = {
     {    112,   26,   -7,  9, 47,  2 }, {    112,   27,   -7,  9, 47,  2 }, {    112,   28,   -7,  8, 47,  2 }, {    112,   29,   -7,  8, 47,  2 }, {    112,   30,   -7,  8, 47,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FC5FA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FC5FA = {
     135, {
     {     31,   16,    8,  0, 47,  4 }, {     30,   16,    8,  0, 47,  4 }, {     29,   16,    8,  0, 47,  4 }, {     28,   16,    8,  0, 47,  4 }, {     27,   16,    8,  1, 47,  4 },
     {     26,   16,    8,  1, 47,  4 }, {     25,   17,    8,  1, 47,  4 }, {     24,   17,    8,  1, 47,  4 }, {     23,   17,    7,  1, 47,  4 }, {     22,   17,    7,  1, 47,  4 },
@@ -11761,7 +11761,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FC5FA = {
     {     26,  112,   -7, 15, 47,  4 }, {     27,  112,   -7, 15, 47,  4 }, {     28,  112,   -7, 16, 47,  4 }, {     29,  112,   -7, 16, 47,  4 }, {     30,  112,   -7, 16, 47,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FCABB = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FCABB = {
     137, {
     {     16,    0,    8,  8, 47,  4 }, {     16,    1,    8,  8, 47,  4 }, {     16,    2,    8,  8, 47,  4 }, {     16,    3,    8,  8, 47,  4 }, {     16,    4,    8,  8, 47,  4 },
     {     16,    5,    8,  9, 47,  4 }, {     16,    6,    8,  9, 47,  4 }, {     17,    7,    8,  9, 47,  4 }, {     17,    8,    8,  9, 47,  4 }, {     17,    9,    7,  9, 47,  4 },
@@ -11793,7 +11793,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FCABB = {
     {    112,    2,   -7, 24, 47,  4 }, {    112,    1,   -7, 24, 47,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FCF8E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FCF8E = {
     137, {
     {      0,   16,    8, 16, 47,  4 }, {      1,   16,    8, 16, 47,  4 }, {      2,   16,    8, 16, 47,  4 }, {      3,   16,    8, 16, 47,  4 }, {      4,   16,    8, 16, 47,  4 },
     {      5,   16,    8, 17, 47,  4 }, {      6,   16,    8, 17, 47,  4 }, {      7,   15,    8, 17, 47,  4 }, {      8,   15,    8, 17, 47,  4 }, {      9,   15,    7, 17, 47,  4 },
@@ -11825,7 +11825,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FCF8E = {
     {      2,  -80,   -7,  0, 47,  4 }, {      1,  -80,   -8,  0, 47,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FD461 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FD461 = {
     135, {
     {     16,   31,    8, 24, 47,  4 }, {     16,   30,    8, 24, 47,  4 }, {     16,   29,    8, 24, 47,  4 }, {     16,   28,    8, 24, 47,  4 }, {     16,   27,    8, 25, 47,  4 },
     {     16,   26,    8, 25, 47,  4 }, {     15,   25,    8, 25, 47,  4 }, {     15,   24,    8, 25, 47,  4 }, {     15,   23,    7, 25, 47,  4 }, {     15,   22,    7, 25, 47,  4 },
@@ -11856,7 +11856,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FD461 = {
     {    -80,   26,   -7,  7, 47,  4 }, {    -80,   27,   -7,  7, 47,  4 }, {    -80,   28,   -7,  8, 47,  4 }, {    -80,   29,   -7,  8, 47,  4 }, {    -80,   30,   -8,  8, 47,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F0C22 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F0C22 = {
     227, {
     {     31,   16,    0,  0, 44,  2 }, {     30,   16,    0,  0, 44,  2 }, {     29,   16,    0,  0, 44,  2 }, {     28,   16,    0,  0, 44,  2 }, {     27,   16,    0,  0, 44,  2 },
     {     26,   16,    0,  0, 44,  2 }, {     25,   16,    0,  0, 44,  2 }, {     24,   16,    0, 31, 44,  2 }, {     23,   15,    0, 31, 44,  2 }, {     22,   15,    0, 31, 44,  2 },
@@ -11906,7 +11906,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F0C22 = {
     {     30, -144,   15, 16, 44,  2 }, {     31, -144,   16, 16, 44,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F141F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F141F = {
     229, {
     {     16,    0,    0,  8, 44,  2 }, {     16,    1,    0,  8, 44,  2 }, {     16,    2,    0,  8, 44,  2 }, {     16,    3,    0,  8, 44,  2 }, {     16,    4,    0,  8, 44,  2 },
     {     16,    5,    0,  8, 44,  2 }, {     16,    6,    0,  8, 44,  2 }, {     16,    7,    0,  8, 44,  2 }, {     16,    8,    0,  7, 44,  2 }, {     15,    9,    0,  7, 44,  2 },
@@ -11956,7 +11956,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F141F = {
     {   -144,    3,   15, 24, 44,  2 }, {   -144,    2,   15, 24, 44,  2 }, {   -144,    1,   15, 24, 44,  2 }, {   -144,    0,   16, 24, 44,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F1C2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F1C2E = {
     229, {
     {      0,   16,    0, 16, 44,  2 }, {      1,   16,    0, 16, 44,  2 }, {      2,   16,    0, 16, 44,  2 }, {      3,   16,    0, 16, 44,  2 }, {      4,   16,    0, 16, 44,  2 },
     {      5,   16,    0, 16, 44,  2 }, {      6,   16,    0, 16, 44,  2 }, {      7,   16,    0, 16, 44,  2 }, {      8,   16,    0, 15, 44,  2 }, {      9,   17,    0, 15, 44,  2 },
@@ -12006,7 +12006,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F1C2E = {
     {      3,  176,   15,  0, 44,  2 }, {      2,  176,   15,  0, 44,  2 }, {      1,  176,   15,  0, 44,  2 }, {      0,  176,   15,  0, 44,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F243D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F243D = {
     227, {
     {     16,   31,    0, 24, 44,  2 }, {     16,   30,    0, 24, 44,  2 }, {     16,   29,    0, 24, 44,  2 }, {     16,   28,    0, 24, 44,  2 }, {     16,   27,    0, 24, 44,  2 },
     {     16,   26,    0, 24, 44,  2 }, {     16,   25,    0, 24, 44,  2 }, {     16,   24,    0, 23, 44,  2 }, {     17,   23,    0, 23, 44,  2 }, {     17,   22,    0, 23, 44,  2 },
@@ -12056,7 +12056,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F243D = {
     {    176,   30,   15,  8, 44,  2 }, {    176,   31,   15,  8, 44,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F2C3A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F2C3A = {
     227, {
     {     31,   16,    0,  0, 44,  4 }, {     30,   16,    0,  0, 44,  4 }, {     29,   16,    0,  0, 44,  4 }, {     28,   16,    0,  0, 44,  4 }, {     27,   16,    0,  0, 44,  4 },
     {     26,   16,    0,  0, 44,  4 }, {     25,   16,    0,  0, 44,  4 }, {     24,   16,    0,  1, 44,  4 }, {     23,   17,    0,  1, 44,  4 }, {     22,   17,    0,  1, 44,  4 },
@@ -12106,7 +12106,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F2C3A = {
     {     30,  176,   15, 16, 44,  4 }, {     31,  176,   15, 16, 44,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F3437 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F3437 = {
     229, {
     {     16,    0,    0,  8, 44,  4 }, {     16,    1,    0,  8, 44,  4 }, {     16,    2,    0,  8, 44,  4 }, {     16,    3,    0,  8, 44,  4 }, {     16,    4,    0,  8, 44,  4 },
     {     16,    5,    0,  8, 44,  4 }, {     16,    6,    0,  8, 44,  4 }, {     16,    7,    0,  8, 44,  4 }, {     16,    8,    0,  9, 44,  4 }, {     17,    9,    0,  9, 44,  4 },
@@ -12156,7 +12156,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F3437 = {
     {    176,    3,   15, 24, 44,  4 }, {    176,    2,   15, 24, 44,  4 }, {    176,    1,   15, 24, 44,  4 }, {    176,    0,   15, 24, 44,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F3C46 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F3C46 = {
     229, {
     {      0,   16,    0, 16, 44,  4 }, {      1,   16,    0, 16, 44,  4 }, {      2,   16,    0, 16, 44,  4 }, {      3,   16,    0, 16, 44,  4 }, {      4,   16,    0, 16, 44,  4 },
     {      5,   16,    0, 16, 44,  4 }, {      6,   16,    0, 16, 44,  4 }, {      7,   16,    0, 16, 44,  4 }, {      8,   16,    0, 17, 44,  4 }, {      9,   15,    0, 17, 44,  4 },
@@ -12206,7 +12206,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F3C46 = {
     {      3, -144,   15,  0, 44,  4 }, {      2, -144,   15,  0, 44,  4 }, {      1, -144,   15,  0, 44,  4 }, {      0, -144,   16,  0, 44,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F4455 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F4455 = {
     227, {
     {     16,   31,    0, 24, 44,  4 }, {     16,   30,    0, 24, 44,  4 }, {     16,   29,    0, 24, 44,  4 }, {     16,   28,    0, 24, 44,  4 }, {     16,   27,    0, 24, 44,  4 },
     {     16,   26,    0, 24, 44,  4 }, {     16,   25,    0, 24, 44,  4 }, {     16,   24,    0, 25, 44,  4 }, {     15,   23,    0, 25, 44,  4 }, {     15,   22,    0, 25, 44,  4 },
@@ -12256,7 +12256,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F4455 = {
     {   -144,   30,   15,  8, 44,  4 }, {   -144,   31,   16,  8, 44,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F4C52 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F4C52 = {
     227, {
     {     31,   16,    8,  0, 46,  2 }, {     30,   16,    8,  0, 46,  2 }, {     29,   16,    8,  0, 46,  2 }, {     28,   16,    8,  0, 46,  2 }, {     27,   16,    8,  0, 46,  2 },
     {     26,   16,    8,  0, 46,  2 }, {     25,   16,    8,  0, 46,  2 }, {     24,   16,    8, 31, 46,  2 }, {     23,   15,    8, 31, 46,  2 }, {     22,   15,    8, 31, 46,  2 },
@@ -12306,7 +12306,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F4C52 = {
     {     30, -144,   -7, 16, 46,  2 }, {     31, -144,   -8, 16, 46,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F544F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F544F = {
     229, {
     {     16,    0,    8,  8, 46,  2 }, {     16,    1,    8,  8, 46,  2 }, {     16,    2,    8,  8, 46,  2 }, {     16,    3,    8,  8, 46,  2 }, {     16,    4,    8,  8, 46,  2 },
     {     16,    5,    8,  8, 46,  2 }, {     16,    6,    8,  8, 46,  2 }, {     16,    7,    8,  8, 46,  2 }, {     16,    8,    8,  7, 46,  2 }, {     15,    9,    8,  7, 46,  2 },
@@ -12356,7 +12356,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F544F = {
     {   -144,    3,   -7, 24, 46,  2 }, {   -144,    2,   -7, 24, 46,  2 }, {   -144,    1,   -7, 24, 46,  2 }, {   -144,    0,   -8, 24, 46,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F5C5E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F5C5E = {
     229, {
     {      0,   16,    8, 16, 46,  2 }, {      1,   16,    8, 16, 46,  2 }, {      2,   16,    8, 16, 46,  2 }, {      3,   16,    8, 16, 46,  2 }, {      4,   16,    8, 16, 46,  2 },
     {      5,   16,    8, 16, 46,  2 }, {      6,   16,    8, 16, 46,  2 }, {      7,   16,    8, 16, 46,  2 }, {      8,   16,    8, 15, 46,  2 }, {      9,   17,    8, 15, 46,  2 },
@@ -12406,7 +12406,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F5C5E = {
     {      3,  176,   -7,  0, 46,  2 }, {      2,  176,   -7,  0, 46,  2 }, {      1,  176,   -7,  0, 46,  2 }, {      0,  176,   -7,  0, 46,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F646D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F646D = {
     227, {
     {     16,   31,    8, 24, 46,  2 }, {     16,   30,    8, 24, 46,  2 }, {     16,   29,    8, 24, 46,  2 }, {     16,   28,    8, 24, 46,  2 }, {     16,   27,    8, 24, 46,  2 },
     {     16,   26,    8, 24, 46,  2 }, {     16,   25,    8, 24, 46,  2 }, {     16,   24,    8, 23, 46,  2 }, {     17,   23,    8, 23, 46,  2 }, {     17,   22,    8, 23, 46,  2 },
@@ -12456,7 +12456,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F646D = {
     {    176,   30,   -7,  8, 46,  2 }, {    176,   31,   -7,  8, 46,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F6C6A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F6C6A = {
     227, {
     {     31,   16,    8,  0, 46,  4 }, {     30,   16,    8,  0, 46,  4 }, {     29,   16,    8,  0, 46,  4 }, {     28,   16,    8,  0, 46,  4 }, {     27,   16,    8,  0, 46,  4 },
     {     26,   16,    8,  0, 46,  4 }, {     25,   16,    8,  0, 46,  4 }, {     24,   16,    8,  1, 46,  4 }, {     23,   17,    8,  1, 46,  4 }, {     22,   17,    8,  1, 46,  4 },
@@ -12506,7 +12506,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F6C6A = {
     {     30,  176,   -7, 16, 46,  4 }, {     31,  176,   -7, 16, 46,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F7467 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F7467 = {
     229, {
     {     16,    0,    8,  8, 46,  4 }, {     16,    1,    8,  8, 46,  4 }, {     16,    2,    8,  8, 46,  4 }, {     16,    3,    8,  8, 46,  4 }, {     16,    4,    8,  8, 46,  4 },
     {     16,    5,    8,  8, 46,  4 }, {     16,    6,    8,  8, 46,  4 }, {     16,    7,    8,  8, 46,  4 }, {     16,    8,    8,  9, 46,  4 }, {     17,    9,    8,  9, 46,  4 },
@@ -12556,7 +12556,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F7467 = {
     {    176,    3,   -7, 24, 46,  4 }, {    176,    2,   -7, 24, 46,  4 }, {    176,    1,   -7, 24, 46,  4 }, {    176,    0,   -7, 24, 46,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F7C76 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F7C76 = {
     229, {
     {      0,   16,    8, 16, 46,  4 }, {      1,   16,    8, 16, 46,  4 }, {      2,   16,    8, 16, 46,  4 }, {      3,   16,    8, 16, 46,  4 }, {      4,   16,    8, 16, 46,  4 },
     {      5,   16,    8, 16, 46,  4 }, {      6,   16,    8, 16, 46,  4 }, {      7,   16,    8, 16, 46,  4 }, {      8,   16,    8, 17, 46,  4 }, {      9,   15,    8, 17, 46,  4 },
@@ -12606,7 +12606,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F7C76 = {
     {      3, -144,   -7,  0, 46,  4 }, {      2, -144,   -7,  0, 46,  4 }, {      1, -144,   -7,  0, 46,  4 }, {      0, -144,   -8,  0, 46,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8F8485 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8F8485 = {
     227, {
     {     16,   31,    8, 24, 46,  4 }, {     16,   30,    8, 24, 46,  4 }, {     16,   29,    8, 24, 46,  4 }, {     16,   28,    8, 24, 46,  4 }, {     16,   27,    8, 24, 46,  4 },
     {     16,   26,    8, 24, 46,  4 }, {     16,   25,    8, 24, 46,  4 }, {     16,   24,    8, 25, 46,  4 }, {     15,   23,    8, 25, 46,  4 }, {     15,   22,    8, 25, 46,  4 },
@@ -12656,7 +12656,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8F8485 = {
     {   -144,   30,   -7,  8, 46,  4 }, {   -144,   31,   -8,  8, 46,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E402E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E402E = {
     64, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     30,   16,    4,  0,  4,  0 },
     {     29,   16,    5, 31,  4,  0 }, {     29,   16,    6, 31,  4,  0 }, {     28,   15,    7, 31,  4,  0 }, {     28,   15,    8, 31,  4,  0 }, {     28,   15,    9, 31,  4,  0 },
@@ -12673,7 +12673,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E402E = {
     {     16,    1,   60, 24,  4,  0 }, {     16,    0,   61, 24,  4,  0 }, {     16,    0,   62, 24,  4,  0 }, {     16,    0,   63, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E4270 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E4270 = {
     64, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    2,    5,  8,  4,  0 }, {     16,    3,    6,  7,  4,  0 }, {     16,    3,    7,  7,  4,  0 }, {     15,    4,    8,  7,  4,  0 }, {     15,    4,    9,  7,  4,  0 },
@@ -12690,7 +12690,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E4270 = {
     {      1,   16,   60,  0,  4,  0 }, {      0,   16,   61,  0,  4,  0 }, {      0,   16,   62,  0,  4,  0 }, {      0,   16,   63,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E44B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E44B2 = {
     64, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      1,   16,    4, 16,  4,  0 },
     {      2,   16,    5, 16,  4,  0 }, {      2,   16,    6, 16,  4,  0 }, {      3,   16,    7, 15,  4,  0 }, {      3,   16,    8, 15,  4,  0 }, {      3,   16,    9, 15,  4,  0 },
@@ -12707,7 +12707,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E44B2 = {
     {     16,   30,   60,  8,  4,  0 }, {     16,   31,   61,  8,  4,  0 }, {     16,   31,   62,  8,  4,  0 }, {     16,   31,   63,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E46F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E46F4 = {
     64, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 23,  4,  0 },
     {     16,   29,    5, 23,  4,  0 }, {     17,   28,    6, 23,  4,  0 }, {     17,   28,    7, 23,  4,  0 }, {     17,   28,    8, 23,  4,  0 }, {     17,   27,    9, 22,  4,  0 },
@@ -12724,7 +12724,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E46F4 = {
     {     31,   16,   60, 16,  4,  0 }, {     31,   16,   61, 16,  4,  0 }, {     31,   16,   62, 16,  4,  0 }, {     31,   16,   63, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E4936 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E4936 = {
     64, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     30,   16,    4,  0,  4,  0 },
     {     29,   16,    5,  1,  4,  0 }, {     29,   16,    6,  1,  4,  0 }, {     29,   16,    7,  1,  4,  0 }, {     28,   17,    8,  1,  4,  0 }, {     28,   17,    9,  1,  4,  0 },
@@ -12741,7 +12741,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E4936 = {
     {     16,   31,   60,  8,  4,  0 }, {     16,   31,   61,  8,  4,  0 }, {     16,   31,   62,  8,  4,  0 }, {     16,   31,   63,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E4B78 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E4B78 = {
     64, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    2,    5,  8,  4,  0 }, {     16,    3,    6,  9,  4,  0 }, {     16,    3,    7,  9,  4,  0 }, {     17,    4,    8,  9,  4,  0 }, {     17,    4,    9,  9,  4,  0 },
@@ -12758,7 +12758,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E4B78 = {
     {     31,   16,   60, 16,  4,  0 }, {     31,   16,   61, 16,  4,  0 }, {     31,   16,   62, 16,  4,  0 }, {     31,   16,   63, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E4DBA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E4DBA = {
     64, {
     {      0,   16,    0, 16,  4,  0 }, {      1,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      2,   16,    5, 16,  4,  0 }, {      2,   16,    6, 16,  4,  0 }, {      3,   16,    7, 17,  4,  0 }, {      3,   16,    8, 17,  4,  0 }, {      3,   16,    9, 17,  4,  0 },
@@ -12775,7 +12775,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E4DBA = {
     {     16,    1,   60, 24,  4,  0 }, {     16,    0,   61, 24,  4,  0 }, {     16,    0,   62, 24,  4,  0 }, {     16,    0,   63, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E4FFC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E4FFC = {
     64, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 25,  4,  0 },
     {     16,   29,    5, 25,  4,  0 }, {     15,   28,    6, 25,  4,  0 }, {     15,   28,    7, 25,  4,  0 }, {     15,   28,    8, 25,  4,  0 }, {     15,   27,    9, 26,  4,  0 },
@@ -12792,7 +12792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E4FFC = {
     {      0,   16,   60,  0,  4,  0 }, {      0,   16,   61,  0,  4,  0 }, {      0,   16,   62,  0,  4,  0 }, {      0,   16,   63,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E523E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E523E = {
     64, {
     {     31,   16,   63,  0,  8,  0 }, {     31,   16,   62,  0,  8,  0 }, {     30,   16,   61,  0,  8,  0 }, {     30,   16,   60,  0,  8,  0 }, {     30,   16,   59,  0,  8,  0 },
     {     29,   16,   58, 31,  8,  0 }, {     29,   16,   57, 31,  8,  0 }, {     28,   15,   56, 31,  8,  0 }, {     28,   15,   55, 31,  8,  0 }, {     28,   15,   54, 31,  8,  0 },
@@ -12809,7 +12809,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E523E = {
     {     16,    1,    3, 24,  8,  0 }, {     16,    0,    2, 24,  8,  0 }, {     16,    0,    1, 24,  8,  0 }, {     16,    0,    0, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E5480 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E5480 = {
     64, {
     {     16,    0,   63,  8,  8,  0 }, {     16,    0,   62,  8,  8,  0 }, {     16,    1,   61,  8,  8,  0 }, {     16,    1,   60,  8,  8,  0 }, {     16,    2,   59,  8,  8,  0 },
     {     16,    2,   58,  8,  8,  0 }, {     16,    3,   57,  7,  8,  0 }, {     16,    3,   56,  7,  8,  0 }, {     15,    4,   55,  7,  8,  0 }, {     15,    4,   54,  7,  8,  0 },
@@ -12826,7 +12826,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E5480 = {
     {      1,   16,    3,  0,  8,  0 }, {      0,   16,    2,  0,  8,  0 }, {      0,   16,    1,  0,  8,  0 }, {      0,   16,    0,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E56C2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E56C2 = {
     64, {
     {      0,   16,   63, 16,  8,  0 }, {      0,   16,   62, 16,  8,  0 }, {      1,   16,   61, 16,  8,  0 }, {      1,   16,   60, 16,  8,  0 }, {      1,   16,   59, 16,  8,  0 },
     {      2,   16,   58, 16,  8,  0 }, {      2,   16,   57, 16,  8,  0 }, {      3,   16,   56, 15,  8,  0 }, {      3,   16,   55, 15,  8,  0 }, {      3,   16,   54, 15,  8,  0 },
@@ -12843,7 +12843,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E56C2 = {
     {     16,   30,    3,  8,  8,  0 }, {     16,   31,    2,  8,  8,  0 }, {     16,   31,    1,  8,  8,  0 }, {     16,   31,    0,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E5904 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E5904 = {
     64, {
     {     16,   31,   63, 24,  8,  0 }, {     16,   31,   62, 24,  8,  0 }, {     16,   30,   61, 24,  8,  0 }, {     16,   30,   60, 24,  8,  0 }, {     16,   29,   59, 23,  8,  0 },
     {     16,   29,   58, 23,  8,  0 }, {     17,   28,   57, 23,  8,  0 }, {     17,   28,   56, 23,  8,  0 }, {     17,   28,   55, 23,  8,  0 }, {     17,   27,   54, 22,  8,  0 },
@@ -12860,7 +12860,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E5904 = {
     {     31,   16,    3, 16,  8,  0 }, {     31,   16,    2, 16,  8,  0 }, {     31,   16,    1, 16,  8,  0 }, {     31,   16,    0, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E5B46 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E5B46 = {
     64, {
     {     31,   16,   63,  0,  8,  0 }, {     31,   16,   62,  0,  8,  0 }, {     30,   16,   61,  0,  8,  0 }, {     30,   16,   60,  0,  8,  0 }, {     30,   16,   59,  0,  8,  0 },
     {     29,   16,   58,  1,  8,  0 }, {     29,   16,   57,  1,  8,  0 }, {     29,   16,   56,  1,  8,  0 }, {     28,   17,   55,  1,  8,  0 }, {     28,   17,   54,  1,  8,  0 },
@@ -12877,7 +12877,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E5B46 = {
     {     16,   31,    3,  8,  8,  0 }, {     16,   31,    2,  8,  8,  0 }, {     16,   31,    1,  8,  8,  0 }, {     16,   31,    0,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E5D88 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E5D88 = {
     64, {
     {     16,    0,   63,  8,  8,  0 }, {     16,    0,   62,  8,  8,  0 }, {     16,    1,   61,  8,  8,  0 }, {     16,    1,   60,  8,  8,  0 }, {     16,    2,   59,  8,  8,  0 },
     {     16,    2,   58,  8,  8,  0 }, {     16,    3,   57,  9,  8,  0 }, {     16,    3,   56,  9,  8,  0 }, {     17,    4,   55,  9,  8,  0 }, {     17,    4,   54,  9,  8,  0 },
@@ -12894,7 +12894,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E5D88 = {
     {     31,   16,    3, 16,  8,  0 }, {     31,   16,    2, 16,  8,  0 }, {     31,   16,    1, 16,  8,  0 }, {     31,   16,    0, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E5FCA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E5FCA = {
     64, {
     {      0,   16,   63, 16,  8,  0 }, {      1,   16,   62, 16,  8,  0 }, {      1,   16,   61, 16,  8,  0 }, {      1,   16,   60, 16,  8,  0 }, {      2,   16,   59, 16,  8,  0 },
     {      2,   16,   58, 16,  8,  0 }, {      2,   16,   57, 16,  8,  0 }, {      3,   16,   56, 17,  8,  0 }, {      3,   16,   55, 17,  8,  0 }, {      3,   16,   54, 17,  8,  0 },
@@ -12911,7 +12911,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E5FCA = {
     {     16,    1,    3, 24,  8,  0 }, {     16,    0,    2, 24,  8,  0 }, {     16,    0,    1, 24,  8,  0 }, {     16,    0,    0, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E620C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E620C = {
     64, {
     {     16,   31,   63, 24,  8,  0 }, {     16,   31,   62, 24,  8,  0 }, {     16,   30,   61, 24,  8,  0 }, {     16,   30,   60, 24,  8,  0 }, {     16,   29,   59, 25,  8,  0 },
     {     16,   29,   58, 25,  8,  0 }, {     15,   28,   57, 25,  8,  0 }, {     15,   28,   56, 25,  8,  0 }, {     15,   28,   55, 25,  8,  0 }, {     15,   27,   54, 26,  8,  0 },
@@ -12928,7 +12928,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E620C = {
     {      0,   16,    3,  0,  8,  0 }, {      0,   16,    2,  0,  8,  0 }, {      0,   16,    1,  0,  8,  0 }, {      0,   16,    0,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B0EB2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B0EB2 = {
     114, {
     {     31,   16,    0,  0, 48,  2 }, {     30,   16,    0,  0, 48,  2 }, {     29,   16,    0,  0, 48,  2 }, {     28,   16,    0,  0, 48,  2 }, {     27,   16,    0,  0, 48,  2 },
     {     26,   16,    0,  0, 48,  2 }, {     25,   16,    0,  0, 48,  2 }, {     24,   16,    1, 31, 48,  2 }, {     23,   15,    1, 31, 48,  2 }, {     22,   15,    1, 31, 48,  2 },
@@ -12955,7 +12955,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B0EB2 = {
     {    -48,  -61,   15, 24, 48,  2 }, {    -48,  -62,   15, 24, 48,  2 }, {    -48,  -63,   15, 24, 48,  2 }, {    -48,  -64,   16, 24, 48,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B12B6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B12B6 = {
     115, {
     {     16,    0,    0,  8, 48,  2 }, {     16,    1,    0,  8, 48,  2 }, {     16,    2,    0,  8, 48,  2 }, {     16,    3,    0,  8, 48,  2 }, {     16,    4,    0,  8, 48,  2 },
     {     16,    5,    0,  8, 48,  2 }, {     16,    6,    0,  8, 48,  2 }, {     16,    7,    0,  8, 48,  2 }, {     16,    8,    1,  7, 48,  2 }, {     15,    9,    1,  7, 48,  2 },
@@ -12982,7 +12982,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B12B6 = {
     {    -60,   80,   15,  0, 48,  2 }, {    -61,   80,   15,  0, 48,  2 }, {    -62,   80,   15,  0, 48,  2 }, {    -63,   80,   15,  0, 48,  2 }, {    -64,   80,   15,  0, 48,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B16C3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B16C3 = {
     114, {
     {      0,   16,    0, 16, 48,  2 }, {      1,   16,    0, 16, 48,  2 }, {      2,   16,    0, 16, 48,  2 }, {      3,   16,    0, 16, 48,  2 }, {      4,   16,    0, 16, 48,  2 },
     {      5,   16,    0, 16, 48,  2 }, {      6,   16,    0, 16, 48,  2 }, {      7,   16,    0, 16, 48,  2 }, {      8,   16,    1, 15, 48,  2 }, {      9,   17,    1, 15, 48,  2 },
@@ -13009,7 +13009,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B16C3 = {
     {     80,   92,   15,  8, 48,  2 }, {     80,   93,   15,  8, 48,  2 }, {     80,   94,   15,  8, 48,  2 }, {     80,   95,   15,  8, 48,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B1AC7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B1AC7 = {
     113, {
     {     16,   31,    0, 24, 48,  2 }, {     16,   30,    0, 24, 48,  2 }, {     16,   29,    0, 24, 48,  2 }, {     16,   28,    0, 24, 48,  2 }, {     16,   27,    0, 24, 48,  2 },
     {     16,   26,    0, 24, 48,  2 }, {     16,   25,    0, 24, 48,  2 }, {     16,   24,    1, 23, 48,  2 }, {     17,   23,    1, 23, 48,  2 }, {     17,   22,    1, 23, 48,  2 },
@@ -13036,7 +13036,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B1AC7 = {
     {     93,  -48,   15, 16, 48,  2 }, {     94,  -48,   15, 16, 48,  2 }, {     95,  -48,   16, 16, 48,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B1EC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B1EC2 = {
     113, {
     {     31,   16,    0,  0, 48,  4 }, {     30,   16,    0,  0, 48,  4 }, {     29,   16,    0,  0, 48,  4 }, {     28,   16,    0,  0, 48,  4 }, {     27,   16,    0,  0, 48,  4 },
     {     26,   16,    0,  0, 48,  4 }, {     25,   16,    0,  0, 48,  4 }, {     24,   16,    1,  1, 48,  4 }, {     23,   17,    1,  1, 48,  4 }, {     22,   17,    1,  1, 48,  4 },
@@ -13063,7 +13063,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B1EC2 = {
     {    -48,   93,   15,  8, 48,  4 }, {    -48,   94,   15,  8, 48,  4 }, {    -48,   95,   16,  8, 48,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B22BD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B22BD = {
     114, {
     {     16,    0,    0,  8, 48,  4 }, {     16,    1,    0,  8, 48,  4 }, {     16,    2,    0,  8, 48,  4 }, {     16,    3,    0,  8, 48,  4 }, {     16,    4,    0,  8, 48,  4 },
     {     16,    5,    0,  8, 48,  4 }, {     16,    6,    0,  8, 48,  4 }, {     16,    7,    0,  8, 48,  4 }, {     16,    8,    1,  9, 48,  4 }, {     17,    9,    1,  9, 48,  4 },
@@ -13090,7 +13090,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B22BD = {
     {     92,   80,   15, 16, 48,  4 }, {     93,   80,   15, 16, 48,  4 }, {     94,   80,   15, 16, 48,  4 }, {     95,   80,   15, 16, 48,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B26C1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B26C1 = {
     115, {
     {      0,   16,    0, 16, 48,  4 }, {      1,   16,    0, 16, 48,  4 }, {      2,   16,    0, 16, 48,  4 }, {      3,   16,    0, 16, 48,  4 }, {      4,   16,    0, 16, 48,  4 },
     {      5,   16,    0, 16, 48,  4 }, {      6,   16,    0, 16, 48,  4 }, {      7,   16,    0, 16, 48,  4 }, {      8,   16,    1, 17, 48,  4 }, {      9,   15,    1, 17, 48,  4 },
@@ -13117,7 +13117,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B26C1 = {
     {     80,  -60,   15, 24, 48,  4 }, {     80,  -61,   15, 24, 48,  4 }, {     80,  -62,   15, 24, 48,  4 }, {     80,  -63,   15, 24, 48,  4 }, {     80,  -64,   15, 24, 48,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B2ACE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B2ACE = {
     114, {
     {     16,   31,    0, 24, 48,  4 }, {     16,   30,    0, 24, 48,  4 }, {     16,   29,    0, 24, 48,  4 }, {     16,   28,    0, 24, 48,  4 }, {     16,   27,    0, 24, 48,  4 },
     {     16,   26,    0, 24, 48,  4 }, {     16,   25,    0, 24, 48,  4 }, {     16,   24,    1, 25, 48,  4 }, {     15,   23,    1, 25, 48,  4 }, {     15,   22,    1, 25, 48,  4 },
@@ -13144,7 +13144,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B2ACE = {
     {    -61,  -48,   15,  0, 48,  4 }, {    -62,  -48,   15,  0, 48,  4 }, {    -63,  -48,   15,  0, 48,  4 }, {    -64,  -48,   16,  0, 48,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B2ED2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B2ED2 = {
     114, {
     {     31,   16,   16,  0, 49,  2 }, {     30,   16,   16,  0, 49,  2 }, {     29,   16,   16,  0, 49,  2 }, {     28,   16,   16,  0, 49,  2 }, {     27,   16,   16,  0, 49,  2 },
     {     26,   16,   16,  0, 49,  2 }, {     25,   16,   16,  0, 49,  2 }, {     24,   16,   15, 31, 49,  2 }, {     23,   15,   15, 31, 49,  2 }, {     22,   15,   15, 31, 49,  2 },
@@ -13171,7 +13171,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B2ED2 = {
     {    -48,  -61,    1, 24, 49,  2 }, {    -48,  -62,    1, 24, 49,  2 }, {    -48,  -63,    1, 24, 49,  2 }, {    -48,  -64,    0, 24, 49,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B32D6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B32D6 = {
     115, {
     {     16,    0,   16,  8, 49,  2 }, {     16,    1,   16,  8, 49,  2 }, {     16,    2,   16,  8, 49,  2 }, {     16,    3,   16,  8, 49,  2 }, {     16,    4,   16,  8, 49,  2 },
     {     16,    5,   16,  8, 49,  2 }, {     16,    6,   16,  8, 49,  2 }, {     16,    7,   16,  8, 49,  2 }, {     16,    8,   15,  7, 49,  2 }, {     15,    9,   15,  7, 49,  2 },
@@ -13198,7 +13198,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B32D6 = {
     {    -60,   80,    1,  0, 49,  2 }, {    -61,   80,    1,  0, 49,  2 }, {    -62,   80,    1,  0, 49,  2 }, {    -63,   80,    1,  0, 49,  2 }, {    -64,   80,    1,  0, 49,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B36E3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B36E3 = {
     114, {
     {      0,   16,   16, 16, 49,  2 }, {      1,   16,   16, 16, 49,  2 }, {      2,   16,   16, 16, 49,  2 }, {      3,   16,   16, 16, 49,  2 }, {      4,   16,   16, 16, 49,  2 },
     {      5,   16,   16, 16, 49,  2 }, {      6,   16,   16, 16, 49,  2 }, {      7,   16,   16, 16, 49,  2 }, {      8,   16,   15, 15, 49,  2 }, {      9,   17,   15, 15, 49,  2 },
@@ -13225,7 +13225,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B36E3 = {
     {     80,   92,    1,  8, 49,  2 }, {     80,   93,    1,  8, 49,  2 }, {     80,   94,    1,  8, 49,  2 }, {     80,   95,    1,  8, 49,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B3AE7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B3AE7 = {
     113, {
     {     16,   31,   16, 24, 49,  2 }, {     16,   30,   16, 24, 49,  2 }, {     16,   29,   16, 24, 49,  2 }, {     16,   28,   16, 24, 49,  2 }, {     16,   27,   16, 24, 49,  2 },
     {     16,   26,   16, 24, 49,  2 }, {     16,   25,   16, 24, 49,  2 }, {     16,   24,   15, 23, 49,  2 }, {     17,   23,   15, 23, 49,  2 }, {     17,   22,   15, 23, 49,  2 },
@@ -13252,7 +13252,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B3AE7 = {
     {     93,  -48,    1, 16, 49,  2 }, {     94,  -48,    1, 16, 49,  2 }, {     95,  -48,    0, 16, 49,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B3EE2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B3EE2 = {
     113, {
     {     31,   16,   16,  0, 49,  4 }, {     30,   16,   16,  0, 49,  4 }, {     29,   16,   16,  0, 49,  4 }, {     28,   16,   16,  0, 49,  4 }, {     27,   16,   16,  0, 49,  4 },
     {     26,   16,   16,  0, 49,  4 }, {     25,   16,   16,  0, 49,  4 }, {     24,   16,   15,  1, 49,  4 }, {     23,   17,   15,  1, 49,  4 }, {     22,   17,   15,  1, 49,  4 },
@@ -13279,7 +13279,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B3EE2 = {
     {    -48,   93,    1,  8, 49,  4 }, {    -48,   94,    1,  8, 49,  4 }, {    -48,   95,    0,  8, 49,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B42DD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B42DD = {
     114, {
     {     16,    0,   16,  8, 49,  4 }, {     16,    1,   16,  8, 49,  4 }, {     16,    2,   16,  8, 49,  4 }, {     16,    3,   16,  8, 49,  4 }, {     16,    4,   16,  8, 49,  4 },
     {     16,    5,   16,  8, 49,  4 }, {     16,    6,   16,  8, 49,  4 }, {     16,    7,   16,  8, 49,  4 }, {     16,    8,   15,  9, 49,  4 }, {     17,    9,   15,  9, 49,  4 },
@@ -13306,7 +13306,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B42DD = {
     {     92,   80,    1, 16, 49,  4 }, {     93,   80,    1, 16, 49,  4 }, {     94,   80,    1, 16, 49,  4 }, {     95,   80,    1, 16, 49,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B46E1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B46E1 = {
     115, {
     {      0,   16,   16, 16, 49,  4 }, {      1,   16,   16, 16, 49,  4 }, {      2,   16,   16, 16, 49,  4 }, {      3,   16,   16, 16, 49,  4 }, {      4,   16,   16, 16, 49,  4 },
     {      5,   16,   16, 16, 49,  4 }, {      6,   16,   16, 16, 49,  4 }, {      7,   16,   16, 16, 49,  4 }, {      8,   16,   15, 17, 49,  4 }, {      9,   15,   15, 17, 49,  4 },
@@ -13333,7 +13333,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B46E1 = {
     {     80,  -60,    1, 24, 49,  4 }, {     80,  -61,    1, 24, 49,  4 }, {     80,  -62,    1, 24, 49,  4 }, {     80,  -63,    1, 24, 49,  4 }, {     80,  -64,    1, 24, 49,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B4AEE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B4AEE = {
     114, {
     {     16,   31,   16, 24, 49,  4 }, {     16,   30,   16, 24, 49,  4 }, {     16,   29,   16, 24, 49,  4 }, {     16,   28,   16, 24, 49,  4 }, {     16,   27,   16, 24, 49,  4 },
     {     16,   26,   16, 24, 49,  4 }, {     16,   25,   16, 24, 49,  4 }, {     16,   24,   15, 25, 49,  4 }, {     15,   23,   15, 25, 49,  4 }, {     15,   22,   15, 25, 49,  4 },
@@ -13360,7 +13360,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B4AEE = {
     {    -61,  -48,    1,  0, 49,  4 }, {    -62,  -48,    1,  0, 49,  4 }, {    -63,  -48,    1,  0, 49,  4 }, {    -64,  -48,    0,  0, 49,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B4EF2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B4EF2 = {
     114, {
     {     31,   16,    0,  0, 48,  0 }, {     30,   16,    0,  0, 48,  0 }, {     29,   16,    0,  0, 48,  0 }, {     28,   16,    0,  0, 48,  0 }, {     27,   16,    0,  0, 48,  0 },
     {     26,   16,    0,  0, 48,  0 }, {     25,   16,    0,  0, 48,  0 }, {     24,   16,    1, 31, 48,  0 }, {     23,   15,    1, 31, 48,  0 }, {     22,   15,    1, 31, 48,  0 },
@@ -13387,7 +13387,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B4EF2 = {
     {    -48,  -61,   15, 24, 48,  0 }, {    -48,  -62,   15, 24, 48,  0 }, {    -48,  -63,   15, 24, 48,  0 }, {    -48,  -64,   16, 24, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B52F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B52F6 = {
     115, {
     {     16,    0,    0,  8, 48,  0 }, {     16,    1,    0,  8, 48,  0 }, {     16,    2,    0,  8, 48,  0 }, {     16,    3,    0,  8, 48,  0 }, {     16,    4,    0,  8, 48,  0 },
     {     16,    5,    0,  8, 48,  0 }, {     16,    6,    0,  8, 48,  0 }, {     16,    7,    0,  8, 48,  0 }, {     16,    8,    1,  7, 48,  0 }, {     15,    9,    1,  7, 48,  0 },
@@ -13414,7 +13414,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B52F6 = {
     {    -60,   80,   15,  0, 48,  0 }, {    -61,   80,   15,  0, 48,  0 }, {    -62,   80,   15,  0, 48,  0 }, {    -63,   80,   15,  0, 48,  0 }, {    -64,   80,   15,  0, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B5703 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B5703 = {
     114, {
     {      0,   16,    0, 16, 48,  0 }, {      1,   16,    0, 16, 48,  0 }, {      2,   16,    0, 16, 48,  0 }, {      3,   16,    0, 16, 48,  0 }, {      4,   16,    0, 16, 48,  0 },
     {      5,   16,    0, 16, 48,  0 }, {      6,   16,    0, 16, 48,  0 }, {      7,   16,    0, 16, 48,  0 }, {      8,   16,    1, 15, 48,  0 }, {      9,   17,    1, 15, 48,  0 },
@@ -13441,7 +13441,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B5703 = {
     {     80,   92,   15,  8, 48,  0 }, {     80,   93,   15,  8, 48,  0 }, {     80,   94,   15,  8, 48,  0 }, {     80,   95,   15,  8, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B5B07 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B5B07 = {
     113, {
     {     16,   31,    0, 24, 48,  0 }, {     16,   30,    0, 24, 48,  0 }, {     16,   29,    0, 24, 48,  0 }, {     16,   28,    0, 24, 48,  0 }, {     16,   27,    0, 24, 48,  0 },
     {     16,   26,    0, 24, 48,  0 }, {     16,   25,    0, 24, 48,  0 }, {     16,   24,    1, 23, 48,  0 }, {     17,   23,    1, 23, 48,  0 }, {     17,   22,    1, 23, 48,  0 },
@@ -13468,7 +13468,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B5B07 = {
     {     93,  -48,   15, 16, 48,  0 }, {     94,  -48,   15, 16, 48,  0 }, {     95,  -48,   16, 16, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B5F02 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B5F02 = {
     113, {
     {     31,   16,    0,  0, 48,  0 }, {     30,   16,    0,  0, 48,  0 }, {     29,   16,    0,  0, 48,  0 }, {     28,   16,    0,  0, 48,  0 }, {     27,   16,    0,  0, 48,  0 },
     {     26,   16,    0,  0, 48,  0 }, {     25,   16,    0,  0, 48,  0 }, {     24,   16,    1,  1, 48,  0 }, {     23,   17,    1,  1, 48,  0 }, {     22,   17,    1,  1, 48,  0 },
@@ -13495,7 +13495,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B5F02 = {
     {    -48,   93,   15,  8, 48,  0 }, {    -48,   94,   15,  8, 48,  0 }, {    -48,   95,   16,  8, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B62FD = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B62FD = {
     114, {
     {     16,    0,    0,  8, 48,  0 }, {     16,    1,    0,  8, 48,  0 }, {     16,    2,    0,  8, 48,  0 }, {     16,    3,    0,  8, 48,  0 }, {     16,    4,    0,  8, 48,  0 },
     {     16,    5,    0,  8, 48,  0 }, {     16,    6,    0,  8, 48,  0 }, {     16,    7,    0,  8, 48,  0 }, {     16,    8,    1,  9, 48,  0 }, {     17,    9,    1,  9, 48,  0 },
@@ -13522,7 +13522,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B62FD = {
     {     92,   80,   15, 16, 48,  0 }, {     93,   80,   15, 16, 48,  0 }, {     94,   80,   15, 16, 48,  0 }, {     95,   80,   15, 16, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B6701 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B6701 = {
     115, {
     {      0,   16,    0, 16, 48,  0 }, {      1,   16,    0, 16, 48,  0 }, {      2,   16,    0, 16, 48,  0 }, {      3,   16,    0, 16, 48,  0 }, {      4,   16,    0, 16, 48,  0 },
     {      5,   16,    0, 16, 48,  0 }, {      6,   16,    0, 16, 48,  0 }, {      7,   16,    0, 16, 48,  0 }, {      8,   16,    1, 17, 48,  0 }, {      9,   15,    1, 17, 48,  0 },
@@ -13549,7 +13549,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B6701 = {
     {     80,  -60,   15, 24, 48,  0 }, {     80,  -61,   15, 24, 48,  0 }, {     80,  -62,   15, 24, 48,  0 }, {     80,  -63,   15, 24, 48,  0 }, {     80,  -64,   15, 24, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B6B0E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B6B0E = {
     114, {
     {     16,   31,    0, 24, 48,  0 }, {     16,   30,    0, 24, 48,  0 }, {     16,   29,    0, 24, 48,  0 }, {     16,   28,    0, 24, 48,  0 }, {     16,   27,    0, 24, 48,  0 },
     {     16,   26,    0, 24, 48,  0 }, {     16,   25,    0, 24, 48,  0 }, {     16,   24,    1, 25, 48,  0 }, {     15,   23,    1, 25, 48,  0 }, {     15,   22,    1, 25, 48,  0 },
@@ -13576,7 +13576,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B6B0E = {
     {    -61,  -48,   15,  0, 48,  0 }, {    -62,  -48,   15,  0, 48,  0 }, {    -63,  -48,   15,  0, 48,  0 }, {    -64,  -48,   16,  0, 48,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B6F12 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B6F12 = {
     114, {
     {     31,   16,   16,  0, 49,  0 }, {     30,   16,   16,  0, 49,  0 }, {     29,   16,   16,  0, 49,  0 }, {     28,   16,   16,  0, 49,  0 }, {     27,   16,   16,  0, 49,  0 },
     {     26,   16,   16,  0, 49,  0 }, {     25,   16,   16,  0, 49,  0 }, {     24,   16,   15, 31, 49,  0 }, {     23,   15,   15, 31, 49,  0 }, {     22,   15,   15, 31, 49,  0 },
@@ -13603,7 +13603,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B6F12 = {
     {    -48,  -61,    1, 24, 49,  0 }, {    -48,  -62,    1, 24, 49,  0 }, {    -48,  -63,    1, 24, 49,  0 }, {    -48,  -64,    0, 24, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B7316 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B7316 = {
     115, {
     {     16,    0,   16,  8, 49,  0 }, {     16,    1,   16,  8, 49,  0 }, {     16,    2,   16,  8, 49,  0 }, {     16,    3,   16,  8, 49,  0 }, {     16,    4,   16,  8, 49,  0 },
     {     16,    5,   16,  8, 49,  0 }, {     16,    6,   16,  8, 49,  0 }, {     16,    7,   16,  8, 49,  0 }, {     16,    8,   15,  7, 49,  0 }, {     15,    9,   15,  7, 49,  0 },
@@ -13630,7 +13630,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B7316 = {
     {    -60,   80,    1,  0, 49,  0 }, {    -61,   80,    1,  0, 49,  0 }, {    -62,   80,    1,  0, 49,  0 }, {    -63,   80,    1,  0, 49,  0 }, {    -64,   80,    1,  0, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B7723 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B7723 = {
     114, {
     {      0,   16,   16, 16, 49,  0 }, {      1,   16,   16, 16, 49,  0 }, {      2,   16,   16, 16, 49,  0 }, {      3,   16,   16, 16, 49,  0 }, {      4,   16,   16, 16, 49,  0 },
     {      5,   16,   16, 16, 49,  0 }, {      6,   16,   16, 16, 49,  0 }, {      7,   16,   16, 16, 49,  0 }, {      8,   16,   15, 15, 49,  0 }, {      9,   17,   15, 15, 49,  0 },
@@ -13657,7 +13657,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B7723 = {
     {     80,   92,    1,  8, 49,  0 }, {     80,   93,    1,  8, 49,  0 }, {     80,   94,    1,  8, 49,  0 }, {     80,   95,    1,  8, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B7B27 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B7B27 = {
     113, {
     {     16,   31,   16, 24, 49,  0 }, {     16,   30,   16, 24, 49,  0 }, {     16,   29,   16, 24, 49,  0 }, {     16,   28,   16, 24, 49,  0 }, {     16,   27,   16, 24, 49,  0 },
     {     16,   26,   16, 24, 49,  0 }, {     16,   25,   16, 24, 49,  0 }, {     16,   24,   15, 23, 49,  0 }, {     17,   23,   15, 23, 49,  0 }, {     17,   22,   15, 23, 49,  0 },
@@ -13684,7 +13684,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B7B27 = {
     {     93,  -48,    1, 16, 49,  0 }, {     94,  -48,    1, 16, 49,  0 }, {     95,  -48,    0, 16, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B7F22 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B7F22 = {
     113, {
     {     31,   16,   16,  0, 49,  0 }, {     30,   16,   16,  0, 49,  0 }, {     29,   16,   16,  0, 49,  0 }, {     28,   16,   16,  0, 49,  0 }, {     27,   16,   16,  0, 49,  0 },
     {     26,   16,   16,  0, 49,  0 }, {     25,   16,   16,  0, 49,  0 }, {     24,   16,   15,  1, 49,  0 }, {     23,   17,   15,  1, 49,  0 }, {     22,   17,   15,  1, 49,  0 },
@@ -13711,7 +13711,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B7F22 = {
     {    -48,   93,    1,  8, 49,  0 }, {    -48,   94,    1,  8, 49,  0 }, {    -48,   95,    0,  8, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B831D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B831D = {
     114, {
     {     16,    0,   16,  8, 49,  0 }, {     16,    1,   16,  8, 49,  0 }, {     16,    2,   16,  8, 49,  0 }, {     16,    3,   16,  8, 49,  0 }, {     16,    4,   16,  8, 49,  0 },
     {     16,    5,   16,  8, 49,  0 }, {     16,    6,   16,  8, 49,  0 }, {     16,    7,   16,  8, 49,  0 }, {     16,    8,   15,  9, 49,  0 }, {     17,    9,   15,  9, 49,  0 },
@@ -13738,7 +13738,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B831D = {
     {     92,   80,    1, 16, 49,  0 }, {     93,   80,    1, 16, 49,  0 }, {     94,   80,    1, 16, 49,  0 }, {     95,   80,    1, 16, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B8721 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B8721 = {
     115, {
     {      0,   16,   16, 16, 49,  0 }, {      1,   16,   16, 16, 49,  0 }, {      2,   16,   16, 16, 49,  0 }, {      3,   16,   16, 16, 49,  0 }, {      4,   16,   16, 16, 49,  0 },
     {      5,   16,   16, 16, 49,  0 }, {      6,   16,   16, 16, 49,  0 }, {      7,   16,   16, 16, 49,  0 }, {      8,   16,   15, 17, 49,  0 }, {      9,   15,   15, 17, 49,  0 },
@@ -13765,7 +13765,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B8721 = {
     {     80,  -60,    1, 24, 49,  0 }, {     80,  -61,    1, 24, 49,  0 }, {     80,  -62,    1, 24, 49,  0 }, {     80,  -63,    1, 24, 49,  0 }, {     80,  -64,    1, 24, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8B8B2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8B8B2E = {
     114, {
     {     16,   31,   16, 24, 49,  0 }, {     16,   30,   16, 24, 49,  0 }, {     16,   29,   16, 24, 49,  0 }, {     16,   28,   16, 24, 49,  0 }, {     16,   27,   16, 24, 49,  0 },
     {     16,   26,   16, 24, 49,  0 }, {     16,   25,   16, 24, 49,  0 }, {     16,   24,   15, 25, 49,  0 }, {     15,   23,   15, 25, 49,  0 }, {     15,   22,   15, 25, 49,  0 },
@@ -13792,7 +13792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8B8B2E = {
     {    -61,  -48,    1,  0, 49,  0 }, {    -62,  -48,    1,  0, 49,  0 }, {    -63,  -48,    1,  0, 49,  0 }, {    -64,  -48,    0,  0, 49,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968C6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_968C6E = {
     32, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    1,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    2,  0,  2,  2 }, {     27,   16,    2,  0,  2,  2 },
     {     26,   16,    3,  0,  2,  2 }, {     25,   16,    3,  0,  2,  2 }, {     24,   16,    4,  0,  2,  2 }, {     23,   16,    4,  0,  2,  2 }, {     22,   16,    5,  0,  2,  2 },
@@ -13803,7 +13803,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968C6E = {
     {      1,   16,   15,  0,  2,  2 }, {      0,   16,   16,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968D90 = {
+static const rct_vehicle_info_list TrackVehicleInfo_968D90 = {
     32, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    1,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    2,  8,  2,  2 },
     {     16,    5,    2,  8,  2,  2 }, {     16,    6,    3,  8,  2,  2 }, {     16,    7,    3,  8,  2,  2 }, {     16,    8,    4,  8,  2,  2 }, {     16,    9,    4,  8,  2,  2 },
@@ -13814,7 +13814,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968D90 = {
     {     16,   30,   15,  8,  2,  2 }, {     16,   31,   15,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968EB2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_968EB2 = {
     32, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    1, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    2, 16,  2,  2 },
     {      5,   16,    2, 16,  2,  2 }, {      6,   16,    3, 16,  2,  2 }, {      7,   16,    3, 16,  2,  2 }, {      8,   16,    4, 16,  2,  2 }, {      9,   16,    4, 16,  2,  2 },
@@ -13825,7 +13825,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968EB2 = {
     {     30,   16,   15, 16,  2,  2 }, {     31,   16,   15, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968FD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_968FD4 = {
     32, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    1, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    2, 24,  2,  2 }, {     16,   27,    2, 24,  2,  2 },
     {     16,   26,    3, 24,  2,  2 }, {     16,   25,    3, 24,  2,  2 }, {     16,   24,    4, 24,  2,  2 }, {     16,   23,    4, 24,  2,  2 }, {     16,   22,    5, 24,  2,  2 },
@@ -13836,7 +13836,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968FD4 = {
     {     16,    1,   15, 24,  2,  2 }, {     16,    0,   16, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96957E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96957E = {
     32, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    1,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    2,  0,  2,  4 }, {     27,   16,    2,  0,  2,  4 },
     {     26,   16,    3,  0,  2,  4 }, {     25,   16,    3,  0,  2,  4 }, {     24,   16,    4,  0,  2,  4 }, {     23,   16,    4,  0,  2,  4 }, {     22,   16,    5,  0,  2,  4 },
@@ -13847,7 +13847,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96957E = {
     {      1,   16,   15,  0,  2,  4 }, {      0,   16,   16,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9696A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9696A0 = {
     32, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    1,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    2,  8,  2,  4 },
     {     16,    5,    2,  8,  2,  4 }, {     16,    6,    3,  8,  2,  4 }, {     16,    7,    3,  8,  2,  4 }, {     16,    8,    4,  8,  2,  4 }, {     16,    9,    4,  8,  2,  4 },
@@ -13858,7 +13858,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9696A0 = {
     {     16,   30,   15,  8,  2,  4 }, {     16,   31,   15,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9697C2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9697C2 = {
     32, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    1, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    2, 16,  2,  4 },
     {      5,   16,    2, 16,  2,  4 }, {      6,   16,    3, 16,  2,  4 }, {      7,   16,    3, 16,  2,  4 }, {      8,   16,    4, 16,  2,  4 }, {      9,   16,    4, 16,  2,  4 },
@@ -13869,7 +13869,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9697C2 = {
     {     30,   16,   15, 16,  2,  4 }, {     31,   16,   15, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9698E4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9698E4 = {
     32, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    1, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    2, 24,  2,  4 }, {     16,   27,    2, 24,  2,  4 },
     {     16,   26,    3, 24,  2,  4 }, {     16,   25,    3, 24,  2,  4 }, {     16,   24,    4, 24,  2,  4 }, {     16,   23,    4, 24,  2,  4 }, {     16,   22,    5, 24,  2,  4 },
@@ -13880,7 +13880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9698E4 = {
     {     16,    1,   15, 24,  2,  4 }, {     16,    0,   16, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9048E8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9048E8 = {
     32, {
     {     31,   16,    0,  0,  1,  0 }, {     30,   16,    0,  0,  1,  0 }, {     29,   16,    0,  0,  1,  0 }, {     28,   16,    0,  0,  1,  0 }, {     27,   16,    0,  0,  1,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  5,  0 }, {     22,   16,    0,  0,  5,  0 },
@@ -13891,7 +13891,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9048E8 = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904A0A = {
+static const rct_vehicle_info_list TrackVehicleInfo_904A0A = {
     32, {
     {     16,    0,    0,  8,  1,  0 }, {     16,    1,    0,  8,  1,  0 }, {     16,    2,    0,  8,  1,  0 }, {     16,    3,    0,  8,  1,  0 }, {     16,    4,    0,  8,  1,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  5,  0 }, {     16,    9,    0,  8,  5,  0 },
@@ -13902,7 +13902,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904A0A = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904B2C = {
+static const rct_vehicle_info_list TrackVehicleInfo_904B2C = {
     32, {
     {      0,   16,    0, 16,  1,  0 }, {      1,   16,    0, 16,  1,  0 }, {      2,   16,    0, 16,  1,  0 }, {      3,   16,    0, 16,  1,  0 }, {      4,   16,    0, 16,  1,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  5,  0 }, {      9,   16,    0, 16,  5,  0 },
@@ -13913,7 +13913,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904B2C = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904C4E = {
+static const rct_vehicle_info_list TrackVehicleInfo_904C4E = {
     32, {
     {     16,   31,    0, 24,  1,  0 }, {     16,   30,    0, 24,  1,  0 }, {     16,   29,    0, 24,  1,  0 }, {     16,   28,    0, 24,  1,  0 }, {     16,   27,    0, 24,  1,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  5,  0 }, {     16,   22,    0, 24,  5,  0 },
@@ -13924,7 +13924,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904C4E = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9690F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9690F6 = {
     32, {
     {     31,   16,   15,  0,  6,  2 }, {     30,   16,   15,  0,  6,  2 }, {     29,   16,   14,  0,  6,  2 }, {     28,   16,   14,  0,  6,  2 }, {     27,   16,   13,  0,  6,  2 },
     {     26,   16,   13,  0,  6,  2 }, {     25,   16,   12,  0,  6,  2 }, {     24,   16,   12,  0,  6,  2 }, {     23,   16,   11,  0,  6,  2 }, {     22,   16,   11,  0,  6,  2 },
@@ -13935,7 +13935,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9690F6 = {
     {      1,   16,    0,  0,  6,  2 }, {      0,   16,    0,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969218 = {
+static const rct_vehicle_info_list TrackVehicleInfo_969218 = {
     32, {
     {     16,    0,   15,  8,  6,  2 }, {     16,    1,   14,  8,  6,  2 }, {     16,    2,   14,  8,  6,  2 }, {     16,    3,   13,  8,  6,  2 }, {     16,    4,   13,  8,  6,  2 },
     {     16,    5,   12,  8,  6,  2 }, {     16,    6,   12,  8,  6,  2 }, {     16,    7,   11,  8,  6,  2 }, {     16,    8,   11,  8,  6,  2 }, {     16,    9,   10,  8,  6,  2 },
@@ -13946,7 +13946,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969218 = {
     {     16,   30,    0,  8,  6,  2 }, {     16,   31,   -1,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96933A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96933A = {
     32, {
     {      0,   16,   15, 16,  6,  2 }, {      1,   16,   14, 16,  6,  2 }, {      2,   16,   14, 16,  6,  2 }, {      3,   16,   13, 16,  6,  2 }, {      4,   16,   13, 16,  6,  2 },
     {      5,   16,   12, 16,  6,  2 }, {      6,   16,   12, 16,  6,  2 }, {      7,   16,   11, 16,  6,  2 }, {      8,   16,   11, 16,  6,  2 }, {      9,   16,   10, 16,  6,  2 },
@@ -13957,7 +13957,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96933A = {
     {     30,   16,    0, 16,  6,  2 }, {     31,   16,   -1, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96945C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96945C = {
     32, {
     {     16,   31,   15, 24,  6,  2 }, {     16,   30,   15, 24,  6,  2 }, {     16,   29,   14, 24,  6,  2 }, {     16,   28,   14, 24,  6,  2 }, {     16,   27,   13, 24,  6,  2 },
     {     16,   26,   13, 24,  6,  2 }, {     16,   25,   12, 24,  6,  2 }, {     16,   24,   12, 24,  6,  2 }, {     16,   23,   11, 24,  6,  2 }, {     16,   22,   11, 24,  6,  2 },
@@ -13968,7 +13968,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96945C = {
     {     16,    1,    0, 24,  6,  2 }, {     16,    0,    0, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969A06 = {
+static const rct_vehicle_info_list TrackVehicleInfo_969A06 = {
     32, {
     {     31,   16,   15,  0,  6,  4 }, {     30,   16,   15,  0,  6,  4 }, {     29,   16,   14,  0,  6,  4 }, {     28,   16,   14,  0,  6,  4 }, {     27,   16,   13,  0,  6,  4 },
     {     26,   16,   13,  0,  6,  4 }, {     25,   16,   12,  0,  6,  4 }, {     24,   16,   12,  0,  6,  4 }, {     23,   16,   11,  0,  6,  4 }, {     22,   16,   11,  0,  6,  4 },
@@ -13979,7 +13979,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969A06 = {
     {      1,   16,    0,  0,  6,  4 }, {      0,   16,    0,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969B28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_969B28 = {
     32, {
     {     16,    0,   15,  8,  6,  4 }, {     16,    1,   14,  8,  6,  4 }, {     16,    2,   14,  8,  6,  4 }, {     16,    3,   13,  8,  6,  4 }, {     16,    4,   13,  8,  6,  4 },
     {     16,    5,   12,  8,  6,  4 }, {     16,    6,   12,  8,  6,  4 }, {     16,    7,   11,  8,  6,  4 }, {     16,    8,   11,  8,  6,  4 }, {     16,    9,   10,  8,  6,  4 },
@@ -13990,7 +13990,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969B28 = {
     {     16,   30,    0,  8,  6,  4 }, {     16,   31,   -1,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969C4A = {
+static const rct_vehicle_info_list TrackVehicleInfo_969C4A = {
     32, {
     {      0,   16,   15, 16,  6,  4 }, {      1,   16,   14, 16,  6,  4 }, {      2,   16,   14, 16,  6,  4 }, {      3,   16,   13, 16,  6,  4 }, {      4,   16,   13, 16,  6,  4 },
     {      5,   16,   12, 16,  6,  4 }, {      6,   16,   12, 16,  6,  4 }, {      7,   16,   11, 16,  6,  4 }, {      8,   16,   11, 16,  6,  4 }, {      9,   16,   10, 16,  6,  4 },
@@ -14001,7 +14001,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969C4A = {
     {     30,   16,    0, 16,  6,  4 }, {     31,   16,   -1, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969D6C = {
+static const rct_vehicle_info_list TrackVehicleInfo_969D6C = {
     32, {
     {     16,   31,   15, 24,  6,  4 }, {     16,   30,   15, 24,  6,  4 }, {     16,   29,   14, 24,  6,  4 }, {     16,   28,   14, 24,  6,  4 }, {     16,   27,   13, 24,  6,  4 },
     {     16,   26,   13, 24,  6,  4 }, {     16,   25,   12, 24,  6,  4 }, {     16,   24,   12, 24,  6,  4 }, {     16,   23,   11, 24,  6,  4 }, {     16,   22,   11, 24,  6,  4 },
@@ -14012,7 +14012,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969D6C = {
     {     16,    1,    0, 24,  6,  4 }, {     16,    0,    0, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904D72 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904D72 = {
     160, {
     {     31,   16,   16,  0,  0,  0 }, {     30,   16,   16,  0,  0,  0 }, {     29,   16,   16,  0,  0,  0 }, {     28,   16,   16,  0,  0,  0 }, {     27,   16,   16,  0,  0,  0 },
     {     26,   16,   16,  0,  0,  0 }, {     25,   16,   16,  0,  0,  0 }, {     24,   16,   16,  0,  0,  0 }, {     23,   16,   16,  0,  0,  0 }, {     22,   16,   16,  0,  0,  0 },
@@ -14048,7 +14048,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904D72 = {
     {   -124,   16,   16,  0,  0,  0 }, {   -125,   16,   16,  0,  0,  0 }, {   -126,   16,   16,  0,  0,  0 }, {   -127,   16,   16,  0,  0,  0 }, {   -128,   16,   16,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_905314 = {
+static const rct_vehicle_info_list TrackVehicleInfo_905314 = {
     160, {
     {     16,    0,   16,  8,  0,  0 }, {     16,    1,   16,  8,  0,  0 }, {     16,    2,   16,  8,  0,  0 }, {     16,    3,   16,  8,  0,  0 }, {     16,    4,   16,  8,  0,  0 },
     {     16,    5,   16,  8,  0,  0 }, {     16,    6,   16,  8,  0,  0 }, {     16,    7,   16,  8,  0,  0 }, {     16,    8,   16,  8,  0,  0 }, {     16,    9,   16,  8,  0,  0 },
@@ -14084,7 +14084,7 @@ const rct_vehicle_info_list TrackVehicleInfo_905314 = {
     {     16,  155,   16,  8,  0,  0 }, {     16,  156,   16,  8,  0,  0 }, {     16,  157,   16,  8,  0,  0 }, {     16,  158,   16,  8,  0,  0 }, {     16,  159,   16,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9058B6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9058B6 = {
     160, {
     {      0,   16,   16, 16,  0,  0 }, {      1,   16,   16, 16,  0,  0 }, {      2,   16,   16, 16,  0,  0 }, {      3,   16,   16, 16,  0,  0 }, {      4,   16,   16, 16,  0,  0 },
     {      5,   16,   16, 16,  0,  0 }, {      6,   16,   16, 16,  0,  0 }, {      7,   16,   16, 16,  0,  0 }, {      8,   16,   16, 16,  0,  0 }, {      9,   16,   16, 16,  0,  0 },
@@ -14120,7 +14120,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9058B6 = {
     {    155,   16,   16, 16,  0,  0 }, {    156,   16,   16, 16,  0,  0 }, {    157,   16,   16, 16,  0,  0 }, {    158,   16,   16, 16,  0,  0 }, {    159,   16,   16, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_905E58 = {
+static const rct_vehicle_info_list TrackVehicleInfo_905E58 = {
     160, {
     {     16,   31,   16, 24,  0,  0 }, {     16,   30,   16, 24,  0,  0 }, {     16,   29,   16, 24,  0,  0 }, {     16,   28,   16, 24,  0,  0 }, {     16,   27,   16, 24,  0,  0 },
     {     16,   26,   16, 24,  0,  0 }, {     16,   25,   16, 24,  0,  0 }, {     16,   24,   16, 24,  0,  0 }, {     16,   23,   16, 24,  0,  0 }, {     16,   22,   16, 24,  0,  0 },
@@ -14156,7 +14156,7 @@ const rct_vehicle_info_list TrackVehicleInfo_905E58 = {
     {     16, -124,   16, 24,  0,  0 }, {     16, -125,   16, 24,  0,  0 }, {     16, -126,   16, 24,  0,  0 }, {     16, -127,   16, 24,  0,  0 }, {     16, -128,   16, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96D4AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_96D4AE = {
     141, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -14189,7 +14189,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96D4AE = {
     {    -96,   16,   87,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96D9A5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96D9A5 = {
     141, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -14222,7 +14222,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96D9A5 = {
     {     16,  127,   87,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96DE9C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96DE9C = {
     141, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -14255,7 +14255,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96DE9C = {
     {    127,   16,   87, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96E393 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96E393 = {
     141, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -14288,7 +14288,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96E393 = {
     {     16,  -96,   87, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96E88A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96E88A = {
     141, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     29,   16,    3,  0,  4,  0 }, {     29,   16,    4,  0,  4,  0 },
     {     28,   16,    5,  0,  4,  0 }, {     28,   16,    6,  0,  4,  0 }, {     27,   16,    7,  0,  4,  0 }, {     27,   16,    8,  0,  4,  0 }, {     26,   16,    9,  0,  4,  0 },
@@ -14321,7 +14321,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96E88A = {
     {    -96,   16,   87,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96ED81 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96ED81 = {
     141, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    2,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    3,    5,  8,  4,  0 }, {     16,    3,    6,  8,  4,  0 }, {     16,    4,    7,  8,  4,  0 }, {     16,    4,    8,  8,  4,  0 }, {     16,    5,    9,  8,  4,  0 },
@@ -14354,7 +14354,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96ED81 = {
     {     16,  127,   87,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96F278 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96F278 = {
     141, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      2,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      3,   16,    5, 16,  4,  0 }, {      3,   16,    6, 16,  4,  0 }, {      4,   16,    7, 16,  4,  0 }, {      4,   16,    8, 16,  4,  0 }, {      5,   16,    9, 16,  4,  0 },
@@ -14387,7 +14387,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96F278 = {
     {    127,   16,   87, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96F76F = {
+static const rct_vehicle_info_list TrackVehicleInfo_96F76F = {
     141, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   29,    3, 24,  4,  0 }, {     16,   29,    4, 24,  4,  0 },
     {     16,   28,    5, 24,  4,  0 }, {     16,   28,    6, 24,  4,  0 }, {     16,   27,    7, 24,  4,  0 }, {     16,   27,    8, 24,  4,  0 }, {     16,   26,    9, 24,  4,  0 },
@@ -14420,7 +14420,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96F76F = {
     {     16,  -96,   87, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_971042 = {
+static const rct_vehicle_info_list TrackVehicleInfo_971042 = {
     141, {
     {     31,   16,   48,  0,  8,  0 }, {     31,   16,   47,  0,  8,  0 }, {     30,   16,   46,  0,  8,  0 }, {     29,   16,   45,  0,  8,  0 }, {     29,   16,   44,  0,  8,  0 },
     {     28,   16,   43,  0,  8,  0 }, {     28,   16,   42,  0,  8,  0 }, {     27,   16,   41,  0,  8,  0 }, {     27,   16,   40,  0,  8,  0 }, {     26,   16,   39,  0,  8,  0 },
@@ -14453,7 +14453,7 @@ const rct_vehicle_info_list TrackVehicleInfo_971042 = {
     {    -96,   16,  -39,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_971539 = {
+static const rct_vehicle_info_list TrackVehicleInfo_971539 = {
     141, {
     {     16,    0,   48,  8,  8,  0 }, {     16,    0,   47,  8,  8,  0 }, {     16,    1,   46,  8,  8,  0 }, {     16,    2,   45,  8,  8,  0 }, {     16,    2,   44,  8,  8,  0 },
     {     16,    3,   43,  8,  8,  0 }, {     16,    3,   42,  8,  8,  0 }, {     16,    4,   41,  8,  8,  0 }, {     16,    4,   40,  8,  8,  0 }, {     16,    5,   39,  8,  8,  0 },
@@ -14486,7 +14486,7 @@ const rct_vehicle_info_list TrackVehicleInfo_971539 = {
     {     16,  127,  -39,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_971A30 = {
+static const rct_vehicle_info_list TrackVehicleInfo_971A30 = {
     141, {
     {      0,   16,   48, 16,  8,  0 }, {      0,   16,   47, 16,  8,  0 }, {      1,   16,   46, 16,  8,  0 }, {      2,   16,   45, 16,  8,  0 }, {      2,   16,   44, 16,  8,  0 },
     {      3,   16,   43, 16,  8,  0 }, {      3,   16,   42, 16,  8,  0 }, {      4,   16,   41, 16,  8,  0 }, {      4,   16,   40, 16,  8,  0 }, {      5,   16,   39, 16,  8,  0 },
@@ -14519,7 +14519,7 @@ const rct_vehicle_info_list TrackVehicleInfo_971A30 = {
     {    127,   16,  -39, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_971F27 = {
+static const rct_vehicle_info_list TrackVehicleInfo_971F27 = {
     141, {
     {     16,   31,   48, 24,  8,  0 }, {     16,   31,   47, 24,  8,  0 }, {     16,   30,   46, 24,  8,  0 }, {     16,   29,   45, 24,  8,  0 }, {     16,   29,   44, 24,  8,  0 },
     {     16,   28,   43, 24,  8,  0 }, {     16,   28,   42, 24,  8,  0 }, {     16,   27,   41, 24,  8,  0 }, {     16,   27,   40, 24,  8,  0 }, {     16,   26,   39, 24,  8,  0 },
@@ -14552,7 +14552,7 @@ const rct_vehicle_info_list TrackVehicleInfo_971F27 = {
     {     16,  -96,  -39, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96FC66 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96FC66 = {
     141, {
     {     31,   16,    8,  0,  0,  0 }, {     30,   16,    8,  0,  0,  0 }, {     29,   16,    8,  0,  0,  0 }, {     28,   16,    8,  0,  0,  0 }, {     27,   16,    8,  0,  0,  0 },
     {     26,   16,    8,  0,  0,  0 }, {     25,   16,    8,  0,  0,  0 }, {     24,   16,    8,  0,  0,  0 }, {     23,   16,    8,  0,  0,  0 }, {     22,   16,    8,  0,  0,  0 },
@@ -14585,7 +14585,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96FC66 = {
     {    -96,   16,  -79,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97015D = {
+static const rct_vehicle_info_list TrackVehicleInfo_97015D = {
     141, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    1,    8,  8,  0,  0 }, {     16,    2,    8,  8,  0,  0 }, {     16,    3,    8,  8,  0,  0 }, {     16,    4,    8,  8,  0,  0 },
     {     16,    5,    8,  8,  0,  0 }, {     16,    6,    8,  8,  0,  0 }, {     16,    7,    8,  8,  0,  0 }, {     16,    8,    8,  8,  0,  0 }, {     16,    9,    8,  8,  0,  0 },
@@ -14618,7 +14618,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97015D = {
     {     16,  127,  -79,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_970654 = {
+static const rct_vehicle_info_list TrackVehicleInfo_970654 = {
     141, {
     {      0,   16,    8, 16,  0,  0 }, {      1,   16,    8, 16,  0,  0 }, {      2,   16,    8, 16,  0,  0 }, {      3,   16,    8, 16,  0,  0 }, {      4,   16,    8, 16,  0,  0 },
     {      5,   16,    8, 16,  0,  0 }, {      6,   16,    8, 16,  0,  0 }, {      7,   16,    8, 16,  0,  0 }, {      8,   16,    8, 16,  0,  0 }, {      9,   16,    8, 16,  0,  0 },
@@ -14651,7 +14651,7 @@ const rct_vehicle_info_list TrackVehicleInfo_970654 = {
     {    127,   16,  -79, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_970B4B = {
+static const rct_vehicle_info_list TrackVehicleInfo_970B4B = {
     141, {
     {     16,   31,    8, 24,  0,  0 }, {     16,   30,    8, 24,  0,  0 }, {     16,   29,    8, 24,  0,  0 }, {     16,   28,    8, 24,  0,  0 }, {     16,   27,    8, 24,  0,  0 },
     {     16,   26,    8, 24,  0,  0 }, {     16,   25,    8, 24,  0,  0 }, {     16,   24,    8, 24,  0,  0 }, {     16,   23,    8, 24,  0,  0 }, {     16,   22,    8, 24,  0,  0 },
@@ -14684,7 +14684,7 @@ const rct_vehicle_info_list TrackVehicleInfo_970B4B = {
     {     16,  -96,  -79, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97241E = {
+static const rct_vehicle_info_list TrackVehicleInfo_97241E = {
     165, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    1,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    2,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  1,  0 }, {     22,   16,    4,  0,  1,  0 },
@@ -14721,7 +14721,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97241E = {
     {    -94,   16,  -92,  0,  8,  0 }, {    -95,   16,  -93,  0,  8,  0 }, {    -95,   16,  -94,  0,  8,  0 }, {    -96,   16,  -95,  0,  8,  0 }, {    -96,   16,  -96,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9729ED = {
+static const rct_vehicle_info_list TrackVehicleInfo_9729ED = {
     165, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  1,  0 }, {     16,    9,    4,  8,  1,  0 },
@@ -14758,7 +14758,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9729ED = {
     {     16,  125,  -92,  8,  8,  0 }, {     16,  126,  -93,  8,  8,  0 }, {     16,  126,  -94,  8,  8,  0 }, {     16,  127,  -95,  8,  8,  0 }, {     16,  127,  -96,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_972FBC = {
+static const rct_vehicle_info_list TrackVehicleInfo_972FBC = {
     165, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  1,  0 }, {      9,   16,    4, 16,  1,  0 },
@@ -14795,7 +14795,7 @@ const rct_vehicle_info_list TrackVehicleInfo_972FBC = {
     {    125,   16,  -92, 16,  8,  0 }, {    126,   16,  -93, 16,  8,  0 }, {    126,   16,  -94, 16,  8,  0 }, {    127,   16,  -95, 16,  8,  0 }, {    127,   16,  -96, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97358B = {
+static const rct_vehicle_info_list TrackVehicleInfo_97358B = {
     165, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    1, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    2, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  1,  0 }, {     16,   22,    4, 24,  1,  0 },
@@ -14832,7 +14832,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97358B = {
     {     16,  -94,  -92, 24,  8,  0 }, {     16,  -95,  -93, 24,  8,  0 }, {     16,  -95,  -94, 24,  8,  0 }, {     16,  -96,  -95, 24,  8,  0 }, {     16,  -96,  -96, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9063FA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9063FA = {
     304, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    1,  0,  0,  0 }, {     23,   16,    1,  0,  0,  0 }, {     22,   16,    1,  0,  0,  0 },
@@ -14897,7 +14897,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9063FA = {
     {   -155,   16,  235,  0, 10,  0 }, {   -155,   16,  236,  0, 10,  0 }, {   -155,   16,  237,  0, 10,  0 }, {   -155,   16,  238,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_906EAC = {
+static const rct_vehicle_info_list TrackVehicleInfo_906EAC = {
     304, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    1,  8,  0,  0 }, {     16,    8,    1,  8,  0,  0 }, {     16,    9,    1,  8,  0,  0 },
@@ -14962,7 +14962,7 @@ const rct_vehicle_info_list TrackVehicleInfo_906EAC = {
     {     16,  186,  235,  8, 10,  0 }, {     16,  186,  236,  8, 10,  0 }, {     16,  186,  237,  8, 10,  0 }, {     16,  186,  238,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90795E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90795E = {
     304, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    1, 16,  0,  0 }, {      8,   16,    1, 16,  0,  0 }, {      9,   16,    1, 16,  0,  0 },
@@ -15027,7 +15027,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90795E = {
     {    186,   16,  235, 16, 10,  0 }, {    186,   16,  236, 16, 10,  0 }, {    186,   16,  237, 16, 10,  0 }, {    186,   16,  238, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_908410 = {
+static const rct_vehicle_info_list TrackVehicleInfo_908410 = {
     304, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    1, 24,  0,  0 }, {     16,   23,    1, 24,  0,  0 }, {     16,   22,    1, 24,  0,  0 },
@@ -15092,7 +15092,7 @@ const rct_vehicle_info_list TrackVehicleInfo_908410 = {
     {     16, -155,  235, 24, 10,  0 }, {     16, -155,  236, 24, 10,  0 }, {     16, -155,  237, 24, 10,  0 }, {     16, -155,  238, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90B98A = {
+static const rct_vehicle_info_list TrackVehicleInfo_90B98A = {
     80, {
     {     37,   16,    0,  0, 10,  0 }, {     37,   16,    1,  0, 10,  0 }, {     37,   16,    2,  0, 10,  0 }, {     37,   16,    3,  0, 10,  0 }, {     37,   16,    4,  0, 10,  0 },
     {     37,   16,    5,  0, 10,  0 }, {     37,   16,    6,  0, 10,  0 }, {     37,   16,    7,  0, 10,  0 }, {     37,   16,    8,  0, 10,  0 }, {     37,   16,    9,  0, 10,  0 },
@@ -15112,7 +15112,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90B98A = {
     {     37,   16,   75,  0, 10,  0 }, {     37,   16,   76,  0, 10,  0 }, {     37,   16,   77,  0, 10,  0 }, {     37,   16,   78,  0, 10,  0 }, {     37,   16,   79,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90BC5C = {
+static const rct_vehicle_info_list TrackVehicleInfo_90BC5C = {
     80, {
     {     16,   -6,    0,  8, 10,  0 }, {     16,   -6,    1,  8, 10,  0 }, {     16,   -6,    2,  8, 10,  0 }, {     16,   -6,    3,  8, 10,  0 }, {     16,   -6,    4,  8, 10,  0 },
     {     16,   -6,    5,  8, 10,  0 }, {     16,   -6,    6,  8, 10,  0 }, {     16,   -6,    7,  8, 10,  0 }, {     16,   -6,    8,  8, 10,  0 }, {     16,   -6,    9,  8, 10,  0 },
@@ -15132,7 +15132,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90BC5C = {
     {     16,   -6,   75,  8, 10,  0 }, {     16,   -6,   76,  8, 10,  0 }, {     16,   -6,   77,  8, 10,  0 }, {     16,   -6,   78,  8, 10,  0 }, {     16,   -6,   79,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90BF2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90BF2E = {
     80, {
     {     -6,   16,    0, 16, 10,  0 }, {     -6,   16,    1, 16, 10,  0 }, {     -6,   16,    2, 16, 10,  0 }, {     -6,   16,    3, 16, 10,  0 }, {     -6,   16,    4, 16, 10,  0 },
     {     -6,   16,    5, 16, 10,  0 }, {     -6,   16,    6, 16, 10,  0 }, {     -6,   16,    7, 16, 10,  0 }, {     -6,   16,    8, 16, 10,  0 }, {     -6,   16,    9, 16, 10,  0 },
@@ -15152,7 +15152,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90BF2E = {
     {     -6,   16,   75, 16, 10,  0 }, {     -6,   16,   76, 16, 10,  0 }, {     -6,   16,   77, 16, 10,  0 }, {     -6,   16,   78, 16, 10,  0 }, {     -6,   16,   79, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90C200 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90C200 = {
     80, {
     {     16,   37,    0, 24, 10,  0 }, {     16,   37,    1, 24, 10,  0 }, {     16,   37,    2, 24, 10,  0 }, {     16,   37,    3, 24, 10,  0 }, {     16,   37,    4, 24, 10,  0 },
     {     16,   37,    5, 24, 10,  0 }, {     16,   37,    6, 24, 10,  0 }, {     16,   37,    7, 24, 10,  0 }, {     16,   37,    8, 24, 10,  0 }, {     16,   37,    9, 24, 10,  0 },
@@ -15172,7 +15172,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90C200 = {
     {     16,   37,   75, 24, 10,  0 }, {     16,   37,   76, 24, 10,  0 }, {     16,   37,   77, 24, 10,  0 }, {     16,   37,   78, 24, 10,  0 }, {     16,   37,   79, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E02A = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E02A = {
     32, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 }, {     16,   16,    7,  0, 10,  0 }, {     16,   16,    8,  0, 10,  0 }, {     16,   16,    9,  0, 10,  0 },
@@ -15183,7 +15183,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E02A = {
     {     16,   16,   30,  0, 10,  0 }, {     16,   16,   31,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E14C = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E14C = {
     32, {
     {     16,   15,    0,  8, 10,  0 }, {     16,   15,    1,  8, 10,  0 }, {     16,   15,    2,  8, 10,  0 }, {     16,   15,    3,  8, 10,  0 }, {     16,   15,    4,  8, 10,  0 },
     {     16,   15,    5,  8, 10,  0 }, {     16,   15,    6,  8, 10,  0 }, {     16,   15,    7,  8, 10,  0 }, {     16,   15,    8,  8, 10,  0 }, {     16,   15,    9,  8, 10,  0 },
@@ -15194,7 +15194,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E14C = {
     {     16,   15,   30,  8, 10,  0 }, {     16,   15,   31,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E26E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E26E = {
     32, {
     {     15,   16,    0, 16, 10,  0 }, {     15,   16,    1, 16, 10,  0 }, {     15,   16,    2, 16, 10,  0 }, {     15,   16,    3, 16, 10,  0 }, {     15,   16,    4, 16, 10,  0 },
     {     15,   16,    5, 16, 10,  0 }, {     15,   16,    6, 16, 10,  0 }, {     15,   16,    7, 16, 10,  0 }, {     15,   16,    8, 16, 10,  0 }, {     15,   16,    9, 16, 10,  0 },
@@ -15205,7 +15205,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E26E = {
     {     15,   16,   30, 16, 10,  0 }, {     15,   16,   31, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E390 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E390 = {
     32, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 }, {     16,   16,    7, 24, 10,  0 }, {     16,   16,    8, 24, 10,  0 }, {     16,   16,    9, 24, 10,  0 },
@@ -15216,7 +15216,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E390 = {
     {     16,   16,   30, 24, 10,  0 }, {     16,   16,   31, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E4B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E4B2 = {
     32, {
     {     16,   16,   31,  0, 18,  0 }, {     16,   16,   30,  0, 18,  0 }, {     16,   16,   29,  0, 18,  0 }, {     16,   16,   28,  0, 18,  0 }, {     16,   16,   27,  0, 18,  0 },
     {     16,   16,   26,  0, 18,  0 }, {     16,   16,   25,  0, 18,  0 }, {     16,   16,   24,  0, 18,  0 }, {     16,   16,   23,  0, 18,  0 }, {     16,   16,   22,  0, 18,  0 },
@@ -15227,7 +15227,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E4B2 = {
     {     16,   16,    1,  0, 18,  0 }, {     16,   16,    0,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E5D4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E5D4 = {
     32, {
     {     16,   15,   31,  8, 18,  0 }, {     16,   15,   30,  8, 18,  0 }, {     16,   15,   29,  8, 18,  0 }, {     16,   15,   28,  8, 18,  0 }, {     16,   15,   27,  8, 18,  0 },
     {     16,   15,   26,  8, 18,  0 }, {     16,   15,   25,  8, 18,  0 }, {     16,   15,   24,  8, 18,  0 }, {     16,   15,   23,  8, 18,  0 }, {     16,   15,   22,  8, 18,  0 },
@@ -15238,7 +15238,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E5D4 = {
     {     16,   15,    1,  8, 18,  0 }, {     16,   15,    0,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E6F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E6F6 = {
     32, {
     {     15,   16,   31, 16, 18,  0 }, {     15,   16,   30, 16, 18,  0 }, {     15,   16,   29, 16, 18,  0 }, {     15,   16,   28, 16, 18,  0 }, {     15,   16,   27, 16, 18,  0 },
     {     15,   16,   26, 16, 18,  0 }, {     15,   16,   25, 16, 18,  0 }, {     15,   16,   24, 16, 18,  0 }, {     15,   16,   23, 16, 18,  0 }, {     15,   16,   22, 16, 18,  0 },
@@ -15249,7 +15249,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E6F6 = {
     {     15,   16,    1, 16, 18,  0 }, {     15,   16,    0, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E818 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E818 = {
     32, {
     {     16,   16,   31, 24, 18,  0 }, {     16,   16,   30, 24, 18,  0 }, {     16,   16,   29, 24, 18,  0 }, {     16,   16,   28, 24, 18,  0 }, {     16,   16,   27, 24, 18,  0 },
     {     16,   16,   26, 24, 18,  0 }, {     16,   16,   25, 24, 18,  0 }, {     16,   16,   24, 24, 18,  0 }, {     16,   16,   23, 24, 18,  0 }, {     16,   16,   22, 24, 18,  0 },
@@ -15260,7 +15260,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E818 = {
     {     16,   16,    1, 24, 18,  0 }, {     16,   16,    0, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90E93A = {
+static const rct_vehicle_info_list TrackVehicleInfo_90E93A = {
     56, {
     {     31,   16,    0,  0,  4,  0 }, {     31,   16,    1,  0,  4,  0 }, {     30,   16,    2,  0,  4,  0 }, {     30,   16,    3,  0,  4,  0 }, {     29,   16,    4,  0,  4,  0 },
     {     29,   16,    5,  0,  4,  0 }, {     28,   16,    6,  0,  4,  0 }, {     28,   16,    7,  0,  4,  0 }, {     27,   16,    8,  0,  4,  0 }, {     27,   16,    9,  0,  4,  0 },
@@ -15276,7 +15276,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90E93A = {
     {     16,   16,   55,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90EB34 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90EB34 = {
     56, {
     {     16,    0,    0,  8,  4,  0 }, {     16,    0,    1,  8,  4,  0 }, {     16,    1,    2,  8,  4,  0 }, {     16,    1,    3,  8,  4,  0 }, {     16,    2,    4,  8,  4,  0 },
     {     16,    2,    5,  8,  4,  0 }, {     16,    3,    6,  8,  4,  0 }, {     16,    3,    7,  8,  4,  0 }, {     16,    4,    8,  8,  4,  0 }, {     16,    4,    9,  8,  4,  0 },
@@ -15292,7 +15292,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90EB34 = {
     {     16,   15,   55,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90ED2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90ED2E = {
     56, {
     {      0,   16,    0, 16,  4,  0 }, {      0,   16,    1, 16,  4,  0 }, {      1,   16,    2, 16,  4,  0 }, {      1,   16,    3, 16,  4,  0 }, {      2,   16,    4, 16,  4,  0 },
     {      2,   16,    5, 16,  4,  0 }, {      3,   16,    6, 16,  4,  0 }, {      3,   16,    7, 16,  4,  0 }, {      4,   16,    8, 16,  4,  0 }, {      4,   16,    9, 16,  4,  0 },
@@ -15308,7 +15308,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90ED2E = {
     {     15,   16,   55, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90EF28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90EF28 = {
     56, {
     {     16,   31,    0, 24,  4,  0 }, {     16,   31,    1, 24,  4,  0 }, {     16,   30,    2, 24,  4,  0 }, {     16,   30,    3, 24,  4,  0 }, {     16,   29,    4, 24,  4,  0 },
     {     16,   29,    5, 24,  4,  0 }, {     16,   28,    6, 24,  4,  0 }, {     16,   28,    7, 24,  4,  0 }, {     16,   27,    8, 24,  4,  0 }, {     16,   27,    9, 24,  4,  0 },
@@ -15324,7 +15324,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90EF28 = {
     {     16,   16,   55, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9100F2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9100F2 = {
     56, {
     {     16,   16,   55,  0, 18,  0 }, {     16,   16,   54,  0, 18,  0 }, {     16,   16,   53,  0, 18,  0 }, {     16,   16,   52,  0, 18,  0 }, {     16,   16,   51,  0, 18,  0 },
     {     16,   16,   50,  0, 18,  0 }, {     16,   16,   49,  0, 18,  0 }, {     16,   16,   48,  0, 18,  0 }, {     15,   16,   47,  0, 18,  0 }, {     15,   16,   46,  0, 18,  0 },
@@ -15340,7 +15340,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9100F2 = {
     {      0,   16,    0,  0,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9102EC = {
+static const rct_vehicle_info_list TrackVehicleInfo_9102EC = {
     56, {
     {     16,   15,   55,  8, 18,  0 }, {     16,   15,   54,  8, 18,  0 }, {     16,   15,   53,  8, 18,  0 }, {     16,   15,   52,  8, 18,  0 }, {     16,   15,   51,  8, 18,  0 },
     {     16,   15,   50,  8, 18,  0 }, {     16,   15,   49,  8, 18,  0 }, {     16,   15,   48,  8, 18,  0 }, {     16,   16,   47,  8, 18,  0 }, {     16,   16,   46,  8, 18,  0 },
@@ -15356,7 +15356,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9102EC = {
     {     16,   31,    0,  8,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9104E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9104E6 = {
     56, {
     {     15,   16,   55, 16, 18,  0 }, {     15,   16,   54, 16, 18,  0 }, {     15,   16,   53, 16, 18,  0 }, {     15,   16,   52, 16, 18,  0 }, {     15,   16,   51, 16, 18,  0 },
     {     15,   16,   50, 16, 18,  0 }, {     15,   16,   49, 16, 18,  0 }, {     15,   16,   48, 16, 18,  0 }, {     16,   16,   47, 16, 18,  0 }, {     16,   16,   46, 16, 18,  0 },
@@ -15372,7 +15372,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9104E6 = {
     {     31,   16,    0, 16,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9106E0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9106E0 = {
     56, {
     {     16,   16,   55, 24, 18,  0 }, {     16,   16,   54, 24, 18,  0 }, {     16,   16,   53, 24, 18,  0 }, {     16,   16,   52, 24, 18,  0 }, {     16,   16,   51, 24, 18,  0 },
     {     16,   16,   50, 24, 18,  0 }, {     16,   16,   49, 24, 18,  0 }, {     16,   16,   48, 24, 18,  0 }, {     16,   15,   47, 24, 18,  0 }, {     16,   15,   46, 24, 18,  0 },
@@ -15388,7 +15388,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9106E0 = {
     {     16,    0,    0, 24,  8,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90F122 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90F122 = {
     56, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 }, {     16,   16,    7,  0, 10,  0 }, {     15,   16,    8,  0, 10,  0 }, {     15,   16,    9,  0, 10,  0 },
@@ -15404,7 +15404,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90F122 = {
     {      0,   16,   55,  0,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90F31C = {
+static const rct_vehicle_info_list TrackVehicleInfo_90F31C = {
     56, {
     {     16,   15,    0,  8, 10,  0 }, {     16,   15,    1,  8, 10,  0 }, {     16,   15,    2,  8, 10,  0 }, {     16,   15,    3,  8, 10,  0 }, {     16,   15,    4,  8, 10,  0 },
     {     16,   15,    5,  8, 10,  0 }, {     16,   15,    6,  8, 10,  0 }, {     16,   15,    7,  8, 10,  0 }, {     16,   16,    8,  8, 10,  0 }, {     16,   16,    9,  8, 10,  0 },
@@ -15420,7 +15420,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90F31C = {
     {     16,   31,   55,  8,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90F516 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90F516 = {
     56, {
     {     15,   16,    0, 16, 10,  0 }, {     15,   16,    1, 16, 10,  0 }, {     15,   16,    2, 16, 10,  0 }, {     15,   16,    3, 16, 10,  0 }, {     15,   16,    4, 16, 10,  0 },
     {     15,   16,    5, 16, 10,  0 }, {     15,   16,    6, 16, 10,  0 }, {     15,   16,    7, 16, 10,  0 }, {     16,   16,    8, 16, 10,  0 }, {     16,   16,    9, 16, 10,  0 },
@@ -15436,7 +15436,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90F516 = {
     {     31,   16,   55, 16,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90F710 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90F710 = {
     56, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 }, {     16,   16,    7, 24, 10,  0 }, {     16,   15,    8, 24, 10,  0 }, {     16,   15,    9, 24, 10,  0 },
@@ -15452,7 +15452,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90F710 = {
     {     16,    0,   55, 24,  4,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90F90A = {
+static const rct_vehicle_info_list TrackVehicleInfo_90F90A = {
     56, {
     {     31,   16,   55,  0,  8,  0 }, {     31,   16,   54,  0,  8,  0 }, {     30,   16,   53,  0,  8,  0 }, {     30,   16,   52,  0,  8,  0 }, {     29,   16,   51,  0,  8,  0 },
     {     29,   16,   50,  0,  8,  0 }, {     28,   16,   49,  0,  8,  0 }, {     28,   16,   48,  0,  8,  0 }, {     27,   16,   47,  0,  8,  0 }, {     27,   16,   46,  0,  8,  0 },
@@ -15468,7 +15468,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90F90A = {
     {     16,   16,    0,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90FB04 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90FB04 = {
     56, {
     {     16,    0,   55,  8,  8,  0 }, {     16,    0,   54,  8,  8,  0 }, {     16,    1,   53,  8,  8,  0 }, {     16,    1,   52,  8,  8,  0 }, {     16,    2,   51,  8,  8,  0 },
     {     16,    2,   50,  8,  8,  0 }, {     16,    3,   49,  8,  8,  0 }, {     16,    3,   48,  8,  8,  0 }, {     16,    4,   47,  8,  8,  0 }, {     16,    4,   46,  8,  8,  0 },
@@ -15484,7 +15484,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90FB04 = {
     {     16,   15,    0,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90FCFE = {
+static const rct_vehicle_info_list TrackVehicleInfo_90FCFE = {
     56, {
     {      0,   16,   55, 16,  8,  0 }, {      0,   16,   54, 16,  8,  0 }, {      1,   16,   53, 16,  8,  0 }, {      1,   16,   52, 16,  8,  0 }, {      2,   16,   51, 16,  8,  0 },
     {      2,   16,   50, 16,  8,  0 }, {      3,   16,   49, 16,  8,  0 }, {      3,   16,   48, 16,  8,  0 }, {      4,   16,   47, 16,  8,  0 }, {      4,   16,   46, 16,  8,  0 },
@@ -15500,7 +15500,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90FCFE = {
     {     15,   16,    0, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90FEF8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90FEF8 = {
     56, {
     {     16,   31,   55, 24,  8,  0 }, {     16,   31,   54, 24,  8,  0 }, {     16,   30,   53, 24,  8,  0 }, {     16,   30,   52, 24,  8,  0 }, {     16,   29,   51, 24,  8,  0 },
     {     16,   29,   50, 24,  8,  0 }, {     16,   28,   49, 24,  8,  0 }, {     16,   28,   48, 24,  8,  0 }, {     16,   27,   47, 24,  8,  0 }, {     16,   27,   46, 24,  8,  0 },
@@ -15516,7 +15516,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90FEF8 = {
     {     16,   16,    0, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9108DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9108DA = {
     79, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -15536,7 +15536,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9108DA = {
     {    -44,  -13,    0, 28,  0,  0 }, {    -45,  -14,    0, 28,  0,  0 }, {    -46,  -15,    0, 28,  0,  0 }, {    -47,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_910BA3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_910BA3 = {
     80, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -15556,7 +15556,7 @@ const rct_vehicle_info_list TrackVehicleInfo_910BA3 = {
     {    -12,   75,    0,  4,  0,  0 }, {    -13,   76,    0,  4,  0,  0 }, {    -14,   77,    0,  4,  0,  0 }, {    -15,   78,    0,  4,  0,  0 }, {    -16,   79,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_910E75 = {
+static const rct_vehicle_info_list TrackVehicleInfo_910E75 = {
     80, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -15576,7 +15576,7 @@ const rct_vehicle_info_list TrackVehicleInfo_910E75 = {
     {     75,   44,    0, 12,  0,  0 }, {     76,   44,    0, 12,  0,  0 }, {     77,   45,    0, 12,  0,  0 }, {     78,   46,    0, 12,  0,  0 }, {     79,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_911147 = {
+static const rct_vehicle_info_list TrackVehicleInfo_911147 = {
     80, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -15596,7 +15596,7 @@ const rct_vehicle_info_list TrackVehicleInfo_911147 = {
     {     44,  -44,    0, 20,  0,  0 }, {     44,  -45,    0, 20,  0,  0 }, {     45,  -46,    0, 20,  0,  0 }, {     46,  -47,    0, 20,  0,  0 }, {     47,  -48,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_911F58 = {
+static const rct_vehicle_info_list TrackVehicleInfo_911F58 = {
     80, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -15616,7 +15616,7 @@ const rct_vehicle_info_list TrackVehicleInfo_911F58 = {
     {    -44,   44,    0,  4,  0,  0 }, {    -45,   44,    0,  4,  0,  0 }, {    -46,   45,    0,  4,  0,  0 }, {    -47,   46,    0,  4,  0,  0 }, {    -48,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91222A = {
+static const rct_vehicle_info_list TrackVehicleInfo_91222A = {
     80, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -15636,7 +15636,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91222A = {
     {     44,   75,    0, 12,  0,  0 }, {     44,   76,    0, 12,  0,  0 }, {     45,   77,    0, 12,  0,  0 }, {     46,   78,    0, 12,  0,  0 }, {     47,   79,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9124FC = {
+static const rct_vehicle_info_list TrackVehicleInfo_9124FC = {
     80, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -15656,7 +15656,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9124FC = {
     {     75,  -12,    0, 20,  0,  0 }, {     76,  -13,    0, 20,  0,  0 }, {     77,  -14,    0, 20,  0,  0 }, {     78,  -15,    0, 20,  0,  0 }, {     79,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9127CE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9127CE = {
     80, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -15676,7 +15676,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9127CE = {
     {    -12,  -44,    0, 28,  0,  0 }, {    -13,  -45,    0, 28,  0,  0 }, {    -14,  -46,    0, 28,  0,  0 }, {    -15,  -47,    0, 28,  0,  0 }, {    -16,  -48,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_911419 = {
+static const rct_vehicle_info_list TrackVehicleInfo_911419 = {
     79, {
     {     15,   17,    0,  4,  0,  0 }, {     14,   18,    0,  4,  0,  0 }, {     13,   19,    0,  4,  0,  0 }, {     12,   20,    0,  4,  0,  0 }, {     11,   20,    0,  4,  0,  0 },
     {     10,   21,    0,  4,  0,  0 }, {      9,   22,    0,  4,  0,  0 }, {      8,   23,    0,  4,  0,  0 }, {      7,   24,    0,  3,  0,  0 }, {      6,   25,    0,  3,  0,  0 },
@@ -15696,7 +15696,7 @@ const rct_vehicle_info_list TrackVehicleInfo_911419 = {
     {    -60,   48,    0,  0,  0,  0 }, {    -61,   48,    0,  0,  0,  0 }, {    -62,   48,    0,  0,  0,  0 }, {    -63,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9116E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9116E2 = {
     80, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     20,   21,    0, 12,  0,  0 }, {     21,   22,    0, 12,  0,  0 }, {     22,   23,    0, 12,  0,  0 }, {     23,   24,    0, 12,  0,  0 }, {     24,   25,    0, 11,  0,  0 },
@@ -15716,7 +15716,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9116E2 = {
     {     48,   91,    0,  8,  0,  0 }, {     48,   92,    0,  8,  0,  0 }, {     48,   93,    0,  8,  0,  0 }, {     48,   94,    0,  8,  0,  0 }, {     48,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9119B4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9119B4 = {
     80, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   12,    0, 20,  0,  0 },
     {     21,   11,    0, 20,  0,  0 }, {     22,   10,    0, 20,  0,  0 }, {     23,    9,    0, 20,  0,  0 }, {     24,    8,    0, 19,  0,  0 }, {     25,    7,    0, 19,  0,  0 },
@@ -15736,7 +15736,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9119B4 = {
     {     91,  -16,    0, 16,  0,  0 }, {     92,  -16,    0, 16,  0,  0 }, {     93,  -16,    0, 16,  0,  0 }, {     94,  -16,    0, 16,  0,  0 }, {     95,  -16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_911C86 = {
+static const rct_vehicle_info_list TrackVehicleInfo_911C86 = {
     80, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     12,   11,    0, 28,  0,  0 },
     {     11,   10,    0, 28,  0,  0 }, {     10,    9,    0, 28,  0,  0 }, {      9,    8,    0, 28,  0,  0 }, {      8,    7,    0, 27,  0,  0 }, {      7,    6,    0, 27,  0,  0 },
@@ -15756,7 +15756,7 @@ const rct_vehicle_info_list TrackVehicleInfo_911C86 = {
     {    -16,  -60,    0, 24,  0,  0 }, {    -16,  -61,    0, 24,  0,  0 }, {    -16,  -62,    0, 24,  0,  0 }, {    -16,  -63,    0, 24,  0,  0 }, {    -16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_912AA0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_912AA0 = {
     79, {
     {     15,   17,    0,  4,  0,  0 }, {     14,   18,    0,  4,  0,  0 }, {     13,   19,    0,  4,  0,  0 }, {     12,   20,    0,  4,  0,  0 }, {     12,   21,    0,  4,  0,  0 },
     {     11,   22,    0,  4,  0,  0 }, {     10,   23,    0,  4,  0,  0 }, {      9,   24,    0,  4,  0,  0 }, {      8,   25,    0,  5,  0,  0 }, {      7,   26,    0,  5,  0,  0 },
@@ -15776,7 +15776,7 @@ const rct_vehicle_info_list TrackVehicleInfo_912AA0 = {
     {    -16,   92,    0,  8,  0,  0 }, {    -16,   93,    0,  8,  0,  0 }, {    -16,   94,    0,  8,  0,  0 }, {    -16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_912D69 = {
+static const rct_vehicle_info_list TrackVehicleInfo_912D69 = {
     80, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     21,   20,    0, 12,  0,  0 }, {     22,   21,    0, 12,  0,  0 }, {     23,   22,    0, 12,  0,  0 }, {     24,   23,    0, 12,  0,  0 }, {     25,   24,    0, 13,  0,  0 },
@@ -15796,7 +15796,7 @@ const rct_vehicle_info_list TrackVehicleInfo_912D69 = {
     {     91,   48,    0, 16,  0,  0 }, {     92,   48,    0, 16,  0,  0 }, {     93,   48,    0, 16,  0,  0 }, {     94,   48,    0, 16,  0,  0 }, {     95,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91303B = {
+static const rct_vehicle_info_list TrackVehicleInfo_91303B = {
     80, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     19,   11,    0, 20,  0,  0 },
     {     20,   10,    0, 20,  0,  0 }, {     21,    9,    0, 20,  0,  0 }, {     22,    8,    0, 20,  0,  0 }, {     23,    7,    0, 21,  0,  0 }, {     24,    6,    0, 21,  0,  0 },
@@ -15816,7 +15816,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91303B = {
     {     47,  -60,    0, 24,  0,  0 }, {     47,  -61,    0, 24,  0,  0 }, {     47,  -62,    0, 24,  0,  0 }, {     47,  -63,    0, 24,  0,  0 }, {     47,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91330D = {
+static const rct_vehicle_info_list TrackVehicleInfo_91330D = {
     80, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   12,    0, 28,  0,  0 },
     {     10,   11,    0, 28,  0,  0 }, {      9,   10,    0, 28,  0,  0 }, {      8,    9,    0, 28,  0,  0 }, {      7,    8,    0, 29,  0,  0 }, {      6,    7,    0, 29,  0,  0 },
@@ -15836,7 +15836,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91330D = {
     {    -60,  -16,    0,  0,  0,  0 }, {    -61,  -16,    0,  0,  0,  0 }, {    -62,  -16,    0,  0,  0,  0 }, {    -63,  -16,    0,  0,  0,  0 }, {    -64,  -16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9135DF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9135DF = {
     79, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0,  0,  0,  2 }, {     23,   16,    0,  0,  0,  2 }, {     22,   16,    0,  0,  0,  2 },
@@ -15856,7 +15856,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9135DF = {
     {    -44,  -13,    0, 28,  0,  2 }, {    -45,  -14,    0, 28,  0,  2 }, {    -46,  -15,    0, 28,  0,  2 }, {    -47,  -16,    0, 28,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9138A8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9138A8 = {
     80, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  8,  0,  2 }, {     16,    9,    0,  8,  0,  2 },
@@ -15876,7 +15876,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9138A8 = {
     {    -12,   75,    0,  4,  0,  2 }, {    -13,   76,    0,  4,  0,  2 }, {    -14,   77,    0,  4,  0,  2 }, {    -15,   78,    0,  4,  0,  2 }, {    -16,   79,    0,  4,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_913B7A = {
+static const rct_vehicle_info_list TrackVehicleInfo_913B7A = {
     80, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 16,  0,  2 }, {      9,   16,    0, 16,  0,  2 },
@@ -15896,7 +15896,7 @@ const rct_vehicle_info_list TrackVehicleInfo_913B7A = {
     {     75,   44,    0, 12,  0,  2 }, {     76,   44,    0, 12,  0,  2 }, {     77,   45,    0, 12,  0,  2 }, {     78,   46,    0, 12,  0,  2 }, {     79,   47,    0, 12,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_913E4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_913E4C = {
     80, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 24,  0,  2 }, {     16,   23,    0, 24,  0,  2 }, {     16,   22,    0, 24,  0,  2 },
@@ -15916,7 +15916,7 @@ const rct_vehicle_info_list TrackVehicleInfo_913E4C = {
     {     44,  -44,    0, 20,  0,  2 }, {     44,  -45,    0, 20,  0,  2 }, {     45,  -46,    0, 20,  0,  2 }, {     46,  -47,    0, 20,  0,  2 }, {     47,  -48,    0, 20,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_914C5D = {
+static const rct_vehicle_info_list TrackVehicleInfo_914C5D = {
     80, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  0,  0,  4 }, {     23,   16,    0,  0,  0,  4 }, {     22,   16,    0,  0,  0,  4 },
@@ -15936,7 +15936,7 @@ const rct_vehicle_info_list TrackVehicleInfo_914C5D = {
     {    -44,   44,    0,  4,  0,  4 }, {    -45,   44,    0,  4,  0,  4 }, {    -46,   45,    0,  4,  0,  4 }, {    -47,   46,    0,  4,  0,  4 }, {    -48,   47,    0,  4,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_914F2F = {
+static const rct_vehicle_info_list TrackVehicleInfo_914F2F = {
     80, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  8,  0,  4 }, {     16,    9,    0,  8,  0,  4 },
@@ -15956,7 +15956,7 @@ const rct_vehicle_info_list TrackVehicleInfo_914F2F = {
     {     44,   75,    0, 12,  0,  4 }, {     44,   76,    0, 12,  0,  4 }, {     45,   77,    0, 12,  0,  4 }, {     46,   78,    0, 12,  0,  4 }, {     47,   79,    0, 12,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_915201 = {
+static const rct_vehicle_info_list TrackVehicleInfo_915201 = {
     80, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 16,  0,  4 }, {      9,   16,    0, 16,  0,  4 },
@@ -15976,7 +15976,7 @@ const rct_vehicle_info_list TrackVehicleInfo_915201 = {
     {     75,  -12,    0, 20,  0,  4 }, {     76,  -13,    0, 20,  0,  4 }, {     77,  -14,    0, 20,  0,  4 }, {     78,  -15,    0, 20,  0,  4 }, {     79,  -16,    0, 20,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9154D3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9154D3 = {
     80, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 24,  0,  4 }, {     16,   23,    0, 24,  0,  4 }, {     16,   22,    0, 24,  0,  4 },
@@ -15996,7 +15996,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9154D3 = {
     {    -12,  -44,    0, 28,  0,  4 }, {    -13,  -45,    0, 28,  0,  4 }, {    -14,  -46,    0, 28,  0,  4 }, {    -15,  -47,    0, 28,  0,  4 }, {    -16,  -48,    0, 28,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91411E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91411E = {
     79, {
     {     15,   17,    0,  4,  0,  2 }, {     14,   18,    0,  4,  0,  2 }, {     13,   19,    0,  4,  0,  2 }, {     12,   20,    0,  4,  0,  2 }, {     11,   20,    0,  4,  0,  2 },
     {     10,   21,    0,  4,  0,  2 }, {      9,   22,    0,  4,  0,  2 }, {      8,   23,    0,  4,  0,  2 }, {      7,   24,    0,  3,  0,  2 }, {      6,   25,    0,  3,  0,  2 },
@@ -16016,7 +16016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91411E = {
     {    -60,   48,    0,  0,  0,  2 }, {    -61,   48,    0,  0,  0,  2 }, {    -62,   48,    0,  0,  0,  2 }, {    -63,   48,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9143E7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9143E7 = {
     80, {
     {     16,   16,    0, 12,  0,  2 }, {     17,   17,    0, 12,  0,  2 }, {     18,   18,    0, 12,  0,  2 }, {     19,   19,    0, 12,  0,  2 }, {     20,   20,    0, 12,  0,  2 },
     {     20,   21,    0, 12,  0,  2 }, {     21,   22,    0, 12,  0,  2 }, {     22,   23,    0, 12,  0,  2 }, {     23,   24,    0, 12,  0,  2 }, {     24,   25,    0, 11,  0,  2 },
@@ -16036,7 +16036,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9143E7 = {
     {     48,   91,    0,  8,  0,  2 }, {     48,   92,    0,  8,  0,  2 }, {     48,   93,    0,  8,  0,  2 }, {     48,   94,    0,  8,  0,  2 }, {     48,   95,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9146B9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9146B9 = {
     80, {
     {     16,   15,    0, 20,  0,  2 }, {     17,   14,    0, 20,  0,  2 }, {     18,   13,    0, 20,  0,  2 }, {     19,   12,    0, 20,  0,  2 }, {     20,   12,    0, 20,  0,  2 },
     {     21,   11,    0, 20,  0,  2 }, {     22,   10,    0, 20,  0,  2 }, {     23,    9,    0, 20,  0,  2 }, {     24,    8,    0, 19,  0,  2 }, {     25,    7,    0, 19,  0,  2 },
@@ -16056,7 +16056,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9146B9 = {
     {     91,  -16,    0, 16,  0,  2 }, {     92,  -16,    0, 16,  0,  2 }, {     93,  -16,    0, 16,  0,  2 }, {     94,  -16,    0, 16,  0,  2 }, {     95,  -16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91498B = {
+static const rct_vehicle_info_list TrackVehicleInfo_91498B = {
     80, {
     {     15,   15,    0, 28,  0,  2 }, {     14,   14,    0, 28,  0,  2 }, {     13,   13,    0, 28,  0,  2 }, {     12,   12,    0, 28,  0,  2 }, {     12,   11,    0, 28,  0,  2 },
     {     11,   10,    0, 28,  0,  2 }, {     10,    9,    0, 28,  0,  2 }, {      9,    8,    0, 28,  0,  2 }, {      8,    7,    0, 27,  0,  2 }, {      7,    6,    0, 27,  0,  2 },
@@ -16076,7 +16076,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91498B = {
     {    -16,  -60,    0, 24,  0,  2 }, {    -16,  -61,    0, 24,  0,  2 }, {    -16,  -62,    0, 24,  0,  2 }, {    -16,  -63,    0, 24,  0,  2 }, {    -16,  -64,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9157A5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9157A5 = {
     79, {
     {     15,   17,    0,  4,  0,  4 }, {     14,   18,    0,  4,  0,  4 }, {     13,   19,    0,  4,  0,  4 }, {     12,   20,    0,  4,  0,  4 }, {     12,   21,    0,  4,  0,  4 },
     {     11,   22,    0,  4,  0,  4 }, {     10,   23,    0,  4,  0,  4 }, {      9,   24,    0,  4,  0,  4 }, {      8,   25,    0,  5,  0,  4 }, {      7,   26,    0,  5,  0,  4 },
@@ -16096,7 +16096,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9157A5 = {
     {    -16,   92,    0,  8,  0,  4 }, {    -16,   93,    0,  8,  0,  4 }, {    -16,   94,    0,  8,  0,  4 }, {    -16,   95,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_915A6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_915A6E = {
     80, {
     {     16,   16,    0, 12,  0,  4 }, {     17,   17,    0, 12,  0,  4 }, {     18,   18,    0, 12,  0,  4 }, {     19,   19,    0, 12,  0,  4 }, {     20,   20,    0, 12,  0,  4 },
     {     21,   20,    0, 12,  0,  4 }, {     22,   21,    0, 12,  0,  4 }, {     23,   22,    0, 12,  0,  4 }, {     24,   23,    0, 12,  0,  4 }, {     25,   24,    0, 13,  0,  4 },
@@ -16116,7 +16116,7 @@ const rct_vehicle_info_list TrackVehicleInfo_915A6E = {
     {     91,   48,    0, 16,  0,  4 }, {     92,   48,    0, 16,  0,  4 }, {     93,   48,    0, 16,  0,  4 }, {     94,   48,    0, 16,  0,  4 }, {     95,   48,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_915D40 = {
+static const rct_vehicle_info_list TrackVehicleInfo_915D40 = {
     80, {
     {     16,   15,    0, 20,  0,  4 }, {     17,   14,    0, 20,  0,  4 }, {     18,   13,    0, 20,  0,  4 }, {     19,   12,    0, 20,  0,  4 }, {     19,   11,    0, 20,  0,  4 },
     {     20,   10,    0, 20,  0,  4 }, {     21,    9,    0, 20,  0,  4 }, {     22,    8,    0, 20,  0,  4 }, {     23,    7,    0, 21,  0,  4 }, {     24,    6,    0, 21,  0,  4 },
@@ -16136,7 +16136,7 @@ const rct_vehicle_info_list TrackVehicleInfo_915D40 = {
     {     47,  -60,    0, 24,  0,  4 }, {     47,  -61,    0, 24,  0,  4 }, {     47,  -62,    0, 24,  0,  4 }, {     47,  -63,    0, 24,  0,  4 }, {     47,  -64,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916012 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916012 = {
     80, {
     {     15,   15,    0, 28,  0,  4 }, {     14,   14,    0, 28,  0,  4 }, {     13,   13,    0, 28,  0,  4 }, {     12,   12,    0, 28,  0,  4 }, {     11,   12,    0, 28,  0,  4 },
     {     10,   11,    0, 28,  0,  4 }, {      9,   10,    0, 28,  0,  4 }, {      8,    9,    0, 28,  0,  4 }, {      7,    8,    0, 29,  0,  4 }, {      6,    7,    0, 29,  0,  4 },
@@ -16156,7 +16156,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916012 = {
     {    -60,  -16,    0,  0,  0,  4 }, {    -61,  -16,    0,  0,  0,  4 }, {    -62,  -16,    0,  0,  0,  4 }, {    -63,  -16,    0,  0,  0,  4 }, {    -64,  -16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9162E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9162E6 = {
     32, {
     {     15,   16,    0,  4,  0,  0 }, {     14,   17,    0,  4,  0,  0 }, {     13,   18,    0,  4,  0,  0 }, {     12,   19,    0,  4,  0,  0 }, {     11,   20,    0,  4,  0,  0 },
     {     10,   21,    0,  4,  0,  0 }, {      9,   22,    0,  4,  0,  0 }, {      8,   23,    0,  4,  0,  0 }, {      7,   24,    0,  4,  0,  0 }, {      6,   25,    0,  4,  0,  0 },
@@ -16167,7 +16167,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9162E6 = {
     {    -15,   46,    0,  4,  0,  0 }, {    -16,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916408 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916408 = {
     32, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     21,   21,    0, 12,  0,  0 }, {     22,   22,    0, 12,  0,  0 }, {     23,   23,    0, 12,  0,  0 }, {     24,   24,    0, 12,  0,  0 }, {     25,   25,    0, 12,  0,  0 },
@@ -16178,7 +16178,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916408 = {
     {     46,   46,    0, 12,  0,  0 }, {     47,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91652A = {
+static const rct_vehicle_info_list TrackVehicleInfo_91652A = {
     32, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   11,    0, 20,  0,  0 },
     {     21,   10,    0, 20,  0,  0 }, {     22,    9,    0, 20,  0,  0 }, {     23,    8,    0, 20,  0,  0 }, {     24,    7,    0, 20,  0,  0 }, {     25,    6,    0, 20,  0,  0 },
@@ -16189,7 +16189,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91652A = {
     {     46,  -15,    0, 20,  0,  0 }, {     47,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91664C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91664C = {
     32, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   11,    0, 28,  0,  0 },
     {     10,   10,    0, 28,  0,  0 }, {      9,    9,    0, 28,  0,  0 }, {      8,    8,    0, 28,  0,  0 }, {      7,    7,    0, 28,  0,  0 }, {      6,    6,    0, 28,  0,  0 },
@@ -16200,7 +16200,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91664C = {
     {    -15,  -15,    0, 28,  0,  0 }, {    -16,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91676E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91676E = {
     32, {
     {     15,   16,    0,  4, 51,  0 }, {     14,   17,    1,  4, 51,  0 }, {     13,   18,    1,  4, 51,  0 }, {     12,   19,    2,  4, 51,  0 }, {     11,   20,    2,  4, 51,  0 },
     {     10,   21,    3,  4, 51,  0 }, {      9,   22,    3,  4, 51,  0 }, {      8,   23,    4,  4, 51,  0 }, {      7,   24,    4,  4, 51,  0 }, {      6,   25,    5,  4, 51,  0 },
@@ -16211,7 +16211,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91676E = {
     {    -15,   46,   15,  4, 51,  0 }, {    -16,   47,   16,  4, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916890 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916890 = {
     32, {
     {     16,   16,    0, 12, 51,  0 }, {     17,   17,    0, 12, 51,  0 }, {     18,   18,    1, 12, 51,  0 }, {     19,   19,    1, 12, 51,  0 }, {     20,   20,    2, 12, 51,  0 },
     {     21,   21,    2, 12, 51,  0 }, {     22,   22,    3, 12, 51,  0 }, {     23,   23,    3, 12, 51,  0 }, {     24,   24,    4, 12, 51,  0 }, {     25,   25,    4, 12, 51,  0 },
@@ -16222,7 +16222,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916890 = {
     {     46,   46,   15, 12, 51,  0 }, {     47,   47,   15, 12, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9169B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9169B2 = {
     32, {
     {     16,   15,    0, 20, 51,  0 }, {     17,   14,    0, 20, 51,  0 }, {     18,   13,    1, 20, 51,  0 }, {     19,   12,    1, 20, 51,  0 }, {     20,   11,    2, 20, 51,  0 },
     {     21,   10,    2, 20, 51,  0 }, {     22,    9,    3, 20, 51,  0 }, {     23,    8,    3, 20, 51,  0 }, {     24,    7,    4, 20, 51,  0 }, {     25,    6,    4, 20, 51,  0 },
@@ -16233,7 +16233,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9169B2 = {
     {     46,  -15,   15, 20, 51,  0 }, {     47,  -16,   15, 20, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916AD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916AD4 = {
     32, {
     {     15,   15,    0, 28, 51,  0 }, {     14,   14,    1, 28, 51,  0 }, {     13,   13,    1, 28, 51,  0 }, {     12,   12,    2, 28, 51,  0 }, {     11,   11,    2, 28, 51,  0 },
     {     10,   10,    3, 28, 51,  0 }, {      9,    9,    3, 28, 51,  0 }, {      8,    8,    4, 28, 51,  0 }, {      7,    7,    4, 28, 51,  0 }, {      6,    6,    5, 28, 51,  0 },
@@ -16244,7 +16244,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916AD4 = {
     {    -15,  -15,   15, 28, 51,  0 }, {    -16,  -16,   16, 28, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91707E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91707E = {
     64, {
     {     15,   16,    0,  4, 52,  0 }, {     15,   16,    1,  4, 52,  0 }, {     14,   17,    2,  4, 52,  0 }, {     14,   17,    3,  4, 52,  0 }, {     13,   18,    4,  4, 52,  0 },
     {     13,   18,    5,  4, 52,  0 }, {     12,   19,    6,  4, 52,  0 }, {     12,   19,    7,  4, 52,  0 }, {     11,   20,    8,  4, 52,  0 }, {     11,   20,    9,  4, 52,  0 },
@@ -16261,7 +16261,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91707E = {
     {    -15,   46,   60,  4, 52,  0 }, {    -15,   46,   61,  4, 52,  0 }, {    -16,   47,   62,  4, 52,  0 }, {    -16,   47,   63,  4, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9172C0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9172C0 = {
     64, {
     {     16,   16,    0, 12, 52,  0 }, {     16,   16,    1, 12, 52,  0 }, {     17,   17,    2, 12, 52,  0 }, {     17,   17,    3, 12, 52,  0 }, {     18,   18,    4, 12, 52,  0 },
     {     18,   18,    5, 12, 52,  0 }, {     19,   19,    6, 12, 52,  0 }, {     19,   19,    7, 12, 52,  0 }, {     20,   20,    8, 12, 52,  0 }, {     20,   20,    9, 12, 52,  0 },
@@ -16278,7 +16278,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9172C0 = {
     {     46,   46,   60, 12, 52,  0 }, {     46,   46,   61, 12, 52,  0 }, {     47,   47,   62, 12, 52,  0 }, {     47,   47,   63, 12, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_917502 = {
+static const rct_vehicle_info_list TrackVehicleInfo_917502 = {
     64, {
     {     16,   15,    0, 20, 52,  0 }, {     16,   15,    1, 20, 52,  0 }, {     17,   14,    2, 20, 52,  0 }, {     17,   14,    3, 20, 52,  0 }, {     18,   13,    4, 20, 52,  0 },
     {     18,   13,    5, 20, 52,  0 }, {     19,   12,    6, 20, 52,  0 }, {     19,   12,    7, 20, 52,  0 }, {     20,   11,    8, 20, 52,  0 }, {     20,   11,    9, 20, 52,  0 },
@@ -16295,7 +16295,7 @@ const rct_vehicle_info_list TrackVehicleInfo_917502 = {
     {     46,  -15,   60, 20, 52,  0 }, {     46,  -15,   61, 20, 52,  0 }, {     47,  -16,   62, 20, 52,  0 }, {     47,  -16,   63, 20, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_917744 = {
+static const rct_vehicle_info_list TrackVehicleInfo_917744 = {
     64, {
     {     15,   15,    0, 28, 52,  0 }, {     15,   15,    1, 28, 52,  0 }, {     14,   14,    2, 28, 52,  0 }, {     14,   14,    3, 28, 52,  0 }, {     13,   13,    4, 28, 52,  0 },
     {     13,   13,    5, 28, 52,  0 }, {     12,   12,    6, 28, 52,  0 }, {     12,   12,    7, 28, 52,  0 }, {     11,   11,    8, 28, 52,  0 }, {     11,   11,    9, 28, 52,  0 },
@@ -16312,7 +16312,7 @@ const rct_vehicle_info_list TrackVehicleInfo_917744 = {
     {    -15,  -15,   60, 28, 52,  0 }, {    -15,  -15,   61, 28, 52,  0 }, {    -16,  -16,   62, 28, 52,  0 }, {    -16,  -16,   63, 28, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91828E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91828E = {
     32, {
     {     15,   16,    0,  4,  0,  0 }, {     14,   17,    0,  4,  0,  0 }, {     13,   18,    0,  4,  0,  0 }, {     12,   19,    0,  4,  0,  0 }, {     11,   20,    0,  4,  0,  0 },
     {     10,   21,    0,  4,  0,  0 }, {      9,   22,    0,  4,  0,  0 }, {      8,   23,    0,  4,  0,  0 }, {      7,   24,    0,  4, 50,  0 }, {      6,   25,    0,  4, 50,  0 },
@@ -16323,7 +16323,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91828E = {
     {    -15,   46,    7,  4, 51,  0 }, {    -16,   47,    8,  4, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9183B0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9183B0 = {
     32, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     21,   21,    0, 12,  0,  0 }, {     22,   22,    0, 12,  0,  0 }, {     23,   23,    0, 12,  0,  0 }, {     24,   24,    0, 12, 50,  0 }, {     25,   25,    0, 12, 50,  0 },
@@ -16334,7 +16334,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9183B0 = {
     {     46,   46,    7, 12, 51,  0 }, {     47,   47,    7, 12, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9184D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9184D2 = {
     32, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   11,    0, 20,  0,  0 },
     {     21,   10,    0, 20,  0,  0 }, {     22,    9,    0, 20,  0,  0 }, {     23,    8,    0, 20,  0,  0 }, {     24,    7,    0, 20, 50,  0 }, {     25,    6,    0, 20, 50,  0 },
@@ -16345,7 +16345,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9184D2 = {
     {     46,  -15,    7, 20, 51,  0 }, {     47,  -16,    7, 20, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9185F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9185F4 = {
     32, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   11,    0, 28,  0,  0 },
     {     10,   10,    0, 28,  0,  0 }, {      9,    9,    0, 28,  0,  0 }, {      8,    8,    0, 28,  0,  0 }, {      7,    7,    0, 28, 50,  0 }, {      6,    6,    0, 28, 50,  0 },
@@ -16356,7 +16356,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9185F4 = {
     {    -15,  -15,    7, 28, 51,  0 }, {    -16,  -16,    8, 28, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9194F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9194F6 = {
     37, {
     {     15,   16,    0,  4, 51,  0 }, {     14,   17,    0,  4, 51,  0 }, {     13,   18,    1,  4, 51,  0 }, {     12,   19,    1,  4, 51,  0 }, {     11,   20,    2,  4,  2,  0 },
     {     10,   21,    3,  4,  2,  0 }, {      9,   22,    3,  4,  2,  0 }, {      8,   23,    4,  4,  2,  0 }, {      7,   24,    5,  4,  2,  0 }, {      6,   25,    5,  4,  2,  0 },
@@ -16368,7 +16368,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9194F6 = {
     {    -16,   47,   30,  4, 52,  0 }, {    -16,   47,   31,  4, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919645 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919645 = {
     37, {
     {     16,   16,    0, 12, 51,  0 }, {     17,   17,    0, 12, 51,  0 }, {     18,   18,    1, 12, 51,  0 }, {     19,   19,    1, 12, 51,  0 }, {     20,   20,    2, 12,  2,  0 },
     {     21,   21,    3, 12,  2,  0 }, {     22,   22,    3, 12,  2,  0 }, {     23,   23,    4, 12,  2,  0 }, {     24,   24,    5, 12,  2,  0 }, {     25,   25,    5, 12,  2,  0 },
@@ -16380,7 +16380,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919645 = {
     {     47,   47,   30, 12, 52,  0 }, {     47,   47,   31, 12, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919794 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919794 = {
     37, {
     {     16,   15,    0, 20, 51,  0 }, {     17,   14,    0, 20, 51,  0 }, {     18,   13,    1, 20, 51,  0 }, {     19,   12,    1, 20, 51,  0 }, {     20,   11,    2, 20,  2,  0 },
     {     21,   10,    3, 20,  2,  0 }, {     22,    9,    3, 20,  2,  0 }, {     23,    8,    4, 20,  2,  0 }, {     24,    7,    5, 20,  2,  0 }, {     25,    6,    5, 20,  2,  0 },
@@ -16392,7 +16392,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919794 = {
     {     47,  -16,   30, 20, 52,  0 }, {     47,  -16,   31, 20, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9198E3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9198E3 = {
     37, {
     {     15,   15,    0, 28, 51,  0 }, {     14,   14,    0, 28, 51,  0 }, {     13,   13,    1, 28, 51,  0 }, {     12,   12,    1, 28, 51,  0 }, {     11,   11,    2, 28,  2,  0 },
     {     10,   10,    3, 28,  2,  0 }, {      9,    9,    3, 28,  2,  0 }, {      8,    8,    4, 28,  2,  0 }, {      7,    7,    5, 28,  2,  0 }, {      6,    6,    5, 28,  2,  0 },
@@ -16404,7 +16404,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9198E3 = {
     {    -16,  -16,   30, 28, 52,  0 }, {    -16,  -16,   31, 28, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919A32 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919A32 = {
     37, {
     {     15,   16,    0,  4, 52,  0 }, {     15,   16,    1,  4,  3,  0 }, {     14,   17,    2,  4,  3,  0 }, {     14,   17,    3,  4,  3,  0 }, {     13,   18,    4,  4,  3,  0 },
     {     12,   19,    5,  4,  3,  0 }, {     12,   19,    6,  4,  3,  0 }, {     11,   20,    7,  4,  3,  0 }, {     10,   21,    8,  4,  3,  0 }, {     10,   21,    9,  4,  3,  0 },
@@ -16416,7 +16416,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919A32 = {
     {    -15,   46,   31,  4, 51,  0 }, {    -16,   47,   31,  4, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919B81 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919B81 = {
     37, {
     {     16,   16,    0, 12, 52,  0 }, {     16,   16,    1, 12,  3,  0 }, {     17,   17,    2, 12,  3,  0 }, {     17,   17,    3, 12,  3,  0 }, {     18,   18,    4, 12,  3,  0 },
     {     19,   19,    5, 12,  3,  0 }, {     19,   19,    6, 12,  3,  0 }, {     20,   20,    7, 12,  3,  0 }, {     21,   21,    8, 12,  3,  0 }, {     21,   21,    9, 12,  3,  0 },
@@ -16428,7 +16428,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919B81 = {
     {     46,   46,   31, 12, 51,  0 }, {     47,   47,   31, 12, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919CD0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919CD0 = {
     37, {
     {     16,   15,    0, 20, 52,  0 }, {     16,   15,    1, 20,  3,  0 }, {     17,   14,    2, 20,  3,  0 }, {     17,   14,    3, 20,  3,  0 }, {     18,   13,    4, 20,  3,  0 },
     {     19,   12,    5, 20,  3,  0 }, {     19,   12,    6, 20,  3,  0 }, {     20,   11,    7, 20,  3,  0 }, {     21,   10,    8, 20,  3,  0 }, {     21,   10,    9, 20,  3,  0 },
@@ -16440,7 +16440,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919CD0 = {
     {     46,  -15,   31, 20, 51,  0 }, {     47,  -16,   31, 20, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919E1F = {
+static const rct_vehicle_info_list TrackVehicleInfo_919E1F = {
     37, {
     {     15,   15,    0, 28, 52,  0 }, {     15,   15,    1, 28,  3,  0 }, {     14,   14,    2, 28,  3,  0 }, {     14,   14,    3, 28,  3,  0 }, {     13,   13,    4, 28,  3,  0 },
     {     12,   12,    5, 28,  3,  0 }, {     12,   12,    6, 28,  3,  0 }, {     11,   11,    7, 28,  3,  0 }, {     10,   10,    8, 28,  3,  0 }, {     10,   10,    9, 28,  3,  0 },
@@ -16452,7 +16452,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919E1F = {
     {    -15,  -15,   31, 28, 51,  0 }, {    -16,  -16,   31, 28, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918716 = {
+static const rct_vehicle_info_list TrackVehicleInfo_918716 = {
     32, {
     {     15,   16,    0,  4, 51,  0 }, {     14,   17,    1,  4, 51,  0 }, {     13,   18,    1,  4, 51,  0 }, {     12,   19,    2,  4, 51,  0 }, {     11,   20,    2,  4, 51,  0 },
     {     10,   21,    3,  4, 51,  0 }, {      9,   22,    3,  4, 51,  0 }, {      8,   23,    3,  4, 51,  0 }, {      7,   24,    4,  4, 50,  0 }, {      6,   25,    4,  4, 50,  0 },
@@ -16463,7 +16463,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918716 = {
     {    -15,   46,    8,  4,  0,  0 }, {    -16,   47,    8,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91884A = {
+static const rct_vehicle_info_list TrackVehicleInfo_91884A = {
     32, {
     {     16,   16,    0, 12, 51,  0 }, {     17,   17,    0, 12, 51,  0 }, {     18,   18,    1, 12, 51,  0 }, {     19,   19,    1, 12, 51,  0 }, {     20,   20,    2, 12, 51,  0 },
     {     21,   21,    2, 12, 51,  0 }, {     22,   22,    3, 12, 51,  0 }, {     23,   23,    3, 12, 51,  0 }, {     24,   24,    4, 12, 50,  0 }, {     25,   25,    4, 12, 50,  0 },
@@ -16474,7 +16474,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91884A = {
     {     46,   46,    8, 12,  0,  0 }, {     47,   47,    8, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91897E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91897E = {
     32, {
     {     16,   15,    0, 20, 51,  0 }, {     17,   14,    0, 20, 51,  0 }, {     18,   13,    1, 20, 51,  0 }, {     19,   12,    1, 20, 51,  0 }, {     20,   11,    2, 20, 51,  0 },
     {     21,   10,    2, 20, 51,  0 }, {     22,    9,    3, 20, 51,  0 }, {     23,    8,    3, 20, 51,  0 }, {     24,    7,    4, 20, 50,  0 }, {     25,    6,    4, 20, 50,  0 },
@@ -16485,7 +16485,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91897E = {
     {     46,  -15,    8, 20,  0,  0 }, {     47,  -16,    8, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918AB2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_918AB2 = {
     32, {
     {     15,   15,    0, 28, 51,  0 }, {     14,   14,    1, 28, 51,  0 }, {     13,   13,    1, 28, 51,  0 }, {     12,   12,    2, 28, 51,  0 }, {     11,   11,    2, 28, 51,  0 },
     {     10,   10,    3, 28, 51,  0 }, {      9,    9,    3, 28, 51,  0 }, {      8,    8,    3, 28, 51,  0 }, {      7,    7,    4, 28, 50,  0 }, {      6,    6,    4, 28, 50,  0 },
@@ -16496,7 +16496,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918AB2 = {
     {    -15,  -15,    8, 28,  0,  0 }, {    -16,  -16,    8, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916BF6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916BF6 = {
     32, {
     {     15,   16,   15,  4, 54,  0 }, {     14,   17,   15,  4, 54,  0 }, {     13,   18,   14,  4, 54,  0 }, {     12,   19,   14,  4, 54,  0 }, {     11,   20,   13,  4, 54,  0 },
     {     10,   21,   13,  4, 54,  0 }, {      9,   22,   12,  4, 54,  0 }, {      8,   23,   12,  4, 54,  0 }, {      7,   24,   11,  4, 54,  0 }, {      6,   25,   11,  4, 54,  0 },
@@ -16507,7 +16507,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916BF6 = {
     {    -15,   46,    0,  4, 54,  0 }, {    -16,   47,    0,  4, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916D18 = {
+static const rct_vehicle_info_list TrackVehicleInfo_916D18 = {
     32, {
     {     16,   16,   15, 12, 54,  0 }, {     17,   17,   14, 12, 54,  0 }, {     18,   18,   14, 12, 54,  0 }, {     19,   19,   13, 12, 54,  0 }, {     20,   20,   13, 12, 54,  0 },
     {     21,   21,   12, 12, 54,  0 }, {     22,   22,   12, 12, 54,  0 }, {     23,   23,   11, 12, 54,  0 }, {     24,   24,   11, 12, 54,  0 }, {     25,   25,   10, 12, 54,  0 },
@@ -16518,7 +16518,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916D18 = {
     {     46,   46,    0, 12, 54,  0 }, {     47,   47,   -1, 12, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916E3A = {
+static const rct_vehicle_info_list TrackVehicleInfo_916E3A = {
     32, {
     {     16,   15,   15, 20, 54,  0 }, {     17,   14,   14, 20, 54,  0 }, {     18,   13,   14, 20, 54,  0 }, {     19,   12,   13, 20, 54,  0 }, {     20,   11,   13, 20, 54,  0 },
     {     21,   10,   12, 20, 54,  0 }, {     22,    9,   12, 20, 54,  0 }, {     23,    8,   11, 20, 54,  0 }, {     24,    7,   11, 20, 54,  0 }, {     25,    6,   10, 20, 54,  0 },
@@ -16529,7 +16529,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916E3A = {
     {     46,  -15,    0, 20, 54,  0 }, {     47,  -16,   -1, 20, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_916F5C = {
+static const rct_vehicle_info_list TrackVehicleInfo_916F5C = {
     32, {
     {     15,   15,   15, 28, 54,  0 }, {     14,   14,   15, 28, 54,  0 }, {     13,   13,   14, 28, 54,  0 }, {     12,   12,   14, 28, 54,  0 }, {     11,   11,   13, 28, 54,  0 },
     {     10,   10,   13, 28, 54,  0 }, {      9,    9,   12, 28, 54,  0 }, {      8,    8,   12, 28, 54,  0 }, {      7,    7,   11, 28, 54,  0 }, {      6,    6,   11, 28, 54,  0 },
@@ -16540,7 +16540,7 @@ const rct_vehicle_info_list TrackVehicleInfo_916F5C = {
     {    -15,  -15,    0, 28, 54,  0 }, {    -16,  -16,    0, 28, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_917986 = {
+static const rct_vehicle_info_list TrackVehicleInfo_917986 = {
     64, {
     {     15,   16,   63,  4, 55,  0 }, {     15,   16,   62,  4, 55,  0 }, {     14,   17,   61,  4, 55,  0 }, {     14,   17,   60,  4, 55,  0 }, {     13,   18,   59,  4, 55,  0 },
     {     13,   18,   58,  4, 55,  0 }, {     12,   19,   57,  4, 55,  0 }, {     12,   19,   56,  4, 55,  0 }, {     11,   20,   55,  4, 55,  0 }, {     11,   20,   54,  4, 55,  0 },
@@ -16557,7 +16557,7 @@ const rct_vehicle_info_list TrackVehicleInfo_917986 = {
     {    -15,   46,    3,  4, 55,  0 }, {    -15,   46,    2,  4, 55,  0 }, {    -16,   47,    1,  4, 55,  0 }, {    -16,   47,    0,  4, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_917BC8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_917BC8 = {
     64, {
     {     16,   16,   63, 12, 55,  0 }, {     16,   16,   62, 12, 55,  0 }, {     17,   17,   61, 12, 55,  0 }, {     17,   17,   60, 12, 55,  0 }, {     18,   18,   59, 12, 55,  0 },
     {     18,   18,   58, 12, 55,  0 }, {     19,   19,   57, 12, 55,  0 }, {     19,   19,   56, 12, 55,  0 }, {     20,   20,   55, 12, 55,  0 }, {     20,   20,   54, 12, 55,  0 },
@@ -16574,7 +16574,7 @@ const rct_vehicle_info_list TrackVehicleInfo_917BC8 = {
     {     46,   46,    3, 12, 55,  0 }, {     46,   46,    2, 12, 55,  0 }, {     47,   47,    1, 12, 55,  0 }, {     47,   47,    0, 12, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_917E0A = {
+static const rct_vehicle_info_list TrackVehicleInfo_917E0A = {
     64, {
     {     16,   15,   63, 20, 55,  0 }, {     16,   15,   62, 20, 55,  0 }, {     17,   14,   61, 20, 55,  0 }, {     17,   14,   60, 20, 55,  0 }, {     18,   13,   59, 20, 55,  0 },
     {     18,   13,   58, 20, 55,  0 }, {     19,   12,   57, 20, 55,  0 }, {     19,   12,   56, 20, 55,  0 }, {     20,   11,   55, 20, 55,  0 }, {     20,   11,   54, 20, 55,  0 },
@@ -16591,7 +16591,7 @@ const rct_vehicle_info_list TrackVehicleInfo_917E0A = {
     {     46,  -15,    3, 20, 55,  0 }, {     46,  -15,    2, 20, 55,  0 }, {     47,  -16,    1, 20, 55,  0 }, {     47,  -16,    0, 20, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91804C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91804C = {
     64, {
     {     15,   15,   63, 28, 55,  0 }, {     15,   15,   62, 28, 55,  0 }, {     14,   14,   61, 28, 55,  0 }, {     14,   14,   60, 28, 55,  0 }, {     13,   13,   59, 28, 55,  0 },
     {     13,   13,   58, 28, 55,  0 }, {     12,   12,   57, 28, 55,  0 }, {     12,   12,   56, 28, 55,  0 }, {     11,   11,   55, 28, 55,  0 }, {     11,   11,   54, 28, 55,  0 },
@@ -16608,7 +16608,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91804C = {
     {    -15,  -15,    3, 28, 55,  0 }, {    -15,  -15,    2, 28, 55,  0 }, {    -16,  -16,    1, 28, 55,  0 }, {    -16,  -16,    0, 28, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91906E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91906E = {
     32, {
     {     15,   16,    8,  4,  0,  0 }, {     14,   17,    8,  4,  0,  0 }, {     13,   18,    8,  4,  0,  0 }, {     12,   19,    8,  4,  0,  0 }, {     11,   20,    8,  4,  0,  0 },
     {     10,   21,    8,  4,  0,  0 }, {      9,   22,    8,  4,  0,  0 }, {      8,   23,    8,  4,  0,  0 }, {      7,   24,    7,  4, 53,  0 }, {      6,   25,    7,  4, 53,  0 },
@@ -16619,7 +16619,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91906E = {
     {    -15,   46,    0,  4, 54,  0 }, {    -16,   47,    0,  4, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919190 = {
+static const rct_vehicle_info_list TrackVehicleInfo_919190 = {
     32, {
     {     16,   16,    8, 12,  0,  0 }, {     17,   17,    8, 12,  0,  0 }, {     18,   18,    8, 12,  0,  0 }, {     19,   19,    8, 12,  0,  0 }, {     20,   20,    8, 12,  0,  0 },
     {     21,   21,    8, 12,  0,  0 }, {     22,   22,    8, 12,  0,  0 }, {     23,   23,    8, 12,  0,  0 }, {     24,   24,    7, 12, 53,  0 }, {     25,   25,    7, 12, 53,  0 },
@@ -16630,7 +16630,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919190 = {
     {     46,   46,    1, 12, 54,  0 }, {     47,   47,    0, 12, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9192B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9192B2 = {
     32, {
     {     16,   15,    8, 20,  0,  0 }, {     17,   14,    8, 20,  0,  0 }, {     18,   13,    8, 20,  0,  0 }, {     19,   12,    8, 20,  0,  0 }, {     20,   11,    8, 20,  0,  0 },
     {     21,   10,    8, 20,  0,  0 }, {     22,    9,    8, 20,  0,  0 }, {     23,    8,    8, 20,  0,  0 }, {     24,    7,    7, 20, 53,  0 }, {     25,    6,    7, 20, 53,  0 },
@@ -16641,7 +16641,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9192B2 = {
     {     46,  -15,    1, 20, 54,  0 }, {     47,  -16,    0, 20, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9193D4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9193D4 = {
     32, {
     {     15,   15,    8, 28,  0,  0 }, {     14,   14,    8, 28,  0,  0 }, {     13,   13,    8, 28,  0,  0 }, {     12,   12,    8, 28,  0,  0 }, {     11,   11,    8, 28,  0,  0 },
     {     10,   10,    8, 28,  0,  0 }, {      9,    9,    8, 28,  0,  0 }, {      8,    8,    8, 28,  0,  0 }, {      7,    7,    7, 28, 53,  0 }, {      6,    6,    7, 28, 53,  0 },
@@ -16652,7 +16652,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9193D4 = {
     {    -15,  -15,    0, 28, 54,  0 }, {    -16,  -16,    0, 28, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A4AA = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A4AA = {
     37, {
     {     15,   16,   31,  4, 54,  0 }, {     14,   17,   31,  4, 54,  0 }, {     13,   18,   30,  4, 54,  0 }, {     12,   19,   30,  4, 54,  0 }, {     11,   20,   29,  4,  6,  0 },
     {     10,   21,   28,  4,  6,  0 }, {      9,   22,   28,  4,  6,  0 }, {      8,   23,   27,  4,  6,  0 }, {      7,   24,   26,  4,  6,  0 }, {      6,   25,   26,  4,  6,  0 },
@@ -16664,7 +16664,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A4AA = {
     {    -16,   47,    0,  4,  7,  0 }, {    -16,   47,   -1,  4, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A5F9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A5F9 = {
     37, {
     {     16,   16,   31, 12, 54,  0 }, {     17,   17,   31, 12, 54,  0 }, {     18,   18,   30, 12, 54,  0 }, {     19,   19,   30, 12, 54,  0 }, {     20,   20,   29, 12,  6,  0 },
     {     21,   21,   28, 12,  6,  0 }, {     22,   22,   28, 12,  6,  0 }, {     23,   23,   27, 12,  6,  0 }, {     24,   24,   26, 12,  6,  0 }, {     25,   25,   26, 12,  6,  0 },
@@ -16676,7 +16676,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A5F9 = {
     {     47,   47,    0, 12,  7,  0 }, {     47,   47,   -1, 12, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A748 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A748 = {
     37, {
     {     16,   15,   31, 20, 54,  0 }, {     17,   14,   31, 20, 54,  0 }, {     18,   13,   30, 20, 54,  0 }, {     19,   12,   30, 20, 54,  0 }, {     20,   11,   29, 20,  6,  0 },
     {     21,   10,   28, 20,  6,  0 }, {     22,    9,   28, 20,  6,  0 }, {     23,    8,   27, 20,  6,  0 }, {     24,    7,   26, 20,  6,  0 }, {     25,    6,   26, 20,  6,  0 },
@@ -16688,7 +16688,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A748 = {
     {     47,  -16,    0, 20,  7,  0 }, {     47,  -16,   -1, 20, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A897 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A897 = {
     37, {
     {     15,   15,   31, 28, 54,  0 }, {     14,   14,   31, 28, 54,  0 }, {     13,   13,   30, 28, 54,  0 }, {     12,   12,   30, 28, 54,  0 }, {     11,   11,   29, 28,  6,  0 },
     {     10,   10,   28, 28,  6,  0 }, {      9,    9,   28, 28,  6,  0 }, {      8,    8,   27, 28,  6,  0 }, {      7,    7,   26, 28,  6,  0 }, {      6,    6,   26, 28,  6,  0 },
@@ -16700,7 +16700,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A897 = {
     {    -16,  -16,    0, 28,  7,  0 }, {    -16,  -16,   -1, 28, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_919F6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_919F6E = {
     37, {
     {     15,   16,   31,  4, 55,  0 }, {     15,   16,   30,  4, 55,  0 }, {     14,   17,   29,  4, 55,  0 }, {     14,   17,   28,  4, 55,  0 }, {     13,   18,   27,  4,  7,  0 },
     {     12,   19,   26,  4,  7,  0 }, {     12,   19,   25,  4,  7,  0 }, {     11,   20,   24,  4,  7,  0 }, {     10,   21,   23,  4,  7,  0 }, {     10,   21,   22,  4,  7,  0 },
@@ -16712,7 +16712,7 @@ const rct_vehicle_info_list TrackVehicleInfo_919F6E = {
     {    -16,   47,    0,  4, 54,  0 }, {    -17,   48,    0,  4, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A0BD = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A0BD = {
     37, {
     {     16,   16,   31, 12, 55,  0 }, {     16,   16,   30, 12, 55,  0 }, {     17,   17,   29, 12, 55,  0 }, {     17,   17,   28, 12, 55,  0 }, {     18,   18,   27, 12,  7,  0 },
     {     19,   19,   26, 12,  7,  0 }, {     19,   19,   25, 12,  7,  0 }, {     20,   20,   24, 12,  7,  0 }, {     21,   21,   23, 12,  7,  0 }, {     21,   21,   22, 12,  7,  0 },
@@ -16724,7 +16724,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A0BD = {
     {     47,   47,    0, 12, 54,  0 }, {     48,   48,    0, 12, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A20C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A20C = {
     37, {
     {     16,   15,   31, 20, 55,  0 }, {     16,   15,   30, 20, 55,  0 }, {     17,   14,   29, 20, 55,  0 }, {     17,   14,   28, 20, 55,  0 }, {     18,   13,   27, 20,  7,  0 },
     {     19,   12,   26, 20,  7,  0 }, {     19,   12,   25, 20,  7,  0 }, {     20,   11,   24, 20,  7,  0 }, {     21,   10,   23, 20,  7,  0 }, {     21,   10,   22, 20,  7,  0 },
@@ -16736,7 +16736,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A20C = {
     {     47,  -16,    0, 20, 54,  0 }, {     48,  -17,    0, 20, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A35B = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A35B = {
     37, {
     {     15,   15,   31, 28, 55,  0 }, {     15,   15,   30, 28, 55,  0 }, {     14,   14,   29, 28, 55,  0 }, {     14,   14,   28, 28, 55,  0 }, {     13,   13,   27, 28,  7,  0 },
     {     12,   12,   26, 28,  7,  0 }, {     12,   12,   25, 28,  7,  0 }, {     11,   11,   24, 28,  7,  0 }, {     10,   10,   23, 28,  7,  0 }, {     10,   10,   22, 28,  7,  0 },
@@ -16748,7 +16748,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A35B = {
     {    -16,  -16,    0, 28, 54,  0 }, {    -17,  -17,    0, 28, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918BE6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_918BE6 = {
     32, {
     {     15,   16,    7,  4, 54,  0 }, {     14,   17,    7,  4, 54,  0 }, {     13,   18,    6,  4, 54,  0 }, {     12,   19,    6,  4, 54,  0 }, {     11,   20,    5,  4, 54,  0 },
     {     10,   21,    5,  4, 54,  0 }, {      9,   22,    4,  4, 54,  0 }, {      8,   23,    4,  4, 54,  0 }, {      7,   24,    4,  4, 53,  0 }, {      6,   25,    3,  4, 53,  0 },
@@ -16759,7 +16759,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918BE6 = {
     {    -15,   46,    0,  4,  0,  0 }, {    -16,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918D08 = {
+static const rct_vehicle_info_list TrackVehicleInfo_918D08 = {
     32, {
     {     16,   16,    8, 12, 54,  0 }, {     17,   17,    7, 12, 54,  0 }, {     18,   18,    7, 12, 54,  0 }, {     19,   19,    6, 12, 54,  0 }, {     20,   20,    6, 12, 54,  0 },
     {     21,   21,    5, 12, 54,  0 }, {     22,   22,    5, 12, 54,  0 }, {     23,   23,    4, 12, 54,  0 }, {     24,   24,    4, 12, 53,  0 }, {     25,   25,    3, 12, 53,  0 },
@@ -16770,7 +16770,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918D08 = {
     {     46,   46,    0, 12,  0,  0 }, {     47,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918E2A = {
+static const rct_vehicle_info_list TrackVehicleInfo_918E2A = {
     32, {
     {     16,   15,    8, 20, 54,  0 }, {     17,   14,    7, 20, 54,  0 }, {     18,   13,    7, 20, 54,  0 }, {     19,   12,    6, 20, 54,  0 }, {     20,   11,    6, 20, 54,  0 },
     {     21,   10,    5, 20, 54,  0 }, {     22,    9,    5, 20, 54,  0 }, {     23,    8,    4, 20, 54,  0 }, {     24,    7,    4, 20, 53,  0 }, {     25,    6,    3, 20, 53,  0 },
@@ -16781,7 +16781,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918E2A = {
     {     46,  -15,    0, 20,  0,  0 }, {     47,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_918F4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_918F4C = {
     32, {
     {     15,   15,    7, 28, 54,  0 }, {     14,   14,    7, 28, 54,  0 }, {     13,   13,    6, 28, 54,  0 }, {     12,   12,    6, 28, 54,  0 }, {     11,   11,    5, 28, 54,  0 },
     {     10,   10,    5, 28, 54,  0 }, {      9,    9,    4, 28, 54,  0 }, {      8,    8,    4, 28, 54,  0 }, {      7,    7,    4, 28, 53,  0 }, {      6,    6,    3, 28, 53,  0 },
@@ -16792,7 +16792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_918F4C = {
     {    -15,  -15,    0, 28,  0,  0 }, {    -16,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91A9E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91A9E6 = {
     36, {
     {     15,   16,    0,  4,  0,  0 }, {     14,   17,    0,  4,  0,  0 }, {     13,   18,    0,  4,  0,  0 }, {     12,   19,    0,  4,  0,  0 }, {     11,   20,    1,  4,  0,  0 },
     {     10,   21,    1,  4, 50,  0 }, {      9,   22,    1,  4, 50,  0 }, {      8,   23,    2,  4, 50,  0 }, {      7,   24,    2,  4, 50,  0 }, {      6,   25,    2,  4, 50,  0 },
@@ -16804,7 +16804,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91A9E6 = {
     {    -16,   47,   23,  4, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91AB2C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91AB2C = {
     36, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    1, 12,  0,  0 },
     {     21,   21,    1, 12, 50,  0 }, {     22,   22,    1, 12, 50,  0 }, {     23,   23,    2, 12, 50,  0 }, {     24,   24,    2, 12, 50,  0 }, {     25,   25,    2, 12, 50,  0 },
@@ -16816,7 +16816,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91AB2C = {
     {     47,   47,   23, 12, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91AC72 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91AC72 = {
     36, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   11,    1, 20,  0,  0 },
     {     21,   10,    1, 20, 50,  0 }, {     22,    9,    1, 20, 50,  0 }, {     23,    8,    2, 20, 50,  0 }, {     24,    7,    2, 20, 50,  0 }, {     25,    6,    2, 20, 50,  0 },
@@ -16828,7 +16828,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91AC72 = {
     {     47,  -16,   23, 20, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91ADB8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91ADB8 = {
     36, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   11,    1, 28,  0,  0 },
     {     10,   10,    1, 28, 50,  0 }, {      9,    9,    1, 28, 50,  0 }, {      8,    8,    2, 28, 50,  0 }, {      7,    7,    2, 28, 50,  0 }, {      6,    6,    2, 28, 50,  0 },
@@ -16840,7 +16840,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91ADB8 = {
     {    -16,  -16,   23, 28, 52,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91AEFE = {
+static const rct_vehicle_info_list TrackVehicleInfo_91AEFE = {
     36, {
     {     15,   16,    0,  4, 52,  0 }, {     15,   16,    1,  4, 52,  0 }, {     14,   17,    2,  4, 52,  0 }, {     14,   17,    3,  4, 52,  0 }, {     13,   18,    4,  4, 52,  0 },
     {     13,   18,    5,  4, 52,  0 }, {     12,   19,    6,  4, 52,  0 }, {     11,   20,    7,  4,  3,  0 }, {     11,   20,    8,  4,  3,  0 }, {     10,   21,    9,  4,  3,  0 },
@@ -16852,7 +16852,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91AEFE = {
     {    -16,   47,   23,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B044 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B044 = {
     36, {
     {     16,   16,    0, 12, 52,  0 }, {     16,   16,    1, 12, 52,  0 }, {     17,   17,    2, 12, 52,  0 }, {     17,   17,    3, 12, 52,  0 }, {     18,   18,    4, 12, 52,  0 },
     {     18,   18,    5, 12, 52,  0 }, {     19,   19,    6, 12, 52,  0 }, {     20,   20,    7, 12,  3,  0 }, {     20,   20,    8, 12,  3,  0 }, {     21,   21,    9, 12,  3,  0 },
@@ -16864,7 +16864,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B044 = {
     {     47,   47,   23, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B18A = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B18A = {
     36, {
     {     16,   15,    0, 20, 52,  0 }, {     16,   15,    1, 20, 52,  0 }, {     17,   14,    2, 20, 52,  0 }, {     17,   14,    3, 20, 52,  0 }, {     18,   13,    4, 20, 52,  0 },
     {     18,   13,    5, 20, 52,  0 }, {     19,   12,    6, 20, 52,  0 }, {     20,   11,    7, 20,  3,  0 }, {     20,   11,    8, 20,  3,  0 }, {     21,   10,    9, 20,  3,  0 },
@@ -16876,7 +16876,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B18A = {
     {     47,  -16,   23, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B2D0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B2D0 = {
     36, {
     {     15,   15,    0, 28, 52,  0 }, {     15,   15,    1, 28, 52,  0 }, {     14,   14,    2, 28, 52,  0 }, {     14,   14,    3, 28, 52,  0 }, {     13,   13,    4, 28, 52,  0 },
     {     13,   13,    5, 28, 52,  0 }, {     12,   12,    6, 28, 52,  0 }, {     11,   11,    7, 28,  3,  0 }, {     11,   11,    8, 28,  3,  0 }, {     10,   10,    9, 28,  3,  0 },
@@ -16888,7 +16888,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B2D0 = {
     {    -16,  -16,   23, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B416 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B416 = {
     36, {
     {     15,   16,   23,  4,  0,  0 }, {     14,   17,   23,  4,  0,  0 }, {     13,   18,   23,  4,  0,  0 }, {     12,   19,   23,  4,  0,  0 }, {     11,   20,   22,  4,  0,  0 },
     {     10,   21,   22,  4, 53,  0 }, {      9,   22,   22,  4, 53,  0 }, {      8,   23,   21,  4, 53,  0 }, {      7,   24,   21,  4, 53,  0 }, {      6,   25,   21,  4, 53,  0 },
@@ -16900,7 +16900,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B416 = {
     {    -16,   47,    0,  4, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B55C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B55C = {
     36, {
     {     16,   16,   23, 12,  0,  0 }, {     17,   17,   23, 12,  0,  0 }, {     18,   18,   23, 12,  0,  0 }, {     19,   19,   23, 12,  0,  0 }, {     20,   20,   22, 12,  0,  0 },
     {     21,   21,   22, 12, 53,  0 }, {     22,   22,   22, 12, 53,  0 }, {     23,   23,   21, 12, 53,  0 }, {     24,   24,   21, 12, 53,  0 }, {     25,   25,   21, 12, 53,  0 },
@@ -16912,7 +16912,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B55C = {
     {     47,   47,    0, 12, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B6A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B6A2 = {
     36, {
     {     16,   15,   23, 20,  0,  0 }, {     17,   14,   23, 20,  0,  0 }, {     18,   13,   23, 20,  0,  0 }, {     19,   12,   23, 20,  0,  0 }, {     20,   11,   22, 20,  0,  0 },
     {     21,   10,   22, 20, 53,  0 }, {     22,    9,   22, 20, 53,  0 }, {     23,    8,   21, 20, 53,  0 }, {     24,    7,   21, 20, 53,  0 }, {     25,    6,   21, 20, 53,  0 },
@@ -16924,7 +16924,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B6A2 = {
     {     47,  -16,    0, 20, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B7E8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B7E8 = {
     36, {
     {     15,   15,   23, 28,  0,  0 }, {     14,   14,   23, 28,  0,  0 }, {     13,   13,   23, 28,  0,  0 }, {     12,   12,   23, 28,  0,  0 }, {     11,   11,   22, 28,  0,  0 },
     {     10,   10,   22, 28, 53,  0 }, {      9,    9,   22, 28, 53,  0 }, {      8,    8,   21, 28, 53,  0 }, {      7,    7,   21, 28, 53,  0 }, {      6,    6,   21, 28, 53,  0 },
@@ -16936,7 +16936,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B7E8 = {
     {    -16,  -16,    0, 28, 55,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91B92E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91B92E = {
     36, {
     {     15,   16,   23,  4, 55,  0 }, {     15,   16,   22,  4, 55,  0 }, {     14,   17,   21,  4, 55,  0 }, {     14,   17,   20,  4, 55,  0 }, {     13,   18,   19,  4, 55,  0 },
     {     13,   18,   18,  4, 55,  0 }, {     12,   19,   17,  4, 55,  0 }, {     11,   20,   16,  4,  7,  0 }, {     11,   20,   15,  4,  7,  0 }, {     10,   21,   14,  4,  7,  0 },
@@ -16948,7 +16948,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91B92E = {
     {    -16,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91BA74 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91BA74 = {
     36, {
     {     16,   16,   23, 12, 55,  0 }, {     16,   16,   22, 12, 55,  0 }, {     17,   17,   21, 12, 55,  0 }, {     17,   17,   20, 12, 55,  0 }, {     18,   18,   19, 12, 55,  0 },
     {     18,   18,   18, 12, 55,  0 }, {     19,   19,   17, 12, 55,  0 }, {     20,   20,   16, 12,  7,  0 }, {     20,   20,   15, 12,  7,  0 }, {     21,   21,   14, 12,  7,  0 },
@@ -16960,7 +16960,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91BA74 = {
     {     47,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91BBBA = {
+static const rct_vehicle_info_list TrackVehicleInfo_91BBBA = {
     36, {
     {     16,   15,   23, 20, 55,  0 }, {     16,   15,   22, 20, 55,  0 }, {     17,   14,   21, 20, 55,  0 }, {     17,   14,   20, 20, 55,  0 }, {     18,   13,   19, 20, 55,  0 },
     {     18,   13,   18, 20, 55,  0 }, {     19,   12,   17, 20, 55,  0 }, {     20,   11,   16, 20,  7,  0 }, {     20,   11,   15, 20,  7,  0 }, {     21,   10,   14, 20,  7,  0 },
@@ -16972,7 +16972,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91BBBA = {
     {     47,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91BD00 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91BD00 = {
     36, {
     {     15,   15,   23, 28, 55,  0 }, {     15,   15,   22, 28, 55,  0 }, {     14,   14,   21, 28, 55,  0 }, {     14,   14,   20, 28, 55,  0 }, {     13,   13,   19, 28, 55,  0 },
     {     13,   13,   18, 28, 55,  0 }, {     12,   12,   17, 28, 55,  0 }, {     11,   11,   16, 28,  7,  0 }, {     11,   11,   15, 28,  7,  0 }, {     10,   10,   14, 28,  7,  0 },
@@ -16984,7 +16984,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91BD00 = {
     {    -16,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95787E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95787E = {
     32, {
     {     15,   16,    0,  4,  0,  0 }, {     14,   17,    0,  4,  0,  0 }, {     13,   18,    0,  4,  0,  0 }, {     12,   19,    0,  4,  0,  0 }, {     11,   20,    0,  4,  0,  0 },
     {     10,   21,    0,  4,  0,  0 }, {      9,   22,    0,  4,  0,  0 }, {      8,   23,    0,  4,  0,  0 }, {      7,   24,    0,  4,  0,  1 }, {      6,   25,    0,  4,  0,  1 },
@@ -16995,7 +16995,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95787E = {
     {    -15,   46,    0,  4,  0,  2 }, {    -16,   47,    0,  4,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9579A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9579A0 = {
     32, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     21,   21,    0, 12,  0,  0 }, {     22,   22,    0, 12,  0,  0 }, {     23,   23,    0, 12,  0,  0 }, {     24,   24,    0, 12,  0,  1 }, {     25,   25,    0, 12,  0,  1 },
@@ -17006,7 +17006,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9579A0 = {
     {     46,   46,    0, 12,  0,  2 }, {     47,   47,    0, 12,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_957AC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_957AC2 = {
     32, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   11,    0, 20,  0,  0 },
     {     21,   10,    0, 20,  0,  0 }, {     22,    9,    0, 20,  0,  0 }, {     23,    8,    0, 20,  0,  0 }, {     24,    7,    0, 20,  0,  1 }, {     25,    6,    0, 20,  0,  1 },
@@ -17017,7 +17017,7 @@ const rct_vehicle_info_list TrackVehicleInfo_957AC2 = {
     {     46,  -15,    0, 20,  0,  2 }, {     47,  -16,    0, 20,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_957BE4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_957BE4 = {
     32, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   11,    0, 28,  0,  0 },
     {     10,   10,    0, 28,  0,  0 }, {      9,    9,    0, 28,  0,  0 }, {      8,    8,    0, 28,  0,  0 }, {      7,    7,    0, 28,  0,  1 }, {      6,    6,    0, 28,  0,  1 },
@@ -17028,7 +17028,7 @@ const rct_vehicle_info_list TrackVehicleInfo_957BE4 = {
     {    -15,  -15,    0, 28,  0,  2 }, {    -16,  -16,    0, 28,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_957D06 = {
+static const rct_vehicle_info_list TrackVehicleInfo_957D06 = {
     32, {
     {     15,   16,    0,  4,  0,  0 }, {     14,   17,    0,  4,  0,  0 }, {     13,   18,    0,  4,  0,  0 }, {     12,   19,    0,  4,  0,  0 }, {     11,   20,    0,  4,  0,  0 },
     {     10,   21,    0,  4,  0,  0 }, {      9,   22,    0,  4,  0,  0 }, {      8,   23,    0,  4,  0,  0 }, {      7,   24,    0,  4,  0,  3 }, {      6,   25,    0,  4,  0,  3 },
@@ -17039,7 +17039,7 @@ const rct_vehicle_info_list TrackVehicleInfo_957D06 = {
     {    -15,   46,    0,  4,  0,  4 }, {    -16,   47,    0,  4,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_957E28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_957E28 = {
     32, {
     {     16,   16,    0, 12,  0,  0 }, {     17,   17,    0, 12,  0,  0 }, {     18,   18,    0, 12,  0,  0 }, {     19,   19,    0, 12,  0,  0 }, {     20,   20,    0, 12,  0,  0 },
     {     21,   21,    0, 12,  0,  0 }, {     22,   22,    0, 12,  0,  0 }, {     23,   23,    0, 12,  0,  0 }, {     24,   24,    0, 12,  0,  3 }, {     25,   25,    0, 12,  0,  3 },
@@ -17050,7 +17050,7 @@ const rct_vehicle_info_list TrackVehicleInfo_957E28 = {
     {     46,   46,    0, 12,  0,  4 }, {     47,   47,    0, 12,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_957F4A = {
+static const rct_vehicle_info_list TrackVehicleInfo_957F4A = {
     32, {
     {     16,   15,    0, 20,  0,  0 }, {     17,   14,    0, 20,  0,  0 }, {     18,   13,    0, 20,  0,  0 }, {     19,   12,    0, 20,  0,  0 }, {     20,   11,    0, 20,  0,  0 },
     {     21,   10,    0, 20,  0,  0 }, {     22,    9,    0, 20,  0,  0 }, {     23,    8,    0, 20,  0,  0 }, {     24,    7,    0, 20,  0,  3 }, {     25,    6,    0, 20,  0,  3 },
@@ -17061,7 +17061,7 @@ const rct_vehicle_info_list TrackVehicleInfo_957F4A = {
     {     46,  -15,    0, 20,  0,  4 }, {     47,  -16,    0, 20,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95806C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95806C = {
     32, {
     {     15,   15,    0, 28,  0,  0 }, {     14,   14,    0, 28,  0,  0 }, {     13,   13,    0, 28,  0,  0 }, {     12,   12,    0, 28,  0,  0 }, {     11,   11,    0, 28,  0,  0 },
     {     10,   10,    0, 28,  0,  0 }, {      9,    9,    0, 28,  0,  0 }, {      8,    8,    0, 28,  0,  0 }, {      7,    7,    0, 28,  0,  3 }, {      6,    6,    0, 28,  0,  3 },
@@ -17072,7 +17072,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95806C = {
     {    -15,  -15,    0, 28,  0,  4 }, {    -16,  -16,    0, 28,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95818E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95818E = {
     32, {
     {     15,   16,    0,  4,  0,  2 }, {     14,   17,    0,  4,  0,  2 }, {     13,   18,    0,  4,  0,  2 }, {     12,   19,    0,  4,  0,  2 }, {     11,   20,    0,  4,  0,  2 },
     {     10,   21,    0,  4,  0,  2 }, {      9,   22,    0,  4,  0,  2 }, {      8,   23,    0,  4,  0,  2 }, {      7,   24,    0,  4,  0,  1 }, {      6,   25,    0,  4,  0,  1 },
@@ -17083,7 +17083,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95818E = {
     {    -15,   46,    0,  4,  0,  0 }, {    -16,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9582B0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9582B0 = {
     32, {
     {     16,   16,    0, 12,  0,  2 }, {     17,   17,    0, 12,  0,  2 }, {     18,   18,    0, 12,  0,  2 }, {     19,   19,    0, 12,  0,  2 }, {     20,   20,    0, 12,  0,  2 },
     {     21,   21,    0, 12,  0,  2 }, {     22,   22,    0, 12,  0,  2 }, {     23,   23,    0, 12,  0,  2 }, {     24,   24,    0, 12,  0,  1 }, {     25,   25,    0, 12,  0,  1 },
@@ -17094,7 +17094,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9582B0 = {
     {     46,   46,    0, 12,  0,  0 }, {     47,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9583D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9583D2 = {
     32, {
     {     16,   15,    0, 20,  0,  2 }, {     17,   14,    0, 20,  0,  2 }, {     18,   13,    0, 20,  0,  2 }, {     19,   12,    0, 20,  0,  2 }, {     20,   11,    0, 20,  0,  2 },
     {     21,   10,    0, 20,  0,  2 }, {     22,    9,    0, 20,  0,  2 }, {     23,    8,    0, 20,  0,  2 }, {     24,    7,    0, 20,  0,  1 }, {     25,    6,    0, 20,  0,  1 },
@@ -17105,7 +17105,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9583D2 = {
     {     46,  -15,    0, 20,  0,  0 }, {     47,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9584F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9584F4 = {
     32, {
     {     15,   15,    0, 28,  0,  2 }, {     14,   14,    0, 28,  0,  2 }, {     13,   13,    0, 28,  0,  2 }, {     12,   12,    0, 28,  0,  2 }, {     11,   11,    0, 28,  0,  2 },
     {     10,   10,    0, 28,  0,  2 }, {      9,    9,    0, 28,  0,  2 }, {      8,    8,    0, 28,  0,  2 }, {      7,    7,    0, 28,  0,  1 }, {      6,    6,    0, 28,  0,  1 },
@@ -17116,7 +17116,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9584F4 = {
     {    -15,  -15,    0, 28,  0,  0 }, {    -16,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958616 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958616 = {
     32, {
     {     15,   16,    0,  4,  0,  4 }, {     14,   17,    0,  4,  0,  4 }, {     13,   18,    0,  4,  0,  4 }, {     12,   19,    0,  4,  0,  4 }, {     11,   20,    0,  4,  0,  4 },
     {     10,   21,    0,  4,  0,  4 }, {      9,   22,    0,  4,  0,  4 }, {      8,   23,    0,  4,  0,  4 }, {      7,   24,    0,  4,  0,  3 }, {      6,   25,    0,  4,  0,  3 },
@@ -17127,7 +17127,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958616 = {
     {    -15,   46,    0,  4,  0,  0 }, {    -16,   47,    0,  4,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958738 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958738 = {
     32, {
     {     16,   16,    0, 12,  0,  4 }, {     17,   17,    0, 12,  0,  4 }, {     18,   18,    0, 12,  0,  4 }, {     19,   19,    0, 12,  0,  4 }, {     20,   20,    0, 12,  0,  4 },
     {     21,   21,    0, 12,  0,  4 }, {     22,   22,    0, 12,  0,  4 }, {     23,   23,    0, 12,  0,  4 }, {     24,   24,    0, 12,  0,  3 }, {     25,   25,    0, 12,  0,  3 },
@@ -17138,7 +17138,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958738 = {
     {     46,   46,    0, 12,  0,  0 }, {     47,   47,    0, 12,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95885A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95885A = {
     32, {
     {     16,   15,    0, 20,  0,  4 }, {     17,   14,    0, 20,  0,  4 }, {     18,   13,    0, 20,  0,  4 }, {     19,   12,    0, 20,  0,  4 }, {     20,   11,    0, 20,  0,  4 },
     {     21,   10,    0, 20,  0,  4 }, {     22,    9,    0, 20,  0,  4 }, {     23,    8,    0, 20,  0,  4 }, {     24,    7,    0, 20,  0,  3 }, {     25,    6,    0, 20,  0,  3 },
@@ -17149,7 +17149,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95885A = {
     {     46,  -15,    0, 20,  0,  0 }, {     47,  -16,    0, 20,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95897C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95897C = {
     32, {
     {     15,   15,    0, 28,  0,  4 }, {     14,   14,    0, 28,  0,  4 }, {     13,   13,    0, 28,  0,  4 }, {     12,   12,    0, 28,  0,  4 }, {     11,   11,    0, 28,  0,  4 },
     {     10,   10,    0, 28,  0,  4 }, {      9,    9,    0, 28,  0,  4 }, {      8,    8,    0, 28,  0,  4 }, {      7,    7,    0, 28,  0,  3 }, {      6,    6,    0, 28,  0,  3 },
@@ -17160,7 +17160,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95897C = {
     {    -15,  -15,    0, 28,  0,  0 }, {    -16,  -16,    0, 28,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958A9E = {
+static const rct_vehicle_info_list TrackVehicleInfo_958A9E = {
     32, {
     {     15,   16,    0,  4,  0,  2 }, {     14,   17,    0,  4,  0,  2 }, {     13,   18,    0,  4,  0,  2 }, {     12,   19,    0,  4,  0,  2 }, {     11,   20,    0,  4,  0,  2 },
     {     10,   21,    0,  4,  0,  2 }, {      9,   22,    0,  4,  0,  2 }, {      8,   23,    0,  4,  0,  2 }, {      7,   24,    0,  4, 50,  1 }, {      6,   25,    0,  4, 50,  1 },
@@ -17171,7 +17171,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958A9E = {
     {    -15,   46,    7,  4, 51,  0 }, {    -16,   47,    7,  4, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958BC0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958BC0 = {
     32, {
     {     16,   16,    0, 12,  0,  2 }, {     17,   17,    0, 12,  0,  2 }, {     18,   18,    0, 12,  0,  2 }, {     19,   19,    0, 12,  0,  2 }, {     20,   20,    0, 12,  0,  2 },
     {     21,   21,    0, 12,  0,  2 }, {     22,   22,    0, 12,  0,  2 }, {     23,   23,    0, 12,  0,  2 }, {     24,   24,    0, 12, 50,  1 }, {     25,   25,    0, 12, 50,  1 },
@@ -17182,7 +17182,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958BC0 = {
     {     46,   46,    7, 12, 51,  0 }, {     47,   47,    7, 12, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958CE2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958CE2 = {
     32, {
     {     16,   15,    0, 20,  0,  2 }, {     17,   14,    0, 20,  0,  2 }, {     18,   13,    0, 20,  0,  2 }, {     19,   12,    0, 20,  0,  2 }, {     20,   11,    0, 20,  0,  2 },
     {     21,   10,    0, 20,  0,  2 }, {     22,    9,    0, 20,  0,  2 }, {     23,    8,    0, 20,  0,  2 }, {     24,    7,    0, 20, 50,  1 }, {     25,    6,    0, 20, 50,  1 },
@@ -17193,7 +17193,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958CE2 = {
     {     46,  -15,    7, 20, 51,  0 }, {     47,  -16,    7, 20, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958E04 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958E04 = {
     32, {
     {     15,   15,    0, 28,  0,  2 }, {     14,   14,    0, 28,  0,  2 }, {     13,   13,    0, 28,  0,  2 }, {     12,   12,    0, 28,  0,  2 }, {     11,   11,    0, 28,  0,  2 },
     {     10,   10,    0, 28,  0,  2 }, {      9,    9,    0, 28,  0,  2 }, {      8,    8,    0, 28,  0,  2 }, {      7,    7,    0, 28, 50,  1 }, {      6,    6,    0, 28, 50,  1 },
@@ -17204,7 +17204,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958E04 = {
     {    -15,  -15,    7, 28, 51,  0 }, {    -16,  -16,    7, 28, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_958F26 = {
+static const rct_vehicle_info_list TrackVehicleInfo_958F26 = {
     32, {
     {     15,   16,    0,  4,  0,  4 }, {     14,   17,    0,  4,  0,  4 }, {     13,   18,    0,  4,  0,  4 }, {     12,   19,    0,  4,  0,  4 }, {     11,   20,    0,  4,  0,  4 },
     {     10,   21,    0,  4,  0,  4 }, {      9,   22,    0,  4,  0,  4 }, {      8,   23,    0,  4,  0,  4 }, {      7,   24,    0,  4, 50,  3 }, {      6,   25,    0,  4, 50,  3 },
@@ -17215,7 +17215,7 @@ const rct_vehicle_info_list TrackVehicleInfo_958F26 = {
     {    -15,   46,    7,  4, 51,  0 }, {    -16,   47,    7,  4, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959048 = {
+static const rct_vehicle_info_list TrackVehicleInfo_959048 = {
     32, {
     {     16,   16,    0, 12,  0,  4 }, {     17,   17,    0, 12,  0,  4 }, {     18,   18,    0, 12,  0,  4 }, {     19,   19,    0, 12,  0,  4 }, {     20,   20,    0, 12,  0,  4 },
     {     21,   21,    0, 12,  0,  4 }, {     22,   22,    0, 12,  0,  4 }, {     23,   23,    0, 12,  0,  4 }, {     24,   24,    0, 12, 50,  3 }, {     25,   25,    0, 12, 50,  3 },
@@ -17226,7 +17226,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959048 = {
     {     46,   46,    7, 12, 51,  0 }, {     47,   47,    7, 12, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95916A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95916A = {
     32, {
     {     16,   15,    0, 20,  0,  4 }, {     17,   14,    0, 20,  0,  4 }, {     18,   13,    0, 20,  0,  4 }, {     19,   12,    0, 20,  0,  4 }, {     20,   11,    0, 20,  0,  4 },
     {     21,   10,    0, 20,  0,  4 }, {     22,    9,    0, 20,  0,  4 }, {     23,    8,    0, 20,  0,  4 }, {     24,    7,    0, 20, 50,  3 }, {     25,    6,    0, 20, 50,  3 },
@@ -17237,7 +17237,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95916A = {
     {     46,  -15,    7, 20, 51,  0 }, {     47,  -16,    7, 20, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95928C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95928C = {
     32, {
     {     15,   15,    0, 28,  0,  4 }, {     14,   14,    0, 28,  0,  4 }, {     13,   13,    0, 28,  0,  4 }, {     12,   12,    0, 28,  0,  4 }, {     11,   11,    0, 28,  0,  4 },
     {     10,   10,    0, 28,  0,  4 }, {      9,    9,    0, 28,  0,  4 }, {      8,    8,    0, 28,  0,  4 }, {      7,    7,    0, 28, 50,  3 }, {      6,    6,    0, 28, 50,  3 },
@@ -17248,7 +17248,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95928C = {
     {    -15,  -15,    7, 28, 51,  0 }, {    -16,  -16,    7, 28, 51,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9593AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9593AE = {
     32, {
     {     15,   16,    0,  4, 51,  0 }, {     14,   17,    0,  4, 51,  0 }, {     13,   18,    1,  4, 51,  0 }, {     12,   19,    1,  4, 51,  0 }, {     11,   20,    2,  4, 51,  0 },
     {     10,   21,    2,  4, 51,  0 }, {      9,   22,    3,  4, 51,  0 }, {      8,   23,    3,  4, 51,  0 }, {      7,   24,    4,  4, 50,  1 }, {      6,   25,    4,  4, 50,  1 },
@@ -17259,7 +17259,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9593AE = {
     {    -15,   46,    8,  4,  0,  2 }, {    -16,   47,    8,  4,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9594E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9594E2 = {
     32, {
     {     16,   16,    0, 12, 51,  0 }, {     17,   17,    0, 12, 51,  0 }, {     18,   18,    1, 12, 51,  0 }, {     19,   19,    1, 12, 51,  0 }, {     20,   20,    2, 12, 51,  0 },
     {     21,   21,    2, 12, 51,  0 }, {     22,   22,    3, 12, 51,  0 }, {     23,   23,    3, 12, 51,  0 }, {     24,   24,    4, 12, 50,  1 }, {     25,   25,    4, 12, 50,  1 },
@@ -17270,7 +17270,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9594E2 = {
     {     46,   46,    8, 12,  0,  2 }, {     47,   47,    8, 12,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959616 = {
+static const rct_vehicle_info_list TrackVehicleInfo_959616 = {
     32, {
     {     16,   15,    0, 20, 51,  0 }, {     17,   14,    0, 20, 51,  0 }, {     18,   13,    1, 20, 51,  0 }, {     19,   12,    1, 20, 51,  0 }, {     20,   11,    2, 20, 51,  0 },
     {     21,   10,    2, 20, 51,  0 }, {     22,    9,    3, 20, 51,  0 }, {     23,    8,    3, 20, 51,  0 }, {     24,    7,    4, 20, 50,  1 }, {     25,    6,    4, 20, 50,  1 },
@@ -17281,7 +17281,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959616 = {
     {     46,  -15,    8, 20,  0,  2 }, {     47,  -16,    8, 20,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95974A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95974A = {
     32, {
     {     15,   15,    0, 28, 51,  0 }, {     14,   14,    0, 28, 51,  0 }, {     13,   13,    1, 28, 51,  0 }, {     12,   12,    1, 28, 51,  0 }, {     11,   11,    2, 28, 51,  0 },
     {     10,   10,    2, 28, 51,  0 }, {      9,    9,    3, 28, 51,  0 }, {      8,    8,    3, 28, 51,  0 }, {      7,    7,    4, 28, 50,  1 }, {      6,    6,    4, 28, 50,  1 },
@@ -17292,7 +17292,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95974A = {
     {    -15,  -15,    8, 28,  0,  2 }, {    -16,  -16,    8, 28,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95987E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95987E = {
     32, {
     {     15,   16,    0,  4, 51,  0 }, {     14,   17,    0,  4, 51,  0 }, {     13,   18,    1,  4, 51,  0 }, {     12,   19,    1,  4, 51,  0 }, {     11,   20,    2,  4, 51,  0 },
     {     10,   21,    2,  4, 51,  0 }, {      9,   22,    3,  4, 51,  0 }, {      8,   23,    3,  4, 51,  0 }, {      7,   24,    4,  4, 50,  3 }, {      6,   25,    4,  4, 50,  3 },
@@ -17303,7 +17303,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95987E = {
     {    -15,   46,    8,  4,  0,  4 }, {    -16,   47,    8,  4,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9599B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9599B2 = {
     32, {
     {     16,   16,    0, 12, 51,  0 }, {     17,   17,    0, 12, 51,  0 }, {     18,   18,    1, 12, 51,  0 }, {     19,   19,    1, 12, 51,  0 }, {     20,   20,    2, 12, 51,  0 },
     {     21,   21,    2, 12, 51,  0 }, {     22,   22,    3, 12, 51,  0 }, {     23,   23,    3, 12, 51,  0 }, {     24,   24,    4, 12, 50,  3 }, {     25,   25,    4, 12, 50,  3 },
@@ -17314,7 +17314,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9599B2 = {
     {     46,   46,    8, 12,  0,  4 }, {     47,   47,    8, 12,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959AE6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_959AE6 = {
     32, {
     {     16,   15,    0, 20, 51,  0 }, {     17,   14,    0, 20, 51,  0 }, {     18,   13,    1, 20, 51,  0 }, {     19,   12,    1, 20, 51,  0 }, {     20,   11,    2, 20, 51,  0 },
     {     21,   10,    2, 20, 51,  0 }, {     22,    9,    3, 20, 51,  0 }, {     23,    8,    3, 20, 51,  0 }, {     24,    7,    4, 20, 50,  3 }, {     25,    6,    4, 20, 50,  3 },
@@ -17325,7 +17325,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959AE6 = {
     {     46,  -15,    8, 20,  0,  4 }, {     47,  -16,    8, 20,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959C1A = {
+static const rct_vehicle_info_list TrackVehicleInfo_959C1A = {
     32, {
     {     15,   15,    0, 28, 51,  0 }, {     14,   14,    0, 28, 51,  0 }, {     13,   13,    1, 28, 51,  0 }, {     12,   12,    1, 28, 51,  0 }, {     11,   11,    2, 28, 51,  0 },
     {     10,   10,    2, 28, 51,  0 }, {      9,    9,    3, 28, 51,  0 }, {      8,    8,    3, 28, 51,  0 }, {      7,    7,    4, 28, 50,  3 }, {      6,    6,    4, 28, 50,  3 },
@@ -17336,7 +17336,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959C1A = {
     {    -15,  -15,    8, 28,  0,  4 }, {    -16,  -16,    8, 28,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A65E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A65E = {
     32, {
     {     15,   16,    8,  4,  0,  2 }, {     14,   17,    8,  4,  0,  2 }, {     13,   18,    8,  4,  0,  2 }, {     12,   19,    8,  4,  0,  2 }, {     11,   20,    8,  4,  0,  2 },
     {     10,   21,    8,  4,  0,  2 }, {      9,   22,    8,  4,  0,  2 }, {      8,   23,    8,  4,  0,  2 }, {      7,   24,    7,  4, 53,  1 }, {      6,   25,    7,  4, 53,  1 },
@@ -17347,7 +17347,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A65E = {
     {    -15,   46,    0,  4, 54,  0 }, {    -16,   47,    0,  4, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A780 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A780 = {
     32, {
     {     16,   16,    8, 12,  0,  2 }, {     17,   17,    8, 12,  0,  2 }, {     18,   18,    8, 12,  0,  2 }, {     19,   19,    8, 12,  0,  2 }, {     20,   20,    8, 12,  0,  2 },
     {     21,   21,    8, 12,  0,  2 }, {     22,   22,    8, 12,  0,  2 }, {     23,   23,    8, 12,  0,  2 }, {     24,   24,    7, 12, 53,  1 }, {     25,   25,    7, 12, 53,  1 },
@@ -17358,7 +17358,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A780 = {
     {     46,   46,    0, 12, 54,  0 }, {     47,   47,    0, 12, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A8A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A8A2 = {
     32, {
     {     16,   15,    8, 20,  0,  2 }, {     17,   14,    8, 20,  0,  2 }, {     18,   13,    8, 20,  0,  2 }, {     19,   12,    8, 20,  0,  2 }, {     20,   11,    8, 20,  0,  2 },
     {     21,   10,    8, 20,  0,  2 }, {     22,    9,    8, 20,  0,  2 }, {     23,    8,    8, 20,  0,  2 }, {     24,    7,    7, 20, 53,  1 }, {     25,    6,    7, 20, 53,  1 },
@@ -17369,7 +17369,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A8A2 = {
     {     46,  -15,    0, 20, 54,  0 }, {     47,  -16,    0, 20, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A9C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A9C4 = {
     32, {
     {     15,   15,    8, 28,  0,  2 }, {     14,   14,    8, 28,  0,  2 }, {     13,   13,    8, 28,  0,  2 }, {     12,   12,    8, 28,  0,  2 }, {     11,   11,    8, 28,  0,  2 },
     {     10,   10,    8, 28,  0,  2 }, {      9,    9,    8, 28,  0,  2 }, {      8,    8,    8, 28,  0,  2 }, {      7,    7,    7, 28, 53,  1 }, {      6,    6,    7, 28, 53,  1 },
@@ -17380,7 +17380,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A9C4 = {
     {    -15,  -15,    0, 28, 54,  0 }, {    -16,  -16,    0, 28, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95AAE6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95AAE6 = {
     32, {
     {     15,   16,    8,  4,  0,  4 }, {     14,   17,    8,  4,  0,  4 }, {     13,   18,    8,  4,  0,  4 }, {     12,   19,    8,  4,  0,  4 }, {     11,   20,    8,  4,  0,  4 },
     {     10,   21,    8,  4,  0,  4 }, {      9,   22,    8,  4,  0,  4 }, {      8,   23,    8,  4,  0,  4 }, {      7,   24,    7,  4, 53,  3 }, {      6,   25,    7,  4, 53,  3 },
@@ -17391,7 +17391,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95AAE6 = {
     {    -15,   46,    0,  4, 54,  0 }, {    -16,   47,    0,  4, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95AC08 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95AC08 = {
     32, {
     {     16,   16,    8, 12,  0,  4 }, {     17,   17,    8, 12,  0,  4 }, {     18,   18,    8, 12,  0,  4 }, {     19,   19,    8, 12,  0,  4 }, {     20,   20,    8, 12,  0,  4 },
     {     21,   21,    8, 12,  0,  4 }, {     22,   22,    8, 12,  0,  4 }, {     23,   23,    8, 12,  0,  4 }, {     24,   24,    7, 12, 53,  3 }, {     25,   25,    7, 12, 53,  3 },
@@ -17402,7 +17402,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95AC08 = {
     {     46,   46,    0, 12, 54,  0 }, {     47,   47,    0, 12, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95AD2A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95AD2A = {
     32, {
     {     16,   15,    8, 20,  0,  4 }, {     17,   14,    8, 20,  0,  4 }, {     18,   13,    8, 20,  0,  4 }, {     19,   12,    8, 20,  0,  4 }, {     20,   11,    8, 20,  0,  4 },
     {     21,   10,    8, 20,  0,  4 }, {     22,    9,    8, 20,  0,  4 }, {     23,    8,    8, 20,  0,  4 }, {     24,    7,    7, 20, 53,  3 }, {     25,    6,    7, 20, 53,  3 },
@@ -17413,7 +17413,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95AD2A = {
     {     46,  -15,    0, 20, 54,  0 }, {     47,  -16,    0, 20, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95AE4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95AE4C = {
     32, {
     {     15,   15,    8, 28,  0,  4 }, {     14,   14,    8, 28,  0,  4 }, {     13,   13,    8, 28,  0,  4 }, {     12,   12,    8, 28,  0,  4 }, {     11,   11,    8, 28,  0,  4 },
     {     10,   10,    8, 28,  0,  4 }, {      9,    9,    8, 28,  0,  4 }, {      8,    8,    8, 28,  0,  4 }, {      7,    7,    7, 28, 53,  3 }, {      6,    6,    7, 28, 53,  3 },
@@ -17424,7 +17424,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95AE4C = {
     {    -15,  -15,    0, 28, 54,  0 }, {    -16,  -16,    0, 28, 54,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959D4E = {
+static const rct_vehicle_info_list TrackVehicleInfo_959D4E = {
     32, {
     {     15,   16,    7,  4, 54,  0 }, {     14,   17,    7,  4, 54,  0 }, {     13,   18,    6,  4, 54,  0 }, {     12,   19,    6,  4, 54,  0 }, {     11,   20,    5,  4, 54,  0 },
     {     10,   21,    5,  4, 54,  0 }, {      9,   22,    4,  4, 54,  0 }, {      8,   23,    4,  4, 54,  0 }, {      7,   24,    4,  4, 53,  1 }, {      6,   25,    3,  4, 53,  1 },
@@ -17435,7 +17435,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959D4E = {
     {    -15,   46,    0,  4,  0,  2 }, {    -16,   47,    0,  4,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959E70 = {
+static const rct_vehicle_info_list TrackVehicleInfo_959E70 = {
     32, {
     {     16,   16,    7, 12, 54,  0 }, {     17,   17,    7, 12, 54,  0 }, {     18,   18,    6, 12, 54,  0 }, {     19,   19,    6, 12, 54,  0 }, {     20,   20,    5, 12, 54,  0 },
     {     21,   21,    5, 12, 54,  0 }, {     22,   22,    4, 12, 54,  0 }, {     23,   23,    4, 12, 54,  0 }, {     24,   24,    4, 12, 53,  1 }, {     25,   25,    3, 12, 53,  1 },
@@ -17446,7 +17446,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959E70 = {
     {     46,   46,    0, 12,  0,  2 }, {     47,   47,    0, 12,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_959F92 = {
+static const rct_vehicle_info_list TrackVehicleInfo_959F92 = {
     32, {
     {     16,   15,    7, 20, 54,  0 }, {     17,   14,    7, 20, 54,  0 }, {     18,   13,    6, 20, 54,  0 }, {     19,   12,    6, 20, 54,  0 }, {     20,   11,    5, 20, 54,  0 },
     {     21,   10,    5, 20, 54,  0 }, {     22,    9,    4, 20, 54,  0 }, {     23,    8,    4, 20, 54,  0 }, {     24,    7,    4, 20, 53,  1 }, {     25,    6,    3, 20, 53,  1 },
@@ -17457,7 +17457,7 @@ const rct_vehicle_info_list TrackVehicleInfo_959F92 = {
     {     46,  -15,    0, 20,  0,  2 }, {     47,  -16,    0, 20,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A0B4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A0B4 = {
     32, {
     {     15,   15,    7, 28, 54,  0 }, {     14,   14,    7, 28, 54,  0 }, {     13,   13,    6, 28, 54,  0 }, {     12,   12,    6, 28, 54,  0 }, {     11,   11,    5, 28, 54,  0 },
     {     10,   10,    5, 28, 54,  0 }, {      9,    9,    4, 28, 54,  0 }, {      8,    8,    4, 28, 54,  0 }, {      7,    7,    4, 28, 53,  1 }, {      6,    6,    3, 28, 53,  1 },
@@ -17468,7 +17468,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A0B4 = {
     {    -15,  -15,    0, 28,  0,  2 }, {    -16,  -16,    0, 28,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A1D6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A1D6 = {
     32, {
     {     15,   16,    7,  4, 54,  0 }, {     14,   17,    7,  4, 54,  0 }, {     13,   18,    6,  4, 54,  0 }, {     12,   19,    6,  4, 54,  0 }, {     11,   20,    5,  4, 54,  0 },
     {     10,   21,    5,  4, 54,  0 }, {      9,   22,    4,  4, 54,  0 }, {      8,   23,    4,  4, 54,  0 }, {      7,   24,    4,  4, 53,  3 }, {      6,   25,    3,  4, 53,  3 },
@@ -17479,7 +17479,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A1D6 = {
     {    -15,   46,    0,  4,  0,  4 }, {    -16,   47,    0,  4,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A2F8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A2F8 = {
     32, {
     {     16,   16,    7, 12, 54,  0 }, {     17,   17,    7, 12, 54,  0 }, {     18,   18,    6, 12, 54,  0 }, {     19,   19,    6, 12, 54,  0 }, {     20,   20,    5, 12, 54,  0 },
     {     21,   21,    5, 12, 54,  0 }, {     22,   22,    4, 12, 54,  0 }, {     23,   23,    4, 12, 54,  0 }, {     24,   24,    4, 12, 53,  3 }, {     25,   25,    3, 12, 53,  3 },
@@ -17490,7 +17490,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A2F8 = {
     {     46,   46,    0, 12,  0,  4 }, {     47,   47,    0, 12,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A41A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A41A = {
     32, {
     {     16,   15,    7, 20, 54,  0 }, {     17,   14,    7, 20, 54,  0 }, {     18,   13,    6, 20, 54,  0 }, {     19,   12,    6, 20, 54,  0 }, {     20,   11,    5, 20, 54,  0 },
     {     21,   10,    5, 20, 54,  0 }, {     22,    9,    4, 20, 54,  0 }, {     23,    8,    4, 20, 54,  0 }, {     24,    7,    4, 20, 53,  3 }, {     25,    6,    3, 20, 53,  3 },
@@ -17501,7 +17501,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A41A = {
     {     46,  -15,    0, 20,  0,  4 }, {     47,  -16,    0, 20,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95A53C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95A53C = {
     32, {
     {     15,   15,    7, 28, 54,  0 }, {     14,   14,    7, 28, 54,  0 }, {     13,   13,    6, 28, 54,  0 }, {     12,   12,    6, 28, 54,  0 }, {     11,   11,    5, 28, 54,  0 },
     {     10,   10,    5, 28, 54,  0 }, {      9,    9,    4, 28, 54,  0 }, {      8,    8,    4, 28, 54,  0 }, {      7,    7,    4, 28, 53,  3 }, {      6,    6,    3, 28, 53,  3 },
@@ -17512,7 +17512,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95A53C = {
     {    -15,  -15,    0, 28,  0,  4 }, {    -16,  -16,    0, 28,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95AF6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95AF6E = {
     32, {
     {     15,   16,    0,  4,  0,  2 }, {     14,   17,    0,  4,  0,  2 }, {     13,   18,    0,  4,  0,  2 }, {     12,   19,    0,  4,  0,  2 }, {     11,   20,    0,  4,  0,  2 },
     {     10,   21,    0,  4,  0,  2 }, {      9,   22,    0,  4,  0,  2 }, {      8,   23,    0,  4,  0,  2 }, {      7,   24,    0,  4,  0,  2 }, {      6,   25,    0,  4,  0,  2 },
@@ -17523,7 +17523,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95AF6E = {
     {    -15,   46,    0,  4,  0,  2 }, {    -16,   47,    0,  4,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B090 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B090 = {
     32, {
     {     16,   16,    0, 12,  0,  2 }, {     17,   17,    0, 12,  0,  2 }, {     18,   18,    0, 12,  0,  2 }, {     19,   19,    0, 12,  0,  2 }, {     20,   20,    0, 12,  0,  2 },
     {     21,   21,    0, 12,  0,  2 }, {     22,   22,    0, 12,  0,  2 }, {     23,   23,    0, 12,  0,  2 }, {     24,   24,    0, 12,  0,  2 }, {     25,   25,    0, 12,  0,  2 },
@@ -17534,7 +17534,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B090 = {
     {     46,   46,    0, 12,  0,  2 }, {     47,   47,    0, 12,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B1B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B1B2 = {
     32, {
     {     16,   15,    0, 20,  0,  2 }, {     17,   14,    0, 20,  0,  2 }, {     18,   13,    0, 20,  0,  2 }, {     19,   12,    0, 20,  0,  2 }, {     20,   11,    0, 20,  0,  2 },
     {     21,   10,    0, 20,  0,  2 }, {     22,    9,    0, 20,  0,  2 }, {     23,    8,    0, 20,  0,  2 }, {     24,    7,    0, 20,  0,  2 }, {     25,    6,    0, 20,  0,  2 },
@@ -17545,7 +17545,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B1B2 = {
     {     46,  -15,    0, 20,  0,  2 }, {     47,  -16,    0, 20,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B2D4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B2D4 = {
     32, {
     {     15,   15,    0, 28,  0,  2 }, {     14,   14,    0, 28,  0,  2 }, {     13,   13,    0, 28,  0,  2 }, {     12,   12,    0, 28,  0,  2 }, {     11,   11,    0, 28,  0,  2 },
     {     10,   10,    0, 28,  0,  2 }, {      9,    9,    0, 28,  0,  2 }, {      8,    8,    0, 28,  0,  2 }, {      7,    7,    0, 28,  0,  2 }, {      6,    6,    0, 28,  0,  2 },
@@ -17556,7 +17556,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B2D4 = {
     {    -15,  -15,    0, 28,  0,  2 }, {    -16,  -16,    0, 28,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B3F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B3F6 = {
     32, {
     {     15,   16,    0,  4,  0,  4 }, {     14,   17,    0,  4,  0,  4 }, {     13,   18,    0,  4,  0,  4 }, {     12,   19,    0,  4,  0,  4 }, {     11,   20,    0,  4,  0,  4 },
     {     10,   21,    0,  4,  0,  4 }, {      9,   22,    0,  4,  0,  4 }, {      8,   23,    0,  4,  0,  4 }, {      7,   24,    0,  4,  0,  4 }, {      6,   25,    0,  4,  0,  4 },
@@ -17567,7 +17567,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B3F6 = {
     {    -15,   46,    0,  4,  0,  4 }, {    -16,   47,    0,  4,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B518 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B518 = {
     32, {
     {     16,   16,    0, 12,  0,  4 }, {     17,   17,    0, 12,  0,  4 }, {     18,   18,    0, 12,  0,  4 }, {     19,   19,    0, 12,  0,  4 }, {     20,   20,    0, 12,  0,  4 },
     {     21,   21,    0, 12,  0,  4 }, {     22,   22,    0, 12,  0,  4 }, {     23,   23,    0, 12,  0,  4 }, {     24,   24,    0, 12,  0,  4 }, {     25,   25,    0, 12,  0,  4 },
@@ -17578,7 +17578,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B518 = {
     {     46,   46,    0, 12,  0,  4 }, {     47,   47,    0, 12,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B63A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B63A = {
     32, {
     {     16,   15,    0, 20,  0,  4 }, {     17,   14,    0, 20,  0,  4 }, {     18,   13,    0, 20,  0,  4 }, {     19,   12,    0, 20,  0,  4 }, {     20,   11,    0, 20,  0,  4 },
     {     21,   10,    0, 20,  0,  4 }, {     22,    9,    0, 20,  0,  4 }, {     23,    8,    0, 20,  0,  4 }, {     24,    7,    0, 20,  0,  4 }, {     25,    6,    0, 20,  0,  4 },
@@ -17589,7 +17589,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B63A = {
     {     46,  -15,    0, 20,  0,  4 }, {     47,  -16,    0, 20,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B75C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B75C = {
     32, {
     {     15,   15,    0, 28,  0,  4 }, {     14,   14,    0, 28,  0,  4 }, {     13,   13,    0, 28,  0,  4 }, {     12,   12,    0, 28,  0,  4 }, {     11,   11,    0, 28,  0,  4 },
     {     10,   10,    0, 28,  0,  4 }, {      9,    9,    0, 28,  0,  4 }, {      8,    8,    0, 28,  0,  4 }, {      7,    7,    0, 28,  0,  4 }, {      6,    6,    0, 28,  0,  4 },
@@ -17600,7 +17600,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B75C = {
     {    -15,  -15,    0, 28,  0,  4 }, {    -16,  -16,    0, 28,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91BE46 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91BE46 = {
     49, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -17614,7 +17614,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91BE46 = {
     {      3,   16,    0,  0,  0,  0 }, {      2,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91C001 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91C001 = {
     49, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -17628,7 +17628,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91C001 = {
     {     16,   28,    0,  8,  0,  0 }, {     16,   29,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91C1BC = {
+static const rct_vehicle_info_list TrackVehicleInfo_91C1BC = {
     49, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -17642,7 +17642,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91C1BC = {
     {     28,   16,    0, 16,  0,  0 }, {     29,   16,    0, 16,  0,  0 }, {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91C377 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91C377 = {
     49, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -17656,7 +17656,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91C377 = {
     {     16,    3,    0, 24,  0,  0 }, {     16,    2,    0, 24,  0,  0 }, {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91C532 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91C532 = {
     96, {
     {     31,   16,    1,  0, 45,  0 }, {     30,   16,    1,  0, 45,  0 }, {     29,   16,    1,  0, 45,  0 }, {     28,   17,    1,  0, 45,  0 }, {     27,   17,    1,  0, 45,  0 },
     {     26,   17,    1,  0, 45,  0 }, {     25,   17,    1,  0, 45,  1 }, {     24,   18,    1,  0, 45,  1 }, {     23,   18,    1,  0, 45,  1 }, {     22,   18,    1,  0, 45,  1 },
@@ -17680,7 +17680,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91C532 = {
     {    -64,   16,   16, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91C894 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91C894 = {
     96, {
     {     16,    0,    1,  8, 45,  0 }, {     16,    1,    1,  8, 45,  0 }, {     16,    2,    1,  8, 45,  0 }, {     17,    3,    1,  8, 45,  0 }, {     17,    4,    1,  8, 45,  0 },
     {     17,    5,    1,  8, 45,  0 }, {     17,    6,    1,  8, 45,  1 }, {     18,    7,    1,  8, 45,  1 }, {     18,    8,    1,  8, 45,  1 }, {     18,    9,    1,  8, 45,  1 },
@@ -17704,7 +17704,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91C894 = {
     {     16,   95,   16, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91CBF6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91CBF6 = {
     96, {
     {      0,   16,    1, 16, 45,  0 }, {      1,   16,    1, 16, 45,  0 }, {      2,   16,    1, 16, 45,  0 }, {      3,   15,    1, 16, 45,  0 }, {      4,   15,    1, 16, 45,  0 },
     {      5,   15,    1, 16, 45,  0 }, {      6,   15,    1, 16, 45,  1 }, {      7,   14,    1, 16, 45,  1 }, {      8,   14,    1, 16, 45,  1 }, {      9,   14,    1, 16, 45,  1 },
@@ -17728,7 +17728,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91CBF6 = {
     {     95,   16,   16,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91CF58 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91CF58 = {
     96, {
     {     16,   31,    1, 24, 45,  0 }, {     16,   30,    1, 24, 45,  0 }, {     16,   29,    1, 24, 45,  0 }, {     15,   28,    1, 24, 45,  0 }, {     15,   27,    1, 24, 45,  0 },
     {     15,   26,    1, 24, 45,  0 }, {     15,   25,    1, 24, 45,  1 }, {     14,   24,    1, 24, 45,  1 }, {     14,   23,    1, 24, 45,  1 }, {     14,   22,    1, 24, 45,  1 },
@@ -17752,7 +17752,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91CF58 = {
     {     16,  -64,   16,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91D2BA = {
+static const rct_vehicle_info_list TrackVehicleInfo_91D2BA = {
     96, {
     {     31,   16,    1,  0, 45,  0 }, {     30,   16,    1,  0, 45,  0 }, {     29,   16,    1,  0, 45,  0 }, {     28,   15,    1,  0, 45,  0 }, {     27,   15,    1,  0, 45,  0 },
     {     26,   15,    1,  0, 45,  0 }, {     25,   15,    1,  0, 45,  3 }, {     24,   14,    1,  0, 45,  3 }, {     23,   14,    1,  0, 45,  3 }, {     22,   14,    1,  0, 45,  3 },
@@ -17776,7 +17776,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91D2BA = {
     {    -64,   16,   16, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91D61C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91D61C = {
     96, {
     {     16,    0,    1,  8, 45,  0 }, {     16,    1,    1,  8, 45,  0 }, {     16,    2,    1,  8, 45,  0 }, {     15,    3,    1,  8, 45,  0 }, {     15,    4,    1,  8, 45,  0 },
     {     15,    5,    1,  8, 45,  0 }, {     15,    6,    1,  8, 45,  3 }, {     14,    7,    1,  8, 45,  3 }, {     14,    8,    1,  8, 45,  3 }, {     14,    9,    1,  8, 45,  3 },
@@ -17800,7 +17800,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91D61C = {
     {     16,   95,   16, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91D97E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91D97E = {
     96, {
     {      0,   16,    1, 16, 45,  0 }, {      1,   16,    1, 16, 45,  0 }, {      2,   16,    1, 16, 45,  0 }, {      3,   17,    1, 16, 45,  0 }, {      4,   17,    1, 16, 45,  0 },
     {      5,   17,    1, 16, 45,  0 }, {      6,   17,    1, 16, 45,  3 }, {      7,   18,    1, 16, 45,  3 }, {      8,   18,    1, 16, 45,  3 }, {      9,   18,    1, 16, 45,  3 },
@@ -17824,7 +17824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91D97E = {
     {     95,   16,   16,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91DCE0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91DCE0 = {
     96, {
     {     16,   31,    1, 24, 45,  0 }, {     16,   30,    1, 24, 45,  0 }, {     16,   29,    1, 24, 45,  0 }, {     17,   28,    1, 24, 45,  0 }, {     17,   27,    1, 24, 45,  0 },
     {     17,   26,    1, 24, 45,  0 }, {     17,   25,    1, 24, 45,  3 }, {     18,   24,    1, 24, 45,  3 }, {     18,   23,    1, 24, 45,  3 }, {     18,   22,    1, 24, 45,  3 },
@@ -17848,7 +17848,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91DCE0 = {
     {     16,  -64,   16,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91E042 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91E042 = {
     96, {
     {     31,   16,   15, 16, 16,  0 }, {     30,   16,   15, 16, 16,  0 }, {     29,   16,   15, 16, 16,  0 }, {     28,   15,   15, 16, 16,  0 }, {     27,   15,   15, 16, 16,  0 },
     {     26,   15,   15, 16, 16,  0 }, {     25,   15,   15,  0, 47, 14 }, {     24,   14,   15,  0, 47, 14 }, {     23,   14,   15,  0, 47, 14 }, {     22,   14,   15,  0, 47, 14 },
@@ -17872,7 +17872,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91E042 = {
     {    -64,   16,    0,  0, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91E3A4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91E3A4 = {
     96, {
     {     16,    0,   15, 24, 16,  0 }, {     16,    1,   15, 24, 16,  0 }, {     16,    2,   15, 24, 16,  0 }, {     15,    3,   15, 24, 16,  0 }, {     15,    4,   15, 24, 16,  0 },
     {     15,    5,   15, 24, 16,  0 }, {     15,    6,   15,  8, 47, 14 }, {     14,    7,   15,  8, 47, 14 }, {     14,    8,   15,  8, 47, 14 }, {     14,    9,   15,  8, 47, 14 },
@@ -17896,7 +17896,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91E3A4 = {
     {     16,   95,    0,  8, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91E706 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91E706 = {
     96, {
     {      0,   16,   15,  0, 16,  0 }, {      1,   16,   15,  0, 16,  0 }, {      2,   16,   15,  0, 16,  0 }, {      3,   17,   15,  0, 16,  0 }, {      4,   17,   15,  0, 16,  0 },
     {      5,   17,   15,  0, 16,  0 }, {      6,   17,   15, 16, 47, 14 }, {      7,   18,   15, 16, 47, 14 }, {      8,   18,   15, 16, 47, 14 }, {      9,   18,   15, 16, 47, 14 },
@@ -17920,7 +17920,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91E706 = {
     {     95,   16,    0, 16, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91EA68 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91EA68 = {
     96, {
     {     16,   31,   15,  8, 16,  0 }, {     16,   30,   15,  8, 16,  0 }, {     16,   29,   15,  8, 16,  0 }, {     17,   28,   15,  8, 16,  0 }, {     17,   27,   15,  8, 16,  0 },
     {     17,   26,   15,  8, 16,  0 }, {     17,   25,   15, 24, 47, 14 }, {     18,   24,   15, 24, 47, 14 }, {     18,   23,   15, 24, 47, 14 }, {     18,   22,   15, 24, 47, 14 },
@@ -17944,7 +17944,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91EA68 = {
     {     16,  -64,    0, 24, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91EDCA = {
+static const rct_vehicle_info_list TrackVehicleInfo_91EDCA = {
     96, {
     {     31,   16,   15, 16, 16,  0 }, {     30,   16,   15, 16, 16,  0 }, {     29,   16,   15, 16, 16,  0 }, {     28,   17,   15, 16, 16,  0 }, {     27,   17,   15, 16, 16,  0 },
     {     26,   17,   15, 16, 16,  0 }, {     25,   17,   15,  0, 47,  9 }, {     24,   18,   15,  0, 47,  9 }, {     23,   18,   15,  0, 47,  9 }, {     22,   18,   15,  0, 47,  9 },
@@ -17968,7 +17968,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91EDCA = {
     {    -64,   16,    0,  0, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91F12C = {
+static const rct_vehicle_info_list TrackVehicleInfo_91F12C = {
     96, {
     {     16,    0,   15, 24, 16,  0 }, {     16,    1,   15, 24, 16,  0 }, {     16,    2,   15, 24, 16,  0 }, {     17,    3,   15, 24, 16,  0 }, {     17,    4,   15, 24, 16,  0 },
     {     17,    5,   15, 24, 16,  0 }, {     17,    6,   15,  8, 47,  9 }, {     18,    7,   15,  8, 47,  9 }, {     18,    8,   15,  8, 47,  9 }, {     18,    9,   15,  8, 47,  9 },
@@ -17992,7 +17992,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91F12C = {
     {     16,   95,    0,  8, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91F48E = {
+static const rct_vehicle_info_list TrackVehicleInfo_91F48E = {
     96, {
     {      0,   16,   15,  0, 16,  0 }, {      1,   16,   15,  0, 16,  0 }, {      2,   16,   15,  0, 16,  0 }, {      3,   15,   15,  0, 16,  0 }, {      4,   15,   15,  0, 16,  0 },
     {      5,   15,   15,  0, 16,  0 }, {      6,   15,   15, 16, 47,  9 }, {      7,   14,   15, 16, 47,  9 }, {      8,   14,   15, 16, 47,  9 }, {      9,   14,   15, 16, 47,  9 },
@@ -18016,7 +18016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91F48E = {
     {     95,   16,    0, 16, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91F7F0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91F7F0 = {
     96, {
     {     16,   31,   15,  8, 16,  0 }, {     16,   30,   15,  8, 16,  0 }, {     16,   29,   15,  8, 16,  0 }, {     15,   28,   15,  8, 16,  0 }, {     15,   27,   15,  8, 16,  0 },
     {     15,   26,   15,  8, 16,  0 }, {     15,   25,   15, 24, 47,  9 }, {     14,   24,   15, 24, 47,  9 }, {     14,   23,   15, 24, 47,  9 }, {     14,   22,   15, 24, 47,  9 },
@@ -18040,7 +18040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91F7F0 = {
     {     16,  -64,    0, 24, 47,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_920E82 = {
+static const rct_vehicle_info_list TrackVehicleInfo_920E82 = {
     68, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0, 31,  0,  2 },
     {     26,   16,    0, 31,  0,  2 }, {     25,   15,    0, 31,  0,  2 }, {     24,   15,    1, 31,  0,  2 }, {     23,   15,    1, 31,  0,  2 }, {     22,   15,    1, 31,  0,  2 },
@@ -18058,7 +18058,7 @@ const rct_vehicle_info_list TrackVehicleInfo_920E82 = {
     {    -16,  -29,   22, 24,  2,  0 }, {    -16,  -30,   23, 24,  2,  0 }, {    -16,  -31,   23, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9210E8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9210E8 = {
     69, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  7,  0,  2 }, {     16,    6,    0,  7,  0,  2 }, {     15,    7,    0,  7,  0,  2 }, {     15,    8,    1,  7,  0,  2 }, {     15,    9,    1,  7,  0,  2 },
@@ -18076,7 +18076,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9210E8 = {
     {    -28,   48,   22,  0,  2,  0 }, {    -29,   48,   22,  0,  2,  0 }, {    -30,   48,   23,  0,  2,  0 }, {    -31,   48,   23,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_921357 = {
+static const rct_vehicle_info_list TrackVehicleInfo_921357 = {
     68, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 15,  0,  2 }, {      6,   16,    0, 15,  0,  2 }, {      7,   17,    1, 15,  0,  2 }, {      8,   17,    1, 15,  0,  2 }, {      9,   17,    1, 15,  0,  2 },
@@ -18094,7 +18094,7 @@ const rct_vehicle_info_list TrackVehicleInfo_921357 = {
     {     48,   60,   22,  8,  2,  0 }, {     48,   61,   23,  8,  2,  0 }, {     48,   62,   23,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9215BD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9215BD = {
     67, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 23,  0,  2 },
     {     16,   26,    0, 23,  0,  2 }, {     17,   25,    1, 23,  0,  2 }, {     17,   24,    1, 23,  0,  2 }, {     17,   23,    1, 23,  0,  2 }, {     17,   22,    1, 23,  0,  2 },
@@ -18112,7 +18112,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9215BD = {
     {     61,  -16,   23, 16,  2,  0 }, {     62,  -16,   23, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92181A = {
+static const rct_vehicle_info_list TrackVehicleInfo_92181A = {
     67, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  1,  0,  4 },
     {     26,   16,    0,  1,  0,  4 }, {     25,   17,    1,  1,  0,  4 }, {     24,   17,    1,  1,  0,  4 }, {     23,   17,    1,  1,  0,  4 }, {     22,   17,    1,  1,  0,  4 },
@@ -18130,7 +18130,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92181A = {
     {    -16,   61,   23,  8,  2,  0 }, {    -16,   62,   23,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_921A77 = {
+static const rct_vehicle_info_list TrackVehicleInfo_921A77 = {
     68, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  9,  0,  4 }, {     16,    6,    0,  9,  0,  4 }, {     17,    7,    1,  9,  0,  4 }, {     17,    8,    1,  9,  0,  4 }, {     17,    9,    1,  9,  0,  4 },
@@ -18148,7 +18148,7 @@ const rct_vehicle_info_list TrackVehicleInfo_921A77 = {
     {     60,   48,   22, 16,  2,  0 }, {     61,   48,   23, 16,  2,  0 }, {     62,   48,   23, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_921CDD = {
+static const rct_vehicle_info_list TrackVehicleInfo_921CDD = {
     69, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 17,  0,  4 }, {      6,   16,    0, 17,  0,  4 }, {      7,   15,    0, 17,  0,  4 }, {      8,   15,    1, 17,  0,  4 }, {      9,   15,    1, 17,  0,  4 },
@@ -18166,7 +18166,7 @@ const rct_vehicle_info_list TrackVehicleInfo_921CDD = {
     {     48,  -28,   22, 24,  2,  0 }, {     48,  -29,   22, 24,  2,  0 }, {     48,  -30,   23, 24,  2,  0 }, {     48,  -31,   23, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_921F4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_921F4C = {
     68, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 25,  0,  4 },
     {     16,   26,    0, 25,  0,  4 }, {     15,   25,    0, 25,  0,  4 }, {     15,   24,    1, 25,  0,  4 }, {     15,   23,    1, 25,  0,  4 }, {     15,   22,    1, 25,  0,  4 },
@@ -18184,7 +18184,7 @@ const rct_vehicle_info_list TrackVehicleInfo_921F4C = {
     {    -29,  -16,   22,  0,  2,  0 }, {    -30,  -16,   23,  0,  2,  0 }, {    -31,  -16,   23,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91FB52 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91FB52 = {
     68, {
     {     31,   16,    7,  0,  6,  0 }, {     30,   16,    7,  0,  6,  0 }, {     29,   16,    6,  0,  6,  0 }, {     28,   16,    6,  0,  6,  0 }, {     27,   16,    5, 31,  6,  0 },
     {     26,   16,    5, 31,  6,  0 }, {     25,   15,    4, 31,  6,  0 }, {     24,   15,    4, 31,  6,  0 }, {     23,   15,    3, 31,  6,  0 }, {     22,   15,    3, 31,  6,  0 },
@@ -18202,7 +18202,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91FB52 = {
     {    -16,  -29,  -16, 24,  0,  2 }, {    -16,  -30,  -16, 24,  0,  2 }, {    -16,  -31,  -16, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_91FDB8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_91FDB8 = {
     69, {
     {     16,    0,    7,  8,  6,  0 }, {     16,    1,    7,  8,  6,  0 }, {     16,    2,    6,  8,  6,  0 }, {     16,    3,    6,  8,  6,  0 }, {     16,    4,    5,  8,  6,  0 },
     {     16,    5,    5,  7,  6,  0 }, {     16,    6,    4,  7,  6,  0 }, {     15,    7,    4,  7,  6,  0 }, {     15,    8,    3,  7,  6,  0 }, {     15,    9,    3,  7,  6,  0 },
@@ -18220,7 +18220,7 @@ const rct_vehicle_info_list TrackVehicleInfo_91FDB8 = {
     {    -28,   48,  -16,  0,  0,  2 }, {    -29,   48,  -16,  0,  0,  2 }, {    -30,   48,  -16,  0,  0,  2 }, {    -31,   48,  -16,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_920027 = {
+static const rct_vehicle_info_list TrackVehicleInfo_920027 = {
     68, {
     {      0,   16,    7, 16,  6,  0 }, {      1,   16,    7, 16,  6,  0 }, {      2,   16,    6, 16,  6,  0 }, {      3,   16,    6, 16,  6,  0 }, {      4,   16,    5, 16,  6,  0 },
     {      5,   16,    5, 15,  6,  0 }, {      6,   16,    4, 15,  6,  0 }, {      7,   17,    4, 15,  6,  0 }, {      8,   17,    3, 15,  6,  0 }, {      9,   17,    3, 15,  6,  0 },
@@ -18238,7 +18238,7 @@ const rct_vehicle_info_list TrackVehicleInfo_920027 = {
     {     48,   60,  -16,  8,  0,  2 }, {     48,   61,  -16,  8,  0,  2 }, {     48,   62,  -16,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92028D = {
+static const rct_vehicle_info_list TrackVehicleInfo_92028D = {
     67, {
     {     16,   31,    7, 24,  6,  0 }, {     16,   30,    7, 24,  6,  0 }, {     16,   29,    6, 24,  6,  0 }, {     16,   28,    6, 24,  6,  0 }, {     16,   27,    5, 23,  6,  0 },
     {     16,   26,    5, 23,  6,  0 }, {     17,   25,    4, 23,  6,  0 }, {     17,   24,    4, 23,  6,  0 }, {     17,   23,    3, 23,  6,  0 }, {     17,   22,    3, 23,  6,  0 },
@@ -18256,7 +18256,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92028D = {
     {     61,  -16,  -16, 16,  0,  2 }, {     62,  -16,  -16, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9204EA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9204EA = {
     67, {
     {     31,   16,    7,  0,  6,  0 }, {     30,   16,    7,  0,  6,  0 }, {     29,   16,    6,  0,  6,  0 }, {     28,   16,    6,  0,  6,  0 }, {     27,   16,    5,  1,  6,  0 },
     {     26,   16,    5,  1,  6,  0 }, {     25,   17,    4,  1,  6,  0 }, {     24,   17,    4,  1,  6,  0 }, {     23,   17,    3,  1,  6,  0 }, {     22,   17,    3,  1,  6,  0 },
@@ -18274,7 +18274,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9204EA = {
     {    -16,   61,  -16,  8,  0,  4 }, {    -16,   62,  -16,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_920747 = {
+static const rct_vehicle_info_list TrackVehicleInfo_920747 = {
     68, {
     {     16,    0,    7,  8,  6,  0 }, {     16,    1,    7,  8,  6,  0 }, {     16,    2,    6,  8,  6,  0 }, {     16,    3,    6,  8,  6,  0 }, {     16,    4,    5,  8,  6,  0 },
     {     16,    5,    5,  9,  6,  0 }, {     16,    6,    4,  9,  6,  0 }, {     17,    7,    4,  9,  6,  0 }, {     17,    8,    3,  9,  6,  0 }, {     17,    9,    3,  9,  6,  0 },
@@ -18292,7 +18292,7 @@ const rct_vehicle_info_list TrackVehicleInfo_920747 = {
     {     60,   48,  -16, 16,  0,  4 }, {     61,   48,  -16, 16,  0,  4 }, {     62,   48,  -16, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9209AD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9209AD = {
     69, {
     {      0,   16,    7, 16,  6,  0 }, {      1,   16,    7, 16,  6,  0 }, {      2,   16,    6, 16,  6,  0 }, {      3,   16,    6, 16,  6,  0 }, {      4,   16,    5, 16,  6,  0 },
     {      5,   16,    5, 17,  6,  0 }, {      6,   16,    4, 17,  6,  0 }, {      7,   15,    4, 17,  6,  0 }, {      8,   15,    3, 17,  6,  0 }, {      9,   15,    3, 17,  6,  0 },
@@ -18310,7 +18310,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9209AD = {
     {     48,  -28,  -16, 24,  0,  4 }, {     48,  -29,  -16, 24,  0,  4 }, {     48,  -30,  -16, 24,  0,  4 }, {     48,  -31,  -16, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_920C1C = {
+static const rct_vehicle_info_list TrackVehicleInfo_920C1C = {
     68, {
     {     16,   31,    7, 24,  6,  0 }, {     16,   30,    7, 24,  6,  0 }, {     16,   29,    6, 24,  6,  0 }, {     16,   28,    6, 24,  6,  0 }, {     16,   27,    5, 25,  6,  0 },
     {     16,   26,    5, 25,  6,  0 }, {     15,   25,    4, 25,  6,  0 }, {     15,   24,    4, 25,  6,  0 }, {     15,   23,    3, 25,  6,  0 }, {     15,   22,    3, 25,  6,  0 },
@@ -18328,7 +18328,7 @@ const rct_vehicle_info_list TrackVehicleInfo_920C1C = {
     {    -29,  -16,  -16,  0,  0,  4 }, {    -30,  -16,  -16,  0,  0,  4 }, {    -31,  -16,  -16,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9221B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9221B2 = {
     311, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  2,  0 }, {     22,   16,    4,  0,  2,  0 },
@@ -18395,7 +18395,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9221B2 = {
     {    -34,  -15,  264,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9237A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9237A6 = {
     311, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  2,  0 }, {     16,    9,    4,  8,  2,  0 },
@@ -18462,7 +18462,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9237A6 = {
     {    -15,   65,  264,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_924D9A = {
+static const rct_vehicle_info_list TrackVehicleInfo_924D9A = {
     311, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  2,  0 }, {      9,   16,    4, 16,  2,  0 },
@@ -18529,7 +18529,7 @@ const rct_vehicle_info_list TrackVehicleInfo_924D9A = {
     {     65,   47,  264, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92638E = {
+static const rct_vehicle_info_list TrackVehicleInfo_92638E = {
     311, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  2,  0 }, {     16,   22,    4, 24,  2,  0 },
@@ -18596,7 +18596,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92638E = {
     {     47,  -34,  264, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_922CAC = {
+static const rct_vehicle_info_list TrackVehicleInfo_922CAC = {
     311, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    0,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    1,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    2,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    3,  0,  2,  0 }, {     23,   16,    4,  0,  2,  0 }, {     22,   16,    4,  0,  2,  0 },
@@ -18663,7 +18663,7 @@ const rct_vehicle_info_list TrackVehicleInfo_922CAC = {
     {    -34,   47,  264,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9242A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9242A0 = {
     311, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  2,  0 }, {     16,    9,    4,  8,  2,  0 },
@@ -18730,7 +18730,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9242A0 = {
     {     47,   65,  264,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_925894 = {
+static const rct_vehicle_info_list TrackVehicleInfo_925894 = {
     311, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  2,  0 }, {      9,   16,    4, 16,  2,  0 },
@@ -18797,7 +18797,7 @@ const rct_vehicle_info_list TrackVehicleInfo_925894 = {
     {     65,  -15,  264, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_926E88 = {
+static const rct_vehicle_info_list TrackVehicleInfo_926E88 = {
     311, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    0, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    1, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    2, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    3, 24,  2,  0 }, {     16,   23,    4, 24,  2,  0 }, {     16,   22,    4, 24,  2,  0 },
@@ -18864,7 +18864,7 @@ const rct_vehicle_info_list TrackVehicleInfo_926E88 = {
     {    -15,  -34,  264, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_927982 = {
+static const rct_vehicle_info_list TrackVehicleInfo_927982 = {
     311, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 16,  0 }, {     25,   16,   16, 16, 16,  0 }, {     24,   16,   16, 16, 16,  0 }, {     23,   16,   15, 16, 16,  0 }, {     22,   16,   15, 16, 16,  0 },
@@ -18931,7 +18931,7 @@ const rct_vehicle_info_list TrackVehicleInfo_927982 = {
     {     94,  -15, -248, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_928F76 = {
+static const rct_vehicle_info_list TrackVehicleInfo_928F76 = {
     311, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 16,  0 }, {     16,    6,   16, 24, 16,  0 }, {     16,    7,   16, 24, 16,  0 }, {     16,    8,   15, 24, 16,  0 }, {     16,    9,   15, 24, 16,  0 },
@@ -18998,7 +18998,7 @@ const rct_vehicle_info_list TrackVehicleInfo_928F76 = {
     {    -15,  -63, -248, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92A56A = {
+static const rct_vehicle_info_list TrackVehicleInfo_92A56A = {
     311, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 16,  0 }, {      6,   16,   16,  0, 16,  0 }, {      7,   16,   16,  0, 16,  0 }, {      8,   16,   15,  0, 16,  0 }, {      9,   16,   15,  0, 16,  0 },
@@ -19065,7 +19065,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92A56A = {
     {    -63,   47, -248,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92BB5E = {
+static const rct_vehicle_info_list TrackVehicleInfo_92BB5E = {
     311, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 16,  0 }, {     16,   25,   16,  8, 16,  0 }, {     16,   24,   16,  8, 16,  0 }, {     16,   23,   15,  8, 16,  0 }, {     16,   22,   15,  8, 16,  0 },
@@ -19132,7 +19132,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92BB5E = {
     {     47,   94, -248,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92847C = {
+static const rct_vehicle_info_list TrackVehicleInfo_92847C = {
     311, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 16,  0 }, {     25,   16,   16, 16, 16,  0 }, {     24,   16,   16, 16, 16,  0 }, {     23,   16,   15, 16, 16,  0 }, {     22,   16,   15, 16, 16,  0 },
@@ -19199,7 +19199,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92847C = {
     {     94,   47, -248, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_929A70 = {
+static const rct_vehicle_info_list TrackVehicleInfo_929A70 = {
     311, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 16,  0 }, {     16,    6,   16, 24, 16,  0 }, {     16,    7,   16, 24, 16,  0 }, {     16,    8,   15, 24, 16,  0 }, {     16,    9,   15, 24, 16,  0 },
@@ -19266,7 +19266,7 @@ const rct_vehicle_info_list TrackVehicleInfo_929A70 = {
     {     47,  -63, -248, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92B064 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92B064 = {
     311, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 16,  0 }, {      6,   16,   16,  0, 16,  0 }, {      7,   16,   16,  0, 16,  0 }, {      8,   16,   15,  0, 16,  0 }, {      9,   16,   15,  0, 16,  0 },
@@ -19333,7 +19333,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92B064 = {
     {    -63,  -15, -248,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92C658 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92C658 = {
     311, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 16,  0 }, {     16,   25,   16,  8, 16,  0 }, {     16,   24,   16,  8, 16,  0 }, {     16,   23,   15,  8, 16,  0 }, {     16,   22,   15,  8, 16,  0 },
@@ -19400,7 +19400,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92C658 = {
     {    -15,   94, -248,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DD21E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DD21E = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0, 14 }, {     25,   16,    0,  0,  0, 14 }, {     24,   16,    0,  0,  0, 14 }, {     23,   16,    0,  0,  0, 14 }, {     22,   16,    0,  0,  0, 14 },
@@ -19424,7 +19424,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DD21E = {
     {    -64,   16,    0, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DD580 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DD580 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0, 14 }, {     16,    6,    0,  8,  0, 14 }, {     16,    7,    0,  8,  0, 14 }, {     16,    8,    0,  8,  0, 14 }, {     16,    9,    0,  8,  0, 14 },
@@ -19448,7 +19448,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DD580 = {
     {     16,   95,    0, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DD8E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DD8E2 = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0, 14 }, {      6,   16,    0, 16,  0, 14 }, {      7,   16,    0, 16,  0, 14 }, {      8,   16,    0, 16,  0, 14 }, {      9,   16,    0, 16,  0, 14 },
@@ -19472,7 +19472,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DD8E2 = {
     {     95,   16,    0,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DDC44 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DDC44 = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0, 14 }, {     16,   25,    0, 24,  0, 14 }, {     16,   24,    0, 24,  0, 14 }, {     16,   23,    0, 24,  0, 14 }, {     16,   22,    0, 24,  0, 14 },
@@ -19496,7 +19496,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DDC44 = {
     {     16,  -64,    0,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DDFA6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DDFA6 = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  9 }, {     25,   16,    0,  0,  0,  9 }, {     24,   16,    0,  0,  0,  9 }, {     23,   16,    0,  0,  0,  9 }, {     22,   16,    0,  0,  0,  9 },
@@ -19520,7 +19520,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DDFA6 = {
     {    -64,   16,    0, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DE308 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DE308 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  9 }, {     16,    6,    0,  8,  0,  9 }, {     16,    7,    0,  8,  0,  9 }, {     16,    8,    0,  8,  0,  9 }, {     16,    9,    0,  8,  0,  9 },
@@ -19544,7 +19544,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DE308 = {
     {     16,   95,    0, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DE66A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DE66A = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  9 }, {      6,   16,    0, 16,  0,  9 }, {      7,   16,    0, 16,  0,  9 }, {      8,   16,    0, 16,  0,  9 }, {      9,   16,    0, 16,  0,  9 },
@@ -19568,7 +19568,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DE66A = {
     {     95,   16,    0,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8DE9CC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8DE9CC = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  9 }, {     16,   25,    0, 24,  0,  9 }, {     16,   24,    0, 24,  0,  9 }, {     16,   23,    0, 24,  0,  9 }, {     16,   22,    0, 24,  0,  9 },
@@ -19592,7 +19592,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8DE9CC = {
     {     16,  -64,    0,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E91A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E91A6 = {
     160, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0, 16, 23,  0 }, {     25,   16,   -1, 16, 23,  0 }, {     24,   16,   -1, 16, 23,  0 }, {     23,   16,   -1, 16, 23,  0 }, {     22,   16,   -2, 16, 23,  0 },
@@ -19628,7 +19628,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E91A6 = {
     {     58,   16, -134, 16, 56,  0 }, {     59,   16, -134, 16, 56,  0 }, {     60,   16, -135, 16, 56,  0 }, {     61,   16, -135, 16, 56,  0 }, {     62,   16, -136, 16, 56,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E9751 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E9751 = {
     160, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0, 24, 23,  0 }, {     16,    6,   -1, 24, 23,  0 }, {     16,    7,   -1, 24, 23,  0 }, {     16,    8,   -1, 24, 23,  0 }, {     16,    9,   -2, 24, 23,  0 },
@@ -19664,7 +19664,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E9751 = {
     {     16,  -27, -134, 24, 56,  0 }, {     16,  -28, -134, 24, 56,  0 }, {     16,  -29, -135, 24, 56,  0 }, {     16,  -30, -135, 24, 56,  0 }, {     16,  -31, -136, 24, 56,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8E9CFC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8E9CFC = {
     160, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0,  0, 23,  0 }, {      6,   16,   -1,  0, 23,  0 }, {      7,   16,   -1,  0, 23,  0 }, {      8,   16,   -1,  0, 23,  0 }, {      9,   16,   -2,  0, 23,  0 },
@@ -19700,7 +19700,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8E9CFC = {
     {    -27,   16, -134,  0, 56,  0 }, {    -28,   16, -134,  0, 56,  0 }, {    -29,   16, -135,  0, 56,  0 }, {    -30,   16, -135,  0, 56,  0 }, {    -31,   16, -136,  0, 56,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EA2A7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EA2A7 = {
     160, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0,  8, 23,  0 }, {     16,   25,   -1,  8, 23,  0 }, {     16,   24,   -1,  8, 23,  0 }, {     16,   23,   -1,  8, 23,  0 }, {     16,   22,   -2,  8, 23,  0 },
@@ -19736,7 +19736,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EA2A7 = {
     {     16,   58, -134,  8, 56,  0 }, {     16,   59, -134,  8, 56,  0 }, {     16,   60, -135,  8, 56,  0 }, {     16,   61, -135,  8, 56,  0 }, {     16,   62, -136,  8, 56,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EDF02 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EDF02 = {
     97, {
     {     31,   16,    0, 16,  0,  0 }, {     30,   16,    0, 16,  0,  0 }, {     29,   16,    0, 16,  0,  0 }, {     28,   16,    0, 16,  0,  0 }, {     27,   16,    0, 16,  0,  0 },
     {     26,   16,    0, 16,  0,  0 }, {     25,   16,   -1, 16,  0,  0 }, {     24,   16,   -1, 16,  0,  0 }, {     23,   16,   -1, 24, 33,  0 }, {     22,   16,   -1, 24, 33,  0 },
@@ -19760,7 +19760,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EDF02 = {
     {    -17,  -31,  -64,  8, 16,  0 }, {    -17,  -32,  -64,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EE26D = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EE26D = {
     97, {
     {     16,    0,    0, 24,  0,  0 }, {     16,    1,    0, 24,  0,  0 }, {     16,    2,    0, 24,  0,  0 }, {     16,    3,    0, 24,  0,  0 }, {     16,    4,    0, 24,  0,  0 },
     {     16,    5,    0, 24,  0,  0 }, {     16,    6,   -1, 24,  0,  0 }, {     16,    7,   -1, 24,  0,  0 }, {     16,    8,   -1,  0, 33,  0 }, {     16,    9,   -1,  0, 33,  0 },
@@ -19784,7 +19784,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EE26D = {
     {    -31,   48,  -64, 16, 16,  0 }, {    -32,   48,  -64, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EE5D8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EE5D8 = {
     97, {
     {      0,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {      2,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 }, {      4,   16,    0,  0,  0,  0 },
     {      5,   16,    0,  0,  0,  0 }, {      6,   16,   -1,  0,  0,  0 }, {      7,   16,   -1,  0,  0,  0 }, {      8,   16,   -1,  8, 33,  0 }, {      9,   16,   -1,  8, 33,  0 },
@@ -19808,7 +19808,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EE5D8 = {
     {     48,   63,  -64, 24, 16,  0 }, {     48,   64,  -64, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EE943 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EE943 = {
     97, {
     {     16,   31,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     16,   29,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   27,    0,  8,  0,  0 },
     {     16,   26,    0,  8,  0,  0 }, {     16,   25,   -1,  8,  0,  0 }, {     16,   24,   -1,  8,  0,  0 }, {     16,   23,   -1, 16, 33,  0 }, {     16,   22,   -1, 16, 33,  0 },
@@ -19832,7 +19832,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EE943 = {
     {     63,  -17,  -64,  0, 16,  0 }, {     64,  -17,  -64,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EECAE = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EECAE = {
     97, {
     {     31,   16,    0, 16,  0,  0 }, {     30,   16,    0, 16,  0,  0 }, {     29,   16,    0, 16,  0,  0 }, {     28,   16,    0, 16,  0,  0 }, {     27,   16,    0, 16,  0,  0 },
     {     26,   16,    0, 16,  0,  0 }, {     25,   16,   -1, 16,  0,  0 }, {     24,   16,   -1, 16,  0,  0 }, {     23,   16,   -1,  8, 43,  0 }, {     22,   16,   -1,  8, 43,  0 },
@@ -19856,7 +19856,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EECAE = {
     {    -17,   63,  -64, 24, 16,  0 }, {    -17,   64,  -64, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EF019 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EF019 = {
     97, {
     {     16,    0,    0, 24,  0,  0 }, {     16,    1,    0, 24,  0,  0 }, {     16,    2,    0, 24,  0,  0 }, {     16,    3,    0, 24,  0,  0 }, {     16,    4,    0, 24,  0,  0 },
     {     16,    5,    0, 24,  0,  0 }, {     16,    6,   -1, 24,  0,  0 }, {     16,    7,   -1, 24,  0,  0 }, {     16,    8,   -1, 16, 43,  0 }, {     16,    9,   -1, 16, 43,  0 },
@@ -19880,7 +19880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EF019 = {
     {     63,   48,  -64,  0, 16,  0 }, {     64,   48,  -64,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EF384 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EF384 = {
     97, {
     {      0,   16,    0,  0,  0,  0 }, {      1,   16,    0,  0,  0,  0 }, {      2,   16,    0,  0,  0,  0 }, {      3,   16,    0,  0,  0,  0 }, {      4,   16,    0,  0,  0,  0 },
     {      5,   16,    0,  0,  0,  0 }, {      6,   16,   -1,  0,  0,  0 }, {      7,   16,   -1,  0,  0,  0 }, {      8,   16,   -1, 24, 43,  0 }, {      9,   16,   -1, 24, 43,  0 },
@@ -19904,7 +19904,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EF384 = {
     {     48,  -31,  -64,  8, 16,  0 }, {     48,  -32,  -64,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8EF6EF = {
+static const rct_vehicle_info_list TrackVehicleInfo_8EF6EF = {
     97, {
     {     16,   31,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 }, {     16,   29,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   27,    0,  8,  0,  0 },
     {     16,   26,    0,  8,  0,  0 }, {     16,   25,   -1,  8,  0,  0 }, {     16,   24,   -1,  8,  0,  0 }, {     16,   23,   -1,  0, 43,  0 }, {     16,   22,   -1,  0, 43,  0 },
@@ -19928,7 +19928,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8EF6EF = {
     {    -31,  -17,  -64, 16, 16,  0 }, {    -32,  -17,  -64, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92D152 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92D152 = {
     160, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -19964,7 +19964,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92D152 = {
     {     27,   16,   32, 16,  0,  0 }, {     28,   16,   32, 16,  0,  0 }, {     29,   16,   32, 16,  0,  0 }, {     30,   16,   32, 16,  0,  0 }, {     31,   16,   32, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92D6F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92D6F4 = {
     160, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -20000,7 +20000,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92D6F4 = {
     {     16,    4,   32, 24,  0,  0 }, {     16,    3,   32, 24,  0,  0 }, {     16,    2,   32, 24,  0,  0 }, {     16,    1,   32, 24,  0,  0 }, {     16,    0,   32, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92DC96 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92DC96 = {
     160, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -20036,7 +20036,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92DC96 = {
     {      4,   16,   32,  0,  0,  0 }, {      3,   16,   32,  0,  0,  0 }, {      2,   16,   32,  0,  0,  0 }, {      1,   16,   32,  0,  0,  0 }, {      0,   16,   32,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92E238 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92E238 = {
     160, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -20072,7 +20072,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92E238 = {
     {     16,   27,   32,  8,  0,  0 }, {     16,   28,   32,  8,  0,  0 }, {     16,   29,   32,  8,  0,  0 }, {     16,   30,   32,  8,  0,  0 }, {     16,   31,   32,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92E7DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_92E7DA = {
     160, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,   -1,  0,  0,  0 }, {     22,   16,   -1,  0,  0,  0 },
@@ -20108,7 +20108,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92E7DA = {
     {     27,   16,  -32, 16,  0,  0 }, {     28,   16,  -32, 16,  0,  0 }, {     29,   16,  -32, 16,  0,  0 }, {     30,   16,  -32, 16,  0,  0 }, {     31,   16,  -32, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92ED7C = {
+static const rct_vehicle_info_list TrackVehicleInfo_92ED7C = {
     160, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,   -1,  8,  0,  0 }, {     16,    9,   -1,  8,  0,  0 },
@@ -20144,7 +20144,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92ED7C = {
     {     16,    4,  -32, 24,  0,  0 }, {     16,    3,  -32, 24,  0,  0 }, {     16,    2,  -32, 24,  0,  0 }, {     16,    1,  -32, 24,  0,  0 }, {     16,    0,  -32, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92F31E = {
+static const rct_vehicle_info_list TrackVehicleInfo_92F31E = {
     160, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,   -1, 16,  0,  0 }, {      9,   16,   -1, 16,  0,  0 },
@@ -20180,7 +20180,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92F31E = {
     {      4,   16,  -32,  0,  0,  0 }, {      3,   16,  -32,  0,  0,  0 }, {      2,   16,  -32,  0,  0,  0 }, {      1,   16,  -32,  0,  0,  0 }, {      0,   16,  -32,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92F8C0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92F8C0 = {
     160, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,   -1, 24,  0,  0 }, {     16,   22,   -1, 24,  0,  0 },
@@ -20216,7 +20216,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92F8C0 = {
     {     16,   27,  -32,  8,  0,  0 }, {     16,   28,  -32,  8,  0,  0 }, {     16,   29,  -32,  8,  0,  0 }, {     16,   30,  -32,  8,  0,  0 }, {     16,   31,  -32,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_92FE62 = {
+static const rct_vehicle_info_list TrackVehicleInfo_92FE62 = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  1 }, {     25,   16,    0,  0,  0,  1 }, {     24,   16,    0,  0,  0,  1 }, {     23,   16,    0,  0,  0,  1 }, {     22,   16,    0,  0,  0,  1 },
@@ -20259,7 +20259,7 @@ const rct_vehicle_info_list TrackVehicleInfo_92FE62 = {
     {   -159,   16,    0,  0,  0,  0 }, {   -160,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_930524 = {
+static const rct_vehicle_info_list TrackVehicleInfo_930524 = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  1 }, {     16,    6,    0,  8,  0,  1 }, {     16,    7,    0,  8,  0,  1 }, {     16,    8,    0,  8,  0,  1 }, {     16,    9,    0,  8,  0,  1 },
@@ -20302,7 +20302,7 @@ const rct_vehicle_info_list TrackVehicleInfo_930524 = {
     {     16,  190,    0,  8,  0,  0 }, {     16,  191,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_930BE6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_930BE6 = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  1 }, {      6,   16,    0, 16,  0,  1 }, {      7,   16,    0, 16,  0,  1 }, {      8,   16,    0, 16,  0,  1 }, {      9,   16,    0, 16,  0,  1 },
@@ -20345,7 +20345,7 @@ const rct_vehicle_info_list TrackVehicleInfo_930BE6 = {
     {    190,   16,    0, 16,  0,  0 }, {    191,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9312A8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9312A8 = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  1 }, {     16,   25,    0, 24,  0,  1 }, {     16,   24,    0, 24,  0,  1 }, {     16,   23,    0, 24,  0,  1 }, {     16,   22,    0, 24,  0,  1 },
@@ -20388,7 +20388,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9312A8 = {
     {     16, -159,    0, 24,  0,  0 }, {     16, -160,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93196A = {
+static const rct_vehicle_info_list TrackVehicleInfo_93196A = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  3 }, {     25,   16,    0,  0,  0,  3 }, {     24,   16,    0,  0,  0,  3 }, {     23,   16,    0,  0,  0,  3 }, {     22,   16,    0,  0,  0,  3 },
@@ -20431,7 +20431,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93196A = {
     {   -159,   16,    0,  0,  0,  0 }, {   -160,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93202C = {
+static const rct_vehicle_info_list TrackVehicleInfo_93202C = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  3 }, {     16,    6,    0,  8,  0,  3 }, {     16,    7,    0,  8,  0,  3 }, {     16,    8,    0,  8,  0,  3 }, {     16,    9,    0,  8,  0,  3 },
@@ -20474,7 +20474,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93202C = {
     {     16,  190,    0,  8,  0,  0 }, {     16,  191,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9326EE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9326EE = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  3 }, {      6,   16,    0, 16,  0,  3 }, {      7,   16,    0, 16,  0,  3 }, {      8,   16,    0, 16,  0,  3 }, {      9,   16,    0, 16,  0,  3 },
@@ -20517,7 +20517,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9326EE = {
     {    190,   16,    0, 16,  0,  0 }, {    191,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_932DB0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_932DB0 = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  3 }, {     16,   25,    0, 24,  0,  3 }, {     16,   24,    0, 24,  0,  3 }, {     16,   23,    0, 24,  0,  3 }, {     16,   22,    0, 24,  0,  3 },
@@ -20560,7 +20560,7 @@ const rct_vehicle_info_list TrackVehicleInfo_932DB0 = {
     {     16, -159,    0, 24,  0,  0 }, {     16, -160,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_979BD6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_979BD6 = {
     137, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,   -1,  0,  0,  0 }, {     22,   16,   -1, 16, 23,  0 },
@@ -20592,7 +20592,7 @@ const rct_vehicle_info_list TrackVehicleInfo_979BD6 = {
     {    -48,   16, -110, 16, 18,  0 }, {    -48,   16, -111, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97A0A9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_97A0A9 = {
     137, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,   -1,  8,  0,  0 }, {     16,    9,   -1, 24, 23,  0 },
@@ -20624,7 +20624,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97A0A9 = {
     {     16,   79, -110, 24, 18,  0 }, {     16,   79, -111, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97A57C = {
+static const rct_vehicle_info_list TrackVehicleInfo_97A57C = {
     137, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,   -1, 16,  0,  0 }, {      9,   16,   -1,  0, 23,  0 },
@@ -20656,7 +20656,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97A57C = {
     {     79,   16, -110,  0, 18,  0 }, {     79,   16, -111,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97AA4F = {
+static const rct_vehicle_info_list TrackVehicleInfo_97AA4F = {
     137, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,   -1, 24,  0,  0 }, {     16,   22,   -1,  8, 23,  0 },
@@ -20688,7 +20688,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97AA4F = {
     {     16,  -48, -110,  8, 18,  0 }, {     16,  -48, -111,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_973B5A = {
+static const rct_vehicle_info_list TrackVehicleInfo_973B5A = {
     137, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 }, {     16,   16,    7,  0, 10,  0 }, {     16,   16,    8,  0, 10,  0 }, {     16,   16,    9,  0, 10,  0 },
@@ -20720,7 +20720,7 @@ const rct_vehicle_info_list TrackVehicleInfo_973B5A = {
     {     94,   16,  111,  0, 16,  0 }, {     95,   16,  111,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97402D = {
+static const rct_vehicle_info_list TrackVehicleInfo_97402D = {
     137, {
     {     16,   16,    0,  8, 10,  0 }, {     16,   16,    1,  8, 10,  0 }, {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 },
     {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  8, 10,  0 }, {     16,   16,    7,  8, 10,  0 }, {     16,   16,    8,  8, 10,  0 }, {     16,   16,    9,  8, 10,  0 },
@@ -20752,7 +20752,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97402D = {
     {     16,  -62,  111,  8, 16,  0 }, {     16,  -63,  111,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_974500 = {
+static const rct_vehicle_info_list TrackVehicleInfo_974500 = {
     137, {
     {     16,   16,    0, 16, 10,  0 }, {     16,   16,    1, 16, 10,  0 }, {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 },
     {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 16, 10,  0 }, {     16,   16,    7, 16, 10,  0 }, {     16,   16,    8, 16, 10,  0 }, {     16,   16,    9, 16, 10,  0 },
@@ -20784,7 +20784,7 @@ const rct_vehicle_info_list TrackVehicleInfo_974500 = {
     {    -62,   16,  111, 16, 16,  0 }, {    -63,   16,  111, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9749D3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9749D3 = {
     137, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 }, {     16,   16,    7, 24, 10,  0 }, {     16,   16,    8, 24, 10,  0 }, {     16,   16,    9, 24, 10,  0 },
@@ -20816,7 +20816,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9749D3 = {
     {     16,   94,  111, 24, 16,  0 }, {     16,   95,  111, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_974EA6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_974EA6 = {
     137, {
     {     31,   16,   16, 16, 16,  0 }, {     30,   16,   16, 16, 16,  0 }, {     29,   16,   16, 16, 16,  0 }, {     28,   16,   16, 16, 16,  0 }, {     27,   16,   16, 16, 16,  0 },
     {     26,   16,   16, 16, 16,  0 }, {     25,   16,   16, 16, 16,  0 }, {     24,   16,   16, 16, 16,  0 }, {     23,   16,   15, 16, 16,  0 }, {     22,   16,   15, 16, 23,  0 },
@@ -20848,7 +20848,7 @@ const rct_vehicle_info_list TrackVehicleInfo_974EA6 = {
     {    -48,   16,  -94, 16, 18,  0 }, {    -48,   16,  -95, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_975379 = {
+static const rct_vehicle_info_list TrackVehicleInfo_975379 = {
     137, {
     {     16,    0,   16, 24, 16,  0 }, {     16,    1,   16, 24, 16,  0 }, {     16,    2,   16, 24, 16,  0 }, {     16,    3,   16, 24, 16,  0 }, {     16,    4,   16, 24, 16,  0 },
     {     16,    5,   16, 24, 16,  0 }, {     16,    6,   16, 24, 16,  0 }, {     16,    7,   16, 24, 16,  0 }, {     16,    8,   15, 24, 16,  0 }, {     16,    9,   15, 24, 23,  0 },
@@ -20880,7 +20880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_975379 = {
     {     16,   79,  -94, 24, 18,  0 }, {     16,   79,  -95, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97584C = {
+static const rct_vehicle_info_list TrackVehicleInfo_97584C = {
     137, {
     {      0,   16,   16,  0, 16,  0 }, {      1,   16,   16,  0, 16,  0 }, {      2,   16,   16,  0, 16,  0 }, {      3,   16,   16,  0, 16,  0 }, {      4,   16,   16,  0, 16,  0 },
     {      5,   16,   16,  0, 16,  0 }, {      6,   16,   16,  0, 16,  0 }, {      7,   16,   16,  0, 16,  0 }, {      8,   16,   15,  0, 16,  0 }, {      9,   16,   15,  0, 23,  0 },
@@ -20912,7 +20912,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97584C = {
     {     79,   16,  -94,  0, 18,  0 }, {     79,   16,  -95,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_975D1F = {
+static const rct_vehicle_info_list TrackVehicleInfo_975D1F = {
     137, {
     {     16,   31,   16,  8, 16,  0 }, {     16,   30,   16,  8, 16,  0 }, {     16,   29,   16,  8, 16,  0 }, {     16,   28,   16,  8, 16,  0 }, {     16,   27,   16,  8, 16,  0 },
     {     16,   26,   16,  8, 16,  0 }, {     16,   25,   16,  8, 16,  0 }, {     16,   24,   16,  8, 16,  0 }, {     16,   23,   15,  8, 16,  0 }, {     16,   22,   15,  8, 23,  0 },
@@ -20944,7 +20944,7 @@ const rct_vehicle_info_list TrackVehicleInfo_975D1F = {
     {     16,  -48,  -94,  8, 18,  0 }, {     16,  -48,  -95,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDFAA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDFAA = {
     68, {
     {     31,   16,    0,  0, 59,  0 }, {     30,   16,    0,  0, 59,  0 }, {     29,   16,    0,  0, 59,  0 }, {     28,   16,    0,  0, 59,  0 }, {     27,   16,    1, 31, 59,  0 },
     {     26,   16,    1, 31, 59,  0 }, {     25,   15,    1, 31, 59,  0 }, {     24,   15,    1, 31, 59,  0 }, {     23,   15,    1, 31, 59,  0 }, {     22,   15,    2, 31, 59,  0 },
@@ -20962,7 +20962,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FDFAA = {
     {    -16,  -29,   15, 24, 59,  0 }, {    -16,  -30,   15, 24, 59,  0 }, {    -16,  -31,   15, 24, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FE210 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FE210 = {
     69, {
     {     16,    0,    0,  8, 59,  0 }, {     16,    1,    0,  8, 59,  0 }, {     16,    2,    0,  8, 59,  0 }, {     16,    3,    0,  8, 59,  0 }, {     16,    4,    0,  8, 59,  0 },
     {     16,    5,    1,  7, 59,  0 }, {     16,    6,    1,  7, 59,  0 }, {     15,    7,    1,  7, 59,  0 }, {     15,    8,    1,  7, 59,  0 }, {     15,    9,    1,  7, 59,  0 },
@@ -20980,7 +20980,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FE210 = {
     {    -28,   48,   15,  0, 59,  0 }, {    -29,   48,   15,  0, 59,  0 }, {    -30,   48,   15,  0, 59,  0 }, {    -31,   48,   15,  0, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FE47F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FE47F = {
     68, {
     {      0,   16,    0, 16, 59,  0 }, {      1,   16,    0, 16, 59,  0 }, {      2,   16,    0, 16, 59,  0 }, {      3,   16,    0, 16, 59,  0 }, {      4,   16,    0, 16, 59,  0 },
     {      5,   16,    1, 15, 59,  0 }, {      6,   16,    1, 15, 59,  0 }, {      7,   17,    1, 15, 59,  0 }, {      8,   17,    1, 15, 59,  0 }, {      9,   17,    1, 15, 59,  0 },
@@ -20998,7 +20998,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FE47F = {
     {     48,   60,   15,  8, 59,  0 }, {     48,   61,   15,  8, 59,  0 }, {     48,   62,   15,  8, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FE6E5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FE6E5 = {
     67, {
     {     16,   31,    0, 24, 59,  0 }, {     16,   30,    0, 24, 59,  0 }, {     16,   29,    0, 24, 59,  0 }, {     16,   28,    0, 24, 59,  0 }, {     16,   27,    1, 23, 59,  0 },
     {     16,   26,    1, 23, 59,  0 }, {     17,   25,    1, 23, 59,  0 }, {     17,   24,    1, 23, 59,  0 }, {     17,   23,    1, 23, 59,  0 }, {     17,   22,    2, 23, 59,  0 },
@@ -21016,7 +21016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FE6E5 = {
     {     61,  -16,   15, 16, 59,  0 }, {     62,  -16,   15, 16, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FE942 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FE942 = {
     67, {
     {     31,   16,    0,  0, 59,  0 }, {     30,   16,    0,  0, 59,  0 }, {     29,   16,    0,  0, 59,  0 }, {     28,   16,    0,  0, 59,  0 }, {     27,   16,    1,  1, 59,  0 },
     {     26,   16,    1,  1, 59,  0 }, {     25,   17,    1,  1, 59,  0 }, {     24,   17,    1,  1, 59,  0 }, {     23,   17,    1,  1, 59,  0 }, {     22,   17,    2,  1, 59,  0 },
@@ -21034,7 +21034,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FE942 = {
     {    -16,   61,   15,  8, 59,  0 }, {    -16,   62,   15,  8, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FEB9F = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FEB9F = {
     68, {
     {     16,    0,    0,  8, 59,  0 }, {     16,    1,    0,  8, 59,  0 }, {     16,    2,    0,  8, 59,  0 }, {     16,    3,    0,  8, 59,  0 }, {     16,    4,    0,  8, 59,  0 },
     {     16,    5,    1,  9, 59,  0 }, {     16,    6,    1,  9, 59,  0 }, {     17,    7,    1,  9, 59,  0 }, {     17,    8,    1,  9, 59,  0 }, {     17,    9,    1,  9, 59,  0 },
@@ -21052,7 +21052,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FEB9F = {
     {     60,   48,   15, 16, 59,  0 }, {     61,   48,   15, 16, 59,  0 }, {     62,   48,   15, 16, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FEE05 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FEE05 = {
     69, {
     {      0,   16,    0, 16, 59,  0 }, {      1,   16,    0, 16, 59,  0 }, {      2,   16,    0, 16, 59,  0 }, {      3,   16,    0, 16, 59,  0 }, {      4,   16,    0, 16, 59,  0 },
     {      5,   16,    1, 17, 59,  0 }, {      6,   16,    1, 17, 59,  0 }, {      7,   15,    1, 17, 59,  0 }, {      8,   15,    1, 17, 59,  0 }, {      9,   15,    1, 17, 59,  0 },
@@ -21070,7 +21070,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FEE05 = {
     {     48,  -28,   15, 24, 59,  0 }, {     48,  -29,   15, 24, 59,  0 }, {     48,  -30,   15, 24, 59,  0 }, {     48,  -31,   15, 24, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF074 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF074 = {
     68, {
     {     16,   31,    0, 24, 59,  0 }, {     16,   30,    0, 24, 59,  0 }, {     16,   29,    0, 24, 59,  0 }, {     16,   28,    0, 24, 59,  0 }, {     16,   27,    1, 25, 59,  0 },
     {     16,   26,    1, 25, 59,  0 }, {     15,   25,    1, 25, 59,  0 }, {     15,   24,    1, 25, 59,  0 }, {     15,   23,    1, 25, 59,  0 }, {     15,   22,    2, 25, 59,  0 },
@@ -21088,7 +21088,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF074 = {
     {    -29,  -16,   15,  0, 59,  0 }, {    -30,  -16,   15,  0, 59,  0 }, {    -31,  -16,   15,  0, 59,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94F14E = {
+static const rct_vehicle_info_list TrackVehicleInfo_94F14E = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   15,    0,  0,  0,  0 }, {     25,   15,    0,  0,  0,  0 }, {     24,   14,    0,  0,  0,  0 }, {     23,   14,    0,  0,  0,  0 }, {     22,   13,    0,  0,  0,  0 },
@@ -21131,7 +21131,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94F14E = {
     {    -63,   16,    0,  0,  0,  0 }, {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94F810 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94F810 = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     15,    5,    0,  8,  0,  0 }, {     15,    6,    0,  8,  0,  0 }, {     14,    7,    0,  8,  0,  0 }, {     14,    8,    0,  8,  0,  0 }, {     13,    9,    0,  8,  0,  0 },
@@ -21174,7 +21174,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94F810 = {
     {     16,   94,    0,  8,  0,  0 }, {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94FED2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94FED2 = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   17,    0, 16,  0,  0 }, {      6,   17,    0, 16,  0,  0 }, {      7,   18,    0, 16,  0,  0 }, {      8,   18,    0, 16,  0,  0 }, {      9,   19,    0, 16,  0,  0 },
@@ -21217,7 +21217,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94FED2 = {
     {     94,   16,    0, 16,  0,  0 }, {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_950594 = {
+static const rct_vehicle_info_list TrackVehicleInfo_950594 = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     17,   26,    0, 24,  0,  0 }, {     17,   25,    0, 24,  0,  0 }, {     18,   24,    0, 24,  0,  0 }, {     18,   23,    0, 24,  0,  0 }, {     19,   22,    0, 24,  0,  0 },
@@ -21260,7 +21260,7 @@ const rct_vehicle_info_list TrackVehicleInfo_950594 = {
     {     16,  -63,    0, 24,  0,  0 }, {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_950C56 = {
+static const rct_vehicle_info_list TrackVehicleInfo_950C56 = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   17,    0,  0,  0,  0 }, {     25,   17,    0,  0,  0,  0 }, {     24,   18,    0,  0,  0,  0 }, {     23,   18,    0,  0,  0,  0 }, {     22,   19,    0,  0,  0,  0 },
@@ -21303,7 +21303,7 @@ const rct_vehicle_info_list TrackVehicleInfo_950C56 = {
     {    -63,   16,    0,  0,  0,  0 }, {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_951318 = {
+static const rct_vehicle_info_list TrackVehicleInfo_951318 = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     17,    5,    0,  8,  0,  0 }, {     17,    6,    0,  8,  0,  0 }, {     18,    7,    0,  8,  0,  0 }, {     18,    8,    0,  8,  0,  0 }, {     19,    9,    0,  8,  0,  0 },
@@ -21346,7 +21346,7 @@ const rct_vehicle_info_list TrackVehicleInfo_951318 = {
     {     16,   94,    0,  8,  0,  0 }, {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9519DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9519DA = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      7,   14,    0, 16,  0,  0 }, {      8,   14,    0, 16,  0,  0 }, {      9,   13,    0, 16,  0,  0 },
@@ -21389,7 +21389,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9519DA = {
     {     94,   16,    0, 16,  0,  0 }, {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95209C = {
+static const rct_vehicle_info_list TrackVehicleInfo_95209C = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     14,   24,    0, 24,  0,  0 }, {     14,   23,    0, 24,  0,  0 }, {     13,   22,    0, 24,  0,  0 },
@@ -21432,7 +21432,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95209C = {
     {     16,  -63,    0, 24,  0,  0 }, {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90C4D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90C4D2 = {
     114, {
     {     37,   16,    1,  0, 10,  0 }, {     36,   16,    2,  0, 10,  0 }, {     36,   16,    3,  0, 10,  0 }, {     36,   16,    4,  0, 10,  0 }, {     36,   16,    5,  0, 10,  0 },
     {     36,   16,    6,  0, 10,  0 }, {     35,   16,    7,  0, 10,  0 }, {     35,   16,    8,  0, 10,  0 }, {     35,   16,    9,  0,  9,  0 }, {     35,   16,   10,  0,  9,  0 },
@@ -21459,7 +21459,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90C4D2 = {
     {    -36,   16,    4,  0, 17,  0 }, {    -36,   16,    3,  0, 17,  0 }, {    -37,   16,    2,  0, 17,  0 }, {    -37,   16,    1,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90C8D6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90C8D6 = {
     114, {
     {     16,   -6,    1,  8, 10,  0 }, {     16,   -5,    2,  8, 10,  0 }, {     16,   -5,    3,  8, 10,  0 }, {     16,   -5,    4,  8, 10,  0 }, {     16,   -5,    5,  8, 10,  0 },
     {     16,   -5,    6,  8, 10,  0 }, {     16,   -4,    7,  8, 10,  0 }, {     16,   -4,    8,  8, 10,  0 }, {     16,   -4,    9,  8,  9,  0 }, {     16,   -4,   10,  8,  9,  0 },
@@ -21486,7 +21486,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90C8D6 = {
     {     16,   67,    4,  8, 17,  0 }, {     16,   67,    3,  8, 17,  0 }, {     16,   68,    2,  8, 17,  0 }, {     16,   68,    1,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90CCDA = {
+static const rct_vehicle_info_list TrackVehicleInfo_90CCDA = {
     114, {
     {     -6,   16,    1, 16, 10,  0 }, {     -5,   16,    2, 16, 10,  0 }, {     -5,   16,    3, 16, 10,  0 }, {     -5,   16,    4, 16, 10,  0 }, {     -5,   16,    5, 16, 10,  0 },
     {     -5,   16,    6, 16, 10,  0 }, {     -4,   16,    7, 16, 10,  0 }, {     -4,   16,    8, 16, 10,  0 }, {     -4,   16,    9, 16,  9,  0 }, {     -4,   16,   10, 16,  9,  0 },
@@ -21513,7 +21513,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90CCDA = {
     {     67,   16,    4, 16, 17,  0 }, {     67,   16,    3, 16, 17,  0 }, {     68,   16,    2, 16, 17,  0 }, {     68,   16,    1, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90D0DE = {
+static const rct_vehicle_info_list TrackVehicleInfo_90D0DE = {
     114, {
     {     16,   37,    1, 24, 10,  0 }, {     16,   36,    2, 24, 10,  0 }, {     16,   36,    3, 24, 10,  0 }, {     16,   36,    4, 24, 10,  0 }, {     16,   36,    5, 24, 10,  0 },
     {     16,   36,    6, 24, 10,  0 }, {     16,   35,    7, 24, 10,  0 }, {     16,   35,    8, 24, 10,  0 }, {     16,   35,    9, 24,  9,  0 }, {     16,   35,   10, 24,  9,  0 },
@@ -21540,7 +21540,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90D0DE = {
     {     16,  -36,    4, 24, 17,  0 }, {     16,  -36,    3, 24, 17,  0 }, {     16,  -37,    2, 24, 17,  0 }, {     16,  -37,    1, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90D4E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90D4E2 = {
     80, {
     {     27,   16,   79,  0, 18,  0 }, {     27,   16,   78,  0, 18,  0 }, {     27,   16,   77,  0, 18,  0 }, {     27,   16,   76,  0, 18,  0 }, {     27,   16,   75,  0, 18,  0 },
     {     27,   16,   74,  0, 18,  0 }, {     27,   16,   73,  0, 18,  0 }, {     27,   16,   72,  0, 18,  0 }, {     27,   16,   71,  0, 18,  0 }, {     27,   16,   70,  0, 18,  0 },
@@ -21560,7 +21560,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90D4E2 = {
     {     27,   16,    4,  0, 18,  0 }, {     27,   16,    3,  0, 18,  0 }, {     27,   16,    2,  0, 18,  0 }, {     27,   16,    1,  0, 18,  0 }, {     27,   16,    0,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90D7B4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90D7B4 = {
     80, {
     {     16,    5,   79,  8, 18,  0 }, {     16,    5,   78,  8, 18,  0 }, {     16,    5,   77,  8, 18,  0 }, {     16,    5,   76,  8, 18,  0 }, {     16,    5,   75,  8, 18,  0 },
     {     16,    5,   74,  8, 18,  0 }, {     16,    5,   73,  8, 18,  0 }, {     16,    5,   72,  8, 18,  0 }, {     16,    5,   71,  8, 18,  0 }, {     16,    5,   70,  8, 18,  0 },
@@ -21580,7 +21580,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90D7B4 = {
     {     16,    5,    4,  8, 18,  0 }, {     16,    5,    3,  8, 18,  0 }, {     16,    5,    2,  8, 18,  0 }, {     16,    5,    1,  8, 18,  0 }, {     16,    5,    0,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90DA86 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90DA86 = {
     80, {
     {      5,   16,   79, 16, 18,  0 }, {      5,   16,   78, 16, 18,  0 }, {      5,   16,   77, 16, 18,  0 }, {      5,   16,   76, 16, 18,  0 }, {      5,   16,   75, 16, 18,  0 },
     {      5,   16,   74, 16, 18,  0 }, {      5,   16,   73, 16, 18,  0 }, {      5,   16,   72, 16, 18,  0 }, {      5,   16,   71, 16, 18,  0 }, {      5,   16,   70, 16, 18,  0 },
@@ -21600,7 +21600,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90DA86 = {
     {      5,   16,    4, 16, 18,  0 }, {      5,   16,    3, 16, 18,  0 }, {      5,   16,    2, 16, 18,  0 }, {      5,   16,    1, 16, 18,  0 }, {      5,   16,    0, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90DD58 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90DD58 = {
     80, {
     {     16,   27,   79, 24, 18,  0 }, {     16,   27,   78, 24, 18,  0 }, {     16,   27,   77, 24, 18,  0 }, {     16,   27,   76, 24, 18,  0 }, {     16,   27,   75, 24, 18,  0 },
     {     16,   27,   74, 24, 18,  0 }, {     16,   27,   73, 24, 18,  0 }, {     16,   27,   72, 24, 18,  0 }, {     16,   27,   71, 24, 18,  0 }, {     16,   27,   70, 24, 18,  0 },
@@ -21620,7 +21620,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90DD58 = {
     {     16,   27,    4, 24, 18,  0 }, {     16,   27,    3, 24, 18,  0 }, {     16,   27,    2, 24, 18,  0 }, {     16,   27,    1, 24, 18,  0 }, {     16,   27,    0, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_908EC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_908EC2 = {
     304, {
     {     27,   16,  239,  0, 18,  0 }, {     27,   16,  238,  0, 18,  0 }, {     27,   16,  237,  0, 18,  0 }, {     27,   16,  236,  0, 18,  0 }, {     27,   16,  235,  0, 18,  0 },
     {     27,   16,  234,  0, 18,  0 }, {     27,   16,  233,  0, 18,  0 }, {     27,   16,  232,  0, 18,  0 }, {     27,   16,  231,  0, 18,  0 }, {     27,   16,  229,  0, 18,  0 },
@@ -21685,7 +21685,7 @@ const rct_vehicle_info_list TrackVehicleInfo_908EC2 = {
     {   -157,   16,    0,  0,  0,  0 }, {   -158,   16,    0,  0,  0,  0 }, {   -159,   16,    0,  0,  0,  0 }, {   -160,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_909974 = {
+static const rct_vehicle_info_list TrackVehicleInfo_909974 = {
     304, {
     {     16,    5,  239,  8, 18,  0 }, {     16,    5,  238,  8, 18,  0 }, {     16,    5,  237,  8, 18,  0 }, {     16,    5,  236,  8, 18,  0 }, {     16,    5,  235,  8, 18,  0 },
     {     16,    5,  234,  8, 18,  0 }, {     16,    5,  233,  8, 18,  0 }, {     16,    5,  232,  8, 18,  0 }, {     16,    5,  231,  8, 18,  0 }, {     16,    5,  229,  8, 18,  0 },
@@ -21750,7 +21750,7 @@ const rct_vehicle_info_list TrackVehicleInfo_909974 = {
     {     16,  189,    0,  8,  0,  0 }, {     16,  190,    0,  8,  0,  0 }, {     16,  191,    0,  8,  0,  0 }, {     16,  192,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90A426 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90A426 = {
     304, {
     {      5,   16,  239, 16, 18,  0 }, {      5,   16,  238, 16, 18,  0 }, {      5,   16,  237, 16, 18,  0 }, {      5,   16,  236, 16, 18,  0 }, {      5,   16,  235, 16, 18,  0 },
     {      5,   16,  234, 16, 18,  0 }, {      5,   16,  233, 16, 18,  0 }, {      5,   16,  232, 16, 18,  0 }, {      5,   16,  231, 16, 18,  0 }, {      5,   16,  229, 16, 18,  0 },
@@ -21815,7 +21815,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90A426 = {
     {    189,   16,    0, 16,  0,  0 }, {    190,   16,    0, 16,  0,  0 }, {    191,   16,    0, 16,  0,  0 }, {    192,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90AED8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_90AED8 = {
     304, {
     {     16,   27,  239, 24, 18,  0 }, {     16,   27,  238, 24, 18,  0 }, {     16,   27,  237, 24, 18,  0 }, {     16,   27,  236, 24, 18,  0 }, {     16,   27,  235, 24, 18,  0 },
     {     16,   27,  234, 24, 18,  0 }, {     16,   27,  233, 24, 18,  0 }, {     16,   27,  232, 24, 18,  0 }, {     16,   27,  231, 24, 18,  0 }, {     16,   27,  229, 24, 18,  0 },
@@ -21880,7 +21880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90AED8 = {
     {     16, -157,    0, 24,  0,  0 }, {     16, -158,    0, 24,  0,  0 }, {     16, -159,    0, 24,  0,  0 }, {     16, -160,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_960BEE = {
+static const rct_vehicle_info_list TrackVehicleInfo_960BEE = {
     68, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    0,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    1,  0,  2,  2 }, {     27,   16,    2, 31,  2,  2 },
     {     26,   16,    2, 31,  2,  2 }, {     25,   15,    2, 31,  2,  2 }, {     24,   15,    3, 31,  2,  2 }, {     23,   15,    3, 31,  2,  2 }, {     22,   15,    4, 31,  2,  2 },
@@ -21898,7 +21898,7 @@ const rct_vehicle_info_list TrackVehicleInfo_960BEE = {
     {    -16,  -29,   30, 24,  2,  2 }, {    -16,  -30,   31, 24,  2,  2 }, {    -16,  -31,   31, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_960E54 = {
+static const rct_vehicle_info_list TrackVehicleInfo_960E54 = {
     69, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    0,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    1,  8,  2,  2 },
     {     16,    5,    2,  7,  2,  2 }, {     16,    6,    2,  7,  2,  2 }, {     15,    7,    2,  7,  2,  2 }, {     15,    8,    3,  7,  2,  2 }, {     15,    9,    3,  7,  2,  2 },
@@ -21916,7 +21916,7 @@ const rct_vehicle_info_list TrackVehicleInfo_960E54 = {
     {    -28,   48,   30,  0,  2,  2 }, {    -29,   48,   30,  0,  2,  2 }, {    -30,   48,   31,  0,  2,  2 }, {    -31,   48,   31,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9610C3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9610C3 = {
     68, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    0, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    1, 16,  2,  2 },
     {      5,   16,    2, 15,  2,  2 }, {      6,   16,    2, 15,  2,  2 }, {      7,   17,    2, 15,  2,  2 }, {      8,   17,    3, 15,  2,  2 }, {      9,   17,    3, 15,  2,  2 },
@@ -21934,7 +21934,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9610C3 = {
     {     48,   60,   30,  8,  2,  2 }, {     48,   61,   31,  8,  2,  2 }, {     48,   62,   31,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_961329 = {
+static const rct_vehicle_info_list TrackVehicleInfo_961329 = {
     67, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    0, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    1, 24,  2,  2 }, {     16,   27,    2, 23,  2,  2 },
     {     16,   26,    2, 23,  2,  2 }, {     17,   25,    2, 23,  2,  2 }, {     17,   24,    3, 23,  2,  2 }, {     17,   23,    3, 23,  2,  2 }, {     17,   22,    4, 23,  2,  2 },
@@ -21952,7 +21952,7 @@ const rct_vehicle_info_list TrackVehicleInfo_961329 = {
     {     61,  -16,   31, 16,  2,  2 }, {     62,  -16,   31, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_961586 = {
+static const rct_vehicle_info_list TrackVehicleInfo_961586 = {
     67, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    0,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    1,  0,  2,  4 }, {     27,   16,    2,  1,  2,  4 },
     {     26,   16,    2,  1,  2,  4 }, {     25,   17,    2,  1,  2,  4 }, {     24,   17,    3,  1,  2,  4 }, {     23,   17,    3,  1,  2,  4 }, {     22,   17,    4,  1,  2,  4 },
@@ -21970,7 +21970,7 @@ const rct_vehicle_info_list TrackVehicleInfo_961586 = {
     {    -16,   61,   31,  8,  2,  4 }, {    -16,   62,   31,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9617E3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9617E3 = {
     68, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    0,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    1,  8,  2,  4 },
     {     16,    5,    2,  9,  2,  4 }, {     16,    6,    2,  9,  2,  4 }, {     17,    7,    2,  9,  2,  4 }, {     17,    8,    3,  9,  2,  4 }, {     17,    9,    3,  9,  2,  4 },
@@ -21988,7 +21988,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9617E3 = {
     {     60,   48,   30, 16,  2,  4 }, {     61,   48,   31, 16,  2,  4 }, {     62,   48,   31, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_961A49 = {
+static const rct_vehicle_info_list TrackVehicleInfo_961A49 = {
     69, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    0, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    1, 16,  2,  4 },
     {      5,   16,    2, 17,  2,  4 }, {      6,   16,    2, 17,  2,  4 }, {      7,   15,    2, 17,  2,  4 }, {      8,   15,    3, 17,  2,  4 }, {      9,   15,    3, 17,  2,  4 },
@@ -22006,7 +22006,7 @@ const rct_vehicle_info_list TrackVehicleInfo_961A49 = {
     {     48,  -28,   30, 24,  2,  4 }, {     48,  -29,   30, 24,  2,  4 }, {     48,  -30,   31, 24,  2,  4 }, {     48,  -31,   31, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_961CB8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_961CB8 = {
     68, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    0, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    1, 24,  2,  4 }, {     16,   27,    2, 25,  2,  4 },
     {     16,   26,    2, 25,  2,  4 }, {     15,   25,    2, 25,  2,  4 }, {     15,   24,    3, 25,  2,  4 }, {     15,   23,    3, 25,  2,  4 }, {     15,   22,    4, 25,  2,  4 },
@@ -22024,7 +22024,7 @@ const rct_vehicle_info_list TrackVehicleInfo_961CB8 = {
     {    -29,  -16,   30,  0,  2,  4 }, {    -30,  -16,   31,  0,  2,  4 }, {    -31,  -16,   31,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95F8BE = {
+static const rct_vehicle_info_list TrackVehicleInfo_95F8BE = {
     68, {
     {     31,   16,   15,  0,  6,  2 }, {     30,   16,   15,  0,  6,  2 }, {     29,   16,   14,  0,  6,  2 }, {     28,   16,   14,  0,  6,  2 }, {     27,   16,   13, 31,  6,  2 },
     {     26,   16,   13, 31,  6,  2 }, {     25,   15,   13, 31,  6,  2 }, {     24,   15,   12, 31,  6,  2 }, {     23,   15,   12, 31,  6,  2 }, {     22,   15,   11, 31,  6,  2 },
@@ -22042,7 +22042,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95F8BE = {
     {    -16,  -29,  -15, 24,  6,  2 }, {    -16,  -30,  -16, 24,  6,  2 }, {    -16,  -31,  -17, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95FB24 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95FB24 = {
     69, {
     {     16,    0,   15,  8,  6,  2 }, {     16,    1,   15,  8,  6,  2 }, {     16,    2,   15,  8,  6,  2 }, {     16,    3,   14,  8,  6,  2 }, {     16,    4,   14,  8,  6,  2 },
     {     16,    5,   13,  7,  6,  2 }, {     16,    6,   13,  7,  6,  2 }, {     15,    7,   13,  7,  6,  2 }, {     15,    8,   12,  7,  6,  2 }, {     15,    9,   12,  7,  6,  2 },
@@ -22060,7 +22060,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95FB24 = {
     {    -28,   48,  -15,  0,  6,  2 }, {    -29,   48,  -15,  0,  6,  2 }, {    -30,   48,  -16,  0,  6,  2 }, {    -31,   48,  -17,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95FD93 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95FD93 = {
     68, {
     {      0,   16,   15, 16,  6,  2 }, {      1,   16,   15, 16,  6,  2 }, {      2,   16,   15, 16,  6,  2 }, {      3,   16,   14, 16,  6,  2 }, {      4,   16,   14, 16,  6,  2 },
     {      5,   16,   13, 15,  6,  2 }, {      6,   16,   13, 15,  6,  2 }, {      7,   17,   13, 15,  6,  2 }, {      8,   17,   12, 15,  6,  2 }, {      9,   17,   12, 15,  6,  2 },
@@ -22078,7 +22078,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95FD93 = {
     {     48,   60,  -15,  8,  6,  2 }, {     48,   61,  -16,  8,  6,  2 }, {     48,   62,  -16,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95FFF9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95FFF9 = {
     67, {
     {     16,   31,   15, 24,  6,  2 }, {     16,   30,   15, 24,  6,  2 }, {     16,   29,   14, 24,  6,  2 }, {     16,   28,   14, 24,  6,  2 }, {     16,   27,   13, 23,  6,  2 },
     {     16,   26,   13, 23,  6,  2 }, {     17,   25,   13, 23,  6,  2 }, {     17,   24,   12, 23,  6,  2 }, {     17,   23,   12, 23,  6,  2 }, {     17,   22,   11, 23,  6,  2 },
@@ -22096,7 +22096,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95FFF9 = {
     {     61,  -16,  -16, 16,  6,  2 }, {     62,  -16,  -16, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_960256 = {
+static const rct_vehicle_info_list TrackVehicleInfo_960256 = {
     67, {
     {     31,   16,   15,  0,  6,  4 }, {     30,   16,   15,  0,  6,  4 }, {     29,   16,   14,  0,  6,  4 }, {     28,   16,   14,  0,  6,  4 }, {     27,   16,   13,  1,  6,  4 },
     {     26,   16,   13,  1,  6,  4 }, {     25,   17,   13,  1,  6,  4 }, {     24,   17,   12,  1,  6,  4 }, {     23,   17,   12,  1,  6,  4 }, {     22,   17,   11,  1,  6,  4 },
@@ -22114,7 +22114,7 @@ const rct_vehicle_info_list TrackVehicleInfo_960256 = {
     {    -16,   61,  -16,  8,  6,  4 }, {    -16,   62,  -16,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9604B3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9604B3 = {
     68, {
     {     16,    0,   15,  8,  6,  4 }, {     16,    1,   15,  8,  6,  4 }, {     16,    2,   15,  8,  6,  4 }, {     16,    3,   14,  8,  6,  4 }, {     16,    4,   14,  8,  6,  4 },
     {     16,    5,   13,  9,  6,  4 }, {     16,    6,   13,  9,  6,  4 }, {     17,    7,   13,  9,  6,  4 }, {     17,    8,   12,  9,  6,  4 }, {     17,    9,   12,  9,  6,  4 },
@@ -22132,7 +22132,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9604B3 = {
     {     60,   48,  -15, 16,  6,  4 }, {     61,   48,  -16, 16,  6,  4 }, {     62,   48,  -16, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_960719 = {
+static const rct_vehicle_info_list TrackVehicleInfo_960719 = {
     69, {
     {      0,   16,   15, 16,  6,  4 }, {      1,   16,   15, 16,  6,  4 }, {      2,   16,   15, 16,  6,  4 }, {      3,   16,   14, 16,  6,  4 }, {      4,   16,   14, 16,  6,  4 },
     {      5,   16,   13, 17,  6,  4 }, {      6,   16,   13, 17,  6,  4 }, {      7,   15,   13, 17,  6,  4 }, {      8,   15,   12, 17,  6,  4 }, {      9,   15,   12, 17,  6,  4 },
@@ -22150,7 +22150,7 @@ const rct_vehicle_info_list TrackVehicleInfo_960719 = {
     {     48,  -28,  -15, 24,  6,  4 }, {     48,  -29,  -15, 24,  6,  4 }, {     48,  -30,  -16, 24,  6,  4 }, {     48,  -31,  -16, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_960988 = {
+static const rct_vehicle_info_list TrackVehicleInfo_960988 = {
     68, {
     {     16,   31,   15, 24,  6,  4 }, {     16,   30,   15, 24,  6,  4 }, {     16,   29,   14, 24,  6,  4 }, {     16,   28,   14, 24,  6,  4 }, {     16,   27,   13, 25,  6,  4 },
     {     16,   26,   13, 25,  6,  4 }, {     15,   25,   13, 25,  6,  4 }, {     15,   24,   12, 25,  6,  4 }, {     15,   23,   12, 25,  6,  4 }, {     15,   22,   11, 25,  6,  4 },
@@ -22168,7 +22168,7 @@ const rct_vehicle_info_list TrackVehicleInfo_960988 = {
     {    -29,  -16,  -15,  0,  6,  4 }, {    -30,  -16,  -16,  0,  6,  4 }, {    -31,  -16,  -16,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95B87E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95B87E = {
     114, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    0,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    1,  0,  2,  2 }, {     27,   16,    2,  0,  2,  2 },
     {     26,   16,    2,  0,  2,  2 }, {     25,   16,    3,  0,  2,  2 }, {     24,   16,    3, 31,  2,  2 }, {     23,   15,    4, 31,  2,  2 }, {     22,   15,    4, 31,  2,  2 },
@@ -22195,7 +22195,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95B87E = {
     {    -48,  -61,   62, 24,  2,  2 }, {    -48,  -62,   62, 24,  2,  2 }, {    -48,  -63,   63, 24,  2,  2 }, {    -48,  -64,   64, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95BC82 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95BC82 = {
     115, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    0,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    1,  8,  2,  2 },
     {     16,    5,    2,  8,  2,  2 }, {     16,    6,    2,  8,  2,  2 }, {     16,    7,    3,  8,  2,  2 }, {     16,    8,    3,  7,  2,  2 }, {     15,    9,    4,  7,  2,  2 },
@@ -22222,7 +22222,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95BC82 = {
     {    -60,   80,   61,  0,  2,  2 }, {    -61,   80,   62,  0,  2,  2 }, {    -62,   80,   62,  0,  2,  2 }, {    -63,   80,   63,  0,  2,  2 }, {    -64,   80,   64,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95C08F = {
+static const rct_vehicle_info_list TrackVehicleInfo_95C08F = {
     114, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    0, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    1, 16,  2,  2 },
     {      5,   16,    2, 16,  2,  2 }, {      6,   16,    2, 16,  2,  2 }, {      7,   16,    3, 16,  2,  2 }, {      8,   16,    3, 15,  2,  2 }, {      9,   17,    4, 15,  2,  2 },
@@ -22249,7 +22249,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95C08F = {
     {     80,   92,   62,  8,  2,  2 }, {     80,   93,   62,  8,  2,  2 }, {     80,   94,   63,  8,  2,  2 }, {     80,   95,   63,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95C493 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95C493 = {
     113, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    0, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    1, 24,  2,  2 }, {     16,   27,    2, 24,  2,  2 },
     {     16,   26,    2, 24,  2,  2 }, {     16,   25,    3, 24,  2,  2 }, {     16,   24,    3, 23,  2,  2 }, {     17,   23,    4, 23,  2,  2 }, {     17,   22,    5, 23,  2,  2 },
@@ -22276,7 +22276,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95C493 = {
     {     93,  -48,   62, 16,  2,  2 }, {     94,  -48,   63, 16,  2,  2 }, {     95,  -48,   63, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95C88E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95C88E = {
     113, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    0,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    1,  0,  2,  4 }, {     27,   16,    2,  0,  2,  4 },
     {     26,   16,    2,  0,  2,  4 }, {     25,   16,    3,  0,  2,  4 }, {     24,   16,    3,  1,  2,  4 }, {     23,   17,    4,  1,  2,  4 }, {     22,   17,    5,  1,  2,  4 },
@@ -22303,7 +22303,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95C88E = {
     {    -48,   93,   62,  8,  2,  4 }, {    -48,   94,   63,  8,  2,  4 }, {    -48,   95,   63,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95CC89 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95CC89 = {
     114, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    0,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    1,  8,  2,  4 },
     {     16,    5,    2,  8,  2,  4 }, {     16,    6,    2,  8,  2,  4 }, {     16,    7,    3,  8,  2,  4 }, {     16,    8,    3,  9,  2,  4 }, {     17,    9,    4,  9,  2,  4 },
@@ -22330,7 +22330,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95CC89 = {
     {     92,   80,   62, 16,  2,  4 }, {     93,   80,   62, 16,  2,  4 }, {     94,   80,   63, 16,  2,  4 }, {     95,   80,   63, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95D08D = {
+static const rct_vehicle_info_list TrackVehicleInfo_95D08D = {
     115, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    0, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    1, 16,  2,  4 },
     {      5,   16,    2, 16,  2,  4 }, {      6,   16,    2, 16,  2,  4 }, {      7,   16,    3, 16,  2,  4 }, {      8,   16,    3, 17,  2,  4 }, {      9,   15,    4, 17,  2,  4 },
@@ -22357,7 +22357,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95D08D = {
     {     80,  -60,   61, 24,  2,  4 }, {     80,  -61,   62, 24,  2,  4 }, {     80,  -62,   62, 24,  2,  4 }, {     80,  -63,   63, 24,  2,  4 }, {     80,  -64,   64, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95D49A = {
+static const rct_vehicle_info_list TrackVehicleInfo_95D49A = {
     114, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    0, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    1, 24,  2,  4 }, {     16,   27,    2, 24,  2,  4 },
     {     16,   26,    2, 24,  2,  4 }, {     16,   25,    3, 24,  2,  4 }, {     16,   24,    3, 25,  2,  4 }, {     15,   23,    4, 25,  2,  4 }, {     15,   22,    4, 25,  2,  4 },
@@ -22384,7 +22384,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95D49A = {
     {    -61,  -48,   62,  0,  2,  4 }, {    -62,  -48,   62,  0,  2,  4 }, {    -63,  -48,   63,  0,  2,  4 }, {    -64,  -48,   64,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95D89E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95D89E = {
     114, {
     {     31,   16,   15,  0,  6,  2 }, {     30,   16,   15,  0,  6,  2 }, {     29,   16,   14,  0,  6,  2 }, {     28,   16,   14,  0,  6,  2 }, {     27,   16,   13,  0,  6,  2 },
     {     26,   16,   13,  0,  6,  2 }, {     25,   16,   12,  0,  6,  2 }, {     24,   16,   12, 31,  6,  2 }, {     23,   15,   11, 31,  6,  2 }, {     22,   15,   11, 31,  6,  2 },
@@ -22411,7 +22411,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95D89E = {
     {    -48,  -61,  -47, 24,  6,  2 }, {    -48,  -62,  -47, 24,  6,  2 }, {    -48,  -63,  -48, 24,  6,  2 }, {    -48,  -64,  -49, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95DCA2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95DCA2 = {
     115, {
     {     16,    0,   15,  8,  6,  2 }, {     16,    1,   15,  8,  6,  2 }, {     16,    2,   15,  8,  6,  2 }, {     16,    3,   14,  8,  6,  2 }, {     16,    4,   14,  8,  6,  2 },
     {     16,    5,   13,  8,  6,  2 }, {     16,    6,   13,  8,  6,  2 }, {     16,    7,   12,  8,  6,  2 }, {     16,    8,   12,  7,  6,  2 }, {     15,    9,   11,  7,  6,  2 },
@@ -22438,7 +22438,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95DCA2 = {
     {    -60,   80,  -46,  0,  6,  2 }, {    -61,   80,  -47,  0,  6,  2 }, {    -62,   80,  -47,  0,  6,  2 }, {    -63,   80,  -48,  0,  6,  2 }, {    -64,   80,  -49,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95E0AF = {
+static const rct_vehicle_info_list TrackVehicleInfo_95E0AF = {
     114, {
     {      0,   16,   15, 16,  6,  2 }, {      1,   16,   15, 16,  6,  2 }, {      2,   16,   15, 16,  6,  2 }, {      3,   16,   14, 16,  6,  2 }, {      4,   16,   14, 16,  6,  2 },
     {      5,   16,   13, 16,  6,  2 }, {      6,   16,   13, 16,  6,  2 }, {      7,   16,   12, 16,  6,  2 }, {      8,   16,   12, 15,  6,  2 }, {      9,   17,   11, 15,  6,  2 },
@@ -22465,7 +22465,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95E0AF = {
     {     80,   92,  -47,  8,  6,  2 }, {     80,   93,  -47,  8,  6,  2 }, {     80,   94,  -48,  8,  6,  2 }, {     80,   95,  -48,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95E4B3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95E4B3 = {
     113, {
     {     16,   31,   15, 24,  6,  2 }, {     16,   30,   15, 24,  6,  2 }, {     16,   29,   14, 24,  6,  2 }, {     16,   28,   14, 24,  6,  2 }, {     16,   27,   13, 24,  6,  2 },
     {     16,   26,   13, 24,  6,  2 }, {     16,   25,   12, 24,  6,  2 }, {     16,   24,   12, 23,  6,  2 }, {     17,   23,   11, 23,  6,  2 }, {     17,   22,   10, 23,  6,  2 },
@@ -22492,7 +22492,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95E4B3 = {
     {     93,  -48,  -47, 16,  6,  2 }, {     94,  -48,  -48, 16,  6,  2 }, {     95,  -48,  -48, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95E8AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_95E8AE = {
     113, {
     {     31,   16,   15,  0,  6,  4 }, {     30,   16,   15,  0,  6,  4 }, {     29,   16,   14,  0,  6,  4 }, {     28,   16,   14,  0,  6,  4 }, {     27,   16,   13,  0,  6,  4 },
     {     26,   16,   13,  0,  6,  4 }, {     25,   16,   12,  0,  6,  4 }, {     24,   16,   12,  1,  6,  4 }, {     23,   17,   11,  1,  6,  4 }, {     22,   17,   10,  1,  6,  4 },
@@ -22519,7 +22519,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95E8AE = {
     {    -48,   93,  -47,  8,  6,  4 }, {    -48,   94,  -48,  8,  6,  4 }, {    -48,   95,  -48,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95ECA9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_95ECA9 = {
     114, {
     {     16,    0,   15,  8,  6,  4 }, {     16,    1,   15,  8,  6,  4 }, {     16,    2,   15,  8,  6,  4 }, {     16,    3,   14,  8,  6,  4 }, {     16,    4,   14,  8,  6,  4 },
     {     16,    5,   13,  8,  6,  4 }, {     16,    6,   13,  8,  6,  4 }, {     16,    7,   12,  8,  6,  4 }, {     16,    8,   12,  9,  6,  4 }, {     17,    9,   11,  9,  6,  4 },
@@ -22546,7 +22546,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95ECA9 = {
     {     92,   80,  -47, 16,  6,  4 }, {     93,   80,  -47, 16,  6,  4 }, {     94,   80,  -48, 16,  6,  4 }, {     95,   80,  -48, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95F0AD = {
+static const rct_vehicle_info_list TrackVehicleInfo_95F0AD = {
     115, {
     {      0,   16,   15, 16,  6,  4 }, {      1,   16,   15, 16,  6,  4 }, {      2,   16,   15, 16,  6,  4 }, {      3,   16,   14, 16,  6,  4 }, {      4,   16,   14, 16,  6,  4 },
     {      5,   16,   13, 16,  6,  4 }, {      6,   16,   13, 16,  6,  4 }, {      7,   16,   12, 16,  6,  4 }, {      8,   16,   12, 17,  6,  4 }, {      9,   15,   11, 17,  6,  4 },
@@ -22573,7 +22573,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95F0AD = {
     {     80,  -60,  -46, 24,  6,  4 }, {     80,  -61,  -47, 24,  6,  4 }, {     80,  -62,  -47, 24,  6,  4 }, {     80,  -63,  -48, 24,  6,  4 }, {     80,  -64,  -49, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95F4BA = {
+static const rct_vehicle_info_list TrackVehicleInfo_95F4BA = {
     114, {
     {     16,   31,   15, 24,  6,  4 }, {     16,   30,   15, 24,  6,  4 }, {     16,   29,   14, 24,  6,  4 }, {     16,   28,   14, 24,  6,  4 }, {     16,   27,   13, 24,  6,  4 },
     {     16,   26,   13, 24,  6,  4 }, {     16,   25,   12, 24,  6,  4 }, {     16,   24,   12, 25,  6,  4 }, {     15,   23,   11, 25,  6,  4 }, {     15,   22,   11, 25,  6,  4 },
@@ -22600,7 +22600,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95F4BA = {
     {    -61,  -48,  -47,  0,  6,  4 }, {    -62,  -48,  -47,  0,  6,  4 }, {    -63,  -48,  -48,  0,  6,  4 }, {    -64,  -48,  -49,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_961F1E = {
+static const rct_vehicle_info_list TrackVehicleInfo_961F1E = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    1,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    2,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    4,  0,  2,  0 }, {     23,   16,    4,  0,  2,  1 }, {     22,   16,    5,  0,  2,  1 },
@@ -22611,7 +22611,7 @@ const rct_vehicle_info_list TrackVehicleInfo_961F1E = {
     {      1,   16,   15,  0,  2,  2 }, {      0,   16,   16,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962040 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962040 = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  2,  1 }, {     16,    9,    4,  8,  2,  1 },
@@ -22622,7 +22622,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962040 = {
     {     16,   30,   15,  8,  2,  2 }, {     16,   31,   15,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962162 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962162 = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  2,  1 }, {      9,   16,    4, 16,  2,  1 },
@@ -22633,7 +22633,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962162 = {
     {     30,   16,   15, 16,  2,  2 }, {     31,   16,   15, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962284 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962284 = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    1, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    2, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    4, 24,  2,  0 }, {     16,   23,    4, 24,  2,  1 }, {     16,   22,    5, 24,  2,  1 },
@@ -22644,7 +22644,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962284 = {
     {     16,    1,   15, 24,  2,  2 }, {     16,    0,   16, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9623A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9623A6 = {
     32, {
     {     31,   16,    0,  0,  2,  0 }, {     30,   16,    1,  0,  2,  0 }, {     29,   16,    1,  0,  2,  0 }, {     28,   16,    2,  0,  2,  0 }, {     27,   16,    2,  0,  2,  0 },
     {     26,   16,    3,  0,  2,  0 }, {     25,   16,    3,  0,  2,  0 }, {     24,   16,    4,  0,  2,  0 }, {     23,   16,    4,  0,  2,  3 }, {     22,   16,    5,  0,  2,  3 },
@@ -22655,7 +22655,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9623A6 = {
     {      1,   16,   15,  0,  2,  4 }, {      0,   16,   16,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9624C8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9624C8 = {
     32, {
     {     16,    0,    0,  8,  2,  0 }, {     16,    1,    0,  8,  2,  0 }, {     16,    2,    1,  8,  2,  0 }, {     16,    3,    1,  8,  2,  0 }, {     16,    4,    2,  8,  2,  0 },
     {     16,    5,    2,  8,  2,  0 }, {     16,    6,    3,  8,  2,  0 }, {     16,    7,    3,  8,  2,  0 }, {     16,    8,    4,  8,  2,  3 }, {     16,    9,    4,  8,  2,  3 },
@@ -22666,7 +22666,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9624C8 = {
     {     16,   30,   15,  8,  2,  4 }, {     16,   31,   15,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9625EA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9625EA = {
     32, {
     {      0,   16,    0, 16,  2,  0 }, {      1,   16,    0, 16,  2,  0 }, {      2,   16,    1, 16,  2,  0 }, {      3,   16,    1, 16,  2,  0 }, {      4,   16,    2, 16,  2,  0 },
     {      5,   16,    2, 16,  2,  0 }, {      6,   16,    3, 16,  2,  0 }, {      7,   16,    3, 16,  2,  0 }, {      8,   16,    4, 16,  2,  3 }, {      9,   16,    4, 16,  2,  3 },
@@ -22677,7 +22677,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9625EA = {
     {     30,   16,   15, 16,  2,  4 }, {     31,   16,   15, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96270C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96270C = {
     32, {
     {     16,   31,    0, 24,  2,  0 }, {     16,   30,    1, 24,  2,  0 }, {     16,   29,    1, 24,  2,  0 }, {     16,   28,    2, 24,  2,  0 }, {     16,   27,    2, 24,  2,  0 },
     {     16,   26,    3, 24,  2,  0 }, {     16,   25,    3, 24,  2,  0 }, {     16,   24,    4, 24,  2,  0 }, {     16,   23,    4, 24,  2,  3 }, {     16,   22,    5, 24,  2,  3 },
@@ -22688,7 +22688,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96270C = {
     {     16,    1,   15, 24,  2,  4 }, {     16,    0,   16, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96313E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96313E = {
     32, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    1,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    2,  0,  2,  2 }, {     27,   16,    2,  0,  2,  2 },
     {     26,   16,    3,  0,  2,  2 }, {     25,   16,    3,  0,  2,  2 }, {     24,   16,    4,  0,  2,  2 }, {     23,   16,    4,  0,  2,  1 }, {     22,   16,    5,  0,  2,  1 },
@@ -22699,7 +22699,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96313E = {
     {      1,   16,   15,  0,  2,  0 }, {      0,   16,   16,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963260 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963260 = {
     32, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    1,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    2,  8,  2,  2 },
     {     16,    5,    2,  8,  2,  2 }, {     16,    6,    3,  8,  2,  2 }, {     16,    7,    3,  8,  2,  2 }, {     16,    8,    4,  8,  2,  1 }, {     16,    9,    4,  8,  2,  1 },
@@ -22710,7 +22710,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963260 = {
     {     16,   30,   15,  8,  2,  0 }, {     16,   31,   15,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963382 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963382 = {
     32, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    1, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    2, 16,  2,  2 },
     {      5,   16,    2, 16,  2,  2 }, {      6,   16,    3, 16,  2,  2 }, {      7,   16,    3, 16,  2,  2 }, {      8,   16,    4, 16,  2,  1 }, {      9,   16,    4, 16,  2,  1 },
@@ -22721,7 +22721,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963382 = {
     {     30,   16,   15, 16,  2,  0 }, {     31,   16,   15, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9634A4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9634A4 = {
     32, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    1, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    2, 24,  2,  2 }, {     16,   27,    2, 24,  2,  2 },
     {     16,   26,    3, 24,  2,  2 }, {     16,   25,    3, 24,  2,  2 }, {     16,   24,    4, 24,  2,  2 }, {     16,   23,    4, 24,  2,  1 }, {     16,   22,    5, 24,  2,  1 },
@@ -22732,7 +22732,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9634A4 = {
     {     16,    1,   15, 24,  2,  0 }, {     16,    0,   16, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9635C6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9635C6 = {
     32, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    1,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    2,  0,  2,  4 }, {     27,   16,    2,  0,  2,  4 },
     {     26,   16,    3,  0,  2,  4 }, {     25,   16,    3,  0,  2,  4 }, {     24,   16,    4,  0,  2,  4 }, {     23,   16,    4,  0,  2,  3 }, {     22,   16,    5,  0,  2,  3 },
@@ -22743,7 +22743,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9635C6 = {
     {      1,   16,   15,  0,  2,  0 }, {      0,   16,   16,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9636E8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9636E8 = {
     32, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    1,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    2,  8,  2,  4 },
     {     16,    5,    2,  8,  2,  4 }, {     16,    6,    3,  8,  2,  4 }, {     16,    7,    3,  8,  2,  4 }, {     16,    8,    4,  8,  2,  3 }, {     16,    9,    4,  8,  2,  3 },
@@ -22754,7 +22754,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9636E8 = {
     {     16,   30,   15,  8,  2,  0 }, {     16,   31,   15,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96380A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96380A = {
     32, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    1, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    2, 16,  2,  4 },
     {      5,   16,    2, 16,  2,  4 }, {      6,   16,    3, 16,  2,  4 }, {      7,   16,    3, 16,  2,  4 }, {      8,   16,    4, 16,  2,  3 }, {      9,   16,    4, 16,  2,  3 },
@@ -22765,7 +22765,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96380A = {
     {     30,   16,   15, 16,  2,  0 }, {     31,   16,   15, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96392C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96392C = {
     32, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    1, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    2, 24,  2,  4 }, {     16,   27,    2, 24,  2,  4 },
     {     16,   26,    3, 24,  2,  4 }, {     16,   25,    3, 24,  2,  4 }, {     16,   24,    4, 24,  2,  4 }, {     16,   23,    4, 24,  2,  3 }, {     16,   22,    5, 24,  2,  3 },
@@ -22776,7 +22776,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96392C = {
     {     16,    1,   15, 24,  2,  0 }, {     16,    0,   16, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96282E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96282E = {
     32, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  0,  6,  0 },
     {     26,   16,   13,  0,  6,  0 }, {     25,   16,   12,  0,  6,  0 }, {     24,   16,   12,  0,  6,  0 }, {     23,   16,   11,  0,  6,  1 }, {     22,   16,   11,  0,  6,  1 },
@@ -22787,7 +22787,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96282E = {
     {      1,   16,    0,  0,  6,  2 }, {      0,   16,    0,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962950 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962950 = {
     32, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   14,  8,  6,  0 }, {     16,    2,   14,  8,  6,  0 }, {     16,    3,   13,  8,  6,  0 }, {     16,    4,   13,  8,  6,  0 },
     {     16,    5,   12,  8,  6,  0 }, {     16,    6,   12,  8,  6,  0 }, {     16,    7,   11,  8,  6,  0 }, {     16,    8,   11,  8,  6,  1 }, {     16,    9,   10,  8,  6,  1 },
@@ -22798,7 +22798,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962950 = {
     {     16,   30,    0,  8,  6,  2 }, {     16,   31,   -1,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962A72 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962A72 = {
     32, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   14, 16,  6,  0 }, {      2,   16,   14, 16,  6,  0 }, {      3,   16,   13, 16,  6,  0 }, {      4,   16,   13, 16,  6,  0 },
     {      5,   16,   12, 16,  6,  0 }, {      6,   16,   12, 16,  6,  0 }, {      7,   16,   11, 16,  6,  0 }, {      8,   16,   11, 16,  6,  1 }, {      9,   16,   10, 16,  6,  1 },
@@ -22809,7 +22809,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962A72 = {
     {     30,   16,    0, 16,  6,  2 }, {     31,   16,   -1, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962B94 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962B94 = {
     32, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 24,  6,  0 },
     {     16,   26,   13, 24,  6,  0 }, {     16,   25,   12, 24,  6,  0 }, {     16,   24,   12, 24,  6,  0 }, {     16,   23,   11, 24,  6,  1 }, {     16,   22,   11, 24,  6,  1 },
@@ -22820,7 +22820,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962B94 = {
     {     16,    1,    0, 24,  6,  2 }, {     16,    0,    0, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962CB6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962CB6 = {
     32, {
     {     31,   16,   15,  0,  6,  0 }, {     30,   16,   15,  0,  6,  0 }, {     29,   16,   14,  0,  6,  0 }, {     28,   16,   14,  0,  6,  0 }, {     27,   16,   13,  0,  6,  0 },
     {     26,   16,   13,  0,  6,  0 }, {     25,   16,   12,  0,  6,  0 }, {     24,   16,   12,  0,  6,  0 }, {     23,   16,   11,  0,  6,  3 }, {     22,   16,   11,  0,  6,  3 },
@@ -22831,7 +22831,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962CB6 = {
     {      1,   16,    0,  0,  6,  4 }, {      0,   16,    0,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962DD8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_962DD8 = {
     32, {
     {     16,    0,   15,  8,  6,  0 }, {     16,    1,   14,  8,  6,  0 }, {     16,    2,   14,  8,  6,  0 }, {     16,    3,   13,  8,  6,  0 }, {     16,    4,   13,  8,  6,  0 },
     {     16,    5,   12,  8,  6,  0 }, {     16,    6,   12,  8,  6,  0 }, {     16,    7,   11,  8,  6,  0 }, {     16,    8,   11,  8,  6,  3 }, {     16,    9,   10,  8,  6,  3 },
@@ -22842,7 +22842,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962DD8 = {
     {     16,   30,    0,  8,  6,  4 }, {     16,   31,   -1,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_962EFA = {
+static const rct_vehicle_info_list TrackVehicleInfo_962EFA = {
     32, {
     {      0,   16,   15, 16,  6,  0 }, {      1,   16,   14, 16,  6,  0 }, {      2,   16,   14, 16,  6,  0 }, {      3,   16,   13, 16,  6,  0 }, {      4,   16,   13, 16,  6,  0 },
     {      5,   16,   12, 16,  6,  0 }, {      6,   16,   12, 16,  6,  0 }, {      7,   16,   11, 16,  6,  0 }, {      8,   16,   11, 16,  6,  3 }, {      9,   16,   10, 16,  6,  3 },
@@ -22853,7 +22853,7 @@ const rct_vehicle_info_list TrackVehicleInfo_962EFA = {
     {     30,   16,    0, 16,  6,  4 }, {     31,   16,   -1, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96301C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96301C = {
     32, {
     {     16,   31,   15, 24,  6,  0 }, {     16,   30,   15, 24,  6,  0 }, {     16,   29,   14, 24,  6,  0 }, {     16,   28,   14, 24,  6,  0 }, {     16,   27,   13, 24,  6,  0 },
     {     16,   26,   13, 24,  6,  0 }, {     16,   25,   12, 24,  6,  0 }, {     16,   24,   12, 24,  6,  0 }, {     16,   23,   11, 24,  6,  3 }, {     16,   22,   11, 24,  6,  3 },
@@ -22864,7 +22864,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96301C = {
     {     16,    1,    0, 24,  6,  4 }, {     16,    0,    0, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963A4E = {
+static const rct_vehicle_info_list TrackVehicleInfo_963A4E = {
     32, {
     {     31,   16,   15,  0,  6,  2 }, {     30,   16,   15,  0,  6,  2 }, {     29,   16,   14,  0,  6,  2 }, {     28,   16,   14,  0,  6,  2 }, {     27,   16,   13,  0,  6,  2 },
     {     26,   16,   13,  0,  6,  2 }, {     25,   16,   12,  0,  6,  2 }, {     24,   16,   12,  0,  6,  2 }, {     23,   16,   11,  0,  6,  1 }, {     22,   16,   11,  0,  6,  1 },
@@ -22875,7 +22875,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963A4E = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963B70 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963B70 = {
     32, {
     {     16,    0,   15,  8,  6,  2 }, {     16,    1,   14,  8,  6,  2 }, {     16,    2,   14,  8,  6,  2 }, {     16,    3,   13,  8,  6,  2 }, {     16,    4,   13,  8,  6,  2 },
     {     16,    5,   12,  8,  6,  2 }, {     16,    6,   12,  8,  6,  2 }, {     16,    7,   11,  8,  6,  2 }, {     16,    8,   11,  8,  6,  1 }, {     16,    9,   10,  8,  6,  1 },
@@ -22886,7 +22886,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963B70 = {
     {     16,   30,    0,  8,  6,  0 }, {     16,   31,   -1,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963C92 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963C92 = {
     32, {
     {      0,   16,   15, 16,  6,  2 }, {      1,   16,   14, 16,  6,  2 }, {      2,   16,   14, 16,  6,  2 }, {      3,   16,   13, 16,  6,  2 }, {      4,   16,   13, 16,  6,  2 },
     {      5,   16,   12, 16,  6,  2 }, {      6,   16,   12, 16,  6,  2 }, {      7,   16,   11, 16,  6,  2 }, {      8,   16,   11, 16,  6,  1 }, {      9,   16,   10, 16,  6,  1 },
@@ -22897,7 +22897,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963C92 = {
     {     30,   16,    0, 16,  6,  0 }, {     31,   16,   -1, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963DB4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963DB4 = {
     32, {
     {     16,   31,   15, 24,  6,  2 }, {     16,   30,   15, 24,  6,  2 }, {     16,   29,   14, 24,  6,  2 }, {     16,   28,   14, 24,  6,  2 }, {     16,   27,   13, 24,  6,  2 },
     {     16,   26,   13, 24,  6,  2 }, {     16,   25,   12, 24,  6,  2 }, {     16,   24,   12, 24,  6,  2 }, {     16,   23,   11, 24,  6,  1 }, {     16,   22,   11, 24,  6,  1 },
@@ -22908,7 +22908,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963DB4 = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963ED6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963ED6 = {
     32, {
     {     31,   16,   15,  0,  6,  4 }, {     30,   16,   15,  0,  6,  4 }, {     29,   16,   14,  0,  6,  4 }, {     28,   16,   14,  0,  6,  4 }, {     27,   16,   13,  0,  6,  4 },
     {     26,   16,   13,  0,  6,  4 }, {     25,   16,   12,  0,  6,  4 }, {     24,   16,   12,  0,  6,  4 }, {     23,   16,   11,  0,  6,  3 }, {     22,   16,   11,  0,  6,  3 },
@@ -22919,7 +22919,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963ED6 = {
     {      1,   16,    0,  0,  6,  0 }, {      0,   16,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_963FF8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_963FF8 = {
     32, {
     {     16,    0,   15,  8,  6,  4 }, {     16,    1,   14,  8,  6,  4 }, {     16,    2,   14,  8,  6,  4 }, {     16,    3,   13,  8,  6,  4 }, {     16,    4,   13,  8,  6,  4 },
     {     16,    5,   12,  8,  6,  4 }, {     16,    6,   12,  8,  6,  4 }, {     16,    7,   11,  8,  6,  4 }, {     16,    8,   11,  8,  6,  3 }, {     16,    9,   10,  8,  6,  3 },
@@ -22930,7 +22930,7 @@ const rct_vehicle_info_list TrackVehicleInfo_963FF8 = {
     {     16,   30,    0,  8,  6,  0 }, {     16,   31,   -1,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96411A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96411A = {
     32, {
     {      0,   16,   15, 16,  6,  4 }, {      1,   16,   14, 16,  6,  4 }, {      2,   16,   14, 16,  6,  4 }, {      3,   16,   13, 16,  6,  4 }, {      4,   16,   13, 16,  6,  4 },
     {      5,   16,   12, 16,  6,  4 }, {      6,   16,   12, 16,  6,  4 }, {      7,   16,   11, 16,  6,  4 }, {      8,   16,   11, 16,  6,  3 }, {      9,   16,   10, 16,  6,  3 },
@@ -22941,7 +22941,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96411A = {
     {     30,   16,    0, 16,  6,  0 }, {     31,   16,   -1, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96423C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96423C = {
     32, {
     {     16,   31,   15, 24,  6,  4 }, {     16,   30,   15, 24,  6,  4 }, {     16,   29,   14, 24,  6,  4 }, {     16,   28,   14, 24,  6,  4 }, {     16,   27,   13, 24,  6,  4 },
     {     16,   26,   13, 24,  6,  4 }, {     16,   25,   12, 24,  6,  4 }, {     16,   24,   12, 24,  6,  4 }, {     16,   23,   11, 24,  6,  3 }, {     16,   22,   11, 24,  6,  3 },
@@ -22952,7 +22952,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96423C = {
     {     16,    1,    0, 24,  6,  0 }, {     16,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96435E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96435E = {
     32, {
     {     31,   16,    0,  0,  0,  2 }, {     30,   16,    0,  0,  0,  2 }, {     29,   16,    0,  0,  0,  2 }, {     28,   16,    0,  0,  0,  2 }, {     27,   16,    0,  0,  0,  2 },
     {     26,   16,    0,  0,  0,  2 }, {     25,   16,    0,  0,  0,  2 }, {     24,   16,    0,  0,  0,  2 }, {     23,   16,    0,  0,  1,  2 }, {     22,   16,    0,  0,  1,  2 },
@@ -22963,7 +22963,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96435E = {
     {      1,   16,    7,  0,  2,  2 }, {      0,   16,    8,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964480 = {
+static const rct_vehicle_info_list TrackVehicleInfo_964480 = {
     32, {
     {     16,    0,    0,  8,  0,  2 }, {     16,    1,    0,  8,  0,  2 }, {     16,    2,    0,  8,  0,  2 }, {     16,    3,    0,  8,  0,  2 }, {     16,    4,    0,  8,  0,  2 },
     {     16,    5,    0,  8,  0,  2 }, {     16,    6,    0,  8,  0,  2 }, {     16,    7,    0,  8,  0,  2 }, {     16,    8,    0,  8,  1,  2 }, {     16,    9,    0,  8,  1,  2 },
@@ -22974,7 +22974,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964480 = {
     {     16,   30,    7,  8,  2,  2 }, {     16,   31,    7,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9645A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9645A2 = {
     32, {
     {      0,   16,    0, 16,  0,  2 }, {      1,   16,    0, 16,  0,  2 }, {      2,   16,    0, 16,  0,  2 }, {      3,   16,    0, 16,  0,  2 }, {      4,   16,    0, 16,  0,  2 },
     {      5,   16,    0, 16,  0,  2 }, {      6,   16,    0, 16,  0,  2 }, {      7,   16,    0, 16,  0,  2 }, {      8,   16,    0, 16,  1,  2 }, {      9,   16,    0, 16,  1,  2 },
@@ -22985,7 +22985,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9645A2 = {
     {     30,   16,    7, 16,  2,  2 }, {     31,   16,    7, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9646C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9646C4 = {
     32, {
     {     16,   31,    0, 24,  0,  2 }, {     16,   30,    0, 24,  0,  2 }, {     16,   29,    0, 24,  0,  2 }, {     16,   28,    0, 24,  0,  2 }, {     16,   27,    0, 24,  0,  2 },
     {     16,   26,    0, 24,  0,  2 }, {     16,   25,    0, 24,  0,  2 }, {     16,   24,    0, 24,  0,  2 }, {     16,   23,    0, 24,  1,  2 }, {     16,   22,    0, 24,  1,  2 },
@@ -22996,7 +22996,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9646C4 = {
     {     16,    1,    7, 24,  2,  2 }, {     16,    0,    8, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96557E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96557E = {
     32, {
     {     31,   16,    0,  0,  0,  4 }, {     30,   16,    0,  0,  0,  4 }, {     29,   16,    0,  0,  0,  4 }, {     28,   16,    0,  0,  0,  4 }, {     27,   16,    0,  0,  0,  4 },
     {     26,   16,    0,  0,  0,  4 }, {     25,   16,    0,  0,  0,  4 }, {     24,   16,    0,  0,  0,  4 }, {     23,   16,    0,  0,  1,  4 }, {     22,   16,    0,  0,  1,  4 },
@@ -23007,7 +23007,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96557E = {
     {      1,   16,    7,  0,  2,  4 }, {      0,   16,    8,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9656A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9656A0 = {
     32, {
     {     16,    0,    0,  8,  0,  4 }, {     16,    1,    0,  8,  0,  4 }, {     16,    2,    0,  8,  0,  4 }, {     16,    3,    0,  8,  0,  4 }, {     16,    4,    0,  8,  0,  4 },
     {     16,    5,    0,  8,  0,  4 }, {     16,    6,    0,  8,  0,  4 }, {     16,    7,    0,  8,  0,  4 }, {     16,    8,    0,  8,  1,  4 }, {     16,    9,    0,  8,  1,  4 },
@@ -23018,7 +23018,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9656A0 = {
     {     16,   30,    7,  8,  2,  4 }, {     16,   31,    7,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9657C2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9657C2 = {
     32, {
     {      0,   16,    0, 16,  0,  4 }, {      1,   16,    0, 16,  0,  4 }, {      2,   16,    0, 16,  0,  4 }, {      3,   16,    0, 16,  0,  4 }, {      4,   16,    0, 16,  0,  4 },
     {      5,   16,    0, 16,  0,  4 }, {      6,   16,    0, 16,  0,  4 }, {      7,   16,    0, 16,  0,  4 }, {      8,   16,    0, 16,  1,  4 }, {      9,   16,    0, 16,  1,  4 },
@@ -23029,7 +23029,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9657C2 = {
     {     30,   16,    7, 16,  2,  4 }, {     31,   16,    7, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9658E4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9658E4 = {
     32, {
     {     16,   31,    0, 24,  0,  4 }, {     16,   30,    0, 24,  0,  4 }, {     16,   29,    0, 24,  0,  4 }, {     16,   28,    0, 24,  0,  4 }, {     16,   27,    0, 24,  0,  4 },
     {     16,   26,    0, 24,  0,  4 }, {     16,   25,    0, 24,  0,  4 }, {     16,   24,    0, 24,  0,  4 }, {     16,   23,    0, 24,  1,  4 }, {     16,   22,    0, 24,  1,  4 },
@@ -23040,7 +23040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9658E4 = {
     {     16,    1,    7, 24,  2,  4 }, {     16,    0,    8, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9647E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9647E6 = {
     32, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    1,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    2,  0,  2,  2 }, {     27,   16,    2,  0,  2,  2 },
     {     26,   16,    3,  0,  2,  2 }, {     25,   16,    3,  0,  2,  2 }, {     24,   16,    3,  0,  2,  2 }, {     23,   16,    4,  0,  1,  2 }, {     22,   16,    4,  0,  1,  2 },
@@ -23051,7 +23051,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9647E6 = {
     {      1,   16,    8,  0,  0,  2 }, {      0,   16,    8,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964908 = {
+static const rct_vehicle_info_list TrackVehicleInfo_964908 = {
     32, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    1,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    2,  8,  2,  2 },
     {     16,    5,    2,  8,  2,  2 }, {     16,    6,    3,  8,  2,  2 }, {     16,    7,    3,  8,  2,  2 }, {     16,    8,    4,  8,  1,  2 }, {     16,    9,    4,  8,  1,  2 },
@@ -23062,7 +23062,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964908 = {
     {     16,   30,    8,  8,  0,  2 }, {     16,   31,    8,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964A2A = {
+static const rct_vehicle_info_list TrackVehicleInfo_964A2A = {
     32, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    1, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    2, 16,  2,  2 },
     {      5,   16,    2, 16,  2,  2 }, {      6,   16,    3, 16,  2,  2 }, {      7,   16,    3, 16,  2,  2 }, {      8,   16,    4, 16,  1,  2 }, {      9,   16,    4, 16,  1,  2 },
@@ -23073,7 +23073,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964A2A = {
     {     30,   16,    8, 16,  0,  2 }, {     31,   16,    8, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964B4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_964B4C = {
     32, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    1, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    2, 24,  2,  2 }, {     16,   27,    2, 24,  2,  2 },
     {     16,   26,    3, 24,  2,  2 }, {     16,   25,    3, 24,  2,  2 }, {     16,   24,    3, 24,  2,  2 }, {     16,   23,    4, 24,  1,  2 }, {     16,   22,    4, 24,  1,  2 },
@@ -23084,7 +23084,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964B4C = {
     {     16,    1,    8, 24,  0,  2 }, {     16,    0,    8, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965A06 = {
+static const rct_vehicle_info_list TrackVehicleInfo_965A06 = {
     32, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    1,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    2,  0,  2,  4 }, {     27,   16,    2,  0,  2,  4 },
     {     26,   16,    3,  0,  2,  4 }, {     25,   16,    3,  0,  2,  4 }, {     24,   16,    3,  0,  2,  4 }, {     23,   16,    4,  0,  1,  4 }, {     22,   16,    4,  0,  1,  4 },
@@ -23095,7 +23095,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965A06 = {
     {      1,   16,    8,  0,  0,  4 }, {      0,   16,    8,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965B28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_965B28 = {
     32, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    1,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    2,  8,  2,  4 },
     {     16,    5,    2,  8,  2,  4 }, {     16,    6,    3,  8,  2,  4 }, {     16,    7,    3,  8,  2,  4 }, {     16,    8,    4,  8,  1,  4 }, {     16,    9,    4,  8,  1,  4 },
@@ -23106,7 +23106,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965B28 = {
     {     16,   30,    8,  8,  0,  4 }, {     16,   31,    8,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965C4A = {
+static const rct_vehicle_info_list TrackVehicleInfo_965C4A = {
     32, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    1, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    2, 16,  2,  4 },
     {      5,   16,    2, 16,  2,  4 }, {      6,   16,    3, 16,  2,  4 }, {      7,   16,    3, 16,  2,  4 }, {      8,   16,    4, 16,  1,  4 }, {      9,   16,    4, 16,  1,  4 },
@@ -23117,7 +23117,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965C4A = {
     {     30,   16,    8, 16,  0,  4 }, {     31,   16,    8, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965D6C = {
+static const rct_vehicle_info_list TrackVehicleInfo_965D6C = {
     32, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    1, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    2, 24,  2,  4 }, {     16,   27,    2, 24,  2,  4 },
     {     16,   26,    3, 24,  2,  4 }, {     16,   25,    3, 24,  2,  4 }, {     16,   24,    3, 24,  2,  4 }, {     16,   23,    4, 24,  1,  4 }, {     16,   22,    4, 24,  1,  4 },
@@ -23128,7 +23128,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965D6C = {
     {     16,    1,    8, 24,  0,  4 }, {     16,    0,    8, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9650F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9650F6 = {
     32, {
     {     31,   16,    8,  0,  0,  2 }, {     30,   16,    8,  0,  0,  2 }, {     29,   16,    8,  0,  0,  2 }, {     28,   16,    8,  0,  0,  2 }, {     27,   16,    8,  0,  0,  2 },
     {     26,   16,    8,  0,  0,  2 }, {     25,   16,    8,  0,  0,  2 }, {     24,   16,    8,  0,  0,  2 }, {     23,   16,    7,  0,  5,  2 }, {     22,   16,    7,  0,  5,  2 },
@@ -23139,7 +23139,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9650F6 = {
     {      1,   16,    0,  0,  6,  2 }, {      0,   16,    0,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965218 = {
+static const rct_vehicle_info_list TrackVehicleInfo_965218 = {
     32, {
     {     16,    0,    8,  8,  0,  2 }, {     16,    1,    8,  8,  0,  2 }, {     16,    2,    8,  8,  0,  2 }, {     16,    3,    8,  8,  0,  2 }, {     16,    4,    8,  8,  0,  2 },
     {     16,    5,    8,  8,  0,  2 }, {     16,    6,    8,  8,  0,  2 }, {     16,    7,    8,  8,  0,  2 }, {     16,    8,    7,  8,  5,  2 }, {     16,    9,    7,  8,  5,  2 },
@@ -23150,7 +23150,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965218 = {
     {     16,   30,    1,  8,  6,  2 }, {     16,   31,    0,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96533A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96533A = {
     32, {
     {      0,   16,    8, 16,  0,  2 }, {      1,   16,    8, 16,  0,  2 }, {      2,   16,    8, 16,  0,  2 }, {      3,   16,    8, 16,  0,  2 }, {      4,   16,    8, 16,  0,  2 },
     {      5,   16,    8, 16,  0,  2 }, {      6,   16,    8, 16,  0,  2 }, {      7,   16,    8, 16,  0,  2 }, {      8,   16,    7, 16,  5,  2 }, {      9,   16,    7, 16,  5,  2 },
@@ -23161,7 +23161,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96533A = {
     {     30,   16,    1, 16,  6,  2 }, {     31,   16,    0, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96545C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96545C = {
     32, {
     {     16,   31,    8, 24,  0,  2 }, {     16,   30,    8, 24,  0,  2 }, {     16,   29,    8, 24,  0,  2 }, {     16,   28,    8, 24,  0,  2 }, {     16,   27,    8, 24,  0,  2 },
     {     16,   26,    8, 24,  0,  2 }, {     16,   25,    8, 24,  0,  2 }, {     16,   24,    8, 24,  0,  2 }, {     16,   23,    7, 24,  5,  2 }, {     16,   22,    7, 24,  5,  2 },
@@ -23172,7 +23172,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96545C = {
     {     16,    1,    0, 24,  6,  2 }, {     16,    0,    0, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966316 = {
+static const rct_vehicle_info_list TrackVehicleInfo_966316 = {
     32, {
     {     31,   16,    8,  0,  0,  4 }, {     30,   16,    8,  0,  0,  4 }, {     29,   16,    8,  0,  0,  4 }, {     28,   16,    8,  0,  0,  4 }, {     27,   16,    8,  0,  0,  4 },
     {     26,   16,    8,  0,  0,  4 }, {     25,   16,    8,  0,  0,  4 }, {     24,   16,    8,  0,  0,  4 }, {     23,   16,    7,  0,  5,  4 }, {     22,   16,    7,  0,  5,  4 },
@@ -23183,7 +23183,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966316 = {
     {      1,   16,    0,  0,  6,  4 }, {      0,   16,    0,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966438 = {
+static const rct_vehicle_info_list TrackVehicleInfo_966438 = {
     32, {
     {     16,    0,    8,  8,  0,  4 }, {     16,    1,    8,  8,  0,  4 }, {     16,    2,    8,  8,  0,  4 }, {     16,    3,    8,  8,  0,  4 }, {     16,    4,    8,  8,  0,  4 },
     {     16,    5,    8,  8,  0,  4 }, {     16,    6,    8,  8,  0,  4 }, {     16,    7,    8,  8,  0,  4 }, {     16,    8,    7,  8,  5,  4 }, {     16,    9,    7,  8,  5,  4 },
@@ -23194,7 +23194,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966438 = {
     {     16,   30,    1,  8,  6,  4 }, {     16,   31,    0,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96655A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96655A = {
     32, {
     {      0,   16,    8, 16,  0,  4 }, {      1,   16,    8, 16,  0,  4 }, {      2,   16,    8, 16,  0,  4 }, {      3,   16,    8, 16,  0,  4 }, {      4,   16,    8, 16,  0,  4 },
     {      5,   16,    8, 16,  0,  4 }, {      6,   16,    8, 16,  0,  4 }, {      7,   16,    8, 16,  0,  4 }, {      8,   16,    7, 16,  5,  4 }, {      9,   16,    7, 16,  5,  4 },
@@ -23205,7 +23205,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96655A = {
     {     30,   16,    1, 16,  6,  4 }, {     31,   16,    0, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96667C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96667C = {
     32, {
     {     16,   31,    8, 24,  0,  4 }, {     16,   30,    8, 24,  0,  4 }, {     16,   29,    8, 24,  0,  4 }, {     16,   28,    8, 24,  0,  4 }, {     16,   27,    8, 24,  0,  4 },
     {     16,   26,    8, 24,  0,  4 }, {     16,   25,    8, 24,  0,  4 }, {     16,   24,    8, 24,  0,  4 }, {     16,   23,    7, 24,  5,  4 }, {     16,   22,    7, 24,  5,  4 },
@@ -23216,7 +23216,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96667C = {
     {     16,    1,    0, 24,  6,  4 }, {     16,    0,    0, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964C6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_964C6E = {
     32, {
     {     31,   16,    7,  0,  6,  2 }, {     30,   16,    7,  0,  6,  2 }, {     29,   16,    6,  0,  6,  2 }, {     28,   16,    6,  0,  6,  2 }, {     27,   16,    5,  0,  6,  2 },
     {     26,   16,    5,  0,  6,  2 }, {     25,   16,    4,  0,  6,  2 }, {     24,   16,    4,  0,  6,  2 }, {     23,   16,    4,  0,  5,  2 }, {     22,   16,    3,  0,  5,  2 },
@@ -23227,7 +23227,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964C6E = {
     {      1,   16,    0,  0,  0,  2 }, {      0,   16,    0,  0,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964D90 = {
+static const rct_vehicle_info_list TrackVehicleInfo_964D90 = {
     32, {
     {     16,    0,    8,  8,  6,  2 }, {     16,    1,    7,  8,  6,  2 }, {     16,    2,    7,  8,  6,  2 }, {     16,    3,    6,  8,  6,  2 }, {     16,    4,    6,  8,  6,  2 },
     {     16,    5,    5,  8,  6,  2 }, {     16,    6,    5,  8,  6,  2 }, {     16,    7,    4,  8,  6,  2 }, {     16,    8,    4,  8,  5,  2 }, {     16,    9,    3,  8,  5,  2 },
@@ -23238,7 +23238,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964D90 = {
     {     16,   30,    0,  8,  0,  2 }, {     16,   31,    0,  8,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964EB2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_964EB2 = {
     32, {
     {      0,   16,    8, 16,  6,  2 }, {      1,   16,    7, 16,  6,  2 }, {      2,   16,    7, 16,  6,  2 }, {      3,   16,    6, 16,  6,  2 }, {      4,   16,    6, 16,  6,  2 },
     {      5,   16,    5, 16,  6,  2 }, {      6,   16,    5, 16,  6,  2 }, {      7,   16,    4, 16,  6,  2 }, {      8,   16,    4, 16,  5,  2 }, {      9,   16,    3, 16,  5,  2 },
@@ -23249,7 +23249,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964EB2 = {
     {     30,   16,    0, 16,  0,  2 }, {     31,   16,    0, 16,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_964FD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_964FD4 = {
     32, {
     {     16,   31,    7, 24,  6,  2 }, {     16,   30,    7, 24,  6,  2 }, {     16,   29,    6, 24,  6,  2 }, {     16,   28,    6, 24,  6,  2 }, {     16,   27,    5, 24,  6,  2 },
     {     16,   26,    5, 24,  6,  2 }, {     16,   25,    4, 24,  6,  2 }, {     16,   24,    4, 24,  6,  2 }, {     16,   23,    4, 24,  5,  2 }, {     16,   22,    3, 24,  5,  2 },
@@ -23260,7 +23260,7 @@ const rct_vehicle_info_list TrackVehicleInfo_964FD4 = {
     {     16,    1,    0, 24,  0,  2 }, {     16,    0,    0, 24,  0,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965E8E = {
+static const rct_vehicle_info_list TrackVehicleInfo_965E8E = {
     32, {
     {     31,   16,    7,  0,  6,  4 }, {     30,   16,    7,  0,  6,  4 }, {     29,   16,    6,  0,  6,  4 }, {     28,   16,    6,  0,  6,  4 }, {     27,   16,    5,  0,  6,  4 },
     {     26,   16,    5,  0,  6,  4 }, {     25,   16,    4,  0,  6,  4 }, {     24,   16,    4,  0,  6,  4 }, {     23,   16,    4,  0,  5,  4 }, {     22,   16,    3,  0,  5,  4 },
@@ -23271,7 +23271,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965E8E = {
     {      1,   16,    0,  0,  0,  4 }, {      0,   16,    0,  0,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_965FB0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_965FB0 = {
     32, {
     {     16,    0,    8,  8,  6,  4 }, {     16,    1,    7,  8,  6,  4 }, {     16,    2,    7,  8,  6,  4 }, {     16,    3,    6,  8,  6,  4 }, {     16,    4,    6,  8,  6,  4 },
     {     16,    5,    5,  8,  6,  4 }, {     16,    6,    5,  8,  6,  4 }, {     16,    7,    4,  8,  6,  4 }, {     16,    8,    4,  8,  5,  4 }, {     16,    9,    3,  8,  5,  4 },
@@ -23282,7 +23282,7 @@ const rct_vehicle_info_list TrackVehicleInfo_965FB0 = {
     {     16,   30,    0,  8,  0,  4 }, {     16,   31,    0,  8,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9660D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9660D2 = {
     32, {
     {      0,   16,    8, 16,  6,  4 }, {      1,   16,    7, 16,  6,  4 }, {      2,   16,    7, 16,  6,  4 }, {      3,   16,    6, 16,  6,  4 }, {      4,   16,    6, 16,  6,  4 },
     {      5,   16,    5, 16,  6,  4 }, {      6,   16,    5, 16,  6,  4 }, {      7,   16,    4, 16,  6,  4 }, {      8,   16,    4, 16,  5,  4 }, {      9,   16,    3, 16,  5,  4 },
@@ -23293,7 +23293,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9660D2 = {
     {     30,   16,    0, 16,  0,  4 }, {     31,   16,    0, 16,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9661F4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9661F4 = {
     32, {
     {     16,   31,    7, 24,  6,  4 }, {     16,   30,    7, 24,  6,  4 }, {     16,   29,    6, 24,  6,  4 }, {     16,   28,    6, 24,  6,  4 }, {     16,   27,    5, 24,  6,  4 },
     {     16,   26,    5, 24,  6,  4 }, {     16,   25,    4, 24,  6,  4 }, {     16,   24,    4, 24,  6,  4 }, {     16,   23,    4, 24,  5,  4 }, {     16,   22,    3, 24,  5,  4 },
@@ -23304,7 +23304,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9661F4 = {
     {     16,    1,    0, 24,  0,  4 }, {     16,    0,    0, 24,  0,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96679E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96679E = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  1,  1 }, {     22,   16,    0,  0,  1,  1 },
@@ -23315,7 +23315,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96679E = {
     {      1,   16,    7,  0,  2,  2 }, {      0,   16,    7,  0,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9668C0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9668C0 = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  1,  1 }, {     16,    9,    0,  8,  1,  1 },
@@ -23326,7 +23326,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9668C0 = {
     {     16,   30,    7,  8,  2,  2 }, {     16,   31,    7,  8,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9669E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9669E2 = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  1,  1 }, {      9,   16,    0, 16,  1,  1 },
@@ -23337,7 +23337,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9669E2 = {
     {     30,   16,    7, 16,  2,  2 }, {     31,   16,    7, 16,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966B04 = {
+static const rct_vehicle_info_list TrackVehicleInfo_966B04 = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  1,  1 }, {     16,   22,    0, 24,  1,  1 },
@@ -23348,7 +23348,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966B04 = {
     {     16,    1,    7, 24,  2,  2 }, {     16,    0,    7, 24,  2,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966C26 = {
+static const rct_vehicle_info_list TrackVehicleInfo_966C26 = {
     32, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  1,  3 }, {     22,   16,    0,  0,  1,  3 },
@@ -23359,7 +23359,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966C26 = {
     {      1,   16,    7,  0,  2,  4 }, {      0,   16,    7,  0,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966D48 = {
+static const rct_vehicle_info_list TrackVehicleInfo_966D48 = {
     32, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  1,  3 }, {     16,    9,    0,  8,  1,  3 },
@@ -23370,7 +23370,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966D48 = {
     {     16,   30,    7,  8,  2,  4 }, {     16,   31,    7,  8,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966E6A = {
+static const rct_vehicle_info_list TrackVehicleInfo_966E6A = {
     32, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  1,  3 }, {      9,   16,    0, 16,  1,  3 },
@@ -23381,7 +23381,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966E6A = {
     {     30,   16,    7, 16,  2,  4 }, {     31,   16,    7, 16,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_966F8C = {
+static const rct_vehicle_info_list TrackVehicleInfo_966F8C = {
     32, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  1,  3 }, {     16,   22,    0, 24,  1,  3 },
@@ -23392,7 +23392,7 @@ const rct_vehicle_info_list TrackVehicleInfo_966F8C = {
     {     16,    1,    7, 24,  2,  4 }, {     16,    0,    7, 24,  2,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9670AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9670AE = {
     32, {
     {     31,   16,    0,  0,  2,  2 }, {     30,   16,    0,  0,  2,  2 }, {     29,   16,    1,  0,  2,  2 }, {     28,   16,    1,  0,  2,  2 }, {     27,   16,    2,  0,  2,  2 },
     {     26,   16,    2,  0,  2,  2 }, {     25,   16,    3,  0,  2,  2 }, {     24,   16,    3,  0,  2,  2 }, {     23,   16,    4,  0,  1,  1 }, {     22,   16,    4,  0,  1,  1 },
@@ -23403,7 +23403,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9670AE = {
     {      1,   16,    8,  0,  0,  0 }, {      0,   16,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9671E2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9671E2 = {
     32, {
     {     16,    0,    0,  8,  2,  2 }, {     16,    1,    0,  8,  2,  2 }, {     16,    2,    1,  8,  2,  2 }, {     16,    3,    1,  8,  2,  2 }, {     16,    4,    2,  8,  2,  2 },
     {     16,    5,    2,  8,  2,  2 }, {     16,    6,    3,  8,  2,  2 }, {     16,    7,    3,  8,  2,  2 }, {     16,    8,    4,  8,  1,  1 }, {     16,    9,    4,  8,  1,  1 },
@@ -23414,7 +23414,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9671E2 = {
     {     16,   30,    8,  8,  0,  0 }, {     16,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967316 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967316 = {
     32, {
     {      0,   16,    0, 16,  2,  2 }, {      1,   16,    0, 16,  2,  2 }, {      2,   16,    1, 16,  2,  2 }, {      3,   16,    1, 16,  2,  2 }, {      4,   16,    2, 16,  2,  2 },
     {      5,   16,    2, 16,  2,  2 }, {      6,   16,    3, 16,  2,  2 }, {      7,   16,    3, 16,  2,  2 }, {      8,   16,    4, 16,  1,  1 }, {      9,   16,    4, 16,  1,  1 },
@@ -23425,7 +23425,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967316 = {
     {     30,   16,    8, 16,  0,  0 }, {     31,   16,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96744A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96744A = {
     32, {
     {     16,   31,    0, 24,  2,  2 }, {     16,   30,    0, 24,  2,  2 }, {     16,   29,    1, 24,  2,  2 }, {     16,   28,    1, 24,  2,  2 }, {     16,   27,    2, 24,  2,  2 },
     {     16,   26,    2, 24,  2,  2 }, {     16,   25,    3, 24,  2,  2 }, {     16,   24,    3, 24,  2,  2 }, {     16,   23,    4, 24,  1,  1 }, {     16,   22,    4, 24,  1,  1 },
@@ -23436,7 +23436,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96744A = {
     {     16,    1,    8, 24,  0,  0 }, {     16,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96757E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96757E = {
     32, {
     {     31,   16,    0,  0,  2,  4 }, {     30,   16,    0,  0,  2,  4 }, {     29,   16,    1,  0,  2,  4 }, {     28,   16,    1,  0,  2,  4 }, {     27,   16,    2,  0,  2,  4 },
     {     26,   16,    2,  0,  2,  4 }, {     25,   16,    3,  0,  2,  4 }, {     24,   16,    3,  0,  2,  4 }, {     23,   16,    4,  0,  1,  3 }, {     22,   16,    4,  0,  1,  3 },
@@ -23447,7 +23447,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96757E = {
     {      1,   16,    8,  0,  0,  0 }, {      0,   16,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9676B2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9676B2 = {
     32, {
     {     16,    0,    0,  8,  2,  4 }, {     16,    1,    0,  8,  2,  4 }, {     16,    2,    1,  8,  2,  4 }, {     16,    3,    1,  8,  2,  4 }, {     16,    4,    2,  8,  2,  4 },
     {     16,    5,    2,  8,  2,  4 }, {     16,    6,    3,  8,  2,  4 }, {     16,    7,    3,  8,  2,  4 }, {     16,    8,    4,  8,  1,  3 }, {     16,    9,    4,  8,  1,  3 },
@@ -23458,7 +23458,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9676B2 = {
     {     16,   30,    8,  8,  0,  0 }, {     16,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9677E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9677E6 = {
     32, {
     {      0,   16,    0, 16,  2,  4 }, {      1,   16,    0, 16,  2,  4 }, {      2,   16,    1, 16,  2,  4 }, {      3,   16,    1, 16,  2,  4 }, {      4,   16,    2, 16,  2,  4 },
     {      5,   16,    2, 16,  2,  4 }, {      6,   16,    3, 16,  2,  4 }, {      7,   16,    3, 16,  2,  4 }, {      8,   16,    4, 16,  1,  3 }, {      9,   16,    4, 16,  1,  3 },
@@ -23469,7 +23469,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9677E6 = {
     {     30,   16,    8, 16,  0,  0 }, {     31,   16,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96791A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96791A = {
     32, {
     {     16,   31,    0, 24,  2,  4 }, {     16,   30,    0, 24,  2,  4 }, {     16,   29,    1, 24,  2,  4 }, {     16,   28,    1, 24,  2,  4 }, {     16,   27,    2, 24,  2,  4 },
     {     16,   26,    2, 24,  2,  4 }, {     16,   25,    3, 24,  2,  4 }, {     16,   24,    3, 24,  2,  4 }, {     16,   23,    4, 24,  1,  3 }, {     16,   22,    4, 24,  1,  3 },
@@ -23480,7 +23480,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96791A = {
     {     16,    1,    8, 24,  0,  0 }, {     16,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96835E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96835E = {
     32, {
     {     31,   16,    8,  0,  0,  0 }, {     30,   16,    8,  0,  0,  0 }, {     29,   16,    8,  0,  0,  0 }, {     28,   16,    8,  0,  0,  0 }, {     27,   16,    8,  0,  0,  0 },
     {     26,   16,    8,  0,  0,  0 }, {     25,   16,    8,  0,  0,  0 }, {     24,   16,    8,  0,  0,  0 }, {     23,   16,    7,  0,  5,  1 }, {     22,   16,    7,  0,  5,  1 },
@@ -23491,7 +23491,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96835E = {
     {      1,   16,    0,  0,  6,  2 }, {      0,   16,    0,  0,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968480 = {
+static const rct_vehicle_info_list TrackVehicleInfo_968480 = {
     32, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    1,    8,  8,  0,  0 }, {     16,    2,    8,  8,  0,  0 }, {     16,    3,    8,  8,  0,  0 }, {     16,    4,    8,  8,  0,  0 },
     {     16,    5,    8,  8,  0,  0 }, {     16,    6,    8,  8,  0,  0 }, {     16,    7,    8,  8,  0,  0 }, {     16,    8,    7,  8,  5,  1 }, {     16,    9,    7,  8,  5,  1 },
@@ -23502,7 +23502,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968480 = {
     {     16,   30,    0,  8,  6,  2 }, {     16,   31,    0,  8,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9685A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9685A2 = {
     32, {
     {      0,   16,    8, 16,  0,  0 }, {      1,   16,    8, 16,  0,  0 }, {      2,   16,    8, 16,  0,  0 }, {      3,   16,    8, 16,  0,  0 }, {      4,   16,    8, 16,  0,  0 },
     {      5,   16,    8, 16,  0,  0 }, {      6,   16,    8, 16,  0,  0 }, {      7,   16,    8, 16,  0,  0 }, {      8,   16,    7, 16,  5,  1 }, {      9,   16,    7, 16,  5,  1 },
@@ -23513,7 +23513,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9685A2 = {
     {     30,   16,    0, 16,  6,  2 }, {     31,   16,    0, 16,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9686C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9686C4 = {
     32, {
     {     16,   31,    8, 24,  0,  0 }, {     16,   30,    8, 24,  0,  0 }, {     16,   29,    8, 24,  0,  0 }, {     16,   28,    8, 24,  0,  0 }, {     16,   27,    8, 24,  0,  0 },
     {     16,   26,    8, 24,  0,  0 }, {     16,   25,    8, 24,  0,  0 }, {     16,   24,    8, 24,  0,  0 }, {     16,   23,    7, 24,  5,  1 }, {     16,   22,    7, 24,  5,  1 },
@@ -23524,7 +23524,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9686C4 = {
     {     16,    1,    0, 24,  6,  2 }, {     16,    0,    0, 24,  6,  2 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9687E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9687E6 = {
     32, {
     {     31,   16,    8,  0,  0,  0 }, {     30,   16,    8,  0,  0,  0 }, {     29,   16,    8,  0,  0,  0 }, {     28,   16,    8,  0,  0,  0 }, {     27,   16,    8,  0,  0,  0 },
     {     26,   16,    8,  0,  0,  0 }, {     25,   16,    8,  0,  0,  0 }, {     24,   16,    8,  0,  0,  0 }, {     23,   16,    7,  0,  5,  3 }, {     22,   16,    7,  0,  5,  3 },
@@ -23535,7 +23535,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9687E6 = {
     {      1,   16,    0,  0,  6,  4 }, {      0,   16,    0,  0,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968908 = {
+static const rct_vehicle_info_list TrackVehicleInfo_968908 = {
     32, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    1,    8,  8,  0,  0 }, {     16,    2,    8,  8,  0,  0 }, {     16,    3,    8,  8,  0,  0 }, {     16,    4,    8,  8,  0,  0 },
     {     16,    5,    8,  8,  0,  0 }, {     16,    6,    8,  8,  0,  0 }, {     16,    7,    8,  8,  0,  0 }, {     16,    8,    7,  8,  5,  3 }, {     16,    9,    7,  8,  5,  3 },
@@ -23546,7 +23546,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968908 = {
     {     16,   30,    0,  8,  6,  4 }, {     16,   31,    0,  8,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968A2A = {
+static const rct_vehicle_info_list TrackVehicleInfo_968A2A = {
     32, {
     {      0,   16,    8, 16,  0,  0 }, {      1,   16,    8, 16,  0,  0 }, {      2,   16,    8, 16,  0,  0 }, {      3,   16,    8, 16,  0,  0 }, {      4,   16,    8, 16,  0,  0 },
     {      5,   16,    8, 16,  0,  0 }, {      6,   16,    8, 16,  0,  0 }, {      7,   16,    8, 16,  0,  0 }, {      8,   16,    7, 16,  5,  3 }, {      9,   16,    7, 16,  5,  3 },
@@ -23557,7 +23557,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968A2A = {
     {     30,   16,    0, 16,  6,  4 }, {     31,   16,    0, 16,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_968B4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_968B4C = {
     32, {
     {     16,   31,    8, 24,  0,  0 }, {     16,   30,    8, 24,  0,  0 }, {     16,   29,    8, 24,  0,  0 }, {     16,   28,    8, 24,  0,  0 }, {     16,   27,    8, 24,  0,  0 },
     {     16,   26,    8, 24,  0,  0 }, {     16,   25,    8, 24,  0,  0 }, {     16,   24,    8, 24,  0,  0 }, {     16,   23,    7, 24,  5,  3 }, {     16,   22,    7, 24,  5,  3 },
@@ -23568,7 +23568,7 @@ const rct_vehicle_info_list TrackVehicleInfo_968B4C = {
     {     16,    1,    0, 24,  6,  4 }, {     16,    0,    0, 24,  6,  4 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967A4E = {
+static const rct_vehicle_info_list TrackVehicleInfo_967A4E = {
     32, {
     {     31,   16,    7,  0,  6,  2 }, {     30,   16,    7,  0,  6,  2 }, {     29,   16,    6,  0,  6,  2 }, {     28,   16,    6,  0,  6,  2 }, {     27,   16,    5,  0,  6,  2 },
     {     26,   16,    5,  0,  6,  2 }, {     25,   16,    4,  0,  6,  2 }, {     24,   16,    4,  0,  6,  2 }, {     23,   16,    4,  0,  5,  1 }, {     22,   16,    3,  0,  5,  1 },
@@ -23579,7 +23579,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967A4E = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967B70 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967B70 = {
     32, {
     {     16,    0,    7,  8,  6,  2 }, {     16,    1,    7,  8,  6,  2 }, {     16,    2,    6,  8,  6,  2 }, {     16,    3,    6,  8,  6,  2 }, {     16,    4,    5,  8,  6,  2 },
     {     16,    5,    5,  8,  6,  2 }, {     16,    6,    4,  8,  6,  2 }, {     16,    7,    4,  8,  6,  2 }, {     16,    8,    4,  8,  5,  1 }, {     16,    9,    3,  8,  5,  1 },
@@ -23590,7 +23590,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967B70 = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967C92 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967C92 = {
     32, {
     {      0,   16,    7, 16,  6,  2 }, {      1,   16,    7, 16,  6,  2 }, {      2,   16,    6, 16,  6,  2 }, {      3,   16,    6, 16,  6,  2 }, {      4,   16,    5, 16,  6,  2 },
     {      5,   16,    5, 16,  6,  2 }, {      6,   16,    4, 16,  6,  2 }, {      7,   16,    4, 16,  6,  2 }, {      8,   16,    4, 16,  5,  1 }, {      9,   16,    3, 16,  5,  1 },
@@ -23601,7 +23601,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967C92 = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967DB4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967DB4 = {
     32, {
     {     16,   31,    7, 24,  6,  2 }, {     16,   30,    7, 24,  6,  2 }, {     16,   29,    6, 24,  6,  2 }, {     16,   28,    6, 24,  6,  2 }, {     16,   27,    5, 24,  6,  2 },
     {     16,   26,    5, 24,  6,  2 }, {     16,   25,    4, 24,  6,  2 }, {     16,   24,    4, 24,  6,  2 }, {     16,   23,    4, 24,  5,  1 }, {     16,   22,    3, 24,  5,  1 },
@@ -23612,7 +23612,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967DB4 = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967ED6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967ED6 = {
     32, {
     {     31,   16,    7,  0,  6,  4 }, {     30,   16,    7,  0,  6,  4 }, {     29,   16,    6,  0,  6,  4 }, {     28,   16,    6,  0,  6,  4 }, {     27,   16,    5,  0,  6,  4 },
     {     26,   16,    5,  0,  6,  4 }, {     25,   16,    4,  0,  6,  4 }, {     24,   16,    4,  0,  6,  4 }, {     23,   16,    4,  0,  5,  3 }, {     22,   16,    3,  0,  5,  3 },
@@ -23623,7 +23623,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967ED6 = {
     {      1,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_967FF8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_967FF8 = {
     32, {
     {     16,    0,    7,  8,  6,  4 }, {     16,    1,    7,  8,  6,  4 }, {     16,    2,    6,  8,  6,  4 }, {     16,    3,    6,  8,  6,  4 }, {     16,    4,    5,  8,  6,  4 },
     {     16,    5,    5,  8,  6,  4 }, {     16,    6,    4,  8,  6,  4 }, {     16,    7,    4,  8,  6,  4 }, {     16,    8,    4,  8,  5,  3 }, {     16,    9,    3,  8,  5,  3 },
@@ -23634,7 +23634,7 @@ const rct_vehicle_info_list TrackVehicleInfo_967FF8 = {
     {     16,   30,    0,  8,  0,  0 }, {     16,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96811A = {
+static const rct_vehicle_info_list TrackVehicleInfo_96811A = {
     32, {
     {      0,   16,    7, 16,  6,  4 }, {      1,   16,    7, 16,  6,  4 }, {      2,   16,    6, 16,  6,  4 }, {      3,   16,    6, 16,  6,  4 }, {      4,   16,    5, 16,  6,  4 },
     {      5,   16,    5, 16,  6,  4 }, {      6,   16,    4, 16,  6,  4 }, {      7,   16,    4, 16,  6,  4 }, {      8,   16,    4, 16,  5,  3 }, {      9,   16,    3, 16,  5,  3 },
@@ -23645,7 +23645,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96811A = {
     {     30,   16,    0, 16,  0,  0 }, {     31,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96823C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96823C = {
     32, {
     {     16,   31,    7, 24,  6,  4 }, {     16,   30,    7, 24,  6,  4 }, {     16,   29,    6, 24,  6,  4 }, {     16,   28,    6, 24,  6,  4 }, {     16,   27,    5, 24,  6,  4 },
     {     16,   26,    5, 24,  6,  4 }, {     16,   25,    4, 24,  6,  4 }, {     16,   24,    4, 24,  6,  4 }, {     16,   23,    4, 24,  5,  3 }, {     16,   22,    3, 24,  5,  3 },
@@ -23656,7 +23656,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96823C = {
     {     16,    1,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_969E8E = {
+static const rct_vehicle_info_list TrackVehicleInfo_969E8E = {
     96, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6, 31, 10,  0 }, {     16,   16,    7, 31, 10,  0 }, {     16,   16,    8, 31, 10,  0 }, {     16,   16,    9, 31, 10,  0 },
@@ -23680,7 +23680,7 @@ const rct_vehicle_info_list TrackVehicleInfo_969E8E = {
     {     16,   16,   95, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96A1F0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96A1F0 = {
     96, {
     {     16,   16,    0,  8, 10,  0 }, {     16,   16,    1,  8, 10,  0 }, {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 },
     {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  7, 10,  0 }, {     16,   16,    7,  7, 10,  0 }, {     16,   16,    8,  7, 10,  0 }, {     16,   16,    9,  7, 10,  0 },
@@ -23704,7 +23704,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96A1F0 = {
     {     16,   16,   95,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96A552 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96A552 = {
     96, {
     {     16,   16,    0, 16, 10,  0 }, {     16,   16,    1, 16, 10,  0 }, {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 },
     {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 15, 10,  0 }, {     16,   16,    7, 15, 10,  0 }, {     16,   16,    8, 15, 10,  0 }, {     16,   16,    9, 15, 10,  0 },
@@ -23728,7 +23728,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96A552 = {
     {     16,   16,   95,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96A8B4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96A8B4 = {
     96, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 23, 10,  0 }, {     16,   16,    7, 23, 10,  0 }, {     16,   16,    8, 23, 10,  0 }, {     16,   16,    9, 23, 10,  0 },
@@ -23752,7 +23752,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96A8B4 = {
     {     16,   16,   95, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96B99E = {
+static const rct_vehicle_info_list TrackVehicleInfo_96B99E = {
     96, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  1, 10,  0 }, {     16,   16,    7,  1, 10,  0 }, {     16,   16,    8,  1, 10,  0 }, {     16,   16,    9,  1, 10,  0 },
@@ -23776,7 +23776,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96B99E = {
     {     16,   16,   95,  8, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96BD00 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96BD00 = {
     96, {
     {     16,   16,    0,  8, 10,  0 }, {     16,   16,    1,  8, 10,  0 }, {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 },
     {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  9, 10,  0 }, {     16,   16,    7,  9, 10,  0 }, {     16,   16,    8,  9, 10,  0 }, {     16,   16,    9,  9, 10,  0 },
@@ -23800,7 +23800,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96BD00 = {
     {     16,   16,   95, 16, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96C062 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96C062 = {
     96, {
     {     16,   16,    0, 16, 10,  0 }, {     16,   16,    1, 16, 10,  0 }, {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 },
     {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 17, 10,  0 }, {     16,   16,    7, 17, 10,  0 }, {     16,   16,    8, 17, 10,  0 }, {     16,   16,    9, 17, 10,  0 },
@@ -23824,7 +23824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96C062 = {
     {     16,   16,   95, 24, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96C3C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96C3C4 = {
     96, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 25, 10,  0 }, {     16,   16,    7, 25, 10,  0 }, {     16,   16,    8, 25, 10,  0 }, {     16,   16,    9, 25, 10,  0 },
@@ -23848,7 +23848,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96C3C4 = {
     {     16,   16,   95,  0, 10,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96AC16 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96AC16 = {
     96, {
     {     16,   16,   95,  0, 18,  0 }, {     16,   16,   94,  0, 18,  0 }, {     16,   16,   93,  0, 18,  0 }, {     16,   16,   92,  0, 18,  0 }, {     16,   16,   91,  0, 18,  0 },
     {     16,   16,   90,  0, 18,  0 }, {     16,   16,   89, 31, 18,  0 }, {     16,   16,   88, 31, 18,  0 }, {     16,   16,   87, 31, 18,  0 }, {     16,   16,   86, 31, 18,  0 },
@@ -23872,7 +23872,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96AC16 = {
     {     16,   16,    0, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96AF78 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96AF78 = {
     96, {
     {     16,   16,   95,  8, 18,  0 }, {     16,   16,   94,  8, 18,  0 }, {     16,   16,   93,  8, 18,  0 }, {     16,   16,   92,  8, 18,  0 }, {     16,   16,   91,  8, 18,  0 },
     {     16,   16,   90,  8, 18,  0 }, {     16,   16,   89,  7, 18,  0 }, {     16,   16,   88,  7, 18,  0 }, {     16,   16,   87,  7, 18,  0 }, {     16,   16,   86,  7, 18,  0 },
@@ -23896,7 +23896,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96AF78 = {
     {     16,   16,    0,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96B2DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_96B2DA = {
     96, {
     {     16,   16,   95, 16, 18,  0 }, {     16,   16,   94, 16, 18,  0 }, {     16,   16,   93, 16, 18,  0 }, {     16,   16,   92, 16, 18,  0 }, {     16,   16,   91, 16, 18,  0 },
     {     16,   16,   90, 16, 18,  0 }, {     16,   16,   89, 15, 18,  0 }, {     16,   16,   88, 15, 18,  0 }, {     16,   16,   87, 15, 18,  0 }, {     16,   16,   86, 15, 18,  0 },
@@ -23920,7 +23920,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96B2DA = {
     {     16,   16,    0,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96B63C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96B63C = {
     96, {
     {     16,   16,   95, 24, 18,  0 }, {     16,   16,   94, 24, 18,  0 }, {     16,   16,   93, 24, 18,  0 }, {     16,   16,   92, 24, 18,  0 }, {     16,   16,   91, 24, 18,  0 },
     {     16,   16,   90, 24, 18,  0 }, {     16,   16,   89, 23, 18,  0 }, {     16,   16,   88, 23, 18,  0 }, {     16,   16,   87, 23, 18,  0 }, {     16,   16,   86, 23, 18,  0 },
@@ -23944,7 +23944,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96B63C = {
     {     16,   16,    0, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96C726 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96C726 = {
     96, {
     {     16,   16,   95,  0, 18,  0 }, {     16,   16,   94,  0, 18,  0 }, {     16,   16,   93,  0, 18,  0 }, {     16,   16,   92,  0, 18,  0 }, {     16,   16,   91,  0, 18,  0 },
     {     16,   16,   90,  0, 18,  0 }, {     16,   16,   89,  1, 18,  0 }, {     16,   16,   88,  1, 18,  0 }, {     16,   16,   87,  1, 18,  0 }, {     16,   16,   86,  1, 18,  0 },
@@ -23968,7 +23968,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96C726 = {
     {     16,   16,    0,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96CA88 = {
+static const rct_vehicle_info_list TrackVehicleInfo_96CA88 = {
     96, {
     {     16,   16,   95,  8, 18,  0 }, {     16,   16,   94,  8, 18,  0 }, {     16,   16,   93,  8, 18,  0 }, {     16,   16,   92,  8, 18,  0 }, {     16,   16,   91,  8, 18,  0 },
     {     16,   16,   90,  8, 18,  0 }, {     16,   16,   89,  9, 18,  0 }, {     16,   16,   88,  9, 18,  0 }, {     16,   16,   87,  9, 18,  0 }, {     16,   16,   86,  9, 18,  0 },
@@ -23992,7 +23992,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96CA88 = {
     {     16,   16,    0, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96CDEA = {
+static const rct_vehicle_info_list TrackVehicleInfo_96CDEA = {
     96, {
     {     16,   16,   95, 16, 18,  0 }, {     16,   16,   94, 16, 18,  0 }, {     16,   16,   93, 16, 18,  0 }, {     16,   16,   92, 16, 18,  0 }, {     16,   16,   91, 16, 18,  0 },
     {     16,   16,   90, 16, 18,  0 }, {     16,   16,   89, 17, 18,  0 }, {     16,   16,   88, 17, 18,  0 }, {     16,   16,   87, 17, 18,  0 }, {     16,   16,   86, 17, 18,  0 },
@@ -24016,7 +24016,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96CDEA = {
     {     16,   16,    0, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_96D14C = {
+static const rct_vehicle_info_list TrackVehicleInfo_96D14C = {
     96, {
     {     16,   16,   95, 24, 18,  0 }, {     16,   16,   94, 24, 18,  0 }, {     16,   16,   93, 24, 18,  0 }, {     16,   16,   92, 24, 18,  0 }, {     16,   16,   91, 24, 18,  0 },
     {     16,   16,   90, 24, 18,  0 }, {     16,   16,   89, 25, 18,  0 }, {     16,   16,   88, 25, 18,  0 }, {     16,   16,   87, 25, 18,  0 }, {     16,   16,   86, 25, 18,  0 },
@@ -24040,7 +24040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_96D14C = {
     {     16,   16,    0,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9761F2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9761F2 = {
     137, {
     {     16,   16,    0,  0, 10,  0 }, {     16,   16,    1,  0, 10,  0 }, {     16,   16,    2,  0, 10,  0 }, {     16,   16,    3,  0, 10,  0 }, {     16,   16,    4,  0, 10,  0 },
     {     16,   16,    5,  0, 10,  0 }, {     16,   16,    6,  0, 10,  0 }, {     16,   16,    7,  0, 10,  0 }, {     16,   16,    8,  0, 10,  0 }, {     16,   16,    9,  0, 10,  0 },
@@ -24072,7 +24072,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9761F2 = {
     {     94,   16,  111,  0, 16,  0 }, {     95,   16,  111,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9766C5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9766C5 = {
     137, {
     {     16,   16,    0,  8, 10,  0 }, {     16,   16,    1,  8, 10,  0 }, {     16,   16,    2,  8, 10,  0 }, {     16,   16,    3,  8, 10,  0 }, {     16,   16,    4,  8, 10,  0 },
     {     16,   16,    5,  8, 10,  0 }, {     16,   16,    6,  8, 10,  0 }, {     16,   16,    7,  8, 10,  0 }, {     16,   16,    8,  8, 10,  0 }, {     16,   16,    9,  8, 10,  0 },
@@ -24104,7 +24104,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9766C5 = {
     {     16,  -62,  111,  8, 16,  0 }, {     16,  -63,  111,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_976B98 = {
+static const rct_vehicle_info_list TrackVehicleInfo_976B98 = {
     137, {
     {     16,   16,    0, 16, 10,  0 }, {     16,   16,    1, 16, 10,  0 }, {     16,   16,    2, 16, 10,  0 }, {     16,   16,    3, 16, 10,  0 }, {     16,   16,    4, 16, 10,  0 },
     {     16,   16,    5, 16, 10,  0 }, {     16,   16,    6, 16, 10,  0 }, {     16,   16,    7, 16, 10,  0 }, {     16,   16,    8, 16, 10,  0 }, {     16,   16,    9, 16, 10,  0 },
@@ -24136,7 +24136,7 @@ const rct_vehicle_info_list TrackVehicleInfo_976B98 = {
     {    -62,   16,  111, 16, 16,  0 }, {    -63,   16,  111, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97706B = {
+static const rct_vehicle_info_list TrackVehicleInfo_97706B = {
     137, {
     {     16,   16,    0, 24, 10,  0 }, {     16,   16,    1, 24, 10,  0 }, {     16,   16,    2, 24, 10,  0 }, {     16,   16,    3, 24, 10,  0 }, {     16,   16,    4, 24, 10,  0 },
     {     16,   16,    5, 24, 10,  0 }, {     16,   16,    6, 24, 10,  0 }, {     16,   16,    7, 24, 10,  0 }, {     16,   16,    8, 24, 10,  0 }, {     16,   16,    9, 24, 10,  0 },
@@ -24168,7 +24168,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97706B = {
     {     16,   94,  111, 24, 16,  0 }, {     16,   95,  111, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97753E = {
+static const rct_vehicle_info_list TrackVehicleInfo_97753E = {
     137, {
     {     31,   16,   32,  0,  0,  0 }, {     30,   16,   32,  0,  0,  0 }, {     29,   16,   32,  0,  0,  0 }, {     28,   16,   32,  0,  0,  0 }, {     27,   16,   32,  0,  0,  0 },
     {     26,   16,   32,  0,  0,  0 }, {     25,   16,   32,  0,  0,  0 }, {     24,   16,   32,  0,  5,  0 }, {     23,   16,   31,  0,  5,  0 }, {     22,   16,   31,  0,  5,  0 },
@@ -24200,7 +24200,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97753E = {
     {    -48,   16,  -78,  0, 18,  0 }, {    -48,   16,  -79,  0, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_977A11 = {
+static const rct_vehicle_info_list TrackVehicleInfo_977A11 = {
     137, {
     {     16,    0,   32,  8,  0,  0 }, {     16,    1,   32,  8,  0,  0 }, {     16,    2,   32,  8,  0,  0 }, {     16,    3,   32,  8,  0,  0 }, {     16,    4,   32,  8,  0,  0 },
     {     16,    5,   32,  8,  0,  0 }, {     16,    6,   32,  8,  0,  0 }, {     16,    7,   32,  8,  5,  0 }, {     16,    8,   31,  8,  5,  0 }, {     16,    9,   31,  8,  5,  0 },
@@ -24232,7 +24232,7 @@ const rct_vehicle_info_list TrackVehicleInfo_977A11 = {
     {     16,   79,  -78,  8, 18,  0 }, {     16,   79,  -79,  8, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_977EE4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_977EE4 = {
     137, {
     {      0,   16,   32, 16,  0,  0 }, {      1,   16,   32, 16,  0,  0 }, {      2,   16,   32, 16,  0,  0 }, {      3,   16,   32, 16,  0,  0 }, {      4,   16,   32, 16,  0,  0 },
     {      5,   16,   32, 16,  0,  0 }, {      6,   16,   32, 16,  0,  0 }, {      7,   16,   32, 16,  5,  0 }, {      8,   16,   31, 16,  5,  0 }, {      9,   16,   31, 16,  5,  0 },
@@ -24264,7 +24264,7 @@ const rct_vehicle_info_list TrackVehicleInfo_977EE4 = {
     {     79,   16,  -78, 16, 18,  0 }, {     79,   16,  -79, 16, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9783B7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9783B7 = {
     137, {
     {     16,   31,   32, 24,  0,  0 }, {     16,   30,   32, 24,  0,  0 }, {     16,   29,   32, 24,  0,  0 }, {     16,   28,   32, 24,  0,  0 }, {     16,   27,   32, 24,  0,  0 },
     {     16,   26,   32, 24,  0,  0 }, {     16,   25,   32, 24,  0,  0 }, {     16,   24,   32, 24,  5,  0 }, {     16,   23,   31, 24,  5,  0 }, {     16,   22,   31, 24,  5,  0 },
@@ -24296,7 +24296,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9783B7 = {
     {     16,  -48,  -78, 24, 18,  0 }, {     16,  -48,  -79, 24, 18,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_97888A = {
+static const rct_vehicle_info_list TrackVehicleInfo_97888A = {
     137, {
     {     16,   16,  -32,  0, 10,  0 }, {     16,   16,  -31,  0, 10,  0 }, {     16,   16,  -30,  0, 10,  0 }, {     16,   16,  -29,  0, 10,  0 }, {     16,   16,  -28,  0, 10,  0 },
     {     16,   16,  -27,  0, 10,  0 }, {     16,   16,  -26,  0, 10,  0 }, {     16,   16,  -25,  0, 10,  0 }, {     16,   16,  -24,  0, 10,  0 }, {     16,   16,  -23,  0, 10,  0 },
@@ -24328,7 +24328,7 @@ const rct_vehicle_info_list TrackVehicleInfo_97888A = {
     {     94,   16,   79,  0, 16,  0 }, {     95,   16,   79,  0, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_978D5D = {
+static const rct_vehicle_info_list TrackVehicleInfo_978D5D = {
     137, {
     {     16,   16,  -32,  8, 10,  0 }, {     16,   16,  -31,  8, 10,  0 }, {     16,   16,  -30,  8, 10,  0 }, {     16,   16,  -29,  8, 10,  0 }, {     16,   16,  -28,  8, 10,  0 },
     {     16,   16,  -27,  8, 10,  0 }, {     16,   16,  -26,  8, 10,  0 }, {     16,   16,  -25,  8, 10,  0 }, {     16,   16,  -24,  8, 10,  0 }, {     16,   16,  -23,  8, 10,  0 },
@@ -24360,7 +24360,7 @@ const rct_vehicle_info_list TrackVehicleInfo_978D5D = {
     {     16,  -62,   79,  8, 16,  0 }, {     16,  -63,   79,  8, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_979230 = {
+static const rct_vehicle_info_list TrackVehicleInfo_979230 = {
     137, {
     {     16,   16,  -32, 16, 10,  0 }, {     16,   16,  -31, 16, 10,  0 }, {     16,   16,  -30, 16, 10,  0 }, {     16,   16,  -29, 16, 10,  0 }, {     16,   16,  -28, 16, 10,  0 },
     {     16,   16,  -27, 16, 10,  0 }, {     16,   16,  -26, 16, 10,  0 }, {     16,   16,  -25, 16, 10,  0 }, {     16,   16,  -24, 16, 10,  0 }, {     16,   16,  -23, 16, 10,  0 },
@@ -24392,7 +24392,7 @@ const rct_vehicle_info_list TrackVehicleInfo_979230 = {
     {    -62,   16,   79, 16, 16,  0 }, {    -63,   16,   79, 16, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_979703 = {
+static const rct_vehicle_info_list TrackVehicleInfo_979703 = {
     137, {
     {     16,   16,  -32, 24, 10,  0 }, {     16,   16,  -31, 24, 10,  0 }, {     16,   16,  -30, 24, 10,  0 }, {     16,   16,  -29, 24, 10,  0 }, {     16,   16,  -28, 24, 10,  0 },
     {     16,   16,  -27, 24, 10,  0 }, {     16,   16,  -26, 24, 10,  0 }, {     16,   16,  -25, 24, 10,  0 }, {     16,   16,  -24, 24, 10,  0 }, {     16,   16,  -23, 24, 10,  0 },
@@ -24424,7 +24424,7 @@ const rct_vehicle_info_list TrackVehicleInfo_979703 = {
     {     16,   94,   79, 24, 16,  0 }, {     16,   95,   79, 24, 16,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CDBE2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CDBE2 = {
     32, {
     {     31,    6,    0,  0,  0,  0 }, {     30,    6,    0,  0,  0,  0 }, {     29,    6,    0,  0,  0,  0 }, {     28,    6,    0,  0,  0,  0 }, {     27,    6,    0,  0,  0,  0 },
     {     26,    6,    0,  0,  0,  0 }, {     25,    6,    0,  0,  0,  0 }, {     24,    6,    0,  0,  0,  0 }, {     23,    6,    0,  0,  0,  0 }, {     22,    6,    0,  0,  0,  0 },
@@ -24435,7 +24435,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CDBE2 = {
     {      1,    6,    0,  0,  0,  0 }, {      0,    6,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CDD04 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CDD04 = {
     32, {
     {      6,    0,    0,  8,  0,  0 }, {      6,    1,    0,  8,  0,  0 }, {      6,    2,    0,  8,  0,  0 }, {      6,    3,    0,  8,  0,  0 }, {      6,    4,    0,  8,  0,  0 },
     {      6,    5,    0,  8,  0,  0 }, {      6,    6,    0,  8,  0,  0 }, {      6,    7,    0,  8,  0,  0 }, {      6,    8,    0,  8,  0,  0 }, {      6,    9,    0,  8,  0,  0 },
@@ -24446,7 +24446,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CDD04 = {
     {      6,   30,    0,  8,  0,  0 }, {      6,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CDE26 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CDE26 = {
     32, {
     {      0,   26,    0, 16,  0,  0 }, {      1,   26,    0, 16,  0,  0 }, {      2,   26,    0, 16,  0,  0 }, {      3,   26,    0, 16,  0,  0 }, {      4,   26,    0, 16,  0,  0 },
     {      5,   26,    0, 16,  0,  0 }, {      6,   26,    0, 16,  0,  0 }, {      7,   26,    0, 16,  0,  0 }, {      8,   26,    0, 16,  0,  0 }, {      9,   26,    0, 16,  0,  0 },
@@ -24457,7 +24457,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CDE26 = {
     {     30,   26,    0, 16,  0,  0 }, {     31,   26,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CDF48 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CDF48 = {
     32, {
     {     26,   31,    0, 24,  0,  0 }, {     26,   30,    0, 24,  0,  0 }, {     26,   29,    0, 24,  0,  0 }, {     26,   28,    0, 24,  0,  0 }, {     26,   27,    0, 24,  0,  0 },
     {     26,   26,    0, 24,  0,  0 }, {     26,   25,    0, 24,  0,  0 }, {     26,   24,    0, 24,  0,  0 }, {     26,   23,    0, 24,  0,  0 }, {     26,   22,    0, 24,  0,  0 },
@@ -24468,7 +24468,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CDF48 = {
     {     26,    1,    0, 24,  0,  0 }, {     26,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFB6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFB6E = {
     32, {
     {     31,    6,    0,  0,  2,  0 }, {     30,    6,    1,  0,  2,  0 }, {     29,    6,    1,  0,  2,  0 }, {     28,    6,    2,  0,  2,  0 }, {     27,    6,    2,  0,  2,  0 },
     {     26,    6,    3,  0,  2,  0 }, {     25,    6,    3,  0,  2,  0 }, {     24,    6,    4,  0,  2,  0 }, {     23,    6,    4,  0,  2,  0 }, {     22,    6,    5,  0,  2,  0 },
@@ -24479,7 +24479,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFB6E = {
     {      1,    6,   15,  0,  2,  0 }, {      0,    6,   16,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFC90 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFC90 = {
     32, {
     {      6,    0,    0,  8,  2,  0 }, {      6,    1,    0,  8,  2,  0 }, {      6,    2,    1,  8,  2,  0 }, {      6,    3,    1,  8,  2,  0 }, {      6,    4,    2,  8,  2,  0 },
     {      6,    5,    2,  8,  2,  0 }, {      6,    6,    3,  8,  2,  0 }, {      6,    7,    3,  8,  2,  0 }, {      6,    8,    4,  8,  2,  0 }, {      6,    9,    4,  8,  2,  0 },
@@ -24490,7 +24490,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFC90 = {
     {      6,   30,   15,  8,  2,  0 }, {      6,   31,   15,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFDB2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFDB2 = {
     32, {
     {      0,   26,    0, 16,  2,  0 }, {      1,   26,    0, 16,  2,  0 }, {      2,   26,    1, 16,  2,  0 }, {      3,   26,    1, 16,  2,  0 }, {      4,   26,    2, 16,  2,  0 },
     {      5,   26,    2, 16,  2,  0 }, {      6,   26,    3, 16,  2,  0 }, {      7,   26,    3, 16,  2,  0 }, {      8,   26,    4, 16,  2,  0 }, {      9,   26,    4, 16,  2,  0 },
@@ -24501,7 +24501,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFDB2 = {
     {     30,   26,   15, 16,  2,  0 }, {     31,   26,   15, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFED4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFED4 = {
     32, {
     {     26,   31,    0, 24,  2,  0 }, {     26,   30,    1, 24,  2,  0 }, {     26,   29,    1, 24,  2,  0 }, {     26,   28,    2, 24,  2,  0 }, {     26,   27,    2, 24,  2,  0 },
     {     26,   26,    3, 24,  2,  0 }, {     26,   25,    3, 24,  2,  0 }, {     26,   24,    4, 24,  2,  0 }, {     26,   23,    4, 24,  2,  0 }, {     26,   22,    5, 24,  2,  0 },
@@ -24512,7 +24512,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFED4 = {
     {     26,    1,   15, 24,  2,  0 }, {     26,    0,   16, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CE906 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CE906 = {
     32, {
     {     31,    6,    0,  0,  0,  0 }, {     30,    6,    0,  0,  0,  0 }, {     29,    6,    0,  0,  0,  0 }, {     28,    6,    0,  0,  0,  0 }, {     27,    6,    0,  0,  0,  0 },
     {     26,    6,    0,  0,  0,  0 }, {     25,    6,    0,  0,  0,  0 }, {     24,    6,    0,  0,  0,  0 }, {     23,    6,    0,  0,  1,  0 }, {     22,    6,    0,  0,  1,  0 },
@@ -24523,7 +24523,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CE906 = {
     {      1,    6,    7,  0,  2,  0 }, {      0,    6,    8,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CEA28 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CEA28 = {
     32, {
     {      6,    0,    0,  8,  0,  0 }, {      6,    1,    0,  8,  0,  0 }, {      6,    2,    0,  8,  0,  0 }, {      6,    3,    0,  8,  0,  0 }, {      6,    4,    0,  8,  0,  0 },
     {      6,    5,    0,  8,  0,  0 }, {      6,    6,    0,  8,  0,  0 }, {      6,    7,    0,  8,  0,  0 }, {      6,    8,    0,  8,  1,  0 }, {      6,    9,    0,  8,  1,  0 },
@@ -24534,7 +24534,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CEA28 = {
     {      6,   30,    7,  8,  2,  0 }, {      6,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CEB4A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CEB4A = {
     32, {
     {      0,   26,    0, 16,  0,  0 }, {      1,   26,    0, 16,  0,  0 }, {      2,   26,    0, 16,  0,  0 }, {      3,   26,    0, 16,  0,  0 }, {      4,   26,    0, 16,  0,  0 },
     {      5,   26,    0, 16,  0,  0 }, {      6,   26,    0, 16,  0,  0 }, {      7,   26,    0, 16,  0,  0 }, {      8,   26,    0, 16,  1,  0 }, {      9,   26,    0, 16,  1,  0 },
@@ -24545,7 +24545,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CEB4A = {
     {     30,   26,    7, 16,  2,  0 }, {     31,   26,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CEC6C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CEC6C = {
     32, {
     {     26,   31,    0, 24,  0,  0 }, {     26,   30,    0, 24,  0,  0 }, {     26,   29,    0, 24,  0,  0 }, {     26,   28,    0, 24,  0,  0 }, {     26,   27,    0, 24,  0,  0 },
     {     26,   26,    0, 24,  0,  0 }, {     26,   25,    0, 24,  0,  0 }, {     26,   24,    0, 24,  0,  0 }, {     26,   23,    0, 24,  1,  0 }, {     26,   22,    0, 24,  1,  0 },
@@ -24556,7 +24556,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CEC6C = {
     {     26,    1,    7, 24,  2,  0 }, {     26,    0,    8, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CED8E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CED8E = {
     32, {
     {     31,    6,    0,  0,  2,  0 }, {     30,    6,    1,  0,  2,  0 }, {     29,    6,    1,  0,  2,  0 }, {     28,    6,    2,  0,  2,  0 }, {     27,    6,    2,  0,  2,  0 },
     {     26,    6,    3,  0,  2,  0 }, {     25,    6,    3,  0,  2,  0 }, {     24,    6,    3,  0,  2,  0 }, {     23,    6,    4,  0,  1,  0 }, {     22,    6,    4,  0,  1,  0 },
@@ -24567,7 +24567,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CED8E = {
     {      1,    6,    8,  0,  0,  0 }, {      0,    6,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CEEC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CEEC2 = {
     32, {
     {      6,    0,    0,  8,  2,  0 }, {      6,    1,    0,  8,  2,  0 }, {      6,    2,    1,  8,  2,  0 }, {      6,    3,    1,  8,  2,  0 }, {      6,    4,    2,  8,  2,  0 },
     {      6,    5,    2,  8,  2,  0 }, {      6,    6,    3,  8,  2,  0 }, {      6,    7,    3,  8,  2,  0 }, {      6,    8,    4,  8,  1,  0 }, {      6,    9,    4,  8,  1,  0 },
@@ -24578,7 +24578,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CEEC2 = {
     {      6,   30,    8,  8,  0,  0 }, {      6,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CEFF6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CEFF6 = {
     32, {
     {      0,   26,    0, 16,  2,  0 }, {      1,   26,    0, 16,  2,  0 }, {      2,   26,    1, 16,  2,  0 }, {      3,   26,    1, 16,  2,  0 }, {      4,   26,    2, 16,  2,  0 },
     {      5,   26,    2, 16,  2,  0 }, {      6,   26,    3, 16,  2,  0 }, {      7,   26,    3, 16,  2,  0 }, {      8,   26,    4, 16,  1,  0 }, {      9,   26,    4, 16,  1,  0 },
@@ -24589,7 +24589,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CEFF6 = {
     {     30,   26,    8, 16,  0,  0 }, {     31,   26,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF12A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF12A = {
     32, {
     {     26,   31,    0, 24,  2,  0 }, {     26,   30,    1, 24,  2,  0 }, {     26,   29,    1, 24,  2,  0 }, {     26,   28,    2, 24,  2,  0 }, {     26,   27,    2, 24,  2,  0 },
     {     26,   26,    3, 24,  2,  0 }, {     26,   25,    3, 24,  2,  0 }, {     26,   24,    3, 24,  2,  0 }, {     26,   23,    4, 24,  1,  0 }, {     26,   22,    4, 24,  1,  0 },
@@ -24600,7 +24600,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF12A = {
     {     26,    1,    8, 24,  0,  0 }, {     26,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFFF6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFFF6 = {
     32, {
     {     31,    6,   15,  0,  6,  0 }, {     30,    6,   15,  0,  6,  0 }, {     29,    6,   14,  0,  6,  0 }, {     28,    6,   14,  0,  6,  0 }, {     27,    6,   13,  0,  6,  0 },
     {     26,    6,   13,  0,  6,  0 }, {     25,    6,   12,  0,  6,  0 }, {     24,    6,   12,  0,  6,  0 }, {     23,    6,   11,  0,  6,  0 }, {     22,    6,   11,  0,  6,  0 },
@@ -24611,7 +24611,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFFF6 = {
     {      1,    6,    0,  0,  6,  0 }, {      0,    6,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D0118 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D0118 = {
     32, {
     {      6,    0,   15,  8,  6,  0 }, {      6,    1,   14,  8,  6,  0 }, {      6,    2,   14,  8,  6,  0 }, {      6,    3,   13,  8,  6,  0 }, {      6,    4,   13,  8,  6,  0 },
     {      6,    5,   12,  8,  6,  0 }, {      6,    6,   12,  8,  6,  0 }, {      6,    7,   11,  8,  6,  0 }, {      6,    8,   11,  8,  6,  0 }, {      6,    9,   10,  8,  6,  0 },
@@ -24622,7 +24622,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D0118 = {
     {      6,   30,    0,  8,  6,  0 }, {      6,   31,   -1,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D023A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D023A = {
     32, {
     {      0,   26,   15, 16,  6,  0 }, {      1,   26,   14, 16,  6,  0 }, {      2,   26,   14, 16,  6,  0 }, {      3,   26,   13, 16,  6,  0 }, {      4,   26,   13, 16,  6,  0 },
     {      5,   26,   12, 16,  6,  0 }, {      6,   26,   12, 16,  6,  0 }, {      7,   26,   11, 16,  6,  0 }, {      8,   26,   11, 16,  6,  0 }, {      9,   26,   10, 16,  6,  0 },
@@ -24633,7 +24633,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D023A = {
     {     30,   26,    0, 16,  6,  0 }, {     31,   26,   -1, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8D035C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8D035C = {
     32, {
     {     26,   31,   15, 24,  6,  0 }, {     26,   30,   15, 24,  6,  0 }, {     26,   29,   14, 24,  6,  0 }, {     26,   28,   14, 24,  6,  0 }, {     26,   27,   13, 24,  6,  0 },
     {     26,   26,   13, 24,  6,  0 }, {     26,   25,   12, 24,  6,  0 }, {     26,   24,   12, 24,  6,  0 }, {     26,   23,   11, 24,  6,  0 }, {     26,   22,   11, 24,  6,  0 },
@@ -24644,7 +24644,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8D035C = {
     {     26,    1,    0, 24,  6,  0 }, {     26,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF6E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF6E6 = {
     32, {
     {     31,    6,    8,  0,  0,  0 }, {     30,    6,    8,  0,  0,  0 }, {     29,    6,    8,  0,  0,  0 }, {     28,    6,    8,  0,  0,  0 }, {     27,    6,    8,  0,  0,  0 },
     {     26,    6,    8,  0,  0,  0 }, {     25,    6,    8,  0,  0,  0 }, {     24,    6,    8,  0,  0,  0 }, {     23,    6,    7,  0,  5,  0 }, {     22,    6,    7,  0,  5,  0 },
@@ -24655,7 +24655,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF6E6 = {
     {      1,    6,    0,  0,  6,  0 }, {      0,    6,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF808 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF808 = {
     32, {
     {      6,    0,    8,  8,  0,  0 }, {      6,    1,    8,  8,  0,  0 }, {      6,    2,    8,  8,  0,  0 }, {      6,    3,    8,  8,  0,  0 }, {      6,    4,    8,  8,  0,  0 },
     {      6,    5,    8,  8,  0,  0 }, {      6,    6,    8,  8,  0,  0 }, {      6,    7,    8,  8,  0,  0 }, {      6,    8,    7,  8,  5,  0 }, {      6,    9,    7,  8,  5,  0 },
@@ -24666,7 +24666,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF808 = {
     {      6,   30,    1,  8,  6,  0 }, {      6,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF92A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF92A = {
     32, {
     {      0,   26,    8, 16,  0,  0 }, {      1,   26,    8, 16,  0,  0 }, {      2,   26,    8, 16,  0,  0 }, {      3,   26,    8, 16,  0,  0 }, {      4,   26,    8, 16,  0,  0 },
     {      5,   26,    8, 16,  0,  0 }, {      6,   26,    8, 16,  0,  0 }, {      7,   26,    8, 16,  0,  0 }, {      8,   26,    7, 16,  5,  0 }, {      9,   26,    7, 16,  5,  0 },
@@ -24677,7 +24677,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF92A = {
     {     30,   26,    1, 16,  6,  0 }, {     31,   26,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CFA4C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CFA4C = {
     32, {
     {     26,   31,    8, 24,  0,  0 }, {     26,   30,    8, 24,  0,  0 }, {     26,   29,    8, 24,  0,  0 }, {     26,   28,    8, 24,  0,  0 }, {     26,   27,    8, 24,  0,  0 },
     {     26,   26,    8, 24,  0,  0 }, {     26,   25,    8, 24,  0,  0 }, {     26,   24,    8, 24,  0,  0 }, {     26,   23,    7, 24,  5,  0 }, {     26,   22,    7, 24,  5,  0 },
@@ -24688,7 +24688,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CFA4C = {
     {     26,    1,    0, 24,  6,  0 }, {     26,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF25E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF25E = {
     32, {
     {     31,    6,    7,  0,  6,  0 }, {     30,    6,    7,  0,  6,  0 }, {     29,    6,    6,  0,  6,  0 }, {     28,    6,    6,  0,  6,  0 }, {     27,    6,    5,  0,  6,  0 },
     {     26,    6,    5,  0,  6,  0 }, {     25,    6,    4,  0,  6,  0 }, {     24,    6,    4,  0,  6,  0 }, {     23,    6,    4,  0,  5,  0 }, {     22,    6,    3,  0,  5,  0 },
@@ -24699,7 +24699,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF25E = {
     {      1,    6,    0,  0,  0,  0 }, {      0,    6,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF380 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF380 = {
     32, {
     {      6,    0,    8,  8,  6,  0 }, {      6,    1,    7,  8,  6,  0 }, {      6,    2,    7,  8,  6,  0 }, {      6,    3,    6,  8,  6,  0 }, {      6,    4,    6,  8,  6,  0 },
     {      6,    5,    5,  8,  6,  0 }, {      6,    6,    5,  8,  6,  0 }, {      6,    7,    4,  8,  6,  0 }, {      6,    8,    4,  8,  5,  0 }, {      6,    9,    3,  8,  5,  0 },
@@ -24710,7 +24710,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF380 = {
     {      6,   30,    0,  8,  0,  0 }, {      6,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF4A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF4A2 = {
     32, {
     {      0,   26,    8, 16,  6,  0 }, {      1,   26,    7, 16,  6,  0 }, {      2,   26,    7, 16,  6,  0 }, {      3,   26,    6, 16,  6,  0 }, {      4,   26,    6, 16,  6,  0 },
     {      5,   26,    5, 16,  6,  0 }, {      6,   26,    5, 16,  6,  0 }, {      7,   26,    4, 16,  6,  0 }, {      8,   26,    4, 16,  5,  0 }, {      9,   26,    3, 16,  5,  0 },
@@ -24721,7 +24721,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF4A2 = {
     {     30,   26,    0, 16,  0,  0 }, {     31,   26,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CF5C4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CF5C4 = {
     32, {
     {     26,   31,    7, 24,  6,  0 }, {     26,   30,    7, 24,  6,  0 }, {     26,   29,    6, 24,  6,  0 }, {     26,   28,    6, 24,  6,  0 }, {     26,   27,    5, 24,  6,  0 },
     {     26,   26,    5, 24,  6,  0 }, {     26,   25,    4, 24,  6,  0 }, {     26,   24,    4, 24,  6,  0 }, {     26,   23,    4, 24,  5,  0 }, {     26,   22,    3, 24,  5,  0 },
@@ -24732,31 +24732,31 @@ const rct_vehicle_info_list TrackVehicleInfo_8CF5C4 = {
     {     26,    1,    0, 24,  0,  0 }, {     26,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FD922 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FD922 = {
     9, {
     {     31,    6,    0,  0,  0,  0 }, {     30,    6,    0, 30,  0,  0 }, {     29,    5,    0, 30,  0,  0 }, {     28,    5,    0, 28,  0,  0 }, {     27,    4,    0, 28,  0,  0 },
     {     27,    3,    0, 26,  0,  0 }, {     26,    2,    0, 26,  0,  0 }, {     26,    1,    0, 24,  0,  0 }, {     26,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FD975 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FD975 = {
     10, {
     {      6,    0,    0,  8,  0,  0 }, {      6,    1,    0,  8,  0,  0 }, {      6,    2,    0,  6,  0,  0 }, {      5,    3,    0,  6,  0,  0 }, {      5,    4,    0,  4,  0,  0 },
     {      4,    5,    0,  4,  0,  0 }, {      3,    5,    0,  2,  0,  0 }, {      2,    6,    0,  2,  0,  0 }, {      1,    6,    0,  0,  0,  0 }, {      0,    6,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FD9D1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FD9D1 = {
     9, {
     {      0,   26,    0, 16,  0,  0 }, {      1,   26,    0, 16,  0,  0 }, {      2,   26,    0, 14,  0,  0 }, {      3,   27,    0, 14,  0,  0 }, {      4,   27,    0, 12,  0,  0 },
     {      5,   28,    0, 12,  0,  0 }, {      5,   29,    0, 10,  0,  0 }, {      6,   30,    0, 10,  0,  0 }, {      6,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDA24 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDA24 = {
     8, {
     {     26,   31,    0, 24,  0,  0 }, {     26,   30,    0, 22,  0,  0 }, {     27,   29,    0, 22,  0,  0 }, {     27,   28,    0, 20,  0,  0 }, {     28,   27,    0, 20,  0,  0 },
     {     29,   27,    0, 18,  0,  0 }, {     30,   26,    0, 18,  0,  0 }, {     31,   26,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDA6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDA6E = {
     36, {
     {     31,    6,    0,  0,  0,  0 }, {     30,    6,    0,  0,  0,  0 }, {     29,    6,    0,  0,  0,  0 }, {     28,    6,    0,  0,  0,  0 }, {     27,    6,    0,  0,  0,  0 },
     {     26,    7,    0,  1,  0,  0 }, {     25,    7,    0,  1,  0,  0 }, {     24,    7,    0,  1,  0,  0 }, {     23,    7,    0,  1,  0,  0 }, {     22,    8,    0,  2,  0,  0 },
@@ -24768,7 +24768,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FDA6E = {
     {      6,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDBB4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDBB4 = {
     37, {
     {      6,    0,    0,  8,  0,  0 }, {      6,    1,    0,  8,  0,  0 }, {      6,    2,    0,  8,  0,  0 }, {      6,    3,    0,  8,  0,  0 }, {      6,    4,    0,  8,  0,  0 },
     {      6,    5,    0,  8,  0,  0 }, {      7,    6,    0,  9,  0,  0 }, {      7,    7,    0,  9,  0,  0 }, {      7,    8,    0,  9,  0,  0 }, {      7,    9,    0,  9,  0,  0 },
@@ -24780,7 +24780,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FDBB4 = {
     {     30,   26,    0, 16,  0,  0 }, {     31,   26,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDD03 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDD03 = {
     38, {
     {      0,   26,    0, 16,  0,  0 }, {      1,   26,    0, 16,  0,  0 }, {      2,   26,    0, 16,  0,  0 }, {      3,   26,    0, 16,  0,  0 }, {      4,   26,    0, 16,  0,  0 },
     {      5,   26,    0, 16,  0,  0 }, {      6,   25,    0, 17,  0,  0 }, {      7,   25,    0, 17,  0,  0 }, {      8,   25,    0, 17,  0,  0 }, {      9,   25,    0, 17,  0,  0 },
@@ -24792,7 +24792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FDD03 = {
     {     26,    2,    0, 24,  0,  0 }, {     26,    1,    0, 24,  0,  0 }, {     26,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FDE5B = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FDE5B = {
     37, {
     {     26,   31,    0, 24,  0,  0 }, {     26,   30,    0, 24,  0,  0 }, {     26,   29,    0, 24,  0,  0 }, {     26,   28,    0, 24,  0,  0 }, {     26,   27,    0, 24,  0,  0 },
     {     25,   26,    0, 25,  0,  0 }, {     25,   25,    0, 25,  0,  0 }, {     25,   24,    0, 25,  0,  0 }, {     25,   23,    0, 25,  0,  0 }, {     24,   22,    0, 26,  0,  0 },
@@ -24804,7 +24804,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FDE5B = {
     {      1,    6,    0,  0,  0,  0 }, {      0,    6,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CE06A = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CE06A = {
     61, {
     {     31,    6,    0,  0,  0,  0 }, {     30,    6,    0,  0,  0,  0 }, {     29,    6,    0,  0,  0,  0 }, {     28,    6,    0,  0,  0,  0 }, {     27,    6,    0,  0,  0,  0 },
     {     26,    6,    0,  0,  0,  0 }, {     25,    6,    0,  0,  0,  0 }, {     24,    6,    0,  0,  0,  0 }, {     23,    6,    0,  0,  0,  0 }, {     22,    6,    0,  0,  0,  0 },
@@ -24821,7 +24821,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CE06A = {
     {     31,   26,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CE291 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CE291 = {
     61, {
     {      6,    0,    0,  8,  0,  0 }, {      6,    1,    0,  8,  0,  0 }, {      6,    2,    0,  8,  0,  0 }, {      6,    3,    0,  8,  0,  0 }, {      6,    4,    0,  8,  0,  0 },
     {      6,    5,    0,  8,  0,  0 }, {      6,    6,    0,  8,  0,  0 }, {      6,    7,    0,  8,  0,  0 }, {      6,    8,    0,  8,  0,  0 }, {      6,    9,    0,  8,  0,  0 },
@@ -24838,7 +24838,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CE291 = {
     {     26,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CE4B8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CE4B8 = {
     61, {
     {      0,   26,    0, 16,  0,  0 }, {      1,   26,    0, 16,  0,  0 }, {      2,   26,    0, 16,  0,  0 }, {      3,   26,    0, 16,  0,  0 }, {      4,   26,    0, 16,  0,  0 },
     {      5,   26,    0, 16,  0,  0 }, {      6,   26,    0, 16,  0,  0 }, {      7,   26,    0, 16,  0,  0 }, {      8,   26,    0, 16,  0,  0 }, {      9,   26,    0, 16,  0,  0 },
@@ -24855,7 +24855,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CE4B8 = {
     {      0,    6,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8CE6DF = {
+static const rct_vehicle_info_list TrackVehicleInfo_8CE6DF = {
     61, {
     {     26,   31,    0, 24,  0,  0 }, {     26,   30,    0, 24,  0,  0 }, {     26,   29,    0, 24,  0,  0 }, {     26,   28,    0, 24,  0,  0 }, {     26,   27,    0, 24,  0,  0 },
     {     26,   26,    0, 24,  0,  0 }, {     26,   25,    0, 24,  0,  0 }, {     26,   24,    0, 24,  0,  0 }, {     26,   23,    0, 24,  0,  0 }, {     26,   22,    0, 24,  0,  0 },
@@ -24872,7 +24872,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8CE6DF = {
     {      6,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF2DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF2DA = {
     32, {
     {     31,    9,    0,  0,  0,  0 }, {     30,    9,    0,  0,  0,  0 }, {     29,    9,    0,  0,  0,  0 }, {     28,    9,    0,  0,  0,  0 }, {     27,    9,    0,  0,  0,  0 },
     {     26,    9,    0,  0,  0,  0 }, {     25,    9,    0,  0,  0,  0 }, {     24,    9,    0,  0,  0,  0 }, {     23,    9,    0,  0,  0,  0 }, {     22,    9,    0,  0,  0,  0 },
@@ -24883,7 +24883,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF2DA = {
     {      1,    9,    0,  0,  0,  0 }, {      0,    9,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF3FC = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF3FC = {
     32, {
     {      9,    0,    0,  8,  0,  0 }, {      9,    1,    0,  8,  0,  0 }, {      9,    2,    0,  8,  0,  0 }, {      9,    3,    0,  8,  0,  0 }, {      9,    4,    0,  8,  0,  0 },
     {      9,    5,    0,  8,  0,  0 }, {      9,    6,    0,  8,  0,  0 }, {      9,    7,    0,  8,  0,  0 }, {      9,    8,    0,  8,  0,  0 }, {      9,    9,    0,  8,  0,  0 },
@@ -24894,7 +24894,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF3FC = {
     {      9,   30,    0,  8,  0,  0 }, {      9,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF51E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF51E = {
     32, {
     {      0,   23,    0, 16,  0,  0 }, {      1,   23,    0, 16,  0,  0 }, {      2,   23,    0, 16,  0,  0 }, {      3,   23,    0, 16,  0,  0 }, {      4,   23,    0, 16,  0,  0 },
     {      5,   23,    0, 16,  0,  0 }, {      6,   23,    0, 16,  0,  0 }, {      7,   23,    0, 16,  0,  0 }, {      8,   23,    0, 16,  0,  0 }, {      9,   23,    0, 16,  0,  0 },
@@ -24905,7 +24905,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF51E = {
     {     30,   23,    0, 16,  0,  0 }, {     31,   23,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF640 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF640 = {
     32, {
     {     23,   31,    0, 24,  0,  0 }, {     23,   30,    0, 24,  0,  0 }, {     23,   29,    0, 24,  0,  0 }, {     23,   28,    0, 24,  0,  0 }, {     23,   27,    0, 24,  0,  0 },
     {     23,   26,    0, 24,  0,  0 }, {     23,   25,    0, 24,  0,  0 }, {     23,   24,    0, 24,  0,  0 }, {     23,   23,    0, 24,  0,  0 }, {     23,   22,    0, 24,  0,  0 },
@@ -24916,7 +24916,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF640 = {
     {     23,    1,    0, 24,  0,  0 }, {     23,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900E52 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900E52 = {
     32, {
     {     31,    9,    0,  0,  2,  0 }, {     30,    9,    0,  0,  2,  0 }, {     29,    9,    1,  0,  2,  0 }, {     28,    9,    1,  0,  2,  0 }, {     27,    9,    2,  0,  2,  0 },
     {     26,    9,    2,  0,  2,  0 }, {     25,    9,    3,  0,  2,  0 }, {     24,    9,    3,  0,  2,  0 }, {     23,    9,    4,  0,  2,  0 }, {     22,    9,    4,  0,  2,  0 },
@@ -24927,7 +24927,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900E52 = {
     {      1,    9,   15,  0,  2,  0 }, {      0,    9,   15,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900F74 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900F74 = {
     32, {
     {      9,    0,    0,  8,  2,  0 }, {      9,    1,    1,  8,  2,  0 }, {      9,    2,    1,  8,  2,  0 }, {      9,    3,    2,  8,  2,  0 }, {      9,    4,    2,  8,  2,  0 },
     {      9,    5,    3,  8,  2,  0 }, {      9,    6,    3,  8,  2,  0 }, {      9,    7,    4,  8,  2,  0 }, {      9,    8,    4,  8,  2,  0 }, {      9,    9,    5,  8,  2,  0 },
@@ -24938,7 +24938,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900F74 = {
     {      9,   30,   15,  8,  2,  0 }, {      9,   31,   16,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901096 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901096 = {
     32, {
     {      0,   23,    0, 16,  2,  0 }, {      1,   23,    1, 16,  2,  0 }, {      2,   23,    1, 16,  2,  0 }, {      3,   23,    2, 16,  2,  0 }, {      4,   23,    2, 16,  2,  0 },
     {      5,   23,    3, 16,  2,  0 }, {      6,   23,    3, 16,  2,  0 }, {      7,   23,    4, 16,  2,  0 }, {      8,   23,    4, 16,  2,  0 }, {      9,   23,    5, 16,  2,  0 },
@@ -24949,7 +24949,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901096 = {
     {     30,   23,   15, 16,  2,  0 }, {     31,   23,   16, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9011B8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9011B8 = {
     32, {
     {     23,   31,    0, 24,  2,  0 }, {     23,   30,    0, 24,  2,  0 }, {     23,   29,    1, 24,  2,  0 }, {     23,   28,    1, 24,  2,  0 }, {     23,   27,    2, 24,  2,  0 },
     {     23,   26,    2, 24,  2,  0 }, {     23,   25,    3, 24,  2,  0 }, {     23,   24,    3, 24,  2,  0 }, {     23,   23,    4, 24,  2,  0 }, {     23,   22,    4, 24,  2,  0 },
@@ -24960,7 +24960,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9011B8 = {
     {     23,    1,   15, 24,  2,  0 }, {     23,    0,   15, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FFBEA = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FFBEA = {
     32, {
     {     31,    9,    0,  0,  0,  0 }, {     30,    9,    0,  0,  0,  0 }, {     29,    9,    0,  0,  0,  0 }, {     28,    9,    0,  0,  0,  0 }, {     27,    9,    0,  0,  0,  0 },
     {     26,    9,    0,  0,  0,  0 }, {     25,    9,    0,  0,  0,  0 }, {     24,    9,    0,  0,  0,  0 }, {     23,    9,    0,  0,  1,  0 }, {     22,    9,    0,  0,  1,  0 },
@@ -24971,7 +24971,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FFBEA = {
     {      1,    9,    7,  0,  2,  0 }, {      0,    9,    8,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FFD0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FFD0C = {
     32, {
     {      9,    0,    0,  8,  0,  0 }, {      9,    1,    0,  8,  0,  0 }, {      9,    2,    0,  8,  0,  0 }, {      9,    3,    0,  8,  0,  0 }, {      9,    4,    0,  8,  0,  0 },
     {      9,    5,    0,  8,  0,  0 }, {      9,    6,    0,  8,  0,  0 }, {      9,    7,    0,  8,  0,  0 }, {      9,    8,    0,  8,  1,  0 }, {      9,    9,    0,  8,  1,  0 },
@@ -24982,7 +24982,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FFD0C = {
     {      9,   30,    7,  8,  2,  0 }, {      9,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FFE2E = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FFE2E = {
     32, {
     {      0,   23,    0, 16,  0,  0 }, {      1,   23,    0, 16,  0,  0 }, {      2,   23,    0, 16,  0,  0 }, {      3,   23,    0, 16,  0,  0 }, {      4,   23,    0, 16,  0,  0 },
     {      5,   23,    0, 16,  0,  0 }, {      6,   23,    0, 16,  0,  0 }, {      7,   23,    0, 16,  0,  0 }, {      8,   23,    0, 16,  1,  0 }, {      9,   23,    0, 16,  1,  0 },
@@ -24993,7 +24993,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FFE2E = {
     {     30,   23,    7, 16,  2,  0 }, {     31,   23,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FFF50 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FFF50 = {
     32, {
     {     23,   31,    0, 24,  0,  0 }, {     23,   30,    0, 24,  0,  0 }, {     23,   29,    0, 24,  0,  0 }, {     23,   28,    0, 24,  0,  0 }, {     23,   27,    0, 24,  0,  0 },
     {     23,   26,    0, 24,  0,  0 }, {     23,   25,    0, 24,  0,  0 }, {     23,   24,    0, 24,  0,  0 }, {     23,   23,    0, 24,  1,  0 }, {     23,   22,    0, 24,  1,  0 },
@@ -25004,7 +25004,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FFF50 = {
     {     23,    1,    7, 24,  2,  0 }, {     23,    0,    8, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900072 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900072 = {
     32, {
     {     31,    9,    0,  0,  2,  0 }, {     30,    9,    1,  0,  2,  0 }, {     29,    9,    1,  0,  2,  0 }, {     28,    9,    2,  0,  2,  0 }, {     27,    9,    2,  0,  2,  0 },
     {     26,    9,    3,  0,  2,  0 }, {     25,    9,    3,  0,  2,  0 }, {     24,    9,    3,  0,  2,  0 }, {     23,    9,    4,  0,  1,  0 }, {     22,    9,    4,  0,  1,  0 },
@@ -25015,7 +25015,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900072 = {
     {      1,    9,    8,  0,  0,  0 }, {      0,    9,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9001A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9001A6 = {
     32, {
     {      9,    0,    0,  8,  2,  0 }, {      9,    1,    0,  8,  2,  0 }, {      9,    2,    1,  8,  2,  0 }, {      9,    3,    1,  8,  2,  0 }, {      9,    4,    2,  8,  2,  0 },
     {      9,    5,    2,  8,  2,  0 }, {      9,    6,    3,  8,  2,  0 }, {      9,    7,    3,  8,  2,  0 }, {      9,    8,    4,  8,  1,  0 }, {      9,    9,    4,  8,  1,  0 },
@@ -25026,7 +25026,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9001A6 = {
     {      9,   30,    8,  8,  0,  0 }, {      9,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9002DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9002DA = {
     32, {
     {      0,   23,    0, 16,  2,  0 }, {      1,   23,    0, 16,  2,  0 }, {      2,   23,    1, 16,  2,  0 }, {      3,   23,    1, 16,  2,  0 }, {      4,   23,    2, 16,  2,  0 },
     {      5,   23,    2, 16,  2,  0 }, {      6,   23,    3, 16,  2,  0 }, {      7,   23,    3, 16,  2,  0 }, {      8,   23,    4, 16,  1,  0 }, {      9,   23,    4, 16,  1,  0 },
@@ -25037,7 +25037,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9002DA = {
     {     30,   23,    8, 16,  0,  0 }, {     31,   23,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90040E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90040E = {
     32, {
     {     23,   31,    0, 24,  2,  0 }, {     23,   30,    1, 24,  2,  0 }, {     23,   29,    1, 24,  2,  0 }, {     23,   28,    2, 24,  2,  0 }, {     23,   27,    2, 24,  2,  0 },
     {     23,   26,    3, 24,  2,  0 }, {     23,   25,    3, 24,  2,  0 }, {     23,   24,    3, 24,  2,  0 }, {     23,   23,    4, 24,  1,  0 }, {     23,   22,    4, 24,  1,  0 },
@@ -25048,7 +25048,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90040E = {
     {     23,    1,    8, 24,  0,  0 }, {     23,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9012DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9012DA = {
     32, {
     {     31,    9,   15,  0,  6,  0 }, {     30,    9,   14,  0,  6,  0 }, {     29,    9,   14,  0,  6,  0 }, {     28,    9,   13,  0,  6,  0 }, {     27,    9,   13,  0,  6,  0 },
     {     26,    9,   12,  0,  6,  0 }, {     25,    9,   12,  0,  6,  0 }, {     24,    9,   11,  0,  6,  0 }, {     23,    9,   11,  0,  6,  0 }, {     22,    9,   10,  0,  6,  0 },
@@ -25059,7 +25059,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9012DA = {
     {      1,    9,    0,  0,  6,  0 }, {      0,    9,   -1,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9013FC = {
+static const rct_vehicle_info_list TrackVehicleInfo_9013FC = {
     32, {
     {      9,    0,   15,  8,  6,  0 }, {      9,    1,   15,  8,  6,  0 }, {      9,    2,   14,  8,  6,  0 }, {      9,    3,   14,  8,  6,  0 }, {      9,    4,   13,  8,  6,  0 },
     {      9,    5,   13,  8,  6,  0 }, {      9,    6,   12,  8,  6,  0 }, {      9,    7,   12,  8,  6,  0 }, {      9,    8,   11,  8,  6,  0 }, {      9,    9,   11,  8,  6,  0 },
@@ -25070,7 +25070,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9013FC = {
     {      9,   30,    0,  8,  6,  0 }, {      9,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90151E = {
+static const rct_vehicle_info_list TrackVehicleInfo_90151E = {
     32, {
     {      0,   23,   15, 16,  6,  0 }, {      1,   23,   15, 16,  6,  0 }, {      2,   23,   14, 16,  6,  0 }, {      3,   23,   14, 16,  6,  0 }, {      4,   23,   13, 16,  6,  0 },
     {      5,   23,   13, 16,  6,  0 }, {      6,   23,   12, 16,  6,  0 }, {      7,   23,   12, 16,  6,  0 }, {      8,   23,   11, 16,  6,  0 }, {      9,   23,   11, 16,  6,  0 },
@@ -25081,7 +25081,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90151E = {
     {     30,   23,    0, 16,  6,  0 }, {     31,   23,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901640 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901640 = {
     32, {
     {     23,   31,   15, 24,  6,  0 }, {     23,   30,   14, 24,  6,  0 }, {     23,   29,   14, 24,  6,  0 }, {     23,   28,   13, 24,  6,  0 }, {     23,   27,   13, 24,  6,  0 },
     {     23,   26,   12, 24,  6,  0 }, {     23,   25,   12, 24,  6,  0 }, {     23,   24,   11, 24,  6,  0 }, {     23,   23,   11, 24,  6,  0 }, {     23,   22,   10, 24,  6,  0 },
@@ -25092,7 +25092,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901640 = {
     {     23,    1,    0, 24,  6,  0 }, {     23,    0,   -1, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9009CA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9009CA = {
     32, {
     {     31,    9,    8,  0,  0,  0 }, {     30,    9,    8,  0,  0,  0 }, {     29,    9,    8,  0,  0,  0 }, {     28,    9,    8,  0,  0,  0 }, {     27,    9,    8,  0,  0,  0 },
     {     26,    9,    8,  0,  0,  0 }, {     25,    9,    8,  0,  0,  0 }, {     24,    9,    8,  0,  0,  0 }, {     23,    9,    7,  0,  5,  0 }, {     22,    9,    7,  0,  5,  0 },
@@ -25103,7 +25103,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9009CA = {
     {      1,    9,    0,  0,  6,  0 }, {      0,    9,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900AEC = {
+static const rct_vehicle_info_list TrackVehicleInfo_900AEC = {
     32, {
     {      9,    0,    8,  8,  0,  0 }, {      9,    1,    8,  8,  0,  0 }, {      9,    2,    8,  8,  0,  0 }, {      9,    3,    8,  8,  0,  0 }, {      9,    4,    8,  8,  0,  0 },
     {      9,    5,    8,  8,  0,  0 }, {      9,    6,    8,  8,  0,  0 }, {      9,    7,    8,  8,  0,  0 }, {      9,    8,    7,  8,  5,  0 }, {      9,    9,    7,  8,  5,  0 },
@@ -25114,7 +25114,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900AEC = {
     {      9,   30,    1,  8,  6,  0 }, {      9,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900C0E = {
+static const rct_vehicle_info_list TrackVehicleInfo_900C0E = {
     32, {
     {      0,   23,    8, 16,  0,  0 }, {      1,   23,    8, 16,  0,  0 }, {      2,   23,    8, 16,  0,  0 }, {      3,   23,    8, 16,  0,  0 }, {      4,   23,    8, 16,  0,  0 },
     {      5,   23,    8, 16,  0,  0 }, {      6,   23,    8, 16,  0,  0 }, {      7,   23,    8, 16,  0,  0 }, {      8,   23,    7, 16,  5,  0 }, {      9,   23,    7, 16,  5,  0 },
@@ -25125,7 +25125,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900C0E = {
     {     30,   23,    1, 16,  6,  0 }, {     31,   23,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900D30 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900D30 = {
     32, {
     {     23,   31,    8, 24,  0,  0 }, {     23,   30,    8, 24,  0,  0 }, {     23,   29,    8, 24,  0,  0 }, {     23,   28,    8, 24,  0,  0 }, {     23,   27,    8, 24,  0,  0 },
     {     23,   26,    8, 24,  0,  0 }, {     23,   25,    8, 24,  0,  0 }, {     23,   24,    8, 24,  0,  0 }, {     23,   23,    7, 24,  5,  0 }, {     23,   22,    7, 24,  5,  0 },
@@ -25136,7 +25136,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900D30 = {
     {     23,    1,    0, 24,  6,  0 }, {     23,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900542 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900542 = {
     32, {
     {     31,    9,    7,  0,  6,  0 }, {     30,    9,    7,  0,  6,  0 }, {     29,    9,    6,  0,  6,  0 }, {     28,    9,    6,  0,  6,  0 }, {     27,    9,    5,  0,  6,  0 },
     {     26,    9,    5,  0,  6,  0 }, {     25,    9,    4,  0,  6,  0 }, {     24,    9,    4,  0,  6,  0 }, {     23,    9,    4,  0,  5,  0 }, {     22,    9,    3,  0,  5,  0 },
@@ -25147,7 +25147,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900542 = {
     {      1,    9,    0,  0,  0,  0 }, {      0,    9,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900664 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900664 = {
     32, {
     {      9,    0,    8,  8,  6,  0 }, {      9,    1,    7,  8,  6,  0 }, {      9,    2,    7,  8,  6,  0 }, {      9,    3,    6,  8,  6,  0 }, {      9,    4,    6,  8,  6,  0 },
     {      9,    5,    5,  8,  6,  0 }, {      9,    6,    5,  8,  6,  0 }, {      9,    7,    4,  8,  6,  0 }, {      9,    8,    4,  8,  5,  0 }, {      9,    9,    3,  8,  5,  0 },
@@ -25158,7 +25158,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900664 = {
     {      9,   30,    0,  8,  0,  0 }, {      9,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_900786 = {
+static const rct_vehicle_info_list TrackVehicleInfo_900786 = {
     32, {
     {      0,   23,    8, 16,  6,  0 }, {      1,   23,    7, 16,  6,  0 }, {      2,   23,    7, 16,  6,  0 }, {      3,   23,    6, 16,  6,  0 }, {      4,   23,    6, 16,  6,  0 },
     {      5,   23,    5, 16,  6,  0 }, {      6,   23,    5, 16,  6,  0 }, {      7,   23,    4, 16,  6,  0 }, {      8,   23,    4, 16,  5,  0 }, {      9,   23,    3, 16,  5,  0 },
@@ -25169,7 +25169,7 @@ const rct_vehicle_info_list TrackVehicleInfo_900786 = {
     {     30,   23,    0, 16,  0,  0 }, {     31,   23,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9008A8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9008A8 = {
     32, {
     {     23,   31,    7, 24,  6,  0 }, {     23,   30,    7, 24,  6,  0 }, {     23,   29,    6, 24,  6,  0 }, {     23,   28,    6, 24,  6,  0 }, {     23,   27,    5, 24,  6,  0 },
     {     23,   26,    5, 24,  6,  0 }, {     23,   25,    4, 24,  6,  0 }, {     23,   24,    4, 24,  6,  0 }, {     23,   23,    4, 24,  5,  0 }, {     23,   22,    3, 24,  5,  0 },
@@ -25180,35 +25180,35 @@ const rct_vehicle_info_list TrackVehicleInfo_9008A8 = {
     {     23,    1,    0, 24,  0,  0 }, {     23,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901C05 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901C05 = {
     13, {
     {     31,    9,    0,  0,  0,  0 }, {     30,    9,    0, 31,  0,  0 }, {     29,    9,    0, 31,  0,  0 }, {     28,    8,    0, 30,  0,  0 }, {     27,    8,    0, 30,  0,  0 },
     {     26,    7,    0, 28,  0,  0 }, {     25,    6,    0, 28,  0,  0 }, {     24,    5,    0, 26,  0,  0 }, {     24,    4,    0, 26,  0,  0 }, {     23,    3,    0, 25,  0,  0 },
     {     23,    2,    0, 25,  0,  0 }, {     23,    1,    0, 24,  0,  0 }, {     23,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901C7C = {
+static const rct_vehicle_info_list TrackVehicleInfo_901C7C = {
     14, {
     {      9,    0,    0,  8,  0,  0 }, {      9,    1,    0,  8,  0,  0 }, {      9,    2,    0,  7,  0,  0 }, {      9,    3,    0,  7,  0,  0 }, {      8,    4,    0,  6,  0,  0 },
     {      8,    5,    0,  6,  0,  0 }, {      7,    6,    0,  4,  0,  0 }, {      6,    7,    0,  4,  0,  0 }, {      5,    8,    0,  2,  0,  0 }, {      4,    8,    0,  2,  0,  0 },
     {      3,    9,    0,  1,  0,  0 }, {      2,    9,    0,  1,  0,  0 }, {      1,    9,    0,  0,  0,  0 }, {      0,    9,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901CFC = {
+static const rct_vehicle_info_list TrackVehicleInfo_901CFC = {
     13, {
     {      0,   23,    0, 16,  0,  0 }, {      1,   23,    0, 16,  0,  0 }, {      2,   23,    0, 15,  0,  0 }, {      3,   23,    0, 15,  0,  0 }, {      4,   24,    0, 14,  0,  0 },
     {      5,   24,    0, 14,  0,  0 }, {      6,   25,    0, 12,  0,  0 }, {      7,   26,    0, 12,  0,  0 }, {      8,   27,    0, 10,  0,  0 }, {      8,   28,    0, 10,  0,  0 },
     {      9,   29,    0,  9,  0,  0 }, {      9,   30,    0,  9,  0,  0 }, {      9,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901D73 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901D73 = {
     12, {
     {     23,   31,    0, 24,  0,  0 }, {     23,   30,    0, 23,  0,  0 }, {     23,   29,    0, 23,  0,  0 }, {     24,   28,    0, 22,  0,  0 }, {     24,   27,    0, 22,  0,  0 },
     {     25,   26,    0, 20,  0,  0 }, {     26,   25,    0, 20,  0,  0 }, {     27,   24,    0, 18,  0,  0 }, {     28,   24,    0, 18,  0,  0 }, {     29,   23,    0, 17,  0,  0 },
     {     30,   23,    0, 17,  0,  0 }, {     31,   23,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901762 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901762 = {
     32, {
     {     31,    9,    0,  0,  0,  0 }, {     30,    9,    0,  0,  0,  0 }, {     29,    9,    0,  0,  0,  0 }, {     28,    9,    0,  1,  0,  0 }, {     27,    9,    0,  1,  0,  0 },
     {     26,   10,    0,  1,  0,  0 }, {     25,   10,    0,  1,  0,  0 }, {     24,   10,    0,  2,  0,  0 }, {     23,   11,    0,  2,  0,  0 }, {     22,   11,    0,  2,  0,  0 },
@@ -25219,7 +25219,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901762 = {
     {      9,   30,    0,  8,  0,  0 }, {      9,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901884 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901884 = {
     33, {
     {      9,    0,    0,  8,  0,  0 }, {      9,    1,    0,  8,  0,  0 }, {      9,    2,    0,  8,  0,  0 }, {      9,    3,    0,  8,  0,  0 }, {      9,    4,    0,  9,  0,  0 },
     {      9,    5,    0,  9,  0,  0 }, {     10,    6,    0,  9,  0,  0 }, {     10,    7,    0,  9,  0,  0 }, {     10,    8,    0, 10,  0,  0 }, {     11,    9,    0, 10,  0,  0 },
@@ -25230,7 +25230,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901884 = {
     {     29,   23,    0, 16,  0,  0 }, {     30,   23,    0, 16,  0,  0 }, {     31,   23,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9019AF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9019AF = {
     34, {
     {      0,   23,    0, 16,  0,  0 }, {      1,   23,    0, 16,  0,  0 }, {      2,   23,    0, 16,  0,  0 }, {      3,   23,    0, 16,  0,  0 }, {      4,   23,    0, 17,  0,  0 },
     {      5,   23,    0, 17,  0,  0 }, {      6,   22,    0, 17,  0,  0 }, {      7,   22,    0, 17,  0,  0 }, {      8,   22,    0, 18,  0,  0 }, {      9,   21,    0, 18,  0,  0 },
@@ -25241,7 +25241,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9019AF = {
     {     23,    3,    0, 24,  0,  0 }, {     23,    2,    0, 24,  0,  0 }, {     23,    1,    0, 24,  0,  0 }, {     23,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901AE3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901AE3 = {
     32, {
     {     23,   31,    0, 24,  0,  0 }, {     23,   30,    0, 24,  0,  0 }, {     23,   29,    0, 25,  0,  0 }, {     23,   28,    0, 25,  0,  0 }, {     22,   27,    0, 25,  0,  0 },
     {     22,   26,    0, 25,  0,  0 }, {     22,   25,    0, 26,  0,  0 }, {     21,   24,    0, 26,  0,  0 }, {     21,   23,    0, 26,  0,  0 }, {     21,   22,    0, 26,  0,  0 },
@@ -25252,7 +25252,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901AE3 = {
     {      1,    9,    0,  0,  0,  0 }, {      0,    9,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901DE1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901DE1 = {
     32, {
     {     31,   23,    0,  0,  0,  0 }, {     30,   23,    0,  0,  0,  0 }, {     29,   23,    0,  0,  0,  0 }, {     28,   23,    0,  0,  0,  0 }, {     27,   23,    0,  0,  0,  0 },
     {     26,   23,    0,  0,  0,  0 }, {     25,   23,    0,  0,  0,  0 }, {     24,   23,    0,  0,  0,  0 }, {     23,   23,    0,  0,  0,  0 }, {     22,   23,    0,  0,  0,  0 },
@@ -25263,7 +25263,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901DE1 = {
     {      1,   23,    0,  0,  0,  0 }, {      0,   23,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_901F03 = {
+static const rct_vehicle_info_list TrackVehicleInfo_901F03 = {
     32, {
     {     23,    0,    0,  8,  0,  0 }, {     23,    1,    0,  8,  0,  0 }, {     23,    2,    0,  8,  0,  0 }, {     23,    3,    0,  8,  0,  0 }, {     23,    4,    0,  8,  0,  0 },
     {     23,    5,    0,  8,  0,  0 }, {     23,    6,    0,  8,  0,  0 }, {     23,    7,    0,  8,  0,  0 }, {     23,    8,    0,  8,  0,  0 }, {     23,    9,    0,  8,  0,  0 },
@@ -25274,7 +25274,7 @@ const rct_vehicle_info_list TrackVehicleInfo_901F03 = {
     {     23,   30,    0,  8,  0,  0 }, {     23,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902025 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902025 = {
     32, {
     {      0,    9,    0, 16,  0,  0 }, {      1,    9,    0, 16,  0,  0 }, {      2,    9,    0, 16,  0,  0 }, {      3,    9,    0, 16,  0,  0 }, {      4,    9,    0, 16,  0,  0 },
     {      5,    9,    0, 16,  0,  0 }, {      6,    9,    0, 16,  0,  0 }, {      7,    9,    0, 16,  0,  0 }, {      8,    9,    0, 16,  0,  0 }, {      9,    9,    0, 16,  0,  0 },
@@ -25285,7 +25285,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902025 = {
     {     30,    9,    0, 16,  0,  0 }, {     31,    9,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902147 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902147 = {
     32, {
     {      9,   31,    0, 24,  0,  0 }, {      9,   30,    0, 24,  0,  0 }, {      9,   29,    0, 24,  0,  0 }, {      9,   28,    0, 24,  0,  0 }, {      9,   27,    0, 24,  0,  0 },
     {      9,   26,    0, 24,  0,  0 }, {      9,   25,    0, 24,  0,  0 }, {      9,   24,    0, 24,  0,  0 }, {      9,   23,    0, 24,  0,  0 }, {      9,   22,    0, 24,  0,  0 },
@@ -25296,7 +25296,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902147 = {
     {      9,    1,    0, 24,  0,  0 }, {      9,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9034D1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9034D1 = {
     32, {
     {     31,   23,    0,  0,  2,  0 }, {     30,   23,    0,  0,  2,  0 }, {     29,   23,    1,  0,  2,  0 }, {     28,   23,    1,  0,  2,  0 }, {     27,   23,    2,  0,  2,  0 },
     {     26,   23,    2,  0,  2,  0 }, {     25,   23,    3,  0,  2,  0 }, {     24,   23,    3,  0,  2,  0 }, {     23,   23,    4,  0,  2,  0 }, {     22,   23,    4,  0,  2,  0 },
@@ -25307,7 +25307,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9034D1 = {
     {      1,   23,   15,  0,  2,  0 }, {      0,   23,   15,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9035F3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9035F3 = {
     32, {
     {     23,    0,    0,  8,  2,  0 }, {     23,    1,    1,  8,  2,  0 }, {     23,    2,    1,  8,  2,  0 }, {     23,    3,    2,  8,  2,  0 }, {     23,    4,    2,  8,  2,  0 },
     {     23,    5,    3,  8,  2,  0 }, {     23,    6,    3,  8,  2,  0 }, {     23,    7,    4,  8,  2,  0 }, {     23,    8,    4,  8,  2,  0 }, {     23,    9,    5,  8,  2,  0 },
@@ -25318,7 +25318,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9035F3 = {
     {     23,   30,   15,  8,  2,  0 }, {     23,   31,   16,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903715 = {
+static const rct_vehicle_info_list TrackVehicleInfo_903715 = {
     32, {
     {      0,    9,    0, 16,  2,  0 }, {      1,    9,    1, 16,  2,  0 }, {      2,    9,    1, 16,  2,  0 }, {      3,    9,    2, 16,  2,  0 }, {      4,    9,    2, 16,  2,  0 },
     {      5,    9,    3, 16,  2,  0 }, {      6,    9,    3, 16,  2,  0 }, {      7,    9,    4, 16,  2,  0 }, {      8,    9,    4, 16,  2,  0 }, {      9,    9,    5, 16,  2,  0 },
@@ -25329,7 +25329,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903715 = {
     {     30,    9,   15, 16,  2,  0 }, {     31,    9,   16, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903837 = {
+static const rct_vehicle_info_list TrackVehicleInfo_903837 = {
     32, {
     {      9,   31,    0, 24,  2,  0 }, {      9,   30,    0, 24,  2,  0 }, {      9,   29,    1, 24,  2,  0 }, {      9,   28,    1, 24,  2,  0 }, {      9,   27,    2, 24,  2,  0 },
     {      9,   26,    2, 24,  2,  0 }, {      9,   25,    3, 24,  2,  0 }, {      9,   24,    3, 24,  2,  0 }, {      9,   23,    4, 24,  2,  0 }, {      9,   22,    4, 24,  2,  0 },
@@ -25340,7 +25340,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903837 = {
     {      9,    1,   15, 24,  2,  0 }, {      9,    0,   15, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902269 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902269 = {
     32, {
     {     31,   23,    0,  0,  0,  0 }, {     30,   23,    0,  0,  0,  0 }, {     29,   23,    0,  0,  0,  0 }, {     28,   23,    0,  0,  0,  0 }, {     27,   23,    0,  0,  0,  0 },
     {     26,   23,    0,  0,  0,  0 }, {     25,   23,    0,  0,  0,  0 }, {     24,   23,    0,  0,  0,  0 }, {     23,   23,    0,  0,  1,  0 }, {     22,   23,    0,  0,  1,  0 },
@@ -25351,7 +25351,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902269 = {
     {      1,   23,    7,  0,  2,  0 }, {      0,   23,    8,  0,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90238B = {
+static const rct_vehicle_info_list TrackVehicleInfo_90238B = {
     32, {
     {     23,    0,    0,  8,  0,  0 }, {     23,    1,    0,  8,  0,  0 }, {     23,    2,    0,  8,  0,  0 }, {     23,    3,    0,  8,  0,  0 }, {     23,    4,    0,  8,  0,  0 },
     {     23,    5,    0,  8,  0,  0 }, {     23,    6,    0,  8,  0,  0 }, {     23,    7,    0,  8,  0,  0 }, {     23,    8,    0,  8,  1,  0 }, {     23,    9,    0,  8,  1,  0 },
@@ -25362,7 +25362,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90238B = {
     {     23,   30,    7,  8,  2,  0 }, {     23,   31,    7,  8,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9024AD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9024AD = {
     32, {
     {      0,    9,    0, 16,  0,  0 }, {      1,    9,    0, 16,  0,  0 }, {      2,    9,    0, 16,  0,  0 }, {      3,    9,    0, 16,  0,  0 }, {      4,    9,    0, 16,  0,  0 },
     {      5,    9,    0, 16,  0,  0 }, {      6,    9,    0, 16,  0,  0 }, {      7,    9,    0, 16,  0,  0 }, {      8,    9,    0, 16,  1,  0 }, {      9,    9,    0, 16,  1,  0 },
@@ -25373,7 +25373,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9024AD = {
     {     30,    9,    7, 16,  2,  0 }, {     31,    9,    7, 16,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9025CF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9025CF = {
     32, {
     {      9,   31,    0, 24,  0,  0 }, {      9,   30,    0, 24,  0,  0 }, {      9,   29,    0, 24,  0,  0 }, {      9,   28,    0, 24,  0,  0 }, {      9,   27,    0, 24,  0,  0 },
     {      9,   26,    0, 24,  0,  0 }, {      9,   25,    0, 24,  0,  0 }, {      9,   24,    0, 24,  0,  0 }, {      9,   23,    0, 24,  1,  0 }, {      9,   22,    0, 24,  1,  0 },
@@ -25384,7 +25384,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9025CF = {
     {      9,    1,    7, 24,  2,  0 }, {      9,    0,    8, 24,  2,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9026F1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9026F1 = {
     32, {
     {     31,   23,    0,  0,  2,  0 }, {     30,   23,    1,  0,  2,  0 }, {     29,   23,    1,  0,  2,  0 }, {     28,   23,    2,  0,  2,  0 }, {     27,   23,    2,  0,  2,  0 },
     {     26,   23,    3,  0,  2,  0 }, {     25,   23,    3,  0,  2,  0 }, {     24,   23,    3,  0,  2,  0 }, {     23,   23,    4,  0,  1,  0 }, {     22,   23,    4,  0,  1,  0 },
@@ -25395,7 +25395,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9026F1 = {
     {      1,   23,    8,  0,  0,  0 }, {      0,   23,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902825 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902825 = {
     32, {
     {     23,    0,    0,  8,  2,  0 }, {     23,    1,    0,  8,  2,  0 }, {     23,    2,    1,  8,  2,  0 }, {     23,    3,    1,  8,  2,  0 }, {     23,    4,    2,  8,  2,  0 },
     {     23,    5,    2,  8,  2,  0 }, {     23,    6,    3,  8,  2,  0 }, {     23,    7,    3,  8,  2,  0 }, {     23,    8,    4,  8,  1,  0 }, {     23,    9,    4,  8,  1,  0 },
@@ -25406,7 +25406,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902825 = {
     {     23,   30,    8,  8,  0,  0 }, {     23,   31,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902959 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902959 = {
     32, {
     {      0,    9,    0, 16,  2,  0 }, {      1,    9,    0, 16,  2,  0 }, {      2,    9,    1, 16,  2,  0 }, {      3,    9,    1, 16,  2,  0 }, {      4,    9,    2, 16,  2,  0 },
     {      5,    9,    2, 16,  2,  0 }, {      6,    9,    3, 16,  2,  0 }, {      7,    9,    3, 16,  2,  0 }, {      8,    9,    4, 16,  1,  0 }, {      9,    9,    4, 16,  1,  0 },
@@ -25417,7 +25417,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902959 = {
     {     30,    9,    8, 16,  0,  0 }, {     31,    9,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902A8D = {
+static const rct_vehicle_info_list TrackVehicleInfo_902A8D = {
     32, {
     {      9,   31,    0, 24,  2,  0 }, {      9,   30,    1, 24,  2,  0 }, {      9,   29,    1, 24,  2,  0 }, {      9,   28,    2, 24,  2,  0 }, {      9,   27,    2, 24,  2,  0 },
     {      9,   26,    3, 24,  2,  0 }, {      9,   25,    3, 24,  2,  0 }, {      9,   24,    3, 24,  2,  0 }, {      9,   23,    4, 24,  1,  0 }, {      9,   22,    4, 24,  1,  0 },
@@ -25428,7 +25428,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902A8D = {
     {      9,    1,    8, 24,  0,  0 }, {      9,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903959 = {
+static const rct_vehicle_info_list TrackVehicleInfo_903959 = {
     32, {
     {     31,   23,   15,  0,  6,  0 }, {     30,   23,   14,  0,  6,  0 }, {     29,   23,   14,  0,  6,  0 }, {     28,   23,   13,  0,  6,  0 }, {     27,   23,   13,  0,  6,  0 },
     {     26,   23,   12,  0,  6,  0 }, {     25,   23,   12,  0,  6,  0 }, {     24,   23,   11,  0,  6,  0 }, {     23,   23,   11,  0,  6,  0 }, {     22,   23,   10,  0,  6,  0 },
@@ -25439,7 +25439,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903959 = {
     {      1,   23,    0,  0,  6,  0 }, {      0,   23,   -1,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903A7B = {
+static const rct_vehicle_info_list TrackVehicleInfo_903A7B = {
     32, {
     {     23,    0,   15,  8,  6,  0 }, {     23,    1,   15,  8,  6,  0 }, {     23,    2,   14,  8,  6,  0 }, {     23,    3,   14,  8,  6,  0 }, {     23,    4,   13,  8,  6,  0 },
     {     23,    5,   13,  8,  6,  0 }, {     23,    6,   12,  8,  6,  0 }, {     23,    7,   12,  8,  6,  0 }, {     23,    8,   11,  8,  6,  0 }, {     23,    9,   11,  8,  6,  0 },
@@ -25450,7 +25450,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903A7B = {
     {     23,   30,    0,  8,  6,  0 }, {     23,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903B9D = {
+static const rct_vehicle_info_list TrackVehicleInfo_903B9D = {
     32, {
     {      0,    9,   15, 16,  6,  0 }, {      1,    9,   15, 16,  6,  0 }, {      2,    9,   14, 16,  6,  0 }, {      3,    9,   14, 16,  6,  0 }, {      4,    9,   13, 16,  6,  0 },
     {      5,    9,   13, 16,  6,  0 }, {      6,    9,   12, 16,  6,  0 }, {      7,    9,   12, 16,  6,  0 }, {      8,    9,   11, 16,  6,  0 }, {      9,    9,   11, 16,  6,  0 },
@@ -25461,7 +25461,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903B9D = {
     {     30,    9,    0, 16,  6,  0 }, {     31,    9,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903CBF = {
+static const rct_vehicle_info_list TrackVehicleInfo_903CBF = {
     32, {
     {      9,   31,   15, 24,  6,  0 }, {      9,   30,   14, 24,  6,  0 }, {      9,   29,   14, 24,  6,  0 }, {      9,   28,   13, 24,  6,  0 }, {      9,   27,   13, 24,  6,  0 },
     {      9,   26,   12, 24,  6,  0 }, {      9,   25,   12, 24,  6,  0 }, {      9,   24,   11, 24,  6,  0 }, {      9,   23,   11, 24,  6,  0 }, {      9,   22,   10, 24,  6,  0 },
@@ -25472,7 +25472,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903CBF = {
     {      9,    1,    0, 24,  6,  0 }, {      9,    0,   -1, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903049 = {
+static const rct_vehicle_info_list TrackVehicleInfo_903049 = {
     32, {
     {     31,   23,    8,  0,  0,  0 }, {     30,   23,    8,  0,  0,  0 }, {     29,   23,    8,  0,  0,  0 }, {     28,   23,    8,  0,  0,  0 }, {     27,   23,    8,  0,  0,  0 },
     {     26,   23,    8,  0,  0,  0 }, {     25,   23,    8,  0,  0,  0 }, {     24,   23,    8,  0,  0,  0 }, {     23,   23,    7,  0,  5,  0 }, {     22,   23,    7,  0,  5,  0 },
@@ -25483,7 +25483,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903049 = {
     {      1,   23,    0,  0,  6,  0 }, {      0,   23,    0,  0,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90316B = {
+static const rct_vehicle_info_list TrackVehicleInfo_90316B = {
     32, {
     {     23,    0,    8,  8,  0,  0 }, {     23,    1,    8,  8,  0,  0 }, {     23,    2,    8,  8,  0,  0 }, {     23,    3,    8,  8,  0,  0 }, {     23,    4,    8,  8,  0,  0 },
     {     23,    5,    8,  8,  0,  0 }, {     23,    6,    8,  8,  0,  0 }, {     23,    7,    8,  8,  0,  0 }, {     23,    8,    7,  8,  5,  0 }, {     23,    9,    7,  8,  5,  0 },
@@ -25494,7 +25494,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90316B = {
     {     23,   30,    1,  8,  6,  0 }, {     23,   31,    0,  8,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_90328D = {
+static const rct_vehicle_info_list TrackVehicleInfo_90328D = {
     32, {
     {      0,    9,    8, 16,  0,  0 }, {      1,    9,    8, 16,  0,  0 }, {      2,    9,    8, 16,  0,  0 }, {      3,    9,    8, 16,  0,  0 }, {      4,    9,    8, 16,  0,  0 },
     {      5,    9,    8, 16,  0,  0 }, {      6,    9,    8, 16,  0,  0 }, {      7,    9,    8, 16,  0,  0 }, {      8,    9,    7, 16,  5,  0 }, {      9,    9,    7, 16,  5,  0 },
@@ -25505,7 +25505,7 @@ const rct_vehicle_info_list TrackVehicleInfo_90328D = {
     {     30,    9,    1, 16,  6,  0 }, {     31,    9,    0, 16,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9033AF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9033AF = {
     32, {
     {      9,   31,    8, 24,  0,  0 }, {      9,   30,    8, 24,  0,  0 }, {      9,   29,    8, 24,  0,  0 }, {      9,   28,    8, 24,  0,  0 }, {      9,   27,    8, 24,  0,  0 },
     {      9,   26,    8, 24,  0,  0 }, {      9,   25,    8, 24,  0,  0 }, {      9,   24,    8, 24,  0,  0 }, {      9,   23,    7, 24,  5,  0 }, {      9,   22,    7, 24,  5,  0 },
@@ -25516,7 +25516,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9033AF = {
     {      9,    1,    0, 24,  6,  0 }, {      9,    0,    0, 24,  6,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902BC1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902BC1 = {
     32, {
     {     31,   23,    7,  0,  6,  0 }, {     30,   23,    7,  0,  6,  0 }, {     29,   23,    6,  0,  6,  0 }, {     28,   23,    6,  0,  6,  0 }, {     27,   23,    5,  0,  6,  0 },
     {     26,   23,    5,  0,  6,  0 }, {     25,   23,    4,  0,  6,  0 }, {     24,   23,    4,  0,  6,  0 }, {     23,   23,    4,  0,  5,  0 }, {     22,   23,    3,  0,  5,  0 },
@@ -25527,7 +25527,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902BC1 = {
     {      1,   23,    0,  0,  0,  0 }, {      0,   23,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902CE3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902CE3 = {
     32, {
     {     23,    0,    8,  8,  6,  0 }, {     23,    1,    7,  8,  6,  0 }, {     23,    2,    7,  8,  6,  0 }, {     23,    3,    6,  8,  6,  0 }, {     23,    4,    6,  8,  6,  0 },
     {     23,    5,    5,  8,  6,  0 }, {     23,    6,    5,  8,  6,  0 }, {     23,    7,    4,  8,  6,  0 }, {     23,    8,    4,  8,  5,  0 }, {     23,    9,    3,  8,  5,  0 },
@@ -25538,7 +25538,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902CE3 = {
     {     23,   30,    0,  8,  0,  0 }, {     23,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902E05 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902E05 = {
     32, {
     {      0,    9,    8, 16,  6,  0 }, {      1,    9,    7, 16,  6,  0 }, {      2,    9,    7, 16,  6,  0 }, {      3,    9,    6, 16,  6,  0 }, {      4,    9,    6, 16,  6,  0 },
     {      5,    9,    5, 16,  6,  0 }, {      6,    9,    5, 16,  6,  0 }, {      7,    9,    4, 16,  6,  0 }, {      8,    9,    4, 16,  5,  0 }, {      9,    9,    3, 16,  5,  0 },
@@ -25549,7 +25549,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902E05 = {
     {     30,    9,    0, 16,  0,  0 }, {     31,    9,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_902F27 = {
+static const rct_vehicle_info_list TrackVehicleInfo_902F27 = {
     32, {
     {      9,   31,    7, 24,  6,  0 }, {      9,   30,    7, 24,  6,  0 }, {      9,   29,    6, 24,  6,  0 }, {      9,   28,    6, 24,  6,  0 }, {      9,   27,    5, 24,  6,  0 },
     {      9,   26,    5, 24,  6,  0 }, {      9,   25,    4, 24,  6,  0 }, {      9,   24,    4, 24,  6,  0 }, {      9,   23,    4, 24,  5,  0 }, {      9,   22,    3, 24,  5,  0 },
@@ -25560,7 +25560,7 @@ const rct_vehicle_info_list TrackVehicleInfo_902F27 = {
     {      9,    1,    0, 24,  0,  0 }, {      9,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903DE1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_903DE1 = {
     33, {
     {     31,   23,    0,  0,  0,  0 }, {     30,   23,    0,  0,  0,  0 }, {     29,   23,    0,  0,  0,  0 }, {     28,   23,    0, 31,  0,  0 }, {     27,   23,    0, 31,  0,  0 },
     {     26,   22,    0, 31,  0,  0 }, {     25,   22,    0, 31,  0,  0 }, {     24,   22,    0, 30,  0,  0 }, {     23,   21,    0, 30,  0,  0 }, {     22,   21,    0, 30,  0,  0 },
@@ -25571,7 +25571,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903DE1 = {
     {      9,    2,    0, 24,  0,  0 }, {      9,    1,    0, 24,  0,  0 }, {      9,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_903F0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_903F0C = {
     34, {
     {     23,    0,    0,  8,  0,  0 }, {     23,    1,    0,  8,  0,  0 }, {     23,    2,    0,  8,  0,  0 }, {     23,    3,    0,  8,  0,  0 }, {     23,    4,    0,  7,  0,  0 },
     {     23,    5,    0,  7,  0,  0 }, {     22,    6,    0,  7,  0,  0 }, {     22,    7,    0,  7,  0,  0 }, {     22,    8,    0,  6,  0,  0 }, {     21,    9,    0,  6,  0,  0 },
@@ -25582,7 +25582,7 @@ const rct_vehicle_info_list TrackVehicleInfo_903F0C = {
     {      3,   23,    0,  0,  0,  0 }, {      2,   23,    0,  0,  0,  0 }, {      1,   23,    0,  0,  0,  0 }, {      0,   23,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904040 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904040 = {
     32, {
     {      0,    9,    0, 16,  0,  0 }, {      1,    9,    0, 16,  0,  0 }, {      2,    9,    0, 16,  0,  0 }, {      3,    9,    0, 16,  0,  0 }, {      4,    9,    0, 15,  0,  0 },
     {      5,   10,    0, 15,  0,  0 }, {      6,   10,    0, 15,  0,  0 }, {      7,   10,    0, 15,  0,  0 }, {      8,   11,    0, 14,  0,  0 }, {      9,   11,    0, 14,  0,  0 },
@@ -25593,7 +25593,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904040 = {
     {     23,   30,    0,  8,  0,  0 }, {     23,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904162 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904162 = {
     32, {
     {      9,   31,    0, 24,  0,  0 }, {      9,   30,    0, 24,  0,  0 }, {      9,   29,    0, 24,  0,  0 }, {      9,   28,    0, 23,  0,  0 }, {      9,   27,    0, 23,  0,  0 },
     {     10,   26,    0, 23,  0,  0 }, {     10,   25,    0, 23,  0,  0 }, {     10,   24,    0, 22,  0,  0 }, {     11,   23,    0, 22,  0,  0 }, {     11,   22,    0, 22,  0,  0 },
@@ -25604,35 +25604,35 @@ const rct_vehicle_info_list TrackVehicleInfo_904162 = {
     {     30,    9,    0, 16,  0,  0 }, {     31,    9,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904284 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904284 = {
     12, {
     {     31,   23,    0,  0,  0,  0 }, {     30,   23,    0,  1,  0,  0 }, {     29,   23,    0,  1,  0,  0 }, {     28,   24,    0,  2,  0,  0 }, {     27,   24,    0,  2,  0,  0 },
     {     26,   25,    0,  4,  0,  0 }, {     25,   26,    0,  4,  0,  0 }, {     24,   27,    0,  6,  0,  0 }, {     24,   28,    0,  6,  0,  0 }, {     23,   29,    0,  7,  0,  0 },
     {     23,   30,    0,  7,  0,  0 }, {     23,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9042F2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9042F2 = {
     13, {
     {     23,    0,    0,  8,  0,  0 }, {     23,    1,    0,  8,  0,  0 }, {     23,    2,    0,  9,  0,  0 }, {     23,    3,    0,  9,  0,  0 }, {     24,    4,    0, 10,  0,  0 },
     {     24,    5,    0, 10,  0,  0 }, {     25,    6,    0, 12,  0,  0 }, {     26,    7,    0, 12,  0,  0 }, {     27,    8,    0, 14,  0,  0 }, {     28,    8,    0, 14,  0,  0 },
     {     29,    9,    0, 15,  0,  0 }, {     30,    9,    0, 15,  0,  0 }, {     31,    9,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904369 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904369 = {
     14, {
     {      0,    9,    0, 16,  0,  0 }, {      1,    9,    0, 16,  0,  0 }, {      2,    9,    0, 17,  0,  0 }, {      3,    9,    0, 17,  0,  0 }, {      4,    8,    0, 18,  0,  0 },
     {      5,    8,    0, 18,  0,  0 }, {      6,    7,    0, 20,  0,  0 }, {      7,    6,    0, 20,  0,  0 }, {      8,    5,    0, 22,  0,  0 }, {      8,    4,    0, 22,  0,  0 },
     {      9,    3,    0, 23,  0,  0 }, {      9,    2,    0, 23,  0,  0 }, {      9,    1,    0, 24,  0,  0 }, {      9,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9043E9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9043E9 = {
     13, {
     {      9,   31,    0, 24,  0,  0 }, {      9,   30,    0, 25,  0,  0 }, {      9,   29,    0, 25,  0,  0 }, {      8,   28,    0, 26,  0,  0 }, {      8,   27,    0, 26,  0,  0 },
     {      7,   26,    0, 28,  0,  0 }, {      6,   25,    0, 28,  0,  0 }, {      5,   24,    0, 30,  0,  0 }, {      4,   24,    0, 30,  0,  0 }, {      3,   23,    0, 31,  0,  0 },
     {      2,   23,    0, 31,  0,  0 }, {      1,   23,    0,  0,  0,  0 }, {      0,   23,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF762 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF762 = {
     32, {
     {     31,    9,    0,  0,  0,  0 }, {     30,    9,    0,  0,  0,  0 }, {     29,    9,    0,  0,  0,  0 }, {     28,    9,    0,  0,  0,  0 }, {     27,   10,    0,  2,  0,  0 },
     {     26,   10,    0,  2,  0,  0 }, {     25,   10,    0,  2,  0,  0 }, {     24,   11,    0,  2,  0,  0 }, {     23,   11,    0,  2,  0,  0 }, {     22,   12,    0,  2,  0,  0 },
@@ -25643,7 +25643,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF762 = {
     {      1,   23,    0,  0,  0,  0 }, {      0,   23,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF884 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF884 = {
     32, {
     {      9,    0,    0,  8,  0,  0 }, {      9,    1,    0,  8,  0,  0 }, {      9,    2,    0,  8,  0,  0 }, {      9,    3,    0,  8,  0,  0 }, {     10,    4,    0, 10,  0,  0 },
     {     10,    5,    0, 10,  0,  0 }, {     10,    6,    0, 10,  0,  0 }, {     11,    7,    0, 10,  0,  0 }, {     11,    8,    0, 10,  0,  0 }, {     12,    9,    0, 10,  0,  0 },
@@ -25654,7 +25654,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF884 = {
     {     23,   30,    0,  8,  0,  0 }, {     23,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FF9A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FF9A6 = {
     32, {
     {      0,   23,    0, 16,  0,  0 }, {      1,   23,    0, 16,  0,  0 }, {      2,   23,    0, 16,  0,  0 }, {      3,   23,    0, 16,  0,  0 }, {      4,   22,    0, 18,  0,  0 },
     {      5,   22,    0, 18,  0,  0 }, {      6,   22,    0, 18,  0,  0 }, {      7,   21,    0, 18,  0,  0 }, {      8,   21,    0, 18,  0,  0 }, {      9,   20,    0, 18,  0,  0 },
@@ -25665,7 +25665,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FF9A6 = {
     {     30,    9,    0, 16,  0,  0 }, {     31,    9,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_8FFAC8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_8FFAC8 = {
     32, {
     {     23,   31,    0, 24,  0,  0 }, {     23,   30,    0, 24,  0,  0 }, {     23,   29,    0, 24,  0,  0 }, {     23,   28,    0, 24,  0,  0 }, {     22,   27,    0, 26,  0,  0 },
     {     22,   26,    0, 26,  0,  0 }, {     22,   25,    0, 26,  0,  0 }, {     21,   24,    0, 26,  0,  0 }, {     21,   23,    0, 26,  0,  0 }, {     20,   22,    0, 26,  0,  0 },
@@ -25676,7 +25676,7 @@ const rct_vehicle_info_list TrackVehicleInfo_8FFAC8 = {
     {      9,    1,    0, 24,  0,  0 }, {      9,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904460 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904460 = {
     32, {
     {     31,   23,    0,  0,  0,  0 }, {     30,   23,    0,  0,  0,  0 }, {     29,   23,    0,  0,  0,  0 }, {     28,   23,    0,  0,  0,  0 }, {     27,   22,    0, 30,  0,  0 },
     {     26,   22,    0, 30,  0,  0 }, {     25,   22,    0, 30,  0,  0 }, {     24,   21,    0, 30,  0,  0 }, {     23,   21,    0, 30,  0,  0 }, {     22,   20,    0, 30,  0,  0 },
@@ -25687,7 +25687,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904460 = {
     {      1,    9,    0,  0,  0,  0 }, {      0,    9,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_904582 = {
+static const rct_vehicle_info_list TrackVehicleInfo_904582 = {
     32, {
     {     23,    0,    0,  8,  0,  0 }, {     23,    1,    0,  8,  0,  0 }, {     23,    2,    0,  8,  0,  0 }, {     23,    3,    0,  8,  0,  0 }, {     22,    4,    0,  6,  0,  0 },
     {     22,    5,    0,  6,  0,  0 }, {     22,    6,    0,  6,  0,  0 }, {     21,    7,    0,  6,  0,  0 }, {     21,    8,    0,  6,  0,  0 }, {     20,    9,    0,  6,  0,  0 },
@@ -25698,7 +25698,7 @@ const rct_vehicle_info_list TrackVehicleInfo_904582 = {
     {      9,   30,    0,  8,  0,  0 }, {      9,   31,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9046A4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9046A4 = {
     32, {
     {      0,    9,    0, 16,  0,  0 }, {      1,    9,    0, 16,  0,  0 }, {      2,    9,    0, 16,  0,  0 }, {      3,    9,    0, 16,  0,  0 }, {      4,   10,    0, 14,  0,  0 },
     {      5,   10,    0, 14,  0,  0 }, {      6,   10,    0, 14,  0,  0 }, {      7,   11,    0, 14,  0,  0 }, {      8,   11,    0, 14,  0,  0 }, {      9,   12,    0, 14,  0,  0 },
@@ -25709,7 +25709,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9046A4 = {
     {     30,   23,    0, 16,  0,  0 }, {     31,   23,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9047C6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9047C6 = {
     32, {
     {      9,   31,    0, 24,  0,  0 }, {      9,   30,    0, 24,  0,  0 }, {      9,   29,    0, 24,  0,  0 }, {      9,   28,    0, 24,  0,  0 }, {     10,   27,    0, 22,  0,  0 },
     {     10,   26,    0, 22,  0,  0 }, {     10,   25,    0, 22,  0,  0 }, {     11,   24,    0, 22,  0,  0 }, {     11,   23,    0, 22,  0,  0 }, {     12,   22,    0, 22,  0,  0 },
@@ -25720,7 +25720,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9047C6 = {
     {     23,    1,    0, 24,  0,  0 }, {     23,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938212 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938212 = {
     16, {
     {     30,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
     {     20,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 }, {     16,   16,    0,  0,  0,  0 }, {     14,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 },
@@ -25728,7 +25728,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938212 = {
     {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9382A4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9382A4 = {
     16, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 },
     {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 }, {     16,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     16,   18,    0,  8,  0,  0 },
@@ -25736,7 +25736,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9382A4 = {
     {     16,   30,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938336 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938336 = {
     16, {
     {      0,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 },
     {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 }, {     14,   16,    0, 16,  0,  0 }, {     16,   16,    0, 16,  0,  0 }, {     18,   16,    0, 16,  0,  0 },
@@ -25744,7 +25744,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938336 = {
     {     30,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9383C8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9383C8 = {
     16, {
     {     16,   30,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
     {     16,   20,    0, 24,  0,  0 }, {     16,   18,    0, 24,  0,  0 }, {     16,   16,    0, 24,  0,  0 }, {     16,   14,    0, 24,  0,  0 }, {     16,   12,    0, 24,  0,  0 },
@@ -25752,7 +25752,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9383C8 = {
     {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938D7A = {
+static const rct_vehicle_info_list TrackVehicleInfo_938D7A = {
     16, {
     {     30,   16,    1,  0,  0,  0 }, {     28,   16,    2,  0,  0,  0 }, {     26,   16,    3,  0,  0,  0 }, {     24,   16,    4,  0,  0,  0 }, {     22,   16,    5,  0,  0,  0 },
     {     20,   16,    6,  0,  0,  0 }, {     18,   16,    7,  0,  0,  0 }, {     16,   16,    8,  0,  0,  0 }, {     14,   16,    9,  0,  0,  0 }, {     12,   16,   10,  0,  0,  0 },
@@ -25760,7 +25760,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938D7A = {
     {      0,   16,   16,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938E0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_938E0C = {
     16, {
     {     16,    0,    1,  8,  0,  0 }, {     16,    2,    2,  8,  0,  0 }, {     16,    4,    3,  8,  0,  0 }, {     16,    6,    4,  8,  0,  0 }, {     16,    8,    5,  8,  0,  0 },
     {     16,   10,    6,  8,  0,  0 }, {     16,   12,    7,  8,  0,  0 }, {     16,   14,    8,  8,  0,  0 }, {     16,   16,    9,  8,  0,  0 }, {     16,   18,   10,  8,  0,  0 },
@@ -25768,7 +25768,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938E0C = {
     {     16,   30,   16,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938E9E = {
+static const rct_vehicle_info_list TrackVehicleInfo_938E9E = {
     16, {
     {      0,   16,    1, 16,  0,  0 }, {      2,   16,    2, 16,  0,  0 }, {      4,   16,    3, 16,  0,  0 }, {      6,   16,    4, 16,  0,  0 }, {      8,   16,    5, 16,  0,  0 },
     {     10,   16,    6, 16,  0,  0 }, {     12,   16,    7, 16,  0,  0 }, {     14,   16,    8, 16,  0,  0 }, {     16,   16,    9, 16,  0,  0 }, {     18,   16,   10, 16,  0,  0 },
@@ -25776,7 +25776,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938E9E = {
     {     30,   16,   16, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938F30 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938F30 = {
     16, {
     {     16,   30,    1, 24,  0,  0 }, {     16,   28,    2, 24,  0,  0 }, {     16,   26,    3, 24,  0,  0 }, {     16,   24,    4, 24,  0,  0 }, {     16,   22,    5, 24,  0,  0 },
     {     16,   20,    6, 24,  0,  0 }, {     16,   18,    7, 24,  0,  0 }, {     16,   16,    8, 24,  0,  0 }, {     16,   14,    9, 24,  0,  0 }, {     16,   12,   10, 24,  0,  0 },
@@ -25784,7 +25784,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938F30 = {
     {     16,    0,   16, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93845A = {
+static const rct_vehicle_info_list TrackVehicleInfo_93845A = {
     16, {
     {     30,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
     {     20,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 }, {     16,   16,    0,  0,  0,  0 }, {     14,   16,    1,  0,  0,  0 }, {     12,   16,    2,  0,  0,  0 },
@@ -25792,7 +25792,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93845A = {
     {      0,   16,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9384EC = {
+static const rct_vehicle_info_list TrackVehicleInfo_9384EC = {
     16, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 },
     {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 }, {     16,   14,    0,  8,  0,  0 }, {     16,   16,    1,  8,  0,  0 }, {     16,   18,    2,  8,  0,  0 },
@@ -25800,7 +25800,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9384EC = {
     {     16,   30,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93857E = {
+static const rct_vehicle_info_list TrackVehicleInfo_93857E = {
     16, {
     {      0,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 },
     {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 }, {     14,   16,    0, 16,  0,  0 }, {     16,   16,    1, 16,  0,  0 }, {     18,   16,    2, 16,  0,  0 },
@@ -25808,7 +25808,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93857E = {
     {     30,   16,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938610 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938610 = {
     16, {
     {     16,   30,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
     {     16,   20,    0, 24,  0,  0 }, {     16,   18,    0, 24,  0,  0 }, {     16,   16,    0, 24,  0,  0 }, {     16,   14,    1, 24,  0,  0 }, {     16,   12,    2, 24,  0,  0 },
@@ -25816,7 +25816,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938610 = {
     {     16,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9386A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9386A2 = {
     16, {
     {     30,   16,    1,  0,  0,  0 }, {     28,   16,    2,  0,  0,  0 }, {     26,   16,    3,  0,  0,  0 }, {     24,   16,    4,  0,  0,  0 }, {     22,   16,    5,  0,  0,  0 },
     {     20,   16,    6,  0,  0,  0 }, {     18,   16,    7,  0,  0,  0 }, {     16,   16,    8,  0,  0,  0 }, {     14,   16,    8,  0,  0,  0 }, {     12,   16,    8,  0,  0,  0 },
@@ -25824,7 +25824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9386A2 = {
     {      0,   16,    8,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938734 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938734 = {
     16, {
     {     16,    0,    1,  8,  0,  0 }, {     16,    2,    2,  8,  0,  0 }, {     16,    4,    3,  8,  0,  0 }, {     16,    6,    4,  8,  0,  0 }, {     16,    8,    5,  8,  0,  0 },
     {     16,   10,    6,  8,  0,  0 }, {     16,   12,    7,  8,  0,  0 }, {     16,   14,    8,  8,  0,  0 }, {     16,   16,    8,  8,  0,  0 }, {     16,   18,    8,  8,  0,  0 },
@@ -25832,7 +25832,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938734 = {
     {     16,   30,    8,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9387C6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9387C6 = {
     16, {
     {      0,   16,    1, 16,  0,  0 }, {      2,   16,    2, 16,  0,  0 }, {      4,   16,    3, 16,  0,  0 }, {      6,   16,    4, 16,  0,  0 }, {      8,   16,    5, 16,  0,  0 },
     {     10,   16,    6, 16,  0,  0 }, {     12,   16,    7, 16,  0,  0 }, {     14,   16,    8, 16,  0,  0 }, {     16,   16,    8, 16,  0,  0 }, {     18,   16,    8, 16,  0,  0 },
@@ -25840,7 +25840,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9387C6 = {
     {     30,   16,    8, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938858 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938858 = {
     16, {
     {     16,   30,    1, 24,  0,  0 }, {     16,   28,    2, 24,  0,  0 }, {     16,   26,    3, 24,  0,  0 }, {     16,   24,    4, 24,  0,  0 }, {     16,   22,    5, 24,  0,  0 },
     {     16,   20,    6, 24,  0,  0 }, {     16,   18,    7, 24,  0,  0 }, {     16,   16,    8, 24,  0,  0 }, {     16,   14,    8, 24,  0,  0 }, {     16,   12,    8, 24,  0,  0 },
@@ -25848,7 +25848,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938858 = {
     {     16,    0,    8, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938FC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938FC2 = {
     16, {
     {     30,   16,   16,  0,  0,  0 }, {     28,   16,   15,  0,  0,  0 }, {     26,   16,   14,  0,  0,  0 }, {     24,   16,   13,  0,  0,  0 }, {     22,   16,   12,  0,  0,  0 },
     {     20,   16,   11,  0,  0,  0 }, {     18,   16,   10,  0,  0,  0 }, {     16,   16,    9,  0,  0,  0 }, {     14,   16,    8,  0,  0,  0 }, {     12,   16,    7,  0,  0,  0 },
@@ -25856,7 +25856,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938FC2 = {
     {      0,   16,    1,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939054 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939054 = {
     16, {
     {     16,    0,   16,  8,  0,  0 }, {     16,    2,   15,  8,  0,  0 }, {     16,    4,   14,  8,  0,  0 }, {     16,    6,   13,  8,  0,  0 }, {     16,    8,   12,  8,  0,  0 },
     {     16,   10,   11,  8,  0,  0 }, {     16,   12,   10,  8,  0,  0 }, {     16,   14,    9,  8,  0,  0 }, {     16,   16,    8,  8,  0,  0 }, {     16,   18,    7,  8,  0,  0 },
@@ -25864,7 +25864,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939054 = {
     {     16,   30,    1,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9390E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9390E6 = {
     16, {
     {      0,   16,   16, 16,  0,  0 }, {      2,   16,   15, 16,  0,  0 }, {      4,   16,   14, 16,  0,  0 }, {      6,   16,   13, 16,  0,  0 }, {      8,   16,   12, 16,  0,  0 },
     {     10,   16,   11, 16,  0,  0 }, {     12,   16,   10, 16,  0,  0 }, {     14,   16,    9, 16,  0,  0 }, {     16,   16,    8, 16,  0,  0 }, {     18,   16,    7, 16,  0,  0 },
@@ -25872,7 +25872,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9390E6 = {
     {     30,   16,    1, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939178 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939178 = {
     16, {
     {     16,   30,   16, 24,  0,  0 }, {     16,   28,   15, 24,  0,  0 }, {     16,   26,   14, 24,  0,  0 }, {     16,   24,   13, 24,  0,  0 }, {     16,   22,   12, 24,  0,  0 },
     {     16,   20,   11, 24,  0,  0 }, {     16,   18,   10, 24,  0,  0 }, {     16,   16,    9, 24,  0,  0 }, {     16,   14,    8, 24,  0,  0 }, {     16,   12,    7, 24,  0,  0 },
@@ -25880,7 +25880,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939178 = {
     {     16,    0,    1, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938B32 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938B32 = {
     16, {
     {     30,   16,    8,  0,  0,  0 }, {     28,   16,    8,  0,  0,  0 }, {     26,   16,    8,  0,  0,  0 }, {     24,   16,    8,  0,  0,  0 }, {     22,   16,    8,  0,  0,  0 },
     {     20,   16,    8,  0,  0,  0 }, {     18,   16,    8,  0,  0,  0 }, {     16,   16,    8,  0,  0,  0 }, {     14,   16,    8,  0,  0,  0 }, {     12,   16,    7,  0,  0,  0 },
@@ -25888,7 +25888,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938B32 = {
     {      0,   16,    1,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938BC4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938BC4 = {
     16, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    2,    8,  8,  0,  0 }, {     16,    4,    8,  8,  0,  0 }, {     16,    6,    8,  8,  0,  0 }, {     16,    8,    8,  8,  0,  0 },
     {     16,   10,    8,  8,  0,  0 }, {     16,   12,    8,  8,  0,  0 }, {     16,   14,    8,  8,  0,  0 }, {     16,   16,    8,  8,  0,  0 }, {     16,   18,    7,  8,  0,  0 },
@@ -25896,7 +25896,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938BC4 = {
     {     16,   30,    1,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938C56 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938C56 = {
     16, {
     {      0,   16,    8, 16,  0,  0 }, {      2,   16,    8, 16,  0,  0 }, {      4,   16,    8, 16,  0,  0 }, {      6,   16,    8, 16,  0,  0 }, {      8,   16,    8, 16,  0,  0 },
     {     10,   16,    8, 16,  0,  0 }, {     12,   16,    8, 16,  0,  0 }, {     14,   16,    8, 16,  0,  0 }, {     16,   16,    8, 16,  0,  0 }, {     18,   16,    7, 16,  0,  0 },
@@ -25904,7 +25904,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938C56 = {
     {     30,   16,    1, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938CE8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938CE8 = {
     16, {
     {     16,   30,    8, 24,  0,  0 }, {     16,   28,    8, 24,  0,  0 }, {     16,   26,    8, 24,  0,  0 }, {     16,   24,    8, 24,  0,  0 }, {     16,   22,    8, 24,  0,  0 },
     {     16,   20,    8, 24,  0,  0 }, {     16,   18,    8, 24,  0,  0 }, {     16,   16,    8, 24,  0,  0 }, {     16,   14,    8, 24,  0,  0 }, {     16,   12,    7, 24,  0,  0 },
@@ -25912,7 +25912,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938CE8 = {
     {     16,    0,    1, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9388EA = {
+static const rct_vehicle_info_list TrackVehicleInfo_9388EA = {
     16, {
     {     30,   16,    8,  0,  0,  0 }, {     28,   16,    7,  0,  0,  0 }, {     26,   16,    6,  0,  0,  0 }, {     24,   16,    5,  0,  0,  0 }, {     22,   16,    4,  0,  0,  0 },
     {     20,   16,    3,  0,  0,  0 }, {     18,   16,    2,  0,  0,  0 }, {     16,   16,    1,  0,  0,  0 }, {     14,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 },
@@ -25920,7 +25920,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9388EA = {
     {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93897C = {
+static const rct_vehicle_info_list TrackVehicleInfo_93897C = {
     16, {
     {     16,    0,    8,  8,  0,  0 }, {     16,    2,    7,  8,  0,  0 }, {     16,    4,    6,  8,  0,  0 }, {     16,    6,    5,  8,  0,  0 }, {     16,    8,    4,  8,  0,  0 },
     {     16,   10,    3,  8,  0,  0 }, {     16,   12,    2,  8,  0,  0 }, {     16,   14,    1,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     16,   18,    0,  8,  0,  0 },
@@ -25928,7 +25928,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93897C = {
     {     16,   30,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938A0E = {
+static const rct_vehicle_info_list TrackVehicleInfo_938A0E = {
     16, {
     {      0,   16,    8, 16,  0,  0 }, {      2,   16,    7, 16,  0,  0 }, {      4,   16,    6, 16,  0,  0 }, {      6,   16,    5, 16,  0,  0 }, {      8,   16,    4, 16,  0,  0 },
     {     10,   16,    3, 16,  0,  0 }, {     12,   16,    2, 16,  0,  0 }, {     14,   16,    1, 16,  0,  0 }, {     16,   16,    0, 16,  0,  0 }, {     18,   16,    0, 16,  0,  0 },
@@ -25936,7 +25936,7 @@ const rct_vehicle_info_list TrackVehicleInfo_938A0E = {
     {     30,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_938AA0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_938AA0 = {
     16, {
     {     16,   30,    8, 24,  0,  0 }, {     16,   28,    7, 24,  0,  0 }, {     16,   26,    6, 24,  0,  0 }, {     16,   24,    5, 24,  0,  0 }, {     16,   22,    4, 24,  0,  0 },
     {     16,   20,    3, 24,  0,  0 }, {     16,   18,    2, 24,  0,  0 }, {     16,   16,    1, 24,  0,  0 }, {     16,   14,    0, 24,  0,  0 }, {     16,   12,    0, 24,  0,  0 },
@@ -25944,14 +25944,14 @@ const rct_vehicle_info_list TrackVehicleInfo_938AA0 = {
     {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93920A = {
+static const rct_vehicle_info_list TrackVehicleInfo_93920A = {
     15, {
     {     30,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     20,   16,    0,  0,  0,  0 },
     {     18,   16,    0,  0,  0,  0 }, {     16,   16,    0,  0,  0,  0 }, {     16,   14,    0, 24,  0,  0 }, {     16,   12,    0, 24,  0,  0 }, {     16,   10,    0, 24,  0,  0 },
     {     16,    8,    0, 24,  0,  0 }, {     16,    6,    0, 24,  0,  0 }, {     16,    4,    0, 24,  0,  0 }, {     16,    2,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939293 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939293 = {
     17, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 },
     {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 }, {     16,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     14,   16,    0,  0,  0,  0 },
@@ -25959,7 +25959,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939293 = {
     {      2,   16,    0,  0,  0,  0 }, {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93932E = {
+static const rct_vehicle_info_list TrackVehicleInfo_93932E = {
     16, {
     {      0,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 },
     {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 }, {     14,   16,    0, 16,  0,  0 }, {     16,   16,    0, 16,  0,  0 }, {     16,   18,    0,  8,  0,  0 },
@@ -25967,21 +25967,21 @@ const rct_vehicle_info_list TrackVehicleInfo_93932E = {
     {     16,   30,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9393C0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9393C0 = {
     15, {
     {     16,   30,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
     {     16,   20,    0, 24,  0,  0 }, {     16,   18,    0, 24,  0,  0 }, {     16,   16,    0, 24,  0,  0 }, {     18,   16,    0, 16,  0,  0 }, {     20,   16,    0, 16,  0,  0 },
     {     22,   16,    0, 16,  0,  0 }, {     24,   16,    0, 16,  0,  0 }, {     26,   16,    0, 16,  0,  0 }, {     28,   16,    0, 16,  0,  0 }, {     30,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939449 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939449 = {
     15, {
     {     30,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
     {     20,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 }, {     16,   16,    0,  0,  0,  0 }, {     16,   18,    0,  8,  0,  0 }, {     16,   20,    0,  8,  0,  0 },
     {     16,   22,    0,  8,  0,  0 }, {     16,   24,    0,  8,  0,  0 }, {     16,   26,    0,  8,  0,  0 }, {     16,   28,    0,  8,  0,  0 }, {     16,   30,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9394D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9394D2 = {
     16, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 },
     {     16,   10,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 }, {     16,   14,    0,  8,  0,  0 }, {     16,   16,    0,  8,  0,  0 }, {     18,   16,    0, 16,  0,  0 },
@@ -25989,7 +25989,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9394D2 = {
     {     30,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939564 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939564 = {
     17, {
     {      0,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 },
     {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 }, {     14,   16,    0, 16,  0,  0 }, {     16,   16,    0, 16,  0,  0 }, {     16,   14,    0, 24,  0,  0 },
@@ -25997,7 +25997,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939564 = {
     {     16,    2,    0, 24,  0,  0 }, {     16,    0,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9395FF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9395FF = {
     16, {
     {     16,   30,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   26,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
     {     16,   20,    0, 24,  0,  0 }, {     16,   18,    0, 24,  0,  0 }, {     16,   16,    0, 24,  0,  0 }, {     14,   16,    0,  0,  0,  0 }, {     12,   16,    0,  0,  0,  0 },
@@ -26005,7 +26005,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9395FF = {
     {      0,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939691 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939691 = {
     59, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26021,7 +26021,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939691 = {
     {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93C082 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93C082 = {
     59, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26037,7 +26037,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93C082 = {
     {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93EA73 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93EA73 = {
     59, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26053,7 +26053,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93EA73 = {
     {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941464 = {
+static const rct_vehicle_info_list TrackVehicleInfo_941464 = {
     59, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26069,7 +26069,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941464 = {
     {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93A46E = {
+static const rct_vehicle_info_list TrackVehicleInfo_93A46E = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26085,7 +26085,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93A46E = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93CE5F = {
+static const rct_vehicle_info_list TrackVehicleInfo_93CE5F = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26101,7 +26101,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93CE5F = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93F850 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93F850 = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26117,7 +26117,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93F850 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_942241 = {
+static const rct_vehicle_info_list TrackVehicleInfo_942241 = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26133,7 +26133,7 @@ const rct_vehicle_info_list TrackVehicleInfo_942241 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93B2AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_93B2AE = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26149,7 +26149,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93B2AE = {
     {    -23,   16,    0,  0,  0,  0 }, {    -25,   16,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93DC9F = {
+static const rct_vehicle_info_list TrackVehicleInfo_93DC9F = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26165,7 +26165,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93DC9F = {
     {     16,   54,    0,  8,  0,  0 }, {     16,   56,    0,  8,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_940690 = {
+static const rct_vehicle_info_list TrackVehicleInfo_940690 = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26181,7 +26181,7 @@ const rct_vehicle_info_list TrackVehicleInfo_940690 = {
     {     54,   15,    0, 16,  0,  0 }, {     56,   15,    0, 16,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_943081 = {
+static const rct_vehicle_info_list TrackVehicleInfo_943081 = {
     60, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26197,7 +26197,7 @@ const rct_vehicle_info_list TrackVehicleInfo_943081 = {
     {     15,  -23,    0, 24,  0,  0 }, {     15,  -25,    0, 24,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_943E56 = {
+static const rct_vehicle_info_list TrackVehicleInfo_943E56 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26217,7 +26217,7 @@ const rct_vehicle_info_list TrackVehicleInfo_943E56 = {
     {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_946B14 = {
+static const rct_vehicle_info_list TrackVehicleInfo_946B14 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26237,7 +26237,7 @@ const rct_vehicle_info_list TrackVehicleInfo_946B14 = {
     {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9497D2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9497D2 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26257,7 +26257,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9497D2 = {
     {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94C490 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94C490 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26277,7 +26277,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94C490 = {
     {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9454B5 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9454B5 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26297,7 +26297,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9454B5 = {
     {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_948173 = {
+static const rct_vehicle_info_list TrackVehicleInfo_948173 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26317,7 +26317,7 @@ const rct_vehicle_info_list TrackVehicleInfo_948173 = {
     {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94AE31 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94AE31 = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26337,7 +26337,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94AE31 = {
     {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94DAEF = {
+static const rct_vehicle_info_list TrackVehicleInfo_94DAEF = {
     76, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26357,7 +26357,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94DAEF = {
     {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9398A6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9398A6 = {
     53, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   16,    0,  0,  0,  0 },
@@ -26372,7 +26372,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9398A6 = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93C297 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93C297 = {
     53, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     16,   12,    0,  8,  0,  0 },
@@ -26387,7 +26387,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93C297 = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93EC88 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93EC88 = {
     53, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   15,    0, 16,  0,  0 },
@@ -26402,7 +26402,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93EC88 = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941679 = {
+static const rct_vehicle_info_list TrackVehicleInfo_941679 = {
     53, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     15,   19,    0, 24,  0,  0 },
@@ -26417,7 +26417,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941679 = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93A68C = {
+static const rct_vehicle_info_list TrackVehicleInfo_93A68C = {
     58, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
@@ -26433,7 +26433,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93A68C = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93D07D = {
+static const rct_vehicle_info_list TrackVehicleInfo_93D07D = {
     58, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
@@ -26449,7 +26449,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93D07D = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93FA6E = {
+static const rct_vehicle_info_list TrackVehicleInfo_93FA6E = {
     58, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
@@ -26465,7 +26465,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93FA6E = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94245F = {
+static const rct_vehicle_info_list TrackVehicleInfo_94245F = {
     58, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
@@ -26481,7 +26481,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94245F = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93B4CC = {
+static const rct_vehicle_info_list TrackVehicleInfo_93B4CC = {
     42, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     18,   18,    0,  0,  0,  0 },
@@ -26494,7 +26494,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93B4CC = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93DEBD = {
+static const rct_vehicle_info_list TrackVehicleInfo_93DEBD = {
     42, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     18,   13,    0,  8,  0,  0 },
@@ -26507,7 +26507,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93DEBD = {
     { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9408AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9408AE = {
     42, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     13,   13,    0, 16,  0,  0 },
@@ -26520,7 +26520,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9408AE = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94329F = {
+static const rct_vehicle_info_list TrackVehicleInfo_94329F = {
     42, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     13,   18,    0, 24,  0,  0 },
@@ -26533,7 +26533,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94329F = {
     { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_944104 = {
+static const rct_vehicle_info_list TrackVehicleInfo_944104 = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
@@ -26552,7 +26552,7 @@ const rct_vehicle_info_list TrackVehicleInfo_944104 = {
     {    -17,   60,    0,  8,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_946DC2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_946DC2 = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
@@ -26571,7 +26571,7 @@ const rct_vehicle_info_list TrackVehicleInfo_946DC2 = {
     {     60,   48,    0, 16,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_949A80 = {
+static const rct_vehicle_info_list TrackVehicleInfo_949A80 = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
@@ -26590,7 +26590,7 @@ const rct_vehicle_info_list TrackVehicleInfo_949A80 = {
     {     48,  -29,    0, 24,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94C73E = {
+static const rct_vehicle_info_list TrackVehicleInfo_94C73E = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
@@ -26609,7 +26609,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94C73E = {
     {    -29,  -17,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_945763 = {
+static const rct_vehicle_info_list TrackVehicleInfo_945763 = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
@@ -26628,7 +26628,7 @@ const rct_vehicle_info_list TrackVehicleInfo_945763 = {
     {    -17,  -28,    0, 24,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_948421 = {
+static const rct_vehicle_info_list TrackVehicleInfo_948421 = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
@@ -26647,7 +26647,7 @@ const rct_vehicle_info_list TrackVehicleInfo_948421 = {
     {    -28,   48,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94B0DF = {
+static const rct_vehicle_info_list TrackVehicleInfo_94B0DF = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
@@ -26666,7 +26666,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94B0DF = {
     {     48,   59,    0,  8,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94DD9D = {
+static const rct_vehicle_info_list TrackVehicleInfo_94DD9D = {
     74, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
@@ -26685,7 +26685,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94DD9D = {
     {     59,  -17,    0, 16,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939A85 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939A85 = {
     66, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26703,7 +26703,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939A85 = {
     {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93C476 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93C476 = {
     66, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26721,7 +26721,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93C476 = {
     {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93EE67 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93EE67 = {
     66, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26739,7 +26739,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93EE67 = {
     {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941858 = {
+static const rct_vehicle_info_list TrackVehicleInfo_941858 = {
     66, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26757,7 +26757,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941858 = {
     {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93A898 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93A898 = {
     81, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26778,7 +26778,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93A898 = {
     {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93D289 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93D289 = {
     81, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26799,7 +26799,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93D289 = {
     {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93FC7A = {
+static const rct_vehicle_info_list TrackVehicleInfo_93FC7A = {
     81, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26820,7 +26820,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93FC7A = {
     {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94266B = {
+static const rct_vehicle_info_list TrackVehicleInfo_94266B = {
     81, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26841,7 +26841,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94266B = {
     {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93B648 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93B648 = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26860,7 +26860,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93B648 = {
     {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93E039 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93E039 = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26879,7 +26879,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93E039 = {
     {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_940A2A = {
+static const rct_vehicle_info_list TrackVehicleInfo_940A2A = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26898,7 +26898,7 @@ const rct_vehicle_info_list TrackVehicleInfo_940A2A = {
     {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94341B = {
+static const rct_vehicle_info_list TrackVehicleInfo_94341B = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26917,7 +26917,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94341B = {
     {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9443A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9443A0 = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26940,7 +26940,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9443A0 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94705E = {
+static const rct_vehicle_info_list TrackVehicleInfo_94705E = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26963,7 +26963,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94705E = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_949D1C = {
+static const rct_vehicle_info_list TrackVehicleInfo_949D1C = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -26986,7 +26986,7 @@ const rct_vehicle_info_list TrackVehicleInfo_949D1C = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94C9DA = {
+static const rct_vehicle_info_list TrackVehicleInfo_94C9DA = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27009,7 +27009,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94C9DA = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9459FF = {
+static const rct_vehicle_info_list TrackVehicleInfo_9459FF = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27032,7 +27032,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9459FF = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9486BD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9486BD = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27055,7 +27055,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9486BD = {
     { -32768,    3,    0,  0,  0,  0 }, {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94B37B = {
+static const rct_vehicle_info_list TrackVehicleInfo_94B37B = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27078,7 +27078,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94B37B = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94E039 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94E039 = {
     92, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27101,7 +27101,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94E039 = {
     { -32768,    3,    0,  0,  0,  0 }, {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939CD9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_939CD9 = {
     52, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 },
@@ -27116,7 +27116,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939CD9 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93C6CA = {
+static const rct_vehicle_info_list TrackVehicleInfo_93C6CA = {
     52, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 },
@@ -27131,7 +27131,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93C6CA = {
     { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93F0BB = {
+static const rct_vehicle_info_list TrackVehicleInfo_93F0BB = {
     52, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      8,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 },
@@ -27146,7 +27146,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93F0BB = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941AAC = {
+static const rct_vehicle_info_list TrackVehicleInfo_941AAC = {
     52, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     15,   23,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 },
@@ -27161,7 +27161,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941AAC = {
     { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93AB73 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93AB73 = {
     62, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     22,   15,    0,  0,  0,  0 }, {     20,   15,    0,  0,  0,  0 },
@@ -27178,7 +27178,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93AB73 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93D564 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93D564 = {
     62, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     15,    9,    0,  8,  0,  0 }, {     15,   11,    0,  8,  0,  0 },
@@ -27195,7 +27195,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93D564 = {
     { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93FF55 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93FF55 = {
     62, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 }, {     11,   16,    0, 16,  0,  0 },
@@ -27212,7 +27212,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93FF55 = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_942946 = {
+static const rct_vehicle_info_list TrackVehicleInfo_942946 = {
     62, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 }, {     16,   20,    0, 24,  0,  0 },
@@ -27229,7 +27229,7 @@ const rct_vehicle_info_list TrackVehicleInfo_942946 = {
     { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93B8DB = {
+static const rct_vehicle_info_list TrackVehicleInfo_93B8DB = {
     51, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   16,    0,  0,  0,  0 }, {     18,   16,    0,  0,  0,  0 },
@@ -27244,7 +27244,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93B8DB = {
     { -32768,    3,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93E2CC = {
+static const rct_vehicle_info_list TrackVehicleInfo_93E2CC = {
     51, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,   10,    0,  8,  0,  0 }, {     16,   13,    0,  8,  0,  0 },
@@ -27259,7 +27259,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93E2CC = {
     { -32768,    3,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_940CBD = {
+static const rct_vehicle_info_list TrackVehicleInfo_940CBD = {
     51, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   15,    0, 16,  0,  0 }, {     13,   15,    0, 16,  0,  0 },
@@ -27274,7 +27274,7 @@ const rct_vehicle_info_list TrackVehicleInfo_940CBD = {
     { -32768,    3,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9436AE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9436AE = {
     51, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     15,   21,    0, 24,  0,  0 }, {     15,   18,    0, 24,  0,  0 },
@@ -27289,7 +27289,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9436AE = {
     { -32768,    3,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9446DE = {
+static const rct_vehicle_info_list TrackVehicleInfo_9446DE = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     19,   17,    0,  0,  0,  0 },
@@ -27315,7 +27315,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9446DE = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94739C = {
+static const rct_vehicle_info_list TrackVehicleInfo_94739C = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     17,   12,    0,  8,  0,  0 },
@@ -27341,7 +27341,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94739C = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94A05A = {
+static const rct_vehicle_info_list TrackVehicleInfo_94A05A = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     12,   14,    0, 16,  0,  0 },
@@ -27367,7 +27367,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94A05A = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94CD18 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94CD18 = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     14,   19,    0, 24,  0,  0 },
@@ -27393,7 +27393,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94CD18 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_945D3D = {
+static const rct_vehicle_info_list TrackVehicleInfo_945D3D = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
@@ -27419,7 +27419,7 @@ const rct_vehicle_info_list TrackVehicleInfo_945D3D = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9489FB = {
+static const rct_vehicle_info_list TrackVehicleInfo_9489FB = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
@@ -27445,7 +27445,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9489FB = {
     { -32768,    3,    0,  0,  0,  0 }, {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94B6B9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94B6B9 = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
@@ -27471,7 +27471,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94B6B9 = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94E377 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94E377 = {
     107, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
@@ -27497,7 +27497,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94E377 = {
     { -32768,    3,    0,  0,  0,  0 }, {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_939EAF = {
+static const rct_vehicle_info_list TrackVehicleInfo_939EAF = {
     93, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27520,7 +27520,7 @@ const rct_vehicle_info_list TrackVehicleInfo_939EAF = {
     {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93C8A0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93C8A0 = {
     93, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27543,7 +27543,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93C8A0 = {
     {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93F291 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93F291 = {
     93, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27566,7 +27566,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93F291 = {
     {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941C82 = {
+static const rct_vehicle_info_list TrackVehicleInfo_941C82 = {
     93, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27589,7 +27589,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941C82 = {
     {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93ADA3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93ADA3 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27607,7 +27607,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93ADA3 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93D794 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93D794 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27625,7 +27625,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93D794 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_940185 = {
+static const rct_vehicle_info_list TrackVehicleInfo_940185 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27643,7 +27643,7 @@ const rct_vehicle_info_list TrackVehicleInfo_940185 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_942B76 = {
+static const rct_vehicle_info_list TrackVehicleInfo_942B76 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27661,7 +27661,7 @@ const rct_vehicle_info_list TrackVehicleInfo_942B76 = {
     { -32768,    4,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93BAB1 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93BAB1 = {
     88, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27683,7 +27683,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93BAB1 = {
     {    -27,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93E4A2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93E4A2 = {
     88, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27705,7 +27705,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93E4A2 = {
     {     16,   58,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_940E93 = {
+static const rct_vehicle_info_list TrackVehicleInfo_940E93 = {
     88, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27727,7 +27727,7 @@ const rct_vehicle_info_list TrackVehicleInfo_940E93 = {
     {     58,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_943884 = {
+static const rct_vehicle_info_list TrackVehicleInfo_943884 = {
     88, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27749,7 +27749,7 @@ const rct_vehicle_info_list TrackVehicleInfo_943884 = {
     {     15,  -27,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_944AA3 = {
+static const rct_vehicle_info_list TrackVehicleInfo_944AA3 = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27774,7 +27774,7 @@ const rct_vehicle_info_list TrackVehicleInfo_944AA3 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_947761 = {
+static const rct_vehicle_info_list TrackVehicleInfo_947761 = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27799,7 +27799,7 @@ const rct_vehicle_info_list TrackVehicleInfo_947761 = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94A41F = {
+static const rct_vehicle_info_list TrackVehicleInfo_94A41F = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27824,7 +27824,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94A41F = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94D0DD = {
+static const rct_vehicle_info_list TrackVehicleInfo_94D0DD = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27849,7 +27849,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94D0DD = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_946102 = {
+static const rct_vehicle_info_list TrackVehicleInfo_946102 = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27874,7 +27874,7 @@ const rct_vehicle_info_list TrackVehicleInfo_946102 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_948DC0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_948DC0 = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    4,    0,  8,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27899,7 +27899,7 @@ const rct_vehicle_info_list TrackVehicleInfo_948DC0 = {
     { -32768,    3,    0,  0,  0,  0 }, {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94BA7E = {
+static const rct_vehicle_info_list TrackVehicleInfo_94BA7E = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, {      2,   15,    0, 16,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      4,   15,    0, 16,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27924,7 +27924,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94BA7E = {
     { -32768,    3,    0,  0,  0,  0 }, {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94E73C = {
+static const rct_vehicle_info_list TrackVehicleInfo_94E73C = {
     102, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, {     15,   29,    0, 24,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     { -32768,    5,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   27,    0, 24,  0,  0 }, { -32768,    4,    5,  0,  0,  0 }, { -32768,    5,    0,  0,  0,  0 },
@@ -27949,7 +27949,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94E73C = {
     { -32768,    3,    0,  0,  0,  0 }, {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93A1F6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93A1F6 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     23,   15,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 },
@@ -27967,7 +27967,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93A1F6 = {
     { -32768,    2,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93CBE7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93CBE7 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     15,    8,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 },
@@ -27985,7 +27985,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93CBE7 = {
     { -32768,    2,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93F5D8 = {
+static const rct_vehicle_info_list TrackVehicleInfo_93F5D8 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 },
@@ -28003,7 +28003,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93F5D8 = {
     { -32768,    2,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_941FC9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_941FC9 = {
     70, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 },
@@ -28021,7 +28021,7 @@ const rct_vehicle_info_list TrackVehicleInfo_941FC9 = {
     { -32768,    2,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93B01B = {
+static const rct_vehicle_info_list TrackVehicleInfo_93B01B = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
@@ -28040,7 +28040,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93B01B = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93DA0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_93DA0C = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
@@ -28059,7 +28059,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93DA0C = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9403FD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9403FD = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      6,   15,    0, 16,  0,  0 }, {      9,   15,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
@@ -28078,7 +28078,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9403FD = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_942DEE = {
+static const rct_vehicle_info_list TrackVehicleInfo_942DEE = {
     73, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   25,    0, 24,  0,  0 }, {     15,   22,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
@@ -28097,7 +28097,7 @@ const rct_vehicle_info_list TrackVehicleInfo_942DEE = {
     { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93BDCB = {
+static const rct_vehicle_info_list TrackVehicleInfo_93BDCB = {
     77, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     18,   14,    0,  0,  0,  0 },
@@ -28117,7 +28117,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93BDCB = {
     { -32768,    3,    0,  0,  0,  0 }, {    -29,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_93E7BC = {
+static const rct_vehicle_info_list TrackVehicleInfo_93E7BC = {
     77, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     14,   13,    0,  8,  0,  0 },
@@ -28137,7 +28137,7 @@ const rct_vehicle_info_list TrackVehicleInfo_93E7BC = {
     { -32768,    3,    0,  0,  0,  0 }, {     16,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9411AD = {
+static const rct_vehicle_info_list TrackVehicleInfo_9411AD = {
     77, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     13,   17,    0, 16,  0,  0 },
@@ -28157,7 +28157,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9411AD = {
     { -32768,    3,    0,  0,  0,  0 }, {     60,   15,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_943B9E = {
+static const rct_vehicle_info_list TrackVehicleInfo_943B9E = {
     77, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     17,   18,    0, 24,  0,  0 },
@@ -28177,7 +28177,7 @@ const rct_vehicle_info_list TrackVehicleInfo_943B9E = {
     { -32768,    3,    0,  0,  0,  0 }, {     15,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_944E3B = {
+static const rct_vehicle_info_list TrackVehicleInfo_944E3B = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   17,    0,  0,  0,  0 }, {     19,   17,    0,  0,  0,  0 },
@@ -28218,7 +28218,7 @@ const rct_vehicle_info_list TrackVehicleInfo_944E3B = {
     {    -17,   60,    0,  8,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -17,   60,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_947AF9 = {
+static const rct_vehicle_info_list TrackVehicleInfo_947AF9 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     17,   10,    0,  8,  0,  0 }, {     17,   12,    0,  8,  0,  0 },
@@ -28259,7 +28259,7 @@ const rct_vehicle_info_list TrackVehicleInfo_947AF9 = {
     {     60,   48,    0, 16,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     60,   48,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94A7B7 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94A7B7 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   14,    0, 16,  0,  0 }, {     12,   14,    0, 16,  0,  0 },
@@ -28300,7 +28300,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94A7B7 = {
     {     48,  -29,    0, 24,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     48,  -29,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94D475 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94D475 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     14,   21,    0, 24,  0,  0 }, {     14,   19,    0, 24,  0,  0 },
@@ -28341,7 +28341,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94D475 = {
     {    -29,  -17,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -29,  -17,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94649A = {
+static const rct_vehicle_info_list TrackVehicleInfo_94649A = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     31,   16,    0,  0,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     26,   16,    0,  0,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     21,   15,    0,  0,  0,  0 }, {     19,   15,    0,  0,  0,  0 },
@@ -28382,7 +28382,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94649A = {
     {    -17,  -28,    0, 24,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -17,  -28,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_949158 = {
+static const rct_vehicle_info_list TrackVehicleInfo_949158 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     16,    0,    0,  8,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     16,    5,    0,  8,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     15,   10,    0,  8,  0,  0 }, {     15,   12,    0,  8,  0,  0 },
@@ -28423,7 +28423,7 @@ const rct_vehicle_info_list TrackVehicleInfo_949158 = {
     {    -28,   48,    0,  0,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {    -28,   48,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94BE16 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94BE16 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {      0,   15,    0, 16,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {      5,   15,    0, 16,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {      5,   15,    0, 16,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {      7,   15,    0, 16,  0,  0 }, {     10,   16,    0, 16,  0,  0 }, {     12,   16,    0, 16,  0,  0 },
@@ -28464,7 +28464,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94BE16 = {
     {     48,   59,    0,  8,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     48,   59,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_94EAD4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_94EAD4 = {
     184, {
     { -32768,    0,    0,  0,  0,  0 }, {     15,   31,    0, 24,  0,  0 }, { -32768,    2,    0,  0,  0,  0 }, {     15,   26,    0, 24,  0,  0 }, { -32768,    4,    1,  0,  0,  0 },
     {     15,   26,    0, 24,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     15,   24,    0, 24,  0,  0 }, {     16,   21,    0, 24,  0,  0 }, {     16,   19,    0, 24,  0,  0 },
@@ -28505,7 +28505,7 @@ const rct_vehicle_info_list TrackVehicleInfo_94EAD4 = {
     {     59,  -17,    0, 16,  0,  0 }, { -32768,    6,    0,  0,  0,  0 }, { -32768,    3,    0,  0,  0,  0 }, {     59,  -17,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95275E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95275E = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -28529,7 +28529,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95275E = {
     {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_952AC0 = {
+static const rct_vehicle_info_list TrackVehicleInfo_952AC0 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -28553,7 +28553,7 @@ const rct_vehicle_info_list TrackVehicleInfo_952AC0 = {
     {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_952E22 = {
+static const rct_vehicle_info_list TrackVehicleInfo_952E22 = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -28577,7 +28577,7 @@ const rct_vehicle_info_list TrackVehicleInfo_952E22 = {
     {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_953184 = {
+static const rct_vehicle_info_list TrackVehicleInfo_953184 = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -28601,7 +28601,7 @@ const rct_vehicle_info_list TrackVehicleInfo_953184 = {
     {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9534E6 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9534E6 = {
     96, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -28625,7 +28625,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9534E6 = {
     {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_953848 = {
+static const rct_vehicle_info_list TrackVehicleInfo_953848 = {
     96, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -28649,7 +28649,7 @@ const rct_vehicle_info_list TrackVehicleInfo_953848 = {
     {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_953BAA = {
+static const rct_vehicle_info_list TrackVehicleInfo_953BAA = {
     96, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -28673,7 +28673,7 @@ const rct_vehicle_info_list TrackVehicleInfo_953BAA = {
     {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_953F0C = {
+static const rct_vehicle_info_list TrackVehicleInfo_953F0C = {
     96, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -28697,7 +28697,7 @@ const rct_vehicle_info_list TrackVehicleInfo_953F0C = {
     {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_95426E = {
+static const rct_vehicle_info_list TrackVehicleInfo_95426E = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -28740,7 +28740,7 @@ const rct_vehicle_info_list TrackVehicleInfo_95426E = {
     {    -63,   16,    0,  0,  0,  0 }, {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_954930 = {
+static const rct_vehicle_info_list TrackVehicleInfo_954930 = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -28783,7 +28783,7 @@ const rct_vehicle_info_list TrackVehicleInfo_954930 = {
     {     16,   94,    0,  8,  0,  0 }, {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_954FF2 = {
+static const rct_vehicle_info_list TrackVehicleInfo_954FF2 = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -28826,7 +28826,7 @@ const rct_vehicle_info_list TrackVehicleInfo_954FF2 = {
     {     94,   16,    0, 16,  0,  0 }, {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9556B4 = {
+static const rct_vehicle_info_list TrackVehicleInfo_9556B4 = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -28869,7 +28869,7 @@ const rct_vehicle_info_list TrackVehicleInfo_9556B4 = {
     {     16,  -63,    0, 24,  0,  0 }, {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_955D76 = {
+static const rct_vehicle_info_list TrackVehicleInfo_955D76 = {
     192, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },
     {     26,   16,    0,  0,  0,  0 }, {     25,   16,    0,  0,  0,  0 }, {     24,   16,    0,  0,  0,  0 }, {     23,   16,    0,  0,  0,  0 }, {     22,   16,    0,  0,  0,  0 },
@@ -28912,7 +28912,7 @@ const rct_vehicle_info_list TrackVehicleInfo_955D76 = {
     {    -63,   16,    0,  0,  0,  0 }, {    -64,   16,    0,  0,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_956438 = {
+static const rct_vehicle_info_list TrackVehicleInfo_956438 = {
     192, {
     {     16,    0,    0,  8,  0,  0 }, {     16,    1,    0,  8,  0,  0 }, {     16,    2,    0,  8,  0,  0 }, {     16,    3,    0,  8,  0,  0 }, {     16,    4,    0,  8,  0,  0 },
     {     16,    5,    0,  8,  0,  0 }, {     16,    6,    0,  8,  0,  0 }, {     16,    7,    0,  8,  0,  0 }, {     16,    8,    0,  8,  0,  0 }, {     16,    9,    0,  8,  0,  0 },
@@ -28955,7 +28955,7 @@ const rct_vehicle_info_list TrackVehicleInfo_956438 = {
     {     16,   94,    0,  8,  0,  0 }, {     16,   95,    0,  8,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_956AFA = {
+static const rct_vehicle_info_list TrackVehicleInfo_956AFA = {
     192, {
     {      0,   16,    0, 16,  0,  0 }, {      1,   16,    0, 16,  0,  0 }, {      2,   16,    0, 16,  0,  0 }, {      3,   16,    0, 16,  0,  0 }, {      4,   16,    0, 16,  0,  0 },
     {      5,   16,    0, 16,  0,  0 }, {      6,   16,    0, 16,  0,  0 }, {      7,   16,    0, 16,  0,  0 }, {      8,   16,    0, 16,  0,  0 }, {      9,   16,    0, 16,  0,  0 },
@@ -28998,7 +28998,7 @@ const rct_vehicle_info_list TrackVehicleInfo_956AFA = {
     {     94,   16,    0, 16,  0,  0 }, {     95,   16,    0, 16,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_9571BC = {
+static const rct_vehicle_info_list TrackVehicleInfo_9571BC = {
     192, {
     {     16,   31,    0, 24,  0,  0 }, {     16,   30,    0, 24,  0,  0 }, {     16,   29,    0, 24,  0,  0 }, {     16,   28,    0, 24,  0,  0 }, {     16,   27,    0, 24,  0,  0 },
     {     16,   26,    0, 24,  0,  0 }, {     16,   25,    0, 24,  0,  0 }, {     16,   24,    0, 24,  0,  0 }, {     16,   23,    0, 24,  0,  0 }, {     16,   22,    0, 24,  0,  0 },
@@ -29041,9 +29041,9 @@ const rct_vehicle_info_list TrackVehicleInfo_9571BC = {
     {     16,  -63,    0, 24,  0,  0 }, {     16,  -64,    0, 24,  0,  0 },
 } };
 
-const rct_vehicle_info_list TrackVehicleInfo_000000 = { 0 };
+static const rct_vehicle_info_list TrackVehicleInfo_000000 = { 0 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -29217,7 +29217,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8B8F98[] = {
     &TrackVehicleInfo_97888A, &TrackVehicleInfo_978D5D, &TrackVehicleInfo_979230, &TrackVehicleInfo_979703,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BBAB8[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BBAB8[] = {
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48,
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CFB6E, &TrackVehicleInfo_8CFC90,
@@ -29336,7 +29336,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BBAB8[] = {
     &TrackVehicleInfo_91C1BC, &TrackVehicleInfo_91C377,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BC588[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BC588[] = {
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48,
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
     &TrackVehicleInfo_8CDE26, &TrackVehicleInfo_8CDF48, &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04, &TrackVehicleInfo_8D023A, &TrackVehicleInfo_8D035C,
@@ -29407,7 +29407,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BC588[] = {
     &TrackVehicleInfo_8CDBE2, &TrackVehicleInfo_8CDD04,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BCBD8[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BCBD8[] = {
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -29478,7 +29478,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BCBD8[] = {
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BD228[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BD228[] = {
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF,
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
     &TrackVehicleInfo_8CE4B8, &TrackVehicleInfo_8CE6DF, &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -29549,7 +29549,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BD228[] = {
     &TrackVehicleInfo_8CE06A, &TrackVehicleInfo_8CE291,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BD878[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BD878[] = {
     &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC,
     &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640,
     &TrackVehicleInfo_8FF2DA, &TrackVehicleInfo_8FF3FC, &TrackVehicleInfo_8FF51E, &TrackVehicleInfo_8FF640, &TrackVehicleInfo_900E52, &TrackVehicleInfo_900F74,
@@ -29587,7 +29587,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BD878[] = {
     &TrackVehicleInfo_901762, &TrackVehicleInfo_901884, &TrackVehicleInfo_9019AF, &TrackVehicleInfo_901AE3,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BDBB8[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BDBB8[] = {
     &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03,
     &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147,
     &TrackVehicleInfo_901DE1, &TrackVehicleInfo_901F03, &TrackVehicleInfo_902025, &TrackVehicleInfo_902147, &TrackVehicleInfo_9034D1, &TrackVehicleInfo_9035F3,
@@ -29625,7 +29625,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BDBB8[] = {
     &TrackVehicleInfo_904284, &TrackVehicleInfo_9042F2, &TrackVehicleInfo_904369, &TrackVehicleInfo_9043E9,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BDEF8[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BDEF8[] = {
     &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884,
     &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8,
     &TrackVehicleInfo_8FF762, &TrackVehicleInfo_8FF884, &TrackVehicleInfo_8FF9A6, &TrackVehicleInfo_8FFAC8, &TrackVehicleInfo_900E52, &TrackVehicleInfo_900F74,
@@ -29663,7 +29663,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BDEF8[] = {
     &TrackVehicleInfo_901762, &TrackVehicleInfo_901884, &TrackVehicleInfo_9019AF, &TrackVehicleInfo_901AE3,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BE238[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BE238[] = {
     &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_904460, &TrackVehicleInfo_904582,
     &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6,
     &TrackVehicleInfo_904460, &TrackVehicleInfo_904582, &TrackVehicleInfo_9046A4, &TrackVehicleInfo_9047C6, &TrackVehicleInfo_9034D1, &TrackVehicleInfo_9035F3,
@@ -29701,7 +29701,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8BE238[] = {
     &TrackVehicleInfo_904284, &TrackVehicleInfo_9042F2, &TrackVehicleInfo_904369, &TrackVehicleInfo_9043E9,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_9334D0[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_9334D0[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -29842,7 +29842,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_9334D0[] = {
     &TrackVehicleInfo_94AE31, &TrackVehicleInfo_94DAEF,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_9341B0[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_9341B0[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -29983,7 +29983,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_9341B0[] = {
     &TrackVehicleInfo_94B0DF, &TrackVehicleInfo_94DD9D,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_934E90[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_934E90[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -30124,7 +30124,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_934E90[] = {
     &TrackVehicleInfo_94B37B, &TrackVehicleInfo_94E039,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_935B70[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_935B70[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -30265,7 +30265,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_935B70[] = {
     &TrackVehicleInfo_94B6B9, &TrackVehicleInfo_94E377,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_936850[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_936850[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -30406,7 +30406,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_936850[] = {
     &TrackVehicleInfo_94BA7E, &TrackVehicleInfo_94E73C,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_937530[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_937530[] = {
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4,
     &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8,
     &TrackVehicleInfo_938212, &TrackVehicleInfo_9382A4, &TrackVehicleInfo_938336, &TrackVehicleInfo_9383C8, &TrackVehicleInfo_938D7A, &TrackVehicleInfo_938E0C,
@@ -30547,7 +30547,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_937530[] = {
     &TrackVehicleInfo_94BE16, &TrackVehicleInfo_94EAD4,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8B9F98[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8B9F98[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,
@@ -30695,7 +30695,7 @@ const rct_vehicle_info_list *TrackVehicleInfoList_8B9F98[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
 };
 
-const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
+static const rct_vehicle_info_list *TrackVehicleInfoList_8BAD28[] = {
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C,
     &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0,
     &TrackVehicleInfo_8BE57A, &TrackVehicleInfo_8BE69C, &TrackVehicleInfo_8BE7BE, &TrackVehicleInfo_8BE8E0, &TrackVehicleInfo_8C232A, &TrackVehicleInfo_8C244C,

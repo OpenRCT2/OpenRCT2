@@ -20,7 +20,7 @@
 #include "map_element/map_element.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
-const rct_xy8 loc_97AF20[] = {
+static const rct_xy8 loc_97AF20[] = {
     {4,  4},
     {28, 4},
     {4,  28},
@@ -76,7 +76,7 @@ static const uint8 _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-const rct_xy16 loc_97B052[] = {
+static const rct_xy16 loc_97B052[] = {
     {-15, -1},
     {0,   -2},
     {-2,  -1},
@@ -88,7 +88,7 @@ const rct_xy16 loc_97B052[] = {
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
-const rct_xy8 _97B062[] = {
+static const rct_xy8 _97B062[] = {
     { 18,  3 },
     {  3, 18 },
     { 18,  3 },
@@ -100,7 +100,7 @@ const rct_xy8 _97B062[] = {
 };
 
 /** rct2: 0x0097B072 */
-const uint32 _metalSupportTypeToCrossbeamImages[][8] = {
+static const uint32 _metalSupportTypeToCrossbeamImages[][8] = {
     { 3370, 3371, 3370, 3371, 3372, 3373, 3372, 3373 }, // METAL_SUPPORTS_TUBES
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK
     { 3374, 3375, 3374, 3375, 3376, 3377, 3376, 3377 }, // METAL_SUPPORTS_FORK_ALT
@@ -186,7 +186,7 @@ typedef struct supports_id_desc {
 } supports_id_desc;
 
 /* 0x0097B1C4 */
-const supports_id_desc WoodenSupportImageIds[] = {
+static const supports_id_desc WoodenSupportImageIds[] = {
     { 3392, 3393, 3394, 3536 },
     { 3390, 3391, 3394, 3514 },
     { 3558, 3559, 3560, 3570 },
@@ -202,7 +202,7 @@ const supports_id_desc WoodenSupportImageIds[] = {
 };
 
 /* 0x0097B224 */
-const uint16 WoodenCurveSupportImageIds[] = {
+static const uint16 WoodenCurveSupportImageIds[] = {
     3465,
     3465,
     0,
@@ -233,7 +233,7 @@ typedef struct unk_supports_desc {
 } unk_supports_desc;
 
 /* 0x0097B23C */
-const unk_supports_desc byte_97B23C[] = {
+static const unk_supports_desc byte_97B23C[] = {
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
     {{{0,  0,  0}, {1,  1,  8}},  0, 1},
@@ -294,7 +294,7 @@ static const unk_supports_desc byte_98D8D4[] = {
 };
 
 /* 0x0097B3C4 */
-const uint16 word_97B3C4[] = {
+static const uint16 word_97B3C4[] = {
     0,
     0,
     1,

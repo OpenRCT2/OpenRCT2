@@ -45,7 +45,7 @@ static struct {
 
 #pragma region Random objects
 
-const char *GrassTrees[] = {
+static const char *GrassTrees[] = {
     // Dark
     "TCF     ",     // Caucasian Fir Tree
     "TRF     ",     // Red Fir Tree
@@ -61,12 +61,7 @@ const char *GrassTrees[] = {
     "TEL     ",     // European Larch Tree
 };
 
-// Trees to be placed in proximity to water
-const char *GrassWaterTrees[] = {
-    "TWW     "      // Weeping Willow Tree
-};
-
-const char *DesertTrees[] = {
+static const char *DesertTrees[] = {
     "TMP     ",     // Monkey-Puzzle Tree
     "THL     ",     // Honey Locust Tree
     "TH1     ",     // Canary Palm Tree
@@ -77,7 +72,7 @@ const char *DesertTrees[] = {
     "TSC     ",     // Cactus
 };
 
-const char *SnowTrees[] = {
+static const char *SnowTrees[] = {
     "TCFS    ",     // Snow-covered Caucasian Fir Tree
     "TNSS    ",     // Snow-covered Norway Spruce Tree
     "TRF3    ",     // Snow-covered Red Fir Tree
@@ -87,7 +82,7 @@ const char *SnowTrees[] = {
 #pragma endregion
 
 // Randomly chosen base terrains. We rarely want a whole map made out of chequerboard or rock.
-const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
+static const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LIGHT, TERRAIN_DIRT, TERRAIN_ICE };
 
 #define BLOB_HEIGHT 255
 
