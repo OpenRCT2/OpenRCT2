@@ -595,7 +595,7 @@ void mapgen_generate_trees(mapgen_settings * settings)
             if (numDesertTreeIds == 0)
                 break;
 
-            if (util_rand() % 4 == 0)
+            if (util_rand() % 3 == 0)
                 type = desertTreeIds[util_rand() % numDesertTreeIds];
             break;
 
