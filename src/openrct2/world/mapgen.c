@@ -86,7 +86,7 @@ static const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_L
 
 #define BLOB_HEIGHT 255
 
-static void mapgen_place_trees();
+static void mapgen_place_trees(mapgen_settings *settings);
 static void mapgen_set_water_level(sint32 height);
 static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight);
 static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height);
@@ -264,7 +264,7 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
-void mapgen_place_trees(mapgen_settings * settings)
+static void mapgen_place_trees(mapgen_settings * settings)
 {
     // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
     // thus preventing need to regenerate terrain for a new forest.
