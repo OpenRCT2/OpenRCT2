@@ -75,7 +75,6 @@ static const format_code_token format_code_tokens[] = {
     { FORMAT_LIGHTPINK,                 "LIGHTPINK"             },
     { FORMAT_PEARLAQUA,                 "PEARLAQUA"             },
     { FORMAT_PALESILVER,                "PALESILVER"            },
-    { FORMAT_AMINUSCULE,                "AMINUSCULE"            },
     { FORMAT_UP,                        "UP"                    },
     { FORMAT_POUND,                     "POUND"                 },
     { FORMAT_YEN,                       "YEN"                   },
