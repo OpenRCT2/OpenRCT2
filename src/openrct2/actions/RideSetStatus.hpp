@@ -25,6 +25,13 @@
 #include "../world/park.h"
 #include "../ride/ride.h"
 
+static rct_string_id _StatusErrorTitles[] =
+{
+    STR_CANT_CLOSE,
+    STR_CANT_OPEN,
+    STR_CANT_TEST
+};
+
 struct RideSetStatusAction : public GameActionBase<GAME_COMMAND_SET_RIDE_STATUS, GameActionResult>
 {
 private:
@@ -53,10 +60,41 @@ public:
 
     GameActionResult::Ptr Query() const override
     {
+        GameActionResult::Ptr res = std::make_unique<GameActionResult>();
+        Ride *ride = get_ride(_rideIndex);
+        res->ErrorTitle = _StatusErrorTitles[_status];
+        set_format_arg_on(res->ErrorMessageArgs, 6, rct_string_id, ride->name);
+        set_format_arg_on(res->ErrorMessageArgs, 8, uint32, ride->name_arguments);
+
         if (_rideIndex >= MAX_RIDES || _rideIndex < 0)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            return res;
+        }
+
+        if (_status != ride->status)
+        {
+            if (_status == RIDE_STATUS_TESTING)
+            {
+                if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+                {
+                    log_warning("Ride %u not valid for test", _rideIndex);
+                    res->Error = GA_ERROR::UNKNOWN;
+                    res->ErrorMessage = gGameCommandErrorText;
+                    return res;
+                }
+            }
+            else if (_status == RIDE_STATUS_OPEN) {
+                if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
+                {
+                    log_warning("Ride %u not valid for open", _rideIndex);
+                    res->Error = GA_ERROR::UNKNOWN;
+                    res->ErrorMessage = gGameCommandErrorText;
+                    return res;
+                }
+            }
         }
         return std::make_unique<GameActionResult>();
     }
@@ -67,11 +105,16 @@ public:
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_RUNNING_COSTS;
 
         Ride *ride = get_ride(_rideIndex);
+        res->ErrorTitle = _StatusErrorTitles[_status];
+        set_format_arg_on(res->ErrorMessageArgs, 6, rct_string_id, ride->name);
+        set_format_arg_on(res->ErrorMessageArgs, 8,uint32, ride->name_arguments);
 
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_INVALID_SELECTION_OF_OBJECTS);
+            res->Error = GA_ERROR::INVALID_PARAMETERS;
+            res->ErrorMessage = STR_INVALID_SELECTION_OF_OBJECTS;
+            return res;
         }
 
         if (ride->overall_view.xy != RCT_XY8_UNDEFINED) 
@@ -119,13 +162,17 @@ public:
                 {
                     if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                     {
-                        //*ebx = MONEY32_UNDEFINED;
+                        log_warning("Ride %u not valid for test", _rideIndex);
+                        res->Error = GA_ERROR::UNKNOWN;
+                        res->ErrorMessage = gGameCommandErrorText;
                         return res;
                     }
                 }
                 else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                 {
-                    //*ebx = MONEY32_UNDEFINED;
+                    log_warning("Ride %u not valid for open", _rideIndex);
+                    res->Error = GA_ERROR::UNKNOWN;
+                    res->ErrorMessage = gGameCommandErrorText;
                     return res;
                 }
 

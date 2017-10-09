@@ -37,6 +37,21 @@ GameActionResult::GameActionResult(GA_ERROR error, rct_string_id message)
     ErrorMessage = message;
 }
 
+GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message)
+{
+    Error = error;
+    ErrorTitle = title;
+    ErrorMessage = message;
+}
+
+GameActionResult::GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8 * args)
+{
+    Error = error;
+    ErrorTitle = title;
+    ErrorMessage = message;
+    Memory::CopyArray(ErrorMessageArgs, args, Util::CountOf(ErrorMessageArgs));
+}
+
 namespace GameActions
 {
     static GameActionFactory _actions[GAME_COMMAND_COUNT];

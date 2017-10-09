@@ -73,13 +73,15 @@ public:
     GA_ERROR        Error = GA_ERROR::OK;
     rct_string_id   ErrorTitle = (rct_string_id)-1;
     rct_string_id   ErrorMessage = (rct_string_id)-1;
-    uint8           ErrorMessageArgs[8] = { 0 };
+    uint8           ErrorMessageArgs[12] = { 0 };
     rct_xyz32       Position = { 0 };
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
 
     GameActionResult();
     GameActionResult(GA_ERROR error, rct_string_id message);
+    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message);
+    GameActionResult(GA_ERROR error, rct_string_id title, rct_string_id message, uint8 * args);
     GameActionResult(const GameActionResult&) = delete;
     virtual ~GameActionResult() {};
 };
