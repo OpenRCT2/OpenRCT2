@@ -160,16 +160,19 @@ namespace OpenRCT2 { namespace Ui
                 std::string output;
                 if (Execute(cmd, &output) == 0)
                 {
+                    // The default file extension is taken from the **first** available filter, since
+                    // we cannot obtain it from zenity's output. This means that the FileDialogDesc::Filters
+                    // array must be carefully populated, at least the first element.
                     std::string pattern = desc.Filters[0].Pattern;
-                    std::string extension = pattern.substr(pattern.find_last_of('.'));    // Derive the extension from the first filter's pattern
-                    int dotPosition = output.size()-extension.size();                    // Compute where the dot of the extension is supposed to be
-                    if (output.substr(dotPosition, extension.size()).compare(extension) == 0)    // Check if the extension is present
+                    std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
+                    int dotPosition = output.size() - extension.size();
+                    if (output.substr(dotPosition, defaultExtension.size()).compare(defaultExtension) == 0)
                     {
-                        result = output;                                                // If it is, the path is complete
+                        result = output;
                     }
                     else
                     {
-                        result = output.append(extension);                                // If not, append the extension
+                        result = output.append(defaultExtension);
                     }
                 }
                 break;
