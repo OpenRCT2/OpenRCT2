@@ -10830,7 +10830,7 @@ static void peep_update_ride_nausea_growth(rct_peep *peep, Ride *ride)
     uint32 nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
     nauseaGrowthRateChange *= max(128, peep->hunger) / 64;
     nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
-    peep->nausea_target = (uint8)clamp(0, peep->nausea_target + nauseaGrowthRateChange, 255);
+    peep->nausea_target = (uint8)max(peep->nausea_target + nauseaGrowthRateChange, 255);
 }
 
 static bool peep_should_go_on_ride_again(rct_peep *peep, Ride *ride)
