@@ -28,6 +28,50 @@
 extern "C" {
 #endif
 
+typedef enum RCT2Polish
+{
+    RCT2_A_OGONEK_UC = 0x9F,
+    RCT2_C_ACUTE_UC = 0xA2,
+    RCT2_E_OGONEK_UC = 0xA6,
+    RCT2_N_ACUTE_UC = 0xC6,
+    RCT2_L_STROKE_UC = 0xA7,
+    RCT2_S_ACUTE_UC = 0xD0,
+    RCT2_Z_DOT_UC = 0xD8,
+    RCT2_Z_ACUTE_UC = 0xD7,
+
+    RCT2_A_OGONEK = 0xDD,
+    RCT2_C_ACUTE = 0xDE,
+    RCT2_E_OGONEK = 0xE6,
+    RCT2_N_ACUTE = 0xF0,
+    RCT2_L_STROKE = 0xF7,
+    RCT2_S_ACUTE = 0xF8,
+    RCT2_Z_DOT = 0xFD,
+    RCT2_Z_ACUTE = 0xFE,
+}
+RCT2Polish;
+
+typedef enum UnicodePolish
+{
+    UNICODE_A_OGONEK_UC = 260,
+    UNICODE_C_ACUTE_UC = 262,
+    UNICODE_E_OGONEK_UC = 280,
+    UNICODE_N_ACUTE_UC = 323,
+    UNICODE_L_STROKE_UC = 321,
+    UNICODE_S_ACUTE_UC = 346,
+    UNICODE_Z_DOT_UC = 379,
+    UNICODE_Z_ACUTE_UC = 377,
+
+    UNICODE_A_OGONEK = 261,
+    UNICODE_C_ACUTE = 263,
+    UNICODE_E_OGONEK = 281,
+    UNICODE_N_ACUTE = 324,
+    UNICODE_L_STROKE = 322,
+    UNICODE_S_ACUTE = 347,
+    UNICODE_Z_DOT = 380,
+    UNICODE_Z_ACUTE = 378,
+}
+UnicodePolish;
+
 bool utf8_is_format_code(sint32 codepoint);
 bool utf8_is_colour_code(sint32 codepoint);
 bool utf8_should_use_sprite_for_codepoint(sint32 codepoint);

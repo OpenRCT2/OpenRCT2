@@ -95,6 +95,25 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     case FORMAT_SMALLDOWN: return 189 - 32;
     case FORMAT_LEFT: return 190 - 32;
     case FORMAT_INVERTEDQUESTION: return 191 - 32;
+
+    case UNICODE_A_OGONEK_UC: return RCT2_A_OGONEK_UC - 32;
+    case UNICODE_C_ACUTE_UC: return RCT2_C_ACUTE_UC - 32;
+    case UNICODE_E_OGONEK_UC: return RCT2_E_OGONEK_UC - 32;
+    case UNICODE_N_ACUTE_UC: return RCT2_N_ACUTE_UC - 32;
+    case UNICODE_L_STROKE_UC: return RCT2_L_STROKE_UC - 32;
+    case UNICODE_S_ACUTE_UC: return RCT2_S_ACUTE_UC - 32;
+    case UNICODE_Z_DOT_UC: return RCT2_Z_DOT_UC - 32;
+    case UNICODE_Z_ACUTE_UC: return RCT2_Z_ACUTE_UC - 32;
+
+    case UNICODE_A_OGONEK: return RCT2_A_OGONEK - 32;
+    case UNICODE_C_ACUTE: return RCT2_C_ACUTE - 32;
+    case UNICODE_E_OGONEK: return RCT2_E_OGONEK - 32;
+    case UNICODE_N_ACUTE: return RCT2_N_ACUTE - 32;
+    case UNICODE_L_STROKE: return RCT2_L_STROKE - 32;
+    case UNICODE_S_ACUTE: return RCT2_S_ACUTE - 32;
+    case UNICODE_Z_DOT: return RCT2_Z_DOT - 32;
+    case UNICODE_Z_ACUTE: return RCT2_Z_ACUTE - 32;
+
     default:
         if (codepoint < 32 || codepoint >= 256) codepoint = '?';
         return codepoint - 32;
