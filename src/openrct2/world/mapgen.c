@@ -483,6 +483,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
     }
 
     sint32 treesRemoved = 0;
+    sint32 randIncrement = util_rand() % 1000;
+    sint32 rand = 0;
+
     // After list has been fully completed, remove trees surrounded by other trees.
     for (sint32 i = 0; i < availablePositionsCount; i++) {
         pos = &availablePositions[i];
@@ -530,12 +533,16 @@ void mapgen_generate_trees(mapgen_settings * settings)
             }
         }
 
-        if ((nearbyTrees >= 4) ||
-            (nearbyTrees >= 2 && (util_rand() % 2 == 0))) {
+
+        rand = (rand + randIncrement) % 100;
+        
+        if (
+            ((nearbyTrees >= 4) && (rand > 30)) ||
+            ((nearbyTrees >= 2) && (rand > 60))
+        ) {
             pos->tree = false;
             treesRemoved++;
         }
-
     }
 
     log_info("%d trees were removed due to neighboring positions", treesRemoved);
@@ -563,10 +570,15 @@ void mapgen_generate_trees(mapgen_settings * settings)
 
         sint32 type = -1;
         rct_map_element *mapElement = map_get_surface_element_at(pos->x + 1, pos->y + 1);
+        
+        // If this is triggered, there is likely a pos to map conversion problem somewhere.
+        // Make sure x is never incremented unless being handled by a mapElement.
+        // TODO: If this if statement no longer persists, remove it
         if (mapElement == NULL) {
             log_info("Map element at %d, %d was null", pos->x + 1, pos->y + 1);
             continue;
         }
+
         switch (map_element_get_terrain(mapElement)) {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
