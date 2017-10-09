@@ -9,6 +9,7 @@
 - Feature: [#6324] Add command to deselect unused objects from the object selection.
 - Feature: [#6325] Allow using g1.dat from RCT Classic.
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
+- Feature: [#6411] Add command to remove the park fence.
 - Feature: Allow using object files from RCT Classic.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
