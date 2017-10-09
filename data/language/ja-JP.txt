@@ -1171,9 +1171,9 @@ STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
 STR_1166    :Can't lower water level here...
 STR_1167    :Can't raise water level here...
 STR_1168    :設定
-STR_1169    :(None)
+STR_1169    :(なし)
 STR_1170    :{STRING}
-STR_1171    :{RED}Closed - - 
+STR_1171    :{RED}閉鎖中 - - 
 STR_1172    :{YELLOW}{STRINGID} - - 
 STR_1173    :{SMALLFONT}{BLACK}Build footpaths and queue lines
 STR_1174    :Banner sign in the way
@@ -1196,16 +1196,16 @@ STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
 STR_1191    :{BLACK}{STRINGID}
 STR_1192    :{OUTLINE}{RED}{STRINGID}
 STR_1193    :{WINDOW_COLOUR_2}{STRINGID}
-STR_1194    :Closed
-STR_1195    :Test Run
-STR_1196    :Open
-STR_1197    :Broken Down
-STR_1198    :Crashed!
-STR_1199    :{COMMA16} person on ride
-STR_1200    :{COMMA16} people on ride
+STR_1194    :閉鎖中
+STR_1195    :試験中
+STR_1196    :稼働中
+STR_1197    :故障中
+STR_1198    :クラッシュ！
+STR_1199    :{COMMA16}人の乗客
+STR_1200    :{COMMA16}人の乗客
 STR_1201    :Nobody in queue line
-STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
+STR_1202    :1人の行列
+STR_1203    :{COMMA16}人の行列
 STR_1204    :{COMMA16} minute queue time
 STR_1205    :{COMMA16} minutes queue time
 STR_1206    :{WINDOW_COLOUR_2}発車待ち:
@@ -1219,7 +1219,7 @@ STR_1213    :{SMALLFONT}{BLACK}Select minimum length of time to wait before depa
 STR_1214    :{SMALLFONT}{BLACK}Select maximum length of time to wait before departing
 STR_1215    :{WINDOW_COLOUR_2}Synchronise with adjacent stations
 STR_1216    :{SMALLFONT}{BLACK}Select whether to synchronise departure with all adjacent stations (for 'racing')
-STR_1217    :{COMMA16} seconds
+STR_1217    :{COMMA16}分
 STR_1218    :{BLACK}{SMALLUP}
 STR_1219    :{BLACK}{SMALLDOWN}
 STR_1220    :Exit only
@@ -1458,9 +1458,9 @@ STR_1452    :来客の名前
 STR_1453    :来客の名前を入力してください:
 STR_1454    :Can't name guest...
 STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
+STR_1456    :{WINDOW_COLOUR_2}使ったお金: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}ポケットマネー: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}パーク滞在時間: {BLACK}{REALTIME}
 STR_1459    :Track style
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
@@ -1473,15 +1473,15 @@ STR_1467    :大きい螺旋 (下)
 STR_1468    :スタッフ
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
-STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
-STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
-STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
-STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
-STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
+STR_1471    :{WINDOW_COLOUR_2}速度:
+STR_1472    :{SMALLFONT}{BLACK}ライドの速度
+STR_1473    :{WINDOW_COLOUR_2}興奮度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1474    :{WINDOW_COLOUR_2}興奮度: {BLACK}まだ結果がない
+STR_1475    :{WINDOW_COLOUR_2}強烈度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1476    :{WINDOW_COLOUR_2}強烈度: {BLACK}まだ結果がない
+STR_1477    :{WINDOW_COLOUR_2}強烈度: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
+STR_1478    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}{COMMA2DP32}  ({STRINGID})
+STR_1479    :{WINDOW_COLOUR_2}ゲロ度: {BLACK}まだ結果がない
 STR_1480    :{SMALLFONT}「{STRINGID}には手が出ない」
 STR_1481    :{SMALLFONT}「お金をすべて使っちゃった…」
 STR_1482    :{SMALLFONT}「気分が悪い…」
@@ -1733,7 +1733,7 @@ STR_1726    :Land not for sale!
 STR_1727    :Construction rights not for sale!
 STR_1728    :Can't buy construction rights here...
 STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1730    :{RED}閉鎖中 - - 
 STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Build
 STR_1733    :モード
@@ -1760,15 +1760,15 @@ STR_1753    :{SMALLFONT}{BLACK}Show summarised list of guests in park
 STR_1754    :{BLACK}{COMMA16} 来客
 STR_1755    :{BLACK}{COMMA16} 来客
 STR_1756    :{WINDOW_COLOUR_2}入場料:
-STR_1757    :{WINDOW_COLOUR_2}Reliability: {MOVE_X}{255}{BLACK}{COMMA16}%
+STR_1757    :{WINDOW_COLOUR_2}信頼度: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1758    :{SMALLFONT}{BLACK}Build mode
 STR_1759    :{SMALLFONT}{BLACK}Move mode
 STR_1760    :{SMALLFONT}{BLACK}Fill-in mode
 STR_1761    :{SMALLFONT}{BLACK}Build maze in this direction
-STR_1762    :Waterfalls
-STR_1763    :Rapids
+STR_1762    :ウォーター・フォール
+STR_1763    :急流
 STR_1764    :Log Bumps
-STR_1765    :On-ride photo section
+STR_1765    :フォト・セクション
 STR_1766    :Reverser turntable
 STR_1767    :Spinning tunnel
 STR_1768    :Can't change number of swings...
@@ -1801,16 +1801,16 @@ STR_1794    :Fixing {STRINGID}
 STR_1795    :Answering radio call
 STR_1796    :Has broken down and requires fixing
 STR_1797    :This option cannot be changed for this ride
-STR_1798    :Whirlpool
+STR_1798    :回転プール
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
-STR_1800    :Safety cut-out
-STR_1801    :Restraints stuck closed
-STR_1802    :Restraints stuck open
-STR_1803    :Doors stuck closed
-STR_1804    :Doors stuck open
-STR_1805    :Vehicle malfunction
-STR_1806    :Brakes failure
-STR_1807    :Control failure
+STR_1800    :非常停止
+STR_1801    :制限　稼働に失敗
+STR_1802    :制限　閉鎖に失敗
+STR_1803    :ドアを開くことに失敗した
+STR_1804    :ドアを閉めることに失敗した
+STR_1805    :車両が失敗した
+STR_1806    :ブレーキが故障した
+STR_1807    :コントロールが故障した
 STR_1808    :{WINDOW_COLOUR_2}Last breakdown: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}Current breakdown: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}Carrying:
@@ -1829,7 +1829,7 @@ STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
 STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
 STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
 STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
-STR_1826    :Status
+STR_1826    :ステータス
 STR_1827    :人気度
 STR_1828    :満足度
 STR_1829    :利益
@@ -1852,16 +1852,16 @@ STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA16}人の来客
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}人の来客
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
-STR_1849    :{WINDOW_COLOUR_2}Play music
-STR_1850    :{SMALLFONT}{BLACK}Select whether music should be played for this ride
-STR_1851    :{WINDOW_COLOUR_2}Running cost: {BLACK}{CURRENCY2DP} per hour
-STR_1852    :{WINDOW_COLOUR_2}Running cost: {BLACK}Unknown
-STR_1853    :{WINDOW_COLOUR_2}Built: {BLACK}This Year
-STR_1854    :{WINDOW_COLOUR_2}Built: {BLACK}Last Year
-STR_1855    :{WINDOW_COLOUR_2}Built: {BLACK}{COMMA16} Years Ago
-STR_1856    :{WINDOW_COLOUR_2}Profit per item sold: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}Loss per item sold: {BLACK}{CURRENCY2DP}
-STR_1858    :{WINDOW_COLOUR_2}コスト: {BLACK}{CURRENCY2DP} per month
+STR_1849    :{WINDOW_COLOUR_2}音楽を流す
+STR_1850    :{SMALLFONT}{BLACK}このライドで流す音楽の選択
+STR_1851    :{WINDOW_COLOUR_2}維持費: {BLACK}{CURRENCY2DP} 時間あたり
+STR_1852    :{WINDOW_COLOUR_2}維持費: {BLACK}Unknown
+STR_1853    :{WINDOW_COLOUR_2}建設: {BLACK}今年
+STR_1854    :{WINDOW_COLOUR_2}建設: {BLACK}昨年
+STR_1855    :{WINDOW_COLOUR_2}建設: {BLACK}{COMMA16}年前
+STR_1856    :{WINDOW_COLOUR_2}itemからの収益: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}itemからの損失: {BLACK}{CURRENCY2DP}
+STR_1858    :{WINDOW_COLOUR_2}毎月コスト: {BLACK}{CURRENCY2DP}
 STR_1859    :清掃員
 STR_1860    :整備士
 STR_1861    :警備員
@@ -1876,8 +1876,8 @@ STR_1869    :{WINDOW_COLOUR_2}回転数:
 STR_1870    :{SMALLFONT}{BLACK}Number of complete rotations
 STR_1871    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1872    :{COMMA16}
-STR_1873    :{WINDOW_COLOUR_2}Income: {BLACK}{CURRENCY2DP} per hour
-STR_1874    :{WINDOW_COLOUR_2}Profit: {BLACK}{CURRENCY2DP} per hour
+STR_1873    :{WINDOW_COLOUR_2}毎時収入: {BLACK}{CURRENCY2DP}
+STR_1874    :{WINDOW_COLOUR_2}毎時利潤: {BLACK}{CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}Inspect Rides
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}Fix Rides
@@ -1900,8 +1900,8 @@ STR_1891    :No {STRINGID} in park yet!
 STR_1892    :<removed string - do not use>
 STR_1893    :<removed string - do not use>
 STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sold: {BLACK}{COMMA32}
-STR_1895    :{SMALLFONT}{BLACK}Build new ride/attraction
-STR_1896    :{WINDOW_COLOUR_2}Expenditure/Income
+STR_1895    :{SMALLFONT}{BLACK}ライド建設費
+STR_1896    :{WINDOW_COLOUR_2}支出／収入
 STR_1897    :{WINDOW_COLOUR_2}ライド建設費
 STR_1898    :{WINDOW_COLOUR_2}ライド運営費
 STR_1899    :{WINDOW_COLOUR_2}土地購入費
@@ -1916,7 +1916,7 @@ STR_1907    :{WINDOW_COLOUR_2}スタッフ月給
 STR_1908    :{WINDOW_COLOUR_2}広告宣伝費
 STR_1909    :{WINDOW_COLOUR_2}研究開発
 STR_1910    :{WINDOW_COLOUR_2}借入金利
-STR_1911    :{BLACK} at {COMMA16}% per year
+STR_1911    :{BLACK} ({COMMA16}% 1年当たり)
 STR_1912    :{MONTH}
 STR_1913    :{BLACK}+{CURRENCY2DP}
 STR_1914    :{BLACK}{CURRENCY2DP}
@@ -1932,8 +1932,8 @@ STR_1923    :{SMALLFONT}{BLACK}チュートリアル
 STR_1924    :{SMALLFONT}{BLACK}終了
 STR_1925    :ここに人を置けない...
 STR_1926    :{SMALLFONT}
-STR_1927    :{YELLOW}{STRINGID} has broken down
-STR_1928    :{RED}{STRINGID} has crashed!
+STR_1927    :{YELLOW}{STRINGID}は壊れています。
+STR_1928    :{RED}{STRINGID}がクラッシュしました！
 STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
 STR_1931    :{STRINGID} has joined the queue line for {STRINGID}
@@ -1954,8 +1954,8 @@ STR_1945    :{SMALLFONT}{BLACK}Show orders and options for this staff member
 STR_1946    :{SMALLFONT}{BLACK}Select costume for this entertainer
 STR_1947    :{SMALLFONT}{BLACK}Show areas patrolled by selected staff type, and locate the nearest staff member
 STR_1948    :{SMALLFONT}{BLACK}Hire a new staff member of the selected type
-STR_1949    :Financial Summary
-STR_1950    :Financial Graph
+STR_1949    :財務の報告
+STR_1950    :財務のグラフ
 STR_1951    :Park Value Graph
 STR_1952    :Profit Graph
 STR_1953    :Marketing
@@ -1965,38 +1965,38 @@ STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
 STR_1959    :Can't change number of circuits...
-STR_1960    :{WINDOW_COLOUR_2}Balloon price:
-STR_1961    :{WINDOW_COLOUR_2}Cuddly Toy price:
-STR_1962    :{WINDOW_COLOUR_2}Park Map price:
-STR_1963    :{WINDOW_COLOUR_2}On-Ride Photo price:
-STR_1964    :{WINDOW_COLOUR_2}Umbrella price:
-STR_1965    :{WINDOW_COLOUR_2}Drink price:
-STR_1966    :{WINDOW_COLOUR_2}Burger price:
-STR_1967    :{WINDOW_COLOUR_2}Chips price:
-STR_1968    :{WINDOW_COLOUR_2}Ice Cream price:
-STR_1969    :{WINDOW_COLOUR_2}Candyfloss price:
+STR_1960    :{WINDOW_COLOUR_2}風船の価格:
+STR_1961    :{WINDOW_COLOUR_2}縫い包みの価格:
+STR_1962    :{WINDOW_COLOUR_2}パークの地図の価格:
+STR_1963    :{WINDOW_COLOUR_2}ライドフォトの価格:
+STR_1964    :{WINDOW_COLOUR_2}傘の価格:
+STR_1965    :{WINDOW_COLOUR_2}飲み物の価格:
+STR_1966    :{WINDOW_COLOUR_2}ハンバーガーの価格:
+STR_1967    :{WINDOW_COLOUR_2}フライドポテトの価格:
+STR_1968    :{WINDOW_COLOUR_2}ソフトクリームの価格:
+STR_1969    :{WINDOW_COLOUR_2}綿菓子の価格:
 STR_1970    :{WINDOW_COLOUR_2}
 STR_1971    :{WINDOW_COLOUR_2}
 STR_1972    :{WINDOW_COLOUR_2}
-STR_1973    :{WINDOW_COLOUR_2}Pizza price:
+STR_1973    :{WINDOW_COLOUR_2}ピザの価格:
 STR_1974    :{WINDOW_COLOUR_2}
-STR_1975    :{WINDOW_COLOUR_2}Popcorn price:
-STR_1976    :{WINDOW_COLOUR_2}Hot Dog price:
-STR_1977    :{WINDOW_COLOUR_2}Tentacle price:
-STR_1978    :{WINDOW_COLOUR_2}Hat price:
-STR_1979    :{WINDOW_COLOUR_2}Toffee Apple price:
-STR_1980    :{WINDOW_COLOUR_2}T-Shirt price:
-STR_1981    :{WINDOW_COLOUR_2}Doughnut price:
-STR_1982    :{WINDOW_COLOUR_2}Coffee price:
+STR_1975    :{WINDOW_COLOUR_2}ポップコーンの価格:
+STR_1976    :{WINDOW_COLOUR_2}ホットドッグの価格:
+STR_1977    :{WINDOW_COLOUR_2}触手の価格:
+STR_1978    :{WINDOW_COLOUR_2}帽子の価格:
+STR_1979    :{WINDOW_COLOUR_2}リンゴ飴の価格:
+STR_1980    :{WINDOW_COLOUR_2}Tシャツの価格:
+STR_1981    :{WINDOW_COLOUR_2}ドーナツの価格:
+STR_1982    :{WINDOW_COLOUR_2}コーヒーの価格:
 STR_1983    :{WINDOW_COLOUR_2}
-STR_1984    :{WINDOW_COLOUR_2}Fried Chicken price:
-STR_1985    :{WINDOW_COLOUR_2}Lemonade price:
+STR_1984    :{WINDOW_COLOUR_2}フライドチキンの価格:
+STR_1985    :{WINDOW_COLOUR_2}レモネードの価格:
 STR_1986    :{WINDOW_COLOUR_2}
 STR_1987    :{WINDOW_COLOUR_2}
 STR_1988    :風船
-STR_1989    :Cuddly Toy
-STR_1990    :地図
-STR_1991    :On-Ride Photo
+STR_1989    :縫い包み
+STR_1990    :パークの地図
+STR_1991    :ライドフォト
 STR_1992    :傘
 STR_1993    :飲み物
 STR_1994    :ハンバーガー
@@ -2005,14 +2005,14 @@ STR_1996    :ソフトクリーム
 STR_1997    :綿菓子
 STR_1998    :空き缶
 STR_1999    :ゴミ
-STR_2000    :Empty Burger Box
+STR_2000    :空のバーガーボックス
 STR_2001    :ピザ
-STR_2002    :Voucher
+STR_2002    :クーポン
 STR_2003    :ポップコーン
 STR_2004    :ホットドッグ
-STR_2005    :Tentacle
+STR_2005    :触手
 STR_2006    :帽子
-STR_2007    :Toffee Apple
+STR_2007    :リンゴ飴
 STR_2008    :Tシャツ
 STR_2009    :ドーナツ
 STR_2010    :コーヒー
@@ -2022,9 +2022,9 @@ STR_2013    :レモネード
 STR_2014    :空の箱
 STR_2015    :空き瓶
 STR_2016    :風船
-STR_2017    :Cuddly Toys
+STR_2017    :縫い包み
 STR_2018    :地図
-STR_2019    :On-Ride Photos
+STR_2019    :ライドフォト
 STR_2020    :傘
 STR_2021    :ドリンク
 STR_2022    :バーガー
@@ -2033,27 +2033,27 @@ STR_2024    :ソフトクリーム
 STR_2025    :綿菓子
 STR_2026    :空き缶
 STR_2027    :ごみ
-STR_2028    :Empty Burger Boxes
+STR_2028    :空のバーガーボックス
 STR_2029    :ピザ
 STR_2030    :無料券
 STR_2031    :ポップコーン
 STR_2032    :ホットドッグ
-STR_2033    :Tentacles
+STR_2033    :触手
 STR_2034    :帽子
-STR_2035    :Toffee Apples
+STR_2035    :リンゴ飴
 STR_2036    :ティーシャツ
 STR_2037    :ドーナツ
 STR_2038    :コーヒー
 STR_2039    :Empty Cups
 STR_2040    :フライドチキン
 STR_2041    :レモネード
-STR_2042    :Empty Boxes
+STR_2042    :空のボックス
 STR_2043    :空き瓶
-STR_2044    :a Balloon
-STR_2045    :a Cuddly Toy
-STR_2046    :a Park Map
-STR_2047    :an On-Ride Photo
-STR_2048    :an Umbrella
+STR_2044    :風船
+STR_2045    :縫い包み
+STR_2046    :パークの地図
+STR_2047    :ライドフォト
+STR_2048    :傘
 STR_2049    :ドリンク
 STR_2050    :バーガー
 STR_2051    :some Chips
@@ -2061,9 +2061,9 @@ STR_2052    :アイスクリーム
 STR_2053    :some Candyfloss
 STR_2054    :an Empty Can
 STR_2055    :くず
-STR_2056    :an Empty Burger Box
+STR_2056    :空のバーガーボックス
 STR_2057    :ピザ
-STR_2058    :a Voucher
+STR_2058    :クーポン
 STR_2059    :ポップコーン
 STR_2060    :ホットドッグ
 STR_2061    :a Tentacle
@@ -2075,13 +2075,13 @@ STR_2066    :コーヒー
 STR_2067    :an Empty Cup
 STR_2068    :フライドチキン
 STR_2069    :レモネード
-STR_2070    :an Empty Box
-STR_2071    :an Empty Bottle
-STR_2072    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Balloon
-STR_2073    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Cuddly Toy
-STR_2074    :{STRINGID}の地図
-STR_2075    :On-Ride Photo of {STRINGID}
-STR_2076    :{OPENQUOTES}{STRINGID}{ENDQUOTES} Umbrella
+STR_2070    :空のボックス
+STR_2071    :空き瓶
+STR_2072    :「{STRINGID}」の風船
+STR_2073    :「{STRINGID}」の縫い包み
+STR_2074    :「{STRINGID}」の地図
+STR_2075    :「{STRINGID}」のライドフォト
+STR_2076    :「{STRINGID}」の傘
 STR_2077    :飲み物
 STR_2078    :ハンバーガー
 STR_2079    :フライドポテト
@@ -2089,7 +2089,7 @@ STR_2080    :ソフトクリーム
 STR_2081    :綿菓子
 STR_2082    :空き缶
 STR_2083    :ゴミ
-STR_2084    :Empty Burger Box
+STR_2084    :空のボックス
 STR_2085    :ピザ
 STR_2086    :{STRINGID}の無料券
 STR_2087    :ポップコーン
@@ -2125,7 +2125,7 @@ STR_2116    :{WINDOW_COLOUR_2}クッキーの価格:
 STR_2117    :{WINDOW_COLOUR_2}
 STR_2118    :{WINDOW_COLOUR_2}
 STR_2119    :{WINDOW_COLOUR_2}
-STR_2120    :{WINDOW_COLOUR_2}Roast Sausage price:
+STR_2120    :{WINDOW_COLOUR_2}ローストソーセージの価格:
 STR_2121    :{WINDOW_COLOUR_2}
 STR_2122    :ライドフォト
 STR_2123    :ライドフォト
@@ -2144,55 +2144,55 @@ STR_2135    :豆乳
 STR_2136    :スジョングァ
 STR_2137    :サンドイッチ
 STR_2138    :クッキー
-STR_2139    :Empty Bowl
-STR_2140    :Empty Drink Carton
-STR_2141    :Empty Juice Cup
-STR_2142    :Roast Sausage
-STR_2143    :Empty Bowl
-STR_2144    :On-Ride Photos
-STR_2145    :On-Ride Photos
-STR_2146    :On-Ride Photos
-STR_2147    :Pretzels
-STR_2148    :Hot Chocolates
-STR_2149    :Iced Teas
-STR_2150    :Funnel Cakes
-STR_2151    :Sunglasses
-STR_2152    :Beef Noodles
-STR_2153    :Fried Rice Noodles
-STR_2154    :Wonton Soups
-STR_2155    :Meatball Soups
-STR_2156    :Fruit Juices
-STR_2157    :Soybean Milks
-STR_2158    :Sujongkwa
-STR_2159    :Sub Sandwiches
-STR_2160    :Cookies
-STR_2161    :Empty Bowls
-STR_2162    :Empty Drink Cartons
-STR_2163    :Empty Juice cups
-STR_2164    :Roast Sausages
-STR_2165    :Empty Bowls
-STR_2166    :an On-Ride Photo
-STR_2167    :an On-Ride Photo
-STR_2168    :an On-Ride Photo
-STR_2169    :a Pretzel
-STR_2170    :a Hot Chocolate
-STR_2171    :an Iced Tea
-STR_2172    :a Funnel Cake
-STR_2173    :a pair of Sunglasses
-STR_2174    :some Beef Noodles
-STR_2175    :some Fried Rice Noodles
-STR_2176    :some Wonton Soup
-STR_2177    :some Meatball Soup
-STR_2178    :a Fruit Juice
-STR_2179    :some Soybean Milk
-STR_2180    :some Sujongkwa
-STR_2181    :a Sub Sandwich
-STR_2182    :a Cookie
-STR_2183    :an Empty Bowl
-STR_2184    :an Empty Drink Carton
-STR_2185    :an Empty Juice Cup
-STR_2186    :a Roast Sausage
-STR_2187    :an Empty Bowl
+STR_2139    :空のボウル
+STR_2140    :空のドリンクカートン
+STR_2141    :空のジュースカップ
+STR_2142    :ローストソーセージ
+STR_2143    :空のボウル
+STR_2144    :ライドフォト
+STR_2145    :ライドフォト
+STR_2146    :ライドフォト
+STR_2147    :プレッツェル
+STR_2148    :ホットココア
+STR_2149    :アイスティー
+STR_2150    :ファンネルケーキ
+STR_2151    :サングラス
+STR_2152    :牛肉ヌードル
+STR_2153    :焼飯ヌードル
+STR_2154    :ワンタンスープ
+STR_2155    :肉団子スープ
+STR_2156    :フルーツジュース
+STR_2157    :豆乳
+STR_2158    :スジョングァ
+STR_2159    :サンドイッチ
+STR_2160    :クッキー
+STR_2161    :空のボウル
+STR_2162    :空のドリンクカートン
+STR_2163    :空のジュースカップ
+STR_2164    :ローストソーセージ
+STR_2165    :空のボウル
+STR_2166    :ライドフォト
+STR_2167    :ライドフォト
+STR_2168    :ライドフォト
+STR_2169    :プレッツェル
+STR_2170    :ホットココア
+STR_2171    :アイスティー
+STR_2172    :ファンネルケーキ
+STR_2173    :サングラス
+STR_2174    :牛肉ヌードル
+STR_2175    :焼飯ヌードル
+STR_2176    :ワンタンスープ
+STR_2177    :肉団子スープ
+STR_2178    :フルーツジュース
+STR_2179    :豆乳
+STR_2180    :スジョングァ
+STR_2181    :サンドイッチ
+STR_2182    :クッキー
+STR_2183    :空のボウル
+STR_2184    :空のドリンクカートン
+STR_2185    :空のジュースカップ
+STR_2186    :ローストソーセージ
+STR_2187    :空のボウル
 STR_2188    :{STRINGID}のライドフォト
 STR_2189    :{STRINGID}のライドフォト
 STR_2190    :{STRINGID}のライドフォト
@@ -2210,11 +2210,11 @@ STR_2201    :豆乳
 STR_2202    :スジョングァ
 STR_2203    :サンドイッチ
 STR_2204    :クッキー
-STR_2205    :Empty Bowl
-STR_2206    :Empty Drink Carton
-STR_2207    :Empty Juice Cup
-STR_2208    :Roast Sausage
-STR_2209    :Empty Bowl
+STR_2205    :空のボウル
+STR_2206    :空のドリンクカートン
+STR_2207    :空のジュースカップ
+STR_2208    :ローストソーセージ
+STR_2209    :空のボウル
 STR_2210    :{SMALLFONT}{BLACK}Show list of handymen in park
 STR_2211    :{SMALLFONT}{BLACK}Show list of mechanics in park
 STR_2212    :{SMALLFONT}{BLACK}Show list of security guards in park
@@ -2265,12 +2265,12 @@ STR_2256    :スリルライド
 STR_2257    :ウォーターライド
 STR_2258    :ショップと施設
 STR_2259    :景観アイテム
-STR_2260    :No funding
-STR_2261    :Minimum funding
-STR_2262    :Normal funding
-STR_2263    :Maximum funding
+STR_2260    :なしの資金調達
+STR_2261    :最低の資金調達
+STR_2262    :通常の資金調達
+STR_2263    :最大の資金調達
 STR_2264    :月毎の費用合計
-STR_2265    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY} per month
+STR_2265    :{WINDOW_COLOUR_2}毎月コスト: {BLACK}{CURRENCY}
 STR_2266    :研究優先度
 STR_2267    :現在の研究
 STR_2268    :Last development
@@ -2278,7 +2278,7 @@ STR_2269    :{WINDOW_COLOUR_2}Type: {BLACK}{STRINGID}
 STR_2270    :{WINDOW_COLOUR_2}Progress: {BLACK}{STRINGID}
 STR_2271    :{WINDOW_COLOUR_2}Expected: {BLACK}{STRINGID}
 STR_2272    :{WINDOW_COLOUR_2}Ride/attraction:{NEWLINE}{BLACK}{STRINGID}
-STR_2273    :{WINDOW_COLOUR_2}Scenery/theming:{NEWLINE}{BLACK}{STRINGID}
+STR_2273    :{WINDOW_COLOUR_2}景観とテーマ:{NEWLINE}{BLACK}{STRINGID}
 STR_2274    :{SMALLFONT}{BLACK}Show details of this invention or development
 STR_2275    :{SMALLFONT}{BLACK}Show funding and options for research & development
 STR_2276    :{SMALLFONT}{BLACK}Show research & development status
@@ -2296,9 +2296,9 @@ STR_2287    :Completing design
 STR_2288    :Unknown
 STR_2289    :{STRINGID} {STRINGID}
 STR_2290    :<removed string - do not use>
-STR_2291    :Select scenario for new game
+STR_2291    :新しいシナリオを始める
 STR_2292    :{WINDOW_COLOUR_2}Rides been on:
-STR_2293    :{BLACK} Nothing
+STR_2293    :{BLACK} なし
 STR_2294    :{SMALLFONT}{BLACK}Change base land style
 STR_2295    :{SMALLFONT}{BLACK}Change vertical edges of land
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} paid to enter park
@@ -2313,14 +2313,14 @@ STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} spent on {BLACK}{COMMA16} sou
 STR_2305    :Track design files
 STR_2306    :Save track design
 STR_2307    :Select {STRINGID} design
-STR_2308    :{STRINGID} Track Designs
+STR_2308    :{STRINGID}のトラックデザイン
 STR_2309    :Install New Track Design
 STR_2310    :Build custom design
 STR_2311    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2312    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2313    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32} (approx.)
 STR_2314    :{WINDOW_COLOUR_2}Ride length: {BLACK}{STRINGID}
-STR_2315    :{WINDOW_COLOUR_2}Cost: {BLACK}around {CURRENCY}
+STR_2315    :{WINDOW_COLOUR_2}コスト: {BLACK} {CURRENCY}くらい
 STR_2316    :{WINDOW_COLOUR_2}Space required: {BLACK}{COMMA16} x {COMMA16} blocks
 STR_2317    :<removed string - do not use>
 STR_2318    :<removed string - do not use>
@@ -2351,10 +2351,10 @@ STR_2342    :クローナ (kr)
 STR_2343    :ユーロ ({EURO})
 STR_2344    :ポンド法
 STR_2345    :メートル法
-STR_2346    :Display
+STR_2346    :ディスプレイ
 STR_2347    :{RED}{STRINGID}が溺れてしまいました。
 STR_2348    :{SMALLFONT}{BLACK}Show statistics for this staff member
-STR_2349    :{WINDOW_COLOUR_2}月給: {BLACK}{CURRENCY} per month
+STR_2349    :{WINDOW_COLOUR_2}毎月給: {BLACK}{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}雇用した日: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}草を刈った回数: {BLACK}{COMMA16}
 STR_2352    :{WINDOW_COLOUR_2}庭木に水をやった回数: {BLACK}{COMMA16}
@@ -2402,7 +2402,7 @@ STR_2393    :{BLACK}To have 10 different types of roller coasters operating in y
 STR_2394    :{BLACK}To finish building all 5 of the partially built roller coasters in this park, designing them to achieve excitement ratings of at least {POP16}{POP16}{COMMA2DP32} each
 STR_2395    :{BLACK}To repay your loan and achieve a park value of at least {POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}To achieve a monthly profit from food, drink and merchandise sales of at least {POP16}{POP16}{CURRENCY}
-STR_2397    :None
+STR_2397    :なし
 STR_2398    :Number of guests at a given date
 STR_2399    :Park value at a given date
 STR_2400    :Have fun
@@ -2415,10 +2415,10 @@ STR_2406    :Finish building 5 roller coasters
 STR_2407    :Repay loan and achieve a given park value
 STR_2408    :Monthly profit from food/merchandise
 STR_2409    :{WINDOW_COLOUR_2}広告宣伝活動
-STR_2410    :{BLACK}None
-STR_2411    :{WINDOW_COLOUR_2}Marketing campaigns available
-STR_2412    :{SMALLFONT}{BLACK}Start this marketing campaign
-STR_2413    :{BLACK}({CURRENCY2DP} per week)
+STR_2410    :{BLACK}なし
+STR_2411    :{WINDOW_COLOUR_2}実施可能なキャンペーン
+STR_2412    :{SMALLFONT}{BLACK}この広告キャンペーンを開始します
+STR_2413    :{BLACK}({CURRENCY2DP} 週あたり)
 STR_2414    :(Not Selected)
 STR_2415    :{WINDOW_COLOUR_2}Ride:
 STR_2416    :{WINDOW_COLOUR_2}Item:
@@ -2427,20 +2427,20 @@ STR_2418    :Free entry to {STRINGID}
 STR_2419    :Free ride on {STRINGID}
 STR_2420    :Half-price entry to {STRINGID}
 STR_2421    :Free {STRINGID}
-STR_2422    :Advertising campaign for {STRINGID}
-STR_2423    :Advertising campaign for {STRINGID}
+STR_2422    :{STRINGID}の広告キャンペーン
+STR_2423    :{STRINGID}の広告キャンペーン
 STR_2424    :{WINDOW_COLOUR_2}Vouchers for free entry to the park
 STR_2425    :{WINDOW_COLOUR_2}Vouchers for free rides on a particular ride
 STR_2426    :{WINDOW_COLOUR_2}Vouchers for half-price entry to the park
 STR_2427    :{WINDOW_COLOUR_2}Vouchers for free food or drink
-STR_2428    :{WINDOW_COLOUR_2}Advertising campaign for the park
+STR_2428    :{WINDOW_COLOUR_2}パークの広告キャンペーン
 STR_2429    :{WINDOW_COLOUR_2}Advertising campaign for a particular ride
 STR_2430    :{BLACK}Vouchers for free entry to {STRINGID}
 STR_2431    :{BLACK}Vouchers for free ride on {STRINGID}
 STR_2432    :{BLACK}Vouchers for half-price entry to {STRINGID}
 STR_2433    :{BLACK}Vouchers for free {STRINGID}
-STR_2434    :{BLACK}Advertising campaign for {STRINGID}
-STR_2435    :{BLACK}Advertising campaign for {STRINGID}
+STR_2434    :{BLACK}{STRINGID}の広告キャンペーン
+STR_2435    :{BLACK}{STRINGID}の広告キャンペーン
 STR_2436    :1週間
 STR_2437    :<removed string - do not use>
 STR_2438    :<removed string - do not use>
@@ -2448,17 +2448,17 @@ STR_2439    :<removed string - do not use>
 STR_2440    :<removed string - do not use>
 STR_2441    :<removed string - do not use>
 STR_2442    :<removed string - do not use>
-STR_2443    :{WINDOW_COLOUR_2}Cost per week: {BLACK}{CURRENCY2DP}
-STR_2444    :{WINDOW_COLOUR_2}Total cost: {BLACK}{CURRENCY2DP}
-STR_2445    :Start this marketing campaign
+STR_2443    :{WINDOW_COLOUR_2}毎週のコスト: {BLACK}{CURRENCY2DP}
+STR_2444    :{WINDOW_COLOUR_2}総コスト: {BLACK}{CURRENCY2DP}
+STR_2445    :この広告キャンペーンを開始します
 STR_2446    :{YELLOW}Your marketing campaign for free entry to the park has finished
 STR_2447    :{YELLOW}Your marketing campaign for free rides on {STRINGID} has finished
 STR_2448    :{YELLOW}Your marketing campaign for half-price entry to the park has finished
 STR_2449    :{YELLOW}Your marketing campaign for free {STRINGID} has finished
 STR_2450    :{YELLOW}Your advertising campaign for the park has finished
 STR_2451    :{YELLOW}Your advertising campaign for {STRINGID} has finished
-STR_2452    :{WINDOW_COLOUR_2}Cash (less loan): {BLACK}{CURRENCY2DP}
-STR_2453    :{WINDOW_COLOUR_2}Cash (less loan): {RED}{CURRENCY2DP}
+STR_2452    :{WINDOW_COLOUR_2}資金／借入: {BLACK}{CURRENCY2DP}
+STR_2453    :{WINDOW_COLOUR_2}資金／借入: {RED}{CURRENCY2DP}
 STR_2454    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
 STR_2455    :{SMALLFONT}{BLACK}+{CURRENCY2DP} -
 STR_2456    :{SMALLFONT}{BLACK}{CURRENCY2DP} -
@@ -2476,27 +2476,27 @@ STR_2467    :{SMALLFONT}{BLACK}Show objectives for this game
 STR_2468    :{SMALLFONT}{BLACK}Show recent awards this park has received
 STR_2469    :{SMALLFONT}{BLACK}Select level of research & development
 STR_2470    :{SMALLFONT}{BLACK}新しい輸送ライドを研究する
-STR_2471    :{SMALLFONT}{BLACK}Research new gentle rides
-STR_2472    :{SMALLFONT}{BLACK}Research new roller coasters
-STR_2473    :{SMALLFONT}{BLACK}Research new thrill rides
-STR_2474    :{SMALLFONT}{BLACK}Research new water rides
+STR_2471    :{SMALLFONT}{BLACK}新しいジェントルライドを研究する
+STR_2472    :{SMALLFONT}{BLACK}新しいローラーコースターを研究する
+STR_2473    :{SMALLFONT}{BLACK}新しいスリルライドを研究する
+STR_2474    :{SMALLFONT}{BLACK}新しいウォーターライドを研究する
 STR_2475    :{SMALLFONT}{BLACK}新しい軽食店と雑貨屋を研究する
-STR_2476    :{SMALLFONT}{BLACK}Research new scenery and theming
+STR_2476    :{SMALLFONT}{BLACK}新しい景観とテーマを研究する
 STR_2477    :{SMALLFONT}{BLACK}Select operating mode for this ride/attraction
 STR_2478    :{SMALLFONT}{BLACK}Show graph of velocity against time
 STR_2479    :{SMALLFONT}{BLACK}Show graph of altitude against time
 STR_2480    :{SMALLFONT}{BLACK}Show graph of vertical acceleration against time
 STR_2481    :{SMALLFONT}{BLACK}Show graph of lateral acceleration against time
-STR_2482    :{SMALLFONT}{BLACK}Profit: {CURRENCY} per week,  Park Value: {CURRENCY}
-STR_2483    :{WINDOW_COLOUR_2}Weekly profit: {BLACK}+{CURRENCY2DP}
-STR_2484    :{WINDOW_COLOUR_2}Weekly profit: {RED}{CURRENCY2DP}
+STR_2482    :{SMALLFONT}{BLACK}週収: {CURRENCY},  パーク評価額: {CURRENCY}
+STR_2483    :{WINDOW_COLOUR_2}週収: {BLACK}+{CURRENCY2DP}
+STR_2484    :{WINDOW_COLOUR_2}週収: {RED}{CURRENCY2DP}
 STR_2485    :コントロール
 STR_2486    :General
 STR_2487    :Show 'real' names of guests
 STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
 STR_2489    :キーバインドの確認…
 STR_2490    :キーバインドの確認
-STR_2491    :Reset keys
+STR_2491    :キーバインドをリセットする
 STR_2492    :{SMALLFONT}{BLACK}Set all keyboard shortcuts back to default settings
 STR_2493    :Close top-most window
 STR_2494    :Close all floating windows
@@ -2989,9 +2989,9 @@ STR_2977    :スタッフの名前
 STR_2978    :新しい名前を入力してください:
 STR_2979    :スタッフに名前を付けられません
 STR_2980    :Too many banners in game
-STR_2981    :{RED}No entry - - 
-STR_2982    :Banner text
-STR_2983    :Enter new text for this banner:
+STR_2981    :{RED}立入り禁止 - - 
+STR_2982    :バナーのテキト
+STR_2983    :テキトを入力してください:
 STR_2984    :Can't set new text for banner...
 STR_2985    :バナー
 STR_2986    :{SMALLFONT}{BLACK}Change text on banner
@@ -3062,7 +3062,7 @@ STR_3050    :Golf hole B
 STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
-STR_3054    :Loading...
+STR_3054    :ローディング中…
 STR_3055    :白
 STR_3056    :半透明
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
@@ -3072,11 +3072,11 @@ STR_3060    :Ice blocks
 STR_3061    :Wooden fences
 STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
 STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
-STR_3064    :Beginner Parks
-STR_3065    :Challenging Parks
-STR_3066    :Expert Parks
-STR_3067    :{OPENQUOTES}Real{ENDQUOTES} Parks
-STR_3068    :Other Parks
+STR_3064    :初心者のパーク
+STR_3065    :挑戦のパーク
+STR_3066    :名手のパーク
+STR_3067    :現実のパーク
+STR_3068    :外のパーク
 STR_3069    :Top Section
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}パーク中で同一価格
@@ -3321,8 +3321,8 @@ STR_3309    :{WINDOW_COLOUR_2}{COMMA16}
 STR_3310    :{WINDOW_COLOUR_2}{LENGTH}
 STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
-STR_3313    :Scenario Name
-STR_3314    :Enter name for scenario:
+STR_3313    :シナリオ名
+STR_3314    :シナリオ名を入力して下さい。
 STR_3315    :Park/Scenario Details
 STR_3316    :Enter description of this scenario:
 STR_3317    :No details yet
@@ -3330,7 +3330,7 @@ STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
 STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
 STR_3320    :Unable to save scenario file...
 STR_3321    :New objects installed successfully
-STR_3322    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRINGID}
+STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
 STR_3324    :Requires Add-On Pack: {STRINGID}
 STR_3325    :Requires an Add-On Pack
@@ -3920,7 +3920,7 @@ STR_5577    :大韓民国ウォン (₩)
 STR_5578    :ロシア・ルーブル (₽)
 STR_5579    :Window scale factor:
 STR_5580    :チェコ・コルナ (Kc)
-STR_5581    :Show FPS
+STR_5581    :FPSを表示する
 STR_5582    :Trap mouse cursor in window
 STR_5583    :{COMMA1DP16}ms{POWERNEGATIVEONE}
 STR_5584    :SI
@@ -4191,20 +4191,20 @@ STR_5878    :Software (hardware display)
 STR_5879    :OpenGL (experimental)
 STR_5880    :Selected only
 STR_5881    :Non-selected only
-STR_5882    :Custom currency
-STR_5883    :Custom currency configuration
-STR_5884    :{WINDOW_COLOUR_2}Exchange rate: 
-STR_5885    :{WINDOW_COLOUR_2}is equivalent to {COMMA32} GBP (£)
-STR_5886    :{WINDOW_COLOUR_2}Currency symbol:
-STR_5887    :Prefix
-STR_5888    :Suffix
-STR_5889    :Custom currency symbol
-STR_5890    :Enter the currency symbol to display
-STR_5891    :Default
-STR_5892    :{SMALLFONT}{BLACK}Go to the default directory
-STR_5893    :Exchange Rate
-STR_5894    :Enter the exchange rate
-STR_5895    :Save Track
+STR_5882    :カスタム通貨記号
+STR_5883    :カスタム通貨記号設定
+STR_5884    :{WINDOW_COLOUR_2}円相場:
+STR_5885    :{WINDOW_COLOUR_2}は{COMMA32}GBP(£)と等価です。
+STR_5886    :{WINDOW_COLOUR_2}通貨記号:
+STR_5887    :接頭辞
+STR_5888    :接尾辞
+STR_5889    :カスタム通貨記号
+STR_5890    :通貨記号を入力して下さい。
+STR_5891    :デフォルト
+STR_5892    :{SMALLFONT}{BLACK}デフォルト・ディレクトリに移動
+STR_5893    :円相場
+STR_5894    :円相場を入力して下さい。
+STR_5895    :トラックをセーブする
 STR_5896    :Track save failed!
 STR_5897    :Window limit:
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
@@ -4215,7 +4215,7 @@ STR_5902    :Show bounding boxes
 STR_5903    :Show paint debug window
 STR_5904    :Reset date
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
-STR_5906    :Zoom to cursor position
+STR_5906    :マウスカーソルにズームする
 STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the cursor, as opposed to the screen centre.
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
@@ -4224,9 +4224,9 @@ STR_5911    :See-Through Paths
 STR_5912    :See-through paths toggle
 STR_5913    :Chat
 STR_5914    :Unknown ride
-STR_5915    :Player
-STR_5916    :{COMMA16} player
-STR_5917    :{COMMA16} players
+STR_5915    :プレイヤー
+STR_5916    :{COMMA16}プレイヤー
+STR_5917    :{COMMA16}プレイヤー
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
 STR_5920    :Render weather effects
