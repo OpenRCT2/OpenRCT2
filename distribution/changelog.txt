@@ -1,4 +1,4 @@
-0.1.2 (in development)
+﻿0.1.2 (in development)
 ------------------------------------------------------------------------
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#5826] Add the show_limits command to show map data counts and limits.
@@ -33,6 +33,7 @@
 - Fix: [#6360] Off-by-one filenames when exporting all sprites.
 - Fix: [#5585] Inconsistent zooming with mouse wheel.
 - Fix: [#6358] HTTP requests can point to invalid URL string.
+- Fix: [#6413] Maze previews only showing scenery.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
