@@ -5,7 +5,7 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
 endif ()
 
 set(OPENRCT2_SRCPATH "${ROOT_DIR}/src/openrct2")
-file(GLOB_RECURSE ORCT2_RIDE_SOURCES "${OPENRCT2_SRCPATH}/ride/*/*.c")
+file(GLOB_RECURSE ORCT2_RIDE_SOURCES "${OPENRCT2_SRCPATH}/ride/*/*.cpp")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "${OPENRCT2_SRCPATH}/ride/ride_data.c"
                                          "${OPENRCT2_SRCPATH}/ride/track_data.c"
                                          "${OPENRCT2_SRCPATH}/ride/track_data_old.c"
