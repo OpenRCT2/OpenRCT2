@@ -62,10 +62,8 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
     switch (codepoint) {
     case FORMAT_ENDQUOTES: return 34 - 32;
 
-    case FORMAT_AMINUSCULE: return 159 - 32;
     case FORMAT_UP: return 160 - 32;
     case FORMAT_SYMBOL_i: return 160 - 32;
-    case FORMAT_CENT: return 162 - 32;
     case FORMAT_POUND: return 163 - 32;
 
     case FORMAT_YEN: return 165 - 32;
@@ -173,10 +171,8 @@ bool font_supports_string_sprite(const utf8 *text)
         bool supported = false;
         switch (codepoint) {
         case FORMAT_ENDQUOTES:
-        case FORMAT_AMINUSCULE:
         case FORMAT_UP:
         case FORMAT_SYMBOL_i:
-        case FORMAT_CENT:
         case FORMAT_POUND:
         case FORMAT_YEN:
         case FORMAT_COPYRIGHT:
@@ -200,6 +196,25 @@ bool font_supports_string_sprite(const utf8 *text)
         case FORMAT_SMALLDOWN:
         case FORMAT_LEFT:
         case FORMAT_INVERTEDQUESTION:
+
+        case UNICODE_A_OGONEK_UC:
+        case UNICODE_C_ACUTE_UC:
+        case UNICODE_E_OGONEK_UC:
+        case UNICODE_N_ACUTE_UC:
+        case UNICODE_L_STROKE_UC:
+        case UNICODE_S_ACUTE_UC:
+        case UNICODE_Z_DOT_UC:
+        case UNICODE_Z_ACUTE_UC:
+
+        case UNICODE_A_OGONEK:
+        case UNICODE_C_ACUTE:
+        case UNICODE_E_OGONEK:
+        case UNICODE_N_ACUTE:
+        case UNICODE_L_STROKE:
+        case UNICODE_S_ACUTE:
+        case UNICODE_Z_DOT:
+        case UNICODE_Z_ACUTE:
+
             supported = true;
             break;
         default:
