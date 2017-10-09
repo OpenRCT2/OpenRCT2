@@ -25,7 +25,7 @@
 #include "../ride_data.h"
 #include "../track_data.h"
 #include "../track_paint.h"
-#include "bolliger_mabillard_track.h"
+#include "BolligerMabillardTrack.h"
 
 void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                    sint32 height, rct_map_element * mapElement, sint32 supportType)

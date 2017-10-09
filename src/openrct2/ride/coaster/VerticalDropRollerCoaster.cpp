@@ -17,7 +17,7 @@
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
 #include "../track_data.h"
-#include "bolliger_mabillard_track.h"
+#include "BolligerMabillardTrack.h"
 
 /** rct2: 0x008AA00C */
 static void vertical_drop_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,

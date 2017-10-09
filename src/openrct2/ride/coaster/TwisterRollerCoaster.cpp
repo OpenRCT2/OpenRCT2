@@ -25,7 +25,7 @@
 #include "../ride_data.h"
 #include "../track_data.h"
 #include "../track_paint.h"
-#include "bolliger_mabillard_track.h"
+#include "BolligerMabillardTrack.h"
 
 /** rct2: 0x008AB6A4 */
 static void twister_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,

@@ -624,7 +624,7 @@
 		4C93F1161F881F9C00A9330D /* Finance.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Finance.h; sourceTree = "<group>"; };
 		4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AirPoweredVerticalCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BobsleighCoaster.cpp; sourceTree = "<group>"; };
-		4C93F11A1F8B744400A9330D /* bolliger_mabillard_track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = bolliger_mabillard_track.h; sourceTree = "<group>"; };
+		4C93F11A1F8B744400A9330D /* BolligerMabillardTrack.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BolligerMabillardTrack.h; sourceTree = "<group>"; };
 		4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BolligerMabillardTrack.cpp; sourceTree = "<group>"; };
 		4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CompactInvertedCoaster.cpp; sourceTree = "<group>"; };
 		4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CorkscrewRollerCoaster.cpp; sourceTree = "<group>"; };
@@ -634,7 +634,7 @@
 		4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedHairpinCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedImpulseCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InvertedRollerCoaster.cpp; sourceTree = "<group>"; };
-		4C93F1241F8B744400A9330D /* junior_roller_coaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = junior_roller_coaster.h; sourceTree = "<group>"; };
+		4C93F1241F8B744400A9330D /* JuniorRollerCoaster.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JuniorRollerCoaster.h; sourceTree = "<group>"; };
 		4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = JuniorRollerCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LayDownRollerCoaster.cpp; sourceTree = "<group>"; };
 		4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LimLaunchedRollerCoaster.cpp; sourceTree = "<group>"; };
@@ -2350,7 +2350,7 @@
 			children = (
 				4C93F1181F8B744400A9330D /* AirPoweredVerticalCoaster.cpp */,
 				4C93F1191F8B744400A9330D /* BobsleighCoaster.cpp */,
-				4C93F11A1F8B744400A9330D /* bolliger_mabillard_track.h */,
+				4C93F11A1F8B744400A9330D /* BolligerMabillardTrack.h */,
 				4C93F11B1F8B744400A9330D /* BolligerMabillardTrack.cpp */,
 				4C93F11C1F8B744400A9330D /* CompactInvertedCoaster.cpp */,
 				4C93F11D1F8B744400A9330D /* CorkscrewRollerCoaster.cpp */,
@@ -2360,7 +2360,7 @@
 				4C93F1211F8B744400A9330D /* InvertedHairpinCoaster.cpp */,
 				4C93F1221F8B744400A9330D /* InvertedImpulseCoaster.cpp */,
 				4C93F1231F8B744400A9330D /* InvertedRollerCoaster.cpp */,
-				4C93F1241F8B744400A9330D /* junior_roller_coaster.h */,
+				4C93F1241F8B744400A9330D /* JuniorRollerCoaster.h */,
 				4C93F1251F8B744400A9330D /* JuniorRollerCoaster.cpp */,
 				4C93F1261F8B744400A9330D /* LayDownRollerCoaster.cpp */,
 				4C93F1271F8B744400A9330D /* LimLaunchedRollerCoaster.cpp */,

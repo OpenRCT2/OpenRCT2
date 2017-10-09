@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../coaster/junior_roller_coaster.h"
+#include "../coaster/JuniorRollerCoaster.h"
 #include "../track.h"
 #include "../track_paint.h"
 

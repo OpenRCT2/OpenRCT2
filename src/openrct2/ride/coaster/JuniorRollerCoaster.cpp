@@ -27,7 +27,7 @@
 #include "../ride_data.h"
 #include "../track_data.h"
 #include "../track_paint.h"
-#include "junior_roller_coaster.h"
+#include "JuniorRollerCoaster.h"
 
 enum
 {
