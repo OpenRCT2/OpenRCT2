@@ -233,11 +233,8 @@ void mapgen_generate(mapgen_settings *settings)
         }
     }
 
-    // Place the trees, prefering the new algorithm over the old. 
     if (settings->trees_place)
-        mapgen_generate_trees(settings);
-    else if (settings->trees != 0)
-        mapgen_place_trees();
+        mapgen_place_trees(settings);
 
     map_reorganise_elements();
 }
@@ -267,127 +264,10 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
-static void mapgen_place_trees()
+void mapgen_place_trees(mapgen_settings * settings)
 {
-    sint32 numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
-    sint32 *grassTreeIds = (sint32*)malloc(countof(GrassTrees) * sizeof(sint32));
-    sint32 *desertTreeIds = (sint32*)malloc(countof(DesertTrees) * sizeof(sint32));
-    sint32 *snowTreeIds = (sint32*)malloc(countof(SnowTrees) * sizeof(sint32));
-
-    for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++) {
-        rct_scenery_entry *sceneryEntry = get_small_scenery_entry(i);
-        rct_object_entry_extended *entry = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
-
-        if (sceneryEntry == (rct_scenery_entry*)-1 || sceneryEntry == NULL)
-            continue;
-
-        sint32 j;
-        for (j = 0; j < countof(GrassTrees); j++)
-            if (strncmp(GrassTrees[j], entry->name, 8) == 0)
-                break;
-        if (j != countof(GrassTrees)) {
-            grassTreeIds[numGrassTreeIds++] = i;
-            continue;
-        }
-
-        for (j = 0; j < countof(DesertTrees); j++)
-            if (strncmp(DesertTrees[j], entry->name, 8) == 0)
-                break;
-        if (j != countof(DesertTrees)) {
-            desertTreeIds[numDesertTreeIds++] = i;
-            continue;
-        }
-
-        for (j = 0; j < countof(SnowTrees); j++)
-            if (strncmp(SnowTrees[j], entry->name, 8) == 0)
-                break;
-        if (j != countof(SnowTrees)) {
-            snowTreeIds[numSnowTreeIds++] = i;
-            continue;
-        }
-    }
-
-    sint32 availablePositionsCount = 0;
-    struct { sint32 x; sint32 y; } tmp, *pos, *availablePositions;
-    availablePositions = malloc(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
-
-    // Create list of available tiles
-    for (sint32 y = 1; y < gMapSize - 1; y++) {
-        for (sint32 x = 1; x < gMapSize - 1; x++) {
-            rct_map_element *mapElement = map_get_surface_element_at(x, y);
-
-            // Exclude water tiles
-            if (map_get_water_height(mapElement) > 0)
-                continue;
-
-            pos = &availablePositions[availablePositionsCount++];
-            pos->x = x;
-            pos->y = y;
-        }
-    }
-
-    // Shuffle list
-    for (sint32 i = 0; i < availablePositionsCount; i++) {
-        sint32 rindex = util_rand() % availablePositionsCount;
-        if (rindex == i)
-            continue;
-
-        tmp = availablePositions[i];
-        availablePositions[i] = availablePositions[rindex];
-        availablePositions[rindex] = tmp;
-    }
-
-    // Place trees
-    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
-
-    for (sint32 i = 0; i < numTrees; i++) {
-        pos = &availablePositions[i];
-
-        sint32 type = -1;
-        rct_map_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
-        switch (map_element_get_terrain(mapElement)) {
-        case TERRAIN_GRASS:
-        case TERRAIN_DIRT:
-        case TERRAIN_GRASS_CLUMPS:
-            if (numGrassTreeIds == 0)
-                break;
-
-            type = grassTreeIds[util_rand() % numGrassTreeIds];
-            break;
-
-        case TERRAIN_SAND:
-        case TERRAIN_SAND_DARK:
-        case TERRAIN_SAND_LIGHT:
-            if (numDesertTreeIds == 0)
-                break;
-
-            if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % numDesertTreeIds];
-            break;
-
-        case TERRAIN_ICE:
-            if (numSnowTreeIds == 0)
-                break;
-
-            type = snowTreeIds[util_rand() % numSnowTreeIds];
-            break;
-        }
-
-        if (type != -1)
-            mapgen_place_tree(type, pos->x, pos->y);
-    }
-
-    free(availablePositions);
-    free(grassTreeIds);
-    free(desertTreeIds);
-    free(snowTreeIds);
-}
-
-void mapgen_generate_trees(mapgen_settings * settings)
-{
-    // This is seperate from mapgen_generate because this will allow independant forest generating,
-    // without requiring the terrain to be regenerated.
+    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
+    // thus preventing need to regenerate terrain for a new forest.
 
     if (!settings->trees_place)
         return;
@@ -614,9 +494,9 @@ void mapgen_generate_trees(mapgen_settings * settings)
             if (numDesertTreeIds == 0)
                 break;
 
-            // Because deserts have less trees than forests, apply a 1/3rd chance 
+            // Because deserts have less trees than forests, apply a 1/4th chance 
             // of tree being placed.
-            if (util_rand() % 3 == 0)
+            if (util_rand() % 4 == 0)
                 type = desertTreeIds[util_rand() % numDesertTreeIds];
             break;
 
