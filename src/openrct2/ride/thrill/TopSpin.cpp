@@ -146,7 +146,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     }
     image_id += seatImageId;
 
-    rct_xyz16 seatCoords = { .x = al, .y = cl, .z = static_cast<sint16>(height) };
+    rct_xyz16 seatCoords = { al, cl, static_cast<sint16>(height) };
 
     seatCoords.z += TopSpinSeatHeightOffset[armRotation];
 

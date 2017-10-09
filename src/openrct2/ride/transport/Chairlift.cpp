@@ -148,8 +148,8 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_e
 
     rct_xy16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
     rct_xy16 newPos = {
-        .x = static_cast<sint16>(pos.x - delta.x),
-        .y = static_cast<sint16>(pos.y - delta.y),
+        static_cast<sint16>(pos.x - delta.x),
+        static_cast<sint16>(pos.y - delta.y),
     };
 
     rct_map_element * nextTrack =
@@ -168,8 +168,8 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 
     rct_xy16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
     rct_xy16 newPos = {
-        .x = static_cast<sint16>(pos.x + delta.x),
-        .y = static_cast<sint16>(pos.y + delta.y),
+        static_cast<sint16>(pos.x + delta.x),
+        static_cast<sint16>(pos.y + delta.y),
     };
 
     rct_map_element * nextTrack =

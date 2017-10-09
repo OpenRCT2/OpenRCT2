@@ -848,7 +848,7 @@ static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_sessi
                              session->TrackColours[SCHEME_TRACK];
             rct_xy16  offset       = miniature_railway_right_quarter_turn_5_tiles_offsets[direction][index];
             rct_xy16  boundsLength = miniature_railway_right_quarter_turn_5_tiles_bound_lengths[direction][index];
-            rct_xyz16 boundsOffset = { .x = offset.x, .y = offset.y, .z = 0 };
+            rct_xyz16 boundsOffset = { offset.x, offset.y, 0 };
 
             sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, 2, height,
                        boundsOffset.x, boundsOffset.y, height + boundsOffset.z, get_current_rotation());
@@ -1179,7 +1179,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles[direction][index] | session->TrackColours[SCHEME_TRACK];
         rct_xy16  offset       = defaultRightQuarterTurn3TilesOffsets[direction][index];
         rct_xy16  boundsLength = defaultRightQuarterTurn3TilesBoundLengths[direction][index];
-        rct_xyz16 boundsOffset = { .x = offset.x, .y = offset.y, .z = 0 };
+        rct_xyz16 boundsOffset = { offset.x, offset.y, 0 };
 
         sub_98199C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, 3, height,
                    boundsOffset.x, boundsOffset.y, height + boundsOffset.z, get_current_rotation());
@@ -1576,7 +1576,7 @@ static void miniature_railway_track_diag_flat(paint_session * session, uint8 rid
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     uint32 imageId  = miniature_railway_track_pieces_diag_flat[direction];
@@ -1660,7 +1660,7 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     const sint8 offsetsB[4][4][2] = {
@@ -1717,7 +1717,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_up(paint_session * sessi
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     uint32 imageId  = miniature_railway_track_pieces_diag_flat_to_25_deg_up[direction];
@@ -1779,7 +1779,7 @@ static void miniature_railway_track_diag_25_deg_up_to_flat(paint_session * sessi
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     const sint8 offsetsB[4][4][2] = {
@@ -1851,7 +1851,7 @@ static void miniature_railway_track_diag_25_deg_down(paint_session * session, ui
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     uint32      imageId       = miniature_railway_track_pieces_diag_25_deg_up[(direction + 2) % 4];
@@ -1921,7 +1921,7 @@ static void miniature_railway_track_diag_flat_to_25_deg_down(paint_session * ses
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     const sint8 offsetsB[4][4][2] = {
@@ -1976,7 +1976,7 @@ static void miniature_railway_track_diag_25_deg_down_to_flat(paint_session * ses
 
     if (direction == 1 && trackSequence == 3)
     {
-        floorBoundOffset = (rct_xy16){ -16, -16 };
+        floorBoundOffset = { -16, -16 };
     }
 
     uint32 imageId  = miniature_railway_track_pieces_diag_flat_to_25_deg_up[(direction + 2) % 4];

@@ -363,7 +363,7 @@ static const uint8 * mini_golf_peep_animation_frames[] = {
     mini_golf_peep_animation_frames_put,
 };
 
-const uint8 mini_golf_peep_animation_lengths[] = {
+const size_t mini_golf_peep_animation_lengths[] = {
     Util::CountOf(mini_golf_peep_animation_frames_walk),
     Util::CountOf(mini_golf_peep_animation_frames_place_ball_downwards),
     Util::CountOf(mini_golf_peep_animation_frames_swing_left),
@@ -746,6 +746,7 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
                                     const uint32 sprites[4][2][2])
 {
     uint32 imageId;
+    rct_xy16 boundBox, boundBoxOffset;
 
     bool drewSupports =
         wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
@@ -762,8 +763,16 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
         paint_util_push_tunnel_right(session, height, TUNNEL_10);
     }
 
-    rct_xy16 boundBox       = (direction & 1) ? (rct_xy16){ 26, 32 } : (rct_xy16){ 32, 26 };
-    rct_xy16 boundBoxOffset = (direction & 1) ? (rct_xy16){ 3, 0 } : (rct_xy16){ 0, 3 };
+    if (direction & 1)
+    {
+        boundBox = { 26, 32 };
+        boundBoxOffset = { 3, 0 };
+    }
+    else
+    {
+        boundBox = { 32, 26 };
+        boundBoxOffset = { 0, 3 };
+    }
 
     imageId = sprites[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, boundBox.x, boundBox.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 24,
@@ -806,6 +815,7 @@ static void paint_mini_golf_hole_c(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
+    rct_xy16 boundBox, boundBoxOffset;
 
     bool drewSupports =
         wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
@@ -822,8 +832,16 @@ static void paint_mini_golf_hole_c(paint_session * session, uint8 rideIndex, uin
         paint_util_push_tunnel_right(session, height, TUNNEL_10);
     }
 
-    rct_xy16 boundBox       = (direction & 1) ? (rct_xy16){ 26, 32 } : (rct_xy16){ 32, 26 };
-    rct_xy16 boundBoxOffset = (direction & 1) ? (rct_xy16){ 3, 0 } : (rct_xy16){ 0, 3 };
+    if (direction & 1)
+    {
+        boundBox       = { 26, 32 };
+        boundBoxOffset = { 3, 0 };
+    }
+    else
+    {
+        boundBox       = { 32, 26 };
+        boundBoxOffset = { 0, 3 };
+    }
 
     imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
 
@@ -866,6 +884,7 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
+    rct_xy16 boundBox, boundBoxOffset;
 
     sint32 supportType = (direction & 1);
     if (trackSequence == 2)
@@ -889,8 +908,16 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
         break;
     }
 
-    rct_xy16 boundBox       = (supportType & 1) ? (rct_xy16){ 26, 32 } : (rct_xy16){ 32, 26 };
-    rct_xy16 boundBoxOffset = (supportType & 1) ? (rct_xy16){ 3, 0 } : (rct_xy16){ 0, 3 };
+    if (direction & 1)
+    {
+        boundBox       = { 26, 32 };
+        boundBoxOffset = { 3, 0 };
+    }
+    else
+    {
+        boundBox       = { 32, 26 };
+        boundBoxOffset = { 0, 3 };
+    }
 
     imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
 
@@ -919,10 +946,10 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
     switch ((direction << 4) | trackSequence)
     {
     case 0x02:
-        boundBox = (rct_xy16){ 23, 32 };
+        boundBox = { 23, 32 };
         break;
     case 0x10:
-        boundBox = (rct_xy16){ 24, 32 };
+        boundBox = { 24, 32 };
         break;
     }
 
@@ -949,6 +976,7 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
+    rct_xy16 boundBox, boundBoxOffset;
 
     sint32 supportType = (direction & 1);
     if (trackSequence == 2)
@@ -972,8 +1000,16 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
         break;
     }
 
-    rct_xy16 boundBox       = (supportType & 1) ? (rct_xy16){ 26, 32 } : (rct_xy16){ 32, 26 };
-    rct_xy16 boundBoxOffset = (supportType & 1) ? (rct_xy16){ 3, 0 } : (rct_xy16){ 0, 3 };
+    if (direction & 1)
+    {
+        boundBox       = { 26, 32 };
+        boundBoxOffset = { 3, 0 };
+    }
+    else
+    {
+        boundBox       = { 32, 26 };
+        boundBoxOffset = { 0, 3 };
+    }
 
     imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
 
@@ -1002,10 +1038,10 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
     switch ((direction << 4) | trackSequence)
     {
     case 0x10:
-        boundBox = (rct_xy16){ 24, 32 };
+        boundBox = { 24, 32 };
         break;
     case 0x32:
-        boundBox = (rct_xy16){ 32, 23 };
+        boundBox = { 32, 23 };
         break;
     }
 

@@ -975,6 +975,8 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
     uint32 imageId      = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     sint16 bboy;
+    static const sint32 supportTypes1[] = { 5, 2, 3, 4 };
+    static const sint32 supportTypes2[] = { 3, 4, 5, 2 };
 
     switch (trackSequence)
     {
@@ -989,7 +991,6 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
         sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-        static const sint32 supportTypes1[] = { 5, 2, 3, 4 };
         wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       NULL);
 
@@ -1003,7 +1004,6 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
         sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-        static const sint32 supportTypes2[] = { 3, 4, 5, 2 };
         wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       NULL);
 
@@ -1064,6 +1064,9 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
     uint32 imageId      = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     sint16 bboy;
+    static const sint32 supportTypes1[] = { 4, 5, 2, 3 };
+    static const sint32 supportTypes2[] = { 2, 3, 4, 5 };
+
 
     switch (trackSequence)
     {
@@ -1078,7 +1081,6 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
         sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-        static const sint32 supportTypes1[] = { 4, 5, 2, 3 };
         wooden_a_supports_paint_setup(session, supportTypes1[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       NULL);
 
@@ -1092,7 +1094,6 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 26, 2, height, 0, bboy, height);
         sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 26, 0, height, 0, bboy, height + 27);
 
-        static const sint32 supportTypes2[] = { 2, 3, 4, 5 };
         wooden_a_supports_paint_setup(session, supportTypes2[direction], 0, height, session->TrackColours[SCHEME_SUPPORTS],
                                       NULL);
 

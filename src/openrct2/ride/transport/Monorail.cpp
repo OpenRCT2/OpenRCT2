@@ -1117,26 +1117,8 @@ static void paint_monorail_track_right_eighth_to_orthogonal(paint_session * sess
     paint_monorail_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-static void paint_monorail_util_diag_supports(paint_session * session, uint8 direction, sint32 height)
+static const bool monorail_diag_image_segment[][4] =
 {
-    switch (direction)
-    {
-    case 0:
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        break;
-    case 1:
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 0, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        break;
-    case 2:
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 2, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        break;
-    case 3:
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 3, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        break;
-    }
-}
-
-static const bool monorail_diag_image_segment[][4] = {
     { false, true, false, false },
     { false, false, false, true },
     { false, false, true, false },
