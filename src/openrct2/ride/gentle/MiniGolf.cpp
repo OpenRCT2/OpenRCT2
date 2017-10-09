@@ -908,7 +908,7 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
         break;
     }
 
-    if (direction & 1)
+    if (supportType & 1)
     {
         boundBox       = { 26, 32 };
         boundBoxOffset = { 3, 0 };
@@ -1000,7 +1000,7 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
         break;
     }
 
-    if (direction & 1)
+    if (supportType & 1)
     {
         boundBox       = { 26, 32 };
         boundBoxOffset = { 3, 0 };
