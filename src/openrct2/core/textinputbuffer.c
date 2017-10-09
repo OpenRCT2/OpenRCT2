@@ -108,7 +108,7 @@ void textinputbuffer_cursor_right(textinputbuffer * tib)
             selectionOffset++;
         } while (!utf8_is_codepoint_start(ch) && selectionOffset < selectionMaxOffset);
 
-        tib->selection_size = max(0, tib->selection_size - (selectionOffset - tib->selection_offset));
+        tib->selection_size = tib->selection_size - (selectionOffset - tib->selection_offset);
         tib->selection_offset = selectionOffset;
     }
 }
