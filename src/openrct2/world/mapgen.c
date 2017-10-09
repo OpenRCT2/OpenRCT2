@@ -570,15 +570,10 @@ void mapgen_generate_trees(mapgen_settings * settings)
 
         sint32 type = -1;
         rct_map_element *mapElement = map_get_surface_element_at(pos->x + 1, pos->y + 1);
-        
-        // If this is triggered, there is likely a pos to map conversion problem somewhere.
-        // Make sure x is never incremented unless being handled by a mapElement.
-        // TODO: If this if statement no longer persists, remove it
         if (mapElement == NULL) {
             log_info("Map element at %d, %d was null", pos->x + 1, pos->y + 1);
             continue;
         }
-
         switch (map_element_get_terrain(mapElement)) {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
