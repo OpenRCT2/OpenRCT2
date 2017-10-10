@@ -148,7 +148,7 @@ GameActionResult::Ptr GameActions::Query(const GameAction * action)
 
 GameActionResult::Ptr GameActions::Execute(const GameAction * action)
 {
-    // FIXME: This should be moved to GameState once we are there.
+    // FIXME: The instance should be moved to GameState once we are there.
     return GameActions::Instance().InternalExecute(action);
 }
 
@@ -204,6 +204,7 @@ GameActionResult::Ptr GameActions::InternalExecute(const GameAction * action)
 
         // Update money balance
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result->Cost != 0 &&
+            !(flags & GAME_COMMAND_FLAG_5) &&
             nestedGameAction == false)
         {
             finance_payment(result->Cost, result->ExpenditureType);
