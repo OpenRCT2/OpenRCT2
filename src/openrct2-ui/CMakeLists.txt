@@ -25,7 +25,6 @@ endif ()
 
 # Sources
 file(GLOB_RECURSE OPENRCT2_UI_SOURCES
-    "${CMAKE_CURRENT_LIST_DIR}/*.c"
     "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
     "${CMAKE_CURRENT_LIST_DIR}/*.h"
     "${CMAKE_CURRENT_LIST_DIR}/*.hpp")
