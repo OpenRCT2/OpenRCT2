@@ -3805,6 +3805,7 @@ enum {
     STR_SERVER_LIST_INVALID_RESPONSE_JSON_ARRAY = 6152,
 
     STR_MAPGEN_OPTION_PLACE_BEACHES = 6153,
+    STR_MAPGEN_OPTION_BEACHES_HEIGHT = 6154,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
