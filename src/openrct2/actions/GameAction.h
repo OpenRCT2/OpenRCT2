@@ -27,8 +27,8 @@
 #include "../world/map.h"
 
 /**
- * Common error codes for game actions.
- */
+* Common error codes for game actions.
+*/
 enum class GA_ERROR : uint16
 {
     OK,
@@ -52,8 +52,8 @@ enum class GA_ERROR : uint16
 namespace GA_FLAGS
 {
     constexpr uint16 ALLOW_WHILE_PAUSED = 1 << 0;
-    constexpr uint16 CLIENT_ONLY        = 1 << 1;
-    constexpr uint16 EDITOR_ONLY        = 1 << 2;
+    constexpr uint16 CLIENT_ONLY = 1 << 1;
+    constexpr uint16 EDITOR_ONLY = 1 << 2;
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
@@ -63,8 +63,8 @@ namespace GA_FLAGS
 #endif
 
 /**
- * Represents the result of a game action query or execution.
- */
+* Represents the result of a game action query or execution.
+*/
 class GameActionResult
 {
 public:
@@ -95,9 +95,9 @@ public:
 private:
     uint32 const _type;
 
-    uint32 _playerId    = 0;    // Callee
-    uint32 _flags       = 0;    // GAME_COMMAND_FLAGS
-    uint32 _networkId   = 0;
+    uint32 _playerId = 0;    // Callee
+    uint32 _flags = 0;    // GAME_COMMAND_FLAGS
+    uint32 _networkId = 0;
     Callback_t _callback;
 
 public:
@@ -223,14 +223,35 @@ public:
 
 typedef GameAction *(*GameActionFactory)();
 
-namespace GameActions
+class GameActions
 {
-    void                    Initialize();
-    void                    Register();
-    GameAction::Ptr         Create(uint32 id);
-    GameActionResult::Ptr   Query(const GameAction * action);
-    GameActionResult::Ptr   Execute(const GameAction * action);
-    GameActionFactory       Register(uint32 id, GameActionFactory action);
+private:
+    struct GameActionScopedDepth
+    {
+        sint32& _depth;
+        GameActionScopedDepth(sint32 &depth) : _depth(depth)
+        {
+            _depth++;
+        }
+        ~GameActionScopedDepth()
+        {
+            _depth--;
+        }
+    };
+    sint32 _depth;
+
+public:
+    GameActions();
+
+    static GameActions& Instance();
+
+    static void Initialize();
+    static void Register();
+
+    static GameAction::Ptr         Create(uint32 id);
+    static GameActionResult::Ptr   Query(const GameAction * action);
+    static GameActionResult::Ptr   Execute(const GameAction * action);
+    static GameActionFactory       Register(uint32 id, GameActionFactory action);
 
     template<typename T>
     static GameActionFactory Register()
@@ -242,4 +263,6 @@ namespace GameActions
         Register(T::TYPE, factory);
         return factory;
     }
-}
+private:
+    GameActionResult::Ptr   InternalExecute(const GameAction * action);
+};

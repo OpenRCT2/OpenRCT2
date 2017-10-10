@@ -24,17 +24,15 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 
-namespace GameActions
+void GameActions::Register()
 {
-    void Register()
-    {
-        Register<SetParkEntranceFeeAction>();
-        Register<PlaceParkEntranceAction>();
-        Register<RideCreateAction>();
-        Register<RideSetStatusAction>();
-        Register<RideSetNameAction>();
-        Register<RideDemolishAction>();
-        Register<GuestSetNameAction>();
-        Register<StaffSetNameAction>();
-    }
+    Register<SetParkEntranceFeeAction>();
+    Register<PlaceParkEntranceAction>();
+    Register<RideCreateAction>();
+    Register<RideSetStatusAction>();
+    Register<RideSetNameAction>();
+    Register<RideDemolishAction>();
+    Register<GuestSetNameAction>();
+    Register<StaffSetNameAction>();
 }
+
