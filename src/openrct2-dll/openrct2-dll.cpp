@@ -41,7 +41,9 @@ static char * * GetCommandLineArgs(int argc, wchar_t * * argvW);
 static void FreeCommandLineArgs(int argc, char * * argv);
 static char * ConvertUTF16toUTF8(const wchar_t * src);
 
-DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
+DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t ** argvW);
+
+DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t ** argvW)
 {
     char * * argv = GetCommandLineArgs(argc, argvW);
     if (argv == nullptr)
@@ -62,7 +64,7 @@ static char * * GetCommandLineArgs(int argc, wchar_t * * argvW)
     char * * argv = (char * *)malloc(argc * sizeof(char *));
     if (argv == nullptr)
     {
-        return false;
+        return nullptr;
     }
 
     // Convert to UTF-8

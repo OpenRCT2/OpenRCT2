@@ -34,7 +34,7 @@ pushd build
 		chmod a+rwx "$(pwd)"
 		chmod g+s "$(pwd)"
 		# CMAKE and MAKE opts from environment
-		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DBUILD_TESTING=YES $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ctest --output-on-failure && ( ./testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
+		docker run -v "$PARENT":"$PARENT" -w "$PARENT"/build -i -t openrct2/openrct2:ubuntu_i686 bash -c "cmake ../ -DBUILD_TESTING=YES $OPENRCT2_CMAKE_OPTS && ninja all testpaint install $OPENRCT_MAKE_OPTS && ctest --output-on-failure && ( ./bin/testpaint --quiet ||  if [[ \$? -eq 1 ]] ; then echo Allowing failed tests to pass ; else echo here ; false; fi )"
 	elif [[ $TARGET == "ubuntu_amd64" ]]
 	then
 		PARENT=$(readlink -f ../)

@@ -33,7 +33,6 @@ if(NOT MSVC)
         -Wno-missing-braces
         -Wno-comment
         -Wshadow
-        -Wmissing-declarations
         -Wnonnull
         -fstrict-overflow
         )
@@ -191,10 +190,12 @@ if(UNIX AND NOT CMAKE_SYSTEM_NAME MATCHES BSD)
     target_link_libraries(openrct2-flags-iface INTERFACE dl)
 endif()
 
-# Enable multithreading
-set(THREADS_PREFER_PTHREAD_FLAG TRUE)
-find_package(Threads REQUIRED)
-target_link_libraries(openrct2-flags-iface INTERFACE Threads::Threads)
+if(ENABLE_HTTP_TWITCH OR ENABLE_NETWORK)
+    # Enable multithreading
+    set(THREADS_PREFER_PTHREAD_FLAG TRUE)
+    find_package(Threads REQUIRED)
+    target_link_libraries(openrct2-flags-iface INTERFACE Threads::Threads)
+endif()
 
 if(APPLE OR CMAKE_SYSTEM_NAME MATCHES "BSD")
     find_library(ICONV_LIBRARY NAMES libiconv.a iconv libiconv libiconv-2)

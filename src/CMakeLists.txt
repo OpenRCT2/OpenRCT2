@@ -8,12 +8,12 @@ add_subdirectory(openrct2)
 add_subdirectory(openrct2-cli)
 # UI library
 add_subdirectory(openrct2-ui)
-if(WIN32)
+if(WIN32 AND NOT MINGW)
     # Windows runtime
     add_subdirectory(openrct2-dll)
     # Windows Main
     add_subdirectory(openrct2-win)
-elseif(UNIX)
-    # Linux Main
+else()
+    # Unix Main
     add_subdirectory(openrct2-nix)
 endif()
