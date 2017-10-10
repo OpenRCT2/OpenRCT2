@@ -5669,7 +5669,7 @@ static void peep_update_buying(rct_peep* peep)
         }
         else{
             rct_ride_entry* ride_type = get_ride_entry(ride->subtype);
-            if (ride_type->shop_item_secondary != 0xFF){
+            if (ride_type->shop_item_secondary != SHOP_ITEM_NONE){
                 money16 price = ride->price_secondary;
 
                 item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item_secondary, price);
@@ -5678,7 +5678,7 @@ static void peep_update_buying(rct_peep* peep)
                 }
             }
 
-            if (!item_bought && ride_type->shop_item != 0xFF){
+            if (!item_bought && ride_type->shop_item != SHOP_ITEM_NONE){
                 money16 price = ride->price;
 
                 item_bought = peep_decide_and_buy_item(peep, peep->current_ride, ride_type->shop_item, price);

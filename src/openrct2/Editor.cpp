@@ -706,36 +706,39 @@ namespace Editor
             {
                 if (*edx == 0)
                 {
-                    if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkEntranceFee = MONEY(0, 00);
-                    }
+                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gParkEntranceFee = MONEY(0, 00);
+                }
+                else if (*edx == 1)
+                {
+                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gParkEntranceFee = MONEY(10, 00);
                 }
                 else
                 {
-                    if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                    {
-                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                        gParkEntranceFee = MONEY(10, 00);
-                    }
+                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
+                    gParkEntranceFee = MONEY(10, 00);
                 }
             }
             else
             {
                 if (*edx == 0)
                 {
-                    if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
-                    {
-                        gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
-                    }
+                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
+                }
+                else if (*edx == 1)
+                {
+                    gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags &= ~PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 else
                 {
-                    if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
-                    {
-                        gParkFlags &= ~PARK_FLAGS_PARK_FREE_ENTRY;
-                    }
+                    gParkFlags |= PARK_FLAGS_PARK_FREE_ENTRY;
+                    gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
                 }
                 window_invalidate_by_class(WC_PARK_INFORMATION);
                 window_invalidate_by_class(WC_RIDE);

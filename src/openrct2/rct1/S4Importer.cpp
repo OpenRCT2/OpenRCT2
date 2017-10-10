@@ -2120,11 +2120,7 @@ private:
         // If this flag is not set, the player can ask money for both rides and entry.
         if (!(_s4.park_flags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
         {
-            gCheatsUnlockAllPrices = true;
-        }
-        else
-        {
-            gCheatsUnlockAllPrices = false;
+            gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
         }
 
         // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.

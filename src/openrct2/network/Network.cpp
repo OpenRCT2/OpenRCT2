@@ -2009,7 +2009,6 @@ bool Network::LoadMap(IStream * stream)
         gCheatsFastLiftHill = stream->ReadValue<uint8>() != 0;
         gCheatsDisableBrakesFailure = stream->ReadValue<uint8>() != 0;
         gCheatsDisableAllBreakdowns = stream->ReadValue<uint8>() != 0;
-        gCheatsUnlockAllPrices = stream->ReadValue<uint8>() != 0;
         gCheatsBuildInPauseMode = stream->ReadValue<uint8>() != 0;
         gCheatsIgnoreRideIntensity = stream->ReadValue<uint8>() != 0;
         gCheatsDisableVandalism = stream->ReadValue<uint8>() != 0;
@@ -2057,7 +2056,6 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
         stream->WriteValue<uint8>(gCheatsFastLiftHill);
         stream->WriteValue<uint8>(gCheatsDisableBrakesFailure);
         stream->WriteValue<uint8>(gCheatsDisableAllBreakdowns);
-        stream->WriteValue<uint8>(gCheatsUnlockAllPrices);
         stream->WriteValue<uint8>(gCheatsBuildInPauseMode);
         stream->WriteValue<uint8>(gCheatsIgnoreRideIntensity);
         stream->WriteValue<uint8>(gCheatsDisableVandalism);

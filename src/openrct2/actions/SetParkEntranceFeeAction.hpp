@@ -51,7 +51,7 @@ public:
     GameActionResult::Ptr Query() const override
     {
         bool noMoney = (gParkFlags & PARK_FLAGS_NO_MONEY) != 0;
-        bool forceFreeEntry = (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices;
+        bool forceFreeEntry = !park_entry_price_unlocked();
         if (noMoney || forceFreeEntry)
         {
             return std::make_unique<GameActionResult>(GA_ERROR::DISALLOWED, STR_NONE);

@@ -25,6 +25,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
+#include <openrct2/world/park.h>
 #include <openrct2/windows/dropdown.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
@@ -103,7 +104,6 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     WIDX_SANDBOX_MODE,
     WIDX_RESET_DATE,
     WIDX_OWN_ALL_LAND,
-    WIDX_UNLOCK_ALL_PRICES,
     WIDX_FORCE_PARK_RATING,
     WIDX_PARK_RATING_SPINNER,
     WIDX_INCREASE_PARK_RATING,
@@ -239,7 +239,6 @@ static rct_widget window_cheats_misc_widgets[] = {
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(2),         HPL(2),         STR_CHEAT_SANDBOX_MODE,             STR_CHEAT_SANDBOX_MODE_TIP },           // Sandbox mode (edit land ownership in-game)
     { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(2),         HPL(2),         STR_CHEAT_RESET_DATE,               STR_NONE },                             // Reset date
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_CHEAT_OWN_ALL_LAND,             STR_CHEAT_OWN_ALL_LAND_TIP },           // Own all land
-    { WWT_CHECKBOX,         1,      XPL(0),                 OWPL,                   YPL(4),         OHPL(4),        STR_CHEAT_UNLOCK_PRICES,            STR_CHEAT_UNLOCK_PRICES_TIP },          // Unlock all prices
     { WWT_CHECKBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_FORCE_PARK_RATING,              STR_NONE },                             // Force park rating
     { WWT_SPINNER,          1,      XPL(1),                 WPL(1) - 10,            YPL(5) + 2,     HPL(5) - 3,     STR_NONE,                           STR_NONE },                             // park rating
     { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(5) + 3,     YPL(5) + 7,     STR_NUMERIC_UP,                     STR_NONE },                             // increase rating
@@ -452,7 +451,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
     MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_FREEZE_CLIMATE) |
         (1ULL << WIDX_OPEN_CLOSE_PARK) | (1ULL << WIDX_WEATHER) | (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) | (1ULL << WIDX_CLEAR_GRASS) | (1ULL << WIDX_MOWED_GRASS) |
         (1ULL << WIDX_WATER_PLANTS) | (1ULL << WIDX_DISABLE_PLANT_AGING) | (1ULL << WIDX_FIX_VANDALISM) | (1ULL << WIDX_REMOVE_LITTER) | (1ULL << WIDX_WIN_SCENARIO) | (1ULL << WIDX_HAVE_FUN) | (1ULL << WIDX_OWN_ALL_LAND) |
-        (1ULL << WIDX_NEVERENDING_MARKETING) | (1ULL << WIDX_UNLOCK_ALL_PRICES) | (1ULL << WIDX_SANDBOX_MODE) | (1ULL << WIDX_RESET_DATE) | (1ULL << WIDX_FAST_STAFF) | (1ULL << WIDX_NORMAL_STAFF) |
+        (1ULL << WIDX_NEVERENDING_MARKETING) | (1ULL << WIDX_SANDBOX_MODE) | (1ULL << WIDX_RESET_DATE) | (1ULL << WIDX_FAST_STAFF) | (1ULL << WIDX_NORMAL_STAFF) |
         (1ULL << WIDX_PARK_PARAMETERS) | (1ULL << WIDX_FORCE_PARK_RATING) | (1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
     MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_RENEW_RIDES) |
         (1ULL << WIDX_MAKE_DESTRUCTIBLE) | (1ULL << WIDX_FIX_ALL) | (1ULL << WIDX_FAST_LIFT_HILL) | (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
@@ -734,9 +733,6 @@ static void window_cheats_misc_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_NEVERENDING_MARKETING:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_NEVERENDINGMARKETING, !gCheatsNeverendingMarketing, GAME_COMMAND_CHEAT, 0, 0);
         break;
-    case WIDX_UNLOCK_ALL_PRICES:
-        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_UNLOCKALLPRICES, !gCheatsUnlockAllPrices, GAME_COMMAND_CHEAT, 0, 0);
-        break;
     case WIDX_SANDBOX_MODE:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SANDBOXMODE, !gCheatsSandboxMode, GAME_COMMAND_CHEAT, 0, 0);
         // To prevent tools from staying active after disabling cheat
@@ -903,7 +899,6 @@ static void window_cheats_invalidate(rct_window *w)
         break;
     case WINDOW_CHEATS_PAGE_MISC:
         w->widgets[WIDX_OPEN_CLOSE_PARK].text = (gParkFlags & PARK_FLAGS_PARK_OPEN) ? STR_CHEAT_CLOSE_PARK : STR_CHEAT_OPEN_PARK;
-        widget_set_checkbox_value(w, WIDX_UNLOCK_ALL_PRICES, gCheatsUnlockAllPrices);
         widget_set_checkbox_value(w, WIDX_FORCE_PARK_RATING, get_forced_park_rating() >= 0);
         w->widgets[WIDX_SANDBOX_MODE].text = gCheatsSandboxMode ? STR_CHEAT_SANDBOX_MODE_DISABLE : STR_CHEAT_SANDBOX_MODE;
         w->widgets[WIDX_FREEZE_CLIMATE].text = gCheatsFreezeClimate ? STR_CHEAT_UNFREEZE_CLIMATE : STR_CHEAT_FREEZE_CLIMATE;

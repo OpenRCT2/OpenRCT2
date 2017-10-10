@@ -196,12 +196,12 @@ bool marketing_is_campaign_type_applicable(sint32 campaignType)
     switch (campaignType) {
     case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
     case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-        if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+        if (!park_entry_price_unlocked())
             return false;
         return true;
 
     case ADVERTISING_CAMPAIGN_RIDE_FREE:
-        if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
+        if (!park_ride_prices_unlocked())
             return false;
 
         // fall-through
