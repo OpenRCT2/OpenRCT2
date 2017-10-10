@@ -100,83 +100,9 @@ typedef void   (APIENTRYP PFNGLTEXIMAGE3DPROC    )(GLenum target, GLint level, G
 typedef void   (APIENTRYP PFNGLGETINTERGERVPROC  )(GLenum pname, GLint * data);
 typedef void   (APIENTRYP PFNGLGETTEXIMAGEPROC   )(GLenum target, GLint level, GLenum format, GLenum type, GLvoid * img);
 
-#ifdef NO_EXTERN_GLAPI
-    // Defines the function pointers
-    #define GLAPI_DECL
-    #define GLAPI_SET   = nullptr
-#else
-    // Defines the functions as "extern"
-    #define GLAPI_DECL  extern
-    #define GLAPI_SET
-#endif
-
-// 1.1 function pointers
-GLAPI_DECL PFNGLACTIVETEXTUREPROC               glActiveTexture             GLAPI_SET;
-GLAPI_DECL PFNGLBEGINPROC                       glBegin                     GLAPI_SET;
-GLAPI_DECL PFNGLBINDTEXTUREPROC                 glBindTexture               GLAPI_SET;
-GLAPI_DECL PFNGLBLENDFUNCPROC                   glBlendFunc                 GLAPI_SET;
-GLAPI_DECL PFNGLCLEARPROC                       glClear                     GLAPI_SET;
-GLAPI_DECL PFNGLCLEARCOLORPROC                  glClearColor                GLAPI_SET;
-GLAPI_DECL PFNGLCULLFACEPROC                    glCullFace                  GLAPI_SET;
-GLAPI_DECL PFNGLDELETETEXTURESPROC              glDeleteTextures            GLAPI_SET;
-GLAPI_DECL PFNGLDISABLEPROC                     glDisable                   GLAPI_SET;
-GLAPI_DECL PFNGLDRAWARRAYSPROC                  glDrawArrays                GLAPI_SET;
-GLAPI_DECL PFNGLENABLEPROC                      glEnable                    GLAPI_SET;
-GLAPI_DECL PFNGLENDPROC                         glEnd                       GLAPI_SET;
-GLAPI_DECL PFNGLGENTEXTURESPROC                 glGenTextures               GLAPI_SET;
-GLAPI_DECL PFNGLGETERRORPROC                    glGetError                  GLAPI_SET;
-GLAPI_DECL PFNGLPIXELSTOREIPROC                 glPixelStorei               GLAPI_SET;
-GLAPI_DECL PFNGLREADPIXELSPROC                  glReadPixels                GLAPI_SET;
-GLAPI_DECL PFNGLTEXIMAGE2DPROC                  glTexImage2D                GLAPI_SET;
-GLAPI_DECL PFNGLTEXPARAMETERIPROC               glTexParameteri             GLAPI_SET;
-GLAPI_DECL PFNGLVIEWPORTPROC                    glViewport                  GLAPI_SET;
-GLAPI_DECL PFNGLTEXSUBIMAGE3DPROC               glTexSubImage3D             GLAPI_SET;
-GLAPI_DECL PFNGLTEXIMAGE3DPROC                  glTexImage3D                GLAPI_SET;
-GLAPI_DECL PFNGLGETINTERGERVPROC                glGetIntegerv               GLAPI_SET;
-GLAPI_DECL PFNGLGETTEXIMAGEPROC                 glGetTexImage               GLAPI_SET;
-
-// 2.0+ function pointers
-GLAPI_DECL PFNGLATTACHSHADERPROC                glAttachShader              GLAPI_SET;
-GLAPI_DECL PFNGLBINDBUFFERPROC                  glBindBuffer                GLAPI_SET;
-GLAPI_DECL PFNGLBINDFRAGDATALOCATIONPROC        glBindFragDataLocation      GLAPI_SET;
-GLAPI_DECL PFNGLBINDFRAMEBUFFERPROC             glBindFramebuffer           GLAPI_SET;
-GLAPI_DECL PFNGLBINDVERTEXARRAYPROC             glBindVertexArray           GLAPI_SET;
-GLAPI_DECL PFNGLBUFFERDATAPROC                  glBufferData                GLAPI_SET;
-GLAPI_DECL PFNGLCOMPILESHADERPROC               glCompileShader             GLAPI_SET;
-GLAPI_DECL PFNGLCREATEPROGRAMPROC               glCreateProgram             GLAPI_SET;
-GLAPI_DECL PFNGLCREATESHADERPROC                glCreateShader              GLAPI_SET;
-GLAPI_DECL PFNGLDELETEBUFFERSPROC               glDeleteBuffers             GLAPI_SET;
-GLAPI_DECL PFNGLDELETEFRAMEBUFFERSPROC          glDeleteFramebuffers        GLAPI_SET;
-GLAPI_DECL PFNGLDELETEPROGRAMPROC               glDeleteProgram             GLAPI_SET;
-GLAPI_DECL PFNGLDELETESHADERPROC                glDeleteShader              GLAPI_SET;
-GLAPI_DECL PFNGLDELETEVERTEXARRAYSPROC          glDeleteVertexArrays        GLAPI_SET;
-GLAPI_DECL PFNGLDETACHSHADERPROC                glDetachShader              GLAPI_SET;
-GLAPI_DECL PFNGLENABLEVERTEXATTRIBARRAYPROC     glEnableVertexAttribArray   GLAPI_SET;
-GLAPI_DECL PFNGLFRAMEBUFFERTEXTURE2DPROC        glFramebufferTexture2D      GLAPI_SET;
-GLAPI_DECL PFNGLGETATTRIBLOCATIONPROC           glGetAttribLocation         GLAPI_SET;
-GLAPI_DECL PFNGLGENBUFFERSPROC                  glGenBuffers                GLAPI_SET;
-GLAPI_DECL PFNGLGENFRAMEBUFFERSPROC             glGenFramebuffers           GLAPI_SET;
-GLAPI_DECL PFNGLGETPROGRAMINFOLOGPROC           glGetProgramInfoLog         GLAPI_SET;
-GLAPI_DECL PFNGLGETPROGRAMIVPROC                glGetProgramiv              GLAPI_SET;
-GLAPI_DECL PFNGLGETSHADERINFOLOGPROC            glGetShaderInfoLog          GLAPI_SET;
-GLAPI_DECL PFNGLGETSHADERIVPROC                 glGetShaderiv               GLAPI_SET;
-GLAPI_DECL PFNGLGETUNIFORMLOCATIONPROC          glGetUniformLocation        GLAPI_SET;
-GLAPI_DECL PFNGLGENVERTEXARRAYSPROC             glGenVertexArrays           GLAPI_SET;
-GLAPI_DECL PFNGLLINKPROGRAMPROC                 glLinkProgram               GLAPI_SET;
-GLAPI_DECL PFNGLSHADERSOURCEPROC                glShaderSource              GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM1IPROC                   glUniform1i                 GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM1IVPROC                  glUniform1iv                GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM2IPROC                   glUniform2i                 GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM2FPROC                   glUniform2f                 GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM4FPROC                   glUniform4f                 GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM4IPROC                   glUniform4i                 GLAPI_SET;
-GLAPI_DECL PFNGLUNIFORM4FVPROC                  glUniform4fv                GLAPI_SET;
-GLAPI_DECL PFNGLUSEPROGRAMPROC                  glUseProgram                GLAPI_SET;
-GLAPI_DECL PFNGLVERTEXATTRIBIPOINTERPROC        glVertexAttribIPointer      GLAPI_SET;
-GLAPI_DECL PFNGLVERTEXATTRIBPOINTERPROC         glVertexAttribPointer       GLAPI_SET;
-GLAPI_DECL PFNGLDRAWARRAYSINSTANCEDPROC         glDrawArraysInstanced       GLAPI_SET;
-GLAPI_DECL PFNGLVERTEXATTRIBDIVISORPROC         glVertexAttribDivisor       GLAPI_SET;
-GLAPI_DECL PFNGLBLENDFUNCSEPARATEPROC           glBlendFuncSeparate         GLAPI_SET;
+#define OPENGL_PROC(TYPE, PROC) extern TYPE PROC;
+#include "OpenGLAPIProc.h"
+#undef OPENGL_PROC
 
 #endif /* OPENGL_NO_LINK */
 
