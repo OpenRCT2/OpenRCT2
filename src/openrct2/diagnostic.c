@@ -26,14 +26,6 @@
 static bool _log_location_enabled = true;
 bool _log_levels[DIAGNOSTIC_LEVEL_COUNT] = { true, true, true, false, true };
 
-static const char * _level_strings[] = {
-    "FATAL",
-    "ERROR",
-    "WARNING",
-    "VERBOSE",
-    "INFO"
-};
-
 static FILE * diagnostic_get_stream(DiagnosticLevel level)
 {
     switch (level) {
@@ -78,6 +70,14 @@ void diagnostic_log_with_location(DiagnosticLevel diagnosticLevel, const char *f
 }
 
 #else
+
+static const char * _level_strings[] = {
+    "FATAL",
+    "ERROR",
+    "WARNING",
+    "VERBOSE",
+    "INFO"
+};
 
 void diagnostic_log(DiagnosticLevel diagnosticLevel, const char *format, ...)
 {
