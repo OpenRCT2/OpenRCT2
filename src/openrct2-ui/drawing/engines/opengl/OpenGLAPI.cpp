@@ -16,105 +16,30 @@
 
 #ifndef DISABLE_OPENGL
 
-#define NO_EXTERN_GLAPI
 #include "OpenGLAPI.h"
 
 #if OPENGL_NO_LINK
+
+#define OPENGL_PROC(TYPE, PROC) TYPE PROC = nullptr;
+#include "OpenGLAPIProc.h"
+#undef OPENGL_PROC
 
 #include <SDL_video.h>
 
 #include <openrct2/core/Console.hpp>
 
-template <typename T>
-static inline bool SetProc(T * func, const char * name)
-{
-    T address = (T)SDL_GL_GetProcAddress(name);
-    if (address == nullptr)
-    {
-        return false;
-    }
-
-    *func = address;
-    return true;
-}
-
-#define SetupOpenGLFunction(func)           \
-    {                                       \
-        if (!SetProc(&func, "" #func ""))   \
-        {                                   \
-            return "" #func "";             \
-        }                                   \
-    }
-
 static const char * TryLoadAllProcAddresses()
 {
-    // 1.1 functions
-    SetupOpenGLFunction(glActiveTexture);
-    SetupOpenGLFunction(glBegin);
-    SetupOpenGLFunction(glBindTexture);
-    SetupOpenGLFunction(glBlendFunc);
-    SetupOpenGLFunction(glClear);
-    SetupOpenGLFunction(glClearColor);
-    SetupOpenGLFunction(glCullFace);
-    SetupOpenGLFunction(glDeleteTextures);
-    SetupOpenGLFunction(glDisable);
-    SetupOpenGLFunction(glDrawArrays);
-    SetupOpenGLFunction(glEnable);
-    SetupOpenGLFunction(glEnd);
-    SetupOpenGLFunction(glGenTextures);
-    SetupOpenGLFunction(glGetError);
-    SetupOpenGLFunction(glPixelStorei);
-    SetupOpenGLFunction(glReadPixels);
-    SetupOpenGLFunction(glTexImage2D);
-    SetupOpenGLFunction(glTexParameteri);
-    SetupOpenGLFunction(glViewport);
-    SetupOpenGLFunction(glTexSubImage3D);
-    SetupOpenGLFunction(glTexImage3D);
-    SetupOpenGLFunction(glGetIntegerv);
-    SetupOpenGLFunction(glGetTexImage);
-
-    // 2.0+ functions
-    SetupOpenGLFunction(glAttachShader);
-    SetupOpenGLFunction(glBindBuffer);
-    SetupOpenGLFunction(glBindFragDataLocation);
-    SetupOpenGLFunction(glBindFramebuffer);
-    SetupOpenGLFunction(glBindVertexArray);
-    SetupOpenGLFunction(glBufferData);
-    SetupOpenGLFunction(glCompileShader);
-    SetupOpenGLFunction(glCreateProgram);
-    SetupOpenGLFunction(glCreateShader);
-    SetupOpenGLFunction(glDeleteBuffers);
-    SetupOpenGLFunction(glDeleteFramebuffers);
-    SetupOpenGLFunction(glDeleteProgram);
-    SetupOpenGLFunction(glDeleteShader);
-    SetupOpenGLFunction(glDeleteVertexArrays);
-    SetupOpenGLFunction(glDetachShader);
-    SetupOpenGLFunction(glEnableVertexAttribArray);
-    SetupOpenGLFunction(glFramebufferTexture2D);
-    SetupOpenGLFunction(glGetAttribLocation);
-    SetupOpenGLFunction(glGenBuffers);
-    SetupOpenGLFunction(glGenFramebuffers);
-    SetupOpenGLFunction(glGetProgramInfoLog);
-    SetupOpenGLFunction(glGetProgramiv);
-    SetupOpenGLFunction(glGetShaderInfoLog);
-    SetupOpenGLFunction(glGetShaderiv);
-    SetupOpenGLFunction(glGetUniformLocation);
-    SetupOpenGLFunction(glGenVertexArrays);
-    SetupOpenGLFunction(glLinkProgram);
-    SetupOpenGLFunction(glShaderSource);
-    SetupOpenGLFunction(glUniform1i);
-    SetupOpenGLFunction(glUniform1iv);
-    SetupOpenGLFunction(glUniform2i);
-    SetupOpenGLFunction(glUniform2f);
-    SetupOpenGLFunction(glUniform4f);
-    SetupOpenGLFunction(glUniform4i);
-    SetupOpenGLFunction(glUniform4fv);
-    SetupOpenGLFunction(glUseProgram);
-    SetupOpenGLFunction(glVertexAttribIPointer);
-    SetupOpenGLFunction(glVertexAttribPointer);
-    SetupOpenGLFunction(glDrawArraysInstanced);
-    SetupOpenGLFunction(glVertexAttribDivisor);
-    SetupOpenGLFunction(glBlendFuncSeparate);
+#define OPENGL_PROC(TYPE, PROC)                     \
+    {                                               \
+        PROC = (TYPE)SDL_GL_GetProcAddress(#PROC);  \
+        if (PROC == nullptr)                        \
+        {                                           \
+            return #PROC;                           \
+        }                                           \
+    }
+#include "OpenGLAPIProc.h"
+#undef OPENGL_PROC
 
     return nullptr;
 }

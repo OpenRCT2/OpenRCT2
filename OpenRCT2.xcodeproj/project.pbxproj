@@ -853,6 +853,7 @@
 		D41B741C1C210A7A0080A7B9 /* libiconv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libiconv.tbd; path = usr/lib/libiconv.tbd; sourceTree = SDKROOT; };
 		D41B74721C2125E50080A7B9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = distribution/macos/Assets.xcassets; sourceTree = SOURCE_ROOT; };
 		D43407E11D0E14CE00C2B3D4 /* shaders */ = {isa = PBXFileReference; lastKnownFileType = folder; name = shaders; path = data/shaders; sourceTree = SOURCE_ROOT; };
+		D43BAB921F8C2B2B00A9E362 /* OpenGLAPIProc.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLAPIProc.h; sourceTree = "<group>"; };
 		D45A38B31CF3006400659A24 /* libcrypto.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libcrypto.dylib; sourceTree = "<group>"; };
 		D45A38B41CF3006400659A24 /* libfreetype.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libfreetype.dylib; sourceTree = "<group>"; };
 		D45A38B51CF3006400659A24 /* libjansson.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libjansson.dylib; sourceTree = "<group>"; };
@@ -2667,6 +2668,7 @@
 				F76C859A1EC4E82600FA49E2 /* GLSLTypes.h */,
 				F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */,
 				F76C859C1EC4E82600FA49E2 /* OpenGLAPI.h */,
+				D43BAB921F8C2B2B00A9E362 /* OpenGLAPIProc.h */,
 				F76C859D1EC4E82600FA49E2 /* OpenGLDrawingEngine.cpp */,
 				F76C859E1EC4E82600FA49E2 /* OpenGLFramebuffer.cpp */,
 				F76C859F1EC4E82600FA49E2 /* OpenGLFramebuffer.h */,
