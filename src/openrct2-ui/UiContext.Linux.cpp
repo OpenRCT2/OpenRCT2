@@ -371,6 +371,8 @@ namespace OpenRCT2 { namespace Ui
 
         static void ThrowMissingDialogApp()
         {
+            IUiContext * uiContext = GetContext()->GetUiContext();
+            uiContext->ShowMessageBox("Neither KDialog nor Zenity are installed. Please install one.");
             throw std::runtime_error("KDialog or Zenity not installed.");
         }
     };
