@@ -12783,7 +12783,8 @@ void pathfind_logging_enable(rct_peep* peep) {
     #endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }
 
-void pathfind_logging_disable() {
+void pathfind_logging_disable()
+{
     #if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     gPathFindDebug = false;
     #endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
@@ -12802,38 +12803,47 @@ void peep_autoposition(rct_peep *newPeep)
     rct_peep *guest = NULL;
 
     // Count number of walking guests
-    FOR_ALL_GUESTS(sprite_index, guest) {
-                if (guest->state == PEEP_STATE_WALKING)
-                    ++count;
-            }
+    FOR_ALL_GUESTS(sprite_index, guest)
+    {
+        if (guest->state == PEEP_STATE_WALKING)
+            ++count;
+    }
 
-    if (count > 0) {
+    if (count > 0)
+    {
         // Place staff at a random guest
         uint32 rand = scenario_rand_max(count);
-        FOR_ALL_GUESTS(sprite_index, guest) {
-                    if (guest->state == PEEP_STATE_WALKING) {
-                        if (rand == 0)
-                            break;
-                        --rand;
-                    }
-                }
+        FOR_ALL_GUESTS(sprite_index, guest)
+        {
+            if (guest->state == PEEP_STATE_WALKING)
+            {
+                if (rand == 0)
+                    break;
+                --rand;
+            }
+        }
 
         x = guest->x;
         y = guest->y;
         z = guest->z;
-    } else {
+    }
+    else
+    {
         // No walking guests; pick random park entrance
         count = 0;
         uint8 i;
-        for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
+        for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
+        {
             if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
                 ++count;
         }
 
-        if (count > 0) {
+        if (count > 0)
+        {
             uint32 rand = scenario_rand_max(count);
             for (i = 0; i < MAX_PARK_ENTRANCES; ++i) {
-                if (gParkEntrances[i].x != SPRITE_LOCATION_NULL) {
+                if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
+                {
                     if (rand == 0)
                         break;
                     --rand;
@@ -12846,7 +12856,9 @@ void peep_autoposition(rct_peep *newPeep)
             z = gParkEntrances[i].z;
             x += 16 + ((dir & 1) == 0 ? ((dir & 2) ? 32 : -32) : 0);
             y += 16 + ((dir & 1) == 1 ? ((dir & 2) ? -32 : 32) : 0);
-        } else {
+        }
+        else
+        {
             // No more options; user must pick a location
             newPeep->state = PEEP_STATE_PICKED;
             x = newPeep->x;
@@ -12859,40 +12871,57 @@ void peep_autoposition(rct_peep *newPeep)
     invalidate_sprite_2((rct_sprite *)newPeep);
 }
 
-void increment_guests_in_park(){
-    if (gNumGuestsInPark < UINT16_MAX){
+void increment_guests_in_park()
+{
+    if (gNumGuestsInPark < UINT16_MAX)
+    {
         gNumGuestsInPark++;
-    } else {
+    }
+    else
+    {
         openrct2_assert(false, "Attempt to increment guests in park above max value (65535).");
     }
 }
 
-void increment_guests_heading_for_park(){
-    if (gNumGuestsHeadingForPark < UINT16_MAX){
+void increment_guests_heading_for_park()
+{
+    if (gNumGuestsHeadingForPark < UINT16_MAX)
+    {
         gNumGuestsHeadingForPark++;
-    } else {
+    }
+    else
+    {
         openrct2_assert(false, "Attempt to increment guests heading for park above max value (65535).");
     }
 }
 
-void decrement_guests_in_park(){
-    if (gNumGuestsInPark > 0){
+
+void decrement_guests_in_park()
+{
+    if (gNumGuestsInPark > 0)
+    {
         gNumGuestsInPark--;
-    } else {
+    }
+    else
+    {
         log_error("Attempt to decrement guests in park below zero.");
     }
 }
 
-void decrement_guests_heading_for_park(){
-    if (gNumGuestsHeadingForPark > 0){
+void decrement_guests_heading_for_park()
+{
+    if (gNumGuestsHeadingForPark > 0)
+    {
         gNumGuestsHeadingForPark--;
-    } else {
+    }
+    else
+    {
         log_error("Attempt to decrement guests heading for park below zero.");
     }
 }
 
-static void peep_release_balloon(rct_peep *peep, sint16 spawn_height) {
-
+static void peep_release_balloon(rct_peep *peep, sint16 spawn_height)
+{
     if (peep->item_standard_flags & PEEP_ITEM_BALLOON)
     {
         peep->item_standard_flags &= ~PEEP_ITEM_BALLOON;
