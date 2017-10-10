@@ -18,7 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
-#include "input/input.h"
+#include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
 

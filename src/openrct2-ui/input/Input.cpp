@@ -25,7 +25,7 @@
 #include <openrct2/interface/console.h>
 #include <openrct2/interface/window.h>
 #include "KeyboardShortcuts.h"
-#include "input.h"
+#include "Input.h"
 
 static void input_handle_console(sint32 key)
 {
