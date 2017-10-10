@@ -456,6 +456,11 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
                 command.Type = TITLE_SCRIPT_SPEED;
                 command.Speed = Math::Max(1, Math::Min(4, atoi(part1) & 0xFF));
             }
+            else if (_stricmp(token, "FOLLOW") == 0)
+            {
+                command.Type = TITLE_SCRIPT_FOLLOW;
+                command.SpriteIndex = atoi(part1) & 0xFFFF;
+            }
             else if (_stricmp(token, "WAIT") == 0)
             {
                 command.Type = TITLE_SCRIPT_WAIT;
@@ -601,6 +606,10 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             break;
         case TITLE_SCRIPT_ZOOM:
             String::Format(buffer, sizeof(buffer), "ZOOM %u", command->Zoom);
+            sb.Append(buffer);
+            break;
+        case TITLE_SCRIPT_FOLLOW:
+            String::Format(buffer, sizeof(buffer), "FOLLOW %u", command->SpriteIndex);
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_SPEED:

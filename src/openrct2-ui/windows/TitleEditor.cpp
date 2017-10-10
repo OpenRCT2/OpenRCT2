@@ -888,14 +888,15 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
             commandName = STR_TITLE_EDITOR_COMMAND_SPEED;
             set_format_arg(0, rct_string_id, SpeedNames[command->Speed - 1]);
             break;
+        case TITLE_SCRIPT_FOLLOW:
+            commandName = STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW;
+            break;
         case TITLE_SCRIPT_WAIT:
             commandName = STR_TITLE_EDITOR_COMMAND_WAIT;
             set_format_arg(0, uint16, command->Milliseconds);
             break;
         case TITLE_SCRIPT_RESTART:
             commandName = STR_TITLE_EDITOR_RESTART;
-            // TODO: Why the format arg?
-            set_format_arg(0, uint16, command->Zoom);
             break;
         case TITLE_SCRIPT_END:
             commandName = STR_TITLE_EDITOR_END;
