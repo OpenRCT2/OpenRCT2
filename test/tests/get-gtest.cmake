@@ -11,6 +11,10 @@ ExternalProject_Add(
     INSTALL_COMMAND ""
 )
 
+if(DEFINED CMAKE_TOOLCHAIN_FILE)
+    set(tc_arg "-DCMAKE_TOOLCHAIN_FILE=${CMAKE_TOOLCHAIN_FILE}")
+endif()
+
 # Specify include dir
 ExternalProject_Get_Property(googletest-distribution SOURCE_DIR)
 set(GOOGLETEST_DISTRIB_SOURCE_DIR "${SOURCE_DIR}")
@@ -21,8 +25,8 @@ ExternalProject_Add(
     DOWNLOAD_COMMAND ""
     SOURCE_DIR "${GOOGLETEST_DISTRIB_SOURCE_DIR}/googletest"
     CMAKE_ARGS
-        "-DCMAKE_CXX_FLAGS=${TARGET_M}"
         "-Dgtest_force_shared_crt=TRUE"
+        ${tc_arg}
     BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest${CMAKE_STATIC_LIBRARY_SUFFIX}"
     BUILD_BYPRODUCTS "googletest-prefix/src/googletest-build/${CMAKE_STATIC_LIBRARY_PREFIX}gtest_main${CMAKE_STATIC_LIBRARY_SUFFIX}"
     # Disable install step
