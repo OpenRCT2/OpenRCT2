@@ -87,6 +87,7 @@ enum {
     WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX,
     WIDX_SIMPLEX_FLOOR_TEXTURE,
     WIDX_SIMPLEX_WALL_TEXTURE,
+    WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX,
     WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
 
     WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
@@ -185,8 +186,9 @@ static rct_widget SimplexWidgets[] = {
     { WWT_CHECKBOX,         1,  104,    198,    190,    201,    STR_MAPGEN_OPTION_RANDOM_TERRAIN, STR_NONE }, // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
     { WWT_FLATBTN,          1,  102,    148,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP }, // WIDX_SIMPLEX_FLOOR_TEXTURE
     { WWT_FLATBTN,          1,  150,    196,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
+    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX
 
-    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    { WWT_CHECKBOX,         1,  104,    198,    252,    263,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
 
     { WIDGETS_END },
 };
@@ -451,6 +453,7 @@ static uint64 PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX) |
     (1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
     (1ULL << WIDX_SIMPLEX_WALL_TEXTURE) |
+    (1ULL << WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX) |
     (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
 
     (1ULL << WIDX_CLOSE) |
@@ -554,6 +557,9 @@ static sint32 _waterLevel = 6;
 static sint32 _floorTexture = TERRAIN_GRASS;
 static sint32 _wallTexture = TERRAIN_EDGE_ROCK;
 static bool _randomTerrain = true;
+
+static bool _beachesPlace = false;
+static sint32 _beachesHeight = 6;
 
 static sint32 _simplex_low = 6;
 static sint32 _simplex_high = 10;
@@ -834,6 +840,10 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
         mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
 
+        // Randomly decide to use beaches if floor is grass or randomTerrain is enabled
+        mapgenSettings.beaches_place = ((_randomTerrain || _floorTexture == TERRAIN_GRASS) && (util_rand() % 2 == 0));
+        mapgenSettings.beaches_height = 6;
+
         mapgenSettings.simplex_low = util_rand() % 4;
         mapgenSettings.simplex_high = 12 + (util_rand() % (32 - 12));
         mapgenSettings.simplex_base_freq = 1.75f;
@@ -919,6 +929,9 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.floor = _randomTerrain ? -1 : _floorTexture;
         mapgenSettings.wall = _randomTerrain ? -1 : _wallTexture;
 
+        mapgenSettings.beaches_place = _beachesPlace;
+        mapgenSettings.beaches_height = _beachesHeight;
+
         mapgenSettings.simplex_low = _simplex_low;
         mapgenSettings.simplex_high = _simplex_high;
         mapgenSettings.simplex_base_freq = ((float)_simplex_base_freq) / 100.00f;
@@ -997,6 +1010,10 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
     case WIDX_SIMPLEX_WALL_TEXTURE:
         land_tool_show_edge_style_dropdown(w, widget, _wallTexture);
         break;
+    case WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX:
+        _beachesPlace = !_beachesPlace;
+        window_invalidate(w);
+        break;
     case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
         _treesPlace = !_treesPlace;
         window_invalidate(w);
@@ -1066,6 +1083,7 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _treesPlace);
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX, _beachesPlace);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain) {
@@ -1101,6 +1119,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour, w->x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_octaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
     gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_BEACHES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_BEACHES_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
     
     // The practical map size is 2 lower than the technical map size

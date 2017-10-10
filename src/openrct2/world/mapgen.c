@@ -213,9 +213,10 @@ void mapgen_generate(mapgen_settings *settings)
     mapgen_set_water_level(waterLevel);
 
     // Add sandy beaches
-    sint32 beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == TERRAIN_GRASS) {
-        switch (util_rand() % 4) {
+    if ((settings->beaches_place) && !(settings->floor == -1 && floorTexture == TERRAIN_ICE)) {
+        // Randomly choose sand terrain.
+        sint32 beachTexture = floorTexture;
+        switch (util_rand() % 2) {
         case 0:
             beachTexture = TERRAIN_SAND;
             break;
@@ -223,13 +224,14 @@ void mapgen_generate(mapgen_settings *settings)
             beachTexture = TERRAIN_SAND_LIGHT;
             break;
         }
-    }
-    for (y = 1; y < mapSize - 1; y++) {
-        for (x = 1; x < mapSize - 1; x++) {
-            mapElement = map_get_surface_element_at(x, y);
 
-            if (mapElement->base_height < waterLevel + 6)
-                map_element_set_terrain(mapElement, beachTexture);
+        for (y = 1; y < mapSize - 1; y++) {
+            for (x = 1; x < mapSize - 1; x++) {
+                mapElement = map_get_surface_element_at(x, y);
+
+                if (mapElement->base_height < waterLevel + settings->beaches_height)
+                    map_element_set_terrain(mapElement, beachTexture);
+            }
         }
     }
 

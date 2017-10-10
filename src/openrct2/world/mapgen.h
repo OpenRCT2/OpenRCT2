@@ -28,7 +28,8 @@ typedef struct mapgen_settings {
     sint32 wall;
 
     // Features (e.g. tree, rivers, lakes etc.)
-    sint32 trees;
+    bool beaches_place;
+    sint32 beaches_height;
 
     // Simplex Noise Parameters
     sint32 simplex_low;
