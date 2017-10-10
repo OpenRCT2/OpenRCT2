@@ -15,19 +15,20 @@ endif()
 # were derived.
 if(ENABLE_RCT2 AND UNIX)
     set(OPENRCT2_EXE "${PROJECT_SOURCE_DIR}/openrct2.exe")
+    set(text_bin "${CMAKE_CURRENT_BINARY_DIR}/openrct2_text.bin")
     add_custom_command(
-        OUTPUT openrct2_text
-        COMMAND dd if="${OPENRCT2_EXE}" of="${CMAKE_BINARY_DIR}/openrct2_text" bs=4096 skip=1 count=1187
+        OUTPUT "${text_bin}"
+        COMMAND dd if="${OPENRCT2_EXE}" of="${text_bin}" bs=4096 skip=1 count=1187
         DEPENDS ${OPENRCT2_EXE}
     )
+    set(data_bin "${CMAKE_CURRENT_BINARY_DIR}/openrct2_data.bin")
     add_custom_command(
-        OUTPUT openrct2_data
-        COMMAND dd if="${OPENRCT2_EXE}" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1188 count=318
-        COMMAND dd if=/dev/zero of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 seek=318 count=2630 conv=notrunc
-        COMMAND dd if="${OPENRCT2_EXE}" of="${CMAKE_BINARY_DIR}/openrct2_data" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
+        OUTPUT "${data_bin}"
+        COMMAND dd if="${OPENRCT2_EXE}" of="${data_bin}" bs=4096 skip=1188 count=318
+        COMMAND dd if=/dev/zero of="${data_bin}" bs=4096 seek=318 count=2630 conv=notrunc
+        COMMAND dd if="${OPENRCT2_EXE}" of="${data_bin}" bs=4096 skip=1506 seek=2948 count=1 conv=notrunc
         DEPENDS ${OPENRCT2_EXE}
     )
-    add_custom_target(segfiles DEPENDS openrct2_text openrct2_data)
     if(NOT USE_MMAP)
         set(OBJ_FORMAT "elf32-i386")
         set(LINKER_SCRIPT "ld_script_i386.xc")
@@ -37,28 +38,41 @@ if(ENABLE_RCT2 AND UNIX)
             # For Linux we have to use objcopy to wrap regular binaries into a linkable
             # format. We use specific section names which are then referenced in a
             # bespoke linker script so they can be placed at predefined VMAs.
+            set(text_out "${CMAKE_CURRENT_BINARY_DIR}/openrct2_text_section.o")
             add_custom_command(
-                OUTPUT openrct2_text_section.o
-                COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_text openrct2_text_section.o --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
-                DEPENDS segfiles
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                OUTPUT "${text_out}"
+                COMMAND objcopy
+                    --input binary
+                    --output ${OBJ_FORMAT}
+                    --binary-architecture i386
+                    "${text_bin}" "${text_out}"
+                    --rename-section .data=.rct2_text,contents,alloc,load,readonly,code
+                DEPENDS "${text_bin}"
             )
+            set(data_out "${CMAKE_CURRENT_BINARY_DIR}/openrct2_data_section.o")
             add_custom_command(
-                OUTPUT openrct2_data_section.o
-                COMMAND objcopy --input binary --output ${OBJ_FORMAT} --binary-architecture i386 openrct2_data openrct2_data_section.o --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
-                DEPENDS segfiles
-                WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
+                OUTPUT "${data_out}"
+                COMMAND objcopy
+                    --input binary
+                    --output ${OBJ_FORMAT}
+                    --binary-architecture i386
+                    "${data_bin}" "${data_out}"
+                    --rename-section .data=.rct2_data,contents,alloc,load,readonly,data
+                DEPENDS "${data_bin}"
             )
-            add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
-            set_source_files_properties(
-                openrct2_text_section.o openrct2_data_section.o
-                PROPERTIES
-                EXTERNAL_OBJECT true
-                GENERATED true
+            # add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
+            # set_source_files_properties(
+            #     "${text_out}" "${data_out}"
+            #     PROPERTIES
+            #     EXTERNAL_OBJECT TRUE
+            #     GENERATED TRUE
+            # )
+            add_library(rct2-sections STATIC "${text_out}" "${data_out}")
+            add_library(openrct2::sections ALIAS rct2-sections)
+            set_property(TARGET rct2-sections PROPERTY LINKER_LANGUAGE C)
+            target_link_libraries(rct2-sections PUBLIC
+                "-Wl,-T,\"${PROJECT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\""
             )
-            # can't use GLOB here, as the files don't exist yet at cmake-time
-            set(RCT2_SECTIONS "${CMAKE_BINARY_DIR}/openrct2_data_section.o" "${CMAKE_BINARY_DIR}/openrct2_text_section.o")
-            set(RCT2_SEGMENT_LINKER_FLAGS "-Wl,-T,\"${PROJECT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\"")
         endif()
     endif()
 elseif(USE_MMAP)
@@ -75,13 +89,7 @@ target_include_directories(libopenrct2 PUBLIC ${OPENRCT2_SOURCE_DIR})
 set_target_properties(libopenrct2 PROPERTIES PREFIX "")
 
 if(ENABLE_RCT2)
-    add_dependencies(libopenrct2 segfiles)
-    if(NOT USE_MMAP)
-        if(NOT APPLE)
-            add_dependencies(libopenrct2 linkable_sections)
-        endif()
-        set_target_properties(libopenrct2 PROPERTIES LINK_FLAGS ${RCT2_SEGMENT_LINKER_FLAGS})
-    endif()
+    target_link_libraries(libopenrct2 PUBLIC openrct2::sections)
 endif()
 
 if(APPLE AND NOT USE_MMAP)
