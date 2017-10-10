@@ -7769,8 +7769,8 @@ money16 ride_get_price(Ride * ride)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY) return 0;
     if (ride_is_ride(ride)) {
-        if (!gCheatsUnlockAllPrices) {
-            if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)) return 0;
+        if (!park_ride_prices_unlocked()) {
+            return 0;
         }
     }
     return ride->price;

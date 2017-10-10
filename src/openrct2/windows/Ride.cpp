@@ -4617,7 +4617,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
     track_colour trackColour = ride_get_track_colour(ride, w->ride_colour);
 
     //
-    if (rideEntry->shop_item == 0xFF) {
+    if (rideEntry->shop_item == SHOP_ITEM_NONE) {
         sint32 x = w->x + widget->left;
         sint32 y = w->y + widget->top;
 
@@ -4643,7 +4643,7 @@ static void window_ride_colour_paint(rct_window *w, rct_drawpixelinfo *dpi)
         sint32 x = w->x + (widget->left + widget->right) / 2 - 8;
         sint32 y = w->y + (widget->bottom + widget->top) / 2 - 6;
 
-        uint8 shopItem = rideEntry->shop_item_secondary == 255 ? rideEntry->shop_item : rideEntry->shop_item_secondary;
+        uint8 shopItem = rideEntry->shop_item_secondary == SHOP_ITEM_NONE ? rideEntry->shop_item : rideEntry->shop_item_secondary;
         sint32 spriteIndex = ShopItemImage[shopItem];
         spriteIndex |= SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_main[0]);
 
@@ -5866,7 +5866,7 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
     ride_type = get_ride_entry(ride->subtype);
 
     shop_item = ride_type->shop_item_secondary;
-    if (shop_item == 0xFF)
+    if (shop_item == SHOP_ITEM_NONE)
         shop_item = RidePhotoItems[ride->type];
 
     update_same_price_throughout_flags(shop_item);
@@ -5887,10 +5887,11 @@ static void window_ride_income_increase_primary_price(rct_window *w)
     ride = get_ride(w->number);
     ride_type = get_ride_entry(ride->subtype);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
-        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
-            if (!gCheatsUnlockAllPrices)
-                return;
+    if (!park_ride_prices_unlocked())
+    {
+        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == SHOP_ITEM_NONE)
+        {
+            return;
         }
     }
     money16 price = ride->price;
@@ -5912,10 +5913,11 @@ static void window_ride_income_decrease_primary_price(rct_window *w)
     ride = get_ride(w->number);
     ride_type = get_ride_entry(ride->subtype);
 
-    if ((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) == 0) {
-        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == 0xFF) {
-            if (!gCheatsUnlockAllPrices)
-                return;
+    if (!park_ride_prices_unlocked())
+    {
+        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == SHOP_ITEM_NONE)
+        {
+            return;
         }
     }
     money16 price = ride->price;
@@ -6071,9 +6073,8 @@ static void window_ride_income_invalidate(rct_window *w)
     window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_NONE;
     window_ride_income_widgets[WIDX_PRIMARY_PRICE].tooltip = STR_NONE;
 
-    // If the park doesn't have free entry, lock the admission price, unless the cheat to unlock all prices is activated.
-    if ((!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && rideEntry->shop_item == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
-        && (!gCheatsUnlockAllPrices))
+    // If ride prices are locked, do not allow setting the price, unless we're dealing with a shop or toilet.
+    if (!park_ride_prices_unlocked() && rideEntry->shop_item == SHOP_ITEM_NONE && ride->type != RIDE_TYPE_TOILETS)
     {
         w->disabled_widgets |= (1 << WIDX_PRIMARY_PRICE);
         window_ride_income_widgets[WIDX_PRIMARY_PRICE_LABEL].tooltip = STR_RIDE_INCOME_ADMISSION_PAY_FOR_ENTRY_TIP;

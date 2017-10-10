@@ -1038,22 +1038,54 @@ void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
 }
 
 
-void set_forced_park_rating(sint32 rating){
+void set_forced_park_rating(sint32 rating)
+{
     _forcedParkRating = rating;
     gParkRating = calculate_park_rating();
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
     window_invalidate_by_class(WC_PARK_INFORMATION);
 }
 
-sint32 get_forced_park_rating(){
+sint32 get_forced_park_rating()
+{
     return _forcedParkRating;
 }
 
 money16 park_get_entrance_fee()
 {
-    if (gParkFlags & PARK_FLAGS_NO_MONEY) return 0;
-    if (!gCheatsUnlockAllPrices) {
-        if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) return 0;
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
+        return 0;
+    }
+    if (!park_entry_price_unlocked())
+    {
+        return 0;
     }
     return gParkEntranceFee;
+}
+
+bool park_ride_prices_unlocked()
+{
+    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    {
+        return true;
+    }
+    if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+    {
+        return true;
+    }
+    return false;
+}
+
+bool park_entry_price_unlocked()
+{
+    if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+    {
+        return true;
+    }
+    if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY))
+    {
+        return true;
+    }
+    return false;
 }

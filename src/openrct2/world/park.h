@@ -42,7 +42,8 @@ enum {
     PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
     PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),  // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
     PARK_FLAGS_SPRITES_INITIALISED = (1 << 18), // After a scenario is loaded this prevents edits in the scenario editor
-    PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19) // Not used anymore
+    PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
+    PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31), // OpenRCT2 only!
 };
 
 enum
@@ -115,6 +116,9 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 void game_command_buy_land_rights(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
 money16 park_get_entrance_fee();
+
+bool park_ride_prices_unlocked();
+bool park_entry_price_unlocked();
 
 #ifdef __cplusplus
 }

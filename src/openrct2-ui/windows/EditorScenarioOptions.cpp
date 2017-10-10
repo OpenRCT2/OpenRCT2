@@ -23,6 +23,7 @@
 #include <openrct2/game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/string_ids.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
 
@@ -1337,6 +1338,8 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
         gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
         gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
+        gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
 
         window_dropdown_show_text_custom_width(
             w->x + dropdownWidget->left,
@@ -1345,11 +1348,17 @@ static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_wid
             w->colours[1],
             0,
             DROPDOWN_FLAG_STAY_OPEN,
-            2,
+            3,
             dropdownWidget->right - dropdownWidget->left - 3
         );
 
-        dropdown_set_checked((gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? 0 : 1), true);
+        if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+            dropdown_set_checked(2, true);
+        else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+            dropdown_set_checked(0, true);
+        else
+            dropdown_set_checked(1, true);
+
         break;
     }
 }
@@ -1405,7 +1414,9 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
         (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY))) {
         for (sint32 i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
             w->widgets[i].type = WWT_EMPTY;
-    } else {
+    }
+    else
+    {
         w->widgets[WIDX_LAND_COST].type = WWT_SPINNER;
         w->widgets[WIDX_LAND_COST_INCREASE].type = WWT_DROPDOWN_BUTTON;
         w->widgets[WIDX_LAND_COST_DECREASE].type = WWT_DROPDOWN_BUTTON;
@@ -1415,11 +1426,14 @@ static void window_editor_scenario_options_park_invalidate(rct_window *w)
         w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].type = WWT_DROPDOWN;
         w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
 
-        if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) {
+        if (!park_entry_price_unlocked())
+        {
             w->widgets[WIDX_ENTRY_PRICE].type = WWT_EMPTY;
             w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_EMPTY;
             w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_EMPTY;
-        } else {
+        }
+        else
+        {
             w->widgets[WIDX_ENTRY_PRICE].type = WWT_SPINNER;
             w->widgets[WIDX_ENTRY_PRICE_INCREASE].type = WWT_DROPDOWN_BUTTON;
             w->widgets[WIDX_ENTRY_PRICE_DECREASE].type = WWT_DROPDOWN_BUTTON;
@@ -1496,8 +1510,14 @@ static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpix
         y = w->y + w->widgets[WIDX_PAY_FOR_PARK_OR_RIDES].top;
         gfx_draw_string_left(dpi, STR_FREE_PARK_ENTER, nullptr, COLOUR_BLACK, x, y);
 
-        // Pay for park or rides value
-        stringId = gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY ? STR_FREE_PARK_ENTER : STR_PAY_PARK_ENTER;
+        // Pay for park and/or rides value
+        if (gParkFlags & PARK_FLAGS_UNLOCK_ALL_PRICES)
+            stringId = STR_PAID_ENTRY_PAID_RIDES;
+        else if (gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY)
+            stringId = STR_FREE_PARK_ENTER;
+        else
+            stringId = STR_PAY_PARK_ENTER;
+
         gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y);
     }
 

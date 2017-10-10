@@ -196,7 +196,7 @@ public:
 
             if (rideEntry->shop_item == SHOP_ITEM_NONE)
             {
-                if (!(gParkFlags & PARK_FLAGS_PARK_FREE_ENTRY) && !gCheatsUnlockAllPrices)
+                if (!park_ride_prices_unlocked())
                 {
                     ride->price = 0;
                 }
