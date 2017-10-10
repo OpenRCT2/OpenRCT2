@@ -16,6 +16,7 @@
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
@@ -39,7 +40,9 @@ uint8 gKeyboardShortcutChangeId;
 
 typedef void (*shortcut_action)();
 
-static const shortcut_action shortcut_table[SHORTCUT_COUNT];
+namespace {
+extern const shortcut_action shortcut_table[SHORTCUT_COUNT];
+}
 
 /**
  *
@@ -55,7 +58,7 @@ void keyboard_shortcut_handle(sint32 key)
 
 void keyboard_shortcut_handle_command(sint32 shortcutIndex)
 {
-    if (shortcutIndex >= 0 && shortcutIndex < countof(shortcut_table)) {
+    if (shortcutIndex >= 0 && static_cast<uint32>(shortcutIndex) < Util::CountOf(shortcut_table)) {
         shortcut_action action = shortcut_table[shortcutIndex];
         if (action != NULL) {
             action();
@@ -676,7 +679,8 @@ static void shortcut_load_game()
     }
 }
 
-static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
+namespace {
+const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
     shortcut_close_top_most_window,
     shortcut_close_all_floating_windows,
     shortcut_cancel_construction_mode,
@@ -744,5 +748,6 @@ static const shortcut_action shortcut_table[SHORTCUT_COUNT] = {
     shortcut_load_game,
     shortcut_clear_scenery,
 };
+}
 
 #pragma endregion
