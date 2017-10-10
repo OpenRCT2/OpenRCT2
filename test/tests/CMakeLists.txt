@@ -14,10 +14,11 @@ else (SYSTEM_GTEST)
         # Bootstrap GoogleTest
         INCLUDE(ExternalProject)
 
+        # Use googletest with https://github.com/google/googletest/pull/1045 applied
         ExternalProject_Add(
                 googletest-distribution
-                URL https://github.com/google/googletest/archive/release-1.8.0.tar.gz
-                URL_HASH SHA1=e7e646a6204638fe8e87e165292b8dd9cd4c36ed
+                URL https://github.com/google/googletest/archive/ad49eaa0466b98f21449efaaaae817683daa8b99.tar.gz
+                URL_HASH SHA1=e468bfdffe7c46c14ce06bfb48a29b6201908504
                 TIMEOUT 10
                 CONFIGURE_COMMAND ""
                 BUILD_COMMAND ""
