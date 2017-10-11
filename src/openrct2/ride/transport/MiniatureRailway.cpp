@@ -18,6 +18,7 @@
 #include "../../interface/viewport.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
+#include "../../sprites.h"
 #include "../../world/map.h"
 #include "../ride_data.h"
 #include "../Track.h"
@@ -547,27 +548,106 @@ static const uint32 miniature_railway_track_pieces_diag_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_S_N,
 };
 
+static uint32 miniature_railway_track_to_gravel(uint32 imageId)
+{
+    return imageId - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GRAVEL_SW_NE;
+}
+
+static uint32 miniature_railway_track_to_grooved(uint32 imageId)
+{
+    return imageId - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
+}
+
+static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, rct_map_element *path, uint8 direction)
+{
+    if (!path)
+    {
+        return 0;
+    }
+
+    uint32 imageIdAlt = SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
+
+    uint8 correctedEdges = path->properties.path.edges;
+    correctedEdges |= correctedEdges << 4;
+    correctedEdges >>= 4 - get_current_rotation();
+    correctedEdges &= 0x0F;
+
+    if (direction & 0x1)
+    {
+        uint32 imageIds[2][2] = { { SPR_G2_MINIATURE_RAILWAY_INSET_NW_SE,  SPR_G2_MINIATURE_RAILWAY_INSET_END_NW },
+                                  { SPR_G2_MINIATURE_RAILWAY_INSET_END_SE, SPR_G2_MINIATURE_RAILWAY_INSET_END_NW_SE } };
+        imageIdAlt = imageIds[(correctedEdges & 0x2)? 0 : 1][(correctedEdges & 0x8)? 0 : 1];
+    }
+    else
+    {
+        uint32 imageIds[2][2] = { { SPR_G2_MINIATURE_RAILWAY_INSET_SW_NE,  SPR_G2_MINIATURE_RAILWAY_INSET_END_SW },
+                                  { SPR_G2_MINIATURE_RAILWAY_INSET_END_NE, SPR_G2_MINIATURE_RAILWAY_INSET_END_SW_NE } };
+        imageIdAlt = imageIds[(correctedEdges & 0x1)? 0 : 1][(correctedEdges & 0x4)? 0 : 1];
+    }
+
+    return imageIdAlt;
+}
+
 /** rct2: 0x008AD0C0 */
 static void paint_miniature_railway_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
+    bool paintAsGravel  = false;
+    bool paintGrooved   = false;
 
-    bool isSupported =
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
-    uint32 imageId;
+    if (session->PathElementOnSameHeight)
+    {
+        paintAsGravel = true;
+        paintGrooved = true;
+    }
 
+    bool isSupported = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+    uint32 imageId, imageIdAlt;
+
+    // In the following 3 calls to sub_98197C_rotated/sub_98199C_rotated, we add 1 to the
+    //  bound_box_offset_z argument to make straight tracks draw above footpaths
     if (isSupported)
     {
         imageId = miniature_railway_track_floor[direction] | session->TrackColours[SCHEME_SUPPORTS];
         sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
 
         imageId = miniature_railway_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
-        sub_98199C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        if (!paintAsGravel)
+        {
+            sub_98199C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        }
+        else
+        {
+            imageIdAlt = miniature_railway_track_to_gravel(imageId);
+            sub_98199C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height);
+        }
+        if (paintGrooved)
+        {
+            imageIdAlt = miniature_railway_track_to_grooved(imageId);
+            sub_98199C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height + 2);
+            imageIdAlt = miniature_railway_track_to_grooved_indent(imageId, session->PathElementOnSameHeight, direction);
+            sub_98199C_rotated(session, direction, (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (PALETTE_DARKEN_2 << 19), 0, 6, 32, 20, 2, height, 0, 6, height + 2);
+        }
     }
     else
     {
         imageId = miniature_railway_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
-        sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        if (!paintAsGravel)
+        {
+            sub_98197C_rotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+        }
+        else
+        {
+            imageIdAlt = miniature_railway_track_to_gravel(imageId);
+            sub_98197C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height);
+        }
+        if (paintGrooved)
+        {
+            imageIdAlt = miniature_railway_track_to_grooved(imageId);
+            sub_98197C_rotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height + 2);
+            imageIdAlt = miniature_railway_track_to_grooved_indent(imageId, session->PathElementOnSameHeight, direction);
+            sub_98197C_rotated(session, direction, (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | (PALETTE_DARKEN_2 << 19), 0, 6, 32, 20, 2, height, 0, 6, height + 2);
+        }
     }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
