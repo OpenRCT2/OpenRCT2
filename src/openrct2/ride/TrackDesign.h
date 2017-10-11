@@ -22,7 +22,7 @@
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../world/map.h"
-#include "vehicle.h"
+#include "Vehicle.h"
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)
 

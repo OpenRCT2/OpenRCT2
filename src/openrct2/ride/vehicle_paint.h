@@ -17,7 +17,7 @@
 #ifndef _VEHICLE_PAINT_H
 #define _VEHICLE_PAINT_H
 
-#include "vehicle.h"
+#include "Vehicle.h"
 
 #ifdef __cplusplus
 extern "C" {

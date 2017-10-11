@@ -23,7 +23,7 @@
 #include "../rct2.h"
 #include "../world/map.h"
 #include "ride_ratings.h"
-#include "vehicle.h"
+#include "Vehicle.h"
 
 #define MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
 // The max number of different types of vehicle.
