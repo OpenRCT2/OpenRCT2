@@ -84,13 +84,11 @@ bool news_item_is_queue_empty()
  */
 void news_item_init_queue()
 {
-    sint32 i;
-
     news_item_get(0)->Type  = NEWS_ITEM_NULL;
     news_item_get(11)->Type = NEWS_ITEM_NULL;
 
     // Throttles for warning types (PEEP_*_WARNING)
-    for (i = 0; i < Util::CountOf(gPeepWarningThrottle); i++)
+    for (sint32 i = 0; i < Util::CountOf(gPeepWarningThrottle); i++)
     {
         gPeepWarningThrottle[i] = 0;
     }
@@ -201,10 +199,8 @@ static void news_item_shift_history_up()
  */
 static sint32 news_item_get_new_history_slot()
 {
-    sint32 i;
-
     // Find an available history news item slot
-    for (i = 11; i < MAX_NEWS_ITEMS; i++)
+    for (sint32 i = 11; i < MAX_NEWS_ITEMS; i++)
     {
         if (news_item_is_empty(i))
             return i;
@@ -223,7 +219,6 @@ static sint32 news_item_get_new_history_slot()
  */
 void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sint32 * y, sint32 * z)
 {
-    sint32 i;
     Ride        * ride;
     rct_peep    * peep;
     rct_vehicle * vehicle;
@@ -266,7 +261,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         // Find the first car of the train peep is on
         vehicle = &(get_sprite(ride->vehicles[peep->current_train])->vehicle);
         // Find the actual car peep is on
-        for (i  = 0; i < peep->current_car; i++)
+        for (sint32 i = 0; i < peep->current_car; i++)
         {
             vehicle = &(get_sprite(vehicle->next_vehicle_on_train)->vehicle);
         }
