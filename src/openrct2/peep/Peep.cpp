@@ -8048,10 +8048,10 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->angriness                = 0;
     peep->var_F4                   = 0;
 
-    uint8 tshirt_colour = peep_rand() % Util::CountOf(tshirt_colours);
+    uint8 tshirt_colour = static_cast<uint8>(peep_rand() % Util::CountOf(tshirt_colours));
     peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-    uint8 trousers_colour = peep_rand() % Util::CountOf(trouser_colours);
+    uint8 trousers_colour = static_cast<uint8>(peep_rand() % Util::CountOf(trouser_colours));
     peep->trousers_colour = trouser_colours[trousers_colour];
 
     /* It looks like 65 is about 50% energy level, so this initialises

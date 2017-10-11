@@ -661,7 +661,7 @@ typedef struct rct_sprite_bounds
 typedef struct rct_peep_animation
 {
     uint32        base_image; // 0x00
-    uint32        num_frames;
+    size_t        num_frames;
     const uint8 * frame_offsets;
 } rct_peep_animation;
 
