@@ -101,6 +101,8 @@
 		4C93F1A91F8B748900A9330D /* SplashBoats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A21F8B748900A9330D /* SplashBoats.cpp */; };
 		4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */; };
 		4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */; };
+		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
+		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
 		4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A51EFBDCCE00B88761 /* land_tool.c */; };
 		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
@@ -254,7 +256,6 @@
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
-		F74789551EEDEA0D009E50E7 /* input.c in Sources */ = {isa = PBXBuildFile; fileRef = F74789531EEDEA0D009E50E7 /* input.c */; };
 		F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
@@ -489,7 +490,6 @@
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
-		F7CB86491EEDA1330030C877 /* keyboard_shortcut.c in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
 		F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
@@ -697,6 +697,8 @@
 		4C93F1A21F8B748900A9330D /* SplashBoats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SplashBoats.cpp; sourceTree = "<group>"; };
 		4C93F1A31F8B748900A9330D /* SubmarineRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SubmarineRide.cpp; sourceTree = "<group>"; };
 		4C93F1A41F8B748900A9330D /* WaterCoaster.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WaterCoaster.cpp; sourceTree = "<group>"; };
+		4C93F1AC1F8CD9F000A9330D /* Input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Input.cpp; sourceTree = "<group>"; };
+		4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcut.cpp; sourceTree = "<group>"; };
 		4CB832A51EFBDCCE00B88761 /* land_tool.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = land_tool.c; sourceTree = "<group>"; };
 		4CB832A61EFBDCCE00B88761 /* land_tool.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = land_tool.h; sourceTree = "<group>"; };
 		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
@@ -1013,8 +1015,7 @@
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
-		F74789531EEDEA0D009E50E7 /* input.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = input.c; sourceTree = "<group>"; };
-		F74789541EEDEA0D009E50E7 /* input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = input.h; sourceTree = "<group>"; };
+		F74789541EEDEA0D009E50E7 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F76C83571EC4E7CC00FA49E2 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
 		F76C83581EC4E7CC00FA49E2 /* audio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = audio.h; sourceTree = "<group>"; };
@@ -1418,7 +1419,6 @@
 		F79F428E1F3260F1009E42F8 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = distribution/changelog.txt; sourceTree = SOURCE_ROOT; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
-		F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = keyboard_shortcut.c; sourceTree = "<group>"; };
 		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
 		F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KeyboardShortcuts.h; sourceTree = "<group>"; };
 		F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyWindowManager.cpp; sourceTree = "<group>"; };
@@ -2749,9 +2749,9 @@
 		F7CB86451EEDA1200030C877 /* input */ = {
 			isa = PBXGroup;
 			children = (
-				F74789531EEDEA0D009E50E7 /* input.c */,
-				F74789541EEDEA0D009E50E7 /* input.h */,
-				F7CB86461EEDA1330030C877 /* keyboard_shortcut.c */,
+				4C93F1AC1F8CD9F000A9330D /* Input.cpp */,
+				F74789541EEDEA0D009E50E7 /* Input.h */,
+				4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */,
 				F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */,
 				F7CB86481EEDA1330030C877 /* KeyboardShortcuts.h */,
 			);
@@ -3122,7 +3122,6 @@
 				4C93F1931F8B747A00A9330D /* Twist.cpp in Sources */,
 				4C93F14A1F8B744400A9330D /* MineTrainCoaster.cpp in Sources */,
 				4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */,
-				F74789551EEDEA0D009E50E7 /* input.c in Sources */,
 				4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
 				4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */,
@@ -3173,6 +3172,7 @@
 				C64644FC1F3FA4120026AC2D /* Footpath.cpp in Sources */,
 				F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */,
 				F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */,
+				4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */,
 				4C93F14B1F8B744400A9330D /* MiniRollerCoaster.cpp in Sources */,
 				C654DF3D1F69C0430040F43D /* TrackDesignPlace.cpp in Sources */,
 				4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */,
@@ -3251,10 +3251,10 @@
 				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
-				F7CB86491EEDA1330030C877 /* keyboard_shortcut.c in Sources */,
 				4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
+				4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */,
 				C666EE761F37ACB10061AA04 /* Options.cpp in Sources */,
 				C666EE6E1F37ACB10061AA04 /* CustomCurrency.cpp in Sources */,
 				4C93F1711F8B745700A9330D /* HauntedHouse.cpp in Sources */,
