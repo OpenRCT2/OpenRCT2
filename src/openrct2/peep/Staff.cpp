@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/core/Math.hpp>
-#include <openrct2/core/Util.hpp>
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Context.h"
 #include "../config/Config.h"
 #include "../game.h"
@@ -26,6 +26,7 @@
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../paint/map_element/map_element.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../world/entrance.h"
@@ -990,7 +991,6 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     return nextDirection;
 }
 
-extern const uint8 byte_98D800[4];
 
 /**
  *

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/core/Util.hpp>
+#include "../core/Util.hpp"
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../audio/AudioMixer.h"
@@ -3357,7 +3357,7 @@ static void peep_update_ride_sub_state_5(rct_peep * peep)
 
         vehicle->friction += seated_peep->var_41;
         invalidate_sprite_2((rct_sprite *)seated_peep);
-        sprite_move(0x8000, 0, 0, (rct_sprite *)seated_peep);
+        sprite_move(0x2000, 0, 0, (rct_sprite *)seated_peep);
 
         peep_decrement_num_riders(seated_peep);
         seated_peep->state = PEEP_STATE_ON_RIDE;
@@ -3374,7 +3374,7 @@ static void peep_update_ride_sub_state_5(rct_peep * peep)
     invalidate_sprite_2((rct_sprite *)vehicle);
 
     invalidate_sprite_2((rct_sprite *)peep);
-    sprite_move(0x8000, 0, 0, (rct_sprite *)peep);
+    sprite_move(0x2000, 0, 0, (rct_sprite *)peep);
 
     peep_decrement_num_riders(peep);
     peep->state = PEEP_STATE_ON_RIDE;
@@ -3911,7 +3911,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
         peep->destination_x = 0;
         peep->destination_y = 0;
         peep->var_37        = (peep->var_37 / 4) & 0xC;
-        sprite_move(0x8000, y, peep->z, (rct_sprite *)peep);
+        sprite_move(0x2000, y, peep->z, (rct_sprite *)peep);
         return;
     }
     else if ((peep->var_37 & 3) == 2)
@@ -10529,9 +10529,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     // Used to allow walking through no entry banners
     _peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
 
-    rct_xyz8 goal = { .x = (uint8)(gPeepPathFindGoalPosition.x >> 5),
-                      .y = (uint8)(gPeepPathFindGoalPosition.y >> 5),
-                      .z = (uint8)(gPeepPathFindGoalPosition.z) };
+    rct_xyz8 goal = { (uint8)(gPeepPathFindGoalPosition.x >> 5),
+                      (uint8)(gPeepPathFindGoalPosition.y >> 5),
+                      (uint8)(gPeepPathFindGoalPosition.z) };
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (gPathFindDebug)
@@ -10989,7 +10989,7 @@ static sint32 guest_path_find_leaving_park(rct_peep * peep, rct_map_element * ma
     uint8  z         = peepSpawn->z * 2;
     uint8  direction = peepSpawn->direction;
 
-    gPeepPathFindGoalPosition = (rct_xyz16){ x, y, z };
+    gPeepPathFindGoalPosition = { x, y, z };
     if (x == peep->next_x && y == peep->next_y)
     {
         return peep_move_one_tile(direction, peep);
@@ -11491,7 +11491,7 @@ static sint32 guest_path_finding(rct_peep * peep)
 
     get_ride_queue_end(&x, &y, &z);
 
-    gPeepPathFindGoalPosition        = (rct_xyz16){ x, y, z };
+    gPeepPathFindGoalPosition        = { x, y, z };
     gPeepPathFindIgnoreForeignQueues = true;
 
     direction = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
