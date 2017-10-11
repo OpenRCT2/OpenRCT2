@@ -160,20 +160,27 @@ namespace OpenRCT2 { namespace Ui
                 std::string output;
                 if (Execute(cmd, &output) == 0)
                 {
-                    // The default file extension is taken from the **first** available filter, since
-                    // we cannot obtain it from zenity's output. This means that the FileDialogDesc::Filters
-                    // array must be carefully populated, at least the first element.
-                    std::string pattern = desc.Filters[0].Pattern;
-                    std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
-                    int dotPosition = output.size() - defaultExtension.size();
-                    // Add the default extension if no extension is specified
-                    if (output.substr(dotPosition, defaultExtension.size()).compare(defaultExtension) == 0)
+                    if (desc.Type == FILE_DIALOG_TYPE::SAVE)
                     {
-                        result = output;
+                        // The default file extension is taken from the **first** available filter, since
+                        // we cannot obtain it from zenity's output. This means that the FileDialogDesc::Filters
+                        // array must be carefully populated, at least the first element.
+                        std::string pattern = desc.Filters[0].Pattern;
+                        std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
+                        int dotPosition = output.size() - defaultExtension.size();
+                        // Add the default extension if no extension is specified
+                        if (output.substr(dotPosition, defaultExtension.size()).compare(defaultExtension) == 0)
+                        {
+                            result = output;
+                        }
+                        else
+                        {
+                            result = output.append(defaultExtension);
+                        }
                     }
                     else
                     {
-                        result = output.append(defaultExtension);
+                        result = output;
                     }
                 }
                 break;
