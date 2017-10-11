@@ -234,12 +234,48 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.x = x;
     session->SpritePosition.y = y;
     session->DidPassSurface = false;
+    sint32 previousHeight = 0;
     do {
         // Only paint tile_elements below the clip height.
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) break;
 
         sint32 direction = tile_element_get_direction_with_offset(tile_element, rotation);
         sint32 height = tile_element->base_height * 8;
+
+        // If we are on a new height level, look through elements on the
+        //  same height and store any types might be relevant to others
+        if (height != previousHeight)
+        {
+            previousHeight = height;
+            session->PathElementOnSameHeight = 0;
+            session->TrackElementOnSameHeight = 0;
+            rct_tile_element * tile_element_sub_iterator = tile_element;
+            while (!map_element_is_last_for_tile(tile_element_sub_iterator++))
+            {
+                if (tile_element_sub_iterator->base_height != tile_element->base_height)
+                {
+                    break;
+                }
+                switch (map_element_get_type(tile_element_sub_iterator))
+                {
+                case TILE_ELEMENT_TYPE_PATH:
+                    session->PathElementOnSameHeight = tile_element_sub_iterator;
+                    break;
+                case TILE_ELEMENT_TYPE_TRACK:
+                    session->TrackElementOnSameHeight = tile_element_sub_iterator;
+                    break;
+                case TILE_ELEMENT_TYPE_CORRUPT:
+                    // To preserve regular behaviour, make an element hidden by
+                    //  corruption also invisible to this method.
+                    if (tile_element_is_last_for_tile(tile_element))
+                    {
+                        break;
+                    }
+                    tile_element_sub_iterator++;
+                    break;
+                }
+            }
+        }
 
         LocationXY16 dword_9DE574 = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
