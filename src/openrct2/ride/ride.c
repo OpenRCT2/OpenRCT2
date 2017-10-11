@@ -33,7 +33,7 @@
 #include "../object_list.h"
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../rct1.h"
 #include "../rct2/addresses.h"
 #include "../scenario/scenario.h"

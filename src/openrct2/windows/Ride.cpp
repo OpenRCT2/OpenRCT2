@@ -34,7 +34,7 @@
 #include "../interface/widget.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../rct1.h"
 #include "../ride/ride_data.h"
 #include "../ride/track.h"

@@ -40,7 +40,7 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../OpenRCT2.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_ratings.h"
 #include "../scenario/scenario.h"

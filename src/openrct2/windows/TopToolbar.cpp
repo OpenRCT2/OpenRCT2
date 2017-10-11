@@ -32,7 +32,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../network/twitch.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"

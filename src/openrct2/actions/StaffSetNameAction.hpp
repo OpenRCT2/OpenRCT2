@@ -21,7 +21,7 @@
 #include "GameAction.h"
 
 #include "../cheats.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../world/park.h"

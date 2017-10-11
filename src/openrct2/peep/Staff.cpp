@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/core/Util.hpp>
+#include <openrct2/core/Math.hpp>
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../game.h"
@@ -31,7 +33,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "Peep.h"
-#include "staff.h"
+#include "Staff.h"
 
 const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
@@ -407,7 +409,7 @@ void game_command_set_staff_order(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 
         if(order_id & 0x80){ // change costume
             uint8 sprite_type = order_id & ~0x80;
             sprite_type += 4;
-            if (sprite_type >= countof(peep_slow_walking_types)) {
+            if (sprite_type >= Util::CountOf(peep_slow_walking_types)) {
                 log_error("Invalid change costume order for sprite_type %u", sprite_type);
                 *ebx = MONEY32_UNDEFINED;
                 return;
@@ -862,8 +864,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
     }
 
     rct_xy16 litterTile = {
-        .x = nearestLitter->x & 0xFFE0,
-        .y = nearestLitter->y & 0xFFE0
+        static_cast<sint16>(nearestLitter->x & 0xFFE0),
+        static_cast<sint16>(nearestLitter->y & 0xFFE0)
     };
 
     if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y)){
@@ -886,8 +888,8 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep* peep){
     }
 
     rct_xy16 nextTile = {
-        .x = (nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x,
-        .y = (nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y
+        static_cast<sint16>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
+        static_cast<sint16>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y)
     };
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
@@ -951,8 +953,8 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep* peep, uint8 valid
         }
 
         rct_xy16 chosenTile = {
-            .x = peep->next_x + TileDirectionDelta[chosenDirection].x,
-            .y = peep->next_y + TileDirectionDelta[chosenDirection].y,
+            static_cast<sint16>(peep->next_x + TileDirectionDelta[chosenDirection].x),
+            static_cast<sint16>(peep->next_y + TileDirectionDelta[chosenDirection].y)
         };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
@@ -986,8 +988,8 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep* peep, uint8 validD
             continue;
 
         rct_xy16 chosenTile = {
-            .x = peep->next_x + TileDirectionDelta[direction].x,
-            .y = peep->next_y + TileDirectionDelta[direction].y,
+            static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+            static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y)
         };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y))
@@ -1068,8 +1070,8 @@ static sint32 staff_path_finding_handyman(rct_peep* peep)
     assert(direction < 8);
 
     rct_xy16 chosenTile = {
-        .x = peep->next_x + TileDirectionDelta[direction].x,
-        .y = peep->next_y + TileDirectionDelta[direction].y
+        static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+        static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y)
     };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF) {
@@ -1123,8 +1125,8 @@ static uint8 staff_direction_surface(rct_peep* peep, uint8 initialDirection) {
             continue;
 
         rct_xy16 chosenTile = {
-            .x = peep->next_x + TileDirectionDelta[direction].x,
-            .y = peep->next_y + TileDirectionDelta[direction].y
+            static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+            static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y)
         };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false) {
@@ -1152,8 +1154,8 @@ static uint8 staff_mechanic_direction_surface(rct_peep* peep) {
         }
 
         rct_xy16 chosenTile = {
-            .x = location.x * 32,
-            .y = location.y * 32
+            static_cast<sint16>(location.x * 32),
+            static_cast<sint16>(location.y * 32)
         };
 
         sint16 x_diff = chosenTile.x - peep->x;
@@ -1240,8 +1242,8 @@ static uint8 staff_mechanic_direction_path(rct_peep* peep, uint8 validDirections
         }
 
         rct_xy16 chosenTile = {
-            .x = location.x * 32,
-            .y = location.y * 32
+            static_cast<sint16>(location.x * 32),
+            static_cast<sint16>(location.y * 32)
         };
 
         gPeepPathFindGoalPosition.x = chosenTile.x;
@@ -1320,8 +1322,8 @@ static sint32 staff_path_finding_mechanic(rct_peep* peep) {
     assert(direction < 8);
 
     rct_xy16 chosenTile = {
-        .x = peep->next_x + TileDirectionDelta[direction].x,
-        .y = peep->next_y + TileDirectionDelta[direction].y
+        static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+        static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y)
     };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF) {
@@ -1397,8 +1399,8 @@ static sint32 staff_path_finding_misc(rct_peep* peep) {
     }
 
     rct_xy16 chosenTile = {
-        .x = peep->next_x + TileDirectionDelta[direction].x,
-        .y = peep->next_y + TileDirectionDelta[direction].y
+        static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+        static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y)
     };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF) {
@@ -1441,7 +1443,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             continue;
 
         if (peep->state == PEEP_STATE_WALKING) {
-            peep->happiness_target = min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
+            peep->happiness_target = Math::Min(peep->happiness_target + 4, PEEP_MAX_HAPPINESS);
         }
         else if (peep->state == PEEP_STATE_QUEUING) {
             if(peep->time_in_queue > 200) {
@@ -1450,7 +1452,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep* peep) {
             else {
                 peep->time_in_queue = 0;
             }
-            peep->happiness_target = min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
+            peep->happiness_target = Math::Min(peep->happiness_target + 3, PEEP_MAX_HAPPINESS);
         }
     }
 }

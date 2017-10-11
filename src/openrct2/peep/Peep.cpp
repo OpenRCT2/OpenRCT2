@@ -44,7 +44,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "Peep.h"
-#include "staff.h"
+#include "Staff.h"
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 bool gPathFindDebug = false;

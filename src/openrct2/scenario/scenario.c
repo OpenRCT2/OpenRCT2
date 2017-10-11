@@ -32,7 +32,7 @@
 #include "../object_list.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
 #include "../ride/ride.h"

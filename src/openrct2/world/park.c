@@ -28,7 +28,7 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../scenario/scenario.h"

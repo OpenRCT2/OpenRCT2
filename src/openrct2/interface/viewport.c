@@ -22,7 +22,7 @@
 #include "../localisation/localisation.h"
 #include "../paint/paint.h"
 #include "../paint/supports.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../ride/ride_data.h"
 #include "../ride/track_data.h"
 #include "../world/banner.h"

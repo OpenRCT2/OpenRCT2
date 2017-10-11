@@ -19,7 +19,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../peep/Peep.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
 #include "../world/park.h"
