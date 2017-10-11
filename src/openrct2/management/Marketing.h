@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "../cheats.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 
 enum {
     ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE,

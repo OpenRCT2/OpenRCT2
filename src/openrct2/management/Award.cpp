@@ -18,7 +18,7 @@
 #include "../core/Util.hpp"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../ride/ride.h"
 #include "../scenario/scenario.h"
 #include "../world/sprite.h"

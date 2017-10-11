@@ -27,7 +27,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"

@@ -18,7 +18,7 @@
 #define _STAFF_H_
 
 #include "../common.h"
-#include "peep.h"
+#include "Peep.h"
 
 #define STAFF_MAX_COUNT        200
 // The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.

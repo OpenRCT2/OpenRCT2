@@ -37,7 +37,7 @@
 #include "../interface/console.h"
 #include "../localisation/localisation.h"
 #include "../management/NewsItem.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
 #include "../world/sprite.h"

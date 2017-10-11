@@ -18,7 +18,7 @@
 #define _RIDE_H_
 
 #include "../common.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../world/map.h"

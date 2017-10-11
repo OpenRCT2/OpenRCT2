@@ -35,7 +35,7 @@
 #include "object.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
-#include "peep/peep.h"
+#include "peep/Peep.h"
 #include "peep/staff.h"
 #include "platform/platform.h"
 #include "rct1.h"

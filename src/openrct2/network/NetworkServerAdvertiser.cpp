@@ -26,7 +26,7 @@
 #include "../config/Config.h"
 #include "../localisation/date.h"
 #include "../management/Finance.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../platform/platform.h"
 #include "../util/util.h"
 #include "../world/map.h"

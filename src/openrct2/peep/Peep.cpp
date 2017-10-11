@@ -14,10 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2/core/Util.hpp>
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../cheats.h"
 #include "../config/Config.h"
+#include "../core/Math.hpp"
 #include "../Context.h"
 #include "../game.h"
 #include "../input.h"
@@ -41,7 +43,7 @@
 #include "../world/map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
-#include "peep.h"
+#include "Peep.h"
 #include "staff.h"
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -577,10 +579,10 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
     uint16 nearby_music = 0;
     uint16 num_rubbish = 0;
 
-    sint16 initial_x = max(centre_x - 160, 0);
-    sint16 initial_y = max(centre_y - 160, 0);
-    sint16 final_x = min(centre_x + 160, 8192);
-    sint16 final_y = min(centre_y + 160, 8192);
+    sint16 initial_x = Math::Max(centre_x - 160, 0);
+    sint16 initial_y = Math::Max(centre_y - 160, 0);
+    sint16 final_x = Math::Min(centre_x + 160, 8192);
+    sint16 final_y = Math::Min(centre_y + 160, 8192);
 
     for (sint16 x = initial_x; x < final_x; x += 32){
         for (sint16 y = initial_y; y < final_y; y += 32){
@@ -649,7 +651,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
 
         sint16 dist_x = abs(litter->x - centre_x);
         sint16 dist_y = abs(litter->y - centre_y);
-        if (max(dist_x, dist_y) <= 160) {
+        if (Math::Max(dist_x, dist_y) <= 160) {
             num_rubbish++;
         }
     }
@@ -679,8 +681,8 @@ static void peep_update_hunger(rct_peep *peep){
     {
         peep->hunger -= 2;
 
-        peep->energy_target = min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
-        peep->bathroom = min(peep->bathroom + 1, 255);
+        peep->energy_target = Math::Min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
+        peep->bathroom = Math::Min(peep->bathroom + 1, 255);
     }
 }
 
@@ -977,7 +979,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 
                     if (thought_type != PEEP_THOUGHT_TYPE_NONE) {
                         peep_insert_new_thought(peep, thought_type, 0xFF);
-                        peep->happiness_target = min(PEEP_MAX_HAPPINESS, peep->happiness_target + 45);
+                        peep->happiness_target = Math::Min(PEEP_MAX_HAPPINESS, peep->happiness_target + 45);
                     }
                 }
             }
@@ -986,14 +988,14 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
         peep_update_sprite_type(peep);
 
         if (peep->state == PEEP_STATE_ON_RIDE || peep->state == PEEP_STATE_ENTERING_RIDE){
-            peep->time_on_ride = min(255, peep->time_on_ride + 1);
+            peep->time_on_ride = Math::Min(255, peep->time_on_ride + 1);
 
             if (peep->peep_flags & PEEP_FLAGS_WOW){
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WOW2, 0xFF);
             }
 
             if (peep->time_on_ride > 15){
-                peep->happiness_target = max(0, peep->happiness_target - 5);
+                peep->happiness_target = Math::Max(0, peep->happiness_target - 5);
 
                 if (peep->time_on_ride > 22){
                     Ride* ride = get_ride(peep->current_ride);
@@ -1020,7 +1022,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
                 peep_pick_ride_to_go_on(peep);
 
                 if (peep->guest_heading_to_ride_id == 0xFF){
-                    peep->happiness_target = max(peep->happiness_target - 128, 0);
+                    peep->happiness_target = Math::Max(peep->happiness_target - 128, 0);
                     peep_leave_park(peep);
                     peep_update_hunger(peep);
                     goto loc_68F9F3;
@@ -1135,7 +1137,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
 
             if (peep->thirst >= 5){
                 peep->thirst -= 4;
-                peep->bathroom = min(255, peep->bathroom + 3);
+                peep->bathroom = Math::Min(255, peep->bathroom + 3);
             }
 
             if (peep->nausea_target >= 50)
@@ -1184,7 +1186,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
                 else{
                     /* Without a queue line TV monitor peeps waiting too long
                      * in a queue get less happy. */
-                    peep->happiness_target = max(peep->happiness_target - 4, 0);
+                    peep->happiness_target = Math::Max(peep->happiness_target - 4, 0);
                 }
             }
             peep_update_hunger(peep);
@@ -1205,19 +1207,19 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
         else
             peep->happiness_target++;
 
-        peep->nausea_target = max(peep->nausea_target - 2, 0);
+        peep->nausea_target = Math::Max(peep->nausea_target - 2, 0);
 
         if (peep->energy <= 50)
         {
-            peep->energy = max(peep->energy - 2, 0);
+            peep->energy = Math::Max(peep->energy - 2, 0);
         }
 
         if (peep->hunger < 10){
-            peep->hunger = max(peep->hunger - 1, 0);
+            peep->hunger = Math::Max(peep->hunger - 1, 0);
         }
 
         if (peep->thirst < 10){
-            peep->thirst = max(peep->thirst - 1, 0);
+            peep->thirst = Math::Max(peep->thirst - 1, 0);
         }
 
         if (peep->bathroom >= 195){
@@ -1250,15 +1252,15 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     if (peep->var_42 != 0 &&
         peep->state != PEEP_STATE_ON_RIDE){
 
-        peep->var_42 = max(peep->var_42 - 3, 0);
+        peep->var_42 = Math::Max(peep->var_42 - 3, 0);
 
         if (peep_has_drink(peep)){
-            peep->thirst = min(peep->thirst + 7, 255);
+            peep->thirst = Math::Min(peep->thirst + 7, 255);
         }
         else{
-            peep->hunger = min(peep->hunger + 7, 255);
-            peep->thirst = max(peep->thirst - 3, 0);
-            peep->bathroom = min(peep->bathroom + 2, 255);
+            peep->hunger = Math::Min(peep->hunger + 7, 255);
+            peep->thirst = Math::Max(peep->thirst - 3, 0);
+            peep->bathroom = Math::Min(peep->bathroom + 2, 255);
         }
 
         if (peep->var_42 == 0){
@@ -1303,7 +1305,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     }
     else
     {
-        energy = min(PEEP_MAX_ENERGY_TARGET, energy + 4);
+        energy = Math::Min(PEEP_MAX_ENERGY_TARGET, energy + 4);
         if (energy > energy_target)
             energy = energy_target;
     }
@@ -1312,7 +1314,7 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
         energy = 32;
 
     /* Previous code here suggested maximum energy is 128. */
-    energy = min(PEEP_MAX_ENERGY, energy);
+    energy = Math::Min(static_cast<uint8>(PEEP_MAX_ENERGY), energy);
 
     if (energy != peep->energy)
     {
@@ -1323,12 +1325,12 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     uint8 happiness = peep->happiness;
     uint8 happiness_growth = peep->happiness_target;
     if (happiness >= happiness_growth){
-        happiness = max(happiness - 4, 0);
+        happiness = Math::Max(happiness - 4, 0);
         if (happiness < happiness_growth)
             happiness = happiness_growth;
     }
     else{
-        happiness = min(255, happiness + 4);
+        happiness = Math::Min(255, happiness + 4);
         if (happiness > happiness_growth)
             happiness = happiness_growth;
     }
@@ -1341,12 +1343,12 @@ static void sub_68F41A(rct_peep *peep, sint32 index)
     uint8 nausea = peep->nausea;
     uint8 nausea_growth = peep->nausea_target;
     if (nausea >= nausea_growth){
-        nausea = max(nausea - 4, 0);
+        nausea = Math::Max(nausea - 4, 0);
         if (nausea < nausea_growth)
             nausea = nausea_growth;
     }
     else{
-        nausea = min(255, nausea + 4);
+        nausea = Math::Min(255, nausea + 4);
         if (nausea > nausea_growth)
             nausea = nausea_growth;
     }
@@ -1398,10 +1400,10 @@ static uint8 peep_get_action_sprite_type(rct_peep* peep)
 {
     if (peep->action >= PEEP_ACTION_NONE_1){ // PEEP_ACTION_NONE_1 or PEEP_ACTION_NONE_2
         return PeepSpecialSpriteToSpriteTypeMap[peep->special_sprite];
-    } else if (peep->action < countof(PeepActionToSpriteTypeMap)) {
+    } else if (peep->action < Util::CountOf(PeepActionToSpriteTypeMap)) {
         return PeepActionToSpriteTypeMap[peep->action];
     } else {
-        openrct2_assert(peep->action >= countof(PeepActionToSpriteTypeMap) && peep->action < PEEP_ACTION_NONE_1,
+        openrct2_assert(peep->action >= Util::CountOf(PeepActionToSpriteTypeMap) && peep->action < PEEP_ACTION_NONE_1,
                         "Invalid peep action %u", peep->action);
         return 0;
     }
@@ -1412,7 +1414,7 @@ static uint8 peep_get_action_sprite_type(rct_peep* peep)
 *  rct2: 0x00693B58
 */
 void peep_update_current_action_sprite_type(rct_peep* peep){
-    if (peep->sprite_type >= countof(g_peep_animation_entries)) {
+    if (peep->sprite_type >= Util::CountOf(g_peep_animation_entries)) {
         return;
     }
     uint8 action_sprite_type = peep_get_action_sprite_type(peep);
@@ -1485,7 +1487,7 @@ static void peep_check_if_lost(rct_peep* peep){
     }
     peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, 0xFF);
 
-    peep->happiness_target = max(peep->happiness_target - 30, 0);
+    peep->happiness_target = Math::Max(peep->happiness_target - 30, 0);
 }
 
 /**
@@ -1500,7 +1502,7 @@ static void peep_check_cant_find_ride(rct_peep* peep){
     // Peeps will think "I can't find ride X" twice before giving up completely.
     if (peep->peep_is_lost_countdown == 30 || peep->peep_is_lost_countdown == 60) {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND, peep->guest_heading_to_ride_id);
-        peep->happiness_target = max(peep->happiness_target - 30, 0);
+        peep->happiness_target = Math::Max(peep->happiness_target - 30, 0);
     }
 
     peep->peep_is_lost_countdown--;
@@ -1529,7 +1531,7 @@ static void peep_check_cant_find_exit(rct_peep* peep){
     // Peeps who can't find the park exit will continue to get less happy until they find it.
     if (peep->peep_is_lost_countdown == 1) {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
-        peep->happiness_target = max(peep->happiness_target - 30, 0);
+        peep->happiness_target = Math::Max(peep->happiness_target - 30, 0);
     }
 
     if (--peep->peep_is_lost_countdown == 0)
@@ -1673,7 +1675,7 @@ static void set_sprite_type(rct_peep* peep, uint8 type){
         peep->action = PEEP_ACTION_NONE_2;
 
     peep->peep_flags &= ~PEEP_FLAGS_SLOW_WALK;
-    assert(type < countof(SpriteTypeToSlowWalkMap));
+    assert(type < Util::CountOf(SpriteTypeToSlowWalkMap));
     if (SpriteTypeToSlowWalkMap[type]) {
         peep->peep_flags |= PEEP_FLAGS_SLOW_WALK;
     }
@@ -1944,7 +1946,7 @@ bool peep_pickup_place(rct_peep* peep, sint32 x, sint32 y, sint32 z, bool apply)
 
         if (peep->type == PEEP_TYPE_GUEST) {
             peep->action_sprite_type = 0xFF;
-            peep->happiness_target = max(peep->happiness_target - 10, 0);
+            peep->happiness_target = Math::Max(peep->happiness_target - 10, 0);
             peep_update_current_action_sprite_type(peep);
         }
 
@@ -1966,26 +1968,34 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
     }
     switch (action) {
         case 0: // pickup
-            if (!peep_can_be_picked_up(peep)) {
+        {
+            if (!peep_can_be_picked_up(peep))
+            {
                 return false;
             }
-            rct_peep* existing = network_get_pickup_peep(game_command_playerid);
-            if (existing) {
+            rct_peep *existing = network_get_pickup_peep(game_command_playerid);
+            if (existing)
+            {
                 // already picking up a peep
-                bool result = peep_pickup_command(existing->sprite_index, network_get_pickup_peep_old_x(game_command_playerid), 0, 0, 1, apply);
-                if (existing == peep) {
+                bool result = peep_pickup_command(existing->sprite_index,
+                                                  network_get_pickup_peep_old_x(game_command_playerid), 0, 0, 1, apply);
+                if (existing == peep)
+                {
                     return result;
                 }
-                if (game_command_playerid == network_get_current_player_id()) {
+                if (game_command_playerid == network_get_current_player_id())
+                {
                     // prevent tool_cancel()
                     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, false);
                 }
             }
-            if (apply) {
+            if (apply)
+            {
                 network_set_pickup_peep(game_command_playerid, peep);
                 network_set_pickup_peep_old_x(game_command_playerid, peep->x);
                 peep_pickup(peep);
             }
+        }
             break;
         case 1: // cancel
             if (apply) {
@@ -2085,7 +2095,7 @@ static void peep_update_falling(rct_peep* peep){
             news_item_add_to_queue(NEWS_ITEM_BLANK, STR_NEWS_ITEM_GUEST_DROWNED, peep->x | (peep->y << 16));
         }
 
-        gParkRatingCasualtyPenalty = min(gParkRatingCasualtyPenalty + 25, 1000);
+        gParkRatingCasualtyPenalty = Math::Min(gParkRatingCasualtyPenalty + 25, 1000);
         peep_remove(peep);
         return;
     }
@@ -4075,7 +4085,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
             peep->destination_x = x;
             peep->destination_y = y;
             peep->destination_tolerence = 3;
-            peep->happiness_target = min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
+            peep->happiness_target = Math::Min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
             peep->happiness = peep->happiness_target;
         }
         else{
@@ -4103,7 +4113,7 @@ static void peep_update_ride_sub_state_20(rct_peep* peep){
     peep->destination_y = y;
     peep->destination_tolerence = 3;
 
-    peep->happiness_target = min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
+    peep->happiness_target = Math::Min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
     peep->happiness = peep->happiness_target;
 
     peep_stop_purchase_thought(peep, ride->type);
@@ -4999,7 +5009,7 @@ static void peep_update_mowing(rct_peep* peep){
             peep_switch_to_special_sprite(peep, 2);
         }
 
-        if (peep->var_37 == countof(_9929C8)) {
+        if (peep->var_37 == Util::CountOf(_9929C8)) {
             peep_state_reset(peep);
             return;
         }
@@ -5276,7 +5286,7 @@ static void peep_update_watching(rct_peep* peep){
 
         peep->sub_state++;
 
-        peep->time_to_stand = clamp(0, ((129 - peep->energy) * 16 + 50) / 2, 255);
+        peep->time_to_stand = Math::Clamp(0, ((129 - peep->energy) * 16 + 50) / 2, 255);
         peep_update_sprite_type(peep);
     }
     else if (peep->sub_state == 1){
@@ -5592,7 +5602,7 @@ static void peep_update_walking_break_scenery(rct_peep* peep){
         sint32 x_diff = abs(inner_peep->x - peep->x);
         sint32 y_diff = abs(inner_peep->y - peep->y);
 
-        if (max(x_diff, y_diff) < 224)return;
+        if (Math::Max(x_diff, y_diff) < 224)return;
     }
 
     map_element->flags |= MAP_ELEMENT_FLAG_BROKEN;
@@ -7012,7 +7022,7 @@ void peep_update_crowd_noise()
 
         // Formula to scale peeps to dB where peeps [0, 120] scales approximately logarithmically to [-3314, -150] dB/100
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
-        volume = 120 - min(visiblePeeps, 120);
+        volume = 120 - Math::Min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
         volume = (((207360000 - volume) >> viewport->zoom) - 207360000) / 65536 - 150;
 
@@ -7196,7 +7206,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->window_invalidate_flags = 0;
 
     uint8 al = (peep_rand() & 0x7) + 3;
-    uint8 ah = min(al, 7) - 3;
+    uint8 ah = Math::Min(al, static_cast<uint8>(7)) - 3;
 
     if (al >= 7) al = 15;
 
@@ -7230,7 +7240,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     /* Initial value will vary by -15..16 */
     sint8 happiness_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->happiness = clamp(0, peep->happiness + happiness_delta, PEEP_MAX_HAPPINESS);
+    peep->happiness = Math::Clamp(0, peep->happiness + happiness_delta, PEEP_MAX_HAPPINESS);
     peep->happiness_target = peep->happiness;
     peep->nausea = 0;
     peep->nausea_target = 0;
@@ -7242,7 +7252,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     /* Initial value will vary by -15..16 */
     sint8 hunger_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->hunger = clamp(0, peep->hunger + hunger_delta, 255);
+    peep->hunger = Math::Clamp(0, peep->hunger + hunger_delta, 255);
 
     /* Scenario editor limits initial guest thirst to between 37..253.
      * To be on the safe side, assume the value could have been hacked
@@ -7251,7 +7261,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     /* Initial value will vary by -15..16 */
     sint8 thirst_delta = (peep_rand() & 0x1F) - 15;
     /* Adjust by the delta, clamping at min=0 and max=255. */
-    peep->thirst = clamp(0, peep->thirst + thirst_delta, 0xFF);
+    peep->thirst = Math::Clamp(0, peep->thirst + thirst_delta, 0xFF);
 
     peep->bathroom = 0;
     peep->var_42 = 0;
@@ -7302,10 +7312,10 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->angriness = 0;
     peep->var_F4 = 0;
 
-    uint8 tshirt_colour = peep_rand() % countof(tshirt_colours);
+    uint8 tshirt_colour = peep_rand() % Util::CountOf(tshirt_colours);
     peep->tshirt_colour = tshirt_colours[tshirt_colour];
 
-    uint8 trousers_colour = peep_rand() % countof(trouser_colours);
+    uint8 trousers_colour = peep_rand() % Util::CountOf(trouser_colours);
     peep->trousers_colour = trouser_colours[trousers_colour];
 
     /* It looks like 65 is about 50% energy level, so this initialises
@@ -7628,13 +7638,12 @@ sint32 peep_check_easteregg_name(sint32 index, rct_peep *peep)
 sint32 peep_get_easteregg_name_id(rct_peep *peep)
 {
     char buffer[256];
-    sint32 i;
 
     format_string(buffer, 256, peep->name_string_idx, &peep->id);
 
-    for (i = 0; i < countof(gPeepEasterEggNames); i++)
+    for (uint32 i = 0; i < Util::CountOf(gPeepEasterEggNames); i++)
         if (_stricmp(buffer, gPeepEasterEggNames[i]) == 0)
-            return i;
+            return static_cast<sint32>(i);
 
     return -1;
 
@@ -8267,7 +8276,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
 
             if ((peep_rand() & 0xFFFF) <= 10922){
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, 0xFF);
-                peep->happiness_target = max(0, peep->happiness_target - 17);
+                peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             }
             peep->var_EF |= 0xC0;
         }
@@ -8313,11 +8322,11 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         (peep_rand() & 0xFFFF) <= 21845){
 
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, 0xFF);
-        peep->happiness_target = max(0, peep->happiness_target - 14);
+        peep->happiness_target = Math::Max(0, peep->happiness_target - 14);
     }
 
-    litter_count = min(3, litter_count);
-    sick_count = min(3, sick_count);
+    litter_count = Math::Min(static_cast<uint8>(3), litter_count);
+    sick_count = Math::Min(static_cast<uint8>(3), sick_count);
 
     uint8 disgusting_time = peep->disgusting_count & 0xC0;
     uint8 disgusting_count = ((peep->disgusting_count & 0xF) << 2) | sick_count;
@@ -8337,7 +8346,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         if (total_sick >= 3 &&
             (peep_rand() & 0xFFFF) <= 10922){
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, 0xFF);
-            peep->happiness_target = max(0, peep->happiness_target - 17);
+            peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             // Reset disgusting time
             peep->disgusting_count |= 0xC0;
         }
@@ -8361,7 +8370,7 @@ static sint32 peep_footpath_move_forward(rct_peep* peep, sint16 x, sint16 y, rct
         if (total_litter >= 3 &&
             (peep_rand() & 0xFFFF) <= 10922){
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, 0xFF);
-            peep->happiness_target = max(0, peep->happiness_target - 17);
+            peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             // Reset litter time
             peep->litter_count |= 0xC0;
         }
@@ -8786,13 +8795,16 @@ static uint8 footpath_element_dest_in_dir(
 
         switch (map_element_get_type(mapElement)) {
         case MAP_ELEMENT_TYPE_TRACK:
+        {
             if (z != mapElement->base_height) continue;
             sint32 rideIndex = mapElement->properties.track.ride_index;
             Ride *ride = get_ride(rideIndex);
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            {
                 *outRideIndex = rideIndex;
                 return PATH_SEARCH_SHOP_ENTRANCE;
             }
+        }
             break;
         case MAP_ELEMENT_TYPE_ENTRANCE:
             if (z != mapElement->base_height) continue;
@@ -9097,18 +9109,22 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         uint8 rideIndex = 0xFF;
         switch (map_element_get_type(mapElement)) {
         case MAP_ELEMENT_TYPE_TRACK:
+        {
             if (z != mapElement->base_height) continue;
             /* For peeps heading for a shop, the goal is the shop
              * tile. */
             rideIndex = mapElement->properties.track.ride_index;
             Ride *ride = get_ride(rideIndex);
-            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP)) {
+            if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
+            {
                 found = true;
                 searchResult = PATH_SEARCH_SHOP_ENTRANCE;
                 break;
-            } else {
+            } else
+            {
                 continue;
             }
+        }
         case MAP_ELEMENT_TYPE_ENTRANCE:
             if (z != mapElement->base_height) continue;
             sint32 direction;
@@ -9150,6 +9166,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             }
             break;
         case MAP_ELEMENT_TYPE_PATH:
+        {
             /* For peeps heading for a ride with a queue, the goal is the last
              * queue path.
              * Otherwise, peeps walk on path tiles to get to the goal. */
@@ -9159,7 +9176,8 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             // Path may be sloped, so set z to path base height.
             z = mapElement->base_height;
 
-            if (footpath_element_is_wide(mapElement)) {
+            if (footpath_element_is_wide(mapElement))
+            {
                 /* Check if staff can ignore this wide flag. */
                 if (!staff_can_ignore_wide_flag(peep, x, y, z, mapElement))
                 {
@@ -9173,13 +9191,19 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
             uint8 numEdges = bitcount(path_get_permitted_edges(mapElement));
 
-            if (numEdges < 2) {
+            if (numEdges < 2)
+            {
                 searchResult = PATH_SEARCH_DEAD_END;
-            } else if (numEdges > 2) {
+            } else if (numEdges > 2)
+            {
                 searchResult = PATH_SEARCH_JUNCTION;
-            } else { // numEdges == 2
-                if (footpath_element_is_queue(mapElement) && mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex) {
-                    if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF)) {
+            } else
+            { // numEdges == 2
+                if (footpath_element_is_queue(mapElement) &&
+                    mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex)
+                {
+                    if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF))
+                    {
                         // Path is a queue we aren't interested in
                         /* The rideIndex will be useful for
                         * adding transport rides later. */
@@ -9189,6 +9213,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 }
             }
             found = true;
+        }
             break;
         default:
             continue;
@@ -9920,7 +9945,7 @@ static sint32 guest_path_find_entering_park(rct_peep *peep, rct_map_element *map
     sint16 y = gParkEntrances[chosenEntrance].y;
     sint16 z = gParkEntrances[chosenEntrance].z;
 
-    gPeepPathFindGoalPosition = (rct_xyz16){ x, y, z >> 3 };
+    gPeepPathFindGoalPosition = { x, y, static_cast<sint16>(z >> 3) };
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = 255;
 
@@ -10033,7 +10058,7 @@ static sint32 guest_path_find_park_entrance(rct_peep* peep, rct_map_element *map
     sint16 y = gParkEntrances[entranceNum].y;
     sint16 z = gParkEntrances[entranceNum].z;
 
-    gPeepPathFindGoalPosition = (rct_xyz16) { x, y, z >> 3 };
+    gPeepPathFindGoalPosition = { x, y, static_cast<sint16>(z >> 3) };
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = 255;
 
@@ -10510,7 +10535,7 @@ static sint32 peep_perform_next_action(rct_peep *peep)
     }
 
     rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
-    sint16 base_z = max(0, (peep->z / 8) - 2);
+    sint16 base_z = Math::Max(0, (peep->z / 8) - 2);
     sint16 top_z = (peep->z / 8) + 1;
 
     do{
@@ -10583,7 +10608,7 @@ static void peep_spend_money(rct_peep *peep, money16 *peep_expend_type, money32 
 {
     assert(!(gParkFlags & PARK_FLAGS_NO_MONEY));
 
-    peep->cash_in_pocket = max(0, peep->cash_in_pocket - amount);
+    peep->cash_in_pocket = Math::Max(0, peep->cash_in_pocket - amount);
     peep->cash_spent += amount;
     if (peep_expend_type != NULL) {
         *peep_expend_type += (money16)amount;
@@ -10655,7 +10680,7 @@ static void peep_on_enter_ride(rct_peep *peep, sint32 rideIndex)
 
     peep_set_has_ridden(peep, peep->current_ride);
     peep_update_favourite_ride(peep, ride);
-    peep->happiness_target = clamp(0, peep->happiness_target + satisfaction, PEEP_MAX_HAPPINESS);
+    peep->happiness_target = Math::Clamp(0, peep->happiness_target + satisfaction, PEEP_MAX_HAPPINESS);
     peep_update_ride_nausea_growth(peep, ride);
 }
 
@@ -10672,7 +10697,7 @@ static void peep_on_enter_ride(rct_peep *peep, sint32 rideIndex)
 static void peep_update_favourite_ride(rct_peep *peep, Ride *ride)
 {
     peep->peep_flags &= ~PEEP_FLAGS_RIDE_SHOULD_BE_MARKED_AS_FAVOURITE;
-    uint8 peepRideRating = clamp(0, (ride->excitement / 4) + peep->happiness, PEEP_MAX_HAPPINESS);
+    uint8 peepRideRating = Math::Clamp(0, (ride->excitement / 4) + peep->happiness, PEEP_MAX_HAPPINESS);
     if (peepRideRating >= peep->favourite_ride_rating) {
         if (peep->happiness >= 160 && peep->happiness_target >= 160) {
             peep->favourite_ride_rating = peepRideRating;
@@ -10751,8 +10776,8 @@ static sint16 peep_calculate_ride_intensity_nausea_satisfaction(rct_peep * peep,
         nauseaSatisfaction--;
     }
 
-    uint8 highestSatisfaction = max(intensitySatisfaction, nauseaSatisfaction);
-    uint8 lowestSatisfaction = min(intensitySatisfaction, nauseaSatisfaction);
+    uint8 highestSatisfaction = Math::Max(intensitySatisfaction, nauseaSatisfaction);
+    uint8 lowestSatisfaction = Math::Min(intensitySatisfaction, nauseaSatisfaction);
 
     switch (highestSatisfaction) {
     default:
@@ -10825,11 +10850,11 @@ static sint16 peep_calculate_ride_satisfaction(rct_peep *peep, Ride *ride)
  */
 static void peep_update_ride_nausea_growth(rct_peep *peep, Ride *ride)
 {
-    uint32 nauseaMultiplier = clamp(64, 256 - peep->happiness_target, 200);
+    uint32 nauseaMultiplier = Math::Clamp(64, 256 - peep->happiness_target, 200);
     uint32 nauseaGrowthRateChange = (ride->nausea * nauseaMultiplier) / 512;
-    nauseaGrowthRateChange *= max(128, peep->hunger) / 64;
+    nauseaGrowthRateChange *= Math::Max(static_cast<uint8>(128), peep->hunger) / 64;
     nauseaGrowthRateChange >>= (peep->nausea_tolerance & 3);
-    peep->nausea_target = (uint8)min(peep->nausea_target + nauseaGrowthRateChange, 255);
+    peep->nausea_target = (uint8)Math::Min(peep->nausea_target + nauseaGrowthRateChange, 255u);
 }
 
 static bool peep_should_go_on_ride_again(rct_peep *peep, Ride *ride)
@@ -11052,7 +11077,7 @@ loc_69B119:
         }
         else {
             value -= price;
-            value = max(8, value);
+            value = Math::Max(8, value);
 
             if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
                 if (value >= (money32)(peep_rand() & 0x07)) {
@@ -11063,8 +11088,8 @@ loc_69B119:
             }
 
             sint32 happinessGrowth = value * 4;
-            peep->happiness_target = min((peep->happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
-            peep->happiness = min((peep->happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
+            peep->happiness_target = Math::Min((peep->happiness_target + happinessGrowth), PEEP_MAX_HAPPINESS);
+            peep->happiness = Math::Min((peep->happiness + happinessGrowth), PEEP_MAX_HAPPINESS);
         }
     }
 
@@ -11114,7 +11139,7 @@ loc_69B221:
         peep_reset_pathfind_goal(peep);
 
     uint16 dl = byte_9822F4[shopItem];
-    peep->var_42 = min((peep->var_42 + dl), 255);
+    peep->var_42 = Math::Min((peep->var_42 + dl), 255);
 
     if (shopItem == SHOP_ITEM_PHOTO)
         peep->photo1_ride_ref = rideIndex;
@@ -11784,7 +11809,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
                     if (abs(lastPeepInQueue->z - peep->z) <= 6) {
                         sint32 dx = abs(lastPeepInQueue->x - peep->x);
                         sint32 dy = abs(lastPeepInQueue->y - peep->y);
-                        sint32 maxD = max(dx, dy);
+                        sint32 maxD = Math::Max(dx, dy);
 
                         // Unlike normal paths, peeps cannot overlap when queueing for a ride.
                         // This check enforces a minimum distance between peeps entering the queue.
@@ -11872,7 +11897,7 @@ static bool peep_should_go_on_ride(rct_peep *peep, sint32 rideIndex, sint32 entr
                     // Intensity calculations. Even though the max intensity can go up to 15, it's capped
                     // at 10.0 (before happiness calculations). A full happiness bar will increase the max
                     // intensity and decrease the min intensity by about 2.5.
-                    ride_rating maxIntensity = min((peep->intensity >> 4) * 100, 1000) + peep->happiness;
+                    ride_rating maxIntensity = Math::Min((peep->intensity >> 4) * 100, 1000) + peep->happiness;
                     ride_rating minIntensity = ((peep->intensity & 0x0F) * 100) - peep->happiness;
                     if (ride->intensity < minIntensity) {
                         if (peepAtRide) {
@@ -12101,7 +12126,7 @@ static void peep_pick_ride_to_go_on(rct_peep *peep)
     if (peep_has_food(peep)) return;
     if (peep->x == MAP_LOCATION_NULL) return;
 
-    for (sint32 i = 0; i < countof(_peepRideConsideration); i++) {
+    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++) {
         _peepRideConsideration[i] = 0;
     }
 
@@ -12214,7 +12239,7 @@ static void peep_head_for_nearest_ride_type(rct_peep *peep, sint32 rideType)
         }
     }
 
-    for (sint32 i = 0; i < countof(_peepRideConsideration); i++) {
+    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++) {
         _peepRideConsideration[i] = 0;
     }
 
@@ -12321,7 +12346,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep *peep, sint32 rideTyp
         return;
     }
 
-    for (sint32 i = 0; i < countof(_peepRideConsideration); i++) {
+    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++) {
         _peepRideConsideration[i] = 0;
     }
 
@@ -12465,12 +12490,12 @@ static sint32 peep_compare(const void *sprite_index_a, const void *sprite_index_
         rct_string_id peep_a_format = peep_a->name_string_idx + 0xA000;
         rct_string_id peep_b_format = peep_b->name_string_idx + 0xA000;
 
-        uint16 peep_a_name = (peep_a_format % countof(real_names));
-        uint16 peep_b_name = (peep_b_format % countof(real_names));
+        uint16 peep_a_name = (peep_a_format % Util::CountOf(real_names));
+        uint16 peep_b_name = (peep_b_format % Util::CountOf(real_names));
 
         if (peep_a_name == peep_b_name) {
-            uint16 peep_a_initial = ((peep_a_format >> 10) % countof(real_name_initials));
-            uint16 peep_b_initial = ((peep_b_format >> 10) % countof(real_name_initials));
+            uint16 peep_a_initial = ((peep_a_format >> 10) % Util::CountOf(real_name_initials));
+            uint16 peep_b_initial = ((peep_b_format >> 10) % Util::CountOf(real_name_initials));
             return peep_a_initial - peep_b_initial;
         } else {
             return peep_a_name - peep_b_name;

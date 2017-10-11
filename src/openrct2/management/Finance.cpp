@@ -18,7 +18,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../peep/staff.h"
 #include "../ride/ride.h"
 #include "../util/util.h"

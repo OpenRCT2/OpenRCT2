@@ -32,7 +32,7 @@
 #include "../network/network.h"
 #include "../object_list.h"
 #include "../OpenRCT2.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
 #include "../rct2/addresses.h"

@@ -46,7 +46,7 @@
 #include "../management/Marketing.h"
 #include "../object.h"
 #include "../object/ObjectManager.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../peep/staff.h"
 #include "../rct1.h"
 #include "../ride/ride_data.h"

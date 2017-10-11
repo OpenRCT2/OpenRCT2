@@ -30,7 +30,7 @@
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
-#include "peep.h"
+#include "Peep.h"
 #include "staff.h"
 
 const rct_string_id StaffCostumeNames[] = {

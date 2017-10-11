@@ -21,7 +21,7 @@
 #include <string>
 #include "../common.h"
 
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../world/map.h"
 #include "../world/sprite.h"
 
