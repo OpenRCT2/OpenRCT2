@@ -303,7 +303,7 @@ namespace OpenRCT2
 
             if (platform_process_is_elevated())
             {
-                std::string elevationWarning = "For security reasons, it is strongly recommended not to run OpenRCT2 with elevated permissions.";
+                std::string elevationWarning = language_get_string(6154);
                 if (gOpenRCT2Headless)
                 {
                     Console::Error::WriteLine(elevationWarning.c_str());

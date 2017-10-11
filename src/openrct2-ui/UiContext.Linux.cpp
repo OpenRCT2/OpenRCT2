@@ -23,6 +23,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/ui/UiContext.h>
 #include "UiContext.h"
+#include "openrct2/localisation/localisation.h"
 
 #include <SDL.h>
 
@@ -372,8 +373,9 @@ namespace OpenRCT2 { namespace Ui
         static void ThrowMissingDialogApp()
         {
             IUiContext * uiContext = GetContext()->GetUiContext();
-            uiContext->ShowMessageBox("Neither KDialog nor Zenity are installed. Please install one.");
-            throw std::runtime_error("KDialog or Zenity not installed.");
+            std::string dialogMissingWarning = language_get_string(6155);
+            uiContext->ShowMessageBox(dialogMissingWarning);
+            throw std::runtime_error(dialogMissingWarning);
         }
     };
 
