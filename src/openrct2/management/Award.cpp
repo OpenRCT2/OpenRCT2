@@ -538,7 +538,7 @@ static bool award_is_deserved_best_custom_designed_rides(sint32 awardType, sint3
 static const uint8 dazzling_ride_colours[] = { 5, 14, 20, 30 };
 static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint32 activeAwardTypes)
 {
-    sint32 i, j, countedRides, colourfulRides;
+    sint32 i, countedRides, colourfulRides;
     Ride *ride;
     uint8 mainTrackColour;
 
@@ -547,14 +547,15 @@ static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint3
 
     countedRides = 0;
     colourfulRides = 0;
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES(i, ride)
+    {
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK))
             continue;
 
         countedRides++;
 
         mainTrackColour = ride->track_colour_main[0];
-        for (j = 0; j < Util::CountOf(dazzling_ride_colours); j++) {
+        for (uint32 j = 0; j < Util::CountOf(dazzling_ride_colours); j++) {
             if (mainTrackColour == dazzling_ride_colours[j]) {
                 colourfulRides++;
                 break;

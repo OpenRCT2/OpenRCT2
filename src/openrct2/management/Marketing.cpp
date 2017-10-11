@@ -168,11 +168,11 @@ void marketing_start_campaign(sint32 type, sint32 rideOrItem, sint32 numWeeks)
  */
 void game_command_start_campaign(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
 {
-    sint32 type       = *edx & 0xFF;
+    uint8 type       = *edx & 0xFF;
     sint32 rideOrItem = (*edx >> 8) & 0xFF;
     sint32 numWeeks   = (*ebx >> 8) & 0xFF;
 
-    if (type < 0 || type >= Util::CountOf(AdvertisingCampaignPricePerWeek))
+    if (type >= Util::CountOf(AdvertisingCampaignPricePerWeek))
     {
         log_warning("Invalid game command, type = %d", type);
         *ebx = MONEY32_UNDEFINED;
