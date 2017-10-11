@@ -5369,7 +5369,7 @@ static void vehicle_crash_on_water(rct_vehicle * vehicle)
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite *)vehicle);
     vehicle_invalidate(vehicle);
 
-    vehicle->var_4E = 0xFFFF;
+    vehicle->var_4E = 0xFFFFu;
 }
 
 /**
@@ -6317,7 +6317,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
         uint8 oldC4     = vehicle->var_C4 & 0x1E;
         vehicle->var_C4 = 0;
 
-        LocationXYZ16 location = { .x = vehicle->x, .y = vehicle->y, .z = vehicle->z };
+        LocationXYZ16 location = { vehicle->x, vehicle->y, vehicle->z };
 
         location.x += Unk9A36C4[oldC4].x;
         location.y += Unk9A36C4[oldC4].y;
