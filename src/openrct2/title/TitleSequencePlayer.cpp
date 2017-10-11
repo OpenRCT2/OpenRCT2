@@ -34,7 +34,7 @@
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../management/news_item.h"
+#include "../management/NewsItem.h"
 #include "../world/scenery.h"
 
 using namespace OpenRCT2;

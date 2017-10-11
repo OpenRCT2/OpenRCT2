@@ -22,7 +22,7 @@
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
-#include "../management/news_item.h"
+#include "../management/NewsItem.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../rct12.h"

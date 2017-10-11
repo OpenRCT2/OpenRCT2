@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _MARKETING_H_
-#define _MARKETING_H_
+#pragma once
 
 #include "../common.h"
 #include "../cheats.h"
@@ -58,6 +57,4 @@ bool marketing_is_campaign_type_applicable(sint32 campaignType);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _RESEARCH_H_
-#define _RESEARCH_H_
+#pragma once
 
 #include "../common.h"
 #include "../ride/ride.h"
@@ -128,6 +127,4 @@ void research_remove_flags();
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

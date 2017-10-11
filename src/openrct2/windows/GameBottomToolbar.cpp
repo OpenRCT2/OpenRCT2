@@ -26,7 +26,7 @@
 #include "../interface/widget.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/news_item.h"
+#include "../management/NewsItem.h"
 #include "../peep/staff.h"
 #include "../sprites.h"
 

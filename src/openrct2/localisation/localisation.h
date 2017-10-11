@@ -22,7 +22,7 @@
 #include "format_codes.h"
 #include "language.h"
 #include "string_ids.h"
-#include "../management/marketing.h"
+#include "../management/Marketing.h"
 
 #ifdef __cplusplus
 extern "C" {

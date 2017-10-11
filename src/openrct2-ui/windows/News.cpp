@@ -19,7 +19,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/management/news_item.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/world/sprite.h>
 #include <openrct2/peep/staff.h>
