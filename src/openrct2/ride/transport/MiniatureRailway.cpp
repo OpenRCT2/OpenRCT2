@@ -1243,6 +1243,13 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
             session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
             miniature_railway_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
             defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+
+        // The following piece was missing in vanilla RCT2
+        if (trackSequence == 1 && direction == 0)
+        {
+             uint32 imageId = SPR_G2_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_3 | session->TrackColours[SCHEME_TRACK];
+             sub_98197C(session, imageId, 0, 0, 8, 8, 2, height, 0, 0, height, get_current_rotation());
+        }
     }
     else
     {
