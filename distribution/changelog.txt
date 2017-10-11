@@ -13,6 +13,7 @@
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
 - Feature: [#6411] Add command to remove the park fence.
 - Feature: [#6414] Raise maximum launch speed of the Corkscrew RC back to 96 km/h (for RCT1 parity).
+- Feature: [#6433] Turn 'unlock all prices' into a regular (non-cheat, persistent) option.
 - Feature: Allow using object files from RCT Classic.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
