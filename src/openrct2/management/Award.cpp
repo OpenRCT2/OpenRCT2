@@ -29,46 +29,46 @@
 #define POSITIVE 1
 
 static const uint8 AwardPositiveMap[] =
-                       {
-                           NEGATIVE, // PARK_AWARD_MOST_UNTIDY
-                           POSITIVE, // PARK_AWARD_MOST_TIDY
-                           POSITIVE, // PARK_AWARD_BEST_ROLLERCOASTERS
-                           POSITIVE, // PARK_AWARD_BEST_VALUE
-                           POSITIVE, // PARK_AWARD_MOST_BEAUTIFUL
-                           NEGATIVE, // PARK_AWARD_WORST_VALUE
-                           POSITIVE, // PARK_AWARD_SAFEST
-                           POSITIVE, // PARK_AWARD_BEST_STAFF
-                           POSITIVE, // PARK_AWARD_BEST_FOOD
-                           NEGATIVE, // PARK_AWARD_WORST_FOOD
-                           POSITIVE, // PARK_AWARD_BEST_RESTROOMS
-                           NEGATIVE, // PARK_AWARD_MOST_DISAPPOINTING
-                           POSITIVE, // PARK_AWARD_BEST_WATER_RIDES
-                           POSITIVE, // PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES
-                           POSITIVE, // PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS
-                           NEGATIVE, // PARK_AWARD_MOST_CONFUSING_LAYOUT
-                           POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
-                       };
+{
+    NEGATIVE, // PARK_AWARD_MOST_UNTIDY
+    POSITIVE, // PARK_AWARD_MOST_TIDY
+    POSITIVE, // PARK_AWARD_BEST_ROLLERCOASTERS
+    POSITIVE, // PARK_AWARD_BEST_VALUE
+    POSITIVE, // PARK_AWARD_MOST_BEAUTIFUL
+    NEGATIVE, // PARK_AWARD_WORST_VALUE
+    POSITIVE, // PARK_AWARD_SAFEST
+    POSITIVE, // PARK_AWARD_BEST_STAFF
+    POSITIVE, // PARK_AWARD_BEST_FOOD
+    NEGATIVE, // PARK_AWARD_WORST_FOOD
+    POSITIVE, // PARK_AWARD_BEST_RESTROOMS
+    NEGATIVE, // PARK_AWARD_MOST_DISAPPOINTING
+    POSITIVE, // PARK_AWARD_BEST_WATER_RIDES
+    POSITIVE, // PARK_AWARD_BEST_CUSTOM_DESIGNED_RIDES
+    POSITIVE, // PARK_AWARD_MOST_DAZZLING_RIDE_COLOURS
+    NEGATIVE, // PARK_AWARD_MOST_CONFUSING_LAYOUT
+    POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
+};
 
 static const rct_string_id AwardNewsStrings[] =
-                               {
-                                   STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
-                                   STR_NEWS_ITEM_MOST_TIDY,
-                                   STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
-                                   STR_NEWS_ITEM_BEST_VALUE,
-                                   STR_NEWS_ITEM_MOST_BEAUTIFUL,
-                                   STR_NEWS_ITEM_WORST_VALUE,
-                                   STR_NEWS_ITEM_SAFEST,
-                                   STR_NEWS_ITEM_BEST_STAFF,
-                                   STR_NEWS_ITEM_BEST_FOOD,
-                                   STR_NEWS_ITEM_WORST_FOOD,
-                                   STR_NEWS_ITEM_BEST_RESTROOMS,
-                                   STR_NEWS_ITEM_MOST_DISAPPOINTING,
-                                   STR_NEWS_ITEM_BEST_WATER_RIDES,
-                                   STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
-                                   STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS,
-                                   STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,
-                                   STR_NEWS_ITEM_BEST_GENTLE_RIDES,
-                               };
+{
+    STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
+    STR_NEWS_ITEM_MOST_TIDY,
+    STR_NEWS_ITEM_BEST_ROLLERCOASTERS,
+    STR_NEWS_ITEM_BEST_VALUE,
+    STR_NEWS_ITEM_MOST_BEAUTIFUL,
+    STR_NEWS_ITEM_WORST_VALUE,
+    STR_NEWS_ITEM_SAFEST,
+    STR_NEWS_ITEM_BEST_STAFF,
+    STR_NEWS_ITEM_BEST_FOOD,
+    STR_NEWS_ITEM_WORST_FOOD,
+    STR_NEWS_ITEM_BEST_RESTROOMS,
+    STR_NEWS_ITEM_MOST_DISAPPOINTING,
+    STR_NEWS_ITEM_BEST_WATER_RIDES,
+    STR_NEWS_ITEM_BEST_CUSTOM_DESIGNED_RIDES,
+    STR_NEWS_ITEM_MOST_DAZZLING_RIDE_COLOURS,
+    STR_NEWS_ITEM_MOST_CONFUSING_LAYOUT,
+    STR_NEWS_ITEM_BEST_GENTLE_RIDES,
+};
 
 Award gCurrentAwards[MAX_AWARDS];
 
@@ -644,25 +644,25 @@ static bool award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activeA
 typedef bool (* award_deserved_check)(sint32, sint32);
 
 static const award_deserved_check _awardChecks[] =
-                                      {
-                                          award_is_deserved_most_untidy,
-                                          award_is_deserved_most_tidy,
-                                          award_is_deserved_best_rollercoasters,
-                                          award_is_deserved_best_value,
-                                          award_is_deserved_most_beautiful,
-                                          award_is_deserved_worst_value,
-                                          award_is_deserved_safest,
-                                          award_is_deserved_best_staff,
-                                          award_is_deserved_best_food,
-                                          award_is_deserved_worst_food,
-                                          award_is_deserved_best_restrooms,
-                                          award_is_deserved_most_disappointing,
-                                          award_is_deserved_best_water_rides,
-                                          award_is_deserved_best_custom_designed_rides,
-                                          award_is_deserved_most_dazzling_ride_colours,
-                                          award_is_deserved_most_confusing_layout,
-                                          award_is_deserved_best_gentle_rides
-                                      };
+{
+    award_is_deserved_most_untidy,
+    award_is_deserved_most_tidy,
+    award_is_deserved_best_rollercoasters,
+    award_is_deserved_best_value,
+    award_is_deserved_most_beautiful,
+    award_is_deserved_worst_value,
+    award_is_deserved_safest,
+    award_is_deserved_best_staff,
+    award_is_deserved_best_food,
+    award_is_deserved_worst_food,
+    award_is_deserved_best_restrooms,
+    award_is_deserved_most_disappointing,
+    award_is_deserved_best_water_rides,
+    award_is_deserved_best_custom_designed_rides,
+    award_is_deserved_most_dazzling_ride_colours,
+    award_is_deserved_most_confusing_layout,
+    award_is_deserved_best_gentle_rides
+};
 
 static bool award_is_deserved(sint32 awardType, sint32 activeAwardTypes)
 {
