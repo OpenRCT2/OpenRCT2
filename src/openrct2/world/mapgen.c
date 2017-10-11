@@ -86,7 +86,7 @@ static const uint8 BaseTerrain[] = { TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_L
 
 #define BLOB_HEIGHT 255
 
-static void mapgen_place_trees();
+static void mapgen_place_trees(mapgen_settings *settings);
 static void mapgen_set_water_level(sint32 height);
 static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight);
 static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height);
@@ -94,6 +94,9 @@ static void mapgen_smooth_height(sint32 iterations);
 static void mapgen_set_height();
 
 static void mapgen_simplex(mapgen_settings *settings);
+
+static void noise_rand();
+static float fractal_noise(sint32 x, sint32 y, float frequency, sint32 octaves, float lacunarity, float persistence);
 
 static sint32 _heightSize;
 static uint8 *_height;
@@ -210,9 +213,10 @@ void mapgen_generate(mapgen_settings *settings)
     mapgen_set_water_level(waterLevel);
 
     // Add sandy beaches
-    sint32 beachTexture = floorTexture;
-    if (settings->floor == -1 && floorTexture == TERRAIN_GRASS) {
-        switch (util_rand() % 4) {
+    if ((settings->beaches_place) && !(settings->floor == -1 && floorTexture == TERRAIN_ICE)) {
+        // Randomly choose sand terrain.
+        sint32 beachTexture = floorTexture;
+        switch (util_rand() % 2) {
         case 0:
             beachTexture = TERRAIN_SAND;
             break;
@@ -220,21 +224,26 @@ void mapgen_generate(mapgen_settings *settings)
             beachTexture = TERRAIN_SAND_LIGHT;
             break;
         }
-    }
-    for (y = 1; y < mapSize - 1; y++) {
-        for (x = 1; x < mapSize - 1; x++) {
-            mapElement = map_get_surface_element_at(x, y);
 
-            if (mapElement->base_height < waterLevel + 6)
-                map_element_set_terrain(mapElement, beachTexture);
+        for (y = 1; y < mapSize - 1; y++) {
+            for (x = 1; x < mapSize - 1; x++) {
+                mapElement = map_get_surface_element_at(x, y);
+
+                if (mapElement->base_height < waterLevel + settings->beaches_height)
+                    map_element_set_terrain(mapElement, beachTexture);
+            }
         }
     }
 
-    // Place the trees
-    if (settings->trees != 0)
-        mapgen_place_trees();
+    if (settings->trees_place)
+        mapgen_place_trees(settings);
 
     map_reorganise_elements();
+}
+
+static void mapgen_clear_trees()
+{
+    // TODO clear trees, possibly using scenery_clear function..
 }
 
 static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
@@ -257,8 +266,16 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
-static void mapgen_place_trees()
+static void mapgen_place_trees(mapgen_settings * settings)
 {
+    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
+    // thus preventing need to regenerate terrain for a new forest.
+
+    if (!settings->trees_place)
+        return;
+
+    mapgen_clear_trees();
+
     sint32 numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
     sint32 *grassTreeIds = (sint32*)malloc(countof(GrassTrees) * sizeof(sint32));
     sint32 *desertTreeIds = (sint32*)malloc(countof(DesertTrees) * sizeof(sint32));
@@ -297,26 +314,137 @@ static void mapgen_place_trees()
         }
     }
 
-    sint32 availablePositionsCount = 0;
-    struct { sint32 x; sint32 y; } tmp, *pos, *availablePositions;
-    availablePositions = malloc(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
+    float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
+    float trees_octaves = settings->trees_octaves;
 
+    sint32 availablePositionsCount = 0;
+    struct { sint32 x; sint32 y; bool tree; } tmp, *pos, *availablePositions, *neighborPos;
+    sint32 availablePositionsKeymap[MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL];
+
+    const sint32 mapSizeTechnicalArea = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+
+    availablePositions = malloc(mapSizeTechnicalArea * sizeof(tmp));
+    
     // Create list of available tiles
-    for (sint32 y = 1; y < gMapSize - 1; y++) {
-        for (sint32 x = 1; x < gMapSize - 1; x++) {
-            rct_map_element *mapElement = map_get_surface_element_at(x, y);
+    for (sint32 y = 0; y < gMapSize - 2; y++) {
+        for (sint32 x = 0; x < gMapSize - 2; x++) {
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = -1;
+
+            rct_map_element *mapElement = map_get_surface_element_at(x + 1, y + 1);
 
             // Exclude water tiles
             if (map_get_water_height(mapElement) > 0)
                 continue;
 
-            pos = &availablePositions[availablePositionsCount++];
+            pos = &availablePositions[availablePositionsCount];
             pos->x = x;
             pos->y = y;
+            pos->tree = true;
+
+            // Store x/y coordinate as 1d indice.
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = availablePositionsCount;
+
+            availablePositionsCount++;
         }
     }
 
-    // Shuffle list
+    // Randomise with simplex
+    for (sint32 i = 0; i < availablePositionsCount; i++) {
+        pos = &availablePositions[i];
+        
+        if (!pos->tree)
+            continue;
+
+        float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
+        float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
+
+        if (normalisedNoiseValue < 0.5f) {
+            pos->tree = false;
+            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
+        }
+    }
+
+    sint32 treesRemoved = 0;
+    sint32 randIncrement = util_rand() % 1000;
+    sint32 rand = 0;
+
+    // After list has been fully completed, remove trees surrounded by other trees.
+    for (sint32 i = 0; i < availablePositionsCount; i++) {
+        pos = &availablePositions[i];
+        
+        // Skip already treeless items
+        if (!pos->tree)
+            continue;
+
+        // Store number of nearby trees. Will never exceed 4.
+        sint32 nearbyTrees = 0,
+               keymap = 0;
+
+        // _, _, _,
+        // X, T, _,
+        // _, _, _,
+        sint32 x2 = clamp(0, pos->x - 1, gMapSize - 2);
+        keymap = x2 + (pos->y * (gMapSize - 2));
+        if (availablePositionsKeymap[keymap] != -1) {
+            neighborPos = &availablePositions[keymap];
+            if (neighborPos->tree) {
+                nearbyTrees++;
+            }
+        }
+
+        // _, _, _,
+        // _, T, X,
+        // _, _, _,
+        x2 = clamp(0, pos->x + 1, gMapSize - 2);
+        keymap = x2 + (pos->y * (gMapSize - 2));
+        if (availablePositionsKeymap[keymap] != -1) {
+            neighborPos = &availablePositions[keymap];
+            if (neighborPos->tree) {
+                nearbyTrees++;
+            }
+        }
+
+        // _, X, _,
+        // _, T, _,
+        // _, _, _,
+        sint32 y2 = clamp(0, pos->y - 1, gMapSize - 2);
+        keymap = pos->x + (y2 * (gMapSize - 2));
+        if (availablePositionsKeymap[keymap] != -1) {
+            neighborPos = &availablePositions[keymap];
+            if (neighborPos->tree) {
+                nearbyTrees++;
+            }
+        }
+
+        // _, _, _,
+        // _, T, _,
+        // _, X, _,
+        y2 = clamp(0, pos->y + 1, gMapSize - 2);
+        keymap = pos->x + (y2 * (gMapSize - 2));
+        if (availablePositionsKeymap[keymap] != -1) {
+            neighborPos = &availablePositions[keymap];
+            if (neighborPos->tree) {
+                nearbyTrees++;
+            }
+        }
+
+        // Using a increment-based approach reduces util_rand() calls to one, increasing speed.
+        rand = (rand + randIncrement) % 100;
+        
+        if (
+            // Set probability of removing to number of nearby trees required.
+            ((nearbyTrees >= 4) && (rand > 30)) ||
+            ((nearbyTrees >= 3) && (rand < 50)) ||
+            ((nearbyTrees >= 2) && (rand > 60))
+        ) {
+            pos->tree = false;
+            treesRemoved++;
+        }
+    }
+
+    log_info("%d trees were removed due to neighboring positions", treesRemoved);
+
+    // Shuffle list, to evenly distribute the next portions probability ratio.
     for (sint32 i = 0; i < availablePositionsCount; i++) {
         sint32 rindex = util_rand() % availablePositionsCount;
         if (rindex == i)
@@ -328,14 +456,30 @@ static void mapgen_place_trees()
     }
 
     // Place trees
-    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
+
+    // choose number of trees by applying a random ratio (between 0.60f and 0.80f)
+    // to the number of availablePositionsCount. if lower than 4, 4 is used.
+    float treeToLandRatio = (60 + (util_rand() % 20)) / 100.0f;
     sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
 
     for (sint32 i = 0; i < numTrees; i++) {
         pos = &availablePositions[i];
+        
+        if (!pos->tree)
+            continue;
 
         sint32 type = -1;
-        rct_map_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
+        rct_map_element *mapElement = map_get_surface_element_at(pos->x + 1, pos->y + 1);
+
+        // If this is triggered, there is likely a pos to map conversion problem somewhere.
+        // Make sure all 'pos'/'positionsAvailable' x/y coordinates are 0 based, unless
+        // being converted to a mapElement, in which case 1 should be added to pos->x/y
+        // TODO: If this if statement no longer persists, remove it
+        if (mapElement == NULL) {
+            log_info("Map element at %d, %d was null", pos->x + 1, pos->y + 1);
+            continue;
+        }
+
         switch (map_element_get_terrain(mapElement)) {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
@@ -352,6 +496,8 @@ static void mapgen_place_trees()
             if (numDesertTreeIds == 0)
                 break;
 
+            // Because deserts have less trees than forests, apply a 1/4th chance 
+            // of tree being placed.
             if (util_rand() % 4 == 0)
                 type = desertTreeIds[util_rand() % numDesertTreeIds];
             break;
@@ -365,7 +511,7 @@ static void mapgen_place_trees()
         }
 
         if (type != -1)
-            mapgen_place_tree(type, pos->x, pos->y);
+            mapgen_place_tree(type, pos->x + 1, pos->y + 1);
     }
 
     free(availablePositions);
