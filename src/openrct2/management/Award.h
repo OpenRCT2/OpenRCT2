@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _AWARD_H_
-#define _AWARD_H_
+#pragma once
 
 #include "../common.h"
 
@@ -60,6 +59,4 @@ extern "C"
     void award_update_all();
 #ifdef __cplusplus
 }
-#endif
-
 #endif

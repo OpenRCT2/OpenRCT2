@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _FINANCE_H_
-#define _FINANCE_H_
+#pragma once
 
 #include "../common.h"
 #include "../peep/staff.h"
@@ -97,6 +96,4 @@ money32 finance_get_last_month_shop_profit();
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

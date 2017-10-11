@@ -28,7 +28,7 @@
 #include <openrct2/game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/management/news_item.h>
+#include <openrct2/management/NewsItem.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/track_data.h>

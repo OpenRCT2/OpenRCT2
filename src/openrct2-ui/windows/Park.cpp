@@ -27,7 +27,7 @@
 #include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/management/award.h>
+#include <openrct2/management/Award.h>
 #include <openrct2/util/util.h>
 #include <openrct2/world/entrance.h>
 #include <openrct2/windows/dropdown.h>

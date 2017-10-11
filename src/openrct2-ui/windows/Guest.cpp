@@ -20,7 +20,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
-#include <openrct2/management/marketing.h>
+#include <openrct2/management/Marketing.h>
 #include <openrct2/peep/staff.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/localisation/localisation.h>

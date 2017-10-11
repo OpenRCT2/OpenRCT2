@@ -34,7 +34,7 @@
 #include "../util/util.h"
 #include "date.h"
 #include "localisation.h"
-#include "../management/marketing.h"
+#include "../management/Marketing.h"
 
 char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];

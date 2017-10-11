@@ -31,7 +31,7 @@
 #include "../ride/RideGroupManager.h"
 #include "../ride/track_data.h"
 #include "../world/scenery.h"
-#include "news_item.h"
+#include "NewsItem.h"
 #include "Finance.h"
 #include "Research.h"
 
@@ -205,7 +205,7 @@ void research_finish_item(uint32 entryIndex)
         sint32 rideEntryIndex = entryIndex & 0xFF;
         rct_ride_entry * rideEntry = get_ride_entry(rideEntryIndex);
 
-        if (rideEntry != NULL && rideEntry != (rct_ride_entry *) -1 && base_ride_type != RIDE_TYPE_NULL)
+        if (rideEntry != nullptr && rideEntry != (rct_ride_entry *) -1 && base_ride_type != RIDE_TYPE_NULL)
         {
             bool ride_group_was_invented_before = false;
             bool ride_type_was_invented_before  = ride_type_is_invented(base_ride_type);
@@ -311,7 +311,7 @@ void research_finish_item(uint32 entryIndex)
     {
         // Scenery
         rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
-        if (scenerySetEntry != NULL && scenerySetEntry != (rct_scenery_set_entry *) -1)
+        if (scenerySetEntry != nullptr && scenerySetEntry != (rct_scenery_set_entry *) -1)
         {
             for (sint32 i = 0; i < scenerySetEntry->entry_count; i++)
             {
@@ -405,8 +405,8 @@ void research_reset_current_item()
             continue;
         }
 
-        rct_research_item * edx            = NULL;
-        rct_research_item * ebp            = NULL;
+        rct_research_item * edx            = nullptr;
+        rct_research_item * ebp            = nullptr;
         rct_research_item * inner_research = gResearchItems;
         do
         {
@@ -420,9 +420,9 @@ void research_reset_current_item()
             }
         }
         while ((inner_research++)->entryIndex != RESEARCHED_ITEMS_END);
-        assert(edx != NULL);
+        assert(edx != nullptr);
         edx->entryIndex = research->entryIndex;
-        assert(ebp != NULL);
+        assert(ebp != nullptr);
         ebp->entryIndex = (research + 1)->entryIndex;
 
         uint8 cat = edx->category;
@@ -848,7 +848,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
     if (researchItem >= RESEARCH_ENTRY_RIDE_MASK)
     {
         rct_ride_entry * rideEntry = get_ride_entry(researchItem & 0xFF);
-        if (rideEntry == NULL || rideEntry == (rct_ride_entry *) -1)
+        if (rideEntry == nullptr || rideEntry == (rct_ride_entry *) -1)
         {
             return 0;
         }
@@ -866,7 +866,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
     else
     {
         rct_scenery_set_entry * sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
-        if (sceneryEntry == NULL || sceneryEntry == (rct_scenery_set_entry *) -1)
+        if (sceneryEntry == nullptr || sceneryEntry == (rct_scenery_set_entry *) -1)
         {
             return 0;
         }
