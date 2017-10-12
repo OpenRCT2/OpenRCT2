@@ -71,7 +71,7 @@ NewsItem * news_item_get(sint32 index)
 bool news_item_is_empty(sint32 index)
 {
     NewsItem * news = news_item_get(index);
-    return news && news->Type == NEWS_ITEM_NULL;
+    return news != nullptr && news->Type == NEWS_ITEM_NULL;
 }
 
 bool news_item_is_queue_empty()
