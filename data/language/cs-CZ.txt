@@ -3511,7 +3511,7 @@ STR_5167    :Sledovat návštěvníky-followery
 STR_5168    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po Twitch followerech
 STR_5169    :Pojmenovávat návštěvníky podle lidí v Twitch chatu
 STR_5170    :{SMALLFONT}{BLACK}Pojmenovávat návštěvníky podle{NEWLINE}lidí v Twitch chatu
-STR_5171    :Sledovat návštěvníky z chatu
+STR_5171    :<removed string - do not use>
 STR_5172    :{SMALLFONT}{BLACK}Zapnout sledování návštěvníků{NEWLINE}pojmenovaných po lidech v Twitch chatu
 STR_5173    :Použít Twitch chat jako zprávy
 STR_5174    :{SMALLFONT}{BLACK}Bude používat zprávy z Twitch{NEWLINE}chatu, začínající !news pro herní notifikace
@@ -4457,6 +4457,12 @@ STR_6144    :Zvýraznit znevalidované bloky pro vykreslení
 STR_6145    :{SMALLFONT}{BLACK}Nastavit rychlostní limit boosteru
 STR_6146    :Povolit všechny vykreslitelné části trati
 STR_6147    :{SMALLFONT}{BLACK}Povolí všechny části trati, které atrakce podporuje. Nezáleží, jestli je podporují i vozy.
+STR_6148    :Připojování na master server...
+STR_6149    :Nepodařilo se připojit k master serveru
+STR_6150    :Neplatná odpověď master serveru (chybí JSON číslo)
+STR_6151    :Master server neposlal seznam herních serverů
+STR_6152    :Neplatná odpověď master serveru (chybí JSON pole)
+STR_6153    :Zpoplatněné vstupné / Zpoplatněné atrakce
 
 ###############################################################################
 ## RCT2 Objects

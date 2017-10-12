@@ -3384,7 +3384,7 @@ STR_3372    :{BLACK}= 提款機
 STR_3373    :{BLACK}= 廁所
 STR_3374    :警告: 選取了太多物件!
 STR_3375    :不是在此景觀組別中的所有物件都能夠選取
-STR_3376    :安裝新的軌道設計...
+STR_3376    :安裝新的...
 STR_3377    :{SMALLFONT}{BLACK}安裝新的軌道設計檔案
 STR_3378    :安裝
 STR_3379    :取消
@@ -4450,6 +4450,13 @@ STR_6137    :OpenRCT2, 一個免費及開放原始碼的模擬樂園2複製品.
 STR_6138    :OpenRCT2由眾多志願者一起開發, 完整的列表可於 {OPENQUOTES}contributors.md{ENDQUOTES} 找到. 請訪問 http://github.com/OpenRCT2/OpenRCT2 以便獲取更多資訊
 STR_6139    :所有的產品及公司名稱皆屬其擁有者所有. 使用那些名稱並不暗示或代表本項目與他們有任何聯繫.
 STR_6140    :更新日誌...
+STR_6141    :夢幻遊樂園(RCT1)式的底部工具列
+STR_6142    :{WINDOW_COLOUR_2}軌道設計名稱: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}遊樂設施種類: {BLACK}{STRINGID}
+STR_6144    :顥示沒有更新的畫面區域
+STR_6145    :{SMALLFONT}{BLACK}為加速裝置設置速度限制
+STR_6146    :啟用所有可以渲染的軌道選項
+STR_6147    :{SMALLFONT}{BLACK}在建造視窗中啟用所有該遊樂設施可以建設的軌道選項, 並忽略車輛能否於那些軌道上行走.
 
 #############
 # Scenarios #

@@ -77,9 +77,9 @@ STR_0072    :الأطباق الطائرة
 STR_0073    :الفأر المعوج
 STR_0074    :منوريل دوائر
 STR_0075    :إفعوانية معكوسة مدمجة
-STR_0076    :دوامة مائية
-STR_0077    :دوامة معكوسة عاملة بالهواء
-STR_0078    :دوامة منعطف حاد معكوسة
+STR_0076    :إفعوانية مائية
+STR_0077    :إفعوانية معكوسة عاملة بالهواء
+STR_0078    :إفعوانية منعطفه حاده معكوسة
 STR_0079    :السجادة السحرية
 STR_0080    :رحلة غواصة
 STR_0081    :طوافات النهر
@@ -89,8 +89,8 @@ STR_0084    :رحلة غير معروفة (52)
 STR_0085    :رحلة غير معروفة (53)
 STR_0086    :رحلة غير معروفة (54)
 STR_0087    :رحلة غير معروفة (55)
-STR_0088    :دوامة دافعة معكوسة
-STR_0089    :دوامة دائرية مصغرة
+STR_0088    :إفعوانية دافعة معكوسة
+STR_0089    :إفعوانية دائرية مصغرة
 STR_0090    :رحلة مصغرة
 STR_0091    :رحلة غير معروفة (59)
 STR_0092    :LIMأفعوانية مُطلقة بواسطة 
@@ -828,7 +828,7 @@ STR_0823    :ملف البيانات مفقود أو لا يمكن الوصول 
 STR_0824    :{BLACK}{CROSS}
 STR_0825    :الأسم المختار مستخدم مسبقاً
 STR_0826    :أسماء كثيرة جداً محددة
-STR_0827    :لا نقود كافية - يتطلب {CURRENCY2DP}
+STR_0827    :{CURRENCY2DP} لا نقود كافية - يتطلب 
 STR_0828    :{SMALLFONT}{BLACK}أغلق النافذة
 STR_0829    :{SMALLFONT}{BLACK}عنوان النافذة - إسحب هذا لكي تحرك النافذة
 STR_0830    :{SMALLFONT}{BLACK}تكبير المشهد للداخل
@@ -935,11 +935,11 @@ STR_0929    :'S' Bend (left)
 STR_0930    :'S' Bend (right)
 STR_0931    :Vertical Loop (left)
 STR_0932    :Vertical Loop (right)
-STR_0933    :Raise or lower land first
-STR_0934    :Ride entrance in the way
+STR_0933    :علي أو خفض الأرض أولاً
+STR_0934    :مدخل الرحلة في الطريق
 STR_0935    :مخرج الرحلة في الطريق
-STR_0936    :Park entrance in the way
-STR_0937    :{SMALLFONT}{BLACK}View options
+STR_0936    :مدخل الحديقة في الطريق
+STR_0937    :{SMALLFONT}{BLACK}أظهر الإغدادات
 STR_0938    :{SMALLFONT}{BLACK}Adjust land height and slope
 STR_0939    :Underground/Inside View
 STR_0940    :Hide Base Land
@@ -983,8 +983,8 @@ STR_0977    :New Transport Rides
 STR_0978    :New Gentle Rides
 STR_0979    :New Roller Coasters
 STR_0980    :New Thrill Rides
-STR_0981    :New Water Rides
-STR_0982    :New Shops & Stalls
+STR_0981    :رحلات مائية جديدة
+STR_0982    :متاجر و إكشاك جديدة
 STR_0983    :البحث والتطوير
 STR_0984    :{WINDOW_COLOUR_2}{UP}{BLACK}  {CURRENCY2DP}
 STR_0985    :{WINDOW_COLOUR_2}{DOWN}{BLACK}  {CURRENCY2DP}
@@ -999,16 +999,16 @@ STR_0993    :Demolish ride/attraction
 STR_0994    :تدمير
 STR_0995    :{WINDOW_COLOUR_1}Are you sure you want to completely demolish {STRINGID}?
 STR_0996    :نظرة عامة
-STR_0997    :{SMALLFONT}{BLACK}View selection
+STR_0997    :{SMALLFONT}{BLACK}أظهر التحديد
 STR_0998    :No more stations allowed on this ride
 STR_0999    :Requires a station platform
-STR_1000    :Track is not a complete circuit
-STR_1001    :Track unsuitable for type of train
-STR_1002    :Can't open {POP16}{POP16}{POP16}{STRINGID}...
-STR_1003    :Can't test {POP16}{POP16}{POP16}{STRINGID}...
-STR_1004    :Can't close {POP16}{POP16}{POP16}{STRINGID}...
-STR_1005    :Can't start construction on {POP16}{POP16}{POP16}{STRINGID}...
-STR_1006    :Must be closed first
+STR_1000    :المسار ليس دائرة متصلة
+STR_1001    :المسار غير مناسب  لهذا القطار
+STR_1002    :{POP16}{POP16}{POP16}{STRINGID} لا يمكن فتح...
+STR_1003    :{POP16}{POP16}{POP16}{STRINGID}لا يمكن إختبار...
+STR_1004    :{POP16}{POP16}{POP16}{STRINGID}لا يمكن إغلاق...
+STR_1005    :{POP16}{POP16}{POP16}{STRINGID} لا يمكن بدء البناء في...
+STR_1006    :يجب أن يُغلق أولاً
 STR_1007    :Unable to create enough vehicles
 STR_1008    :{SMALLFONT}{BLACK}Open, close, or test ride/attraction
 STR_1009    :{SMALLFONT}{BLACK}Open or close all rides/attractions
@@ -1053,12 +1053,12 @@ STR_1047    :حفظ اللعبة فشل!
 STR_1048    :حفظ السيناريو فشل!
 STR_1049    :Landscape save failed!
 STR_1050    :فشل في التحميل...{NEWLINE}الملف يحتوي علي بيانات خاطئة!
-STR_1051    :Invisible Supports
+STR_1051    :دعم غير مرئي
 STR_1052    :أناس غير مرئيين
 STR_1053    :{SMALLFONT}{BLACK}Rides/attractions in park
 STR_1054    :{SMALLFONT}{BLACK}Name ride/attraction
 STR_1055    :{SMALLFONT}{BLACK}تسمية شخص
-STR_1056    :{SMALLFONT}{BLACK}Name staff member
+STR_1056    :{SMALLFONT}{BLACK}ـسمية عضو العمل
 STR_1057    :Ride/attraction name
 STR_1058    :Enter new name for this ride/attraction:
 STR_1059    :Can't rename ride/attraction...
@@ -1107,35 +1107,35 @@ STR_1101    :Departing {POP16}{STRINGID}
 STR_1102    :يسافر بسرعة {VELOCITY}
 STR_1103    :يصل في خلال {POP16}{STRINGID}
 STR_1104    :Unloading passengers at {POP16}{STRINGID}
-STR_1105    :يسافر بسرعة {VELOCITY}
+STR_1105    :{VELOCITY}يسافر بسرعة
 STR_1106    :يتحطم!
 STR_1107    :تحطم!
-STR_1108    :يسافر بسرعة {VELOCITY}
+STR_1108    :{VELOCITY}يسافر بسرعة
 STR_1109    :يتارجح
 STR_1110    :يدور
 STR_1111    :يدور
 STR_1112    :Operating
 STR_1113    :Showing film
-STR_1114    :Rotating
+STR_1114    :يدور
 STR_1115    :Operating
 STR_1116    :Operating
 STR_1117    :Doing circus show
 STR_1118    :Operating
 STR_1119    :Waiting for cable lift
-STR_1120    :Travelling at {VELOCITY}
+STR_1120    :{VELOCITY}يسافر بسرعة
 STR_1121    :يتوقف
-STR_1122    :Waiting for passengers
-STR_1123    :Waiting to start
+STR_1122    :ينتظر الركاب
+STR_1123    :ينتظر ليبدء
 STR_1124    :يبدأ
 STR_1125    :Operating
 STR_1126    :يتوقف
-STR_1127    :Unloading passengers
+STR_1127    :تنزيل الركاب
 STR_1128    :Stopped by block brakes
 STR_1129    :كل المركبات بنفس اللون
 STR_1130    :ألوان مختلفة لكل {STRINGID}
 STR_1131    :ألوان مختلفة لكل مركبة
-STR_1132    :المركبة {POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
-STR_1133    :المركبة {POP16}{COMMA16}
+STR_1132    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}المركبة
+STR_1133    :{POP16}{COMMA16}المركبة
 STR_1134    :{POP16}{POP16}{POP16}{POP16}{POP16}{STRINGID} {COMMA16}
 STR_1135    :{STRINGID} {COMMA16}
 STR_1136    :{SMALLFONT}{BLACK}حدد الون الأساسي
@@ -1150,26 +1150,26 @@ STR_1144    :Can't build/move entrance for this ride/attraction...
 STR_1145    :Can't build/move exit for this ride/attraction...
 STR_1146    :المدخل لم يُبني بعد
 STR_1147    :المخرج لم يُبني بعد
-STR_1148    :Quarter load
-STR_1149    :Half load
-STR_1150    :Three-quarter load
+STR_1148    :ربع الحمل
+STR_1149    :نصف الحمل
+STR_1150    :ثلاثة أرباع الحمل
 STR_1151    :الحمل الكامل
-STR_1152    :Any load
+STR_1152    :أي حمل
 STR_1153    :Height Marks on Ride Tracks
 STR_1154    :Height Marks on Land
 STR_1155    :Height Marks on Paths
 STR_1156    :{MOVE_X}{SMALLFONT}{STRINGID}
 STR_1157    :{TICK}{MOVE_X}{SMALLFONT}{STRINGID}
-STR_1158    :Can't remove this...
+STR_1158    :لا يمكن مسح هذا...
 STR_1159    :{SMALLFONT}{BLACK}Place scenery, gardens, and other accessories
 STR_1160    :{SMALLFONT}{BLACK}Create/adjust lakes & water
-STR_1161    :Can't position this here...
+STR_1161    :لا يمكن وضع هذا هنا...
 STR_1162    :{OUTLINE}{TOPAZ}{STRINGID}
 STR_1163    :{STRINGID}{NEWLINE}(Right-Click to Modify)
 STR_1164    :{STRINGID}{NEWLINE}(Right-Click to Remove)
 STR_1165    :{STRINGID} - {STRINGID} {COMMA16}
-STR_1166    :Can't lower water level here...
-STR_1167    :Can't raise water level here...
+STR_1166    :لا يمكن تقليل مستوي الماء هنا...
+STR_1167    :لا يمكن تعلية مستوي الماء هنا...
 STR_1168    :الإعدادات
 STR_1169    :(لا شئ)
 STR_1170    :{STRING}
@@ -1187,9 +1187,9 @@ STR_1181    :خطوات أقدام
 STR_1182    :النوع
 STR_1183    :الإتجاة
 STR_1184    :الإنحدار
-STR_1185    :{SMALLFONT}{BLACK}Direction
+STR_1185    :{SMALLFONT}{BLACK}الإتجاه
 STR_1186    :{SMALLFONT}{BLACK}Slope down
-STR_1187    :{SMALLFONT}{BLACK}Level
+STR_1187    :{SMALLFONT}{BLACK}المستوي
 STR_1188    :{SMALLFONT}{BLACK}Slope up
 STR_1189    :{SMALLFONT}{BLACK}Construct the selected footpath section
 STR_1190    :{SMALLFONT}{BLACK}Remove previous footpath section
@@ -1205,10 +1205,10 @@ STR_1199    :{COMMA16} شخص في الرحلة
 STR_1200    :{COMMA16} أناس في الرحلة
 STR_1201    :لا أحد في طابور الإنتظار
 STR_1202    :1 شخص في طابور الإنتظار
-STR_1203    :{COMMA16} people in queue line
-STR_1204    :{COMMA16} minute queue time
-STR_1205    :{COMMA16} minutes queue time
-STR_1206    :{WINDOW_COLOUR_2}Wait for:
+STR_1203    :{COMMA16} الناس في صف الإنتظار
+STR_1204    :دقيقة وقت الإنتظار{COMMA16}
+STR_1205    :دقائق وقت الإنتظار{COMMA16}
+STR_1206    :{WINDOW_COLOUR_2}إنتظر لي:
 STR_1207    :{WINDOW_COLOUR_2}Leave if another train arrives at station
 STR_1208    :{WINDOW_COLOUR_2}Leave if another boat arrives at station
 STR_1209    :{SMALLFONT}{BLACK}Select whether should wait for passengers before departing
@@ -1237,21 +1237,21 @@ STR_1231    :قطار
 STR_1232    :قطارات
 STR_1233    :{COMMA16} قطار
 STR_1234    :{COMMA16} قطارات
-STR_1235    :Train {COMMA16}
-STR_1236    :boat
-STR_1237    :boats
-STR_1238    :Boat
-STR_1239    :Boats
-STR_1240    :{COMMA16} boat
-STR_1241    :{COMMA16} boats
-STR_1242    :Boat {COMMA16}
-STR_1243    :track
-STR_1244    :tracks
-STR_1245    :Track
-STR_1246    :Tracks
-STR_1247    :{COMMA16} track
-STR_1248    :{COMMA16} tracks
-STR_1249    :Track {COMMA16}
+STR_1235    :قطار {COMMA16}
+STR_1236    :قارب
+STR_1237    :قوارب
+STR_1238    :قارب
+STR_1239    :قوارب
+STR_1240    :{COMMA16} قارب
+STR_1241    :{COMMA16} قوارب
+STR_1242    :قارب {COMMA16}
+STR_1243    :مسار
+STR_1244    :مسارات
+STR_1245    :مسار
+STR_1246    :مسارات
+STR_1247    :{COMMA16} مسار
+STR_1248    :{COMMA16} مسارات
+STR_1249    :{COMMA16}مسار
 STR_1250    :docking platform
 STR_1251    :docking platforms
 STR_1252    :Docking platform
@@ -1412,13 +1412,13 @@ STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this desi
 STR_1407    :{WINDOW_COLOUR_2}Build this...
 STR_1408    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
-STR_1411    :{STRINGID} in the way
+STR_1410    :برج أفقي
+STR_1411    :في الطريق{STRINGID}
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
 STR_1414    :{SMALLFONT}{BLACK}{DURATION}
-STR_1415    :{WINDOW_COLOUR_2}Velocity
-STR_1416    :{WINDOW_COLOUR_2}Altitude
+STR_1415    :{WINDOW_COLOUR_2}السرعة
+STR_1416    :{WINDOW_COLOUR_2}الإرتفاع
 STR_1417    :{WINDOW_COLOUR_2}Vert.G's
 STR_1418    :{WINDOW_COLOUR_2}Lat.G's
 STR_1419    :{SMALLFONT}{BLACK}{VELOCITY}
@@ -1428,7 +1428,7 @@ STR_1422    :{SMALLFONT}{BLACK}Logging data from {POP16}{STRINGID}
 STR_1423    :{SMALLFONT}{BLACK}Queue line path
 STR_1424    :{SMALLFONT}{BLACK}Footpath
 STR_1425    :خطوات أقدام
-STR_1426    :Queue Line
+STR_1426    :طابور إنتظار
 STR_1427    :{WINDOW_COLOUR_2}Customers: {BLACK}{COMMA32} per hour
 STR_1428    :{WINDOW_COLOUR_2}Admission price:
 STR_1429    :{POP16}{POP16}{POP16}{CURRENCY2DP}
@@ -1437,9 +1437,9 @@ STR_1431    :يمشي
 STR_1432    :Heading for {STRINGID}
 STR_1433    :Queuing for {STRINGID}
 STR_1434    :Drowning
-STR_1435    :On {STRINGID}
-STR_1436    :In {STRINGID}
-STR_1437    :At {STRINGID}
+STR_1435    :علي {STRINGID}
+STR_1436    :في {STRINGID}
+STR_1437    :عند {STRINGID}
 STR_1438    :جالس
 STR_1439    :(حدد المكان)
 STR_1440    :Mowing grass
@@ -3495,7 +3495,7 @@ STR_5153    :Edit Themes...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
-STR_5157    :Unlock all prices
+STR_5157    :<removed string - do not use>
 STR_5158    :Quit to menu
 STR_5159    :Exit OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
@@ -4456,7 +4456,12 @@ STR_6144    :أظهر تأثيرات التراب
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
-
+STR_6148    :يتصل إلي السرفر الأساسي...
+STR_6149    :غير قادر علي الإتصال بالسرفر الأساسي
+STR_6150    :رد خاطئ من السرفر الأساسي (JSON لا رقم)
+STR_6151    :السرفر الأساسي فشل في إرجاع السرفرات
+STR_6152    :رد خاطئ من السرفر الأساسي(JSON لا طبقات)
+STR_6153    :دُفع لدخول الحديقة / دُفع لكل رحلة
 #############
 # Scenarios #
 #############

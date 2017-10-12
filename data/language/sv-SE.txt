@@ -3493,7 +3493,7 @@ STR_5153    :Redigera Teman...
 STR_5154    :Hårdvaruhantering
 STR_5155    :Tillåt testning av spår som inte är färdiga
 STR_5156    :{SMALLFONT}{BLACK}Tillåter testning av de flesta åkturer även när spåret är oklart, gäller inte Blockavdelade kontinuerliga banlägen
-STR_5157    :Lås upp alla priser
+STR_5157    :<removed string - do not use>
 STR_5158    :Avsluta till menyn
 STR_5159    :Avsluta OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, År {POP16}{COMMA16}
@@ -4453,6 +4453,12 @@ STR_6144    :Visa visuella-uppdateringar
 STR_6145    :{SMALLFONT}{BLACK}Sätt hastighetsgräns för boosters
 STR_6146    :Aktivera alla ritbara spår på berg- och dalbanor
 STR_6147    :{SMALLFONT}{BLACK}Aktiverar alla spår attraktionstypen är tillgänglig att visa i konstruktionsfönstret, oavsett om fordonet har en ritbar version av spåret.
+STR_6148    :Ansluter till huvudservern...
+STR_6149    :Det gick inte ansluta till huvudservern
+STR_6150    :Ogiltigt svar från huvudservern (inget JSON-nummer)
+STR_6151    :Huvudservern misslyckades att söka upp servrar
+STR_6152    :Ogiltigt svar från huvudservern (ingen JSON-array)
+STR_6153    :Betala för inträde / Betala för åktur
 
 #############
 # Scenarion #

@@ -3496,7 +3496,7 @@ STR_5153    :Modifica temi...
 STR_5154    :Rendering hardware
 STR_5155    :Permetti di testare percorsi non finiti
 STR_5156    :{SMALLFONT}{BLACK}Permette di effettuare il test della maggior parte dei percorsi anche quando il percorso non è un circuito completo, non si applica alla modalità sezioni a blocchi
-STR_5157    :Sblocca tutti i prezzi
+STR_5157    :<removed string - do not use>
 STR_5158    :Torna al menu
 STR_5159    :Esci da OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, anno {POP16}{COMMA16}
@@ -4459,6 +4459,12 @@ STR_6144    :Mostra visuali sporche
 STR_6145    :{SMALLFONT}{BLACK}Imposta limite di velocità per gli acceleratori
 STR_6146    :Abilita tutti i pezzi disegnabili del percorso
 STR_6147    :{SMALLFONT}{BLACK}Abilita nella finestra di costruzione tutti i pezzi che l'attrazione è in grado di supportare, a prescindere dal fatto che il veicolo li supporti o meno.
+STR_6148    :Connessione al server principale...
+STR_6149    :Impossibile connettersi al server principale
+STR_6150    :Risposta non valida da parte del server principale (il JSON non è un numero)
+STR_6151    :Il server principale non ha inviato la lista dei server
+STR_6152    :Risposta non valida da parte del server principale (il JSON non è un array)
+STR_6153    :Biglietto di ingresso / Attrazioni a pagamento
 
 
 #############
