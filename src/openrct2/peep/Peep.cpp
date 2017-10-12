@@ -177,6 +177,7 @@ bool loc_690FD0(rct_peep *peep, uint8 *rideToView, uint8 *rideSeatToView, rct_ma
 #define peep_rand() scenario_rand()
 #endif
 
+// clang-format off
 static const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",
     "JACQUES VILLENEUVE",
@@ -205,7 +206,8 @@ static const char *gPeepEasterEggNames[] = {
 };
 
 /** rct2: 0x00981DB0 */
-static struct {
+static struct
+{
     uint8 action;
     uint8 flags;
 } PeepThoughtToActionMap[] = {
@@ -512,6 +514,7 @@ static const rct_xy16 SpiralSlideWalkingPath[64] = {
     {   0,   8 },
     {   0,  32 },
 };
+// clang-format on
 
 rct_peep * try_get_guest(uint16 spriteIndex)
 {
@@ -758,6 +761,7 @@ static void peep_decide_whether_to_leave_park(rct_peep *peep)
     peep_leave_park(peep);
 }
 
+// clang-format off
 /** rct2: 0x009822F4, 0x00982310 */
 static const uint8 byte_9822F4[] = {
     0,      // SHOP_ITEM_BALLOON
@@ -788,10 +792,10 @@ static const uint8 byte_9822F4[] = {
     115,    // SHOP_ITEM_LEMONADE
     0,      // SHOP_ITEM_EMPTY_BOX
     0,      // SHOP_ITEM_EMPTY_BOTTLE
-    0xFF,
-    0xFF,
-    0xFF,
-    0xFF,
+    0xFF,   // UNUSED
+    0xFF,   // UNUSED
+    0xFF,   // UNUSED
+    0xFF,   // UNUSED
     0,      // SHOP_ITEM_PHOTO2
     0,      // SHOP_ITEM_PHOTO3
     0,      // SHOP_ITEM_PHOTO4
@@ -893,6 +897,7 @@ static const uint8 peep_extra_item_containers[] = {
     0xFF,                           // PEEP_ITEM_ROAST_SAUSAGE
     0xFF,                           // PEEP_ITEM_EMPTY_BOWL_BLUE
 };
+// clang-format on
 
 /**
  *
@@ -1701,6 +1706,7 @@ typedef struct item_pref_t {
     uint8 sprite_type;
 } item_pref_t;
 
+// clang-format off
 static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_ICE_CREAM, PEEP_SPRITE_TYPE_ICE_CREAM },
         { 0, PEEP_ITEM_CHIPS, PEEP_SPRITE_TYPE_CHIPS },
@@ -1735,6 +1741,7 @@ static item_pref_t item_order_preference[] = {
         { 1, PEEP_ITEM_SUNGLASSES, PEEP_SPRITE_TYPE_SUNGLASSES },
         { 0xFF, 0xFFFFFFFF, 0xFF}
 };
+// clang-format on
 
 /**
  *
@@ -6382,6 +6389,7 @@ static void peep_update_patrolling(rct_peep* peep){
     peep_update_patrolling_find_watering(peep);
 }
 
+// clang-format off
 /** rct2: 0x00981F4C, 0x00981F4E */
 static const rct_xy16 _981F4C[] = {
     {  7,  5 },
@@ -6417,6 +6425,7 @@ static const rct_xy16 _981F4C[] = {
     { 25,  0 },
     {  0,  7 },
 };
+// clang-format on
 
 /**
  *
@@ -7087,6 +7096,7 @@ void peep_update_days_in_queue()
     }
 }
 
+// clang-format off
 /** rct2: 0x009823A0 */
 static const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
     PEEP_NAUSEA_TOLERANCE_NONE,
@@ -7160,6 +7170,7 @@ static const uint8 tshirt_colours[] = {
     COLOUR_DARK_PINK,
     COLOUR_BRIGHT_PINK,
 };
+// clang-format on
 
 /**
  *

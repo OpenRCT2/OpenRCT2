@@ -35,6 +35,7 @@
 #include "Peep.h"
 #include "Staff.h"
 
+// clang-format off
 const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_PANDA,
         STR_STAFF_OPTION_COSTUME_TIGER,
@@ -48,6 +49,7 @@ const rct_string_id StaffCostumeNames[] = {
         STR_STAFF_OPTION_COSTUME_SHERIFF,
         STR_STAFF_OPTION_COSTUME_PIRATE,
 };
+// clang-format on
 
 // Every staff member has STAFF_PATROL_AREA_SIZE elements assigned to in this array, indexed by their staff_id
 // Additionally there is a patrol area for each staff type, which is the union of the patrols of all staff members of that type
