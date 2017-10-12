@@ -1473,18 +1473,18 @@ private:
         dst->pathfind_goal.z = 0xFF;
         dst->pathfind_goal.direction = 0xFF;
 
-		// It seems guests' favorite rides either wasn't a feature
-		// or wasn't saved prior to Loopy Landscapes
-		if (_gameVersion == FILE_VERSION_RCT1_LL)
-		{
-			dst->favourite_ride = src->favourite_ride;
-			dst->favourite_ride_rating = src->favourite_ride_rating;
-		}
-		else
-		{
-			dst->favourite_ride = 0xFF;
-			dst->favourite_ride_rating = 0;
-		}
+        // Guests' favourite ride was only saved in LL.
+        // Set it to N/A if the save comes from the original or AA.
+        if (_gameVersion == FILE_VERSION_RCT1_LL)
+        {
+            dst->favourite_ride = src->favourite_ride;
+            dst->favourite_ride_rating = src->favourite_ride_rating;
+        }
+        else
+        {
+            dst->favourite_ride = RIDE_INDEX_NULL;
+            dst->favourite_ride_rating = 0;
+        }
 
         dst->item_standard_flags = src->item_standard_flags;
 
