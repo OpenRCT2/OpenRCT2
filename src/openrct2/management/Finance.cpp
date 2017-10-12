@@ -412,10 +412,12 @@ money32 finance_get_last_month_shop_profit()
     money32 profit = 0;
     if (gDateMonthsElapsed != 0)
     {
-        profit += gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES];
-        profit += gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_STOCK];
-        profit += gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_SALES];
-        profit += gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+        money32 * lastMonthExpenditure = gExpenditureTable[1];
+
+        profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES];
+        profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK];
+        profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES];
+        profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
     }
     return profit;
 }

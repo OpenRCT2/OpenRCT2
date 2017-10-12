@@ -966,11 +966,12 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
+    money32 * lastMonthExpenditure = gExpenditureTable[1];
     sint32 lastMonthProfit =
-        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
-        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
-        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
-        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+       lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
+       lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
+       lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
+       lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
 
     if (lastMonthProfit >= gScenarioObjectiveCurrency) {
         scenario_success();
