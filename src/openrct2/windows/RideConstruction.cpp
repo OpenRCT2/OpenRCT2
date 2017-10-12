@@ -611,6 +611,8 @@ rct_window *window_ride_construction_open()
 
     _previousTrackBankEnd = 0;
     _previousTrackSlopeEnd = 0;
+
+    _currentTrackPieceDirection = 0;
     _rideConstructionState = RIDE_CONSTRUCTION_STATE_PLACE;
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
