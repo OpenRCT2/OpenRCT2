@@ -706,10 +706,11 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
         // Month expenditures
         money32 profit = 0;
-        money32 *expenditures = &gExpenditureTable[i * RCT_EXPENDITURE_TYPE_COUNT];
-        for (j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++) {
-            money32 expenditure = expenditures[j];
-            if (expenditure != 0) {
+        for (j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++)
+        {
+            money32 expenditure = gExpenditureTable[i][j];
+            if (expenditure != 0)
+            {
                 profit += expenditure;
                 gfx_draw_string_right(
                     dpi,

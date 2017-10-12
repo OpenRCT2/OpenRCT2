@@ -41,7 +41,6 @@ enum {
 };
 
 #define EXPENDITURE_TABLE_MONTH_COUNT 16
-#define EXPENDITURE_TABLE_TOTAL_COUNT (EXPENDITURE_TABLE_MONTH_COUNT * RCT_EXPENDITURE_TYPE_COUNT)
 #define FINANCE_GRAPH_SIZE 128
 
 #ifdef __cplusplus
@@ -70,7 +69,7 @@ extern uint16 gWeeklyProfitAverageDivisor;
 extern money32 gCashHistory[FINANCE_GRAPH_SIZE];
 extern money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 extern money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-extern money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
+extern money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
 
 extern uint8 gCommandExpenditureType;
 

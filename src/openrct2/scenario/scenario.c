@@ -885,8 +885,7 @@ static void scenario_objective_check_guests_and_rating()
 
 static void scenario_objective_check_monthly_ride_income()
 {
-    money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
-    money32 lastMonthRideIncome = expenditureLastMonth[RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
+    money32 lastMonthRideIncome = gExpenditureTable[1][RCT_EXPENDITURE_TYPE_PARK_RIDE_TICKETS];
     if (lastMonthRideIncome >= gScenarioObjectiveCurrency) {
         scenario_success();
     }
@@ -967,12 +966,11 @@ static void scenario_objective_check_replay_loan_and_park_value()
 
 static void scenario_objective_check_monthly_food_income()
 {
-    money32 *expenditureLastMonth = &gExpenditureTable[1 * RCT_EXPENDITURE_TYPE_COUNT];
     sint32 lastMonthProfit =
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
-        expenditureLastMonth[RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
+        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES] +
+        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_SHOP_STOCK] +
+        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_SALES] +
+        gExpenditureTable[1][RCT_EXPENDITURE_TYPE_FOODDRINK_STOCK];
 
     if (lastMonthProfit >= gScenarioObjectiveCurrency) {
         scenario_success();

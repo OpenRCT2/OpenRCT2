@@ -620,7 +620,7 @@ typedef struct rct1_s4 {
     uint32 ride_feature_2[128];
     uint16 guests_in_park;
     uint16 unk_198C9E;
-    money32 expenditure[14 * 16];
+    money32 expenditure[RCT12_EXPENDITURE_TABLE_MONTH_COUNT][RCT12_EXPENDITURE_TYPE_COUNT];
     uint32 guests_in_park_2;
     uint8 unk_199024;
     colour_t handman_colour;
@@ -660,13 +660,13 @@ typedef struct rct1_s4 {
     uint8 marketing_status[20];
     uint8 marketing_assoc[20];
     uint8 unk_199582[2];
-    money32 cash_history[128];
+    money32 cash_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 total_expenditure;
     money32 profit;
     uint8 unk_199788[8];
-    money32 weekly_profit_history[128];
+    money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
     money32 park_value;
-    money32 park_value_history[128];
+    money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
     uint32 scenario_objective_score;
     uint32 num_admissions;
     money32 admission_total_income;
