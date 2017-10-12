@@ -205,7 +205,7 @@ void research_finish_item(uint32 entryIndex)
         sint32 rideEntryIndex = entryIndex & 0xFF;
         rct_ride_entry * rideEntry = get_ride_entry(rideEntryIndex);
 
-        if (rideEntry != nullptr && rideEntry != (rct_ride_entry *) -1 && base_ride_type != RIDE_TYPE_NULL)
+        if (rideEntry != nullptr && base_ride_type != RIDE_TYPE_NULL)
         {
             bool ride_group_was_invented_before = false;
             bool ride_type_was_invented_before  = ride_type_is_invented(base_ride_type);
@@ -233,7 +233,7 @@ void research_finish_item(uint32 entryIndex)
                 for (sint32 i = 0; i < MAX_RESEARCHED_TRACK_TYPES; i++)
                 {
                     rct_ride_entry * rideEntry2 = get_ride_entry(i);
-                    if (rideEntry2 == (rct_ride_entry *) -1)
+                    if (rideEntry2 == nullptr)
                     {
                         continue;
                     }
@@ -645,7 +645,7 @@ void research_populate_list_random()
     for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
         rct_ride_entry * rideEntry = get_ride_entry(i);
-        if (rideEntry == (rct_ride_entry *) -1)
+        if (rideEntry == nullptr)
         {
             continue;
         }
@@ -681,7 +681,7 @@ void research_populate_list_researched()
     for (sint32 i = 0; i < MAX_RIDE_OBJECTS; i++)
     {
         rct_ride_entry * rideEntry = get_ride_entry(i);
-        if (rideEntry == (rct_ride_entry *) -1)
+        if (rideEntry == nullptr)
         {
             continue;
         }
@@ -848,7 +848,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
     if (researchItem >= RESEARCH_ENTRY_RIDE_MASK)
     {
         rct_ride_entry * rideEntry = get_ride_entry(researchItem & 0xFF);
-        if (rideEntry == nullptr || rideEntry == (rct_ride_entry *) -1)
+        if (rideEntry == nullptr)
         {
             return 0;
         }

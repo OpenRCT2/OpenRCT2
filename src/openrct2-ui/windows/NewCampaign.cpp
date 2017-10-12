@@ -21,6 +21,7 @@
 #include <openrct2/game.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/interface/widget.h>
+#include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/windows/dropdown.h>
 
@@ -205,12 +206,12 @@ static void window_new_campaign_get_shop_items()
 
     uint64 items = 0;
     FOR_ALL_RIDES(i, ride) {
-        rct_ride_entry *rideType = get_ride_entry(ride->subtype);
-        if (rideType == nullptr) {
+        rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
+        if (rideEntry == nullptr) {
             continue;
         }
-        uint8 itemType = rideType->shop_item;
-        if (itemType != 255)
+        uint8 itemType = rideEntry->shop_item;
+        if (itemType != SHOP_ITEM_NONE)
             items |= 1LL << itemType;
     }
 

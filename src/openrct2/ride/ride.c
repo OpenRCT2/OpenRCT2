@@ -226,14 +226,20 @@ Ride *get_ride(sint32 index)
     return &gRideList[index];
 }
 
-rct_ride_entry *get_ride_entry(sint32 index)
+rct_ride_entry * get_ride_entry(sint32 index)
 {
     if (index < 0 || index >= object_entry_group_counts[OBJECT_TYPE_RIDE])
     {
         log_error("invalid index %d for ride type", index);
         return NULL;
     }
-    return gRideEntries[index];
+
+    rct_ride_entry * retVal = gRideEntries[index];
+
+    if (retVal == (rct_ride_entry *)-1)
+        return NULL;
+    else
+        return retVal;
 }
 
 void get_ride_entry_name(char *name, sint32 index)
@@ -254,7 +260,7 @@ rct_ride_measurement *get_ride_measurement(sint32 index)
     return &gRideMeasurements[index];
 }
 
-rct_ride_entry *get_ride_entry_by_ride(Ride *ride)
+rct_ride_entry * get_ride_entry_by_ride(Ride *ride)
 {
     rct_ride_entry *type = get_ride_entry(ride->subtype);
     if (type == NULL)
@@ -272,14 +278,13 @@ rct_ride_entry *get_ride_entry_by_ride(Ride *ride)
 */
 void reset_type_to_ride_entry_index_map()
 {
-    uint8 maxRideEntries = 128;
-    size_t stride = maxRideEntries + 1;
+    size_t stride = MAX_RIDE_OBJECTS + 1;
     uint8 * entryTypeTable = malloc(RIDE_TYPE_COUNT * stride);
     memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
 
-    for (uint8 i = 0; i < maxRideEntries; i++) {
+    for (uint8 i = 0; i < MAX_RIDE_OBJECTS; i++) {
         rct_ride_entry * rideEntry = get_ride_entry(i);
-        if (rideEntry == (rct_ride_entry *)-1) {
+        if (rideEntry == NULL) {
             continue;
         }
         for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
@@ -443,7 +448,8 @@ static money32 ride_calculate_income_per_hour(Ride *ride)
 {
     // Get entry by ride to provide better reporting
     rct_ride_entry *entry = get_ride_entry_by_ride(ride);
-    if (entry == NULL || entry == (rct_ride_entry*)-1) {
+    if (entry == NULL)
+    {
         return 0;
     }
     money32 customersPerHour = ride_customers_per_hour(ride);
@@ -979,8 +985,8 @@ void reset_all_ride_build_dates()
 
 static sint32 ride_check_if_construction_allowed(Ride *ride)
 {
-    rct_ride_entry *rideType = get_ride_entry_by_ride(ride);
-    if (rideType == NULL) {
+    rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
+    if (rideEntry == NULL) {
         context_show_error(STR_INVALID_RIDE_TYPE, STR_CANT_EDIT_INVALID_RIDE_TYPE);
         return 0;
     }
@@ -1817,7 +1823,7 @@ sint32 ride_modify(rct_xy_element *input)
     sint32 rideIndex, x, y, z, direction, type;
     rct_xy_element mapElement, endOfTrackElement;
     Ride *ride;
-    rct_ride_entry *rideType;
+    rct_ride_entry *rideEntry;
 
     mapElement = *input;
     rideIndex = mapElement.element->properties.track.ride_index;
@@ -1825,9 +1831,9 @@ sint32 ride_modify(rct_xy_element *input)
     if (ride == NULL) {
         return 0;
     }
-    rideType = get_ride_entry_by_ride(ride);
+    rideEntry = get_ride_entry_by_ride(ride);
 
-    if ((rideType == NULL) || !ride_check_if_construction_allowed(ride))
+    if ((rideEntry == NULL) || !ride_check_if_construction_allowed(ride))
         return 0;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE) {
@@ -3114,7 +3120,7 @@ sint32 ride_get_unused_preset_vehicle_colour(uint8 ride_type, uint8 ride_sub_typ
         return 0;
     }
     rct_ride_entry *rideEntry = get_ride_entry(ride_sub_type);
-    if (rideEntry == (rct_ride_entry *)-1)
+    if (rideEntry == NULL)
     {
         return 0;
     }
@@ -6060,11 +6066,11 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
         *ebx = MONEY32_UNDEFINED;
         return;
     }
-    rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     money16 price = *edi;
     bool secondary_price = (*edx >> 8);
 
-    if (rideEntry == (rct_ride_entry *)-1)
+    if (rideEntry == NULL)
     {
         log_warning("Invalid game command for ride %u", ride_number);
         *ebx = MONEY32_UNDEFINED;
@@ -6127,7 +6133,7 @@ void game_command_set_ride_price(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
         }
         ride = get_ride(0);
 
-        for (uint8 rideId = 0; rideId < 0xFF; rideId++, ride++) {
+        for (uint8 rideId = 0; rideId < MAX_RIDES; rideId++, ride++) {
             // Unplaced rides have a type of NULL
             if (ride->type == RIDE_TYPE_NULL)
                 continue;
@@ -7005,7 +7011,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
         return;
 
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
-    if (rideEntry == (rct_ride_entry*)-1)
+    if (rideEntry == NULL)
     {
         return;
     }

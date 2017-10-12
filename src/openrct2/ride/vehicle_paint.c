@@ -2359,7 +2359,7 @@ void vehicle_paint(paint_session * session, rct_vehicle *vehicle, sint32 imageDi
         vehicleEntry = &CableLiftVehicle;
     } else {
         rideEntry = get_ride_entry(vehicle->ride_subtype);
-        if (rideEntry == (rct_ride_entry*)-1)
+        if (rideEntry == NULL)
         {
             return;
         }

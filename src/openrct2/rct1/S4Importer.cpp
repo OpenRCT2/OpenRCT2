@@ -718,7 +718,7 @@ private:
 
         rct_ride_entry * rideEntry = get_ride_entry(dst->subtype);
         // This can happen with hacked parks
-        if (rideEntry == nullptr || rideEntry == (rct_ride_entry*)-1)
+        if (rideEntry == nullptr)
         {
             dst = nullptr;
             return;

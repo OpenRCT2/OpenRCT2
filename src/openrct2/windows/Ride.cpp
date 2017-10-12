@@ -1422,13 +1422,17 @@ static void window_ride_disable_tabs(rct_window *w)
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) != 0)
         disabled_tabs |= (1 << WIDX_TAB_4 | 1 << WIDX_TAB_6 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10); // 0x3280
 
-    rct_ride_entry *type = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
-    if (type == nullptr || type == reinterpret_cast<rct_ride_entry*>(-1)) {
+    if (rideEntry == nullptr)
+    {
         disabled_tabs |= 1 << WIDX_TAB_2 | 1 << WIDX_TAB_3 | 1 << WIDX_TAB_4 | 1 << WIDX_TAB_5 | 1 << WIDX_TAB_6
                        | 1 << WIDX_TAB_7 | 1 << WIDX_TAB_8 | 1 << WIDX_TAB_9 | 1 << WIDX_TAB_10;
-    } else if ((type->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
-        disabled_tabs |= (1 << WIDX_TAB_5); // 0x100
+    }
+    else if ((rideEntry->flags & RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB) != 0)
+    {
+        disabled_tabs |= (1 << WIDX_TAB_5);
+    }
 
     w->disabled_widgets = disabled_tabs;
 }
@@ -3727,8 +3731,9 @@ static void window_ride_maintenance_resize(rct_window *w)
 static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget)
 {
     Ride *ride = get_ride(w->number);
-    rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
-    if (ride_type == nullptr) {
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
+    if (rideEntry == nullptr)
+    {
         return;
     }
 
@@ -3759,14 +3764,14 @@ static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex wid
     case WIDX_FORCE_BREAKDOWN:
         num_items = 1;
         for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-            if (ride_type->ride_type[j] != 0xFF)
+            if (rideEntry->ride_type[j] != 0xFF)
                 break;
         }
         gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
         gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
         for (sint32 i = 0; i < 8; i++) {
-            assert(j < (sint32)Util::CountOf(ride_type->ride_type));
-            if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+            assert(j < (sint32)Util::CountOf(rideEntry->ride_type));
+            if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & (uint8)(1 << i)) {
                 if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
                     if (ride->num_vehicles != 1)
                         continue;
@@ -3793,7 +3798,7 @@ static void window_ride_maintenance_mousedown(rct_window *w, rct_widgetindex wid
             sint32 breakdownReason = ride->breakdown_reason_pending;
             if (breakdownReason != BREAKDOWN_NONE && (ride->lifecycle_flags & RIDE_LIFECYCLE_BREAKDOWN_PENDING)) {
                 for (sint32 i = 0; i < 8; i++) {
-                    if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+                    if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & (uint8)(1 << i)) {
                         if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
                             if (ride->num_vehicles != 1)
                                 continue;
@@ -3829,7 +3834,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
 
     rct_vehicle *vehicle;
     Ride *ride = get_ride(w->number);
-    rct_ride_entry *ride_type = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     switch (widgetIndex) {
     case WIDX_INSPECTION_INTERVAL_DROPDOWN:
@@ -3881,14 +3886,14 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
         else {
             sint32 j;
             for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++) {
-                if (ride_type->ride_type[j] != RIDE_TYPE_NULL)
+                if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                     break;
             }
             sint32 i;
             sint32 num_items = 1;
             for (i = 0; i < BREAKDOWN_COUNT; i++) {
-                assert(j < (sint32)Util::CountOf(ride_type->ride_type));
-                if (RideAvailableBreakdowns[ride_type->ride_type[j]] & (uint8)(1 << i)) {
+                assert(j < (sint32)Util::CountOf(rideEntry->ride_type));
+                if (RideAvailableBreakdowns[rideEntry->ride_type[j]] & (uint8)(1 << i)) {
                     if (i == BREAKDOWN_BRAKES_FAILURE && (ride->mode == RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED || ride->mode == RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED)) {
                         if (ride->num_vehicles != 1)
                             continue;
@@ -5828,19 +5833,19 @@ static void update_same_price_throughout_flags(uint32 shop_item)
  */
 static void window_ride_income_toggle_primary_price(rct_window *w)
 {
-    Ride *ride;
-    rct_ride_entry *ride_type;
+    Ride * ride;
+    rct_ride_entry * rideEntry;
     uint32 shop_item;
     money16 price;
 
     ride = get_ride(w->number);
-    ride_type = get_ride_entry(ride->subtype);
+    rideEntry = get_ride_entry(ride->subtype);
 
     if (ride->type == RIDE_TYPE_TOILETS) {
         shop_item = SHOP_ITEM_ADMISSION;
     }
     else {
-        shop_item = ride_type->shop_item;
+        shop_item = rideEntry->shop_item;
         if (shop_item == 0xFFFF)
             return;
     }
@@ -5857,15 +5862,15 @@ static void window_ride_income_toggle_primary_price(rct_window *w)
  */
 static void window_ride_income_toggle_secondary_price(rct_window *w)
 {
-    Ride *ride;
-    rct_ride_entry *ride_type;
+    Ride * ride;
+    rct_ride_entry * rideEntry;
     uint32 shop_item;
     money16 price;
 
     ride = get_ride(w->number);
-    ride_type = get_ride_entry(ride->subtype);
+    rideEntry = get_ride_entry(ride->subtype);
 
-    shop_item = ride_type->shop_item_secondary;
+    shop_item = rideEntry->shop_item_secondary;
     if (shop_item == SHOP_ITEM_NONE)
         shop_item = RidePhotoItems[ride->type];
 
@@ -5881,15 +5886,15 @@ static void window_ride_income_toggle_secondary_price(rct_window *w)
  */
 static void window_ride_income_increase_primary_price(rct_window *w)
 {
-    Ride *ride;
-    rct_ride_entry *ride_type;
+    Ride * ride;
+    rct_ride_entry * rideEntry;
 
     ride = get_ride(w->number);
-    ride_type = get_ride_entry(ride->subtype);
+    rideEntry = get_ride_entry(ride->subtype);
 
     if (!park_ride_prices_unlocked())
     {
-        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == SHOP_ITEM_NONE)
+        if (ride->type != RIDE_TYPE_TOILETS && rideEntry->shop_item == SHOP_ITEM_NONE)
         {
             return;
         }
@@ -5908,14 +5913,14 @@ static void window_ride_income_increase_primary_price(rct_window *w)
 static void window_ride_income_decrease_primary_price(rct_window *w)
 {
     Ride *ride;
-    rct_ride_entry *ride_type;
+    rct_ride_entry *rideEntry;
 
     ride = get_ride(w->number);
-    ride_type = get_ride_entry(ride->subtype);
+    rideEntry = get_ride_entry(ride->subtype);
 
     if (!park_ride_prices_unlocked())
     {
-        if (ride->type != RIDE_TYPE_TOILETS && ride_type->shop_item == SHOP_ITEM_NONE)
+        if (ride->type != RIDE_TYPE_TOILETS && rideEntry->shop_item == SHOP_ITEM_NONE)
         {
             return;
         }
