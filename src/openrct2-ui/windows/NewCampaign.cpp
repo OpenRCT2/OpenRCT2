@@ -21,9 +21,9 @@
 #include <openrct2/game.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/interface/widget.h>
+#include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/windows/dropdown.h>
-#include "../../openrct2/ride/ride.h"
 
 #define SELECTED_RIDE_UNDEFINED ((uint16)0xFFFF)
 
