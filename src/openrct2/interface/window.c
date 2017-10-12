@@ -2278,7 +2278,7 @@ void window_update_viewport_ride_music()
     rct_window *w;
 
     gRideMusicParamsListEnd = &gRideMusicParamsList[0];
-    g_music_tracking_viewport = (rct_viewport*)-1;
+    g_music_tracking_viewport = NULL;
 
     for (w = RCT2_LAST_WINDOW; w >= g_window_list; w--) {
         viewport = w->viewport;

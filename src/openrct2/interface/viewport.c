@@ -122,7 +122,8 @@ void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
-    if (start_x == ((sint16)(uint16)0x8000)){
+    if (start_x == ((sint16)(uint16)0x8000))
+    {
         *out_x = ((sint16)(uint16)0x8000);
         *out_y = 0;
         return;

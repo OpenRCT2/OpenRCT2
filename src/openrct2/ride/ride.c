@@ -3460,7 +3460,7 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  */
 sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != (rct_viewport*)-1) {
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != NULL) {
         rct_xy16 rotatedCoords = { 0, 0 };
 
         switch (get_current_rotation()) {

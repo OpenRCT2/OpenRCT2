@@ -801,11 +801,13 @@ sint32 sub_6BC2F3(rct_vehicle* vehicle)
  */
 void vehicle_sounds_update()
 {
-    if (gAudioCurrentDevice != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless) {
-        g_music_tracking_viewport = (rct_viewport*)-1;
-        rct_viewport* viewport = (rct_viewport*)-1;
-        rct_window* window = gWindowNextSlot;
-        while (1) {
+    if (gAudioCurrentDevice != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless)
+    {
+        g_music_tracking_viewport = NULL;
+        rct_viewport * viewport = NULL;
+        rct_window * window = gWindowNextSlot;
+        while (1)
+        {
             window--;
             if (window < g_window_list) {
                 break;
@@ -816,7 +818,7 @@ void vehicle_sounds_update()
             }
         }
         g_music_tracking_viewport = viewport;
-        if (viewport != NULL && viewport != (rct_viewport*)-1) {
+        if (viewport != NULL) {
             if (window) {
                 gWindowAudioExclusive = window;
                 gVolumeAdjustZoom = 0;

@@ -6974,7 +6974,7 @@ void peep_update_crowd_noise()
         return;
 
     viewport = g_music_tracking_viewport;
-    if (viewport == NULL || viewport == (rct_viewport*)-1)
+    if (viewport == NULL)
         return;
 
     // Count the number of peeps visible
