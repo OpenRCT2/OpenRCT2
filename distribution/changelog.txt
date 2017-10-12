@@ -50,6 +50,7 @@
 - Improved: [#6423] Polish is now rendered using the sprite font, rather than TTF.
 - Improved: Load/save window now refreshes list if native file dialog is closed/cancelled.
 - Improved: Major translation updates for Japanese and Polish.
+- Improved: Added 24x24, 48x48, and 96x96 icon resolutions.
 - Technical: [#6384] On macOS, address NSFileHandlingPanel deprecation by using NSModalResponse instead.
 
 0.1.1 (2017-08-09)
