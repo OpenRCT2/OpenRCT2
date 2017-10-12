@@ -49,7 +49,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
 
     Ride * ride = get_ride(original_map_element->properties.track.ride_index);
 
-    rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
@@ -61,7 +61,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
         }
     }
 
-    uint32 image_id = (direction + ride_type->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
+    uint32 image_id = (direction + rideEntry->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
 
     rct_crooked_house_bound_box boundBox = crooked_house_data[segment];
     sub_98197C(session, image_id, x_offset, y_offset, boundBox.length_x, boundBox.length_y, 127, height + 3, boundBox.offset_x,

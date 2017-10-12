@@ -911,7 +911,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
         return MONEY32_UNDEFINED;
     }
     rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
-    if (rideEntry == (rct_ride_entry *)-1 || rideEntry == NULL)
+    if (rideEntry == NULL)
     {
         log_warning("Invalid ride type for track placement, rideIndex = %d", rideIndex);
         return MONEY32_UNDEFINED;

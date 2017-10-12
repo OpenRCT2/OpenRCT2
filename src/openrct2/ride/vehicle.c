@@ -731,16 +731,18 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 
                             sint32 v = vehicle->velocity;
 
-                            rct_ride_entry* ride_type = get_ride_entry(vehicle->ride_subtype);
-                            if (ride_type != (rct_ride_entry*)-1)
+                            rct_ride_entry * ride_type = get_ride_entry(vehicle->ride_subtype);
+                            if (ride_type != NULL)
                             {
                                 uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
 
-                                if (test & 1) {
+                                if (test & 1)
+                                {
                                     v *= 2;
                                 }
                             }
-                            if (v < 0) {
+                            if (v < 0)
+                            {
                                 v = -v;
                             }
                             v >>= 5;
@@ -4919,7 +4921,7 @@ static void vehicle_update_sound(rct_vehicle *vehicle)
     ride = get_ride(vehicle->ride);
     rideEntry = get_ride_entry(vehicle->ride_subtype);
 
-    if (rideEntry == (rct_ride_entry*)-1)
+    if (rideEntry == NULL)
     {
         return;
     }
@@ -9040,7 +9042,7 @@ loc_6DC316:
 rct_ride_entry_vehicle *vehicle_get_vehicle_entry(rct_vehicle *vehicle)
 {
     rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
-    if (rideEntry == (rct_ride_entry*)-1)
+    if (rideEntry == NULL)
     {
         return NULL;
     }

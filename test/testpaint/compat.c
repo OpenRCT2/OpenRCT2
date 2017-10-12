@@ -22,6 +22,7 @@
 #include <openrct2/ride/track.h>
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/map_element/map_element.h>
+#include "../../src/openrct2/ride/ride.h"
 
 #define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
 
@@ -101,11 +102,16 @@ rct_ride_entry *get_ride_entry(int index) {
         log_error("invalid index %d for ride type", index);
         return NULL;
     }
-    return gRideEntries[index];
+
+    rct_ride_entry * retVal = gRideEntries[index];
+    if (retVal == (rct_ride_entry *)-1)
+        return NULL;
+    else
+        return retVal;
 }
 
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride) {
-    rct_ride_entry *type = get_ride_entry(ride->subtype);
+    rct_ride_entry * type = get_ride_entry(ride->subtype);
     if (type == NULL) {
         log_error("Invalid ride subtype for ride");
     }

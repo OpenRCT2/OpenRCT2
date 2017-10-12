@@ -343,9 +343,10 @@ static void window_track_list_update(rct_window *w)
 static void window_track_list_invalidate(rct_window *w)
 {
     rct_string_id stringId = STR_NONE;
-    rct_ride_entry *entry = get_ride_entry(_window_track_list_item.entry_index);
+    rct_ride_entry * entry = get_ride_entry(_window_track_list_item.entry_index);
 
-    if (entry != nullptr && entry != (rct_ride_entry*)-1) {
+    if (entry != nullptr)
+    {
         rct_ride_name rideName = get_ride_naming(_window_track_list_item.type, entry);
         stringId = rideName.name;
     }

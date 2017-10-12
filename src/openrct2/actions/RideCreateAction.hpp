@@ -121,7 +121,7 @@ public:
 
         auto ride = get_ride(rideIndex);
         rideEntry = get_ride_entry(rideEntryIndex);
-        if (rideEntry == nullptr || rideEntry == (rct_ride_entry *)-1)
+        if (rideEntry == nullptr)
         {
             log_warning("Invalid request for ride %u", rideIndex);
             res->Error = GA_ERROR::UNKNOWN;

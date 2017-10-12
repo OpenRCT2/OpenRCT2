@@ -942,10 +942,10 @@ extern "C" {
 extern const rct_ride_properties RideProperties[RIDE_TYPE_COUNT];
 
 /** Helper macros until rides are stored in this module. */
-Ride *get_ride(sint32 index);
-rct_ride_entry *get_ride_entry(sint32 index);
-void get_ride_entry_name(char *name, sint32 index);
-rct_ride_measurement *get_ride_measurement(sint32 index);
+Ride * get_ride(sint32 index);
+rct_ride_entry * get_ride_entry(sint32 index);
+void get_ride_entry_name(char * name, sint32 index);
+rct_ride_measurement * get_ride_measurement(sint32 index);
 
 /**
  * Helper macro loop for enumerating through all the non null rides.

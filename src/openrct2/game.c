@@ -1101,7 +1101,7 @@ void game_fix_save_vars()
         if (researchItem->entryIndex & RESEARCH_ENTRY_RIDE_MASK) {
             uint8 entryIndex = researchItem->entryIndex & 0xFF;
             rct_ride_entry *rideEntry = get_ride_entry(entryIndex);
-            if (rideEntry == NULL || rideEntry == (rct_ride_entry*)-1) {
+            if (rideEntry == NULL) {
                 research_remove(researchItem->entryIndex);
                 i--;
             }

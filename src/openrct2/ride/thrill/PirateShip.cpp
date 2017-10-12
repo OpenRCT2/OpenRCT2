@@ -67,7 +67,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 
     rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
 
-    rct_ride_entry * rideType = get_ride_entry(ride->subtype);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle *    vehicle  = NULL;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
@@ -83,7 +83,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    baseImageId = rideType->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
+    baseImageId = rideEntry->vehicles[0].base_image_id + pirate_ship_base_sprite_offset[direction];
     if (vehicle != NULL)
     {
         sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
