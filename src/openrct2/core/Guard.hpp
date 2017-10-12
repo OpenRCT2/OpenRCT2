@@ -17,6 +17,7 @@
 #pragma once
 
 #include <stdarg.h>
+#include <stdbool.h>
 
 #ifdef __cplusplus
 extern "C" {
