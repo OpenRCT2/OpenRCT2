@@ -233,7 +233,13 @@ public:
         gNumGuestsInPark         = _s6.guests_in_park;
         gNumGuestsHeadingForPark = _s6.guests_heading_for_park;
 
-        memcpy(gExpenditureTable, _s6.expenditure_table, sizeof(_s6.expenditure_table));
+        for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+        {
+            for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+            {
+                gExpenditureTable[i][j] = _s6.expenditure_table[i][j];
+            }
+        }
 
         gNumGuestsInParkLastWeek = _s6.last_guests_in_park;
         // pad_01357BCA
@@ -273,19 +279,20 @@ public:
         memcpy(gMarketingCampaignDaysLeft, _s6.campaign_weeks_left, sizeof(_s6.campaign_weeks_left));
         memcpy(gMarketingCampaignRideIndex, _s6.campaign_ride_index, sizeof(_s6.campaign_ride_index));
 
-        memcpy(gCashHistory, _s6.balance_history, sizeof(_s6.balance_history));
-
         gCurrentExpenditure          = _s6.current_expenditure;
         gCurrentProfit               = _s6.current_profit;
         gWeeklyProfitAverageDividend = _s6.weekly_profit_average_dividend;
         gWeeklyProfitAverageDivisor  = _s6.weekly_profit_average_divisor;
         // pad_0135833A
 
-        memcpy(gWeeklyProfitHistory, _s6.weekly_profit_history, sizeof(_s6.weekly_profit_history));
-
         gParkValue = _s6.park_value;
 
-        memcpy(gParkValueHistory, _s6.park_value_history, sizeof(_s6.park_value_history));
+        for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
+        {
+            gCashHistory[i]         = _s6.balance_history[i];
+            gWeeklyProfitHistory[i] = _s6.weekly_profit_history[i];
+            gParkValueHistory[i]    = _s6.park_value_history[i];
+        }
 
         gScenarioCompletedCompanyValue = _s6.completed_company_value;
         gTotalAdmissions               = _s6.total_admissions;

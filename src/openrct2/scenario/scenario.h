@@ -142,7 +142,7 @@ typedef struct rct_s6_data {
     uint16 guests_heading_for_park;
 
     // Ignored in scenario
-    money32 expenditure_table[224];
+    money32 expenditure_table[RCT12_EXPENDITURE_TABLE_MONTH_COUNT][RCT12_EXPENDITURE_TYPE_COUNT];
 
     // SC6[8]
     uint16 last_guests_in_park;
@@ -188,7 +188,7 @@ typedef struct rct_s6_data {
     uint8 campaign_ride_index[22];
 
     // Ignored in scenario
-    money32 balance_history[128];
+    money32 balance_history[RCT12_FINANCE_GRAPH_SIZE];
 
     // SC6[11]
     money32 current_expenditure;
@@ -198,13 +198,13 @@ typedef struct rct_s6_data {
     uint8 pad_0135833A[2];
 
     // Ignored in scenario
-    money32 weekly_profit_history[128];
+    money32 weekly_profit_history[RCT12_FINANCE_GRAPH_SIZE];
 
     // SC6[12]
     money32 park_value;
 
     // Ignored in scenario
-    money32 park_value_history[128];
+    money32 park_value_history[RCT12_FINANCE_GRAPH_SIZE];
 
     // SC6[13]
     money32 completed_company_value;

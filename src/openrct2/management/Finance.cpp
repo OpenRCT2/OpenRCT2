@@ -63,7 +63,7 @@ uint16  gWeeklyProfitAverageDivisor;
 money32 gCashHistory[FINANCE_GRAPH_SIZE];
 money32 gWeeklyProfitHistory[FINANCE_GRAPH_SIZE];
 money32 gParkValueHistory[FINANCE_GRAPH_SIZE];
-money32 gExpenditureTable[EXPENDITURE_TABLE_TOTAL_COUNT];
+money32 gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT][RCT_EXPENDITURE_TYPE_COUNT];
 
 uint8 gCommandExpenditureType;
 
@@ -82,7 +82,7 @@ void finance_payment(money32 amount, rct_expenditure_type type)
     new_money = add_clamp_money32(cur_money, -amount);
 
     gCashEncrypted = ENCRYPT_MONEY(new_money);
-    gExpenditureTable[type] -= amount;
+    gExpenditureTable[0][type] -= amount;
     if (dword_988E60[type] & 1)
     {
         // Cumulative amount of money spent this day
@@ -207,7 +207,7 @@ void finance_init()
     // It only initialises the first month
     for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
     {
-        gExpenditureTable[i] = 0;
+        gExpenditureTable[0][i] = 0;
     }
 
     gCurrentExpenditure = 0;
@@ -370,23 +370,26 @@ void finance_shift_expenditure_table()
     if (gDateMonthsElapsed >= EXPENDITURE_TABLE_MONTH_COUNT)
     {
         money32 sum = 0;
-        for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - RCT_EXPENDITURE_TYPE_COUNT; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++)
+        for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
         {
-            sum += gExpenditureTable[i];
+            sum += gExpenditureTable[EXPENDITURE_TABLE_MONTH_COUNT - 1][i];
         }
         gHistoricalProfit += sum;
     }
 
     // Shift the table
-    for (uint32 i = EXPENDITURE_TABLE_TOTAL_COUNT - 1; i >= RCT_EXPENDITURE_TYPE_COUNT; i--)
+    for (size_t i = EXPENDITURE_TABLE_MONTH_COUNT - 1; i >= 1; i--)
     {
-        gExpenditureTable[i] = gExpenditureTable[i - RCT_EXPENDITURE_TYPE_COUNT];
+        for (size_t j = 0; j < RCT_EXPENDITURE_TYPE_COUNT; j++)
+        {
+            gExpenditureTable[i][j] = gExpenditureTable[i - 1][j];
+        }
     }
 
     // Zero the beginning of the table, which is the new month
     for (uint32 i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++)
     {
-        gExpenditureTable[i] = 0;
+        gExpenditureTable[0][i] = 0;
     }
 
     window_invalidate_by_class(WC_FINANCES);
@@ -409,7 +412,8 @@ money32 finance_get_last_month_shop_profit()
     money32 profit = 0;
     if (gDateMonthsElapsed != 0)
     {
-        money32 * lastMonthExpenditure = &gExpenditureTable[RCT_EXPENDITURE_TYPE_COUNT];
+        money32 * lastMonthExpenditure = gExpenditureTable[1];
+
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_SHOP_SALES];
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_SHOP_STOCK];
         profit += lastMonthExpenditure[RCT_EXPENDITURE_TYPE_FOODDRINK_SALES];

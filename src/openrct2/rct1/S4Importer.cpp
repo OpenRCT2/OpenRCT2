@@ -1736,16 +1736,19 @@ private:
         gParkValue = CorrectRCT1ParkValue(_s4.park_value);
         gCurrentProfit = _s4.profit;
 
-        for (size_t i = 0; i < 128; i++)
+        for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
         {
             gCashHistory[i] = _s4.cash_history[i];
             gParkValueHistory[i] = CorrectRCT1ParkValue(_s4.park_value_history[i]);
             gWeeklyProfitHistory[i] = _s4.weekly_profit_history[i];
         }
 
-        for (size_t i = 0; i < EXPENDITURE_TABLE_TOTAL_COUNT; i++)
+        for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
         {
-            gExpenditureTable[i] = _s4.expenditure[i];
+            for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+            {
+                gExpenditureTable[i][j] = _s4.expenditure[i][j];
+            }
         }
         gCurrentExpenditure = _s4.total_expenditure;
 
