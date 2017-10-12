@@ -894,6 +894,10 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
 {
 
     sint32 baseImage_id = ebx;
+    if (vehicleEntry->draw_order >= countof(VehicleBoundboxes))
+    {
+        return;
+    }
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) 
     {
@@ -2330,7 +2334,6 @@ void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle
  */
 void vehicle_visual_default(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-    assert(vehicle->vehicle_sprite_type < countof(vehicle_sprite_funcs));
     if (vehicle->vehicle_sprite_type < countof(vehicle_sprite_funcs)) {
         vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
     }
