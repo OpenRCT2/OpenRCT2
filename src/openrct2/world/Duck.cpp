@@ -34,7 +34,7 @@ enum DUCK_STATE
 };
 constexpr sint32 DUCK_MAX_STATES = 5;
 
-static const rct_xy16 DuckMoveOffset[] =
+static const LocationXY16 DuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },

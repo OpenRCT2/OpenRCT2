@@ -167,7 +167,7 @@ static void window_news_update(rct_window *w)
             }
             else if (w->news.var_482 > 1) {
                 news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
-                if (x != SPRITE_LOCATION_NULL)
+                if (x != LOCATION_NULL)
                     if ((w = window_get_main()) != nullptr)
                         window_scroll_to_location(w, x, y, z);
                 return;

@@ -2088,7 +2088,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
 
     if (!_trackPlaceCtrlState) {
         sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &mapElement);
-        if (mapX == MAP_LOCATION_NULL)
+        if (mapX == LOCATION_NULL)
             return false;
 
         _trackPlaceZ = 0;
@@ -2108,7 +2108,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
         _trackPlaceZ = Math::Max<sint32>(mapZ, 16);
     }
 
-    if (mapX == MAP_LOCATION_NULL)
+    if (mapX == LOCATION_NULL)
         return false;
 
     *outX = floor2(mapX, 32);
@@ -3709,7 +3709,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
         // Raise z above all slopes and water
         if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
             sint32 highestZ = 0;
-            rct_xy16 *selectedTile = gMapSelectionTiles;
+            LocationXY16 *selectedTile = gMapSelectionTiles;
             while (selectedTile->x != -1) {
                 if (selectedTile->x < (256 * 32) && selectedTile->y < (256 * 32)) {
                     z = map_get_highest_z(selectedTile->x >> 5, selectedTile->y >> 5);
@@ -3761,7 +3761,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
                 break;
 
             _currentTrackBeginZ -= 8;
-            if (_currentTrackBeginZ & 0x8000)
+            if (_currentTrackBeginZ & LOCATION_NULL)
                 break;
 
             if (bx >= 0)
@@ -3784,7 +3784,7 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
             break;
 
         _currentTrackBeginZ -= 8;
-        if (_currentTrackBeginZ & 0x8000)
+        if (_currentTrackBeginZ & LOCATION_NULL)
             break;
 
         if (bx >= 0)
@@ -3864,7 +3864,7 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
     // Raise z above all slopes and water
     highestZ = 0;
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-        rct_xy16 *selectedTile = gMapSelectionTiles;
+        LocationXY16 *selectedTile = gMapSelectionTiles;
         while (selectedTile->x != -1) {
             if (selectedTile->x >= (256 * 32) || selectedTile->y >= (256 * 32))
                 continue;

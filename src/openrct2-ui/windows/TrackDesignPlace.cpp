@@ -121,11 +121,11 @@ static void window_track_place_attempt_placement(rct_track_td6 *td6, sint32 x, s
 
 static void window_track_place_clear_mini_preview();
 static void window_track_place_draw_mini_preview(rct_track_td6 *td6);
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max);
-static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
-static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel);
-static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel);
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max);
+static LocationXY16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y);
+static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel);
+static uint8 *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel);
 
 /**
  *
@@ -258,7 +258,7 @@ static void window_track_place_toolupdate(rct_window* w, rct_widgetindex widgetI
 
     // Get the tool map position
     sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
-    if (mapX == MAP_LOCATION_NULL) {
+    if (mapX == LOCATION_NULL) {
         window_track_place_clear_provisional();
         return;
     }
@@ -320,7 +320,7 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     sub_68A15E(x, y, &mapX, &mapY, nullptr, nullptr);
-    if (mapX == MAP_LOCATION_NULL)
+    if (mapX == LOCATION_NULL)
         return;
 
     // Try increasing Z until a feasible placement is found
@@ -486,10 +486,10 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     window_track_place_clear_mini_preview();
 
     // First pass is used to determine the width and height of the image so it can centre it
-    rct_xy16 min = { 0, 0 };
-    rct_xy16 max = { 0, 0 };
+    LocationXY16 min = { 0, 0 };
+    LocationXY16 max = { 0, 0 };
     for (sint32 pass = 0; pass < 2; pass++) {
-        rct_xy16 origin = { 0, 0 };
+        LocationXY16 origin = { 0, 0 };
         if (pass == 1) {
             origin.x -= ((max.x + min.x) >> 6) * 32;
             origin.y -= ((max.y + min.y) >> 6) * 32;
@@ -503,7 +503,7 @@ static void window_track_place_draw_mini_preview(rct_track_td6 *td6)
     }
 }
 
-static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
 {
     uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_track_element *trackElement = td6->track_elements;
@@ -526,7 +526,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
                 min->y = Math::Min(min->y, y);
                 max->y = Math::Max(max->y, y);
             } else {
-                rct_xy16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+                LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
                 if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {
                     uint8 *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
@@ -566,7 +566,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
     }
 }
 
-static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, rct_xy16 origin, rct_xy16 *min, rct_xy16 *max)
+static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32 pass, LocationXY16 origin, LocationXY16 *min, LocationXY16 *max)
 {
     uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_maze_element *mazeElement = td6->maze_elements;
@@ -584,7 +584,7 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
             min->y = Math::Min(min->y, y);
             max->y = Math::Max(max->y, y);
         } else {
-            rct_xy16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
+            LocationXY16 pixelPosition = draw_mini_preview_get_pixel_position(x, y);
             if (draw_mini_preview_is_pixel_in_bounds(pixelPosition)) {
                 uint8 *pixel = draw_mini_preview_get_pixel_ptr(pixelPosition);
 
@@ -603,7 +603,7 @@ static void window_track_place_draw_mini_preview_maze(rct_track_td6 *td6, sint32
     }
 }
 
-static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y)
+static LocationXY16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y)
 {
     return {
         (sint16)(80 + ((y / 32) - (x / 32)) * 4),
@@ -611,12 +611,12 @@ static rct_xy16 draw_mini_preview_get_pixel_position(sint16 x, sint16 y)
     };
 }
 
-static bool draw_mini_preview_is_pixel_in_bounds(rct_xy16 pixel)
+static bool draw_mini_preview_is_pixel_in_bounds(LocationXY16 pixel)
 {
     return pixel.x >= 0 && pixel.y >= 0 && pixel.x <= 160 && pixel.y <= 75;
 }
 
-static uint8 *draw_mini_preview_get_pixel_ptr(rct_xy16 pixel)
+static uint8 *draw_mini_preview_get_pixel_ptr(LocationXY16 pixel)
 {
     return &_window_track_place_mini_preview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
 }

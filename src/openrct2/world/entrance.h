@@ -35,19 +35,19 @@ extern "C" {
 
 void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 
-typedef struct rct_xyz16 rct_xyz16;
-typedef struct rct_xyzd16 rct_xyzd16;
+typedef struct LocationXYZ16 LocationXYZ16;
+typedef struct LocationXYZD16 LocationXYZD16;
 typedef struct rct_map_element rct_map_element;
 
 extern bool gParkEntranceGhostExists;
-extern rct_xyz16 gParkEntranceGhostPosition;
+extern LocationXYZ16 gParkEntranceGhostPosition;
 extern uint8 gParkEntranceGhostDirection;
 
 #define MAX_PARK_ENTRANCES 4
 
-extern rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
+extern LocationXYZD16 gParkEntrances[MAX_PARK_ENTRANCES];
 
-extern rct_xyzd16 gRideEntranceExitGhostPosition;
+extern LocationXYZD16 gRideEntranceExitGhostPosition;
 extern uint8 gRideEntranceExitGhostStationIndex;
 
 void park_entrance_remove_ghost();

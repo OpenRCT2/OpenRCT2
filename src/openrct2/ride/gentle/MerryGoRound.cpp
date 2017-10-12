@@ -115,7 +115,7 @@ static void paint_merry_go_round(paint_session * session, uint8 rideIndex, uint8
 
     sint32   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
 

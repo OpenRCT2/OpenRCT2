@@ -873,7 +873,7 @@ static const uint32 junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[2
       } }
 };
 
-const rct_xy16 junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = { {
+const LocationXY16 junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = { {
                                                                                    { 0, 6 },
                                                                                    { 0, 0 },
                                                                                    { 0, 16 },
@@ -1910,7 +1910,7 @@ static void junior_rc_flat_to_left_bank_paint_setup(paint_session * session, uin
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -1958,7 +1958,7 @@ static void junior_rc_flat_to_right_bank_paint_setup(paint_session * session, ui
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -1982,7 +1982,7 @@ static void junior_rc_right_bank_to_flat_paint_setup(paint_session * session, ui
     junior_rc_flat_to_left_bank_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-const rct_xy16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
+const LocationXY16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
                                                                                        { 32, 20 },
                                                                                        { 32, 16 },
                                                                                        { 16, 16 },
@@ -2011,7 +2011,7 @@ const rct_xy16 junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths[4][5] =
                                                                                        { 32, 20 },
                                                                                    } };
 
-const rct_xyz16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
+const LocationXYZ16 junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
                                                                                         { 0, 6 },
                                                                                         { 0, 16 },
                                                                                         { 0, 0 },
@@ -2172,7 +2172,7 @@ static void junior_rc_left_bank_to_25_deg_up_paint_setup(paint_session * session
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -2232,7 +2232,7 @@ static void junior_rc_right_bank_to_25_deg_up_paint_setup(paint_session * sessio
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -2309,7 +2309,7 @@ static void junior_rc_25_deg_up_to_left_bank_paint_setup(paint_session * session
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -2370,7 +2370,7 @@ static void junior_rc_25_deg_up_to_right_bank_paint_setup(paint_session * sessio
         }
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -2418,14 +2418,14 @@ static void junior_rc_25_deg_down_to_right_bank_paint_setup(paint_session * sess
     junior_rc_left_bank_to_25_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-static const rct_xyz16 junior_rc_left_bank_bound_lengths[4] = {
+static const LocationXYZ16 junior_rc_left_bank_bound_lengths[4] = {
     { 32, 1, 26 },
     { 1, 32, 26 },
     { 32, 20, 1 },
     { 20, 32, 1 },
 };
 
-static const rct_xy16 junior_rc_left_bank_bound_offsets[4] = {
+static const LocationXY16 junior_rc_left_bank_bound_offsets[4] = {
     { 0, 27 },
     { 27, 0 },
     { 0, 6 },
@@ -2455,7 +2455,7 @@ static void junior_rc_left_bank_paint_setup(paint_session * session, uint8 rideI
         paint_util_push_tunnel_left(session, height, 0);
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -2681,14 +2681,14 @@ static void junior_rc_s_bend_left_paint_setup(paint_session * session, uint8 rid
         trackSequence = 3 - trackSequence;
     }
 
-    const rct_xy16 offsetList[] = {
+    const LocationXY16 offsetList[] = {
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
         { 0, 6 },
     };
 
-    const rct_xy16 boundsList[] = {
+    const LocationXY16 boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -2696,8 +2696,8 @@ static void junior_rc_s_bend_left_paint_setup(paint_session * session, uint8 rid
     };
 
     uint32   imageId = junior_rc_track_pieces_s_bend_left[(direction & 1)][trackSequence] | session->TrackColours[SCHEME_TRACK];
-    rct_xy16 offset  = offsetList[trackSequence];
-    rct_xy16 bounds  = boundsList[trackSequence];
+    LocationXY16 offset  = offsetList[trackSequence];
+    LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
         sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
@@ -2781,14 +2781,14 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
         trackSequence = 3 - trackSequence;
     }
 
-    const rct_xy16 offsetList[] = {
+    const LocationXY16 offsetList[] = {
         { 0, 6 },
         { 0, 6 },
         { 0, 0 },
         { 0, 6 },
     };
 
-    const rct_xy16 boundsList[] = {
+    const LocationXY16 boundsList[] = {
         { 32, 20 },
         { 32, 26 },
         { 32, 26 },
@@ -2796,8 +2796,8 @@ static void junior_rc_s_bend_right_paint_setup(paint_session * session, uint8 ri
     };
 
     uint32   imageId = junior_rc_track_pieces_s_bend_right[direction & 1][trackSequence] | session->TrackColours[SCHEME_TRACK];
-    rct_xy16 offset  = offsetList[trackSequence];
-    rct_xy16 bounds  = boundsList[trackSequence];
+    LocationXY16 offset  = offsetList[trackSequence];
+    LocationXY16 bounds  = boundsList[trackSequence];
     if (direction == 0 || direction == 2)
     {
         sub_98196C(session, imageId, (sint8)offset.x, (sint8)offset.y, bounds.x, bounds.y, 1, height, get_current_rotation());
@@ -2919,7 +2919,7 @@ static void junior_rc_left_quarter_turn_3_tiles_paint_setup(paint_session * sess
                                                      mapElement);
 }
 
-const rct_xy16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = { {
+const LocationXY16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = { {
                                                                                      { 32, 20 },
                                                                                      { 16, 16 },
                                                                                      { 20, 32 },
@@ -2940,7 +2940,7 @@ const rct_xy16 junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths[4][3] = {
                                                                                      { 32, 20 },
                                                                                  } };
 
-const rct_xyz16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = { {
+const LocationXYZ16 junior_rc_right_quarter_turn_3_tiles_bank_offsets[4][3] = { {
                                                                                 { 0, 6 },
                                                                                 { 16, 16 },
                                                                                 { 6, 0 },
@@ -3017,9 +3017,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_up(paint_session * 
                                                                 JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32   imageId      = 0;
-    rct_xy16 offset       = { 0 };
-    rct_xy16 boundsLength = { 0 };
-    rct_xy16 boundsOffset = { 0 };
+    LocationXY16 offset       = { 0 };
+    LocationXY16 boundsLength = { 0 };
+    LocationXY16 boundsOffset = { 0 };
 
     switch (trackSequence)
     {
@@ -3095,9 +3095,9 @@ void junior_rc_paint_track_right_quarter_turn_3_tiles_25_deg_down(paint_session 
                                                                   JUNIOR_RC_CHAINTYPE chainType)
 {
     uint32   imageId      = 0;
-    rct_xy16 offset       = { 0 };
-    rct_xy16 boundsLength = { 0 };
-    rct_xy16 boundsOffset = { 0 };
+    LocationXY16 offset       = { 0 };
+    LocationXY16 boundsLength = { 0 };
+    LocationXY16 boundsOffset = { 0 };
 
     switch (trackSequence)
     {
@@ -3601,7 +3601,7 @@ static void junior_rc_brake_paint_setup(paint_session * session, uint8 rideIndex
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -3637,7 +3637,7 @@ static void junior_rc_block_brake_paint_setup(paint_session * session, uint8 rid
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         sint32 edi = (direction & 1) ? 2 : 1;
@@ -3791,7 +3791,7 @@ static void junior_rc_right_eighth_to_orthogonal_paint_setup(paint_session * ses
     junior_rc_left_eighth_to_diag_paint_setup(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
-static const rct_xy16 junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
+static const LocationXY16 junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
         { 32, 1 },
         { 32, 16 },
@@ -3818,7 +3818,7 @@ static const rct_xy16 junior_rc_left_eighth_to_diag_bank_bound_lengths[4][4] = {
     },
 };
 
-static const rct_xyz16 junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
+static const LocationXYZ16 junior_rc_left_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
         { 0, 27 },
         { 0, 0 },
@@ -3935,7 +3935,7 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(paint_session * sessi
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const rct_xy16 junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
+static const LocationXY16 junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = {
     {
         { 32, 20 },
         { 16, 16 },
@@ -3962,7 +3962,7 @@ static const rct_xy16 junior_rc_right_eighth_to_diag_bank_bound_lengths[4][4] = 
     },
 };
 
-static const rct_xyz16 junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
+static const LocationXYZ16 junior_rc_right_eighth_to_diag_bank_bound_offsets[4][4] = {
     {
         { 0, 6 },
         { 0, 0 },
@@ -4723,14 +4723,14 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(paint_session *
     paint_util_set_general_support_height(session, height + 48, 0x20);
 }
 
-const rct_xyz16 junior_rc_diag_left_bank_bound_offsets[4] = {
+const LocationXYZ16 junior_rc_diag_left_bank_bound_offsets[4] = {
     { -16, -16, 27 },
     { -16, -16 },
     { -16, -16 },
     { -16, -16 },
 };
 
-const rct_xyz16 junior_rc_diag_right_bank_bound_offsets[4] = {
+const LocationXYZ16 junior_rc_diag_right_bank_bound_offsets[4] = {
     { -16, -16 },
     { -16, -16 },
     { -16, -16, 27 },
@@ -4779,14 +4779,14 @@ static void junior_rc_diag_right_bank_paint_setup(paint_session * session, uint8
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const rct_xy16 junior_rc_60_deg_up_bound_offsets[4] = {
+static const LocationXY16 junior_rc_60_deg_up_bound_offsets[4] = {
     { 0, 6 },
     { 10, 29 },
     { 29, 10 },
     { 6, 0 },
 };
 
-static const rct_xy16 junior_rc_60_deg_up_tile_offsets[4] = {
+static const LocationXY16 junior_rc_60_deg_up_tile_offsets[4] = {
     { 0, 6 },
     { 6, 0 },
     { 0, 6 },
@@ -4795,7 +4795,7 @@ static const rct_xy16 junior_rc_60_deg_up_tile_offsets[4] = {
 
 static const sint8 junior_rc_60_deg_up_bound_thickness[4] = { 1, 75, 75, 1 };
 
-static const rct_xy16 junior_rc_60_deg_up_bound_lengths[4] = {
+static const LocationXY16 junior_rc_60_deg_up_bound_lengths[4] = {
     { 32, 20 },
     { 10, 1 },
     { 1, 10 },
@@ -4831,7 +4831,7 @@ void junior_rc_paint_track_60_deg_up(paint_session * session, uint8 rideIndex, u
         break;
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
 
     sint8 support[4] = { 35, 29, 25, 32 };
     if (track_paint_util_should_paint_supports(pos))
@@ -4859,7 +4859,7 @@ static void junior_rc_60_deg_down_paint_setup(paint_session * session, uint8 rid
     junior_rc_60_deg_up_paint_setup(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
-static const rct_xy16 junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
+static const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
     { { 32, 20 }, { 0 } },
     { { 10, 32 }, { 2, 32 } },
     { { 32, 10 }, { 32, 2 } },
@@ -4868,7 +4868,7 @@ static const rct_xy16 junior_rc_25_deg_up_to_60_deg_up_bound_lengths[4][2] = {
 
 static const sint8 junior_rc_25_deg_up_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
-static const rct_xy16 junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
+static const LocationXY16 junior_rc_25_deg_up_to_60_deg_up_bound_offsets[4][2] = {
     { { 0, 6 }, { 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
@@ -4922,7 +4922,7 @@ void junior_rc_paint_track_25_deg_up_to_60_deg_up(paint_session * session, uint8
         break;
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
 
     sint8 support[4] = { 12, 12, 12, 14 };
     if (track_paint_util_should_paint_supports(pos))
@@ -4997,7 +4997,7 @@ void junior_rc_paint_track_60_deg_up_to_25_deg_up(paint_session * session, uint8
         break;
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos))
     {
@@ -5204,7 +5204,7 @@ static void junior_rc_diag_60_deg_down_to_25_deg_down_paint_setup(paint_session 
                                                           isChained ? JUNIOR_RC_CHAIN_FRICTION_WHEELS : JUNIOR_RC_CHAIN_NONE);
 }
 
-static const rct_xy16 junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
+static const LocationXY16 junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
     { { 32, 24 }, { 0 } },
     { { 10, 1 }, { 2, 32 } },
     { { 1, 10 }, { 32, 2 } },
@@ -5213,18 +5213,18 @@ static const rct_xy16 junior_rc_flat_to_60_deg_up_bound_lengths[4][2] = {
 
 static const sint8 junior_rc_flat_to_60_deg_up_bound_thickness[4] = { 1, 43, 43, 1 };
 
-static const rct_xy16 junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
+static const LocationXY16 junior_rc_flat_to_60_deg_up_bound_offsets[4][2] = {
     { { 0, 4 }, { 0 } },
     { { 10, 0 }, { 4, 0 } },
     { { 0, 10 }, { 0, 4 } },
     { { 4, 0 }, { 0 } },
 };
 
-static const rct_xy16 junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
+static const LocationXY16 junior_rc_flat_to_60_deg_up_tile_offsets[4][2] = {
     { { 12, -10 }, { 0 } }, { { 22, 9 }, { 12, -11 } }, { { 30, 7 }, { 5, 0 } }, { { 12, -12 }, { 0 } }
 };
 
-static const rct_xy16 junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
+static const LocationXY16 junior_rc_60_deg_up_to_flat_tile_offsets[4][2] = {
     { { 13, -9 }, { 0 } }, { { 32, 9 }, { -7, -11 } }, { { 22, 18 }, { 2, -19 } }, { { 13, -9 }, { 0 } }
 };
 
@@ -5276,7 +5276,7 @@ static void junior_rc_flat_to_60_deg_up_paint_setup(paint_session * session, uin
         break;
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
 
     sint8 support[4] = { 12, 12, 12, 14 };
     if (track_paint_util_should_paint_supports(pos))
@@ -5345,7 +5345,7 @@ static void junior_rc_60_deg_up_to_flat_paint_setup(paint_session * session, uin
         break;
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
 
     if (track_paint_util_should_paint_supports(pos))
     {
@@ -5454,7 +5454,7 @@ static void junior_rc_booster_paint_setup(paint_session * session, uint8 rideInd
         paint_util_push_tunnel_left(session, height, TUNNEL_0);
     }
 
-    const rct_xy16 pos = session->MapPosition;
+    const LocationXY16 pos = session->MapPosition;
     if (track_paint_util_should_paint_supports(pos))
     {
         uint8 supportType = (direction & 1) ? METAL_SUPPORTS_FORK_ALT : METAL_SUPPORTS_FORK;

@@ -24,14 +24,14 @@
 #include "../../world/map.h"
 #include "../../world/scenery.h"
 
-static const rct_xy16 offsets[] = {
+static const LocationXY16 offsets[] = {
     {  3,  3 },
     {  3, 17 },
     { 17,  3 },
     {  3,  3 }
 };
 
-static const rct_xy16 lengths[] = {
+static const LocationXY16 lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },
@@ -45,8 +45,8 @@ static const rct_xy16 lengths[] = {
 void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* mapElement) {
     //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
-    rct_xyz16 boxlength;
-    rct_xyz16 boxoffset;
+    LocationXYZ16 boxlength;
+    LocationXYZ16 boxoffset;
     boxoffset.x = 0;
     boxoffset.y = 0;
     boxoffset.z = height;

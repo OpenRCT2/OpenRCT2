@@ -111,20 +111,20 @@ void viewport_init_all()
 void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 * out_y, rct_viewport * viewport){
     sint32 start_x = x;
 
-    rct_xyz16 coord_3d = {
+    LocationXYZ16 coord_3d = {
         .x = x,
         .y = y,
         .z = z
     };
 
-    rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
+    LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
 
     // If the start location was invalid
     // propagate the invalid location to the output.
     // This fixes a bug that caused the game to enter an infinite loop.
-    if (start_x == ((sint16)(uint16)0x8000))
+    if (start_x == LOCATION_NULL)
     {
-        *out_x = ((sint16)(uint16)0x8000);
+        *out_x = LOCATION_NULL;
         *out_y = 0;
         return;
     }
@@ -226,7 +226,7 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
     sint16 height = 0;
 
     uint32 rotation = get_current_rotation();
-    rct_xy16 pos;
+    LocationXY16 pos;
     for (sint32 i = 0; i < 6; i++) {
         pos = viewport_coord_to_map_coord(start_x, start_y, height);
         height = map_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
@@ -784,7 +784,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
 {
     screen_get_map_xy(*x, *y, x, y, NULL);
-    if (*x == MAP_LOCATION_NULL)
+    if (*x == LOCATION_NULL)
         return;
 
     sint32 my_direction;
@@ -816,17 +816,17 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
     if (direction != NULL) *direction = my_direction;
 }
 
-rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
+LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
 {
-    rct_xy16 ret;
+    LocationXY16 ret;
     ret.x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
     ret.y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
     return ret;
 }
 
-rct_xy16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
+LocationXY16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z)
 {
-    rct_xy16 ret = { 0 };
+    LocationXY16 ret = { 0 };
     switch (get_current_rotation()) {
     case 0:
         ret.x = -x / 2 + y + z;
@@ -1474,12 +1474,12 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
     rct_viewport *myViewport = NULL;
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-        *x = 0x8000;
+        *x = LOCATION_NULL;
         return;
     }
 
-    rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-    rct_xy16 map_pos = { my_x + 16, my_y + 16 };
+    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
+    LocationXY16 map_pos = { my_x + 16, my_y + 16 };
 
     for (sint32 i = 0; i < 5; i++) {
         sint32 z = map_element_height(map_pos.x, map_pos.y);
@@ -1502,16 +1502,16 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
 {
     rct_viewport *viewport = viewport_find_from_point(screenX, screenY);
     if (viewport == NULL) {
-        *mapX = 0x8000;
+        *mapX = LOCATION_NULL;
         return;
     }
 
     screenX = viewport->view_x + ((screenX - viewport->x) << viewport->zoom);
     screenY = viewport->view_y + ((screenY - viewport->y) << viewport->zoom);
 
-    rct_xy16 mapPosition = viewport_coord_to_map_coord(screenX, screenY + z, 0);
+    LocationXY16 mapPosition = viewport_coord_to_map_coord(screenX, screenY + z, 0);
     if (mapPosition.x < 0 || mapPosition.x >= (256 * 32) || mapPosition.y < 0 || mapPosition.y >(256 * 32)) {
-        *mapX = 0x8000;
+        *mapX = LOCATION_NULL;
         return;
     }
 
@@ -1526,7 +1526,7 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
 void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
     screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
-    if (*mapX == MAP_LOCATION_NULL)
+    if (*mapX == LOCATION_NULL)
         return;
 
     *quadrant = map_get_tile_quadrant(*mapX, *mapY);
@@ -1541,7 +1541,7 @@ void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, si
 void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
     screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
-    if (*mapX == MAP_LOCATION_NULL)
+    if (*mapX == LOCATION_NULL)
         return;
 
     *quadrant = map_get_tile_quadrant(*mapX, *mapY);
@@ -1556,7 +1556,7 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
 void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
     screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
-    if (*mapX == MAP_LOCATION_NULL)
+    if (*mapX == LOCATION_NULL)
         return;
 
     *side = map_get_tile_side(*mapX, *mapY);
@@ -1571,7 +1571,7 @@ void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16
 void screen_get_map_xy_side_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
     screen_get_map_xy_with_z(screenX, screenY, z, mapX, mapY);
-    if (*mapX == MAP_LOCATION_NULL)
+    if (*mapX == LOCATION_NULL)
         return;
 
     *side = map_get_tile_side(*mapX, *mapY);

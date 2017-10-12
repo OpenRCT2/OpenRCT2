@@ -1393,7 +1393,7 @@ static money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32
     }
 
     if (gGameCommandNestLevel == 1) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = originX + 16;
         coord.y = originY + 16;
         coord.z = trackpieceZ;
@@ -1693,7 +1693,7 @@ static money32 track_remove(uint8 type, uint8 sequence, sint16 originX, sint16 o
         price *= -10;
 
     if (gGameCommandNestLevel == 1) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = originX + 16;
         coord.y = originY + 16;
         coord.z = trackpieceZ;

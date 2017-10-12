@@ -1339,7 +1339,7 @@ void window_set_location(rct_window *w, sint32 x, sint32 y, sint32 z)
 */
 void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
 {
-    rct_xyz16 location_3d = {
+    LocationXYZ16 location_3d = {
         .x = x,
         .y = y,
         .z = z
@@ -1360,7 +1360,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
             }
         }
 
-        rct_xy16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
+        LocationXY16 map_coordinate = coordinate_3d_to_2d(&location_3d, get_current_rotation());
 
         sint32 i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
@@ -1437,8 +1437,8 @@ void window_rotate_camera(rct_window *w, sint32 direction)
     screen_get_map_xy(x, y, &x, &y, &other);
 
     // other != viewport probably triggers on viewports in ride or guest window?
-    // x is 0x8000 if middle of viewport is obstructed by another window?
-    if (x == SPRITE_LOCATION_NULL || other != viewport) {
+    // x is LOCATION_NULL if middle of viewport is obstructed by another window?
+    if (x == LOCATION_NULL || other != viewport) {
         x = (viewport->view_width >> 1) + viewport->view_x;
         y = (viewport->view_height >> 1) + viewport->view_y;
 

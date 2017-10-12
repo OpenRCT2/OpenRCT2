@@ -86,7 +86,7 @@ static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 tra
 
     sint32   edges    = edges_4x4[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 

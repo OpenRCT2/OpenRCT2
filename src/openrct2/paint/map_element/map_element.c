@@ -241,7 +241,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
         sint32 height = map_element->base_height * 8;
 
-        rct_xy16 dword_9DE574 = session->MapPosition;
+        LocationXY16 dword_9DE574 = session->MapPosition;
         session->CurrentlyDrawnItem = map_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (map_element_get_type(map_element))

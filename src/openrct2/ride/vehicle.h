@@ -126,7 +126,7 @@ typedef struct rct_vehicle {
     union {
         sint16 track_direction;     // 0x36 (0000 0000 0000 0011)
         sint16 track_type;          // 0x36 (0000 0011 1111 1100)
-        rct_xy8 boat_location;      // 0x36
+        LocationXY8 boat_location;      // 0x36
     };
     uint16 track_x;                 // 0x38
     uint16 track_y;                 // 0x3A
@@ -399,7 +399,7 @@ extern uint8 _vehicleVAngleEndF64E36;
 extern uint8 _vehicleBankEndF64E37;
 extern uint8 _vehicleF64E2C;
 extern rct_vehicle * _vehicleFrontVehicle;
-extern rct_xyz16 unk_F64E20;
+extern LocationXYZ16 unk_F64E20;
 
 #ifdef __cplusplus
 }

@@ -73,16 +73,16 @@ typedef struct rct2_ride {
             uint16 name_arguments_number;                           // 0x04E
         };
     };
-    rct_xy8 overall_view;                                           // 0x050
-    rct_xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];            // 0x052
+    LocationXY8 overall_view;                                           // 0x050
+    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];            // 0x052
     uint8 station_heights[RCT12_MAX_STATIONS_PER_RIDE];             // 0x05A
     uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];              // 0x05E
     uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];              // 0x062
     // ride->vehicle index for current train waiting for passengers
     // at station
     uint8 train_at_station[RCT12_MAX_STATIONS_PER_RIDE];            // 0x066
-    rct_xy8 entrances[RCT12_MAX_STATIONS_PER_RIDE];                 // 0x06A
-    rct_xy8 exits[RCT12_MAX_STATIONS_PER_RIDE];                     // 0x072
+    LocationXY8 entrances[RCT12_MAX_STATIONS_PER_RIDE];                 // 0x06A
+    LocationXY8 exits[RCT12_MAX_STATIONS_PER_RIDE];                     // 0x072
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE];         // 0x07A
     uint8 pad_082[RCT12_MAX_STATIONS_PER_RIDE];                     // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
     uint16 vehicles[RCT2_MAX_VEHICLES_PER_RIDE];                    // 0x086, Points to the first car in the train
@@ -108,7 +108,7 @@ typedef struct rct2_ride {
     };
 
     uint8 boat_hire_return_direction;                               // 0x0D1
-    rct_xy8 boat_hire_return_position;                              // 0x0D2
+    LocationXY8 boat_hire_return_position;                              // 0x0D2
     uint8 measurement_index;                                        // 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
@@ -134,7 +134,7 @@ typedef struct rct2_ride {
     uint32 testing_flags;                                           // 0x108
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    rct_xy8 cur_test_track_location;                                // 0x10C
+    LocationXY8 cur_test_track_location;                                // 0x10C
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16 turn_count_default;                                      // 0x10E X = current turn count
     uint16 turn_count_banked;                                       // 0x110
@@ -163,7 +163,7 @@ typedef struct rct2_ride {
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16 num_customers[RCT2_CUSTOMER_HISTORY_SIZE];               // 0x124
     money16 price;                                                  // 0x138
-    rct_xy8 chairlift_bullwheel_location[2];                        // 0x13A
+    LocationXY8 chairlift_bullwheel_location[2];                        // 0x13A
     uint8 chairlift_bullwheel_z[2];                                 // 0x13E
     union {
         rating_tuple ratings;                                       // 0x140

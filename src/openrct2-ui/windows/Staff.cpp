@@ -1088,7 +1088,7 @@ void window_staff_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     sint32 map_x, map_y;
     footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
-    if (map_x != MAP_LOCATION_NULL) {
+    if (map_x != LOCATION_NULL) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         gMapSelectPositionA.x = map_x;
@@ -1135,7 +1135,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         rct_map_element* mapElement;
         footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
-        if (dest_x == MAP_LOCATION_NULL)
+        if (dest_x == LOCATION_NULL)
             return;
 
         game_command_callback = game_command_callback_pickup_staff;
@@ -1145,7 +1145,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         sint32 dest_x, dest_y;
         footpath_get_coordinates_from_pos(x, y, &dest_x, &dest_y, nullptr, nullptr);
 
-        if (dest_x == MAP_LOCATION_NULL) return;
+        if (dest_x == LOCATION_NULL) return;
 
         game_do_command(dest_x, 1, dest_y, w->number, GAME_COMMAND_SET_STAFF_PATROL, 0, 0);
     }

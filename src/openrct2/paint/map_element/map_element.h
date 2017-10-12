@@ -87,7 +87,7 @@ extern const uint16 segment_offsets[9];
 
 extern bool gShowSupportSegmentHeights;
 
-extern const rct_xy16 BannerBoundBoxes[][2];
+extern const LocationXY16 BannerBoundBoxes[][2];
 
 extern const uint8 byte_98D800[4];
 

@@ -146,7 +146,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     }
     image_id += seatImageId;
 
-    rct_xyz16 seatCoords = { al, cl, static_cast<sint16>(height) };
+    LocationXYZ16 seatCoords = { al, cl, static_cast<sint16>(height) };
 
     seatCoords.z += TopSpinSeatHeightOffset[armRotation];
 
@@ -250,7 +250,7 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
 
     sint32   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 

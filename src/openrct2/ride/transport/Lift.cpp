@@ -80,7 +80,7 @@ static void paint_lift_base(paint_session * session, uint8 rideIndex, uint8 trac
 
     sint32   edges    = edges_3x3[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());

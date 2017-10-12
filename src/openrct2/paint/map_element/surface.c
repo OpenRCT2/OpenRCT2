@@ -31,7 +31,7 @@ static const uint8 byte_97B444[] = {
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static const rct_xy16 viewport_surface_paint_data[][4] = {
+static const LocationXY16 viewport_surface_paint_data[][4] = {
     {
         {32,  0},
         {-32, 32},
@@ -460,8 +460,8 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
 {
     registers regs;
 
-    rct_xy8 offset = {0, 0};
-    rct_xy8 bounds = {0, 0};
+    LocationXY8 offset = {0, 0};
+    LocationXY8 bounds = {0, 0};
     switch (edge) {
         case EDGE_TOPLEFT:
             regs.al = self.corner_heights.top;
@@ -558,10 +558,10 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 {
     registers regs;
 
-    rct_xy8 offset = {0, 0};
-    rct_xy8 bounds = {0, 0};
-    rct_xy16 tunnelBounds = {1, 1};
-    rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
+    LocationXY8 offset = {0, 0};
+    LocationXY8 bounds = {0, 0};
+    LocationXY16 tunnelBounds = {1, 1};
+    LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
 
     tunnel_entry * tunnelArray;
     switch (edge) {
@@ -718,8 +718,8 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 {
     registers regs;
 
-    rct_xy8 offset = {0, 0};
-    rct_xy8 bounds = {0, 0};
+    LocationXY8 offset = {0, 0};
+    LocationXY8 bounds = {0, 0};
     switch (edge) {
         case EDGE_TOPLEFT:
             regs.al = self.corner_heights.top;
@@ -820,10 +820,10 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 {
     registers regs;
 
-    rct_xy8 offset = {0, 0};
-    rct_xy8 bounds = {0, 0};
-    rct_xy16 tunnelBounds = {1, 1};
-    rct_xy16 tunnelTopBoundBoxOffset = {0, 0};
+    LocationXY8 offset = {0, 0};
+    LocationXY8 bounds = {0, 0};
+    LocationXY16 tunnelBounds = {1, 1};
+    LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
 
     tunnel_entry * tunnelArray;
     switch (edge) {
@@ -1001,7 +1001,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     uint32 terrain_type = map_element_get_terrain(mapElement);
     uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
-    rct_xy16 base = {
+    LocationXY16 base = {
         .x = session->SpritePosition.x,
         .y = session->SpritePosition.y
     };
@@ -1023,8 +1023,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     tileDescriptors[0] = selfDescriptor;
 
     for (sint32 i = 0; i < 4; i++) {
-        rct_xy16 offset = viewport_surface_paint_data[i][rotation];
-        rct_xy16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
+        LocationXY16 offset = viewport_surface_paint_data[i][rotation];
+        LocationXY16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
 
         tileDescriptors[i + 1].map_element = NULL;
         if (position.x > 0x2000 || position.y > 0x2000) {
@@ -1173,7 +1173,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
     ) {
-        rct_xy16 pos = session->MapPosition;
+        LocationXY16 pos = session->MapPosition;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
@@ -1193,7 +1193,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             assert(surfaceShape < countof(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
-            rct_xy16 pos = session->MapPosition;
+            LocationXY16 pos = session->MapPosition;
             paint_struct * backup = session->UnkF1AD28;
             sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
@@ -1208,7 +1208,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
             paint_struct * backup = session->UnkF1AD28;
-            rct_xy16 pos = session->MapPosition;
+            LocationXY16 pos = session->MapPosition;
             sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
             session->UnkF1AD28 = backup;
@@ -1221,7 +1221,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
         // loc_660FB8:
-        rct_xy16 pos = session->MapPosition;
+        LocationXY16 pos = session->MapPosition;
         if (pos.x >= gMapSelectPositionA.x &&
             pos.x <= gMapSelectPositionB.x &&
             pos.y >= gMapSelectPositionA.y &&
@@ -1284,9 +1284,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     }
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
-        rct_xy16 pos = session->MapPosition;
+        LocationXY16 pos = session->MapPosition;
 
-        rct_xy16 * tile;
+        LocationXY16 * tile;
         for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
             if (tile->x != pos.x || tile->y != pos.y) {
                 continue;
@@ -1412,8 +1412,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
 
             sint32 bit_1, bit_8, bit_4, bit_2;
-            rct_xy8 offset;
-            rct_xy16 box_offset, box_size;
+            LocationXY8 offset;
+            LocationXY16 box_offset, box_size;
             uint32 image_1, image_2, image_3;
             switch (i) {
                 default:
@@ -1426,9 +1426,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22872;
                     image_2 = 22876;
                     image_3 = 22874;
-                    offset = (rct_xy8) {1, 31};
-                    box_size = (struct rct_xy16) {.x=30, .y=1};
-                    box_offset = (struct rct_xy16) {.x=1, .y=31};
+                    offset = (LocationXY8) {1, 31};
+                    box_size = (struct LocationXY16) {.x=30, .y=1};
+                    box_offset = (struct LocationXY16) {.x=1, .y=31};
                     break;
 
                 case 1:
@@ -1440,9 +1440,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22873;
                     image_2 = 22877;
                     image_3 = 22875;
-                    offset = (rct_xy8) {31, 0};
-                    box_size = (struct rct_xy16) {.x=1, .y=30};
-                    box_offset = (struct rct_xy16) {.x=31, .y=1};
+                    offset = (LocationXY8) {31, 0};
+                    box_size = (struct LocationXY16) {.x=1, .y=30};
+                    box_offset = (struct LocationXY16) {.x=31, .y=1};
                     break;
 
                 case 2:
@@ -1454,9 +1454,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22872;
                     image_2 = 22874;
                     image_3 = 22876;
-                    offset = (rct_xy8) {1, 0};
-                    box_size = (struct rct_xy16) {30, 1};
-                    box_offset = (struct rct_xy16) {1, 1};
+                    offset = (LocationXY8) {1, 0};
+                    box_size = (struct LocationXY16) {30, 1};
+                    box_offset = (struct LocationXY16) {1, 1};
                     // TODO: Fences on top tile get clipped after a while
                     break;
 
@@ -1469,9 +1469,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22873;
                     image_2 = 22875;
                     image_3 = 22877;
-                    offset = (rct_xy8) {1, 1};
-                    box_size = (struct rct_xy16) {1, 30};
-                    box_offset = (struct rct_xy16) {1, 1};
+                    offset = (LocationXY8) {1, 1};
+                    box_size = (struct LocationXY16) {1, 30};
+                    box_offset = (struct LocationXY16) {1, 1};
                     break;
             }
 

@@ -597,7 +597,7 @@ static void paint_mini_golf_track_25_deg_down_to_flat(paint_session * session, u
 static void paint_mini_golf_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                     sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16                             position      = session->MapPosition;
+    LocationXY16                             position      = session->MapPosition;
     Ride *                               ride          = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
     uint32                               imageId;
@@ -746,7 +746,7 @@ static void paint_mini_golf_hole_ab(paint_session * session, uint8 trackSequence
                                     const uint32 sprites[4][2][2])
 {
     uint32 imageId;
-    rct_xy16 boundBox, boundBoxOffset;
+    LocationXY16 boundBox, boundBoxOffset;
 
     bool drewSupports =
         wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
@@ -815,7 +815,7 @@ static void paint_mini_golf_hole_c(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
-    rct_xy16 boundBox, boundBoxOffset;
+    LocationXY16 boundBox, boundBoxOffset;
 
     bool drewSupports =
         wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
@@ -884,7 +884,7 @@ static void paint_mini_golf_hole_d(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
-    rct_xy16 boundBox, boundBoxOffset;
+    LocationXY16 boundBox, boundBoxOffset;
 
     sint32 supportType = (direction & 1);
     if (trackSequence == 2)
@@ -976,7 +976,7 @@ static void paint_mini_golf_hole_e(paint_session * session, uint8 rideIndex, uin
                                    sint32 height, rct_map_element * mapElement)
 {
     uint32 imageId;
-    rct_xy16 boundBox, boundBoxOffset;
+    LocationXY16 boundBox, boundBoxOffset;
 
     sint32 supportType = (direction & 1);
     if (trackSequence == 2)

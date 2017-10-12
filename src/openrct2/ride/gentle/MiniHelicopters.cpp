@@ -64,7 +64,7 @@ static void paint_mini_helicopters_track_station(paint_session * session, uint8 
 static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                               sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
     uint32   imageId;
 
     if (direction & 1)
@@ -95,7 +95,7 @@ static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rid
 static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
     uint32   imageId;
 
     switch (direction)
@@ -136,7 +136,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * sessi
 static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                    uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
     uint32   imageId;
 
     switch (direction)
@@ -177,7 +177,7 @@ static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint
 static void paint_mini_helicopters_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
     uint32   imageId;
 
     switch (direction)

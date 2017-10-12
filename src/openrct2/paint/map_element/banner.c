@@ -24,7 +24,7 @@
 #include "../../world/scenery.h"
 
 /** rct2: 0x0098D884 */
-const rct_xy16 BannerBoundBoxes[][2] = {
+const LocationXY16 BannerBoundBoxes[][2] = {
     {{ 1,  2}, { 1, 29}},
     {{ 2, 32}, {29, 32}},
     {{32,  2}, {32, 29}},

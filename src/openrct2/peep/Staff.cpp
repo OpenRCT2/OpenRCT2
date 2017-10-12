@@ -156,7 +156,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
         uint8 i;
         for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
-            if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
+            if (gParkEntrances[i].x != LOCATION_NULL)
                 ++count;
         }
 
@@ -165,7 +165,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
             uint32 rand = scenario_rand_max(count);
             for (i = 0; i < MAX_PARK_ENTRANCES; ++i)
             {
-                if (gParkEntrances[i].x != SPRITE_LOCATION_NULL)
+                if (gParkEntrances[i].x != LOCATION_NULL)
                 {
                     if (rand == 0)
                         break;
@@ -578,7 +578,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 
     sint32 command_x, ebx, command_y, command_z, esi, new_sprite_index, ebp;
     command_y = command_z = esi = new_sprite_index = ebp = 0;
-    command_x                                            = 0x8000;
+    command_x                                            = LOCATION_NULL;
 
     sint32 autoposition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
@@ -931,7 +931,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         return 0xFF;
     }
 
-    rct_xy16 litterTile = { static_cast<sint16>(nearestLitter->x & 0xFFE0), static_cast<sint16>(nearestLitter->y & 0xFFE0) };
+    LocationXY16 litterTile = { static_cast<sint16>(nearestLitter->x & 0xFFE0), static_cast<sint16>(nearestLitter->y & 0xFFE0) };
 
     if (!staff_is_location_in_patrol(peep, litterTile.x, litterTile.y))
     {
@@ -955,7 +955,7 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
         nextDirection = x_diff < 0 ? 0 : 2;
     }
 
-    rct_xy16 nextTile = { static_cast<sint16>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
+    LocationXY16 nextTile = { static_cast<sint16>((nearestLitter->x & 0xFFE0) - TileDirectionDelta[nextDirection].x),
                           static_cast<sint16>((nearestLitter->y & 0xFFE0) - TileDirectionDelta[nextDirection].y) };
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
@@ -1026,7 +1026,7 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
             continue;
         }
 
-        rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[chosenDirection].x),
+        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[chosenDirection].x),
                                 static_cast<sint16>(peep->next_y + TileDirectionDelta[chosenDirection].y) };
 
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
@@ -1061,7 +1061,7 @@ static sint32 staff_handyman_direction_rand_surface(rct_peep * peep, uint8 valid
         if (!(validDirections & (1 << direction)))
             continue;
 
-        rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
                                 static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y))
@@ -1150,7 +1150,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
     // countof(TileDirectionDelta)
     assert(direction < 8);
 
-    rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
                             static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
@@ -1199,7 +1199,7 @@ static uint8 staff_direction_surface(rct_peep * peep, uint8 initialDirection)
         if (fence_in_the_way(peep->next_x, peep->next_y, peep->next_z, peep->next_z + 4, direction ^ (1 << 1)) == true)
             continue;
 
-        rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+        LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
                                 static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
 
         if (map_surface_is_blocked(chosenTile.x, chosenTile.y) == false)
@@ -1223,13 +1223,13 @@ static uint8 staff_mechanic_direction_surface(rct_peep * peep)
 
         Ride * ride = get_ride(peep->current_ride);
 
-        rct_xy8 location = ride->exits[peep->current_ride_station];
+        LocationXY8 location = ride->exits[peep->current_ride_station];
         if (location.xy == RCT_XY8_UNDEFINED)
         {
             location = ride->entrances[peep->current_ride_station];
         }
 
-        rct_xy16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
+        LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
 
         sint16 x_diff = chosenTile.x - peep->x;
         sint16 y_diff = chosenTile.y - peep->y;
@@ -1321,13 +1321,13 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
 
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        rct_xy8 location = ride->exits[peep->current_ride_station];
+        LocationXY8 location = ride->exits[peep->current_ride_station];
         if (location.xy == RCT_XY8_UNDEFINED)
         {
             location = ride->entrances[peep->current_ride_station];
         }
 
-        rct_xy16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
+        LocationXY16 chosenTile = { static_cast<sint16>(location.x * 32), static_cast<sint16>(location.y * 32) };
 
         gPeepPathFindGoalPosition.x = chosenTile.x;
         gPeepPathFindGoalPosition.y = chosenTile.y;
@@ -1410,7 +1410,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     // countof(TileDirectionDelta)
     assert(direction < 8);
 
-    rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
                             static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
@@ -1495,7 +1495,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
         direction = staff_direction_path(peep, validDirections, pathElement);
     }
 
-    rct_xy16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
+    LocationXY16 chosenTile = { static_cast<sint16>(peep->next_x + TileDirectionDelta[direction].x),
                             static_cast<sint16>(peep->next_y + TileDirectionDelta[direction].y) };
 
     while (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
@@ -1524,7 +1524,7 @@ static void staff_entertainer_update_nearby_peeps(rct_peep * peep)
 
     FOR_ALL_GUESTS(spriteIndex, guest)
     {
-        if (guest->x == SPRITE_LOCATION_NULL)
+        if (guest->x == LOCATION_NULL)
             continue;
 
         sint16 z_dist = abs(peep->z - guest->z);

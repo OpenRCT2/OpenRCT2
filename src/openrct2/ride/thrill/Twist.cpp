@@ -89,7 +89,7 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
 
     const uint8 edges    = edges_3x3[trackSequence];
     Ride *      ride     = get_ride(rideIndex);
-    rct_xy16    position = session->MapPosition;
+    LocationXY16    position = session->MapPosition;
 
     uint32 imageId;
 

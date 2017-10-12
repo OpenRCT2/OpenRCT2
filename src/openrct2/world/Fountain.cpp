@@ -45,7 +45,7 @@ namespace FOUNTAIN_FLAG
     const uint32 DIRECTION    = 1 << 7;
 };
 
-static const rct_xy16 _fountainDirectionsNegative[] =
+static const LocationXY16 _fountainDirectionsNegative[] =
 {
     { -32,   0 },
     { -32, -32 },
@@ -57,7 +57,7 @@ static const rct_xy16 _fountainDirectionsNegative[] =
     { -32, -32 },
 };
 
-static const rct_xy16 _fountainDirectionsPositive[] =
+static const LocationXY16 _fountainDirectionsPositive[] =
 {
     { 32,  0 },
     {  0,  0 },

@@ -68,14 +68,14 @@ typedef struct rct1_ride {
     uint16 name;                                            // 0x022
     uint16 name_argument_ride;                              // 0x024
     uint16 name_argument_number;                            // 0x026
-    rct_xy8 overall_view;                                   // 0x028
-    rct_xy8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];    // 0x02A
+    LocationXY8 overall_view;                                   // 0x028
+    LocationXY8 station_starts[RCT12_MAX_STATIONS_PER_RIDE];    // 0x02A
     uint8 station_height[RCT12_MAX_STATIONS_PER_RIDE];      // 0x032
     uint8 station_length[RCT12_MAX_STATIONS_PER_RIDE];      // 0x036
     uint8 station_light[RCT12_MAX_STATIONS_PER_RIDE];       // 0x03A
     uint8 station_depart[RCT12_MAX_STATIONS_PER_RIDE];      // 0x03E
-    rct_xy8 entrance[RCT12_MAX_STATIONS_PER_RIDE];          // 0x042
-    rct_xy8 exit[RCT12_MAX_STATIONS_PER_RIDE];              // 0x04A
+    LocationXY8 entrance[RCT12_MAX_STATIONS_PER_RIDE];          // 0x042
+    LocationXY8 exit[RCT12_MAX_STATIONS_PER_RIDE];              // 0x04A
     uint16 last_peep_in_queue[RCT12_MAX_STATIONS_PER_RIDE]; // 0x052
     uint8 num_peeps_in_queue[RCT12_MAX_STATIONS_PER_RIDE];  // 0x05A
     uint16 vehicles[RCT1_MAX_TRAINS_PER_RIDE];              // 0x05E
@@ -91,7 +91,7 @@ typedef struct rct1_ride {
     uint8 max_waiting_time;                                 // 0x07F
     uint8 operation_option;                                 // 0x080
     uint8 boat_hire_return_direction;                       // 0x081
-    rct_xy8 boat_hire_return_position;                      // 0x082
+    LocationXY8 boat_hire_return_position;                      // 0x082
     uint8 data_logging_index;                               // 0x084
     uint8 special_track_elements;                           // 0x085
     uint16 unk_86;                                          // 0x086
@@ -111,7 +111,7 @@ typedef struct rct1_ride {
     uint32 testing_flags;                                   // 0x0B8
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    rct_xy8 cur_test_track_location;                        // 0x0BC
+    LocationXY8 cur_test_track_location;                        // 0x0BC
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16 turn_count_default;                              // 0x0BE X = current turn count
     uint16 turn_count_banked;                               // 0x0C0
@@ -141,7 +141,7 @@ typedef struct rct1_ride {
     sint16 unk_E4;                                          // 0x0E4
     sint16 unk_E6;                                          // 0x0E6
     money16 price;                                          // 0x0E8
-    rct_xy8 chairlift_bullwheel_location[2];                // 0x0EA
+    LocationXY8 chairlift_bullwheel_location[2];                // 0x0EA
     uint8 chairlift_bullwheel_z[2];                         // 0x0EE
     union {
         rating_tuple ratings;
@@ -289,7 +289,7 @@ typedef struct rct1_vehicle {
     union {
         sint16 track_direction;     // 0x36 (0000 0000 0000 0011)
         sint16 track_type;          // 0x36 (0000 0011 1111 1100)
-        rct_xy8 boat_location;      // 0x36
+        LocationXY8 boat_location;      // 0x36
     };
     uint16 track_x;                 // 0x38
     uint16 track_y;                 // 0x3A
@@ -485,8 +485,8 @@ typedef struct rct1_peep {
     };
     uint8 photo1_ride_ref;          // 0xC7
     uint32 peep_flags;              // 0xC8
-    rct_xyzd8 pathfind_goal;        // 0xCC
-    rct_xyzd8 pathfind_history[4];  // 0xD0
+    LocationXYZD8 pathfind_goal;        // 0xCC
+    LocationXYZD8 pathfind_history[4];  // 0xD0
     uint8 no_action_frame_no;       // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count;             // 0xE1

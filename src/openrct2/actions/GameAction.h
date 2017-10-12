@@ -74,7 +74,7 @@ public:
     rct_string_id   ErrorTitle = (rct_string_id)-1;
     rct_string_id   ErrorMessage = (rct_string_id)-1;
     uint8           ErrorMessageArgs[12] = { 0 };
-    rct_xyz32       Position = { 0 };
+    LocationXYZ32   Position = { 0 };
     money32         Cost = 0;
     uint16          ExpenditureType = 0;
 

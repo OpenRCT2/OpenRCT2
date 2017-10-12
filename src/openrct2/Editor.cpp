@@ -535,7 +535,7 @@ namespace Editor
 
         for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
-            if (gParkEntrances[i].x != MAP_LOCATION_NULL)
+            if (gParkEntrances[i].x != LOCATION_NULL)
             {
                 break;
             }
@@ -549,7 +549,7 @@ namespace Editor
 
         for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
-            if (gParkEntrances[i].x == MAP_LOCATION_NULL)
+            if (gParkEntrances[i].x == LOCATION_NULL)
             {
                 continue;
             }

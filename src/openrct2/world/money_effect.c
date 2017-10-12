@@ -20,7 +20,7 @@
 #include "../OpenRCT2.h"
 #include "sprite.h"
 
-static const rct_xy16 _moneyEffectMoveOffset[] = {
+static const LocationXY16 _moneyEffectMoveOffset[] = {
     {  1, -1 },
     {  1,  1 },
     { -1,  1 },
@@ -71,13 +71,13 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
  */
 void money_effect_create(money32 value)
 {
-    rct_xyz16 mapPosition = {
+    LocationXYZ16 mapPosition = {
         .x = gCommandPosition.x,
         .y = gCommandPosition.y,
         .z = gCommandPosition.z
     };
 
-    if (mapPosition.x == MAP_LOCATION_NULL) {
+    if (mapPosition.x == LOCATION_NULL) {
         rct_window *mainWindow = window_get_main();
         if (mainWindow == NULL)
             return;
@@ -90,7 +90,7 @@ void money_effect_create(money32 value)
             &mapPosition.y,
             NULL
         );
-        if (mapPosition.x == MAP_LOCATION_NULL)
+        if (mapPosition.x == LOCATION_NULL)
             return;
 
         mapPosition.z = map_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;

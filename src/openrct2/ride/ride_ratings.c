@@ -1251,7 +1251,7 @@ static rating_tuple ride_ratings_get_drop_ratings(Ride *ride)
 static sint32 ride_ratings_get_scenery_score(Ride *ride)
 {
     sint8 i = ride_get_first_valid_station_start(ride);
-    rct_xy8 location;
+    LocationXY8 location;
 
     if (i == -1)
     {

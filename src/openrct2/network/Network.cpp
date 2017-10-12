@@ -30,7 +30,7 @@
 #define ACTION_COOLDOWN_TIME_DEMOLISH_RIDE  1000
 
 static rct_peep* _pickup_peep = 0;
-static sint32 _pickup_peep_old_x = SPRITE_LOCATION_NULL;
+static sint32 _pickup_peep_old_x = LOCATION_NULL;
 
 #ifndef DISABLE_NETWORK
 
@@ -2594,12 +2594,12 @@ void network_set_player_last_action(uint32 index, sint32 command)
     gNetwork.player_list[index]->LastActionTime = platform_get_ticks();
 }
 
-rct_xyz16 network_get_player_last_action_coord(uint32 index)
+LocationXYZ16 network_get_player_last_action_coord(uint32 index)
 {
     return gNetwork.player_list[index]->LastActionCoord;
 }
 
-void network_set_player_last_action_coord(uint32 index, rct_xyz16 coord)
+void network_set_player_last_action_coord(uint32 index, LocationXYZ16 coord)
 {
     if (index < gNetwork.player_list.size()) {
         gNetwork.player_list[index]->LastActionCoord = coord;
@@ -3207,8 +3207,8 @@ money32 network_get_player_money_spent(uint32 index) { return MONEY(0, 0); }
 void network_add_player_money_spent(uint32 index, money32 cost) { }
 sint32 network_get_player_last_action(uint32 index, sint32 time) { return -999; }
 void network_set_player_last_action(uint32 index, sint32 command) { }
-rct_xyz16 network_get_player_last_action_coord(uint32 index) { return {0, 0, 0}; }
-void network_set_player_last_action_coord(uint32 index, rct_xyz16 coord) { }
+LocationXYZ16 network_get_player_last_action_coord(uint32 index) { return {0, 0, 0}; }
+void network_set_player_last_action_coord(uint32 index, LocationXYZ16 coord) { }
 uint32 network_get_player_commands_ran(uint32 index) { return 0; }
 sint32 network_get_player_index(uint8 id) { return -1; }
 uint8 network_get_player_group(uint32 index) { return 0; }

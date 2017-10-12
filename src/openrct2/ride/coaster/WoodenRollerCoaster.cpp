@@ -30,9 +30,9 @@ typedef struct sprite_bb_2
 {
     uint32    sprite_id_a;
     uint32    sprite_id_b;
-    rct_xyz16 offset;
-    rct_xyz16 bb_offset;
-    rct_xyz16 bb_size;
+    LocationXYZ16 offset;
+    LocationXYZ16 bb_offset;
+    LocationXYZ16 bb_size;
 } sprite_bb_2;
 
 enum

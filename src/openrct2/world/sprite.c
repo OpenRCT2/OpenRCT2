@@ -42,8 +42,8 @@ static bool _spriteFlashingList[MAX_SPRITES];
 
 uint16 gSpriteSpatialIndex[0x10001];
 
-static rct_xyz16 _spritelocations1[MAX_SPRITES];
-static rct_xyz16 _spritelocations2[MAX_SPRITES];
+static LocationXYZ16 _spritelocations1[MAX_SPRITES];
+static LocationXYZ16 _spritelocations2[MAX_SPRITES];
 
 static size_t GetSpatialIndexOffset(sint32 x, sint32 y);
 
@@ -71,7 +71,7 @@ uint16 sprite_get_first_in_quadrant(sint32 x, sint32 y)
 
 static void invalidate_sprite_max_zoom(rct_sprite *sprite, sint32 maxZoom)
 {
-    if (sprite->unknown.sprite_left == SPRITE_LOCATION_NULL) return;
+    if (sprite->unknown.sprite_left == LOCATION_NULL) return;
 
     for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
         rct_viewport *viewport = &g_viewport_list[i];
@@ -181,7 +181,7 @@ void reset_sprite_spatial_index()
 static size_t GetSpatialIndexOffset(sint32 x, sint32 y)
 {
     size_t index = SPATIAL_INDEX_LOCATION_NULL;
-    if (x != SPRITE_LOCATION_NULL) {
+    if (x != LOCATION_NULL) {
         x = clamp(0, x, 0xFFFF);
         y = clamp(0, y, 0xFFFF);
 
@@ -322,15 +322,15 @@ rct_sprite *create_sprite(uint8 bl)
     // may contain garbage and cause a desync later on.
     sprite_reset(sprite);
 
-    sprite->x = SPRITE_LOCATION_NULL;
-    sprite->y = SPRITE_LOCATION_NULL;
+    sprite->x = LOCATION_NULL;
+    sprite->y = LOCATION_NULL;
     sprite->z = 0;
     sprite->name_string_idx = 0;
     sprite->sprite_width = 0x10;
     sprite->sprite_height_negative = 0x14;
     sprite->sprite_height_positive = 0x8;
     sprite->flags = 0;
-    sprite->sprite_left = SPRITE_LOCATION_NULL;
+    sprite->sprite_left = LOCATION_NULL;
 
     sprite->next_in_quadrant = gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL];
     gSpriteSpatialIndex[SPATIAL_INDEX_LOCATION_NULL] = sprite->sprite_index;
@@ -541,7 +541,7 @@ void sprite_misc_update_all()
 void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
 {
     if (x < 0 || y < 0 || x > 0x1FFF || y > 0x1FFF) {
-        x = SPRITE_LOCATION_NULL;
+        x = LOCATION_NULL;
     }
 
     size_t newIndex = GetSpatialIndexOffset(x, y);
@@ -565,8 +565,8 @@ void sprite_move(sint16 x, sint16 y, sint16 z, rct_sprite *sprite)
         sprite->unknown.next_in_quadrant = tempSpriteIndex;
     }
 
-    if (x == SPRITE_LOCATION_NULL) {
-        sprite->unknown.sprite_left = SPRITE_LOCATION_NULL;
+    if (x == LOCATION_NULL) {
+        sprite->unknown.sprite_left = LOCATION_NULL;
         sprite->unknown.x = x;
         sprite->unknown.y = y;
         sprite->unknown.z = z;
@@ -736,7 +736,7 @@ static bool sprite_should_tween(rct_sprite *sprite)
     return false;
 }
 
-static void store_sprite_locations(rct_xyz16 * sprite_locations)
+static void store_sprite_locations(LocationXYZ16 * sprite_locations)
 {
     for (uint16 i = 0; i < MAX_SPRITES; i++) {
         // skip going through `get_sprite` to not get stalled on assert,
@@ -765,8 +765,8 @@ void sprite_position_tween_all(float alpha)
     for (uint16 i = 0; i < MAX_SPRITES; i++) {
         rct_sprite * sprite = get_sprite(i);
         if (sprite_should_tween(sprite)) {
-            rct_xyz16 posA = _spritelocations1[i];
-            rct_xyz16 posB = _spritelocations2[i];
+            LocationXYZ16 posA = _spritelocations1[i];
+            LocationXYZ16 posB = _spritelocations2[i];
             if (posA.x == posB.x && posA.y == posB.y && posA.z == posB.z) {
                 continue;
             }
@@ -791,7 +791,7 @@ void sprite_position_tween_restore()
         if (sprite_should_tween(sprite)) {
             invalidate_sprite_2(sprite);
 
-            rct_xyz16 pos = _spritelocations2[i];
+            LocationXYZ16 pos = _spritelocations2[i];
             sprite_set_coordinates(pos.x, pos.y, pos.z, sprite);
         }
     }

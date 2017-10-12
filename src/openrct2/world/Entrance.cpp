@@ -28,11 +28,11 @@
 #include "../ride/track.h"
 
 bool gParkEntranceGhostExists = false;
-rct_xyz16 gParkEntranceGhostPosition = { 0, 0, 0 };
+LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };
 uint8 gParkEntranceGhostDirection = 0;
-rct_xyzd16 gParkEntrances[MAX_PARK_ENTRANCES];
+LocationXYZD16 gParkEntrances[MAX_PARK_ENTRANCES];
 
-rct_xyzd16 gRideEntranceExitGhostPosition;
+LocationXYZD16 gRideEntranceExitGhostPosition;
 uint8 gRideEntranceExitGhostStationIndex;
 
 static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
@@ -75,7 +75,7 @@ static money32 ParkEntranceRemove(sint16 x, sint16 y, uint8 z, uint8 flags)
         return 0;
     }
 
-    gParkEntrances[entranceIndex].x = MAP_LOCATION_NULL;
+    gParkEntrances[entranceIndex].x = LOCATION_NULL;
     direction = (gParkEntrances[entranceIndex].direction - 1) & 3;
 
     // Centre (sign)
@@ -189,7 +189,7 @@ static money32 RideEntranceExitPlace(sint16 x,
         ride_remove_peeps(rideIndex);
 
         bool requiresRemove = false;
-        rct_xy16 removeCoord = { 0, 0 };
+        LocationXY16 removeCoord = { 0, 0 };
 
         if (isExit)
         {
@@ -275,7 +275,7 @@ static money32 RideEntranceExitPlace(sint16 x,
 
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -400,7 +400,7 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
             return MONEY32_UNDEFINED;
         }
 
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -513,7 +513,7 @@ extern "C"
     {
         for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
         {
-            gParkEntrances[i].x = MAP_LOCATION_NULL;
+            gParkEntrances[i].x = LOCATION_NULL;
         }
     }
 
