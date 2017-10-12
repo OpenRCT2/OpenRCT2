@@ -7174,7 +7174,7 @@ rct_peep *peep_generate(sint32 x, sint32 y, sint32 z)
     peep->no_action_frame_no = 0;
     peep->action_sprite_type = 0;
     peep->peep_flags = 0;
-    peep->favourite_ride = 0xFF;
+    peep->favourite_ride = RIDE_ID_NULL;
     peep->favourite_ride_rating = 0;
 
     const rct_sprite_bounds* spriteBounds = g_peep_animation_entries[peep->sprite_type].sprite_bounds;

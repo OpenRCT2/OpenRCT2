@@ -403,7 +403,7 @@ void ride_update_favourited_stat()
     FOR_ALL_PEEPS(spriteIndex, peep) {
         if (peep->linked_list_type_offset != SPRITE_LIST_PEEP * 2)
             return;
-        if (peep->favourite_ride != 0xff) {
+        if (peep->favourite_ride != RIDE_ID_NULL) {
             ride = &gRideList[peep->favourite_ride];
             ride->guests_favourite++;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;

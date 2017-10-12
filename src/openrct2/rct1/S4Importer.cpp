@@ -1482,7 +1482,7 @@ private:
         }
         else
         {
-            dst->favourite_ride = RIDE_INDEX_NULL;
+            dst->favourite_ride = RIDE_ID_NULL;
             dst->favourite_ride_rating = 0;
         }
 
