@@ -42,6 +42,7 @@
 - Fix: [#6423] Importing parks containing names with Polish characters.
 - Fix: [#6423] Polish characters now correctly drawn when using the sprite font.
 - Fix: [#6445] Guests' favourite ride improperly set when importing from RCT1 or AA.
+- Fix: [#6452] Scenario text cut off when switching between 32 and 64-bit builds.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
