@@ -212,7 +212,8 @@ void mapgen_generate(mapgen_settings *settings)
     // Add the water
     mapgen_set_water_level(waterLevel);
 
-    // Add sandy beaches
+    // Add sandy beaches. Ignores ice terrain when the "random terrain" option is used.
+    // If the user has "place beaches" enabled and ice terrain is manually selected, allow it.
     if ((settings->beaches_place) && !(settings->floor == -1 && floorTexture == TERRAIN_ICE)) {
         // Randomly choose sand terrain.
         sint32 beachTexture = floorTexture;
@@ -225,6 +226,7 @@ void mapgen_generate(mapgen_settings *settings)
             break;
         }
 
+        // Paint each map tile with the sand terrain if it's below our water + beach height.
         for (y = 1; y < mapSize - 1; y++) {
             for (x = 1; x < mapSize - 1; x++) {
                 mapElement = map_get_surface_element_at(x, y);
