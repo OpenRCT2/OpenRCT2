@@ -1116,9 +1116,13 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     // only allow beaches controls if place beaches is enabled
     if (_beachesPlace) {
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT, true);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_UP, true);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN, true);
     }
     else {
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT, false);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_UP, false);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN, false);
     }
 
     window_mapgen_set_pressed_tab(w);
