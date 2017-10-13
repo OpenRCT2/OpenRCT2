@@ -585,6 +585,10 @@ static sint32 _heightmapLow = 2;
 static sint32 _heightmapHigh = 70;
 
 static bool _treesPlace = false;
+static sint32 _treesLow = 0;
+static sint32 _treesHigh = 10;
+static sint32 _treesBaseFreq = 60;
+static sint32 _treesOctaves = 4;
 
 rct_window *window_mapgen_open()
 {
@@ -948,10 +952,10 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.simplex_octaves = _simplex_octaves;
 
         mapgenSettings.trees_place = _treesPlace;
-        mapgenSettings.trees_low = 0;
-        mapgenSettings.trees_high = 10;
-        mapgenSettings.trees_base_freq = ((float)60) / 100.00f;
-        mapgenSettings.trees_octaves = 4;
+        mapgenSettings.trees_low = _treesLow;
+        mapgenSettings.trees_high = _treesHigh;
+        mapgenSettings.trees_base_freq = ((float)_treesBaseFreq) / 100.00f;
+        mapgenSettings.trees_octaves = _treesOctaves;
 
         mapgen_generate(&mapgenSettings);
         gfx_invalidate_screen();
