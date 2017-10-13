@@ -152,7 +152,7 @@ extern rct_colour_map ColourMapA[COLOUR_COUNT];
 void colours_init_maps();
 
 #ifndef NO_TTF
-uint8 blend(const uint8 base, const uint8 layer);
+uint8 blend(const uint8 paletteIndex1, const uint8 paletteIndex2);
 #endif
 
 #ifdef __cplusplus
