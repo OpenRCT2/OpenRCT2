@@ -717,6 +717,48 @@ static void ttf_draw_string_raw_sprite(rct_drawpixelinfo *dpi, const utf8 *text,
 
 #ifndef NO_TTF
 
+static uint8 colormap[256][256] = {0};
+
+uint8 findClosestIndex(uint8 red, uint8 green, uint8 blue)
+{
+    sint16 closest = -1;
+    sint32 closestDistance = INT32_MAX;
+
+    for (int i = 0; i < 256; i++)
+    {
+        const int distance =
+            pow(gPalette[i].red - red, 2) + pow(gPalette[i].green - green, 2) + pow(gPalette[i].blue - blue, 2);
+
+        if (distance < closestDistance)
+        {
+            closest = i;
+            closestDistance = distance;
+        }
+    }
+
+    return closest;
+}
+
+uint8 blend(const uint8 base, const uint8 layer)
+{
+    const uint8 cMin = min(base, layer);
+    const uint8 cMax = max(base, layer);
+
+    if (colormap[cMin][cMax] != 0)
+    {
+        return colormap[cMin][cMax];
+    }
+
+    log_info("Blending colours %d and %d", cMin, cMax);
+
+    uint8 red = (gPalette[cMin].red + gPalette[cMax].red) / 2;
+    uint8 green = (gPalette[cMin].green + gPalette[cMax].green) / 2;
+    uint8 blue = (gPalette[cMin].blue + gPalette[cMax].blue) / 2;
+
+    colormap[cMin][cMax] = findClosestIndex(red, green, blue);
+    return colormap[cMin][cMax];
+}
+
 static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, text_draw_info *info)
 {
     if (!ttf_initialise())
@@ -805,36 +847,18 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
                             // Centre of the glyph: use full colour.
                             *dst = colour;
                         }
-                        else if (*dst < 10 && *src > 50)
-                        {
-                            // For black backgrounds, hint using grey pixels.
-                            *dst = ColourMapA[COLOUR_WHITE].colour_0;
-                        }
-                        else if (*src > 70)
+                        else if (*src > 80)
                         {
                             // Simulate font hinting by shading the background colour instead.
                             if (info->flags & TEXT_DRAW_FLAG_OUTLINE)
                             {
                                 // As outlines are black, these texts should always use a darker shade
                                 // of the foreground colour for font hinting.
-                                *dst = ColourMapA[COLOUR_WHITE].colour_1;
-                            }
-                            else if (colour == ColourMapA[COLOUR_DARK_GREEN].colour_11)
-                            {
-                                // Exception: theme window text colour.
-                                *dst = ColourMapA[COLOUR_DARK_GREEN].lightest;
-                            }
-                            else if (colour == ColourMapA[COLOUR_BRIGHT_RED].light)
-                            {
-                                // Exception: losses in finance window.
-                                *dst = ColourMapA[COLOUR_BRIGHT_RED].lightest;
+                                *dst = blend(colour, PALETTE_INDEX_0);
                             }
                             else
                             {
-                                // For other texts, hinting direction depends on the intensity of the
-                                // foreground colour.
-                                bool intensive = colour % 12 > 4 && colour % 12 < 10;
-                                *dst += intensive ? 2 : -3;
+                                *dst = blend(colour, *dst);
                             }
                         }
                     }
