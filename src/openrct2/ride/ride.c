@@ -5481,15 +5481,15 @@ sint32 ride_get_refund_price(sint32 ride_id)
         uint8 rotation = map_element_get_direction(it.element);
         uint8 type = it.element->properties.track.type;
 
-        if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
-            money32 removePrice = game_do_command(
-                x,
-                GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8),
-                y,
+        if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        {
+            money32 removePrice = ride_remove_track_piece(x,
+                y, 
+                z, 
+                rotation & 3, 
                 type | (map_element_get_track_sequence(it.element) << 8),
-                GAME_COMMAND_REMOVE_TRACK,
-                z,
-                0);
+                GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY);
+
             if (removePrice == MONEY32_UNDEFINED) {
                 map_element_remove(it.element);
             } else {
