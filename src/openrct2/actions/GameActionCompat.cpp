@@ -26,6 +26,7 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideRemoveTrack.hpp"
+#include "RidePlaceTrack.hpp"
 
 extern "C"
 {
@@ -289,5 +290,55 @@ extern "C"
         Guard::Assert(false, "GAME_COMMAND_REMOVE_TRACK DEPRECATED");
     }
 #pragma endregion 
+
+
+#pragma region RidePlaceTrack
+
+    money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 brakeSpeed, sint32 colour, sint32 seatRotation, sint32 liftHillAndAlternativeState, sint32 flags)
+    {
+        auto gameAction = RidePlaceTrackAction(rideIndex, type, originX, originY, originZ, direction, brakeSpeed, colour, seatRotation, liftHillAndAlternativeState);
+        gameAction.SetFlags(flags);
+
+        auto res = GameActions::Execute(&gameAction);
+
+        if (res->Error != GA_ERROR::OK)
+            return MONEY32_UNDEFINED;
+
+        return res->Cost;
+    }
+
+    /**
+    *
+    *  rct2: 0x006C511D
+    */
+    void game_command_place_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp)
+    {
+        /*
+        rideIndex = edx & xFF,
+        type = (edx >> 8) & xFF,
+        direction = ebx >> 8,
+        brakeSpeed = edi >> 16 & xFF,
+        colour = edi >> 24 & 0x0F
+        seatRotation = edi >> 28 & 0x0F
+        liftHill = edx >> 16
+
+        *ebx = track_place(
+            *edx & 0xFF,
+            (*edx >> 8) & 0xFF,
+            (sint16)(*eax & 0xFFFF),
+            (sint16)(*ecx & 0xFFFF),
+            (sint16)(*edi & 0xFFFF),
+            (*ebx >> 8) & 0xFF,
+            (*edi >> 16) & 0xFF,
+            (*edi >> 24) & 0x0F,
+            (*edi >> 28) & 0x0F,
+            (*edx >> 16),
+            *ebx & 0xFF
+        );
+        */
+        Guard::Assert(false, "GAME_COMMAND_PLACE_TRACK DEPRECATED");
+    }
+
+#pragma endregion
 
 }

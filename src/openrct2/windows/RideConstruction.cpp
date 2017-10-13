@@ -2782,7 +2782,20 @@ money32 _place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint3
 
         return result;
     } else {
-        result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z, 0);
+        /*
+        rideIndex = edx & xFF,
+        type = (edx >> 8) & xFF,
+        direction = ebx >> 8,
+        brakeSpeed = edi >> 16 & xFF,
+        colour = edi >> 24 & 0x0F
+        seatRotation = edi >> 28 & 0x0F
+        liftHill = edx >> 16
+        */
+
+        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+        result = track_place(rideIndex, trackType, x, y, z, trackDirection, 0, 0, 0, liftHillAndAlternativeState, flags);
+
+        //result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z, 0);
         if (result == MONEY32_UNDEFINED)
             return result;
 

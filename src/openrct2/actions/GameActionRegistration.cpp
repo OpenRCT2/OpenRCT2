@@ -24,6 +24,7 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 #include "RideRemoveTrack.hpp"
+#include "RidePlaceTrack.hpp"
 
 void GameActions::Register()
 {
@@ -36,5 +37,6 @@ void GameActions::Register()
     Register<GuestSetNameAction>();
     Register<StaffSetNameAction>();
     Register<RideRemoveTrackAction>();
+    Register<RidePlaceTrackAction>();
 }
 

@@ -173,10 +173,11 @@ GameActionResult::Ptr GameActions::InternalExecute(const GameAction * action)
         if (network_get_mode() == NETWORK_MODE_CLIENT)
         {
             // As a client we have to wait or send it first.
-            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED) &&
+            if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && 
+                !(flags & GAME_COMMAND_FLAG_NETWORKED) &&
                 nestedGameAction == false)
             {
-                log_info("[%s] GameAction::Execute\n", "cl");
+                log_info("[%s] GameAction::Execute", "RT");
 
                 network_send_game_action(action);
 
@@ -190,17 +191,23 @@ GameActionResult::Ptr GameActions::InternalExecute(const GameAction * action)
             if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED) &&
                 nestedGameAction == false)
             {
-                log_info("[%s] GameAction::Execute\n", "sv-cl");
+                log_info("[%s] GameAction::Execute", "QE");
                 network_enqueue_game_action(action);
 
                 return result;
             }
         }
 
-        log_info("[%s] GameAction::Execute\n", "sv");
-
         // Execute the action, changing the game state
         result = action->Execute();
+        if (result->Error != GA_ERROR::OK)
+        {
+            log_info("[%s] GameAction::Execute (%u) : Error", "R0", action->GetType());
+        }
+        else
+        {
+            log_info("[%s] GameAction::Execute (%u) : OK", "R0", action->GetType());
+        }
 
         // Update money balance
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result->Cost != 0 &&

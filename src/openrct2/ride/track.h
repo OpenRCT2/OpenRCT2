@@ -527,6 +527,7 @@ const rct_preview_track *get_track_def_from_ride(Ride *ride, sint32 trackType);
 const rct_preview_track *get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
 const rct_track_coordinates *get_track_coord_from_ride(Ride *ride, sint32 trackType);
 
+bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex, sint32 flags);
 bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex, sint32 flags);
 
 void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
@@ -549,6 +550,7 @@ void track_element_set_inverted(rct_map_element * mapElement, bool inverted);
 sint32 track_get_actual_bank(rct_map_element *mapElement, sint32 bank);
 sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank);
 sint32 track_get_actual_bank_3(rct_vehicle *vehicle, rct_map_element *mapElement);
+money32 track_place(sint32 rideIndex, sint32 type, sint32 originX, sint32 originY, sint32 originZ, sint32 direction, sint32 brakeSpeed, sint32 colour, sint32 seatRotation, sint32 liftHillAndAlternativeState, sint32 flags);
 
 void game_command_place_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_remove_track(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
