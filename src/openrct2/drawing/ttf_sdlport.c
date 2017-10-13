@@ -1433,6 +1433,20 @@ static bool CharacterIsDelimiter(char c, const char *delimiters)
     return false;
 }
 
+void TTF_SetFontHinting(TTF_Font* font, int hinting)
+{
+    if (hinting == TTF_HINTING_LIGHT)
+        font->hinting = FT_LOAD_TARGET_LIGHT;
+    else if (hinting == TTF_HINTING_MONO)
+        font->hinting = FT_LOAD_TARGET_MONO;
+    else if (hinting == TTF_HINTING_NONE)
+        font->hinting = FT_LOAD_NO_HINTING;
+    else
+        font->hinting = 0;
+
+    Flush_Cache(font);
+}
+
 void TTF_Quit(void)
 {
     if (TTF_initialized) {

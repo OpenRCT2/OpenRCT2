@@ -1083,7 +1083,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             gConfigFonts.enable_hinting = (int_val[0] != 0);
             config_save_default();
             console_execute_silent("get enable_hinting");
-            ttf_surface_cache_dispose_all();
+            ttf_toggle_hinting();
         }
 #endif
         else if (invalidArgs) {
