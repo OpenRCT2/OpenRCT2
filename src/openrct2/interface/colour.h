@@ -111,6 +111,8 @@ enum
     PALETTE_INDEX_209 = 209,    // Bright Pink (light)
     PALETTE_INDEX_222 = 222,    //
     PALETTE_INDEX_245 = 245,    //
+
+    PALETTE_COUNT = 256,
 };
 
 #define TEXT_COLOUR_254         (254)
@@ -147,6 +149,10 @@ extern "C" {
 extern rct_colour_map ColourMapA[COLOUR_COUNT];
 
 void colours_init_maps();
+
+#ifndef NO_TTF
+uint8 blend(const uint8 base, const uint8 layer);
+#endif
 
 #ifdef __cplusplus
 }
