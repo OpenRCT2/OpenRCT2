@@ -60,7 +60,6 @@ static TTF_Font * ttf_open_font(const utf8 * fontPath, sint32 ptSize);
 static void ttf_close_font(TTF_Font * font);
 static uint32 ttf_surface_cache_hash(TTF_Font * font, const utf8 * text);
 static void ttf_surface_cache_dispose(ttf_cache_entry * entry);
-static void ttf_surface_cache_dispose_all();
 static void ttf_getwidth_cache_dispose_all();
 static bool ttf_get_size(TTF_Font * font, const utf8 * text, sint32 * width, sint32 * height);
 static TTFSurface * ttf_render(TTF_Font * font, const utf8 * text);
@@ -144,7 +143,7 @@ static void ttf_surface_cache_dispose(ttf_cache_entry *entry)
     }
 }
 
-static void ttf_surface_cache_dispose_all()
+void ttf_surface_cache_dispose_all()
 {
     for (sint32 i = 0; i < TTF_SURFACE_CACHE_SIZE; i++) {
         ttf_surface_cache_dispose(&_ttfSurfaceCache[i]);

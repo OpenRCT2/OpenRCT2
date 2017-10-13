@@ -44,6 +44,7 @@ extern "C" {
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
 TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text);
+void ttf_surface_cache_dispose_all();
 uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text);
 bool ttf_provides_glyph(const TTF_Font * font, codepoint_t codepoint);
 void ttf_free_surface(TTFSurface * surface);

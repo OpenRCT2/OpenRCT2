@@ -45,6 +45,10 @@
 #include "console.h"
 #include "viewport.h"
 
+#ifndef NO_TTF
+#include "../drawing/ttf.h"
+#endif
+
 #define CONSOLE_BUFFER_SIZE 8192
 #define CONSOLE_BUFFER_2_SIZE 256
 #define CONSOLE_HISTORY_SIZE 64
@@ -833,6 +837,11 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
         else if (strcmp(argv[0], "cheat_disable_support_limits") == 0) {
             console_printf("cheat_disable_support_limits %d", gCheatsDisableSupportLimits);
         }
+#ifndef NO_TTF
+        else if (strcmp(argv[0], "enable_hinting") == 0) {
+            console_printf("enable_hinting %d", gConfigFonts.enable_hinting);
+        }
+#endif
         else {
             console_writeline_warning("Invalid variable.");
         }
@@ -1069,6 +1078,14 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             }
             console_execute_silent("get cheat_disable_support_limits");
         }
+#ifndef NO_TTF
+        else if (strcmp(argv[0], "enable_hinting") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
+            gConfigFonts.enable_hinting = (int_val[0] != 0);
+            config_save_default();
+            console_execute_silent("get enable_hinting");
+            ttf_surface_cache_dispose_all();
+        }
+#endif
         else if (invalidArgs) {
             console_writeline_error("Invalid arguments.");
         }
