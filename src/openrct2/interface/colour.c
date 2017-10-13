@@ -62,3 +62,47 @@ void colours_init_maps()
         ColourMapA[i].colour_11 = g1Element->offset[INDEX_COLOUR_11];
     }
 }
+
+#ifndef NO_TTF
+static uint8 BlendColourMap[PALETTE_COUNT][PALETTE_COUNT] = {0};
+
+static uint8 findClosestIndex(uint8 red, uint8 green, uint8 blue)
+{
+    sint16 closest = -1;
+    sint32 closestDistance = INT32_MAX;
+
+    for (int i = 0; i < PALETTE_COUNT; i++)
+    {
+        const int distance =
+            pow(gPalette[i].red - red, 2) + pow(gPalette[i].green - green, 2) + pow(gPalette[i].blue - blue, 2);
+
+        if (distance < closestDistance)
+        {
+            closest = i;
+            closestDistance = distance;
+        }
+    }
+
+    return closest;
+}
+
+uint8 blend(const uint8 base, const uint8 layer)
+{
+    const uint8 cMin = min(base, layer);
+    const uint8 cMax = max(base, layer);
+
+    if (BlendColourMap[cMin][cMax] != 0)
+    {
+        return BlendColourMap[cMin][cMax];
+    }
+
+    log_info("Blending colours %d and %d", cMin, cMax);
+
+    uint8 red = (gPalette[cMin].red + gPalette[cMax].red) / 2;
+    uint8 green = (gPalette[cMin].green + gPalette[cMax].green) / 2;
+    uint8 blue = (gPalette[cMin].blue + gPalette[cMax].blue) / 2;
+
+    BlendColourMap[cMin][cMax] = findClosestIndex(red, green, blue);
+    return BlendColourMap[cMin][cMax];
+}
+#endif
