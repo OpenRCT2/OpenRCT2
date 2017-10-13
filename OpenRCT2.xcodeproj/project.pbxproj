@@ -111,6 +111,9 @@
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
 		4CF788C01F1B787700C611BF /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF788BE1F1B787700C611BF /* Painter.cpp */; };
 		4CFBCD5E1F27CD8000D74FB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */; };
+		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
+		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
+		4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
 		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
@@ -373,9 +376,6 @@
 		F76C86981EC4E88400FA49E2 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844D1EC4E7CC00FA49E2 /* sprite.c */; };
 		F76C869A1EC4E88400FA49E2 /* supports.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844F1EC4E7CC00FA49E2 /* supports.c */; };
 		F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */; };
-		F76C869E1EC4E88400FA49E2 /* peep.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84541EC4E7CC00FA49E2 /* peep.c */; };
-		F76C86A01EC4E88400FA49E2 /* peep_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84561EC4E7CC00FA49E2 /* peep_data.c */; };
-		F76C86A11EC4E88400FA49E2 /* staff.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84571EC4E7CC00FA49E2 /* staff.c */; };
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
 		F76C86A51EC4E88400FA49E2 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C845C1EC4E7CC00FA49E2 /* linux.c */; };
 		F76C86A61EC4E88400FA49E2 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.m */; };
@@ -713,6 +713,11 @@
 		4CF788BE1F1B787700C611BF /* Painter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Painter.cpp; sourceTree = "<group>"; };
 		4CF788BF1F1B787700C611BF /* Painter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painter.h; sourceTree = "<group>"; };
 		4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenery.cpp; sourceTree = "<group>"; };
+		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
+		4CFE4E7C1F90A3F1005243C2 /* Peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peep.h; sourceTree = "<group>"; };
+		4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepData.cpp; sourceTree = "<group>"; };
+		4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Staff.cpp; sourceTree = "<group>"; };
+		4CFE4E7F1F90A3F1005243C2 /* Staff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Staff.h; sourceTree = "<group>"; };
 		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1247,11 +1252,6 @@
 		F76C84501EC4E7CC00FA49E2 /* supports.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = supports.h; sourceTree = "<group>"; };
 		F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParkImporter.cpp; sourceTree = "<group>"; };
 		F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParkImporter.h; sourceTree = "<group>"; };
-		F76C84541EC4E7CC00FA49E2 /* peep.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = peep.c; sourceTree = "<group>"; };
-		F76C84551EC4E7CC00FA49E2 /* peep.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = peep.h; sourceTree = "<group>"; };
-		F76C84561EC4E7CC00FA49E2 /* peep_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = peep_data.c; sourceTree = "<group>"; };
-		F76C84571EC4E7CC00FA49E2 /* staff.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = staff.c; sourceTree = "<group>"; };
-		F76C84581EC4E7CC00FA49E2 /* staff.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = staff.h; sourceTree = "<group>"; };
 		F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
 		F76C845B1EC4E7CC00FA49E2 /* crash.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = crash.h; sourceTree = "<group>"; };
 		F76C845C1EC4E7CC00FA49E2 /* linux.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = linux.c; sourceTree = "<group>"; };
@@ -2236,11 +2236,11 @@
 		F76C84531EC4E7CC00FA49E2 /* peep */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84541EC4E7CC00FA49E2 /* peep.c */,
-				F76C84551EC4E7CC00FA49E2 /* peep.h */,
-				F76C84561EC4E7CC00FA49E2 /* peep_data.c */,
-				F76C84571EC4E7CC00FA49E2 /* staff.c */,
-				F76C84581EC4E7CC00FA49E2 /* staff.h */,
+				4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */,
+				4CFE4E7C1F90A3F1005243C2 /* Peep.h */,
+				4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */,
+				4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */,
+				4CFE4E7F1F90A3F1005243C2 /* Staff.h */,
 			);
 			path = peep;
 			sourceTree = "<group>";
@@ -3137,6 +3137,7 @@
 				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
 				4C93F1A51F8B748900A9330D /* BoatRide.cpp in Sources */,
+				4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
@@ -3158,6 +3159,7 @@
 				4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */,
 				4C93F1BA1F8E185600A9330D /* Award.cpp in Sources */,
 				F76C887A1EC5324E00FA49E2 /* AudioMixer.cpp in Sources */,
+				4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */,
 				4C93F1431F8B744400A9330D /* InvertedImpulseCoaster.cpp in Sources */,
 				4C93F1481F8B744400A9330D /* LoopingRollerCoaster.cpp in Sources */,
 				4C93F1551F8B744400A9330D /* VerticalDropRollerCoaster.cpp in Sources */,
@@ -3242,6 +3244,7 @@
 				4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
 				4C93F1901F8B747A00A9330D /* RotoDrop.cpp in Sources */,
+				4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
 				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
@@ -3435,9 +3438,6 @@
 				F76C86981EC4E88400FA49E2 /* sprite.c in Sources */,
 				F76C869A1EC4E88400FA49E2 /* supports.c in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
-				F76C869E1EC4E88400FA49E2 /* peep.c in Sources */,
-				F76C86A01EC4E88400FA49E2 /* peep_data.c in Sources */,
-				F76C86A11EC4E88400FA49E2 /* staff.c in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A51EC4E88400FA49E2 /* linux.c in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
