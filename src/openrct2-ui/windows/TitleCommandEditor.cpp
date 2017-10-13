@@ -111,7 +111,7 @@ static void window_title_command_editor_textinput(rct_window *w, rct_widgetindex
 static void window_title_command_editor_inputsize(rct_window *w);
 static sint32 get_command_info_index(sint32 index);
 static TITLE_COMMAND_ORDER get_command_info(sint32 index);
-static rct_xy16 get_location();
+static LocationXY16 get_location();
 static uint8 get_zoom();
 
 static rct_window_event_list window_title_command_editor_events = {
@@ -163,9 +163,9 @@ static TITLE_COMMAND_ORDER get_command_info(sint32 index)
     return _window_title_command_editor_orders[0];
 }
 
-static rct_xy16 get_location()
+static LocationXY16 get_location()
 {
-    rct_xy16 mapCoord = { 0 };
+    LocationXY16 mapCoord = { 0 };
     rct_window *w = window_get_main();
     if (w != nullptr) {
         sint32 interactionType;
@@ -274,7 +274,7 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         break;
     case WIDX_GET:
         if (command.Type == TITLE_SCRIPT_LOCATION) {
-            rct_xy16 mapCoord = get_location();
+            LocationXY16 mapCoord = get_location();
             command.X = (uint8)mapCoord.x;
             command.Y = (uint8)mapCoord.y;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
@@ -391,7 +391,7 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
         switch (command.Type) {
         case TITLE_SCRIPT_LOCATION:
         {
-            rct_xy16 mapCoord = get_location();
+            LocationXY16 mapCoord = get_location();
             command.X = (uint8)mapCoord.x;
             command.Y = (uint8)mapCoord.y;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);

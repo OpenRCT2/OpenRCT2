@@ -49,7 +49,7 @@ uint8 gSceneryPlacePathSlope;
 uint8 gSceneryPlaceRotation;
 
 uint8 gSceneryGhostType;
-rct_xyz16 gSceneryGhostPosition;
+LocationXYZ16 gSceneryGhostPosition;
 uint32 gSceneryGhostPathObjectType;
 uint8 gSceneryGhostWallRotation;
 
@@ -66,7 +66,7 @@ uint8 gSceneryGroundFlags;
 money32 gClearSceneryCost;
 
 // rct2: 0x009A3E74
-const rct_xy8 ScenerySubTileOffsets[] = {
+const LocationXY8 ScenerySubTileOffsets[] = {
     {  7,  7 },
     {  7, 23 },
     { 23, 23 },

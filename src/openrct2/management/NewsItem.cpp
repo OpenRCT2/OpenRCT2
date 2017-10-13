@@ -214,7 +214,7 @@ static sint32 news_item_get_new_history_slot()
 
 /**
  * Get the (x,y,z) coordinates of the subject of a news item.
- * If the new item is no longer valid, return SPRITE_LOCATION_NULL in the x-coordinate
+ * If the new item is no longer valid, return LOCATION_NULL in the x-coordinate
  *
  *  rct2: 0x0066BA74
  */
@@ -230,7 +230,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         ride = get_ride(subject);
         if (ride->overall_view.xy == RCT_XY8_UNDEFINED)
         {
-            *x = SPRITE_LOCATION_NULL;
+            *x = LOCATION_NULL;
             break;
         }
         *x   = ride->overall_view.x * 32 + 16;
@@ -242,12 +242,12 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         *x = peep->x;
         *y = peep->y;
         *z = peep->z;
-        if (*x != SPRITE_LOCATION_NULL)
+        if (*x != LOCATION_NULL)
             break;
 
         if (peep->state != 3 && peep->state != 7)
         {
-            *x = SPRITE_LOCATION_NULL;
+            *x = LOCATION_NULL;
             break;
         }
 
@@ -255,7 +255,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         ride = get_ride(peep->current_ride);
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         {
-            *x = SPRITE_LOCATION_NULL;
+            *x = LOCATION_NULL;
             break;
         }
 
@@ -282,7 +282,7 @@ void news_item_get_subject_location(sint32 type, sint32 subject, sint32 * x, sin
         *z = map_element_height(*x, *y);
         break;
     default:
-        *x = SPRITE_LOCATION_NULL;
+        *x = LOCATION_NULL;
         break;
     }
 }

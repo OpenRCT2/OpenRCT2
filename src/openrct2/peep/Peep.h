@@ -601,8 +601,8 @@ typedef struct rct_peep
     };
     uint8     photo1_ride_ref;     // 0xC7
     uint32    peep_flags;          // 0xC8
-    rct_xyzd8 pathfind_goal;       // 0xCC
-    rct_xyzd8 pathfind_history[4]; // 0xD0
+    LocationXYZD8 pathfind_goal;       // 0xCC
+    LocationXYZD8 pathfind_history[4]; // 0xD0
     uint8     no_action_frame_no;  // 0xE0
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
     uint8 litter_count; // 0xE1
@@ -739,7 +739,7 @@ extern uint32 gNextGuestNumber;
 
 extern uint8 gPeepWarningThrottle[16];
 
-extern rct_xyz16 gPeepPathFindGoalPosition;
+extern LocationXYZ16 gPeepPathFindGoalPosition;
 extern bool      gPeepPathFindIgnoreForeignQueues;
 extern uint8     gPeepPathFindQueueRideIndex;
 

@@ -22,7 +22,7 @@
 #include <openrct2/ride/track.h>
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/map_element/map_element.h>
-#include "../../src/openrct2/ride/ride.h"
+#include <openrct2/ride/ride.h>
 
 #define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
 
@@ -39,7 +39,7 @@ bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 uint8 gClipHeight = 255;
 
-const rct_xy16 TileDirectionDelta[] = {
+const LocationXY16 TileDirectionDelta[] = {
     {-32, 0},
     {0,   +32},
     {+32, 0},
@@ -76,9 +76,9 @@ int object_entry_group_counts[] = {
 GeneralConfiguration gConfigGeneral;
 uint16 gMapSelectFlags;
 uint16 gMapSelectType;
-rct_xy16 gMapSelectPositionA;
-rct_xy16 gMapSelectPositionB;
-rct_xyz16 gMapSelectArrowPosition;
+LocationXY16 gMapSelectPositionA;
+LocationXY16 gMapSelectPositionB;
+LocationXYZ16 gMapSelectArrowPosition;
 uint8 gMapSelectArrowDirection;
 
 void entrance_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }

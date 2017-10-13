@@ -104,7 +104,7 @@ static void paint_session_add_ps_to_quadrant(paint_session * session, paint_stru
 /**
 * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
 */
-static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_xyz16 offset, rct_xyz16 boundBoxSize, rct_xyz16 boundBoxOffset, uint8 rotation)
+static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, LocationXYZ16 offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset, uint8 rotation)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return NULL;
     paint_struct * ps = &session->NextFreePaintStruct->basic;
@@ -132,7 +132,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_x
     offset.x += session->SpritePosition.x;
     offset.y += session->SpritePosition.y;
 
-    rct_xy16 map = coordinate_3d_to_2d(&offset, rotation);
+    LocationXY16 map = coordinate_3d_to_2d(&offset, rotation);
 
     ps->x = map.x;
     ps->y = map.y;
@@ -201,7 +201,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, rct_x
 void paint_session_generate(paint_session * session)
 {
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
-    rct_xy16 mapTile =
+    LocationXY16 mapTile =
     {
         (sint16)(dpi->x & 0xFFE0),
         (sint16)((dpi->y - 16) & 0xFFE0)
@@ -545,69 +545,69 @@ static void paint_ps_image_with_bounding_boxes(rct_drawpixelinfo * dpi, paint_st
     const uint8 colour = BoundBoxDebugColours[ps->sprite_type];
     const uint8 rotation = get_current_rotation();
 
-    const rct_xyz16 frontTop =
+    const LocationXYZ16 frontTop =
     {
         (sint16)ps->bound_box_x_end,
         (sint16)ps->bound_box_y_end,
         (sint16)ps->bound_box_z_end
     };
-    const rct_xy16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, rotation);
+    const LocationXY16 screenCoordFrontTop = coordinate_3d_to_2d(&frontTop, rotation);
 
-    const rct_xyz16 frontBottom =
+    const LocationXYZ16 frontBottom =
     {
         (sint16)ps->bound_box_x_end,
         (sint16)ps->bound_box_y_end,
         (sint16)ps->bound_box_z
     };
-    const rct_xy16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, rotation);
+    const LocationXY16 screenCoordFrontBottom = coordinate_3d_to_2d(&frontBottom, rotation);
 
-    const rct_xyz16 leftTop =
+    const LocationXYZ16 leftTop =
     {
         (sint16)ps->bound_box_x,
         (sint16)ps->bound_box_y_end,
         (sint16)ps->bound_box_z_end
     };
-    const rct_xy16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, rotation);
+    const LocationXY16 screenCoordLeftTop = coordinate_3d_to_2d(&leftTop, rotation);
 
-    const rct_xyz16 leftBottom =
+    const LocationXYZ16 leftBottom =
     {
         (sint16)ps->bound_box_x,
         (sint16)ps->bound_box_y_end,
         (sint16)ps->bound_box_z
     };
-    const rct_xy16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, rotation);
+    const LocationXY16 screenCoordLeftBottom = coordinate_3d_to_2d(&leftBottom, rotation);
 
-    const rct_xyz16 rightTop =
+    const LocationXYZ16 rightTop =
     {
         (sint16)ps->bound_box_x_end,
         (sint16)ps->bound_box_y,
         (sint16)ps->bound_box_z_end
     };
-    const rct_xy16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, rotation);
+    const LocationXY16 screenCoordRightTop = coordinate_3d_to_2d(&rightTop, rotation);
 
-    const rct_xyz16 rightBottom =
+    const LocationXYZ16 rightBottom =
     {
         (sint16)ps->bound_box_x_end,
         (sint16)ps->bound_box_y,
         (sint16)ps->bound_box_z
     };
-    const rct_xy16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, rotation);
+    const LocationXY16 screenCoordRightBottom = coordinate_3d_to_2d(&rightBottom, rotation);
 
-    const rct_xyz16 backTop =
+    const LocationXYZ16 backTop =
     {
         (sint16)ps->bound_box_x,
         (sint16)ps->bound_box_y,
         (sint16)ps->bound_box_z_end
     };
-    const rct_xy16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, rotation);
+    const LocationXY16 screenCoordBackTop = coordinate_3d_to_2d(&backTop, rotation);
 
-    const rct_xyz16 backBottom =
+    const LocationXYZ16 backBottom =
     {
         (sint16)ps->bound_box_x,
         (sint16)ps->bound_box_y,
         (sint16)ps->bound_box_z
     };
-    const rct_xy16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, rotation);
+    const LocationXY16 screenCoordBackBottom = coordinate_3d_to_2d(&backBottom, rotation);
 
     // bottom square
     gfx_draw_line(dpi, screenCoordFrontBottom.x, screenCoordFrontBottom.y, screenCoordLeftBottom.x, screenCoordLeftBottom.y, colour);
@@ -767,14 +767,14 @@ extern "C"
         uint32 image_element = image_id & 0x7FFFF;
         rct_g1_element *g1Element = gfx_get_g1_element(image_element);
 
-        rct_xyz16 coord_3d =
+        LocationXYZ16 coord_3d =
         {
             x_offset, // ax
             y_offset, // cx
             z_offset
         };
 
-        rct_xyz16 boundBox =
+        LocationXYZ16 boundBox =
         {
             bound_box_length_x, // di
             bound_box_length_y, // si
@@ -821,7 +821,7 @@ extern "C"
         ps->bound_box_z = coord_3d.z;
         ps->bound_box_z_end = (boundBox.z + coord_3d.z);
 
-        rct_xy16 map = coordinate_3d_to_2d(&coord_3d, rotation);
+        LocationXY16 map = coordinate_3d_to_2d(&coord_3d, rotation);
 
         ps->x = map.x;
         ps->y = map.y;
@@ -903,9 +903,9 @@ extern "C"
         session->UnkF1AD28 = 0;
         session->UnkF1AD2C = NULL;
 
-        rct_xyz16 offset = { x_offset, y_offset, z_offset };
-        rct_xyz16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-        rct_xyz16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+        LocationXYZ16 offset = { x_offset, y_offset, z_offset };
+        LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+        LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
         if (ps == NULL) {
@@ -914,7 +914,7 @@ extern "C"
 
         session->UnkF1AD28 = ps;
 
-        rct_xy16 attach =
+        LocationXY16 attach =
         {
             (sint16)ps->bound_box_x,
             (sint16)ps->bound_box_y
@@ -973,9 +973,9 @@ extern "C"
         session->UnkF1AD28 = 0;
         session->UnkF1AD2C = NULL;
 
-        rct_xyz16 offset = { x_offset, y_offset, z_offset };
-        rct_xyz16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-        rct_xyz16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+        LocationXYZ16 offset = { x_offset, y_offset, z_offset };
+        LocationXYZ16 boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+        LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBoxSize, boundBoxOffset, rotation);
 
         if (ps == NULL) {
@@ -1028,9 +1028,9 @@ extern "C"
             );
         }
 
-        rct_xyz16 offset = { x_offset, y_offset, z_offset };
-        rct_xyz16 boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-        rct_xyz16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
+        LocationXYZ16 offset = { x_offset, y_offset, z_offset };
+        LocationXYZ16 boundBox = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
+        LocationXYZ16 boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
         paint_struct * ps = sub_9819_c(session, image_id, offset, boundBox, boundBoxOffset, rotation);
 
         if (ps == NULL)
@@ -1148,13 +1148,13 @@ extern "C"
         ps->args[3] = 0;
         ps->y_offsets = (uint8 *)y_offsets;
 
-        const rct_xyz16 position =
+        const LocationXYZ16 position =
         {
             session->SpritePosition.x,
             session->SpritePosition.y,
             z
         };
-        const rct_xy16 coord = coordinate_3d_to_2d(&position, rotation);
+        const LocationXY16 coord = coordinate_3d_to_2d(&position, rotation);
 
         ps->x = coord.x + offset_x;
         ps->y = coord.y;

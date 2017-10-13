@@ -103,7 +103,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -398,7 +398,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);

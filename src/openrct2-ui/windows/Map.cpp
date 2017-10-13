@@ -100,7 +100,7 @@ static rct_widget window_map_widgets[] = {
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-const rct_xy16 MiniMapOffsets[] = {
+const LocationXY16 MiniMapOffsets[] = {
     { 256 - 8,   0 },
     { 512 - 8, 256 },
     { 256 - 8, 512 },
@@ -934,7 +934,7 @@ static void window_map_centre_on_view_point()
     if (w_map == nullptr)
         return;
 
-    rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
+    LocationXY16 offset = MiniMapOffsets[get_current_rotation()];
 
     // calculate centre view point of viewport and transform it to minimap coordinates
 
@@ -1072,7 +1072,7 @@ static void window_map_paint_peep_overlay(rct_drawpixelinfo *dpi)
         left = peep->x;
         top = peep->y;
 
-        if (left == SPRITE_LOCATION_NULL)
+        if (left == LOCATION_NULL)
             continue;
 
         window_map_transform_to_map_coords(&left, &top);
@@ -1122,7 +1122,7 @@ static void window_map_paint_train_overlay(rct_drawpixelinfo *dpi)
             left = vehicle->x;
             top = vehicle->y;
 
-            if (left == SPRITE_LOCATION_NULL)
+            if (left == LOCATION_NULL)
                 continue;
 
             window_map_transform_to_map_coords(&left, &top);
@@ -1151,7 +1151,7 @@ static void window_map_paint_hud_rectangle(rct_drawpixelinfo *dpi)
     if (viewport == nullptr)
         return;
 
-    rct_xy16 offset = MiniMapOffsets[get_current_rotation()];
+    LocationXY16 offset = MiniMapOffsets[get_current_rotation()];
     sint16 left = (viewport->view_x >> 5) + offset.x;
     sint16 right = ((viewport->view_x + viewport->view_width) >> 5) + offset.x;
     sint16 top = (viewport->view_y >> 4) + offset.y;
@@ -1186,7 +1186,7 @@ static void window_map_set_land_rights_tool_update(sint32 x, sint32 y)
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     screen_get_map_xy(x, y, &mapX, &mapY, &viewport);
-    if (mapX == MAP_LOCATION_NULL)
+    if (mapX == LOCATION_NULL)
         return;
 
     gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
@@ -1216,7 +1216,7 @@ static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *map
     rct_map_element *mapElement;
 
     sub_68A15E(x, y, mapX, mapY, direction, &mapElement);
-    if (*mapX == MAP_LOCATION_NULL)
+    if (*mapX == LOCATION_NULL)
         return;
 
     mapElement = map_get_surface_element_at(*mapX >> 5, *mapY >> 5);
@@ -1290,7 +1290,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if ((mapX & 0xFFFF) == 0x8000)
+    if ((mapX & 0xFFFF) == LOCATION_NULL)
         return;
 
     mapZ = mapElement->base_height * 8;
@@ -1326,7 +1326,7 @@ static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
     sint16 mapX, mapY, mapZ;
     sint32 direction;
     place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
-    if (mapX != MAP_LOCATION_NULL) {
+    if (mapX != LOCATION_NULL) {
         gGameCommandErrorTitle = STR_CANT_BUILD_PARK_ENTRANCE_HERE;
         money32 price = place_park_entrance(mapX, mapY, mapZ, direction);
         if (price != MONEY32_UNDEFINED) {
@@ -1350,7 +1350,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
     sint32 mapX, mapY, mapZ, direction;
 
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if (mapX == 0x8000)
+    if (mapX == LOCATION_NULL)
         return;
 
     surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
@@ -1648,7 +1648,7 @@ static void map_window_set_pixels(rct_window *w)
     sint32 x = 0, y = 0, dx = 0, dy = 0;
 
     sint32 pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-    rct_xy16 destinationPosition = MakeXY16(pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE);
+    LocationXY16 destinationPosition = MakeXY16(pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE);
     destination = &(*_mapImageData)[destinationPosition.y][destinationPosition.x];
     switch (get_current_rotation()) {
     case 0:

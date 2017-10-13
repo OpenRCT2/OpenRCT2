@@ -101,7 +101,7 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
     {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -237,7 +237,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
     {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -490,7 +490,7 @@ extern "C"
         sint32 i, rideIndex;
         Ride *ride;
 
-        static const rct_xy16 NeighbourCheckOrder[] =
+        static const LocationXY16 NeighbourCheckOrder[] =
         {
             {  32,   0 },
             { -32,   0 },
@@ -519,7 +519,7 @@ extern "C"
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
                 continue;
 
-            rct_xy8 location = ride->overall_view;
+            LocationXY8 location = ride->overall_view;
             if (location.xy == RCT_XY8_UNDEFINED)
                 continue;
 

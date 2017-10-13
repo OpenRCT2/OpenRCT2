@@ -1250,7 +1250,7 @@ static void window_tile_inspector_tool_update(rct_window* w, rct_widgetindex wid
     sint16 mapY = y;
     sint32 direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX != MAP_LOCATION_NULL) {
+    if (mapX != LOCATION_NULL) {
         gMapSelectPositionA.x = gMapSelectPositionB.x = mapX;
         gMapSelectPositionA.y = gMapSelectPositionB.y = mapY;
     }
@@ -1279,7 +1279,7 @@ static void window_tile_inspector_update_selected_tile(rct_window *w, sint32 x, 
     sint16 mapY = y;
     sint32 direction;
     screen_pos_to_map_pos(&mapX, &mapY, &direction);
-    if (mapX == MAP_LOCATION_NULL) {
+    if (mapX == LOCATION_NULL) {
         return;
     }
 

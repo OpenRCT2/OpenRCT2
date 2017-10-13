@@ -92,7 +92,7 @@ public:
         sint8 entranceNum = -1;
         for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
-            if (gParkEntrances[i].x == MAP_LOCATION_NULL)
+            if (gParkEntrances[i].x == LOCATION_NULL)
             {
                 entranceNum = i;
                 break;
@@ -106,7 +106,7 @@ public:
 
         sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        rct_xy16 entranceLoc = { _x, _y };
+        LocationXY16 entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)
@@ -152,7 +152,7 @@ public:
         sint8 entranceNum = -1;
         for (uint8 i = 0; i < MAX_PARK_ENTRANCES; ++i)
         {
-            if (gParkEntrances[i].x == MAP_LOCATION_NULL)
+            if (gParkEntrances[i].x == LOCATION_NULL)
             {
                 entranceNum = i;
                 break;
@@ -168,7 +168,7 @@ public:
 
         sint8 zLow = _z * 2;
         sint8 zHigh = zLow + 12;
-        rct_xy16 entranceLoc = { _x, _y };
+        LocationXY16 entranceLoc = { _x, _y };
         for (uint8 index = 0; index < 3; index++)
         {
             if (index == 1)

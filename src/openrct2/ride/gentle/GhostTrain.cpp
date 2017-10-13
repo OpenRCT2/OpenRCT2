@@ -138,7 +138,7 @@ static const uint32 ghost_train_track_pieces_brakes[4] = {
 static void paint_ghost_train_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                          sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -174,7 +174,7 @@ static void paint_ghost_train_track_flat(paint_session * session, uint8 rideInde
 static void paint_ghost_train_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                               sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = ghost_train_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
@@ -226,7 +226,7 @@ static void paint_ghost_train_track_25_deg_up(paint_session * session, uint8 rid
 static void paint_ghost_train_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                       uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
@@ -277,7 +277,7 @@ static void paint_ghost_train_track_flat_to_25_deg_up(paint_session * session, u
 static void paint_ghost_train_track_25_deg_up_to_flat_shared(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                              uint8 direction, sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
     if (direction == 0 || direction == 2)
@@ -525,7 +525,7 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
 static void paint_ghost_train_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                            sint32 height, rct_map_element * mapElement)
 {
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     uint32 imageId = ghost_train_track_pieces_brakes[direction] | session->TrackColours[SCHEME_TRACK];
 

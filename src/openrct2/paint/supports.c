@@ -20,7 +20,7 @@
 #include "map_element/map_element.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
-static const rct_xy8 loc_97AF20[] = {
+static const LocationXY8 loc_97AF20[] = {
     {4,  4},
     {28, 4},
     {4,  28},
@@ -76,7 +76,7 @@ static const uint8 _97AF32[] = {
 };
 
 /** rct2: 0x0097B052, 0x0097B053 */
-static const rct_xy16 loc_97B052[] = {
+static const LocationXY16 loc_97B052[] = {
     {-15, -1},
     {0,   -2},
     {-2,  -1},
@@ -88,7 +88,7 @@ static const rct_xy16 loc_97B052[] = {
 };
 
 /** rct2: 0x0097B062, 0x0097B063 */
-static const rct_xy8 _97B062[] = {
+static const LocationXY8 _97B062[] = {
     { 18,  3 },
     {  3, 18 },
     { 18,  3 },

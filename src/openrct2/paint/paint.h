@@ -112,9 +112,9 @@ union paint_entry {
 
 typedef struct sprite_bb {
     uint32 sprite_id;
-    rct_xyz16 offset;
-    rct_xyz16 bb_offset;
-    rct_xyz16 bb_size;
+    LocationXYZ16 offset;
+    LocationXYZ16 bb_offset;
+    LocationXYZ16 bb_size;
 } sprite_bb;
 
 typedef struct paint_struct_bound_box {
@@ -154,7 +154,7 @@ typedef struct paint_session
     void *                  CurrentlyDrawnItem;
     paint_entry *           EndOfPaintStructArray;
     paint_entry *           NextFreePaintStruct;
-    rct_xy16                SpritePosition;
+    LocationXY16                SpritePosition;
     paint_struct            UnkF1A4CC;
     paint_struct *          UnkF1AD28;
     attached_paint_struct * UnkF1AD2C;
@@ -164,7 +164,7 @@ typedef struct paint_session
     paint_string_struct *   PSStringHead;
     paint_string_struct *   LastPSString;
     paint_struct *          WoodenSupportsPrependTo;
-    rct_xy16                MapPosition;
+    LocationXY16                MapPosition;
     tunnel_entry            LeftTunnels[TUNNEL_MAX_COUNT];
     uint8                   LeftTunnelCount;
     tunnel_entry            RightTunnels[TUNNEL_MAX_COUNT];
@@ -183,12 +183,12 @@ extern paint_session gPaintSession;
 #define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
 #define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
 #define gEndOfPaintStructArray      RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gPaintSpritePosition        RCT2_GLOBAL(0x009DE568, rct_xy16)
+#define gPaintSpritePosition        RCT2_GLOBAL(0x009DE568, LocationXY16)
 #define gPaintInteractionType       RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
 #define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
 #define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
 #define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
-#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, rct_xy16)
+#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, LocationXY16)
 #define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)
 #define gLeftTunnelCount            RCT2_GLOBAL(0x0141F56A, uint8)
 #define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)

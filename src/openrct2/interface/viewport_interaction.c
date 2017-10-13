@@ -57,7 +57,7 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    rct_xy16 mapCoord = { 0 };
+    LocationXY16 mapCoord = { 0 };
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -183,7 +183,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-    rct_xy16 mapCoord = { 0 };
+    LocationXY16 mapCoord = { 0 };
     get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
@@ -563,7 +563,7 @@ static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint3
     closestPeep = NULL;
     closestDistance = 0xFFFF;
     FOR_ALL_PEEPS(spriteIndex, peep) {
-        if (peep->sprite_left == (sint16)(uint16)0x8000)
+        if (peep->sprite_left == LOCATION_NULL)
             continue;
 
         distance =
@@ -594,7 +594,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-        *x = 0x8000;
+        *x = LOCATION_NULL;
         return;
     }
 
@@ -603,8 +603,8 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
         originalZ = map_get_water_height(myMapElement) << 4;
     }
 
-    rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    rct_xy16 map_pos = { my_x + 16, my_y + 16 };
+    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+    LocationXY16 map_pos = { my_x + 16, my_y + 16 };
 
     for (sint32 i = 0; i < 5; i++) {
         sint16 z = originalZ;

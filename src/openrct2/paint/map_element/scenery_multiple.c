@@ -155,8 +155,8 @@ static void scenery_multiple_sign_paint_line(paint_session * session, const utf8
 }
 
 typedef struct boundbox {
-    rct_xy16 offset;
-    rct_xy16 length;
+    LocationXY16 offset;
+    LocationXY16 length;
 } boundbox;
 
 static const boundbox s98E3C4[] = {
@@ -195,8 +195,8 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
     uint32 dword_F4387C = 0;
     image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    rct_xyz16 boxlength;
-    rct_xyz16 boxoffset;
+    LocationXYZ16 boxlength;
+    LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_map_element(mapElement)) {
             ebp = 0x21700000;

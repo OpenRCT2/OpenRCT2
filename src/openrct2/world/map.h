@@ -18,6 +18,7 @@
 #define _MAP_H_
 
 #include "../common.h"
+#include "Location.h"
 
 #pragma pack(push, 1)
 typedef struct rct_map_element_surface_properties {
@@ -282,65 +283,17 @@ enum
 #define MAXIMUM_MAP_SIZE_PRACTICAL (MAXIMUM_MAP_SIZE_TECHNICAL-2)
 
 #define MAP_MINIMUM_X_Y -MAXIMUM_MAP_SIZE_TECHNICAL
-#define MAP_LOCATION_NULL ((sint16)(uint16)0x8000)
 
 #define MAX_MAP_ELEMENTS 196096 // 0x30000
 #define MAX_TILE_MAP_ELEMENT_POINTERS (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL)
 #define MAX_PEEP_SPAWNS 2
 #define PEEP_SPAWN_UNDEFINED 0xFFFF
-#define RCT_XY8_UNDEFINED 0xFFFF
 
 #define MAP_ELEMENT_LARGE_TYPE_MASK 0x3FF
 
 #define TILE_UNDEFINED_MAP_ELEMENT (rct_map_element*)-1
 
 #pragma pack(push, 1)
-typedef struct rct_xy8 {
-    union {
-        struct {
-            uint8 x, y;
-        };
-        uint16 xy;
-    };
-} rct_xy8;
-assert_struct_size(rct_xy8, 2);
-
-typedef struct rct_xyz8 {
-    uint8 x, y, z;
-} rct_xyz8;
-assert_struct_size(rct_xyz8, 3);
-
-typedef struct rct_xyzd8 {
-    uint8 x, y, z, direction;
-} rct_xyzd8;
-assert_struct_size(rct_xyzd8, 4);
-
-typedef struct rct_xy16 {
-    sint16 x, y;
-} rct_xy16;
-assert_struct_size(rct_xy16, 4);
-
-#define MakeXY16(x, y) {(sint16)(x), (sint16)(y)}
-
-typedef struct rct_xyz16 {
-    sint16 x, y, z;
-} rct_xyz16;
-assert_struct_size(rct_xyz16, 6);
-
-typedef struct rct_xyzd16 {
-    sint16 x, y, z;
-    uint8 direction;
-} rct_xyzd16;
-assert_struct_size(rct_xyzd16, 7);
-
-typedef struct rct_xy32 {
-    sint32 x, y;
-} rct_xy32;
-
-typedef struct rct_xyz32 {
-    sint32 x, y, z;
-} rct_xyz32;
-
 typedef struct rct_xy_element {
     sint32 x, y;
     rct_map_element *element;
@@ -386,7 +339,7 @@ enum {
 extern "C" {
 #endif
 
-extern const rct_xy16 TileDirectionDelta[];
+extern const LocationXY16 TileDirectionDelta[];
 extern const money32 TerrainPricing[];
 
 extern uint16 gWidePathTileLoopX;
@@ -401,9 +354,9 @@ extern sint16 gMapBaseZ;
 
 extern uint16       gMapSelectFlags;
 extern uint16       gMapSelectType;
-extern rct_xy16     gMapSelectPositionA;
-extern rct_xy16     gMapSelectPositionB;
-extern rct_xyz16    gMapSelectArrowPosition;
+extern LocationXY16     gMapSelectPositionA;
+extern LocationXY16     gMapSelectPositionB;
+extern LocationXYZ16    gMapSelectArrowPosition;
 extern uint8        gMapSelectArrowDirection;
 
 extern uint8 gMapGroundFlags;
@@ -416,7 +369,7 @@ extern rct_map_element *gMapElements;
 extern rct_map_element **gMapElementTilePointers;
 #endif
 
-extern rct_xy16 gMapSelectionTiles[300];
+extern LocationXY16 gMapSelectionTiles[300];
 extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 extern rct_map_element *gNextFreeMapElement;
@@ -434,7 +387,7 @@ extern bool gClearFootpath;
 extern uint16 gLandRemainingOwnershipSales;
 extern uint16 gLandRemainingConstructionSales;
 
-extern rct_xyz16 gCommandPosition;
+extern LocationXYZ16 gCommandPosition;
 
 extern bool gMapLandRightsUpdateSuccess;
 
@@ -500,7 +453,7 @@ sint32 map_place_scenery_clear_func(rct_map_element** map_element, sint32 x, sin
 sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price);
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
-rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, sint32 rotation);
+LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation);
 money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags);
 sint32 map_get_water_height(const rct_map_element * mapElement);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
@@ -583,7 +536,7 @@ bool map_large_scenery_get_origin(
 );
 
 void map_offset_with_rotation(sint16 *x, sint16 *y, sint16 offsetX, sint16 offsetY, uint8 rotation);
-rct_xy32 translate_3d_to_2d_with_z(sint32 rotation, rct_xyz32 pos);
+LocationXY32 translate_3d_to_2d_with_z(sint32 rotation, LocationXYZ32 pos);
 
 rct_map_element *map_get_track_element_at(sint32 x, sint32 y, sint32 z);
 rct_map_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z, sint32 trackType);

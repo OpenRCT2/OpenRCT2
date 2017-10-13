@@ -44,7 +44,7 @@
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
-const rct_xy16 TileDirectionDelta[] = {
+const LocationXY16 TileDirectionDelta[] = {
     { -32,   0 },
     {   0, +32 },
     { +32,   0 },
@@ -75,9 +75,9 @@ const money32 TerrainPricing[] = {
 
 uint16          gMapSelectFlags;
 uint16          gMapSelectType;
-rct_xy16        gMapSelectPositionA;
-rct_xy16        gMapSelectPositionB;
-rct_xyz16       gMapSelectArrowPosition;
+LocationXY16        gMapSelectPositionA;
+LocationXY16        gMapSelectPositionB;
+LocationXYZ16       gMapSelectArrowPosition;
 uint8           gMapSelectArrowDirection;
 
 uint8 gMapGroundFlags;
@@ -99,7 +99,7 @@ rct_map_element *gMapElementTilePointers[MAX_TILE_MAP_ELEMENT_POINTERS];
 rct_map_element *gMapElements = RCT2_ADDRESS(RCT2_ADDRESS_MAP_ELEMENTS, rct_map_element);
 rct_map_element **gMapElementTilePointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS, rct_map_element*);
 #endif
-rct_xy16 gMapSelectionTiles[300];
+LocationXY16 gMapSelectionTiles[300];
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 rct_map_element *gNextFreeMapElement;
@@ -114,7 +114,7 @@ bool gClearFootpath;
 uint16 gLandRemainingOwnershipSales;
 uint16 gLandRemainingConstructionSales;
 
-rct_xyz16 gCommandPosition;
+LocationXYZ16 gCommandPosition;
 
 bool gMapLandRightsUpdateSuccess;
 
@@ -147,8 +147,8 @@ void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation)
     }
 }
 
-rct_xy16 coordinate_3d_to_2d(const rct_xyz16* coordinate_3d, sint32 rotation){
-    rct_xy16 coordinate_2d;
+LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation){
+    LocationXY16 coordinate_2d;
 
     switch (rotation){
     default:
@@ -916,7 +916,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
     }
 
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
-    rct_xyz16 firstTile = {
+    LocationXYZ16 firstTile = {
         .x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
         .y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
         .z = (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset
@@ -930,7 +930,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
     bool calculate_cost = true;
     for (sint32 i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++){
 
-        rct_xyz16 currentTile = {
+        LocationXYZ16 currentTile = {
             .x = scenery_entry->large_scenery.tiles[i].x_offset,
             .y = scenery_entry->large_scenery.tiles[i].y_offset,
             .z = scenery_entry->large_scenery.tiles[i].z_offset
@@ -991,7 +991,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -1041,7 +1041,7 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
     rct_scenery_entry *scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & 0x3FF);
 
     // Work out the base tile coordinates (Tile with index 0)
-    rct_xyz16 baseTile = {
+    LocationXYZ16 baseTile = {
         .x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
         .y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
         .z = (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset
@@ -1054,7 +1054,7 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
         assert(i < MAXIMUM_MAP_SIZE_TECHNICAL);
 
         // Work out the current tile coordinates
-        rct_xyz16 currentTile = {
+        LocationXYZ16 currentTile = {
             .x = scenery_entry->large_scenery.tiles[i].x_offset,
             .y = scenery_entry->large_scenery.tiles[i].y_offset,
             .z = scenery_entry->large_scenery.tiles[i].z_offset
@@ -1240,7 +1240,7 @@ money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 cle
     }
 
     if (gGameCommandNestLevel == 1 && flags & GAME_COMMAND_FLAG_APPLY) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = ((x0 + x1) / 2) + 16;
         coord.y = ((y0 + y1) / 2) + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -1388,7 +1388,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY && gGameCommandNestLevel == 1) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = ((x0 + x1) / 2) + 16;
         coord.y = ((y0 + y1) / 2) + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -1668,7 +1668,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     if(flags & GAME_COMMAND_FLAG_APPLY)
     {
         if (gGameCommandNestLevel == 1) {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -1961,7 +1961,7 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         if (z != 0)
             z = base_height_z;
 
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x;
         coord.y = y;
         coord.z = z;
@@ -2037,7 +2037,7 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
         if (z == 0)
             z = base_height_z;
 
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x;
         coord.y = y;
         coord.z = z;
@@ -2328,7 +2328,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = centreX + 16;
         coord.y = centreY + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -2710,7 +2710,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         tile++) {
         num_elements++;
 
-        rct_xy16 curTile = {
+        LocationXY16 curTile = {
             .x = tile->x_offset,
             .y = tile->y_offset
         };
@@ -2756,7 +2756,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
     tile->x_offset != -1;
         tile++, tile_num++) {
 
-        rct_xy16 curTile = {
+        LocationXY16 curTile = {
             .x = tile->x_offset,
             .y = tile->y_offset
         };
@@ -2818,7 +2818,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
                 }
             }
             if (gGameCommandNestLevel == 1 && !(*ebx & GAME_COMMAND_FLAG_GHOST)) {
-                rct_xyz16 coord;
+                LocationXYZ16 coord;
                 coord.x = x + 16;
                 coord.y = y + 16;
                 coord.z = map_element_height(coord.x, coord.y);
@@ -2993,7 +2993,7 @@ void map_remove_all_rides()
  */
 void map_invalidate_map_selection_tiles()
 {
-    rct_xy16 *position;
+    LocationXY16 *position;
 
     if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT))
         return;
@@ -3949,9 +3949,9 @@ static void translate_3d_to_2d(sint32 rotation, sint32 *x, sint32 *y)
     *y = ry;
 }
 
-rct_xy32 translate_3d_to_2d_with_z(sint32 rotation, rct_xyz32 pos)
+LocationXY32 translate_3d_to_2d_with_z(sint32 rotation, LocationXYZ32 pos)
 {
-    rct_xy32 result;
+    LocationXY32 result;
     switch (rotation & 3) {
     default:
     case 0:
@@ -4410,7 +4410,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
             !(flags & GAME_COMMAND_FLAG_GHOST) &&
             *ebx != MONEY32_UNDEFINED)
     {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = (x << 5) + 16;
         coord.y = (y << 5) + 16;
         coord.z = map_element_height(coord.x, coord.y);

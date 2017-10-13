@@ -98,7 +98,7 @@ typedef struct rct_large_scenery_text_glyph {
 assert_struct_size(rct_large_scenery_text_glyph, 4);
 
 typedef struct rct_large_scenery_text {
-    rct_xy16 offset[2];     // 0x0
+    LocationXY16 offset[2];     // 0x0
     uint16 max_width;       // 0x8
     uint16 pad_A;           // 0xA
     uint8 flags;            // 0xC
@@ -263,7 +263,7 @@ extern uint8 gSceneryPlacePathSlope;
 extern uint8 gSceneryPlaceRotation;
 
 extern uint8 gSceneryGhostType;
-extern rct_xyz16 gSceneryGhostPosition;
+extern LocationXYZ16 gSceneryGhostPosition;
 extern uint32 gSceneryGhostPathObjectType;
 extern uint8 gSceneryGhostWallRotation;
 
@@ -277,7 +277,7 @@ extern sint16 gSceneryCtrlPressZ;
 
 extern uint8 gSceneryGroundFlags;
 
-extern const rct_xy8 ScenerySubTileOffsets[];
+extern const LocationXY8 ScenerySubTileOffsets[];
 
 extern sint16 window_scenery_tab_entries[20][SCENERY_ENTRIES_BY_TAB + 1];
 

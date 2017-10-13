@@ -138,7 +138,7 @@ static rct_map_element * chairlift_paint_util_map_get_track_element_at_from_ride
     return NULL;
 };
 
-static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_element * mapElement, rct_xy16 pos,
+static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_element * mapElement, LocationXY16 pos,
                                                 uint8 trackType)
 {
     if (mapElement->properties.track.type != TRACK_ELEM_BEGIN_STATION)
@@ -146,8 +146,8 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_e
         return false;
     }
 
-    rct_xy16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
-    rct_xy16 newPos = {
+    LocationXY16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
+    LocationXY16 newPos = {
         static_cast<sint16>(pos.x - delta.x),
         static_cast<sint16>(pos.y - delta.y),
     };
@@ -158,7 +158,7 @@ static bool chairlift_paint_util_is_first_track(uint8 rideIndex, const rct_map_e
     return nextTrack == NULL;
 }
 
-static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_element * mapElement, rct_xy16 pos,
+static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_element * mapElement, LocationXY16 pos,
                                                uint8 trackType)
 {
     if (mapElement->properties.track.type != TRACK_ELEM_END_STATION)
@@ -166,8 +166,8 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
         return false;
     }
 
-    rct_xy16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
-    rct_xy16 newPos = {
+    LocationXY16 delta  = TileDirectionDelta[map_element_get_direction(mapElement)];
+    LocationXY16 newPos = {
         static_cast<sint16>(pos.x + delta.x),
         static_cast<sint16>(pos.y + delta.y),
     };
@@ -181,7 +181,7 @@ static bool chairlift_paint_util_is_last_track(uint8 rideIndex, const rct_map_el
 static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                           sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos       = session->MapPosition;
+    const LocationXY16 pos       = session->MapPosition;
     uint8          trackType = mapElement->properties.track.type;
     Ride *         ride      = get_ride(rideIndex);
     uint32         imageId;
@@ -272,7 +272,7 @@ static void chairlift_paint_station_ne_sw(paint_session * session, uint8 rideInd
 static void chairlift_paint_station_se_nw(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                           sint32 height, rct_map_element * mapElement)
 {
-    const rct_xy16 pos       = session->MapPosition;
+    const LocationXY16 pos       = session->MapPosition;
     uint8          trackType = mapElement->properties.track.type;
     Ride *         ride      = get_ride(rideIndex);
     uint32         imageId;

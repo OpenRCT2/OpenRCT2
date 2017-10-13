@@ -70,8 +70,8 @@ static rct_vehicle * get_first_vehicle(Ride * ride)
     return NULL;
 }
 
-static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8 direction, rct_xyz16 offset,
-                                     rct_xyz16 bbOffset, rct_xyz16 bbSize)
+static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8 direction, LocationXYZ16 offset,
+                                     LocationXYZ16 bbOffset, LocationXYZ16 bbSize)
 {
     uint32 imageId;
     if (direction & 1)
@@ -96,7 +96,7 @@ static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8
 }
 
 static void paint_magic_carpet_pendulum(paint_session * session, uint8 plane, uint32 swingImageId, uint8 direction,
-                                        rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
+                                        LocationXYZ16 offset, LocationXYZ16 bbOffset, LocationXYZ16 bbSize)
 {
     uint32 imageId = swingImageId;
     if (direction & 2)
@@ -117,7 +117,7 @@ static void paint_magic_carpet_pendulum(paint_session * session, uint8 plane, ui
 }
 
 static void paint_magic_carpet_vehicle(paint_session * session, Ride * ride, uint8 direction, uint32 swingImageId,
-                                       rct_xyz16 offset, rct_xyz16 bbOffset, rct_xyz16 bbSize)
+                                       LocationXYZ16 offset, LocationXYZ16 bbOffset, LocationXYZ16 bbSize)
 {
     rct_ride_entry * rideEntry      = get_ride_entry_by_ride(ride);
     uint32           vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
@@ -186,7 +186,7 @@ static void paint_magic_carpet_structure(paint_session * session, Ride * ride, u
     }
 
     bound_box bb = MagicCarpetBounds[direction];
-    rct_xyz16 offset, bbOffset, bbSize;
+    LocationXYZ16 offset, bbOffset, bbSize;
     offset.x   = (direction & 1) ? 0 : axisOffset;
     offset.y   = (direction & 1) ? axisOffset : 0;
     offset.z   = height + 7;

@@ -39,9 +39,9 @@ public:
     uint32      CommandsRan             = 0;
     sint32      LastAction              = -999;
     uint32      LastActionTime          = 0;
-    rct_xyz16   LastActionCoord         = { 0 };
+    LocationXYZ16   LastActionCoord         = { 0 };
     rct_peep*   PickupPeep              = 0;
-    sint32      PickupPeepOldX          = SPRITE_LOCATION_NULL;
+    sint32      PickupPeepOldX          = LOCATION_NULL;
     std::string KeyHash;
     uint32      LastDemolishRideTime    = 0;
     uint32      LastPlaceSceneryTime    = 0;

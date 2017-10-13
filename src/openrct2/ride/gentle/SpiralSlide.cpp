@@ -143,8 +143,8 @@ static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideInd
         {
 
             sint32    offset            = SPIRAL_SLIDE_PEEP + 46 * direction;
-            rct_xyz8  boundingBox       = { 0, 0, 108 };
-            rct_xyz16 boundingBoxOffset = { 0, 0, static_cast<sint16>(height + 3) };
+            LocationXYZ8  boundingBox       = { 0, 0, 108 };
+            LocationXYZ16 boundingBoxOffset = { 0, 0, static_cast<sint16>(height + 3) };
 
             if (direction == 0)
             {
@@ -200,7 +200,7 @@ static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 t
 
     sint32   edges    = edges_2x2[trackSequence];
     Ride *   ride     = get_ride(rideIndex);
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
 

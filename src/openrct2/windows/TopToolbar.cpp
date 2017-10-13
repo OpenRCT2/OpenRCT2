@@ -1127,7 +1127,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     rct_window* w = window_find_by_class(WC_SCENERY);
 
     if (w == nullptr) {
-        *grid_x = MAP_LOCATION_NULL;
+        *grid_x = LOCATION_NULL;
         return;
     }
 
@@ -1213,7 +1213,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             if (!gSceneryCtrlPressed) {
                 screen_get_map_xy_quadrant(x, y, grid_x, grid_y, &cl);
 
-                if (*grid_x == MAP_LOCATION_NULL)
+                if (*grid_x == LOCATION_NULL)
                     return;
 
                 gSceneryPlaceZ = 0;
@@ -1223,7 +1223,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                     if (map_element == nullptr) {
-                        *grid_x = MAP_LOCATION_NULL;
+                        *grid_x = LOCATION_NULL;
                         return;
                     }
 
@@ -1250,7 +1250,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 gSceneryPlaceZ = z;
             }
 
-            if (*grid_x == MAP_LOCATION_NULL)
+            if (*grid_x == LOCATION_NULL)
                 return;
 
             uint8 rotation = gWindowSceneryRotation;
@@ -1280,7 +1280,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
-                *grid_x = MAP_LOCATION_NULL;
+                *grid_x = LOCATION_NULL;
                 return;
             }
 
@@ -1295,7 +1295,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                 if (map_element == nullptr) {
-                    *grid_x = MAP_LOCATION_NULL;
+                    *grid_x = LOCATION_NULL;
                     return;
                 }
 
@@ -1321,7 +1321,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             gSceneryPlaceZ = z;
         }
 
-        if (*grid_x == MAP_LOCATION_NULL)
+        if (*grid_x == LOCATION_NULL)
             return;
 
         *grid_x &= 0xFFE0;
@@ -1353,14 +1353,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
-            *grid_x = MAP_LOCATION_NULL;
+            *grid_x = LOCATION_NULL;
             return;
         }
 
         *parameter_1 = 0 | ((map_element->properties.path.type & 0x7) << 8);
         *parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
         if (map_element->type & 1) {
-            *parameter_2 |= MAP_LOCATION_NULL;
+            *parameter_2 |= LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
         break;
@@ -1373,7 +1373,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         if (!gSceneryCtrlPressed) {
             screen_get_map_xy_side(x, y, grid_x, grid_y, &cl);
 
-            if (*grid_x == MAP_LOCATION_NULL)
+            if (*grid_x == LOCATION_NULL)
                 return;
 
             gSceneryPlaceZ = 0;
@@ -1383,7 +1383,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                 if (map_element == nullptr) {
-                    *grid_x = MAP_LOCATION_NULL;
+                    *grid_x = LOCATION_NULL;
                     return;
                 }
 
@@ -1409,7 +1409,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             gSceneryPlaceZ = z;
         }
 
-        if (*grid_x == MAP_LOCATION_NULL)
+        if (*grid_x == LOCATION_NULL)
             return;
 
         _unkF64F15 = gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8);
@@ -1426,7 +1426,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         if (!gSceneryCtrlPressed) {
             sub_68A15E(x, y, grid_x, grid_y, nullptr, nullptr);
 
-            if (*grid_x == MAP_LOCATION_NULL)
+            if (*grid_x == LOCATION_NULL)
                 return;
 
             gSceneryPlaceZ = 0;
@@ -1436,7 +1436,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
                 if (map_element == nullptr) {
-                    *grid_x = MAP_LOCATION_NULL;
+                    *grid_x = LOCATION_NULL;
                     return;
                 }
 
@@ -1462,7 +1462,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             gSceneryPlaceZ = z;
         }
 
-        if (*grid_x == MAP_LOCATION_NULL)
+        if (*grid_x == LOCATION_NULL)
             return;
 
         *grid_x &= 0xFFE0;
@@ -1489,7 +1489,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
-            *grid_x = MAP_LOCATION_NULL;
+            *grid_x = LOCATION_NULL;
             return;
         }
 
@@ -1550,7 +1550,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
     sub_6E1F34(x, y, selectedTab, &gridX, &gridY, &parameter_1, &parameter_2, &parameter_3);
 
-    if (gridX == MAP_LOCATION_NULL) return;
+    if (gridX == LOCATION_NULL) return;
 
     switch (sceneryType){
     case SCENERY_TYPE_SMALL:
@@ -1746,10 +1746,10 @@ static void top_toolbar_tool_update_scenery_clear(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    rct_xy16 mapTile = { 0 };
+    LocationXY16 mapTile = { 0 };
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
-    if (mapTile.x == MAP_LOCATION_NULL) {
+    if (mapTile.x == LOCATION_NULL) {
         if (gClearSceneryCost != MONEY32_UNDEFINED) {
             gClearSceneryCost = MONEY32_UNDEFINED;
             window_invalidate_by_class(WC_CLEAR_SCENERY);
@@ -1823,10 +1823,10 @@ static void top_toolbar_tool_update_land_paint(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    rct_xy16 mapTile = { 0 };
+    LocationXY16 mapTile = { 0 };
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
-    if (mapTile.x == MAP_LOCATION_NULL) {
+    if (mapTile.x == LOCATION_NULL) {
         if (gClearSceneryCost != MONEY32_UNDEFINED) {
             gClearSceneryCost = MONEY32_UNDEFINED;
             window_invalidate_by_class(WC_CLEAR_SCENERY);
@@ -1907,14 +1907,14 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
     }
 
     sint16 tool_size = gLandToolSize;
-    rct_xy16 mapTile = { x, y };
+    LocationXY16 mapTile = { x, y };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     if (tool_size == 1){
         sint32 direction;
         screen_pos_to_map_pos(&mapTile.x, &mapTile.y, &direction);
 
-        if (mapTile.x == MAP_LOCATION_NULL) {
+        if (mapTile.x == LOCATION_NULL) {
             money32 lower_cost = MONEY32_UNDEFINED;
             money32 raise_cost = MONEY32_UNDEFINED;
 
@@ -1978,7 +1978,7 @@ static void top_toolbar_tool_update_land(sint16 x, sint16 y){
 
     screen_get_map_xy(x, y, &mapTile.x, &mapTile.y, nullptr);
 
-    if (mapTile.x == MAP_LOCATION_NULL) {
+    if (mapTile.x == LOCATION_NULL) {
         money32 lower_cost = MONEY32_UNDEFINED;
         money32 raise_cost = MONEY32_UNDEFINED;
 
@@ -2088,7 +2088,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
 
-    rct_xy16 mapTile = { 0 };
+    LocationXY16 mapTile = { 0 };
     sint32 interaction_type = 0;
     get_map_coordinates_from_pos(
         x,
@@ -2187,7 +2187,7 @@ static void top_toolbar_tool_update_water(sint16 x, sint16 y){
  * On failure returns MONEY32_UNDEFINED
  * On success places ghost scenery and returns cost to place proper
  */
-static money32 try_place_ghost_scenery(rct_xy16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
+static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1, uint32 parameter_2, uint32 parameter_3, uint16 selected_tab){
     scenery_remove_ghost_tool_placement();
 
     uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
@@ -2367,12 +2367,12 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
 
     uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
     uint8 selected_scenery = selected_tab & 0xFF;
-    rct_xy16 mapTile = { 0 };
+    LocationXY16 mapTile = { 0 };
     uint32 parameter1, parameter2, parameter3;
 
     sub_6E1F34(x, y, selected_tab, &mapTile.x, &mapTile.y, &parameter1, &parameter2, &parameter3);
 
-    if (mapTile.x == MAP_LOCATION_NULL) {
+    if (mapTile.x == LOCATION_NULL) {
         scenery_remove_ghost_tool_placement();
         return;
     }
@@ -2523,10 +2523,10 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
     case 3:
     {
         scenery = get_large_scenery_entry(selected_scenery);
-        rct_xy16* selectedTile = gMapSelectionTiles;
+        LocationXY16* selectedTile = gMapSelectionTiles;
 
         for (rct_large_scenery_tile* tile = scenery->large_scenery.tiles; tile->x_offset != (sint16)(uint16)0xFFFF; tile++){
-            rct_xy16 tileLocation = { tile->x_offset, tile->y_offset };
+            LocationXY16 tileLocation = { tile->x_offset, tile->y_offset };
 
             rotate_map_coordinates(&tileLocation.x, &tileLocation.y, (parameter1 >> 8) & 0xFF);
 

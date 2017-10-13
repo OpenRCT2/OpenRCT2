@@ -129,7 +129,7 @@ static sint32 SoundVolumeAdjust[SOUND_MAXID] =
     -700    // SOUND_62
 };
 
-AudioParams audio_get_params_from_location(sint32 soundId, const rct_xyz16 *location);
+AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *location);
 
 void audio_init()
 {
@@ -189,7 +189,7 @@ sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z
     if (gGameSoundsOff)
         return 0;
 
-    rct_xyz16 location;
+    LocationXYZ16 location;
     location.x = x;
     location.y = y;
     location.z = z;
@@ -208,7 +208,7 @@ sint32 audio_play_sound_at_location(sint32 soundId, sint16 x, sint16 y, sint16 z
 * @param location The location at which the sound effect is to be played.
 * @return The audio parameters to be used when playing this sound effect.
 */
-AudioParams audio_get_params_from_location(sint32 soundId, const rct_xyz16 *location)
+AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *location)
 {
     sint32 volumeDown = 0;
     AudioParams params;
@@ -223,7 +223,7 @@ AudioParams audio_get_params_from_location(sint32 soundId, const rct_xyz16 *loca
     }
 
     uint8 rotation = get_current_rotation();
-    rct_xy16 pos2 = coordinate_3d_to_2d(location, rotation);
+    LocationXY16 pos2 = coordinate_3d_to_2d(location, rotation);
     rct_window * window = gWindowNextSlot;
     while (true)
     {

@@ -311,7 +311,7 @@ static money32 WallPlace(uint8 wallType,
                   uint8 tertiaryColour,
                   uint8 flags)
 {
-    rct_xyz16 position = { x, y, z };
+    LocationXYZ16 position = { x, y, z };
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = position.x + 16;
@@ -523,7 +523,7 @@ static money32 WallPlace(uint8 wallType,
     {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = position.x + 16;
             coord.y = position.y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -625,7 +625,7 @@ static money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction,
 
     if (gGameCommandNestLevel == 1 && !isGhost)
     {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);

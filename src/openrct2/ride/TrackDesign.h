@@ -203,9 +203,9 @@ extern "C" {
 
 extern rct_track_td6 *gActiveTrackDesign;
 extern bool gTrackDesignSceneryToggle;
-extern rct_xyz16 gTrackPreviewMin;
-extern rct_xyz16 gTrackPreviewMax;
-extern rct_xyz16 gTrackPreviewOrigin;
+extern LocationXYZ16 gTrackPreviewMin;
+extern LocationXYZ16 gTrackPreviewMax;
+extern LocationXYZ16 gTrackPreviewOrigin;
 
 extern bool byte_9D8150;
 

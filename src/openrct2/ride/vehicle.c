@@ -96,7 +96,7 @@ uint8 _vehicleVAngleEndF64E36;
 uint8 _vehicleBankEndF64E37;
 uint8 _vehicleF64E2C;
 rct_vehicle * _vehicleFrontVehicle;
-rct_xyz16 unk_F64E20;
+LocationXYZ16 unk_F64E20;
 
 static const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
 static const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
@@ -375,7 +375,7 @@ static const unk_9a36c4 Unk9A36C4[] = {
 };
 
 /** rct2: 0x009A37C4 */
-static const rct_xy16 Unk9A37C4[] = {
+static const LocationXY16 Unk9A37C4[] = {
     { 0,  0},
     { 0, +1},
     {+1,  0},
@@ -539,7 +539,7 @@ static const sint32 Unk9A39C4[] = {
     1946281152,
 };
 
-static const rct_xy16 AvoidCollisionMoveOffset[] = {
+static const LocationXY16 AvoidCollisionMoveOffset[] = {
     { -1,  0 },
     {  0,  1 },
     {  1,  0 },
@@ -679,7 +679,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER)) {
         if (vehicle->sound1_id != RCT12_SOUND_ID_NULL || vehicle->sound2_id != RCT12_SOUND_ID_NULL) {
-            if (vehicle->sprite_left != (sint16)(uint16)0x8000) {
+            if (vehicle->sprite_left != LOCATION_NULL) {
                 sint16 x = g_music_tracking_viewport->view_x;
                 sint16 y = g_music_tracking_viewport->view_y;
                 sint16 w = g_music_tracking_viewport->view_width / 4;
@@ -753,7 +753,7 @@ static void vehicle_update_sound_params(rct_vehicle* vehicle)
                             i->frequency = (uint16)v;
                             i->id = vehicle->sprite_index;
                             i->volume = 0;
-                            if (vehicle->x != MAP_LOCATION_NULL) {
+                            if (vehicle->x != LOCATION_NULL) {
                                 rct_map_element* map_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
                                 if (map_element != NULL && map_element->base_height * 8 > vehicle->z) { // vehicle underground
                                     i->volume = 0x30;
@@ -1507,7 +1507,7 @@ static void vehicle_update_measurements(rct_vehicle *vehicle)
     x = vehicle->x;
     y = vehicle->y;
 
-    if (x == SPRITE_LOCATION_NULL){
+    if (x == LOCATION_NULL){
         ride->testing_flags &= ~RIDE_TESTING_SHELTERED;
         return;
     }
@@ -2437,7 +2437,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle *vehicle)
 {
     Ride * ride = get_ride(vehicle->ride);
     sint32 station = vehicle->current_station;
-    rct_xy8 location = ride->station_starts[station];
+    LocationXY8 location = ride->station_starts[station];
     sint32 x = location.x * 32;
     sint32 y = location.y * 32;
     sint32 z = ride->station_heights[station];
@@ -2755,7 +2755,7 @@ static void vehicle_update_travelling_boat_hire_setup(rct_vehicle* vehicle) {
     vehicle->track_x = vehicle->x & 0xFFE0;
     vehicle->track_y = vehicle->y & 0xFFE0;
 
-    rct_xy8 location = {
+    LocationXY8 location = {
         .x = (vehicle->track_x + TileDirectionDelta[vehicle->sprite_direction >> 3].x) / 32,
         .y = (vehicle->track_y + TileDirectionDelta[vehicle->sprite_direction >> 3].y) / 32
     };
@@ -3173,7 +3173,7 @@ static void vehicle_update_collision_setup(rct_vehicle* vehicle) {
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
-static const rct_xy16 stru_9A3AC4[] = {
+static const LocationXY16 stru_9A3AC4[] = {
     { -256,    0 },
     { -236,   98 },
     { -181,  181 },
@@ -4097,10 +4097,10 @@ static void vehicle_update_motion_boat_hire(rct_vehicle *vehicle)
 static void vehicle_update_boat_location(rct_vehicle *vehicle)
 {
     Ride *ride = get_ride(vehicle->ride);
-    rct_xy8 returnPosition = ride->boat_hire_return_position;
+    LocationXY8 returnPosition = ride->boat_hire_return_position;
     uint8 returnDirection = ride->boat_hire_return_direction & 3;
 
-    rct_xy8 location = {
+    LocationXY8 location = {
         .x = (vehicle->x + TileDirectionDelta[returnDirection].x) / 32,
         .y = (vehicle->y + TileDirectionDelta[returnDirection].y) / 32
     };
@@ -4118,7 +4118,7 @@ static void vehicle_update_boat_location(rct_vehicle *vehicle)
     rct_ride_entry *rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_7) || vehicle->lost_time_out > 1920) {
         if (scenario_rand() & 1) {
-            rct_xy16 destLocation = {
+            LocationXY16 destLocation = {
                 .x = returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16,
                 .y = returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16
             };
@@ -4879,7 +4879,7 @@ static void vehicle_update_crash(rct_vehicle *vehicle){
 
         invalidate_sprite_2((rct_sprite*)curVehicle);
 
-        rct_xyz16 curPosition = {
+        LocationXYZ16 curPosition = {
             .x = curVehicle->x,
             .y = curVehicle->y,
             .z = curVehicle->z
@@ -5726,7 +5726,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle) {
         uint8 oldC4 = vehicle->var_C4 & 0x1E;
         vehicle->var_C4 = 0;
 
-        rct_xyz16 location = {
+        LocationXYZ16 location = {
             .x = vehicle->x,
             .y = vehicle->y,
             .z = vehicle->z
@@ -5764,7 +5764,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle* vehicle) {
             uint8 direction = vehicle->sprite_direction;
             direction |= vehicle->var_35 & 1;
 
-            rct_xyz16 location = unk_F64E20;
+            LocationXYZ16 location = unk_F64E20;
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
@@ -5867,7 +5867,7 @@ bool vehicle_update_dodgems_collision(rct_vehicle *vehicle, sint16 x, sint16 y, 
         return true;
     }
 
-    rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
+    LocationXY8 location = {.x = (x / 32), .y = (y / 32)};
 
 
     uint8 rideIndex = vehicle->ride;
@@ -7128,7 +7128,7 @@ static void vehicle_update_reverser_car_bogies(rct_vehicle *vehicle)
     sprite_move(x, y, z, (rct_sprite*)vehicle);
 }
 
-extern const rct_xy16 DuckMoveOffset[4];
+extern const LocationXY16 DuckMoveOffset[4];
 
 /**
  * Collision Detection
@@ -7178,7 +7178,7 @@ static bool vehicle_update_motion_collision_detection(
         return true;
     }
 
-    rct_xy8 location = {.x = (x / 32), .y = (y / 32)};
+    LocationXY8 location = {.x = (x / 32), .y = (y / 32)};
 
     bool mayCollide = false;
     uint16 collideId = SPRITE_INDEX_NULL;
@@ -7537,7 +7537,7 @@ loc_6DB41D:
     }
 
     if (vehicle->var_CD != 0 && vehicle->var_CD < 5) {
-        rct_xy8 curLocation = {
+        LocationXY8 curLocation = {
             .x = regs.ax >> 5,
             .y = regs.cx >> 5
         };
@@ -8265,7 +8265,7 @@ loc_6DC743:
 
     for (;;) {
         moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, vehicle->track_progress);
-        if (moveInfo->x != MAP_LOCATION_NULL) {
+        if (moveInfo->x != LOCATION_NULL) {
             break;
         }
         switch (moveInfo->y) {

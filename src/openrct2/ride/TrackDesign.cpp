@@ -53,9 +53,9 @@ typedef struct map_backup
 
 rct_track_td6 * gActiveTrackDesign;
 bool          gTrackDesignSceneryToggle;
-rct_xyz16     gTrackPreviewMin;
-rct_xyz16     gTrackPreviewMax;
-rct_xyz16     gTrackPreviewOrigin;
+LocationXYZ16     gTrackPreviewMin;
+LocationXYZ16     gTrackPreviewMax;
+LocationXYZ16     gTrackPreviewOrigin;
 
 bool           byte_9D8150;
 static uint8   _trackDesignPlaceOperation;
@@ -644,7 +644,7 @@ void track_design_mirror(rct_track_td6 * td6)
 
 static void track_design_add_selection_tile(sint16 x, sint16 y)
 {
-    rct_xy16 * selectionTile = gMapSelectionTiles;
+    LocationXY16 * selectionTile = gMapSelectionTiles;
     for (; selectionTile->x != -1; selectionTile++)
     {
         if (selectionTile->x == x && selectionTile->y == y)
@@ -695,7 +695,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
         for (rct_td6_scenery_element * scenery = scenery_start; scenery->scenery_object.end_flag != 0xFF; scenery++)
         {
             uint8   rotation = _currentTrackPieceDirection;
-            rct_xy8 tile     = {(uint8) (originX / 32), (uint8) (originY / 32)};
+            LocationXY8 tile     = {(uint8) (originX / 32), (uint8) (originY / 32)};
             switch (rotation & 3)
             {
             case MAP_ELEMENT_DIRECTION_WEST:
@@ -716,13 +716,13 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                 break;
             }
 
-            rct_xy16 mapCoord = {(sint16) (tile.x * 32), (sint16) (tile.y * 32)};
+            LocationXY16 mapCoord = {(sint16) (tile.x * 32), (sint16) (tile.y * 32)};
             track_design_update_max_min_coordinates(mapCoord.x, mapCoord.y, originZ);
 
             if (_trackDesignPlaceOperation == PTD_OPERATION_DRAW_OUTLINES && mode == 0)
             {
                 uint8    new_tile        = 1;
-                rct_xy16 * selectionTile = gMapSelectionTiles;
+                LocationXY16 * selectionTile = gMapSelectionTiles;
                 for (; selectionTile->x != -1; selectionTile++)
                 {
                     if (selectionTile->x == tile.x && selectionTile->y == tile.y)
@@ -1173,7 +1173,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
     for (; maze_element->all != 0; maze_element++)
     {
         uint8    rotation = _currentTrackPieceDirection & 3;
-        rct_xy16 mapCoord = {(sint16) (maze_element->x * 32), (sint16) (maze_element->y * 32)};
+        LocationXY16 mapCoord = {(sint16) (maze_element->x * 32), (sint16) (maze_element->y * 32)};
         rotate_map_coordinates(&mapCoord.x, &mapCoord.y, rotation);
         mapCoord.x += x;
         mapCoord.y += y;
@@ -1391,7 +1391,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         case PTD_OPERATION_DRAW_OUTLINES:
             for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
-                rct_xy16 tile = {x, y};
+                LocationXY16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
                 track_design_update_max_min_coordinates(tile.x, tile.y, z);
                 track_design_add_selection_tile(tile.x, tile.y);
@@ -1471,7 +1471,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
             sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
             for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
-                rct_xy16 tile = {x, y};
+                LocationXY16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
                 if (tile.x < 0 || tile.y < 0 || tile.x >= (256 * 32) || tile.y >= (256 * 32))
                 {
@@ -1558,7 +1558,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
 
             if (_trackDesignPlaceOperation != PTD_OPERATION_1)
             {
-                rct_xy16        tile          = {
+                LocationXY16        tile          = {
                     (sint16) (x + TileDirectionDelta[rotation].x),
                     (sint16) (y + TileDirectionDelta[rotation].y)
                 };
@@ -2098,7 +2098,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
     {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST))
         {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 8;
             coord.y = y + 8;
             coord.z = z;
@@ -2201,7 +2201,7 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     td6->cost        = cost;
     td6->track_flags = flags & 7;
 
-    rct_xyz32 centre;
+    LocationXYZ32 centre;
     centre.x = (gTrackPreviewMin.x + gTrackPreviewMax.x) / 2 + 16;
     centre.y = (gTrackPreviewMin.y + gTrackPreviewMax.y) / 2 + 16;
     centre.z = (gTrackPreviewMin.z + gTrackPreviewMax.z) / 2;
@@ -2249,12 +2249,12 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     dpi.pitch      = 0;
     dpi.bits       = pixels;
 
-    rct_xy32    offset = {size_x / 2, size_y / 2};
+    LocationXY32    offset = {size_x / 2, size_y / 2};
     for (sint32 i      = 0; i < 4; i++)
     {
         gCurrentRotation = i;
 
-        rct_xy32 pos2d = translate_3d_to_2d_with_z(i, centre);
+        LocationXY32 pos2d = translate_3d_to_2d_with_z(i, centre);
         pos2d.x -= offset.x;
         pos2d.y -= offset.y;
 

@@ -833,7 +833,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         return false;
     }
 
-    gTrackPreviewOrigin = (rct_xyz16) { startX, startY, mapElement->base_height * 8 };
+    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, mapElement->base_height * 8 };
 
     size_t numMazeElements = 0;
     td6->maze_elements = calloc(8192, sizeof(rct_td6_maze_element));
@@ -867,7 +867,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     }
 
     Ride *ride = get_ride(rideIndex);
-    rct_xy8 location = ride->entrances[0];
+    LocationXY8 location = ride->entrances[0];
 
     if (location.xy == RCT_XY8_UNDEFINED) {
         gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -932,7 +932,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     // Save global vars as they are still used by scenery
     sint16 startZ = gTrackPreviewOrigin.z;
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
-    gTrackPreviewOrigin = (rct_xyz16) { startX, startY, startZ };
+    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, startZ };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
@@ -996,7 +996,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     sint16 start_x = trackElement.x;
     sint16 start_y = trackElement.y;
     sint16 start_z = z + trackCoordinates->z_begin;
-    gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };
+    gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
 
     size_t numTrackElements = 0;
     td6->track_elements = calloc(8192, sizeof(rct_td6_track_element));
@@ -1058,7 +1058,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         for (sint32 station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++) {
             z = ride->station_heights[station_index];
 
-            rct_xy8 location;
+            LocationXY8 location;
             if (i == 0) {
                 location = ride->entrances[station_index];
             } else {
@@ -1121,7 +1121,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
 
     // Resave global vars for scenery reasons.
-    gTrackPreviewOrigin = (rct_xyz16) { start_x, start_y, start_z };
+    gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;

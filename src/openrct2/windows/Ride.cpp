@@ -1829,7 +1829,7 @@ static void window_ride_init_viewport(rct_window *w)
             }
         } while (count >= 0);
 
-        rct_xy8 location = ride->station_starts[stationIndex];
+        LocationXY8 location = ride->station_starts[stationIndex];
 
         focus.coordinate.x = location.x * 32;
         focus.coordinate.y = location.y * 32;
@@ -4115,7 +4115,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
 
     newColourScheme = (uint8)w->ride_colour;
 
-    rct_xy16 mapCoord = { 0 };
+    LocationXY16 mapCoord = { 0 };
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;

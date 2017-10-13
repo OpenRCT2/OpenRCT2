@@ -180,13 +180,13 @@ void lightfx_prepare_light_list()
             continue;
         }
 
-        rct_xyz16 coord_3d = {
+        LocationXYZ16 coord_3d = {
             .x = entry->x,
             .y = entry->y,
             .z = entry->z
         };
 
-        rct_xy16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
+        LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
 
         entry->x = coord_2d.x;// - (_current_view_x_front);
         entry->y = coord_2d.y;// - (_current_view_y_front);
@@ -276,7 +276,7 @@ void lightfx_prepare_light_list()
             }
 
             for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
-                rct_xy16 mapCoord = { 0 };
+                LocationXY16 mapCoord = { 0 };
 
                 rct_map_element *mapElement = 0;
 
@@ -666,7 +666,7 @@ void lightfx_add_3d_light(uint32 lightID, uint16 lightIDqualifier, sint16 x, sin
 //  log_warning("new 3d light");
 }
 
-void lightfx_add_3d_light_magic_from_drawing_tile(rct_xy16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
+void lightfx_add_3d_light_magic_from_drawing_tile(LocationXY16 mapPosition, sint16 offsetX, sint16 offsetY, sint16 offsetZ, uint8 lightType)
 {
     sint16 x = mapPosition.x + offsetX;
     sint16 y = mapPosition.y + offsetY;

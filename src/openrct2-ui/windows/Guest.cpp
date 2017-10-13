@@ -702,7 +702,7 @@ void window_guest_viewport_init(rct_window* w){
         uint8 final_check = 1;
         if (peep->state == PEEP_STATE_ON_RIDE
             || peep->state == PEEP_STATE_ENTERING_RIDE
-            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == SPRITE_LOCATION_NULL)){
+            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL)){
 
             Ride *ride = get_ride(peep->current_ride);
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK){
@@ -717,7 +717,7 @@ void window_guest_viewport_init(rct_window* w){
                 final_check = 0;
             }
         }
-        if (peep->x == SPRITE_LOCATION_NULL && final_check){
+        if (peep->x == LOCATION_NULL && final_check){
             Ride *ride = get_ride(peep->current_ride);
             sint32 x = ride->overall_view.x * 32 + 16;
             sint32 y = ride->overall_view.y * 32 + 16;
@@ -1150,7 +1150,7 @@ void window_guest_overview_tool_update(rct_window* w, rct_widgetindex widgetInde
 
     sint32 map_x, map_y;
     footpath_get_coordinates_from_pos(x, y + 16, &map_x, &map_y, nullptr, nullptr);
-    if (map_x != MAP_LOCATION_NULL) {
+    if (map_x != LOCATION_NULL) {
         gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
         gMapSelectType = MAP_SELECT_TYPE_FULL;
         gMapSelectPositionA.x = map_x;
@@ -1199,7 +1199,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
     rct_map_element* mapElement;
     footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
-    if (dest_x == MAP_LOCATION_NULL)
+    if (dest_x == LOCATION_NULL)
         return;
 
     game_command_callback = game_command_callback_pickup_guest;

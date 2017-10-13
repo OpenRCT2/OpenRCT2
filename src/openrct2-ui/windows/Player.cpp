@@ -278,7 +278,7 @@ void window_player_overview_mouse_up(rct_window *w, rct_widgetindex widgetIndex)
             if (player == -1) {
                 return;
             }
-            rct_xyz16 coord = network_get_player_last_action_coord(player);
+            LocationXYZ16 coord = network_get_player_last_action_coord(player);
             if (coord.x || coord.y || coord.z) {
                 window_scroll_to_location(mainWindow, coord.x, coord.y, coord.z);
             }
@@ -603,7 +603,7 @@ static void window_player_update_viewport(rct_window *w, bool scroll)
 
     rct_viewport *viewport = w->viewport;
     if (viewport != nullptr) {
-        rct_xyz16 coord = network_get_player_last_action_coord(playerIndex);
+        LocationXYZ16 coord = network_get_player_last_action_coord(playerIndex);
         if (coord.x != 0 || coord.y != 0 || coord.z != 0) {
             sint32 viewX, viewY;
             centre_2d_coordinates(coord.x, coord.y, coord.z, &viewX, &viewY, viewport);

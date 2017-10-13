@@ -202,7 +202,7 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
 
             news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
-            if (x == SPRITE_LOCATION_NULL)
+            if (x == LOCATION_NULL)
                 break;
 
             rct_window *mainWindow = window_get_main();
@@ -303,7 +303,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
         sint32 subject = newsItem->Assoc;
         news_item_get_subject_location(newsItem->Type, subject, &x, &y, &z);
 
-        if (x == SPRITE_LOCATION_NULL)
+        if (x == LOCATION_NULL)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
         if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)) {

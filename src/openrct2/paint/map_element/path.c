@@ -368,7 +368,7 @@ static void sub_6A4101(paint_session * session, rct_map_element * map_element, u
         direction += get_current_rotation();
         direction &= 3;
 
-        rct_xyz16 boundBoxOffsets = {
+        LocationXYZ16 boundBoxOffsets = {
             .x = BannerBoundBoxes[direction][0].x,
             .y = BannerBoundBoxes[direction][0].y,
             .z = height + 2
@@ -803,8 +803,8 @@ void path_paint_pole_support(paint_session * session, rct_map_element * mapEleme
         (((mapElement->properties.path.edges >> 4) << get_current_rotation()) >> 4);
 
 
-    rct_xy16 boundBoxOffset = {.x =stru_98D804[edges][0], .y = stru_98D804[edges][1]};
-    rct_xy16 boundBoxSize = {.x =stru_98D804[edges][2], .y = stru_98D804[edges][3]};
+    LocationXY16 boundBoxOffset = {.x =stru_98D804[edges][0], .y = stru_98D804[edges][1]};
+    LocationXY16 boundBoxSize = {.x =stru_98D804[edges][2], .y = stru_98D804[edges][3]};
 
     uint16 edi = edges | (corners << 4);
 
@@ -904,12 +904,12 @@ void path_paint_box_support(paint_session * session, rct_map_element* mapElement
     uint8 edges = ((mapElement->properties.path.edges << get_current_rotation()) & 0xF) |
         (((mapElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
 
-    rct_xy16 boundBoxOffset = {
+    LocationXY16 boundBoxOffset = {
         .x = stru_98D804[edges][0],
         .y = stru_98D804[edges][1]
     };
 
-    rct_xy16 boundBoxSize = {
+    LocationXY16 boundBoxSize = {
         .x = stru_98D804[edges][2],
         .y = stru_98D804[edges][3]
     };

@@ -29,13 +29,13 @@ void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);
 void footpath_update_queue_entrance_banner(sint32 x, sint32 y, rct_map_element *mapElement);
 
 uint8 gFootpathProvisionalFlags;
-rct_xyz16 gFootpathProvisionalPosition;
+LocationXYZ16 gFootpathProvisionalPosition;
 uint8 gFootpathProvisionalType;
 uint8 gFootpathProvisionalSlope;
 uint8 gFootpathConstructionMode;
 uint16 gFootpathSelectedId;
 uint8 gFootpathSelectedType;
-rct_xyz16 gFootpathConstructFromPosition;
+LocationXYZ16 gFootpathConstructFromPosition;
 uint8 gFootpathConstructDirection;
 uint8 gFootpathConstructSlope;
 uint8 gFootpathConstructValidDirections;
@@ -46,7 +46,7 @@ static uint8 *_footpathQueueChainNext;
 static uint8 _footpathQueueChain[64];
 
 /** rct2: 0x00981D6C, 0x00981D6E */
-const rct_xy16 word_981D6C[4] = {
+const LocationXY16 word_981D6C[4] = {
     { -1,  0 },
     {  0,  1 },
     {  1,  0 },
@@ -380,7 +380,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
     if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-        rct_xyz16 coord;
+        LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
         coord.z = map_element_height(coord.x, coord.y);
@@ -448,7 +448,7 @@ money32 footpath_remove_real(sint32 x, sint32 y, sint32 z, sint32 flags)
     mapElement = map_get_footpath_element(x / 32, y / 32, z);
     if (mapElement != NULL && (flags & GAME_COMMAND_FLAG_APPLY)) {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -578,7 +578,7 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
 
     if (flags & GAME_COMMAND_FLAG_APPLY) {
         if (gGameCommandNestLevel == 1 && !(flags & GAME_COMMAND_FLAG_GHOST)) {
-            rct_xyz16 coord;
+            LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
             coord.z = map_element_height(coord.x, coord.y);
@@ -728,19 +728,19 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     sint32 z = 0, interactionType;
     rct_map_element *myMapElement;
     rct_viewport *viewport;
-    rct_xy16 position = { 0 };
+    LocationXY16 position = { 0 };
 
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
     if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH || !(viewport->flags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL))) {
         get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN, &position.x, &position.y, &interactionType, &myMapElement, &viewport);
         if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
-            if (x != NULL) *x = MAP_LOCATION_NULL;
+            if (x != NULL) *x = LOCATION_NULL;
             return;
         }
     }
 
-    rct_xy16 minPosition = position;
-    rct_xy16 maxPosition = { position.x + 31, position.y + 31 };
+    LocationXY16 minPosition = position;
+    LocationXY16 maxPosition = { position.x + 31, position.y + 31 };
 
     position.x += 16;
     position.y += 16;
@@ -752,7 +752,7 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
         }
     }
 
-    rct_xy16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
+    LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
 
     for (sint32 i = 0; i < 5; i++) {
         if (interactionType != VIEWPORT_INTERACTION_ITEM_FOOTPATH) {
@@ -802,7 +802,7 @@ void footpath_bridge_get_info_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     sint32 interactionType;
     rct_viewport *viewport;
 
-    rct_xy16 map_pos = { 0 };
+    LocationXY16 map_pos = { 0 };
     get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_RIDE, &map_pos.x, &map_pos.y, &interactionType, mapElement, &viewport);
     *x = map_pos.x;
     *y = map_pos.y;

@@ -1073,7 +1073,7 @@ private:
             if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
             {
                 rct1_vehicle * srcVehicle = &_s4.sprites[i].vehicle;
-                if (srcVehicle->x != SPRITE_LOCATION_NULL)
+                if (srcVehicle->x != LOCATION_NULL)
                 {
                     rct_vehicle * vehicle = (rct_vehicle *)create_sprite(SPRITE_IDENTIFIER_VEHICLE);
                     spriteIndexMap[i] = vehicle->sprite_index;
@@ -2543,7 +2543,7 @@ private:
     {
         for (size_t i = 0; i < Util::CountOf(gParkEntrances); i++)
         {
-            gParkEntrances[i].x = MAP_LOCATION_NULL;
+            gParkEntrances[i].x = LOCATION_NULL;
         }
 
         uint8 entranceIndex = 0;
@@ -2656,11 +2656,11 @@ private:
         }
     }
 
-    void FixLandOwnershipTiles(std::initializer_list<rct_xy8> tiles)
+    void FixLandOwnershipTiles(std::initializer_list<LocationXY8> tiles)
     {
 
         rct_map_element * currentElement;
-        for (const rct_xy8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
+        for (const LocationXY8 * tile = tiles.begin(); tile != tiles.end(); ++tile)
         {
             currentElement = map_get_surface_element_at((*tile).x, (*tile).y);
             currentElement->properties.surface.ownership |= OWNERSHIP_AVAILABLE;

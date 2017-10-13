@@ -118,7 +118,7 @@ static void multi_dimension_rc_track_station(paint_session * session, uint8 ride
         { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
     };
 
-    rct_xy16 position = session->MapPosition;
+    LocationXY16 position = session->MapPosition;
 
     if (mapElement->properties.track.type == TRACK_ELEM_END_STATION)
     {

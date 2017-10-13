@@ -304,7 +304,7 @@ public:
         window_invalidate_by_class(WC_RIDE_LIST);
 
         res->ExpenditureType = RCT_EXPENDITURE_TYPE_RIDE_CONSTRUCTION;
-        res->Position.x = (uint16)0x8000;
+        res->Position.x = LOCATION_NULL;
 
         return std::move(res);
     }

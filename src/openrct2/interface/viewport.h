@@ -130,8 +130,8 @@ void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left,
 
 void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z);
 
-rct_xy16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
-rct_xy16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z);
+LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y);
+LocationXY16 viewport_coord_to_map_coord(sint32 x, sint32 y, sint32 z);
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction);
 
 void show_gridlines();

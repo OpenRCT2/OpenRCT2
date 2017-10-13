@@ -157,16 +157,16 @@ typedef struct Ride {
             uint16 name_arguments_number;                           // 0x04E
         };
     };
-    rct_xy8 overall_view;                                           // 0x050
-    rct_xy8 station_starts[MAX_STATIONS];                           // 0x052
+    LocationXY8 overall_view;                                           // 0x050
+    LocationXY8 station_starts[MAX_STATIONS];                           // 0x052
     uint8 station_heights[MAX_STATIONS];                            // 0x05A
     uint8 station_length[MAX_STATIONS];                             // 0x05E
     uint8 station_depart[MAX_STATIONS];                             // 0x062
     // ride->vehicle index for current train waiting for passengers
     // at station
     uint8 train_at_station[MAX_STATIONS];                           // 0x066
-    rct_xy8 entrances[MAX_STATIONS];                                // 0x06A
-    rct_xy8 exits[MAX_STATIONS];                                    // 0x072
+    LocationXY8 entrances[MAX_STATIONS];                                // 0x06A
+    LocationXY8 exits[MAX_STATIONS];                                    // 0x072
     uint16 last_peep_in_queue[MAX_STATIONS];                        // 0x07A
     uint8 pad_082[MAX_STATIONS];                                    // 0x082, Used to be number of peeps in queue in RCT1, but this has moved.
     uint16 vehicles[MAX_VEHICLES_PER_RIDE];                         // 0x086, Points to the first car in the train
@@ -192,7 +192,7 @@ typedef struct Ride {
     };
 
     uint8 boat_hire_return_direction;                               // 0x0D1
-    rct_xy8 boat_hire_return_position;                              // 0x0D2
+    LocationXY8 boat_hire_return_position;                              // 0x0D2
     uint8 measurement_index;                                        // 0x0D4
     // bits 0 through 4 are the number of helix sections
     // bit 5: spinning tunnel, water splash, or rapids
@@ -218,7 +218,7 @@ typedef struct Ride {
     uint32 testing_flags;                                           // 0x108
     // x y map location of the current track piece during a test
     // this is to prevent counting special tracks multiple times
-    rct_xy8 cur_test_track_location;                                // 0x10C
+    LocationXY8 cur_test_track_location;                                // 0x10C
     // Next 3 variables are related (XXXX XYYY ZZZa aaaa)
     uint16 turn_count_default;                                      // 0x10E X = current turn count
     uint16 turn_count_banked;                                       // 0x110
@@ -247,7 +247,7 @@ typedef struct Ride {
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16 num_customers[CUSTOMER_HISTORY_SIZE];                    // 0x124
     money16 price;                                                  // 0x138
-    rct_xy8 chairlift_bullwheel_location[2];                        // 0x13A
+    LocationXY8 chairlift_bullwheel_location[2];                        // 0x13A
     uint8 chairlift_bullwheel_z[2];                                 // 0x13E
     union {
         rating_tuple ratings;                                       // 0x140
@@ -1002,9 +1002,9 @@ extern uint16 _previousTrackPieceZ;
 extern uint8 _currentBrakeSpeed2;
 extern uint8 _currentSeatRotationAngle;
 
-extern rct_xyz16 _unkF44188;
+extern LocationXYZ16 _unkF44188;
 
-extern rct_xyzd16 _unkF440C5;
+extern LocationXYZD16 _unkF440C5;
 
 extern uint8 gRideEntranceExitPlaceType;
 extern uint8 gRideEntranceExitPlaceRideIndex;

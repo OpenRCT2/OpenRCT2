@@ -50,10 +50,10 @@ static const uint8 byte_9A40CC[] = {
 static void fence_paint_door(paint_session * session, uint32 imageId,
                       rct_scenery_entry * sceneryEntry,
                       uint32 imageColourFlags, uint32 tertiaryColour, uint32 dword_141F710,
-                      rct_xyz16 offset,
-                      rct_xyz16 boundsR1, rct_xyz16 boundsR1_,
-                      rct_xyz16 boundsR2, rct_xyz16 boundsR2_,
-                      rct_xyz16 boundsL1, rct_xyz16 boundsL1_)
+                      LocationXYZ16 offset,
+                      LocationXYZ16 boundsR1, LocationXYZ16 boundsR1_,
+                      LocationXYZ16 boundsR2, LocationXYZ16 boundsR2_,
+                      LocationXYZ16 boundsL1, LocationXYZ16 boundsL1_)
 {
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR) {
         imageId |= imageColourFlags;
@@ -90,7 +90,7 @@ static void fence_paint_door(paint_session * session, uint32 imageId,
     }
 }
 
-static void fence_paint_wall(paint_session * session, uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 imageColourFlags, uint32 dword_141F718, uint32 tertiaryColour, uint32 imageOffset, rct_xyz16 offset, rct_xyz16 bounds, rct_xyz16 boundsOffset)
+static void fence_paint_wall(paint_session * session, uint32 frameNum, const rct_scenery_entry * sceneryEntry, uint32 dword_141F710, uint32 imageColourFlags, uint32 dword_141F718, uint32 tertiaryColour, uint32 imageOffset, LocationXYZ16 offset, LocationXYZ16 bounds, LocationXYZ16 boundsOffset)
 {
     uint32 baseImageId = sceneryEntry->image + imageOffset + frameNum;
     uint32 imageId = baseImageId;
@@ -181,8 +181,8 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
-        rct_xyz16 offset;
-        rct_xyz16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
+        LocationXYZ16 offset;
+        LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
         uint8 animationFrame = wall_element_get_animation_frame(map_element);
         // Add the direction as well
         animationFrame |= (map_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
@@ -191,15 +191,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             case 0:
                 imageId = sceneryEntry->image + byte_9A406C[animationFrame];
 
-                boundsR1 = (rct_xyz16) {1, 3, ah - 5};
-                boundsR1_ = (rct_xyz16) {1, 1, height + 1};
-                boundsR2 = (rct_xyz16) {1, 28, 3};
-                boundsR2_ = (rct_xyz16) {1, 1, height + ah - 9};
+                boundsR1 = (LocationXYZ16) {1, 3, ah - 5};
+                boundsR1_ = (LocationXYZ16) {1, 1, height + 1};
+                boundsR2 = (LocationXYZ16) {1, 28, 3};
+                boundsR2_ = (LocationXYZ16) {1, 1, height + ah - 9};
 
-                boundsL1 = (rct_xyz16) {1, 28, ah};
-                boundsL1_ = (rct_xyz16) {1, 1, height + 1};
+                boundsL1 = (LocationXYZ16) {1, 28, ah};
+                boundsL1_ = (LocationXYZ16) {1, 1, height + 1};
 
-                offset = (rct_xyz16) {0, 0, height};
+                offset = (LocationXYZ16) {0, 0, height};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -207,15 +207,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             case 1:
                 imageId = sceneryEntry->image + byte_9A408C[animationFrame];
 
-                boundsR1 = (rct_xyz16) {3, 3, ah - 5};
-                boundsR1_ = (rct_xyz16) {1, 30, height + 1};
-                boundsR2 = (rct_xyz16) {29, 3, 2};
-                boundsR2_ = (rct_xyz16) {1, 30, height + ah - 8};
+                boundsR1 = (LocationXYZ16) {3, 3, ah - 5};
+                boundsR1_ = (LocationXYZ16) {1, 30, height + 1};
+                boundsR2 = (LocationXYZ16) {29, 3, 2};
+                boundsR2_ = (LocationXYZ16) {1, 30, height + ah - 8};
 
-                boundsL1 = (rct_xyz16) {29, 1, ah};
-                boundsL1_ = (rct_xyz16) {2, 30, height + 1};
+                boundsL1 = (LocationXYZ16) {29, 1, ah};
+                boundsL1_ = (LocationXYZ16) {2, 30, height + 1};
 
-                offset = (rct_xyz16) {1, 31, height};
+                offset = (LocationXYZ16) {1, 31, height};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -223,15 +223,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             case 2:
                 imageId = sceneryEntry->image + byte_9A40AC[animationFrame];
 
-                boundsR1 = (rct_xyz16) {3, 3, ah - 5};
-                boundsR1_ = (rct_xyz16) {30, 1, height + 1};
-                boundsR2 = (rct_xyz16) {3, 29, 2};
-                boundsR2_ = (rct_xyz16) {30, 1, height + ah - 8};
+                boundsR1 = (LocationXYZ16) {3, 3, ah - 5};
+                boundsR1_ = (LocationXYZ16) {30, 1, height + 1};
+                boundsR2 = (LocationXYZ16) {3, 29, 2};
+                boundsR2_ = (LocationXYZ16) {30, 1, height + ah - 8};
 
-                boundsL1 = (rct_xyz16) {1, 29, ah};
-                boundsL1_ = (rct_xyz16) {30, 2, height + 1};
+                boundsL1 = (LocationXYZ16) {1, 29, ah};
+                boundsL1_ = (LocationXYZ16) {30, 2, height + 1};
 
-                offset = (rct_xyz16) {31, 0, height};
+                offset = (LocationXYZ16) {31, 0, height};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -239,15 +239,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             case 3:
                 imageId = sceneryEntry->image + byte_9A40CC[animationFrame];
 
-                boundsR1 = (rct_xyz16) {3, 1, ah - 5};
-                boundsR1_ = (rct_xyz16) {1, 1, height + 1};
-                boundsR2 = (rct_xyz16) {28, 1, 3};
-                boundsR2_ = (rct_xyz16) {1, 1, height + ah - 9};
+                boundsR1 = (LocationXYZ16) {3, 1, ah - 5};
+                boundsR1_ = (LocationXYZ16) {1, 1, height + 1};
+                boundsR2 = (LocationXYZ16) {28, 1, 3};
+                boundsR2_ = (LocationXYZ16) {1, 1, height + ah - 9};
 
-                boundsL1 = (rct_xyz16) {28, 1, ah};
-                boundsL1_ = (rct_xyz16) {1, 1, height + 1};
+                boundsL1 = (LocationXYZ16) {28, 1, ah};
+                boundsL1_ = (LocationXYZ16) {1, 1, height + 1};
 
-                offset = (rct_xyz16) {2, 1, height};
+                offset = (LocationXYZ16) {2, 1, height};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -258,7 +258,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
 
     uint32 imageOffset = 0;
-    rct_xyz16 offset = { 0, 0, 0 }, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
+    LocationXYZ16 offset = { 0, 0, 0 }, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
     switch (direction) {
         case 0:
@@ -270,9 +270,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
                 imageOffset = 1;
             }
 
-            offset = (rct_xyz16){0, 0, height};
-            bounds = (rct_xyz16){1, 28, ah};
-            boundsOffset = (rct_xyz16){1, 1, height + 1};
+            offset = (LocationXYZ16){0, 0, height};
+            bounds = (LocationXYZ16){1, 28, ah};
+            boundsOffset = (LocationXYZ16){1, 1, height + 1};
             break;
 
         case 1:
@@ -294,9 +294,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
                 }
             }
 
-            offset = (rct_xyz16){1, 31, height};
-            bounds = (rct_xyz16){29, 1, ah};
-            boundsOffset = (rct_xyz16){2, 30, height + 1};
+            offset = (LocationXYZ16){1, 31, height};
+            bounds = (LocationXYZ16){29, 1, ah};
+            boundsOffset = (LocationXYZ16){2, 30, height + 1};
             break;
 
         case 2:
@@ -312,9 +312,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
                 imageOffset += 6;
             }
 
-            offset = (rct_xyz16){31, 0, height};
-            bounds = (rct_xyz16){1, 29, ah};
-            boundsOffset = (rct_xyz16){30, 2, height + 1};
+            offset = (LocationXYZ16){31, 0, height};
+            bounds = (LocationXYZ16){1, 29, ah};
+            boundsOffset = (LocationXYZ16){30, 2, height + 1};
             break;
 
         case 3:
@@ -326,9 +326,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
                 imageOffset = 0;
             }
 
-            offset = (rct_xyz16){2, 1, height};
-            bounds = (rct_xyz16){28, 1, ah};
-            boundsOffset = (rct_xyz16){1, 1, height + 1};
+            offset = (LocationXYZ16){2, 1, height};
+            bounds = (LocationXYZ16){28, 1, ah};
+            boundsOffset = (LocationXYZ16){1, 1, height + 1};
             break;
     }
 
