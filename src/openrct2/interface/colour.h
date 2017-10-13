@@ -110,6 +110,7 @@ enum
     PALETTE_INDEX_195 = 195,    //
     PALETTE_INDEX_209 = 209,    // Bright Pink (light)
     PALETTE_INDEX_222 = 222,    //
+    PALETTE_INDEX_230 = 230,    //
     PALETTE_INDEX_245 = 245,    //
 
     PALETTE_COUNT = 256,

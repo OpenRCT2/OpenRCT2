@@ -71,7 +71,7 @@ static uint8 findClosestIndex(uint8 red, uint8 green, uint8 blue)
     sint16 closest = -1;
     sint32 closestDistance = INT32_MAX;
 
-    for (int i = 0; i < PALETTE_COUNT; i++)
+    for (int i = PALETTE_INDEX_0; i < PALETTE_INDEX_230; i++)
     {
         const int distance =
             pow(gPalette[i].red - red, 2) + pow(gPalette[i].green - green, 2) + pow(gPalette[i].blue - blue, 2);
