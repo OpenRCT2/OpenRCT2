@@ -4462,7 +4462,8 @@ STR_6150    :Invalid response from master server (no JSON number)
 STR_6151    :Master server failed to return servers
 STR_6152    :Invalid response from master server (no JSON array)
 STR_6153    :Place beaches
-STR_6154    :Height
+STR_6154    :Beach height:
+STR_6155    :Use light sand
 
 #############
 # Scenarios #

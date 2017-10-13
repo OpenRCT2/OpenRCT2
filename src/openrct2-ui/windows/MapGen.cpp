@@ -91,6 +91,7 @@ enum {
     WIDX_SIMPLEX_BEACHES_HEIGHT,
     WIDX_SIMPLEX_BEACHES_HEIGHT_UP,
     WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN,
+    WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX,
     WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
 
     WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
@@ -114,7 +115,7 @@ enum {
 #pragma region Widgets
 
 #define WW 250
-#define WH 300
+#define WH 320
 
 #define SHARED_WIDGETS \
     { WWT_FRAME,    0,  0,          WW - 1, 0,  WH - 1, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_BACKGROUND */ \
@@ -190,12 +191,13 @@ static rct_widget SimplexWidgets[] = {
     { WWT_FLATBTN,          1,  102,    148,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP }, // WIDX_SIMPLEX_FLOOR_TEXTURE
     { WWT_FLATBTN,          1,  150,    196,    202,    237,    0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP }, // WIDX_SIMPLEX_WALL_TEXTURE
     
-    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_BEACHES_PLACE_CHECKBOX
-    { WWT_SPINNER,          1,  104,    198,    252,    263,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    253,    257,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT_UP
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    258,    262,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN
+    { WWT_CHECKBOX,         1,  104,    198,    239,    250,    STR_NONE,                                   STR_NONE }, // WIDX_SIMPLEX_BEACHES_PLACE_CHECKBOX
+    { WWT_SPINNER,          1,  104,    198,    252,    263,    STR_NONE,                                   STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    253,    257,    STR_NUMERIC_UP,                             STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    258,    262,    STR_NUMERIC_DOWN,                           STR_NONE }, // WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN
+    { WWT_CHECKBOX,         1,  104,    198,    266,    277,    STR_MAPGEN_OPTION_BEACHES_USE_LIGHT_SAND,   STR_NONE }, // WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX
 
-    { WWT_CHECKBOX,         1,  104,    198,    265,    276,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    { WWT_CHECKBOX,         1,  104,    198,    281,    292,    STR_NONE,                                   STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
 
     { WIDGETS_END },
 };
@@ -464,6 +466,7 @@ static uint64 PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT) |
     (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_UP) |
     (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN) |
+    (1ULL << WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX) |
     (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
 
     (1ULL << WIDX_CLOSE) |
@@ -570,6 +573,7 @@ static bool _randomTerrain = true;
 
 static bool _beachesPlace = false;
 static sint32 _beachesHeight = 6;
+static bool _beachesUseLightSand = false;
 
 static sint32 _simplex_low = 6;
 static sint32 _simplex_high = 10;
@@ -857,6 +861,7 @@ static void window_mapgen_random_mouseup(rct_window *w, rct_widgetindex widgetIn
         // Randomly decide to use beaches if floor is grass or randomTerrain is enabled
         mapgenSettings.beaches_place = ((_randomTerrain || _floorTexture == TERRAIN_GRASS) && (util_rand() % 2 == 0));
         mapgenSettings.beaches_height = 6;
+        mapgenSettings.beaches_floor = (util_rand() % 2 == 0) ? TERRAIN_SAND : TERRAIN_SAND_LIGHT;
 
         mapgenSettings.simplex_low = util_rand() % 4;
         mapgenSettings.simplex_high = 12 + (util_rand() % (32 - 12));
@@ -945,6 +950,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
 
         mapgenSettings.beaches_place = _beachesPlace;
         mapgenSettings.beaches_height = _beachesHeight;
+        mapgenSettings.beaches_floor = _beachesUseLightSand ? TERRAIN_SAND_LIGHT : TERRAIN_SAND;
 
         mapgenSettings.simplex_low = _simplex_low;
         mapgenSettings.simplex_high = _simplex_high;
@@ -1032,6 +1038,10 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         _beachesHeight = Math::Min(_beachesHeight + 2, 20);
         window_invalidate(w);
         break;
+    case WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX:
+        _beachesUseLightSand = !_beachesUseLightSand;
+        window_invalidate(w);
+        break;
     case WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN:
         _beachesHeight = Math::Max(_beachesHeight - 2, 0);
         window_invalidate(w);
@@ -1106,6 +1116,7 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
     widget_set_checkbox_value(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _treesPlace);
     widget_set_checkbox_value(w, WIDX_SIMPLEX_BEACHES_PLACE_CHECKBOX, _beachesPlace);
+    widget_set_checkbox_value(w, WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX, _beachesPlace && _beachesUseLightSand);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain) {
@@ -1122,11 +1133,13 @@ static void window_mapgen_simplex_invalidate(rct_window *w)
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT, true);
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_UP, true);
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN, true);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX, true);
     }
     else {
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT, false);
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_UP, false);
         widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN, false);
+        widget_set_enabled(w, WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX, false);
     }
 
     window_mapgen_set_pressed_tab(w);
