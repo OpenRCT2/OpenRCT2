@@ -278,7 +278,7 @@ namespace PaintIntercept {
             log_error("Ebp is different from current rotation");
         }
 
-        rct_xyz16 boundOffset = {
+        LocationXYZ16 boundOffset = {
             RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
             RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
             RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
