@@ -234,12 +234,7 @@ rct_ride_entry * get_ride_entry(sint32 index)
         return NULL;
     }
 
-    rct_ride_entry * retVal = gRideEntries[index];
-
-    if (retVal == (rct_ride_entry *)-1)
-        return NULL;
-    else
-        return retVal;
+    return gRideEntries[index];
 }
 
 void get_ride_entry_name(char *name, sint32 index)

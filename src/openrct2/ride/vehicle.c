@@ -4624,9 +4624,9 @@ static void vehicle_update_doing_circus_show(rct_vehicle *vehicle)
 static rct_map_element* vehicle_check_collision(sint16 x, sint16 y, sint16 z) {
     rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
     if (mapElement == NULL)
-        // Can't return null as that implies no collision,
-        // but should still cause a crash when dereferenced.
-        return (rct_map_element *) -1;
+    {
+        return NULL;
+    }
 
     uint8 bl;
     if ((x & 0x1F) >= 16) {

@@ -454,9 +454,8 @@ static money32 WallPlace(uint8 wallType,
     }
     sint32 bannerIndex = 0xFF;
     rct_scenery_entry * wallEntry = get_wall_entry(wallType);
-    // Have to check both -1 and nullptr, as one can be a invalid object,
-    // while the other can be invalid index
-    if ((uintptr_t)wallEntry == (uintptr_t)-1 || wallEntry == nullptr)
+
+    if (wallEntry == nullptr)
     {
         return MONEY32_UNDEFINED;
     }

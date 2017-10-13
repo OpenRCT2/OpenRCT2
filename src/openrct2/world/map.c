@@ -4096,7 +4096,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
             return true;
 
         rct_scenery_entry* scenery = get_small_scenery_entry(mapElement->properties.scenery.type);
-        if (scenery == (rct_scenery_entry*)-1)
+        if (scenery == NULL)
         {
             return false;
         }

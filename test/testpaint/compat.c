@@ -103,11 +103,7 @@ rct_ride_entry *get_ride_entry(int index) {
         return NULL;
     }
 
-    rct_ride_entry * retVal = gRideEntries[index];
-    if (retVal == (rct_ride_entry *)-1)
-        return NULL;
-    else
-        return retVal;
+    return gRideEntries[index];
 }
 
 rct_ride_entry *get_ride_entry_by_ride(Ride *ride) {

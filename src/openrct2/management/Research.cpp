@@ -866,7 +866,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
     else
     {
         rct_scenery_set_entry * sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
-        if (sceneryEntry == nullptr || sceneryEntry == (rct_scenery_set_entry *) -1)
+        if (sceneryEntry == nullptr)
         {
             return 0;
         }
