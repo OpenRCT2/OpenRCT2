@@ -1979,20 +1979,15 @@ static void window_ride_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         default:
         case WIDX_CLOSE_LIGHT:
             status = RIDE_STATUS_CLOSED;
-            gGameCommandErrorTitle = STR_CANT_CLOSE;
             break;
         case WIDX_TEST_LIGHT:
             status = RIDE_STATUS_TESTING;
-            gGameCommandErrorTitle = STR_CANT_TEST;
             break;
         case WIDX_OPEN_LIGHT:
             status = RIDE_STATUS_OPEN;
-            gGameCommandErrorTitle = STR_CANT_OPEN;
             break;
         }
 
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32, ride->name_arguments);
         ride_set_status(w->number, status);
         break;
     }
@@ -2244,20 +2239,14 @@ static void window_ride_main_dropdown(rct_window *w, rct_widgetindex widgetIndex
         switch (dropdownIndex) {
         case 0:
             status = RIDE_STATUS_CLOSED;
-            gGameCommandErrorTitle = STR_CANT_CLOSE;
             break;
         case 1:
             status = RIDE_STATUS_TESTING;
-            gGameCommandErrorTitle = STR_CANT_TEST;
             break;
         case 2:
             status = RIDE_STATUS_OPEN;
-            gGameCommandErrorTitle = STR_CANT_OPEN;
             break;
         }
-
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32, ride->name_arguments);
         ride_set_status(w->number, status);
         break;
     case WIDX_RIDE_TYPE:
