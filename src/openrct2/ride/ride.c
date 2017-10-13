@@ -1387,17 +1387,15 @@ void ride_remove_provisional_track_piece()
             y -= TileDirectionDelta[direction].y;
         }
         rct_xy_element next_track;
-        if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) {
+        if (track_block_get_next_from_zero(x, y, z, rideIndex, direction, &next_track, &z, &direction)) 
+        {
             sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
-            game_do_command(
-                next_track.x,
-                flags | ((direction & 3) << 8),
+            ride_remove_track_piece(next_track.x,
                 next_track.y,
-                next_track.element->properties.track.type | (map_element_get_track_sequence(next_track.element) << 8),
-                GAME_COMMAND_REMOVE_TRACK,
                 z,
-                0
-            );
+                direction & 3,
+                next_track.element->properties.track.type | (map_element_get_track_sequence(next_track.element) << 8),
+                flags);
         }
     }
 }
@@ -5483,15 +5481,15 @@ sint32 ride_get_refund_price(sint32 ride_id)
         uint8 rotation = map_element_get_direction(it.element);
         uint8 type = it.element->properties.track.type;
 
-        if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP){
-            money32 removePrice = game_do_command(
-                x,
-                GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8),
-                y,
+        if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+        {
+            money32 removePrice = ride_remove_track_piece(x,
+                y, 
+                z, 
+                rotation & 3, 
                 type | (map_element_get_track_sequence(it.element) << 8),
-                GAME_COMMAND_REMOVE_TRACK,
-                z,
-                0);
+                GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY);
+
             if (removePrice == MONEY32_UNDEFINED) {
                 map_element_remove(it.element);
             } else {
@@ -6731,16 +6729,6 @@ bool ride_select_forwards_from_back()
     } else {
         return false;
     }
-}
-
-money32 ride_remove_track_piece(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type, uint8 flags)
-{
-    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
-    if (network_get_mode() == NETWORK_MODE_CLIENT)
-    {
-        game_command_callback = game_command_callback_ride_remove_track_piece;
-    }
-    return game_do_command(x, flags | ((direction & 3) << 8), y, type, GAME_COMMAND_REMOVE_TRACK, z, 0);
 }
 
 /**

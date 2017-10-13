@@ -14,6 +14,8 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "../network/network.h"
+
 #include "GameAction.h"
 #include "GuestSetNameAction.hpp"
 #include "PlaceParkEntranceAction.hpp"
@@ -23,6 +25,7 @@
 #include "RideSetStatus.hpp"
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
+#include "RideRemoveTrack.hpp"
 
 extern "C"
 {
@@ -236,5 +239,55 @@ extern "C"
     }
 
 #pragma endregion
+
+#pragma region RideRemoveTrack
+    money32 ride_remove_track_piece(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 type, uint8 flags)
+    {
+        gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS;
+
+        auto gameAction = RideRemoveTrackAction(x, 
+            y, 
+            z, 
+            direction & 3, 
+            type & 0xFF, 
+            (type >> 8) & 0xFF);
+
+        if (network_get_mode() == NETWORK_MODE_CLIENT)
+        {
+            gameAction.SetCallback([](const GameAction *ga, const RideRemoveTrackActionResult * result)
+            {
+                if (result->Error != GA_ERROR::OK)
+                    return;
+
+                window_ride_construction_mouseup_demolish_next_piece(result->x, result->y, result->z, result->direction, result->type);
+            });
+        }
+
+        gameAction.SetFlags(flags);
+
+        auto res = GameActions::Execute(&gameAction);
+        if (res->Error != GA_ERROR::OK)
+            return MONEY32_UNDEFINED;
+
+        return res->Cost;        
+    }
+
+    /**
+    *
+    *  rct2: 0x006C5B69
+    */
+    void game_command_remove_track(sint32 *x, sint32 *dir_flags, sint32 *y, sint32 *type, sint32 *cmd, sint32 *z, sint32 *ebp)
+    {
+        // eax = x
+        // ecx = y
+        // ebx = (dir << 8) | flags
+        // edx = type
+        // esi = cmd
+        // edi = z
+        // ebp = 0
+
+        Guard::Assert(false, "GAME_COMMAND_REMOVE_TRACK DEPRECATED");
+    }
+#pragma endregion 
 
 }

@@ -527,6 +527,8 @@ const rct_preview_track *get_track_def_from_ride(Ride *ride, sint32 trackType);
 const rct_preview_track *get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
 const rct_track_coordinates *get_track_coord_from_ride(Ride *ride, sint32 trackType);
 
+bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex, sint32 flags);
+
 void track_circuit_iterator_begin(track_circuit_iterator *it, rct_xy_element first);
 bool track_circuit_iterator_previous(track_circuit_iterator *it);
 bool track_circuit_iterator_next(track_circuit_iterator *it);
