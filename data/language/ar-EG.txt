@@ -550,7 +550,7 @@ STR_0545    :Traditional rotating carousel with carved wooden horses
 STR_0546    :<removed string - do not use>
 STR_0547    :كشك حيث يمكن للضيوف شراء خرائط للحديقة والشمسيات
 STR_0548    :مبني الحمامات
-STR_0549    :Rotating big wheel with open chairs
+STR_0549    :عجلة كبيرة دواره مع كراسي مفتوحه
 STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
 STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
 STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
@@ -1831,8 +1831,8 @@ STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
 STR_1826    :الوضع
 STR_1827    :Popularity
 STR_1828    :Satisfaction
-STR_1829    :Profit
-STR_1830    :Queue length
+STR_1829    :الربح
+STR_1830    :طول طابور الإنتظار
 STR_1831    :Queue time
 STR_1832    :Reliability
 STR_1833    :Down-time
@@ -1864,11 +1864,11 @@ STR_1858    :{WINDOW_COLOUR_2}Cost: {BLACK}{CURRENCY2DP} per month
 STR_1859    :رجل مساعد
 STR_1860    :ميكانيكي
 STR_1861    :رجال الأمن
-STR_1862    :Entertainers
-STR_1863    :Handyman
-STR_1864    :Mechanic
-STR_1865    :Security Guard
-STR_1866    :Entertainer
+STR_1862    :المُرفهين
+STR_1863    :رجل مُساعد
+STR_1864    :ميكانيكي
+STR_1865    :رجل الأمن
+STR_1866    :مُرفه
 STR_1867    :{BLACK}{COMMA16} {STRINGID}
 STR_1868    :Can't change number of rotations...
 STR_1869    :{WINDOW_COLOUR_2}Number of rotations:
@@ -2577,7 +2577,7 @@ STR_2568    :Execute
 STR_2569    :Snapshot
 STR_2570    :Insert
 STR_2571    :Delete
-STR_2572    :Help
+STR_2572    :مساعدة
 STR_2573    :0
 STR_2574    :1
 STR_2575    :2
@@ -2697,7 +2697,7 @@ STR_2688    :Base Frequency:
 STR_2689    :Octaves:
 STR_2690    :Map Generation
 STR_2691    :Base height:
-STR_2692    :Water level:
+STR_2692    :مستوي الماء:
 STR_2693    :Terrain:
 STR_2694    :Generate
 STR_2695    :Random terrain
@@ -2705,13 +2705,13 @@ STR_2696    :Place trees
 STR_2697    :???
 STR_2698    :???
 STR_2699    :???
-STR_2700    :Autosave frequency:
-STR_2701    :Every minute
-STR_2702    :Every 5 minutes
-STR_2703    :Every 15 minutes
-STR_2704    :Every 30 minutes
-STR_2705    :Every hour
-STR_2706    :Never
+STR_2700    :معدل تكرار الحفظ التلقائي:
+STR_2701    :كل دقيقة
+STR_2702    :كل 5دقائق
+STR_2703    :كل 15 دقيقة
+STR_2704    :كل 30 دقيقة
+STR_2705    :كل ساعة
+STR_2706    :أبداً
 STR_2707    :Use system dialog window
 STR_2708    :{WINDOW_COLOUR_1}Are you sure you want to overwrite {STRINGID}?
 STR_2709    :Overwrite
@@ -3061,7 +3061,7 @@ STR_3050    :Golf hole B
 STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
-STR_3054    :Loading...
+STR_3054    :تحميل...
 STR_3055    :White
 STR_3056    :Translucent
 STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
@@ -3114,9 +3114,9 @@ STR_3103    :Can't re-paint this...
 STR_3104    :{SMALLFONT}{BLACK}List rides
 STR_3105    :{SMALLFONT}{BLACK}List shops and stalls
 STR_3106    :{SMALLFONT}{BLACK}List information kiosks and other guest facilities
-STR_3107    :Close
-STR_3108    :Test
-STR_3109    :Open
+STR_3107    :إغلاق
+STR_3108    :إختبار
+STR_3109    :فتح
 STR_3110    :{WINDOW_COLOUR_2}Block Sections: {BLACK}{COMMA16}
 STR_3111    :{SMALLFONT}{BLACK}Click on design to build it
 STR_3112    :{SMALLFONT}{BLACK}Click on design to rename or delete it
@@ -3137,8 +3137,8 @@ STR_3126    :{WINDOW_COLOUR_2}Intensity Factor: {BLACK}+{COMMA16}%
 STR_3127    :{WINDOW_COLOUR_2}Nausea Factor: {BLACK}+{COMMA16}%
 STR_3128    :Save Track Design
 STR_3129    :Save Track Design with Scenery
-STR_3130    :Save
-STR_3131    :Cancel
+STR_3130    :حفظ
+STR_3131    :إلغاء
 STR_3132    :{BLACK}Click items of scenery to select them to be saved with track design...
 STR_3133    :Unable to build this on a slope
 STR_3134    :{RED}(Design includes scenery which is unavailable)
@@ -3218,7 +3218,7 @@ STR_3207    :Track Designer
 STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
-STR_3211    :Map size:
+STR_3211    :حجم الخريطة:
 STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
 STR_3213    :Can't decrease map size any further
 STR_3214    :Can't increase map size any further
@@ -3245,7 +3245,7 @@ STR_3234    :Options - Park
 STR_3235    :{SMALLFONT}{BLACK}Show financial options
 STR_3236    :{SMALLFONT}{BLACK}Show guest options
 STR_3237    :{SMALLFONT}{BLACK}Show park options
-STR_3238    :No Money
+STR_3238    :لا نقود
 STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
 STR_3240    :{WINDOW_COLOUR_2}Initial cash:
 STR_3241    :{WINDOW_COLOUR_2}Initial loan:
@@ -3297,11 +3297,11 @@ STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
 STR_3287    :{WINDOW_COLOUR_2}Objective:
 STR_3288    :{SMALLFONT}{BLACK}Select climate
 STR_3289    :{WINDOW_COLOUR_2}Climate:
-STR_3290    :Cool and wet
-STR_3291    :Warm
-STR_3292    :Hot and dry
-STR_3293    :Cold
-STR_3294    :Change...
+STR_3290    :بارد ومبتل
+STR_3291    :دافئ
+STR_3292    :حار وجاف
+STR_3293    :بارد
+STR_3294    :تغيير...
 STR_3295    :{SMALLFONT}{BLACK}Change name of park
 STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
@@ -3355,8 +3355,8 @@ STR_3344    :Track Designer
 STR_3345    :Track Designs Manager
 STR_3346    :Can't save track design...
 STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
-STR_3348    :Rename
-STR_3349    :Delete
+STR_3348    :إعادة تسمية
+STR_3349    :مسح
 STR_3350    :Track design name
 STR_3351    :Enter new name for this track design:
 STR_3352    :Can't rename track design...
@@ -3480,26 +3480,26 @@ STR_5138    :{SMALLFONT}{WINDOW_COLOUR_2}{STRINGID}
 STR_5139    :{WHITE}{STRINGID}
 STR_5140    :Disable brakes failure
 STR_5141    :Disable all breakdowns
-STR_5142    :Normal Speed
+STR_5142    :السرعة العادية
 STR_5143    :Quick Speed
 STR_5144    :Fast Speed
 STR_5145    :Turbo Speed
 STR_5146    :Hyper Speed
-STR_5147    :Cheats
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Show cheat options
-STR_5150    :Enable debugging tools
-STR_5151    :,
+STR_5147    :الشفرات
+STR_5148    :{SMALLFONT}{BLACK}غير سرعة اللعبة
+STR_5149    :{SMALLFONT}{BLACK}أظهر إعددادت الشات
+STR_5150    :تفعيل أدوات التصحيح
+STR_5151    :،
 STR_5152    :.
-STR_5153    :Edit Themes...
+STR_5153    :تعديل الثيمات...
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5157    :<removed string - do not use>
-STR_5158    :Quit to menu
-STR_5159    :Exit OpenRCT2
+STR_5158    :أخرج إلي القائمة
+STR_5159    :أخرج من اللعبة
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Year {POP16}{COMMA16}
-STR_5161    :Date Format:
+STR_5161    :صيغة التاريخ:
 STR_5162    :Day/Month/Year
 STR_5163    :Month/Day/Year
 STR_5164    :Twitch Channel name
@@ -3527,10 +3527,10 @@ STR_5185    :Water level
 STR_5186    :Enter water level between {COMMA16} and {COMMA16}
 STR_5187    :Finances
 STR_5188    :New Campaign
-STR_5189    :Research
-STR_5190    :Map
+STR_5189    :تطوير
+STR_5190    :خريطة
 STR_5191    :Viewport
-STR_5192    :Recent News
+STR_5192    :الأخبار الحالية
 STR_5193    :Land
 STR_5194    :Water
 STR_5195    :Clear Scenery
@@ -3555,13 +3555,13 @@ STR_5213    :Objective Options
 STR_5214    :Map Generation
 STR_5215    :Track Design Manager
 STR_5216    :Track Design Manager List
-STR_5217    :Cheats
-STR_5218    :Themes
-STR_5219    :Options
-STR_5220    :Keyboard Shortcuts
-STR_5221    :Change Keyboard Shortcut
-STR_5222    :Load/Save
-STR_5223    :Save Prompt
+STR_5217    :الشفرات
+STR_5218    :الثيمات
+STR_5219    :الإعدادات
+STR_5220    :إختصرات لوحة المفاتيح
+STR_5221    :تغيير إختصار لوحة المفاتيح
+STR_5222    :حفظ/تحميل
+STR_5223    :أذن الحفظ
 STR_5224    :Demolish Ride Prompt
 STR_5225    :Fire Staff Prompt
 STR_5226    :Track Delete Prompt
@@ -3576,7 +3576,7 @@ STR_5234    :{SMALLFONT}{BLACK}Prompts
 STR_5235    :{SMALLFONT}{BLACK}Settings
 STR_5236    :Window:
 STR_5237    :Palette:
-STR_5238    :Current Theme:
+STR_5238    :الثيم الحالي:
 STR_5239    :Duplicate
 STR_5240    :Enter a name for the theme
 STR_5241    :Can't change this theme
@@ -3591,22 +3591,22 @@ STR_5249    :Title Menu Buttons
 STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
-STR_5253    :Park Information
-STR_5254    :Create
+STR_5253    :معلومات الحديقة
+STR_5254    :أنشئ
 STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
 STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
 STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
-STR_5260    :Giant Screenshot
-STR_5261    :Filter
+STR_5260    :لقطة شاشة عملاقة
+STR_5261    :المُصفي
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
-STR_5264    :Custom
+STR_5264    :مخصص
 STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
+STR_5266    :{SMALLFONT}{BLACK}العرض
 STR_5267    :{SMALLFONT}{BLACK}Culture and Units
-STR_5268    :{SMALLFONT}{BLACK}Audio
+STR_5268    :{SMALLFONT}{BLACK}الصوت
 STR_5269    :{SMALLFONT}{BLACK}Controls and interface
 STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
 STR_5271    :{SMALLFONT}{BLACK}Twitch
@@ -3615,7 +3615,7 @@ STR_5273    :{SMALLFONT}{BLACK}Large Scenery
 STR_5274    :{SMALLFONT}{BLACK}Footpath
 STR_5275    :Search for Objects
 STR_5276    :Enter the name of an object to search for
-STR_5277    :Clear
+STR_5277    :إخلاء
 STR_5278    :Sandbox mode
 STR_5279    :Sandbox mode off
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
@@ -3682,7 +3682,7 @@ STR_5340    :{SMALLFONT}{BLACK}Clearance height
 STR_5341    :<removed string - do not use>
 STR_5342    :<removed string - do not use>
 STR_5343    :Automatically place staff
-STR_5344    :Changelog
+STR_5344    :سجل التغيير
 STR_5345    :Financial cheats
 STR_5346    :Guest cheats
 STR_5347    :Park cheats
@@ -3782,10 +3782,10 @@ STR_5440    :Minimise fullscreen on focus loss
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5443    :Speed{MOVE_X}{87}{STRINGID}
-STR_5444    :Speed:
-STR_5445    :Speed
+STR_5444    :السرعة:
+STR_5445    :سرعة
 STR_5446    :Get
-STR_5447    :Type {STRINGID}
+STR_5447    :النوع {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
 STR_5449    :Reduce game speed
 STR_5450    :Increase game speed
@@ -3801,8 +3801,8 @@ STR_5459    :Rotate anti-clockwise
 STR_5460    :Rotate view anti-clockwise
 STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
-STR_5463    :Goal: Have fun!
-STR_5464    :General
+STR_5463    :الهدف: تمتع!
+STR_5464    :عام
 STR_5465    :Climate
 STR_5466    :Staff
 STR_5467    :ALT +
@@ -3814,12 +3814,12 @@ STR_5472    :Scroll map right
 STR_5473    :Cycle day / night
 STR_5474    :Display text on banners in uppercase
 STR_5475    :{COMMA16} weeks
-STR_5476    :Hardware
-STR_5477    :Map rendering
-STR_5478    :Controls
+STR_5476    :الهاردوير
+STR_5477    :تصيير الخريطة
+STR_5478    :التحكم
 STR_5479    :Toolbar
 STR_5480    :Show toolbar buttons for:
-STR_5481    :Themes
+STR_5481    :الثيمات
 STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
 STR_5483    :{BLACK}({COMMA16} weeks remaining)
 STR_5484    :{BLACK}({COMMA16} week remaining)
@@ -3831,14 +3831,14 @@ STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
 STR_5492    :Scenario options
-STR_5493    :Send Message
+STR_5493    :أرسل رسالة
 STR_5494    :<not used anymore>
 STR_5495    :Player List
-STR_5496    :Player:
+STR_5496    :اللاعب:
 STR_5497    :Ping:
-STR_5498    :Server List
-STR_5499    :Player Name:
-STR_5500    :Add Server
+STR_5498    :قائمة السرفر
+STR_5499    :اسم اللاعب:
+STR_5500    :أضف سرفر
 STR_5501    :إبدأ السرفر
 STR_5502    :اللعب الجماعي
 STR_5503    :Enter hostname or IP address:
@@ -3848,15 +3848,15 @@ STR_5506    :Guests ignore intensities
 STR_5507    :Handymen mow grass by default
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
-STR_5510    :Default sound device
+STR_5510    :جهاز الصوت الإفتراضي
 STR_5511    :(غير معروف)
-STR_5512    :Save Game As
-STR_5513    :(Quick) save game
+STR_5512    :حفظ اللعبة كـ
+STR_5513    :(سريع) حفظ اللعبة
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
-STR_5516    :{SMALLFONT}{BLACK}Black
+STR_5516    :{SMALLFONT}{BLACK}أسود
 STR_5517    :{SMALLFONT}{BLACK}Grey
-STR_5518    :{SMALLFONT}{BLACK}White
+STR_5518    :{SMALLFONT}{BLACK}أبيض
 STR_5519    :{SMALLFONT}{BLACK}Dark purple
 STR_5520    :{SMALLFONT}{BLACK}Light purple
 STR_5521    :{SMALLFONT}{BLACK}Bright purple
@@ -3899,24 +3899,24 @@ STR_5557    :Stay connected after desynchronisation (Multiplayer)
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
-STR_5561    :Failed to load language
+STR_5561    :فشل في تحميل اللغه
 STR_5562    :تحذير!
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :كلمة السر:
 STR_5567    :Advertise
-STR_5568    :Password Required
-STR_5569    :This server requires a password
+STR_5568    :كلمة السر مطلوبة
+STR_5569    :هذا السرفر يتطلب كلمة السر
 STR_5570    :Fetch Servers
 STR_5571    :إنضم للعبة
-STR_5572    :Add To Favourites
-STR_5573    :Remove From Favourites
-STR_5574    :Server Name:
-STR_5575    :Max Players:
-STR_5576    :Port:
+STR_5572    :أضف إلي المفضلة
+STR_5573    :إمسح من المفضلة
+STR_5574    :أسم السرفر:
+STR_5575    :حد اللاعبين:
+STR_5576    :المنفذ:
 STR_5577    :South Korean Won (W)
-STR_5578    :Russian Rouble (R)
+STR_5578    :الروبية الروسية (R)
 STR_5579    :Window scale factor:
 STR_5580    :Czech koruna (Kc)
 STR_5581    :Show FPS
@@ -3937,8 +3937,8 @@ STR_5595    :Ride has crashed
 STR_5596    :Ride warnings
 STR_5597    :Ride / scenery researched
 STR_5598    :Guest warnings
-STR_5599    :Guest is lost
-STR_5600    :Guest has left the park
+STR_5599    :الضيف تائة
+STR_5600    :الضيف قد غادر الحديقة
 STR_5601    :Guest is queuing for ride
 STR_5602    :Guest is on ride
 STR_5603    :Guest has left ride
@@ -3966,24 +3966,24 @@ STR_5624    :Time Twister
 STR_5625    :{OPENQUOTES}Real{ENDQUOTES} Parks
 STR_5626    :Other Parks
 STR_5627    :Group scenario list by:
-STR_5628    :Source game
+STR_5628    :اللعبة المصدر
 STR_5629    :مستوي الصعوبة
 STR_5630    :Enable unlocking of scenarios
 STR_5631    :Original DLC Parks
 STR_5632    :Build your own...
 STR_5633    :CMD +
-STR_5634    :OPTION +
+STR_5634    :إعدادات +
 STR_5635    :{WINDOW_COLOUR_2}Money spent: {BLACK}{CURRENCY2DP}
 STR_5636    :{WINDOW_COLOUR_2}Commands ran: {BLACK}{COMMA16}
-STR_5637    :Can't do this...
+STR_5637    :لا يُمكن فعل هذا...
 STR_5638    :Permission denied
-STR_5639    :{SMALLFONT}{BLACK}Show list of players
-STR_5640    :{SMALLFONT}{BLACK}Manage groups
-STR_5641    :Default Group:
-STR_5642    :Group:
-STR_5643    :Add Group
-STR_5644    :Remove Group
-STR_5645    :Chat
+STR_5639    :{SMALLFONT}{BLACK}أظهر قائمة اللاعبين
+STR_5640    :{SMALLFONT}{BLACK}إدارة المجموعات
+STR_5641    :المجموعة الإفتراضية:
+STR_5642    :مجموعة:
+STR_5643    :أضف مجموعة
+STR_5644    :إمسح مجموعة
+STR_5645    :الشات
 STR_5646    :Terraform
 STR_5647    :Toggle Pause
 STR_5648    :Set Water Level
@@ -3993,14 +3993,14 @@ STR_5651    :Build Ride
 STR_5652    :Ride Properties
 STR_5653    :Scenery
 STR_5654    :Path
-STR_5655    :Guest
+STR_5655    :ضيف
 STR_5656    :Staff
 STR_5657    :Park Properties
 STR_5658    :Park Funding
 STR_5659    :أطرد اللاعب
-STR_5660    :Modify Groups
-STR_5661    :Set Player Group
-STR_5662    :N/A
+STR_5660    :عدل المجموعات
+STR_5661    :حدد مجموعة اللاعب
+STR_5662    :لا شئ
 STR_5663    :Clear Landscape
 STR_5664    :الشفرات
 STR_5665    :Toggle Scenery Cluster
@@ -4030,8 +4030,8 @@ STR_5721    :مغيمه
 STR_5722    :مطر
 STR_5723    :مطر شديد
 STR_5724    :عاصفة برق
-STR_5725    :{BLACK}Force weather:
-STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
+STR_5725    :{BLACK}طبق الجو الأتي بالقوة:
+STR_5726    :{SMALLFONT}{BLACK}يُحدد الجو الحالي في الحديقة
 STR_5727    :Scaling quality
 STR_5728    :Requires hardware display option
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
@@ -4429,8 +4429,8 @@ STR_6117    :Sitting in comfortable trains with only simple lap restraints rider
 STR_6118    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRINGID}
-STR_6121    :{SMALLFONT}{BLACK}توسيع حدود الحديقة إلي اليسار بالكامل إلي حدود الخريطة
-STR_6122    :ليس هناك دوامات وملاهي كافية في هذا المشهد!
+STR_6121    :{SMALLFONT}{BLACK}توسيع حدود الحديقة إلي اليسار بالكامل حتي حدود الخريطة
+STR_6122    :ليس هناك أفعوانيات وملاهي كافية في هذا المشهد!
 STR_6123    :خطأ في تحميل العناصر للحديقة
 STR_6124    :أسم العنصر
 STR_6125    :نوع العنصر
@@ -4450,10 +4450,10 @@ STR_6138    :OpenRCT2 is the work of many authors, a full list can be found in {
 STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
 STR_6140    :سجل التغيير...
 STR_6141    :RCT1 Bottom Toolbar
-STR_6142    :{WINDOW_COLOUR_2}Track name: {BLACK}{STRING}
-STR_6143    :{WINDOW_COLOUR_2}Ride type: {BLACK}{STRINGID}
+STR_6142    :{WINDOW_COLOUR_2}أسم المسار: {BLACK}{STRING}
+STR_6143    :{WINDOW_COLOUR_2}نوع الرحلة: {BLACK}{STRINGID}
 STR_6144    :أظهر تأثيرات التراب
-STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
+STR_6145    :{SMALLFONT}{BLACK}حدد 
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
 STR_6148    :يتصل إلي السرفر الأساسي...
