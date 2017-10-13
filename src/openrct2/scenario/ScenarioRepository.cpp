@@ -123,7 +123,7 @@ class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 {
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16 VERSION = 1;
+    static constexpr uint16 VERSION = 2;
     static constexpr auto PATTERN = "*.sc4;*.sc6";
     
 public:
@@ -157,18 +157,45 @@ protected:
 
     void Serialise(IStream * stream, const scenario_index_entry &item) const override
     {
-        // HACK: Zero highscore pointer
-        auto copy = item;
-        copy.highscore = nullptr;
-        stream->WriteValue(copy);
+        stream->Write(item.path, sizeof(item.path));
+        stream->WriteValue(item.timestamp);
+
+        stream->WriteValue(item.category);
+        stream->WriteValue(item.source_game);
+        stream->WriteValue(item.source_index);
+        stream->WriteValue(item.sc_id);
+
+        stream->WriteValue(item.objective_type);
+        stream->WriteValue(item.objective_arg_1);
+        stream->WriteValue(item.objective_arg_2);
+        stream->WriteValue(item.objective_arg_3);
+
+        stream->Write(item.name, sizeof(item.name));
+        stream->Write(item.details, sizeof(item.details));
     }
 
     scenario_index_entry Deserialise(IStream * stream) const override
     {
-        auto result = stream->ReadValue<scenario_index_entry>();
-        // HACK: Zero highscore pointer
-        result.highscore = nullptr;
-        return result;
+        scenario_index_entry item;
+
+        stream->Read(item.path, sizeof(item.path));
+        item.timestamp = stream->ReadValue<uint64>();
+
+        item.category = stream->ReadValue<uint8>();
+        item.source_game = stream->ReadValue<uint8>();
+        item.source_index = stream->ReadValue<sint16>();
+        item.sc_id = stream->ReadValue<uint16>();
+
+        item.objective_type = stream->ReadValue<uint8>();
+        item.objective_arg_1 = stream->ReadValue<uint8>();
+        item.objective_arg_2 = stream->ReadValue<sint32>();
+        item.objective_arg_3 = stream->ReadValue<sint16>();
+        item.highscore = nullptr;
+
+        stream->Read(item.name, sizeof(item.name));
+        stream->Read(item.details, sizeof(item.details));
+
+        return item;
     }
 
 private:
