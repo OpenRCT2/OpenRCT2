@@ -21,10 +21,17 @@
 #include "../world/map.h"
 #include "ride.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 void ride_update_station(Ride *ride, sint32 stationIndex);
 sint32 ride_get_first_valid_station_exit(Ride * ride);
 sint8 ride_get_first_valid_station_start(const Ride *ride);
 sint8 ride_get_first_empty_station_start(const Ride *ride);
 
+#ifdef __cplusplus
+}
+#endif
 
 #endif

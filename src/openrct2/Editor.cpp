@@ -26,7 +26,7 @@
 #include "object_list.h"
 #include "object/ObjectManager.h"
 #include "OpenRCT2.h"
-#include "peep/staff.h"
+#include "peep/Staff.h"
 #include "rct1.h"
 #include "ParkImporter.h"
 #include "util/util.h"

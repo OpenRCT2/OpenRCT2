@@ -19,7 +19,7 @@
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../object_list.h"
-#include "../../peep/staff.h"
+#include "../../peep/Staff.h"
 #include "../../ride/track.h"
 #include "../../ride/track_paint.h"
 #include "../../world/footpath.h"

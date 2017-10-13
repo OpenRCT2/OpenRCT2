@@ -32,7 +32,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"

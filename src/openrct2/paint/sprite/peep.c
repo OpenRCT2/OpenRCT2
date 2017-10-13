@@ -18,7 +18,7 @@
 #include "../../drawing/lightfx.h"
 #include "../../interface/viewport.h"
 #include "../../paint/sprite/sprite.h"
-#include "../../peep/peep.h"
+#include "../../peep/Peep.h"
 #include "../../world/sprite.h"
 #include "../paint.h"
 

@@ -16,7 +16,7 @@
 
 #include "_legacy.h"
 #include "../interface/window.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "Intent.h"
 #include "../Context.h"
 

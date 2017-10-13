@@ -18,7 +18,7 @@
 #define _SPRITE_H_
 
 #include "../common.h"
-#include "../peep/peep.h"
+#include "../peep/Peep.h"
 #include "../ride/vehicle.h"
 
 #define SPRITE_INDEX_NULL       0xFFFF

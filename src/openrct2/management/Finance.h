@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "Research.h"
 
 typedef sint32 rct_expenditure_type;

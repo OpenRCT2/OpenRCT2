@@ -18,7 +18,7 @@
 #include "../../config/Config.h"
 #include "../../interface/viewport.h"
 #include "../../OpenRCT2.h"
-#include "../../peep/staff.h"
+#include "../../peep/Staff.h"
 #include "../../sprites.h"
 #include "map_element.h"
 #include "surface.h"

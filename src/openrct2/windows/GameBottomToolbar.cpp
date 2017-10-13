@@ -27,7 +27,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../management/NewsItem.h"
-#include "../peep/staff.h"
+#include "../peep/Staff.h"
 #include "../sprites.h"
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
