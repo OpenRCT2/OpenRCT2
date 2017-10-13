@@ -26,6 +26,7 @@
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
+#include "../object_list.h"
 #include "../paint/map_element/map_element.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
@@ -1664,7 +1665,7 @@ uint32 staff_get_available_entertainer_costumes()
     init_scenery();
 
     uint32 entertainerCostumes = 0;
-    for (sint32 i = 0; i < 19; i++)
+    for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         if (window_scenery_tab_entries[i][0] != -1)
         {
