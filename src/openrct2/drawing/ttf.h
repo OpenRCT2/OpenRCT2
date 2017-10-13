@@ -43,8 +43,8 @@ extern "C" {
 #endif
 
 TTFFontDescriptor * ttf_get_font_from_sprite_base(uint16 spriteBase);
+void ttf_toggle_hinting();
 TTFSurface * ttf_surface_cache_get_or_add(TTF_Font * font, const utf8 * text);
-void ttf_surface_cache_dispose_all();
 uint32 ttf_getwidth_cache_get_or_add(TTF_Font * font, const utf8 * text);
 bool ttf_provides_glyph(const TTF_Font * font, codepoint_t codepoint);
 void ttf_free_surface(TTFSurface * surface);
@@ -57,6 +57,7 @@ int TTF_SizeUTF8(TTF_Font *font, const char *text, int *w, int *h);
 TTFSurface * TTF_RenderUTF8_Solid(TTF_Font *font, const char *text, uint32 colour);
 TTFSurface * TTF_RenderUTF8_Shaded(TTF_Font *font, const char *text, uint32 fg, uint32 bg);
 void TTF_CloseFont(TTF_Font *font);
+void TTF_SetFontHinting(TTF_Font* font, int hinting);
 void TTF_Quit(void);
 
 #ifdef __cplusplus
