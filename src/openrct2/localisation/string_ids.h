@@ -3807,6 +3807,7 @@ enum {
     STR_MAPGEN_OPTION_PLACE_BEACHES = 6153,
     STR_MAPGEN_OPTION_BEACHES_HEIGHT = 6154,
     STR_MAPGEN_OPTION_BEACHES_USE_LIGHT_SAND = 6155,
+    STR_MAPGEN_SIMPLEX_TREES_PROBABILITY = 6156,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768

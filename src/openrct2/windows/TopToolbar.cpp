@@ -485,7 +485,7 @@ static void window_top_toolbar_mousedown(rct_window *w, rct_widgetindex widgetIn
         gDropdownItemsFormat[1] = STR_EXTRA_VIEWPORT;
         numItems = 2;
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR) {
+        if ((gCheatsSandboxMode && gConfigGeneral.debugging_tools) || (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR && gS6Info.editor_step == EDITOR_STEP_LANDSCAPE_EDITOR)) {
             gDropdownItemsFormat[2] = STR_MAPGEN_WINDOW_TITLE;
             numItems++;
         }

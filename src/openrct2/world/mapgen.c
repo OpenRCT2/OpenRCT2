@@ -309,6 +309,7 @@ static void mapgen_place_trees(mapgen_settings * settings)
 
     float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
     float trees_octaves = settings->trees_octaves;
+    float trees_probability = settings->trees_probability;
 
     sint32 availablePositionsCount = 0;
     struct { sint32 x; sint32 y; bool tree; } tmp, *pos, *availablePositions, *neighborPos;
@@ -351,7 +352,7 @@ static void mapgen_place_trees(mapgen_settings * settings)
         float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
         float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
 
-        if (normalisedNoiseValue < 0.5f) {
+        if (normalisedNoiseValue < trees_probability) {
             pos->tree = false;
             availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
         }

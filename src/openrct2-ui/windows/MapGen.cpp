@@ -93,6 +93,21 @@ enum {
     WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN,
     WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX,
     WIDX_SIMPLEX_PLACE_TREES_CHECKBOX,
+    WIDX_SIMPLEX_TREES_LOW,
+    WIDX_SIMPLEX_TREES_LOW_UP,
+    WIDX_SIMPLEX_TREES_LOW_DOWN,
+    WIDX_SIMPLEX_TREES_HIGH,
+    WIDX_SIMPLEX_TREES_HIGH_UP,
+    WIDX_SIMPLEX_TREES_HIGH_DOWN,
+    WIDX_SIMPLEX_TREES_BASE_FREQ,
+    WIDX_SIMPLEX_TREES_BASE_FREQ_UP,
+    WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN,
+    WIDX_SIMPLEX_TREES_OCTAVES,
+    WIDX_SIMPLEX_TREES_OCTAVES_UP,
+    WIDX_SIMPLEX_TREES_OCTAVES_DOWN,
+    WIDX_SIMPLEX_TREES_PROBABILITY,
+    WIDX_SIMPLEX_TREES_PROBABILITY_UP,
+    WIDX_SIMPLEX_TREES_PROBABILITY_DOWN,
 
     WIDX_HEIGHTMAP_SELECT = TAB_BEGIN,
     WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP,
@@ -115,7 +130,7 @@ enum {
 #pragma region Widgets
 
 #define WW 250
-#define WH 320
+#define WH 400
 
 #define SHARED_WIDGETS \
     { WWT_FRAME,    0,  0,          WW - 1, 0,  WH - 1, 0xFFFFFFFF,                 STR_NONE },             /* WIDX_BACKGROUND */ \
@@ -198,6 +213,26 @@ static rct_widget SimplexWidgets[] = {
     { WWT_CHECKBOX,         1,  104,    198,    266,    277,    STR_MAPGEN_OPTION_BEACHES_USE_LIGHT_SAND,   STR_NONE }, // WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX
 
     { WWT_CHECKBOX,         1,  104,    198,    281,    292,    STR_NONE,                                   STR_NONE }, // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    
+    { WWT_SPINNER,          1,  104,    198,    294,    305,     STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_TREES_LOW
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    295,    299,     STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_TREES_LOW_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    300,    304,     STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_TREES_LOW_DOWN
+
+    { WWT_SPINNER,          1,  104,    198,    307,    318,     STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_TREES_HIGH
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    308,    312,     STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_TREES_HIGH_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    313,    317,     STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_TREES_HIGH_DOWN
+
+    { WWT_SPINNER,          1,  104,    198,    320,    331,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_TREES_BASE_FREQ
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    321,    326,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_TREES_BASE_FREQ_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    326,    330,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN
+
+    { WWT_SPINNER,          1,  104,    198,    333,    344,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_TREES_OCTAVES
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    334,    338,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_TREES_OCTAVES_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    339,    343,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_TREES_OCTAVES_DOWN
+
+    { WWT_SPINNER,          1,  104,    198,    346,    357,    STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_TREES_PROBABILITY
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    347,    351,    STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_TREES_PROBABILITY_UP
+    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    352,    356,    STR_NUMERIC_DOWN,                 STR_NONE }, // WIDX_SIMPLEX_TREES_PROBABILITY_DOWN
 
     { WIDGETS_END },
 };
@@ -467,7 +502,22 @@ static uint64 PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_UP) |
     (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN) |
     (1ULL << WIDX_SIMPLEX_BEACHES_USE_LIGHT_SAND_CHECKBOX) |
-    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
+    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX) |
+    (1ULL << WIDX_SIMPLEX_TREES_LOW) |
+    (1ULL << WIDX_SIMPLEX_TREES_LOW_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_LOW_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_HIGH) |
+    (1ULL << WIDX_SIMPLEX_TREES_HIGH_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_HIGH_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_BASE_FREQ) |
+    (1ULL << WIDX_SIMPLEX_TREES_BASE_FREQ_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_OCTAVES) |
+    (1ULL << WIDX_SIMPLEX_TREES_OCTAVES_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_OCTAVES_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_PROBABILITY) |
+    (1ULL << WIDX_SIMPLEX_TREES_PROBABILITY_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_PROBABILITY_DOWN),
 
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
@@ -522,7 +572,19 @@ static uint64 HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_MAP_SIZE_UP) |
     (1ULL << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
+    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
+    (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_UP) |
+    (1ULL << WIDX_SIMPLEX_BEACHES_HEIGHT_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_LOW_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_LOW_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_HIGH_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_HIGH_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_BASE_FREQ_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_OCTAVES_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_OCTAVES_DOWN) |
+    (1ULL << WIDX_SIMPLEX_TREES_PROBABILITY_UP) |
+    (1ULL << WIDX_SIMPLEX_TREES_PROBABILITY_DOWN),
 
     (1ULL << WIDX_HEIGHTMAP_STRENGTH_UP) |
     (1ULL << WIDX_HEIGHTMAP_STRENGTH_DOWN) |
@@ -593,6 +655,7 @@ static sint32 _treesLow = 0;
 static sint32 _treesHigh = 10;
 static sint32 _treesBaseFreq = 60;
 static sint32 _treesOctaves = 4;
+static sint32 _treesProbability = 5;
 
 rct_window *window_mapgen_open()
 {
@@ -962,7 +1025,7 @@ static void window_mapgen_simplex_mouseup(rct_window *w, rct_widgetindex widgetI
         mapgenSettings.trees_high = _treesHigh;
         mapgenSettings.trees_base_freq = ((float)_treesBaseFreq) / 100.00f;
         mapgenSettings.trees_octaves = _treesOctaves;
-
+        mapgenSettings.trees_probability = ((float)_treesProbability) / 100.00f;
         mapgen_generate(&mapgenSettings);
         gfx_invalidate_screen();
         break;
@@ -1048,6 +1111,46 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         break;
     case WIDX_SIMPLEX_PLACE_TREES_CHECKBOX:
         _treesPlace = !_treesPlace;
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_LOW_UP:
+        _treesLow = Math::Min(_treesLow + 1, 24);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_LOW_DOWN:
+        _treesLow = Math::Max(_treesLow - 1, 0);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_HIGH_UP:
+        _treesHigh = Math::Min(_treesHigh + 1, 36);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_HIGH_DOWN:
+        _treesHigh = Math::Max(_treesHigh - 1, 0);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_BASE_FREQ_UP:
+        _treesBaseFreq = Math::Min(_treesBaseFreq + 5, 1000);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN:
+        _treesBaseFreq = Math::Max(_treesBaseFreq - 5, 0);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_OCTAVES_UP:
+        _treesOctaves = Math::Min(_treesOctaves + 1, 10);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_OCTAVES_DOWN:
+        _treesOctaves = Math::Max(_treesOctaves - 1, 1);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_PROBABILITY_UP:
+        _treesProbability = Math::Min(_treesProbability + 1, 10);
+        window_invalidate(w);
+        break;
+    case WIDX_SIMPLEX_TREES_PROBABILITY_DOWN:
+        _treesProbability = Math::Max(_treesProbability - 1, 1);
         window_invalidate(w);
         break;
     }
@@ -1161,14 +1264,26 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_MAP_SIZE, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
     gfx_draw_string_left(dpi, STR_WATER_LEVEL_LABEL, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_BEACHES_HEIGHT, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_LOW_, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_LOW].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_HIGH].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_TREES_PROBABILITY, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
 
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_low, textColour, w->x + w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_high, textColour, w->x + w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
     gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_simplex_base_freq, textColour, w->x + w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_octaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1);
+    gfx_draw_string_left(dpi, STR_COMMA16, &_treesLow, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_LOW].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_LOW].top + 1);
+    gfx_draw_string_left(dpi, STR_COMMA16, &_treesHigh, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_HIGH].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_HIGH].top + 1);
+    gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_treesBaseFreq, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].top + 1);
+    gfx_draw_string_left(dpi, STR_COMMA16, &_treesOctaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
+    gfx_draw_string_left(dpi, STR_COMMA16, &_treesProbability, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].top + 1);
+
     gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_BEACHES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_PLACE_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
+    
     
     // The practical map size is 2 lower than the technical map size
     rct_xy16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);
@@ -1178,6 +1293,9 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].left + 1, w->y + w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1);
     arg = _beachesHeight / 2;
     gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].top + 1);
+    arg = _treesProbability * 10;
+    gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].top + 1);
+
 }
 
 #pragma endregion

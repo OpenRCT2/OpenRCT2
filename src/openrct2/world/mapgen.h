@@ -50,6 +50,7 @@ typedef struct mapgen_settings {
     sint32 trees_high;
     float trees_base_freq;
     sint32 trees_octaves;
+    float trees_probability;
 
 } mapgen_settings;
 
