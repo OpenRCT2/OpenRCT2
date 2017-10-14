@@ -18,21 +18,14 @@
 
 #include "DrawImageShader.h"
 
-DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
+DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage", true)
 {
     GetLocations();
 
-    glGenBuffers(1, &_vbo);
     glGenBuffers(1, &_vboInstances);
     glGenVertexArrays(1, &_vao);
 
-    GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
-    glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-
     glBindVertexArray(_vao);
-
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
 
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glVertexAttribIPointer(vClip, 4, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, clip));
@@ -47,7 +40,6 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, bounds));
     glVertexAttribIPointer(vMask, 1, GL_INT, sizeof(DrawImageCommand), (void*) offsetof(DrawImageCommand, mask));
 
-    glEnableVertexAttribArray(vIndex);
     glEnableVertexAttribArray(vClip);
     glEnableVertexAttribArray(vTexColourAtlas);
     glEnableVertexAttribArray(vTexColourBounds);
@@ -60,25 +52,12 @@ DrawImageShader::DrawImageShader() : OpenGLShaderProgram("drawimage")
     glEnableVertexAttribArray(vBounds);
     glEnableVertexAttribArray(vMask);
 
-    glVertexAttribDivisor(vClip, 1);
-    glVertexAttribDivisor(vTexColourAtlas, 1);
-    glVertexAttribDivisor(vTexColourBounds, 1);
-    glVertexAttribDivisor(vTexMaskAtlas, 1);
-    glVertexAttribDivisor(vTexMaskBounds, 1);
-    glVertexAttribDivisor(vTexPaletteAtlas, 1);
-    glVertexAttribDivisor(vTexPaletteBounds, 1);
-    glVertexAttribDivisor(vFlags, 1);
-    glVertexAttribDivisor(vColour, 1);
-    glVertexAttribDivisor(vBounds, 1);
-    glVertexAttribDivisor(vMask, 1);
-
     Use();
     glUniform1i(uTexture, 0);
 }
 
 DrawImageShader::~DrawImageShader()
 {
-    glDeleteBuffers(1, &_vbo);
     glDeleteBuffers(1, &_vboInstances);
     glDeleteVertexArrays(1, &_vao);
 }
@@ -114,7 +93,7 @@ void DrawImageShader::DrawInstances(const ImageCommandBatch& instances)
     glBindBuffer(GL_ARRAY_BUFFER, _vboInstances);
     glBufferData(GL_ARRAY_BUFFER, sizeof(DrawImageCommand) * instances.size(), instances.data(), GL_STREAM_DRAW);
 
-    glDrawArraysInstanced(GL_TRIANGLES, 0, 6, (GLsizei)instances.size());
+    glDrawArrays(GL_POINTS, 0, (GLsizei)instances.size());
 }
 
 #endif /* DISABLE_OPENGL */

@@ -41,7 +41,6 @@ private:
     GLuint vBounds;
     GLuint vMask;
 
-    GLuint _vbo;
     GLuint _vboInstances;
     GLuint _vao;
 

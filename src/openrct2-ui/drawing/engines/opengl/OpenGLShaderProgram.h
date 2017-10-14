@@ -44,9 +44,10 @@ private:
     GLuint         _id              = 0;
     OpenGLShader * _vertexShader    = nullptr;
     OpenGLShader * _fragmentShader  = nullptr;
+    OpenGLShader * _geometryShader  = nullptr;
 
 public:
-    explicit OpenGLShaderProgram(const char * name);
+    explicit OpenGLShaderProgram(const char * name, bool geometry = false);
     explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = default;
     virtual ~OpenGLShaderProgram();
 

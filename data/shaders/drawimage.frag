@@ -7,18 +7,18 @@ const int FLAG_TRANSPARENT_SPECIAL = (1 << 3);
 
 uniform usampler2DArray uTexture;
 
-flat in ivec4           fClip;
-flat in int             fFlags;
-flat in uint            fColour;
-flat in int             fTexColourAtlas;
-in vec2                 fTexColourCoords;
-flat in int             fTexMaskAtlas;
-in vec2                 fTexMaskCoords;
-flat in int             fTexPaletteAtlas;
-flat in vec4            fTexPaletteBounds;
-flat in int             fMask;
+flat in ivec4   fClip;
+flat in int     fFlags;
+flat in uint    fColour;
+flat in int     fTexColourAtlas;
+flat in int     fTexMaskAtlas;
+flat in int     fTexPaletteAtlas;
+flat in vec4    fTexPaletteBounds;
+flat in int     fMask;
 
-in vec2 fPosition;
+in vec2         fPosition;
+in vec2         fTexColourCoords;
+in vec2         fTexMaskCoords;
 
 out uint oColour;
 

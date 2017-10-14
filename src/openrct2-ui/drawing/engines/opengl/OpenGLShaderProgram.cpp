@@ -74,6 +74,10 @@ void OpenGLShader::GetPath(char * buffer, size_t bufferSize, const char * name)
     {
         String::Append(buffer, bufferSize, ".vert");
     }
+    else if (_type == GL_GEOMETRY_SHADER)
+    {
+        String::Append(buffer, bufferSize, ".geom");
+    }
     else
     {
         String::Append(buffer, bufferSize, ".frag");
@@ -96,14 +100,17 @@ char * OpenGLShader::ReadSourceCode(const utf8 * path)
     return fileData;
 }
 
-OpenGLShaderProgram::OpenGLShaderProgram(const char * name)
+OpenGLShaderProgram::OpenGLShaderProgram(const char * name, bool geometry)
 {
     _vertexShader = new OpenGLShader(name, GL_VERTEX_SHADER);
     _fragmentShader = new OpenGLShader(name, GL_FRAGMENT_SHADER);
+    if (geometry) _geometryShader = new OpenGLShader(name, GL_GEOMETRY_SHADER);
 
     _id = glCreateProgram();
     glAttachShader(_id, _vertexShader->GetShaderId());
     glAttachShader(_id, _fragmentShader->GetShaderId());
+    if (_geometryShader != nullptr)
+        glAttachShader(_id, _geometryShader->GetShaderId());
     glBindFragDataLocation(_id, 0, "oColour");
 
     if (!Link())
