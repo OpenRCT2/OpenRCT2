@@ -53,6 +53,7 @@ extern "C" {
     uint16 title_sequence_manager_get_predefined_index(size_t index);
     size_t title_sequence_manager_get_index_for_config_id(const utf8 * configId);
     size_t title_sequence_manager_get_index_for_name(const utf8 * name);
+    bool title_sequence_manager_is_name_reserved(const utf8 * name);
     void title_sequence_manager_scan();
     void title_sequence_manager_delete(size_t i);
     size_t title_sequence_manager_rename(size_t i, const utf8 * name);

@@ -57,6 +57,7 @@ namespace TitleSequenceManager
     static std::string GetNameFromSequencePath(const std::string &path);
     static void GetDataSequencesPath(utf8 * buffer, size_t bufferSize);
     static void GetUserSequencesPath(utf8 * buffer, size_t bufferSize);
+    static bool IsNameReserved(const std::string &name);
 
     size_t GetCount()
     {
@@ -267,6 +268,12 @@ namespace TitleSequenceManager
             rct_string_id stringId = PredefinedSequences[item.PredefinedIndex].StringId;
             item.Name = language_get_string(stringId);
         }
+        else if (IsNameReserved(item.Name))
+        {
+            // Reserved names are not allowed because they map to the
+            // actual predefined names and also prevent editing
+            return;
+        }
         item.IsZip = isZip;
         _items.push_back(item);
     }
@@ -289,6 +296,21 @@ namespace TitleSequenceManager
     {
         platform_get_user_directory(buffer, "title sequences", bufferSize);
         platform_ensure_directory_exists(buffer);
+    }
+
+    static bool IsNameReserved(const std::string &name)
+    {
+        for (const auto &pseq : TitleSequenceManager::PredefinedSequences)
+        {
+            const utf8 * predefinedName = Path::GetFileNameWithoutExtension(pseq.Filename);
+            std::string reservedName = std::string(predefinedName);
+            Memory::Free(predefinedName);
+            if (String::Equals(name, reservedName, true))
+            {
+                return true;
+            }
+        }
+        return false;
     }
 }
 
@@ -374,6 +396,11 @@ extern "C"
             }
         }
         return SIZE_MAX;
+    }
+
+    bool title_sequence_manager_is_name_reserved(const utf8 * name)
+    {
+        return TitleSequenceManager::IsNameReserved(name);
     }
 
     void title_sequence_manager_scan()
