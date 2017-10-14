@@ -649,6 +649,8 @@ void park_set_open(sint32 open)
 
         FOR_ALL_GUESTS(sprite_index, peep)
         {
+            if (peep->outside_of_park != 0)
+                continue;
             // force them to leave queues
             if (peep->state == PEEP_STATE_QUEUING)
             {
