@@ -44,11 +44,15 @@ If you want to help translate the game to your language, please stop by the Loca
 - 5 - [Licence](#5-licence)
 - 6 - [More information](#6-more-information)
 
+---
+
 # 1 Introduction
 
 **OpenRCT2** is an open-source re-implementation of RollerCoaster Tycoon 2 (RCT2). The gameplay revolves around building and maintaining an amusement park containing attractions, shops and facilities. The player must try to make a profit and maintain a good park reputation whilst keeping the guests happy. OpenRCT2 allows for both scenario and sandbox play. Scenarios require the player to complete a certain objective in a set time limit whilst sandbox allows the player to build a more flexible park with optionally no restrictions or finance.
 
 RollerCoaster Tycoon 2 was originally written by Chris Sawyer in x86 assembly and is the sequel to RollerCoaster Tycoon. The engine was based on Transport Tycoon, an older game which also has an equivalent open-source project, [OpenTTD](http://openttd.org). OpenRCT2 attempts to provide everything from RCT2 as well as many improvements and additional features, some of these include support for modern platforms, an improved interface, improved guest and staff AI, more editing tools, increased limits, and cooperative multiplayer. It also re-introduces mechanics from RollerCoaster Tycoon that were not present in RollerCoaster Tycoon 2. Some of those include; mountain tool in-game, the *"have fun"* objective, launched coasters (not passing-through the station) and several buttons on the toolbar.
+
+---
 
 # 2 Downloading the game (pre-built)
 
@@ -64,6 +68,9 @@ Some Linux distributions offer native packages already. These packages are usual
 
 Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
+
+---
+
 # 3 Building the game
 
 ## 3.1 Building prerequisites
@@ -78,7 +85,6 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 - [7-Zip](http://www.7-zip.org/) (for deployment only)
 - [NSIS](http://nsis.sourceforge.net/) (for deployment only)
 
----
 
 ### macOS:
 - Xcode 8
@@ -88,6 +94,7 @@ The program can also be built as a command line program using CMake. This type o
 - Xcode Command Line Tools
 - [Homebrew](http://brew.sh)
 - CMake (available through Homebrew)
+
 
 ### Linux:
 - sdl2 (only for UI client)
@@ -103,6 +110,8 @@ The program can also be built as a command line program using CMake. This type o
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
 - cmake
+
+---
 
 ## 3.2 Compiling and running
 ### Windows:
