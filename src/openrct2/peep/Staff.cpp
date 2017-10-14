@@ -549,12 +549,6 @@ void game_command_fire_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx, si
             *ebx = MONEY32_UNDEFINED;
             return;
         }
-        if (peep->state == PEEP_STATE_PICKED)
-        {
-            *ebx = MONEY32_UNDEFINED;
-            return;
-        }
-        remove_peep_from_ride(peep);
         peep_sprite_remove(peep);
     }
     *ebx = 0;
