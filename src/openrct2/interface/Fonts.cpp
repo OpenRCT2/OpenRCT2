@@ -25,39 +25,42 @@
 #include "../localisation/language.h"
 
 #ifndef NO_TTF
+uint8 const HINTING_THRESHOLD_LOW    = 40;
+uint8 const HINTING_THRESHOLD_MEDIUM = 60;
+
 TTFFontSetDescriptor TTFFontMSGothic = { {
-    { "msgothic.ttc", "MS PGothic", 9, 1, 0, 15, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, nullptr },
-    { "msgothic.ttc", "MS PGothic", 13, 1, 0, 20, nullptr },
+    { "msgothic.ttc", "MS PGothic",  9, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 13, 1, 0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMingLiu = { {
-    { "msjh.ttc", "JhengHei", 9, -1, -3, 6, nullptr },
-    { "mingliu.ttc", "MingLiU", 11, 1, 1, 12, nullptr },
-    { "mingliu.ttc", "MingLiU", 12, 1, 0, 12, nullptr },
-    { "mingliu.ttc", "MingLiU", 13, 1, 0, 20, nullptr },
+    {    "msjh.ttc", "JhengHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 11,  1,  1, 12, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 12,  1,  0, 12, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 13,  1,  0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontSimSun = { {
-    { "msyh.ttc", "YaHei", 9, -1, -3, 6, nullptr },
-    { "simsun.ttc", "SimSun", 11, 1, -1, 14, nullptr },
-    { "simsun.ttc", "SimSun", 12, 1, -2, 14, nullptr },
-    { "simsun.ttc", "SimSun", 13, 1, 0, 20, nullptr },
+    {   "msyh.ttc",  "YaHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 12,  1, -2, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 13,  1,  0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontGulim = { {
-    { "gulim.ttc", "Gulim", 11, 1, 0, 15, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, nullptr },
-    { "gulim.ttc", "Gulim", 13, 1, 0, 20, nullptr },
+    { "gulim.ttc", "Gulim", 11, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 13, 1, 0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontArial = { {
-    { "arial.ttf", "Arial", 8, 0, -1, 6, nullptr },
-    { "arial.ttf", "Arial", 10, 0, -1, 12, nullptr },
-    { "arial.ttf", "Arial", 11, 0, -1, 12, nullptr },
-    { "arial.ttf", "Arial", 12, 0, -1, 20, nullptr },
+    { "arial.ttf", "Arial",  8, 0, -1,  6, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 20, HINTING_THRESHOLD_LOW, nullptr },
 } };
 #endif // NO_TTF
 
@@ -85,13 +88,13 @@ static bool LoadCustomConfigFont()
 {
     static TTFFontSetDescriptor TTFFontCustom = { {
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_tiny, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_tiny, nullptr },
+          gConfigFonts.height_tiny, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_small, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_small, nullptr },
+          gConfigFonts.height_small, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_medium, gConfigFonts.x_offset,
-          gConfigFonts.y_offset, gConfigFonts.height_medium, nullptr },
+          gConfigFonts.y_offset, gConfigFonts.height_medium, gConfigFonts.hinting_threshold, nullptr },
         { gConfigFonts.file_name, gConfigFonts.font_name, gConfigFonts.size_big, gConfigFonts.x_offset, gConfigFonts.y_offset,
-          gConfigFonts.height_big, nullptr },
+          gConfigFonts.height_big, gConfigFonts.hinting_threshold, nullptr },
     } };
 
     ttf_dispose();
