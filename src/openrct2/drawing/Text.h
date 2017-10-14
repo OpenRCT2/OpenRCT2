@@ -17,11 +17,7 @@
 #pragma once
 
 #include "../common.h"
-
-extern "C"
-{
-    #include "drawing.h"
-}
+#include "drawing.h"
 
 enum class TextAlignment
 {
@@ -46,6 +42,9 @@ private:
     sint32      _lineCount;
     sint32      _lineHeight;
     sint32      _maxWidth;
+
+    StaticLayout();
+    StaticLayout(const StaticLayout &);
 
 public:
     StaticLayout(utf8string source, TextPaint paint, sint32 width);

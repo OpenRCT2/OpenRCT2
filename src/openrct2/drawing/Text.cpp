@@ -214,7 +214,7 @@ extern "C"
         _legacyPaint.Alignment = TextAlignment::LEFT;
         _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
 
-        auto layout = StaticLayout(buffer, _legacyPaint, width);
+        StaticLayout layout(buffer, _legacyPaint, width);
         layout.Draw(dpi, x, y);
 
         return layout.GetHeight();
@@ -232,7 +232,7 @@ extern "C"
         _legacyPaint.Alignment = TextAlignment::CENTRE;
         _legacyPaint.SpriteBase = gCurrentFontSpriteBase;
 
-        auto layout = StaticLayout(buffer, _legacyPaint, width);
+        StaticLayout layout(buffer, _legacyPaint, width);
 
         // The original tried to vertically centre the text, but used line count - 1
         sint32 lineCount = layout.GetLineCount();
