@@ -65,8 +65,8 @@ struct DataSerializerTraits<std::string>
     static void encode(IStream *stream, const std::string& str)
     {
         uint16 len = (uint16)str.size();
-        len = ByteSwapBE(len);
-        stream->Write(&len);
+        uint16 swapped = ByteSwapBE(len);
+        stream->Write(&swapped);
         stream->WriteArray(str.c_str(), len);
     }
     static void decode(IStream *stream, std::string& res)
