@@ -48,6 +48,7 @@ typedef struct TTFFontDescriptor {
     sint32 offset_x;
     sint32 offset_y;
     sint32 line_height;
+    sint32 hinting_threshold;
     TTF_Font * font;
 } TTFFontDescriptor;
 
