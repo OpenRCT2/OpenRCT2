@@ -6,12 +6,12 @@ else()
     add_custom_command(
         OUTPUT "${g2_dat}"
         COMMAND "${CMAKE_COMMAND}" -E make_directory "${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/data"
-        COMMAND $<TARGET_FILE:openrct2-cli> sprite build
+        COMMAND $<TARGET_FILE:openrct2> sprite build
             "${g2_dat}"
             ${PROJECT_SOURCE_DIR}/resources/g2/sprites.json
             silent
         DEPENDS
-            openrct2-cli
+            openrct2
             "${PROJECT_SOURCE_DIR}/resources/g2/sprites.json"
         WORKING_DIRECTORY "${CMAKE_BINARY_DIR}"
         COMMENT "Generating g2.dat"
