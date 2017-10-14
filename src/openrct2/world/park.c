@@ -642,6 +642,21 @@ void park_update_histories()
 
 void park_set_open(sint32 open)
 {
+    if (!park_is_open() && open == 0)
+    {
+        sint32 sprite_index;
+        rct_peep *peep;
+
+        FOR_ALL_GUESTS(sprite_index, peep)
+        {
+            // force them to leave queues
+            if (peep->state == PEEP_STATE_QUEUING)
+            {
+                remove_peep_from_ride(peep);
+            }
+            peep_leave_park(peep);
+        }
+    }
     game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, open << 8, GAME_COMMAND_SET_PARK_OPEN, 0, 0);
 }
 
