@@ -3806,6 +3806,9 @@ enum {
 
     STR_PAID_ENTRY_PAID_RIDES = 6153,
 
+    STR_ADMIN_NOT_RECOMMENDED = 6154,
+    STR_MISSING_DIALOG_APPLICATION_ERROR = 6155,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

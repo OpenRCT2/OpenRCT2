@@ -280,9 +280,30 @@ namespace OpenRCT2
                 config_save_default();
             }
 
+            // TODO add configuration option to allow multiple instances
+            // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+            //  log_fatal("OpenRCT2 is already running.");
+            //  return false;
+            // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
+
+            _objectRepository = CreateObjectRepository(_env);
+            _objectManager = CreateObjectManager(_objectRepository);
+            _trackDesignRepository = CreateTrackDesignRepository(_env);
+            _scenarioRepository = CreateScenarioRepository(_env);
+
+            if (!language_open(gConfigGeneral.language))
+            {
+                log_error("Failed to open configured language...");
+                if (!language_open(LANGUAGE_ENGLISH_UK))
+                {
+                    log_fatal("Failed to open fallback language...");
+                    return false;
+                }
+            }
+
             if (platform_process_is_elevated())
             {
-                std::string elevationWarning = "For security reasons, it is strongly recommended not to run OpenRCT2 with elevated permissions.";
+                std::string elevationWarning = language_get_string(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
                 {
                     Console::Error::WriteLine(elevationWarning.c_str());
@@ -305,26 +326,10 @@ namespace OpenRCT2
                 _uiContext->CreateWindow();
             }
 
-            // TODO add configuration option to allow multiple instances
-            // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
-            //  log_fatal("OpenRCT2 is already running.");
-            //  return false;
-            // }
 
-            _objectRepository = CreateObjectRepository(_env);
-            _objectManager = CreateObjectManager(_objectRepository);
-            _trackDesignRepository = CreateTrackDesignRepository(_env);
-            _scenarioRepository = CreateScenarioRepository(_env);
 
-            if (!language_open(gConfigGeneral.language))
-            {
-                log_error("Failed to open configured language...");
-                if (!language_open(LANGUAGE_ENGLISH_UK))
-                {
-                    log_fatal("Failed to open fallback language...");
-                    return false;
-                }
-            }
+
+
 
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
