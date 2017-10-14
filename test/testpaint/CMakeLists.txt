@@ -19,12 +19,14 @@ file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c"
                                           "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
                                           "${CMAKE_CURRENT_LIST_DIR}/*.h")
 
-add_executable(testpaint EXCLUDE_FROM_ALL
+add_executable(testpaint
     ${ORCT2_RIDE_SOURCES}
     ${ORCT2_RIDE_DEP_SOURCES}
     ${ORCT2_TESTPAINT_SOURCES}
     )
 target_include_directories(testpaint PRIVATE "${PROJECT_SOURCE_DIR}/src/")
 target_compile_definitions(testpaint PRIVATE NO_VEHICLES __TESTPAINT__)
-target_compile_options(testpaint PRIVATE -Wno-unused)
+target_compile_options(testpaint PRIVATE -Wno-unused -fno-omit-frame-pointer)
 target_link_libraries(testpaint PRIVATE openrct2::sections openrct2::flags)
+add_test(NAME testpaint COMMAND testpaint --quiet)
+set_property(TEST testpaint PROPERTY WILL_FAIL TRUE)

@@ -61,17 +61,19 @@ if(ENABLE_RCT2 AND UNIX)
                 DEPENDS "${data_bin}"
             )
             # add_custom_target(linkable_sections DEPENDS openrct2_text_section.o openrct2_data_section.o)
-            # set_source_files_properties(
-            #     "${text_out}" "${data_out}"
-            #     PROPERTIES
-            #     EXTERNAL_OBJECT TRUE
-            #     GENERATED TRUE
-            # )
+            set_source_files_properties(
+                "${text_out}" "${data_out}"
+                PROPERTIES
+                EXTERNAL_OBJECT TRUE
+                GENERATED TRUE
+            )
             add_library(rct2-sections STATIC "${text_out}" "${data_out}")
-            add_library(openrct2::sections ALIAS rct2-sections)
             set_property(TARGET rct2-sections PROPERTY LINKER_LANGUAGE C)
-            target_link_libraries(rct2-sections PUBLIC
-                "-Wl,-T,\"${PROJECT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}\""
+            add_library(openrct2::sections ALIAS rct2-sections)
+            target_link_libraries(rct2-sections INTERFACE
+                "${text_out}"
+                "${data_out}"
+                "-Wl,-T,${PROJECT_SOURCE_DIR}/distribution/linux/${LINKER_SCRIPT}"
             )
         endif()
     endif()

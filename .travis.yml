@@ -22,30 +22,35 @@ matrix:
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_BUILD_TYPE=RelWithDebInfo -DBUILD_SHARED_LIBS=ON -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DPORTABLE=ON -DENABLE_RCT2_TESTS=NO" TARGET=ubuntu_amd64
+            - CONFIG=Linux64Bit
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
-            # Android jobs are triggered from cron and overwrite `after_sucess` part
-            - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
-            - sudo chown -R $USER build
-            - cd build
-              # make install is done inside docker
-            - mv OpenRCT2/bin/openrct2 OpenRCT2/ && mv OpenRCT2/bin/openrct2-cli OpenRCT2/ && mv OpenRCT2/bin/libopenrct2.so OpenRCT2/ && mv OpenRCT2/share/openrct2 OpenRCT2/data && mv OpenRCT2/share/doc/openrct2 OpenRCT2/doc
-            - rm -rf OpenRCT2/bin OpenRCT2/share # remove empty dirs
-            - tar cvzf openrct2-linux.tar.gz OpenRCT2/
-            - if [[ "z${TRAVIS_TAG}" != "z" ]] ; then
-              export PUSH_BRANCH=master ;
-              else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
+            - |
+              set -e
+              if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+                # Android jobs are triggered from cron and overwrite `after_sucess` part
+                exit 0
               fi
-            - if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]] ; then
-              curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-x86_64.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=9" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
-              else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link;
+              sudo chown -R $USER build
+              cd build
+              # make install is done inside docker
+              file=$(find -maxdepth 1 -name "openrct2-*.tar.gz")
+              full_file=$(readlink -m ${file})
+              filename=$(basename ${full_file})
+              if [[ "z${TRAVIS_TAG}" != "z" ]]; then
+                export PUSH_BRANCH=master ;
+                else export PUSH_BRANCH=$TRAVIS_BRANCH ; export FILENAME_PART=-${TRAVIS_BRANCH}-$(git rev-parse --short HEAD) ;
+              fi
+              if [[ "z$OPENRCT2_ORG_TOKEN" != "z" && "$TRAVIS_PULL_REQUEST" == "false" && ("${TRAVIS_BRANCH}" =~ ^(develop|push/) || "z${TRAVIS_TAG}" != "z") ]]; then
+                curl -o - -v --form "key=$OPENRCT2_ORG_TOKEN" --form "fileName=OpenRCT2-${OPENRCT2_VERSION}${FILENAME_PART}-linux-x86_64.tar.gz" --form "version=${OPENRCT2_VERSION}" --form "gitHash=$TRAVIS_COMMIT" --form "gitBranch=$PUSH_BRANCH" --form "flavourId=9" --form "file=@openrct2-linux.tar.gz" "https://openrct2.org/altapi/?command=push-build";
+              else
+                curl --progress-bar --upload-file ${full_file} https://transfer.sh/openrct2-linux-x86_64.tar.gz -o link && cat link
               fi
         - os: linux
           services:
             - docker
           env:
-            - OPENRCT2_CMAKE_OPTS="-G Ninja -C../cmake/configs/Linux32Bit.cmake -DENABLE_RCT2=YES -DBUILD_SHARED_LIBS=off -DCMAKE_INSTALL_PREFIX=OpenRCT2 -DENABLE_RCT2_TESTS=NO" TARGET=ubuntu_i686
+            - CONFIG=Linux32Bit
             - secure: "S3u2VCE2Vy8KNXoeh+DhnzjCmgTX0r95uEZrXDU+IKANOOCKn7Dg4OFDZE3LY/i1y2/EUDpnR5yLC38Ks795EUP/sv/OoMl4tjQ20yERjqWh+gcIRrgx7SdVabuAh3t4aBdaLD4Pfnj5avxeCt6rL7yGnj0wdbrbJSBZPsgSnuQ="
           after_success:
             # Android jobs are triggered from cron and overwrite `after_sucess` part
@@ -65,19 +70,19 @@ matrix:
               else curl --progress-bar --upload-file openrct2-linux.tar.gz https://transfer.sh/openrct2-linux-i686.tar.gz -o link && cat link;
               fi
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=ubuntu_amd64
+          env: CONFIG=LinuxClang
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -C../cmake/configs/LinuxMinGW.cmake -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=windows
+          env: CONFIG=LinuxMinGW
         - os: linux
-          env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_TTF=NO -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO"
+          env: CONFIG=LinuxArch
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_TTF=NO -DENABLE_NETWORK=NO -DENABLE_HTTP_TWITCH=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
+          env: CONFIG=LinuxArch-NoNetwork
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DENABLE_TTF=NO -DENABLE_OPENGL=NO -DBUILD_SHARED_LIBS=ON -DENABLE_RCT2_TESTS=NO" TARGET=docker64
+          env: CONFIG=LinuxArch-NoOpenGL
           services:
             - docker
         - os: osx
@@ -150,17 +155,26 @@ matrix:
         # - os: linux
         #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_NETWORK=YES -DENABLE_HTTP_TWITCH=YES -DCMAKE_C_COMPILER=gcc-4.8 -DCMAKE_CXX_COMPILER=g++-4.8"
         # - os: linux
-        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_NETWORK=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_NETWORK=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TAG=mingw-arch
         # - os: linux
-        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_NETWORK=NO -DENABLE_HTTP_TWITCH=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_NETWORK=NO -DENABLE_HTTP_TWITCH=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TAG=mingw-arch
         # - os: linux
-        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_HTTP_TWITCH=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TARGET=windows
+        #   env: OPENRCT2_CMAKE_OPTS="-DENABLE_HTTP_TWITCH=NO -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt" TAG=mingw-arch
 
 script:
     # Android jobs are triggered from cron and overwrite `script` part
-    - if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]] ; then exit 0 ; fi
-    - if [[ $TRAVIS_OS_NAME == "linux" ]]; then bash scripts/linux/build.sh ; fi
-    - if [[ $TRAVIS_OS_NAME == "osx" ]]; then set -o pipefail && xcodebuild | xcpretty -f `xcpretty-travis-formatter`; fi
+    - |
+      set -e
+      if [[ "$TRAVIS_EVENT_TYPE" == "cron" ]]; then
+        exit 0
+      fi
+      if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then
+        bash scripts/linux/build.sh
+      fi
+      if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+        set -o pipefail
+        xcodebuild | xcpretty -f `xcpretty-travis-formatter`
+      fi
 
 notifications:
     on_failure: change
