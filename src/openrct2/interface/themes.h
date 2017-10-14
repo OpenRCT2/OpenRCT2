@@ -40,9 +40,11 @@ void         theme_manager_initialise();
 void         theme_manager_load_available_themes();
 size_t       theme_manager_get_num_available_themes();
 const utf8 * theme_manager_get_available_theme_path(size_t index);
+const utf8 * theme_manager_get_available_theme_config_name(size_t index);
 const utf8 * theme_manager_get_available_theme_name(size_t index);
 size_t       theme_manager_get_active_available_theme_index();
 void         theme_manager_set_active_available_theme(size_t index);
+size_t       theme_get_index_for_name(const utf8 * name);
 
 colour_t theme_get_colour(rct_windowclass wc, uint8 index);
 void     theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour);

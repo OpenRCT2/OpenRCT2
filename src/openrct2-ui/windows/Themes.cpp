@@ -661,25 +661,15 @@ static void window_themes_textinput(rct_window *w, rct_widgetindex widgetIndex, 
     case WIDX_THEMES_DUPLICATE_BUTTON:
     case WIDX_THEMES_RENAME_BUTTON:
         if (filename_valid_characters(text)) {
-            bool nameTaken = false;
-            sint32 numAvailableThemes = (sint32)theme_manager_get_num_available_themes();
-            for (sint32 i = 0; i < numAvailableThemes; i++) {
-                const utf8 * themeName = theme_manager_get_available_theme_name(i);
-                if (strcmp(themeName, text) == 0) {
-                    if (widgetIndex != WIDX_THEMES_RENAME_BUTTON) {
-                        context_show_error(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE);
-                    }
-                    nameTaken = true;
-                    break;
-                }
-            }
-            if (!nameTaken) {
+            if (theme_get_index_for_name(text) == SIZE_MAX) {
                 if (widgetIndex == WIDX_THEMES_DUPLICATE_BUTTON) {
                     theme_duplicate(text);
                 } else {
                     theme_rename(text);
                 }
                 window_invalidate(w);
+            } else {
+                context_show_error(STR_THEMES_ERR_NAME_ALREADY_EXISTS, STR_NONE);
             }
         } else {
             context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE);
