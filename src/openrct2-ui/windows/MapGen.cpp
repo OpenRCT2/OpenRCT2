@@ -1268,7 +1268,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_HIGH, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_HIGH].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_BASE_FREQUENCY, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
-    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_TREES_PROBABILITY, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
+    gfx_draw_string_left(dpi, STR_MAPGEN_SIMPLEX_TREES_PROBABILITY, nullptr, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].top + 1);
 
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_low, textColour, w->x + w->widgets[WIDX_SIMPLEX_LOW].left + 1, w->y + w->widgets[WIDX_SIMPLEX_LOW].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_simplex_high, textColour, w->x + w->widgets[WIDX_SIMPLEX_HIGH].left + 1, w->y + w->widgets[WIDX_SIMPLEX_HIGH].top + 1);
@@ -1278,13 +1278,12 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_COMMA16, &_treesHigh, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_HIGH].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_HIGH].top + 1);
     gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &_treesBaseFreq, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_BASE_FREQ].top + 1);
     gfx_draw_string_left(dpi, STR_COMMA16, &_treesOctaves, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_OCTAVES].top + 1);
-    gfx_draw_string_left(dpi, STR_COMMA16, &_treesProbability, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].top + 1);
 
     gfx_draw_string_left(dpi, STR_TERRAIN_LABEL, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_BEACHES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_PLACE_CHECKBOX].top + 1);
     gfx_draw_string_left(dpi, STR_MAPGEN_OPTION_PLACE_TREES, NULL, textColour, w->x + 5, w->y + w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1);
-    
-    
+
+
     // The practical map size is 2 lower than the technical map size
     rct_xy16 mapSizeArgs = MakeXY16(_mapSize - 2, _mapSize - 2);
     gfx_draw_string_left(dpi, STR_RESOLUTION_X_BY_Y, &mapSizeArgs, textColour, w->x + w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->y + w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1);
@@ -1294,7 +1293,7 @@ static void window_mapgen_simplex_paint(rct_window *w, rct_drawpixelinfo *dpi)
     arg = _beachesHeight / 2;
     gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].top + 1);
     arg = _treesProbability * 10;
-    gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].left + 1, w->y + w->widgets[WIDX_SIMPLEX_BEACHES_HEIGHT].top + 1);
+    gfx_draw_string_left(dpi, STR_COMMA16, &arg, textColour, w->x + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].left + 1, w->y + w->widgets[WIDX_SIMPLEX_TREES_PROBABILITY].top + 1);
 
 }
 
