@@ -715,7 +715,7 @@ static void peep_update_hunger(rct_peep * peep)
  *
  *  rct2: 0x0068F93E
  */
-static void peep_leave_park(rct_peep * peep)
+void peep_leave_park(rct_peep * peep)
 {
     peep->guest_heading_to_ride_id = 0xFF;
     if (peep->peep_flags & PEEP_FLAGS_LEAVING_PARK)

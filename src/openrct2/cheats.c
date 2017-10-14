@@ -426,6 +426,24 @@ static void cheat_explode_guests()
     }
 }
 
+static void cheat_leave_park()
+{
+    sint32 sprite_index;
+    rct_peep *peep;
+
+    FOR_ALL_GUESTS(sprite_index, peep)
+    {
+        if (peep->outside_of_park != 0)
+            continue;
+        // force them to leave queues
+        if (peep->state == PEEP_STATE_QUEUING)
+        {
+            remove_peep_from_ride(peep);
+        }
+        peep_leave_park(peep);
+    }
+}
+
 static void cheat_set_staff_speed(uint8 value)
 {
     uint16 spriteIndex;
@@ -509,6 +527,7 @@ void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint
         case CHEAT_GENERATEGUESTS: cheat_generate_guests(*edx); break;
         case CHEAT_REMOVEALLGUESTS: cheat_remove_all_guests(); break;
         case CHEAT_EXPLODEGUESTS: cheat_explode_guests(); break;
+        case CHEAT_LEAVEPARK: cheat_leave_park(); break;
         case CHEAT_GIVEALLGUESTS: cheat_give_all_guests(*edx); break;
         case CHEAT_SETGRASSLENGTH: cheat_set_grass_length(*edx); break;
         case CHEAT_WATERPLANTS: cheat_water_plants(); break;
@@ -675,6 +694,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         case CHEAT_GENERATEGUESTS: return language_get_string(STR_CHEAT_LARGE_TRAM_GUESTS);
         case CHEAT_REMOVEALLGUESTS: return language_get_string(STR_CHEAT_REMOVE_ALL_GUESTS);
         case CHEAT_EXPLODEGUESTS: return language_get_string(STR_CHEAT_EXPLODE);
+        case CHEAT_LEAVEPARK: return language_get_string(STR_CHEAT_LEAVE_PARK);
         case CHEAT_GIVEALLGUESTS:
         {
             static char cheat_string[64];
