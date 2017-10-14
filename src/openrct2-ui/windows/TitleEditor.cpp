@@ -398,7 +398,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
                 if (w->selected_list_item >= (sint16)_editingTitleSequence->NumCommands) {
                     w->selected_list_item--;
                 }
-                TileSequenceSave(_editingTitleSequence);
+                TitleSequenceSave(_editingTitleSequence);
             }
         }
         break;
@@ -421,7 +421,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
                 *a = *b;
                 *b = tmp;
                 w->selected_list_item++;
-                TileSequenceSave(_editingTitleSequence);
+                TitleSequenceSave(_editingTitleSequence);
             }
         }
         break;
@@ -434,7 +434,7 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
                 *b = *a;
                 *a = tmp;
                 w->selected_list_item--;
-                TileSequenceSave(_editingTitleSequence);
+                TitleSequenceSave(_editingTitleSequence);
             }
         }
         break;
@@ -1016,7 +1016,7 @@ static void window_title_editor_add_park_callback(sint32 result, const utf8 * pa
         return;
     }
 
-    TileSequenceAddPark(_editingTitleSequence, path, filename);
+    TitleSequenceAddPark(_editingTitleSequence, path, filename);
 }
 
 static void window_title_editor_rename_park(size_t index, const utf8 * name)
@@ -1036,7 +1036,7 @@ static void window_title_editor_rename_park(size_t index, const utf8 * name)
         }
     }
 
-    if (TileSequenceRenamePark(_editingTitleSequence, index, name)) {
-        TileSequenceSave(_editingTitleSequence);
+    if (TitleSequenceRenamePark(_editingTitleSequence, index, name)) {
+        TitleSequenceSave(_editingTitleSequence);
     }
 }

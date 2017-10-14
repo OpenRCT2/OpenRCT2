@@ -185,7 +185,7 @@ extern "C"
         }
     }
 
-    bool TileSequenceSave(TitleSequence * seq)
+    bool TitleSequenceSave(TitleSequence * seq)
     {
         bool success = false;
         utf8 * script = LegacyScriptWrite(seq);
@@ -217,7 +217,7 @@ extern "C"
         return success;
     }
 
-    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
+    bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name)
     {
         // Get new save index
         size_t index = SIZE_MAX;
@@ -275,7 +275,7 @@ extern "C"
         return true;
     }
 
-    bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
+    bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name)
     {
         Guard::Assert(index < seq->NumSaves, GUARD_LINE);
 

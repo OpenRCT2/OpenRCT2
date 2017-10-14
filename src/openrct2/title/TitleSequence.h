@@ -94,9 +94,9 @@ extern "C"
      * The pointer to the handle is invalid after calling this function.
      */
     void TitleSequenceCloseParkHandle(TitleSequenceParkHandle * handle);
-    bool TileSequenceSave(TitleSequence * seq);
-    bool TileSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
-    bool TileSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
+    bool TitleSequenceSave(TitleSequence * seq);
+    bool TitleSequenceAddPark(TitleSequence * seq, const utf8 * path, const utf8 * name);
+    bool TitleSequenceRenamePark(TitleSequence * seq, size_t index, const utf8 * name);
     bool TitleSequenceRemovePark(TitleSequence * seq, size_t index);
 
     bool TitleSequenceIsLoadCommand(const TitleCommand * command);

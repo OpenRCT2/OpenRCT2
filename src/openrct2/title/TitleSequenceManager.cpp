@@ -151,7 +151,7 @@ namespace TitleSequenceManager
         seq->Path = String::Duplicate(path.c_str());
         seq->IsZip = true;
 
-        bool success = TileSequenceSave(seq);
+        bool success = TitleSequenceSave(seq);
         FreeTitleSequence(seq);
 
         size_t index = SIZE_MAX;
