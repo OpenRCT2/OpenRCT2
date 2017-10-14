@@ -52,6 +52,8 @@ utf8 gPathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 // Zaxcav: Used to enable the A* heuristic search.
+bool gAStarEnableAll = true; // Set to true to enable A* for ALL peeps;
+                             // Set to false to only enable A* for tracked guests and mechanics named "Mechanic Star".
 utf8 gAStarPeepName[256];
 
 uint8  gGuestChangeModifier;
@@ -9981,7 +9983,6 @@ static uint16 findBestScoreInList(searchItem list[], uint16 size, sint16 end)
     */
 
     // Score (heuristic + cost) is the primary measure of tile worth.
-    // TODO: Determine what is the better 2nd measure when the scores are equal.
     // Currently use smaller cost as the 2nd measure.
     uint16 bestScore = 0xFFFF;
     uint16 bestCost = 0xFFFF;
@@ -11191,14 +11192,14 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
     }
 
     /* Count the length of the best path */
-    /* All paths to the best result must be in the closed list */
+    /* All paths to the best result must be in the closed list
+    * ... not quite true. The parent of the best result could have had only some neighbours added, and be in the boundary list. */
     uint16 solutionCount = 1;
     searchItem *currentItem = bestItem;
     sint16 current_idx = best_idx;
+    bool isFirst = true;
     while (currentItem->parentTileX != -1 &&
         currentItem->parentTileY != -1)
-    //while (solnList[current_idx].parent_x != -1 &&
-    //    solnList[current_idx].parent_y != -1)
     {
         /* The tile has a parent, i.e. is not the start */
         /* Find the index of the parent */
@@ -11206,14 +11207,49 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
                 currentItem->parentTileY,
                 currentItem->parentTileZ,
                 closedList, closed_size, closed_end);
-        /* If the parent wasn't found the closed list is corrupted! */
-        assert(current_idx != -1);
+        if (current_idx == -1)
+        {
+            if (isFirst)
+            {
+                if (tileCount >= AStarMaxTiles)
+                {
+                    /* If the search limit was exceeded and the best item was found in the boundary
+                     * list, its parent may also be in the boundary list - this is the special case
+                     * in which the search limit was exceeded while adding its neighbours and the
+                     * best item was one of the neighbours added before the search limit was exceeded.
+                     */
+                    current_idx = findXYZInList(currentItem->parentTileX,
+                        currentItem->parentTileY,
+                        currentItem->parentTileZ,
+                        boundaryList, boundary_size, boundary_end);
 
-        currentItem = &closedList[current_idx];
+                    /* The parent wasn't found in either the closed/boundary lists! */
+                    if (current_idx == -1)
+                    {
+                        log_error("Search limit exceeded. First parent not in closed or boundary list. Investigate.\n");
+	            }
+                    assert(current_idx != -1);
+                    currentItem = &boundaryList[current_idx];
+                }
+                else
+                {
+                    log_error("Search limit not exceeded. First parent not in closed list. Investigate.\n");
+                    assert(true);
+                }
+            }
+            else
+            {
+                log_error("Non-first parent not in closed list. Investigate.");
+                assert(true);
+            }
+        }
+        else
+        {
+          currentItem = &closedList[current_idx];
+        }
         solutionCount++;
+	isFirst = false;
     }
-    /* If solutionCount > closed_size the soln list is corrupted! */
-    assert(solutionCount <= closed_size);
 
     #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     uint8 bestPathLength = ((solutionCount < MaxSteps) ? (uint8)solutionCount : MaxSteps);
@@ -11228,41 +11264,65 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
     /* Extract the path from the best tile back to the start using the
        closed list */
     currentItem = bestItem;
-    if (solutionCount < MaxSteps)
+    if (solutionCount <= MaxSteps)
     {
         /* Insert the final tile with no direction (-1) at the end */
         bestPath[solutionCount - 1].tileX = currentItem->tileX;
         bestPath[solutionCount - 1].tileY = currentItem->tileY;
         bestPath[solutionCount - 1].tileZ = currentItem->tileZ;
         bestPath[solutionCount - 1].direction = -1;
-        solutionCount--;
     }
 
-    /* Work backwards to the starting tile */
-    while (solutionCount > 0)
+    /* Work backwards to the start adding the *parent* of the current tile*/
+    isFirst = true;
+    while (solutionCount > 1)
     {
+
         /* Find the index of the parent */
         sint16 parent_idx;
+        searchItem *parentItem;
         parent_idx = findXYZInList(currentItem->parentTileX,
             currentItem->parentTileY,
             currentItem->parentTileZ,
             closedList, closed_size, closed_end);
-        /* If the parent wasn't found the closed list is corrupted! */
-        assert(parent_idx != -1);
-        searchItem *parentItem;
-        parentItem = &closedList[parent_idx];
-
-	if (solutionCount < MaxSteps)
-	{
-            bestPath[solutionCount - 1].tileX = parentItem->tileX;
-            bestPath[solutionCount - 1].tileY = parentItem->tileY;
-            bestPath[solutionCount - 1].tileZ = parentItem->tileZ;
-            bestPath[solutionCount - 1].direction = tileDirectionFromDelta((currentItem->tileX - parentItem->tileX) << 5, (currentItem->tileY - parentItem->tileY) << 5);
+        if (parent_idx == -1)
+        {
+            if (isFirst && (tileCount >= AStarMaxTiles))
+            {
+                parent_idx = findXYZInList(currentItem->parentTileX,
+                    currentItem->parentTileY,
+                    currentItem->parentTileZ,
+                    boundaryList, boundary_size, boundary_end);
+                assert(parent_idx != -1);
+                parentItem = &boundaryList[parent_idx];
+            }
+            else
+            {
+                /* The parent wasn't found the closed list */
+                assert(true);
+            }
         }
-        /* If the direction is -1, the closed list is corrupted! */
-        assert(bestPath[solutionCount - 1].direction != -1);
+        else
+        {
+            parentItem = &closedList[parent_idx];
+        }
+
+	if (solutionCount <= MaxSteps + 1)
+	{
+            bestPath[solutionCount - 2].tileX = parentItem->tileX;
+            bestPath[solutionCount - 2].tileY = parentItem->tileY;
+            bestPath[solutionCount - 2].tileZ = parentItem->tileZ;
+            bestPath[solutionCount - 2].direction = tileDirectionFromDelta((currentItem->tileX - parentItem->tileX) << 5, (currentItem->tileY - parentItem->tileY) << 5);
+        }
+        /* If the direction is -1, something went wrong. */
+        if (bestPath[solutionCount - 2].direction == -1)
+        {
+	    log_error("Could not determine direction from parent. Investigate.");
+        }
+        assert(bestPath[solutionCount - 2].direction != -1);
         currentItem = parentItem;
         solutionCount--;
+	isFirst = false;
     }
 
     #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -11658,7 +11718,7 @@ static sint32 peep_pathfind_choose_direction1(sint16 x, sint16 y, uint8 z, rct_p
 // Zax: a wrapper to choose between the original and new heuristic search
 sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
 {
-    if (enable_astar_pathfinding(peep)) {
+    if (enable_astar_pathfinding(peep) || gAStarEnableAll) {
         return peep_pathfind_choose_direction2(x, y, z, peep);
     } else {
         return peep_pathfind_choose_direction1(x, y, z, peep);
@@ -12055,7 +12115,7 @@ static sint32 guest_path_finding(rct_peep * peep)
                 continue;
 
             // Zaxcav: Original path finding ignores paths with the wide flag set.
-            if (!enable_astar_pathfinding(peep)) {
+            if (!enable_astar_pathfinding(peep) && !gAStarEnableAll) {
             /* If there is a wide path in that direction,
                 remove that edge and try another */
                 if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) ==
