@@ -1273,11 +1273,11 @@ void vehicle_sounds_update()
                 {
                     volume = -10000;
                 }
-                if (sprite->vehicle.sound2_id == (uint8)-1)
+                if (sprite->vehicle.sound2_id == RCT12_SOUND_ID_NULL)
                 {
                     if (vehicle_sound->sound2_id != SOUND_ID_NULL)
                     {
-                        vehicle_sound->sound2_id = -1;
+                        vehicle_sound->sound2_id = SOUND_ID_NULL;
                         Mixer_Stop_Channel(vehicle_sound->sound2_channel);
                     }
                 }
@@ -8009,7 +8009,8 @@ loc_6DB358:
     regs.edx   = z;
     regs.bl    = direction;
 }
-    if (mapElement->properties.track.type == 211 || mapElement->properties.track.type == 212)
+    if (mapElement->properties.track.type == TRACK_ELEM_LEFT_REVERSER ||
+        mapElement->properties.track.type == TRACK_ELEM_RIGHT_REVERSER)
     {
         if (!vehicle->is_child && vehicle->velocity <= 0x30000)
         {
