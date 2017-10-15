@@ -292,6 +292,7 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
             y -= 24;
             if (y < 0 && !listItem->scenario.is_locked) {
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+                gFirstTimeSaving = true;
                 _callback(listItem->scenario.scenario->path);
             }
             break;
