@@ -10063,22 +10063,22 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
     /* Get the tile with the best score out of the open list */
     while ((current = findBestScoreInList(openList, open_size, open_end)) != -1 )
     {
-        searchItem this;
-        this.tileX = openList[current].tileX;
-        this.tileY = openList[current].tileY;
-        this.tileZ = openList[current].tileZ;
-        this.parentTileX = openList[current].parentTileX;
-        this.parentTileY = openList[current].parentTileY;
-        this.parentTileZ = openList[current].parentTileZ;
-        this.score = openList[current].score;
-        this.heuristic = openList[current].heuristic;
-        this.cost = openList[current].cost;
+        searchItem thisItem;
+        thisItem.tileX = openList[current].tileX;
+        thisItem.tileY = openList[current].tileY;
+        thisItem.tileZ = openList[current].tileZ;
+        thisItem.parentTileX = openList[current].parentTileX;
+        thisItem.parentTileY = openList[current].parentTileY;
+        thisItem.parentTileZ = openList[current].parentTileZ;
+        thisItem.score = openList[current].score;
+        thisItem.heuristic = openList[current].heuristic;
+        thisItem.cost = openList[current].cost;
 
         removeFromList(openList, current, &open_size);
 
         #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug) {
-            log_verbose("Removed best element (%d,%d,%d) from Open List: (size: %d, end Index: %d)", this.tileX, this.tileY, this.tileZ, open_size, open_end);
+            log_verbose("Removed best element (%d,%d,%d) from Open List: (size: %d, end Index: %d)", thisItem.tileX, thisItem.tileY, thisItem.tileZ, open_size, open_end);
         }
         #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -10089,9 +10089,9 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
 
         bool adjustHeight = false;
         bool addedAllNeighbours = true;
-	uint8 origTileZ = this.tileZ;
+	uint8 origTileZ = thisItem.tileZ;
         /* get the next map element at the tile location */
-        rct_map_element *mapElement = map_get_first_element_at(this.tileX, this.tileY);
+        rct_map_element *mapElement = map_get_first_element_at(thisItem.tileX, thisItem.tileY);
         do {
             /* Look for all suitable map elements at this location. Of interest
             are entrances (i.e. shops, rides) - these could be the goal,
@@ -10115,21 +10115,21 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
 
                 if (!adjustHeight)
                 {
-                    if ((this.tileZ < mapElement->base_height - 1) ||
-                        (this.tileZ > mapElement->base_height + 1))
+                    if ((thisItem.tileZ < mapElement->base_height - 1) ||
+                        (thisItem.tileZ > mapElement->base_height + 1))
                     {
                         continue;
                     }
 
-                    if (this.tileZ != mapElement->base_height)
+                    if (thisItem.tileZ != mapElement->base_height)
                     {
                         // Adjust z to match mapElement, recalculate the heuristic and update the score accordingly.
-                        this.tileZ = mapElement->base_height;
-                        this.heuristic = heuristic_score(this.tileX << 5, this.tileY << 5, this.tileZ); // Note: Convert x/y from tiles to pixels.
-                        this.score = this.heuristic + this.cost;
+                        thisItem.tileZ = mapElement->base_height;
+                        thisItem.heuristic = heuristic_score(thisItem.tileX << 5, thisItem.tileY << 5, thisItem.tileZ); // Note: Convert x/y from tiles to pixels.
+                        thisItem.score = thisItem.heuristic + thisItem.cost;
                     }
                     adjustHeight = true; //Zax: I think only the first entrance should have a chance to change the height, after this it stays fixed.
-                } else if (this.tileZ != mapElement->base_height)
+                } else if (thisItem.tileZ != mapElement->base_height)
                 {
                     continue;
                 }
@@ -10158,12 +10158,12 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
                     (mapElement->base_height == origTileZ ||
                     mapElement->base_height + 2 == origTileZ) ))
                 {
-                    if (!adjustHeight && this.tileZ != mapElement->base_height)
+                    if (!adjustHeight && thisItem.tileZ != mapElement->base_height)
                     {
                         /* Update z per mapElement, recalculate heuristic and update the score accordingly. */
-                        this.tileZ = mapElement->base_height;
-                        this.heuristic = heuristic_score(this.tileX << 5, this.tileY << 5, this.tileZ); // Note: Convert x/y from tiles to pixels.
-                        this.score = this.heuristic + this.cost;
+                        thisItem.tileZ = mapElement->base_height;
+                        thisItem.heuristic = heuristic_score(thisItem.tileX << 5, thisItem.tileY << 5, thisItem.tileZ); // Note: Convert x/y from tiles to pixels.
+                        thisItem.score = thisItem.heuristic + thisItem.cost;
                     }
                     adjustHeight = true; // Zax: only the first matching path should have the chance to change the height.
 
@@ -10201,7 +10201,7 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
 
             if (!found)
               continue;
-            //if (found && this.heuristic != 0 && // this.cost < MaxSteps &&
+            //if (found && thisItem.heuristic != 0 && // thisItem.cost < MaxSteps &&
             //    tileCount < AStarMaxTiles)
             //{
                 /* Add all new neighbouring, continuing tiles to the open list
@@ -10211,12 +10211,12 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
 
             #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug) {
-                log_verbose("Found a matching map_element at (%d,%d,%d)", this.tileX, this.tileY, this.tileZ);
+                log_verbose("Found a matching map_element at (%d,%d,%d)", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
             }
             #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             /* If this is the destination search no further, so terminate the loop. */
-            if (this.heuristic == 0) {
+            if (thisItem.heuristic == 0) {
                 addedAllNeighbours = true; // force the destination to be added to the closed list.
 		break;
             }
@@ -10247,19 +10247,19 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
                         // Remove this edge
             		edges &= ~(1 << next_edge);
 
-                        nextTileX = this.tileX + (TileDirectionDelta[next_edge].x >> 5);
-                        nextTileY = this.tileY + (TileDirectionDelta[next_edge].y >> 5);
+                        nextTileX = thisItem.tileX + (TileDirectionDelta[next_edge].x >> 5);
+                        nextTileY = thisItem.tileY + (TileDirectionDelta[next_edge].y >> 5);
                         if (peep->type == PEEP_TYPE_GUEST ||
                             ((peep->type == PEEP_TYPE_STAFF) &&
                              staff_is_location_in_patrol(peep, nextTileX << 5, nextTileY << 5))) // Note: convert nextTileX, nextTileY from tiles into pixels
                         {
-                            uint8 nextTileZ = this.tileZ;
+                            uint8 nextTileZ = thisItem.tileZ;
                             if (footpath_element_is_sloped(mapElement) &&
                                 footpath_element_get_slope_direction(mapElement) == next_edge)
                             {
                                 nextTileZ +=2;
                             }
-                            sint16 next_cost = this.cost + 32;
+                            sint16 next_cost = thisItem.cost + 32;
 
                             /* Check if next x,y,z is in open, closed or boundary lists. If not, add to open list. */
                             sint16 found_idx = findXYZInList(nextTileX, nextTileY, nextTileZ, openList, open_size, open_end);
@@ -10272,9 +10272,9 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
                                     /* This is a shorter route to the tile, so update the cost, score and replace the parent. */
                                     openList[found_idx].cost = next_cost;
                                     openList[found_idx].score = openList[found_idx].cost + openList[found_idx].heuristic;
-                                    openList[found_idx].parentTileX = this.tileX;
-                                    openList[found_idx].parentTileY = this.tileY;
-                                    openList[found_idx].parentTileZ = this.tileZ;
+                                    openList[found_idx].parentTileX = thisItem.tileX;
+                                    openList[found_idx].parentTileY = thisItem.tileY;
+                                    openList[found_idx].parentTileZ = thisItem.tileZ;
 
                                     #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                                     if (gPathFindDebug) {
@@ -10304,7 +10304,7 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
                                         /* Neighbour is also not in the boundary list,
                                            so add to the open list. */
                                         uint16 next_heuristic = heuristic_score(nextTileX << 5, nextTileY << 5, nextTileZ); // Note: Convert nextTileX/Y from tiles to pixels.
-                                        addToList(openList, &open_size, &open_end, nextTileX, nextTileY, nextTileZ, this.tileX, this.tileY, this.tileZ, next_heuristic, next_cost);
+                                        addToList(openList, &open_size, &open_end, nextTileX, nextTileY, nextTileZ, thisItem.tileX, thisItem.tileY, thisItem.tileZ, next_heuristic, next_cost);
 
                                         #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
                                         if (gPathFindDebug) {
@@ -10368,38 +10368,38 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
         {
             #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug) {
-                log_verbose("Adding best element (%d,%d,%d) into closed list.", this.tileX, this.tileY, this.tileZ);
+                log_verbose("Adding best element (%d,%d,%d) into closed list.", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
             }
             #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             // Add the xyz to the closed list.
             addToList(closedList, &closed_size, &closed_end,
-                this.tileX,
-                this.tileY,
-                this.tileZ,
-                this.parentTileX,
-                this.parentTileY,
-                this.parentTileZ,
-                this.heuristic,
-                this.cost);
+                thisItem.tileX,
+                thisItem.tileY,
+                thisItem.tileZ,
+                thisItem.parentTileX,
+                thisItem.parentTileY,
+                thisItem.parentTileZ,
+                thisItem.heuristic,
+                thisItem.cost);
         } else
         {
             #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
             if (gPathFindDebug) {
-                log_verbose("Adding best element (%d,%d,%d) into boundary list.", this.tileX, this.tileY, this.tileZ);
+                log_verbose("Adding best element (%d,%d,%d) into boundary list.", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
             }
             #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             // Add the xyz to the boundary list.
             addToList(boundaryList, &boundary_size, &boundary_end,
-                this.tileX,
-                this.tileY,
-                this.tileZ,
-                this.parentTileX,
-                this.parentTileY,
-                this.parentTileZ,
-                this.heuristic,
-                this.cost);
+                thisItem.tileX,
+                thisItem.tileY,
+                thisItem.tileZ,
+                thisItem.parentTileX,
+                thisItem.parentTileY,
+                thisItem.parentTileZ,
+                thisItem.heuristic,
+                thisItem.cost);
         }
 
         #if defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
@@ -10410,10 +10410,10 @@ static void peep_pathfind_heuristic_search2(rct_peep *peep) {
         }
         #endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
 
-        /* if (this.x = gPeepPathFindGoalPosition.x &&
-            this.y = gPeepPathFindGoalPosition.y &&
-            this.z = gPeepPathFindGoalPosition.z) */
-        if (this.heuristic == 0)
+        /* if (thisItem.x = gPeepPathFindGoalPosition.x &&
+            thisItem.y = gPeepPathFindGoalPosition.y &&
+            thisItem.z = gPeepPathFindGoalPosition.z) */
+        if (thisItem.heuristic == 0)
         {
             /* Heuristic search is complete as soon as the
                destination is added to the closed/boundary list. */
@@ -10688,8 +10688,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z,
-                     gPathFindSearchText[searchResult]);
+            log_info("[%03d] Checking map element at %d,%d,%d", counter, x >> 5, y >> 5, z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -11128,6 +11127,7 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
 
         log_verbose("Boundary List: (size: %d)", boundary_size);
         printList(boundaryList, boundary_size, boundary_end);
+    }
     #endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
 
     #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
@@ -11307,19 +11307,19 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
             parentItem = &closedList[parent_idx];
         }
 
-	if (solutionCount <= MaxSteps + 1)
+	if (solutionCount - 2 < MaxSteps)
 	{
             bestPath[solutionCount - 2].tileX = parentItem->tileX;
             bestPath[solutionCount - 2].tileY = parentItem->tileY;
             bestPath[solutionCount - 2].tileZ = parentItem->tileZ;
             bestPath[solutionCount - 2].direction = tileDirectionFromDelta((currentItem->tileX - parentItem->tileX) << 5, (currentItem->tileY - parentItem->tileY) << 5);
+            /* If the direction is -1, something went wrong. */
+            if (bestPath[solutionCount - 2].direction == -1)
+            {
+	        log_error("Could not determine direction from parent. Investigate.");
+            }
+            assert(bestPath[solutionCount - 2].direction != -1);
         }
-        /* If the direction is -1, something went wrong. */
-        if (bestPath[solutionCount - 2].direction == -1)
-        {
-	    log_error("Could not determine direction from parent. Investigate.");
-        }
-        assert(bestPath[solutionCount - 2].direction != -1);
         currentItem = parentItem;
         solutionCount--;
 	isFirst = false;
@@ -11332,7 +11332,7 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
     }
     #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-    /* If the first tile is not the starting tile, the soln list is corrupted! */
+    /* If the first tile is not the starting tile, bestPath list is corrupted! */
     assert(bestPath[0].tileX == x >> 5 && bestPath[0].tileY == y >> 5 && bestPath[0].tileZ == z);
 
     return bestPath[0].direction;
@@ -11903,7 +11903,7 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_map_element * m
         log_verbose("Park entrances:");
         for (uint8 eIdx = 0; eIdx < MAX_PARK_ENTRANCES; eIdx++)
         {
-            if (gParkEntrances[eIdx].x == MAP_LOCATION_NULL)
+            if (gParkEntrances[eIdx].x == LOCATION_NULL)
                 continue;
             log_verbose(" %d at %d,%d,%d", eIdx, gParkEntrances[eIdx].x >> 5, gParkEntrances[eIdx].y >> 5, gParkEntrances[eIdx].z >> 3);
         }
