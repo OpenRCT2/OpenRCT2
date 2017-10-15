@@ -10008,6 +10008,7 @@ static uint16 findBestScoreInList(searchItem list[], uint16 size, sint16 end)
     return bestIdx;
 }
 
+#if defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
 static void printList(searchItem list[], uint16 size, sint16 end)
 {
     log_verbose("x,y,z,score,heuristic,cost,parent_x,parent_y,parent_z");
@@ -10022,7 +10023,9 @@ static void printList(searchItem list[], uint16 size, sint16 end)
         }
     }
 }
+#endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
 
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 static void printRoute(locationAndDirection tileList[], uint8 steps)
 {
     log_verbose("x,y,z,direction,step#");
@@ -10032,7 +10035,8 @@ static void printRoute(locationAndDirection tileList[], uint8 steps)
             tileList[idx].tileX, tileList[idx].tileY, tileList[idx].tileZ,
             tileList[idx].direction,idx);
     }
-};
+}
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 
 uint16 tileCount;
@@ -11280,7 +11284,7 @@ static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_pe
 
         /* Find the index of the parent */
         sint16 parent_idx;
-        searchItem *parentItem;
+        searchItem *parentItem = NULL;
         parent_idx = findXYZInList(currentItem->parentTileX,
             currentItem->parentTileY,
             currentItem->parentTileZ,
