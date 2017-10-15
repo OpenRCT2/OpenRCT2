@@ -135,7 +135,7 @@ void scenario_begin()
         }
         else {
             rct_stex_entry* stex = g_stexEntries[0];
-            if ((intptr_t)stex != -1) {
+            if ((intptr_t)stex != -1 && stex != NULL) {
                 char *buffer = gCommonStringFormatBuffer;
 
                 // Set localised park name
@@ -651,7 +651,7 @@ bool scenario_prepare_for_save()
     gS6Info.entry.flags = 255;
 
     rct_stex_entry* stex = g_stexEntries[0];
-    if ((intptr_t)stex != -1) {
+    if ((intptr_t)stex != -1 && stex != NULL) {
         char buffer[256];
         format_string(buffer, 256, stex->scenario_name, NULL);
         safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
