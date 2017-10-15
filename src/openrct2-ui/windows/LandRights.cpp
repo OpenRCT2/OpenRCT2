@@ -162,7 +162,6 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
         {
             tool_set(w, WIDX_BUY_LAND_RIGHTS, TOOL_UP_ARROW);
             _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
-            hide_construction_rights();
             show_land_rights();
             window_invalidate(w);
         }
@@ -172,7 +171,6 @@ static void window_land_rights_mouseup(rct_window *w, rct_widgetindex widgetInde
         {
             tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, TOOL_UP_ARROW);
             _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
-            hide_land_rights();
             show_construction_rights();
             window_invalidate(w);
         }
