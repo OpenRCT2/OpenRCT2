@@ -234,12 +234,7 @@ rct_ride_entry * get_ride_entry(sint32 index)
         return NULL;
     }
 
-    rct_ride_entry * retVal = gRideEntries[index];
-
-    if (retVal == (rct_ride_entry *)-1)
-        return NULL;
-    else
-        return retVal;
+    return gRideEntries[index];
 }
 
 void get_ride_entry_name(char *name, sint32 index)
@@ -8040,7 +8035,7 @@ void fix_invalid_vehicle_sprite_sizes()
                 }
 
                 rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-                if (vehicleEntry == NULL || vehicleEntry == (rct_ride_entry_vehicle*)-1) {
+                if (vehicleEntry == NULL) {
                     break;
                 }
 

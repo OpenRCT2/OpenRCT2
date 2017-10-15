@@ -171,6 +171,7 @@ public:
         }
 
         auto missingObjects = _objectManager->GetInvalidObjects(_s6.objects);
+
         if (missingObjects.size() > 0)
         {
             return ParkLoadResult::CreateMissingObjects(missingObjects);

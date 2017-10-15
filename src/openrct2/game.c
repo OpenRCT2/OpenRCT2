@@ -171,7 +171,7 @@ void update_palette_effects()
         // Change palette to lighter colour during lightning
         sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
-        if ((intptr_t)water_type != -1) {
+        if (water_type != NULL) {
             palette = water_type->image_id;
         }
         rct_g1_element g1_element = g1Elements[palette];
@@ -190,7 +190,7 @@ void update_palette_effects()
             // Change palette back to normal after lightning
             sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
-            if ((intptr_t)water_type != -1) {
+            if (water_type != NULL) {
                 palette = water_type->image_id;
             }
 
@@ -220,7 +220,7 @@ void update_palette_effects()
         uint32 j = gPaletteEffectFrame;
         j = (((uint16)((~j / 2) * 128) * 15) >> 16);
         uint32 waterId = SPR_GAME_PALETTE_WATER;
-        if ((intptr_t)water_type != -1) {
+        if (water_type != NULL) {
             waterId = water_type->palette_index_1;
         }
         rct_g1_element g1_element = g1Elements[shade + waterId];
@@ -239,7 +239,7 @@ void update_palette_effects()
         }
 
         waterId = SPR_GAME_PALETTE_3;
-        if ((intptr_t)water_type != -1) {
+        if (water_type != NULL) {
             waterId = water_type->palette_index_2;
         }
         g1_element = g1Elements[shade + waterId];
@@ -1108,7 +1108,7 @@ void game_fix_save_vars()
         } else {
             uint8 entryIndex = researchItem->entryIndex;
             rct_scenery_set_entry *sceneryGroupEntry = get_scenery_group_entry(entryIndex);
-            if (sceneryGroupEntry == NULL || sceneryGroupEntry == (rct_scenery_set_entry*)-1) {
+            if (sceneryGroupEntry == NULL) {
                 research_remove(researchItem->entryIndex);
                 i--;
             }

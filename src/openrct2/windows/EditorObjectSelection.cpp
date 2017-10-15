@@ -431,7 +431,7 @@ void window_editor_object_selection_open()
     window->var_4AE = 0;
     window->selected_tab = 0;
     window->selected_list_item = -1;
-    window->object_entry = (rct_object_entry *)-1;
+    window->object_entry = nullptr;
     window->min_width = 600;
     window->min_height = 400;
     window->max_width = 1200;
@@ -508,7 +508,7 @@ static void setup_in_use_selection_flags()
 
     for (uint8 object_type = 0; object_type < 11; object_type++){
         for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-            if (object_entry_groups[object_type].chunks[i] != (uint8*)-1) {
+            if (object_entry_groups[object_type].chunks[i] != nullptr) {
                 Editor::SelectedObjects[object_type][i] |= (1 << 1);
             }
         }
@@ -775,7 +775,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         visible_list_refresh(w);
 
         w->selected_list_item = -1;
-        w->object_entry = (rct_object_entry *)-1;
+        w->object_entry = nullptr;
         w->scrolls[0].v_top = 0;
         window_invalidate(w);
         break;
@@ -794,7 +794,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         visible_list_refresh(w);
 
         w->selected_list_item = -1;
-        w->object_entry = (rct_object_entry *)-1;
+        w->object_entry = nullptr;
         w->scrolls[0].v_top = 0;
         w->frame_no = 0;
         window_invalidate(w);
@@ -1449,7 +1449,7 @@ static void window_editor_object_set_page(rct_window *w, sint32 page)
 
     w->selected_tab = page;
     w->selected_list_item = -1;
-    w->object_entry = (rct_object_entry *)-1;
+    w->object_entry = nullptr;
     w->scrolls[0].v_top = 0;
     w->frame_no = 0;
 
@@ -1653,7 +1653,7 @@ static void window_editor_object_selection_manage_tracks()
     gS6Info.editor_step = EDITOR_STEP_TRACK_DESIGNS_MANAGER;
 
     sint32 entry_index = 0;
-    for (; ((intptr_t)object_entry_groups[0].chunks[entry_index]) == -1; ++entry_index);
+    for (; (object_entry_groups[0].chunks[entry_index]) == nullptr; ++entry_index);
 
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
     uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);

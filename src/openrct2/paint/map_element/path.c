@@ -761,7 +761,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
     uint8 pathType = (map_element->properties.path.type & 0xF0) >> 4;
     rct_footpath_entry * footpathEntry = get_footpath_entry(pathType);
 
-    if (footpathEntry != (void*)-1) {
+    if (footpathEntry != NULL) {
         if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
             path_paint_pole_support(session, map_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
         }

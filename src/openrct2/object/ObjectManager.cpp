@@ -381,8 +381,8 @@ private:
             void * * legacyChunk = &object_entry_groups[objectType].chunks[entryIndex];
             if (loadedObject == nullptr)
             {
-                Memory::Set(legacyEntry, 0xFF, sizeof(rct_object_entry_extended));
-                *legacyChunk = (void *)-1;
+                Memory::Set(legacyEntry, 0x00, sizeof(rct_object_entry_extended));
+                *legacyChunk = nullptr;
             }
             else
             {
@@ -469,28 +469,31 @@ private:
         {
             const rct_object_entry * entry = &entries[i];
             const ObjectRepositoryItem * ori = nullptr;
-            if (!object_entry_is_empty(entry))
+            if (object_entry_is_empty(entry))
             {
-                ori = _objectRepository->FindObject(entry);
-                if (ori == nullptr)
+                Memory::Set(entry, 0, sizeof(rct_object_entry));
+                continue;
+            }
+
+            ori = _objectRepository->FindObject(entry);
+            if (ori == nullptr)
+            {
+                invalidEntries.push_back(*entry);
+                ReportMissingObject(entry);
+            }
+            else
+            {
+                Object * loadedObject = nullptr;
+                loadedObject = ori->LoadedObject;
+                if (loadedObject == nullptr)
                 {
-                    invalidEntries.push_back(*entry);
-                    ReportMissingObject(entry);
-                }
-                else
-                {
-                    Object * loadedObject = nullptr;
-                    loadedObject = ori->LoadedObject;
+                    loadedObject = _objectRepository->LoadObject(ori);
                     if (loadedObject == nullptr)
                     {
-                        loadedObject = _objectRepository->LoadObject(ori);
-                        if (loadedObject == nullptr)
-                        {
-                            invalidEntries.push_back(*entry);
-                            ReportObjectLoadProblem(entry);
-                        }
-                        delete loadedObject;
+                        invalidEntries.push_back(*entry);
+                        ReportObjectLoadProblem(entry);
                     }
+                    delete loadedObject;
                 }
             }
         }

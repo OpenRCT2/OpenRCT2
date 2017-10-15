@@ -188,7 +188,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
     rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
-    if (entry == (void*)-1)
+    if (entry == NULL)
         return;
 
     uint32 image_id = (ebp << 2) + entry->image + 4 + direction;

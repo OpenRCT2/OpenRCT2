@@ -145,7 +145,7 @@ sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_ty
         entry_group.chunks++,
         entry_group.entries++){
 
-        if (*entry_group.chunks == (uint8*)-1) continue;
+        if (*entry_group.chunks == NULL) continue;
 
         if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
     }

@@ -241,14 +241,14 @@ rct_window * window_footpath_open()
 {
     // If a restricted path was selected when the game is no longer in Sandbox mode, reset it
     rct_footpath_entry * pathEntry = get_footpath_entry(gFootpathSelectedId);
-    if (pathEntry != (rct_footpath_entry *) -1 &&
+    if (pathEntry != nullptr &&
         (pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
-        pathEntry = (rct_footpath_entry *) -1;
+        pathEntry = nullptr;
     }
 
     // Select the default path if we don't have one
-    if (pathEntry == (rct_footpath_entry *) -1)
+    if (pathEntry == nullptr)
     {
         if (!footpath_select_default())
         {
@@ -443,7 +443,7 @@ static void window_footpath_dropdown(rct_window * w, rct_widgetindex widgetIndex
         for (; i < MAX_PATH_OBJECTS; i++)
         {
             rct_footpath_entry * pathType = get_footpath_entry(i);
-            if (pathType == (rct_footpath_entry *) -1)
+            if (pathType == nullptr)
             {
                 continue;
             }
@@ -729,7 +729,7 @@ static void window_footpath_show_footpath_types_dialog(rct_window * w, rct_widge
     for (i = 0; i < MAX_PATH_OBJECTS; i++)
     {
         pathType = get_footpath_entry(i);
-        if (pathType == (rct_footpath_entry *) -1)
+        if (pathType == nullptr)
         {
             continue;
         }
@@ -1319,7 +1319,7 @@ static bool footpath_select_default()
     for (sint32 i          = 0; i < object_entry_group_counts[OBJECT_TYPE_PATHS]; i++)
     {
         rct_footpath_entry * pathEntry = get_footpath_entry(i);
-        if (pathEntry != (rct_footpath_entry *) -1)
+        if (pathEntry != nullptr)
         {
             footpathId = i;
 

@@ -338,7 +338,7 @@ static void scenario_week_update()
 
     rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-    if (month <= MONTH_APRIL && (intptr_t)water_type != -1 && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
+    if (month <= MONTH_APRIL && water_type != NULL && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
         // 100 attempts at finding some water to create a few ducks at
         for (sint32 i = 0; i < 100; i++) {
             if (scenario_create_ducks())
@@ -708,8 +708,8 @@ static sint32 scenario_write_available_objects(FILE *file)
     rct_object_entry *dstEntry = (rct_object_entry*)buffer;
     for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++) {
         void *entryData = get_loaded_object_chunk(i);
-        if (entryData == (void*)-1) {
-            memset(dstEntry, 0xFF, sizeof(rct_object_entry));
+        if (entryData == NULL) {
+            memset(dstEntry, 0, sizeof(rct_object_entry));
         } else {
             *dstEntry = *get_loaded_object_entry(i);
         }

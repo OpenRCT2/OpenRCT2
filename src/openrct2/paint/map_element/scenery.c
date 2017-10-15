@@ -65,7 +65,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
 
     rct_scenery_entry *entry = get_small_scenery_entry(mapElement->properties.scenery.type);
 
-    if (entry == (rct_scenery_entry*)-1)
+    if (entry == NULL)
     {
         return;
     }

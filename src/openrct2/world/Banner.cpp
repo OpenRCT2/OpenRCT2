@@ -92,7 +92,7 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
     rct_banner *banner = &gBanners[mapElement->properties.banner.index];
     rct_scenery_entry *bannerEntry = get_banner_entry(banner->type);
     money32 refund = 0;
-    if (bannerEntry != nullptr && bannerEntry != (rct_scenery_entry *)-1)
+    if (bannerEntry != nullptr)
     {
         refund = -((bannerEntry->banner.price * 3) / 4);
     }
@@ -265,7 +265,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
     }
 
     rct_scenery_entry *bannerEntry = get_banner_entry(type);
-    if ((bannerEntry == nullptr) || (bannerEntry == (rct_scenery_entry *)-1))
+    if (bannerEntry == nullptr)
     {
         return MONEY32_UNDEFINED;
     }

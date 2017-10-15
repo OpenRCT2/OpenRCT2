@@ -2674,7 +2674,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
     }
 
     rct_scenery_entry *scenery_entry = get_large_scenery_entry(entry_index);
-    if (scenery_entry == (rct_scenery_entry *)-1)
+    if (scenery_entry == NULL)
     {
         log_warning("Invalid game command for scenery placement, entry_index = %u", entry_index);
         *ebx = MONEY32_UNDEFINED;
@@ -4096,7 +4096,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
             return true;
 
         rct_scenery_entry* scenery = get_small_scenery_entry(mapElement->properties.scenery.type);
-        if (scenery == (rct_scenery_entry*)-1)
+        if (scenery == NULL)
         {
             return false;
         }
