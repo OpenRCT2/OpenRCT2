@@ -52,9 +52,9 @@ utf8 gPathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 // Zaxcav: Used to enable the A* heuristic search.
-bool gAStarEnableAll = true; // Set to true to enable A* for ALL peeps;
+static bool gAStarEnableAll = true; // Set to true to enable A* for ALL peeps;
                              // Set to false to only enable A* for tracked guests and mechanics named "Mechanic Star".
-utf8 gAStarPeepName[256];
+static utf8 gAStarPeepName[256];
 
 uint8  gGuestChangeModifier;
 uint16 gNumGuestsInPark;
@@ -9895,18 +9895,18 @@ typedef struct {
 /* Zax: Global variables for A* */
 #define AStarMaxTiles 15000
 /* Zax: Open List */
-searchItem openList[AStarMaxTiles];
+static searchItem openList[AStarMaxTiles];
         /* With the current quick and dirty array implementation size and end are different */
-uint16 open_size; /* Number of items in the open list */
-sint16 open_end;  /* Index of the last item in the open list. */
+static uint16 open_size; /* Number of items in the open list */
+static sint16 open_end;  /* Index of the last item in the open list. */
 /* Zax: Closed List */
-searchItem closedList[AStarMaxTiles];
-uint16 closed_size;
-sint16 closed_end;
+static searchItem closedList[AStarMaxTiles];
+static uint16 closed_size;
+static sint16 closed_end;
 /* Boundary list */
-searchItem boundaryList[AStarMaxTiles]; /* Zax: doesn't need to be this big, but how big? */
-uint16 boundary_size;
-sint16 boundary_end;
+static searchItem boundaryList[AStarMaxTiles]; /* Zax: doesn't need to be this big, but how big? */
+static uint16 boundary_size;
+static sint16 boundary_end;
 
 static void initList(searchItem list[], uint16 *size, sint16 *end)
 {
@@ -10039,7 +10039,7 @@ static void printRoute(locationAndDirection tileList[], uint8 steps)
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
 
-uint16 tileCount;
+static uint16 tileCount;
 
 /* Zax: Turned into a function - calculation is unchange. */
 static uint16 heuristic_score(sint16 x, sint16 y, uint8 z) {
@@ -11078,7 +11078,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 }
 
 #define MaxSteps 200
-locationAndDirection bestPath[MaxSteps];
+static locationAndDirection bestPath[MaxSteps];
 
 static sint8 tileDirectionFromDelta(sint16 dx, sint16 dy) {
 /* Lookup the direction for the supplied delta */
