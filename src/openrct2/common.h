@@ -27,7 +27,6 @@
 #endif
 
 #include <assert.h>
-#include <limits.h>
 #include <math.h>
 #include <stddef.h>
 #include <stdint.h>
