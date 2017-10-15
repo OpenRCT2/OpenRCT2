@@ -86,7 +86,7 @@ static uint8 findClosestPaletteIndex(uint8 red, uint8 green, uint8 blue)
     return closest;
 }
 
-uint8 blend(const uint8 paletteIndex1, const uint8 paletteIndex2)
+uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2)
 {
     const uint8 cMin = min(paletteIndex1, paletteIndex2);
     const uint8 cMax = max(paletteIndex1, paletteIndex2);
