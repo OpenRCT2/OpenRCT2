@@ -84,7 +84,7 @@ namespace OpenRCT2
         virtual Audio::IAudioContext *  GetAudioContext() abstract;
         virtual Ui::IUiContext *        GetUiContext() abstract;
 
-        virtual sint32 RunOpenRCT2(int argc, char * * argv) abstract;
+        virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
 
         virtual bool Initialise() abstract;
         virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
