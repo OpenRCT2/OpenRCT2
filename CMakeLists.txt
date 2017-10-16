@@ -30,17 +30,6 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-add_definitions(-DOPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
-
-# Define commit hash
-execute_process(
-    COMMAND git rev-parse HEAD
-    WORKING_DIRECTORY ${ROOT_DIR}
-    OUTPUT_VARIABLE OPENRCT2_COMMIT_SHA1
-    OUTPUT_STRIP_TRAILING_WHITESPACE
-    ERROR_QUIET
-)
-add_definitions(-DOPENRCT2_COMMIT_SHA1="${OPENRCT2_COMMIT_SHA1}")
 
 # Define short commit hash
 execute_process(
@@ -50,11 +39,6 @@ execute_process(
     OUTPUT_STRIP_TRAILING_WHITESPACE
     ERROR_QUIET
 )
-
-# Tagged builds are not meant to display commit info
-if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
-    add_definitions(-DOPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
-endif()
 
 function (ADD_CHECK_C_COMPILER_FLAG _CFLAGS _CACHE_VAR _FLAG)
     CHECK_C_COMPILER_FLAG("${_FLAG}" "${_CACHE_VAR}")
