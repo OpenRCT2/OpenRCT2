@@ -150,7 +150,7 @@ namespace OpenRCT2
             return _uiContext;
         }
 
-        sint32 RunOpenRCT2(int argc, char * * argv) override
+        sint32 RunOpenRCT2(int argc, const char * * argv) override
         {
             if (Initialise())
             {
