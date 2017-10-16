@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../peep/Peep.h"
-#include "../ride/vehicle.h"
+#include "../ride/Vehicle.h"
 
 #define SPRITE_INDEX_NULL       0xFFFF
 #define MAX_SPRITES             10000

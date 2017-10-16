@@ -114,6 +114,7 @@
 		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
 		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
 		4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
+		4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
 		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
@@ -407,7 +408,6 @@
 		F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */; };
 		F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
-		F76C87231EC4E88400FA49E2 /* vehicle.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E41EC4E7CD00FA49E2 /* vehicle.c */; };
 		F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */; };
 		F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */; };
 		F76C87311EC4E88400FA49E2 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F41EC4E7CD00FA49E2 /* scenario.c */; };
@@ -718,6 +718,8 @@
 		4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepData.cpp; sourceTree = "<group>"; };
 		4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Staff.cpp; sourceTree = "<group>"; };
 		4CFE4E7F1F90A3F1005243C2 /* Staff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Staff.h; sourceTree = "<group>"; };
+		4CFE4E831F90AF41005243C2 /* Vehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vehicle.cpp; sourceTree = "<group>"; };
+		4CFE4E841F90AF41005243C2 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
 		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
 		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
@@ -1308,8 +1310,6 @@
 		F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
 		F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesignRepository.cpp; sourceTree = "<group>"; };
 		F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TrackDesignRepository.h; sourceTree = "<group>"; };
-		F76C84E41EC4E7CD00FA49E2 /* vehicle.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle.c; sourceTree = "<group>"; };
-		F76C84E51EC4E7CD00FA49E2 /* vehicle.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle.h; sourceTree = "<group>"; };
 		F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		F76C84E71EC4E7CD00FA49E2 /* vehicle_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle_paint.c; sourceTree = "<group>"; };
@@ -2336,8 +2336,8 @@
 				4C4C1E991F5832AA00560300 /* TrackDesign.h */,
 				F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */,
 				F76C84DD1EC4E7CD00FA49E2 /* TrackDesignRepository.h */,
-				F76C84E41EC4E7CD00FA49E2 /* vehicle.c */,
-				F76C84E51EC4E7CD00FA49E2 /* vehicle.h */,
+				4CFE4E831F90AF41005243C2 /* Vehicle.cpp */,
+				4CFE4E841F90AF41005243C2 /* Vehicle.h */,
 				F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */,
 				F76C84E71EC4E7CD00FA49E2 /* vehicle_data.h */,
 				F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */,
@@ -3206,6 +3206,7 @@
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
+				4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */,
 				4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
@@ -3476,7 +3477,6 @@
 				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
-				F76C87231EC4E88400FA49E2 /* vehicle.c in Sources */,
 				F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */,
 				F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */,
 				C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */,

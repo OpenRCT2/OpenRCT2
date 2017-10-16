@@ -23,7 +23,7 @@
 #include "../peep/Peep.h"
 #include "../ride/ride.h"
 #include "../ride/TrackDesign.h"
-#include "../ride/vehicle.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/scenario.h"
 #include "../world/park.h"
 #include "colour.h"

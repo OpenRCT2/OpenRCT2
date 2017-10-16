@@ -18,7 +18,7 @@
 #define _RCT2_H_
 
 #include "ride/ride_ratings.h"
-#include "ride/vehicle.h"
+#include "ride/Vehicle.h"
 #include "common.h"
 #include "rct12.h"
 

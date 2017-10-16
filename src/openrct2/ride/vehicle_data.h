@@ -19,6 +19,10 @@
 
 #include "../common.h"
 
+#ifdef __cplusplus
+extern "C" {
+#endif
+
 extern const uint8 * Rotation1TimeToSpriteMaps[];
 extern const uint8 * Rotation2TimeToSpriteMaps[];
 extern const uint8 * Rotation3TimeToSpriteMaps[];
@@ -37,5 +41,9 @@ extern const sint32 dword_9A2930[];
 extern const sint32 dword_9A2970[];
 
 extern const sint32 word_9A3684[];
+
+#ifdef __cplusplus
+}
+#endif
 
 #endif
