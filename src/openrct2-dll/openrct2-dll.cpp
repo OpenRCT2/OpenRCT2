@@ -52,7 +52,7 @@ DLLEXPORT int LaunchOpenRCT2(int argc, wchar_t * * argvW)
 
     int exitCode = NormalisedMain(argc, argv);
 
-    FreeCommandLineArgs(argc, argv);
+    FreeCommandLineArgs(argc, const_cast<const char * *>(argv));
     return exitCode;
 }
 
