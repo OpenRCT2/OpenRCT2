@@ -8,7 +8,7 @@ set(OPENRCT2_SRCPATH "${ROOT_DIR}/src/openrct2")
 file(GLOB_RECURSE ORCT2_RIDE_SOURCES "${OPENRCT2_SRCPATH}/ride/*/*.cpp")
 file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "${OPENRCT2_SRCPATH}/ride/ride_data.c"
                                          "${OPENRCT2_SRCPATH}/ride/TrackData.cpp"
-                                         "${OPENRCT2_SRCPATH}/ride/track_data_old.c"
+                                         "${OPENRCT2_SRCPATH}/ride/TrackDataOld.cpp"
                                          "${OPENRCT2_SRCPATH}/ride/track_paint.c"
                                          "${OPENRCT2_SRCPATH}/rct2/addresses.c"
                                          "${OPENRCT2_SRCPATH}/diagnostic.c"
