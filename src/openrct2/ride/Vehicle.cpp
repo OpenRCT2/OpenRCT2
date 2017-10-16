@@ -768,47 +768,25 @@ static bool vehicle_move_info_valid(sint32 cd, sint32 typeAndDirection, sint32 o
         size = 692;
         break;
     case 2:
-        size = 404;
-        break;
     case 3:
-        size = 404;
-        break;
     case 4:
         size = 404;
         break;
     case 5:
-        size = 208;
-        break;
     case 6:
-        size = 208;
-        break;
     case 7:
-        size = 208;
-        break;
     case 8:
         size = 208;
         break;
     case 9:
-        size = 824;
-        break;
     case 10:
-        size = 824;
-        break;
     case 11:
-        size = 824;
-        break;
     case 12:
-        size = 824;
-        break;
     case 13:
-        size = 824;
-        break;
     case 14:
         size = 824;
         break;
     case 15:
-        size = 868;
-        break;
     case 16:
         size = 868;
         break;
