@@ -33,9 +33,9 @@ using namespace OpenRCT2::Ui;
  * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
  */
 #ifdef _MSC_VER
-int NormalisedMain(int argc, char * * argv)
+int NormalisedMain(int argc, const char * * argv)
 #else
-int main(int argc, char * * argv)
+int main(int argc, const char * * argv)
 #endif
 {
     core_init();
