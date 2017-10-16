@@ -24,10 +24,10 @@ using namespace OpenRCT2;
 /**
 * Main entry point for non-Windows sytems. Windows instead uses its own DLL proxy.
 */
-int main(int argc, char * * argv)
+int main(int argc, const char * * argv)
 {
     core_init();
-    int runGame = cmdline_run((const char * *)argv, argc);
+    int runGame = cmdline_run(argv, argc);
     if (runGame == 1)
     {
         gOpenRCT2Headless = true;
