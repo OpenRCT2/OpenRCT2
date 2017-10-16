@@ -8797,6 +8797,9 @@ loc_6DC476:
     }
 
     // loc_6DC5B8
+    // Note: Line below was here as part of
+    // https://github.com/OpenRCT2/OpenRCT2/pull/2605/files#diff-e6c06ccf59b47239e1e220468e52497dR7736
+    // but it is not used and overridden later on.
     // const rct_vehicle_info* moveInfo = vehicle_get_move_info(vehicle->var_CD, vehicle->track_type, 0);
 
     // There are two bytes before the move info list
