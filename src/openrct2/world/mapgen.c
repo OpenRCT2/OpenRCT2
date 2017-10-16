@@ -273,19 +273,8 @@ typedef struct mapgen_tree_pos
     bool tree;
 } mapgen_tree_pos;
 
-/**
- * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
- */
-static void mapgen_place_trees(mapgen_settings * settings)
+static void mapgen_tree_load_ids()
 {
-    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
-    // thus preventing need to regenerate terrain for a new forest.
-
-    if (!settings->trees_place)
-        return;
-
-    mapgen_clear_trees();
-
     _numGrassTreeIds = 0;
     _numDesertTreeIds = 0;
     _numSnowTreeIds = 0;
@@ -325,6 +314,29 @@ static void mapgen_place_trees(mapgen_settings * settings)
             continue;
         }
     }
+}
+
+static void mapgen_tree_unload_ids()
+{
+    free(_grassTreeIds);
+    free(_desertTreeIds);
+    free(_snowTreeIds);
+}
+
+/**
+ * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
+ */
+static void mapgen_place_trees(mapgen_settings * settings)
+{
+    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
+    // thus preventing need to regenerate terrain for a new forest.
+
+    if (!settings->trees_place)
+        return;
+
+    mapgen_clear_trees();
+
+    mapgen_tree_load_ids();
 
     sint32 availablePositionsCount = 0;
     mapgen_tree_pos tmp, *pos, *availablePositions, *neighborPos;
@@ -528,9 +540,8 @@ static void mapgen_place_trees(mapgen_settings * settings)
     }
 
     free(availablePositions);
-    free(_grassTreeIds);
-    free(_desertTreeIds);
-    free(_snowTreeIds);
+
+    mapgen_tree_unload_ids();
 }
 
 /**
