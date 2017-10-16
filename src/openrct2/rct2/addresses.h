@@ -25,7 +25,7 @@
 #pragma warning(disable : 4731)
 #endif
 
-#ifdef USE_MMAP
+#if defined(USE_MMAP) && !defined(__TESTPAINT__)
     #if defined(PLATFORM_64BIT)
         #define GOOD_PLACE_FOR_DATA_SEGMENT ((uintptr_t)0x200000000)
     #elif defined(PLATFORM_32BIT)

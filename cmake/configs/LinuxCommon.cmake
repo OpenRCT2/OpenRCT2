@@ -1,0 +1,4 @@
+set(BUILD_CLI TRUE CACHE BOOL "We want to build the CLI on Linux")
+set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/OpenRCT2" CACHE STRING "For CI builds")
+set(ENABLE_RCT2_TESTS FALSE CACHE BOOL "No rct2 tests on CI")
+set(CMAKE_BUILD_TYPE Release CACHE STRING "Build type for CI")

@@ -1,0 +1,3 @@
+include(${CMAKE_CURRENT_LIST_DIR}/LinuxArch.cmake)
+
+set(ENABLE_OPENGL FALSE CACHE BOOL "No OpenGL")

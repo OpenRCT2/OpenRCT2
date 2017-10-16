@@ -1,0 +1,4 @@
+include(${CMAKE_CURRENT_LIST_DIR}/LinuxArch.cmake)
+
+set(ENABLE_NETWORK FALSE CACHE BOOL "No networking")
+set(ENABLE_HTTP_TWITCH FALSE CACHE BOOL "No Twitch")

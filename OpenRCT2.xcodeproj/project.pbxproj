@@ -258,6 +258,7 @@
 		D45A395F1CF300AF00659A24 /* libspeexdsp.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B91CF3006400659A24 /* libspeexdsp.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */; };
+		D48E9BCA1F92B54A00D521BD /* openrct2-nix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48E9BC91F92B54900D521BD /* openrct2-nix.cpp */; };
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
@@ -1023,6 +1024,7 @@
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchGfxCommmands.cpp; sourceTree = "<group>"; };
+		D48E9BC91F92B54900D521BD /* openrct2-nix.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; name = "openrct2-nix.cpp"; path = "../openrct2-nix/openrct2-nix.cpp"; sourceTree = "<group>"; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
@@ -2606,6 +2608,7 @@
 				F76C85A81EC4E82600FA49E2 /* SDLException.h */,
 				F76C85A91EC4E82600FA49E2 /* TextComposition.cpp */,
 				F76C85AA1EC4E82600FA49E2 /* TextComposition.h */,
+				D48E9BC91F92B54900D521BD /* openrct2-nix.cpp */,
 				F775F5321EE35A48001F00E7 /* Ui.h */,
 				F76C85AB1EC4E82600FA49E2 /* Ui.cpp */,
 				F76C85AC1EC4E82600FA49E2 /* UiContext.cpp */,
@@ -3234,6 +3237,7 @@
 				4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */,
 				4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */,
 				4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */,
+				D48E9BCA1F92B54A00D521BD /* openrct2-nix.cpp in Sources */,
 				4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
