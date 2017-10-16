@@ -117,6 +117,8 @@
 		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
 		4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
 		4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
+		4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E861F950164005243C2 /* TrackData.cpp */; };
+		4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
 		4CFE4E901F9625B0005243C2 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E8E1F9625B0005243C2 /* Track.cpp */; };
 		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
 		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
@@ -404,8 +406,6 @@
 		F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BA1EC4E7CC00FA49E2 /* ride.c */; };
 		F76C86FE1EC4E88400FA49E2 /* ride_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */; };
 		F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */; };
-		F76C87141EC4E88400FA49E2 /* track_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D41EC4E7CC00FA49E2 /* track_data.c */; };
-		F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */; };
 		F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */; };
 		F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */; };
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
@@ -725,6 +725,9 @@
 		4CFE4E7F1F90A3F1005243C2 /* Staff.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Staff.h; sourceTree = "<group>"; };
 		4CFE4E831F90AF41005243C2 /* Vehicle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Vehicle.cpp; sourceTree = "<group>"; };
 		4CFE4E841F90AF41005243C2 /* Vehicle.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Vehicle.h; sourceTree = "<group>"; };
+		4CFE4E861F950164005243C2 /* TrackData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackData.cpp; sourceTree = "<group>"; };
+		4CFE4E871F950164005243C2 /* TrackData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackData.h; sourceTree = "<group>"; };
+		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
 		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
@@ -1305,9 +1308,6 @@
 		F76C84BD1EC4E7CC00FA49E2 /* ride_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_data.h; sourceTree = "<group>"; };
 		F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_ratings.c; sourceTree = "<group>"; };
 		F76C84BF1EC4E7CC00FA49E2 /* ride_ratings.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_ratings.h; sourceTree = "<group>"; };
-		F76C84D41EC4E7CC00FA49E2 /* track_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_data.c; sourceTree = "<group>"; };
-		F76C84D51EC4E7CC00FA49E2 /* track_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_data.h; sourceTree = "<group>"; };
-		F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_data_old.c; sourceTree = "<group>"; };
 		F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_design_save.c; sourceTree = "<group>"; };
 		F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = track_paint.c; sourceTree = "<group>"; };
 		F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = track_paint.h; sourceTree = "<group>"; };
@@ -2331,9 +2331,9 @@
 				4C6AC20E1F9E1693004324AA /* Station.h */,
 				4CFE4E8E1F9625B0005243C2 /* Track.cpp */,
 				4CFE4E8F1F9625B0005243C2 /* Track.h */,
-				F76C84D41EC4E7CC00FA49E2 /* track_data.c */,
-				F76C84D51EC4E7CC00FA49E2 /* track_data.h */,
-				F76C84D61EC4E7CC00FA49E2 /* track_data_old.c */,
+				4CFE4E861F950164005243C2 /* TrackData.cpp */,
+				4CFE4E871F950164005243C2 /* TrackData.h */,
+				4CFE4E881F950164005243C2 /* TrackDataOld.cpp */,
 				F76C84D91EC4E7CD00FA49E2 /* track_design_save.c */,
 				F76C84DA1EC4E7CD00FA49E2 /* track_paint.c */,
 				F76C84DB1EC4E7CD00FA49E2 /* track_paint.h */,
@@ -3147,12 +3147,14 @@
 				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */,
+				4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
 				4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */,
 				4C93F1731F8B745700A9330D /* MerryGoRound.cpp in Sources */,
 				C654DF3C1F69C0430040F43D /* TrackDesignManage.cpp in Sources */,
 				4C93F1591F8B744400A9330D /* WoodenWildMouse.cpp in Sources */,
+				4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */,
 				4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */,
 				4C93F14E1F8B744400A9330D /* ReverseFreefallCoaster.cpp in Sources */,
 				C654DF3B1F69C0430040F43D /* TitleScenarioSelect.cpp in Sources */,
@@ -3478,8 +3480,6 @@
 				C666EE161F33E3800061AA04 /* EditorBottomToolbar.cpp in Sources */,
 				C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */,
 				C666EE291F33E3800061AA04 /* MapTooltip.cpp in Sources */,
-				F76C87141EC4E88400FA49E2 /* track_data.c in Sources */,
-				F76C87161EC4E88400FA49E2 /* track_data_old.c in Sources */,
 				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
