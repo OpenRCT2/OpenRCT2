@@ -4588,8 +4588,8 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         if (scenario_rand() & 1)
         {
             LocationXY16 destLocation = {
-                static_cast<uint8>(returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16),
-                static_cast<uint8>(returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16)
+                static_cast<sint16>(returnPosition.x * 32 - TileDirectionDelta[returnDirection].x + 16),
+                static_cast<sint16>(returnPosition.y * 32 - TileDirectionDelta[returnDirection].y + 16)
             };
 
             destLocation.x -= vehicle->x;
