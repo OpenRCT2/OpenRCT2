@@ -27,6 +27,8 @@
 #define WW_SC_MAX 1200
 #define WH_SC_MAX 800
 
+#define ROW_HEIGHT 12
+
 enum WINDOW_SHORTCUT_WIDGET_IDX {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -241,7 +243,7 @@ static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
 */
 static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = w->no_list_items * 10;
+    *height = w->no_list_items * ROW_HEIGHT;
 }
 
 /**
@@ -250,7 +252,7 @@ static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sin
 */
 static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 selected_item = y / 10;
+    sint32 selected_item = (y - 1) / ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -263,7 +265,7 @@ static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 */
 static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 selected_item = y / 10;
+    sint32 selected_item = (y - 1) / ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -280,16 +282,24 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 {
     gfx_fill_rect(dpi, dpi->x, dpi->y, dpi->x + dpi->width - 1, dpi->y + dpi->height - 1, ColourMapA[w->colours[1]].mid_light);
 
-    for (sint32 i = 0; i < w->no_list_items; ++i) {
-        sint32 y = i * 10;
+    for (sint32 i = 0; i < w->no_list_items; ++i)
+    {
+        sint32 y = 1 + i * ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
+        {
             break;
+        }
 
-        if (y + 10 < dpi->y)continue;
+        if (y + ROW_HEIGHT < dpi->y)
+        {
+            continue;
+        }
+
         sint32 format = STR_BLACK_STRING;
-        if (i == w->selected_list_item) {
+        if (i == w->selected_list_item)
+        {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y - 1, 800, y + (ROW_HEIGHT - 2), PALETTE_DARKEN_1);
         }
 
         char templateString[128];
