@@ -32,7 +32,7 @@
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/ride/track_data.h>
+#include <openrct2/ride/TrackData.h>
 
 class PaintCodeGenerator
 {
@@ -113,7 +113,7 @@ private:
             "../../world/map.h",
             "../../world/sprite.h",
             "../ride_data.h",
-            "../track_data.h",
+            "../TrackData.h",
             "../track_paint.h",
         };
         for (auto include : includes)

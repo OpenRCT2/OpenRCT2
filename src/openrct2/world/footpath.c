@@ -22,7 +22,7 @@
 #include "../OpenRCT2.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../util/util.h"
 
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);

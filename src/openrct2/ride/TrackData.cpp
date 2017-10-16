@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "Track.h"
-#include "track_data.h"
+#include "TrackData.h"
 #include "track_paint.h"
 
 const rct_track_coordinates FlatTrackCoordinates[] = {

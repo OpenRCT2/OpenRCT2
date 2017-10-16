@@ -23,7 +23,7 @@
 #include "../../world/map.h"
 #include "../../world/sprite.h"
 #include "../ride_data.h"
-#include "../track_data.h"
+#include "../TrackData.h"
 #include "../track_paint.h"
 
 /** rct2: 0x00792D88 */

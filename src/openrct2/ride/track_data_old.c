@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "track_data.h"
+#include "TrackData.h"
 
 /** rct2: 0x008A42F4 */
 static const uint32 _OldSpiralRollerCoasterTrackPaintFunctions[256] = {

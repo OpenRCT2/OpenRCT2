@@ -16,7 +16,7 @@
 
 #include "../../drawing/drawing.h"
 #include "../../paint/supports.h"
-#include "../track_data.h"
+#include "../TrackData.h"
 #include "BolligerMabillardTrack.h"
 
 /** rct2: 0x008AA00C */
