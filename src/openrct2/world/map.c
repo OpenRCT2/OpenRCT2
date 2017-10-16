@@ -29,7 +29,7 @@
 #include "../OpenRCT2.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../windows/Intent.h"

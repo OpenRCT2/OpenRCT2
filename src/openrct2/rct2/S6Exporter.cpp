@@ -42,7 +42,7 @@
 #include "../peep/Staff.h"
 #include "../ride/ride.h"
 #include "../ride/ride_ratings.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../scenario/scenario.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"

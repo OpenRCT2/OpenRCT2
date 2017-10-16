@@ -26,7 +26,7 @@
 #include "../world/scenery.h"
 #include "ride_data.h"
 #include "Track.h"
-#include "track_data.h"
+#include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
 #include "../Context.h"

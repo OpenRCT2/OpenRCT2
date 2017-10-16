@@ -38,7 +38,7 @@
 #include "../rct1.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../sprites.h"
 #include "dropdown.h"
 

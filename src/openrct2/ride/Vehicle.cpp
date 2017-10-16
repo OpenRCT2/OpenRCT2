@@ -40,7 +40,7 @@
 #include "ride_data.h"
 #include "Station.h"
 #include "Track.h"
-#include "track_data.h"
+#include "TrackData.h"
 #include "vehicle_data.h"
 
 static void vehicle_update(rct_vehicle * vehicle);

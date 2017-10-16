@@ -25,7 +25,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "Track.h"
-#include "track_data.h"
+#include "TrackData.h"
 
 static const RideGroup ride_group_corkscrew_rc = {
     /*.RideType =*/ RIDE_TYPE_CORKSCREW_ROLLER_COASTER,

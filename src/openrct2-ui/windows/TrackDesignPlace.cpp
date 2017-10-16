@@ -27,7 +27,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/ride/track_data.h>
+#include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168

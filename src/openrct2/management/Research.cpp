@@ -29,7 +29,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/RideGroupManager.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../world/scenery.h"
 #include "NewsItem.h"
 #include "Finance.h"

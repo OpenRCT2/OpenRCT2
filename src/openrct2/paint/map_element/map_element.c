@@ -19,7 +19,7 @@
 #include "map_element.h"
 #include "../../drawing/drawing.h"
 #include "../../ride/ride_data.h"
-#include "../../ride/track_data.h"
+#include "../../ride/TrackData.h"
 #include "../../ride/track_paint.h"
 #include "../../config/Config.h"
 #include "../../world/sprite.h"

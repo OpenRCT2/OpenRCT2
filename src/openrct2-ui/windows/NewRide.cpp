@@ -31,7 +31,7 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/ride_data.h>
-#include <openrct2/ride/track_data.h>
+#include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 

@@ -37,7 +37,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "Track.h"
-#include "track_data.h"
+#include "TrackData.h"
 #include "TrackDesign.h"
 
 typedef struct map_backup

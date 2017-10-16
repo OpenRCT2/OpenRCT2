@@ -30,7 +30,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
-#include "../ride/track_data.h"
+#include "../ride/TrackData.h"
 #include "../world/footpath.h"
 #include "dropdown.h"
 #include "../sprites.h"

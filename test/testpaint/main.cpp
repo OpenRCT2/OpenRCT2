@@ -33,7 +33,7 @@
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/ride/track_data.h>
+#include <openrct2/ride/TrackData.h>
 
 typedef struct {
     uint8 rideType;
