@@ -280,3 +280,15 @@ if (CXX_WARN_SUGGEST_FINAL_METHODS)
     # Disable -Wsuggest-final-methods via pragmas where due.
    add_definitions(-D__WARN_SUGGEST_FINAL_METHODS__)
 endif ()
+
+# To avoid unnecessary rebuilds set the current branch and
+# short sha1 only for the two files that use these
+# definitions: Version.cpp and Crash/Platform.cpp
+set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp PROPERTY
+    COMPILE_DEFINITIONS OPENRCT2_BRANCH="${OPENRCT2_BRANCH}")
+if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
+    set_property(SOURCE ${CMAKE_CURRENT_LIST_DIR}/Version.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/Crash/Platform.cpp PROPERTY
+    COMPILE_DEFINITIONS OPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
+endif()
