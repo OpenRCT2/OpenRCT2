@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <string>
+
 #include <openrct2/config/Config.h>
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/core/Memory.hpp>
@@ -836,7 +838,7 @@ static void window_loadsave_select(rct_window *w, const char *path)
     {
         save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
         auto intent = Intent(WC_INSTALL_TRACK);
-        intent.putExtra(INTENT_EXTRA_PATH, pathBuffer);
+        intent.putExtra(INTENT_EXTRA_PATH, std::string { pathBuffer });
         context_open_intent(&intent);
         window_close_by_class(WC_LOADSAVE);
         window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);

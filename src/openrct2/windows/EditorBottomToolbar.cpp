@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <string>
+
 #include "../Context.h"
 #include "../OpenRCT2.h"
 
@@ -292,7 +294,7 @@ void window_editor_bottom_toolbar_jump_forward_to_save_scenario()
     window_close_all();
     auto intent = Intent(WC_LOADSAVE);
     intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO);
-    intent.putExtra(INTENT_EXTRA_PATH, gS6Info.name);
+    intent.putExtra(INTENT_EXTRA_PATH, std::string { gS6Info.name });
     context_open_intent(&intent);
 }
 
