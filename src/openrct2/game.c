@@ -46,6 +46,7 @@
 #include "ride/Vehicle.h"
 #include "scenario/scenario.h"
 #include "title/TitleScreen.h"
+#include "title/TitleSequencePlayer.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
 #include "windows/Intent.h"
@@ -72,6 +73,8 @@ bool gInMapInitCode = false;
 sint32 gGameCommandNestLevel;
 bool gGameCommandIsNetworked;
 char gCurrentLoadedPath[MAX_PATH];
+
+bool gLoadKeepWindowsOpen = false;
 
 uint8 gUnk13CA740;
 uint8 gUnk141F568;
@@ -291,6 +294,11 @@ void game_update()
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
     game_handle_keyboard_input();
+
+    if (game_is_not_paused() && gTestingTitleSequenceInGame)
+    {
+        title_sequence_player_update((ITitleSequencePlayer*)title_get_sequence_player());
+    }
 
     // Determine how many times we need to update the game
     if (gGameSpeed > 1) {
@@ -1158,8 +1166,11 @@ void game_load_init()
 
     gScreenFlags = SCREEN_FLAGS_PLAYING;
     audio_stop_all_music_and_sounds();
-    viewport_init_all();
-    game_create_windows();
+    if (!gLoadKeepWindowsOpen)
+    {
+        viewport_init_all();
+        game_create_windows();
+    }
     mainWindow = window_get_main();
 
     if (mainWindow != NULL)

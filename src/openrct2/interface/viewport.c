@@ -1349,9 +1349,14 @@ static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  */
 void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
 {
+    rct_window* window = window_find_from_point(screenX, screenY);
+    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, mapElement, viewport);
+}
+
+void get_map_coordinates_from_pos_window(rct_window *window, sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+{
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
-    rct_window* window = window_find_from_point(screenX, screenY);
     if (window != NULL && window->viewport != NULL)
     {
         rct_viewport* myviewport = window->viewport;

@@ -28,7 +28,7 @@ class TitleScreen final
 public:
     ITitleSequencePlayer *  GetSequencePlayer();
     uint16                  GetCurrentSequence();
-    void                    SetCurrentSequence(uint16 value);
+    void                    SetCurrentSequence(uint16 value, bool loadSequence);
     bool                    ShouldHideVersionInfo();
     void                    SetHideVersionInfo(bool value);
 
@@ -61,8 +61,9 @@ extern "C"
     void title_sequence_change_preset(sint32 preset);
     bool title_should_hide_version_info();
     void title_set_hide_version_info(bool value);
+    uint16 title_get_config_sequence();
     uint16 title_get_current_sequence();
-    void title_set_current_sequence(uint16 value);
+    void title_set_current_sequence(uint16 value, bool loadSequence);
     void DrawOpenRCT2(rct_drawpixelinfo *dpi, sint32 x, sint32 y);
 #ifdef __cplusplus
 }

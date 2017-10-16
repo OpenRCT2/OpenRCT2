@@ -143,6 +143,7 @@ void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
 void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
+void get_map_coordinates_from_pos_window(rct_window *window, sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport);
 
 sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interaction_info *info);
 sint32 viewport_interaction_left_over(sint32 x, sint32 y);

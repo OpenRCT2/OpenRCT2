@@ -105,7 +105,7 @@ void scenario_begin()
     research_reset_current_item();
     scenery_set_default_placement_configuration();
     news_item_init_queue();
-    if (gScenarioObjectiveType != OBJECTIVE_NONE)
+    if (gScenarioObjectiveType != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
         context_open_window_view(WV_PARK_OBJECTIVE);
 
     gParkRating = calculate_park_rating();
