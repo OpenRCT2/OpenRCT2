@@ -1934,7 +1934,6 @@ static void window_ride_rename(rct_window *w)
 static void window_ride_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
     uint8 rideIndex;
-    Ride *ride;
     sint32 status;
 
     switch (widgetIndex) {
@@ -1972,10 +1971,8 @@ static void window_ride_main_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_CLOSE_LIGHT:
     case WIDX_TEST_LIGHT:
     case WIDX_OPEN_LIGHT:
-
-        ride = get_ride(w->number);
-
-        switch (widgetIndex) {
+        switch (widgetIndex)
+        {
         default:
         case WIDX_CLOSE_LIGHT:
             status = RIDE_STATUS_CLOSED;
