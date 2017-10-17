@@ -35,6 +35,8 @@ struct TitleSequence;
 struct TextInputSession;
 typedef struct scenario_index_entry scenario_index_entry;
 
+#define ROW_HEIGHT 12
+
 #define TEXT_INPUT_SIZE 1024
 #define TOP_TOOLBAR_HEIGHT 27
 
