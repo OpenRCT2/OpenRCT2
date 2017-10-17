@@ -453,6 +453,8 @@ static void mapgen_place_trees_randomize_with_simplex(mapgen_settings * settings
     float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
     float trees_octaves = settings->trees_octaves;
     float trees_probability = settings->trees_probability;
+    
+    sint32 removedTrees = 0;
 
     for (sint32 i = 0; i < count; i++) {
         mapgen_tree_pos * pos = &availablePositions[i];
@@ -466,8 +468,11 @@ static void mapgen_place_trees_randomize_with_simplex(mapgen_settings * settings
         if (normalisedNoiseValue < trees_probability) {
             pos->tree = false;
             availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
+            removedTrees++;
         }
     }
+    log_info("%d trees were removed because of simplex", removedTrees);
+
 }
 
 static sint32 mapgen_place_trees_create_available_tiles(sint32 * availablePositionsKeymap, mapgen_tree_pos * availablePositions)
