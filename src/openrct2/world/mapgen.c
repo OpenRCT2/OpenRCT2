@@ -323,87 +323,26 @@ static void mapgen_tree_unload_ids()
     free(_snowTreeIds);
 }
 
-/**
- * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
- */
-static void mapgen_place_trees(mapgen_settings * settings)
+static void mapgen_trees_remove_nearby(sint32 availablePositionsCount, mapgen_tree_pos * availablePositions, sint32 * availablePositionsKeymap)
 {
-    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
-    // thus preventing need to regenerate terrain for a new forest.
-
-    if (!settings->trees_place)
-        return;
-
-    mapgen_clear_trees();
-
-    mapgen_tree_load_ids();
-
-    sint32 availablePositionsCount = 0;
-    mapgen_tree_pos tmp, *pos, *availablePositions, *neighborPos;
-    sint32 availablePositionsKeymap[MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL];
-
-    const sint32 mapSizeTechnicalArea = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
-
-    availablePositions = malloc(mapSizeTechnicalArea * sizeof(tmp));
-    
-    // Create list of available tiles
-    for (sint32 y = 0; y < gMapSize - 2; y++) {
-        for (sint32 x = 0; x < gMapSize - 2; x++) {
-            availablePositionsKeymap[x + (y * (gMapSize - 2))] = -1;
-
-            rct_map_element *mapElement = map_get_surface_element_at(x + 1, y + 1);
-
-            // Exclude water tiles
-            if (map_get_water_height(mapElement) > 0)
-                continue;
-
-            pos = &availablePositions[availablePositionsCount];
-            pos->x = x;
-            pos->y = y;
-            pos->tree = true;
-            
-            // Store x/y coordinate as 1d indice.
-            availablePositionsKeymap[x + (y * (gMapSize - 2))] = availablePositionsCount;
-
-            availablePositionsCount++;
-        }
-    }
-
-    // Randomise with simplex
-    float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
-    float trees_octaves = settings->trees_octaves;
-    float trees_probability = settings->trees_probability;
-    
-    for (sint32 i = 0; i < availablePositionsCount; i++) {
-        pos = &availablePositions[i];
-        
-        if (!pos->tree)
-            continue;
-
-        float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
-        float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
-
-        if (normalisedNoiseValue < trees_probability) {
-            pos->tree = false;
-            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
-        }
-    }
-
 
     // After list has been fully completed, remove trees surrounded by other trees.
     sint32 treesRemoved = 0;
     sint32 randIncrement = util_rand() % 1000;
     sint32 rand = 0;
+
+    mapgen_tree_pos * pos, * neighborPos;
+
     for (sint32 i = 0; i < availablePositionsCount; i++) {
         pos = &availablePositions[i];
-        
+
         // Skip already treeless items
         if (!pos->tree)
             continue;
 
         // Store number of nearby trees. Will never exceed 4.
         sint32 nearbyTrees = 0,
-               keymap = 0;
+            keymap = 0;
 
         // _, _, _,
         // X, T, _,
@@ -455,19 +394,135 @@ static void mapgen_place_trees(mapgen_settings * settings)
 
         // Using a increment-based approach reduces util_rand() calls to one, increasing speed.
         rand = (rand + randIncrement) % 100;
-        
+
         if (
             // Set probability of removing to number of nearby trees required.
             ((nearbyTrees >= 4) && (rand > 30)) ||
             ((nearbyTrees >= 3) && (rand < 50)) ||
             ((nearbyTrees >= 2) && (rand > 60))
-        ) {
+            ) {
             pos->tree = false;
             treesRemoved++;
         }
     }
 
     log_info("%d trees were removed due to neighboring positions", treesRemoved);
+
+}
+
+static sint32 mapgen_trees_determine_type(mapgen_tree_pos * pos)
+{
+    sint32 type = -1;
+    rct_map_element *mapElement = map_get_surface_element_at(pos->x + 1, pos->y + 1);
+
+    // If this is triggered, there is likely a pos to map conversion problem somewhere.
+    // Make sure all 'pos'/'positionsAvailable' x/y coordinates are 0 based, unless
+    // being converted to a mapElement, in which case 1 should be added to pos->x/y
+    // TODO: If this if statement no longer persists, remove it
+    if (mapElement == NULL) {
+        log_info("Map element at %d, %d was null", pos->x + 1, pos->y + 1);
+        return -1;
+    }
+
+    switch (map_element_get_terrain(mapElement)) {
+    case TERRAIN_GRASS:
+    case TERRAIN_DIRT:
+    case TERRAIN_GRASS_CLUMPS:
+        if (_numGrassTreeIds == 0)
+            break;
+
+        type = _grassTreeIds[util_rand() % _numGrassTreeIds];
+        break;
+
+    case TERRAIN_SAND:
+    case TERRAIN_SAND_DARK:
+    case TERRAIN_SAND_LIGHT:
+        if (_numDesertTreeIds == 0)
+            break;
+
+        // Because deserts have less trees than forests, apply a 1/4th chance 
+        // of tree being placed.
+        if (util_rand() % 4 == 0)
+            type = _desertTreeIds[util_rand() % _numDesertTreeIds];
+        break;
+
+    case TERRAIN_ICE:
+        if (_numSnowTreeIds == 0)
+            break;
+
+        type = _snowTreeIds[util_rand() % _numSnowTreeIds];
+        break;
+    }
+
+}
+
+/**
+ * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
+ */
+static void mapgen_place_trees(mapgen_settings * settings)
+{
+    // TODO: Make mapgen_clear_trees() work to allow mapgen_place_trees to work seperately from mapgen_generate,
+    // thus preventing need to regenerate terrain for a new forest.
+
+    if (!settings->trees_place)
+        return;
+
+    mapgen_clear_trees();
+
+    mapgen_tree_load_ids();
+
+    sint32 availablePositionsCount = 0;
+    mapgen_tree_pos tmp, *pos, *availablePositions;
+    sint32 availablePositionsKeymap[MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL];
+
+    const sint32 mapSizeTechnicalArea = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
+
+    availablePositions = malloc(mapSizeTechnicalArea * sizeof(tmp));
+    
+    // Create list of available tiles
+    for (sint32 y = 0; y < gMapSize - 2; y++) {
+        for (sint32 x = 0; x < gMapSize - 2; x++) {
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = -1;
+
+            rct_map_element *mapElement = map_get_surface_element_at(x + 1, y + 1);
+
+            // Exclude water tiles
+            if (map_get_water_height(mapElement) > 0)
+                continue;
+
+            pos = &availablePositions[availablePositionsCount];
+            pos->x = x;
+            pos->y = y;
+            pos->tree = true;
+            
+            // Store x/y coordinate as 1d indice.
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = availablePositionsCount;
+
+            availablePositionsCount++;
+        }
+    }
+
+    // Randomise with simplex
+    float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
+    float trees_octaves = settings->trees_octaves;
+    float trees_probability = settings->trees_probability;
+    
+    for (sint32 i = 0; i < availablePositionsCount; i++) {
+        pos = &availablePositions[i];
+        
+        if (!pos->tree)
+            continue;
+
+        float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
+        float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
+
+        if (normalisedNoiseValue < trees_probability) {
+            pos->tree = false;
+            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
+        }
+    }
+
+    mapgen_trees_remove_nearby(availablePositionsCount, availablePositions, availablePositionsKeymap);
 
     // Shuffle list, to evenly distribute the next portions probability ratio.
     for (sint32 i = 0; i < availablePositionsCount; i++) {
@@ -493,47 +548,7 @@ static void mapgen_place_trees(mapgen_settings * settings)
         if (!pos->tree)
             continue;
 
-        sint32 type = -1;
-        rct_map_element *mapElement = map_get_surface_element_at(pos->x + 1, pos->y + 1);
-
-        // If this is triggered, there is likely a pos to map conversion problem somewhere.
-        // Make sure all 'pos'/'positionsAvailable' x/y coordinates are 0 based, unless
-        // being converted to a mapElement, in which case 1 should be added to pos->x/y
-        // TODO: If this if statement no longer persists, remove it
-        if (mapElement == NULL) {
-            log_info("Map element at %d, %d was null", pos->x + 1, pos->y + 1);
-            continue;
-        }
-
-        switch (map_element_get_terrain(mapElement)) {
-        case TERRAIN_GRASS:
-        case TERRAIN_DIRT:
-        case TERRAIN_GRASS_CLUMPS:
-            if (_numGrassTreeIds == 0)
-                break;
-
-            type = _grassTreeIds[util_rand() % _numGrassTreeIds];
-            break;
-
-        case TERRAIN_SAND:
-        case TERRAIN_SAND_DARK:
-        case TERRAIN_SAND_LIGHT:
-            if (_numDesertTreeIds == 0)
-                break;
-
-            // Because deserts have less trees than forests, apply a 1/4th chance 
-            // of tree being placed.
-            if (util_rand() % 4 == 0)
-                type = _desertTreeIds[util_rand() % _numDesertTreeIds];
-            break;
-
-        case TERRAIN_ICE:
-            if (_numSnowTreeIds == 0)
-                break;
-
-            type = _snowTreeIds[util_rand() % _numSnowTreeIds];
-            break;
-        }
+        sint32 type = mapgen_trees_determine_type(pos);
 
         if (type != -1)
             mapgen_place_tree(type, pos->x + 1, pos->y + 1);
