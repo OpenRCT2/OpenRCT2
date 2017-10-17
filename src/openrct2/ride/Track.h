@@ -191,15 +191,6 @@ enum
 
 enum
 {
-    TRACK_HALF_LOOP_UP          = 64,
-    TRACK_HALF_LOOP_DOWN        = -64,
-    TRACK_UNKNOWN_VERTICAL_LOOP = -48,
-    TRACK_216                   = -40,
-    TRACK_CORKSCREW_DOWN        = -32
-};
-
-enum
-{
     TRACK_ELEM_FLAG_ONLY_UNDERWATER       = (1 << 0),
     TRACK_ELEM_FLAG_TURN_LEFT             = (1 << 1),
     TRACK_ELEM_FLAG_TURN_RIGHT            = (1 << 2),
