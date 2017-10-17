@@ -18,7 +18,7 @@
 #include "../drawing/drawing.h"
 #include "../world/sprite.h"
 #include "../ride/ride_data.h"
-#include "../ride/track.h"
+#include "Track.h"
 #include "../interface/viewport.h"
 #include "../game.h"
 #include "../drawing/lightfx.h"

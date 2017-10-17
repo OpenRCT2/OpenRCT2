@@ -31,7 +31,7 @@
 #include <openrct2/rct2.h>
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/ride_data.h>
-#include <openrct2/ride/track.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/ride/track_data.h>
 
 class PaintCodeGenerator

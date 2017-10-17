@@ -41,7 +41,7 @@
 #include "rct1.h"
 #include "ride/ride.h"
 #include "ride/ride_ratings.h"
-#include "ride/track.h"
+#include "ride/Track.h"
 #include "ride/TrackDesign.h"
 #include "ride/Vehicle.h"
 #include "scenario/scenario.h"

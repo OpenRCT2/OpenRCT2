@@ -18,7 +18,7 @@
 #include "../world/sprite.h"
 #include "cable_lift.h"
 #include "ride.h"
-#include "track.h"
+#include "Track.h"
 #include "ride_data.h"
 #include "vehicle_data.h"
 

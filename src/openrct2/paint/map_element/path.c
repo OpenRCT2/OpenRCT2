@@ -20,7 +20,7 @@
 #include "../../localisation/localisation.h"
 #include "../../object_list.h"
 #include "../../peep/Staff.h"
-#include "../../ride/track.h"
+#include "../../ride/Track.h"
 #include "../../ride/track_paint.h"
 #include "../../world/footpath.h"
 #include "../../world/scenery.h"

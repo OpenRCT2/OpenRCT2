@@ -18,7 +18,7 @@
 #include "../core/Guard.hpp"
 #include "../game.h"
 #include "../interface/window.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
 #include "map.h"

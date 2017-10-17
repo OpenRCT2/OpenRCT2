@@ -28,7 +28,7 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/ride_data.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../ride/track_data.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"

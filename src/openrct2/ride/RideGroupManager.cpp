@@ -24,7 +24,7 @@
 #include "../management/Research.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "track.h"
+#include "Track.h"
 #include "track_data.h"
 
 static const RideGroup ride_group_corkscrew_rc = {

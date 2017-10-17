@@ -19,7 +19,7 @@
 #include <openrct2/interface/colour.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/ride/ride.h>
-#include <openrct2/ride/track.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/map_element/map_element.h>
 #include <openrct2/ride/ride.h>

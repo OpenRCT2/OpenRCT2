@@ -22,7 +22,7 @@
 #include "../OpenRCT2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../scenario/scenario.h"
 #include "../world/banner.h"
 #include "../world/footpath.h"

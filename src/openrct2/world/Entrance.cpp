@@ -25,7 +25,7 @@
 #include "../game.h"
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 
 bool gParkEntranceGhostExists = false;
 LocationXYZ16 gParkEntranceGhostPosition = { 0, 0, 0 };

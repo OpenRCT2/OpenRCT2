@@ -23,7 +23,7 @@
 #include "ride_data.h"
 #include "ride_ratings.h"
 #include "station.h"
-#include "track.h"
+#include "Track.h"
 
 enum {
     RIDE_RATINGS_STATE_FIND_NEXT_RIDE,

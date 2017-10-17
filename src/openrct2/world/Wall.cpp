@@ -21,7 +21,7 @@
 #include "../cheats.h"
 #include "../game.h"
 #include "../localisation/string_ids.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../ride/track_data.h"
 #include "map.h"
 #include "park.h"

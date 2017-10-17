@@ -24,7 +24,7 @@
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride_data.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"

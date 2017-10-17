@@ -18,7 +18,7 @@
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../ride_data.h"
-#include "../track.h"
+#include "../Track.h"
 #include "../track_paint.h"
 #include "../vehicle_paint.h"
 
