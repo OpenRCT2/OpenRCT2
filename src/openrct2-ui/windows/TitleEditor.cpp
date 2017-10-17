@@ -144,7 +144,6 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define BY 52
 #define BH 63
 #define BS 18
-#define ROW_HEIGHT 11
 #define SCROLL_WIDTH 350
 #define WH2 127
 
