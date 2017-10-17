@@ -26,11 +26,11 @@
 #include "../rct1.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
-#include "../world/footpath.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
@@ -909,9 +909,9 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
 
                     ride->station_starts[stationIndex].x = (x >> 5);
                     ride->station_starts[stationIndex].y = (y >> 5);
-                    ride->station_heights[stationIndex] = z;
-                    ride->station_depart[stationIndex]  = 1;
-                    ride->station_length[stationIndex]  = stationLength != 0 ? stationLength : byte_F441D1;
+                    ride->station_heights[stationIndex]  = z;
+                    ride->station_depart[stationIndex]   = 1;
+                    ride->station_length[stationIndex]   = stationLength != 0 ? stationLength : byte_F441D1;
                     ride->num_stations++;
 
                     stationLength   = 0;
@@ -920,16 +920,14 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
                 else
                 {
                     if (x + TileDirectionDelta[direction].x == removeX &&
-                        y + TileDirectionDelta[direction].y == removeY
-                        )
+                        y + TileDirectionDelta[direction].y == removeY)
                     {
                         goto loc_6C4BF5;
                     }
                     else
                     {
                         if (x - TileDirectionDelta[direction].x == removeX &&
-                            y - TileDirectionDelta[direction].y == removeY
-                            )
+                            y - TileDirectionDelta[direction].y == removeY)
                         {
                             targetTrackType = TRACK_ELEM_BEGIN_STATION;
                         }
@@ -1905,7 +1903,7 @@ static money32 track_remove(uint8 type,
         price *= TrackPricing[type];
     }
     price >>= 16;
-    price         = (price + cost) / 2;
+    price = (price + cost) / 2;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
         price *= -7;
     else
@@ -2510,7 +2508,7 @@ void track_element_set_inverted(rct_map_element * mapElement, bool inverted)
 
 sint32 track_get_actual_bank(rct_map_element * mapElement, sint32 bank)
 {
-    Ride   * ride      = get_ride(mapElement->properties.track.ride_index);
+    Ride * ride        = get_ride(mapElement->properties.track.ride_index);
     sint32 trackColour = mapElement->properties.track.colour;
     return track_get_actual_bank_2(ride->type, trackColour, bank);
 }
