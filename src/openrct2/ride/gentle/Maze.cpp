@@ -20,7 +20,7 @@
 #include "../../paint/supports.h"
 #include "../../sprites.h"
 #include "../../world/map.h"
-#include "../track.h"
+#include "../Track.h"
 #include "../track_paint.h"
 
 enum

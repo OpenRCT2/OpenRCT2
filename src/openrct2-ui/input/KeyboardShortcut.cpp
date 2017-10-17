@@ -30,7 +30,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/ride/track.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/ride/track_paint.h>
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/util.h>

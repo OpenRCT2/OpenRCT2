@@ -50,7 +50,7 @@
 #include "../peep/Staff.h"
 #include "../rct1.h"
 #include "../ride/ride_data.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../world/Climate.h"

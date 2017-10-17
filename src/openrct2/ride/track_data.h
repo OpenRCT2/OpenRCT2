@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "track.h"
+#include "Track.h"
 #include "track_paint.h"
 
 #ifdef __cplusplus

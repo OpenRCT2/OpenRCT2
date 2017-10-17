@@ -35,7 +35,7 @@
 #include "ride_ratings.h"
 #include "RideGroupManager.h"
 #include "station.h"
-#include "track.h"
+#include "Track.h"
 #include "track_data.h"
 #include "../world/map.h"
 

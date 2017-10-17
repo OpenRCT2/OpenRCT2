@@ -19,7 +19,7 @@
 #include "../../drawing/drawing.h"
 #include "../../world/scenery.h"
 #include "../../game.h"
-#include "../../ride/track.h"
+#include "../../ride/Track.h"
 #include "../../config/Config.h"
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"

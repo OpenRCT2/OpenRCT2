@@ -21,7 +21,7 @@
 #include "../object_list.h"
 #include "../OpenRCT2.h"
 #include "../ride/station.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../ride/track_data.h"
 #include "../util/util.h"
 

@@ -21,7 +21,7 @@
 #include "../../paint/supports.h"
 #include "../../world/map.h"
 #include "../../world/sprite.h"
-#include "../track.h"
+#include "../Track.h"
 #include "../track_paint.h"
 #include "../vehicle_paint.h"
 

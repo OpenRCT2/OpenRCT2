@@ -21,7 +21,7 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 #include "../sprites.h"
 
 #pragma region Widgets

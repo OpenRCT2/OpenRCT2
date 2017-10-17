@@ -39,7 +39,7 @@
 #include "ride.h"
 #include "ride_data.h"
 #include "station.h"
-#include "track.h"
+#include "Track.h"
 #include "track_data.h"
 #include "vehicle_data.h"
 

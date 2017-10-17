@@ -27,7 +27,7 @@
 #include "../localisation/localisation.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "track.h"
+#include "Track.h"
 #include "../audio/audio.h"
 #include "../sprites.h"
 #include "../interface/colour.h"

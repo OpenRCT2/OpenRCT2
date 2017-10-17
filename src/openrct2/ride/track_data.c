@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "track.h"
+#include "Track.h"
 #include "track_data.h"
 #include "track_paint.h"
 

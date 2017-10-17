@@ -28,7 +28,7 @@
 #include "../localisation/localisation.h"
 #include "../rct1.h"
 #include "../ride/ride.h"
-#include "../ride/track.h"
+#include "../ride/Track.h"
 
 RideObject::~RideObject()
 {
