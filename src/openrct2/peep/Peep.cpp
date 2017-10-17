@@ -1397,8 +1397,8 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             energy = energy_target;
     }
 
-    if (energy < 32)
-        energy = 32;
+    if (energy < PEEP_MIN_ENERGY)
+        energy = PEEP_MIN_ENERGY;
 
     /* Previous code here suggested maximum energy is 128. */
     energy = Math::Min(static_cast<uint8>(PEEP_MAX_ENERGY), energy);
