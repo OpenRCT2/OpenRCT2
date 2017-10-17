@@ -182,6 +182,7 @@ typedef fixed64_1dp money64;
 #define MONEY(whole, fraction)          ((whole) * 10 + ((fraction) / 10))
 
 #define MONEY_FREE                      MONEY(0,00)
+#define MONEY16_UNDEFINED               (money16)(uint16)0xFFFF
 #define MONEY32_UNDEFINED               ((money32)0x80000000)
 
 typedef void (EMPTY_ARGS_VOID_POINTER)();

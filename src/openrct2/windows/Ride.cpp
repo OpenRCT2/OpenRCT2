@@ -6209,7 +6209,7 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Running cost per hour
     costPerHour = ride->upkeep_cost * 16;
-    stringId = ride->upkeep_cost == (money16)(uint16)0xFFFF ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
+    stringId = ride->upkeep_cost == MONEY16_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     gfx_draw_string_left(dpi, stringId, &costPerHour, COLOUR_BLACK, x, y);
     y += 10;
 

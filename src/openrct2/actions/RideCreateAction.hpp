@@ -280,7 +280,7 @@ public:
         ride->music_tune_id = 255;
 
         ride->breakdown_reason = 255;
-        ride->upkeep_cost = (money16)-1;
+        ride->upkeep_cost = MONEY16_UNDEFINED;
         ride->reliability = RIDE_INITIAL_RELIABILITY;
         ride->unreliability_factor = 1;
         ride->inspection_interval = RIDE_INSPECTION_EVERY_30_MINUTES;

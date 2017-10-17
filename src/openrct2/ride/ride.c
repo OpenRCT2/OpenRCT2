@@ -2020,7 +2020,7 @@ static void ride_update(sint32 rideIndex)
         ride->income_per_hour = ride_calculate_income_per_hour(ride);
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
 
-        if (ride->upkeep_cost != (money16)(uint16)0xFFFF)
+        if (ride->upkeep_cost != MONEY16_UNDEFINED)
             ride->profit = (ride->income_per_hour - ((money32)ride->upkeep_cost * 16));
     }
 
