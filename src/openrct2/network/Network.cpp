@@ -1424,13 +1424,6 @@ void Network::ProcessGameCommandQueue()
             if (result->Error == GA_ERROR::OK)
             {
                 game_commands_processed_this_tick++;
-                NetworkPlayer* player = GetPlayerByID(gc.playerid);
-                if (player) {
-                    player->LastAction = NetworkActions::FindCommand(action->GetType());
-                    player->LastActionTime = platform_get_ticks();
-                    player->AddMoneySpent(result->Cost);
-                }
-
                 Server_Send_GAME_ACTION(action);
             }
         }
