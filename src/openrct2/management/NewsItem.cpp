@@ -24,6 +24,7 @@
 #include "../OpenRCT2.h"
 #include "../ride/ride.h"
 #include "../util/util.h"
+#include "../windows/Intent.h"
 #include "../world/sprite.h"
 #include "NewsItem.h"
 

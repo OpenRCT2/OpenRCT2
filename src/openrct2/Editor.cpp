@@ -30,6 +30,7 @@
 #include "rct1.h"
 #include "ParkImporter.h"
 #include "util/util.h"
+#include "windows/Intent.h"
 #include "world/Climate.h"
 
 

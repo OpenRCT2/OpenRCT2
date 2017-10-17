@@ -32,6 +32,7 @@
 #include "../ride/track_data.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
+#include "../windows/Intent.h"
 #include "banner.h"
 #include "Climate.h"
 #include "footpath.h"

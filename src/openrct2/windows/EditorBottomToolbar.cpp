@@ -27,6 +27,7 @@
 #include "../localisation/localisation.h"
 #include "../interface/themes.h"
 #include "../interface/widget.h"
+#include "../windows/Intent.h"
 #include "../world/scenery.h"
 
 enum {

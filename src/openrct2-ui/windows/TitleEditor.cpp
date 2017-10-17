@@ -24,6 +24,7 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/Context.h>
+#include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/game.h>

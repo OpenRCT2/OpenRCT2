@@ -48,6 +48,7 @@
 #include "title/TitleScreen.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
+#include "windows/Intent.h"
 #include "windows/tooltip.h"
 #include "world/banner.h"
 #include "world/Climate.h"

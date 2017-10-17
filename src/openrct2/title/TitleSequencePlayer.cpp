@@ -35,6 +35,7 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../management/NewsItem.h"
+#include "../windows/Intent.h"
 #include "../world/scenery.h"
 
 using namespace OpenRCT2;

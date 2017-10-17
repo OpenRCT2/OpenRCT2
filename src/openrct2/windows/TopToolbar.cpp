@@ -36,6 +36,7 @@
 #include "../network/twitch.h"
 #include "../peep/Staff.h"
 #include "../util/util.h"
+#include "../windows/Intent.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
 #include "dropdown.h"

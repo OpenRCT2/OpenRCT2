@@ -27,6 +27,7 @@
 #include "../localisation/localisation.h"
 #include "../rct1.h"
 #include "../sprites.h"
+#include "../windows/Intent.h"
 
 enum {
     WIDX_BACKGROUND,
