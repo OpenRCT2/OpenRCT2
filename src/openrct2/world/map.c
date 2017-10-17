@@ -3351,7 +3351,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                         continue;
                     }
                 }
-                if (map_element != (rct_map_element*)0xFFFFFFF) {
+                if (map_element != NULL) {
                     map_obstruction_set_error_text(map_element);
                 }
                 return false;
@@ -3361,7 +3361,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                         goto loc_68B9B7;
                     }
                 }
-                if (map_element != (rct_map_element*)0xFFFFFFF) {
+                if (map_element != NULL) {
                     gGameCommandErrorText = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                 }
                 return false;
