@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <string>
+
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../OpenRCT2.h"
@@ -560,7 +562,7 @@ static void window_top_toolbar_dropdown(rct_window *w, rct_widgetindex widgetInd
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) {
                 auto intent = Intent(WC_LOADSAVE);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
-                intent.putExtra(INTENT_EXTRA_PATH, gS6Info.name);
+                intent.putExtra(INTENT_EXTRA_PATH, std::string { gS6Info.name });
                 context_open_intent(&intent);
             }
             else {
