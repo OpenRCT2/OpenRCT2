@@ -323,17 +323,32 @@ static void mapgen_tree_unload_ids()
     free(_snowTreeIds);
 }
 
-static void mapgen_trees_remove_nearby(sint32 availablePositionsCount, mapgen_tree_pos * availablePositions, sint32 * availablePositionsKeymap)
+static bool mapgen_trees_remove_nearby_has_tree_at(sint32 x, sint32 y, mapgen_tree_pos * availablePositions, sint32 *availablePositionsKeymap)
 {
+    x = clamp(0, x, gMapSize - 2);
+    y = clamp(0, y, gMapSize - 2);
+    sint32 keymap = x + (y * (gMapSize - 2));
+    if (availablePositionsKeymap[keymap] != -1) {
+        mapgen_tree_pos *neighbor;
+        neighbor = &availablePositions[keymap];
+        if (neighbor->tree) {
+            return true;
+        }
+    }
+    return false;
+}
 
-    // After list has been fully completed, remove trees surrounded by other trees.
+static void mapgen_trees_remove_nearby(mapgen_tree_pos *availablePositions, sint32 *availablePositionsKeymap, sint32 count)
+{
     sint32 treesRemoved = 0;
+
+    // Instead of calling util_rand() every time, call it once and add it to rand. Potentially increases speed.
     sint32 randIncrement = util_rand() % 1000;
     sint32 rand = 0;
 
-    mapgen_tree_pos * pos, * neighborPos;
+    mapgen_tree_pos *pos;
 
-    for (sint32 i = 0; i < availablePositionsCount; i++) {
+    for (sint32 i = 0; i < count; i++) {
         pos = &availablePositions[i];
 
         // Skip already treeless items
@@ -341,58 +356,36 @@ static void mapgen_trees_remove_nearby(sint32 availablePositionsCount, mapgen_tr
             continue;
 
         // Store number of nearby trees. Will never exceed 4.
-        sint32 nearbyTrees = 0,
-            keymap = 0;
+        sint32 nearbyTrees = 0;
 
         // _, _, _,
         // X, T, _,
         // _, _, _,
-        sint32 x2 = clamp(0, pos->x - 1, gMapSize - 2);
-        keymap = x2 + (pos->y * (gMapSize - 2));
-        if (availablePositionsKeymap[keymap] != -1) {
-            neighborPos = &availablePositions[keymap];
-            if (neighborPos->tree) {
-                nearbyTrees++;
-            }
+        if (mapgen_trees_remove_nearby_has_tree_at(pos->x - 1, pos->y, availablePositions, availablePositionsKeymap)) {
+            nearbyTrees++;
         }
 
         // _, _, _,
         // _, T, X,
         // _, _, _,
-        x2 = clamp(0, pos->x + 1, gMapSize - 2);
-        keymap = x2 + (pos->y * (gMapSize - 2));
-        if (availablePositionsKeymap[keymap] != -1) {
-            neighborPos = &availablePositions[keymap];
-            if (neighborPos->tree) {
-                nearbyTrees++;
-            }
+        if (mapgen_trees_remove_nearby_has_tree_at(pos->x + 1, pos->y, availablePositions, availablePositionsKeymap)) {
+            nearbyTrees++;
         }
 
         // _, X, _,
         // _, T, _,
         // _, _, _,
-        sint32 y2 = clamp(0, pos->y - 1, gMapSize - 2);
-        keymap = pos->x + (y2 * (gMapSize - 2));
-        if (availablePositionsKeymap[keymap] != -1) {
-            neighborPos = &availablePositions[keymap];
-            if (neighborPos->tree) {
-                nearbyTrees++;
-            }
+        if (mapgen_trees_remove_nearby_has_tree_at(pos->x, pos->y - 1, availablePositions, availablePositionsKeymap)) {
+            nearbyTrees++;
         }
 
         // _, _, _,
         // _, T, _,
         // _, X, _,
-        y2 = clamp(0, pos->y + 1, gMapSize - 2);
-        keymap = pos->x + (y2 * (gMapSize - 2));
-        if (availablePositionsKeymap[keymap] != -1) {
-            neighborPos = &availablePositions[keymap];
-            if (neighborPos->tree) {
-                nearbyTrees++;
-            }
+        if (mapgen_trees_remove_nearby_has_tree_at(pos->x, pos->y + 1, availablePositions, availablePositionsKeymap)) {
+            nearbyTrees++;
         }
 
-        // Using a increment-based approach reduces util_rand() calls to one, increasing speed.
         rand = (rand + randIncrement) % 100;
 
         if (
@@ -402,12 +395,10 @@ static void mapgen_trees_remove_nearby(sint32 availablePositionsCount, mapgen_tr
             ((nearbyTrees >= 2) && (rand > 60))
             ) {
             pos->tree = false;
+            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
             treesRemoved++;
         }
     }
-
-    log_info("%d trees were removed due to neighboring positions", treesRemoved);
-
 }
 
 static sint32 mapgen_trees_determine_type(mapgen_tree_pos * pos)
@@ -454,6 +445,93 @@ static sint32 mapgen_trees_determine_type(mapgen_tree_pos * pos)
         break;
     }
 
+    return type;
+}
+
+static void mapgen_place_trees_randomize_with_simplex(mapgen_settings * settings, mapgen_tree_pos * availablePositions, sint32 * availablePositionsKeymap, sint32 count)
+{
+    float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
+    float trees_octaves = settings->trees_octaves;
+    float trees_probability = settings->trees_probability;
+
+    for (sint32 i = 0; i < count; i++) {
+        mapgen_tree_pos * pos = &availablePositions[i];
+
+        if (!pos->tree)
+            continue;
+
+        float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
+        float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
+
+        if (normalisedNoiseValue < trees_probability) {
+            pos->tree = false;
+            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
+        }
+    }
+}
+
+static sint32 mapgen_place_trees_create_available_tiles(sint32 * availablePositionsKeymap, mapgen_tree_pos * availablePositions)
+{
+    sint32 count = 0;
+
+    for (sint32 y = 0; y < gMapSize - 2; y++) {
+        for (sint32 x = 0; x < gMapSize - 2; x++) {
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = -1;
+
+            rct_map_element *mapElement = map_get_surface_element_at(x + 1, y + 1);
+
+            // Exclude water tiles
+            if (map_get_water_height(mapElement) > 0)
+                continue;
+
+            mapgen_tree_pos * pos = &availablePositions[count];
+            pos->x = x;
+            pos->y = y;
+            pos->tree = true;
+
+            // Store x/y coordinate as 1d indice.
+            availablePositionsKeymap[x + (y * (gMapSize - 2))] = count;
+
+            count++;
+        }
+    }
+    return count;
+}
+
+static void mapgen_place_trees_plant_trees(float treeToLandRatio, mapgen_tree_pos * availablePositions, sint32 count)
+{
+    sint32 numTrees = max(4, (sint32)(count * treeToLandRatio));
+
+    for (sint32 i = 0; i < numTrees; i++) {
+        mapgen_tree_pos * pos = &availablePositions[i];
+
+        if (!pos->tree)
+            continue;
+
+        sint32 type = mapgen_trees_determine_type(pos);
+
+        if (type != -1)
+            mapgen_place_tree(type, pos->x + 1, pos->y + 1);
+    }
+}
+
+static void mapgen_place_trees_shuffle_list(sint32 count, mapgen_tree_pos * availablePositions)
+{
+    mapgen_tree_pos tmp;
+
+    for (sint32 i = 0; i < count; i++) {
+        sint32 rindex = util_rand() % count;
+        if (rindex == i) {
+            rindex = (rindex + 1) % count;
+            if (rindex == 1) {
+                continue;
+            }
+        }
+
+        tmp = availablePositions[i];
+        availablePositions[i] = availablePositions[rindex];
+        availablePositions[rindex] = tmp;
+    }
 }
 
 /**
@@ -471,8 +549,7 @@ static void mapgen_place_trees(mapgen_settings * settings)
 
     mapgen_tree_load_ids();
 
-    sint32 availablePositionsCount = 0;
-    mapgen_tree_pos tmp, *pos, *availablePositions;
+    mapgen_tree_pos tmp, *availablePositions;
     sint32 availablePositionsKeymap[MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL];
 
     const sint32 mapSizeTechnicalArea = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
@@ -480,79 +557,20 @@ static void mapgen_place_trees(mapgen_settings * settings)
     availablePositions = malloc(mapSizeTechnicalArea * sizeof(tmp));
     
     // Create list of available tiles
-    for (sint32 y = 0; y < gMapSize - 2; y++) {
-        for (sint32 x = 0; x < gMapSize - 2; x++) {
-            availablePositionsKeymap[x + (y * (gMapSize - 2))] = -1;
-
-            rct_map_element *mapElement = map_get_surface_element_at(x + 1, y + 1);
-
-            // Exclude water tiles
-            if (map_get_water_height(mapElement) > 0)
-                continue;
-
-            pos = &availablePositions[availablePositionsCount];
-            pos->x = x;
-            pos->y = y;
-            pos->tree = true;
-            
-            // Store x/y coordinate as 1d indice.
-            availablePositionsKeymap[x + (y * (gMapSize - 2))] = availablePositionsCount;
-
-            availablePositionsCount++;
-        }
-    }
-
-    // Randomise with simplex
-    float trees_freq = settings->trees_low + (settings->trees_base_freq * settings->trees_high);
-    float trees_octaves = settings->trees_octaves;
-    float trees_probability = settings->trees_probability;
+    sint32 availablePositionsCount = mapgen_place_trees_create_available_tiles(availablePositionsKeymap, availablePositions);
     
-    for (sint32 i = 0; i < availablePositionsCount; i++) {
-        pos = &availablePositions[i];
-        
-        if (!pos->tree)
-            continue;
+    // Randomise with simplex
+    mapgen_place_trees_randomize_with_simplex(settings, availablePositions, availablePositionsKeymap, availablePositionsCount);
 
-        float noiseValue = fractal_noise(pos->x, pos->y, trees_freq, trees_octaves, 2.0f, 0.65f);
-        float normalisedNoiseValue = (clamp(-1.0f, noiseValue, 1.0f) + 1.0f) / 2.0f;
-
-        if (normalisedNoiseValue < trees_probability) {
-            pos->tree = false;
-            availablePositionsKeymap[pos->x + (pos->y * (gMapSize - 2))] = -1;
-        }
-    }
-
-    mapgen_trees_remove_nearby(availablePositionsCount, availablePositions, availablePositionsKeymap);
+    // After list has been fully completed, remove trees surrounded by other trees.
+    mapgen_trees_remove_nearby(availablePositions, availablePositionsKeymap, availablePositionsCount);
 
     // Shuffle list, to evenly distribute the next portions probability ratio.
-    for (sint32 i = 0; i < availablePositionsCount; i++) {
-        sint32 rindex = util_rand() % availablePositionsCount;
-        if (rindex == i)
-            continue;
+    mapgen_place_trees_shuffle_list(availablePositionsCount, availablePositions);
 
-        tmp = availablePositions[i];
-        availablePositions[i] = availablePositions[rindex];
-        availablePositions[rindex] = tmp;
-    }
-
-    // Place trees
-
-    // choose number of trees by applying a random ratio (between 0.60f and 0.80f)
-    // to the number of availablePositionsCount. if lower than 4, 4 is used.
+    // choose number of trees by applying a random ratio.
     float treeToLandRatio = (60 + (util_rand() % 20)) / 100.0f;
-    sint32 numTrees = max(4, (sint32)(availablePositionsCount * treeToLandRatio));
-
-    for (sint32 i = 0; i < numTrees; i++) {
-        pos = &availablePositions[i];
-        
-        if (!pos->tree)
-            continue;
-
-        sint32 type = mapgen_trees_determine_type(pos);
-
-        if (type != -1)
-            mapgen_place_tree(type, pos->x + 1, pos->y + 1);
-    }
+    mapgen_place_trees_plant_trees(treeToLandRatio, availablePositions, availablePositionsCount);
 
     free(availablePositions);
 
