@@ -268,7 +268,7 @@ void finance_update_daily_profit()
         sint32 i;
         FOR_ALL_RIDES(i, ride)
         {
-            if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != -1)
+            if (ride->status != RIDE_STATUS_CLOSED && ride->upkeep_cost != MONEY16_UNDEFINED)
             {
                 current_profit -= 2 * ride->upkeep_cost;
             }
