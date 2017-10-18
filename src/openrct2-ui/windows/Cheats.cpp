@@ -97,6 +97,7 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     WIDX_TRAM_GUESTS,
     WIDX_REMOVE_ALL_GUESTS,
     WIDX_EXPLODE_GUESTS,
+    WIDX_LEAVE_PARK,
 
     WIDX_GENERAL_GROUP = WIDX_TAB_CONTENT,
     WIDX_OPEN_CLOSE_PARK,
@@ -227,6 +228,7 @@ static rct_widget window_cheats_guests_widgets[] = {
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(18),        HPL(18),        STR_CHEAT_LARGE_TRAM_GUESTS,        STR_CHEAT_LARGE_TRAM_GUESTS_TIP },      // large tram
     { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(18),        HPL(18),        STR_CHEAT_REMOVE_ALL_GUESTS,        STR_CHEAT_REMOVE_ALL_GUESTS_TIP },      // remove all guests
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(19),        HPL(19),        STR_CHEAT_EXPLODE,                  STR_CHEAT_EXPLODE_TIP },                // explode guests
+    { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(19),        HPL(19),        STR_CHEAT_LEAVE_PARK,               STR_CHEAT_LEAVE_PARK_TIP },             // guests leave park
     { WIDGETS_END },
 };
 
@@ -446,7 +448,7 @@ static uint64 window_cheats_page_enabled_widgets[] = {
         (1ULL << WIDX_GUEST_NAUSEA_MAX) | (1ULL << WIDX_GUEST_NAUSEA_MIN) | (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) | (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) |
         (1ULL << WIDX_GUEST_BATHROOM_MAX) | (1ULL << WIDX_GUEST_BATHROOM_MIN) | (1ULL << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) | (1ULL << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) |
         (1ULL << WIDX_GUEST_IGNORE_RIDE_INTENSITY) | (1ULL << WIDX_GIVE_ALL_GUESTS_GROUP) | (1ULL << WIDX_GIVE_GUESTS_MONEY) | (1ULL << WIDX_GIVE_GUESTS_PARK_MAPS) |
-        (1ULL << WIDX_GIVE_GUESTS_BALLOONS) | (1ULL << WIDX_GIVE_GUESTS_UMBRELLAS) | (1ULL << WIDX_TRAM_GUESTS) | (1ULL << WIDX_REMOVE_ALL_GUESTS) | (1ULL << WIDX_EXPLODE_GUESTS) |
+        (1ULL << WIDX_GIVE_GUESTS_BALLOONS) | (1ULL << WIDX_GIVE_GUESTS_UMBRELLAS) | (1ULL << WIDX_TRAM_GUESTS) | (1ULL << WIDX_REMOVE_ALL_GUESTS) | (1ULL << WIDX_EXPLODE_GUESTS) | (1ULL << WIDX_LEAVE_PARK) |
         (1ULL << WIDX_DISABLE_VANDALISM) | (1ULL << WIDX_DISABLE_LITTERING),
     MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_FREEZE_CLIMATE) |
         (1ULL << WIDX_OPEN_CLOSE_PARK) | (1ULL << WIDX_WEATHER) | (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) | (1ULL << WIDX_CLEAR_GRASS) | (1ULL << WIDX_MOWED_GRASS) |
@@ -660,6 +662,9 @@ static void window_cheats_guests_mouseup(rct_window *w, rct_widgetindex widgetIn
         break;
     case WIDX_EXPLODE_GUESTS:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_EXPLODEGUESTS, 0, GAME_COMMAND_CHEAT, 0, 0);
+        break;
+    case WIDX_LEAVE_PARK:
+        game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_LEAVEPARK, 0, GAME_COMMAND_CHEAT, 0, 0);
         break;
     case WIDX_GIVE_GUESTS_MONEY:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_GIVEALLGUESTS, OBJECT_MONEY, GAME_COMMAND_CHEAT, 0, 0);

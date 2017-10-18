@@ -3809,6 +3809,9 @@ enum {
     STR_ADMIN_NOT_RECOMMENDED = 6154,
     STR_MISSING_DIALOG_APPLICATION_ERROR = 6155,
 
+    STR_CHEAT_LEAVE_PARK = 6156,
+    STR_CHEAT_LEAVE_PARK_TIP = 6157,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
