@@ -3437,6 +3437,46 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
     }
 }
 
+static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8 rideIndex, sint32 v32, sint32 pan_x, uint16 sampleRate)
+{
+    if (a1 < gRideMusicInfoList[*tuneId]->length)
+    {
+        rct_ride_music_params * ride_music_params = gRideMusicParamsListEnd;
+        if (ride_music_params < &gRideMusicParamsList[countof(gRideMusicParamsList)])
+        {
+            ride_music_params->ride_id   = rideIndex;
+            ride_music_params->tune_id   = *tuneId;
+            ride_music_params->offset    = a1;
+            ride_music_params->volume    = v32;
+            ride_music_params->pan       = pan_x;
+            ride_music_params->frequency = sampleRate;
+            gRideMusicParamsListEnd++;
+        }
+
+        return a1;
+    }
+    else
+    {
+        *tuneId = 0xFF;
+        return 0;
+    }
+}
+
+static sint32 ride_music_params_update_label_58(uint32 position, uint8 * tuneId)
+{
+    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
+    position += ride_music_info->offset;
+    if (position < ride_music_info->length)
+    {
+        return position;
+    }
+    else
+    {
+        *tuneId = 0xFF;
+        return 0;
+    }
+}
+
 /**
  *
  *  rct2: 0x006BC3AC
@@ -3450,46 +3490,52 @@ void ride_set_map_tooltip(rct_map_element *mapElement)
  * @param tuneId (bh)
  * @returns new position (ebp)
  */
-sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId)
+sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 * tuneId)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != NULL) {
-        LocationXY16 rotatedCoords = { 0, 0 };
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != NULL)
+    {
+        LocationXY16 rotatedCoords = {0, 0};
 
-        switch (get_current_rotation()) {
-            case 0:
-                rotatedCoords.x = y - x;
-                rotatedCoords.y = ((y + x) / 2) - z;
-                break;
-            case 1:
-                rotatedCoords.x = -x - y;
-                rotatedCoords.y = ((y - x) / 2) - z;
-                break;
-            case 2:
-                rotatedCoords.x = x - y;
-                rotatedCoords.y = ((-y - x) / 2) - z;
-                break;
-            case 3:
-                rotatedCoords.x = y + x;
-                rotatedCoords.y = ((x - y) / 2) - z;
-                break;
+        switch (get_current_rotation())
+        {
+        case 0:
+            rotatedCoords.x = y - x;
+            rotatedCoords.y = ((y + x) / 2) - z;
+            break;
+        case 1:
+            rotatedCoords.x = -x - y;
+            rotatedCoords.y = ((y - x) / 2) - z;
+            break;
+        case 2:
+            rotatedCoords.x = x - y;
+            rotatedCoords.y = ((-y - x) / 2) - z;
+            break;
+        case 3:
+            rotatedCoords.x = y + x;
+            rotatedCoords.y = ((x - y) / 2) - z;
+            break;
         }
-        rct_viewport* viewport = g_music_tracking_viewport;
-        sint16 view_width = viewport->view_width;
+        rct_viewport * viewport = g_music_tracking_viewport;
+        sint16 view_width  = viewport->view_width;
         sint16 view_width2 = view_width * 2;
-        sint16 view_x = viewport->view_x - view_width2;
-        sint16 view_y = viewport->view_y - view_width;
-        sint16 view_x2 = view_width2 + view_width2 + viewport->view_width + view_x;
-        sint16 view_y2 = view_width + view_width + viewport->view_height + view_y;
+        sint16 view_x      = viewport->view_x - view_width2;
+        sint16 view_y      = viewport->view_y - view_width;
+        sint16 view_x2     = view_width2 + view_width2 + viewport->view_width + view_x;
+        sint16 view_y2     = view_width + view_width + viewport->view_height + view_y;
+
         if (view_x >= rotatedCoords.x ||
             view_y >= rotatedCoords.y ||
             view_x2 < rotatedCoords.x ||
-            view_y2 < rotatedCoords.y) {
-                goto label58;
+            view_y2 < rotatedCoords.y)
+        {
+            return ride_music_params_update_label_58(position, tuneId);
         }
+
         sint32 x2 = viewport->x + ((rotatedCoords.x - viewport->view_x) >> viewport->zoom);
         x2 *= 0x10000;
         uint16 screenwidth = context_get_width();
-        if (screenwidth < 64) {
+        if (screenwidth < 64)
+        {
             screenwidth = 64;
         }
         sint32 pan_x = ((x2 / screenwidth) - 0x8000) >> 4;
@@ -3497,106 +3543,104 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
         sint32 y2 = viewport->y + ((rotatedCoords.y - viewport->view_y) >> viewport->zoom);
         y2 *= 0x10000;
         uint16 screenheight = context_get_height();
-        if (screenheight < 64) {
+        if (screenheight < 64)
+        {
             screenheight = 64;
         }
         sint32 pan_y = ((y2 / screenheight) - 0x8000) >> 4;
 
-        uint8 vol1 = -1;
-        uint8 vol2 = -1;
+        uint8  vol1  = -1;
+        uint8  vol2  = -1;
         sint32 panx2 = pan_x;
         sint32 pany2 = pan_y;
-        if (pany2 < 0) {
+        if (pany2 < 0)
+        {
             pany2 = -pany2;
         }
-        if (pany2 > 6143) {
+        if (pany2 > 6143)
+        {
             pany2 = 6143;
         }
         pany2 -= 2048;
-        if (pany2 > 0) {
+        if (pany2 > 0)
+        {
             pany2 = -((pany2 / 4) - 1024) / 4;
-            vol1 = (uint8)pany2;
-            if (pany2 >= 256) {
+            vol1  = (uint8) pany2;
+            if (pany2 >= 256)
+            {
                 vol1 = -1;
             }
         }
 
-        if (panx2 < 0) {
+        if (panx2 < 0)
+        {
             panx2 = -panx2;
         }
-        if (panx2 > 6143) {
+        if (panx2 > 6143)
+        {
             panx2 = 6143;
         }
         panx2 -= 2048;
-        if (panx2 > 0) {
+        if (panx2 > 0)
+        {
             panx2 = -((panx2 / 4) - 1024) / 4;
-            vol2 = (uint8)panx2;
-            if (panx2 >= 256) {
+            vol2  = (uint8) panx2;
+            if (panx2 >= 256)
+            {
                 vol2 = -1;
             }
         }
-        if (vol1 >= vol2) {
+        if (vol1 >= vol2)
+        {
             vol1 = vol2;
         }
-        if (vol1 < gVolumeAdjustZoom * 3) {
+        if (vol1 < gVolumeAdjustZoom * 3)
+        {
             vol1 = 0;
-        } else {
+        }
+        else
+        {
             vol1 = vol1 - (gVolumeAdjustZoom * 3);
         }
-        sint32 v32 = -(((uint8)(-vol1 - 1) * (uint8)(-vol1 - 1)) / 16) - 700;
-        if (vol1 && v32 >= -4000) {
-            if (pan_x > 10000) {
+        sint32 v32 = -(((uint8) (-vol1 - 1) * (uint8) (-vol1 - 1)) / 16) - 700;
+        if (vol1 && v32 >= -4000)
+        {
+            if (pan_x > 10000)
+            {
                 pan_x = 10000;
             }
-            if (pan_x < -10000) {
+            if (pan_x < -10000)
+            {
                 pan_x = -10000;
             }
-            rct_ride_music* ride_music = &gRideMusicList[0];
+            rct_ride_music * ride_music = &gRideMusicList[0];
             sint32 channel = 0;
             uint32 a1;
-            while (ride_music->ride_id != rideIndex || ride_music->tune_id != *tuneId) {
+            while (ride_music->ride_id != rideIndex || ride_music->tune_id != *tuneId)
+            {
                 ride_music++;
                 channel++;
-                if (channel >= AUDIO_MAX_RIDE_MUSIC) {
-                    rct_ride_music_info* ride_music_info = gRideMusicInfoList[*tuneId];
+                if (channel >= AUDIO_MAX_RIDE_MUSIC)
+                {
+                    rct_ride_music_info * ride_music_info = gRideMusicInfoList[*tuneId];
                     a1 = position + ride_music_info->offset;
-                    goto label51;
+
+                    return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
                 }
             }
             sint32 playing = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
-            if (!playing) {
+            if (!playing)
+            {
                 *tuneId = 0xFF;
                 return 0;
             }
-            a1 = (uint32)Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
-        label51:
-            if (a1 < gRideMusicInfoList[*tuneId]->length) {
-                position = a1;
-                rct_ride_music_params* ride_music_params = gRideMusicParamsListEnd;
-                if (ride_music_params < &gRideMusicParamsList[countof(gRideMusicParamsList)]) {
-                    ride_music_params->ride_id = rideIndex;
-                    ride_music_params->tune_id = *tuneId;
-                    ride_music_params->offset = a1;
-                    ride_music_params->volume = v32;
-                    ride_music_params->pan = pan_x;
-                    ride_music_params->frequency = sampleRate;
-                    gRideMusicParamsListEnd++;
-                }
-            } else {
-                *tuneId = 0xFF;
-                return 0;
-            }
-        } else {
-        label58:
-            ;
-            rct_ride_music_info* ride_music_info = gRideMusicInfoList[*tuneId];
-            position += ride_music_info->offset;
-            if (position < ride_music_info->length) {
-                return position;
-            } else {
-                *tuneId = 0xFF;
-                return 0;
-            }
+            a1 = (uint32) Mixer_Channel_GetOffset(gRideMusicList[channel].sound_channel);
+
+            return ride_music_params_update_label_51(a1, tuneId, rideIndex, v32, pan_x, sampleRate);
+        }
+        else
+        {
+            return ride_music_params_update_label_58(position, tuneId);
         }
     }
     return position;
