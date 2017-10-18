@@ -32,7 +32,7 @@ typedef struct rct_draw_scroll_text {
     uint16 position;            // 0x0A
     uint16 mode;                // 0x0C
     uint32 id;                  // 0x0E
-    uint8 bitmap[64 * 8 * 5];   // 0x12
+    uint8 bitmap[64 * 40];      // 0x12
 } rct_draw_scroll_text;
 assert_struct_size(rct_draw_scroll_text, 0xA12);
 #pragma pack(pop)
@@ -40,7 +40,7 @@ assert_struct_size(rct_draw_scroll_text, 0xA12);
 #define MAX_SCROLLING_TEXT_ENTRIES 32
 
 static rct_draw_scroll_text _drawScrollTextList[MAX_SCROLLING_TEXT_ENTRIES];
-static uint8 _characterBitmaps[224 * 8];
+static uint8 _characterBitmaps[FONT_SPRITE_GLYPH_COUNT][8];
 static uint32 _drawSCrollNextIndex = 0;
 
 void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitmap, const sint16 *scrollPositionOffsets);
@@ -60,7 +60,7 @@ void scrolling_text_initialise_bitmaps()
     };
 
 
-    for (sint32 i = 0; i < 224; i++) {
+    for (sint32 i = 0; i < FONT_SPRITE_GLYPH_COUNT; i++) {
         memset(drawingSurface, 0, sizeof(drawingSurface));
         gfx_draw_sprite_software(&dpi, SPR_CHAR_START + FONT_SPRITE_BASE_TINY + i, -1, 0, 0);
 
@@ -73,7 +73,7 @@ void scrolling_text_initialise_bitmaps()
                     val |= 0x80;
                 }
             }
-            _characterBitmaps[i * 8 + x] = val;
+            _characterBitmaps[i][x] = val;
         }
     }
 
@@ -93,7 +93,7 @@ void scrolling_text_initialise_bitmaps()
 
 static uint8 *font_sprite_get_codepoint_bitmap(sint32 codepoint)
 {
-    return &_characterBitmaps[font_sprite_get_codepoint_offset(codepoint) * 8];
+    return _characterBitmaps[font_sprite_get_codepoint_offset(codepoint)];
 }
 
 

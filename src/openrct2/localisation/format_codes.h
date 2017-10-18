@@ -36,6 +36,9 @@ enum {
     // The next byte specifies the palette
     FORMAT_ADJUST_PALETTE,
 
+    FORMAT_3,
+    FORMAT_4,
+
     // Moves to the next line
     FORMAT_NEWLINE = 5,
     // Moves less than NEWLINE
@@ -53,6 +56,8 @@ enum {
     FORMAT_WINDOW_COLOUR_1,
     FORMAT_WINDOW_COLOUR_2,
     FORMAT_WINDOW_COLOUR_3,
+
+    FORMAT_16,
 
     // The next 2 bytes specify the X and Y coordinates
     FORMAT_NEWLINE_X_Y = 17,

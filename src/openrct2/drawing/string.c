@@ -34,7 +34,6 @@ enum {
 };
 
 static sint32 ttf_get_string_width(const utf8 *text);
-static void ttf_draw_string(rct_drawpixelinfo *dpi, char *buffer, sint32 colour, sint32 x, sint32 y);
 
 /**
  *
@@ -213,202 +212,6 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
 }
 
 /**
- * Draws i formatted text string left aligned at i specified position but clips
- * the text with an ellipsis if the text width exceeds the specified width.
- *  rct2: 0x006C1B83
- * dpi (edi)
- * format (bx)
- * args (esi)
- * colour (al)
- * x (cx)
- * y (dx)
- * width (bp)
- */
-void gfx_draw_string_left_clipped(rct_drawpixelinfo* dpi, rct_string_id format, void* args, sint32 colour, sint32 x, sint32 y, sint32 width)
-{
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    // Clip text - return value is not needed
-    gfx_clip_string(buffer, width);
-
-    gfx_draw_string(dpi, buffer, colour, x, y);
-}
-
-/**
- * Draws i formatted text string centred at i specified position but clips the
- * text with an ellipsis if the text width exceeds the specified width.
- *  rct2: 0x006C1BBA
- * dpi (edi)
- * format (bx)
- * args (esi)
- * colour (al)
- * x (cx)
- * y (dx)
- * width (bp)
- */
-void gfx_draw_string_centred_clipped(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y, sint32 width)
-{
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    // Clip text
-    sint32 text_width = gfx_clip_string(buffer, width);
-
-    // Draw the text centred
-    if (text_width <= 0xFFFF && text_width >= 0) {
-        x -= (text_width - 1) / 2;
-        gfx_draw_string(dpi, buffer, colour, x, y);
-    } else {
-        log_warning("improper text width %d for string %s", text_width, buffer);
-    }
-}
-
-/**
- * Draws i formatted text string right aligned.
- *  rct2: 0x006C1BFC
- * dpi (edi)
- * format (bx)
- * args (esi)
- * colour (al)
- * x (cx)
- * y (dx)
- */
-void gfx_draw_string_right(rct_drawpixelinfo* dpi, rct_string_id format, void* args, sint32 colour, sint32 x, sint32 y)
-{
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, format, args);
-
-    // Measure text width
-    sint16 text_width = gfx_get_string_width(buffer);
-
-    // Draw the text right aligned
-    x -= text_width;
-    gfx_draw_string(dpi, buffer, colour, x, y);
-}
-
-/**
- * Draws i formatted text string centred at i specified position.
- *  rct2: 0x006C1D6C
- * dpi (edi)
- * format (bx)
- * x (cx)
- * y (dx)
- * colour (al)
- * args (esi)
- */
-void gfx_draw_string_centred(rct_drawpixelinfo *dpi, rct_string_id format, sint32 x, sint32 y, sint32 colour, void *args)
-{
-    gfx_draw_string_centred_wrapped(dpi, args, x, y, INT32_MAX, format, colour);
-}
-
-/**
- *
- *  rct2: 0x006C1E53
- * dpi (edi)
- * args (esi)
- * x (cx)
- * y (dx)
- * width (bp)
- * colour (al)
- * format (ebx)
- */
-sint32 gfx_draw_string_centred_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, sint32 colour)
-{
-    sint32 font_height, line_height, line_y, num_lines;
-
-    if (gCurrentFontSpriteBase >= 0) {
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    }
-
-    char *buffer = gCommonStringFormatBuffer;
-    gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
-    format_string(buffer, 256, format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    gfx_wrap_string(buffer, width, &num_lines, &font_height);
-    line_height = font_get_line_height(font_height);
-
-    if (*buffer == FORMAT_OUTLINE) {
-        line_height = line_height + 1;
-    }
-
-    font_height = (line_height / 2) * num_lines;
-    line_y = y - font_height;
-
-    gCurrentFontFlags = 0;
-
-    for (sint32 line = 0; line <= num_lines; ++line) {
-        sint32 half_width = gfx_get_string_width(buffer) / 2;
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x - half_width, line_y);
-
-        buffer = get_string_end(buffer) + 1;
-        line_y += line_height;
-    }
-
-    return line_y - y;
-}
-
-/**
- *
- *  rct2: 0x006C2105
- * dpi (edi)
- * args (esi)
- * x (cx)
- * y (dx)
- * width (bp)
- * format (bx)
- * colour (al)
- */
-sint32 gfx_draw_string_left_wrapped(rct_drawpixelinfo *dpi, void *args, sint32 x, sint32 y, sint32 width, rct_string_id format, sint32 colour)
-{
-    // font height might actually be something else
-    sint32 fontSpriteBase, lineHeight, lineY, numLines;
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-
-    char *buffer = gCommonStringFormatBuffer;
-    gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
-    format_string(buffer, 256, format, args);
-
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_wrap_string(buffer, width, &numLines, &fontSpriteBase);
-    lineHeight = font_get_line_height(fontSpriteBase);
-
-    gCurrentFontFlags = 0;
-    lineY = y;
-    for (sint32 line = 0; line <= numLines; ++line) {
-        gfx_draw_string(dpi, buffer, TEXT_COLOUR_254, x, lineY);
-        buffer = get_string_end(buffer) + 1;
-        lineY += lineHeight;
-    }
-    return lineY - y;
-}
-
-/**
- * Draws i formatted text string.
- *  rct2: 0x006C1B2F
- * dpi (edi)
- * format (bx)
- * args (esi)
- * colour (al)
- * x (cx)
- * y (dx)
- */
-void gfx_draw_string_left(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
-{
-    char* buffer = gCommonStringFormatBuffer;
-    format_string(buffer, 256, format, args);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, buffer, colour, x, y);
-}
-
-/**
  * Draws text that is left aligned and vertically centred.
  */
 void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
@@ -462,64 +265,6 @@ static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* p
 
 /**
  *
- *  rct2: 0x00682702
- * dpi (edi)
- * buffer (esi)
- * colour (al)
- * x (cx)
- * y (dx)
- */
-void gfx_draw_string(rct_drawpixelinfo *dpi, char *buffer, sint32 colour, sint32 x, sint32 y)
-{
-    ttf_draw_string(dpi, buffer, colour, x, y);
-}
-
-void draw_string_left_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
-{
-    char buffer[128];
-    sint32 width;
-
-    format_string(buffer, 128, format, args);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    width = gfx_get_string_width(buffer);
-    gfx_draw_string(dpi, buffer, colour, x, y);
-    gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
-    if (text_palette[2] != 0)
-        gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
-}
-
-void draw_string_right_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
-{
-    char buffer[128];
-    sint32 width;
-
-    format_string(buffer, 128, format, args);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    width = gfx_get_string_width(buffer);
-    x -= width;
-    gfx_draw_string(dpi, buffer, colour, x, y);
-    gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
-    if (text_palette[2] != 0)
-        gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
-}
-
-void draw_string_centred_underline(rct_drawpixelinfo *dpi, rct_string_id format, void *args, sint32 colour, sint32 x, sint32 y)
-{
-    char buffer[128];
-    sint32 width;
-
-    format_string(buffer, 128, format, args);
-    gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    width = gfx_get_string_width(buffer);
-    x -= width / 2;
-    gfx_draw_string(dpi, buffer, colour, x, y);
-    gfx_fill_rect(dpi, x, y + 11, x + width, y + 11, text_palette[1]);
-    if (text_palette[2] != 0)
-        gfx_fill_rect(dpi, x + 1, y + 12, x + width + 1, y + 12, text_palette[2]);
-}
-
-/**
- *
  *  rct2: 0x006C1DB7
  *
  * left     : cx
@@ -566,36 +311,36 @@ sint32 string_get_height_raw(char *buffer)
         char c = *ch++;
         switch (c) {
         case FORMAT_NEWLINE:
-            if (fontBase <= 224) {
+            if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM) {
                 height += 10;
                 break;
-            } else if (fontBase == 448) {
+            } else if (fontBase == FONT_SPRITE_BASE_TINY) {
                 height += 6;
                 break;
             }
             height += 18;
             break;
         case FORMAT_NEWLINE_SMALLER:
-            if (fontBase <= 224) {
+            if (fontBase == FONT_SPRITE_BASE_SMALL || fontBase == FONT_SPRITE_BASE_MEDIUM) {
                 height += 5;
                 break;
-            } else if (fontBase == 448) {
+            } else if (fontBase == FONT_SPRITE_BASE_TINY) {
                 height += 3;
                 break;
             }
             height += 9;
             break;
         case FORMAT_TINYFONT:
-            fontBase = 448;
+            fontBase = FONT_SPRITE_BASE_TINY;
             break;
         case FORMAT_BIGFONT:
-            fontBase = 672;
+            fontBase = FONT_SPRITE_BASE_BIG;
             break;
         case FORMAT_MEDIUMFONT:
-            fontBase = 224;
+            fontBase = FONT_SPRITE_BASE_MEDIUM;
             break;
         case FORMAT_SMALLFONT:
-            fontBase = 0;
+            fontBase = FONT_SPRITE_BASE_SMALL;
             break;
         default:
             if (c >= 32) continue;
@@ -871,8 +616,8 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         memcpy(info->palette + 5, &(g1Element->offset[250]), 2);
         break;
     }
-    case 3:
-    case 4:
+    case FORMAT_3:
+    case FORMAT_4:
         nextCh++;
         break;
     case FORMAT_NEWLINE:
@@ -884,13 +629,13 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         info->y += font_get_line_height_small(info->font_sprite_base);
         break;
     case FORMAT_TINYFONT:
-        info->font_sprite_base = 448;
+        info->font_sprite_base = FONT_SPRITE_BASE_TINY;
         break;
     case FORMAT_SMALLFONT:
-        info->font_sprite_base = 0;
+        info->font_sprite_base = FONT_SPRITE_BASE_SMALL;
         break;
     case FORMAT_MEDIUMFONT:
-        info->font_sprite_base = 224;
+        info->font_sprite_base = FONT_SPRITE_BASE_MEDIUM;
         break;
     case FORMAT_BIGFONT:
         info->font_sprite_base = 672;
@@ -919,7 +664,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
         colour_char_window(gCurrentWindowColours[2], &flags, info->palette);
         break;
     }
-    case 0x10:
+    case FORMAT_16:
         break;
     case FORMAT_INLINE_SPRITE:
     {
@@ -1053,7 +798,7 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
     }
 }
 
-static void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y)
+void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y)
 {
     if (text == NULL) return;
 

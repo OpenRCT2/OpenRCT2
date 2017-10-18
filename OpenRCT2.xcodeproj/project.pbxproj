@@ -240,6 +240,7 @@
 		C685E51B1F8907850090598F /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5161F8907840090598F /* Guest.cpp */; };
 		C685E51C1F8907850090598F /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5171F8907840090598F /* Map.cpp */; };
 		C685E51D1F8907850090598F /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5181F8907840090598F /* Research.cpp */; };
+		C651A8D91F30204300443BCA /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C651A8D71F30204300443BCA /* Text.cpp */; };
 		C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
@@ -848,6 +849,8 @@
 		C685E5161F8907840090598F /* Guest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
 		C685E5171F8907840090598F /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		C685E5181F8907840090598F /* Research.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
+		C651A8D71F30204300443BCA /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
+		C651A8D81F30204300443BCA /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
 		C686F8E91CDBC3B7009F9BFC /* observation_tower.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = observation_tower.c; sourceTree = "<group>"; };
 		C686F8EA1CDBC3B7009F9BFC /* space_rings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = space_rings.c; sourceTree = "<group>"; };
 		C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spiral_slide.c; sourceTree = "<group>"; };
@@ -2011,6 +2014,7 @@
 		F76C839D1EC4E7CC00FA49E2 /* drawing */ = {
 			isa = PBXGroup;
 			children = (
+				F76C83A01EC4E7CC00FA49E2 /* drawing_fast.cpp */,
 				F76C839E1EC4E7CC00FA49E2 /* drawing.c */,
 				F76C839F1EC4E7CC00FA49E2 /* drawing.h */,
 				F76C83A01EC4E7CC00FA49E2 /* DrawingFast.cpp */,
@@ -2030,9 +2034,11 @@
 				F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */,
 				F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */,
 				F76C83B01EC4E7CC00FA49E2 /* string.c */,
+				C651A8D71F30204300443BCA /* Text.cpp */,
+				C651A8D81F30204300443BCA /* Text.h */,
+				4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */,
 				4CB832A91EFFB8D100B88761 /* ttf.c */,
 				4CB832AA1EFFB8D100B88761 /* ttf.h */,
-				4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */,
 				4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */,
 				4C8B426F1EEB1ABD00F015CA /* X8DrawingEngine.h */,
 			);
@@ -3218,6 +3224,8 @@
 				4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */,
 				4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
+				F7CB86431EEDA0F50030C877 /* shortcut_key_change.c in Sources */,
+				C651A8D91F30204300443BCA /* Text.cpp in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
