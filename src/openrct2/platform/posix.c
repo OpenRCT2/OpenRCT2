@@ -845,36 +845,6 @@ utf8* platform_get_username() {
     }
 }
 
-bool platform_get_steam_path(utf8 *outPath, size_t outSize)
-{
-#if defined(__unix__)
-    char *steamRoot = getenv("STEAMROOT");
-    if (steamRoot != NULL)
-    {
-        safe_strcpy(outPath, steamRoot, outSize);
-        safe_strcat_path(outPath, "steamapps/common", outSize);
-        return true;
-    }
-    else
-    {
-        if (platform_directory_exists("~/.local/share/Steam/steamapps/common"))
-        {
-            safe_strcpy(outPath, "~/.local/share/Steam/steamapps/common", outSize);
-            return true;
-        }
-        else if (platform_directory_exists("~/.steam/steam/steamapps/common"))
-        {
-            safe_strcpy(outPath, "~/.steam/steam/steamapps/common", outSize);
-            return true;
-        }
-    }
-#elif (defined(__APPLE__) && defined(__MACH__))
-    safe_strcpy(outPath, "~/Library/Application Support/Steam/steamapps/common", outSize);
-    return true;
-#endif
-    return false;
-}
-
 bool platform_process_is_elevated()
 {
 #ifndef __EMSCRIPTEN__

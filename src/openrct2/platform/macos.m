@@ -215,4 +215,14 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
     safe_strcat_path(outPath, "changelog.txt", outSize);
 }
 
+bool platform_get_steam_path(utf8 *outPath, size_t outSize)
+{
+	const char *steamPath = "~/Library/Application Support/Steam/steamapps/common";
+	if (platform_directory_exists(steamPath)) {
+		safe_strcpy(outPath, steamPath, outSize);
+		return true;
+	}
+	return false;
+}
+
 #endif
