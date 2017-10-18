@@ -3704,86 +3704,107 @@ rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
 */
 void ride_music_update_final()
 {
-    rct_ride_music_params* edi = NULL;
+    rct_ride_music_params * edi = NULL;
     sint32 ebx = 0;
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)) {
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR))
+    {
         // TODO Allow circus music (CSS24) to play if ride music is disabled (that should be sound)
-        if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-            while (1) {
+        if (!gGameSoundsOff && gConfigSound.ride_music_enabled && !(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        {
+            while (1)
+            {
                 sint32 v8 = 0;
                 sint32 v9 = 1;
-                rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
-                while (ride_music_params < gRideMusicParamsListEnd) {
-                    if (ride_music_params->ride_id != (uint8)-1) {
+                rct_ride_music_params * ride_music_params = &gRideMusicParamsList[0];
+                while (ride_music_params < gRideMusicParamsListEnd)
+                {
+                    if (ride_music_params->ride_id != (uint8) -1)
+                    {
                         v8++;
-                        if (v9 >= ride_music_params->volume) {
-                            v9 = ride_music_params->volume;
+                        if (v9 >= ride_music_params->volume)
+                        {
+                            v9  = ride_music_params->volume;
                             edi = ride_music_params;
                         }
                     }
                     ride_music_params++;
                 }
-                if (v8 <= 2) {
+                if (v8 <= 2)
+                {
                     break;
                 }
                 edi->ride_id = -1;
             }
 
             // stop currently playing music that is not in music params list or not playing?
-            rct_ride_music* ride_music = &gRideMusicList[0];
+            rct_ride_music * ride_music = &gRideMusicList[0];
             sint32 channel = 0;
-            do {
-                if (ride_music->ride_id != (uint8)-1) {
-                    rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0];
-                    while (ride_music_params < gRideMusicParamsListEnd) {
-                        if (ride_music_params->ride_id == ride_music->ride_id && ride_music_params->tune_id == ride_music->tune_id) {
-                            sint32 isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
-                            if (isplaying) {
-                                goto label32;
-                            }
+            do
+            {
+                if (ride_music->ride_id != RIDE_ID_NULL)
+                {
+                    rct_ride_music_params * ride_music_params = &gRideMusicParamsList[0];
+                    sint32 isplaying = 0;
+                    while (ride_music_params < gRideMusicParamsListEnd && !isplaying)
+                    {
+                        if (ride_music_params->ride_id == ride_music->ride_id && ride_music_params->tune_id == ride_music->tune_id)
+                        {
+                            isplaying = Mixer_Channel_IsPlaying(gRideMusicList[channel].sound_channel);
                             break;
                         }
                         ride_music_params++;
                     }
-                    Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
-                    ride_music->ride_id = -1;
+                    if (!isplaying)
+                    {
+                        Mixer_Stop_Channel(gRideMusicList[channel].sound_channel);
+                        ride_music->ride_id = RIDE_ID_NULL;
+                    }
+
                 }
-            label32:
                 ride_music++;
                 channel++;
-            } while(channel < AUDIO_MAX_RIDE_MUSIC);
+            }
+            while (channel < AUDIO_MAX_RIDE_MUSIC);
 
-            for (rct_ride_music_params* ride_music_params = &gRideMusicParamsList[0]; ride_music_params < gRideMusicParamsListEnd; ride_music_params++) {
-                if (ride_music_params->ride_id != (uint8)-1) {
-                    rct_ride_music* ride_music_2 = &gRideMusicList[0];
+            for (rct_ride_music_params * ride_music_params = &gRideMusicParamsList[0]; ride_music_params < gRideMusicParamsListEnd; ride_music_params++)
+            {
+                if (ride_music_params->ride_id != RIDE_ID_NULL)
+                {
+                    rct_ride_music * ride_music_2 = &gRideMusicList[0];
                     sint32 channel2 = 0;
-                    while (ride_music_params->ride_id != ride_music_2->ride_id || ride_music_params->tune_id != ride_music_2->tune_id) {
-                        if (ride_music_2->ride_id == (uint8)-1) {
+                    while (ride_music_params->ride_id != ride_music_2->ride_id || ride_music_params->tune_id != ride_music_2->tune_id)
+                    {
+                        if (ride_music_2->ride_id == RIDE_ID_NULL)
+                        {
                             ebx = channel2;
                         }
                         ride_music_2++;
                         channel2++;
-                        if (channel2 >= AUDIO_MAX_RIDE_MUSIC) {
-                            rct_ride_music_info* ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
-                            rct_ride_music* ride_music_3 = &gRideMusicList[ebx];
+                        if (channel2 >= AUDIO_MAX_RIDE_MUSIC)
+                        {
+                            rct_ride_music_info * ride_music_info = gRideMusicInfoList[ride_music_params->tune_id];
+                            rct_ride_music      * ride_music_3    = &gRideMusicList[ebx];
                             ride_music_3->sound_channel = Mixer_Play_Music(ride_music_info->path_id, MIXER_LOOP_NONE, true);
-                            if (ride_music_3->sound_channel) {
-                                ride_music_3->volume = ride_music_params->volume;
-                                ride_music_3->pan = ride_music_params->pan;
+                            if (ride_music_3->sound_channel)
+                            {
+                                ride_music_3->volume    = ride_music_params->volume;
+                                ride_music_3->pan       = ride_music_params->pan;
                                 ride_music_3->frequency = ride_music_params->frequency;
-                                ride_music_3->ride_id = ride_music_params->ride_id;
-                                ride_music_3->tune_id = ride_music_params->tune_id;
+                                ride_music_3->ride_id   = ride_music_params->ride_id;
+                                ride_music_3->tune_id   = ride_music_params->tune_id;
                                 Mixer_Channel_Volume(ride_music_3->sound_channel, DStoMixerVolume(ride_music_3->volume));
                                 Mixer_Channel_Pan(ride_music_3->sound_channel, DStoMixerPan(ride_music_3->pan));
                                 Mixer_Channel_Rate(ride_music_3->sound_channel, DStoMixerRate(ride_music_3->frequency));
                                 sint32 offset = ride_music_params->offset - 10000;
-                                if (offset < 0) {
+                                if (offset < 0)
+                                {
                                     offset = 0;
                                 }
                                 Mixer_Channel_SetOffset(ride_music_3->sound_channel, offset);
 
                                 // Move circus music to the sound mixer group
-                                if (ride_music_info->path_id == PATH_ID_CSS24) {
+                                if (ride_music_info->path_id == PATH_ID_CSS24)
+                                {
                                     Mixer_Channel_SetGroup(ride_music_3->sound_channel, MIXER_GROUP_SOUND);
                                 }
                             }
@@ -3791,15 +3812,18 @@ void ride_music_update_final()
                         }
                     }
 
-                    if (ride_music_params->volume != ride_music_2->volume) {
+                    if (ride_music_params->volume != ride_music_2->volume)
+                    {
                         ride_music_2->volume = ride_music_params->volume;
                         Mixer_Channel_Volume(ride_music_2->sound_channel, DStoMixerVolume(ride_music_2->volume));
                     }
-                    if (ride_music_params->pan != ride_music_2->pan) {
+                    if (ride_music_params->pan != ride_music_2->pan)
+                    {
                         ride_music_2->pan = ride_music_params->pan;
                         Mixer_Channel_Pan(ride_music_2->sound_channel, DStoMixerPan(ride_music_2->pan));
                     }
-                    if (ride_music_params->frequency != ride_music_2->frequency) {
+                    if (ride_music_params->frequency != ride_music_2->frequency)
+                    {
                         ride_music_2->frequency = ride_music_params->frequency;
                         Mixer_Channel_Rate(ride_music_2->sound_channel, DStoMixerRate(ride_music_2->frequency));
                     }
