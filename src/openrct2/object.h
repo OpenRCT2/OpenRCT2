@@ -18,7 +18,6 @@
 #define _OBJECT_H_
 
 #include "common.h"
-#include "drawing/drawing.h"
 
 // First 0xF of rct_object_entry->flags
 typedef enum

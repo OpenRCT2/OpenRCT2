@@ -18,7 +18,6 @@
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../rct12/SawyerChunkReader.h"
 #include "BannerObject.h"
@@ -36,7 +35,6 @@
 #include "WaterObject.h"
 
 #include "../object.h"
-#include "../util/sawyercoding.h"
 
 class ReadObjectContext : public IReadObjectContext
 {

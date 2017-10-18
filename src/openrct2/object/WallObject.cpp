@@ -15,11 +15,10 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "../core/Memory.hpp"
 #include "WallObject.h"
 
 #include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
+#include "../localisation/language.h"
 
 void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

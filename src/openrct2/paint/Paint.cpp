@@ -22,7 +22,6 @@
 #include "../core/Math.hpp"
 #include "map_element/map_element.h"
 #include "sprite/sprite.h"
-#include "supports.h"
 
 #include <algorithm>
 

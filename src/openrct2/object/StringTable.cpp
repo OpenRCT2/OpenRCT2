@@ -17,11 +17,10 @@
 #include <algorithm>
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
+#include "../localisation/language.h"
 #include "../localisation/LanguagePack.h"
 #include "Object.h"
 #include "StringTable.h"
-
-#include "../localisation/localisation.h"
 
 static bool StringIsBlank(utf8 * str)
 {

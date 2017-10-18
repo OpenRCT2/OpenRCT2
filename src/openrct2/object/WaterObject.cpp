@@ -15,10 +15,10 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
+#include "../localisation/language.h"
+#include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
 #include "WaterObject.h"
-
-#include "../localisation/localisation.h"
 
 void WaterObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

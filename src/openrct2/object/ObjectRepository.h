@@ -36,6 +36,8 @@
     typedef struct Object Object;
 #endif
 
+typedef struct rct_drawpixelinfo rct_drawpixelinfo;
+
 typedef struct ObjectRepositoryItem
 {
     size_t             Id;
