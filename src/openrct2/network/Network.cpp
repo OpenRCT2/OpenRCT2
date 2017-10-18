@@ -60,8 +60,6 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
-#include "../management/Finance.h"
-#include "../network/http.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../cheats.h"
