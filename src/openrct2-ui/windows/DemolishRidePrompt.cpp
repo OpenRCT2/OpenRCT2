@@ -105,7 +105,6 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
     switch (widgetIndex) {
     case WIDX_DEMOLISH:
     {
-        gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         ride_demolish(w->number, GAME_COMMAND_FLAG_APPLY);
 
         // Prevents demolished rides sticking around in the ride list window

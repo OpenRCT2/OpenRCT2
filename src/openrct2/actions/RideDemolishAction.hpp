@@ -55,12 +55,12 @@ public:
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
         if (ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, 
+            return std::make_unique<GameActionResult>(GA_ERROR::NO_CLEARANCE, STR_CANT_DEMOLISH_RIDE,
                 STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
         }
 
@@ -73,7 +73,7 @@ public:
         if (ride->type == RIDE_TYPE_NULL)
         {
             log_warning("Invalid game command for ride %u", _rideIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
         sint32 refundPrice = ride_get_refund_price(_rideIndex);

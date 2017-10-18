@@ -1129,9 +1129,6 @@ void window_guest_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
 
     if (text == nullptr)
         return;
-
-    gGameCommandErrorTitle = STR_CANT_NAME_GUEST;
-
     guest_set_name(w->number, text);
 }
 

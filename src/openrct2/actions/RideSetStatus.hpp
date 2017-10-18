@@ -80,7 +80,6 @@ public:
             {
                 if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
                 {
-                    log_warning("Ride %u not valid for test", _rideIndex);
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
@@ -89,7 +88,6 @@ public:
             else if (_status == RIDE_STATUS_OPEN) {
                 if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 0))
                 {
-                    log_warning("Ride %u not valid for open", _rideIndex);
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;
@@ -162,7 +160,6 @@ public:
                 {
                     if (!ride_is_valid_for_test(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                     {
-                        log_warning("Ride %u not valid for test", _rideIndex);
                         res->Error = GA_ERROR::UNKNOWN;
                         res->ErrorMessage = gGameCommandErrorText;
                         return res;
@@ -170,7 +167,6 @@ public:
                 }
                 else if (!ride_is_valid_for_open(_rideIndex, _status == RIDE_STATUS_OPEN, 1))
                 {
-                    log_warning("Ride %u not valid for open", _rideIndex);
                     res->Error = GA_ERROR::UNKNOWN;
                     res->ErrorMessage = gGameCommandErrorText;
                     return res;

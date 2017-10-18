@@ -438,7 +438,6 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
     // Open ride window
     uint8 rideIndex = w->list_item_positions[index];
     if (_quickDemolishMode && network_get_mode() != NETWORK_MODE_CLIENT) {
-        gGameCommandErrorTitle = STR_CANT_DEMOLISH_RIDE;
         ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY);
         window_ride_list_refresh_list(w);
     }
@@ -913,11 +912,6 @@ static void window_ride_list_close_all(rct_window *w)
             continue;
         if (ride->status == RIDE_STATUS_CLOSED)
             continue;
-
-        gGameCommandErrorTitle = STR_CANT_CLOSE;
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32, ride->name_arguments);
-
         ride_set_status(i, RIDE_STATUS_CLOSED);
     }
 }
@@ -932,11 +926,6 @@ static void window_ride_list_open_all(rct_window *w)
             continue;
         if (ride->status == RIDE_STATUS_OPEN)
             continue;
-
-        gGameCommandErrorTitle = STR_CANT_OPEN;
-        set_format_arg(6, rct_string_id, ride->name);
-        set_format_arg(8, uint32, ride->name_arguments);
-
         ride_set_status(i, RIDE_STATUS_OPEN);
     }
 }

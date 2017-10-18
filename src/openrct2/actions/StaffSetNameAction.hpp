@@ -56,7 +56,7 @@ public:
     {
         if (_spriteIndex >= MAX_SPRITES)
         {
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         if (_name.empty())
@@ -68,14 +68,14 @@ public:
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         rct_string_id newUserStringId = user_string_allocate(USER_STRING_HIGH_ID_NUMBER | USER_STRING_DUPLICATION_PERMITTED, _name.c_str());
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
         }
         user_string_free(newUserStringId);
 
@@ -88,14 +88,14 @@ public:
         if (newUserStringId == 0)
         {
             // TODO: Probably exhausted, introduce new error.
-            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, gGameCommandErrorText);
+            return std::make_unique<GameActionResult>(GA_ERROR::UNKNOWN, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, gGameCommandErrorText);
         }
 
         rct_peep * peep = GET_PEEP(_spriteIndex);
         if (peep->type != PEEP_TYPE_STAFF)
         {
             log_warning("Invalid game command for sprite %u", _spriteIndex);
-            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_NONE);
+            return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
         }
 
         set_format_arg(0, uint32, peep->id);

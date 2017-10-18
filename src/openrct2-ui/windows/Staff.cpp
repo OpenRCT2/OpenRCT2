@@ -1175,9 +1175,6 @@ void window_staff_overview_text_input(rct_window *w, rct_widgetindex widgetIndex
 
     if (text == nullptr)
         return;
-
-    gGameCommandErrorTitle = STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER;
-
     staff_set_name(w->number, text);
 }
 
