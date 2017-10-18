@@ -230,8 +230,9 @@ void console_draw(rct_drawpixelinfo *dpi)
             break;
         }
     }
+
     x = _consoleLeft + 4;
-    y = _consoleBottom - 15;
+    y = _consoleBottom - lineHeight - 5;
 
     // Draw current line
     lineCh = lineBuffer;
@@ -248,9 +249,12 @@ void console_draw(rct_drawpixelinfo *dpi)
 
         gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_144);
     }
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 21, _consoleRight, _consoleBottom - 21, PALETTE_INDEX_14);
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 20, _consoleRight, _consoleBottom - 20, PALETTE_INDEX_11);
 
+    // Input area top border
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, PALETTE_INDEX_14);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - lineHeight - 10, PALETTE_INDEX_11);
+
+    // Input area bottom border
     gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, PALETTE_INDEX_14);
     gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, PALETTE_INDEX_12);
 }
@@ -399,8 +403,7 @@ void console_scroll(sint32 linesToScroll)
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
-    const sint32 lineHeight = 10;
-    return ((_consoleBottom - 22 - _consoleTop) / lineHeight) - 1;
+    return ceil((_consoleBottom - _consoleTop) / font_get_line_height(gCurrentFontSpriteBase)) - 1;
 }
 
 void console_clear()
