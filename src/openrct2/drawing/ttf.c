@@ -157,6 +157,11 @@ static void ttf_surface_cache_dispose_all()
 
 void ttf_toggle_hinting()
 {
+    if (!gUseTrueTypeFont)
+    {
+        return;
+    }
+
     for (sint32 i = 0; i < FONT_SIZE_COUNT; i++)
     {
         TTFFontDescriptor *fontDesc = &(gCurrentTTFFontSet->size[i]);
