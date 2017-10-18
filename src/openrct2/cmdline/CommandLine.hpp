@@ -19,7 +19,6 @@
 #ifdef __cplusplus
 
 #include "../common.h"
-#include "../cmdline_sprite.h"
 
 /**
  * Class for enumerating and retrieving values for a set of command line arguments.
