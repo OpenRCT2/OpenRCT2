@@ -22,6 +22,7 @@
 #include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
+#include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"
 #include "../management/Finance.h"
@@ -176,9 +177,13 @@ void console_draw(rct_drawpixelinfo *dpi)
             lines++;
     }
 
-    // Background
     console_invalidate();
-    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_TRANSLUCENT_LIGHT_BLUE_HIGHLIGHT);
+
+    // Paint background colour.
+    uint8 backgroundColour = theme_get_colour(WC_CONSOLE, 0);
+    gfx_filter_rect(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, PALETTE_51);
+    gfx_fill_rect_inset(dpi, _consoleLeft, _consoleTop, _consoleRight, _consoleBottom, backgroundColour, INSET_RECT_FLAG_FILL_NONE);
+    gfx_fill_rect_inset(dpi, _consoleLeft + 1, _consoleTop + 1, _consoleRight - 1, _consoleBottom - 1, backgroundColour, INSET_RECT_FLAG_BORDER_INSET);
 
     sint32 x = _consoleLeft + 4;
     sint32 y = _consoleTop + 4;
@@ -247,16 +252,21 @@ void console_draw(rct_drawpixelinfo *dpi)
         sint32 caretX = x + gfx_get_string_width(lineBuffer);
         sint32 caretY = y + lineHeight;
 
-        gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, PALETTE_INDEX_144);
+        uint8 caretColour = ColourMapA[BASE_COLOUR(backgroundColour)].dark;
+        gfx_fill_rect(dpi, caretX, caretY, caretX + 6, caretY + 1, caretColour);
     }
 
+    // What about border colours?
+    uint8 borderColour1 = ColourMapA[BASE_COLOUR(backgroundColour)].light;
+    uint8 borderColour2 = ColourMapA[BASE_COLOUR(backgroundColour)].mid_dark;
+
     // Input area top border
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, PALETTE_INDEX_14);
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - lineHeight - 10, PALETTE_INDEX_11);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 11, _consoleRight, _consoleBottom - lineHeight - 11, borderColour1);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - lineHeight - 10, _consoleRight, _consoleBottom - lineHeight - 10, borderColour2);
 
     // Input area bottom border
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, PALETTE_INDEX_14);
-    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, PALETTE_INDEX_12);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 1, _consoleRight, _consoleBottom - 1, borderColour1);
+    gfx_fill_rect(dpi, _consoleLeft, _consoleBottom - 0, _consoleRight, _consoleBottom - 0, borderColour2);
 }
 
 void console_input(CONSOLE_INPUT input)

@@ -4465,6 +4465,7 @@ STR_6153    :Pay to enter park / Pay per ride
 STR_6154    :It is not recommended to run OpenRCT2 with elevated permissions.
 STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or configure from the command line.
 STR_6156    :Name is reserved
+STR_6157    :Console
 
 #############
 # Scenarios #
