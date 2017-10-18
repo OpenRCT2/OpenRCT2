@@ -255,7 +255,7 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
 
 bool platform_get_steam_path(utf8 *outPath, size_t outSize)
 {
-    const char *steamRoot = getenv("STEAMROOT");
+    const char * steamRoot = getenv("STEAMROOT");
     if (steamRoot != NULL)
     {
         safe_strcpy(outPath, steamRoot, outSize);
@@ -264,7 +264,7 @@ bool platform_get_steam_path(utf8 *outPath, size_t outSize)
     }
 
     char steamPath[1024] = { 0 };
-    const char *localSharePath = getenv("XDG_DATA_HOME");
+    const char * localSharePath = getenv("XDG_DATA_HOME");
     if (localSharePath != NULL)
     {
         safe_strcpy(steamPath, localSharePath, sizeof(steamPath));
@@ -276,7 +276,7 @@ bool platform_get_steam_path(utf8 *outPath, size_t outSize)
         }
     }
 
-    const char *homeDir = getenv("HOME");
+    const char * homeDir = getenv("HOME");
     if (homeDir != NULL)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
