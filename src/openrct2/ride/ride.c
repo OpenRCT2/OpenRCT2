@@ -7048,9 +7048,9 @@ static sint32 ride_get_smallest_station_length(Ride *ride)
 static sint32 ride_get_track_length(Ride * ride)
 {
     rct_window             * w;
-    rct_map_element        * mapElement;
+    rct_map_element        * mapElement = NULL;
     track_circuit_iterator it;
-    sint32                 x, y, z, trackType, rideIndex, result;
+    sint32                 x = 0, y = 0, z, trackType, rideIndex, result;
     bool                   foundTrack = false;
 
     for (sint32 i = 0; i < MAX_STATIONS && !foundTrack; i++)
