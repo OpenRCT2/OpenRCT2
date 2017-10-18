@@ -506,7 +506,7 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
     }
 }
 
-bool platform_get_steam_path(utf8 *outPath, size_t outSize)
+bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     wchar_t * wSteamPath;
     HKEY hKey;
