@@ -16,7 +16,6 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../core/Collections.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"

@@ -31,7 +31,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../localisation/localisation.h"
+#include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 
 struct WindowThemeDesc;
