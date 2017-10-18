@@ -241,7 +241,7 @@ static void window_shortcut_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
 */
 static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = w->no_list_items * ROW_HEIGHT;
+    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
 /**
@@ -250,7 +250,7 @@ static void window_shortcut_scrollgetsize(rct_window *w, sint32 scrollIndex, sin
 */
 static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 selected_item = (y - 1) / ROW_HEIGHT;
+    sint32 selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -263,7 +263,7 @@ static void window_shortcut_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 */
 static void window_shortcut_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 selected_item = (y - 1) / ROW_HEIGHT;
+    sint32 selected_item = (y - 1) / SCROLLABLE_ROW_HEIGHT;
     if (selected_item >= w->no_list_items)
         return;
 
@@ -282,13 +282,13 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 
     for (sint32 i = 0; i < w->no_list_items; ++i)
     {
-        sint32 y = 1 + i * ROW_HEIGHT;
+        sint32 y = 1 + i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
         {
             break;
         }
 
-        if (y + ROW_HEIGHT < dpi->y)
+        if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
         {
             continue;
         }
@@ -297,7 +297,7 @@ static void window_shortcut_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         if (i == w->selected_list_item)
         {
             format = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y - 1, 800, y + (ROW_HEIGHT - 2), PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y - 1, 800, y + (SCROLLABLE_ROW_HEIGHT - 2), PALETTE_DARKEN_1);
         }
 
         char templateString[128];

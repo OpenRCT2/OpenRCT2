@@ -559,7 +559,7 @@ static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex,
         lineCount = _editingTitleSequence->NumCommands;
     }
 
-    *height = (sint32)(lineCount * ROW_HEIGHT);
+    *height = (sint32)(lineCount * SCROLLABLE_ROW_HEIGHT);
     sint32 i = *height - window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].bottom + window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].top + 21;
     if (i < 0) {
         i = 0;
@@ -574,7 +574,7 @@ static void window_title_editor_scrollgetsize(rct_window *w, sint32 scrollIndex,
 
 static void window_title_editor_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 index = y / ROW_HEIGHT;
+    sint32 index = y / SCROLLABLE_ROW_HEIGHT;
     w->selected_list_item = -1;
     switch (w->selected_tab) {
     case WINDOW_TITLE_EDITOR_TAB_SAVES:
@@ -594,7 +594,7 @@ static void window_title_editor_scrollmousedown(rct_window *w, sint32 scrollInde
 
 static void window_title_editor_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    sint32 index = y / ROW_HEIGHT;
+    sint32 index = y / SCROLLABLE_ROW_HEIGHT;
     switch (w->selected_tab) {
     case WINDOW_TITLE_EDITOR_TAB_SAVES:
         if (index < (sint32)_editingTitleSequence->NumSaves)
@@ -806,17 +806,17 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
     if (_editingTitleSequence == nullptr) {
         return;
     }
-    for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumSaves; i++, y += ROW_HEIGHT) {
+    for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumSaves; i++, y += SCROLLABLE_ROW_HEIGHT) {
         bool selected = false;
         bool hover = false;
         if (i == w->selected_list_item) {
             selected = true;
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
         } else if (i == _window_title_editor_highlighted_index || i == currentSaveIndex) {
             hover = true;
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
         } else if (i & 1) {
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
         char buffer[256];
@@ -842,19 +842,19 @@ static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixe
 
     sint32 x = 0;
     sint32 y = 0;
-    for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumCommands; i++, y += ROW_HEIGHT) {
+    for (sint32 i = 0; i < (sint32)_editingTitleSequence->NumCommands; i++, y += SCROLLABLE_ROW_HEIGHT) {
         TitleCommand * command = &_editingTitleSequence->Commands[i];
         bool selected = false;
         bool hover = false;
         bool error = false;
         if (i == w->selected_list_item) {
             selected = true;
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].dark);
         } else if (i == (sint32)_window_title_editor_highlighted_index || i == position) {
             hover = true;
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].mid_dark);
         } else if (i & 1) {
-            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, x, y, x + SCROLL_WIDTH + 100, y + SCROLLABLE_ROW_HEIGHT - 1, ColourMapA[w->colours[1]].lighter | 0x1000000);
         }
 
         rct_string_id commandName = STR_NONE;

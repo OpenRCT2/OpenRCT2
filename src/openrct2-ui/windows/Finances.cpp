@@ -675,10 +675,10 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
     for (i = 0; i < RCT_EXPENDITURE_TYPE_COUNT; i++) {
         // Darken every even row
         if (i % 2 == 0)
-            gfx_fill_rect(dpi, x, y - 1, x + 513 - 2, y + (ROW_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
+            gfx_fill_rect(dpi, x, y - 1, x + 513 - 2, y + (TABLE_CELL_HEIGHT - 2), ColourMapA[w->colours[1]].lighter | 0x1000000);
 
         gfx_draw_string_left(dpi, window_finances_summary_row_labels[i], nullptr, COLOUR_BLACK, x, y - 1);
-        y += ROW_HEIGHT;
+        y += TABLE_CELL_HEIGHT;
     }
 
     // Expenditure / Income values for each month
@@ -721,7 +721,7 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
                     y
                 );
             }
-            y += ROW_HEIGHT;
+            y += TABLE_CELL_HEIGHT;
         }
         y += 4;
 
@@ -1132,7 +1132,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
         if (gMarketingCampaignDaysLeft[i] != 0)
             numActiveCampaigns++;
 
-    sint32 y = Math::Max(1, numActiveCampaigns) * ROW_HEIGHT + 92;
+    sint32 y = Math::Max(1, numActiveCampaigns) * LIST_ROW_HEIGHT + 92;
 
     // Update group box positions
     window_finances_marketing_widgets[WIDX_ACTIVE_CAMPAIGNS_GROUP].bottom = y - 22;
@@ -1153,8 +1153,8 @@ static void window_finances_marketing_invalidate(rct_window *w)
 
         campaignButton->type = WWT_DROPDOWN_BUTTON;
         campaignButton->top = y;
-        campaignButton->bottom = y + ROW_HEIGHT + 1;
-        y += ROW_HEIGHT + 2;
+        campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
+        y += BUTTON_FACE_HEIGHT + 2;
     }
 }
 
@@ -1202,12 +1202,12 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
         weeksRemaining = (gMarketingCampaignDaysLeft[i] % 128);
         gfx_draw_string_left(dpi, weeksRemaining == 1 ? STR_1_WEEK_REMAINING : STR_X_WEEKS_REMAINING, &weeksRemaining, COLOUR_BLACK, x + 304, y);
 
-        y += ROW_HEIGHT;
+        y += LIST_ROW_HEIGHT;
     }
 
     if (noCampaignsActive) {
         gfx_draw_string_left(dpi, STR_MARKETING_CAMPAIGNS_NONE, nullptr, COLOUR_BLACK, x + 4, y);
-        y += ROW_HEIGHT;
+        y += LIST_ROW_HEIGHT;
     }
     y += 34;
 
@@ -1224,7 +1224,7 @@ static void window_finances_marketing_paint(rct_window *w, rct_drawpixelinfo *dp
         gfx_draw_string_left(dpi, MarketingCampaignNames[i][0], nullptr, COLOUR_BLACK, x + 4, y);
         gfx_draw_string_left(dpi, STR_MARKETING_PER_WEEK, &pricePerWeek, COLOUR_BLACK, x + 310, y);
 
-        y += ROW_HEIGHT + 2;
+        y += BUTTON_FACE_HEIGHT + 2;
     }
 }
 
