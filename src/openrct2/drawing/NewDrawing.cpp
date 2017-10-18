@@ -18,7 +18,6 @@
 #include "../Context.h"
 #include "../ui/UiContext.h"
 #include "../core/Exception.hpp"
-#include "../core/Registration.hpp"
 #include "../interface/Screenshot.h"
 #include "../paint/Painter.h"
 #include "IDrawingContext.h"

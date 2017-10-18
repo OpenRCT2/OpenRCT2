@@ -15,8 +15,6 @@
 #pragma endregion
 
 #include <stack>
-#include "../core/Console.hpp"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
