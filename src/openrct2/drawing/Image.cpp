@@ -18,7 +18,6 @@
 #include <list>
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
-#include "../core/Memory.hpp"
 #include "../OpenRCT2.h"
 
 #include "drawing.h"
