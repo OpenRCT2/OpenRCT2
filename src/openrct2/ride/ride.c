@@ -6598,28 +6598,36 @@ static sint32 loc_6CD18E(sint16 mapX, sint16 mapY, sint16 entranceMinX, sint16 e
     return -1;
 }
 
+
 /**
  *
  *  rct2: 0x006CCF70
  */
-void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sint32 screenY, sint32 *outX, sint32 *outY, sint32 *outDirection)
+void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sint32 screenY, sint32 * outX, sint32 * outY, sint32 * outDirection)
 {
-    sint16 mapX, mapY;
-    sint16 entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
-    sint32 interactionType, direction, stationHeight, stationDirection;
-    rct_map_element *mapElement;
-    rct_viewport *viewport;
-    Ride *ride;
+    sint16          mapX, mapY;
+    sint16          entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
+    sint32          interactionType, direction, stationHeight, stationDirection;
+    rct_map_element * mapElement;
+    rct_viewport    * viewport;
+    Ride            * ride;
 
     gRideEntranceExitPlaceDirection = 255;
     get_map_coordinates_from_pos(screenX, screenY, 0xFFFB, &mapX, &mapY, &interactionType, &mapElement, &viewport);
-    if (interactionType != 0) {
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK) {
-            if (mapElement->properties.track.ride_index == gRideEntranceExitPlaceRideIndex) {
-                if (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN) {
-                    if (mapElement->properties.track.type == TRACK_ELEM_MAZE) {
+    if (interactionType != 0)
+    {
+        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK)
+        {
+            if (mapElement->properties.track.ride_index == gRideEntranceExitPlaceRideIndex)
+            {
+                if (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+                {
+                    if (mapElement->properties.track.type == TRACK_ELEM_MAZE)
+                    {
                         gRideEntranceExitPlaceStationIndex = 0;
-                    } else {
+                    }
+                    else
+                    {
                         gRideEntranceExitPlaceStationIndex = map_element_get_station(mapElement);
                     }
                 }
@@ -6627,11 +6635,12 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
         }
     }
 
-    ride = get_ride(gRideEntranceExitPlaceRideIndex);
+    ride          = get_ride(gRideEntranceExitPlaceRideIndex);
     stationHeight = ride->station_heights[gRideEntranceExitPlaceStationIndex];
 
     screen_get_map_xy_with_z(screenX, screenY, stationHeight * 8, &mapX, &mapY);
-    if (mapX == LOCATION_NULL) {
+    if (mapX == LOCATION_NULL)
+    {
         *outX = 0x8000;
         return;
     }
@@ -6652,28 +6661,36 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
 
     _unkF44188.z = stationHeight;
 
-    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3)) {
+    if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_3))
+    {
         mapX = (word_F4418C & 0x1F) - 16;
         mapY = (word_F4418E & 0x1F) - 16;
-        if (abs(mapX) < abs(mapY)) {
+        if (abs(mapX) < abs(mapY))
+        {
             direction = mapY < 0 ? 3 : 1;
-        } else {
+        }
+        else
+        {
             direction = mapX < 0 ? 0 : 2;
         }
 
-        for (sint32 i = 0; i < MAX_STATIONS; i++) {
+        for (sint32 i = 0; i < MAX_STATIONS; i++)
+        {
             mapX = _unkF44188.x + TileDirectionDelta[direction].x;
             mapY = _unkF44188.y + TileDirectionDelta[direction].y;
-            if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32)) {
+            if (mapX >= 0 && mapY >= 0 && mapX < (256 * 32) && mapY < (256 * 32))
+            {
                 mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
-                do {
+                do
+                {
                     if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
                         continue;
                     if (mapElement->base_height != stationHeight)
                         continue;
                     if (mapElement->properties.track.ride_index != gRideEntranceExitPlaceRideIndex)
                         continue;
-                    if (mapElement->properties.track.type == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+                    if (mapElement->properties.track.type == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
+                    {
                         gRideEntranceExitPlaceDirection = direction ^ 2;
                         *outDirection = direction ^ 2;
                         return;
@@ -6682,66 +6699,84 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
                         continue;
 
                     sint32 eax = (direction + 2 - map_element_get_direction(mapElement)) & MAP_ELEMENT_DIRECTION_MASK;
-                    if (FlatRideTrackSequenceProperties[mapElement->properties.track.type][map_element_get_track_sequence(mapElement)] & (1 << eax)) {
+                    if (FlatRideTrackSequenceProperties[mapElement->properties.track.type][map_element_get_track_sequence(mapElement)] & (1 << eax))
+                    {
                         gRideEntranceExitPlaceDirection = direction ^ 2;
                         *outDirection = direction ^ 2;
                         return;
                     }
-                } while (!map_element_is_last_for_tile(mapElement++));
+                }
+                while (!map_element_is_last_for_tile(mapElement++));
             }
             direction = (direction + 1) & 3;
         }
         gRideEntranceExitPlaceDirection = 0xFF;
-    } else {
-        mapX = stationStart.x * 32;
-        mapY = stationStart.y * 32;
+    }
+    else
+    {
+        mapX         = stationStart.x * 32;
+        mapY         = stationStart.y * 32;
         entranceMinX = mapX;
         entranceMinY = mapY;
 
         mapElement = ride_get_station_start_track_element(ride, gRideEntranceExitPlaceStationIndex);
-        if (mapElement == NULL) {
+        if (mapElement == NULL)
+        {
             *outX = 0x8000;
             return;
         }
-        direction = map_element_get_direction(mapElement);
+        direction        = map_element_get_direction(mapElement);
         stationDirection = direction;
 
-    nextTile:
-        entranceMaxX = mapX;
-        entranceMaxY = mapY;
-        mapX -= TileDirectionDelta[direction].x;
-        mapY -= TileDirectionDelta[direction].y;
-        mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
-        do {
-            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
-                continue;
-            if (mapElement->properties.track.ride_index != gRideEntranceExitPlaceRideIndex)
-                continue;
-            if (map_element_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
-                continue;
+        while (true)
+        {
+            entranceMaxX = mapX;
+            entranceMaxY = mapY;
+            mapX -= TileDirectionDelta[direction].x;
+            mapY -= TileDirectionDelta[direction].y;
+            mapElement = map_get_first_element_at(mapX >> 5, mapY >> 5);
+            bool goToNextTile = false;
 
-            switch (mapElement->properties.track.type) {
-            case TRACK_ELEM_END_STATION:
-            case TRACK_ELEM_BEGIN_STATION:
-            case TRACK_ELEM_MIDDLE_STATION:
-                goto nextTile;
+            do
+            {
+                if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+                    continue;
+                if (mapElement->properties.track.ride_index != gRideEntranceExitPlaceRideIndex)
+                    continue;
+                if (map_element_get_station(mapElement) != gRideEntranceExitPlaceStationIndex)
+                    continue;
+
+                switch (mapElement->properties.track.type)
+                {
+                case TRACK_ELEM_END_STATION:
+                case TRACK_ELEM_BEGIN_STATION:
+                case TRACK_ELEM_MIDDLE_STATION:
+                    goToNextTile = true;
+                }
             }
-        } while (!map_element_is_last_for_tile(mapElement++));
+            while (!goToNextTile && !map_element_is_last_for_tile(mapElement++));
+
+            if (!goToNextTile)
+                break;
+        }
 
         mapX = entranceMinX;
-        if (mapX > entranceMaxX) {
+        if (mapX > entranceMaxX)
+        {
             entranceMinX = entranceMaxX;
             entranceMaxX = mapX;
         }
 
         mapY = entranceMinY;
-        if (mapY > entranceMaxY) {
+        if (mapY > entranceMaxY)
+        {
             entranceMinY = entranceMaxY;
             entranceMaxY = mapY;
         }
 
         direction = loc_6CD18E(*outX, *outY, entranceMinX - 32, entranceMinY - 32, entranceMaxX + 32, entranceMaxY + 32);
-        if (direction != -1 && direction != stationDirection && direction != (stationDirection ^ 2)) {
+        if (direction != -1 && direction != stationDirection && direction != (stationDirection ^ 2))
+        {
             gRideEntranceExitPlaceDirection = direction;
             *outDirection = direction;
             return;
