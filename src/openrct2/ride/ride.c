@@ -6986,14 +6986,16 @@ static sint32 ride_get_smallest_station_length(Ride *ride)
  *
  *  rct2: 0x006CB3AA
  */
-static sint32 ride_get_track_length(Ride *ride)
+static sint32 ride_get_track_length(Ride * ride)
 {
-    rct_window *w;
-    rct_map_element *mapElement;
+    rct_window             * w;
+    rct_map_element        * mapElement;
     track_circuit_iterator it;
-    sint32 x, y, z, trackType, rideIndex, result;
+    sint32                 x, y, z, trackType, rideIndex, result;
+    bool                   foundTrack;
 
-    for (sint32 i = 0; i < MAX_STATIONS; i++) {
+    for (sint32 i = 0; i < MAX_STATIONS && !foundTrack; i++)
+    {
         LocationXY8 location = ride->station_starts[i];
         if (location.xy == RCT_XY8_UNDEFINED)
             continue;
@@ -7003,7 +7005,8 @@ static sint32 ride_get_track_length(Ride *ride)
         z = ride->station_heights[i];
 
         mapElement = map_get_first_element_at(x >> 5, y >> 5);
-        do {
+        do
+        {
             if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
                 continue;
 
@@ -7014,26 +7017,34 @@ static sint32 ride_get_track_length(Ride *ride)
             if (mapElement->base_height != z)
                 continue;
 
-            goto foundTrack;
-        } while (!map_element_is_last_for_tile(mapElement++));
-    }
-    return 0;
-
-foundTrack:
-    rideIndex = mapElement->properties.track.ride_index;
-
-    w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex) {
-        ride_construction_invalidate_current_track();
+            foundTrack = true;
+        }
+        while (!map_element_is_last_for_tile(mapElement++) && !foundTrack);
     }
 
-    result = 0;
-    track_circuit_iterator_begin(&it, (rct_xy_element){ x, y, mapElement });
-    while (track_circuit_iterator_next(&it)) {
-        trackType = it.current.element->properties.track.type;
-        result += TrackPieceLengths[trackType];
+    if (foundTrack)
+    {
+        rideIndex = mapElement->properties.track.ride_index;
+
+        w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (w != NULL && _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 && _currentRideIndex == rideIndex)
+        {
+            ride_construction_invalidate_current_track();
+        }
+
+        result = 0;
+        track_circuit_iterator_begin(&it, (rct_xy_element) {x, y, mapElement});
+        while (track_circuit_iterator_next(&it))
+        {
+            trackType = it.current.element->properties.track.type;
+            result += TrackPieceLengths[trackType];
+        }
+        return result;
     }
-    return result;
+    else
+    {
+        return 0;
+    }
 }
 
 /**
