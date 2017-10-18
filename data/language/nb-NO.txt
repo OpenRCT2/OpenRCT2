@@ -4464,6 +4464,9 @@ STR_6150    :Ugyldig svar fra mesterserver (mangler JSON-nummer)
 STR_6151    :Mesterserver sendte ikke serverliste
 STR_6152    :Ugyldig svar fra mesterserver (mangler JSON-liste)
 STR_6153    :Betal for parkinngang / Betal for attraksjoner
+STR_6154    :Det er ikke anbefalt å kjøre OpenRCT2 med opphøyde brukerrettigheter.
+STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, eller konfigurer fra kommandolinjen.
+STR_6156    :Reservert navn
 
 #############
 # Scenarios #
