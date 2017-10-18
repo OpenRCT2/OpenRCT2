@@ -7051,7 +7051,7 @@ static sint32 ride_get_track_length(Ride * ride)
     rct_map_element        * mapElement;
     track_circuit_iterator it;
     sint32                 x, y, z, trackType, rideIndex, result;
-    bool                   foundTrack;
+    bool                   foundTrack = false;
 
     for (sint32 i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
