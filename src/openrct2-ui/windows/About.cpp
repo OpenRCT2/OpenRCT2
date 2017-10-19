@@ -209,6 +209,8 @@ static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetI
 
 static void window_about_openrct2_common_paint(rct_window * w, rct_drawpixelinfo * dpi)
 {
+    window_draw_widgets(w, dpi);
+
     sint32 x1, x2, y;
 
     x1 = w->x + (&w->widgets[WIDX_TAB_ABOUT_OPENRCT2])->left + 45;
@@ -224,31 +226,38 @@ static void window_about_openrct2_common_paint(rct_window * w, rct_drawpixelinfo
 
 static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
-    window_draw_widgets(w, dpi);
     window_about_openrct2_common_paint(w, dpi);
 
     sint32 x, y, width;
     rct_size16 logoSize;
 
-    x = w->x + (w->width / 2);
-    y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 10;
-    width = w->width - 20;
-    
-    utf8 buffer[256];
-    utf8 *ch = buffer;
-    openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
+    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + 10;
+    x = w->x + (w->width / 2);
+    y = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + lineHeight;
+    width = w->width - 20;
+
+    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION, w->colours[2]) + lineHeight;
 
     logoSize = gfx_get_sprite_size(SPR_G2_LOGO);
     gfx_draw_sprite(dpi, SPR_G2_LOGO, x - (logoSize.width / 2), y, 0);
-    y += logoSize.height + 20;
+    y += logoSize.height + lineHeight * 2;
 
-    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2]) + 15;
-    gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+    // About OpenRCT2 text
+    y += gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_2, w->colours[2]) + lineHeight + 5;
 
+    // Copyright disclaimer; hidden when using truetype fonts to prevent
+    // the text from overlapping the changelog button.
+    if (!gUseTrueTypeFont)
+    {
+        gfx_draw_string_centred_wrapped(dpi, nullptr, x, y, width, STR_ABOUT_OPENRCT2_DESCRIPTION_3, w->colours[2]);
+    }
+
+    // Version info
+    utf8 buffer[256];
+    utf8 *ch = buffer;
+    openrct2_write_full_version_info(ch, sizeof(buffer) - (ch - buffer));
     gfx_draw_string_centred_wrapped(dpi, &ch, x, w->y + WH - 25, width, STR_STRING, w->colours[2]);
-
 }
 
 #pragma endregion OpenRCT2
@@ -283,7 +292,6 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     sint32 x, y, yPage;
 
-    window_draw_widgets(w, dpi);
     window_about_openrct2_common_paint(w, dpi);
 
     yPage = w->y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
@@ -291,23 +299,25 @@ static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi)
     x = w->x + 200;
     y = yPage + 5;
 
+    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+
     // Credits
     gfx_draw_string_centred(dpi, STR_COPYRIGHT_CS, x, y, COLOUR_BLACK, nullptr);
-    y += 84;
+    y += lineHeight + 74;
     gfx_draw_string_centred(dpi, STR_DESIGNED_AND_PROGRAMMED_BY_CS, x, y, COLOUR_BLACK, nullptr);
-    y += 10;
+    y += lineHeight;
     gfx_draw_string_centred(dpi, STR_GRAPHICS_BY_SF, x, y, COLOUR_BLACK, nullptr);
-    y += 10;
+    y += lineHeight;
     gfx_draw_string_centred(dpi, STR_SOUND_AND_MUSIC_BY_AB, x, y, COLOUR_BLACK, nullptr);
-    y += 10;
+    y += lineHeight;
     gfx_draw_string_centred(dpi, STR_ADDITIONAL_SOUNDS_RECORDED_BY_DE, x, y, COLOUR_BLACK, nullptr);
-    y += 13;
+    y += lineHeight + 3;
     gfx_draw_string_centred(dpi, STR_REPRESENTATION_BY_JL, x, y, COLOUR_BLACK, nullptr);
-    y += 25;
+    y += 2 * lineHeight + 5;
     gfx_draw_string_centred(dpi, STR_THANKS_TO, x, y, COLOUR_BLACK, nullptr);
-    y += 10;
+    y += lineHeight;
     gfx_draw_string_centred(dpi, STR_THANKS_TO_PEOPLE, x, y, COLOUR_BLACK, nullptr);
-    y += 25;
+    y += 2 * lineHeight + 5;
     gfx_draw_string_centred(dpi, STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC, x, y, COLOUR_BLACK, nullptr);
 
     // Images

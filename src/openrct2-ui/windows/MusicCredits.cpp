@@ -170,7 +170,8 @@ static void window_music_credits_mouseup(rct_window *w, rct_widgetindex widgetIn
  */
 static void window_music_credits_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = 460;
+    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    *height = static_cast<sint32>(Util::CountOf(music_credits) + Util::CountOf(music_credits_rct2)) * lineHeight + 12;
 }
 
 /**
@@ -188,28 +189,29 @@ static void window_music_credits_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_music_credits_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    sint32 x = 245;
+    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
 
+    sint32 x = 245;
     sint32 y = 2;
 
     for (size_t i = 0; i < Util::CountOf(music_credits); i++) {
         gfx_draw_string_centred(dpi, music_credits[i], x, y, COLOUR_BLACK, nullptr);
-        y += 10;
+        y += lineHeight;
     }
 
     // Add 4 more space before "Original recordings ...".
     y += 4;
     gfx_draw_string_centred(dpi, STR_MUSIC_ACKNOWLEDGEMENTS_ORIGINAL_RECORDINGS, x, y, COLOUR_BLACK, nullptr);
-    y += 10;
+    y += lineHeight;
 
     // Draw the separator
     y += 5;
     gfx_fill_rect_inset(dpi, 4, y, 484, y+1, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
-    y += 11;
+    y += lineHeight + 1;
 
     for (size_t i = 0; i < Util::CountOf(music_credits_rct2); i++) {
         gfx_draw_string_centred(dpi, music_credits_rct2[i], x, y, COLOUR_BLACK, nullptr);
-        y += 10;
+        y += lineHeight;
     }
 
 }
