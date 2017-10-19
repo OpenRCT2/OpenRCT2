@@ -87,6 +87,8 @@ static rct_widget window_guest_list_widgets[] = {
     { WIDGETS_END },
 };
 
+static const uint8 SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
+
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);
 static void window_guest_list_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
@@ -463,7 +465,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
             numGuests++;
         }
         w->var_492 = numGuests;
-        y = numGuests * 10;
+        y = numGuests * SCROLLABLE_ROW_HEIGHT;
         _window_guest_list_num_pages = (sint32) ceilf((float)numGuests / 3173);
         if (_window_guest_list_num_pages == 0)
             _window_guest_list_selected_page = 0;
@@ -474,7 +476,7 @@ static void window_guest_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
         // Find the groups
         window_guest_list_find_groups();
         w->var_492 = _window_guest_list_num_groups;
-        y = _window_guest_list_num_groups * 21;
+        y = _window_guest_list_num_groups * SUMMARISED_GUEST_ROW_HEIGHT;
         break;
     default:
         log_error("Improper tab selected: %d, bailing out.", _window_guest_list_selected_tab);
@@ -516,7 +518,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, sint32 scrollIndex,
 
     switch (_window_guest_list_selected_tab) {
     case PAGE_INDIVIDUAL:
-        i = y / 10;
+        i = y / SCROLLABLE_ROW_HEIGHT;
         i += _window_guest_list_selected_page * 3173;
         FOR_ALL_GUESTS(spriteIndex, peep) {
             if (peep->outside_of_park != 0)
@@ -538,7 +540,7 @@ static void window_guest_list_scrollmousedown(rct_window *w, sint32 scrollIndex,
         }
         break;
     case PAGE_SUMMARISED:
-        i = y / 21;
+        i = y / SUMMARISED_GUEST_ROW_HEIGHT;
         if (i < _window_guest_list_num_groups) {
             memcpy(_window_guest_list_filter_arguments + 0, &_window_guest_list_groups_argument_1[i], 4);
             memcpy(_window_guest_list_filter_arguments + 2, &_window_guest_list_groups_argument_2[i], 4);
@@ -560,7 +562,7 @@ static void window_guest_list_scrollmouseover(rct_window *w, sint32 scrollIndex,
 {
     sint32 i;
 
-    i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? 10 : 21);
+    i = y / (_window_guest_list_selected_tab == PAGE_INDIVIDUAL ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
     i += _window_guest_list_selected_page * 3173;
     if (i != _window_guest_list_highlighted_index) {
         _window_guest_list_highlighted_index = i;
@@ -707,31 +709,31 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
                 continue;
 
             // Check if y is beyond the scroll control
-            if (y + 11 >= -0x7FFF &&
-                y + 11 > dpi->y &&
+            if (y + SCROLLABLE_ROW_HEIGHT + 1 >= -0x7FFF &&
+                y + SCROLLABLE_ROW_HEIGHT + 1 > dpi->y &&
                 y < 0x7FFF &&
                 y < dpi->y + dpi->height) {
 
                 // Highlight backcolour and text colour (format)
                 format = STR_BLACK_STRING;
                 if (i == _window_guest_list_highlighted_index) {
-                    gfx_filter_rect(dpi, 0, y, 800, y + 9, PALETTE_DARKEN_1);
+                    gfx_filter_rect(dpi, 0, y, 800, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
                 // Guest name
                 set_format_arg(0, rct_string_id, peep->name_string_idx);
                 set_format_arg(2, uint32, peep->id);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 113);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 113);
 
                 switch (_window_guest_list_selected_view) {
                 case VIEW_ACTIONS:
                     // Guest face
-                    gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y, 0);
+                    gfx_draw_sprite(dpi, get_peep_face_sprite_small(peep), 118, y + 1, 0);
 
                     // Tracking icon
                     if (peep->peep_flags & PEEP_FLAGS_TRACKING)
-                        gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y, 0);
+                        gfx_draw_sprite(dpi, STR_ENTER_SELECTION_SIZE, 112, y + 1, 0);
 
                     // Action
 
@@ -739,7 +741,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
                     set_format_arg(0, uint32, argument_1);
                     set_format_arg(4, uint32, argument_2);
-                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 133, y - 1, 314);
+                    gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 133, y, 314);
                     break;
                 case VIEW_THOUGHTS:
                     // For each thought
@@ -753,7 +755,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
                             break;
 
                         peep_thought_set_format_args(&peep->thoughts[j]);
-                        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 118, y - 1, 329);
+                        gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 118, y, 329);
                         break;
                     }
                     break;
@@ -762,7 +764,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
             // Increment list item index and y
             i++;
-            y += 10;
+            y += SCROLLABLE_ROW_HEIGHT;
         }
         break;
     case PAGE_SUMMARISED:
@@ -771,7 +773,7 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
         // For each group of guests
         for (i = 0; i < _window_guest_list_num_groups; i++) {
             // Check if y is beyond the scroll control
-            if (y + 22 >= dpi->y) {
+            if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= dpi->y) {
                 // Check if y is beyond the scroll control
                 if (y >= dpi->y + dpi->height)
                     break;
@@ -779,26 +781,26 @@ static void window_guest_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
                 // Highlight backcolour and text colour (format)
                 format = STR_BLACK_STRING;
                 if (i == _window_guest_list_highlighted_index) {
-                    gfx_filter_rect(dpi, 0, y, 800, y + 20, PALETTE_DARKEN_1);
+                    gfx_filter_rect(dpi, 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT, PALETTE_DARKEN_1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
                 // Draw guest faces
                 numGuests = _window_guest_list_groups_num_guests[i];
                 for (j = 0; j < 56 && j < numGuests; j++)
-                    gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY, j * 8, y + 9, 0);
+                    gfx_draw_sprite(dpi, _window_guest_list_groups_guest_faces[i * 56 + j] + SPR_PEEP_SMALL_FACE_VERY_VERY_UNHAPPY, j * 8, y + 12, 0);
 
                 // Draw action
                 set_format_arg(0, uint32, _window_guest_list_groups_argument_1[i]);
                 set_format_arg(4, uint32, _window_guest_list_groups_argument_2[i]);
                 set_format_arg(10, uint32, numGuests);
-                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1, 414);
+                gfx_draw_string_left_clipped(dpi, format, gCommonFormatArgs, COLOUR_BLACK, 0, y, 414);
 
                 // Draw guest count
                 set_format_arg(8, rct_string_id, STR_GUESTS_COUNT_COMMA_SEP);
-                gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, COLOUR_BLACK, 326, y - 1);
+                gfx_draw_string_right(dpi, format, gCommonFormatArgs + 8, COLOUR_BLACK, 326, y);
             }
-            y += 21;
+            y += SUMMARISED_GUEST_ROW_HEIGHT;
         }
         break;
     }
