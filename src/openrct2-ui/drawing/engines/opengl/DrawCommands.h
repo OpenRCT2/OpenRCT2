@@ -64,43 +64,33 @@ public:
     }
 };
 
-struct DrawRectCommand {
-    uint32 flags;
-    GLuint sourceFramebuffer;
-    sint32 clip[4];
-    sint32 bounds[4];
-    GLuint paletteRemap[256];
-};
-
-struct DrawLineCommand {
+struct DrawLineCommand
+{
     uint8 colour;
-    sint32 clip[4];
+    vec4i clip;
     sint32 pos[4];
 };
 
 // Per-instance data for images
-struct DrawImageCommand {
+struct DrawRectCommand
+{
     vec4i clip;
     sint32 texColourAtlas;
     vec4f texColourBounds;
     sint32 texMaskAtlas;
     vec4f texMaskBounds;
-    sint32 texPaletteAtlas;
-    vec4f texPaletteBounds;
+    vec3i palettes;
     sint32 flags;
-    uint8 colour;
+    uint32 colour;
     vec4i bounds;
-    sint32 mask;
 
     enum
     {
-        FLAG_COLOUR = (1 << 0),
-        FLAG_REMAP = (1 << 1),
-        FLAG_TRANSPARENT = (1 << 2),
-        FLAG_TRANSPARENT_SPECIAL = (1 << 3),
+        FLAG_NO_TEXTURE = (1 << 2),
+        FLAG_MASK = (1 << 3),
+        FLAG_CROSS_HATCH = (1 << 4),
     };
 };
 
-typedef CommandBatch<DrawImageCommand> ImageCommandBatch;
 typedef CommandBatch<DrawLineCommand> LineCommandBatch;
 typedef CommandBatch<DrawRectCommand> RectCommandBatch;

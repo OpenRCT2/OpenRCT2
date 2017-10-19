@@ -470,9 +470,8 @@
 		F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858A1EC4E82600FA49E2 /* CursorData.cpp */; };
 		F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */; };
 		F76C887F1EC5324E00FA49E2 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */; };
-		F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85941EC4E82600FA49E2 /* DrawImageShader.cpp */; };
+		F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */; };
 		F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */; };
-		F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85981EC4E82600FA49E2 /* FillRectShader.cpp */; };
 		F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */; };
 		F76C88841EC5324E00FA49E2 /* OpenGLDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859D1EC4E82600FA49E2 /* OpenGLDrawingEngine.cpp */; };
 		F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859E1EC4E82600FA49E2 /* OpenGLFramebuffer.cpp */; };
@@ -1392,12 +1391,10 @@
 		F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
 		F76C85921EC4E82600FA49E2 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
 		F76C85931EC4E82600FA49E2 /* DrawCommands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawCommands.h; sourceTree = "<group>"; };
-		F76C85941EC4E82600FA49E2 /* DrawImageShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawImageShader.cpp; sourceTree = "<group>"; };
-		F76C85951EC4E82600FA49E2 /* DrawImageShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawImageShader.h; sourceTree = "<group>"; };
+		F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRectShader.cpp; sourceTree = "<group>"; };
+		F76C85951EC4E82600FA49E2 /* DrawRectShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawRectShader.h; sourceTree = "<group>"; };
 		F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawLineShader.cpp; sourceTree = "<group>"; };
 		F76C85971EC4E82600FA49E2 /* DrawLineShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawLineShader.h; sourceTree = "<group>"; };
-		F76C85981EC4E82600FA49E2 /* FillRectShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FillRectShader.cpp; sourceTree = "<group>"; };
-		F76C85991EC4E82600FA49E2 /* FillRectShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = FillRectShader.h; sourceTree = "<group>"; };
 		F76C859A1EC4E82600FA49E2 /* GLSLTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = GLSLTypes.h; sourceTree = "<group>"; };
 		F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenGLAPI.cpp; sourceTree = "<group>"; };
 		F76C859C1EC4E82600FA49E2 /* OpenGLAPI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenGLAPI.h; sourceTree = "<group>"; };
@@ -2669,12 +2666,10 @@
 				F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */,
 				F76C85921EC4E82600FA49E2 /* CopyFramebufferShader.h */,
 				F76C85931EC4E82600FA49E2 /* DrawCommands.h */,
-				F76C85941EC4E82600FA49E2 /* DrawImageShader.cpp */,
-				F76C85951EC4E82600FA49E2 /* DrawImageShader.h */,
 				F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */,
 				F76C85971EC4E82600FA49E2 /* DrawLineShader.h */,
-				F76C85981EC4E82600FA49E2 /* FillRectShader.cpp */,
-				F76C85991EC4E82600FA49E2 /* FillRectShader.h */,
+				F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */,
+				F76C85951EC4E82600FA49E2 /* DrawRectShader.h */,
 				F76C859A1EC4E82600FA49E2 /* GLSLTypes.h */,
 				F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */,
 				F76C859C1EC4E82600FA49E2 /* OpenGLAPI.h */,
@@ -3232,7 +3227,7 @@
 				4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				C651A8D91F30204300443BCA /* Text.cpp in Sources */,
-				F76C88801EC5324E00FA49E2 /* DrawImageShader.cpp in Sources */,
+				F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
@@ -3263,7 +3258,6 @@
 				4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */,
 				C654DF3A1F69C0430040F43D /* TitleEditor.cpp in Sources */,
 				C666EE6F1F37ACB10061AA04 /* DebugPaint.cpp in Sources */,
-				F76C88821EC5324E00FA49E2 /* FillRectShader.cpp in Sources */,
 				F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */,
 				4C93F1521F8B744400A9330D /* Steeplechase.cpp in Sources */,
 				4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */,

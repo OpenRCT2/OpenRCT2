@@ -22,35 +22,36 @@
 #include <SDL_pixels.h>
 #include <vector>
 
-class DrawImageShader final : public OpenGLShaderProgram
+class DrawRectShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;
     GLuint uTexture;
+    GLuint uPaletteTex;
 
-    GLuint vIndex;
+    GLuint vVertMat;
+    GLuint vVertVec;
+
     GLuint vClip;
     GLuint vTexColourAtlas;
     GLuint vTexColourBounds;
     GLuint vTexMaskAtlas;
     GLuint vTexMaskBounds;
-    GLuint vTexPaletteAtlas;
-    GLuint vTexPaletteBounds;
+    GLuint vPalettes;
     GLuint vFlags;
     GLuint vColour;
     GLuint vBounds;
-    GLuint vMask;
 
     GLuint _vbo;
     GLuint _vboInstances;
     GLuint _vao;
 
 public:
-    DrawImageShader();
-    ~DrawImageShader() override;
+    DrawRectShader();
+    ~DrawRectShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void DrawInstances(const ImageCommandBatch& instances);
+    void DrawInstances(const RectCommandBatch& instances);
 
 private:
     void GetLocations();

@@ -18,6 +18,20 @@
 
 #include "CopyFramebufferShader.h"
 
+struct VDStruct
+{
+    GLfloat position[2];
+    GLfloat texturecoordinate[2];
+};
+
+constexpr VDStruct VertexData[4] =
+{
+    { -1.0f, -1.0f, 0.0f, 0.0f },
+    {  1.0f, -1.0f, 1.0f, 0.0f },
+    { -1.0f,  1.0f, 0.0f, 1.0f },
+    {  1.0f,  1.0f, 1.0f, 1.0f },
+};
+
 CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframebuffer")
 {
     GetLocations();
@@ -25,16 +39,17 @@ CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframeb
     glGenBuffers(1, &_vbo);
     glGenVertexArrays(1, &_vao);
 
-    GLuint vertices[] = { 0, 1, 2, 2, 1, 3 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glEnableVertexAttribArray(vIndex);
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
+    glVertexAttribPointer(vPosition, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, position));
+    glVertexAttribPointer(vTextureCoordinate, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, texturecoordinate));
+
+    glEnableVertexAttribArray(vPosition);
+    glEnableVertexAttribArray(vTextureCoordinate);
 
     Use();
-    SetTextureCoordinates(0, 0, 1, 1);
     glUniform1i(uTexture, 0);
 }
 
@@ -46,28 +61,11 @@ CopyFramebufferShader::~CopyFramebufferShader()
 
 void CopyFramebufferShader::GetLocations()
 {
-    uScreenSize         = GetUniformLocation("uScreenSize");
-    uBounds             = GetUniformLocation("uBounds");
-    uTextureCoordinates = GetUniformLocation("uTextureCoordinates");
     uTexture            = GetUniformLocation("uTexture");
     uPalette            = GetUniformLocation("uPalette");
 
-    vIndex              = GetAttributeLocation("vIndex");
-}
-
-void CopyFramebufferShader::SetScreenSize(sint32 width, sint32 height)
-{
-    glUniform2i(uScreenSize, width, height);
-}
-
-void CopyFramebufferShader::SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uBounds, left, top, right, bottom);
-}
-
-void CopyFramebufferShader::SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom)
-{
-    glUniform4i(uTextureCoordinates, left, top, right, bottom);
+    vPosition           = GetAttributeLocation("vPosition");
+    vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
 }
 
 void CopyFramebufferShader::SetTexture(GLuint texture)
@@ -82,7 +80,7 @@ void CopyFramebufferShader::SetPalette(const vec4f * glPalette) {
 void CopyFramebufferShader::Draw()
 {
     glBindVertexArray(_vao);
-    glDrawArrays(GL_TRIANGLES, 0, 6);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 }
 
 #endif /* DISABLE_OPENGL */

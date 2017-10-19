@@ -19,6 +19,17 @@
 #include "DrawLineShader.h"
 #include "OpenGLFramebuffer.h"
 
+struct VDStruct
+{
+    GLfloat mat[4][2];
+};
+
+constexpr VDStruct VertexData[2] =
+{
+    { 1.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f, 0.0f },
+    { 0.0f, 0.0f, 0.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f },
+};
+
 DrawLineShader::DrawLineShader() : OpenGLShaderProgram("drawline")
 {
     GetLocations();
@@ -26,13 +37,19 @@ DrawLineShader::DrawLineShader() : OpenGLShaderProgram("drawline")
     glGenBuffers(1, &_vbo);
     glGenVertexArrays(1, &_vao);
 
-    GLuint vertices[] = { 0, 1 };
     glBindBuffer(GL_ARRAY_BUFFER, _vbo);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(VertexData), VertexData, GL_STATIC_DRAW);
 
     glBindVertexArray(_vao);
-    glEnableVertexAttribArray(vIndex);
-    glVertexAttribIPointer(vIndex, 1, GL_INT, 0, nullptr);
+    glVertexAttribPointer(vVertMat+0, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[0]));
+    glVertexAttribPointer(vVertMat+1, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[1]));
+    glVertexAttribPointer(vVertMat+2, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[2]));
+    glVertexAttribPointer(vVertMat+3, 2, GL_FLOAT, GL_FALSE, sizeof(VDStruct), (void*) offsetof(VDStruct, mat[3]));
+
+    glEnableVertexAttribArray(vVertMat+0);
+    glEnableVertexAttribArray(vVertMat+1);
+    glEnableVertexAttribArray(vVertMat+2);
+    glEnableVertexAttribArray(vVertMat+3);
 
     Use();
 }
@@ -50,7 +67,7 @@ void DrawLineShader::GetLocations()
     uBounds     = GetUniformLocation("uBounds");
     uColour     = GetUniformLocation("uColour");
 
-    vIndex      = GetAttributeLocation("vIndex");
+    vVertMat    = GetAttributeLocation("vVertMat");
 }
 
 void DrawLineShader::SetScreenSize(sint32 width, sint32 height)

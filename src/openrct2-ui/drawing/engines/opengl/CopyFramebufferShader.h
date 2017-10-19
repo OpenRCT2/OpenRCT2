@@ -22,13 +22,11 @@
 class CopyFramebufferShader final : public OpenGLShaderProgram
 {
 private:
-    GLuint uScreenSize;
-    GLuint uBounds;
-    GLuint uTextureCoordinates;
     GLuint uTexture;
     GLuint uPalette;
 
-    GLuint vIndex;
+    GLuint vPosition;
+    GLuint vTextureCoordinate;
 
     GLuint _vbo;
     GLuint _vao;
@@ -37,9 +35,6 @@ public:
     CopyFramebufferShader();
     ~CopyFramebufferShader() override;
 
-    void SetScreenSize(sint32 width, sint32 height);
-    void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetTextureCoordinates(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetTexture(GLuint texture);
     void SetPalette(const vec4f * glPalette);
 
