@@ -2,23 +2,15 @@
 
 uniform ivec2 uScreenSize;
 uniform ivec4 uBounds;
+uniform ivec4 uClip;
 
-in uint vIndex;
+in mat4x2 vVertMat;
 
 out vec2 fPosition;
 
 void main()
 {
-    vec2 pos;
-    if (vIndex == 0u)
-    {
-        pos = uBounds.xy;
-    }
-    else
-    {
-        pos = uBounds.zw;
-    }
-
+    vec2 pos = clamp(vVertMat * uBounds, uClip.xy, uClip.zw);
     fPosition = pos;
 
     // Transform screen coordinates to viewport

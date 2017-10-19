@@ -41,9 +41,8 @@
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
 #include "CopyFramebufferShader.h"
-#include "DrawImageShader.h"
 #include "DrawLineShader.h"
-#include "FillRectShader.h"
+#include "DrawRectShader.h"
 #include "SwapFramebuffer.h"
 #include "TextureCache.h"
 #include "DrawCommands.h"
@@ -68,9 +67,8 @@ private:
     OpenGLDrawingEngine *   _engine = nullptr;
     rct_drawpixelinfo *     _dpi    = nullptr;
 
-    DrawImageShader *       _drawImageShader        = nullptr;
     DrawLineShader *        _drawLineShader         = nullptr;
-    FillRectShader *        _fillRectShader         = nullptr;
+    DrawRectShader *        _drawRectShader         = nullptr;
 
     TextureCache * _textureCache = nullptr;
 
@@ -82,9 +80,8 @@ private:
     sint32 _clipBottom = 0;
 
     struct {
-        RectCommandBatch rectangles;
         LineCommandBatch lines;
-        ImageCommandBatch images;
+        RectCommandBatch rects;
     } _commandBuffers;
 
 public:
@@ -109,9 +106,8 @@ public:
 
     void FlushCommandBuffers();
 
-    void FlushRectangles();
     void FlushLines();
-    void FlushImages();
+    void FlushRectangles();
 
     void SetDPI(rct_drawpixelinfo * dpi);
 };
@@ -383,9 +379,6 @@ private:
         _swapFramebuffer = new SwapFramebuffer(_width, _height);
 
         _copyFramebufferShader->Use();
-        _copyFramebufferShader->SetScreenSize(_width, _height);
-        _copyFramebufferShader->SetBounds(0, 0, _width, _height);
-        _copyFramebufferShader->SetTextureCoordinates(0, 1, 1, 0);
     }
 
     void Display()
@@ -406,9 +399,8 @@ OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine * engine)
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
 {
-    delete _drawImageShader;
     delete _drawLineShader;
-    delete _fillRectShader;
+    delete _drawRectShader;
 
     delete _textureCache;
 }
@@ -421,82 +413,67 @@ IDrawingEngine * OpenGLDrawingContext::GetEngine()
 void OpenGLDrawingContext::Initialise()
 {
     _textureCache = new TextureCache();
-    _drawImageShader = new DrawImageShader();
+    _drawRectShader = new DrawRectShader();
     _drawLineShader = new DrawLineShader();
-    _fillRectShader = new FillRectShader();
 }
 
 void OpenGLDrawingContext::Resize(sint32 width, sint32 height)
 {
     FlushCommandBuffers();
 
-    _drawImageShader->Use();
-    _drawImageShader->SetScreenSize(width, height);
+    _drawRectShader->Use();
+    _drawRectShader->SetScreenSize(width, height);
     _drawLineShader->Use();
     _drawLineShader->SetScreenSize(width, height);
-    _fillRectShader->Use();
-    _fillRectShader->SetScreenSize(width, height);
 }
 
 void OpenGLDrawingContext::ResetPalette()
 {
     //FlushCommandBuffers();
-
-    _textureCache->SetPalette(_engine->Palette);
 }
 
 void OpenGLDrawingContext::Clear(uint8 paletteIndex)
 {
-    FillRect(paletteIndex, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight, _clipBottom);
+    FillRect(paletteIndex, _clipLeft - _offsetX, _clipTop - _offsetY, _clipRight - _offsetX, _clipBottom - _offsetY);
 }
 
 void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
-    // Must be rendered in order, depends on already rendered contents
-    FlushCommandBuffers();
-
     left += _offsetX;
     top += _offsetY;
     right += _offsetX;
     bottom += _offsetY;
 
-    DrawRectCommand& command = _commandBuffers.rectangles.allocate();
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
 
-    command.sourceFramebuffer = _fillRectShader->GetSourceFramebuffer();
+    command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
+    command.texColourAtlas = 0;
+    command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+    command.texMaskAtlas = 0;
+    command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+    command.palettes = { 0, 0, 0 };
+    command.colour = colour & 0xFF;
+    command.bounds = { left + _offsetX, top + _offsetY, right + 1, bottom + 1 };
+    command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
 
     if (colour & 0x1000000)
     {
         // cross-pattern
-        command.flags = 1;
+        command.flags = DrawRectCommand::FLAG_CROSS_HATCH;
     }
     else if (colour & 0x2000000)
     {
         assert(false);
         // Should be FilterRect
     }
-    else
-    {
-        command.flags = 0;
-    }
-
-    for (size_t i = 0; i < 256; i++)
-    {
-        command.paletteRemap[i] = colour & 0xFF;
-    }
-
-    command.clip[0] = _clipLeft;
-    command.clip[1] = _clipTop;
-    command.clip[2] = _clipRight;
-    command.clip[3] = _clipBottom;
-
-    command.bounds[0] = left;
-    command.bounds[1] = top;
-    command.bounds[2] = right + 1;
-    command.bounds[3] = bottom + 1;
 }
 
 void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {
+    // ignore transparency TODO
+    return;
+
+    /*
     // Must be rendered in order, depends on already rendered contents
     FlushCommandBuffers();
 
@@ -524,15 +501,13 @@ void OpenGLDrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, si
 
     // END FILTER
 
-    command.clip[0] = _clipLeft;
-    command.clip[1] = _clipTop;
-    command.clip[2] = _clipRight;
-    command.clip[3] = _clipBottom;
+    command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
 
     command.bounds[0] = left;
     command.bounds[1] = top;
     command.bounds[2] = right + 1;
     command.bounds[3] = bottom + 1;
+     */
 }
 
 void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 x2, sint32 y2)
@@ -546,10 +521,7 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 
     command.colour = colour & 0xFF;
 
-    command.clip[0] = _clipLeft;
-    command.clip[1] = _clipTop;
-    command.clip[2] = _clipRight;
-    command.clip[3] = _clipBottom;
+    command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
 
     command.pos[0] = x1;
     command.pos[1] = y1;
@@ -589,13 +561,8 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     uint8 zoomLevel = (1 << _dpi->zoom_level);
 
-    sint32 drawOffsetX = g1Element->x_offset;
-    sint32 drawOffsetY = g1Element->y_offset;
-    sint32 drawWidth = g1Element->width;
-    sint32 drawHeight = g1Element->height;
-
-    sint32 left = x + drawOffsetX;
-    sint32 top = y + drawOffsetY;
+    sint32 left = x + g1Element->x_offset;
+    sint32 top = y + g1Element->y_offset;
 
     sint32 zoom_mask = 0xFFFFFFFF << _dpi->zoom_level;
     if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION){
@@ -609,8 +576,8 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     left &= zoom_mask;
 
-    sint32 right = left + drawWidth;
-    sint32 bottom = top + drawHeight;
+    sint32 right = left + g1Element->width;
+    sint32 bottom = top + g1Element->height;
 
     if (_dpi->zoom_level && g1Element->flags & G1_FLAG_RLE_COMPRESSION) {
         bottom += top & ~zoom_mask;
@@ -642,46 +609,54 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
     auto texture = _textureCache->GetOrLoadImageTexture(image);
 
+    int paletteCount;
+    vec3i palettes{};
     bool special = false;
-    if (!(image & IMAGE_TYPE_REMAP_2_PLUS) && (image & IMAGE_TYPE_REMAP)) {
-        if (((image >> 19) & 0x7F) == 32) {
+    if (image & IMAGE_TYPE_REMAP_2_PLUS)
+    {
+        palettes.x = TextureCache::PaletteToY((image >> 19) & 0x1F);
+        palettes.y = TextureCache::PaletteToY((image >> 24) & 0x1F);
+        if (image & IMAGE_TYPE_REMAP)
+        {
+            paletteCount = 2;
+        }
+        else
+        {
+            paletteCount = 3;
+            palettes.z = TextureCache::PaletteToY(tertiaryColour & 0xFF);
+        }
+    }
+    else if (image & IMAGE_TYPE_REMAP)
+    {
+        paletteCount = 1;
+        palettes.x = TextureCache::PaletteToY((image >> 19) & 0xFF);
+        if (palettes.x == 32)
+        {
             special = true;
         }
     }
-
-    if (!((image & IMAGE_TYPE_REMAP_2_PLUS) && !(image & IMAGE_TYPE_REMAP))) {
-        tertiaryColour = 0;
+    else
+    {
+        paletteCount = 0;
     }
 
-    auto texture2 = _textureCache->GetOrLoadPaletteTexture(image, tertiaryColour, special);
+    if (special || (image & IMAGE_TYPE_TRANSPARENT))
+    {
+        // ignore transparecy TODO
+        return;
+    }
 
-    DrawImageCommand& command = _commandBuffers.images.allocate();
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture->index;
     command.texColourBounds = texture->normalizedBounds;
     command.texMaskAtlas = 0;
-    command.texMaskBounds = { 0.0f, 0.0f, 0.0f };
-    command.texPaletteAtlas = texture2->index;
-    command.texPaletteBounds = texture2->computedBounds;
+    command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+    command.palettes = palettes;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
-    command.mask = 0;
-    command.flags = 0;
-
-    if (special)
-    {
-        command.flags |= DrawImageCommand::FLAG_TRANSPARENT_SPECIAL;
-    }
-
-    if (image & IMAGE_TYPE_TRANSPARENT)
-    {
-        command.flags |= DrawImageCommand::FLAG_TRANSPARENT;
-    }
-    else if (image & (IMAGE_TYPE_REMAP_2_PLUS | IMAGE_TYPE_REMAP))
-    {
-        command.flags |= DrawImageCommand::FLAG_REMAP;
-    }
+    command.flags = paletteCount;
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
@@ -728,23 +703,23 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     right += _clipLeft;
     bottom += _clipTop;
 
-    DrawImageCommand& command = _commandBuffers.images.allocate();
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = textureColour->index;
     command.texColourBounds = textureColour->normalizedBounds;
     command.texMaskAtlas = textureMask->index;
     command.texMaskBounds = textureMask->normalizedBounds;
-    command.texPaletteAtlas = 0;
-    command.texPaletteBounds = {0.0f, 0.0f, 0.0f};
-    command.flags = 0;
+    command.palettes = { 0, 0, 0 };
+    command.flags = DrawRectCommand::FLAG_MASK;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
-    command.mask = 1;
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
 {
+    assert((colour & 0xFF) > 0u);
+
     sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
 
@@ -774,19 +749,17 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     right += _offsetX;
     bottom += _offsetY;
 
-    DrawImageCommand& command = _commandBuffers.images.allocate();
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-    command.texColourAtlas = texture->index;
-    command.texColourBounds = texture->normalizedBounds;
-    command.texMaskAtlas = 0;
-    command.texMaskBounds = { 0.0f, 0.0f, 0.0f };
-    command.texPaletteAtlas = texture->index;
-    command.texPaletteBounds = texture->computedBounds;
-    command.flags = DrawImageCommand::FLAG_COLOUR;
+    command.texColourAtlas = 0;
+    command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+    command.texMaskAtlas = texture->index;
+    command.texMaskBounds = texture->normalizedBounds;
+    command.palettes = { 0, 0, 0 };
+    command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
     command.colour = colour & 0xFF;
     command.bounds = { left, top, right, bottom };
-    command.mask = 0;
 }
 
 void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
@@ -820,43 +793,23 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     right += _offsetX;
     bottom += _offsetY;
 
-    DrawImageCommand& command = _commandBuffers.images.allocate();
+    DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = texture.index;
     command.texColourBounds = texture.normalizedBounds;
     command.texMaskAtlas = 0;
-    command.texMaskBounds = { 0.0f, 0.0f, 0.0f };
-    command.texPaletteAtlas = 0;
-    command.texPaletteBounds = { 0.0f, 0.0f, 0.0f};
+    command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
+    command.palettes = { 0, 0, 0 };
     command.flags = 0;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
-    command.mask = 0;
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
-    FlushRectangles();
     FlushLines();
-    FlushImages();
-}
-
-void OpenGLDrawingContext::FlushRectangles()
-{
-    for(size_t n = 0; n < _commandBuffers.rectangles.size(); n++)
-    {
-        const auto& command = _commandBuffers.rectangles[n];
-
-        _fillRectShader->Use();
-        _fillRectShader->SetFlags(command.flags);
-        _fillRectShader->SetSourceFramebuffer(command.sourceFramebuffer);
-        _fillRectShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
-        _fillRectShader->SetPaletteRemap(command.paletteRemap);
-        _fillRectShader->Draw(command.bounds[0], command.bounds[1], command.bounds[2], command.bounds[3]);
-    }
-
-    _commandBuffers.rectangles.reset();
+    FlushRectangles();
 }
 
 void OpenGLDrawingContext::FlushLines() 
@@ -867,23 +820,24 @@ void OpenGLDrawingContext::FlushLines()
 
         _drawLineShader->Use();
         _drawLineShader->SetColour(command.colour);
-        _drawLineShader->SetClip(command.clip[0], command.clip[1], command.clip[2], command.clip[3]);
+        _drawLineShader->SetClip(command.clip.x, command.clip.y, command.clip.z, command.clip.w);
         _drawLineShader->Draw(command.pos[0], command.pos[1], command.pos[2], command.pos[3]);
     }
 
     _commandBuffers.lines.reset();
 }
 
-void OpenGLDrawingContext::FlushImages()
+void OpenGLDrawingContext::FlushRectangles()
 {
-    if (_commandBuffers.images.size() == 0) return;
+    if (_commandBuffers.rects.size() == 0) return;
 
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D_ARRAY, _textureCache->GetAtlasesTexture());
+    OpenGLAPI::SetTexture(1, GL_TEXTURE_RECTANGLE, _textureCache->GetPaletteTexture());
 
-    _drawImageShader->Use();
-    _drawImageShader->DrawInstances(_commandBuffers.images);
+    _drawRectShader->Use();
+    _drawRectShader->DrawInstances(_commandBuffers.rects);
 
-    _commandBuffers.images.reset();
+    _commandBuffers.rects.reset();
 }
 
 void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)

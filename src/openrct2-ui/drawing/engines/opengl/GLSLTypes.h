@@ -32,6 +32,13 @@ struct vec2f
     union { float y; float t; float g; };
 };
 
+struct vec3i
+{
+    union { sint32 x; sint32 s; sint32 r; };
+    union { sint32 y; sint32 t; sint32 g; };
+    union { sint32 z; sint32 p; sint32 b; };
+};
+
 struct vec3f
 {
     union { float x; float s; float r; };

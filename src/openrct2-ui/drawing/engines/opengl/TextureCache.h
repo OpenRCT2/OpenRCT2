@@ -188,7 +188,7 @@ private:
 class TextureCache final
 {
 private:
-    bool _atlasesTextureInitialised = false;
+    bool _initialized                 = false;
 
     GLuint _atlasesTexture            = 0;
     GLint _atlasesTextureDimensions   = 0;
@@ -200,34 +200,30 @@ private:
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
     std::unordered_map<uint32, CachedTextureInfo> _paletteTextureMap;
 
-    SDL_Color _palette[256];
+    GLuint _paletteTexture            = 0;
 
 public:
     TextureCache() = default;
     ~TextureCache();
-    void SetPalette(const SDL_Color * palette);
     void InvalidateImage(uint32 image);
     const CachedTextureInfo* GetOrLoadImageTexture(uint32 image);
     CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
-    const CachedTextureInfo* GetOrLoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
 
     GLuint GetAtlasesTexture();
+    GLuint GetPaletteTexture();
+    static GLint PaletteToY(uint32 palette);
 
 private:
-    void CreateAtlasesTexture();
-    void AllocateAtlasesTexture();
+    void CreateTextures();
+    void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
     CachedTextureInfo LoadImageTexture(uint32 image);
     CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
-    CachedTextureInfo LoadPaletteTexture(uint32 image, uint32 tertiaryColour, bool special);
     CachedTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
-    void * GetImageAsARGB(uint32 image, uint32 tertiaryColour, uint32 * outWidth, uint32 * outHeight);
-    rct_drawpixelinfo * GetImageAsDPI(uint32 image, uint32 tertiaryColour);
-    void * GetGlyphAsARGB(uint32 image, uint8 * palette, uint32 * outWidth, uint32 * outHeight);
-    rct_drawpixelinfo * GetGlyphAsDPI(uint32 image, uint8 * palette);
-    void * ConvertDPIto32bpp(const rct_drawpixelinfo * dpi);
+    rct_drawpixelinfo GetImageAsDPI(uint32 image, uint32 tertiaryColour);
+    rct_drawpixelinfo GetGlyphAsDPI(uint32 image, uint8 * palette);
     void FreeTextures();
 
-    static rct_drawpixelinfo * CreateDPI(sint32 width, sint32 height);
-    static void DeleteDPI(rct_drawpixelinfo * dpi);
+    static rct_drawpixelinfo CreateDPI(sint32 width, sint32 height);
+    static void DeleteDPI(rct_drawpixelinfo dpi);
 };

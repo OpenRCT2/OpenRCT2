@@ -27,7 +27,7 @@ private:
     GLuint uBounds;
     GLuint uColour;
 
-    GLuint vIndex;
+    GLuint vVertMat;
 
     GLuint _vbo;
     GLuint _vao;
