@@ -417,7 +417,7 @@ namespace Config
             model->ride_researched = reader->GetBoolean("ride_researched", true);
             model->guest_warnings = reader->GetBoolean("guest_warnings", true);
             model->guest_lost = reader->GetBoolean("guest_lost", false);
-            model->guest_left_park = reader->GetBoolean("guest_entered_left_park", true);
+            model->guest_left_park = reader->GetBoolean("guest_left_park", true);
             model->guest_queuing_for_ride = reader->GetBoolean("guest_queuing_for_ride", true);
             model->guest_on_ride = reader->GetBoolean("guest_on_ride", true);
             model->guest_left_ride = reader->GetBoolean("guest_left_ride", true);
