@@ -5,7 +5,7 @@
 #include <gtest/gtest.h>
 
 template<typename T, typename TExpected>
-void AssertVector(std::vector<T> actual, TExpected expected)
+static void AssertVector(std::vector<T> actual, TExpected expected)
 {
     ASSERT_EQ(actual.size(), expected.size()) <<
         "Expected vector of size " << expected.size() << ", but was " << actual.size();
@@ -19,7 +19,7 @@ void AssertVector(std::vector<T> actual, TExpected expected)
 }
 
 template<typename T>
-void AssertVector(std::vector<T> actual, std::initializer_list<T> expected)
+static void AssertVector(std::vector<T> actual, std::initializer_list<T> expected)
 {
     AssertVector<T, std::initializer_list<T>>(actual, expected);
 }
