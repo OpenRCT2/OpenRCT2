@@ -41,6 +41,7 @@ private:
     GLuint vFlags;
     GLuint vColour;
     GLuint vBounds;
+    GLuint vDepth;
 
     GLuint _vbo;
     GLuint _vboInstances;

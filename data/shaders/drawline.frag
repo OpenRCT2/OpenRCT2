@@ -1,12 +1,10 @@
 #version 150
 
-uniform uint    uColour;
-
-in vec2 fPosition;
+flat in uint fColour;
 
 out uint oColour;
 
 void main()
 {
-    oColour = uColour;
+    oColour = fColour;
 }

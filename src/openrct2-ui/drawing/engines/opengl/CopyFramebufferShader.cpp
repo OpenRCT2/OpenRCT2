@@ -73,7 +73,8 @@ void CopyFramebufferShader::SetTexture(GLuint texture)
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
-void CopyFramebufferShader::SetPalette(const vec4f * glPalette) {
+void CopyFramebufferShader::SetPalette(const vec4 * glPalette)
+{
     glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
 }
 

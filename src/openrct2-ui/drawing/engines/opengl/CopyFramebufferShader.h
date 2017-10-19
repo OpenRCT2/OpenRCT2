@@ -36,7 +36,7 @@ public:
     ~CopyFramebufferShader() override;
 
     void SetTexture(GLuint texture);
-    void SetPalette(const vec4f * glPalette);
+    void SetPalette(const vec4 * glPalette);
 
     void Draw();
 

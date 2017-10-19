@@ -29,6 +29,7 @@ class OpenGLFramebuffer
 private:
     GLuint _id;
     GLuint _texture;
+    GLuint _depth;
     sint32 _width;
     sint32 _height;
 

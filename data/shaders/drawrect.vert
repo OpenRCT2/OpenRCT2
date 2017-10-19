@@ -1,5 +1,8 @@
 #version 150
 
+// Allows for about 8 million draws per frame
+const float DEPTH_INCREMENT = 1.0 / float(1u << 22u);
+
 uniform ivec2 uScreenSize;
 
 in ivec4 vClip;
@@ -11,6 +14,7 @@ in ivec3 vPalettes;
 in int   vFlags;
 in uint  vColour;
 in ivec4 vBounds;
+in int   vDepth;
 
 in mat4x2 vVertMat;
 in vec2   vVertVec;
@@ -36,10 +40,11 @@ void main()
     pos.x = (pos.x * (2.0 / uScreenSize.x)) - 1.0;
     pos.y = (pos.y * (2.0 / uScreenSize.y)) - 1.0;
     pos.y *= -1;
+    float depth = 1.0 - vDepth * DEPTH_INCREMENT;
 
     fFlags = vFlags;
     fColour = vColour;
     fPalettes = vec3(vPalettes);
 
-    gl_Position = vec4(pos, 0.0, 1.0);
+    gl_Position = vec4(pos, depth, 1.0);
 }
