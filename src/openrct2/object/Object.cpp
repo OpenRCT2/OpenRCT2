@@ -16,9 +16,10 @@
 
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
+#include "../localisation/language.h"
+#include "../localisation/string_ids.h"
 #include "Object.h"
 
-#include "../localisation/localisation.h"
 
 Object::Object(const rct_object_entry &entry)
 {

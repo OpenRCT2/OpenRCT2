@@ -16,7 +16,6 @@
 
 #include <chrono>
 #include "../audio/audio.h"
-#include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../Imaging.h"

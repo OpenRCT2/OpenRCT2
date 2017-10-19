@@ -30,7 +30,6 @@
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../intro.h"
-#include "../platform/platform.h"
 #include "drawing.h"
 #include "lightfx.h"
 

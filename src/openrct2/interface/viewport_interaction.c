@@ -24,6 +24,7 @@
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
 #include "../scenario/scenario.h"
+#include "../windows/Intent.h"
 #include "../world/banner.h"
 #include "../world/footpath.h"
 #include "../world/map.h"

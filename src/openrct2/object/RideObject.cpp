@@ -17,16 +17,14 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../core/Util.hpp"
 #include "../OpenRCT2.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
 #include "../ride/RideGroupManager.h"
 
-#include "../config/Config.h"
 #include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
-#include "../rct1.h"
+#include "../localisation/language.h"
+#include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/Track.h"
 

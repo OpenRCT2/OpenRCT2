@@ -20,7 +20,7 @@
 #include "SmallSceneryObject.h"
 
 #include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
+#include "../localisation/language.h"
 
 SmallSceneryObject::~SmallSceneryObject()
 {

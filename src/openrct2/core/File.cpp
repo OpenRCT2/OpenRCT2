@@ -21,7 +21,6 @@
     #include <sys/stat.h>
 #endif
 
-#include "Console.hpp"
 #include "File.h"
 #include "FileStream.hpp"
 #include "String.hpp"

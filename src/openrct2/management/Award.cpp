@@ -17,11 +17,10 @@
 #include "../config/Config.h"
 #include "../core/Util.hpp"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/string_ids.h"
 #include "../peep/Peep.h"
 #include "../ride/ride.h"
 #include "../scenario/scenario.h"
-#include "../world/sprite.h"
 #include "Award.h"
 #include "NewsItem.h"
 

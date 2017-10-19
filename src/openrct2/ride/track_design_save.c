@@ -22,6 +22,7 @@
 #include "../interface/viewport.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
+#include "../windows/Intent.h"
 #include "../world/scenery.h"
 #include "ride_data.h"
 #include "Track.h"

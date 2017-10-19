@@ -17,7 +17,16 @@
 #pragma once
 
 #include "common.h"
-#include "windows/Intent.h"
+
+#ifdef __cplusplus
+class Intent;
+#else
+// Allow C code to use `Intent *`
+typedef struct Intent Intent;
+#endif
+
+typedef struct rct_window rct_window;
+typedef uint8 rct_windowclass;
 
 typedef struct CursorState
 {

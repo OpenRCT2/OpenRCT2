@@ -21,7 +21,7 @@
 #include "SceneryGroupObject.h"
 
 #include "../drawing/drawing.h"
-#include "../localisation/localisation.h"
+#include "../localisation/language.h"
 
 SceneryGroupObject::~SceneryGroupObject()
 {

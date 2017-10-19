@@ -17,7 +17,8 @@
 #pragma once
 
 #include "../common.h"
-#include "../ride/ride.h"
+
+typedef struct rct_ride_entry rct_ride_entry;
 
 #pragma pack(push, 1)
 typedef struct rct_research_item {

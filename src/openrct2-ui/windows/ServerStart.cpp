@@ -18,6 +18,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/network/network.h>
+#include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/interface/chat.h>

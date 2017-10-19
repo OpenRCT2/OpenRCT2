@@ -28,8 +28,8 @@
 #include "NetworkTypes.h"
 #include "NetworkKey.h"
 #include "NetworkPacket.h"
-#include "TcpSocket.h"
 
+interface ITcpSocket;
 class NetworkPlayer;
 struct ObjectRepositoryItem;
 

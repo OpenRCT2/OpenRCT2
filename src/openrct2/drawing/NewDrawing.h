@@ -16,7 +16,9 @@
 
 #pragma once
 
-#include "drawing.h"
+#include "../common.h"
+
+typedef struct rct_drawpixelinfo rct_drawpixelinfo;
 
 #ifdef __cplusplus
 extern "C"

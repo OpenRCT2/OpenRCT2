@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Console.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../OpenRCT2.h"
