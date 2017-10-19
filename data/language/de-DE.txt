@@ -4447,6 +4447,12 @@ STR_6144    :Neu gezeichnete Kacheln markieren
 STR_6145    :{SMALLFONT}{BLACK}Geschwindigkeitsgrenze{NEWLINE}für Booster einstellen
 STR_6146    :Alle Streckenabschnitte ermöglichen
 STR_6147    :{SMALLFONT}{BLACK}Ermöglicht die Auswahl sämtlicher zum Bahntyp passenden Streckenabschnitte im Konstruktionsfenster unabhängig davon, ob das eingesetzte Fahrzeug diese unterstützt.
+STR_6148    :Verbinden zum Hauptserver...
+STR_6149    :Verbindung zum Hauptserver nicht möglich.
+STR_6150    :Ungültige Antwort vom Hauptserver (keine JSON-Nummer)
+STR_6151    :Hauptserver antwortete nicht mit gültigen Servern
+STR_6152    :Ungültige Antwort vom Hauptserver (kein JSON-Array)
+STR_6153    :Bezahle um den Park zu betreten / Zahle pro Fahrt
 
 #############
 # Scenarios #
