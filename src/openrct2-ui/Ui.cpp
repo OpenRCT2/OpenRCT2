@@ -70,7 +70,7 @@ int main(int argc, const char * * argv)
 
 #ifdef __ANDROID__
 extern "C" {
-int SDL_main(int argc, char *argv[])
+int SDL_main(int argc, const char *argv[])
 {
     return main(argc, argv);
 }
