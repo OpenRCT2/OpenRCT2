@@ -86,6 +86,20 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
     rct2_time currentTime;
     platform_get_time_local(&currentTime);
 
+#ifdef _WIN32
+    // On NTFS filesystems, a colon (:) in a path
+    // indicates you want to write a file stream
+    // (hidden metadata). This will pass the
+    // file_exists and fopen checks, since it is
+    // technically valid. We don't want that, so
+    // replace colons with hyphens in the park name.
+    char * foundColon = park_name;
+    while ((foundColon = strchr(foundColon, ':')) != nullptr)
+    {
+        *foundColon = '-';
+    }
+#endif
+
     // Glue together path and filename
     snprintf(path, size, "%s%s %d-%02d-%02d %02d-%02d-%02d.png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
 

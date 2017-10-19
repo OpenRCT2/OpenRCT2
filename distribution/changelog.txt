@@ -22,6 +22,7 @@
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
+- Fix: [#5585] Inconsistent zooming with mouse wheel.
 - Fix: [#5609] Vehicle switching may cause '0 cars per train' to be set.
 - Fix: [#5741] Land rights indicators disappear when switching views.
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
@@ -42,7 +43,6 @@
 - Fix: [#6320] Crash when CSS1.DAT is absent.
 - Fix: [#6331] Scenery costs nothing in track designs.
 - Fix: [#6360] Off-by-one filenames when exporting all sprites.
-- Fix: [#5585] Inconsistent zooming with mouse wheel.
 - Fix: [#6358] HTTP requests can point to invalid URL string.
 - Fix: [#6413] Maze previews only showing scenery.
 - Fix: [#6423] Importing parks containing names with Polish characters.
@@ -50,6 +50,7 @@
 - Fix: [#6445] Guests' favourite ride improperly set when importing from RCT1 or AA.
 - Fix: [#6452] Scenario text cut off when switching between 32 and 64-bit builds.
 - Fix: [#6460] Crash when reading corrupt object files.
+- Fix: [#6481] Can't take screenshots of parks with colons in the name.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
