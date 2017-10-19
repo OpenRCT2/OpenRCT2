@@ -27,6 +27,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
 {
     _id = BACKBUFFER_ID;
     _texture = 0;
+    _depth = 0;
     SDL_GetWindowSize(window, &_width, &_height);
 }
 
@@ -41,9 +42,17 @@ OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
+    glGenTextures(1, &_depth);
+    glBindTexture(GL_TEXTURE_2D, _depth);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+
     glGenFramebuffers(1, &_id);
     glBindFramebuffer(GL_FRAMEBUFFER, _id);
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depth, 0);
 }
 
 OpenGLFramebuffer::~OpenGLFramebuffer()
@@ -51,6 +60,7 @@ OpenGLFramebuffer::~OpenGLFramebuffer()
     if (_id != BACKBUFFER_ID)
     {
         glDeleteTextures(1, &_texture);
+        glDeleteTextures(1, &_depth);
         glDeleteFramebuffers(1, &_id);
     }
 }

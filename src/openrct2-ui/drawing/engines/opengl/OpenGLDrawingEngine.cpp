@@ -79,7 +79,10 @@ private:
     sint32 _clipRight  = 0;
     sint32 _clipBottom = 0;
 
-    struct {
+    sint32 _drawCount  = 0;
+
+    struct
+    {
         LineCommandBatch lines;
         RectCommandBatch rects;
     } _commandBuffers;
@@ -94,6 +97,7 @@ public:
     void Initialise();
     void Resize(sint32 width, sint32 height);
     void ResetPalette();
+    void ResetDrawCount() { _drawCount = 0; }
 
     void Clear(uint8 paletteIndex) override;
     void FillRect(uint32 colour, sint32 x, sint32 y, sint32 w, sint32 h) override;
@@ -135,7 +139,7 @@ private:
 
 public:
     SDL_Color Palette[256];
-    vec4f     GLPalette[256];
+    vec4      GLPalette[256];
 
     OpenGLDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
@@ -228,7 +232,9 @@ public:
         assert(_screenFramebuffer != nullptr);
         assert(_swapFramebuffer != nullptr);
 
+        _drawingContext->ResetDrawCount();
         _swapFramebuffer->Bind();
+        glClear(GL_DEPTH_BUFFER_BIT);
     }
 
     void EndDraw() override
@@ -236,6 +242,7 @@ public:
         _drawingContext->FlushCommandBuffers();
 
         // Scale up to window
+        glDisable(GL_DEPTH_TEST);
         _screenFramebuffer->Bind();
         _copyFramebufferShader->Use();
         _copyFramebufferShader->SetTexture(_swapFramebuffer->GetTargetFramebuffer()->GetTexture());
@@ -453,8 +460,9 @@ void OpenGLDrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint
     command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
     command.palettes = { 0, 0, 0 };
     command.colour = colour & 0xFF;
-    command.bounds = { left + _offsetX, top + _offsetY, right + 1, bottom + 1 };
+    command.bounds = { left, top, right + 1, bottom + 1 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE;
+    command.depth = _drawCount++;
 
     if (colour & 0x1000000)
     {
@@ -519,17 +527,10 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 
     DrawLineCommand& command = _commandBuffers.lines.allocate();
 
-    command.colour = colour & 0xFF;
-
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-
-    command.pos[0] = x1;
-    command.pos[1] = y1;
-    command.pos[2] = x2;
-    command.pos[3] = y2;
-
-    // Must be rendered in order right now, because it does not yet use depth
-    FlushCommandBuffers();
+    command.bounds = { x1, y1, x2, y2 };
+    command.colour = colour & 0xFF;
+    command.depth = _drawCount++;
 }
 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
@@ -610,7 +611,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     int paletteCount;
-    vec3i palettes{};
+    ivec3 palettes{};
     bool special = false;
     if (image & IMAGE_TYPE_REMAP_2_PLUS)
     {
@@ -657,6 +658,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
     command.flags = paletteCount;
+    command.depth = _drawCount++;
 }
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
@@ -714,6 +716,7 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     command.flags = DrawRectCommand::FLAG_MASK;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
+    command.depth = _drawCount++;
 }
 
 void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uint8 colour)
@@ -760,6 +763,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
     command.colour = colour & 0xFF;
     command.bounds = { left, top, right, bottom };
+    command.depth = _drawCount++;
 }
 
 void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
@@ -804,25 +808,22 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
     command.flags = 0;
     command.colour = 0;
     command.bounds = { left, top, right, bottom };
+    command.depth = _drawCount++;
 }
 
 void OpenGLDrawingContext::FlushCommandBuffers()
 {
+    glEnable(GL_DEPTH_TEST);
     FlushLines();
     FlushRectangles();
 }
 
 void OpenGLDrawingContext::FlushLines() 
 {
-    for (size_t n = 0; n < _commandBuffers.lines.size(); n++)
-    {
-        const auto& command = _commandBuffers.lines[n];
+    if (_commandBuffers.lines.size() == 0) return;
 
-        _drawLineShader->Use();
-        _drawLineShader->SetColour(command.colour);
-        _drawLineShader->SetClip(command.clip.x, command.clip.y, command.clip.z, command.clip.w);
-        _drawLineShader->Draw(command.pos[0], command.pos[1], command.pos[2], command.pos[3]);
-    }
+    _drawLineShader->Use();
+    _drawLineShader->DrawInstances(_commandBuffers.lines);
 
     _commandBuffers.lines.reset();
 }

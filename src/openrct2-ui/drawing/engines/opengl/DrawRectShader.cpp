@@ -61,6 +61,7 @@ DrawRectShader::DrawRectShader() : OpenGLShaderProgram("drawrect")
     glVertexAttribIPointer(vFlags, 1, GL_INT, sizeof(DrawRectCommand), (void*) offsetof(DrawRectCommand, flags));
     glVertexAttribIPointer(vColour, 1, GL_UNSIGNED_INT, sizeof(DrawRectCommand), (void*) offsetof(DrawRectCommand, colour));
     glVertexAttribIPointer(vBounds, 4, GL_INT, sizeof(DrawRectCommand), (void*) offsetof(DrawRectCommand, bounds));
+    glVertexAttribIPointer(vDepth, 1, GL_INT, sizeof(DrawRectCommand), (void*) offsetof(DrawRectCommand, depth));
 
     glEnableVertexAttribArray(vVertMat+0);
     glEnableVertexAttribArray(vVertMat+1);
@@ -77,6 +78,7 @@ DrawRectShader::DrawRectShader() : OpenGLShaderProgram("drawrect")
     glEnableVertexAttribArray(vFlags);
     glEnableVertexAttribArray(vColour);
     glEnableVertexAttribArray(vBounds);
+    glEnableVertexAttribArray(vDepth);
 
     glVertexAttribDivisor(vClip, 1);
     glVertexAttribDivisor(vTexColourAtlas, 1);
@@ -87,6 +89,7 @@ DrawRectShader::DrawRectShader() : OpenGLShaderProgram("drawrect")
     glVertexAttribDivisor(vFlags, 1);
     glVertexAttribDivisor(vColour, 1);
     glVertexAttribDivisor(vBounds, 1);
+    glVertexAttribDivisor(vDepth, 1);
 
     Use();
     glUniform1i(uTexture, 0);
@@ -115,6 +118,7 @@ void DrawRectShader::GetLocations()
     vFlags              = GetAttributeLocation("vFlags");
     vColour             = GetAttributeLocation("vColour");
     vBounds             = GetAttributeLocation("vBounds");
+    vDepth              = GetAttributeLocation("vDepth");
 
     vVertMat            = GetAttributeLocation("vVertMat");
     vVertVec            = GetAttributeLocation("vVertVec");

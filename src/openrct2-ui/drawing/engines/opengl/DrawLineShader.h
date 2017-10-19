@@ -18,18 +18,22 @@
 
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
+#include "DrawCommands.h"
 
 class DrawLineShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uScreenSize;
-    GLuint uClip;
-    GLuint uBounds;
-    GLuint uColour;
+
+    GLuint vClip;
+    GLuint vBounds;
+    GLuint vColour;
+    GLuint vDepth;
 
     GLuint vVertMat;
 
     GLuint _vbo;
+    GLuint _vboInstances;
     GLuint _vao;
 
 public:
@@ -37,11 +41,7 @@ public:
     ~DrawLineShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void SetClip(sint32 left, sint32 top, sint32 right, sint32 bottom);
-    void SetBounds(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
-    void SetColour(uint8 colour);
-
-    void Draw(sint32 x0, sint32 y0, sint32 x1, sint32 y1);
+    void DrawInstances(const LineCommandBatch& instances);
 
 private:
     void GetLocations();

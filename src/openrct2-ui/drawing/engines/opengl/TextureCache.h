@@ -65,9 +65,9 @@ struct CachedTextureInfo
 {
     GLuint index;
     GLuint slot;
-    vec4i bounds;
-    vec4f normalizedBounds;
-    vec4f computedBounds;
+    ivec4 bounds;
+    vec4 normalizedBounds;
+    vec4 computedBounds;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -159,12 +159,12 @@ public:
     }
 
 private:
-    vec4i GetSlotCoordinates(GLuint slot, sint32 actualWidth, sint32 actualHeight) const
+    ivec4 GetSlotCoordinates(GLuint slot, sint32 actualWidth, sint32 actualHeight) const
     {
         sint32 row = slot / _cols;
         sint32 col = slot % _cols;
 
-        return vec4i
+        return ivec4
         {
             _imageSize * col,
             _imageSize * row,
@@ -173,14 +173,14 @@ private:
         };
     }
 
-    vec4f NormalizeCoordinates(const vec4i& coords) const
+    vec4 NormalizeCoordinates(const ivec4& coords) const
     {
-        return vec4f
+        return vec4
         {
             coords.x / (float) _atlasWidth,
             coords.y / (float) _atlasHeight,
             coords.z / (float) _atlasWidth,
-            coords.w / (float) _atlasHeight
+            coords.w / (float) _atlasHeight,
         };
     }
 };
