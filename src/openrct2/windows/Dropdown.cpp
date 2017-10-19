@@ -27,6 +27,8 @@
 // The maximum number of rows to list before items overflow into new columns
 #define DROPDOWN_TEXT_MAX_ROWS 32
 
+#define DROPDOWN_ITEM_HEIGHT 12
+
 sint32 gAppropriateImageDropdownItemsPerRow[] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4,
     3, 5, 4, 4, 5, 5, 5, 4, 5,
@@ -180,7 +182,7 @@ void window_dropdown_show_text_custom_width(sint32 x, sint32 y, sint32 extray, u
     
     // Set and calculate num items, rows and columns
     _dropdown_item_width = width;
-    _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : 10;
+    _dropdown_item_height = (flags & DROPDOWN_FLAG_CUSTOM_HEIGHT) ? custom_height : DROPDOWN_ITEM_HEIGHT;
     gDropdownNumItems = (sint32)num_items;
     // There must always be at least one column to prevent dividing by zero
     if (gDropdownNumItems == 0)
@@ -397,7 +399,7 @@ static void window_dropdown_paint(rct_window *w, rct_drawpixelinfo *dpi)
                     item,
                     (void*)(&gDropdownItemsArgs[i]), colour,
                     w->x + 2 + (cell_x * _dropdown_item_width),
-                    w->y + 1 + (cell_y * _dropdown_item_height),
+                    w->y + 2 + (cell_y * _dropdown_item_height),
                     w->width - 5
                 );
             }
