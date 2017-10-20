@@ -22,6 +22,7 @@
 #include <openrct2/input.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/peep/Staff.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
