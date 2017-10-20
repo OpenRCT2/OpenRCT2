@@ -29,38 +29,38 @@ uint8 const HINTING_THRESHOLD_LOW    = 40;
 uint8 const HINTING_THRESHOLD_MEDIUM = 60;
 
 TTFFontSetDescriptor TTFFontMSGothic = { {
-    { "msgothic.ttc", "MS PGothic",  9, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "msgothic.ttc", "MS PGothic", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "msgothic.ttc", "MS PGothic", 13, 1, 0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic",  9, 1, -1, 10, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "msgothic.ttc", "MS PGothic", 13, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontMingLiu = { {
     {    "msjh.ttc", "JhengHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "mingliu.ttc",  "MingLiU", 11,  1,  1, 12, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "mingliu.ttc",  "MingLiU", 12,  1,  0, 12, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "mingliu.ttc",  "MingLiU", 13,  1,  0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "mingliu.ttc",  "MingLiU", 13,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontSimSun = { {
     {   "msyh.ttc",  "YaHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "simsun.ttc", "SimSun", 12,  1, -2, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "simsun.ttc", "SimSun", 13,  1,  0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 12,  1, -2, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "simsun.ttc", "SimSun", 13,  1,  0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontGulim = { {
-    { "gulim.ttc", "Gulim", 11, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "gulim.ttc", "Gulim", 12, 1, 0, 17, HINTING_THRESHOLD_MEDIUM, nullptr },
-    { "gulim.ttc", "Gulim", 13, 1, 0, 20, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 11, 1, 0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { "gulim.ttc", "Gulim", 13, 1, 0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
 TTFFontSetDescriptor TTFFontArial = { {
     { "arial.ttf", "Arial",  8, 0, -1,  6, HINTING_THRESHOLD_LOW, nullptr },
     { "arial.ttf", "Arial", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arial.ttf", "Arial", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
-    { "arial.ttf", "Arial", 12, 0, -1, 20, HINTING_THRESHOLD_LOW, nullptr },
+    { "arial.ttf", "Arial", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
 } };
 #endif // NO_TTF
 
