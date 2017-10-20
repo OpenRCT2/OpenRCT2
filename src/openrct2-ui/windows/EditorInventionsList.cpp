@@ -56,9 +56,9 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    385,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    372,    383,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    359,    370,    STR_MOVE_ALL_TOP,       STR_NONE                },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,       STR_NONE                },
     { WIDGETS_END }
 };
 
@@ -438,7 +438,7 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
     }
 
     for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
-        y -= 10;
+        y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
             return researchItem;
     }
@@ -463,7 +463,7 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
     }
 
     for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
-        y -= 10;
+        y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
             return researchItem;
     }
@@ -605,7 +605,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
 
     // Count / skip pre-researched items
     for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
-        *height += 10;
+        *height += SCROLLABLE_ROW_HEIGHT;
 
     if (scrollIndex == 1) {
         researchItem++;
@@ -613,7 +613,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
         // Count non pre-researched items
         *height = 0;
         for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++)
-            *height += 10;
+            *height += SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -819,11 +819,12 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         researchItemEndMarker = RESEARCHED_ITEMS_SEPARATOR;
     }
 
-    // Since this is now a do while need to counteract the +10
-    itemY = -10;
-    do{
-        itemY += 10;
-        if (itemY + 10 < dpi->y || itemY >= dpi->y + dpi->height)
+    // Since this is now a do while need to counteract the +SCROLLABLE_ROW_HEIGHT
+    itemY = -SCROLLABLE_ROW_HEIGHT;
+    do
+    {
+        itemY += SCROLLABLE_ROW_HEIGHT;
+        if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
             continue;
 
         uint8 colour = COLOUR_BRIGHT_GREEN | COLOUR_FLAG_TRANSLUCENT;
@@ -831,7 +832,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
             if (_editorInventionsListDraggedItem == nullptr) {
                 // Highlight
                 top = itemY;
-                bottom = itemY + 9;
+                bottom = itemY + SCROLLABLE_ROW_HEIGHT - 1;
             } else {
                 // Drop horizontal rule
                 top = itemY - 1;
@@ -871,7 +872,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         }
 
         left = 1;
-        top = itemY - 1;
+        top = itemY;
         gfx_draw_string(dpi, buffer, colour, left, top);
     }while(researchItem++->entryIndex != researchItemEndMarker);
 }
