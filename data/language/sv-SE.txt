@@ -4462,6 +4462,7 @@ STR_6153    :Betala för inträde / Betala för åktur
 STR_6154    :Det är inte rekommenderat att köra OpenRCT2 med extra behörigheter.
 STR_6155    :Varken KDialog eller Zenity är installerade. Vänligen installera en av dem eller konfigurera från kommandoraden.
 STR_6156    :Namn är reserverat
+STR_6157    :Utvecklarkonsol
 
 #############
 # Scenarion #

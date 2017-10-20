@@ -4466,6 +4466,7 @@ STR_6153    :Zpoplatněné vstupné / Zpoplatněné atrakce
 STR_6154    :Není doporučeno spouštět OpenRCT2 v řežimu zvýšených oprávnění.
 STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
 STR_6156    :Tento název je rezervován a nelze jej použít.
+STR_6157    :Konzole
 
 ###############################################################################
 ## RCT2 Objects
