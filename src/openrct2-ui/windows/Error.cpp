@@ -20,6 +20,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
+#include <openrct2/drawing/font.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 
@@ -119,7 +120,7 @@ rct_window * window_error_open(rct_string_id title, rct_string_id message)
 
     _window_error_num_lines = numLines;
     width = width + 3;
-    height = (numLines + 1) * 10 + 4;
+    height = (numLines + 1) * font_get_line_height(gCurrentFontSpriteBase) + 4;
 
     window_error_widgets[WIDX_BACKGROUND].right = width;
     window_error_widgets[WIDX_BACKGROUND].bottom = height;
