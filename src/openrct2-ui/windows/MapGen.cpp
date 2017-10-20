@@ -1130,11 +1130,11 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_TREES_BASE_FREQ_UP:
-        _treesBaseFreq = Math::Min(_treesBaseFreq + 5, 1000);
+        _treesBaseFreq = Math::Min(_treesBaseFreq + 1, 1000);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_TREES_BASE_FREQ_DOWN:
-        _treesBaseFreq = Math::Max(_treesBaseFreq - 5, 0);
+        _treesBaseFreq = Math::Max(_treesBaseFreq - 1, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_TREES_OCTAVES_UP:
@@ -1142,7 +1142,7 @@ static void window_mapgen_simplex_mousedown(rct_window *w, rct_widgetindex widge
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_TREES_OCTAVES_DOWN:
-        _treesOctaves = Math::Max(_treesOctaves - 1, 1);
+        _treesOctaves = Math::Max(_treesOctaves - 1, 0);
         window_invalidate(w);
         break;
     case WIDX_SIMPLEX_TREES_PROBABILITY_UP:
