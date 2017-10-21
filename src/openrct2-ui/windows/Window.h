@@ -116,3 +116,5 @@ void window_ride_measurements_design_cancel();
 // rct2: 0x00F635EE
 extern ride_list_item _window_track_list_item;
 rct_window * window_track_list_open(ride_list_item item);
+
+void window_map_tooltip_update_visibility();

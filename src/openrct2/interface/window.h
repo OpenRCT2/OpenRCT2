@@ -745,8 +745,6 @@ void window_bubble_list_item(rct_window* w, sint32 item_position);
 
 void window_align_tabs( rct_window *w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id );
 
-void window_map_tooltip_update_visibility();
-
 void window_staff_list_init_vars();
 
 void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);

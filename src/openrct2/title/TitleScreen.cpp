@@ -172,7 +172,7 @@ void TitleScreen::Update()
 
     input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, false);
 
-    window_map_tooltip_update_visibility();
+    context_update_map_tooltip();
     window_dispatch_update_all();
 
     gSavedAge++;
