@@ -102,12 +102,14 @@ endif ()
 
 set(SAWYERCODING_TEST_SOURCES
         "${CMAKE_CURRENT_LIST_DIR}/sawyercoding_test.cpp"
-        "${ROOT_DIR}/src/openrct2/diagnostic.c"
+        "${ROOT_DIR}/src/openrct2/core/IStream.cpp"
+        "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
+        "${ROOT_DIR}/src/openrct2/rct12/SawyerChunk.cpp"
+        "${ROOT_DIR}/src/openrct2/rct12/SawyerChunkReader.cpp"
         "${ROOT_DIR}/src/openrct2/util/sawyercoding.c"
-        "${ROOT_DIR}/src/openrct2/localisation/utf8.c"
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
-target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES})
+target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME sawyercoding COMMAND test_sawyercoding)
 
 # LanguagePack test
@@ -120,7 +122,7 @@ if (UNIX AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     # Include libdl for dlopen
     set(LDL dl)
 endif ()
-target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common ${LDL} z SDL2)
+target_link_libraries(test_languagepack ${GTEST_LIBRARIES} test-common ${LDL} z)
 add_test(NAME languagepack COMMAND test_languagepack)
 
 # INI test
