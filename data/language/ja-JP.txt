@@ -2388,7 +2388,7 @@ STR_2379    :{SMALLFONT}{BLACK}Adjust larger area of land
 STR_2380    :{SMALLFONT}{BLACK}Adjust smaller area of water
 STR_2381    :{SMALLFONT}{BLACK}Adjust larger area of water
 STR_2382    :地形
-STR_2383    :Water
+STR_2383    :水
 STR_2384    :{WINDOW_COLOUR_2}あなたの目標:
 STR_2385    :{BLACK}なし
 STR_2386    :{BLACK}To have at least {COMMA16} guests in your park at the end of {MONTHYEAR}, with a park rating of at least 600
@@ -2492,7 +2492,7 @@ STR_2483    :{WINDOW_COLOUR_2}週収: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}週収: {RED}{CURRENCY2DP}
 STR_2485    :コントロール
 STR_2486    :General
-STR_2487    :Show 'real' names of guests
+STR_2487    :ゲストの名前は現実的な
 STR_2488    :{SMALLFONT}{BLACK}Toggle between showing 'real' names of guests and guest numbers
 STR_2489    :キーバインドの確認…
 STR_2490    :キーバインドの確認
@@ -3240,20 +3240,20 @@ STR_3228    :{SMALLFONT}{BLACK}Set starting positions for people
 STR_3229    :Block Brakes cannot be used directly after station
 STR_3230    :Block Brakes cannot be used directly after each other
 STR_3231    :Block Brakes cannot be used directly after the top of this lift hill
-STR_3232    :Options - Financial
-STR_3233    :Options - Guests
-STR_3234    :Options - Park
-STR_3235    :{SMALLFONT}{BLACK}Show financial options
-STR_3236    :{SMALLFONT}{BLACK}Show guest options
-STR_3237    :{SMALLFONT}{BLACK}Show park options
+STR_3232    :財務の設定
+STR_3233    :ゲストの設定
+STR_3234    :パークの設定
+STR_3235    :{SMALLFONT}{BLACK}財務の設定の表示
+STR_3236    :{SMALLFONT}{BLACK}ゲストの設定の表示
+STR_3237    :{SMALLFONT}{BLACK}パークの設定の表示
 STR_3238    :No Money
 STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
-STR_3240    :{WINDOW_COLOUR_2}Initial cash:
-STR_3241    :{WINDOW_COLOUR_2}Initial loan:
+STR_3240    :{WINDOW_COLOUR_2}金銭 初期値:
+STR_3241    :{WINDOW_COLOUR_2}借金 初期値:
 STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
 STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
-STR_3244    :Forbid marketing campaigns
-STR_3245    :{SMALLFONT}{BLACK}Forbid advertising, promotional schemes, and other marketing campaigns
+STR_3244    :広告宣伝キャンペーンを禁止する
+STR_3245    :{SMALLFONT}{BLACK}広告宣伝キャンペーンを禁止の設定です。
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
 STR_3247    :{WINDOW_COLOUR_2}{COMMA16}%
 STR_3248    :Can't increase initial cash any further!
@@ -3264,10 +3264,10 @@ STR_3252    :Can't increase maximum loan size any further!
 STR_3253    :Can't reduce maximum loan size any further!
 STR_3254    :Can't increase interest rate any further!
 STR_3255    :Can't reduce interest rate any further!
-STR_3256    :Guests prefer less intense rides
-STR_3257    :{SMALLFONT}{BLACK}Select whether guests should generally prefer less intense rides only
-STR_3258    :Guests prefer more intense rides
-STR_3259    :{SMALLFONT}{BLACK}Select whether guests should generally prefer more intense rides only
+STR_3256    :ゲストは低いライドの強烈度が好きです。
+STR_3257    :{SMALLFONT}{BLACK}ゲストは低いライドの強烈度が好きの設定です。
+STR_3258    :ゲストは高いライドの強烈度が好きです。
+STR_3259    :{SMALLFONT}{BLACK}ゲストは高いライドの強烈度が好きの設定です。
 STR_3260    :{WINDOW_COLOUR_2}ゲストの平均所持金:
 STR_3261    :{WINDOW_COLOUR_2}ゲストの幸福度　初期値:
 STR_3262    :{WINDOW_COLOUR_2}ゲストの空腹度　初期値:
@@ -3275,18 +3275,18 @@ STR_3263    :{WINDOW_COLOUR_2}ゲストの喉の渇き　初期値:
 STR_3264    :Can't increase this any further!
 STR_3265    :Can't reduce this any further!
 STR_3266    :{SMALLFONT}{BLACK}Select how this park charges for entrance and rides
-STR_3267    :Forbid tree removal
-STR_3268    :{SMALLFONT}{BLACK}Forbid tall trees being removed
-STR_3269    :Forbid landscape changes
-STR_3270    :{SMALLFONT}{BLACK}Forbid any changes to the landscape
-STR_3271    :Forbid high construction
-STR_3272    :{SMALLFONT}{BLACK}Forbid any tall construction
-STR_3273    :Park rating is harder to increase and maintain
-STR_3274    :{SMALLFONT}{BLACK}Make the park rating value more challenging
+STR_3267    :樹木の伐採を禁止する
+STR_3268    :{SMALLFONT}{BLACK}樹木の伐採を禁止の設定です。
+STR_3269    :地形編集を禁止する
+STR_3270    :{SMALLFONT}{BLACK}地形編集を禁止の設定です。
+STR_3271    :高い建物の建造を禁止する
+STR_3272    :{SMALLFONT}{BLACK}高い建物の建造を禁止の設定です。
+STR_3273    :パーク評価値の算定を厳しくする
+STR_3274    :{SMALLFONT}{BLACK}パーク評価値の算定を厳しくの設定です。
 STR_3275    :Guests are more difficult to attract
 STR_3276    :{SMALLFONT}{BLACK}Make it more difficult to attract guests to the park
-STR_3277    :{WINDOW_COLOUR_2}Cost to buy land:
-STR_3278    :{WINDOW_COLOUR_2}Cost to buy construction rights:
+STR_3277    :{WINDOW_COLOUR_2}土地購入費用:
+STR_3278    :{WINDOW_COLOUR_2}土地利用権費用:
 STR_3279    :Free park entry / Pay per ride
 STR_3280    :Pay to enter park / Free rides
 STR_3281    :{WINDOW_COLOUR_2}Entry price:
@@ -3294,15 +3294,15 @@ STR_3282    :{SMALLFONT}{BLACK}Select objective and park name
 STR_3283    :{SMALLFONT}{BLACK}Select rides to be preserved
 STR_3284    :Objective Selection
 STR_3285    :Preserved Rides
-STR_3286    :{SMALLFONT}{BLACK}Select objective for this scenario
+STR_3286    :{SMALLFONT}{BLACK}目標の選定
 STR_3287    :{WINDOW_COLOUR_2}目標:
-STR_3288    :{SMALLFONT}{BLACK}Select climate
-STR_3289    :{WINDOW_COLOUR_2}雰囲気:
+STR_3288    :{SMALLFONT}{BLACK}気候の選定
+STR_3289    :{WINDOW_COLOUR_2}気候:
 STR_3290    :質素
 STR_3291    :南国
 STR_3292    :砂漠
 STR_3293    :冬
-STR_3294    :Change...
+STR_3294    :変更する...
 STR_3295    :{SMALLFONT}{BLACK}Change name of park
 STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
 STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
@@ -3459,13 +3459,13 @@ STR_3445    :巡回エリアにセットする
 STR_3446    :巡回エリアをキャンセル
 
 # New strings, cleaner
-STR_5120    :Finances
+STR_5120    :財務表
 STR_5121    :研究
-STR_5122    :Select rides by track type (like in RCT1)
+STR_5122    :RCT1のようにライドタイプ選定
 STR_5123    :Renew rides
 STR_5124    :<not used anymore>
 STR_5125    :All destructible
-STR_5126    :Random title music
+STR_5126    :ランダムのタイトル音楽
 STR_5127    :{SMALLFONT}{BLACK}While dragging, paint landscape instead of changing elevation
 STR_5128    :Selection size
 STR_5129    :Enter selection size between {COMMA16} and {COMMA16}
@@ -3492,7 +3492,7 @@ STR_5149    :{SMALLFONT}{BLACK}Show cheat options
 STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
-STR_5153    :Edit Themes...
+STR_5153    :テーマを変更する
 STR_5154    :Hardware display
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
@@ -3517,31 +3517,31 @@ STR_5174    :{SMALLFONT}{BLACK}Use Twitch chat messages preceded by !news for in
 STR_5175    :Input the name of your Twitch channel
 STR_5176    :Enable Twitch integration
 STR_5177    :スクリーンモード:
-STR_5178    :{SMALLFONT}{BLACK}Show financial cheats
-STR_5179    :{SMALLFONT}{BLACK}Show guest cheats
-STR_5180    :{SMALLFONT}{BLACK}Show park cheats
-STR_5181    :{SMALLFONT}{BLACK}Show ride cheats
+STR_5178    :{SMALLFONT}{BLACK}財務表のカニング
+STR_5179    :{SMALLFONT}{BLACK}ゲストのカニング
+STR_5180    :{SMALLFONT}{BLACK}パクのカニング
+STR_5181    :{SMALLFONT}{BLACK}ライドのカニング
 STR_5182    :{INT32}
 STR_5183    :Base height
 STR_5184    :Enter base height between {COMMA16} and {COMMA16}
 STR_5185    :Water level
 STR_5186    :Enter water level between {COMMA16} and {COMMA16} 
-STR_5187    :Finances
-STR_5188    :New Campaign
+STR_5187    :財務表
+STR_5188    :新しいキャンペーン
 STR_5189    :研究
 STR_5190    :地図
 STR_5191    :ビューポート
 STR_5192    :最近のメッセージ
 STR_5193    :地形
 STR_5194    :水
-STR_5195    :Clear Scenery
-STR_5196    :Land Rights
+STR_5195    :景色物をクリアする
+STR_5196    :土地購入
 STR_5197    :景観物
 STR_5198    :歩道
-STR_5199    :Ride Construction
+STR_5199    :ライドの建設
 STR_5200    :Track Design Place
 STR_5201    :新しいライド
-STR_5202    :Track Design Selection
+STR_5202    :トラックデサイン選択
 STR_5203    :ライド
 STR_5204    :ライドリスト
 STR_5205    :ゲスト
@@ -3549,49 +3549,49 @@ STR_5206    :ゲストリスト
 STR_5207    :スタッフ
 STR_5208    :スタッフ一覧
 STR_5209    :バナー
-STR_5210    :Object Selection
+STR_5210    :オブジェクト選択
 STR_5211    :Invention List
-STR_5212    :Scenario Options
-STR_5213    :Objective Options
+STR_5212    :シナリオ設定
+STR_5213    :目標の設定
 STR_5214    :Map Generation
-STR_5215    :Track Design Manager
-STR_5216    :Track Design Manager List
-STR_5217    :Cheats
+STR_5215    :トラックデサインマネージャー
+STR_5216    :トラックデサインマネージャーリスト
+STR_5217    :カンニング
 STR_5218    :スタイル
 STR_5219    :設定
 STR_5220    :ショートカット
 STR_5221    :ショートカットをセットする
-STR_5222    :Load/Save
-STR_5223    :Save Prompt
-STR_5224    :Demolish Ride Prompt
-STR_5225    :Fire Staff Prompt
-STR_5226    :Track Delete Prompt
-STR_5227    :Save Overwrite Prompt
-STR_5228    :{SMALLFONT}{BLACK}Main UI
-STR_5229    :{SMALLFONT}{BLACK}Park
-STR_5230    :{SMALLFONT}{BLACK}Tools
-STR_5231    :{SMALLFONT}{BLACK}Rides and Guests
-STR_5232    :{SMALLFONT}{BLACK}Editors
-STR_5233    :{SMALLFONT}{BLACK}Miscellaneous
-STR_5234    :{SMALLFONT}{BLACK}Prompts
-STR_5235    :{SMALLFONT}{BLACK}Settings
+STR_5222    :ロード／セーブ
+STR_5223    :セーブのプロンプト
+STR_5224    :Demolish Rideのプロンプト
+STR_5225    :Fire Staffのプロンプト
+STR_5226    :Track Deleteのプロンプト
+STR_5227    :Save Overwriteのプロンプト
+STR_5228    :{SMALLFONT}{BLACK}メインUI
+STR_5229    :{SMALLFONT}{BLACK}パーク
+STR_5230    :{SMALLFONT}{BLACK}ツール
+STR_5231    :{SMALLFONT}{BLACK}ライドとゲスト
+STR_5232    :{SMALLFONT}{BLACK}エディター
+STR_5233    :{SMALLFONT}{BLACK}雑貨
+STR_5234    :{SMALLFONT}{BLACK}プロンプト
+STR_5235    :{SMALLFONT}{BLACK}設定
 STR_5236    :ウインドウ:
 STR_5237    :パレット:
 STR_5238    :現行のスタイル:
 STR_5239    :複写
-STR_5240    :Enter a name for the theme
-STR_5241    :Can't change this theme
-STR_5242    :Theme name already exists
+STR_5240    :スタイルの名を入力してください。
+STR_5241    :このスタイルを変更できません。
+STR_5242    :スタイルの名はもう存在します。
 STR_5243    :Invalid characters used
 STR_5244    :スタイル
 STR_5245    :上のツールバー
 STR_5246    :下のツールバー
 STR_5247    :トラックエディターの下のツールバー
 STR_5248    :シナリオエディターの下のツールバー
-STR_5249    :Title Menu Buttons
-STR_5250    :Title Exit Button
-STR_5251    :Title Options Button
-STR_5252    :Title Scenario Selection
+STR_5249    :タイトルメニューのボタン
+STR_5250    :タイトルの終了ボタン
+STR_5251    :タイトルの設定ボタン
+STR_5252    :タイトルのシナリオ選択
 STR_5253    :パーク・インフォメーション
 STR_5254    :Create
 STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
@@ -3684,10 +3684,10 @@ STR_5341    :<removed string - do not use>
 STR_5342    :<removed string - do not use>
 STR_5343    :Automatically place staff
 STR_5344    :変更履歴
-STR_5345    :Financial cheats
-STR_5346    :Guest cheats
-STR_5347    :Park cheats
-STR_5348    :Ride cheats
+STR_5345    :財務のカンニング
+STR_5346    :ゲストのカンニング
+STR_5347    :パークのカンニング
+STR_5348    :ライドのカンニング
 STR_5349    :{SMALLFONT}{BLACK}All Rides
 STR_5350    :最大限
 STR_5351    :最小限
@@ -3698,19 +3698,19 @@ STR_5355    :{BLACK}喉の渇き:
 STR_5356    :{BLACK}ゲロ度:
 STR_5357    :{BLACK}乗り物酔い耐性:
 STR_5358    :{BLACK}トイレ度:
-STR_5359    :Remove guests
-STR_5360    :{SMALLFONT}{BLACK}Removes all guests from the map
-STR_5361    :Give all guests:
-STR_5362    :{BLACK}Set all guests' preferred ride intensity to:
-STR_5363    :More than 1
-STR_5364    :Less than 15
+STR_5359    :全てのゲストを外す
+STR_5360    :{SMALLFONT}{BLACK}全てのゲストを外すのカンニングです。
+STR_5361    :全てのゲストに上げる:
+STR_5362    :{BLACK}ゲストのいライド強烈度は○○に設定する:
+STR_5363    :1以上
+STR_5364    :15以下
 STR_5365    :{BLACK}スタフのスピード:
 STR_5366    :普通
 STR_5367    :速い
 STR_5368    :Reset crash status
 STR_5369    :Park parameters...
 STR_5370    :{SMALLFONT}{BLACK}Click this button to modify park{NEWLINE}parameters like restrictions,{NEWLINE}guest generation and money.
-STR_5371    :Object Selection
+STR_5371    :オブジェクト選定
 STR_5372    :Invert right mouse dragging
 STR_5373    :名前 {STRINGID}
 STR_5374    :日時 {STRINGID}
@@ -3831,7 +3831,7 @@ STR_5488    :No entrance (OpenRCT2 only!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
 STR_5491    :Inventions list
-STR_5492    :Scenario options
+STR_5492    :シナリオ設定
 STR_5493    :Send Message
 STR_5494    :<not used anymore>
 STR_5495    :プレーヤー 名鑑
@@ -3918,7 +3918,7 @@ STR_5575    :プレーヤーの制限:
 STR_5576    :ポート:
 STR_5577    :大韓民国ウォン (₩)
 STR_5578    :ロシア・ルーブル (₽)
-STR_5579    :Window scale factor:
+STR_5579    :ウインドウのスケール:
 STR_5580    :チェコ・コルナ (Kc)
 STR_5581    :FPSを表示する
 STR_5582    :Trap mouse cursor in window
@@ -3984,7 +3984,7 @@ STR_5641    :Default Group:
 STR_5642    :Group:
 STR_5643    :Add Group
 STR_5644    :Remove Group
-STR_5645    :Chat
+STR_5645    :チャット
 STR_5646    :Terraform
 STR_5647    :Toggle Pause
 STR_5648    :Set Water Level
@@ -4222,7 +4222,7 @@ STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crash
 STR_5910    :Apply
 STR_5911    :歩道透明度の切り替え
 STR_5912    :歩道透明度の切り替え
-STR_5913    :Chat
+STR_5913    :チャット
 STR_5914    :Unknown ride
 STR_5915    :プレイヤー
 STR_5916    :{COMMA16}プレイヤー
@@ -4265,10 +4265,10 @@ STR_5952    :{WINDOW_COLOUR_2}Sequence number: {BLACK}{COMMA16}
 STR_5953    :{SMALLFONT}{BLACK}Sort the map elements on the current tile based on their base height.
 STR_5954    :{WINDOW_COLOUR_2}Scenery age: {BLACK}{COMMA16}
 STR_5955    :{WINDOW_COLOUR_2}Quadrant placement: {BLACK}{STRINGID}
-STR_5956    :Southwest
-STR_5957    :Northwest
-STR_5958    :Northeast
-STR_5959    :Southeast
+STR_5956    :南西
+STR_5957    :北西
+STR_5958    :北東
+STR_5959    :南東
 STR_5960    :{WINDOW_COLOUR_2}Quadrant placement:
 STR_5961    :{WINDOW_COLOUR_2}Entry index: {BLACK}{COMMA16}
 STR_5962    :{WINDOW_COLOUR_2}Collision detection:
@@ -4276,12 +4276,12 @@ STR_5963    :{WINDOW_COLOUR_2}Raised Corners:
 STR_5964    :{WINDOW_COLOUR_2}Diagonal
 STR_5965    :{WINDOW_COLOUR_2}Entrance type: {BLACK}{STRINGID}
 STR_5966    :{WINDOW_COLOUR_2}Park entrance part: {BLACK}{STRINGID}
-STR_5967    :Middle
-STR_5968    :Left
-STR_5969    :Right
-STR_5970    :{WINDOW_COLOUR_2}Entrance ID: {BLACK}{COMMA16}
-STR_5971    :{WINDOW_COLOUR_2}Exit ID: {BLACK}{COMMA16}
-STR_5972    :{WINDOW_COLOUR_2}Ride ID: {BLACK}{COMMA16}
+STR_5967    :中
+STR_5968    :左
+STR_5969    :右
+STR_5970    :{WINDOW_COLOUR_2}入口のID: {BLACK}{COMMA16}
+STR_5971    :{WINDOW_COLOUR_2}出口のID: {BLACK}{COMMA16}
+STR_5972    :{WINDOW_COLOUR_2}ライドのID: {BLACK}{COMMA16}
 STR_5973    :Clamp to next
 STR_5974    :{SMALLFONT}{BLACK}Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :Slope:
@@ -4324,27 +4324,27 @@ STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :{SMALLFONT}{BLACK}Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
 STR_6014    :{SMALLFONT}{BLACK}Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
-STR_6015    :Sloped
+STR_6015    :斜面
 STR_6016    :Modify Tile
-STR_6017    :Please slow down
-STR_6018    :Ride construction - Turn left
-STR_6019    :Ride construction - Turn right
-STR_6020    :Ride construction - Use default track
-STR_6021    :Ride construction - Slope down
-STR_6022    :Ride construction - Slope up
-STR_6023    :Ride construction - Toggle chain lift
-STR_6024    :Ride construction - Bank left
-STR_6025    :Ride construction - Bank right
-STR_6026    :Ride construction - Previous track
-STR_6027    :Ride construction - Next track
-STR_6028    :Ride construction - Build current
-STR_6029    :Ride construction - Demolish current
+STR_6017    :ゆっくりして下さい。
+STR_6018    :ライドの建設 - 左折
+STR_6019    :ライドの建設 - 右折
+STR_6020    :ライドの建設 - 直進
+STR_6021    :ライドの建設 - 下り斜面
+STR_6022    :ライドの建設 - 上り斜面
+STR_6023    :ライドの建設 - チェーンリフト
+STR_6024    :ライドの建設 - 左の傾斜
+STR_6025    :ライドの建設 - 右の傾斜
+STR_6026    :ライドの建設 - 前のトラック
+STR_6027    :ライドの建設 - 次のトラック
+STR_6028    :ライドの建設 - 現在のアイテムを建てる
+STR_6029    :ライドの建設 - 削除
 STR_6030    :{SMALLFONT}{BLACK}Scenery picker. Click any scenery on the map to select the same piece for construction.
-STR_6031    :Server Description:
-STR_6032    :Server Greeting:
-STR_6033    :Path to RCT1 installation:
+STR_6031    :サーバの説明:
+STR_6032    :サーバの挨拶:
+STR_6033    :RCT1インストールのパス:
 STR_6034    :{SMALLFONT}{BLACK}{STRING}
-STR_6035    :Please select your RCT1 directory
+STR_6035    :RCT1のダイレクトリーを選定します。
 STR_6036    :{SMALLFONT}{BLACK}Clear
 STR_6037    :Please select a valid RCT1 directory
 STR_6038    :{SMALLFONT}{BLACK}If you have RCT1 installed, set this option to its directory to load scenarios, music, etc.
@@ -4367,7 +4367,7 @@ STR_6054    :Only 24-bit bitmaps are supported
 STR_6055    :OpenRCT2 Heightmap File
 STR_6056    :{SMALLFONT}{BLACK}Mute
 STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
-STR_6058    :Mute
+STR_6058    :ミュート
 STR_6059    :{RIGHTGUILLEMET}
 STR_6060    :Show guest purchases as animation
 STR_6061    :{SMALLFONT}{BLACK}Show animated money effect{NEWLINE}when guests make purchases.
@@ -4433,17 +4433,17 @@ STR_6120    :{BABYBLUE}New vehicle now available for {STRINGID}:{NEWLINE}{STRING
 STR_6121    :{SMALLFONT}{BLACK}Extends the park's land rights all the way to the edges of the map
 STR_6122    :There are not enough roller coasters in this scenario!
 STR_6123    :Error loading objects for park
-STR_6124    :Object name
-STR_6125    :Object type
-STR_6126    :Unknown type
-STR_6127    :File: {STRING}
+STR_6124    :オブジェクトの名
+STR_6125    :オブジェクトのタイプ
+STR_6126    :タイプ未知
+STR_6127    :ファイル: {STRING}
 STR_6128    :The file could not be loaded as some of the objects referenced in it are missing or corrupt. A list of these objects is given below.
 STR_6129    :Copy selected item to clipboard
 STR_6130    :Copy entire list to clipboard
-STR_6131    :Object source
+STR_6131    :オブジェクト源
 STR_6132    :Ignore research status
 STR_6133    :{SMALLFONT}{BLACK}Access rides and scenery that have not yet been invented
-STR_6134    :Clear Scenery
+STR_6134    :景色物をクリアする
 STR_6135    :Client sent invalid request
 STR_6136    :Server sent invalid request
 STR_6137    :OpenRCT2, a free and open source clone of Roller Coaster Tycoon 2.
@@ -4453,7 +4453,7 @@ STR_6140    :変更履歴...
 STR_6141    :RCT1の下のツールバー
 STR_6142    :{WINDOW_COLOUR_2}トラックの名: {BLACK}{STRING}
 STR_6143    :{WINDOW_COLOUR_2}ラウドの名: {BLACK}{STRINGID}
-STR_6144    :Show dirty visuals
+STR_6144    :汚いビジュアルを表示する
 STR_6145    :{SMALLFONT}{BLACK}Set speed limit for boosters
 STR_6146    :Enable all drawable track pieces
 STR_6147    :{SMALLFONT}{BLACK}Enables all track pieces the ride type is capable of in the construction window, regardless of whether the vehicle supports them.
@@ -4466,6 +4466,7 @@ STR_6153    :パークの価格／ライドの価格
 STR_6154    :高い権限でOpenRCT2を実行することは推奨されません。
 STR_6155    :KDialogやZenityがインストールしませんでした。どれかがインストールして下さい又は、コマンドラインから設定して下さい。
 STR_6156    :その名が残しました。
+STR_6157    :コンソール
 
 
 #####################

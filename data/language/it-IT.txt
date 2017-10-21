@@ -4465,6 +4465,10 @@ STR_6150    :Risposta non valida da parte del server principale (il JSON non è 
 STR_6151    :Il server principale non ha inviato la lista dei server
 STR_6152    :Risposta non valida da parte del server principale (il JSON non è un array)
 STR_6153    :Biglietto di ingresso / Attrazioni a pagamento
+STR_6154    :È sconsigliato eseguire OpenRCT2 con permessi di amministratore.
+STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
+STR_6156    :Il nome è riservato
+STR_6157    :Console
 
 
 #############
