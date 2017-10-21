@@ -12,13 +12,14 @@
 #ifdef __cplusplus
 struct IntentData
 {
-    enum DATATYPE { DT_INT, DT_STRING, DT_POINTER } type;
+    enum DATATYPE { DT_INT, DT_STRING, DT_POINTER, DT_CLOSE_CALLBACK } type;
 
     union {
         uint32 unsignedInt;
         sint32 signedInt;
     } intVal;
     std::string stringVal;
+    close_callback closeCallbackVal;
     void * pointerVal;
 };
 
@@ -34,10 +35,12 @@ public:
     std::string GetStringExtra(uint32 key);
     uint32 GetUIntExtra(uint32 key);
     sint32 GetSIntExtra(uint32 key);
+    close_callback GetCloseCallbackExtra(uint32 key);
     Intent * putExtra(uint32 key, uint32 value);
     Intent * putExtra(uint32 key, void * value);
     Intent * putExtra(uint32 key, sint32 value);
     Intent * putExtra(uint32 key, std::string value);
+    Intent * putExtra(uint32 key, close_callback value);
 };
 #else
 // Allow C code to use `Intent *`
@@ -62,6 +65,7 @@ extern "C" {
         INTENT_EXTRA_RIDE_ENTRY_INDEX,
         INTENT_EXTRA_TILE_ELEMENT,
         INTENT_EXTRA_VEHICLE,
+        INTENT_EXTRA_MESSAGE,
     };
 
     enum {

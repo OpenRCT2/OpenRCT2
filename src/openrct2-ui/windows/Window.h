@@ -121,3 +121,7 @@ void window_map_tooltip_update_visibility();
 
 rct_window * window_maze_construction_open();
 void window_maze_construction_update_pressed_widgets();
+
+rct_window * window_network_status_open(const char * text, close_callback onClose);
+rct_window * window_network_status_open_password();
+void window_network_status_close();

@@ -41,6 +41,7 @@ namespace OpenRCT2
             virtual rct_window * OpenIntent(Intent * intent) abstract;
             virtual void BroadcastIntent(Intent * intent) abstract;
             virtual rct_window * ShowError(rct_string_id title, rct_string_id message) abstract;
+            virtual void ForceClose(rct_windowclass windowClass) abstract;
             virtual void UpdateMapTooltip() abstract;
             virtual void HandleKeyboard(bool isTitle) abstract;
             virtual std::string GetKeyboardShortcutString(sint32 shortcut) abstract;

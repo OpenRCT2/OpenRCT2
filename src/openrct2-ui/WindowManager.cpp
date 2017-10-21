@@ -146,6 +146,8 @@ public:
             }
         case WV_MAZE_CONSTRUCTION:
             return window_maze_construction_open();
+        case WV_NETWORK_PASSWORD:
+            return window_network_status_open_password();
         default:
             return nullptr;
         }
@@ -203,6 +205,12 @@ public:
         }
         case WC_MANAGE_TRACK_DESIGN:
             return window_track_manage_open((track_design_file_ref *) intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+        case WC_NETWORK_STATUS:
+        {
+            std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
+            close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
+            return window_network_status_open(message.c_str(), callback);
+        }
         case WC_RIDE:
             return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
         case WC_TRACK_DESIGN_PLACE:
@@ -265,6 +273,19 @@ public:
 
         case INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION:
             window_maze_construction_update_pressed_widgets();
+            break;
+        }
+    }
+
+    void ForceClose(rct_windowclass windowClass) override
+    {
+        switch (windowClass)
+        {
+        case WC_NETWORK_STATUS:
+            window_network_status_close();
+            break;
+
+        default:
             break;
         }
     }

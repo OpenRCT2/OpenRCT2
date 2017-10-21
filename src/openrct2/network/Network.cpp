@@ -463,9 +463,13 @@ void Network::UpdateClient()
                 _lastConnectStatus = SOCKET_STATUS_RESOLVING;
                 char str_resolving[256];
                 format_string(str_resolving, 256, STR_MULTIPLAYER_RESOLVING, nullptr);
-                window_network_status_open(str_resolving, []() -> void {
+
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_resolving });
+                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void {
                     gNetwork.Close();
                 });
+                context_open_intent(&intent);
             }
             break;
         }
@@ -476,9 +480,14 @@ void Network::UpdateClient()
                 _lastConnectStatus = SOCKET_STATUS_CONNECTING;
                 char str_connecting[256];
                 format_string(str_connecting, 256, STR_MULTIPLAYER_CONNECTING, nullptr);
-                window_network_status_open(str_connecting, []() -> void {
+
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_connecting });
+                intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void {
                     gNetwork.Close();
                 });
+                context_open_intent(&intent);
+
                 server_connect_time = platform_get_ticks();
             }
             break;
@@ -490,9 +499,13 @@ void Network::UpdateClient()
             Client_Send_TOKEN();
             char str_authenticating[256];
             format_string(str_authenticating, 256, STR_MULTIPLAYER_AUTHENTICATING, nullptr);
-            window_network_status_open(str_authenticating, []() -> void {
+
+            auto intent = Intent(WC_NETWORK_STATUS);
+            intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_authenticating });
+            intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void {
                 gNetwork.Close();
             });
+            context_open_intent(&intent);
             break;
         }
         default:
@@ -503,7 +516,7 @@ void Network::UpdateClient()
             }
 
             Close();
-            window_network_status_close();
+            context_force_close_window_by_class(WC_NETWORK_STATUS);
             context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE);
             break;
         }
@@ -515,7 +528,7 @@ void Network::UpdateClient()
         if (!ProcessConnection(*server_connection)) {
             // Do not show disconnect message window when password window closed/canceled
             if (server_connection->AuthStatus == NETWORK_AUTH_REQUIREPASSWORD) {
-                window_network_status_close();
+                context_force_close_window_by_class(WC_NETWORK_STATUS);
             } else {
                 char str_disconnected[256];
 
@@ -526,7 +539,9 @@ void Network::UpdateClient()
                     format_string(str_disconnected, 256, STR_MULTIPLAYER_DISCONNECTED_NO_REASON, nullptr);
                 }
 
-                window_network_status_open(str_disconnected, nullptr);
+                auto intent = Intent(WC_NETWORK_STATUS);
+                intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_disconnected });
+                context_open_intent(&intent);
             }
             Close();
         }
@@ -647,7 +662,11 @@ void Network::CheckDesynchronizaton()
 
         char str_desync[256];
         format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
-        window_network_status_open(str_desync, NULL);
+
+        auto intent = Intent(WC_NETWORK_STATUS);
+        intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_desync });
+        context_open_intent(&intent);
+
         if (!gConfigNetwork.stay_connected) {
             Close();
         }
@@ -1690,7 +1709,7 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         connection.Socket->Disconnect();
         break;
     case NETWORK_AUTH_REQUIREPASSWORD:
-        window_network_status_open_password();
+        context_open_window_view(WV_NETWORK_PASSWORD);
         break;
     case NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED:
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
@@ -1912,12 +1931,17 @@ void Network::Client_Handle_MAP(NetworkConnection& connection, NetworkPacket& pa
     char str_downloading_map[256];
     uint32 downloading_map_args[2] = {(offset + chunksize) / 1024, size / 1024};
     format_string(str_downloading_map, 256, STR_MULTIPLAYER_DOWNLOADING_MAP, downloading_map_args);
-    window_network_status_open(str_downloading_map, []() -> void {
+
+    auto intent = Intent(WC_NETWORK_STATUS);
+    intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_downloading_map });
+    intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void {
         gNetwork.Close();
     });
+    context_open_intent(&intent);
+
     memcpy(&chunk_buffer[offset], (void*)packet.Read(chunksize), chunksize);
     if (offset + chunksize == size) {
-        window_network_status_close();
+        context_force_close_window_by_class(WC_NETWORK_STATUS);
         bool has_to_free = false;
         uint8 *data = &chunk_buffer[0];
         size_t data_size = size;
