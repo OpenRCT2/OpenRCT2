@@ -14,20 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../drawing/IDrawingEngine.h"
-#include "../ride/TrackDesignRepository.h"
-#include "../OpenRCT2.h"
-#include "../core/Math.hpp"
-#include "../core/Memory.hpp"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../Editor.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../rct1.h"
-#include "../sprites.h"
-#include "../windows/Intent.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/Editor.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/rct1.h>
+#include <openrct2/ride/TrackDesignRepository.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/Intent.h>
 
 enum {
     WIDX_BACKGROUND,
@@ -113,7 +114,7 @@ static bool track_list_load_design_for_preview(utf8 *path);
  *
  *  rct2: 0x006CF1A2
  */
-static void _window_track_list_open(ride_list_item item)
+rct_window * window_track_list_open(ride_list_item item)
 {
     window_close_construction_windows();
     _window_track_list_item = item;
@@ -155,6 +156,8 @@ static void _window_track_list_open(ride_list_item item)
 
     _loadedTrackDesign = nullptr;
     _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+
+    return w;
 }
 
 /**
@@ -643,12 +646,4 @@ static bool track_list_load_design_for_preview(utf8 *path)
         return true;
     }
     return false;
-}
-
-extern "C"
-{
-    void window_track_list_open(ride_list_item item)
-    {
-        _window_track_list_open(item);
-    }
 }

@@ -630,9 +630,6 @@ extern rct_window * gWindowFirst;
 extern rct_window * gWindowNextSlot;
 extern rct_window * gWindowAudioExclusive;
 
-// rct2: 0x00F635EE
-extern ride_list_item _window_track_list_item;
-
 extern uint16 gWindowUpdateTicks;
 extern uint8 gToolbarDirtyFlags;
 extern uint16 gWindowMapFlashingFlags;
@@ -719,7 +716,6 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height);
 void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
-void window_track_list_open(ride_list_item item);
 void window_ride_construct(rct_window *w);
 rct_window *window_ride_construction_open();
 rct_window *window_maze_construction_open();
