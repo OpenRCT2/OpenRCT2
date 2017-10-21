@@ -65,6 +65,7 @@ Some Linux distributions offer native packages already. These packages are usual
 * Ubuntu PPA: [`master` branch](https://launchpad.net/~openrct2/+archive/ubuntu/master) and [`develop` branch](https://launchpad.net/~openrct2/+archive/ubuntu/nightly) (`develop` branch builds are temporarily on hold due to [missing functionality in bzr](https://bugs.launchpad.net/ubuntu/+source/bzr-git/+bug/1084403))
 * openSUSE OBS: [games/openrct2](https://software.opensuse.org/download.html?project=games&package=openrct2)
 * Gentoo (main portage tree): [games-simulation/openrct2](https://packages.gentoo.org/packages/games-simulation/openrct2)
+* NixOS (`nixos-unstable` channel): [openrct2](https://github.com/NixOS/nixpkgs/blob/master/pkgs/games/openrct2/default.nix)
 
 Some \*BSD operating systems offer native packages. These packages are usually third-party, but we're trying to resolve issues they are facing.
 * OpenBSD: [games/openrct2](http://openports.se/games/openrct2)
