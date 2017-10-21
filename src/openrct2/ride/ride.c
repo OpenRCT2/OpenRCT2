@@ -38,6 +38,7 @@
 #include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
+#include "../windows/Intent.h"
 #include "../world/banner.h"
 #include "../world/Climate.h"
 #include "../world/footpath.h"
@@ -7656,7 +7657,11 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
         // Open ride window for crashed vehicle
-        rct_window *w = window_ride_open_vehicle(vehicle);
+        Intent * intent = intent_create(WD_VEHICLE);
+        intent_set_pointer(intent, INTENT_EXTRA_VEHICLE, vehicle);
+        rct_window * w = context_open_intent(intent);
+        intent_release(intent);
+
         if (w->viewport != NULL) {
             w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }

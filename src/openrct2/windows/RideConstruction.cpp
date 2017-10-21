@@ -35,6 +35,7 @@
 #include "dropdown.h"
 #include "../sprites.h"
 #include "../world/entrance.h"
+#include "Intent.h"
 
 #pragma region Widgets
 
@@ -669,7 +670,9 @@ static void window_ride_construction_close(rct_window *w)
         }
 
         ride_set_to_default_inspection_interval(rideIndex);
-        window_ride_main_open(rideIndex);
+        auto intent = Intent(WC_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+        context_open_intent(&intent);
     }
     else 
     {

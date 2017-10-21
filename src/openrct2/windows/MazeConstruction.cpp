@@ -23,6 +23,8 @@
 #include "../localisation/localisation.h"
 #include "../ride/Track.h"
 #include "../sprites.h"
+#include "Intent.h"
+#include "../Context.h"
 
 #pragma region Widgets
 
@@ -184,7 +186,9 @@ static void window_maze_construction_close(rct_window *w)
         ride_demolish(rideIndex, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
         gGamePaused = savedPausedState;
     } else {
-        window_ride_main_open(rideIndex);
+        auto intent = Intent(WC_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+        context_open_intent(&intent);
     }
 }
 

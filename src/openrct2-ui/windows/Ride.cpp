@@ -14,33 +14,34 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../network/network.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../OpenRCT2.h"
-#include "../ride/RideGroupManager.h"
-#include "../core/Math.hpp"
-#include "../core/Util.hpp"
-#include "../Context.h"
-#include "Intent.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../cheats.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/themes.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../peep/Staff.h"
-#include "../rct1.h"
-#include "../ride/ride_data.h"
-#include "../ride/Track.h"
-#include "../ride/TrackData.h"
-#include "../sprites.h"
-#include "dropdown.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/cheats.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/network/network.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/peep/Staff.h>
+#include <openrct2/rct1.h>
+#include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/ride/TrackData.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/windows/Intent.h>
 
 enum {
     WINDOW_RIDE_PAGE_MAIN,
@@ -1556,7 +1557,7 @@ rct_window *window_ride_main_open(sint32 rideIndex)
  *
  *  rct2: 0x006ACCCE
  */
-rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
+static rct_window * window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
 {
     sint32 i;
     Ride *ride;
