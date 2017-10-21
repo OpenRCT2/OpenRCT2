@@ -349,8 +349,12 @@ void news_item_open_subject(sint32 type, sint32 subject)
     switch (type)
     {
     case NEWS_ITEM_RIDE:
-        window_ride_main_open(subject);
+    {
+        auto intent = Intent(WC_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, subject);
+        context_open_intent(&intent);
         break;
+    }
     case NEWS_ITEM_PEEP_ON_RIDE:
     case NEWS_ITEM_PEEP:
     {

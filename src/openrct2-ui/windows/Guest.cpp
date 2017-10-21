@@ -30,6 +30,8 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/util/util.h>
 #include <openrct2/world/footpath.h>
+#include <openrct2/Context.h>
+#include <openrct2/windows/Intent.h>
 
 enum WINDOW_GUEST_PAGE {
     WINDOW_GUEST_OVERVIEW,
@@ -1578,7 +1580,9 @@ void window_guest_rides_scroll_mouse_down(rct_window *w, sint32 scrollIndex, sin
     index = y / 10;
     if (index >= w->no_list_items) return;
 
-    window_ride_main_open(w->list_item_positions[index]);
+    auto intent = Intent(WC_RIDE);
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, w->list_item_positions[index]);
+    context_open_intent(&intent);
 }
 
 /**

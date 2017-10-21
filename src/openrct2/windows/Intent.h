@@ -60,6 +60,8 @@ extern "C" {
         INTENT_EXTRA_TRACK_DESIGN,
         INTENT_EXTRA_RIDE_TYPE,
         INTENT_EXTRA_RIDE_ENTRY_INDEX,
+        INTENT_EXTRA_TILE_ELEMENT,
+        INTENT_EXTRA_VEHICLE,
     };
 
     enum {

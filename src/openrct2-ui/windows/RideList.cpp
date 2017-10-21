@@ -25,6 +25,8 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/Context.h>
 
 enum {
     PAGE_RIDES,
@@ -442,7 +444,9 @@ static void window_ride_list_scrollmousedown(rct_window *w, sint32 scrollIndex, 
         window_ride_list_refresh_list(w);
     }
     else {
-        window_ride_main_open(rideIndex);
+        auto intent = Intent(WC_RIDE);
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+        context_open_intent(&intent);
     }
 }
 

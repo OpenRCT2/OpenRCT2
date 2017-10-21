@@ -107,3 +107,8 @@ void window_new_ride_focus(ride_list_item rideItem);
 
 rct_window * window_ride_list_open();
 void window_ride_list_refresh_list(rct_window * w);
+
+rct_window * window_ride_main_open(sint32 rideIndex);
+rct_window * window_ride_open_track(rct_tile_element * tileElement);
+rct_window * window_ride_open_vehicle(rct_vehicle * vehicle);
+void window_ride_measurements_design_cancel();

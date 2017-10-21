@@ -29,6 +29,8 @@
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
+#include <openrct2/Context.h>
+#include <openrct2/windows/Intent.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
 #define TRACK_MINI_PREVIEW_HEIGHT   78
@@ -336,7 +338,9 @@ static void window_track_place_tooldown(rct_window* w, rct_widgetindex widgetInd
 
             _currentRideIndex = rideIndex;
             if (track_design_are_entrance_and_exit_placed()) {
-                window_ride_main_open(rideIndex);
+                auto intent = Intent(WC_RIDE);
+                intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex);
+                context_open_intent(&intent);
                 window_close(w);
             } else {
                 ride_initialise_construction_window(rideIndex);

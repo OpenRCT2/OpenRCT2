@@ -201,10 +201,16 @@ public:
         }
         case WC_MANAGE_TRACK_DESIGN:
             return window_track_manage_open((track_design_file_ref *) intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
+        case WC_RIDE:
+            return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
         case WC_TRACK_DESIGN_PLACE:
             return window_track_place_open((track_design_file_ref *) intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN));
         case WC_SCENARIO_SELECT:
             return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+        case WD_VEHICLE:
+            return window_ride_open_vehicle((rct_vehicle *) intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
+        case WD_TRACK:
+            return window_ride_open_track((rct_tile_element *) intent->GetPointerExtra(INTENT_EXTRA_TILE_ELEMENT));
         case INTENT_ACTION_NEW_RIDE_OF_TYPE:
         {
             // Open ride list window
