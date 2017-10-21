@@ -54,7 +54,6 @@ extern "C" {
 extern bool gUseRLE;
 
 uint32 sawyercoding_calculate_checksum(const uint8* buffer, size_t length);
-size_t sawyercoding_read_chunk_buffer(uint8 *dst_buffer, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader, size_t dst_buffer_size);
 size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8 *src_buffer, sawyercoding_chunk_header chunkHeader);
 size_t sawyercoding_decode_sv4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength);
 size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size_t bufferLength);
