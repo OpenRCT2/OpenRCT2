@@ -549,7 +549,9 @@ rct_window *window_ride_construction_open()
     _deferClose = false;
 
     if (ride->type == RIDE_TYPE_MAZE)
-        return window_maze_construction_open();
+    {
+        return context_open_window_view(WV_MAZE_CONSTRUCTION);
+    }
 
     w = window_create(0, 29, 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
@@ -3755,7 +3757,8 @@ void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY)
                 _currentTrackBeginZ += 16;
         }
 
-        window_maze_construction_update_pressed_widgets();
+        auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+        context_broadcast_intent(&intent);
         map_invalidate_map_selection_tiles();
         return;
     }
@@ -3902,7 +3905,8 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
             _currentTrackBeginZ = z;
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
-            window_maze_construction_update_pressed_widgets();
+            auto intent = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+            context_broadcast_intent(&intent);
             w = window_find_by_class(WC_RIDE_CONSTRUCTION);
             if (w == nullptr)
                 break;
@@ -3942,7 +3946,8 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;
                     }
-                    window_maze_construction_update_pressed_widgets();
+                    auto intent2 = Intent(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+                    context_broadcast_intent(&intent2);
                     break;
                 }
                 else if (zAttempts >= 0) {

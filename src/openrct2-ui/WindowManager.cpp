@@ -144,6 +144,8 @@ public:
             {
                 return window_new_ride_open_research();
             }
+        case WV_MAZE_CONSTRUCTION:
+            return window_maze_construction_open();
         default:
             return nullptr;
         }
@@ -260,6 +262,10 @@ public:
 
             break;
         }
+
+        case INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION:
+            window_maze_construction_update_pressed_widgets();
+            break;
         }
     }
 

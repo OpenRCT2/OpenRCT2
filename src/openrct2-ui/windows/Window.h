@@ -118,3 +118,6 @@ extern ride_list_item _window_track_list_item;
 rct_window * window_track_list_open(ride_list_item item);
 
 void window_map_tooltip_update_visibility();
+
+rct_window * window_maze_construction_open();
+void window_maze_construction_update_pressed_widgets();
