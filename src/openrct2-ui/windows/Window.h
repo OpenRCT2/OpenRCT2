@@ -112,3 +112,7 @@ rct_window * window_ride_main_open(sint32 rideIndex);
 rct_window * window_ride_open_track(rct_tile_element * tileElement);
 rct_window * window_ride_open_vehicle(rct_vehicle * vehicle);
 void window_ride_measurements_design_cancel();
+
+// rct2: 0x00F635EE
+extern ride_list_item _window_track_list_item;
+rct_window * window_track_list_open(ride_list_item item);

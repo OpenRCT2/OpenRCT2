@@ -229,7 +229,11 @@ static void window_track_place_mouseup(rct_window *w, rct_widgetindex widgetInde
         break;
     case WIDX_SELECT_DIFFERENT_DESIGN:
         window_close(w);
-        window_track_list_open(_window_track_list_item);
+
+        auto intent = Intent(WC_TRACK_DESIGN_LIST);
+        intent.putExtra(INTENT_EXTRA_RIDE_TYPE, _window_track_list_item.type);
+        intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, _window_track_list_item.entry_index);
+        context_open_intent(&intent);
         break;
     }
 }

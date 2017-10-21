@@ -34,6 +34,7 @@
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
+#include <openrct2/windows/Intent.h>
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
@@ -1013,7 +1014,10 @@ static void window_new_ride_select(rct_window *w)
 
     if (allowTrackDesigns && ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
         if (_lastTrackDesignCount > 0) {
-            window_track_list_open(item);
+            auto intent = Intent(WC_TRACK_DESIGN_LIST);
+            intent.putExtra(INTENT_EXTRA_RIDE_TYPE, item.type);
+            intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, item.entry_index);
+            context_open_intent(&intent);
             return;
         }
     }

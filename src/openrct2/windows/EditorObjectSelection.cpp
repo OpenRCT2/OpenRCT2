@@ -1659,9 +1659,10 @@ static void window_editor_object_selection_manage_tracks()
     rct_ride_entry* ride_entry = get_ride_entry(entry_index);
     uint8 ride_type = ride_entry_get_first_non_null_ride_type(ride_entry);
 
-    ride_list_item item = { ride_type, (uint8) entry_index };
-    // track_load_list(item);
-    window_track_list_open(item);
+    auto intent = Intent(WC_TRACK_DESIGN_LIST);
+    intent.putExtra(INTENT_EXTRA_RIDE_TYPE, ride_type);
+    intent.putExtra(INTENT_EXTRA_RIDE_ENTRY_INDEX, entry_index);
+    context_open_intent(&intent);
 }
 
 /**
