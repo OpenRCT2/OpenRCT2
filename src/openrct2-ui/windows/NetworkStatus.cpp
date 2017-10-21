@@ -14,11 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../network/network.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../util/util.h"
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/network/network.h>
+#include <openrct2/util/util.h>
 
 static char _password[33];
 
@@ -78,7 +79,7 @@ static rct_window_event_list window_network_status_events = {
 
 static close_callback _onClose = nullptr;
 
-void window_network_status_open(const char* text, close_callback onClose)
+rct_window * window_network_status_open(const char* text, close_callback onClose)
 {
     _onClose = onClose;
     safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
@@ -86,7 +87,7 @@ void window_network_status_open(const char* text, close_callback onClose)
     // Check if window is already open
     rct_window *window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
     if (window != nullptr)
-        return;
+        return window;
 
     window = window_create_centred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
@@ -103,6 +104,8 @@ void window_network_status_open(const char* text, close_callback onClose)
 
     window->page = 0;
     window->list_information_type = 0;
+
+    return window;
 }
 
 void window_network_status_close()
@@ -111,14 +114,16 @@ void window_network_status_close()
     window_close_by_class(WC_NETWORK_STATUS);
 }
 
-void window_network_status_open_password()
+rct_window * window_network_status_open_password()
 {
     rct_window* window;
     window = window_bring_to_front_by_class(WC_NETWORK_STATUS);
     if (window == nullptr)
-        return;
+        return nullptr;
 
     window_text_input_raw_open(window, WIDX_PASSWORD, STR_PASSWORD_REQUIRED, STR_PASSWORD_REQUIRED_DESC, _password, 32);
+
+    return window;
 }
 
 static void window_network_status_onclose(rct_window *w)

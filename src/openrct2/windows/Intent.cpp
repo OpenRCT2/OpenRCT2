@@ -51,6 +51,17 @@ Intent * Intent::putExtra(uint32 key, std::string value)
     return this;
 }
 
+Intent * Intent::putExtra(uint32 key, close_callback value)
+{
+    IntentData data = {};
+    data.closeCallbackVal = value;
+    data.type = IntentData::DT_CLOSE_CALLBACK;
+
+    _Data.insert(std::make_pair(key, data));
+
+    return this;
+}
+
 rct_windowclass Intent::GetWindowClass()
 {
     return this->_Class;
@@ -102,6 +113,18 @@ std::string Intent::GetStringExtra(uint32 key)
     auto data = _Data.at(key);
     openrct2_assert(data.type == IntentData::DT_STRING, "Actual type doesn't match requested type");
     return data.stringVal;
+}
+
+close_callback Intent::GetCloseCallbackExtra(uint32 key)
+{
+    if (_Data.count(key) == 0)
+    {
+        return nullptr;
+    }
+
+    auto data = _Data.at(key);
+    openrct2_assert(data.type == IntentData::DT_CLOSE_CALLBACK, "Actual type doesn't match requested type");
+    return data.closeCallbackVal;
 }
 
 extern "C" {

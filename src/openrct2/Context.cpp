@@ -1033,6 +1033,12 @@ extern "C"
         windowManager->BroadcastIntent(intent);
     }
 
+    void context_force_close_window_by_class(rct_windowclass windowClass)
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->ForceClose(windowClass);
+    }
+
     rct_window * context_show_error(rct_string_id title, rct_string_id message)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

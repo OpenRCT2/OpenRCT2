@@ -508,6 +508,7 @@ enum {
     WV_FINANCES_RESEARCH,
     WV_RIDE_RESEARCH,
     WV_MAZE_CONSTRUCTION,
+    WV_NETWORK_PASSWORD,
 };
 
 enum {
@@ -721,11 +722,6 @@ rct_window *window_ride_construction_open();
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
-
-
-void window_network_status_open(const char* text, close_callback onClose);
-void window_network_status_close();
-void window_network_status_open_password();
 
 void window_scenery_open();
 void window_tile_inspector_open();

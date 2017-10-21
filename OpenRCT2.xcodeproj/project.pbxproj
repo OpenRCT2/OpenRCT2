@@ -247,6 +247,11 @@
 		C685E51C1F8907850090598F /* Map.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5171F8907840090598F /* Map.cpp */; };
 		C685E51D1F8907850090598F /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5181F8907840090598F /* Research.cpp */; };
 		C6CB94F21EFFBF860065888F /* libfreetype.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D45A38B41CF3006400659A24 /* libfreetype.dylib */; };
+		C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE11F9BAA6C008B557C /* Ride.cpp */; };
+		C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE31F9BAACC008B557C /* TrackList.cpp */; };
+		C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */; };
+		C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */; };
+		C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
@@ -877,6 +882,11 @@
 		C686F9031CDBC3B7009F9BFC /* boat_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
 		C686F9041CDBC3B7009F9BFC /* dingy_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dingy_slide.c; sourceTree = "<group>"; };
 		C686F9051CDBC3B7009F9BFC /* log_flume.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = log_flume.c; sourceTree = "<group>"; };
+		C6D2BEE11F9BAA6C008B557C /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
+		C6D2BEE31F9BAACC008B557C /* TrackList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackList.cpp; sourceTree = "<group>"; };
+		C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTooltip.cpp; sourceTree = "<group>"; };
+		C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MazeConstruction.cpp; sourceTree = "<group>"; };
+		C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkStatus.cpp; sourceTree = "<group>"; };
 		C6E96E331E0408A80076A04F /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		C6E96E341E0408A80076A04F /* zipconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
 		C6E96E351E0408B40076A04F /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
@@ -2725,6 +2735,7 @@
 				C666EE5B1F37ACB10061AA04 /* MapGen.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
 				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
+				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
 				C654DF231F69C0430040F43D /* NewCampaign.cpp */,
 				C685E5141F8907840090598F /* NewRide.cpp */,
 				C666EE5E1F37ACB10061AA04 /* News.cpp */,
@@ -3292,6 +3303,7 @@
 				4C93F18E1F8B747A00A9330D /* MotionSimulator.cpp in Sources */,
 				C666EE711F37ACB10061AA04 /* MapGen.cpp in Sources */,
 				4C93F17C1F8B747300A9330D /* Facility.cpp in Sources */,
+				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
 				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
@@ -3452,7 +3464,6 @@
 				F76C868E1EC4E88400FA49E2 /* scenery.c in Sources */,
 				F76C868F1EC4E88400FA49E2 /* scenery_multiple.c in Sources */,
 				F76C86901EC4E88400FA49E2 /* surface.c in Sources */,
-				C666EE2D1F33E3800061AA04 /* NetworkStatus.cpp in Sources */,
 				F76C86921EC4E88400FA49E2 /* Paint.cpp in Sources */,
 				F76C86941EC4E88400FA49E2 /* paint_helpers.c in Sources */,
 				F76C86951EC4E88400FA49E2 /* litter.c in Sources */,
