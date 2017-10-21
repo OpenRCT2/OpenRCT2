@@ -325,7 +325,7 @@ static rct_widget window_ride_music_widgets[] = {
 // 0x009AE5DC
 static rct_widget window_ride_measurements_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_FLATBTN,          1,  288,    311,    164,    187,    SPR_FLOPPY,                     STR_SAVE_TRACK_DESIGN                       },
+    { WWT_FLATBTN,          1,  288,    311,    194,    217,    SPR_FLOPPY,                     STR_SAVE_TRACK_DESIGN                       },
     { WWT_DROPDOWN_BUTTON,  1,  4,      157,    128,    139,    STR_SELECT_NEARBY_SCENERY,      STR_NONE                                    },
     { WWT_DROPDOWN_BUTTON,  1,  158,    311,    128,    139,    STR_RESET_SELECTION,            STR_NONE                                    },
     { WWT_DROPDOWN_BUTTON,  1,  4,      157,    178,    189,    STR_DESIGN_SAVE,                STR_NONE                                    },
@@ -5088,7 +5088,7 @@ static void window_ride_measurements_mouseup(rct_window *w, rct_widgetindex widg
  */
 static void window_ride_measurements_resize(rct_window *w)
 {
-    window_set_resize(w, 316, 202, 316, 202);
+    window_set_resize(w, 316, 234, 316, 234);
 }
 
 /**
@@ -5287,7 +5287,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
             set_format_arg(4, rct_string_id, ratingName);
             rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
 
             // Intensity
             ratingName = get_rating_name(ride->intensity);
@@ -5301,7 +5301,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                 stringId = STR_INTENSITY_RATING_RED;
 
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
 
             // Nausea
             ratingName = get_rating_name(ride->nausea);
@@ -5309,7 +5309,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
             set_format_arg(4, rct_string_id, ratingName);
             stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y);
-            y += 20;
+            y += 2 * LIST_ROW_HEIGHT;
 
             // Horizontal rule
             gfx_fill_rect_inset(dpi, x, y - 6, x + 303, y - 5, w->colours[1], INSET_RECT_FLAG_BORDER_INSET);
@@ -5319,17 +5319,17 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                     // Holes
                     holes = ride->holes & 0x1F;
                     gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
                 } else {
                     // Max speed
                     maxSpeed = (ride->max_speed * 9) >> 18;
                     gfx_draw_string_left(dpi, STR_MAX_SPEED, &maxSpeed, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Average speed
                     averageSpeed = (ride->average_speed * 9) >> 18;
                     gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &averageSpeed, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Ride time
                     sint32 numTimes = 0;
@@ -5355,7 +5355,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                     set_format_arg(4 + (numTimes * 4), uint16, 0);
                     set_format_arg(6 + (numTimes * 4), uint16, 0);
                     gfx_draw_string_left_clipped(dpi, STR_RIDE_TIME, gCommonFormatArgs, COLOUR_BLACK, x, y, 308);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
                 }
 
                 // Ride length
@@ -5383,7 +5383,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                 set_format_arg(4 + (numLengths * 4), uint16, 0);
                 set_format_arg(6 + (numLengths * 4), uint16, 0);
                 gfx_draw_string_left_clipped(dpi, STR_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 308);
-                y += 10;
+                y += LIST_ROW_HEIGHT;
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
                     // Max. positive vertical G's
@@ -5391,38 +5391,38 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                     stringId = maxPositiveVerticalGs >= FIXED_2DP(5,00) ?
                         STR_MAX_POSITIVE_VERTICAL_G_RED : STR_MAX_POSITIVE_VERTICAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxPositiveVerticalGs, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Max. negative vertical G's
                     maxNegativeVerticalGs = ride->max_negative_vertical_g;
                     stringId = maxNegativeVerticalGs <= -FIXED_2DP(2,00) ?
                         STR_MAX_NEGATIVE_VERTICAL_G_RED : STR_MAX_NEGATIVE_VERTICAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxNegativeVerticalGs, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
                     maxLateralGs = ride->max_lateral_g;
                     stringId = maxLateralGs >= FIXED_2DP(2,80) ?
                         STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     gfx_draw_string_left(dpi, stringId, &maxLateralGs, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Total 'air' time
                     totalAirTime = ride->total_air_time * 3;
                     gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &totalAirTime, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
                 }
 
                 if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_DROPS)) {
                     // Drops
                     drops = ride->drops & 0x3F;
                     gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
 
                     // Highest drop height
                     highestDropHeight = (ride->highest_drop_height * 3) / 4;
                     gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
-                    y += 10;
+                    y += LIST_ROW_HEIGHT;
                 }
 
                 if (ride->type != RIDE_TYPE_MINI_GOLF) {
@@ -5430,7 +5430,7 @@ static void window_ride_measurements_paint(rct_window *w, rct_drawpixelinfo *dpi
                     inversions = ride->inversions & 0x1F;
                     if (inversions != 0) {
                         gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
-                        y += 10;
+                        y += LIST_ROW_HEIGHT;
                     }
                 }
             }
@@ -5989,7 +5989,7 @@ static void window_ride_income_mouseup(rct_window *w, rct_widgetindex widgetInde
  */
 static void window_ride_income_resize(rct_window *w)
 {
-    window_set_resize(w, 316, 177, 316, 177);
+    window_set_resize(w, 316, 183, 316, 183);
 }
 
 /**
@@ -6190,19 +6190,19 @@ static void window_ride_income_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Income per hour
     if (ride->income_per_hour != MONEY32_UNDEFINED) {
         gfx_draw_string_left(dpi, STR_INCOME_PER_HOUR, &ride->income_per_hour, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     // Running cost per hour
     costPerHour = ride->upkeep_cost * 16;
     stringId = ride->upkeep_cost == MONEY16_UNDEFINED ? STR_RUNNING_COST_UNKNOWN : STR_RUNNING_COST_PER_HOUR;
     gfx_draw_string_left(dpi, stringId, &costPerHour, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Profit per hour
     if (ride->profit != MONEY32_UNDEFINED) {
         gfx_draw_string_left(dpi, STR_PROFIT_PER_HOUR, &ride->profit, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
     y += 5;
 
@@ -6271,7 +6271,7 @@ static void window_ride_customer_mouseup(rct_window *w, rct_widgetindex widgetIn
 static void window_ride_customer_resize(rct_window *w)
 {
     w->flags |= WF_RESIZABLE;
-    window_set_resize(w, 316, 149, 316, 149);
+    window_set_resize(w, 316, 163, 316, 163);
 }
 
 /**
@@ -6353,13 +6353,13 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
         sint16 customersOnRide = ride->num_riders;
         gfx_draw_string_left(dpi, STR_CUSTOMERS_ON_RIDE, &customersOnRide, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     // Customers per hour
     customersPerHour = ride_customers_per_hour(ride);
     gfx_draw_string_left(dpi, STR_CUSTOMERS_PER_HOUR, &customersPerHour, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Popularity
     popularity = ride->popularity;
@@ -6370,7 +6370,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
         popularity *= 4;
     }
     gfx_draw_string_left(dpi, stringId, &popularity, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Satisfaction
     satisfaction = ride->satisfaction;
@@ -6381,7 +6381,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
         satisfaction *= 5;
     }
     gfx_draw_string_left(dpi, stringId, &satisfaction, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Queue time
     if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
@@ -6397,7 +6397,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
         set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
         set_format_arg(2, uint32, ride->no_primary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     // Secondary shop items sold / on-ride photos sold
@@ -6408,12 +6408,12 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
         set_format_arg(0, rct_string_id, ShopItemStringIds[shopItem].plural);
         set_format_arg(2, uint32, ride->no_secondary_items_sold);
         gfx_draw_string_left(dpi, STR_ITEMS_SOLD, gCommonFormatArgs, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     // Total customers
     gfx_draw_string_left(dpi, STR_TOTAL_CUSTOMERS, &ride->total_customers, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Guests favourite
     if (gRideClassifications[ride->type] == RIDE_CLASS_RIDE) {
@@ -6421,7 +6421,7 @@ static void window_ride_customer_paint(rct_window *w, rct_drawpixelinfo *dpi)
             STR_FAVOURITE_RIDE_OF_GUEST :
             STR_FAVOURITE_RIDE_OF_GUESTS;
         gfx_draw_string_left(dpi, stringId, &ride->guests_favourite, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
     y += 2;
 
