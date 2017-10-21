@@ -16,35 +16,31 @@
 
 #pragma once
 
-#include <openrct2/common.h>
-#include <openrct2/drawing/drawing.h>
-#include "OpenGLAPI.h"
+#include "GLSLTypes.h"
+#include "OpenGLShaderProgram.h"
 
-#include <vector>
-
-struct SDL_Window;
-
-class OpenGLFramebuffer
+class ApplyTransparencyShader final : public OpenGLShaderProgram
 {
 private:
-    GLuint _id;
-    GLuint _texture;
-    GLuint _depth;
-    sint32 _width;
-    sint32 _height;
+    GLuint uOpaqueTex;
+    GLuint uOpaqueDepth;
+    GLuint uTransparentTex;
+    GLuint uTransparentDepth;
+    GLuint uPaletteTex;
+
+    GLuint vPosition;
+    GLuint vTextureCoordinate;
+
+    GLuint _vbo;
+    GLuint _vao;
 
 public:
-    explicit OpenGLFramebuffer(SDL_Window * window);
-    OpenGLFramebuffer(sint32 width, sint32 height, bool depth = true);
-    ~OpenGLFramebuffer();
+    ApplyTransparencyShader();
+    ~ApplyTransparencyShader() override;
 
-    GLuint GetWidth() const { return _width; }
-    GLuint GetHeight() const { return _height; }
-    GLuint GetTexture() const { return _texture; }
-    GLuint GetDepthTexture() const { return _depth; }
+    void SetTextures(GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex);
+    void Draw();
 
-    void Bind() const;
-    void BindDraw() const;
-    void BindRead() const;
-    void GetPixels(rct_drawpixelinfo &dpi) const;
+private:
+    void GetLocations();
 };

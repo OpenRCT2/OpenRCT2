@@ -38,7 +38,7 @@ public:
     {
         return _numInstances == 0;
     }
-    void reset()
+    void clear()
     {
         _numInstances = 0;
     }
@@ -56,7 +56,7 @@ public:
     }
     const T* data() const
     {
-        return &_instances.at(0);
+        return _instances.data();
     }
     const T& operator[](size_t idx) const
     {

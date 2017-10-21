@@ -21,30 +21,49 @@
 #include "SwapFramebuffer.h"
 
 SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height) :
-_width(width), _height(height),
-_targetFramebuffer(width, height), _sourceFramebuffer(width, height)
+_opaqueFramebuffer(width, height), _transparentFramebuffer(width, height),
+_finalFramebuffer(width, height, false)
 { }
 
-GLuint SwapFramebuffer::GetSourceTexture() const
+void SwapFramebuffer::BindOpaque()
 {
-    return _sourceFramebuffer.GetTexture();
+    _opaqueFramebuffer.Bind();
 }
 
-void SwapFramebuffer::SwapCopy()
+void SwapFramebuffer::BindTransparent()
 {
-    // no longer performs swap, TODO rename function
-    // blit target's texture to source's texture
-    _sourceFramebuffer.BindDraw();
-    _targetFramebuffer.BindRead();
-    glBlitFramebuffer(0, 0, _width, _height,
-                      0, 0, _width, _height,
-                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
-    _targetFramebuffer.Bind();
+    _transparentFramebuffer.Bind();
 }
 
-void SwapFramebuffer::Bind()
+void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex)
 {
-    _targetFramebuffer.Bind();
+    _finalFramebuffer.Bind();
+    glDisable(GL_DEPTH_TEST);
+    shader.Use();
+    shader.SetTextures(
+        _opaqueFramebuffer.GetTexture(),
+        _opaqueFramebuffer.GetDepthTexture(),
+        _transparentFramebuffer.GetTexture(),
+        _transparentFramebuffer.GetDepthTexture(),
+        paletteTex
+    );
+    shader.Draw();
+
+    //Change binding to guaruntee no undefined behavior
+    _opaqueFramebuffer.Bind();
+}
+
+void SwapFramebuffer::Clear()
+{
+    static const GLfloat depthValue[1] = { 1.0f };
+    static const GLuint indexValue[4] = { 0, 0, 0, 0 };
+
+    _opaqueFramebuffer.Bind();
+    glClearBufferfv(GL_DEPTH, 0, depthValue);
+
+    _transparentFramebuffer.Bind();
+    glClearBufferuiv(GL_COLOR, 0, indexValue);
+    glClearBufferfv(GL_DEPTH, 0, depthValue);
 }
 
 #endif /* DISABLE_OPENGL */
