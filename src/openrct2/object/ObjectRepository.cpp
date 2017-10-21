@@ -363,7 +363,7 @@ private:
         std::sort(_items.begin(), _items.end(), [](const ObjectRepositoryItem &a,
                                                    const ObjectRepositoryItem &b) -> bool
         {
-            return strcmp(a.Name, b.Name) < 0;
+            return String::Compare(a.Name, b.Name) < 0;
         });
 
         // Fix the IDs

@@ -17,12 +17,16 @@
 #include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
+#include "../core/Memory.hpp"
 #include "SawyerChunkReader.h"
-
-#include "../util/sawyercoding.h"
 
 // Allow chunks to be uncompressed to a maximum of 16 MiB
 constexpr size_t MAX_UNCOMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;
+
+constexpr const char * EXCEPTION_MSG_CORRUPT_CHUNK_SIZE = "Corrupt chunk size.";
+constexpr const char * EXCEPTION_MSG_DESTINATION_TOO_SMALL = "Chunk data larger than allocated destination capacity.";
+constexpr const char * EXCEPTION_MSG_INVALID_CHUNK_ENCODING = "Invalid chunk encoding.";
+constexpr const char * EXCEPTION_MSG_CORRUPT_RLE = "Corrupt RLE compression data.";
 
 class SawyerChunkException : public IOException
 {
@@ -67,7 +71,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             std::unique_ptr<uint8[]> compressedData(new uint8[header.length]);
             if (_stream->TryRead(compressedData.get(), header.length) != header.length)
             {
-                throw SawyerChunkException("Corrupt chunk size.");
+                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_CHUNK_SIZE);
             }
 
             // Allow 16MiB for chunk data
@@ -78,7 +82,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
                 throw Exception("Unable to allocate buffer.");
             }
 
-            size_t uncompressedLength = sawyercoding_read_chunk_buffer(buffer, compressedData.get(), header, bufferSize);
+            size_t uncompressedLength = DecodeChunk(buffer, bufferSize, compressedData.get(), header);
             Guard::Assert(uncompressedLength != 0, "Encountered zero-sized chunk!");
             buffer = Memory::Reallocate(buffer, uncompressedLength);
             if (buffer == nullptr)
@@ -89,7 +93,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             return std::make_shared<SawyerChunk>((SAWYER_ENCODING)header.encoding, buffer, uncompressedLength);
         }
         default:
-            throw SawyerChunkException("Invalid chunk encoding.");
+            throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
         }
     }
     catch (Exception)
@@ -119,4 +123,127 @@ void SawyerChunkReader::ReadChunk(void * dst, size_t length)
             Memory::Set(offset, 0, remainingLength);
         }
     }
+}
+
+size_t SawyerChunkReader::DecodeChunk(void * dst, size_t dstCapacity, const void * src, const sawyercoding_chunk_header &header)
+{
+    size_t resultLength;
+    switch (header.encoding)
+    {
+    case CHUNK_ENCODING_NONE:
+        if (header.length > dstCapacity)
+        {
+            throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+        }
+        Memory::Copy(dst, src, header.length);
+        resultLength = header.length;
+        break;
+    case CHUNK_ENCODING_RLE:
+        resultLength = DecodeChunkRLE(dst, dstCapacity, src, header.length);
+        break;
+    case CHUNK_ENCODING_RLECOMPRESSED:
+    {
+        auto immBufferLength = MAX_UNCOMPRESSED_CHUNK_SIZE;
+        auto immBuffer = std::make_unique<uint8[]>(immBufferLength);
+        auto immLength = DecodeChunkRLE(immBuffer.get(), immBufferLength, src, header.length);
+        resultLength = DecodeChunkRepeat(dst, dstCapacity, immBuffer.get(), immLength);
+        break;
+    }
+    case CHUNK_ENCODING_ROTATE:
+        resultLength = DecodeChunkRotate(dst, dstCapacity, src, header.length);
+        break;
+    default:
+        throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
+    }
+    return resultLength;
+}
+
+size_t SawyerChunkReader::DecodeChunkRLE(void * dst, size_t dstCapacity, const void * src, size_t srcLength)
+{
+    auto src8 = static_cast<const uint8 *>(src);
+    auto dst8 = static_cast<uint8 *>(dst);
+    auto dstEnd = dst8 + dstCapacity;
+    for (size_t i = 0; i < srcLength; i++)
+    {
+        uint8 rleCodeByte = src8[i];
+        if (rleCodeByte & 128)
+        {
+            i++;
+            size_t count = 257 - rleCodeByte;
+
+            if (i >= srcLength)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+            }
+            if (dst8 + count > dstEnd)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+            }
+
+            Memory::Set(dst8, src8[i], count);
+            dst8 += count;
+        }
+        else
+        {
+            if (i + 1 >= srcLength)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_CORRUPT_RLE);
+            }
+            if (dst8 + rleCodeByte + 1 > dstEnd)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+            }
+
+            Memory::Copy(dst8, src8 + i + 1, rleCodeByte + 1);
+            dst8 += rleCodeByte + 1;
+            i += rleCodeByte + 1;
+        }
+    }
+    return (uintptr_t)dst8 - (uintptr_t)dst;
+}
+
+size_t SawyerChunkReader::DecodeChunkRepeat(void * dst, size_t dstCapacity, const void * src, size_t srcLength)
+{
+    auto src8 = static_cast<const uint8 *>(src);
+    auto dst8 = static_cast<uint8 *>(dst);
+    auto dstEnd = dst8 + dstCapacity;
+    for (size_t i = 0; i < srcLength; i++)
+    {
+        if (src8[i] == 0xFF)
+        {
+            *dst8++ = src8[++i];
+        }
+        else
+        {
+            size_t count = (src8[i] & 7) + 1;
+            const uint8 * copySrc = dst8 + (sint32)(src8[i] >> 3) - 32;
+
+            if (dst8 + count >= dstEnd || copySrc + count >= dstEnd)
+            {
+                throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+            }
+
+            Memory::Copy(dst8, copySrc, count);
+            dst8 += count;
+        }
+    }
+    return (uintptr_t)dst8 - (uintptr_t)dst;
+}
+
+size_t SawyerChunkReader::DecodeChunkRotate(void * dst, size_t dstCapacity, const void * src, size_t srcLength)
+{
+    if (srcLength > dstCapacity)
+    {
+        throw SawyerChunkException(EXCEPTION_MSG_DESTINATION_TOO_SMALL);
+    }
+
+    auto src8 = static_cast<const uint8 *>(src);
+    auto dst8 = static_cast<uint8 *>(dst);
+    uint8 code = 1;
+    for (size_t i = 0; i < srcLength; i++)
+    {
+        dst8[i] = ror8(src8[i], code);
+        code = (code + 2) % 8;
+    }
+    return srcLength;
 }
