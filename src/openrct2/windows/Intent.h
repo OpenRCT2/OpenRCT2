@@ -69,6 +69,7 @@ extern "C" {
         INTENT_ACTION_NEW_RIDE_OF_TYPE,
         INTENT_ACTION_REFRESH_NEW_RIDES,
         INTENT_ACTION_REFRESH_RIDE_LIST,
+        INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION,
     };
 
     Intent *intent_create(rct_windowclass clss);

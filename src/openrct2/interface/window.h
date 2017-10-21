@@ -507,7 +507,7 @@ enum {
     WV_PARK_GUESTS,
     WV_FINANCES_RESEARCH,
     WV_RIDE_RESEARCH,
-
+    WV_MAZE_CONSTRUCTION,
 };
 
 enum {
@@ -718,13 +718,11 @@ void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_ride_construct(rct_window *w);
 rct_window *window_ride_construction_open();
-rct_window *window_maze_construction_open();
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
 
-void window_maze_construction_update_pressed_widgets();
 void window_network_status_open(const char* text, close_callback onClose);
 void window_network_status_close();
 void window_network_status_open_password();

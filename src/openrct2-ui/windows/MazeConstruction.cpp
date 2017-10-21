@@ -14,17 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../audio/audio.h"
-#include "../drawing/drawing.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../ride/Track.h"
-#include "../sprites.h"
-#include "Intent.h"
-#include "../Context.h"
+#include <openrct2-ui/windows/Window.h>
+
+#include <openrct2/audio/audio.h>
+#include <openrct2/Context.h>
+#include <openrct2/drawing/drawing.h>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/Intent.h>
 
 #pragma region Widgets
 

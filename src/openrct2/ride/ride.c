@@ -1801,7 +1801,11 @@ static sint32 ride_modify_maze(rct_tile_element *tileElement, sint32 x, sint32 y
     _currentTrackBeginZ = tileElement->base_height * 8;
     _currentTrackSelectionFlags = 0;
     _rideConstructionArrowPulseTime = 0;
-    window_maze_construction_update_pressed_widgets();
+
+    Intent * intent = intent_create(INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION);
+    context_broadcast_intent(intent);
+    intent_release(intent);
+
     return 1;
 }
 
