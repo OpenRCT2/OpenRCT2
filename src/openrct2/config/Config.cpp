@@ -452,7 +452,7 @@ namespace Config
 
     static void ReadTwitch(IIniReader * reader)
     {
-        if (reader->ReadSection("sound"))
+        if (reader->ReadSection("twitch"))
         {
             auto model = &gConfigTwitch;
             model->channel = reader->GetCString("channel", nullptr);
