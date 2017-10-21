@@ -135,11 +135,10 @@
 		C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */; };
 		C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */; };
 		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
-		C610AA191EA56CEF00EFA5BA /* PlaceParkEntranceAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C610AA151EA56CEF00EFA5BA /* PlaceParkEntranceAction.cpp */; };
-		C610AA1A1EA56CEF00EFA5BA /* GameAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C610AA161EA56CEF00EFA5BA /* GameAction.cpp */; };
-		C610AA1B1EA56CEF00EFA5BA /* SetParkEntranceFeeAction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C610AA181EA56CEF00EFA5BA /* SetParkEntranceFeeAction.cpp */; };
 		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
 		C6136C551E21893500F3ED2B /* view_clipping.c in Sources */ = {isa = PBXBuildFile; fileRef = C6136C541E21893500F3ED2B /* view_clipping.c */; };
+		C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */; };
+		C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2711FA3E25C0095FB9D /* TextInput.cpp */; };
 		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
 		C632C81F1F8A445700781F6D /* RideList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C632C81E1F8A445700781F6D /* RideList.cpp */; };
 		C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B811F477022006CCEE3 /* DataSerialiser.h */; };
@@ -208,18 +207,13 @@
 		C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED851F33E3520061AA04 /* EditorMain.cpp */; };
 		C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */; };
 		C666EE1F1F33E3800061AA04 /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */; };
-		C666EE291F33E3800061AA04 /* MapTooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED961F33E3520061AA04 /* MapTooltip.cpp */; };
-		C666EE2A1F33E3800061AA04 /* MazeConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED971F33E3520061AA04 /* MazeConstruction.cpp */; };
 		C666EE2D1F33E3800061AA04 /* NetworkStatus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */; };
 		C666EE321F33E3800061AA04 /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */; };
-		C666EE381F33E3800061AA04 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA51F33E3520061AA04 /* Ride.cpp */; };
 		C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA61F33E3520061AA04 /* RideConstruction.cpp */; };
 		C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA91F33E3520061AA04 /* Scenery.cpp */; };
-		C666EE431F33E3800061AA04 /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB01F33E3520061AA04 /* TextInput.cpp */; };
 		C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB21F33E3520061AA04 /* TileInspector.cpp */; };
 		C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBA1F33E3520061AA04 /* Tooltip.cpp */; };
 		C666EE4E1F33E3800061AA04 /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBB1F33E3520061AA04 /* TopToolbar.cpp */; };
-		C666EE4F1F33E3800061AA04 /* TrackList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBC1F33E3520061AA04 /* TrackList.cpp */; };
 		C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE551F37ACB10061AA04 /* About.cpp */; };
 		C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE561F37ACB10061AA04 /* Changelog.cpp */; };
 		C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE571F37ACB10061AA04 /* Cheats.cpp */; };
@@ -764,12 +758,10 @@
 		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = PaintIntercept.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CD231DB5120900FE4015 /* TestPaint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPaint.cpp; sourceTree = "<group>"; };
 		C606CD241DB5120900FE4015 /* TestPaint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestPaint.hpp; sourceTree = "<group>"; };
-		C610AA151EA56CEF00EFA5BA /* PlaceParkEntranceAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PlaceParkEntranceAction.cpp; sourceTree = "<group>"; };
-		C610AA161EA56CEF00EFA5BA /* GameAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameAction.cpp; sourceTree = "<group>"; };
-		C610AA171EA56CEF00EFA5BA /* GameAction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = GameAction.h; sourceTree = "<group>"; };
-		C610AA181EA56CEF00EFA5BA /* SetParkEntranceFeeAction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SetParkEntranceFeeAction.cpp; sourceTree = "<group>"; };
 		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
 		C6136C541E21893500F3ED2B /* view_clipping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = view_clipping.c; sourceTree = "<group>"; };
+		C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
+		C61FB2711FA3E25C0095FB9D /* TextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
 		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C632C81E1F8A445700781F6D /* RideList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RideList.cpp; sourceTree = "<group>"; };
 		C6352B811F477022006CCEE3 /* DataSerialiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiser.h; sourceTree = "<group>"; };
@@ -828,18 +820,13 @@
 		C666ED851F33E3520061AA04 /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
 		C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
-		C666ED961F33E3520061AA04 /* MapTooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTooltip.cpp; sourceTree = "<group>"; };
-		C666ED971F33E3520061AA04 /* MazeConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MazeConstruction.cpp; sourceTree = "<group>"; };
 		C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkStatus.cpp; sourceTree = "<group>"; };
 		C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
-		C666EDA51F33E3520061AA04 /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
 		C666EDA61F33E3520061AA04 /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideConstruction.cpp; sourceTree = "<group>"; };
 		C666EDA91F33E3520061AA04 /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
-		C666EDB01F33E3520061AA04 /* TextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
 		C666EDB21F33E3520061AA04 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
 		C666EDBA1F33E3520061AA04 /* Tooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tooltip.cpp; sourceTree = "<group>"; };
 		C666EDBB1F33E3520061AA04 /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
-		C666EDBC1F33E3520061AA04 /* TrackList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackList.cpp; sourceTree = "<group>"; };
 		C666EE551F37ACB10061AA04 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = About.cpp; sourceTree = "<group>"; };
 		C666EE561F37ACB10061AA04 /* Changelog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Changelog.cpp; sourceTree = "<group>"; };
 		C666EE571F37ACB10061AA04 /* Cheats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cheats.cpp; sourceTree = "<group>"; };
@@ -1500,17 +1487,6 @@
 			name = Tests;
 			sourceTree = "<group>";
 		};
-		C610AA141EA56CD900EFA5BA /* actions */ = {
-			isa = PBXGroup;
-			children = (
-				C610AA161EA56CEF00EFA5BA /* GameAction.cpp */,
-				C610AA171EA56CEF00EFA5BA /* GameAction.h */,
-				C610AA151EA56CEF00EFA5BA /* PlaceParkEntranceAction.cpp */,
-				C610AA181EA56CEF00EFA5BA /* SetParkEntranceFeeAction.cpp */,
-			);
-			path = actions;
-			sourceTree = "<group>";
-		};
 		C6352B871F477032006CCEE3 /* actions */ = {
 			isa = PBXGroup;
 			children = (
@@ -1594,7 +1570,6 @@
 				F76C85801EC4E82600FA49E2 /* openrct2-ui */,
 				F76C857C1EC4E80E00FA49E2 /* openrct2-cli */,
 				F76C83551EC4E7CC00FA49E2 /* libopenrct2 */,
-				C610AA141EA56CD900EFA5BA /* actions */,
 			);
 			name = Sources;
 			path = src/openrct2;
@@ -2549,20 +2524,15 @@
 				C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
-				C666ED961F33E3520061AA04 /* MapTooltip.cpp */,
-				C666ED971F33E3520061AA04 /* MazeConstruction.cpp */,
 				C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */,
 				C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */,
-				C666EDA51F33E3520061AA04 /* Ride.cpp */,
 				C666EDA61F33E3520061AA04 /* RideConstruction.cpp */,
 				C666EDA91F33E3520061AA04 /* Scenery.cpp */,
-				C666EDB01F33E3520061AA04 /* TextInput.cpp */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
 				C666EDB21F33E3520061AA04 /* TileInspector.cpp */,
 				C666EDBA1F33E3520061AA04 /* Tooltip.cpp */,
 				F76C85531EC4E7CD00FA49E2 /* tooltip.h */,
 				C666EDBB1F33E3520061AA04 /* TopToolbar.cpp */,
-				C666EDBC1F33E3520061AA04 /* TrackList.cpp */,
 			);
 			path = windows;
 			sourceTree = "<group>";
@@ -2733,6 +2703,8 @@
 				C64644F41F3FA4120026AC2D /* Main.cpp */,
 				C685E5171F8907840090598F /* Map.cpp */,
 				C666EE5B1F37ACB10061AA04 /* MapGen.cpp */,
+				C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */,
+				C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */,
 				C666EE5C1F37ACB10061AA04 /* Multiplayer.cpp */,
 				C666EE5D1F37ACB10061AA04 /* MusicCredits.cpp */,
 				C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */,
@@ -2740,10 +2712,12 @@
 				C685E5141F8907840090598F /* NewRide.cpp */,
 				C666EE5E1F37ACB10061AA04 /* News.cpp */,
 				C666EE5F1F37ACB10061AA04 /* NewsOptions.cpp */,
+				C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */,
 				C666EE601F37ACB10061AA04 /* Options.cpp */,
 				C654DF241F69C0430040F43D /* Park.cpp */,
 				C654DF251F69C0430040F43D /* Player.cpp */,
 				C685E5181F8907840090598F /* Research.cpp */,
+				C6D2BEE11F9BAA6C008B557C /* Ride.cpp */,
 				C632C81E1F8A445700781F6D /* RideList.cpp */,
 				C666EE611F37ACB10061AA04 /* SavePrompt.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
@@ -2754,6 +2728,7 @@
 				C685E5151F8907840090598F /* Staff.cpp */,
 				C654DF271F69C0430040F43D /* StaffFirePrompt.cpp */,
 				C64644F51F3FA4120026AC2D /* StaffList.cpp */,
+				C61FB2711FA3E25C0095FB9D /* TextInput.cpp */,
 				C666EE641F37ACB10061AA04 /* Themes.cpp */,
 				C654DF281F69C0430040F43D /* TitleCommandEditor.cpp */,
 				C654DF291F69C0430040F43D /* TitleEditor.cpp */,
@@ -2764,6 +2739,7 @@
 				C654DF2A1F69C0430040F43D /* TitleScenarioSelect.cpp */,
 				C654DF2B1F69C0430040F43D /* TrackDesignManage.cpp */,
 				C654DF2C1F69C0430040F43D /* TrackDesignPlace.cpp */,
+				C6D2BEE31F9BAACC008B557C /* TrackList.cpp */,
 				C64644F61F3FA4120026AC2D /* ViewClipping.cpp */,
 				C666EE691F37ACB10061AA04 /* Viewport.cpp */,
 				C64644F71F3FA4120026AC2D /* Water.cpp */,
@@ -3154,6 +3130,7 @@
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
 				C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */,
 				4C93F1891F8B747A00A9330D /* 3dCinema.cpp in Sources */,
+				C6D2BEE21F9BAA6C008B557C /* Ride.cpp in Sources */,
 				C666EE7C1F37ACB10061AA04 /* TitleLogo.cpp in Sources */,
 				4C8B42741EEB1B6F00F015CA /* Screenshot.cpp in Sources */,
 				4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */,
@@ -3218,6 +3195,7 @@
 				4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
+				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */,
 				4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */,
 				4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */,
@@ -3229,6 +3207,7 @@
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
 				4C93F1761F8B745700A9330D /* MonorailCycles.cpp in Sources */,
 				4C93F13E1F8B744400A9330D /* CorkscrewRollerCoaster.cpp in Sources */,
+				C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */,
 				4C93F1401F8B744400A9330D /* GigaCoaster.cpp in Sources */,
 				4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */,
 				C6415B471FA3B3E400AC4926 /* FontFamilies.cpp in Sources */,
@@ -3257,6 +3236,7 @@
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
+				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
 				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
 				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
@@ -3267,6 +3247,7 @@
 				4C93F1771F8B745700A9330D /* ObservationTower.cpp in Sources */,
 				4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */,
 				4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */,
+				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
 				4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */,
@@ -3307,6 +3288,7 @@
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
 				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
+				C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,
 				F76C88871EC5324E00FA49E2 /* SwapFramebuffer.cpp in Sources */,
 				F76C88881EC5324E00FA49E2 /* TextureCache.cpp in Sources */,
@@ -3347,7 +3329,6 @@
 				C6352B931F477032006CCEE3 /* GameActionRegistration.cpp in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
 				F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */,
-				C666EE2A1F33E3800061AA04 /* MazeConstruction.cpp in Sources */,
 				C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */,
 				F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */,
 				F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */,
@@ -3374,7 +3355,6 @@
 				F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */,
 				F76C85E41EC4E88300FA49E2 /* Path.cpp in Sources */,
 				F76C85E71EC4E88300FA49E2 /* String.cpp in Sources */,
-				C666EE4F1F33E3800061AA04 /* TrackList.cpp in Sources */,
 				F76C85EB1EC4E88300FA49E2 /* textinputbuffer.c in Sources */,
 				F76C85EE1EC4E88300FA49E2 /* Zip.cpp in Sources */,
 				F76C85F01EC4E88300FA49E2 /* diagnostic.c in Sources */,
@@ -3402,11 +3382,9 @@
 				F76C86111EC4E88300FA49E2 /* colour.c in Sources */,
 				F76C86131EC4E88300FA49E2 /* console.c in Sources */,
 				F76C86161EC4E88300FA49E2 /* Fonts.cpp in Sources */,
-				C666EE321F33E3800061AA04 /* ObjectLoadError.cpp in Sources */,
 				F76C86181EC4E88300FA49E2 /* graph.c in Sources */,
 				F76C861E1EC4E88300FA49E2 /* Theme.cpp in Sources */,
 				F76C86201EC4E88300FA49E2 /* viewport.c in Sources */,
-				C666EE431F33E3800061AA04 /* TextInput.cpp in Sources */,
 				F76C86221EC4E88300FA49E2 /* viewport_interaction.c in Sources */,
 				F76C86231EC4E88300FA49E2 /* widget.c in Sources */,
 				F76C86251EC4E88300FA49E2 /* window.c in Sources */,
@@ -3495,14 +3473,12 @@
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				C666EE4E1F33E3800061AA04 /* TopToolbar.cpp in Sources */,
 				C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */,
-				C666EE381F33E3800061AA04 /* Ride.cpp in Sources */,
 				C6352B921F477032006CCEE3 /* GameActionCompat.cpp in Sources */,
 				F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */,
 				F76C86FE1EC4E88400FA49E2 /* ride_data.c in Sources */,
 				F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */,
 				C666EE161F33E3800061AA04 /* EditorBottomToolbar.cpp in Sources */,
 				C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */,
-				C666EE291F33E3800061AA04 /* MapTooltip.cpp in Sources */,
 				F76C87191EC4E88400FA49E2 /* track_design_save.c in Sources */,
 				F76C871A1EC4E88400FA49E2 /* track_paint.c in Sources */,
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
@@ -3572,10 +3548,7 @@
 				C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */,
 				C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */,
 				C6136C551E21893500F3ED2B /* view_clipping.c in Sources */,
-				C610AA1B1EA56CEF00EFA5BA /* SetParkEntranceFeeAction.cpp in Sources */,
-				C610AA191EA56CEF00EFA5BA /* PlaceParkEntranceAction.cpp in Sources */,
 				C612A8991D64825300B634CA /* vehicle_data.c in Sources */,
-				C610AA1A1EA56CEF00EFA5BA /* GameAction.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
