@@ -1039,6 +1039,12 @@ extern "C"
         return windowManager->ShowError(title, message);
     }
 
+void context_update_map_tooltip()
+{
+    auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+    windowManager->UpdateMapTooltip();
+}
+
     void context_input_handle_keyboard(bool isTitle)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

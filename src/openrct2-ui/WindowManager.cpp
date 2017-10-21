@@ -263,6 +263,11 @@ public:
         }
     }
 
+    void UpdateMapTooltip() override
+    {
+        window_map_tooltip_update_visibility();
+    }
+
     void HandleKeyboard(bool isTitle) override
     {
         input_handle_keyboard(isTitle);

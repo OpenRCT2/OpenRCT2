@@ -368,7 +368,7 @@ void game_update()
             gWindowMapFlashingFlags |= (1 << 3);
         gWindowMapFlashingFlags &= ~(1 << 2);
 
-        window_map_tooltip_update_visibility();
+        context_update_map_tooltip();
 
         // Input
         gUnk141F568 = gUnk13CA740;
