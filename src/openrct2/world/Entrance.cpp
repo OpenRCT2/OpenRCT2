@@ -686,6 +686,7 @@ extern "C"
 
     void fix_park_entrance_locations(void)
     {
+        // Fix gParkEntrance locations for which the map_element no longer exists
         for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum)
         {
             if (gParkEntrances[entranceNum].x == LOCATION_NULL)
