@@ -211,6 +211,13 @@ public:
             close_callback callback = intent->GetCloseCallbackExtra(INTENT_EXTRA_CALLBACK);
             return window_network_status_open(message.c_str(), callback);
         }
+        case WC_OBJECT_LOAD_ERROR:
+        {
+            std::string path = intent->GetStringExtra(INTENT_EXTRA_PATH);
+            const rct_object_entry * objects = (rct_object_entry *) intent->GetPointerExtra(INTENT_EXTRA_LIST);
+            size_t count = intent->GetUIntExtra(INTENT_EXTRA_LIST_COUNT);
+            window_object_load_error_open(const_cast<utf8 *>(path.c_str()), count, objects);
+        }
         case WC_RIDE:
             return window_ride_main_open(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
         case WC_TRACK_DESIGN_PLACE:

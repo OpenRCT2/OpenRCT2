@@ -1148,9 +1148,12 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         }
         // The path needs to be duplicated as it's a const here
         // which the window function doesn't like
-        window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)),
-                                      ParkLoadResult_GetMissingObjectsCount(result),
-                                      ParkLoadResult_GetMissingObjects(result));
+        Intent * intent = intent_create(WC_OBJECT_LOAD_ERROR);
+        intent_set_string(intent, INTENT_EXTRA_PATH, strndup(path, strnlen(path, MAX_PATH)));
+        intent_set_pointer(intent, INTENT_EXTRA_LIST, (void *) ParkLoadResult_GetMissingObjects(result));
+        intent_set_uint(intent, INTENT_EXTRA_LIST_COUNT, (uint32) ParkLoadResult_GetMissingObjectsCount(result));
+        context_open_intent(intent);
+        intent_release(intent);
     }
     else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
     {

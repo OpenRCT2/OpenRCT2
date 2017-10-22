@@ -726,8 +726,6 @@ void window_scenery_open();
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 
-rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
-
 rct_window * window_editor_main_open();
 void window_editor_bottom_toolbar_open();
 void window_editor_object_selection_open();
