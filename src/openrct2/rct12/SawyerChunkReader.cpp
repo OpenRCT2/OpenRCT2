@@ -142,13 +142,8 @@ size_t SawyerChunkReader::DecodeChunk(void * dst, size_t dstCapacity, const void
         resultLength = DecodeChunkRLE(dst, dstCapacity, src, header.length);
         break;
     case CHUNK_ENCODING_RLECOMPRESSED:
-    {
-        auto immBufferLength = MAX_UNCOMPRESSED_CHUNK_SIZE;
-        auto immBuffer = std::make_unique<uint8[]>(immBufferLength);
-        auto immLength = DecodeChunkRLE(immBuffer.get(), immBufferLength, src, header.length);
-        resultLength = DecodeChunkRepeat(dst, dstCapacity, immBuffer.get(), immLength);
+        resultLength = DecodeChunkRLERepeat(dst, dstCapacity, src, header.length);
         break;
-    }
     case CHUNK_ENCODING_ROTATE:
         resultLength = DecodeChunkRotate(dst, dstCapacity, src, header.length);
         break;
@@ -156,6 +151,14 @@ size_t SawyerChunkReader::DecodeChunk(void * dst, size_t dstCapacity, const void
         throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
     }
     return resultLength;
+}
+
+size_t SawyerChunkReader::DecodeChunkRLERepeat(void * dst, size_t dstCapacity, const void * src, size_t srcLength)
+{
+    auto immBufferLength = MAX_UNCOMPRESSED_CHUNK_SIZE;
+    auto immBuffer = std::make_unique<uint8[]>(immBufferLength);
+    auto immLength = DecodeChunkRLE(immBuffer.get(), immBufferLength, src, srcLength);
+    return DecodeChunkRepeat(dst, dstCapacity, immBuffer.get(), immLength);
 }
 
 size_t SawyerChunkReader::DecodeChunkRLE(void * dst, size_t dstCapacity, const void * src, size_t srcLength)
