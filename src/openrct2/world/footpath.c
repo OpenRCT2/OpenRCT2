@@ -173,7 +173,7 @@ static const uint8 byte_98D7EC[] = {
 
 static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
 {
-    rct_map_element *mapElement, *entranceElement;
+    rct_map_element * mapElement, * entranceElement;
     sint32 bl, zHigh;
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -543,7 +543,7 @@ void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 
 static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 edges, sint32 flags)
 {
-    rct_map_element *mapElement, *entranceElement;
+    rct_map_element * mapElement, * entranceElement;
     bool entrancePath = false, entranceIsSamePath = false;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
