@@ -66,6 +66,8 @@ extern "C" {
         INTENT_EXTRA_TILE_ELEMENT,
         INTENT_EXTRA_VEHICLE,
         INTENT_EXTRA_MESSAGE,
+        INTENT_EXTRA_LIST,
+        INTENT_EXTRA_LIST_COUNT,
     };
 
     enum {

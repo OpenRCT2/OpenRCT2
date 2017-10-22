@@ -14,12 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../object/ObjectManager.h"
-#include "../core/Memory.hpp"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../platform/platform.h"
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/platform/platform.h>
 
 enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
     WIDX_BACKGROUND,
