@@ -75,7 +75,9 @@ void ApplyTransparencyShader::GetLocations()
     vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
 }
 
-void ApplyTransparencyShader::SetTextures(GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex)
+void ApplyTransparencyShader::SetTextures(GLuint opaqueTex, GLuint opaqueDepth,
+                                          GLuint transparentTex, GLuint transparentDepth,
+                                          GLuint paletteTex)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, opaqueTex);
     OpenGLAPI::SetTexture(1, GL_TEXTURE_2D, opaqueDepth);

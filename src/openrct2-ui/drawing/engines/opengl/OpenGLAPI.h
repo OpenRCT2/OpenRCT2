@@ -29,6 +29,7 @@
 #define glClearColor        __static__glClearColor
 #define glCullFace          __static__glCullFace
 #define glDeleteTextures    __static__glDeleteTextures
+#define glDepthFunc         __static__glDepthFunc
 #define glDisable           __static__glDisable
 #define glDrawArrays        __static__glDrawArrays
 #define glEnable            __static__glEnable
@@ -60,6 +61,7 @@
 #undef glClearColor
 #undef glCullFace
 #undef glDeleteTextures
+#undef glDepthFunc
 #undef glDisable
 #undef glDrawArrays
 #undef glEnable
@@ -84,6 +86,7 @@ typedef void   (APIENTRYP PFNGLCLEARPROC         )(GLbitfield mask);
 typedef void   (APIENTRYP PFNGLCLEARCOLORPROC    )(GLclampf red, GLclampf green, GLclampf blue, GLclampf alpha);
 typedef void   (APIENTRYP PFNGLCULLFACEPROC      )(GLenum mode);
 typedef void   (APIENTRYP PFNGLDELETETEXTURESPROC)(GLsizei n, const GLuint *textures);
+typedef void   (APIENTRYP PFNGLDEPTHFUNCPROC     )(GLenum func);
 typedef void   (APIENTRYP PFNGLDISABLEPROC       )(GLenum cap);
 typedef void   (APIENTRYP PFNGLDRAWARRAYSPROC    )(GLenum mode, GLint first, GLsizei count);
 typedef void   (APIENTRYP PFNGLENABLEPROC        )(GLenum cap);

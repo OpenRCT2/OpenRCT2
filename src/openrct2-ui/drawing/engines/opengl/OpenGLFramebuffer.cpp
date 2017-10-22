@@ -44,12 +44,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height, bool depth)
 
     if (depth)
     {
-        glGenTextures(1, &_depth);
-        glBindTexture(GL_TEXTURE_2D, _depth);
-        glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, nullptr);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+        _depth = CreateDepthTexture(width, height);
     }
     else
     {
@@ -93,7 +88,9 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
     assert(dpi.width == _width && dpi.height == _height);
 
     uint8 * pixels = Memory::Allocate<uint8>(_width * _height);
-    glReadPixels(0, 0, _width, _height, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels);
+    glBindTexture(GL_TEXTURE_2D, _texture);
+    glPixelStorei(GL_PACK_ALIGNMENT, 1);
+    glGetTexImage(GL_TEXTURE_2D, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, pixels);
 
     // Flip pixels vertically on copy
     uint8 * src = pixels + ((_height - 1) * _width);
@@ -105,6 +102,39 @@ void OpenGLFramebuffer::GetPixels(rct_drawpixelinfo &dpi) const
         dst += dpi.width + dpi.pitch;
     }
     Memory::Free(pixels);
+}
+
+void OpenGLFramebuffer::SwapColourBuffer(OpenGLFramebuffer &other)
+{
+    std::swap(_texture, other._texture);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, _id);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, _texture, 0);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, other._id);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, other._texture, 0);
+}
+
+GLuint OpenGLFramebuffer::SwapDepthTexture(GLuint depth)
+{
+    std::swap(_depth, depth);
+
+    glBindFramebuffer(GL_FRAMEBUFFER, _id);
+    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depth, 0);
+
+    return depth;
+}
+
+GLuint OpenGLFramebuffer::CreateDepthTexture(sint32 width, sint32 height)
+{
+    GLuint depth;
+    glGenTextures(1, &depth);
+    glBindTexture(GL_TEXTURE_2D, depth);
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_DEPTH_COMPONENT24, width, height, 0, GL_DEPTH_COMPONENT, GL_UNSIGNED_INT, nullptr);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_COMPARE_MODE, GL_NONE);
+    return depth;
 }
 
 #endif /* DISABLE_OPENGL */

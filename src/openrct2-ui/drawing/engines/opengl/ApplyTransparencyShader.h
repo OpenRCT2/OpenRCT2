@@ -38,7 +38,9 @@ public:
     ApplyTransparencyShader();
     ~ApplyTransparencyShader() override;
 
-    void SetTextures(GLuint opaqueTex, GLuint opaqueDepth, GLuint transparentTex, GLuint transparentDepth, GLuint paletteTex);
+    void SetTextures(GLuint opaqueTex, GLuint opaqueDepth,
+                     GLuint transparentTex, GLuint transparentDepth,
+                     GLuint paletteTex);
     void Draw();
 
 private:
