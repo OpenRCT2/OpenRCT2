@@ -2766,8 +2766,8 @@ STR_2757    :<not used anymore>
 STR_2758    :<not used anymore>
 STR_2759    :Höhen auf Null
 STR_2760    :+{CURRENCY}
-STR_2761    :Bezahlen für Eintritt
-STR_2762    :Bezahlen für Bahnen
+STR_2761    :Für Eintritt bezahlen
+STR_2762    :Für Bahnen bezahlen
 STR_2763    :???
 STR_2764    :Glückliche Gäste
 STR_2765    :Große Straßenbahn
@@ -3285,8 +3285,8 @@ STR_3275    :Höherer Schwierigkeitsgrad für Besuchergewinnung
 STR_3276    :{SMALLFONT}{BLACK}Machen Sie das Anlocken von{NEWLINE}Besuchern schwieriger
 STR_3277    :{WINDOW_COLOUR_2}Kosten für Landkauf:
 STR_3278    :{WINDOW_COLOUR_2}Kosten für Erwerb v. Baurechten:
-STR_3279    :Freier Eintritt/Bezahlen pro Fahrt
-STR_3280    :Bezahlen für Eintritt/Gratis fahren
+STR_3279    :Freier Eintritt/Pro Fahrt bezahlen
+STR_3280    :Für Eintritt bezahlen/Gratis fahren
 STR_3281    :{WINDOW_COLOUR_2}Eintrittspreis:
 STR_3282    :{SMALLFONT}{BLACK}Ziel und Parkname auswählen
 STR_3283    :{SMALLFONT}{BLACK}Bahnen auswählen, die beibehalten werden sollen
@@ -4452,7 +4452,11 @@ STR_6149    :Verbindung zum Hauptserver nicht möglich.
 STR_6150    :Ungültige Antwort vom Hauptserver (keine JSON-Nummer)
 STR_6151    :Hauptserver antwortete nicht mit gültigen Servern
 STR_6152    :Ungültige Antwort vom Hauptserver (kein JSON-Array)
-STR_6153    :Bezahle um den Park zu betreten / Zahle pro Fahrt
+STR_6153    :Für Eintritt bezahlen/Pro Fahrt bezahlen
+STR_6154    :Es wird nicht empfohlen, OpenRCT2 mit erweiterten Benutzerrechten zu starten.
+STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
+STR_6156    :Name ist reserviert
+STR_6157    :Konsole
 
 #############
 # Scenarios #

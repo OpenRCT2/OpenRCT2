@@ -517,93 +517,93 @@ STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisti
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
 STR_0515    :A steel roller coaster with trains that are held beneath the track, with many complex and twisting track elements
-STR_0516    :A gentle roller coaster for people who haven't yet got the courage to face the larger rides
-STR_0517    :Passengers ride in miniature trains along a narrow-gauge railway track
-STR_0518    :Passengers travel in electric trains along a monorail track
-STR_0519    :Passengers ride in small cars hanging beneath the single-rail track, swinging freely from side to side around corners
+STR_0516    :まだ大きなライドに挑戦する勇気がない人々のための、穏やかなローラーコースターです。
+STR_0517    :狭い軌間の線路に沿って移動するミニチュア電車に乗客を乗せる。
+STR_0518    :モノレールトラックを移動する電車。
+STR_0519    :乗客はう特別にデザインされた車両に乗り、コーナーで制限なく振られる。
 STR_0520    :A dock platform where guests can drive/row personal watercraft on a body of water
-STR_0521    :A fast and twisting roller coaster with tight turns and steep drops. Intensity is bound to be high.
-STR_0522    :A smaller roller coaster where the riders sit above the track with no car around them
+STR_0521    :小さなネズミ型の車両がヘアピンコーナーと急な落下を横断して不安定に身を乗り出す。強烈度が高いはずです。
+STR_0522    :単線のコースタートラックに沿って走る、馬の形をした車両に乗客を乗せる。
 STR_0523    :Riders travel slowly in powered vehicles along a track-based route
-STR_0524    :Freefall car is pneumatically launched up a tall steel tower and then allowed to freefall down
-STR_0525    :Riders career down a twisting track guided only by the curvature and banking of the semi-circular track
-STR_0526    :Passengers travel in a rotating observation cabin which travels up a tall tower
-STR_0527    :A smooth steel-tracked roller coaster capable of vertical loops
-STR_0528    :Riders travel in inflatable dinghies down a twisting semi-circular or completely enclosed tube track
-STR_0529    :Mine train themed roller coaster trains career along steel roller coaster track made to look like old railway track
-STR_0530    :Cars hang from a steel cable which runs continuously from one end of the ride to the other and back again
-STR_0531    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
+STR_0524    :車両は圧搾空気で発車されて高い鉄塔の上まで運ばれ、それから自由落下する。
+STR_0525    :半円形パイプのカーブとバンクに沿って自動的に滑り落ちる小型のボブスレーそりがトラックを滑り降りる。
+STR_0526    :高い塔の上方まで回転するキャビンが移動する。
+STR_0527    :垂直ループを含むことのできるスムースな金属製コースターです。
+STR_0528    :ねじれた半円（あるいは完全に覆われた）パイプのコースを、薄汚れたゴムボートに乗って下る。
+STR_0529    :古い鉄道を模して作られた金属のコースタートラックを鉱山電車テーマのローラーコースターが疾走する。
+STR_0530    :車両は鋼のケーブルに吊られてライドの端からもう一方の端まで行き、そして戻ってくる。
+STR_0531    :コークスクリューやループを伴う金属製トラックの小型ローラーコースター。
 STR_0532    :Maze is constructed from 6-foot tall hedges or walls, and guests wander around the maze leaving only when they find the exit
-STR_0533    :Wooden building with an internal staircase and an external spiral slide for use with slide mats
-STR_0534    :Self-drive petrol-engined go karts
-STR_0535    :Log-shaped boats travel along a water channel, splashing down steep slopes to soak the riders
-STR_0536    :Circular boats meander along a wide water channel, splashing through waterfalls and thrilling riders through foaming rapids
+STR_0533    :内部に階段を、外部に螺旋滑り台とマットを有する木造の建築物。
+STR_0534    :乗客が自分で運転するガソリンエンジンのゴーカート。
+STR_0535    :丸太の形のボードが溝に沿って移動し、急斜面で乗客を水浸しにする。
+STR_0536    :滝の水しぶきや急流部分を通る広い溝に沿って流れる円形のボート。
 STR_0537    :Self-drive electric dodgem cars
 STR_0538    :Large swinging pirate ship
 STR_0539    :Ship is attached to an arm with a counterweight at the opposite end, and swings through a complete 360 degrees
-STR_0540    :A stall where guests can purchase food
+STR_0540    :食べ物を売ります店です。
 STR_0541    :<removed string - do not use>
-STR_0542    :A stall where guests can purchase drinks
+STR_0542    :飲み物を売ります店です。
 STR_0543    :<removed string - do not use>
-STR_0544    :A stall that sells souvenirs
-STR_0545    :Traditional rotating carousel with carved wooden horses
+STR_0544    :お土産を売ります店です。
+STR_0545    :木彫りの馬との伝統的な回転カルーセルです。
 STR_0546    :<removed string - do not use>
-STR_0547    :A stall where guests can obtain park maps and purchase umbrellas
-STR_0548    :A toilet building
-STR_0549    :Rotating big wheel with open chairs
-STR_0550    :Riders view a film inside the motion simulator pod while it is twisted and moved around by a hydraulic arm
-STR_0551    :Cinema showing 3D films inside a geodesic sphere shaped building
-STR_0552    :Passengers ride in a gondola suspended by large rotating arms, rotating forwards and backwards head-over-heels
-STR_0553    :Concentric pivoting rings allowing the riders free rotation in all directions
+STR_0547    :パークの地図や傘が買える店です。
+STR_0548    :トイレ用個室です。
+STR_0549    :巨大なホイールが客を乗せてゆっくり回転する
+STR_0550    :中で乗客に映像を見せながら、ポッドが油圧アームにより回ったり揺られたりする。
+STR_0551    :ジオデシック・ドームの中で3D映画が放映されている。
+STR_0552    :星の形を形成して回転するゴンドラにさらに回転アームが接続。
+STR_0553    :同心上の旋回リングが乗客をあらゆる方向に振り回す。
 STR_0554    :リニア誘導モーターで加速された車両が垂直トラックを上昇し、それから乗り場まで自由落下する
 STR_0555    :Guests ride in a lift up or down a vertical tower to get from one level to another
-STR_0556    :Extra-wide cars descend completely vertical sloped track for the ultimate freefall roller coaster experience
-STR_0557    :An A.T.M. (Cash Machine) for guests to use if they run low on funds
+STR_0556    :究極の自由落下体験のために、完全な垂直軌道を降下するとても広幅の車両を持つコースターです。
+STR_0557    :お金が無くなったゲストが使うキャッシュ機です。
 STR_0558    :Riders ride in pairs of seats rotating around the ends of three long rotating arms
 STR_0559    :Large themed building containing scary corridors and spooky rooms
-STR_0560    :A place for sick guests to go for faster recovery
-STR_0561    :Circus animal show inside a big-top tent
-STR_0562    :Powered cars travel along a multi-level track past spooky scenery and special effects
-STR_0563    :Sitting in comfortable trains with only simple lap restraints riders enjoy giant smooth drops and twisting track as well as plenty of 'air time' over the hills
+STR_0560    :気分が悪くなったピープや怪我をしたピープを救護するための施設。
+STR_0561    :サーカステントの中でサーカス用動物とピエロがショーを行う。
+STR_0562    :特別なエフェクトと景観を有する多段トラックを移動するエンジン付き車両。
+STR_0563    :乗客はひざだけを押さえられて快適な座席に座り、巨大なドロップやツイストを有するトラックを滑走することで、丘の上での「エアタイム」を体験する。
 STR_0564    :Running on wooden track, this coaster is fast, rough, noisy, and gives an 'out of control' riding experience with plenty of 'air time'
 STR_0565    :A simple wooden roller coaster capable of only gentle slopes and turns, where the cars are only kept on the track by side friction wheels and gravity
 STR_0566    :Individual roller coaster cars zip around a tight zig-zag layout of track with sharp corners and short sharp drops
-STR_0567    :Sitting in seats suspended either side of the track, riders are pitched head-over-heels while they plunge down steep drops and travel through various inversions
+STR_0567    :車両は両サイドのトラックで支えられ、乗客は真っ逆さまになって急降下や様々な回転に飛び込む。
 STR_0568    :<removed string - do not use>
 STR_0569    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air
 STR_0570    :<removed string - do not use>
-STR_0571    :Circular cars spin around as they travel along the zig-zagging wooden track
-STR_0572    :Large capacity boats travel along a wide water channel, propelled up slopes by a conveyor belt, accelerating down steep slopes to soak the riders with a giant splash
-STR_0573    :Powered helicopter shaped cars running on a steel track, controlled by the pedalling of the riders
-STR_0574    :Riders are held in special harnesses in a lying-down position, travelling through twisted track and inversions either on their backs or facing the ground
+STR_0571    :木でできたジグザグのトラックを運行する間、円形の車両が回転する。
+STR_0572    :ベルトコンベヤーで斜面を引き上げられ、急降下して大飛沫で乗客を水浸しにする、広い溝に沿って移動する積載容量の高いボート。
+STR_0573    :ヘリコプターの形をしたペダルによって動く車両。
+STR_0574    :乗客は寝転んだ姿勢のまま座席にハーネスで固定され、ツイスト・回転のあるトラックを背に、地面と向かい合って滑走する。
 STR_0575    :Powered trains hanging from a single rail transport people around the park
 STR_0576    :<removed string - do not use>
-STR_0577    :Bogied cars run on wooden tracks, turning around on special reversing sections
+STR_0577    :特別な部分で反転するボギー車が木のトラックを走る。
 STR_0578    :Cars run along track enclosed by circular hoops, traversing steep drops and heartline twists
-STR_0579    :A gentle game of miniature golf
-STR_0580    :A giant steel roller coaster capable of smooth drops and hills of over 300ft
-STR_0581    :A ring of seats is pulled to the top of a tall tower while gently rotating, then allowed to free-fall down, stopping gently at the bottom using magnetic brakes
-STR_0582    :Self-drive hovercraft vehicles
-STR_0583    :Building containing warped rooms and angled corridors to disorientate people walking through it
+STR_0579    :優しいなミニアチュール・ゴルフのゲームです。
+STR_0580    :300フィート以上のリフトアップとドロップが可能な、巨大な金属製ローラーコースターです。
+STR_0581    :座席のリングが穏やかに回転しながら塔の最上部まで持ち上げられ、それから自由落下し、磁器ブレーキにより最下部でゆっくり停止する。
+STR_0582    :自分で運転するホバークラフトです。
+STR_0583    :その家の中は通路も部屋も曲がりくねっており、訪れた人々の方向感覚を狂わせる。
 STR_0584    :Special bicycles run on a steel monorail track, propelled by the pedalling of the riders
-STR_0585    :Riders sit in pairs of seats suspended beneath the track as they loop and twist through tight inversions
-STR_0586    :Boat shaped cars run on roller coaster track to allow twisting curves and steep drops, splashing down into sections of water for gentle river sections
-STR_0587    :After an exhilarating air-powered launch, the train speeds up a vertical track, over the top, and vertically down the other side to return to the station
-STR_0588    :Individual cars run beneath a zig-zagging track with hairpin turns and sharp drops
-STR_0589    :A large flying-carpet themed car which moves up and down cyclically on the ends of 4 arms
-STR_0590    :Riders ride in a submerged submarine through an underwater course
+STR_0585    :トラックに吊り下げられた席に座り、乗客は休む間もなくループやツイストを体験する。
+STR_0586    :ボート型の車両がねじれたカーブや急降下を含むトラックを滑走し、穏やかな川のセクションに着水する。
+STR_0587    :車両は空圧により勢いよく発車して垂直トラックを駆け上がり、トップに達して別方向を垂直落下して乗り場に帰還する。
+STR_0588    :連結していない個々の車両が、ヘアピンターンと急降下のあるジグザグのトラックを滑走する。
+STR_0589    :４本のアームにより周期的に上下する、空飛ぶじゅうたんをテーマにした車。
+STR_0590    :ミニ潜水艦に乗って水中のコースを走る。
 STR_0591    :Raft-shaped boats gently meander around a river track
 STR_0592    :<removed string - do not use>
-STR_0593    :Rotating wheel with suspended passenger pods, which first starts spinning and is then tilted up by a supporting arm
+STR_0593    :ポッドを吊した回転ホイールが、回転を始めた後に支持アームによって上に傾けられる。
 STR_0594    :<removed string - do not use>
 STR_0595    :<removed string - do not use>
 STR_0596    :<removed string - do not use>
 STR_0597    :<removed string - do not use>
-STR_0598    :Inverted roller coaster trains are accelerated out of the station to travel up a vertical spike of track, then reverse back through the station to travel backwards up another vertical spike of track
+STR_0598    :乗り場から一気に加速される車両が、トラックを垂直に上昇して、もう一方の垂直トラックを戻る。
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
-STR_0600    :Powered mine trains career along a smooth and twisted track layout
+STR_0600    :動力を持つ鉱山の列車が、スムースなツイスト・トラック・レイアウトに沿って走る。
 STR_0601    :<removed string - do not use>
-STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
+STR_0602    :ローラーコースター車両はリニア誘導モーター(LIM)で加速され、ツイストや回転のあるコースを疾走する。
 STR_0603    :来客{INT32}
 STR_0604    :来客{INT32}
 STR_0605    :来客{INT32}
@@ -886,8 +886,8 @@ STR_0880    :ここに地形を上げられません…
 STR_0881    :オブジェクトが途中
 STR_0882    :ゲームをロードする
 STR_0883    :ゲームをセーブする
-STR_0884    :景色をロードする
-STR_0885    :景色をセーブする
+STR_0884    :地形をロードする
+STR_0885    :地形をセーブする
 STR_0886    :ゲームを閉じる
 STR_0887    :シナリオエディタを閉じる
 STR_0888    :トラックデザイナーを閉める
@@ -1051,7 +1051,7 @@ STR_1045    :OpenRCT2の景色ファイル
 STR_1046    :OpenRCT2のトラックディサインファイル
 STR_1047    :ゲームをセーブが失敗しました！
 STR_1048    :シナリオをセーブが失敗しました！
-STR_1049    :景色をセーブが失敗しました！
+STR_1049    :地形をセーブが失敗しました！
 STR_1050    :Failed to load...{NEWLINE}File contains invalid data!
 STR_1051    :支柱の切り替え
 STR_1052    :ゲストの切替え
@@ -1351,40 +1351,40 @@ STR_1345    :{LENGTH}
 STR_1346    :{LENGTH} / 
 STR_1347    :{WINDOW_COLOUR_2}平均速度: {BLACK}{VELOCITY}
 STR_1348    :{WINDOW_COLOUR_2}最大垂直プラスG: {BLACK}{COMMA2DP32}g
-STR_1349    :{WINDOW_COLOUR_2}Max. positive vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1349    :{WINDOW_COLOUR_2}最大垂直プラスG: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1350    :{WINDOW_COLOUR_2}最大垂直マイナスG: {BLACK}{COMMA2DP32}g
-STR_1351    :{WINDOW_COLOUR_2}Max. negative vertical G's: {OUTLINE}{RED}{COMMA2DP32}g
+STR_1351    :{WINDOW_COLOUR_2}最大垂直マイナスG: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1352    :{WINDOW_COLOUR_2}最大横G: {BLACK}{COMMA2DP32}g
 STR_1353    :{WINDOW_COLOUR_2}最大横G: {OUTLINE}{RED}{COMMA2DP32}g
 STR_1354    :{WINDOW_COLOUR_2}最高落下高度: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}急降下: {BLACK}{COMMA16}
-STR_1356    :{WINDOW_COLOUR_2}Inversions: {BLACK}{COMMA16}
-STR_1357    :{WINDOW_COLOUR_2}Holes: {BLACK}{COMMA16}
+STR_1356    :{WINDOW_COLOUR_2}回転数: {BLACK}{COMMA16}
+STR_1357    :{WINDOW_COLOUR_2}穴数: {BLACK}{COMMA16}
 STR_1358    :{WINDOW_COLOUR_2}全滞空時間: {BLACK}{COMMA2DP32}秒
 STR_1359    :{WINDOW_COLOUR_2}待ち時間: {BLACK}{COMMA16} 分
 STR_1360    :{WINDOW_COLOUR_2}待ち時間: {BLACK}{COMMA16} 分
 STR_1361    :Can't change speed...
 STR_1362    :Can't change launch speed...
-STR_1363    :Too high for supports!
+STR_1363    :支柱には高すぎます！
 STR_1364    :Supports for track above can't be extended any further!
-STR_1365    :In-line Twist (left)
-STR_1366    :In-line Twist (right)
+STR_1365    :インライン・ツイスト (左)
+STR_1366    :インライン・ツイスト (右)
 STR_1367    :ハーフ・ループ
 STR_1368    :ハーフ・コークスクリュー (左)
 STR_1369    :ハーフ・コークスクリュー (右)
-STR_1370    :Barrel Roll (left)
-STR_1371    :Barrel Roll (right)
-STR_1372    :Launched Lift Hill
+STR_1370    :バレルロール (左)
+STR_1371    :バレルロール (右)
+STR_1372    :ランチ・リフト・ヒル
 STR_1373    :大きなハーフ・ループ (左)
 STR_1374    :大きなハーフ・ループ (右)
-STR_1375    :Upper Transfer
-STR_1376    :Lower Transfer
-STR_1377    :Heartline Roll (left)
-STR_1378    :Heartline Roll (right)
-STR_1379    :Reverser (left)
-STR_1380    :Reverser (right)
-STR_1381    :Curved Lift Hill (left)
-STR_1382    :Curved Lift Hill (right)
+STR_1375    :トランスファー（上）
+STR_1376    :トランスファー（下）
+STR_1377    :ハートライン・ロール (左)
+STR_1378    :ハートライン・ロール (右)
+STR_1379    :リバーサー・ロール (左)
+STR_1380    :リバーサー・ロール (右)
+STR_1381    :カバー付・リフト・ヒル (左)
+STR_1382    :カバー付・リフト・ヒル (右)
 STR_1383    :4分の1ループ
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
@@ -1412,7 +1412,7 @@ STR_1406    :{SMALLFONT}{BLACK}Toggle scenery on/off (if available for this desi
 STR_1407    :{WINDOW_COLOUR_2}これを建設
 STR_1408    :{WINDOW_COLOUR_2}コスト: {BLACK}{CURRENCY}
 STR_1409    :Entry/Exit Platform
-STR_1410    :Vertical Tower
+STR_1410    :垂直の塔
 STR_1411    :{STRINGID} in the way
 STR_1412    :{WINDOW_COLOUR_3}Data logging not available for this type of ride
 STR_1413    :{WINDOW_COLOUR_3}Data logging will start when next {STRINGID} leaves {STRINGID}
@@ -1682,15 +1682,15 @@ STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
 STR_1677    :{WINDOW_COLOUR_2}人気度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}人気度: {BLACK}{COMMA16}%
-STR_1679    :Helix up (left)
-STR_1680    :Helix up (right)
-STR_1681    :Helix down (left)
-STR_1682    :Helix down (right)
+STR_1679    :上の螺旋 (左)
+STR_1680    :上の螺旋 (右)
+STR_1681    :下の螺旋 (左)
+STR_1682    :下の螺旋 (右)
 STR_1683    :Base size 2 x 2
 STR_1684    :Base size 4 x 4
 STR_1685    :Base size 2 x 4
 STR_1686    :Base size 5 x 1
-STR_1687    :Water splash
+STR_1687    :ウォーター・スプラッシュ
 STR_1688    :Base size 4 x 1
 STR_1689    :ブロックブレーキ
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
@@ -1814,18 +1814,18 @@ STR_1807    :コントロールが故障した
 STR_1808    :{WINDOW_COLOUR_2}最後の故障: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}今の故障: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}所持品:
-STR_1811    :Can't build this here...
+STR_1811    :ここで建てることはできません。
 STR_1812    :{SMALLFONT}{BLACK}{STRINGID}
-STR_1813    :Miscellaneous Objects
+STR_1813    :雑貨のオブジェックト
 STR_1814    :活動
 STR_1815    :思考
 STR_1816    :{SMALLFONT}{BLACK}Select information type to show in guest list
 STR_1817    :({COMMA16})
-STR_1818    :{WINDOW_COLOUR_2}All guests
-STR_1819    :{WINDOW_COLOUR_2}All guests (summarised)
-STR_1820    :{WINDOW_COLOUR_2}Guests {STRINGID}
-STR_1821    :{WINDOW_COLOUR_2}Guests thinking {STRINGID}
-STR_1822    :{WINDOW_COLOUR_2}Guests thinking about {POP16}{STRINGID}
+STR_1818    :{WINDOW_COLOUR_2}全てのゲスト
+STR_1819    :{WINDOW_COLOUR_2}全てのゲスト (要約)
+STR_1820    :{WINDOW_COLOUR_2}{STRINGID}のゲスト
+STR_1821    :{WINDOW_COLOUR_2}{STRINGID}を考えるのゲスト
+STR_1822    :{WINDOW_COLOUR_2}{POP16}{STRINGID}を考えるのゲスト
 STR_1823    :{SMALLFONT}{BLACK}Show guests' thoughts about this ride/attraction
 STR_1824    :{SMALLFONT}{BLACK}Show guests on this ride/attraction
 STR_1825    :{SMALLFONT}{BLACK}Show guests queuing for this ride/attraction
@@ -1855,12 +1855,12 @@ STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
 STR_1849    :{WINDOW_COLOUR_2}音楽を流す
 STR_1850    :{SMALLFONT}{BLACK}このライドで流す音楽の選択
 STR_1851    :{WINDOW_COLOUR_2}維持費: {BLACK}{CURRENCY2DP} 時間あたり
-STR_1852    :{WINDOW_COLOUR_2}維持費: {BLACK}Unknown
+STR_1852    :{WINDOW_COLOUR_2}維持費: {BLACK}未知
 STR_1853    :{WINDOW_COLOUR_2}建設: {BLACK}今年
 STR_1854    :{WINDOW_COLOUR_2}建設: {BLACK}昨年
 STR_1855    :{WINDOW_COLOUR_2}建設: {BLACK}{COMMA16}年前
-STR_1856    :{WINDOW_COLOUR_2}itemからの収益: {BLACK}{CURRENCY2DP}
-STR_1857    :{WINDOW_COLOUR_2}itemからの損失: {BLACK}{CURRENCY2DP}
+STR_1856    :{WINDOW_COLOUR_2}売るべき品物からの収益: {BLACK}{CURRENCY2DP}
+STR_1857    :{WINDOW_COLOUR_2}売るべき品物からの損失: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}毎月コスト: {BLACK}{CURRENCY2DP}
 STR_1859    :清掃員
 STR_1860    :整備士
@@ -2058,7 +2058,7 @@ STR_2049    :ドリンク
 STR_2050    :バーガー
 STR_2051    :ポテトフライ
 STR_2052    :アイスクリーム
-STR_2053    :some Candyfloss
+STR_2053    :綿菓子
 STR_2054    :空のキャン
 STR_2055    :くず
 STR_2056    :空のバーガーボックス
@@ -2755,18 +2755,18 @@ STR_2745    :\
 STR_2746    :]
 STR_2747    :{ENDQUOTES}
 STR_2748    :Bar
-STR_2749    :My new scenario
+STR_2749    :題名なしのシナリオ
 # New strings used in the cheats window previously these were ???
-STR_2750    :Move all items to top
-STR_2751    :Move all items to bottom
-STR_2752    :Clear grass
-STR_2753    :Mowed grass
-STR_2754    :Water plants
-STR_2755    :Fix vandalism
-STR_2756    :Remove litter
+STR_2750    :全てのオブジェクト上に移動する
+STR_2751    :全てのオブジェクト下に移動する
+STR_2752    :草をクリアする
+STR_2753    :草を刈る
+STR_2754    :庭木に水をやる
+STR_2755    :壊れた物を補修する
+STR_2756    :ゴミを削除する
 STR_2757    :<removed string - do not use>
 STR_2758    :<removed string - do not use>
-STR_2759    :Zero Clearance
+STR_2759    :ゼロ・クリアランス
 STR_2760    :+{CURRENCY}
 STR_2761    :<removed string - do not use>
 STR_2762    :<removed string - do not use>
@@ -3189,32 +3189,32 @@ STR_3177    :Unable to de-select this object
 STR_3178    :At least one path object must be selected
 STR_3179    :At least one ride vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
-STR_3181    :Object Selection - {STRINGID}
-STR_3182    :Park entrance type must be selected
-STR_3183    :Water type must be selected
-STR_3184    :Ride Vehicles/Attractions
+STR_3181    :オブジェクト選択 - {STRINGID}
+STR_3182    :パーク入口タイプを選択する必要があります。
+STR_3183    :ウォタータイプを選択する必要があります。
+STR_3184    :ライド乗り物/アトラクション
 STR_3185    :小さな景観物
 STR_3186    :大きな景観物
-STR_3187    :Walls/Fences
+STR_3187    :壁とフェンス
 STR_3188    :歩道のバナー
 STR_3189    :歩道
-STR_3190    :Path Extras
-STR_3191    :Scenery Groups
+STR_3190    :歩道の余分
+STR_3191    :景色物グループ
 STR_3192    :パークの入口
 STR_3193    :水
-STR_3194    :Scenario Description
-STR_3195    :Invention List
-STR_3196    :{WINDOW_COLOUR_2}Research Group: {BLACK}{STRINGID}
-STR_3197    :{WINDOW_COLOUR_2}Items pre-invented at start of game:
-STR_3198    :{WINDOW_COLOUR_2}Items to invent during game:
-STR_3199    :Random Shuffle
-STR_3200    :{SMALLFONT}{BLACK}Randomly shuffle the list of items to invent during the game
-STR_3201    :Object Selection
-STR_3202    :Landscape Editor
-STR_3203    :Invention List Set Up
-STR_3204    :Options Selection
-STR_3205    :Objective Selection
-STR_3206    :Save Scenario
+STR_3194    :シナリオの説明
+STR_3195    :発明品リスト
+STR_3196    :{WINDOW_COLOUR_2}研究開発グループ: {BLACK}{STRINGID}
+STR_3197    :{WINDOW_COLOUR_2}ゲームの開始時に事前に発明されたオブジェクト:
+STR_3198    :{WINDOW_COLOUR_2}ゲーム中に発明されたオブジェクト:
+STR_3199    :ランダムシャッフル
+STR_3200    :{SMALLFONT}{BLACK}オブジェクトのリストをランダムシャッフルするにクリックして下さい。
+STR_3201    :オブジェクト選択
+STR_3202    :地形エディター
+STR_3203    :発明品リスト設定
+STR_3204    :設定の選択
+STR_3205    :目標の選択
+STR_3206    :シナリオをセーブする
 STR_3207    :トラックデザイナー
 STR_3208    :トラックデザインマネージャー
 STR_3209    :前のステップに戻る:
@@ -3246,12 +3246,12 @@ STR_3234    :パークの設定
 STR_3235    :{SMALLFONT}{BLACK}財務の設定の表示
 STR_3236    :{SMALLFONT}{BLACK}ゲストの設定の表示
 STR_3237    :{SMALLFONT}{BLACK}パークの設定の表示
-STR_3238    :No Money
-STR_3239    :{SMALLFONT}{BLACK}Make this park a 'no money' park with no financial restrictions
+STR_3238    :資金無制限
+STR_3239    :{SMALLFONT}{BLACK}パークは資金無制限の設定です。
 STR_3240    :{WINDOW_COLOUR_2}金銭 初期値:
 STR_3241    :{WINDOW_COLOUR_2}借金 初期値:
-STR_3242    :{WINDOW_COLOUR_2}Maximum loan size:
-STR_3243    :{WINDOW_COLOUR_2}Annual interest rate:
+STR_3242    :{WINDOW_COLOUR_2}借入上限額:
+STR_3243    :{WINDOW_COLOUR_2}年利息:
 STR_3244    :広告宣伝キャンペーンを禁止する
 STR_3245    :{SMALLFONT}{BLACK}広告宣伝キャンペーンを禁止の設定です。
 STR_3246    :{WINDOW_COLOUR_2}{CURRENCY}
@@ -3303,16 +3303,16 @@ STR_3291    :南国
 STR_3292    :砂漠
 STR_3293    :冬
 STR_3294    :変更する...
-STR_3295    :{SMALLFONT}{BLACK}Change name of park
-STR_3296    :{SMALLFONT}{BLACK}Change name of scenario
-STR_3297    :{SMALLFONT}{BLACK}Change detail notes about park / scenario
-STR_3298    :{WINDOW_COLOUR_2}Park Name: {BLACK}{STRINGID}
-STR_3299    :{WINDOW_COLOUR_2}Park/Scenario Details:
-STR_3300    :{WINDOW_COLOUR_2}Scenario Name: {BLACK}{STRINGID}
+STR_3295    :{SMALLFONT}{BLACK}パーク名を変更する
+STR_3296    :{SMALLFONT}{BLACK}シナリオ名を変更する
+STR_3297    :{SMALLFONT}{BLACK}シナリオ設定を変更する
+STR_3298    :{WINDOW_COLOUR_2}パーク名: {BLACK}{STRINGID}
+STR_3299    :{WINDOW_COLOUR_2}パーク／シナリオの説明:
+STR_3300    :{WINDOW_COLOUR_2}シナリオ名: {BLACK}{STRINGID}
 STR_3301    :{WINDOW_COLOUR_2}Objective Date:
 STR_3302    :{WINDOW_COLOUR_2}{MONTHYEAR}
-STR_3303    :{WINDOW_COLOUR_2}Number of guests:
-STR_3304    :{WINDOW_COLOUR_2}Park value:
+STR_3303    :{WINDOW_COLOUR_2}ゲストの数:
+STR_3304    :{WINDOW_COLOUR_2}パーク評価額:
 STR_3305    :{WINDOW_COLOUR_2}Monthly income:
 STR_3306    :{WINDOW_COLOUR_2}Monthly profit:
 STR_3307    :{WINDOW_COLOUR_2}Minimum length:
@@ -3323,17 +3323,17 @@ STR_3311    :{WINDOW_COLOUR_2}{COMMA2DP32}
 STR_3312    :{WINDOW_COLOUR_2}Rides/attractions under a preservation order:
 STR_3313    :シナリオ名
 STR_3314    :シナリオ名を入力して下さい。
-STR_3315    :Park/Scenario Details
-STR_3316    :Enter description of this scenario:
-STR_3317    :No details yet
-STR_3318    :{SMALLFONT}{BLACK}Select which group this scenario appears in
-STR_3319    :{WINDOW_COLOUR_2}Scenario Group:
-STR_3320    :Unable to save scenario file...
-STR_3321    :New objects installed successfully
+STR_3315    :パーク／シナリオの説明
+STR_3316    :シナリオの説明を入力して下さい。
+STR_3317    :説明がなし
+STR_3318    :{SMALLFONT}{BLACK}シナリオグループを選択する
+STR_3319    :{WINDOW_COLOUR_2}シナリオグループ:
+STR_3320    :シナリオのセーブが失敗しました…
+STR_3321    :新しいオブジェクトが正常にインストールされました。
 STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
-STR_3324    :Requires Add-On Pack: {STRINGID}
-STR_3325    :Requires an Add-On Pack
+STR_3324    :必要のアドオンキット: {STRINGID}
+STR_3325    :アドオンキットが必要
 STR_3326    :{WINDOW_COLOUR_2}(no image)
 STR_3327    :Starting positions for people not set
 STR_3328    :Can't advance to next editor stage...
@@ -3368,26 +3368,26 @@ STR_3356    :Delete File
 STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
 STR_3358    :Can't delete track design...
 STR_3359    :{BLACK}No track designs of this type
-STR_3360    :Warning!
+STR_3360    :ご注意！
 STR_3361    :Too many track designs of this type - Some will not be listed.
 STR_3362    :<removed string - do not use>
 STR_3363    :<removed string - do not use>
-STR_3364    :Advanced
+STR_3364    :上級
 STR_3365    :{SMALLFONT}{BLACK}Allow selection of individual items of scenery in addition to scenery groups
-STR_3366    :{BLACK}= Ride
-STR_3367    :{BLACK}= Food Stall
-STR_3368    :{BLACK}= Drink Stall
-STR_3369    :{BLACK}= Souvenir Stall
-STR_3370    :{BLACK}= Info. Kiosk
-STR_3371    :{BLACK}= First Aid
-STR_3372    :{BLACK}= Cash Machine
-STR_3373    :{BLACK}= Toilet
+STR_3366    :{BLACK}= ライド
+STR_3367    :{BLACK}= 食べ物ショップ
+STR_3368    :{BLACK}= 飲み物ショップ
+STR_3369    :{BLACK}= お土産ショップ
+STR_3370    :{BLACK}= インフォメーション
+STR_3371    :{BLACK}= 救護所
+STR_3372    :{BLACK}= ATM
+STR_3373    :{BLACK}= トイレ
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
 STR_3376    :Install new
 STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
-STR_3378    :Install
-STR_3379    :Cancel
+STR_3378    :インストール
+STR_3379    :キャンセル
 STR_3380    :Unable to install this track design...
 STR_3381    :File is not compatible or contains invalid data
 STR_3382    :File copy failed
@@ -3493,7 +3493,7 @@ STR_5150    :Enable debugging tools
 STR_5151    :,
 STR_5152    :.
 STR_5153    :テーマを変更する
-STR_5154    :Hardware display
+STR_5154    :ハードウェア表示
 STR_5155    :Allow testing of unfinished tracks
 STR_5156    :{SMALLFONT}{BLACK}Allows testing of most ride types even when the track is unfinished, does not apply to block sectioned modes
 STR_5157    :<removed string - do not use>
@@ -3550,10 +3550,10 @@ STR_5207    :スタッフ
 STR_5208    :スタッフ一覧
 STR_5209    :バナー
 STR_5210    :オブジェクト選択
-STR_5211    :Invention List
+STR_5211    :発明品リスト
 STR_5212    :シナリオ設定
 STR_5213    :目標の設定
-STR_5214    :Map Generation
+STR_5214    :地図の生成
 STR_5215    :トラックデサインマネージャー
 STR_5216    :トラックデサインマネージャーリスト
 STR_5217    :カンニング
@@ -3605,17 +3605,17 @@ STR_5262    :ワッキーワールド
 STR_5263    :タイムツイスター
 STR_5264    :カスタム
 STR_5265    :{SMALLFONT}{BLACK}Select which content sources are visible
-STR_5266    :{SMALLFONT}{BLACK}Display
-STR_5267    :{SMALLFONT}{BLACK}Culture and Units
+STR_5266    :{SMALLFONT}{BLACK}表示
+STR_5267    :{SMALLFONT}{BLACK}文化と単位
 STR_5268    :{SMALLFONT}{BLACK}音楽
-STR_5269    :{SMALLFONT}{BLACK}Controls and interface
-STR_5270    :{SMALLFONT}{BLACK}Miscellaneous
+STR_5269    :{SMALLFONT}{BLACK}コントロールとインターフェイス
+STR_5270    :{SMALLFONT}{BLACK}雑貨
 STR_5271    :{SMALLFONT}{BLACK}Twitch
 STR_5272    :{SMALLFONT}{BLACK}小さな景観物
 STR_5273    :{SMALLFONT}{BLACK}大きな景観物
 STR_5274    :{SMALLFONT}{BLACK}歩道
-STR_5275    :Search for Objects
-STR_5276    :Enter the name of an object to search for
+STR_5275    :オブジェクトを調べる
+STR_5276    :オブジェクトの名を入力して下さい。
 STR_5277    :Clear
 STR_5278    :サンドボックスモード
 STR_5279    :サンドボックスモードを切る
@@ -3671,8 +3671,8 @@ STR_5328    :淡い色の砂
 STR_5329    :チェッカーボード (インバーテッド)
 STR_5330    :地形の穴を表示する
 STR_5331    :岩
-STR_5332    :Wood (red)
-STR_5333    :Wood (black)
+STR_5332    :木製 (赤)
+STR_5333    :木製 (黒)
 STR_5334    :氷
 STR_5335    :ライド入口
 STR_5336    :ライド出口
@@ -3758,10 +3758,10 @@ STR_5415    :Load{MOVE_X}{87}{STRING}
 STR_5416    :Load{MOVE_X}{87}No save selected
 STR_5417    :Location
 STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotate
-STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
+STR_5419    :回転
+STR_5420    :回転{MOVE_X}{87}{COMMA16}
+STR_5421    :ズーム
+STR_5422    :ズーム{MOVE_X}{87}{COMMA16}
 STR_5423    :Wait
 STR_5424    :Wait{MOVE_X}{87}{UINT16}
 STR_5425    :Restart
@@ -3769,13 +3769,13 @@ STR_5426    :End
 STR_5427    :Coordinates:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
-STR_5430    :Seconds to wait:
+STR_5430    :Milliseconds to wait:
 STR_5431    :Save to load:
 STR_5432    :Command:
-STR_5433    :Title Sequences
+STR_5433    :タイトルシーケンス
 STR_5434    :Command Editor
 STR_5435    :Rename save
-STR_5436    :Edit Title Sequences...
+STR_5436    :タイトルシーケンスを変更する...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
@@ -3786,20 +3786,20 @@ STR_5443    :スピード{MOVE_X}{87}{STRINGID}
 STR_5444    :スピード:
 STR_5445    :スピード
 STR_5446    :Get
-STR_5447    :Type {STRINGID}
-STR_5448    :Ride / Vehicle {STRINGID}
+STR_5447    :タイプ {STRINGID}
+STR_5448    :ライド／乗り物 {STRINGID}
 STR_5449    :ゲームのスピードを下げる
 STR_5450    :ゲームのスピードを上げる
-STR_5451    :Open cheats window
-STR_5452    :Toggle visibility of toolbars
-STR_5453    :Select another ride
+STR_5451    :カニングウィンドウの表示
+STR_5452    :ツールバーの表示を切り替える
+STR_5453    :他のライドを選択する
 STR_5454    :Uncap FPS
-STR_5455    :Enable sandbox mode
-STR_5456    :Disable clearance checks
-STR_5457    :Disable support limits
-STR_5458    :Rotate clockwise
-STR_5459    :Rotate anti-clockwise
-STR_5460    :Rotate view anti-clockwise
+STR_5455    :サンドボックスモードを有効にする
+STR_5456    :クリアランスチェックを無効にする
+STR_5457    :サポート制限を無効にする
+STR_5458    :右へ回転する
+STR_5459    :左へ回転する
+STR_5460    :ビュウを左へ回転する
 STR_5461    :Set guests' parameters
 STR_5462    :{CURRENCY}
 STR_5463    :楽しむの目的
@@ -3816,7 +3816,7 @@ STR_5473    :昼/夜のモード切替
 STR_5474    :バナーのテキストは大文字で表示する
 STR_5475    :{COMMA16} 週間
 STR_5476    :ハードウェア
-STR_5477    :Map rendering
+STR_5477    :地図のレンダリング
 STR_5478    :コントロール
 STR_5479    :ツールバー
 STR_5480    :ツールバーにボタンの表示:
@@ -3826,13 +3826,13 @@ STR_5483    :{BLACK}(残り{COMMA16}週間)
 STR_5484    :{BLACK}(残り{COMMA16}週間)
 STR_5485    :{SMALLFONT}{STRING}
 STR_5486    :{BLACK}{COMMA16}
-STR_5487    :{SMALLFONT}{BLACK}Show recent messages
-STR_5488    :No entrance (OpenRCT2 only!)
+STR_5487    :{SMALLFONT}{BLACK}最近のメッセージの表示
+STR_5488    :入口なし (OpenRCT2だけ!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
 STR_5490    :Disable audio on focus loss
-STR_5491    :Inventions list
+STR_5491    :発明品リスト
 STR_5492    :シナリオ設定
-STR_5493    :Send Message
+STR_5493    :メッセージを送る
 STR_5494    :<not used anymore>
 STR_5495    :プレーヤー 名鑑
 STR_5496    :プレーヤー:
@@ -3843,50 +3843,50 @@ STR_5500    :新しいサーバ
 STR_5501    :サーバをスタートする
 STR_5502    :マルチプレイ
 STR_5503    :ホスト名またはIPアドレスを入力してください:
-STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
+STR_5504    :{SMALLFONT}{BLACK}マルチプレイのステイタスの表示
 STR_5505    :サーバーに接続できない
 STR_5506    :Guests ignore intensities
 STR_5507    :Handymen mow grass by default
 STR_5508    :Allow loading files with incorrect checksums
 STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that have an incorrect checksum,{NEWLINE}like the scenarios from the demo{NEWLINE}or damaged saves.
-STR_5510    :Default sound device
+STR_5510    :デフォルトのサウンドデバイス
 STR_5511    :(未知)
 STR_5512    :名前を保存
 STR_5513    :(Quick) save game
 STR_5514    :Disable vandalism
 STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
-STR_5516    :{SMALLFONT}{BLACK}黒
+STR_5516    :{SMALLFONT}{BLACK}黒色
 STR_5517    :{SMALLFONT}{BLACK}灰色
-STR_5518    :{SMALLFONT}{BLACK}白
-STR_5519    :{SMALLFONT}{BLACK}Dark purple
-STR_5520    :{SMALLFONT}{BLACK}Light purple
-STR_5521    :{SMALLFONT}{BLACK}Bright purple
+STR_5518    :{SMALLFONT}{BLACK}白色
+STR_5519    :{SMALLFONT}{BLACK}ダーク紫色
+STR_5520    :{SMALLFONT}{BLACK}ライト紫色
+STR_5521    :{SMALLFONT}{BLACK}明るい紫色
 STR_5522    :{SMALLFONT}{BLACK}紺色
 STR_5523    :{SMALLFONT}{BLACK}水色
-STR_5524    :{SMALLFONT}{BLACK}Icy blue
-STR_5525    :{SMALLFONT}{BLACK}Dark water
-STR_5526    :{SMALLFONT}{BLACK}Light water
-STR_5527    :{SMALLFONT}{BLACK}Saturated green
-STR_5528    :{SMALLFONT}{BLACK}Dark green
-STR_5529    :{SMALLFONT}{BLACK}Moss green
-STR_5530    :{SMALLFONT}{BLACK}Bright green
-STR_5531    :{SMALLFONT}{BLACK}Olive green
-STR_5532    :{SMALLFONT}{BLACK}Dark olive green
-STR_5533    :{SMALLFONT}{BLACK}Bright yellow
+STR_5524    :{SMALLFONT}{BLACK}氷青色
+STR_5525    :{SMALLFONT}{BLACK}ダーク水色
+STR_5526    :{SMALLFONT}{BLACK}ライト水色
+STR_5527    :{SMALLFONT}{BLACK}飽和緑色
+STR_5528    :{SMALLFONT}{BLACK}ダーク緑色
+STR_5529    :{SMALLFONT}{BLACK}モス緑色
+STR_5530    :{SMALLFONT}{BLACK}明るい緑色
+STR_5531    :{SMALLFONT}{BLACK}オリーブ緑色
+STR_5532    :{SMALLFONT}{BLACK}ダークオリーブ緑色
+STR_5533    :{SMALLFONT}{BLACK}明るい黄色
 STR_5534    :{SMALLFONT}{BLACK}黄色
-STR_5535    :{SMALLFONT}{BLACK}Dark yellow
-STR_5536    :{SMALLFONT}{BLACK}Light orange
-STR_5537    :{SMALLFONT}{BLACK}Dark orange
-STR_5538    :{SMALLFONT}{BLACK}Light brown
-STR_5539    :{SMALLFONT}{BLACK}Saturated brown
-STR_5540    :{SMALLFONT}{BLACK}Dark brown
-STR_5541    :{SMALLFONT}{BLACK}Salmon pink
-STR_5542    :{SMALLFONT}{BLACK}Bordeaux red
-STR_5543    :{SMALLFONT}{BLACK}Saturated red
-STR_5544    :{SMALLFONT}{BLACK}Bright red
-STR_5545    :{SMALLFONT}{BLACK}Dark pink
-STR_5546    :{SMALLFONT}{BLACK}Bright pink
-STR_5547    :{SMALLFONT}{BLACK}Light pink
+STR_5535    :{SMALLFONT}{BLACK}ダーク黄色
+STR_5536    :{SMALLFONT}{BLACK}ライトオレンジ色
+STR_5537    :{SMALLFONT}{BLACK}ダークオレンジ色
+STR_5538    :{SMALLFONT}{BLACK}明るい褐色
+STR_5539    :{SMALLFONT}{BLACK}飽和褐色
+STR_5540    :{SMALLFONT}{BLACK}ダーク褐色
+STR_5541    :{SMALLFONT}{BLACK}鮭のピンク色
+STR_5542    :{SMALLFONT}{BLACK}ボルドー赤色
+STR_5543    :{SMALLFONT}{BLACK}飽和赤色
+STR_5544    :{SMALLFONT}{BLACK}明るい赤色
+STR_5545    :{SMALLFONT}{BLACK}ダークピンク色
+STR_5546    :{SMALLFONT}{BLACK}明るいピンク色
+STR_5547    :{SMALLFONT}{BLACK}ライトピンク色
 STR_5548    :全て操作方式を見える
 STR_5549    :年月日
 STR_5550    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
@@ -3901,7 +3901,7 @@ STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
 STR_5560    :{SMALLFONT}{BLACK}Sets the inspection time to 'Every 10 minutes' on all rides
 STR_5561    :Failed to load language
-STR_5562    :注意!
+STR_5562    :ご注意！
 STR_5563    :This feature is currently unstable, take extra caution.
 STR_5564    :Insert Corrupt Element
 STR_5565    :{SMALLFONT}{BLACK}Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
@@ -3980,22 +3980,22 @@ STR_5637    :それはできません…
 STR_5638    :アクセス拒否
 STR_5639    :{SMALLFONT}{BLACK}Show list of players
 STR_5640    :{SMALLFONT}{BLACK}Manage groups
-STR_5641    :Default Group:
-STR_5642    :Group:
-STR_5643    :Add Group
+STR_5641    :デファルトのグループ:
+STR_5642    :グループ:
+STR_5643    :新しいグループ
 STR_5644    :Remove Group
 STR_5645    :チャット
-STR_5646    :Terraform
+STR_5646    :テラフォーム
 STR_5647    :Toggle Pause
 STR_5648    :Set Water Level
 STR_5649    :Create Ride
 STR_5650    :Remove Ride
 STR_5651    :Build Ride
 STR_5652    :Ride Properties
-STR_5653    :Scenery
-STR_5654    :Path
-STR_5655    :Guest
-STR_5656    :Staff
+STR_5653    :景色物
+STR_5654    :歩道
+STR_5655    :ゲスト
+STR_5656    :スタフ
 STR_5657    :Park Properties
 STR_5658    :Park Funding
 STR_5659    :Kick Player
@@ -4003,28 +4003,28 @@ STR_5660    :Modify Groups
 STR_5661    :Set Player Group
 STR_5662    :N/A
 STR_5663    :Clear Landscape
-STR_5664    :Cheat
+STR_5664    :カンニング
 STR_5665    :Toggle Scenery Cluster
 STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}Last action: {BLACK}{STRINGID}
 STR_5702    :{SMALLFONT}{BLACK}Locate player's most recent action
 STR_5703    :Can't kick the host
-STR_5704    :Last Action:
+STR_5704    :最後のアクション:
 STR_5705    :Can't set to this group
 STR_5706    :Can't remove group that players belong to
 STR_5707    :This group cannot be modified
 STR_5708    :Can't change the group that the host belongs to
 STR_5709    :Rename Group
-STR_5710    :Group name
-STR_5711    :Enter new name for this group:
+STR_5710    :グループ名
+STR_5711    :グループ名を入力してください。
 STR_5712    :Can't modify permission that you do not have yourself
 STR_5713    :Kick Player
-STR_5714    :Show options window
+STR_5714    :設定ウィンドウの表示
 STR_5715    :新しいゲーム
 STR_5716    :Not allowed in multiplayer mode
 # For identifying client network version in server list window
-STR_5717    :Network version: {STRING}
-STR_5718    :{SMALLFONT}{BLACK}Network version: {STRING}
+STR_5717    :ネットワーク・バージョン: {STRING}
+STR_5718    :{SMALLFONT}{BLACK}ネットワーク・バージョン: {STRING}
 STR_5719    :晴れ
 STR_5720    :晴れ/曇り
 STR_5721    :曇り
@@ -4033,32 +4033,32 @@ STR_5723    :大雨
 STR_5724    :雷雨
 STR_5725    :{BLACK}天気を設定する:
 STR_5726    :{SMALLFONT}{BLACK}パークの天気を設定する
-STR_5727    :Scaling quality
-STR_5728    :Requires hardware display option
-STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
-STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5727    :スケーリング質
+STR_5728    :ハードウェア表示が必要です。
+STR_5729    :{SMALLFONT}{BLACK}ハードウェア表示が必要です。
+STR_5730    :近傍法
+STR_5731    :線形補間
+STR_5732    :異方
+STR_5733    :近傍法スケーリングを使う
 # tooltip for tab in options window
-STR_5734    :{SMALLFONT}{BLACK}Rendering
-STR_5735    :Network Status
-STR_5736    :Player
-STR_5737    :Closed, {COMMA16} person still on ride
-STR_5738    :Closed, {COMMA16} people still on ride
-STR_5739    :{WINDOW_COLOUR_2}Customers on ride: {BLACK}{COMMA16}
-STR_5740    :Never-ending marketing campaigns
-STR_5741    :{SMALLFONT}{BLACK}Marketing campaigns never end
-STR_5742    :Authenticating ...
-STR_5743    :Connecting ...
-STR_5744    :Resolving ...
+STR_5734    :{SMALLFONT}{BLACK}レンダリング
+STR_5735    :ネットワーク・ステータス
+STR_5736    :プレヤー
+STR_5737    :閉鎖中, まだ{COMMA16}人の乗客
+STR_5738    :閉鎖中, まだ{COMMA16}人の乗客
+STR_5739    :{WINDOW_COLOUR_2}人の乗客: {BLACK}{COMMA16}
+STR_5740    :終わりのないの広告宣伝キャンペーン
+STR_5741    :{SMALLFONT}{BLACK}広告宣伝キャンペーンが終わりのないの設定です。
+STR_5742    :認証中 ...
+STR_5743    :接続中 ...
+STR_5744    :解決中　...
 STR_5745    :Network desync detected
 STR_5746    :Disconnected
 STR_5747    :Disconnected: {STRING}
-STR_5748    :Kicked
-STR_5749    :Get out of the server!
+STR_5748    :蹴られました
+STR_5749    :サーバから出ていけ！
 STR_5750    :Connection Closed
-STR_5751    :No Data
+STR_5751    :データなし
 STR_5752    :{OUTLINE}{RED}{STRING} has disconnected
 STR_5753    :{OUTLINE}{RED}{STRING} has disconnected ({STRING})
 STR_5754    :Bad Player Name
@@ -4184,13 +4184,13 @@ STR_5871    :Plants don't age
 STR_5872    :{SMALLFONT}{BLACK}Disable plant ageing such that they don't wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :{SMALLFONT}{BLACK}Allows any piece of track to be made into a chain lift
-STR_5875    :Drawing Engine:
-STR_5876    :{SMALLFONT}{BLACK}The engine to use for drawing the game.
-STR_5877    :Software
-STR_5878    :Software (hardware display)
-STR_5879    :OpenGL (experimental)
-STR_5880    :Selected only
-STR_5881    :Non-selected only
+STR_5875    :レンダリングエンジン:
+STR_5876    :{SMALLFONT}{BLACK}ゲームのレンダリングに使用するエンジン。
+STR_5877    :ソフトウェア
+STR_5878    :ソフトウェア（ハードウェア表示）
+STR_5879    :OpenGL（試験的）
+STR_5880    :選定だけ
+STR_5881    :選定ないだけ
 STR_5882    :カスタム通貨記号
 STR_5883    :カスタム通貨記号設定
 STR_5884    :{WINDOW_COLOUR_2}円相場:
@@ -4206,7 +4206,7 @@ STR_5893    :円相場
 STR_5894    :円相場を入力して下さい。
 STR_5895    :トラックをセーブする
 STR_5896    :Track save failed!
-STR_5897    :Window limit:
+STR_5897    :ウィンドウ制限:
 STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
 STR_5899    :Toggle paint debug window
 STR_5900    :Use original drawing code
@@ -4310,7 +4310,7 @@ STR_5997    :Add/set money
 STR_5998    :Add money
 STR_5999    :Set money
 STR_6000    :Enter new value
-STR_6001    :Enable lighting effects (experimental)
+STR_6001    :Enable lighting effects（試験的）
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
 STR_6003    :切り欠きビュー
 STR_6004    :切り欠きビュー
@@ -4413,14 +4413,14 @@ STR_6100    :You disconnected from the server.
 STR_6101    :Rides don't decrease in value over time
 STR_6102    :{SMALLFONT}{BLACK}The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
 STR_6103    :{SMALLFONT}{BLACK}This option is disabled during network play.
-STR_6104    :Corkscrew Roller Coaster
-STR_6105    :Hypercoaster
-STR_6106    :Car Ride
-STR_6107    :Monster Trucks
-STR_6108    :Steel Twister
-STR_6109    :Hyper-Twister
-STR_6110    :Junior Roller Coaster
-STR_6111    :Classic Mini Roller Coaster
+STR_6104    :コークスクリュー・ジェットコースター
+STR_6105    :ハイパーコースター
+STR_6106    :カーライド
+STR_6107    :モンスタートラック
+STR_6108    :スチール・ツイスター
+STR_6109    :ハイパー・ツイスター
+STR_6110    :子供用ローラーコースター
+STR_6111    :クラシック・ミニ・ジェットコースター
 STR_6112    :A compact steel-tracked roller coaster where the train travels through corkscrews and loops
 STR_6113    :A tall non-inverting roller coaster with large drops, high speed, and comfortable trains with only lap bar restraints
 STR_6114    :Riders travel slowly in powered vehicles along a track-based route
@@ -4480,7 +4480,7 @@ STR_DESC    :動力付きで、急斜面もものともしない巨大な四輪�
 STR_CPTY    :各車両2名
 
 [AML1]
-STR_NAME    :American Style Steam Trains
+STR_NAME    :アメリカンスタイルの蒸気機関車
 STR_DESC    :レプリカの蒸気機関車と炭水車、布製の屋根の木製客車からなるミニチュア列車です
 STR_CPTY    :各客車6名
 
@@ -4490,27 +4490,27 @@ STR_DESC    :昔の線路のようなスチールのコースを走る、鉱山�
 STR_CPTY    :各車両2名または4名
 
 [ARRSW1]
-STR_NAME    :Suspended Swinging Cars
+STR_NAME    :サスペンデッド・スイング車両
 STR_DESC    :車両がコーナーを回る際、大きく揺れ動くようになっている吊り下げ式のローラーコースターです
 STR_CPTY    :各車両4名
 
 [ARRSW2]
-STR_NAME    :Suspended Swinging Aeroplane Cars
+STR_NAME    :サスペンデッド・スイング飛行車両
 STR_DESC    :ぶら下がった飛行機型の車両が、コーナーで大きく揺れ動くコースターです
 STR_CPTY    :各車両4名
 
 [ARRT1]
-STR_NAME    :Corkscrew Roller Coaster
+STR_NAME    :コークスクリュー・ジェットコースター
 STR_DESC    :コークスクリューとループがあるスチールコースを持つ、コンパクトなローラーコースターです
 STR_CPTY    :各車両4名
 
 [ARRT2]
-STR_NAME    :Hypercoaster
+STR_NAME    :ハイパーコースター
 STR_DESC    :高低差もあり速度も速いですが、逆さにはならず膝にしか安全バーがないので、快適な車両です
 STR_CPTY    :各車両6名
 
 [ARRX]
-STR_NAME    :Multi-Dimension Coaster Train
+STR_NAME    :多次元コースター列車
 STR_DESC    :乗客を縦方向に逆さまにできる座席を備えた車両です
 STR_CPTY    :各車両4名
 
@@ -4523,7 +4523,7 @@ STR_NAME    :風船ショップ
 STR_DESC    :ヘリウムガスの入った風船を売る売店です
 
 [BATFL]
-STR_NAME    :Swinging Cars
+STR_NAME    :スイング車両
 STR_DESC    :上部のレールからスイングする、小さい車両です
 STR_CPTY    :各車両2名
 
@@ -4533,41 +4533,41 @@ STR_DESC    :丸い小型ボートで、乗客が操作する中央部のモー�
 STR_CPTY    :各ボート2名
 
 [BMAIR]
-STR_NAME    :Flying Roller Coaster
+STR_NAME    :フライング・ローラーコースター
 STR_DESC    :コースの下にある快適な座席に座り、ひねったコースによって究極の飛行体験が楽しめるコースターです
 STR_CPTY    :各車両4名
 
 [BMFL]
-STR_NAME    :Floorless Roller Coaster
+STR_NAME    :フロアレス・ジェットコースター
 STR_DESC    :床がない幅広のコースターで、コースにはひねりと複数の反転があり、あたかも空を飛んでいるような気分になります
 STR_CPTY    :各車両4名
 
 [BMRB]
-STR_NAME    :Hyper-Twister Trains (wide cars)
-STR_DESC    :?字型で高い座席のある幅広のコースターで、簡単な膝の安全バーを備えています
+STR_NAME    :ハイパー・ツイスター・トレイン (広い車両)
+STR_DESC    :型で高い座席のある幅広のコースターで、簡単な膝の安全バーを備えています
 STR_CPTY    :各車両4名
 
 [BMSD]
-STR_NAME    :Twister Roller Coaster
+STR_NAME    :ツイスター・ジェットコースター
 STR_DESC    :さまざまな反転を持つスムーズなスチールコースを滑走する幅広のローラーコースターです
 STR_CPTY    :各車両4名
 
 [BMSU]
-STR_NAME    :Stand-up Twister Coaster
+STR_NAME    :立ち乗り・ツイスター・コースター
 STR_DESC    :特殊な安全装置の付いた幅広の立ち乗りコースターで、スムーズな降下や複数の反転のあるコースを疾走します
 STR_CPTY    :各車両4名
 
 [BMVD]
-STR_NAME    :Vertical Drop Roller Coaster
+STR_NAME    :バーティカル・ドロップ・ジェットコースター
 STR_DESC    :超幅広の車両が垂直に切り立ったコースを降下する、究極のフリーフォール体験ができるコースターです
 STR_CPTY    :各車両6名
 
 [BNOODLES]
-STR_NAME    :Beef Noodles Stall
-STR_DESC    :中華風ビーフヌードルを売るお店です
+STR_NAME    :牛肉ヌードルショップ
+STR_DESC    :中華風牛肉ヌードルを売るお店です
 
 [BOB1]
-STR_NAME    :Bobsleigh Coaster
+STR_NAME    :ボブスレー・コースター
 STR_DESC    :半円形のコースを、カーブとバンクだけで支えられたボブスレー形の車両が疾走するコースターです
 STR_CPTY    :各車両2名
 
@@ -4607,7 +4607,7 @@ STR_NAME    :フライドポテト・ショップ
 STR_DESC    :フライドポテトを売る売店です
 
 [CINDR]
-STR_NAME    :Sujongkwa Stall
+STR_NAME    :スジョングァ・ショップ
 STR_DESC    :韓国風の柿ジュースを売る売店です
 
 [CIRCUS1]
@@ -4616,66 +4616,66 @@ STR_DESC    :動物のサーカスショーをやっている大テントです
 STR_CPTY    :定員30名
 
 [CLIFT1]
-STR_NAME    :Chairlift Cars
+STR_NAME    :チェアリフト車両
 STR_DESC    :屋根のないリフトカーです
 STR_CPTY    :各車両2名
 
 [CLIFT2]
-STR_NAME    :Ski-lift Chairs
+STR_NAME    :スキーリフト車両
 STR_DESC    :屋根のないリフトカーです
 STR_CPTY    :各車両2名
 
 [CNDYF]
-STR_NAME    :Candyfloss Stall
+STR_NAME    :綿菓子ショップ
 STR_DESC    :ピンク色の綿菓子を売る、綿菓子形の売店です
 
 [COFFS]
-STR_NAME    :Coffee Shop
+STR_NAME    :コーヒーショップ
 STR_DESC    :コーヒーを売るアールデコ風の売店です
 
 [COOKST]
-STR_NAME    :Cookie Shop
+STR_NAME    :クッキーショップ
 STR_DESC    :巨大なクッキーを売る売店です
 
 [CSTBOAT]
-STR_NAME    :Coaster Boats
+STR_NAME    :コースター・ボート
 STR_DESC    :ボート型の車両を持つローラーコースターです
 STR_CPTY    :各車両6名
 
 [CTCAR]
-STR_NAME    :Cheshire Cats
+STR_NAME    :チェシャ猫
 STR_DESC    :決められたコースにしたがって走る、動力つきの猫型車両です
 STR_CPTY    :各車両2名
 
 [DING1]
-STR_NAME    :Dinghy Slide
+STR_NAME    :ディンジー・スライド
 STR_DESC    :ねじれた半円形のコース、またはパイプの中を通るゴムボートです
 STR_CPTY    :各ボート2名
 
 [DODG1]
-STR_NAME    :Dodgems
+STR_NAME    :ダージャムズ
 STR_DESC    :乗客が運転する、電動のバンパーカーです
 STR_CPTY    :各車両1名
 
 [DOUGH]
-STR_NAME    :Doughnut Shop
+STR_NAME    :ドーナツショップ
 STR_DESC    :リングドーナツを売る売店です
 
 [DRNKS]
-STR_NAME    :Drinks Stall
+STR_NAME    :飲み物ショップ
 STR_DESC    :炭酸飲料を売る、缶の形の売店です
 
 [ENTERP]
-STR_NAME    :Enterprise
+STR_NAME    :エンタープライズ
 STR_DESC    :乗客の乗ったポッドがぶら下がった大きな輪が、回転しながら傾斜する乗物です
 STR_CPTY    :定員16名
 
 [FAID1]
-STR_NAME    :First Aid Room
+STR_NAME    :救護所
 STR_DESC    :気分の悪くなった来園客がここに来ると、早く治すことができます
 
 [FRNOOD]
-STR_NAME    :Fried Rice Noodles Stall
+STR_NAME    :焼飯ヌードル
 STR_DESC    :中華風の焼きビーフンを売る売店です
 
 [FSAUC]
@@ -4693,8 +4693,8 @@ STR_DESC    :屋根のないイスが付いた、大きな観覧車です
 STR_CPTY    :定員32名
 
 [GDROP1]
-STR_NAME    :Roto-Drop
-STR_DESC    :円形の座席がゆっくりと回りながら高い塔の上まで上がり、落下して磁気ブレーキで?フトに止まります
+STR_NAME    :ロトドロップ
+STR_DESC    :円形の座席がゆっくりと回りながら高い塔の上まで上がり、落下して磁気ブレーキでリフトに止まります
 STR_CPTY    :定員16名
 
 [GOLF1]
@@ -4702,7 +4702,7 @@ STR_NAME    :ミニゴルフ
 STR_DESC    :やさしいミニゴルフゲームです
 
 [GOLTR]
-STR_NAME    :Hyper-Twister Trains
+STR_NAME    :ハイパー・ツイスター車両
 STR_DESC    :簡単な膝の安全バーだけが付いた、広々とした列車です
 STR_CPTY    :各車両6名
 
@@ -4734,7 +4734,7 @@ STR_NAME    :迷路
 STR_DESC    :高さ6フィート(約1.8m)の生垣または壁を持つ迷路で、出口が見つからないと出られません
 
 [HMCAR]
-STR_NAME    :Haunted Mansion Ride
+STR_NAME    :ホーンテッド・マンション・ライド
 STR_DESC    :特殊な仕掛けと景観が施された多層式のコースを、動力付きの車両が走行する乗物です
 STR_CPTY    :各車両2名
 
@@ -4763,12 +4763,12 @@ STR_NAME    :インフォーメーションキオスク
 STR_DESC    :園内の案内図や傘を売る売店です
 
 [INTBOB]
-STR_NAME    :Flying Turns
+STR_NAME    :フライング・ターン
 STR_DESC    :ひねりのある半円形のコースを、カーブとバンクだけで支えられた大きなボブスレー形の車両が疾走するコースターです
 STR_CPTY    :各車両6名
 
 [INTINV]
-STR_NAME    :Inverted Impulse Coaster
+STR_NAME    :インバーテッド・インパルス・コースター
 STR_DESC    :逆向きのローラーコースターで、発着所から加速して発進し、垂直な絶壁を駆け上ると今度は後ろから発着所に戻り、もうひとつの絶壁を後ろ向きに登ります
 STR_CPTY    :各車両4名
 
@@ -4778,27 +4778,27 @@ STR_DESC    :300フィート(約91m)もの高さの丘と、スムーズな降�
 STR_CPTY    :各車両4名
 
 [IVMC1]
-STR_NAME    :Inverted Hairpin Coaster
+STR_NAME    :インバーテッド・ヘアピン・コースター
 STR_DESC    :ジグザグのコースの下に個別の車両があり、ヘアピンや急降下を進むコースターです
 STR_CPTY    :各車両4名
 
 [JSKI]
-STR_NAME    :Jet Skis
+STR_NAME    :ジェットスキー
 STR_DESC    :乗客が自分で操縦できる、ひとり乗りのジェットスキーです
 STR_CPTY    :各1名
 
 [JSTAR1]
-STR_NAME    :Toboggan Cars
+STR_NAME    :トボガン車両
 STR_DESC    :リュージュ形の座席が直列したローラーコースターです
 STR_CPTY    :各車両4名
 
 [KART1]
-STR_NAME    :Go Karts
-STR_DESC    :自分で操縦する、ガ?リンエンジンのゴーカートです
+STR_NAME    :ゴーカート
+STR_DESC    :自分で操縦する、ガソリンエンジンのゴーカートです
 STR_CPTY    :各車両1名
 
 [LEMST]
-STR_NAME    :Lemonade Stall
+STR_NAME    :レモネードショップ
 STR_DESC    :レモネードを売る売店です
 
 [LFB1]
@@ -4812,16 +4812,16 @@ STR_DESC    :垂直なタワーの各階を移動する際のエレベーター�
 STR_CPTY    :定員16名
 
 [MBSOUP]
-STR_NAME    :Meatball Soup Stall
-STR_DESC    :中華風の肉だんごスープを売る売店です
+STR_NAME    :肉団子スープショップ
+STR_DESC    :中華風の肉団子スープを売る売店です
 
 [MCARPET1]
-STR_NAME    :Magic Carpet
+STR_NAME    :空飛ぶ絨毯
 STR_DESC    :4本のアームの端に大きな空飛ぶじゅうたんの車両が付き、上下しながら回転する乗物です
 STR_CPTY    :定員12名
 
 [MFT]
-STR_NAME    :Articulated Roller Coaster Trains
+STR_NAME    :接合式ローラーコースター列車
 STR_DESC    :前の空いた短い車両のローラーコースターです
 STR_CPTY    :各車両2名
 
@@ -4831,37 +4831,37 @@ STR_DESC    :昔ながらの木彫りの回転木馬です
 STR_CPTY    :定員16名
 
 [MONBK]
-STR_NAME    :Monorail Cycles
+STR_NAME    :モノレール自転車
 STR_DESC    :乗客がペダルで漕ぐ、スチールのモノレールコースを走る特殊な自転車の乗物です
 STR_CPTY    :各車両1名
 
 [MONO1]
-STR_NAME    :Streamlined Monorail Trains
+STR_NAME    :流線型のモノレール車両
 STR_DESC    :流線型の先頭車と客車から成る、定員の多いモノレールです
 STR_CPTY    :各車両5名または10名
 
 [MONO2]
-STR_NAME    :Small Monorail Cars
+STR_NAME    :小さなモノレール車両
 STR_DESC    :横の空いた小さなモノレールです
 STR_CPTY    :各車両4名
 
 [MONO3]
-STR_NAME    :Retro-style Monorail Trains
+STR_NAME    :レトロスタイル・モノレール車両
 STR_DESC    :オープンキャビンを持つモノレールです
 STR_CPTY    :各車両4名
 
 [NEMT]
-STR_NAME    :Inverted Roller Coaster
+STR_NAME    :インバーテッド・ジェットコースター
 STR_DESC    :コースの下にぶら下がった座席があり、コースには巨大ループ、ひねり、急降下があります
 STR_CPTY    :各車両4名
 
 [NRL]
-STR_NAME    :Steam Trains
+STR_NAME    :蒸気機関車
 STR_DESC    :レプリカの蒸気機関車と炭水車、屋根なしの木製客車からなるミニチュア列車です
 STR_CPTY    :各車両6名
 
 [NRL2]
-STR_NAME    :Steam Trains with Covered Cars
+STR_NAME    :屋根の蒸気機関車
 STR_DESC    :レプリカの蒸気機関車と炭水車、布製の屋根の木製客車からなるミニチュア列車です
 STR_CPTY    :各車両6名
 
@@ -4880,7 +4880,7 @@ STR_NAME    :ピザショップ
 STR_DESC    :ピザを売る売店です
 
 [PMT1]
-STR_NAME    :Mine Ride
+STR_NAME    :マイン・ライド
 STR_DESC    :動力付きの鉱山列車がスムーズでひねりのあるコースを進む乗物です
 STR_CPTY    :各車両2名または4名
 
@@ -4898,17 +4898,17 @@ STR_NAME    :プレッツェル・ショップ
 STR_DESC    :サクサクのプレッツェルを売る売店です
 
 [PTCT1]
-STR_NAME    :Wooden Roller Coaster Trains
+STR_NAME    :木のコースター・トレーン
 STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターです
 STR_CPTY    :各車両4名
 
 [PTCT2]
-STR_NAME    :Wooden Roller Coaster Trains (6 seater)
+STR_NAME    :木のコースター・トレーン (6人乗り)
 STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターです
 STR_CPTY    :各車両6名
 
 [PTCT2R]
-STR_NAME    :Wooden Roller Coaster Trains (6 seater, Reversed)
+STR_NAME    :木のコースター・トレーン (6人乗り, 逆走)
 STR_DESC    :膝の安全バーが付いた、パッド入りの座席を持つ木製のコースターで、座席が後ろ向きになっています
 STR_CPTY    :各車両6名
 
@@ -4923,81 +4923,81 @@ STR_DESC    :乗客が自分で漕ぐ手漕ぎボートです
 STR_CPTY    :各ボート2名
 
 [RCKC]
-STR_NAME    :Rocket Cars
+STR_NAME    :ロケットカー
 STR_DESC    :車両をロケットに見立てたローラーコースターです
 STR_CPTY    :各車両4名
 
 [RCR]
-STR_NAME    :Racing Cars
+STR_NAME    :レーシングカー
 STR_DESC    :レーシングカーの形をした、動力付きの車両です
 STR_CPTY    :各車両1名
 
 [REVCAR]
-STR_NAME    :Reverser Roller Coaster
+STR_NAME    :逆向きジェットコースター
 STR_DESC    :特殊な反転ターンがある木製のコースをボギー車両が走行するコースターです
 STR_CPTY    :各車両6名
 
 [REVF1]
-STR_NAME    :Reverse Freefall Car
+STR_NAME    :逆向きフリーフォールカー
 STR_DESC    :逆向きフリーフォールのある、大型コースターです
 STR_CPTY    :各車両8名
 
 [RFTBOAT]
-STR_NAME    :River Rafts
-STR_DESC    :いかだの形のボートが、ゆるやかに曲がりくねった川のコースを進む乗物です
+STR_NAME    :川いかだ
+STR_DESC    :川いかだの形のボートが、ゆるやかに曲がりくねった川のコースを進む乗物です
 STR_CPTY    :各ボート4名
 
 [RSAUS]
-STR_NAME    :Roast Sausage Stall
-STR_DESC    :中華風のロースト?ーセージを売る売店です
+STR_NAME    :ローストソーセージショップ
+STR_DESC    :中華風のローストソーセージを売る売店です
 
 [SBOX]
-STR_NAME    :Soap Box Derby Racers
+STR_NAME    :石鹸箱ダービーレース
 STR_DESC    :石鹸入れの形をした車両の、シングルレールコースのローラーコースターです
 STR_CPTY    :各車両4名
 
 [SCHT1]
-STR_NAME    :Roller Coaster Trains
-STR_DESC    :垂直ループが可?な、膝の安全バーが付いたローラーコースターです
+STR_NAME    :ジェットコースター車両
+STR_DESC    :垂直ループが可能な、膝の安全バーが付いたローラーコースターです
 STR_CPTY    :各車両4名
 
 [SFRIC1]
-STR_NAME    :Wooden Side-Friction Cars
+STR_NAME    :木造のサイドフリクション車両
 STR_DESC    :ベーシックな車両の、サイドフリクションローラーコースターです
 STR_CPTY    :各車両4名
 
 [SIMPOD]
-STR_NAME    :Motion Simulator
+STR_NAME    :動くシミュレーター
 STR_DESC    :映像に合わせて油圧可動式のポッドが動くシミュレーターです
 STR_CPTY    :定員8名
 
 [SKYTR]
-STR_NAME    :Mini Suspended Flying Coaster
+STR_NAME    :ミニ・サスペンデッド・フライング・コースター
 STR_DESC    :シングルレールコースの特殊なデザインの車両から乗客がうつぶせにぶら下がり、コーナーでは左右に振られるコースターです
 STR_CPTY    :各車両1名
 
 [SLCFO]
-STR_NAME    :Inverted Shuttle Coaster
+STR_NAME    :インバーテッド・シャトル・コースター
 STR_DESC    :乗客は前後に向かい合って座り、きつい反転やループ、ひねりのあるコースを走行するコースターです
 STR_CPTY    :各車両4名
 
 [SLCT]
-STR_NAME    :Compact Inverted Coaster
+STR_NAME    :コンパクト・インバーテッド・コースター
 STR_DESC    :乗客はペアになってコースの下にぶら下がり、きつい反転やループ、ひねりのあるコースを走行するコースターです
 STR_CPTY    :各車両2名
 
 [SMC1]
-STR_NAME    :Mouse Cars
+STR_NAME    :ネズミ車両
 STR_DESC    :各車両がネズミの形をした乗物です
 STR_CPTY    :各車両4名
 
 [SMC2]
-STR_NAME    :Mine Cars
+STR_NAME    :マイン・カー
 STR_DESC    :木製のトロッコ型の個別の車両です
 STR_CPTY    :各車両4名
 
 [SMONO]
-STR_NAME    :Suspended Monorail Trains
+STR_NAME    :サスベンデッド・モノレール・トレーン
 STR_DESC    :大定員のモノレールです
 STR_CPTY    :各車両8名
 
@@ -5098,7 +5098,7 @@ STR_NAME    :リンゴ飴店
 STR_DESC    :棒にさしたリンゴアメを売る、リンゴ形の売店です
 
 [TOGST]
-STR_NAME    :Stand-up Roller Coaster
+STR_NAME    :立ち乗りローラーコースター
 STR_DESC    :立ち乗りの、ループローラーコースターです
 STR_CPTY    :各車両4名
 
@@ -5142,7 +5142,7 @@ STR_DESC    :ハート形のひねりを持つローラーコースターです
 STR_CPTY    :各車両4名
 
 [UTCARR]
-STR_NAME    :ツイスト (starting reversed)
+STR_NAME    :ツイスト (逆走で始まる)
 STR_DESC    :ハート形のひねりを持つローラーコースター(逆向きスタート)です
 STR_CPTY    :各車両4名
 
@@ -5162,7 +5162,7 @@ STR_DESC    :乗客は特別なハーネスにより寝た状態で固定され�
 STR_CPTY    :各車両4名
 
 [VEKVAMP]
-STR_NAME    :Swinging Floorless Cars
+STR_NAME    :スイング・フロアレス車両
 STR_DESC    :チェアリフトタイプの座席に座ってぶら下がるローラーコースターで、コーナーで大きく揺れ動きます
 STR_CPTY    :各車両2名
 
@@ -5506,7 +5506,7 @@ STR_NAME    :家
 STR_NAME    :パゴダ
 
 [SPS]
-STR_NAME    :ガ?リンスタンド
+STR_NAME    :ガソリンスタンド
 
 [SPYR]
 STR_NAME    :ピラミッド
@@ -5861,13 +5861,13 @@ STR_NAME    :ポール
 STR_NAME    :ポール
 
 [SUPPW1]
-STR_NAME    :支持?造物
+STR_NAME    :支持構造物
 
 [SUPPW2]
-STR_NAME    :支持?造物
+STR_NAME    :支持構造物
 
 [SUPPW3]
-STR_NAME    :支持?造物
+STR_NAME    :支持構造物
 
 [TAC]
 STR_NAME    :アリゾナ糸杉
@@ -6230,7 +6230,7 @@ STR_NAME    :木
 STR_NAME    :木
 
 [TLC]
-STR_NAME    :ロー?ン糸杉
+STR_NAME    :ローソン糸杉
 
 [TLP]
 STR_NAME    :セイヨウハコヤナギ
