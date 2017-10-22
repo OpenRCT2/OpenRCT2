@@ -1122,21 +1122,8 @@ void game_fix_save_vars()
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 
-    // Fix gEntrance locations for which the map_element no longer exists
-    uint8 entranceNum;
-    for (entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum)
-    {
-        if (gParkEntrances[entranceNum].x == LOCATION_NULL)
-            continue;
-
-        if (map_get_park_entrance_element_at(
-            gParkEntrances[entranceNum].x,
-            gParkEntrances[entranceNum].y,
-            gParkEntrances[entranceNum].z >> 3, false) == NULL)
-        {
-            gParkEntrances[entranceNum].x = LOCATION_NULL;
-        }
-    }
+    // Fix gParkEntrance locations for which the map_element no longer exists
+    fix_park_entrance_locations();
 }
 
 void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
