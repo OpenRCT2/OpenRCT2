@@ -691,7 +691,6 @@ void window_zoom_out(rct_window *w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
 
 void window_show_textinput(rct_window *w, rct_widgetindex widgetIndex, uint16 title, uint16 text, sint32 value);
-void window_text_input_key(rct_window* w, char keychar);
 
 void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
 void window_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top, sint32 right, sint32 bottom);
@@ -726,8 +725,6 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 void window_scenery_open();
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
-void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
-void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
 

@@ -125,3 +125,7 @@ void window_maze_construction_update_pressed_widgets();
 rct_window * window_network_status_open(const char * text, close_callback onClose);
 rct_window * window_network_status_open_password();
 void window_network_status_close();
+
+void window_text_input_key(rct_window * w, char keychar);
+void window_text_input_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength);
+void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
