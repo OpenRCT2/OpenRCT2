@@ -193,7 +193,7 @@ if (NOT DISABLE_TTF)
     endif ()
 endif ()
 
-if (APPLE OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
+if (UNIX OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     find_library(ICONV_LIBRARIES NAMES iconv libiconv libiconv-2 c)
     target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
 endif()
