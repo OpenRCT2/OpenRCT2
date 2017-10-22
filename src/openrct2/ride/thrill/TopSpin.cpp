@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../core/Util.hpp"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../paint/paint.h"
@@ -148,9 +149,12 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
 
     LocationXYZ16 seatCoords = { al, cl, static_cast<sint16>(height) };
 
+    if (armRotation >= static_cast<sint8>(Util::CountOf(TopSpinSeatHeightOffset)))
+    {
+        return;
+    }
     seatCoords.z += TopSpinSeatHeightOffset[armRotation];
 
-    assert(armRotation < static_cast<sint8>(sizeof(TopSpinSeatPositionOffset)));
     switch (direction)
     {
     case 0:
