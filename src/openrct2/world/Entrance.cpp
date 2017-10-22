@@ -683,4 +683,22 @@ extern "C"
             return;
         } while (!map_element_is_last_for_tile(mapElement++));
     }
+
+    void fix_park_entrance_locations(void)
+    {
+        // Fix gParkEntrance locations for which the map_element no longer exists
+        for (uint8 entranceNum = 0; entranceNum < MAX_PARK_ENTRANCES; ++entranceNum)
+        {
+            if (gParkEntrances[entranceNum].x == LOCATION_NULL)
+                continue;
+
+            if (map_get_park_entrance_element_at(
+                gParkEntrances[entranceNum].x,
+                gParkEntrances[entranceNum].y,
+                gParkEntrances[entranceNum].z >> 3, false) == NULL)
+            {
+                gParkEntrances[entranceNum].x = LOCATION_NULL;
+            }
+        }
+    }
 }

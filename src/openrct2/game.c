@@ -1121,6 +1121,9 @@ void game_fix_save_vars()
 
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
+
+    // Fix gParkEntrance locations for which the map_element no longer exists
+    fix_park_entrance_locations();
 }
 
 void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst)
