@@ -17,7 +17,7 @@ void main()
     uint  transparent = texture(uTransparentTex, fTextureCoordinate).r;
     float transparentDepth = texture(uTransparentDepth, fTextureCoordinate).r;
 
-    if (transparentDepth > opaqueDepth)
+    if (opaqueDepth <= transparentDepth)
     {
         transparent = 0u;
     }

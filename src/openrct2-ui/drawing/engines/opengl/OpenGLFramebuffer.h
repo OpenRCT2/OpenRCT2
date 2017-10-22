@@ -38,6 +38,9 @@ public:
     OpenGLFramebuffer(sint32 width, sint32 height, bool depth = true);
     ~OpenGLFramebuffer();
 
+    OpenGLFramebuffer(const OpenGLFramebuffer &) = delete;
+    OpenGLFramebuffer &operator=(const OpenGLFramebuffer &) = delete;
+
     GLuint GetWidth() const { return _width; }
     GLuint GetHeight() const { return _height; }
     GLuint GetTexture() const { return _texture; }
@@ -47,4 +50,9 @@ public:
     void BindDraw() const;
     void BindRead() const;
     void GetPixels(rct_drawpixelinfo &dpi) const;
+
+    void SwapColourBuffer(OpenGLFramebuffer &other);
+    GLuint SwapDepthTexture(GLuint depth);
+
+    static GLuint CreateDepthTexture(sint32 width, sint32 height);
 };

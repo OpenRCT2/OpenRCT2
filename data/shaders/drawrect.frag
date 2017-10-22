@@ -8,6 +8,9 @@ const int FLAG_CROSS_HATCH          = (1 << 4);
 uniform usampler2DArray uTexture;
 uniform usampler2DRect  uPaletteTex;
 
+uniform sampler2D       uPeelingTex;
+uniform bool            uPeeling;
+
 flat in int             fFlags;
 flat in uint            fColour;
 in vec3                 fTexColour;
@@ -15,11 +18,21 @@ in vec3                 fTexMask;
 flat in vec3            fPalettes;
 
 in vec2 fPosition;
+in vec3 fPeelPos;
 
 out uint oColour;
 
 void main()
 {
+    if (uPeeling)
+    {
+        float peel = texture(uPeelingTex, fPeelPos.xy).r;
+        if (peel == 0.0 || fPeelPos.z >= peel)
+        {
+            discard;
+        }
+    }
+
     uint texel;
     if ((fFlags & FLAG_NO_TEXTURE) == 0)
     {

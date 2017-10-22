@@ -29,6 +29,9 @@ private:
     GLuint uTexture;
     GLuint uPaletteTex;
 
+    GLuint uPeelingTex;
+    GLuint uPeeling;
+
     GLuint vVertMat;
     GLuint vVertVec;
 
@@ -47,12 +50,18 @@ private:
     GLuint _vboInstances;
     GLuint _vao;
 
+    GLsizei _instanceCount;
+
 public:
     DrawRectShader();
     ~DrawRectShader() override;
 
     void SetScreenSize(sint32 width, sint32 height);
-    void DrawInstances(const RectCommandBatch& instances);
+    void EnablePeeling(GLuint peelingTex);
+    void DisablePeeling();
+
+    void SetInstances(const RectCommandBatch& instances);
+    void DrawInstances();
 
 private:
     void GetLocations();

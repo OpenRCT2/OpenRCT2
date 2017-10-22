@@ -20,24 +20,21 @@
 #include "OpenGLFramebuffer.h"
 #include "SwapFramebuffer.h"
 
+constexpr GLfloat depthValue[1] = { 1.0f };
+constexpr GLfloat depthValueTransparent[1] = { 0.0f };
+constexpr GLuint indexValue[4] = { 0, 0, 0, 0 };
+
 SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height) :
 _opaqueFramebuffer(width, height), _transparentFramebuffer(width, height),
-_finalFramebuffer(width, height, false)
-{ }
-
-void SwapFramebuffer::BindOpaque()
-{
-    _opaqueFramebuffer.Bind();
-}
-
-void SwapFramebuffer::BindTransparent()
+_mixFramebuffer(width, height, false), _backDepth(OpenGLFramebuffer::CreateDepthTexture(width, height))
 {
     _transparentFramebuffer.Bind();
+    glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
 }
 
 void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex)
 {
-    _finalFramebuffer.Bind();
+    _mixFramebuffer.Bind();
     glDisable(GL_DEPTH_TEST);
     shader.Use();
     shader.SetTextures(
@@ -49,20 +46,21 @@ void SwapFramebuffer::ApplyTransparency(ApplyTransparencyShader &shader, GLuint 
     );
     shader.Draw();
 
+    _backDepth = _transparentFramebuffer.SwapDepthTexture(_backDepth);
+
+    // Clear transparency buffers
+    _transparentFramebuffer.Bind();
+    glClearBufferuiv(GL_COLOR, 0, indexValue);
+    glClearBufferfv(GL_DEPTH, 0, depthValueTransparent);
+
+    _opaqueFramebuffer.SwapColourBuffer(_mixFramebuffer);
     //Change binding to guaruntee no undefined behavior
     _opaqueFramebuffer.Bind();
 }
 
 void SwapFramebuffer::Clear()
 {
-    static const GLfloat depthValue[1] = { 1.0f };
-    static const GLuint indexValue[4] = { 0, 0, 0, 0 };
-
     _opaqueFramebuffer.Bind();
-    glClearBufferfv(GL_DEPTH, 0, depthValue);
-
-    _transparentFramebuffer.Bind();
-    glClearBufferuiv(GL_COLOR, 0, indexValue);
     glClearBufferfv(GL_DEPTH, 0, depthValue);
 }
 

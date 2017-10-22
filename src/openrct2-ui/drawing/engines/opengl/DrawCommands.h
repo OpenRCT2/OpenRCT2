@@ -50,6 +50,14 @@ public:
         }
         return _instances[_numInstances++];
     }
+    T& insert(const T &value)
+    {
+        if (_numInstances + 1 > _instances.size())
+        {
+            _instances.resize((_numInstances + 1) << 1);
+        }
+        return _instances[_numInstances++] = value;
+    }
     size_t size() const
     {
         return _numInstances;
@@ -61,6 +69,14 @@ public:
     const T& operator[](size_t idx) const
     {
         return _instances.at(idx);
+    }
+    typename std::vector<T>::iterator begin()
+    {
+        return _instances.begin();
+    }
+    typename std::vector<T>::iterator end()
+    {
+        return _instances.begin() + _numInstances;
     }
 };
 

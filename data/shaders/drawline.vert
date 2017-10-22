@@ -18,9 +18,8 @@ void main()
 {
     vec2 pos = clamp(vVertMat * vBounds, vClip.xy, vClip.zw);
 
-    // Transform screen coordinates to viewport
-    pos.x = (pos.x * (2.0 / uScreenSize.x)) - 1.0;
-    pos.y = (pos.y * (2.0 / uScreenSize.y)) - 1.0;
+    // Transform screen coordinates to viewport coordinates
+    pos = (pos * (2.0 / uScreenSize)) - 1.0;
     pos.y *= -1;
     float depth = 1.0 - (vDepth + 1) * DEPTH_INCREMENT;
 

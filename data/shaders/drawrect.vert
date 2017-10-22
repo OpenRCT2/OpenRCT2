@@ -20,6 +20,7 @@ in mat4x2 vVertMat;
 in vec2   vVertVec;
 
 out vec2       fPosition;
+out vec3       fPeelPos;
 flat out int   fFlags;
 flat out uint  fColour;
 out vec3       fTexColour;
@@ -36,15 +37,17 @@ void main()
 
     fPosition = pos;
 
-    // Transform screen coordinates to viewport
-    pos.x = (pos.x * (2.0 / uScreenSize.x)) - 1.0;
-    pos.y = (pos.y * (2.0 / uScreenSize.y)) - 1.0;
-    pos.y *= -1;
+    // Transform screen coordinates to texture coordinates
     float depth = 1.0 - (vDepth + 1) * DEPTH_INCREMENT;
+    pos = pos / uScreenSize;
+    pos.y = pos.y * -1.0 + 1.0;
+    fPeelPos = vec3(pos, depth * 0.5 + 0.5);
 
     fFlags = vFlags;
     fColour = vColour;
     fPalettes = vec3(vPalettes);
 
+    // Transform texture coordinates to viewport coordinates
+    pos = pos * 2.0 - 1.0;
     gl_Position = vec4(pos, depth, 1.0);
 }

@@ -36,18 +36,17 @@ class SwapFramebuffer final
 private:
     OpenGLFramebuffer   _opaqueFramebuffer;
     OpenGLFramebuffer   _transparentFramebuffer;
-    OpenGLFramebuffer   _finalFramebuffer;
+    OpenGLFramebuffer   _mixFramebuffer;
+    GLuint              _backDepth;
 
 public:
     SwapFramebuffer(sint32 width, sint32 height);
 
-    const OpenGLFramebuffer &GetOpaqueFramebuffer() const { return _opaqueFramebuffer; }
-    const OpenGLFramebuffer &GetTransparentFramebuffer() const { return _transparentFramebuffer; }
-    const OpenGLFramebuffer &GetFinalFramebuffer() const { return _finalFramebuffer; }
-    GLuint GetFinalTexture() const { return _finalFramebuffer.GetTexture(); }
+    const OpenGLFramebuffer &GetFinalFramebuffer() const { return _opaqueFramebuffer; }
+    GLuint GetBackDepthTexture() const { return _backDepth; }
+    void BindOpaque() { _opaqueFramebuffer.Bind(); }
+    void BindTransparent() { _transparentFramebuffer.Bind(); }
 
-    void BindOpaque();
-    void BindTransparent();
     void ApplyTransparency(ApplyTransparencyShader &shader, GLuint paletteTex);
     void Clear();
 };
