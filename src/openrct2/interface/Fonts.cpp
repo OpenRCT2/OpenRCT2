@@ -28,12 +28,21 @@
 uint8 const HINTING_THRESHOLD_LOW    = 40;
 uint8 const HINTING_THRESHOLD_MEDIUM = 60;
 
-TTFFontSetDescriptor TTFFontMSGothic = { {
+#ifndef __APPLE__
+TTFFontSetDescriptor TTFFontJapanese = { {
     { "msgothic.ttc", "MS PGothic",  9, 1, -1, 10, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic", 12, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "msgothic.ttc", "MS PGothic", 13, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
+#else
+TTFFontSetDescriptor TTFFontJapanese = { {
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Kaku Gothic ProN",  8, 1, -1, 10, HINTING_THRESHOLD_LOW, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Kaku Gothic ProN", 10, 1,  0, 14, HINTING_THRESHOLD_LOW, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Kaku Gothic ProN", 11, 1,  0, 14, HINTING_THRESHOLD_LOW, nullptr },
+    { u8"ヒラギノ丸ゴ ProN W4.ttc", "Hiragino Kaku Gothic ProN", 12, 1,  0, 15, HINTING_THRESHOLD_LOW, nullptr },
+} };
+#endif
 
 TTFFontSetDescriptor TTFFontMingLiu = { {
     {    "msjh.ttc", "JhengHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },

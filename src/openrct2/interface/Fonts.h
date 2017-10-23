@@ -20,7 +20,7 @@
 #include "../drawing/font.h"
 
 #ifndef NO_TTF
-extern TTFFontSetDescriptor TTFFontMSGothic;
+extern TTFFontSetDescriptor TTFFontJapanese;
 extern TTFFontSetDescriptor TTFFontMingLiu;
 extern TTFFontSetDescriptor TTFFontSimSun;
 extern TTFFontSetDescriptor TTFFontGulim;
