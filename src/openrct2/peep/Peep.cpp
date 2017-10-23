@@ -8055,7 +8055,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
 
     /* It looks like 65 is about 50% energy level, so this initialises
      * a peep with approx 50%-100% energy (0x3F = 63, 63 + 65 = 128). */
-    uint8 energy        = (peep_rand() & (PEEP_MAX_ENERGY / 2)) + (PEEP_MAX_ENERGY/2);
+    uint8 energy        = (peep_rand() & 0x3F) + 65;
     peep->energy        = energy;
     peep->energy_target = energy;
 
