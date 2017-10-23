@@ -20,49 +20,31 @@
 #include "OpenGLFramebuffer.h"
 #include "SwapFramebuffer.h"
 
-SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height)
-{
-    _width = width;
-    _height = height;
-    _targetFramebufferIndex = 0;
-    _framebuffer[0] = new OpenGLFramebuffer(width, height);
-    _framebuffer[1] = new OpenGLFramebuffer(width, height);
-    _targetFramebuffer = _framebuffer[0];
-
-    _copyFramebufferShader = new CopyFramebufferShader();
-    _copyFramebufferShader->Use();
-    _copyFramebufferShader->SetScreenSize(_width, _height);
-    _copyFramebufferShader->SetBounds(0, 0, _width, _height);
-    _copyFramebufferShader->SetTextureCoordinates(0, 1, 1, 0);
-}
-
-SwapFramebuffer::~SwapFramebuffer()
-{
-    delete _framebuffer[0];
-    delete _framebuffer[1];
-    delete _copyFramebufferShader;
-}
+SwapFramebuffer::SwapFramebuffer(sint32 width, sint32 height) :
+_width(width), _height(height),
+_targetFramebuffer(width, height), _sourceFramebuffer(width, height)
+{ }
 
 GLuint SwapFramebuffer::GetSourceTexture() const
 {
-    return _sourceFramebuffer->GetTexture();
+    return _sourceFramebuffer.GetTexture();
 }
 
 void SwapFramebuffer::SwapCopy()
 {
-    _sourceFramebuffer = _targetFramebuffer;
-    _targetFramebufferIndex = (_targetFramebufferIndex + 1) & 1;
-    _targetFramebuffer = _framebuffer[_targetFramebufferIndex];
-    _targetFramebuffer->Bind();
-
-    _copyFramebufferShader->Use();
-    _copyFramebufferShader->SetTexture(GetSourceTexture());
-    _copyFramebufferShader->Draw();
+    // no longer performs swap, TODO rename function
+    // blit target's texture to source's texture
+    _sourceFramebuffer.BindDraw();
+    _targetFramebuffer.BindRead();
+    glBlitFramebuffer(0, 0, _width, _height,
+                      0, 0, _width, _height,
+                      GL_COLOR_BUFFER_BIT, GL_NEAREST);
+    _targetFramebuffer.Bind();
 }
 
 void SwapFramebuffer::Bind()
 {
-    _targetFramebuffer->Bind();
+    _targetFramebuffer.Bind();
 }
 
 #endif /* DISABLE_OPENGL */

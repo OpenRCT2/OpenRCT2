@@ -1,6 +1,7 @@
 #version 150
 
-uniform sampler2D uTexture;
+uniform vec4 uPalette[256];
+uniform usampler2D uTexture;
 
 in vec2 fPosition;
 in vec2 fTextureCoordinate;
@@ -9,5 +10,5 @@ out vec4 oColour;
 
 void main()
 {
-    oColour = texture(uTexture, fTextureCoordinate);
+    oColour = uPalette[texture(uTexture, fTextureCoordinate).r];
 }

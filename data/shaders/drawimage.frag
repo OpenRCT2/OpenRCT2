@@ -5,24 +5,22 @@ const int FLAG_REMAP               = (1 << 1);
 const int FLAG_TRANSPARENT         = (1 << 2);
 const int FLAG_TRANSPARENT_SPECIAL = (1 << 3);
 
-uniform vec4            uPalette[256];
 uniform usampler2DArray uTexture;
 
-flat in ivec4           fClip;
-flat in int             fFlags;
-in vec4                 fColour;
-flat in int             fTexColourAtlas;
-in vec2                 fTexColourCoords;
-flat in int             fTexMaskAtlas;
-in vec2                 fTexMaskCoords;
-flat in int             fTexPaletteAtlas;
-flat in vec4            fTexPaletteBounds;
-flat in int             fMask;
+flat in ivec4   fClip;
+flat in int     fFlags;
+flat in uint    fColour;
+flat in int     fTexColourAtlas;
+flat in int     fTexMaskAtlas;
+flat in int     fTexPaletteAtlas;
+flat in vec4    fTexPaletteBounds;
+flat in int     fMask;
 
-in vec2 fPosition;
-in vec2 fTextureCoordinate;
+in vec2         fPosition;
+in vec2         fTexColourCoords;
+in vec2         fTexMaskCoords;
 
-out vec4 oColour;
+out uint oColour;
 
 void main()
 {
@@ -32,43 +30,46 @@ void main()
         discard;
     }
 
-    vec4 texel;
+    uint texel;
 
     // If remap palette used
     if ((fFlags & FLAG_REMAP) != 0)
     {
         // z is the size of each x pixel in the atlas
         float x = fTexPaletteBounds.x + texture(uTexture, vec3(fTexColourCoords, float(fTexColourAtlas))).r * fTexPaletteBounds.z;
-        texel = uPalette[texture(uTexture, vec3(x, fTexPaletteBounds.y, float(fTexPaletteAtlas))).r];
+        texel = texture(uTexture, vec3(x, fTexPaletteBounds.y, float(fTexPaletteAtlas))).r;
     } // If transparent or special transparent
     else if ((fFlags & (FLAG_TRANSPARENT | FLAG_TRANSPARENT_SPECIAL)) != 0)
     {
-        float line = texture(uTexture,vec3(fTexColourCoords, float(fTexColourAtlas))).r;
-        if (line == 0.0)
+        uint line = texture(uTexture, vec3(fTexColourCoords, float(fTexColourAtlas))).r;
+        if (line == 0u)
         {
             discard;
         }
+        /*
         float alpha = 0.5;
         if ((fFlags & FLAG_TRANSPARENT_SPECIAL) != 0)
         {
             alpha = 0.5 + (line - 1.0) / 10.0;
         }
+         */
     
         // z is the size of each x pixel in the atlas
         float x = fTexPaletteBounds.x + fTexPaletteBounds.z * 50.0;
-        oColour = vec4(uPalette[texture(uTexture, vec3(x, fTexPaletteBounds.y, float(fTexPaletteAtlas))).r].rgb, alpha);
+        //oColour = vec4(uPalette[texture(uTexture, vec3(x, fTexPaletteBounds.y, float(fTexPaletteAtlas))).r].rgb, alpha);
+        oColour = texture(uTexture, vec3(x, fTexPaletteBounds.y, float(fTexPaletteAtlas))).r;
         
         return;
     }
     else
     {
-        texel = uPalette[texture(uTexture, vec3(fTexColourCoords, float(fTexColourAtlas))).r];
+        texel = texture(uTexture, vec3(fTexColourCoords, float(fTexColourAtlas))).r;
     }
 
     if (fMask != 0)
     {
-        float mask = texture(uTexture, vec3(fTexMaskCoords, float(fTexMaskAtlas))).r;
-        if ( mask == 0.0 )
+        uint mask = texture(uTexture, vec3(fTexMaskCoords, float(fTexMaskAtlas))).r;
+        if ( mask == 0u )
         {
             discard;
         }
@@ -77,9 +78,14 @@ void main()
     }
     else
     {
+        if (texel == 0u)
+        {
+            discard;
+        }
         if ((fFlags & FLAG_COLOUR) != 0)
         {
-            oColour = vec4(fColour.rgb, fColour.a * texel.a);
+            //oColour = vec4(fColour.rgb, fColour.a * texel.a);
+            oColour = fColour;
         }
         else
         {

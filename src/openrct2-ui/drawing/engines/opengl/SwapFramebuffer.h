@@ -33,23 +33,18 @@ class OpenGLFramebuffer;
 class SwapFramebuffer final
 {
 private:
-    sint32              _width                  = 0;
-    sint32              _height                 = 0;
-    uint8               _targetFramebufferIndex = 0;
-    OpenGLFramebuffer * _targetFramebuffer      = nullptr;
-    OpenGLFramebuffer * _sourceFramebuffer      = nullptr;
-    OpenGLFramebuffer * _framebuffer[2]         = { 0 };
-
-    CopyFramebufferShader * _copyFramebufferShader = nullptr;
+    const sint32                _width;
+    const sint32                _height;
+    OpenGLFramebuffer     _targetFramebuffer;
+    OpenGLFramebuffer     _sourceFramebuffer;
 
 public:
     SwapFramebuffer(sint32 width, sint32 height);
-    ~SwapFramebuffer();
 
     /**
      * Gets the current target framebuffer.
      */
-    const OpenGLFramebuffer * GetTargetFramebuffer() const { return _targetFramebuffer; }
+    const OpenGLFramebuffer * GetTargetFramebuffer() const { return &_targetFramebuffer; }
 
     /**
      * Gets the texture ID for the source framebuffer.

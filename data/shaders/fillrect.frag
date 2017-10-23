@@ -3,14 +3,12 @@
 uniform ivec2       uScreenSize;
 uniform ivec4       uClip;
 uniform int         uFlags;
-uniform sampler2D   uSourceFramebuffer;
-uniform ivec4       uBounds;
-uniform vec4        uPalette[256];
-uniform int         uPaletteRemap[256];
+uniform usampler2D  uSourceFramebuffer;
+uniform uint        uPaletteRemap[256];
 
 in vec2 fPosition;
 
-out vec4 oColour;
+out uint oColour;
 
 void main()
 {
@@ -29,19 +27,7 @@ void main()
         }
     }
 
-    vec2 textureCoordinates = (fPosition / vec2(uScreenSize)) * vec2(1, -1);
-    vec4 sourceColour = texture(uSourceFramebuffer, textureCoordinates);
-
-    // find "best match" palette index of the current 32 bit color
-    float nearestDistance = length(uPalette[0] - sourceColour);
-    uint bestPaletteIndexMatch = 0u;
-    for (uint i = 1u; i < 256u; i++)
-    {
-        float distance = length(uPalette[i] - sourceColour);
-        uint isBetter = -uint(distance < nearestDistance); // unpredictable
-        bestPaletteIndexMatch = (bestPaletteIndexMatch & ~isBetter) | (i & isBetter);
-        nearestDistance = min(nearestDistance, distance);
-    }
-
-    oColour = uPalette[uPaletteRemap[bestPaletteIndexMatch]];
+    vec2 textureCoordinates = (fPosition / vec2(uScreenSize)) * vec2(1.0, -1.0) + vec2(0.0, 1.0);
+    uint sourceColour = texture(uSourceFramebuffer, textureCoordinates).r;
+    oColour = uPaletteRemap[sourceColour];
 }
