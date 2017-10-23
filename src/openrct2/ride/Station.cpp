@@ -57,9 +57,7 @@ void ride_update_station(Ride * ride, sint32 stationIndex)
  */
 static void ride_update_station_blocksection(Ride * ride, sint32 stationIndex)
 {
-    rct_map_element * mapElement;
-
-    mapElement = ride_get_station_start_track_element(ride, stationIndex);
+    rct_map_element * mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
     if ((ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0) || (mapElement != nullptr && mapElement->flags & 0x20))
     {
@@ -90,10 +88,8 @@ static void ride_update_station_bumpercar(Ride * ride, sint32 stationIndex)
 {
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
-    if (
-        ride->status == RIDE_STATUS_CLOSED ||
-        (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
-        )
+    if (ride->status == RIDE_STATUS_CLOSED ||
+        (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
         ride->station_depart[stationIndex] &= ~STATION_DEPART_FLAG;
         return;
@@ -145,9 +141,7 @@ static void ride_update_station_bumpercar(Ride * ride, sint32 stationIndex)
  */
 static void ride_update_station_normal(Ride * ride, sint32 stationIndex)
 {
-    sint32 time;
-
-    time = ride->station_depart[stationIndex] & STATION_DEPART_MASK;
+    sint32 time = ride->station_depart[stationIndex] & STATION_DEPART_MASK;
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)) ||
         (ride->status == RIDE_STATUS_CLOSED && ride->num_riders == 0))
     {
@@ -300,12 +294,9 @@ static void ride_race_init_vehicle_speeds(Ride * ride)
  */
 static void ride_invalidate_station_start(Ride * ride, sint32 stationIndex, bool greenLight)
 {
-    sint32            x, y;
-    rct_map_element * mapElement;
-
-    x          = ride->station_starts[stationIndex].x * 32;
-    y          = ride->station_starts[stationIndex].y * 32;
-    mapElement = ride_get_station_start_track_element(ride, stationIndex);
+    sint32 x = ride->station_starts[stationIndex].x * 32;
+    sint32 y = ride->station_starts[stationIndex].y * 32;
+    rct_map_element * mapElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
     if (mapElement == nullptr)
@@ -319,15 +310,12 @@ static void ride_invalidate_station_start(Ride * ride, sint32 stationIndex, bool
 
 rct_map_element * ride_get_station_start_track_element(Ride * ride, sint32 stationIndex)
 {
-    sint32          x, y, z;
-    rct_map_element * mapElement;
-
-    x = ride->station_starts[stationIndex].x;
-    y = ride->station_starts[stationIndex].y;
-    z = ride->station_heights[stationIndex];
+    sint32 x = ride->station_starts[stationIndex].x;
+    sint32 y = ride->station_starts[stationIndex].y;
+    sint32 z = ride->station_heights[stationIndex];
 
     // Find the station track element
-    mapElement = map_get_first_element_at(x, y);
+    rct_map_element * mapElement = map_get_first_element_at(x, y);
     do
     {
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK && z == mapElement->base_height)
@@ -341,10 +329,8 @@ rct_map_element * ride_get_station_start_track_element(Ride * ride, sint32 stati
 
 rct_map_element * ride_get_station_exit_element(Ride * ride, sint32 x, sint32 y, sint32 z)
 {
-    rct_map_element * mapElement;
-
     // Find the station track element
-    mapElement = map_get_first_element_at(x, y);
+    rct_map_element * mapElement = map_get_first_element_at(x, y);
     do
     {
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE && z == mapElement->base_height)
