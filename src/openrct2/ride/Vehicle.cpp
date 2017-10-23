@@ -35,7 +35,7 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "Vehicle.h"
-#include "cable_lift.h"
+#include "CableLift.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "Station.h"

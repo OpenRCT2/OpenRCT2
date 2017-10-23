@@ -14,9 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Math.hpp"
 #include "../rct12.h"
 #include "../world/sprite.h"
-#include "cable_lift.h"
+#include "CableLift.h"
 #include "ride.h"
 #include "Track.h"
 #include "ride_data.h"
@@ -193,7 +194,7 @@ static void cable_lift_update_travelling(rct_vehicle *vehicle)
 {
     rct_vehicle* passengerVehicle = GET_VEHICLE(vehicle->cable_lift_target);
 
-    vehicle->velocity = min(passengerVehicle->velocity, 439800);
+    vehicle->velocity = Math::Min(passengerVehicle->velocity, 439800);
     vehicle->acceleration = 0;
     if (passengerVehicle->update_flags & VEHICLE_UPDATE_FLAG_BROKEN_TRAIN)
         return;
