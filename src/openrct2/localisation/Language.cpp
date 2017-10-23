@@ -38,7 +38,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] = {
     { "es-ES", "Spanish",               u8"Español",             FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_SPANISH },             // LANGUAGE_SPANISH
     { "fr-FR", "French",                u8"Français",            FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_FRENCH },              // LANGUAGE_FRENCH
     { "it-IT", "Italian",               "Italiano",              FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ITALIAN },             // LANGUAGE_ITALIAN
-    { "ja-JP", "Japanese",              "Japanese",              FONT(&TTFFontMSGothic), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_JAPANESE
+    { "ja-JP", "Japanese",              "Japanese",              FONT(&TTFFontJapanese), RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_JAPANESE
     { "ko-KR", "Korean",                "Korean",                FONT(&TTFFontGulim),    RCT2_LANGUAGE_ID_KOREAN },              // LANGUAGE_KOREAN
     { "hu-HU", "Hungarian",             "Magyar",                FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_HUNGARIAN
     { "nl-NL", "Dutch",                 "Nederlands",            FONT_OPENRCT2_SPRITE,   RCT2_LANGUAGE_ID_DUTCH },               // LANGUAGE_DUTCH
