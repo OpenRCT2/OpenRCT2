@@ -22,7 +22,7 @@
 #include "localisation/localisation.h"
 #include "management/Finance.h"
 #include "network/network.h"
-#include "ride/station.h"
+#include "ride/Station.h"
 #include "util/util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"

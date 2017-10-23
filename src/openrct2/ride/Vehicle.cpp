@@ -38,7 +38,7 @@
 #include "cable_lift.h"
 #include "ride.h"
 #include "ride_data.h"
-#include "station.h"
+#include "Station.h"
 #include "Track.h"
 #include "track_data.h"
 #include "vehicle_data.h"
