@@ -1212,6 +1212,8 @@ sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType);
 void ride_demolish(sint32 rideIndex, sint32 flags);
 void ride_stop_peeps_queuing(sint32 rideIndex);
 
+LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z);
+
 #ifdef __cplusplus
 }
 #endif

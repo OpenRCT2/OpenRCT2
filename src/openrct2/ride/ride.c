@@ -3494,27 +3494,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 {
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gGameSoundsOff && g_music_tracking_viewport != NULL)
     {
-        LocationXY16 rotatedCoords = {0, 0};
-
-        switch (get_current_rotation())
-        {
-        case 0:
-            rotatedCoords.x = y - x;
-            rotatedCoords.y = ((y + x) / 2) - z;
-            break;
-        case 1:
-            rotatedCoords.x = -x - y;
-            rotatedCoords.y = ((y - x) / 2) - z;
-            break;
-        case 2:
-            rotatedCoords.x = x - y;
-            rotatedCoords.y = ((-y - x) / 2) - z;
-            break;
-        case 3:
-            rotatedCoords.x = y + x;
-            rotatedCoords.y = ((x - y) / 2) - z;
-            break;
-        }
+        const LocationXY16 rotatedCoords = ride_get_rotated_coords(x, y, z);
         rct_viewport * viewport = g_music_tracking_viewport;
         sint16 view_width  = viewport->view_width;
         sint16 view_width2 = view_width * 2;
@@ -8218,4 +8198,31 @@ sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType)
     }
 
     return subType;
+}
+
+LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z)
+{
+    LocationXY16 rotatedCoords = { 0, 0 };
+
+    switch (get_current_rotation())
+    {
+    case 0:
+        rotatedCoords.x = y - x;
+        rotatedCoords.y = ((y + x) / 2) - z;
+        break;
+    case 1:
+        rotatedCoords.x = -x - y;
+        rotatedCoords.y = ((y - x) / 2) - z;
+        break;
+    case 2:
+        rotatedCoords.x = x - y;
+        rotatedCoords.y = ((-y - x) / 2) - z;
+        break;
+    case 3:
+        rotatedCoords.x = y + x;
+        rotatedCoords.y = ((x - y) / 2) - z;
+        break;
+    }
+
+    return rotatedCoords;
 }

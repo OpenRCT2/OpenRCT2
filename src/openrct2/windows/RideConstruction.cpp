@@ -2283,25 +2283,10 @@ static void window_ride_construction_draw_track_piece(
         TrackDefinitions[trackType].preview_z_offset;
     z -= previewZOffset;
 
-    sint32 start_x = x;
-    switch (get_current_rotation()) {
-    case 0:
-        x = y - x;
-        y = (y + start_x) / 2 - z;
-        break;
-    case 1:
-        x = -x - y;
-        y = (y - start_x) / 2 - z;
-        break;
-    case 2:
-        x -= y;
-        y = (-y - start_x) / 2 - z;
-        break;
-    case 3:
-        x += y;
-        y = (-y + start_x) / 2 - z;
-        break;
-    }
+    const LocationXY16 rotatedCoords = ride_get_rotated_coords(x, y, z);
+    x = rotatedCoords.x;
+    y = rotatedCoords.y;
+
     dpi->x += x - width / 2;
     dpi->y += y - height / 2 - 16;
     uint32 d = unknown << 16;
