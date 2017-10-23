@@ -217,11 +217,16 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
 
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
-    const char * steamPath = "~/Library/Application Support/Steam/steamapps/common";
-    if (platform_directory_exists(steamPath))
-    {
-        safe_strcpy(outPath, steamPath, outSize);
-        return true;
+    char steamPath[1024] = { 0 };
+    const char * homeDir = getpwuid(getuid())->pw_dir;
+    if (homeDir != NULL) {
+        safe_strcpy(steamPath, homeDir, sizeof(steamPath));
+        safe_strcat_path(steamPath, "Library/Application Support/Steam/steamapps/common", sizeof(steamPath));
+        if (platform_directory_exists(steamPath))
+        {
+            safe_strcpy(outPath, steamPath, outSize);
+            return true;
+        }
     }
     return false;
 }
