@@ -189,20 +189,6 @@ void * get_loaded_object_chunk(size_t index)
     return entry;
 }
 
-void object_entry_get_name(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
-{
-    size_t nameLength = 8;
-    const char * end = memchr(entry->name, ' ', 8);
-    if (end != NULL)
-    {
-        nameLength = (size_t)(end - entry->name);
-    }
-
-    bufferSize = min(nameLength + 1, bufferSize);
-    memcpy(buffer, entry->name, bufferSize - 1);
-    buffer[bufferSize - 1] = 0;
-}
-
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
 {
     bufferSize = min(9, bufferSize);
