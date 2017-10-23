@@ -28,7 +28,7 @@
 #include "../rct1.h"
 #include "../ride/ride_data.h"
 #include "../ride/ride.h"
-#include "../ride/station.h"
+#include "../ride/Station.h"
 
 class RideCreateGameActionResult final : public GameActionResult
 {

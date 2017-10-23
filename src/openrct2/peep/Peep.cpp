@@ -32,7 +32,7 @@
 #include "../network/network.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../ride/station.h"
+#include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
@@ -3422,7 +3422,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     if (ride_station >= MAX_STATIONS)
     {
         // HACK #5658: Some parks have hacked rides which end up in this state
-        sint32 bestStationIndex = ride_get_first_valid_station_exit(ride);
+        sint8 bestStationIndex = ride_get_first_valid_station_exit(ride);
         if (bestStationIndex == -1)
         {
             bestStationIndex = 0;

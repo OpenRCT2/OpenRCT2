@@ -30,7 +30,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../ParkImporter.h"
-#include "../ride/station.h"
+#include "../ride/Station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
 #include "../object_list.h"

@@ -28,7 +28,7 @@
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
-#include "../ride/station.h"
+#include "../ride/Station.h"
 
 #include "../config/Config.h"
 #include "../game.h"
