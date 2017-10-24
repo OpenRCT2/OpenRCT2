@@ -173,8 +173,9 @@ static const uint8 byte_98D7EC[] = {
 
 static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 flags, uint8 pathItemType)
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement, * entranceElement;
     sint32 bl, zHigh;
+    bool entrancePath = false, entranceIsSamePath = false;
 
     if (!map_check_free_elements_and_reorganise(1))
         return MONEY32_UNDEFINED;
@@ -192,7 +193,19 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
         zHigh += 2;
     }
 
-    if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
+    entranceElement = map_get_park_entrance_element_at(x, y, z, false);
+    // Make sure the entrance part is the middle
+    if (entranceElement != NULL && (entranceElement->properties.entrance.index & 0x0F) == 0)
+    {
+        entrancePath = true;
+        // Make the price the same as replacing a path
+        if (entranceElement->properties.entrance.path_type == (type & 0xF))
+            entranceIsSamePath = true;
+        else
+            gFootpathPrice -= MONEY(6, 00);
+    }
+
+    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -207,28 +220,45 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
     gFootpathPrice += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / 2) * MONEY(5, 00);
 
     if (flags & GAME_COMMAND_FLAG_APPLY) {
-        mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
-        assert(mapElement != NULL);
-        mapElement->type = MAP_ELEMENT_TYPE_PATH;
-        mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
-        mapElement->properties.path.type = (type << 4) | (slope & 7);
-        mapElement->type |= type >> 7;
-        mapElement->properties.path.additions = pathItemType;
-        mapElement->properties.path.addition_status = 255;
-        mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-        if (flags & GAME_COMMAND_FLAG_GHOST)
-            mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+        if (entrancePath)
+        {
+            if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
+            {
+                // Set the path type but make sure it's not a queue as that will not show up
+                entranceElement->properties.entrance.path_type = type & 0x7F;
+                map_invalidate_tile_full(x, y);
+            }
+        }
+        else
+        {
+            mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
+            assert(mapElement != NULL);
+            mapElement->type = MAP_ELEMENT_TYPE_PATH;
+            mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
+            mapElement->properties.path.type = (type << 4) | (slope & 7);
+            mapElement->type |= type >> 7;
+            mapElement->properties.path.additions = pathItemType;
+            mapElement->properties.path.addition_status = 255;
+            mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+            if (flags & GAME_COMMAND_FLAG_GHOST)
+                mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
-        footpath_queue_chain_reset();
+            footpath_queue_chain_reset();
 
-        if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
-            footpath_remove_edges_at(x, y, mapElement);
+            if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
+                footpath_remove_edges_at(x, y, mapElement);
 
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
-            automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
+            if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(flags & GAME_COMMAND_FLAG_GHOST))
+                automatically_set_peep_spawn(x, y, mapElement->base_height / 2);
 
-        loc_6A6620(flags, x, y, mapElement);
+            loc_6A6620(flags, x, y, mapElement);
+        }
     }
+
+    // Prevent the place sound from being spammed
+    if (entranceIsSamePath)
+        gFootpathPrice = 0;
+
     return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
@@ -513,7 +543,8 @@ void game_command_place_footpath(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *
 
 static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32 z, sint32 slope, sint32 edges, sint32 flags)
 {
-    rct_map_element *mapElement;
+    rct_map_element * mapElement, * entranceElement;
+    bool entrancePath = false, entranceIsSamePath = false;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
     gCommandPosition.x = x + 16;
@@ -562,7 +593,19 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
         zHigh += 2;
     }
 
-    if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
+    entranceElement = map_get_park_entrance_element_at(x, y, z, false);
+    // Make sure the entrance part is the middle
+    if (entranceElement != NULL && (entranceElement->properties.entrance.index & 0x0F) == 0)
+    {
+        entrancePath = true;
+        // Make the price the same as replacing a path
+        if (entranceElement->properties.entrance.path_type == (type & 0xF))
+            entranceIsSamePath = true;
+        else
+            gFootpathPrice -= MONEY(6, 00);
+    }
+
+    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -585,21 +628,37 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
-        assert(mapElement != NULL);
-        mapElement->type = MAP_ELEMENT_TYPE_PATH;
-        mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
-        mapElement->properties.path.type = (type << 4) | (slope & 7);
-        mapElement->type |= type >> 7;
-        mapElement->properties.path.additions = 0;
-        mapElement->properties.path.addition_status = 255;
-        mapElement->properties.path.edges = edges & 0xF;
-        mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-        if (flags & (1 << 6))
-            mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+        if (entrancePath)
+        {
+            if (!(flags & GAME_COMMAND_FLAG_GHOST) && !entranceIsSamePath)
+            {
+                // Set the path type but make sure it's not a queue as that will not show up
+                entranceElement->properties.entrance.path_type = type & 0x7F;
+                map_invalidate_tile_full(x, y);
+            }
+        }
+        else
+        {
+            mapElement = map_element_insert(x / 32, y / 32, z, 0x0F);
+            assert(mapElement != NULL);
+            mapElement->type = MAP_ELEMENT_TYPE_PATH;
+            mapElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
+            mapElement->properties.path.type = (type << 4) | (slope & 7);
+            mapElement->type |= type >> 7;
+            mapElement->properties.path.additions = 0;
+            mapElement->properties.path.addition_status = 255;
+            mapElement->properties.path.edges = edges & 0xF;
+            mapElement->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
+            if (flags & (1 << 6))
+                mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
 
-        map_invalidate_tile_full(x, y);
+            map_invalidate_tile_full(x, y);
+        }
     }
+
+    if (entranceIsSamePath)
+        gFootpathPrice = 0;
+
     return gParkFlags & PARK_FLAGS_NO_MONEY ? 0 : gFootpathPrice;
 }
 
