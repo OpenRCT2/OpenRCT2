@@ -377,15 +377,14 @@ namespace OpenRCT2
             return true;
         }
 
-        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) final override
+        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
         }
 
-        bool LoadParkFromStream(void * streamPtr, const std::string &path, bool loadTitleScreenFirstOnFail) final override
+        bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
         {
-            IStream *stream = (IStream*)streamPtr;
             ClassifiedFileInfo info;
             if (TryClassifyFile(stream, &info))
             {

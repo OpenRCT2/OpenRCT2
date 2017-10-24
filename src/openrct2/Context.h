@@ -69,6 +69,8 @@ enum
 
 #include <string>
 
+interface IStream;
+
 namespace OpenRCT2
 {
     interface IPlatformEnvironment;
@@ -97,7 +99,7 @@ namespace OpenRCT2
 
         virtual bool Initialise() abstract;
         virtual bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) abstract;
-        virtual bool LoadParkFromStream(void * stream, const std::string &path, bool loadTitleScreenFirstOnFail = false) abstract;
+        virtual bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail = false) abstract;
         virtual void Finish() abstract;
         virtual void Quit() abstract;
 

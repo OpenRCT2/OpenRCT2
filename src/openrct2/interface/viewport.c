@@ -1353,7 +1353,8 @@ void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, 
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, mapElement, viewport);
 }
 
-void get_map_coordinates_from_pos_window(rct_window *window, sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, sint32 screenY, sint32 flags, sint16 * x, sint16 * y,
+    sint32 * interactionType, rct_map_element ** mapElement, rct_viewport ** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
