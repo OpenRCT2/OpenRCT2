@@ -23,6 +23,7 @@
 /* Begin PBXBuildFile section */
 		4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
+		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -400,7 +401,6 @@
 		F76C86C11EC4E88400FA49E2 /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C847B1EC4E7CC00FA49E2 /* interop.c */; };
 		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
-		F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84841EC4E7CC00FA49E2 /* cable_lift.c */; };
 		F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BA1EC4E7CC00FA49E2 /* ride.c */; };
 		F76C86FE1EC4E88400FA49E2 /* ride_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */; };
 		F76C87001EC4E88400FA49E2 /* ride_ratings.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */; };
@@ -615,6 +615,8 @@
 		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
 		4C6AC20D1F9E1693004324AA /* Station.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Station.cpp; sourceTree = "<group>"; };
 		4C6AC20E1F9E1693004324AA /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
+		4C6AC2101F9E1CB3004324AA /* CableLift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CableLift.cpp; sourceTree = "<group>"; };
+		4C6AC2111F9E1CB3004324AA /* CableLift.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CableLift.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1297,8 +1299,6 @@
 		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
 		F76C84811EC4E7CC00FA49E2 /* rct2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct2.h; sourceTree = "<group>"; };
-		F76C84841EC4E7CC00FA49E2 /* cable_lift.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = cable_lift.c; sourceTree = "<group>"; };
-		F76C84851EC4E7CC00FA49E2 /* cable_lift.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = cable_lift.h; sourceTree = "<group>"; };
 		F76C84BA1EC4E7CC00FA49E2 /* ride.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride.c; sourceTree = "<group>"; };
 		F76C84BB1EC4E7CC00FA49E2 /* ride.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride.h; sourceTree = "<group>"; };
 		F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_data.c; sourceTree = "<group>"; };
@@ -2317,8 +2317,8 @@
 				F76C84C61EC4E7CC00FA49E2 /* thrill */,
 				F76C84DE1EC4E7CD00FA49E2 /* transport */,
 				F76C84EA1EC4E7CD00FA49E2 /* water */,
-				F76C84841EC4E7CC00FA49E2 /* cable_lift.c */,
-				F76C84851EC4E7CC00FA49E2 /* cable_lift.h */,
+				4C6AC2101F9E1CB3004324AA /* CableLift.cpp */,
+				4C6AC2111F9E1CB3004324AA /* CableLift.h */,
 				F76C84BA1EC4E7CC00FA49E2 /* ride.c */,
 				F76C84BB1EC4E7CC00FA49E2 /* ride.h */,
 				F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */,
@@ -3264,6 +3264,7 @@
 				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
+				4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */,
 				4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */,
 				C666EE751F37ACB10061AA04 /* NewsOptions.cpp in Sources */,
 				C654DF311F69C0430040F43D /* GuestList.cpp in Sources */,
@@ -3467,7 +3468,6 @@
 				F76C86C11EC4E88400FA49E2 /* interop.c in Sources */,
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
-				F76C86C81EC4E88400FA49E2 /* cable_lift.c in Sources */,
 				C666EE4E1F33E3800061AA04 /* TopToolbar.cpp in Sources */,
 				C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */,
 				C666EE381F33E3800061AA04 /* Ride.cpp in Sources */,
