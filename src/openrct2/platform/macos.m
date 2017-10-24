@@ -19,6 +19,7 @@
 @import AppKit;
 @import Foundation;
 #include <mach-o/dyld.h>
+#include <pwd.h>
 #include "platform.h"
 #include "../util/util.h"
 #include "../localisation/language.h"
@@ -213,6 +214,23 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
 {
     platform_get_openrct_data_path(outPath, outSize);
     safe_strcat_path(outPath, "changelog.txt", outSize);
+}
+
+bool platform_get_steam_path(utf8 * outPath, size_t outSize)
+{
+    char steamPath[1024] = { 0 };
+    const char * homeDir = getpwuid(getuid())->pw_dir;
+    if (homeDir != NULL)
+    {
+        safe_strcpy(steamPath, homeDir, sizeof(steamPath));
+        safe_strcat_path(steamPath, "Library/Application Support/Steam/steamapps/common", sizeof(steamPath));
+        if (platform_directory_exists(steamPath))
+        {
+            safe_strcpy(outPath, steamPath, outSize);
+            return true;
+        }
+    }
+    return false;
 }
 
 #endif

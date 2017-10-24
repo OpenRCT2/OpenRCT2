@@ -27,6 +27,7 @@
 #include <libgen.h>
 #include <locale.h>
 #include <pwd.h>
+#include <stdlib.h>
 #include <sys/file.h>
 #include <sys/stat.h>
 #include <sys/time.h>

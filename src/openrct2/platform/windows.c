@@ -506,6 +506,37 @@ void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t
     }
 }
 
+bool platform_get_steam_path(utf8 * outPath, size_t outSize)
+{
+    wchar_t * wSteamPath;
+    HKEY hKey;
+    DWORD type, size;
+    LRESULT result;
+
+    if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
+        return false;
+
+    // Get the size of the path first
+    if (RegQueryValueExW(hKey, L"SteamPath", 0, &type, NULL, &size) != ERROR_SUCCESS)
+    {
+        RegCloseKey(hKey);
+        return false;
+    }
+
+    wSteamPath = (wchar_t*)malloc(size);
+    result = RegQueryValueExW(hKey, L"SteamPath", 0, &type, (LPBYTE)wSteamPath, &size);
+    if (result == ERROR_SUCCESS)
+    {
+        utf8 * utf8SteamPath = widechar_to_utf8(wSteamPath);
+        safe_strcpy(outPath, utf8SteamPath, outSize);
+        safe_strcat_path(outPath, "steamapps\\common", outSize);
+        free(utf8SteamPath);
+    }
+    free(wSteamPath);
+    RegCloseKey(hKey);
+    return result == ERROR_SUCCESS;
+}
+
 /**
  *
  *  rct2: 0x00407978

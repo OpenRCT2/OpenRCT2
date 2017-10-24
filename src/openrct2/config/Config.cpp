@@ -614,6 +614,17 @@ namespace Config
                 return location;
             }
         }
+
+        utf8 steamPath[2048] = { 0 };
+        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        {
+            std::string location = Path::Combine(steamPath, "Rollercoaster Tycoon 2");
+            if (platform_original_game_data_exists(location.c_str()))
+            {
+                return location;
+            }
+        }
+
         if (platform_original_game_data_exists(gExePath))
         {
             return gExePath;
