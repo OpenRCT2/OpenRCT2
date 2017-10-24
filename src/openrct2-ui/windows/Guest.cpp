@@ -21,6 +21,7 @@
 #include <openrct2/game.h>
 #include <openrct2/input.h>
 #include <openrct2/management/Marketing.h>
+#include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/localisation/localisation.h>
@@ -1362,7 +1363,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 10;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_ENERGY_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    sint32 energy = ((peep->energy - 32) * 85) / 32;
+    sint32 energy = ((peep->energy - PEEP_MIN_ENERGY) * 255) / (PEEP_MAX_ENERGY - PEEP_MIN_ENERGY);
     ebp = COLOUR_BRIGHT_GREEN;
     if (energy < 50){
         ebp |= BAR_BLINK;
