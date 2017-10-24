@@ -34,6 +34,7 @@
 #endif // NO_TTF
 #include <fnmatch.h>
 #include <locale.h>
+#include <pwd.h>
 
 #include "../config/Config.h"
 #include "../localisation/language.h"
@@ -276,7 +277,7 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
         }
     }
 
-    const char * homeDir = getpwuid(getuid())->pw_dir
+    const char * homeDir = getpwuid(getuid())->pw_dir;
     if (homeDir != NULL)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));

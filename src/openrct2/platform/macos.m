@@ -19,6 +19,7 @@
 @import AppKit;
 @import Foundation;
 #include <mach-o/dyld.h>
+#include <pwd.h>
 #include "platform.h"
 #include "../util/util.h"
 #include "../localisation/language.h"
