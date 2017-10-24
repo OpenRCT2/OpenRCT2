@@ -220,7 +220,8 @@ bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     char steamPath[1024] = { 0 };
     const char * homeDir = getpwuid(getuid())->pw_dir;
-    if (homeDir != NULL) {
+    if (homeDir != NULL)
+    {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(steamPath, "Library/Application Support/Steam/steamapps/common", sizeof(steamPath));
         if (platform_directory_exists(steamPath))
