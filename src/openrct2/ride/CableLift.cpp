@@ -16,13 +16,13 @@
 
 #include "../core/Math.hpp"
 #include "../rct12.h"
+#include "../util/util.h"
 #include "../world/sprite.h"
 #include "CableLift.h"
 #include "ride.h"
 #include "Track.h"
 #include "ride_data.h"
 #include "vehicle_data.h"
-#include "../util/util.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle * vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle * vehicle);
@@ -30,7 +30,14 @@ static void cable_lift_update_departing(rct_vehicle * vehicle);
 static void cable_lift_update_travelling(rct_vehicle * vehicle);
 static void cable_lift_update_arriving(rct_vehicle * vehicle);
 
-rct_vehicle * cable_lift_segment_create(sint32 rideIndex, sint32 x, sint32 y, sint32 z, sint32 direction, uint16 var_44, sint32 remaining_distance, bool head)
+rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
+                                        sint32 x,
+                                        sint32 y,
+                                        sint32 z,
+                                        sint32 direction,
+                                        uint16 var_44,
+                                        sint32 remaining_distance,
+                                        bool head)
 {
     Ride        * ride    = get_ride(rideIndex);
     rct_vehicle * current = &(create_sprite(1)->vehicle);
@@ -289,7 +296,7 @@ static bool sub_6DF01A_loop(rct_vehicle * vehicle)
         unk.y += vehicle->track_y;
         unk.z += vehicle->track_z;
 
-        uint8 bx     = 0;
+        uint8 bx = 0;
         unk.z += RideData5[ride->type].z_offset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
@@ -375,7 +382,7 @@ static bool sub_6DF21B_loop(rct_vehicle * vehicle)
         unk.y += vehicle->track_y;
         unk.z += vehicle->track_z;
 
-        uint8 bx     = 0;
+        uint8 bx = 0;
         unk.z += RideData5[ride->type].z_offset;
         if (unk.x != unk_F64E20.x)
             bx |= (1 << 0);
@@ -516,7 +523,9 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
     sint32 edx = cableLift->velocity >> 8;
     edx *= edx;
     if (cableLift->velocity < 0)
-        edx    = -edx;
+    {
+        edx = -edx;
+    }
     edx >>= 4;
     newAcceleration -= edx / frictionTotal;
 
