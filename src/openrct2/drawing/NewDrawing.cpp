@@ -81,8 +81,6 @@ extern "C"
         auto uiContext = context->GetUiContext();
         auto drawingEngine = uiContext->CreateDrawingEngine((DRAWING_ENGINE_TYPE)_drawingEngineType);
 
-        _painter = new Painter(uiContext);
-
         if (drawingEngine == nullptr)
         {
             if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
@@ -103,6 +101,7 @@ extern "C"
         }
         else
         {
+            _painter = new Painter(uiContext);
             try
             {
                 drawingEngine->Initialise();
@@ -111,6 +110,8 @@ extern "C"
             }
             catch (const Exception &ex)
             {
+                delete _painter;
+                _painter = nullptr;
                 delete drawingEngine;
                 drawingEngine = nullptr;
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
@@ -156,7 +157,7 @@ extern "C"
         if (_drawingEngine != nullptr && _painter != nullptr)
         {
             _drawingEngine->BeginDraw();
-                _painter->Paint(_drawingEngine);
+            _painter->Paint(_drawingEngine);
             _drawingEngine->EndDraw();
         }
     }

@@ -52,7 +52,6 @@ void FillRectShader::GetLocations()
     uBounds             = GetUniformLocation("uBounds");
     uFlags              = GetUniformLocation("uFlags");
     uSourceFramebuffer  = GetUniformLocation("uSourceFramebuffer");
-    uPalette            = GetUniformLocation("uPalette");
     uPaletteRemap       = GetUniformLocation("uPaletteRemap");
 
     vIndex              = GetAttributeLocation("vIndex");
@@ -84,14 +83,9 @@ void FillRectShader::SetSourceFramebuffer(GLuint texture)
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
-void FillRectShader::SetPalette(const vec4f * glPalette)
+void FillRectShader::SetPaletteRemap(const GLuint * paletteRemap)
 {
-    glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
-}
-
-void FillRectShader::SetPaletteRemap(const GLint * paletteRemap)
-{
-    glUniform1iv(uPaletteRemap, 256, paletteRemap);
+    glUniform1uiv(uPaletteRemap, 256, paletteRemap);
 }
 
 void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
@@ -102,7 +96,8 @@ void FillRectShader::Draw(sint32 left, sint32 top, sint32 right, sint32 bottom)
     glDrawArrays(GL_TRIANGLES, 0, 6);
 }
 
-GLuint FillRectShader::GetSourceFramebuffer() const {
+GLuint FillRectShader::GetSourceFramebuffer() const
+{
     return _sourceFramebuffer;
 }
 

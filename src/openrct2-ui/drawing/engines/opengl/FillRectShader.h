@@ -29,7 +29,6 @@ private:
     GLuint uBounds;
     GLuint uFlags;
     GLuint uSourceFramebuffer;
-    GLuint uPalette;
     GLuint uPaletteRemap;
 
     GLuint vIndex;
@@ -48,8 +47,7 @@ public:
     void SetBounds(sint32 left, sint32 top, sint32 right, sint32 bottom);
     void SetFlags(uint32 flags);
     void SetSourceFramebuffer(GLuint texture);
-    void SetPalette(const vec4f * glPalette);
-    void SetPaletteRemap(const GLint * filterMap);
+    void SetPaletteRemap(const GLuint * filterMap);
 
     void Draw(sint32 left, sint32 top, sint32 right, sint32 bottom);
 
