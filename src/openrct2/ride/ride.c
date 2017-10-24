@@ -6585,9 +6585,9 @@ static sint32 loc_6CD18E(sint16 mapX, sint16 mapY, sint16 entranceMinX, sint16 e
  */
 void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sint32 screenY, sint32 * outX, sint32 * outY, sint32 * outDirection)
 {
-    sint16          mapX, mapY;
-    sint16          entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
-    sint32          interactionType, direction, stationHeight, stationDirection;
+    sint16            mapX, mapY;
+    sint16            entranceMinX, entranceMinY, entranceMaxX, entranceMaxY, word_F4418C, word_F4418E;
+    sint32            interactionType, direction, stationHeight, stationDirection;
     rct_map_element * mapElement;
     rct_viewport    * viewport;
     Ride            * ride;
@@ -7029,9 +7029,9 @@ static sint32 ride_get_track_length(Ride * ride)
 {
     rct_window             * w;
     rct_map_element        * mapElement = NULL;
-    track_circuit_iterator it;
-    sint32                 x = 0, y = 0, z, trackType, rideIndex, result;
-    bool                   foundTrack = false;
+    track_circuit_iterator   it;
+    sint32                   x = 0, y = 0, z, trackType, rideIndex, result;
+    bool                     foundTrack = false;
 
     for (sint32 i = 0; i < MAX_STATIONS && !foundTrack; i++)
     {
@@ -7058,7 +7058,7 @@ static sint32 ride_get_track_length(Ride * ride)
 
             foundTrack = true;
         }
-        while (!map_element_is_last_for_tile(mapElement++) && !foundTrack);
+        while (!foundTrack && !map_element_is_last_for_tile(mapElement++));
     }
 
     if (foundTrack)
