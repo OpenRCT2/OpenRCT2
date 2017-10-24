@@ -26,8 +26,13 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
     rct_tile_element *tileElement, *tileElement2;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
+<<<<<<< HEAD
             tileElement = map_get_surface_element_at(x, y);
             tileElement->properties.surface.slope &= ~0x1F;
+=======
+            mapElement = map_get_surface_element_at(x, y);
+            mapElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
+>>>>>>> Substitute MAP_ELEMENT_SLOPE_MASK in slope ops
 
             // Raise to edge height - 2
             highest = tileElement->base_height;
@@ -166,7 +171,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 
                 // Raise
                 if (tileElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
-                    tileElement->properties.surface.slope &= ~0x1F;
+                    tileElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
                     tileElement->base_height = tileElement->clearance_height += 2;
                 }
             }
@@ -210,10 +215,12 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 {
     sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
     rct_tile_element *tileElement;
-    for (y = t; y < b; y++) {
-        for (x = l; x < r; x++) {
+    for (y = t; y < b; y++)
+    {
+        for (x = l; x < r; x++)
+        {
             tileElement = map_get_surface_element_at(x, y);
-            tileElement->properties.surface.slope &= ~0x1F;
+            tileElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
 
             // Raise to edge height - 2
             highest = tileElement->base_height;
@@ -310,8 +317,9 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
                     tileElement->properties.surface.slope |= 4;
 
                 // Raise
-                if (tileElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
-                    tileElement->properties.surface.slope &= ~0x1F;
+                if (tileElement->properties.surface.slope == (1 | 2 | 4 | 8))
+                {
+                    tileElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
                     tileElement->base_height = tileElement->clearance_height += 2;
                 }
             }
@@ -386,14 +394,14 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Check if the calculated slope is the same already
-    uint8 currentSlope = surfaceElement->properties.surface.slope & 0x1F;
+    uint8 currentSlope = surfaceElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK;
     if (currentSlope == slope)
     {
         return 0;
     }
 
     // Remove old slope value
-    surfaceElement->properties.surface.slope &= ~0x1F;
+    surfaceElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
     if ((slope & 0xF) == 0xF)
     {
         // All corners are raised, raise the entire tile instead.

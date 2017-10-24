@@ -831,7 +831,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
         footpath_provisional_update();
 
         // Set provisional path
-        sint32 slope = default_path_slope[tileElement->properties.surface.slope & 0x1F];
+        sint32 slope = default_path_slope[tileElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK];
         if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
             slope = tileElement->properties.surface.slope & 7;
@@ -920,7 +920,7 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
     }
 
     // Set path
-    presentType  = default_path_slope[tileElement->properties.path.type & 0x1F];
+    presentType  = default_path_slope[tileElement->properties.path.type & MAP_ELEMENT_SLOPE_MASK];
     if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
     {
         presentType = tileElement->properties.path.type & 7;
