@@ -147,7 +147,7 @@ sint32 gRideRemoveTrackPieceCallbackZ;
 sint32 gRideRemoveTrackPieceCallbackDirection;
 sint32 gRideRemoveTrackPieceCallbackType;
 
-money16 gTotalRideValue;
+money16 gTotalRideValueForMoney;
 uint32 gSamePriceThroughoutParkA;
 uint32 gSamePriceThroughoutParkB;
 

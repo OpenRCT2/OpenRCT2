@@ -954,7 +954,7 @@ rct_ride_measurement * get_ride_measurement(sint32 index);
     for (i = 0; i < MAX_RIDES; i++) \
         if ((ride = get_ride(i))->type != RIDE_TYPE_NULL)
 
-extern money16 gTotalRideValue;
+extern money16 gTotalRideValueForMoney;
 extern uint32 gSamePriceThroughoutParkA;
 extern uint32 gSamePriceThroughoutParkB;
 
