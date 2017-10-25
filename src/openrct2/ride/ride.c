@@ -8236,12 +8236,12 @@ void fix_ride_entrance_and_exit_locations()
     {
         for (sint32 stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
-            LocationXY8       entranceLoc        = ride->entrances[stationIndex];
-            LocationXY8       exitLoc            = ride->exits[stationIndex];
-            uint8             entranceExitHeight = ride->station_heights[stationIndex];
-            bool              fixEntrance        = false;
-            bool              fixExit            = false;
-            rct_map_element * mapElement;
+            const LocationXY8       entranceLoc        = ride->entrances[stationIndex];
+            const LocationXY8       exitLoc            = ride->exits[stationIndex];
+            uint8                   entranceExitHeight = ride->station_heights[stationIndex];
+            bool                    fixEntrance        = false;
+            bool                    fixExit            = false;
+            const rct_map_element * mapElement;
 
             // Skip if the station has no entrance
             if (entranceLoc.xy != RCT_XY8_UNDEFINED)
