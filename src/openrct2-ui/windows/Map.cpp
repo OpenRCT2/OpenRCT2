@@ -1290,7 +1290,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     footpath_bridge_get_info_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if ((mapX & 0xFFFF) == LOCATION_NULL)
+    if ((mapX & 0xFFFF) == 0x8000)
         return;
 
     mapZ = mapElement->base_height * 8;
@@ -1351,7 +1351,7 @@ static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
     sint32 mapX, mapY, mapZ, direction;
 
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
-    if (mapX == LOCATION_NULL)
+    if (mapX == 0x8000)
         return;
 
     surfaceMapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);

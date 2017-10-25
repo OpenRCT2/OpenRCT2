@@ -572,7 +572,7 @@ uint16 hire_new_staff_member(uint8 staffType)
 
     sint32 command_x, ebx, command_y, command_z, esi, new_sprite_index, ebp;
     command_y = command_z = esi = new_sprite_index = ebp = 0;
-    command_x                                            = LOCATION_NULL;
+    command_x                                            = 0x8000;
 
     sint32 autoposition = gConfigGeneral.auto_staff_placement;
     if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
