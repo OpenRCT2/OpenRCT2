@@ -67,6 +67,20 @@ void date_reset()
     gCurrentTicks = 0;
 }
 
+void date_update()
+{
+    sint32 monthTicks = gDateMonthTicks + 4;
+    if (monthTicks >= 0x10000)
+    {
+        gDateMonthTicks = 0;
+        gDateMonthsElapsed++;
+    }
+    else
+    {
+        gDateMonthTicks = floor2((uint16)monthTicks, 4);
+    }
+}
+
 void date_update_real_time_of_day()
 {
     time_t timestamp = time(0);
@@ -75,4 +89,31 @@ void date_update_real_time_of_day()
     gRealTimeOfDay.second = now->tm_sec;
     gRealTimeOfDay.minute = now->tm_min;
     gRealTimeOfDay.hour = now->tm_hour;
+}
+
+bool date_is_day_start(sint32 monthTicks)
+{
+    if (monthTicks < 4)
+    {
+        return false;
+    }
+    sint32 prevMonthTick = monthTicks - 4;
+    sint32 currentMonth = date_get_month(gDateMonthsElapsed);
+    sint32 currentDaysInMonth = days_in_month[currentMonth];
+    return ((currentDaysInMonth * monthTicks) >> 16 != (currentDaysInMonth * prevMonthTick) >> 16);
+}
+
+bool date_is_week_start(sint32 monthTicks)
+{
+    return (monthTicks & 0x3FFF) == 0;
+}
+
+bool date_is_fortnight_start(sint32 monthTicks)
+{
+    return (monthTicks & 0x7FFF) == 0;
+}
+
+bool date_is_month_start(sint32 monthTicks)
+{
+    return (monthTicks == 0);
 }
