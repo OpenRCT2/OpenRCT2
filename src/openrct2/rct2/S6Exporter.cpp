@@ -256,7 +256,7 @@ void S6Exporter::Export()
     _s6.guest_initial_happiness      = gGuestInitialHappiness;
     _s6.park_size                    = gParkSize;
     _s6.guest_generation_probability = _guestGenerationProbability;
-    _s6.total_ride_value             = gTotalRideValue;
+    _s6.total_ride_value_for_money   = gTotalRideValueForMoney;
     _s6.maximum_loan                 = gMaxBankLoan;
     _s6.guest_initial_cash           = gGuestInitialCash;
     _s6.guest_initial_hunger         = gGuestInitialHunger;

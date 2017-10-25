@@ -96,7 +96,7 @@ void park_init()
     gGuestChangeModifier = 0;
     gParkRating = 0;
     _guestGenerationProbability = 0;
-    gTotalRideValue = 0;
+    gTotalRideValueForMoney = 0;
     gResearchLastItemSubject = (uint32)-1;
 
     for (i = 0; i < 20; i++)
@@ -367,12 +367,12 @@ static sint32 park_calculate_guest_generation_probability()
 {
     uint32 probability;
     sint32 i, suggestedMaxGuests;
-    money16 totalRideValue;
+    money16 totalRideValueForMoney;
     Ride *ride;
 
     // Calculate suggested guest maximum (based on ride type) and total ride value
     suggestedMaxGuests = 0;
-    totalRideValue = 0;
+    totalRideValueForMoney = 0;
     FOR_ALL_RIDES(i, ride) {
         if (ride->status != RIDE_STATUS_OPEN)
             continue;
@@ -386,9 +386,9 @@ static sint32 park_calculate_guest_generation_probability()
 
         // Add ride value
         if (ride->value != RIDE_VALUE_UNDEFINED) {
-            money16 rideValue = (money16)(ride->value - ride->price);
-            if (rideValue > 0) {
-                totalRideValue += rideValue * 2;
+            money16 rideValueForMoney = (money16)(ride->value - ride->price);
+            if (rideValueForMoney > 0) {
+                totalRideValueForMoney += rideValueForMoney * 2;
             }
         }
     }
@@ -419,7 +419,7 @@ static sint32 park_calculate_guest_generation_probability()
     }
 
     suggestedMaxGuests = min(suggestedMaxGuests, 65535);
-    gTotalRideValue = totalRideValue;
+    gTotalRideValueForMoney = totalRideValueForMoney;
     _suggestedGuestMaximum = suggestedMaxGuests;
 
     // Begin with 50 + park rating
@@ -441,11 +441,11 @@ static sint32 park_calculate_guest_generation_probability()
 
     // Penalty for overpriced entrance fee relative to total ride value
     money16 entranceFee = park_get_entrance_fee();
-    if (entranceFee > totalRideValue) {
+    if (entranceFee > totalRideValueForMoney) {
         probability /= 4;
 
         // Extra penalty for very overpriced entrance fee
-        if (entranceFee / 2 > totalRideValue)
+        if (entranceFee / 2 > totalRideValueForMoney)
             probability /= 4;
     }
 

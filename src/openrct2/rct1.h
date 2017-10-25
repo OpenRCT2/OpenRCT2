@@ -647,7 +647,7 @@ typedef struct rct1_s4 {
     uint32 unk_19953E;
     uint16 cheat_detection_land_owned;
     uint16 unk_199544;
-    money16 median_recommended_park_entry_fee;
+    money16 total_ride_value_for_money;
     money32 max_loan;
     money16 guest_initial_cash;
     uint8 guest_initial_hunger;

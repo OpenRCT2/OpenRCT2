@@ -174,7 +174,7 @@ typedef struct rct_s6_data {
     uint8 guest_initial_happiness;
     uint16 park_size;
     uint16 guest_generation_probability;
-    uint16 total_ride_value;
+    uint16 total_ride_value_for_money;
     money32 maximum_loan;
     money16 guest_initial_cash;
     uint8 guest_initial_hunger;

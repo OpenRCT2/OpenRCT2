@@ -267,7 +267,7 @@ public:
         gGuestInitialHappiness      = _s6.guest_initial_happiness;
         gParkSize                   = _s6.park_size;
         _guestGenerationProbability = _s6.guest_generation_probability;
-        gTotalRideValue             = _s6.total_ride_value;
+        gTotalRideValueForMoney     = _s6.total_ride_value_for_money;
         gMaxBankLoan                = _s6.maximum_loan;
         gGuestInitialCash           = _s6.guest_initial_cash;
         gGuestInitialHunger         = _s6.guest_initial_hunger;
