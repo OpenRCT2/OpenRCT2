@@ -4729,7 +4729,7 @@ STR_DTLS    :이 작은 공원은 이 도시뿐만 아니라 근교 도시의 �
 <Geoffrey Gardens>
 STR_SCNR    :Geoffrey Gardens
 STR_PARK    :제프리의 정원
-STR_DTLS    :대규모의 정원 공원을 북적이는 놀이공원으로 바꿔해야 합니다.
+STR_DTLS    :대규모의 정원 공원을 북적이는 놀이공원으로 바꿔야 합니다.
 
 
 ## Loopy Landscapes
