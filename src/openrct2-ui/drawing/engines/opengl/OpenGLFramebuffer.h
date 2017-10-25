@@ -35,7 +35,7 @@ private:
 
 public:
     explicit OpenGLFramebuffer(SDL_Window * window);
-    OpenGLFramebuffer(sint32 width, sint32 height, bool depth = true);
+    OpenGLFramebuffer(sint32 width, sint32 height, bool depth = true, bool integer = true);
     ~OpenGLFramebuffer();
 
     OpenGLFramebuffer(const OpenGLFramebuffer &) = delete;
@@ -53,6 +53,7 @@ public:
 
     void SwapColourBuffer(OpenGLFramebuffer &other);
     GLuint SwapDepthTexture(GLuint depth);
+    void Copy(OpenGLFramebuffer &src, GLenum filter);
 
     static GLuint CreateDepthTexture(sint32 width, sint32 height);
 };

@@ -69,6 +69,7 @@ private:
     SDL_Window *    _window = nullptr;
     sint32          _width  = 0;
     sint32          _height = 0;
+    sint32          _scaleQuality = 0;
 
     bool _resolutionsAllowAnyAspectRatio = false;
     std::vector<Resolution> _fsResolutions;
@@ -122,6 +123,11 @@ public:
     sint32 GetHeight() override
     {
         return _height;
+    }
+
+    sint32 GetScaleQuality() override
+    {
+        return _scaleQuality;
     }
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
@@ -485,13 +491,13 @@ public:
     void TriggerResize() override
     {
         char scaleQualityBuffer[4];
-        uint8 scaleQuality = gConfigGeneral.scale_quality;
+        _scaleQuality = gConfigGeneral.scale_quality;
         if (gConfigGeneral.use_nn_at_integer_scales &&
             gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            scaleQuality = 0;
+            _scaleQuality = 0;
         }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", _scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
         sint32 width, height;

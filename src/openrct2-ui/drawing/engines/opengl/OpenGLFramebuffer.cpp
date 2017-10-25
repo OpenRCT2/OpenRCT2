@@ -31,14 +31,21 @@ OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window * window)
     SDL_GetWindowSize(window, &_width, &_height);
 }
 
-OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height, bool depth)
+OpenGLFramebuffer::OpenGLFramebuffer(sint32 width, sint32 height, bool depth, bool integer)
 {
     _width = width;
     _height = height;
 
     glGenTextures(1, &_texture);
     glBindTexture(GL_TEXTURE_2D, _texture);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+    if (integer)
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_R8UI, width, height, 0, GL_RED_INTEGER, GL_UNSIGNED_BYTE, nullptr);
+    }
+    else
+    {
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, nullptr);
+    }
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 
@@ -123,6 +130,17 @@ GLuint OpenGLFramebuffer::SwapDepthTexture(GLuint depth)
     glFramebufferTexture2D(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_TEXTURE_2D, _depth, 0);
 
     return depth;
+}
+
+void OpenGLFramebuffer::Copy(OpenGLFramebuffer &src, GLenum filter)
+{
+    BindDraw();
+    src.BindRead();
+    glBlitFramebuffer(
+        0, 0, src.GetWidth(), src.GetHeight(),
+        0, 0, _width, _height, GL_COLOR_BUFFER_BIT, filter
+    );
+    Bind();
 }
 
 GLuint OpenGLFramebuffer::CreateDepthTexture(sint32 width, sint32 height)

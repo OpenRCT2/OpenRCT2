@@ -37,6 +37,7 @@ namespace OpenRCT2 { namespace Ui
         void * GetWindow() override { return nullptr; }
         sint32 GetWidth() override { return 0; }
         sint32 GetHeight() override { return 0; }
+        sint32 GetScaleQuality() override { return 0; }
         void SetFullscreenMode(FULLSCREEN_MODE mode) override { }
         std::vector<Resolution> GetFullscreenResolutions() override { return std::vector<Resolution>(); }
         bool HasFocus() override { return false; }

@@ -144,6 +144,7 @@ private:
 
     CopyFramebufferShader * _copyFramebufferShader  = nullptr;
     OpenGLFramebuffer *     _screenFramebuffer      = nullptr;
+    OpenGLFramebuffer *     _scaleFramebuffer       = nullptr;
 
 public:
     SDL_Color Palette[256];
@@ -245,12 +246,25 @@ public:
     {
         _drawingContext->FlushCommandBuffers();
 
-        // Scale up to window
         glDisable(GL_DEPTH_TEST);
-        _screenFramebuffer->Bind();
+        if (_scaleFramebuffer != nullptr)
+        {
+            // Render to intermediary RGB buffer for GL_LINEAR
+            _scaleFramebuffer->Bind();
+        }
+        else
+        {
+            _screenFramebuffer->Bind();
+        }
+
         _copyFramebufferShader->Use();
         _copyFramebufferShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
         _copyFramebufferShader->Draw();
+
+        if (_scaleFramebuffer != nullptr)
+        {
+            _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
+        }
 
         CheckGLError();
         Display();
@@ -379,6 +393,15 @@ private:
         delete _screenFramebuffer;
         _screenFramebuffer = new OpenGLFramebuffer(_window);
 
+        if (_scaleFramebuffer != nullptr)
+        {
+            delete _scaleFramebuffer;
+            _scaleFramebuffer = nullptr;
+        }
+        if (GetContext()->GetUiContext()->GetScaleQuality() > 0)
+        {
+            _scaleFramebuffer = new OpenGLFramebuffer(_width, _height, false, false);
+        }
     }
 
     void Display()
@@ -998,8 +1021,7 @@ sint32 OpenGLDrawingContext::MaxTransparencyDepth()
             if (top_it->second.count == 1)
             {
                 auto top_next = std::next(top_it);
-                assert(top_next == y_intersect.end() ?
-                       top_it->second.depth == 0 :
+                assert(top_next != y_intersect.end() &&
                        top_it->second.depth == top_next->second.depth - 1);
             }
 
