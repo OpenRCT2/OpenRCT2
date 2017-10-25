@@ -415,6 +415,7 @@ rct_map_element* map_get_path_element_at(sint32 x, sint32 y, sint32 z);
 rct_map_element *map_get_wall_element_at(sint32 x, sint32 y, sint32 z, sint32 direction);
 rct_map_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z, sint32 type, uint8 quadrant);
 rct_map_element *map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost);
+rct_map_element * map_get_ride_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost);
 sint32 map_element_height(sint32 x, sint32 y);
 void sub_68B089();
 sint32 map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection);

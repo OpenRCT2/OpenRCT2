@@ -3832,6 +3832,30 @@ rct_map_element *map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z, 
     return NULL;
 }
 
+rct_map_element * map_get_ride_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost)
+{
+    rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    do
+    {
+        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+            continue;
+
+        if (mapElement->base_height != z)
+            continue;
+
+        if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+            continue;
+
+        if ((ghost == false) && (mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+            continue;
+
+        return mapElement;
+    }
+    while (!map_element_is_last_for_tile(mapElement++));
+
+    return NULL;
+}
+
 rct_map_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z, sint32 type, uint8 quadrant)
 {
     rct_map_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
