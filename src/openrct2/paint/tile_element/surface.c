@@ -1330,7 +1330,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
         // loc_66122C:
-        uint8 al_edgeStyle = tileElement->properties.surface.slope & 0xE0;
+        uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         uint8 di_type = tileElement->type & 0x80;
 
         uint32 eax = al_edgeStyle + di_type * 2;
@@ -1375,7 +1375,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            uint8 al_edgeStyle = tileElement->properties.surface.slope & 0xE0;
+            uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
             uint8 di_type = tileElement->type & 0x80;
 
             uint32 eax = al_edgeStyle + di_type * 2;
