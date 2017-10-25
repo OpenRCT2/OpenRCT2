@@ -394,29 +394,26 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
-    if (!(gScreenFlags & ~SCREEN_FLAGS_PLAYING)) {
-        uint32 currentMonthTick = floor2(gDateMonthTicks, 4);
-        uint32 nextMonthTick = currentMonthTick + 4;
-        uint8 currentMonth = gDateMonthsElapsed & 7;
-        uint8 currentDaysInMonth = (uint8)days_in_month[currentMonth];
-
-        if ((currentDaysInMonth * nextMonthTick) >> 16 != (currentDaysInMonth * currentMonthTick) >> 16) {
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    {
+        date_update();
+        if (date_is_day_start(gDateMonthTicks))
+        {
             scenario_day_update();
         }
-        if (nextMonthTick % 0x4000 == 0) {
+        if (date_is_week_start(gDateMonthTicks))
+        {
             scenario_week_update();
         }
-        if (nextMonthTick % 0x8000 == 0) {
+        if (date_is_fortnight_start(gDateMonthTicks))
+        {
             scenario_fortnight_update();
         }
-
-        gDateMonthTicks = (uint16)nextMonthTick;
-        if (nextMonthTick >= 0x10000) {
-            gDateMonthsElapsed++;
+        if (date_is_month_start(gDateMonthTicks))
+        {
             scenario_month_update();
         }
     }
-
     scenario_update_daynight_cycle();
 }
 
