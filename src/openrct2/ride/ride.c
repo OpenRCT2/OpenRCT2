@@ -8335,6 +8335,18 @@ void fix_ride_entrance_and_exit_locations()
                     }
                 }
             }
+
+            if (fixEntrance && !alreadyFoundEntrance)
+            {
+                ride->entrances[stationIndex].xy = RCT_XY8_UNDEFINED;
+                log_info("Cleared disconnected entrance of ride %d, station %d.", rideIndex, stationIndex);
+
+            }
+            if (fixExit && !alreadyFoundExit)
+            {
+                ride->exits[stationIndex].xy = RCT_XY8_UNDEFINED;
+                log_info("Cleared disconnected exit of ride %d, station %d.", rideIndex, stationIndex);
+            }
         }
     }
 }
