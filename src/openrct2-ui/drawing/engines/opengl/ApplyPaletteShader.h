@@ -19,7 +19,7 @@
 #include "GLSLTypes.h"
 #include "OpenGLShaderProgram.h"
 
-class CopyFramebufferShader final : public OpenGLShaderProgram
+class ApplyPaletteShader final : public OpenGLShaderProgram
 {
 private:
     GLuint uTexture;
@@ -32,8 +32,8 @@ private:
     GLuint _vao;
 
 public:
-    CopyFramebufferShader();
-    ~CopyFramebufferShader() override;
+    ApplyPaletteShader();
+    ~ApplyPaletteShader() override;
 
     void SetTexture(GLuint texture);
     void SetPalette(const vec4 * glPalette);

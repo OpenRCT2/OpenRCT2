@@ -471,7 +471,7 @@
 		F76C887C1EC5324E00FA49E2 /* MemoryAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85881EC4E82600FA49E2 /* MemoryAudioSource.cpp */; };
 		F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858A1EC4E82600FA49E2 /* CursorData.cpp */; };
 		F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */; };
-		F76C887F1EC5324E00FA49E2 /* CopyFramebufferShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */; };
+		F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85911EC4E82600FA49E2 /* ApplyPaletteShader.cpp */; };
 		F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */; };
 		F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */; };
 		F76C88831EC5324E00FA49E2 /* OpenGLAPI.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C859B1EC4E82600FA49E2 /* OpenGLAPI.cpp */; };
@@ -1394,8 +1394,8 @@
 		F76C858B1EC4E82600FA49E2 /* CursorRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CursorRepository.cpp; sourceTree = "<group>"; };
 		F76C858C1EC4E82600FA49E2 /* CursorRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CursorRepository.h; sourceTree = "<group>"; };
 		F76C858F1EC4E82600FA49E2 /* DrawingEngines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawingEngines.h; sourceTree = "<group>"; };
-		F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = CopyFramebufferShader.cpp; sourceTree = "<group>"; };
-		F76C85921EC4E82600FA49E2 /* CopyFramebufferShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CopyFramebufferShader.h; sourceTree = "<group>"; };
+		F76C85911EC4E82600FA49E2 /* ApplyPaletteShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ApplyPaletteShader.cpp; sourceTree = "<group>"; };
+		F76C85921EC4E82600FA49E2 /* ApplyPaletteShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ApplyPaletteShader.h; sourceTree = "<group>"; };
 		F76C85931EC4E82600FA49E2 /* DrawCommands.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawCommands.h; sourceTree = "<group>"; };
 		F76C85941EC4E82600FA49E2 /* DrawRectShader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = DrawRectShader.cpp; sourceTree = "<group>"; };
 		F76C85951EC4E82600FA49E2 /* DrawRectShader.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = DrawRectShader.h; sourceTree = "<group>"; };
@@ -2669,10 +2669,10 @@
 		F76C85901EC4E82600FA49E2 /* opengl */ = {
 			isa = PBXGroup;
 			children = (
+				F76C85911EC4E82600FA49E2 /* ApplyPaletteShader.cpp */,
+				F76C85921EC4E82600FA49E2 /* ApplyPaletteShader.h */,
 				D45E09161F99CF2F00854B2B /* ApplyTransparencyShader.cpp */,
 				D45E09151F99CF2F00854B2B /* ApplyTransparencyShader.h */,
-				F76C85911EC4E82600FA49E2 /* CopyFramebufferShader.cpp */,
-				F76C85921EC4E82600FA49E2 /* CopyFramebufferShader.h */,
 				F76C85931EC4E82600FA49E2 /* DrawCommands.h */,
 				F76C85961EC4E82600FA49E2 /* DrawLineShader.cpp */,
 				F76C85971EC4E82600FA49E2 /* DrawLineShader.h */,
@@ -3231,7 +3231,7 @@
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
 				C654DF401F69C18C0040F43D /* Intent.cpp in Sources */,
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
-				F76C887F1EC5324E00FA49E2 /* CopyFramebufferShader.cpp in Sources */,
+				F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */,
 				C685E51C1F8907850090598F /* Map.cpp in Sources */,
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
 				4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */,

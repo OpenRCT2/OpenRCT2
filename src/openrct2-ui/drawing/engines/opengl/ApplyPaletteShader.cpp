@@ -16,7 +16,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "CopyFramebufferShader.h"
+#include "ApplyPaletteShader.h"
 
 struct VDStruct
 {
@@ -32,7 +32,7 @@ constexpr VDStruct VertexData[4] =
     {  1.0f,  1.0f, 1.0f, 1.0f },
 };
 
-CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframebuffer")
+ApplyPaletteShader::ApplyPaletteShader() : OpenGLShaderProgram("applypalette")
 {
     GetLocations();
 
@@ -53,13 +53,13 @@ CopyFramebufferShader::CopyFramebufferShader() : OpenGLShaderProgram("copyframeb
     glUniform1i(uTexture, 0);
 }
 
-CopyFramebufferShader::~CopyFramebufferShader()
+ApplyPaletteShader::~ApplyPaletteShader()
 {
     glDeleteBuffers(1, &_vbo);
     glDeleteVertexArrays(1, &_vao);
 }
 
-void CopyFramebufferShader::GetLocations()
+void ApplyPaletteShader::GetLocations()
 {
     uTexture            = GetUniformLocation("uTexture");
     uPalette            = GetUniformLocation("uPalette");
@@ -68,17 +68,17 @@ void CopyFramebufferShader::GetLocations()
     vTextureCoordinate  = GetAttributeLocation("vTextureCoordinate");
 }
 
-void CopyFramebufferShader::SetTexture(GLuint texture)
+void ApplyPaletteShader::SetTexture(GLuint texture)
 {
     OpenGLAPI::SetTexture(0, GL_TEXTURE_2D, texture);
 }
 
-void CopyFramebufferShader::SetPalette(const vec4 * glPalette)
+void ApplyPaletteShader::SetPalette(const vec4 * glPalette)
 {
     glUniform4fv(uPalette, 256, (const GLfloat *)glPalette);
 }
 
-void CopyFramebufferShader::Draw()
+void ApplyPaletteShader::Draw()
 {
     glBindVertexArray(_vao);
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

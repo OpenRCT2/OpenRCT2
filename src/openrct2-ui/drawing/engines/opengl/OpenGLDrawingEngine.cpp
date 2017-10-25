@@ -39,7 +39,7 @@
 #include "GLSLTypes.h"
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
-#include "CopyFramebufferShader.h"
+#include "ApplyPaletteShader.h"
 #include "DrawCommands.h"
 #include "DrawLineShader.h"
 #include "DrawRectShader.h"
@@ -139,7 +139,7 @@ private:
 
     OpenGLDrawingContext *    _drawingContext;
 
-    CopyFramebufferShader * _copyFramebufferShader  = nullptr;
+    ApplyPaletteShader *    _applyPaletteShader     = nullptr;
     OpenGLFramebuffer *     _screenFramebuffer      = nullptr;
     OpenGLFramebuffer *     _scaleFramebuffer       = nullptr;
 
@@ -159,7 +159,7 @@ public:
 
     ~OpenGLDrawingEngine() override
     {
-        delete _copyFramebufferShader;
+        delete _applyPaletteShader;
         delete _screenFramebuffer;
 
         delete _drawingContext;
@@ -191,7 +191,7 @@ public:
 
         _drawingContext->Initialise();
 
-        _copyFramebufferShader = new CopyFramebufferShader();
+        _applyPaletteShader = new ApplyPaletteShader();
     }
 
     void Resize(uint32 width, uint32 height) override
@@ -218,8 +218,8 @@ public:
                              colour.a / 255.0f };
         }
 
-        _copyFramebufferShader->Use();
-        _copyFramebufferShader->SetPalette(GLPalette);
+        _applyPaletteShader->Use();
+        _applyPaletteShader->SetPalette(GLPalette);
         _drawingContext->ResetPalette();
     }
 
@@ -254,9 +254,9 @@ public:
             _screenFramebuffer->Bind();
         }
 
-        _copyFramebufferShader->Use();
-        _copyFramebufferShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
-        _copyFramebufferShader->Draw();
+        _applyPaletteShader->Use();
+        _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
+        _applyPaletteShader->Draw();
 
         if (_scaleFramebuffer != nullptr)
         {
