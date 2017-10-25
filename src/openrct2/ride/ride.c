@@ -8227,7 +8227,7 @@ LocationXY16 ride_get_rotated_coords(sint16 x, sint16 y, sint16 z)
     return rotatedCoords;
 }
 
-void fix_ride_entrance_locations()
+void fix_ride_entrance_and_exit_locations()
 {
     sint32 rideIndex;
     Ride * ride;
@@ -8236,25 +8236,43 @@ void fix_ride_entrance_locations()
     {
         for (sint32 stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
         {
-            LocationXY8 entranceLoc    = ride->entrances[stationIndex];
-            uint8       entranceHeight = ride->station_heights[stationIndex];
+            LocationXY8       entranceLoc        = ride->entrances[stationIndex];
+            LocationXY8       exitLoc            = ride->exits[stationIndex];
+            uint8             entranceExitHeight = ride->station_heights[stationIndex];
+            bool              fixEntrance        = false;
+            bool              fixExit            = false;
+            rct_map_element * mapElement;
 
             // Skip if the station has no entrance
-            if (entranceLoc.xy == RCT_XY8_UNDEFINED)
+            if (entranceLoc.xy != RCT_XY8_UNDEFINED)
+            {
+                mapElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceExitHeight, false);
+
+                if (mapElement == NULL || mapElement->properties.entrance.ride_index != rideIndex || map_element_get_station(mapElement) != stationIndex)
+                {
+                    fixEntrance = true;
+                }
+            }
+
+            if (exitLoc.xy != RCT_XY8_UNDEFINED)
+            {
+                mapElement = map_get_ride_exit_element_at(exitLoc.x * 32, exitLoc.y * 32, entranceExitHeight, false);
+
+                if (mapElement == NULL || mapElement->properties.entrance.ride_index != rideIndex || map_element_get_station(mapElement) != stationIndex)
+                {
+                    fixExit = true;
+                }
+            }
+
+            if (!fixEntrance && !fixExit)
             {
                 continue;
             }
 
-            rct_map_element * mapElement = map_get_ride_entrance_element_at(entranceLoc.x * 32, entranceLoc.y * 32, entranceHeight, false);
-
-            if (mapElement != NULL && mapElement->properties.entrance.ride_index == rideIndex && map_element_get_station(mapElement) == stationIndex)
-            {
-                continue;
-            }
-
-            // At this point, we know we have a disconnected entrance.
+            // At this point, we know we have a disconnected entrance or exit.
             // Search the map to find it. Skip the outer ring of invisible tiles.
-            bool alreadyFoundOne = false;
+            bool alreadyFoundEntrance = false;
+            bool alreadyFoundExit     = false;
             for (uint8 x = 1; x < MAXIMUM_MAP_SIZE_TECHNICAL - 1; x++)
             {
                 for (uint8 y = 1; y < MAXIMUM_MAP_SIZE_TECHNICAL - 1; y++)
@@ -8269,10 +8287,6 @@ void fix_ride_entrance_locations()
                             {
                                 continue;
                             }
-                            if (mapElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
-                            {
-                                continue;
-                            }
                             if (mapElement->properties.entrance.ride_index != rideIndex)
                             {
                                 continue;
@@ -8281,21 +8295,41 @@ void fix_ride_entrance_locations()
                             {
                                 continue;
                             }
-                            // There are some cases (like Belmont Shores), where there is both a sunk and a disconnected entrance.
-                            // Not sure why, but in this case, pick the highest one.
-                            if (alreadyFoundOne && ride->station_heights[stationIndex] > mapElement->base_height)
+
+                            if (fixEntrance && mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
                             {
-                                continue;
+                                // There are some cases (like Belmont Shores), where there is both a sunk and a disconnected entrance.
+                                // Not sure why, but in this case, pick the highest one.
+                                if (alreadyFoundEntrance && ride->station_heights[stationIndex] > mapElement->base_height)
+                                {
+                                    continue;
+                                }
+
+                                // Found our entrance
+                                ride->entrances[stationIndex].x = x;
+                                ride->entrances[stationIndex].y = y;
+                                ride->station_heights[stationIndex] = mapElement->base_height;
+
+                                alreadyFoundEntrance = true;
+
+                                log_info("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, mapElement->base_height);
                             }
+                            else if (fixExit && mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
+                            {
+                                if (alreadyFoundExit && ride->station_heights[stationIndex] > mapElement->base_height)
+                                {
+                                    continue;
+                                }
 
-                            // Found our entrance
-                            ride->entrances[stationIndex].x = x;
-                            ride->entrances[stationIndex].y = y;
-                            ride->station_heights[stationIndex] = mapElement->base_height;
+                                // Found our exit
+                                ride->exits[stationIndex].x = x;
+                                ride->exits[stationIndex].y = y;
+                                ride->station_heights[stationIndex] = mapElement->base_height;
 
-                            alreadyFoundOne = true;
+                                alreadyFoundExit = true;
 
-                            log_info("Fixed disconnected entrance of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, mapElement->base_height);
+                                log_info("Fixed disconnected exit of ride %d, station %d to x = %d, y = %d and z = %d.", rideIndex, stationIndex, x, y, mapElement->base_height);
+                            }
                         }
                         while (!map_element_is_last_for_tile(mapElement++));
                     }
