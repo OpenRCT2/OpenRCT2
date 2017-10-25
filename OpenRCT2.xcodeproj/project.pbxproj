@@ -265,6 +265,7 @@
 		D45E09171F99CF2F00854B2B /* ApplyTransparencyShader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D45E09161F99CF2F00854B2B /* ApplyTransparencyShader.cpp */; };
 		D47304D51C4FF8250015C0EA /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D47304D41C4FF8250015C0EA /* libz.tbd */; };
 		D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */; };
+		D4974F1C1FA04A1900F7FD7F /* TransparencyDepth.cpp in Sources */ = {isa = PBXBuildFile; fileRef = D4974F1A1FA04A1900F7FD7F /* TransparencyDepth.cpp */; };
 		D4A8B4B41DB41873007A2F29 /* libpng16.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; };
 		D4A8B4B51DB4188D007A2F29 /* libpng16.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = D4A8B4B31DB41873007A2F29 /* libpng16.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
@@ -1037,6 +1038,8 @@
 		D47304D41C4FF8250015C0EA /* libz.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libz.tbd; path = usr/lib/libz.tbd; sourceTree = SDKROOT; };
 		D4895D321C23EFDD000CD788 /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = distribution/macos/Info.plist; sourceTree = SOURCE_ROOT; };
 		D48AFDB61EF78DBF0081C644 /* BenchGfxCommmands.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BenchGfxCommmands.cpp; sourceTree = "<group>"; };
+		D4974F1A1FA04A1900F7FD7F /* TransparencyDepth.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = TransparencyDepth.cpp; sourceTree = "<group>"; };
+		D4974F1B1FA04A1900F7FD7F /* TransparencyDepth.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransparencyDepth.h; sourceTree = "<group>"; };
 		D497D0781C20FD52002BF46A /* OpenRCT2.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = OpenRCT2.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		D4A8B4B31DB41873007A2F29 /* libpng16.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libpng16.dylib; sourceTree = "<group>"; };
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
@@ -2683,6 +2686,8 @@
 				F76C85A31EC4E82600FA49E2 /* SwapFramebuffer.h */,
 				F76C85A41EC4E82600FA49E2 /* TextureCache.cpp */,
 				F76C85A51EC4E82600FA49E2 /* TextureCache.h */,
+				D4974F1A1FA04A1900F7FD7F /* TransparencyDepth.cpp */,
+				D4974F1B1FA04A1900F7FD7F /* TransparencyDepth.h */,
 			);
 			path = opengl;
 			sourceTree = "<group>";
@@ -3145,6 +3150,7 @@
 				4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
+				D4974F1C1FA04A1900F7FD7F /* TransparencyDepth.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
 				4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */,
 				4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */,

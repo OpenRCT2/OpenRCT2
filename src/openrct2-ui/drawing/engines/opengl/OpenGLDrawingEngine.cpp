@@ -16,10 +16,7 @@
 
 #ifndef DISABLE_OPENGL
 
-#include <algorithm>
-#include <map>
 #include <unordered_map>
-#include <vector>
 #include <SDL.h>
 
 #include <openrct2/config/Config.h>
@@ -43,11 +40,12 @@
 #include "OpenGLAPI.h"
 #include "OpenGLFramebuffer.h"
 #include "CopyFramebufferShader.h"
+#include "DrawCommands.h"
 #include "DrawLineShader.h"
 #include "DrawRectShader.h"
 #include "SwapFramebuffer.h"
 #include "TextureCache.h"
-#include "DrawCommands.h"
+#include "TransparencyDepth.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
@@ -122,7 +120,6 @@ public:
     void HandleTransparency();
 
     void SetDPI(rct_drawpixelinfo * dpi);
-    sint32 MaxTransparencyDepth();
 };
 
 class OpenGLDrawingEngine : public IDrawingEngine
@@ -882,7 +879,7 @@ void OpenGLDrawingContext::HandleTransparency()
     _drawRectShader->Use();
     _drawRectShader->SetInstances(_commandBuffers.transparent);
 
-    sint32 max_depth = MaxTransparencyDepth();
+    sint32 max_depth = MaxTransparencyDepth(_commandBuffers.transparent);
     for (sint32 i=0; i < max_depth; ++i)
     {
         _swapFramebuffer->BindTransparent();
@@ -926,143 +923,6 @@ void OpenGLDrawingContext::SetDPI(rct_drawpixelinfo * dpi)
     _offsetY = _clipTop - dpi->y;
 
     _dpi = dpi;
-}
-
-sint32 OpenGLDrawingContext::MaxTransparencyDepth()
-{
-    sint32 max_depth = 1;
-
-    struct xdata
-    {
-        sint32 xposition;
-        bool begin;
-        sint32 top, bottom;
-    };
-    std::vector<xdata> x_sweep;
-    x_sweep.reserve(_commandBuffers.transparent.size() * 2);
-    for (DrawRectCommand &command : _commandBuffers.transparent)
-    {
-        sint32 left = std::min(std::max(command.bounds.x, command.clip.x), command.clip.z);
-        sint32 top = std::min(std::max(command.bounds.y, command.clip.y), command.clip.w);
-        sint32 right = std::min(std::max(command.bounds.z, command.clip.x), command.clip.z);
-        sint32 bottom = std::min(std::max(command.bounds.w, command.clip.y), command.clip.w);
-
-        assert(left <= right);
-        assert(top <= bottom);
-        if (left == right) continue;
-        if (top == bottom) continue;
-
-        x_sweep.push_back({left, true, top, bottom});
-        x_sweep.push_back({right, false, top, bottom});
-    }
-    std::sort(x_sweep.begin(), x_sweep.end(), [](const xdata &a, const xdata &b) -> bool {
-        if (a.xposition != b.xposition) return a.xposition < b.xposition;
-        else return !a.begin && b.begin;
-    });
-
-    struct ydata
-    {
-        sint32 count, depth;
-    };
-    std::map<sint32, ydata> y_intersect;
-    for (const xdata &x : x_sweep)
-    {
-        assert(y_intersect.size() == 0 || y_intersect.begin()->second.depth == 0);
-        if (x.begin)
-        {
-            auto top_in = y_intersect.insert({x.top, {1, 0}});
-            auto top_it = top_in.first;
-            if (top_in.second)
-            {
-                auto top_next = std::next(top_it);
-                if (top_next != y_intersect.end())
-                {
-                    top_it->second.depth = top_next->second.depth;
-                }
-            }
-            else
-            {
-                assert(top_it->second.count > 0);
-                ++top_it->second.count;
-            }
-
-            auto bottom_in = y_intersect.insert({x.bottom, {1, 1}});
-            auto bottom_it = bottom_in.first;
-            if (bottom_in.second)
-            {
-                auto bottom_next = std::next(bottom_it);
-                if (bottom_next != y_intersect.end())
-                {
-                    bottom_it->second.depth = bottom_next->second.depth + 1;
-                }
-            }
-            else
-            {
-                assert(bottom_it->second.count > 0);
-                ++bottom_it->second.count;
-                max_depth = std::max(max_depth, ++bottom_it->second.depth);
-            }
-
-            for (auto it = std::next(top_it); it != bottom_it; ++it)
-            {
-                max_depth = std::max(max_depth, ++it->second.depth);
-            }
-        }
-        else
-        {
-            auto top_it = y_intersect.find(x.top);
-            assert(top_it != y_intersect.end());
-            assert(top_it->second.count > 0);
-            auto bottom_it = y_intersect.find(x.bottom);
-            assert(bottom_it != y_intersect.end());
-            assert(bottom_it->second.count > 0);
-
-#ifndef NDEBUG
-            if (top_it->second.count == 1)
-            {
-                auto top_next = std::next(top_it);
-                assert(top_next != y_intersect.end() &&
-                       top_it->second.depth == top_next->second.depth - 1);
-            }
-
-            if (bottom_it->second.count == 1)
-            {
-                auto bottom_next = std::next(bottom_it);
-                assert(bottom_next == y_intersect.end() ?
-                       bottom_it->second.depth == 1 :
-                       bottom_it->second.depth == bottom_next->second.depth + 1);
-            }
-#endif /* NDEBUG */
-
-            for (auto it = std::next(top_it); it != bottom_it; ++it)
-            {
-                assert(it->second.depth > 0);
-                --it->second.depth;
-            }
-
-            if (top_it->second.count == 1)
-            {
-                y_intersect.erase(top_it);
-            }
-            else
-            {
-                --top_it->second.count;
-            }
-
-            if (bottom_it->second.count == 1)
-            {
-                y_intersect.erase(bottom_it);
-            }
-            else
-            {
-                assert(bottom_it->second.depth > 0);
-                --bottom_it->second.count;
-                --bottom_it->second.depth;
-            }
-        }
-    }
-
-    return max_depth;
 }
 
 #endif /* DISABLE_OPENGL */

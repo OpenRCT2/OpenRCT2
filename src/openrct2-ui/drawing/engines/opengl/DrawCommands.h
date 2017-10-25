@@ -70,13 +70,30 @@ public:
     {
         return _instances.at(idx);
     }
+
     typename std::vector<T>::iterator begin()
     {
         return _instances.begin();
     }
+    typename std::vector<T>::const_iterator begin() const
+    {
+        return _instances.cbegin();
+    }
+    typename std::vector<T>::const_iterator cbegin() const
+    {
+        return _instances.cbegin();
+    }
     typename std::vector<T>::iterator end()
     {
         return _instances.begin() + _numInstances;
+    }
+    typename std::vector<T>::const_iterator end() const
+    {
+        return _instances.cbegin() + _numInstances;
+    }
+    typename std::vector<T>::const_iterator cend() const
+    {
+        return _instances.cbegin() + _numInstances;
     }
 };
 
