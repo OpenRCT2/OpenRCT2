@@ -16,7 +16,6 @@
 
 #ifndef DISABLE_OPENGL
 
-#include "CopyFramebufferShader.h"
 #include "OpenGLFramebuffer.h"
 #include "SwapFramebuffer.h"
 
