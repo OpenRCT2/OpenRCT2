@@ -172,7 +172,7 @@ namespace GameActions
                 }
             }
 
-            log_info("[%s] GameAction::Execute\n", "sv");
+            log_verbose("[%s] GameAction::Execute\n", "sv");
 
             // Execute the action, changing the game state
             result = action->Execute();
