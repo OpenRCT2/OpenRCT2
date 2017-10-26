@@ -119,13 +119,19 @@ rct_window * window_news_open()
     return window;
 }
 
+static sint32 window_news_get_item_height()
+{
+    return 4 * font_get_line_height(gCurrentFontSpriteBase) + 2;
+}
+
 /**
  *
  *  rct2: 0x0066D4D5
  */
 static void window_news_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
         window_close(w);
         break;
@@ -143,33 +149,39 @@ static void window_news_update(rct_window *w)
 {
     sint32 i, j, x, y, z;
 
-    if (w->news.var_480 == -1)
+    if (w->news.var_480 == -1 ||
+        --w->news.var_484 != 0)
+    {
         return;
-    if (--w->news.var_484 != 0)
-        return;
+    }
 
     window_invalidate(w);
     audio_play_sound(SOUND_CLICK_2, 0, w->x + (w->width / 2));
 
     j = w->news.var_480;
     w->news.var_480 = -1;
-    for (i = 11; i < 61; i++) {
+    for (i = 11; i < 61; i++)
+    {
         if (news_item_is_empty(i))
             return;
 
-        if (j == 0) {
+        if (j == 0)
+        {
             NewsItem * const newsItem = news_item_get(i);
             if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
                 return;
-            if (w->news.var_482 == 1) {
+            if (w->news.var_482 == 1)
+            {
                 news_item_open_subject(newsItem->Type, newsItem->Assoc);
                 return;
             }
-            else if (w->news.var_482 > 1) {
+            else if (w->news.var_482 > 1)
+            {
                 news_item_get_subject_location(newsItem->Type, newsItem->Assoc, &x, &y, &z);
-                if (x != LOCATION_NULL)
-                    if ((w = window_get_main()) != nullptr)
-                        window_scroll_to_location(w, x, y, z);
+                if (x != LOCATION_NULL && (w = window_get_main()) != nullptr)
+                {
+                    window_scroll_to_location(w, x, y, z);
+                }
                 return;
             }
         }
@@ -183,14 +195,15 @@ static void window_news_update(rct_window *w)
  */
 static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    sint32 i;
+    sint32 itemHeight = window_news_get_item_height();
 
     *height = 0;
-    for (i = 11; i < 61; i++) {
+    for (sint32 i = 11; i < 61; i++)
+    {
         if (news_item_is_empty(i))
             break;
 
-        *height += 42;
+        *height += itemHeight;
     }
 }
 
@@ -200,43 +213,41 @@ static void window_news_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 
  */
 static void window_news_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
+    sint32 itemHeight = window_news_get_item_height();
     sint32 i, buttonIndex;
 
     buttonIndex = 0;
-    for (i = 11; i < 61; i++) {
+    for (i = 11; i < 61; i++)
+    {
         if (news_item_is_empty(i))
             break;
 
-        if (y < 42) {
+        if (y < itemHeight)
+        {
             NewsItem * const newsItem = news_item_get(i);
-            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON) {
+            if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON ||
+                y < 14 || y >= 38 ||
+                x < 328)
+            {
                 buttonIndex = 0;
                 break;
-            } else if (y < 14) {
-                buttonIndex = 0;
+            }
+            else if (x < 351 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)
+            {
+                buttonIndex = 1;
                 break;
-            } else if (y >= 38) {
-                buttonIndex = 0;
+            }
+            else if (x < 376 && news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION)
+            {
+                buttonIndex = 2;
                 break;
-            } else if (x < 328) {
-                buttonIndex = 0;
-                break;
-            } else if (x < 351) {
-                if (news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) {
-                    buttonIndex = 1;
-                    break;
-                }
-            } else if (x < 376) {
-                if (news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) {
-                    buttonIndex = 2;
-                    break;
-                }
             }
         }
-        y -= 42;
+        y -= itemHeight;
     }
 
-    if (buttonIndex != 0) {
+    if (buttonIndex != 0)
+    {
         w->news.var_480 = i - 11;
         w->news.var_482 = buttonIndex;
         w->news.var_484 = 4;
@@ -269,36 +280,41 @@ static void window_news_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
+    sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+    sint32 itemHeight = window_news_get_item_height();
     sint32 i, x, y, yy, press;
 
     y = 0;
-    for (i = 11; i < 61; i++) {
+    for (i = 11; i < 61; i++)
+    {
         NewsItem * const newsItem = news_item_get(i);
         if (news_item_is_empty(i))
             break;
         if (y >= dpi->y + dpi->height)
             break;
-        if (y + 42 < dpi->y) {
-            y += 42;
+        if (y + itemHeight < dpi->y)
+        {
+            y += itemHeight;
             continue;
         }
 
         // Background
-        gfx_fill_rect_inset(dpi, -1, y, 383, y + 41, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+        gfx_fill_rect_inset(dpi, -1, y, 383, y + itemHeight - 1, w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
         // Date text
         set_format_arg(0, rct_string_id, DateDayNames[newsItem->Day - 1]);
         set_format_arg(2, rct_string_id, DateGameMonthNames[(newsItem->MonthYear % 8)]);
-        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 4, y);
+        gfx_draw_string_left(dpi, STR_NEWS_DATE_FORMAT, gCommonFormatArgs, COLOUR_WHITE, 2, y);
 
         // Item text
         utf8 *text = newsItem->Text;
-        gfx_draw_string_left_wrapped(dpi, &text, 2, y + 10, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
+        gfx_draw_string_left_wrapped(dpi, &text, 2, y + lineHeight, 325, STR_BOTTOM_TOOLBAR_NEWS_TEXT, COLOUR_BRIGHT_GREEN);
 
         // Subject button
-        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON)) {
+        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON))
+        {
             x = 328;
-            yy = y + 14;
+            yy = y + lineHeight + 4;
 
             press = 0;
             if (w->news.var_480 != -1) {
@@ -360,9 +376,10 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
         }
 
         // Location button
-        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON)) {
+        if ((news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_LOCATION) && !(newsItem->Flags & NEWS_FLAG_HAS_BUTTON))
+        {
             x = 352;
-            yy = y + 14;
+            yy = y + lineHeight + 4;
 
             press = 0;
             if (w->news.var_480 != -1) {
@@ -375,6 +392,6 @@ static void window_news_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint3
             gfx_draw_sprite(dpi, SPR_LOCATE, x, yy, 0);
         }
 
-        y += 42;
+        y += itemHeight;
     }
 }
