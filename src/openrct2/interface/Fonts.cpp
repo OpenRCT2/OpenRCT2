@@ -19,6 +19,7 @@
 #include "../core/String.hpp"
 #include "../localisation/LanguagePack.h"
 #include "Fonts.h"
+#include "FontFamilies.h"
 
 #include "../drawing/drawing.h"
 #include "../drawing/ttf.h"
@@ -109,8 +110,9 @@ static bool LoadCustomConfigFont()
 void TryLoadFonts()
 {
 #ifndef NO_TTF
-    TTFFontSetDescriptor * font = LanguagesDescriptors[gCurrentLanguage].font;
-    if (font != FONT_OPENRCT2_SPRITE)
+    TTFontFamily const * fontFamily = LanguagesDescriptors[gCurrentLanguage].font_family;
+
+    if (fontFamily != FAMILY_OPENRCT2_SPRITE)
     {
         if (!String::IsNullOrEmpty(gConfigFonts.file_name))
         {
@@ -118,20 +120,37 @@ void TryLoadFonts()
             {
                 return;
             }
-            Console::Error::WriteLine("Unable to initialise configured TrueType font -- falling back to Language default.");
+            Console::Error::WriteLine("Unable to initialise configured TrueType font -- falling back to the language's default.");
         }
 
-        if (LoadFont(font))
+        for (auto &font : *fontFamily)
         {
-            return;
-        }
-        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- falling back to Arial.");
+            if (LoadFont(font))
+            {
+                return;
+            }
 
-        if (LoadFont(&TTFFontArial))
-        {
-            return;
+            TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+            Console::Error::WriteLine("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
-        Console::Error::WriteLine("Unable to initialise preferred TrueType font -- Falling back to sprite font.");
+
+        if (fontFamily != &TTFFamilySansSerif)
+        {
+            Console::Error::WriteLine("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
+
+            for (auto &font : TTFFamilySansSerif)
+            {
+                if (LoadFont(font))
+                {
+                    return;
+                }
+
+                TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
+                Console::Error::WriteLine("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+            }
+
+            Console::Error::WriteLine("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+        }
     }
 #endif // NO_TTF
     LoadSpriteFont();
