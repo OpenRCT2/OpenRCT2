@@ -74,7 +74,7 @@ static rct_widget window_news_options_widgets[] = {
     { WWT_TAB,              1,  34,         64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2
     { WWT_TAB,              1,  65,         95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_NONE },             // tab 2
 
-    { WWT_CHECKBOX,         2,  3,          349,    46,     59,     STR_NONE,                       STR_NONE },
+    { WWT_CHECKBOX,         2,  7,          349,    49,     62,     STR_NONE,                       STR_NONE },
     { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
     { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
     { WWT_CHECKBOX,         2,  0,          0,      0,      0,      STR_NONE,                       STR_NONE },
@@ -224,7 +224,7 @@ static void window_news_options_invalidate(rct_window *w)
         checkboxWidget->left = baseCheckBox->left;
         checkboxWidget->right = baseCheckBox->right;
         checkboxWidget->top = y;
-        checkboxWidget->bottom = checkboxWidget->top + 13;
+        checkboxWidget->bottom = checkboxWidget->top + LIST_ROW_HEIGHT + 3;
         checkboxWidget->text = ndef->caption;
 
         const bool *configValue = get_notification_value_ptr(ndef);
@@ -232,7 +232,7 @@ static void window_news_options_invalidate(rct_window *w)
 
         checkboxWidgetIndex++;
         checkboxWidget++;
-        y += 13;
+        y += LIST_ROW_HEIGHT + 3;
     }
 
     // Remove unused checkboxes
