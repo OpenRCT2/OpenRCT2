@@ -92,6 +92,7 @@ The following people are not part of the project team, but have been contributin
 * Tomas Dittmann (Chaosmeister)
 * William Wallace (Willox)
 * Christian Friedrich Coors (ccoors)
+* Robbin Voortman (rvoortman)
 
 ## Toolchain
 * (Balletie) - macOS
