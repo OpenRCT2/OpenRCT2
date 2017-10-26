@@ -884,7 +884,7 @@ void Network::LoadGroups()
     group_list.at(0)->ActionsAllowed.fill(0xFF);
 }
 
-std::string Network::BeginLog(const std::string &directory, const std::string &filenameFormat)
+std::string Network::BeginLog(const std::string &directory, const std::string &midName, const std::string &filenameFormat)
 {
     utf8 filename[256];
     time_t timer;
@@ -894,7 +894,7 @@ std::string Network::BeginLog(const std::string &directory, const std::string &f
         throw std::runtime_error("strftime failed");
     }
 
-    return Path::Combine(directory, filename);
+    return Path::Combine(directory, midName, filename);
 }
 
 void Network::AppendLog(const std::string &logPath, const std::string &s)
@@ -927,7 +927,7 @@ void Network::AppendLog(const std::string &logPath, const std::string &s)
 void Network::BeginChatLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
-    _chatLogPath = BeginLog(directory, _chatLogFilenameFormat);
+    _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
 }
 
 void Network::AppendChatLog(const std::string &s)
@@ -944,7 +944,7 @@ void Network::CloseChatLog()
 void Network::BeginServerLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
-    _serverLogPath = BeginLog(directory, (ServerName + _serverLogFilenameFormat));
+    _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
 
     // Log server start event
     utf8 logMessage[256];

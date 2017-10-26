@@ -61,6 +61,7 @@
 - Fix: [#6460] Crash when reading corrupt object files.
 - Fix: [#6481] Can't take screenshots of parks with colons in the name.
 - Fix: [#6500] Failure to load resources when config file is missing.
+- Fix: [#6547] The server log is not logged if the server name contains CJK
 - Fix: [#6593] Cannot hire entertainers when default scenery groups are not selected (original bug).
 - Fix: [#6657] Guest list is missing tracking icon after reopening.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
