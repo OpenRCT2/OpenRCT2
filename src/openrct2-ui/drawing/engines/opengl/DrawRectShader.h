@@ -50,7 +50,7 @@ private:
     GLuint _vboInstances;
     GLuint _vao;
 
-    GLsizei _instanceCount;
+    GLsizei _instanceCount = 0;
 
 public:
     DrawRectShader();
