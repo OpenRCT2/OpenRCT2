@@ -152,7 +152,7 @@ namespace GameActions
                 // As a client we have to wait or send it first.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    log_info("[%s] GameAction::Execute\n", "cl");
+                    log_verbose("[%s] GameAction::Execute\n", "cl");
 
                     network_send_game_action(action);
 
@@ -165,7 +165,7 @@ namespace GameActions
                 // at the beginning of the frame, so we have to put them into the queue.
                 if (!(actionFlags & GA_FLAGS::CLIENT_ONLY) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
                 {
-                    log_info("[%s] GameAction::Execute\n", "sv-cl");
+                    log_verbose("[%s] GameAction::Execute\n", "sv-cl");
                     network_enqueue_game_action(action);
 
                     return result;
