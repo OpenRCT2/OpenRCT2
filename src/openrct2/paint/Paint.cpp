@@ -760,11 +760,14 @@ extern "C"
             return nullptr;
         }
 
+        auto g1Element = gfx_get_g1_element(image_id & 0x7FFFF);
+        if (g1Element == nullptr)
+        {
+            return nullptr;
+        }
+
         paint_struct *ps = &session->NextFreePaintStruct->basic;
         ps->image_id = image_id;
-
-        uint32 image_element = image_id & 0x7FFFF;
-        rct_g1_element *g1Element = gfx_get_g1_element(image_element);
 
         LocationXYZ16 coord_3d =
         {

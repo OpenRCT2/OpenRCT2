@@ -880,29 +880,30 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
  */
 static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
 {
-    rct_g1_element *g1_element, pushed_g1_element;
-
     gfx_clear(dpi, PALETTE_INDEX_10);
 
-    g1_element = &g1Elements[SPR_TEMP];
-    pushed_g1_element = *g1_element;
+    rct_g1_element * g1 = &g1Elements[SPR_TEMP];
+    rct_g1_element g1backup = *g1;
 
-    g1_element->offset = (uint8 *) _mapImageData;
-    g1_element->width = MAP_WINDOW_MAP_SIZE;
-    g1_element->height = MAP_WINDOW_MAP_SIZE;
-    g1_element->x_offset = -8;
-    g1_element->y_offset = -8;
-    g1_element->flags = 0;
+    g1->offset = (uint8 *) _mapImageData;
+    g1->width = MAP_WINDOW_MAP_SIZE;
+    g1->height = MAP_WINDOW_MAP_SIZE;
+    g1->x_offset = -8;
+    g1->y_offset = -8;
+    g1->flags = 0;
 
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
 
-    *g1_element = pushed_g1_element;
+    *g1 = g1backup;
 
     if (w->selected_tab == PAGE_PEEPS)
+    {
         window_map_paint_peep_overlay(dpi);
+    }
     else
+    {
         window_map_paint_train_overlay(dpi);
-
+    }
     window_map_paint_hud_rectangle(dpi);
 }
 

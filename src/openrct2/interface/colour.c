@@ -38,28 +38,25 @@ enum
 
 void colours_init_maps()
 {
-    if (g1Elements == NULL)
-    {
-        return;
-    }
-
     // Get colour maps from g1
     for (sint32 i = 0; i < COLOUR_COUNT; i++)
     {
-        rct_g1_element *g1Element = &g1Elements[SPR_PALETTE_2_START + i];
-
-        ColourMapA[i].colour_0 = g1Element->offset[INDEX_COLOUR_0];
-        ColourMapA[i].colour_1 = g1Element->offset[INDEX_COLOUR_1];
-        ColourMapA[i].darkest = g1Element->offset[INDEX_DARKEST];
-        ColourMapA[i].darker = g1Element->offset[INDEX_DARKER];
-        ColourMapA[i].dark = g1Element->offset[INDEX_DARK];
-        ColourMapA[i].mid_dark = g1Element->offset[INDEX_MID_DARK];
-        ColourMapA[i].mid_light = g1Element->offset[INDEX_MID_LIGHT];
-        ColourMapA[i].light = g1Element->offset[INDEX_LIGHT];
-        ColourMapA[i].lighter = g1Element->offset[INDEX_LIGHTER];
-        ColourMapA[i].lightest = g1Element->offset[INDEX_LIGHTEST];
-        ColourMapA[i].colour_10 = g1Element->offset[INDEX_COLOUR_10];
-        ColourMapA[i].colour_11 = g1Element->offset[INDEX_COLOUR_11];
+        rct_g1_element * g1 = gfx_get_g1_element(SPR_PALETTE_2_START + i);
+        if (g1 != NULL)
+        {
+            ColourMapA[i].colour_0 = g1->offset[INDEX_COLOUR_0];
+            ColourMapA[i].colour_1 = g1->offset[INDEX_COLOUR_1];
+            ColourMapA[i].darkest = g1->offset[INDEX_DARKEST];
+            ColourMapA[i].darker = g1->offset[INDEX_DARKER];
+            ColourMapA[i].dark = g1->offset[INDEX_DARK];
+            ColourMapA[i].mid_dark = g1->offset[INDEX_MID_DARK];
+            ColourMapA[i].mid_light = g1->offset[INDEX_MID_LIGHT];
+            ColourMapA[i].light = g1->offset[INDEX_LIGHT];
+            ColourMapA[i].lighter = g1->offset[INDEX_LIGHTER];
+            ColourMapA[i].lightest = g1->offset[INDEX_LIGHTEST];
+            ColourMapA[i].colour_10 = g1->offset[INDEX_COLOUR_10];
+            ColourMapA[i].colour_11 = g1->offset[INDEX_COLOUR_11];
+        }
     }
 }
 

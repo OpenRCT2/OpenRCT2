@@ -797,8 +797,6 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
     }
 }
 
-
-
 static rct_sprite_file_palette_entry _standardPalette[256] = {
     // 0 (unused)
     { 0, 0, 0, 255 },

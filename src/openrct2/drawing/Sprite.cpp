@@ -162,7 +162,8 @@ extern "C"
     static bool     _csgLoaded = false;
 
     #ifdef NO_RCT2
-        rct_g1_element * g1Elements = nullptr;
+        size_t           g1ElementsCount    = 0;
+        rct_g1_element * g1Elements         = nullptr;
     #else
         rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
@@ -189,8 +190,9 @@ extern "C"
             }
 
             // Read element headers
+            g1ElementsCount = 324206;
 #ifdef NO_RCT2
-            g1Elements = Memory::AllocateArray<rct_g1_element>(324206);
+            g1Elements = Memory::AllocateArray<rct_g1_element>(g1ElementsCount);
 #endif
             bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
             read_and_convert_gxdat(&fs, header.num_entries, is_rctc, g1Elements);
@@ -464,7 +466,15 @@ extern "C"
             }
 
             uint16 palette_offset = palette_to_g1_offset[palette_ref];
-            return g1Elements[palette_offset].offset;
+            auto g1 = gfx_get_g1_element(palette_offset);
+            if (g1 == NULL)
+            {
+                return nullptr;
+            }
+            else
+            {
+                return g1->offset;
+            }
         }
         else {
             uint8* palette_pointer = gPeepPalette;
@@ -746,21 +756,36 @@ extern "C"
 
         if (image_id < SPR_G2_BEGIN)
         {
+            if (image_id >= (sint32)g1ElementsCount)
+            {
+                return nullptr;
+            }
             return &g1Elements[image_id];
         }
         if (image_id < SPR_CSG_BEGIN)
         {
             const uint32 idx = image_id - SPR_G2_BEGIN;
-            openrct2_assert(idx < _g2.header.num_entries,
-                            "Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+            if (idx >= _g2.header.num_entries)
+            {
+                // TODO I guess we still want to warn the user, but an assert is not very good.
+                //      Logging to stdout isn't ideal either as it would flood the console with
+                //      the same message.
+                // openrct2_assert(idx < _g2.header.num_entries,
+                //     "Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+                return nullptr;
+            }
             return &_g2.elements[idx];
         }
 
         if (is_csg_loaded())
         {
             const uint32 idx = image_id - SPR_CSG_BEGIN;
-            openrct2_assert(idx < _csg.header.num_entries,
-                            "Invalid entry in csg.dat requested, idx = %u.", idx);
+            if (idx >= _csg.header.num_entries)
+            {
+                openrct2_assert(idx < _csg.header.num_entries,
+                    "Invalid entry in csg.dat requested, idx = %u.", idx);
+                return nullptr;
+            }
             return &_csg.elements[idx];
         }
         return nullptr;

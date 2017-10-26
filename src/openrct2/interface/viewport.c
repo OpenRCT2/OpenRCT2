@@ -1287,7 +1287,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
  */
 static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
-    uint8 *palette = NULL;
+    uint8 * palette = NULL;
     imageId &= 0xBFFFFFFF;
     if (imageId & IMAGE_TYPE_REMAP) {
         _currentImageType = IMAGE_TYPE_REMAP;
@@ -1296,7 +1296,11 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
             index &= 0x1F;
         }
         sint32 g1Index = palette_to_g1_offset[index];
-        palette = g1Elements[g1Index].offset;
+        rct_g1_element * g1 = gfx_get_g1_element(g1Index);
+        if (g1 != NULL)
+        {
+            palette = g1->offset;
+        }
     } else {
         _currentImageType = 0;
     }

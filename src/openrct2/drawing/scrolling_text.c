@@ -77,17 +77,21 @@ void scrolling_text_initialise_bitmaps()
         }
     }
 
-    for (sint32 i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++) {
-        rct_g1_element *g1 = &g1Elements[SPR_SCROLLING_TEXT_START + i];
-        g1->offset = _drawScrollTextList[i].bitmap;
-        g1->width = 64;
-        g1->height = 40;
-        g1->offset[0] = 0xFF;
-        g1->offset[1] = 0xFF;
-        g1->offset[14] = 0;
-        g1->offset[15] = 0;
-        g1->offset[16] = 0;
-        g1->offset[17] = 0;
+    for (sint32 i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
+    {
+        rct_g1_element * g1 = gfx_get_g1_element(SPR_SCROLLING_TEXT_START + i);
+        if (g1 != NULL)
+        {
+            g1->offset = _drawScrollTextList[i].bitmap;
+            g1->width = 64;
+            g1->height = 40;
+            g1->offset[0] = 0xFF;
+            g1->offset[1] = 0xFF;
+            g1->offset[14] = 0;
+            g1->offset[15] = 0;
+            g1->offset[16] = 0;
+            g1->offset[17] = 0;
+        }
     }
 }
 
@@ -1478,7 +1482,11 @@ void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint8 *bitm
         // Set any change in colour
         if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START){
             codepoint -= FORMAT_COLOUR_CODE_START;
-            characterColour = g1Elements[SPR_TEXT_PALETTE].offset[codepoint * 4];
+            rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+            if (g1 != NULL)
+            {
+                characterColour = g1->offset[codepoint * 4];
+            }
             continue;
         }
 
@@ -1539,7 +1547,11 @@ void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *bitmap,
     if (colour == 0) {
         colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
     } else {
-        colour = g1Elements[SPR_TEXT_PALETTE].offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
+        rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+        if (g1 != NULL)
+        {
+            colour = g1->offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
+        }
     }
 
     TTFSurface * surface = ttf_surface_cache_get_or_add(fontDesc->font, text);

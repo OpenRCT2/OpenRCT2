@@ -43,14 +43,16 @@ void font_sprite_initialise_characters()
     for (sint32 fontSize = 0; fontSize < FONT_SIZE_COUNT; fontSize++) {
         sint32 glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
         for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
-            rct_g1_element g1 = g1Elements[glyphIndex + SPR_CHAR_START + glyphOffset];
-
-            sint32 width = g1.width + 2 * g1.x_offset;
-            width += fontSize == FONT_SIZE_BIG ? 1 : -1;
-            if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
-                width = 0;
+            rct_g1_element * g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
+            if (g1 != NULL)
+            {
+                sint32 width = g1->width + 2 * g1->x_offset;
+                width += fontSize == FONT_SIZE_BIG ? 1 : -1;
+                if (glyphIndex >= (FORMAT_ARGUMENT_CODE_START - 32) && glyphIndex < (FORMAT_COLOUR_CODE_END - 32)) {
+                    width = 0;
+                }
+                *pCharacterWidth++ = (uint8)width;
             }
-            *pCharacterWidth++ = (uint8)width;
         }
     }
 

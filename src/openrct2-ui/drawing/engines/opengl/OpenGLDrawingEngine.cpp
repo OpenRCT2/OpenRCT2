@@ -543,6 +543,10 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 {
     sint32 g1Id = image & 0x7FFFF;
     rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+    if (g1Element == nullptr)
+    {
+        return;
+    }
 
     if (_dpi->zoom_level != 0)
     {

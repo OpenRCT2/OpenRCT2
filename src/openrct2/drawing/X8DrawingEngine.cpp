@@ -711,20 +711,22 @@ void X8DrawingContext::FilterRect(FILTER_PALETTE_ID palette, sint32 left, sint32
     uint8 * dst = dpi->bits + (uint32)((startY >> (dpi->zoom_level)) * ((dpi->width >> dpi->zoom_level) + dpi->pitch) + (startX >> dpi->zoom_level));
 
     // Find colour in colour table?
-    uint16           g1Index = palette_to_g1_offset[palette];
-    rct_g1_element * g1Element = &g1Elements[g1Index];
-    uint8 *          g1Bits = g1Element->offset;
-
-    const sint32 scaled_width = width >> dpi->zoom_level;
-    const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
-
-    // Fill the rectangle with the colours from the colour table
-    for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
+    uint16 g1Index = palette_to_g1_offset[palette];
+    auto g1Element = gfx_get_g1_element(g1Index);
+    if (g1Element != nullptr)
     {
-        uint8 * nextdst = dst + step * i;
-        for (sint32 j = 0; j < scaled_width; j++)
+        auto g1Bits = g1Element->offset;
+        const sint32 scaled_width = width >> dpi->zoom_level;
+        const sint32 step = ((dpi->width >> dpi->zoom_level) + dpi->pitch);
+
+        // Fill the rectangle with the colours from the colour table
+        for (sint32 i = 0; i < height >> dpi->zoom_level; i++)
         {
-            *(nextdst + j) = g1Bits[*(nextdst + j)];
+            uint8 * nextdst = dst + step * i;
+            for (sint32 j = 0; j < scaled_width; j++)
+            {
+                *(nextdst + j) = g1Bits[*(nextdst + j)];
+            }
         }
     }
 }

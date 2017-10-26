@@ -327,11 +327,6 @@ namespace OpenRCT2
                 _uiContext->CreateWindow();
             }
 
-
-
-
-
-
             // TODO Ideally we want to delay this until we show the title so that we can
             //      still open the game window and draw a progress screen for the creation
             //      of the object cache.
