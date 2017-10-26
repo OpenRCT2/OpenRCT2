@@ -48,15 +48,19 @@ enum {
 
 #define FONT_OPENRCT2_SPRITE NULL
 
+#ifdef __cplusplus
+#include "../interface/FontFamilies.h"
+#endif
+
 typedef struct language_descriptor {
     const char *locale;
     const utf8 *english_name;
     const utf8 *native_name;
-#ifndef NO_TTF
-    TTFFontSetDescriptor *font;
+#if defined(__cplusplus) && !defined(NO_TTF)
+    TTFontFamily const * font_family;
 #else
-    void * font;
-#endif // NO_TTF
+    void * font_family;
+#endif
     uint8 rct2_original_id;
 } language_descriptor;
 
