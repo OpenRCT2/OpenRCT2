@@ -105,7 +105,7 @@ extern "C"
             try
             {
                 drawingEngine->Initialise();
-                drawingEngine->SetUncappedFrameRate(gConfigGeneral.uncap_fps == 1);
+                drawingEngine->SetVSync(gConfigGeneral.use_vsync);
                 _drawingEngine = drawingEngine;
             }
             catch (const Exception &ex)
@@ -202,11 +202,11 @@ extern "C"
         }
     }
 
-    void drawing_engine_set_fps_uncapped(bool uncapped)
+    void drawing_engine_set_vsync(bool vsync)
     {
         if (_drawingEngine != nullptr)
         {
-            _drawingEngine->SetUncappedFrameRate(uncapped);
+            _drawingEngine->SetVSync(vsync);
         }
     }
 

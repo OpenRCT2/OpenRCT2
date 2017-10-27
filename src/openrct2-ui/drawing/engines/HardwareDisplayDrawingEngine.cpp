@@ -53,6 +53,7 @@ private:
     uint32  _pixelAfterOverlay      = 0;
     bool    _overlayActive          = false;
     bool    _pausedBeforeOverlay    = false;
+    bool    _useVsync               = true;
 
     std::vector<uint32> _dirtyVisualsTime;
     
@@ -76,7 +77,18 @@ public:
 
     void Initialise() override
     {
-        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+        _sdlRenderer = SDL_CreateRenderer(_window, -1, SDL_RENDERER_ACCELERATED | (_useVsync ? SDL_RENDERER_PRESENTVSYNC : 0));
+    }
+
+    void SetVSync(bool vsync) override
+    {
+        if (_useVsync != vsync)
+        {
+            _useVsync = vsync;
+            SDL_DestroyRenderer(_sdlRenderer);
+            Initialise();
+            Resize(_uiContext->GetWidth(), _uiContext->GetHeight());
+        }
     }
 
     void Resize(uint32 width, uint32 height) override

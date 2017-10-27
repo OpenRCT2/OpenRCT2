@@ -3810,6 +3810,9 @@ enum {
 
     STR_CLOSE_X_WHITE = 6164,
 
+    STR_USE_VSYNC = 6165,
+    STR_USE_VSYNC_TIP = 6166,
+            
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
