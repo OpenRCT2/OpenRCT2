@@ -70,6 +70,13 @@ TTFFontSetDescriptor TTFFontArial = { {
     { "arial.ttf", "Arial", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
     { "arial.ttf", "Arial", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
 } };
+
+TTFFontSetDescriptor TTFFontArialUnicode = { {
+    { "arialuni.ttf", "Arial Unicode MS",  8, 0, -1,  6, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 11, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
+    { "arialuni.ttf", "Arial Unicode MS", 12, 0, -1, 14, HINTING_THRESHOLD_LOW, nullptr },
+} };
 #endif // NO_TTF
 
 static void LoadSpriteFont()
