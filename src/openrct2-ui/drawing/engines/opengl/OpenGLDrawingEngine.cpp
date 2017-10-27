@@ -225,9 +225,9 @@ public:
         _drawingContext->ResetPalette();
     }
 
-    void SetUncappedFrameRate(bool uncapped) override
+    void SetVSync(bool vsync) override
     {
-        SDL_GL_SetSwapInterval(uncapped ? 0 : 1);
+        SDL_GL_SetSwapInterval(vsync);
     }
 
     void Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) override

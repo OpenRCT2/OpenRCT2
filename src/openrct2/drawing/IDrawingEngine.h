@@ -54,7 +54,7 @@ namespace OpenRCT2 { namespace Drawing
         virtual void Resize(uint32 width, uint32 height)            abstract;
         virtual void SetPalette(const rct_palette_entry * colours)  abstract;
 
-        virtual void SetUncappedFrameRate(bool uncapped) abstract;
+        virtual void SetVSync(bool vsync) abstract;
 
         virtual void    Invalidate(sint32 left, sint32 top, sint32 right, sint32 bottom) abstract;
         virtual void    BeginDraw() abstract;

@@ -35,6 +35,7 @@ typedef struct GeneralConfiguration
     sint32      drawing_engine;
     sint32      scale_quality;
     bool        uncap_fps;
+    bool        use_vsync;
     bool        show_fps;
     bool        minimize_fullscreen_focus_loss;
 

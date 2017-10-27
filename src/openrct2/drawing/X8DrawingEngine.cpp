@@ -163,7 +163,7 @@ void X8DrawingEngine::SetPalette(const rct_palette_entry * palette)
 {
 }
 
-void X8DrawingEngine::SetUncappedFrameRate(bool uncapped)
+void X8DrawingEngine::SetVSync(bool vsync)
 {
     // Not applicable for this engine
 }
