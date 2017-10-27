@@ -56,14 +56,14 @@ static rct_widget window_loadsave_widgets[] = {
     { WWT_FRAME,        0,      0,                  WW - 1,         0,          WH - 1,     STR_NONE,                           STR_NONE },
     { WWT_CAPTION,      0,      1,                  WW - 2,         1,          14,         STR_NONE,                           STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,     0,      WW - 13,            WW - 3,         2,          13,         STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },     //Window close button
-    { WWT_CLOSEBOX,     0,      4,                  84,             36,         47,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
-    { WWT_CLOSEBOX,     0,      85,                 165,            36,         47,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
-    { WWT_CLOSEBOX,     0,      166,                246,            36,         47,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
-    { WWT_CLOSEBOX,     0,      247,                328,            36,         47,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
-    { WWT_CLOSEBOX,     0,      4,                  (WW - 5) / 2,   50,         61,         STR_NONE,                           STR_NONE },                 // Name
-    { WWT_CLOSEBOX,     0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     50,         61,         STR_NONE,                           STR_NONE },                 // Date
-    { WWT_SCROLL,       0,      4,                  WW - 5,         61,         WH - 40,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
-    { WWT_CLOSEBOX,     0,      4,                  200,            WH - 36,    WH - 18,    STR_FILEBROWSER_USE_SYSTEM_WINDOW,  STR_NONE },                 // Use native browser
+    { WWT_CLOSEBOX,     0,      4,                  85,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
+    { WWT_CLOSEBOX,     0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
+    { WWT_CLOSEBOX,     0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
+    { WWT_CLOSEBOX,     0,      252,                334,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
+    { WWT_CLOSEBOX,     0,      4,                  (WW - 5) / 2,   50,         63,         STR_NONE,                           STR_NONE },                 // Name
+    { WWT_CLOSEBOX,     0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     50,         63,         STR_NONE,                           STR_NONE },                 // Date
+    { WWT_SCROLL,       0,      4,                  WW - 5,         63,         WH - 30,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
+    { WWT_CLOSEBOX,     0,      4,                  200,            WH - 24,    WH - 6,     STR_FILEBROWSER_USE_SYSTEM_WINDOW,  STR_NONE },                 // Use native browser
     { WIDGETS_END }
 };
 
@@ -376,14 +376,14 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
 static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    *height = w->no_list_items * 10;
+    *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
 static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
     sint32 selectedItem;
 
-    selectedItem = y / 10;
+    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
     if (_listItems[selectedItem].type == TYPE_DIRECTORY){
@@ -415,7 +415,7 @@ static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 {
     sint32 selectedItem;
 
-    selectedItem = y / 10;
+    selectedItem = y / SCROLLABLE_ROW_HEIGHT;
     if (selectedItem >= w->no_list_items)
         return;
 
@@ -502,12 +502,16 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw shadow
     gfx_draw_string(dpi, buffer, COLOUR_BLACK, w->x + 4, w->y + 20);
     rct_string_id id = STR_NONE;
+
     // Name button text
     if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
         id = STR_UP;
     else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
         id = STR_DOWN;
-    gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4, w->y + 50, (w->width - 8) / 2);
+
+    gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4,
+        w->y + window_loadsave_widgets[WIDX_SORT_NAME].top + 1, (w->width - 8) / 2);
+
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
         id = STR_UP;
@@ -515,7 +519,9 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
         id = STR_DOWN;
     else
         id = STR_NONE;
-    gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) * 3 / 4, w->y + 50, (w->width - 8) / 2);
+
+    gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) * 3 / 4,
+        w->y + window_loadsave_widgets[WIDX_SORT_DATE].top + 1, (w->width - 8) / 2);
 }
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
@@ -524,11 +530,11 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
     const sint32 listWidth = w->widgets[WIDX_SCROLL].right - w->widgets[WIDX_SCROLL].left;
 
     for (sint32 i = 0; i < w->no_list_items; i++) {
-        sint32 y = i * 10;
+        sint32 y = i * SCROLLABLE_ROW_HEIGHT;
         if (y > dpi->y + dpi->height)
             break;
 
-        if (y + 10 < dpi->y)
+        if (y + SCROLLABLE_ROW_HEIGHT < dpi->y)
             continue;
 
         rct_string_id stringId = STR_BLACK_STRING;
@@ -536,17 +542,17 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         // If hovering over item, change the color and fill the backdrop.
         if (i == w->selected_list_item) {
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            gfx_filter_rect(dpi, 0, y, listWidth, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, 0, y, listWidth, y + SCROLLABLE_ROW_HEIGHT, PALETTE_DARKEN_1);
         }
         // display a marker next to the currently loaded game file
         if (_listItems[i].loaded) {
             set_format_arg(0, rct_string_id, STR_RIGHTGUILLEMET);
-            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y - 1);
+            gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y);
         }
 
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name);
-        gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y - 1);
+        gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, SCROLLABLE_ROW_HEIGHT, y);
     }
 }
 
