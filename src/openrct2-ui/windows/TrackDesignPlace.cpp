@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/core/Memory.hpp>
-#include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/cheats.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
 #include <openrct2/game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/viewport.h>
@@ -28,8 +28,8 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
-#include <openrct2/Context.h>
 #include <openrct2/windows/Intent.h>
 
 #define TRACK_MINI_PREVIEW_WIDTH    168
