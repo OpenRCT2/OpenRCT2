@@ -64,6 +64,13 @@ TTFFontSetDescriptor TTFFontGulim = { {
     { "gulim.ttc", "Gulim", 13, 1, 0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
+TTFFontSetDescriptor TTFFontNanum = { {
+    { "NanumGothic.ttc", "Nanum Gothic", 11, 1, 0, 13, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 12, 1, 0, 15, HINTING_THRESHOLD_LOW, nullptr },
+    { "NanumGothic.ttc", "Nanum Gothic", 13, 1, 0, 16, HINTING_THRESHOLD_LOW, nullptr },
+} };
+
 TTFFontSetDescriptor TTFFontArial = { {
     { "arial.ttf", "Arial",  8, 0, -1,  6, HINTING_THRESHOLD_LOW, nullptr },
     { "arial.ttf", "Arial", 10, 0, -1, 12, HINTING_THRESHOLD_LOW, nullptr },
