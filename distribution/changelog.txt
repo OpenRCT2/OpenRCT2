@@ -19,6 +19,7 @@
 - Feature: Allow using object files from RCT Classic.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
+- Fix: [#4955, #6199] Inverted Hairpin Coaster vehicle tab is not centered.
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
