@@ -26,6 +26,7 @@ extern TTFFontSetDescriptor TTFFontMingLiu;
 extern TTFFontSetDescriptor TTFFontSimSun;
 extern TTFFontSetDescriptor TTFFontGulim;
 extern TTFFontSetDescriptor TTFFontArial;
+extern TTFFontSetDescriptor TTFFontArialUnicode;
 #define FONT(x) x
 #else
 #define FONT(x) FONT_OPENRCT2_SPRITE

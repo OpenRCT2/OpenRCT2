@@ -41,6 +41,7 @@ TTFontFamily const TTFFamilyKorean =
 
 TTFontFamily const TTFFamilySansSerif =
 {
+    &TTFFontArialUnicode,
     &TTFFontArial,
 };
 
