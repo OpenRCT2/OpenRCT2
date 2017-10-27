@@ -21,6 +21,7 @@
 
 #ifndef NO_TTF
 extern TTFFontSetDescriptor TTFFontMSGothic;
+extern TTFFontSetDescriptor TTFFontHiragano;
 extern TTFFontSetDescriptor TTFFontMingLiu;
 extern TTFFontSetDescriptor TTFFontSimSun;
 extern TTFFontSetDescriptor TTFFontGulim;
