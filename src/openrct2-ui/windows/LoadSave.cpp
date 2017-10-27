@@ -60,9 +60,9 @@ static rct_widget window_loadsave_widgets[] = {
     { WWT_CLOSEBOX,     0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
     { WWT_CLOSEBOX,     0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
     { WWT_CLOSEBOX,     0,      252,                334,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FILE,    STR_NONE },                 // New
-    { WWT_CLOSEBOX,     0,      4,                  (WW - 5) / 2,   50,         63,         STR_NONE,                           STR_NONE },                 // Name
-    { WWT_CLOSEBOX,     0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     50,         63,         STR_NONE,                           STR_NONE },                 // Date
-    { WWT_SCROLL,       0,      4,                  WW - 5,         63,         WH - 30,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
+    { WWT_CLOSEBOX,     0,      4,                  (WW - 5) / 2,   55,         68,         STR_NONE,                           STR_NONE },                 // Name
+    { WWT_CLOSEBOX,     0,      (WW - 5) / 2 + 1,   WW - 5 - 1,     55,         68,         STR_NONE,                           STR_NONE },                 // Date
+    { WWT_SCROLL,       0,      4,                  WW - 5,         68,         WH - 30,    SCROLL_VERTICAL,                    STR_NONE },                 // File list
     { WWT_CLOSEBOX,     0,      4,                  200,            WH - 24,    WH - 6,     STR_FILEBROWSER_USE_SYSTEM_WINDOW,  STR_NONE },                 // Use native browser
     { WIDGETS_END }
 };
