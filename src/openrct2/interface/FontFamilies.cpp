@@ -30,6 +30,7 @@ TTFontFamily const TTFFamilyChineseTraditional =
 
 TTFontFamily const TTFFamilyJapanese =
 {
+    &TTFFontHiragano,
     &TTFFontMSGothic,
 };
 
