@@ -113,6 +113,12 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
         colours += 4;
     }
 
+    // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
+    gPalette[255].alpha = 0;
+    gPalette[255].red   = 255;
+    gPalette[255].green = 255;
+    gPalette[255].blue  = 255;
+
     if (!gOpenRCT2Headless) {
         drawing_engine_set_palette(gPalette);
     }
