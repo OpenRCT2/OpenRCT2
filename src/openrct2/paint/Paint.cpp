@@ -106,12 +106,14 @@ static void paint_session_add_ps_to_quadrant(paint_session * session, paint_stru
 static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, LocationXYZ16 offset, LocationXYZ16 boundBoxSize, LocationXYZ16 boundBoxOffset, uint8 rotation)
 {
     if (session->NextFreePaintStruct >= session->EndOfPaintStructArray) return nullptr;
+    auto g1 = gfx_get_g1_element(image_id & 0x7FFFF);
+    if (g1 == nullptr)
+    {
+        return nullptr;
+    }
+
     paint_struct * ps = &session->NextFreePaintStruct->basic;
-
     ps->image_id = image_id;
-
-    uint32 image_element = image_id & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(image_element);
 
     switch (rotation)
     {
@@ -136,11 +138,11 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
     ps->x = map.x;
     ps->y = map.y;
 
-    sint32 left = map.x + g1Element->x_offset;
-    sint32 bottom = map.y + g1Element->y_offset;
+    sint32 left = map.x + g1->x_offset;
+    sint32 bottom = map.y + g1->y_offset;
 
-    sint32 right = left + g1Element->width;
-    sint32 top = bottom + g1Element->height;
+    sint32 right = left + g1->width;
+    sint32 top = bottom + g1->height;
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 

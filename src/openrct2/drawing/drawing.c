@@ -492,20 +492,23 @@ void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE
  */
 void gfx_transpose_palette(sint32 pal, uint8 product)
 {
-    rct_g1_element * g1 = gfx_get_g1_element(pal);
-    sint32 width = g1->width;
-    sint32 x = g1->x_offset;
-    uint8 * dest_pointer = &gGamePalette[x * 4];
-    uint8 * source_pointer = g1->offset;
+    const rct_g1_element * g1 = gfx_get_g1_element(pal);
+    if (g1 != NULL)
+    {
+        sint32 width = g1->width;
+        sint32 x = g1->x_offset;
+        uint8 * dest_pointer = &gGamePalette[x * 4];
+        uint8 * source_pointer = g1->offset;
 
-    for (; width > 0; width--) {
-        dest_pointer[0] = (source_pointer[0] * product) >> 8;
-        dest_pointer[1] = (source_pointer[1] * product) >> 8;
-        dest_pointer[2] = (source_pointer[2] * product) >> 8;
-        source_pointer += 3;
-        dest_pointer += 4;
+        for (; width > 0; width--) {
+            dest_pointer[0] = (source_pointer[0] * product) >> 8;
+            dest_pointer[1] = (source_pointer[1] * product) >> 8;
+            dest_pointer[2] = (source_pointer[2] * product) >> 8;
+            source_pointer += 3;
+            dest_pointer += 4;
+        }
+        platform_update_palette(gGamePalette, 10, 236);
     }
-    platform_update_palette(gGamePalette, 10, 236);
 }
 
 /**
@@ -647,7 +650,7 @@ void gfx_invalidate_pickedup_peep()
     uint32 sprite = gPickupPeepImage;
     if (sprite != UINT32_MAX)
     {
-        rct_g1_element * g1 = gfx_get_g1_element(sprite & 0x7FFFF);
+        const rct_g1_element * g1 = gfx_get_g1_element(sprite & 0x7FFFF);
         if (g1 != NULL)
         {
             sint32 left = gPickupPeepX + g1->x_offset;

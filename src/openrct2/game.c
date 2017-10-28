@@ -178,7 +178,7 @@ void update_palette_effects()
         if (water_type != NULL) {
             palette = water_type->image_id;
         }
-        rct_g1_element * g1 = gfx_get_g1_element(palette);
+        const rct_g1_element * g1 = gfx_get_g1_element(palette);
         if (g1 != NULL)
         {
             sint32 xoffset = g1->x_offset;
@@ -202,7 +202,7 @@ void update_palette_effects()
                 palette = water_type->image_id;
             }
 
-            rct_g1_element * g1 = gfx_get_g1_element(palette);
+            const rct_g1_element * g1 = gfx_get_g1_element(palette);
             if (g1 != NULL)
             {
                 sint32 xoffset = g1->x_offset;
@@ -235,7 +235,7 @@ void update_palette_effects()
         if (water_type != NULL) {
             waterId = water_type->palette_index_1;
         }
-        rct_g1_element * g1 = gfx_get_g1_element(shade + waterId);
+        const rct_g1_element * g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != NULL)
         {
             uint8 * vs = &g1->offset[j * 3];

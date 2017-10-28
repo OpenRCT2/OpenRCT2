@@ -229,7 +229,7 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
 static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
 
     sint32 colour32 = 0;
-    rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+    const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
     if (g1 != NULL)
     {
         colour32 = ((uint32 *)g1->offset)[colour & 0xFF];
@@ -605,7 +605,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     case FORMAT_ADJUST_PALETTE:
     {
         uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
-        rct_g1_element * g1 = gfx_get_g1_element(eax);
+        const rct_g1_element * g1 = gfx_get_g1_element(eax);
         if (g1 != NULL)
         {
             uint32 ebx = g1->offset[249] + 256;

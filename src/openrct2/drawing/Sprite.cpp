@@ -368,7 +368,7 @@ extern "C"
      * image.
      *  rct2: 0x0067A690
      */
-    void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
+    void FASTCALL gfx_bmp_sprite_to_buffer(uint8* palette_pointer, uint8* unknown_pointer, uint8* source_pointer, uint8* dest_pointer, const rct_g1_element* source_image, rct_drawpixelinfo *dest_dpi, sint32 height, sint32 width, sint32 image_type)
     {
         uint16 zoom_level = dest_dpi->zoom_level;
         uint8 zoom_amount = 1 << zoom_level;
@@ -544,13 +544,13 @@ extern "C"
         sint32 image_element = image_id & 0x7FFFF;
         sint32 image_type = image_id & 0xE0000000;
 
-        rct_g1_element *g1_source = gfx_get_g1_element(image_element);
-        if (g1_source == nullptr)
+        const rct_g1_element * g1 = gfx_get_g1_element(image_element);
+        if (g1 == nullptr)
         {
             return;
         }
 
-        if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_HAS_ZOOM_SPRITE)) {
+        if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)) {
             rct_drawpixelinfo zoomed_dpi;
             zoomed_dpi.bits = dpi->bits;
             zoomed_dpi.x = dpi->x >> 1;
@@ -559,11 +559,11 @@ extern "C"
             zoomed_dpi.width = dpi->width >> 1;
             zoomed_dpi.pitch = dpi->pitch;
             zoomed_dpi.zoom_level = dpi->zoom_level - 1;
-            gfx_draw_sprite_palette_set_software(&zoomed_dpi, image_type | (image_element - g1_source->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
+            gfx_draw_sprite_palette_set_software(&zoomed_dpi, image_type | (image_element - g1->zoomed_offset), x >> 1, y >> 1, palette_pointer, unknown_pointer);
             return;
         }
 
-        if (dpi->zoom_level != 0 && (g1_source->flags & G1_FLAG_NO_ZOOM_DRAW)) {
+        if (dpi->zoom_level != 0 && (g1->flags & G1_FLAG_NO_ZOOM_DRAW)) {
             return;
         }
 
@@ -571,19 +571,19 @@ extern "C"
         sint32 zoom_level = dpi->zoom_level;
         sint32 zoom_mask = 0xFFFFFFFF << zoom_level;
 
-        if (zoom_level && g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+        if (zoom_level && g1->flags & G1_FLAG_RLE_COMPRESSION){
             x -= ~zoom_mask;
             y -= ~zoom_mask;
         }
 
         // This will be the height of the drawn image
-        sint32 height = g1_source->height;
+        sint32 height = g1->height;
         // This is the start y coordinate on the destination
-        sint16 dest_start_y = y + g1_source->y_offset;
+        sint16 dest_start_y = y + g1->y_offset;
 
         // For whatever reason the RLE version does not use
         // the zoom mask on the y coordinate but does on x.
-        if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+        if (g1->flags & G1_FLAG_RLE_COMPRESSION){
             dest_start_y -= dpi->y;
         }
         else{
@@ -606,7 +606,7 @@ extern "C"
             dest_start_y = 0;
         }
         else{
-            if (g1_source->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
+            if (g1->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
                 source_start_y -= dest_start_y & ~zoom_mask;
                 height += dest_start_y & ~zoom_mask;
             }
@@ -625,11 +625,11 @@ extern "C"
         dest_start_y >>= zoom_level;
 
         // This will be the width of the drawn image
-        sint32 width = g1_source->width;
+        sint32 width = g1->width;
         // This is the source start x coordinate
         sint32 source_start_x = 0;
         // This is the destination start x coordinate
-        sint16 dest_start_x = ((x + g1_source->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
+        sint16 dest_start_x = ((x + g1->x_offset + ~zoom_mask)&zoom_mask) - dpi->x;
 
         if (dest_start_x < 0){
             // If the destination is negative reduce the width
@@ -645,7 +645,7 @@ extern "C"
             dest_start_x = 0;
         }
         else{
-            if (g1_source->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
+            if (g1->flags & G1_FLAG_RLE_COMPRESSION && zoom_level){
                 source_start_x -= dest_start_x & ~zoom_mask;
             }
         }
@@ -666,18 +666,18 @@ extern "C"
         // Move the pointer to the start point of the destination
         dest_pointer += ((dpi->width >> zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
 
-        if (g1_source->flags & G1_FLAG_RLE_COMPRESSION){
+        if (g1->flags & G1_FLAG_RLE_COMPRESSION){
             // We have to use a different method to move the source pointer for
             // rle encoded sprites so that will be handled within this function
-            gfx_rle_sprite_to_buffer(g1_source->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
+            gfx_rle_sprite_to_buffer(g1->offset, dest_pointer, palette_pointer, dpi, image_type, source_start_y, height, source_start_x, width);
             return;
         }
-        uint8* source_pointer = g1_source->offset;
+        uint8* source_pointer = g1->offset;
         // Move the pointer to the start point of the source
-        source_pointer += g1_source->width*source_start_y + source_start_x;
+        source_pointer += g1->width*source_start_y + source_start_x;
 
-        if (!(g1_source->flags & G1_FLAG_1)) {
-            gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1_source, dpi, height, width, image_type);
+        if (!(g1->flags & G1_FLAG_1)) {
+            gfx_bmp_sprite_to_buffer(palette_pointer, unknown_pointer, source_pointer, dest_pointer, g1, dpi, height, width, image_type);
         }
     }
 
@@ -745,7 +745,7 @@ extern "C"
         }
     }
 
-    rct_g1_element * gfx_get_g1_element(sint32 image_id)
+    const rct_g1_element * gfx_get_g1_element(sint32 image_id)
     {
         openrct2_assert(!gOpenRCT2NoGraphics, "gfx_get_g1_element called on headless instance");
 
@@ -798,12 +798,12 @@ extern "C"
 
     rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id)
     {
-        rct_g1_element *g1_source = gfx_get_g1_element(image_id & 0X7FFFF);
+        const rct_g1_element * g1 = gfx_get_g1_element(image_id & 0X7FFFF);
         rct_size16 size = {};
-        if (g1_source != nullptr)
+        if (g1 != nullptr)
         {
-            size.width = g1_source->width;
-            size.height = g1_source->height;
+            size.width = g1->width;
+            size.height = g1->height;
         }
         return size;
     }
