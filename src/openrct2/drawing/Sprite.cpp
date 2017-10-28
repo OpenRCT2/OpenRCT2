@@ -179,7 +179,7 @@ extern "C"
         log_verbose("gfx_load_g1(...)");
         try
         {
-            auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
+            auto path = Path::Combine( {env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat"} );
             auto fs = FileStream(path, FILE_MODE_OPEN);
             rct_g1_header header = fs.ReadValue<rct_g1_header>();
 

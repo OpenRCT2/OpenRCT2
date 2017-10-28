@@ -36,11 +36,21 @@ namespace Path
         return safe_strcat_path(buffer, src, bufferSize);
     }
 
-    std::string Combine(const std::string &a, const std::string &b)
+    std::string Combine(std::initializer_list<const std::string> pathComponents)
     {
         utf8 buffer[MAX_PATH];
-        String::Set(buffer, sizeof(buffer), a.c_str());
-        Path::Append(buffer, sizeof(buffer), b.c_str());
+
+        // Initialise the buffer with the first argument passed
+        auto pathComponent = pathComponents.begin();
+        String::Set(buffer, sizeof(buffer), pathComponent->c_str());
+        pathComponent++;
+
+        // Append each subsequent argument, handling the separator as needed
+        for (; pathComponent != pathComponents.end(); ++pathComponent)
+        {
+            Path::Append(buffer, sizeof(buffer), pathComponent->c_str());
+        }
+
         return std::string(buffer);
     }
 
@@ -241,7 +251,7 @@ namespace Path
                 {
                     if (String::Equals(files[i]->d_name, fileName.c_str(), true))
                     {
-                        result = Path::Combine(directory, std::string(files[i]->d_name));
+                        result = Path::Combine( {directory, std::string(files[i]->d_name)} );
                         break;
                     }
                 }

@@ -22,13 +22,9 @@
 namespace Path
 {
     utf8 * Append(utf8 * buffer, size_t bufferSize, const utf8 * src);
-    std::string Combine(const std::string &a, const std::string &b);
 
-    template<typename... Args>
-    static std::string Combine(const std::string &a, const std::string &b, Args... args)
-    {
-        return Combine(a, Combine(b, args...));
-    }
+
+    std::string Combine(std::initializer_list<const std::string> pathComponents);
 
     std::string GetDirectory(const std::string &path);
     utf8 * GetDirectory(const utf8 * path);

@@ -876,7 +876,7 @@ std::string Network::BeginLog(const std::string &directory, const std::string &f
         throw std::runtime_error("strftime failed");
     }
 
-    return Path::Combine(directory, filename);
+    return Path::Combine( {directory, filename} );
 }
 
 void Network::AppendLog(const std::string &logPath, const std::string &s)

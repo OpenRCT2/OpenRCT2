@@ -10,7 +10,7 @@ namespace TestData
 
     std::string GetParkPath(std::string name)
     {
-        std::string path = Path::Combine(GetBasePath(), "parks", name);
+        std::string path = Path::Combine( {GetBasePath(), "parks", name} );
         return path;
     }
 };
