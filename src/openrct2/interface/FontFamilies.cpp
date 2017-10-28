@@ -21,6 +21,7 @@
 TTFontFamily const TTFFamilyChineseSimplified =
 {
     &TTFFontMingLiu,
+    &TTFFontHeiti,
 };
 
 TTFontFamily const TTFFamilyChineseTraditional =

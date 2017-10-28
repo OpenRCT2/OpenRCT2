@@ -23,6 +23,7 @@
 extern TTFFontSetDescriptor TTFFontMSGothic;
 extern TTFFontSetDescriptor TTFFontHiragano;
 extern TTFFontSetDescriptor TTFFontMingLiu;
+extern TTFFontSetDescriptor TTFFontHeiti;
 extern TTFFontSetDescriptor TTFFontSimSun;
 extern TTFFontSetDescriptor TTFFontLiHeiPro;
 extern TTFFontSetDescriptor TTFFontGulim;
