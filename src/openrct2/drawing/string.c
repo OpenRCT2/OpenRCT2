@@ -674,11 +674,14 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     case FORMAT_INLINE_SPRITE:
     {
         uint32 imageId = *((uint32*)(nextCh));
-        rct_g1_element *g1Element = &g1Elements[imageId & 0x7FFFF];
-        if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
-            gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
+        const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
+        if (g1 != NULL)
+        {
+            if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
+                gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
+            }
+            info->x += g1->width;
         }
-        info->x += g1Element->width;
         nextCh += 4;
         break;
     }

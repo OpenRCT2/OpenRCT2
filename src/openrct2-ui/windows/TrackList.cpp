@@ -422,16 +422,17 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         return;
     }
 
-    rct_g1_element *substituteElement = &g1Elements[SPR_TEMP];
-    rct_g1_element tmpElement = *substituteElement;
-    substituteElement->offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
-    substituteElement->width = 370;
-    substituteElement->height = 217;
-    substituteElement->x_offset = 0;
-    substituteElement->y_offset = 0;
-    substituteElement->flags = G1_FLAG_BMP;
+    auto g1backup = gfx_get_g1_element(SPR_TEMP);
+
+    rct_g1_element g1temp = { 0 };
+    g1temp.offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
+    g1temp.width = 370;
+    g1temp.height = 217;
+    g1temp.flags = G1_FLAG_BMP;
+
+    gfx_set_g1_element(SPR_TEMP, &g1temp);
     gfx_draw_sprite(dpi, 0, x, y, 0);
-    *substituteElement = tmpElement;
+    gfx_set_g1_element(SPR_TEMP, g1backup);
 
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + widget->bottom - 12;

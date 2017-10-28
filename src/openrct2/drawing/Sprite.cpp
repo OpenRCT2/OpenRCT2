@@ -162,10 +162,10 @@ extern "C"
     static bool     _csgLoaded = false;
 
     #ifdef NO_RCT2
-        size_t           g1ElementsCount    = 0;
-        rct_g1_element * g1Elements         = nullptr;
+        static size_t           g1ElementsCount    = 0;
+        static rct_g1_element * g1Elements         = nullptr;
     #else
-        rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+        static rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
     bool gTinyFontAntiAliased = false;
 
@@ -789,6 +789,23 @@ extern "C"
             return &_csg.elements[idx];
         }
         return nullptr;
+    }
+
+    void gfx_set_g1_element(sint32 imageId, const rct_g1_element * g1)
+    {
+        openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
+#ifdef DEBUG
+        openrct2_assert(imageId >= 0 && imageId < SPR_G2_BEGIN, "gfx_set_g1_element called with unexpected image id");
+        openrct2_assert(g1 != nullptr, "g1 was nullptr");
+#endif
+
+        if (imageId >= 0 || imageId < SPR_G2_BEGIN)
+        {
+            if (imageId < (sint32)g1ElementsCount)
+            {
+                g1Elements[imageId] = *g1;
+            }
+        }
     }
 
     bool is_csg_loaded()

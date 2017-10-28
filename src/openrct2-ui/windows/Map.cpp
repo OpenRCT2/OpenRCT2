@@ -882,19 +882,18 @@ static void window_map_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32
 {
     gfx_clear(dpi, PALETTE_INDEX_10);
 
-    rct_g1_element * g1 = &g1Elements[SPR_TEMP];
-    rct_g1_element g1backup = *g1;
+    auto g1backup = gfx_get_g1_element(SPR_TEMP);
+    
+    rct_g1_element g1temp = { 0 };
+    g1temp.offset = (uint8 *)_mapImageData;
+    g1temp.width = MAP_WINDOW_MAP_SIZE;
+    g1temp.height = MAP_WINDOW_MAP_SIZE;
+    g1temp.x_offset = -8;
+    g1temp.y_offset = -8;
 
-    g1->offset = (uint8 *) _mapImageData;
-    g1->width = MAP_WINDOW_MAP_SIZE;
-    g1->height = MAP_WINDOW_MAP_SIZE;
-    g1->x_offset = -8;
-    g1->y_offset = -8;
-    g1->flags = 0;
-
+    gfx_set_g1_element(SPR_TEMP, &g1temp);
     gfx_draw_sprite(dpi, SPR_TEMP, 0, 0, 0);
-
-    *g1 = g1backup;
+    gfx_set_g1_element(SPR_TEMP, g1backup);
 
     if (w->selected_tab == PAGE_PEEPS)
     {

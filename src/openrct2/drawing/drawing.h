@@ -280,7 +280,6 @@ extern uint32 gPickupPeepImage;
 extern sint32 gPickupPeepX;
 extern sint32 gPickupPeepY;
 
-extern rct_g1_element *g1Elements;
 extern bool gTinyFontAntiAliased;
 
 extern rct_drawpixelinfo gScreenDPI;
@@ -326,6 +325,7 @@ void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();
 const rct_g1_element * gfx_get_g1_element(sint32 image_id);
+void gfx_set_g1_element(sint32 imageId, const rct_g1_element * g1);
 bool is_csg_loaded();
 uint32 gfx_object_allocate_images(const rct_g1_element * images, uint32 count);
 void gfx_object_free_images(uint32 baseImageId, uint32 count);

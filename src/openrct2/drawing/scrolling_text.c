@@ -79,18 +79,21 @@ void scrolling_text_initialise_bitmaps()
 
     for (sint32 i = 0; i < MAX_SCROLLING_TEXT_ENTRIES; i++)
     {
-        rct_g1_element * g1 = &g1Elements[SPR_SCROLLING_TEXT_START + i];
-        if (g1 != NULL)
+        sint32 imageId = SPR_SCROLLING_TEXT_START + i;
+        const rct_g1_element * g1original = gfx_get_g1_element(imageId);
+        if (g1original != NULL)
         {
-            g1->offset = _drawScrollTextList[i].bitmap;
-            g1->width = 64;
-            g1->height = 40;
-            g1->offset[0] = 0xFF;
-            g1->offset[1] = 0xFF;
-            g1->offset[14] = 0;
-            g1->offset[15] = 0;
-            g1->offset[16] = 0;
-            g1->offset[17] = 0;
+            rct_g1_element g1 = *g1original;
+            g1.offset = _drawScrollTextList[i].bitmap;
+            g1.width = 64;
+            g1.height = 40;
+            g1.offset[0] = 0xFF;
+            g1.offset[1] = 0xFF;
+            g1.offset[14] = 0;
+            g1.offset[15] = 0;
+            g1.offset[16] = 0;
+            g1.offset[17] = 0;
+            gfx_set_g1_element(imageId, &g1);
         }
     }
 }
