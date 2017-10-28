@@ -57,6 +57,13 @@ TTFFontSetDescriptor TTFFontSimSun = { {
     { "simsun.ttc", "SimSun", 13,  1,  0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
+TTFFontSetDescriptor TTFFontLiHeiPro = { {
+    { u8"儷黑 Pro.ttf", "LiHei Pro",  9, 1, -1, 10, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 11, 1,  0, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 12, 1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"儷黑 Pro.ttf", "LiHei Pro", 13, 1,  0, 16, HINTING_THRESHOLD_MEDIUM, nullptr },
+} };
+
 TTFFontSetDescriptor TTFFontGulim = { {
     { "gulim.ttc", "Gulim", 11, 1, 0, 13, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "gulim.ttc", "Gulim", 12, 1, 0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
