@@ -26,6 +26,7 @@ TTFontFamily const TTFFamilyChineseSimplified =
 TTFontFamily const TTFFamilyChineseTraditional =
 {
     &TTFFontSimSun,
+    &TTFFontLiHeiPro,
 };
 
 TTFontFamily const TTFFamilyJapanese =
