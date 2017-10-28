@@ -31,6 +31,11 @@ static void paint_3d_cinema_structure(paint_session * session, uint8 rideIndex, 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
         session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;

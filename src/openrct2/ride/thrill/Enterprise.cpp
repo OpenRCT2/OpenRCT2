@@ -31,6 +31,11 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
     rct_ride_entry *  rideEntry       = get_ride_entry(ride->subtype);
     rct_vehicle *     vehicle         = NULL;
 
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)

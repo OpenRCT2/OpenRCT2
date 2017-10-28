@@ -3545,7 +3545,7 @@ sint32 map_element_get_banner_index(rct_map_element *mapElement)
             ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
     case MAP_ELEMENT_TYPE_WALL:
         sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
-        if (sceneryEntry->wall.scrolling_mode == 0xFF)
+        if (sceneryEntry == NULL || sceneryEntry->wall.scrolling_mode == 0xFF)
             return -1;
 
         return mapElement->properties.wall.banner_index;

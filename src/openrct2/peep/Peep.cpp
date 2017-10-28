@@ -2980,6 +2980,11 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
     ride_entry                            = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
+    if (ride_entry == nullptr)
+    {
+        return;
+    }
+
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_26)
     {
         x = ride->entrances[peep->current_ride_station].x;
@@ -3264,6 +3269,10 @@ static void peep_update_ride_sub_state_2(rct_peep * peep)
     }
 
     rct_ride_entry * ride_entry = get_ride_entry(vehicle->ride_subtype);
+    if (ride_entry == nullptr)
+    {
+        return;
+    }
 
     if (ride_entry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
     {
@@ -3433,6 +3442,11 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
 
     rct_ride_entry *         ride_entry    = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
+
+    if (ride_entry == nullptr)
+    {
+        return;
+    }
 
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_26))
     {
@@ -3771,6 +3785,11 @@ static void peep_update_ride_sub_state_12(rct_peep * peep)
 
     rct_ride_entry *         ride_entry   = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
+
+    if (ride_entry == nullptr)
+    {
+        return;
+    }
 
     x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
     y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
@@ -5902,7 +5921,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
         return 0;
     rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
 
-    if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
+    if (sceneryEntry == nullptr || !(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
         return 0;
 
     if (map_element->flags & MAP_ELEMENT_FLAG_BROKEN)
@@ -6005,6 +6024,10 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
     if (!footpath_element_has_path_scenery(map_element))
         return 0;
     rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
+    if (sceneryEntry == nullptr)
+    {
+        return 0;
+    }
 
     if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN))
         return 0;
@@ -6236,6 +6259,10 @@ static void peep_update_buying(rct_peep * peep)
         else
         {
             rct_ride_entry * ride_type = get_ride_entry(ride->subtype);
+            if (ride_type == nullptr)
+            {
+                return;
+            }
             if (ride_type->shop_item_secondary != SHOP_ITEM_NONE)
             {
                 money16 price = ride->price_secondary;
@@ -6271,7 +6298,6 @@ static void peep_update_buying(rct_peep * peep)
         ride_update_popularity(ride, 0);
     }
     peep->sub_state = 1;
-    return;
 }
 
 /** rct2: 0x0097EFCC */
@@ -7248,6 +7274,10 @@ static void peep_update_walking(rct_peep * peep)
         if (!footpath_element_path_scenery_is_ghost(map_element))
         {
             rct_scenery_entry * sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(map_element));
+            if (sceneryEntry == nullptr)
+            {
+                return;
+            }
 
             if (!(sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BENCH))
                 ebp = 9;
@@ -9644,6 +9674,10 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_map_
     x += TileDirectionDelta[chosenDirection].x;
     y += TileDirectionDelta[chosenDirection].y;
     mapElement = map_get_first_element_at(x / 32, y / 32);
+    if (mapElement == nullptr)
+    {
+        return PATH_SEARCH_FAILED;
+    }
     do
     {
         if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST)
@@ -9988,6 +10022,10 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     /* Get the next map element of interest in the direction of test_edge. */
     bool              found      = false;
     rct_map_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+    if (mapElement == nullptr)
+    {
+        return;
+    }
     do
     {
         /* Look for all map elements that the peep could walk onto while
@@ -12632,7 +12670,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
         if (map_element_get_direction(mapElement) != edge)
             continue;
-        if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
         if (peep->next_z + 4 <= mapElement->base_height)
             continue;
@@ -12665,7 +12704,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
         if (map_element_get_direction_with_offset(mapElement, 2) != edge)
             continue;
-        if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
         if (peep->next_z + 4 >= mapElement->base_height)
@@ -12743,7 +12783,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL)
         {
-            if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+            auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+            if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             {
                 continue;
             }
@@ -12776,7 +12817,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
         if (map_element_get_direction_with_offset(mapElement, 2) != edge)
             continue;
-        if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
         if (peep->next_z + 6 <= mapElement->base_height)
             continue;
@@ -12812,7 +12854,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
         {
-            if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags &
+            auto sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+            if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
@@ -12852,7 +12895,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
         if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_WALL)
         {
-            if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+            auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+            if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             {
                 continue;
             }
@@ -12885,7 +12929,8 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             continue;
         if (map_element_get_direction_with_offset(mapElement, 2) != edge)
             continue;
-        if (get_wall_entry(mapElement->properties.wall.type)->wall.flags2 & WALL_SCENERY_2_FLAG4)
+        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
         if (peep->next_z + 8 <= mapElement->base_height)
             continue;
