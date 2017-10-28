@@ -51,6 +51,9 @@ execute_process(
     ERROR_QUIET
 )
 
+# OpenRCT2 resource directory for Linux
+add_definitions(-DORCT2_RESOURCE_DIR="${ORCT2_RESOURCE_DIR}")
+
 # Tagged builds are not meant to display commit info
 if (NOT OPENRCT2_COMMIT_SHA1_SHORT STREQUAL "HEAD")
     add_definitions(-DOPENRCT2_COMMIT_SHA1_SHORT="${OPENRCT2_COMMIT_SHA1_SHORT}")
