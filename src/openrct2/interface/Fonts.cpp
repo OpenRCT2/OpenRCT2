@@ -50,6 +50,13 @@ TTFFontSetDescriptor TTFFontMingLiu = { {
     { "mingliu.ttc",  "MingLiU", 13,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
 } };
 
+TTFFontSetDescriptor TTFFontHeiti = { {
+    { u8"华文黑体.ttf", "STHeiti",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 11,  1,  1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 12,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+    { u8"华文黑体.ttf", "STHeiti", 13,  1,  0, 15, HINTING_THRESHOLD_MEDIUM, nullptr },
+} };
+
 TTFFontSetDescriptor TTFFontSimSun = { {
     {   "msyh.ttc",  "YaHei",  9, -1, -3,  6, HINTING_THRESHOLD_MEDIUM, nullptr },
     { "simsun.ttc", "SimSun", 11,  1, -1, 14, HINTING_THRESHOLD_MEDIUM, nullptr },
