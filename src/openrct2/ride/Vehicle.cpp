@@ -1420,6 +1420,10 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
         rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
         rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
+        if (rideEntry == nullptr)
+        {
+            continue;
+        }
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
             if (abs(vehicle->var_B6) <= 700 && !(vehicle->var_BA & 0x30) &&
@@ -2066,6 +2070,11 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
         rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
         rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
+        if (rideEntry == nullptr)
+        {
+            return;
+        }
+
         if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
         {
             if (vehicle->velocity <= 131940)
@@ -2419,6 +2428,10 @@ static void vehicle_update_dodgems_mode(rct_vehicle * vehicle)
 {
     Ride *                   ride         = get_ride(vehicle->ride);
     rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
     rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_7 && vehicle->var_C5 != 1)
@@ -3180,6 +3193,10 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
 {
     Ride *           ride      = get_ride(vehicle->ride);
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
 
     if (vehicle->sub_state == 0)
     {
@@ -4862,6 +4879,10 @@ static void vehicle_update_rotating(rct_vehicle * vehicle)
 
     Ride *           ride      = get_ride(vehicle->ride);
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
 
     const uint8 * timeToSpriteMap;
     if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)

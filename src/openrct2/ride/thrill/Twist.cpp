@@ -30,6 +30,11 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle *    vehicle   = NULL;
 
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
     height += 7;
     uint32 baseImageId = rideEntry->vehicles[0].base_image_id;
 

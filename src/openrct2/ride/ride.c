@@ -2332,7 +2332,7 @@ static sint32 ride_get_new_breakdown_problem(Ride *ride)
     _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrentRainLevel == 0 ? 3 : 20;
 
     entry = get_ride_entry_by_ride(ride);
-    if (entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
+    if (entry == NULL || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
         return -1;
 
     availableBreakdownProblems = RideAvailableBreakdowns[ride->type];
@@ -3278,6 +3278,10 @@ static void ride_shop_connected(Ride* ride, sint32 ride_idx)
     uint16 entrance_directions = 0;
     uint8 track_type = mapElement->properties.track.type;
     ride = get_ride(mapElement->properties.track.ride_index);
+    if (ride == NULL)
+    {
+        return;
+    }
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
         entrance_directions = FlatRideTrackSequenceProperties[track_type][0];
     } else {

@@ -220,6 +220,10 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
         }
 
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
+        if (entrance == NULL)
+        {
+            return;
+        }
         image_id = (entrance->image_id + direction * 3) | ghost_id;
             sub_98197C(session, image_id, 0, 0, 0x1C, 0x1C, 0x2F, height, 2, 2, height + 32, get_current_rotation());
 
@@ -258,6 +262,10 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     case 1:
     case 2:
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
+        if (entrance == NULL)
+        {
+            return;
+        }
         image_id = (entrance->image_id + part_index + direction * 3) | ghost_id;
             sub_98197C(session, image_id, 0, 0, 0x1A, di, 0x4F, height, 3, 3, height, get_current_rotation());
         break;
