@@ -78,13 +78,13 @@ bool ttf_initialise()
 
             utf8 fontPath[MAX_PATH];
             if (!platform_get_font_path(fontDesc, fontPath, sizeof(fontPath))) {
-                log_error("Unable to load font '%s'", fontDesc->font_name);
+                log_verbose("Unable to load font '%s'", fontDesc->font_name);
                 return false;
             }
 
             fontDesc->font = ttf_open_font(fontPath, fontDesc->ptSize);
             if (fontDesc->font == NULL) {
-                log_error("Unable to load '%s'", fontPath);
+                log_verbose("Unable to load '%s'", fontPath);
                 return false;
             }
 
