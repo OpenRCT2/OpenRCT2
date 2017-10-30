@@ -862,7 +862,6 @@ private:
         dst->breakdown_reason = src->breakdown_reason;
         dst->mechanic_status = src->mechanic_status;
         dst->mechanic = src->mechanic;
-        dst->breakdown_reason = src->breakdown_reason;
         dst->breakdown_reason_pending = src->breakdown_reason_pending;
         dst->inspection_station = src->inspection_station;
         //dst->broken_car?
