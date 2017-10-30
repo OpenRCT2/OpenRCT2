@@ -4467,6 +4467,7 @@ STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or co
 STR_6156    :Name is reserved
 STR_6157    :Console
 STR_6158    :Failed to load this file...{NEWLINE}Incompatible RCTC version: {COMMA16}
+STR_6159    :Smooth Nearest Neighbor
 
 #############
 # Scenarios #

@@ -497,6 +497,10 @@ public:
         {
             _scaleQuality = 0;
         }
+        if (_scaleQuality == 3)
+        {
+            _scaleQuality = 1;
+        }
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", _scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
