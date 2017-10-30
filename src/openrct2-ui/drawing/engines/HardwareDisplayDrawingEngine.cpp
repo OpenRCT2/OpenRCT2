@@ -105,11 +105,11 @@ public:
         if (gConfigGeneral.use_nn_at_integer_scales &&
             gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            scaleQuality = 0;
+            scaleQuality = SCALE_QUALITY_NN;
         }
-        if (scaleQuality == 3)
+        if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
-            scaleQuality = 1;
+            scaleQuality = SCALE_QUALITY_LINEAR;
             smoothNN = true;
         }
         else
