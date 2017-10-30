@@ -2977,13 +2977,13 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
     }
 
-    ride_entry                            = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
-
+    ride_entry = get_ride_entry(vehicle->ride_subtype);
     if (ride_entry == nullptr)
     {
         return;
     }
+
+    rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
     if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_26)
     {
@@ -3438,15 +3438,15 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
         }
         ride_station = bestStationIndex;
     }
-    peep->current_ride_station = ride_station;
-
-    rct_ride_entry *         ride_entry    = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle * vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
+    peep->current_ride_station  = ride_station;
+    rct_ride_entry * ride_entry = get_ride_entry(vehicle->ride_subtype);
 
     if (ride_entry == nullptr)
     {
         return;
     }
+
+    rct_ride_entry_vehicle * vehicle_entry = &ride_entry->vehicles[vehicle->vehicle_type];
 
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_26))
     {
@@ -3783,13 +3783,13 @@ static void peep_update_ride_sub_state_12(rct_peep * peep)
         y = vehicle->y;
     }
 
-    rct_ride_entry *         ride_entry   = get_ride_entry(vehicle->ride_subtype);
-    rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
-
+    rct_ride_entry * ride_entry = get_ride_entry(vehicle->ride_subtype);
     if (ride_entry == nullptr)
     {
         return;
     }
+
+    rct_ride_entry_vehicle * vehicle_type = &ride_entry->vehicles[vehicle->vehicle_type];
 
     x += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 1];
     y += vehicle_type->peep_loading_positions[peep->var_37 * 2 + 2];
