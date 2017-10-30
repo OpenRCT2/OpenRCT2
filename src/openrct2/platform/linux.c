@@ -314,6 +314,7 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
         FcFini();
         return false;
     }
+
     FcPattern* pat = FcNameParse((const FcChar8*) font->font_name);
 
     FcConfigSubstitute(config, pat, FcMatchPattern);
@@ -325,15 +326,33 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 
     if (match)
     {
+        bool is_substitute = false;
+
+        // FontConfig implicitly falls back to any default font it is configured to handle.
+        // In our implementation, this cannot account for supported character sets, leading
+        // to unrendered characters (tofu) when trying to render e.g. CJK characters using a
+        // Western (sans-)serif font. We therefore ignore substitutions FontConfig provides,
+        // and instead rely on exact matches on the fonts predefined for each font family.
+        FcChar8* matched_font_face = NULL;
+        if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch &&
+            strcmp(font->font_name, (const char *) matched_font_face) != 0)
+        {
+            log_verbose("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
+            is_substitute = true;
+        }
+
         FcChar8* filename = NULL;
-        if (FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
+        if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
         {
             found = true;
             safe_strcpy(buffer, (utf8*) filename, size);
             log_verbose("FontConfig provided font %s", filename);
         }
+
         FcPatternDestroy(match);
-    } else {
+    }
+    else
+    {
         log_warning("Failed to find required font.");
     }
 
