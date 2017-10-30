@@ -1262,7 +1262,12 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
     gMapSelectionTiles[3].x = -1;
     gMapSelectionTiles[3].y = -1;
 
-    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+    gMapSelectArrowPosition.x = mapX;
+    gMapSelectArrowPosition.y = mapY;
+    gMapSelectArrowPosition.z = mapZ * 16;
+    gMapSelectArrowDirection = direction;
+
+    gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE_CONSTRUCT | MAP_SELECT_FLAG_ENABLE_ARROW;
     map_invalidate_map_selection_tiles();
     if (
         gParkEntranceGhostExists &&
