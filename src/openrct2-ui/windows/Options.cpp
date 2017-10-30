@@ -385,6 +385,7 @@ static const rct_string_id window_options_scale_quality_names[] = {
     STR_SCALING_QUALITY_NN,
     STR_SCALING_QUALITY_LINEAR,
     STR_SCALING_QUALITY_ANISOTROPIC,
+    STR_SCALING_QUALITY_SMOOTH_NN
 };
 
 static const rct_string_id window_options_fullscreen_mode_names[] = {
@@ -1022,11 +1023,13 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsFormat[3] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[0] = STR_SCALING_QUALITY_NN;
             gDropdownItemsArgs[1] = STR_SCALING_QUALITY_LINEAR;
             gDropdownItemsArgs[2] = STR_SCALING_QUALITY_ANISOTROPIC;
+            gDropdownItemsArgs[3] = STR_SCALING_QUALITY_SMOOTH_NN;
 
-            window_options_show_dropdown(w, widget, 3);
+            window_options_show_dropdown(w, widget, 4);
 
             dropdown_set_checked(gConfigGeneral.scale_quality, true);
             break;

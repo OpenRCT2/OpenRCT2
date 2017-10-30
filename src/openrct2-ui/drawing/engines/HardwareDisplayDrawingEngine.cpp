@@ -40,6 +40,7 @@ private:
     SDL_Window *        _window                     = nullptr;
     SDL_Renderer *      _sdlRenderer                = nullptr;
     SDL_Texture *       _screenTexture              = nullptr;
+    SDL_Texture *       _scaledScreenTexture        = nullptr;
     SDL_PixelFormat *   _screenTextureFormat        = nullptr;
     uint32              _paletteHWMapped[256]       = { 0 };
 #ifdef __ENABLE_LIGHTFX__
@@ -53,6 +54,8 @@ private:
     bool    _pausedBeforeOverlay    = false;
 
     std::vector<uint32> _dirtyVisualsTime;
+    
+    bool    smoothNN = false;
 
 public:
     explicit HardwareDisplayDrawingEngine(IUiContext * uiContext)
@@ -98,7 +101,40 @@ public:
             }
         }
 
-        _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+        sint32 scaleQuality = gConfigGeneral.scale_quality;
+        if (gConfigGeneral.use_nn_at_integer_scales &&
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
+            scaleQuality = 0;
+        }
+        if (scaleQuality == 3)
+        {
+            scaleQuality = 1;
+            smoothNN = true;
+        }
+        else
+        {
+            smoothNN = false;
+        }
+
+        if (smoothNN)
+        {
+            SDL_DestroyTexture(_scaledScreenTexture);
+
+            char scaleQualityBuffer[4];
+            snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
+            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "0");
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING, width, height);
+            SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
+
+            uint32 scale = std::ceil(gConfigGeneral.window_scale);
+            _scaledScreenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_TARGET,
+                                                     width * scale, height * scale);
+        }
+        else
+        {
+            _screenTexture = SDL_CreateTexture(_sdlRenderer, pixelFormat, SDL_TEXTUREACCESS_STREAMING,width, height);
+        }        
 
         uint32 format;
         SDL_QueryTexture(_screenTexture, &format, 0, 0, 0);
@@ -175,7 +211,18 @@ private:
         {
             CopyBitsToTexture(_screenTexture, _bits, (sint32)_width, (sint32)_height, _paletteHWMapped);
         }
-        SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+        if (smoothNN)
+        {
+            SDL_SetRenderTarget(_sdlRenderer, _scaledScreenTexture);
+            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+            
+            SDL_SetRenderTarget(_sdlRenderer, nullptr);
+            SDL_RenderCopy(_sdlRenderer, _scaledScreenTexture, nullptr, nullptr);
+        }
+        else
+        {
+            SDL_RenderCopy(_sdlRenderer, _screenTexture, nullptr, nullptr);
+        }
 
         if (gShowDirtyVisuals)
         {
