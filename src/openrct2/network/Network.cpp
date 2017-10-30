@@ -2086,7 +2086,7 @@ void Network::Server_Handle_CHAT(NetworkConnection& connection, NetworkPacket& p
 {
     if (connection.Player) {
         NetworkGroup* group = GetGroupByID(connection.Player->Group);
-        if (!group || (group && !group->CanPerformCommand(MISC_COMMAND_CHAT))) {
+        if (!group || !group->CanPerformCommand(MISC_COMMAND_CHAT)) {
             return;
         }
     }
@@ -2160,7 +2160,7 @@ void Network::Server_Handle_GAME_ACTION(NetworkConnection& connection, NetworkPa
     // Check if player's group permission allows command to run
     uint32 ticks = platform_get_ticks();
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (!group || (group && !group->CanPerformCommand(type))) {
+    if (!group || !group->CanPerformCommand(type)) {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
         return;
     }
@@ -2239,7 +2239,7 @@ void Network::Server_Handle_GAMECMD(NetworkConnection& connection, NetworkPacket
 
     // Check if player's group permission allows command to run
     NetworkGroup* group = GetGroupByID(connection.Player->Group);
-    if (!group || (group && !group->CanPerformCommand(commandCommand))) {
+    if (!group || !group->CanPerformCommand(commandCommand)) {
         Server_Send_SHOWERROR(connection, STR_CANT_DO_THIS, STR_PERMISSION_DENIED);
         return;
     }
@@ -2821,7 +2821,7 @@ void game_command_modify_groups(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         NetworkPlayer* player = gNetwork.GetPlayerByID(game_command_playerid);
         if (player && !all) {
             mygroup = gNetwork.GetGroupByID(player->Group);
-            if (!mygroup || (mygroup && !mygroup->CanPerformAction(index))) {
+            if (!mygroup || !mygroup->CanPerformAction(index)) {
                 gGameCommandErrorTitle = STR_CANT_MODIFY_PERMISSION_THAT_YOU_DO_NOT_HAVE_YOURSELF;
                 gGameCommandErrorText = STR_NONE;
                 *ebx = MONEY32_UNDEFINED;
