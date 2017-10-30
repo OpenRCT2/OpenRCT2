@@ -1245,6 +1245,7 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
     place_park_entrance_get_map_position(x, y, &mapX, &mapY, &mapZ, &direction);
     if (mapX == (sint16)-1) {
