@@ -413,7 +413,7 @@ void console_scroll(sint32 linesToScroll)
 // Calculates the amount of visible lines, based on the console size, excluding the input line.
 static sint32 console_get_num_visible_lines()
 {
-    return ceil((_consoleBottom - _consoleTop) / font_get_line_height(gCurrentFontSpriteBase)) - 1;
+    return ((_consoleBottom - _consoleTop) / font_get_line_height(gCurrentFontSpriteBase)) - 1;
 }
 
 void console_clear()
