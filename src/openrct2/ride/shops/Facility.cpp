@@ -34,13 +34,19 @@ static void facility_paint_setup(paint_session * session, uint8 rideIndex, uint8
 {
     bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3], NULL);
 
-    Ride *                   ride              = get_ride(rideIndex);
-    rct_ride_entry *         rideEntry         = get_ride_entry(ride->subtype);
-    rct_ride_entry_vehicle * firstVehicleEntry = &rideEntry->vehicles[0];
+    Ride *           ride      = get_ride(rideIndex);
+    rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
-    if (rideEntry == NULL || firstVehicleEntry == NULL)
+    if (rideEntry == nullptr)
     {
-        log_error("Error drawing facility, rideEntry or firstVehicleEntry is NULL.");
+        log_error("Error drawing facility, rideEntry is NULL.");
+        return;
+    }
+
+    rct_ride_entry_vehicle * firstVehicleEntry = &rideEntry->vehicles[0];
+    if (firstVehicleEntry == nullptr)
+    {
+        log_error("Error drawing facility, firstVehicleEntry is NULL.");
         return;
     }
 
