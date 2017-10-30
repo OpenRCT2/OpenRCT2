@@ -155,7 +155,7 @@ void TryLoadFonts()
             {
                 return;
             }
-            Console::Error::WriteLine("Unable to initialise configured TrueType font -- falling back to the language's default.");
+            log_verbose("Unable to initialise configured TrueType font -- falling back to the language's default.");
         }
 
         for (auto &font : *fontFamily)
@@ -166,12 +166,12 @@ void TryLoadFonts()
             }
 
             TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
-            Console::Error::WriteLine("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+            log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
         }
 
         if (fontFamily != &TTFFamilySansSerif)
         {
-            Console::Error::WriteLine("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
+            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sans serif fonts.");
 
             for (auto &font : TTFFamilySansSerif)
             {
@@ -181,10 +181,10 @@ void TryLoadFonts()
                 }
 
                 TTFFontDescriptor smallFont = font->size[FONT_SIZE_SMALL];
-                Console::Error::WriteLine("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
+                log_verbose("Unable to load TrueType font '%s' -- trying the next font in the family.", smallFont.font_name);
             }
 
-            Console::Error::WriteLine("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
+            log_verbose("Unable to initialise any of the preferred TrueType fonts -- falling back to sprite font.");
         }
     }
 #endif // NO_TTF
