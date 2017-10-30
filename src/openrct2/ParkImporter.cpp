@@ -22,13 +22,21 @@
 #include "ParkImporter.h"
 
 ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error)
-    : Error(error)
+    : Error(error),
+      Flag(0)
 {
 }
 
 ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const std::vector<rct_object_entry> &missingObjects)
     : Error(error),
-      MissingObjects(missingObjects)
+      MissingObjects(missingObjects),
+      Flag(0)
+{
+}
+
+ParkLoadResult::ParkLoadResult(PARK_LOAD_ERROR error, const uint8 flag)
+    : Error(error),
+      Flag(flag)
 {
 }
 
@@ -52,6 +60,11 @@ ParkLoadResult ParkLoadResult::CreateUnknown()
     return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNKNOWN);
 }
 
+ParkLoadResult ParkLoadResult::CreateUnsupportedRCTCflag(uint8 classic_flag)
+{
+    return ParkLoadResult(PARK_LOAD_ERROR::PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG, classic_flag);
+}
+
 extern "C"
 {
     PARK_LOAD_ERROR ParkLoadResult_GetError(const ParkLoadResult * t)
@@ -62,6 +75,11 @@ extern "C"
     size_t ParkLoadResult_GetMissingObjectsCount(const ParkLoadResult * t)
     {
         return t->MissingObjects.size();
+    }
+
+    uint8 ParkLoadResult_GetFlag(const ParkLoadResult * t)
+    {
+        return t->Flag;
     }
 
     const rct_object_entry * ParkLoadResult_GetMissingObjects(const ParkLoadResult * t)

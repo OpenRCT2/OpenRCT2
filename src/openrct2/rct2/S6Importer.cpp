@@ -141,6 +141,11 @@ public:
             }
         }
 
+        if (_s6.header.classic_flag == 0xf)
+        {
+            return ParkLoadResult::CreateUnsupportedRCTCflag(_s6.header.classic_flag);
+        }
+
         // Read packed objects
         // TODO try to contain this more and not store objects until later
         for (uint16 i = 0; i < _s6.header.num_packed_objects; i++)
