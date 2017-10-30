@@ -694,6 +694,12 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
         imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
+    // Zax: visual wide paths
+    if (footpath_element_is_wide(map_element)) {
+    //    session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
+        imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
+    }
+
     sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
     rct_map_element * surface = map_get_surface_element_at(x / 32, y / 32);
@@ -746,8 +752,8 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map
         }
     }
 
-
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS) {
+    // Zax: expand to include visualisation of wide paths.
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS || footpath_element_is_wide(map_element)) {
         uint16 height2 = 3 + map_element->base_height * 8;
         if (footpath_element_is_sloped(map_element)) {
             height2 += 8;

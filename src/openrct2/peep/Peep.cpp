@@ -51,6 +51,11 @@ bool gPathFindDebug = false;
 utf8 gPathFindDebugPeepName[256];
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
+// Zaxcav: Used to enable the A* heuristic search.
+static bool gAStarEnableAll = true; // Set to true to enable A* for ALL peeps;
+                             // Set to false to only enable A* for tracked guests and mechanics named "Mechanic Star".
+static utf8 gAStarPeepName[256];
+
 uint8  gGuestChangeModifier;
 uint16 gNumGuestsInPark;
 uint16 gNumGuestsInParkLastWeek;
@@ -93,11 +98,13 @@ static uint8             _peepPotentialRides[256];
 
 enum
 {
+    PATH_SEARCH_PATH,
     PATH_SEARCH_DEAD_END,
     PATH_SEARCH_WIDE,
     PATH_SEARCH_THIN,
     PATH_SEARCH_JUNCTION,
     PATH_SEARCH_RIDE_QUEUE,
+    PATH_SEARCH_ENTRANCE,
     PATH_SEARCH_RIDE_ENTRANCE,
     PATH_SEARCH_RIDE_EXIT,
     PATH_SEARCH_PARK_EXIT,
@@ -170,6 +177,7 @@ static bool   peep_update_fixing_sub_state_13(bool firstRun, sint32 steps, rct_p
 static bool   peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride * ride);
 static void   peep_update_ride_inspected(sint32 rideIndex);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);
+static bool enable_astar_pathfinding(rct_peep* peep);
 
 bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_map_element * esi);
 
@@ -9889,6 +9897,566 @@ static bool path_is_thin_junction(rct_map_element * path, sint16 x, sint16 y, ui
     return thin_junction;
 }
 
+/* Zax: Item type for A* lists */
+typedef struct {
+    // Item location in "tile coordinates" rather than pixel coordinates.
+    sint16 tileX;
+    sint16 tileY;
+    uint8 tileZ;
+    // Parent item location in "tile coordinates".
+    sint16 parentTileX;
+    sint16 parentTileY;
+    uint8 parentTileZ;
+    uint16 score;
+    uint16 heuristic; // TBD: heuristic is determined from tileX/Y/Z - even bother storing this?
+    uint16 cost;
+} searchItem;
+
+/* Zax: Item type for pathfinding solution */
+typedef struct {
+    // Item location in "tile coordinates".
+    sint16 tileX;
+    sint16 tileY;
+    uint8 tileZ;
+    sint8 direction;
+} locationAndDirection;
+
+
+/* Zax: Global variables for A* */
+#define AStarMaxTiles 15000
+/* Zax: Open List */
+static searchItem openList[AStarMaxTiles];
+        /* With the current quick and dirty array implementation size and end are different */
+static uint16 open_size; /* Number of items in the open list */
+static sint16 open_end;  /* Index of the last item in the open list. */
+/* Zax: Closed List */
+static searchItem closedList[AStarMaxTiles];
+static uint16 closed_size;
+static sint16 closed_end;
+/* Boundary list */
+static searchItem boundaryList[AStarMaxTiles]; /* Zax: doesn't need to be this big, but how big? */
+static uint16 boundary_size;
+static sint16 boundary_end;
+
+static void initList(searchItem list[], uint16 *size, sint16 *end)
+{
+    list[0].tileX = -1;
+    list[0].tileY = -1;
+    list[0].tileZ = 0;
+    list[0].parentTileX = -1;
+    list[0].parentTileY = -1;
+    list[0].parentTileZ = 0;
+    list[0].score = 0;
+    list[0].heuristic = 0;
+    list[0].cost = 0;
+    *size = 0;
+    *end = -1;
+}
+
+static void removeFromList(searchItem list[], uint16 idx, uint16 *size)
+{
+    /* Note: once removed the position in the list becomes dead in
+       this prototype. */
+    list[idx].tileX = -1;
+    list[idx].tileY = -1;
+    list[idx].tileZ = 0;
+    list[idx].parentTileX = -1;
+    list[idx].parentTileY = -1;
+    list[idx].parentTileZ = 0;
+    list[idx].score = 0;
+    list[idx].heuristic = 0;
+    list[idx].cost = 0;
+    *size = *size - 1;
+}
+
+static void addToList(searchItem list[], uint16 *size, sint16 *end, sint16 tileX, sint16 tileY, sint16 tileZ,
+    sint16 parentTileX, sint16 parentTileY, sint16 parentTileZ,
+    uint16 heuristic, uint16 cost)
+{
+    *end = (*end) + 1;
+    *size = (*size) + 1;
+    list[*end].tileX = tileX;
+    list[*end].tileY = tileY;
+    list[*end].tileZ = tileZ;
+    list[*end].parentTileX = parentTileX;
+    list[*end].parentTileY = parentTileY;
+    list[*end].parentTileZ = parentTileZ;
+    list[*end].score = heuristic + cost;
+    list[*end].heuristic = heuristic;
+    list[*end].cost = cost;
+}
+
+static sint16 findXYZInList(sint16 tileX, sint16 tileY, uint8 tileZ, searchItem list[], uint16 size, sint16 end)
+{
+    /* Find index of x,y,z in the list */
+    for (uint16 idx = 0; idx <= end; idx++)
+    {
+        if (list[idx].tileX == tileX &&
+            list[idx].tileY == tileY &&
+            list[idx].tileZ == tileZ )
+        {
+            return idx;
+        }
+    }
+    return -1;
+}
+
+static uint16 findBestScoreInList(searchItem list[], uint16 size, sint16 end)
+{
+    if (size == 0)
+        return -1;
+
+    /* The following only works if removal is properly implemented.
+    uint16 bestScore;
+    bestScore = list[0].score;
+    bestIdx = 0;
+    */
+
+    // Score (heuristic + cost) is the primary measure of tile worth.
+    // Currently use smaller cost as the 2nd measure.
+    uint16 bestScore = 0xFFFF;
+    uint16 bestCost = 0xFFFF;
+    //uint16 bestHeuristic = 0xFFFF;
+    sint16 bestIdx = -1;
+
+    for (uint16 idx = 0; idx <= end; idx++)
+    {
+        /* Skip removed entries */
+        if (list[idx].tileX == -1 && list[idx].tileY == -1)
+            continue;
+        if (list[idx].score < bestScore ||
+            (list[idx].score == bestScore &&
+             list[idx].cost < bestCost))
+        {
+            bestScore = list[idx].score;
+            //bestHeuristic = list[idx].heuristic;
+            bestCost = list[idx].cost;
+            bestIdx = idx;
+        }
+    }
+
+    return bestIdx;
+}
+
+#if defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+static void printList(searchItem list[], uint16 size, sint16 end)
+{
+    log_verbose("x,y,z,score,heuristic,cost,parent_x,parent_y,parent_z");
+    for (uint16 idx = 0; idx <= end; idx++)
+    {
+        if (list[idx].tileX != -1)
+        {
+	    log_verbose("%d,%d,%d,%d,%d,%d,%d,%d,%d",
+                list[idx].tileX, list[idx].tileY, list[idx].tileZ,
+                list[idx].score, list[idx].heuristic, list[idx].cost,
+                list[idx].parentTileX, list[idx].parentTileY, list[idx].parentTileZ);
+        }
+    }
+}
+#endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+static void printRoute(locationAndDirection tileList[], uint8 steps)
+{
+    log_verbose("x,y,z,direction,step#");
+    for (uint8 idx = 0; idx < steps; idx++)
+    {
+        log_verbose("%d,%d,%d,%d,%d",
+            tileList[idx].tileX, tileList[idx].tileY, tileList[idx].tileZ,
+            tileList[idx].direction,idx);
+    }
+}
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+
+static uint16 tileCount;
+
+/* Zax: Turned into a function - calculation is unchange. */
+static uint16 heuristic_score(sint16 x, sint16 y, uint8 z) {
+    // Calculate the heuristic score of x,y,z.
+
+    uint16 score;
+
+    uint16 x_delta = abs(gPeepPathFindGoalPosition.x - x);
+    uint16 y_delta = abs(gPeepPathFindGoalPosition.y - y);
+//    if (x_delta < y_delta) x_delta >>= 4;
+//    else y_delta >>= 4;
+    score = x_delta + y_delta;
+    uint16 z_delta = abs(gPeepPathFindGoalPosition.z - z);
+//    z_delta <<= 1;
+    score += z_delta;
+
+    return score;
+}
+
+/* Zax: New heuristic search - A* */
+static void peep_pathfind_heuristic_search2(rct_peep *peep) {
+
+    sint16 current;
+
+    /* Get the tile with the best score out of the open list */
+    while ((current = findBestScoreInList(openList, open_size, open_end)) != -1 )
+    {
+        searchItem thisItem;
+        thisItem.tileX = openList[current].tileX;
+        thisItem.tileY = openList[current].tileY;
+        thisItem.tileZ = openList[current].tileZ;
+        thisItem.parentTileX = openList[current].parentTileX;
+        thisItem.parentTileY = openList[current].parentTileY;
+        thisItem.parentTileZ = openList[current].parentTileZ;
+        thisItem.score = openList[current].score;
+        thisItem.heuristic = openList[current].heuristic;
+        thisItem.cost = openList[current].cost;
+
+        removeFromList(openList, current, &open_size);
+
+        #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+        if (gPathFindDebug) {
+            log_verbose("Removed best element (%d,%d,%d) from Open List: (size: %d, end Index: %d)", thisItem.tileX, thisItem.tileY, thisItem.tileZ, open_size, open_end);
+        }
+        #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+        /* Need to add current to the closed list, but first
+            have to find an appropriate map element, possibly
+            correcting the z value (e.g. in the case of a sloped
+            path.) */
+
+        bool adjustHeight = false;
+        bool addedAllNeighbours = true;
+	uint8 origTileZ = thisItem.tileZ;
+        /* get the next map element at the tile location */
+        rct_map_element *mapElement = map_get_first_element_at(thisItem.tileX, thisItem.tileY);
+        do {
+            /* Look for all suitable map elements at this location. Of interest
+            are entrances (i.e. shops, rides) - these could be the goal,
+            and paths that a peep could pass through to get to the goal. */
+        /* The z value at this point is based on the parent tile. This tile
+            may not be at the same height as the parent - e.g. manually
+            raised/lowered entrances (z+-1), sloped paths (z=-2). The z value
+            is adjusted to match the first suitable map element found. */
+
+            if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) continue;
+
+            uint8 searchResult = PATH_SEARCH_FAILED;
+            bool found = false;
+            uint8 rideIndex = 0xFF;
+            switch (map_element_get_type(mapElement)) {
+            case MAP_ELEMENT_TYPE_ENTRANCE:
+                //if (z != mapElement->base_height) continue;
+
+                /* To support entrances with heights that do not align with
+                pathing, allow a one off z tolerance of +-1. */
+
+                if (!adjustHeight)
+                {
+                    if ((thisItem.tileZ < mapElement->base_height - 1) ||
+                        (thisItem.tileZ > mapElement->base_height + 1))
+                    {
+                        continue;
+                    }
+
+                    if (thisItem.tileZ != mapElement->base_height)
+                    {
+                        // Adjust z to match mapElement, recalculate the heuristic and update the score accordingly.
+                        thisItem.tileZ = mapElement->base_height;
+                        thisItem.heuristic = heuristic_score(thisItem.tileX << 5, thisItem.tileY << 5, thisItem.tileZ); // Note: Convert x/y from tiles to pixels.
+                        thisItem.score = thisItem.heuristic + thisItem.cost;
+                    }
+                    adjustHeight = true; //Zax: I think only the first entrance should have a chance to change the height, after this it stays fixed.
+                } else if (thisItem.tileZ != mapElement->base_height)
+                {
+                    continue;
+                }
+                searchResult = PATH_SEARCH_ENTRANCE;
+                found = true;
+                /* Entrance type is relevant for guests - transport rides
+                   have "neighbours" at other station exits. */
+                if (peep->type == PEEP_TYPE_GUEST &&
+                    mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                {
+                    /* TODO: Check for transport rides.
+                       In this case the ride has no queue. */
+                    rideIndex = mapElement->properties.entrance.ride_index;
+                    searchResult = PATH_SEARCH_RIDE_ENTRANCE;
+                }
+                break;
+            case MAP_ELEMENT_TYPE_PATH:
+                /* Paths ... primary means to get to the goal. */
+
+                /* Height checks: sloped paths may have a base
+                   height 2 units lower. Since we do not know
+                   the edge direction from the parent, do not
+                   additionally check the slope direction. */
+                if (mapElement->base_height == origTileZ ||
+                    (footpath_element_is_sloped(mapElement) &&
+                    (mapElement->base_height == origTileZ ||
+                    mapElement->base_height + 2 == origTileZ) ))
+                {
+                    if (!adjustHeight && thisItem.tileZ != mapElement->base_height)
+                    {
+                        /* Update z per mapElement, recalculate heuristic and update the score accordingly. */
+                        thisItem.tileZ = mapElement->base_height;
+                        thisItem.heuristic = heuristic_score(thisItem.tileX << 5, thisItem.tileY << 5, thisItem.tileZ); // Note: Convert x/y from tiles to pixels.
+                        thisItem.score = thisItem.heuristic + thisItem.cost;
+                    }
+                    adjustHeight = true; // Zax: only the first matching path should have the chance to change the height.
+
+                    bool isQueue = footpath_element_is_queue(mapElement);
+
+                    if (peep->type == PEEP_TYPE_STAFF ||
+                        !isQueue ||
+                        (isQueue &&
+                        mapElement->properties.path.ride_index == 0xFF))
+                    {
+                        /* All ride queues are normal paths for STAFF;
+                        Unconnected ride queues are normal paths for GUESTS */
+                        searchResult = PATH_SEARCH_PATH;
+                        found = true;
+                        break;
+                    }
+
+                    if (peep->type == PEEP_TYPE_GUEST &&
+                        isQueue &&
+                        mapElement->properties.path.ride_index != 0xFF)
+                    {
+                        /* Could be the goal ride: gPeepPathFindQueueRideIndex
+                        or a transport ride */ /* TODO: Something to add here?*/
+                        /* Check for transport ride queues */
+                        rideIndex = mapElement->properties.path.ride_index;
+                        searchResult = PATH_SEARCH_RIDE_QUEUE;
+                        found = true;
+                        break;
+                    }
+                } else // Path is not at the right height.
+                    continue;
+            default:
+                continue;
+            }
+
+            if (!found)
+              continue;
+            //if (found && thisItem.heuristic != 0 && // thisItem.cost < MaxSteps &&
+            //    tileCount < AStarMaxTiles)
+            //{
+                /* Add all new neighbouring, continuing tiles to the open list
+                   ... provind the search limit it not reached. */
+                /* TODO:
+                    PATH_SEARCH_RIDE_QUEUE || PATH_SEARCH_RIDE_ENTRANCE: Get all ride station exits */
+
+            #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+            if (gPathFindDebug) {
+                log_verbose("Found a matching map_element at (%d,%d,%d)", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
+            }
+            #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+            /* If this is the destination search no further, so terminate the loop. */
+            if (thisItem.heuristic == 0) {
+                addedAllNeighbours = true; // force the destination to be added to the closed list.
+		break;
+            }
+
+            /* This is not the destination, so add all neighbours */
+                if (searchResult == PATH_SEARCH_PATH)
+                {
+
+                    uint8 edges = path_get_permitted_edges(mapElement);
+
+                    #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                    if (gPathFindDebug) {
+                        log_verbose("Adding neighbours (permitted edges: %c%c%c%c",
+                            (edges & (1 << 0) ? '0' : ' '),
+                            (edges & (1 << 1) ? '1' : ' '),
+                            (edges & (1 << 2) ? '2' : ' '),
+                            (edges & (1 << 3) ? '3' : ' '));
+                    }
+                    #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+                    sint32 next_edge;
+                    while (((next_edge = bitscanforward(edges)) != -1) &&
+                      tileCount < AStarMaxTiles)
+                    {
+                        sint16 nextTileX;
+                        sint16 nextTileY;
+
+                        // Remove this edge
+            		edges &= ~(1 << next_edge);
+
+                        nextTileX = thisItem.tileX + (TileDirectionDelta[next_edge].x >> 5);
+                        nextTileY = thisItem.tileY + (TileDirectionDelta[next_edge].y >> 5);
+                        if (peep->type == PEEP_TYPE_GUEST ||
+                            ((peep->type == PEEP_TYPE_STAFF) &&
+                             staff_is_location_in_patrol(peep, nextTileX << 5, nextTileY << 5))) // Note: convert nextTileX, nextTileY from tiles into pixels
+                        {
+                            uint8 nextTileZ = thisItem.tileZ;
+                            if (footpath_element_is_sloped(mapElement) &&
+                                footpath_element_get_slope_direction(mapElement) == next_edge)
+                            {
+                                nextTileZ +=2;
+                            }
+                            sint16 next_cost = thisItem.cost + 32;
+
+                            /* Check if next x,y,z is in open, closed or boundary lists. If not, add to open list. */
+                            sint16 found_idx = findXYZInList(nextTileX, nextTileY, nextTileZ, openList, open_size, open_end);
+                            if (found_idx != -1)
+                            {
+
+                                /* Location is already in the open list. */
+                                if (next_cost < openList[found_idx].cost)
+                                {
+                                    /* This is a shorter route to the tile, so update the cost, score and replace the parent. */
+                                    openList[found_idx].cost = next_cost;
+                                    openList[found_idx].score = openList[found_idx].cost + openList[found_idx].heuristic;
+                                    openList[found_idx].parentTileX = thisItem.tileX;
+                                    openList[found_idx].parentTileY = thisItem.tileY;
+                                    openList[found_idx].parentTileZ = thisItem.tileZ;
+
+                                    #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                    if (gPathFindDebug) {
+                                        log_verbose("Neighbour in direction %d at %d,%d,%d found in open list with greater cost - updating with smaller cost", next_edge, nextTileX, nextTileY, nextTileZ);
+                                    }
+                                    #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+                                } else {
+                                    #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                    if (gPathFindDebug) {
+                                        log_verbose("Neighbour in direction %d at %d,%d,%d found in open list with equal or smaller cost", next_edge, nextTileX, nextTileY, nextTileZ);
+                                    }
+                                    #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                }
+                            } else
+                            {
+                                /* Neighbour is not in the open list.
+                                   Check the closed list. */
+                                found_idx = findXYZInList(nextTileX, nextTileY, nextTileZ, closedList, closed_size, closed_end);
+                                if (found_idx == -1)
+                                {
+                                    /* Neighbour is also not in the closed list.
+                                       Check the boundary list. */
+                                    found_idx = findXYZInList(nextTileX, nextTileY, nextTileZ, boundaryList, boundary_size, boundary_end);
+                                    if (found_idx == -1)
+                                    {
+                                        /* Neighbour is also not in the boundary list,
+                                           so add to the open list. */
+                                        uint16 next_heuristic = heuristic_score(nextTileX << 5, nextTileY << 5, nextTileZ); // Note: Convert nextTileX/Y from tiles to pixels.
+                                        addToList(openList, &open_size, &open_end, nextTileX, nextTileY, nextTileZ, thisItem.tileX, thisItem.tileY, thisItem.tileZ, next_heuristic, next_cost);
+
+                                        #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                        if (gPathFindDebug) {
+                                            log_verbose("Neighbour in direction %d at %d,%d,%d not found, adding to open list");
+                                        }
+                                        #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+                                        tileCount++;
+                                        if (tileCount >= AStarMaxTiles)
+                                        {
+                                            #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                            if (gPathFindDebug) {
+                                                log_verbose("Reached search limit: MaxTiles!");
+                                            }
+                                            #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                            // break; // No, do not stop.  Keep processing the open list; no new neighbours can be added, however the boundary list can grow.
+                                        }
+                                    } else {
+                                        #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                        if (gPathFindDebug) {
+                                            log_verbose("Neighbour in direction %d at %d,%d,%d found in boundary list");
+                                        }
+                                        #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                    }
+                                } else {
+                                    #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                    if (gPathFindDebug) {
+                                        log_verbose("Neighbour in direction %d at %d,%d,%d found in closed list");
+                                    }
+                                    #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                                }
+                            }
+                        }
+                        else
+                        {
+                            #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                            if (gPathFindDebug) {
+                                log_verbose("Edge %d outside patrol zone - ignoring", next_edge);
+                            }
+                            #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+                        }
+                    }
+                    if (next_edge != -1)
+                    {
+                      /* Not all edges added - this tile is on the search
+                         boundary */
+                      addedAllNeighbours = false;
+                    }
+                } /* searchResult == PATH_SEARCH_PATH */
+		// TODO: Handle transport RIDE_QUEUES/RIDE_ENTRANCE results.
+                if ((searchResult == PATH_SEARCH_RIDE_QUEUE ||
+                  searchResult == PATH_SEARCH_RIDE_ENTRANCE) &&
+                  rideIndex != 0xFF)
+                {
+                  // Get all other station exit locations
+		  // Note: for RIDE_QUEUE need to find out which station this queue is connected to.
+                }
+            // }
+        } while (!map_element_is_last_for_tile(mapElement++));
+        if (addedAllNeighbours)
+        {
+            #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+            if (gPathFindDebug) {
+                log_verbose("Adding best element (%d,%d,%d) into closed list.", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
+            }
+            #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+            // Add the xyz to the closed list.
+            addToList(closedList, &closed_size, &closed_end,
+                thisItem.tileX,
+                thisItem.tileY,
+                thisItem.tileZ,
+                thisItem.parentTileX,
+                thisItem.parentTileY,
+                thisItem.parentTileZ,
+                thisItem.heuristic,
+                thisItem.cost);
+        } else
+        {
+            #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+            if (gPathFindDebug) {
+                log_verbose("Adding best element (%d,%d,%d) into boundary list.", thisItem.tileX, thisItem.tileY, thisItem.tileZ);
+            }
+            #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+            // Add the xyz to the boundary list.
+            addToList(boundaryList, &boundary_size, &boundary_end,
+                thisItem.tileX,
+                thisItem.tileY,
+                thisItem.tileZ,
+                thisItem.parentTileX,
+                thisItem.parentTileY,
+                thisItem.parentTileZ,
+                thisItem.heuristic,
+                thisItem.cost);
+        }
+
+        #if defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+        if (gPathFindDebug) {
+            log_verbose("Open List.");
+            printList(openList, open_size, open_end);
+            log_verbose("End of Open List");
+        }
+        #endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+
+        /* if (thisItem.x = gPeepPathFindGoalPosition.x &&
+            thisItem.y = gPeepPathFindGoalPosition.y &&
+            thisItem.z = gPeepPathFindGoalPosition.z) */
+        if (thisItem.heuristic == 0)
+        {
+            /* Heuristic search is complete as soon as the
+               destination is added to the closed/boundary list. */
+            return;
+        }
+    } /* Repeat until open list is empty */
+}
+
+
 /**
  * Searches for the tile with the best heuristic score within the search limits
  * starting from the given tile x,y,z and going in the given direction test_edge.
@@ -10158,8 +10726,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
         {
-            log_info("[%03d] Checking map element at %d,%d,%d; Type: %s", counter, x >> 5, y >> 5, z,
-                     gPathFindSearchText[searchResult]);
+            log_info("[%03d] Checking map element at %d,%d,%d", counter, x >> 5, y >> 5, z);
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
@@ -10544,6 +11111,271 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     return;
 }
 
+#define MaxSteps 200
+static locationAndDirection bestPath[MaxSteps];
+
+static sint8 tileDirectionFromDelta(sint16 dx, sint16 dy) {
+/* Lookup the direction for the supplied delta */
+    for (sint8 dir = 0; dir < 8; dir ++) {
+        if (TileDirectionDelta[dir].x == dx &&
+            TileDirectionDelta[dir].y == dy)
+        {
+            return dir;
+        }
+    }
+    return -1;
+}
+
+/* Zax: New choose direction for A* heuristic */
+static sint8 peep_pathfind_choose_direction2(sint16 x, sint16 y, uint8 z, rct_peep *peep) {
+
+    _peepPathFindIsStaff = (peep->type == PEEP_TYPE_STAFF);
+
+    /* Initialise the open list */
+    initList(openList, &open_size, &open_end);
+
+    /* Initialise the closed list */
+    initList(closedList, &closed_size, &closed_end);
+
+    /* Initialise the boundary list */
+    initList(boundaryList, &boundary_size, &boundary_end);
+
+    /* Add the current x,y,z to the open list */
+    addToList(openList, &open_size, &open_end, x >> 5,y >> 5,z,-1,-1,0,
+	heuristic_score(x, y, z),0);
+
+    tileCount = 0;
+
+    #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+    if (gPathFindDebug) {
+        log_verbose("Goal: %d,%d,%d", gPeepPathFindGoalPosition.x >> 5, gPeepPathFindGoalPosition.y >> 5, gPeepPathFindGoalPosition.z);
+    }
+    #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
+
+    /* Call the heuristic search */
+    peep_pathfind_heuristic_search2(peep);
+
+    #if defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+    if (gPathFindDebug) {
+        log_verbose("Open List: (size: %d)", open_size);
+        printList(openList, open_size, open_end);
+
+        log_verbose("Closed List: (size: %d)", closed_size);
+        printList(closedList, closed_size, closed_end);
+
+        log_verbose("Boundary List: (size: %d)", boundary_size);
+        printList(boundaryList, boundary_size, boundary_end);
+    }
+    #endif // defined(DEBUG_LEVEL_3) && DEBUG_LEVEL_3
+
+    #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gPathFindDebug) {
+        // Zaxcav: print some statistics - useful eventually to tune the search limits, etc.
+	log_verbose("Search statistics:");
+        log_verbose("Number of tiles inspected: %d", tileCount);
+        // TODO: Add Max open list size - the open list size grows and shrinks as the search progresses.
+        log_verbose("Max closed list size: %d", closed_size); // close list only grows, so final size is the max.
+        log_verbose("Max boundary list size: %d", boundary_size); // boundary list only grows once the MaxTiles limit is reached, so final size is the max.
+    }
+    #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    searchItem *bestItem;
+
+    /* If a path to the goal was found, goal will be in the closed list. */
+    sint16 best_idx = findXYZInList(gPeepPathFindGoalPosition.x >> 5, gPeepPathFindGoalPosition.y >> 5, gPeepPathFindGoalPosition.z, closedList, closed_size, closed_end);
+    if (best_idx != -1)
+    {
+	bestItem = &closedList[best_idx];
+    }
+    else //if (best_idx == -1)
+    {
+        /* Goal was not found. Search Failed! */
+        if (tileCount < AStarMaxTiles)
+	{
+	    /* Search limit not reached, i.e. all reachable paths searched and
+	       no route to goal found */
+            #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+            if (gPathFindDebug) {
+                log_verbose("No path exists!");
+            }
+            #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+            return -1;
+	}
+
+	/* Search limit reached */
+        #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+        if (gPathFindDebug) {
+            log_verbose("No path to goal found (search space exhausted) picking best boundary tile.");
+        }
+        #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+        /* Find the best result on the search boundary. */
+        best_idx = findBestScoreInList(boundaryList, boundary_size, boundary_end);
+        if (best_idx != -1)
+        {
+            bestItem = &boundaryList[best_idx];
+        }
+        else //if (best_idx == -1)
+        {
+            /* This only occurs if the boundary list is empty.
+               i.e. no tiles added to the boundary list - technically this should
+               not occur when tileCount >= AStarMaxTiles */
+            #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+            if (gPathFindDebug) {
+                log_verbose("No boundary tiles!");
+            }
+            #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+            return -1;
+        }
+    }
+
+    /* Count the length of the best path */
+    /* All paths to the best result must be in the closed list
+    * ... not quite true. The parent of the best result could have had only some neighbours added, and be in the boundary list. */
+    uint16 solutionCount = 1;
+    searchItem *currentItem = bestItem;
+    sint16 current_idx = best_idx;
+    bool isFirst = true;
+    while (currentItem->parentTileX != -1 &&
+        currentItem->parentTileY != -1)
+    {
+        /* The tile has a parent, i.e. is not the start */
+        /* Find the index of the parent */
+        current_idx = findXYZInList(currentItem->parentTileX,
+                currentItem->parentTileY,
+                currentItem->parentTileZ,
+                closedList, closed_size, closed_end);
+        if (current_idx == -1)
+        {
+            if (isFirst)
+            {
+                if (tileCount >= AStarMaxTiles)
+                {
+                    /* If the search limit was exceeded and the best item was found in the boundary
+                     * list, its parent may also be in the boundary list - this is the special case
+                     * in which the search limit was exceeded while adding its neighbours and the
+                     * best item was one of the neighbours added before the search limit was exceeded.
+                     */
+                    current_idx = findXYZInList(currentItem->parentTileX,
+                        currentItem->parentTileY,
+                        currentItem->parentTileZ,
+                        boundaryList, boundary_size, boundary_end);
+
+                    /* The parent wasn't found in either the closed/boundary lists! */
+                    if (current_idx == -1)
+                    {
+                        log_error("Search limit exceeded. First parent not in closed or boundary list. Investigate.\n");
+	            }
+                    assert(current_idx != -1);
+                    currentItem = &boundaryList[current_idx];
+                }
+                else
+                {
+                    log_error("Search limit not exceeded. First parent not in closed list. Investigate.\n");
+                    assert(true);
+                }
+            }
+            else
+            {
+                log_error("Non-first parent not in closed list. Investigate.");
+                assert(true);
+            }
+        }
+        else
+        {
+          currentItem = &closedList[current_idx];
+        }
+        solutionCount++;
+	isFirst = false;
+    }
+
+    #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    uint8 bestPathLength = ((solutionCount < MaxSteps) ? (uint8)solutionCount : MaxSteps);
+    #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    /* Clear bestPath */
+    bestPath[0].tileX = 0;
+    bestPath[0].tileY = 0;
+    bestPath[0].tileZ = 0;
+    bestPath[0].direction = -1;
+
+    /* Extract the path from the best tile back to the start using the
+       closed list */
+    currentItem = bestItem;
+    if (solutionCount <= MaxSteps)
+    {
+        /* Insert the final tile with no direction (-1) at the end */
+        bestPath[solutionCount - 1].tileX = currentItem->tileX;
+        bestPath[solutionCount - 1].tileY = currentItem->tileY;
+        bestPath[solutionCount - 1].tileZ = currentItem->tileZ;
+        bestPath[solutionCount - 1].direction = -1;
+    }
+
+    /* Work backwards to the start adding the *parent* of the current tile*/
+    isFirst = true;
+    while (solutionCount > 1)
+    {
+
+        /* Find the index of the parent */
+        sint16 parent_idx;
+        searchItem *parentItem = NULL;
+        parent_idx = findXYZInList(currentItem->parentTileX,
+            currentItem->parentTileY,
+            currentItem->parentTileZ,
+            closedList, closed_size, closed_end);
+        if (parent_idx == -1)
+        {
+            if (isFirst && (tileCount >= AStarMaxTiles))
+            {
+                parent_idx = findXYZInList(currentItem->parentTileX,
+                    currentItem->parentTileY,
+                    currentItem->parentTileZ,
+                    boundaryList, boundary_size, boundary_end);
+                assert(parent_idx != -1);
+                parentItem = &boundaryList[parent_idx];
+            }
+            else
+            {
+                /* The parent wasn't found the closed list */
+                assert(true);
+            }
+        }
+        else
+        {
+            parentItem = &closedList[parent_idx];
+        }
+
+	if (solutionCount - 2 < MaxSteps)
+	{
+            bestPath[solutionCount - 2].tileX = parentItem->tileX;
+            bestPath[solutionCount - 2].tileY = parentItem->tileY;
+            bestPath[solutionCount - 2].tileZ = parentItem->tileZ;
+            bestPath[solutionCount - 2].direction = tileDirectionFromDelta((currentItem->tileX - parentItem->tileX) << 5, (currentItem->tileY - parentItem->tileY) << 5);
+            /* If the direction is -1, something went wrong. */
+            if (bestPath[solutionCount - 2].direction == -1)
+            {
+	        log_error("Could not determine direction from parent. Investigate.");
+            }
+            assert(bestPath[solutionCount - 2].direction != -1);
+        }
+        currentItem = parentItem;
+        solutionCount--;
+	isFirst = false;
+    }
+
+    #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gPathFindDebug) {
+        log_verbose("Peep path");
+        printRoute(bestPath, bestPathLength);
+    }
+    #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    /* If the first tile is not the starting tile, bestPath list is corrupted! */
+    assert(bestPath[0].tileX == x >> 5 && bestPath[0].tileY == y >> 5 && bestPath[0].tileZ == z);
+
+    return bestPath[0].direction;
+}
+
 /**
  * Returns:
  *   -1   - no direction chosen
@@ -10551,7 +11383,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
  *
  *  rct2: 0x0069A5F0
  */
-sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * peep)
+static sint32 peep_pathfind_choose_direction1(sint16 x, sint16 y, uint8 z, rct_peep * peep)
 {
     // The max number of thin junctions searched - a per-search-path limit.
     _peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
@@ -10921,6 +11753,16 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
     return chosen_edge;
 }
 
+// Zax: a wrapper to choose between the original and new heuristic search
+sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep *peep)
+{
+    if (enable_astar_pathfinding(peep) || gAStarEnableAll) {
+        return peep_pathfind_choose_direction2(x, y, z, peep);
+    } else {
+        return peep_pathfind_choose_direction1(x, y, z, peep);
+    }
+}
+
 /**
  * Gets the nearest park entrance relative to point, by using Manhattan distance.
  * @param x x coordinate of location
@@ -11087,13 +11929,29 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_map_element * m
     gPeepPathFindQueueRideIndex      = 255;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    pathfind_logging_enable(peep);
+    //pathfind_logging_enable(peep);
+    #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+
+    // Zax: debugging for peep leaving park - check where the park entrance
+    // is - deleting the entrance with the tile inspector does not remove
+    // the entrance details in gParkEntrances.
+    #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+    if (gPathFindDebug) {
+        log_verbose("Peep leaving park, heading for entrance %d at %d,%d,%d", entranceNum, x >> 5, y >> 5, z >> 3);
+        log_verbose("Park entrances:");
+        for (uint8 eIdx = 0; eIdx < MAX_PARK_ENTRANCES; eIdx++)
+        {
+            if (gParkEntrances[eIdx].x == LOCATION_NULL)
+                continue;
+            log_verbose(" %d at %d,%d,%d", eIdx, gParkEntrances[eIdx].x >> 5, gParkEntrances[eIdx].y >> 5, gParkEntrances[eIdx].z >> 3);
+        }
+    }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     sint32 chosenDirection = peep_pathfind_choose_direction(peep->next_x, peep->next_y, peep->next_z, peep);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-    pathfind_logging_disable();
+    //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
     if (chosenDirection == -1)
@@ -11294,12 +12152,15 @@ static sint32 guest_path_finding(rct_peep * peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
+            // Zaxcav: Original path finding ignores paths with the wide flag set.
+            if (!enable_astar_pathfinding(peep) && !gAStarEnableAll) {
             /* If there is a wide path in that direction,
                 remove that edge and try another */
-            if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) ==
-                PATH_SEARCH_WIDE)
-            {
-                adjustedEdges &= ~(1 << chosenDirection);
+                if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) ==
+                    PATH_SEARCH_WIDE)
+                {
+                    adjustedEdges &= ~(1 << chosenDirection);
+                }
             }
         }
         if (adjustedEdges != 0)
@@ -11332,7 +12193,7 @@ static sint32 guest_path_finding(rct_peep * peep)
             log_info("Completed guest_path_finding for %s - taking only direction available: %d.", gPathFindDebugPeepName,
                      direction);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return peep_move_one_tile(direction, peep);
     }
@@ -11348,7 +12209,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         {
             log_info("Completed guest_path_finding for %s - peep is outside the park.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         switch (peep->state)
         {
@@ -11419,7 +12280,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         {
             log_info("Completed guest_path_finding for %s - peep is leaving the park.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_park_entrance(peep, mapElement, edges);
     }
@@ -11431,7 +12292,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         {
             log_info("Completed guest_path_finding for %s - peep is aimless.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_aimless(peep, edges);
     }
@@ -11448,7 +12309,7 @@ static sint32 guest_path_finding(rct_peep * peep)
             log_info("Completed guest_path_finding for %s - peep is heading to closed ride == aimless.",
                      gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         return guest_path_find_aimless(peep, edges);
     }
@@ -11544,7 +12405,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         {
             log_info("Completed guest_path_finding for %s - failed to choose a direction == aimless.", gPathFindDebugPeepName);
         }
-        pathfind_logging_disable();
+        //pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
         return guest_path_find_aimless(peep, edges);
@@ -11554,7 +12415,7 @@ static sint32 guest_path_finding(rct_peep * peep)
     {
         log_info("Completed guest_path_finding for %s - direction chosen: %d.", gPathFindDebugPeepName, direction);
     }
-    pathfind_logging_disable();
+    // pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     return peep_move_one_tile(direction, peep);
 }
@@ -14258,6 +15119,16 @@ void peep_handle_easteregg_name(rct_peep * peep)
     }
 }
 
+// Zaxcav: Enable A* pathfinding for peep.
+static bool enable_astar_pathfinding(rct_peep* peep) {
+    format_string(gAStarPeepName, sizeof(gAStarPeepName), peep->name_string_idx, &(peep->id));
+
+    if (peep->type == PEEP_TYPE_GUEST){
+        return peep->peep_flags & PEEP_FLAGS_TRACKING;
+    }
+    return strcmp(gAStarPeepName, "Mechanic Star") == 0;
+}
+
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 void pathfind_logging_enable(rct_peep * peep)
 {
@@ -14277,12 +15148,17 @@ void pathfind_logging_enable(rct_peep * peep)
      * string comparison with a compile time hardcoded name. */
     else
     {
-        gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+        if (!enable_astar_pathfinding(peep))
+        {
+            gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Debug") == 0;
+        } else {
+            gPathFindDebug = strcmp(gPathFindDebugPeepName, "Mechanic Star") == 0;
+        }
     }
 #endif // defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
 }
 
-void pathfind_logging_disable()
+void pathfind_logging_disable()  // Zax: should not be necessary to call this - it's disabled when calling pathfind_logging_enable() for a non-matching peep.
 {
 #if defined(PATHFIND_DEBUG) && PATHFIND_DEBUG
     gPathFindDebug = false;
