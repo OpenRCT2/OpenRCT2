@@ -94,7 +94,7 @@ void StringTable::Sort()
         {
             if (a.LanguageId == b.LanguageId)
             {
-                return _strcmpi(a.Text, b.Text) == -1;
+                return _strcmpi(a.Text, b.Text) < 0;
             }
 
             uint8 currentLanguage = LanguagesDescriptors[gCurrentLanguage].rct2_original_id;
