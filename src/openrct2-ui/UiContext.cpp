@@ -495,11 +495,11 @@ public:
         if (gConfigGeneral.use_nn_at_integer_scales &&
             gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            _scaleQuality = 0;
+            _scaleQuality = SCALE_QUALITY_NN;
         }
-        if (_scaleQuality == 3)
+        if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
-            _scaleQuality = 1;
+            _scaleQuality = SCALE_QUALITY_LINEAR;
         }
         snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", _scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
