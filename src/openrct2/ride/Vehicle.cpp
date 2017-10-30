@@ -1416,14 +1416,15 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
         vehicle->var_4E             = 0;
         vehicle->var_4A             = 0;
 
-        Ride *                   ride         = get_ride(vehicle->ride);
-        rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
-        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
+        Ride *           ride      = get_ride(vehicle->ride);
+        rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
         if (rideEntry == nullptr)
         {
             continue;
         }
+
+        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
             if (abs(vehicle->var_B6) <= 700 && !(vehicle->var_BA & 0x30) &&
@@ -2067,13 +2068,13 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
         break;
     default:
     {
-        rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
-        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
-
+        rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
         if (rideEntry == nullptr)
         {
             return;
         }
+
+        rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
         if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
         {
@@ -2426,8 +2427,8 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
  */
 static void vehicle_update_dodgems_mode(rct_vehicle * vehicle)
 {
-    Ride *                   ride         = get_ride(vehicle->ride);
-    rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
+    Ride *           ride      = get_ride(vehicle->ride);
+    rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
     if (rideEntry == nullptr)
     {
         return;
