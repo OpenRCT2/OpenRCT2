@@ -7613,9 +7613,6 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
         if (y_diff > 0x7FFF)
             return false;
 
-        if (x_diff + y_diff > 0xFFFF)
-            return false;
-
         sint32 z_diff = abs(z - collideVehicle->z);
         if (x_diff + y_diff + z_diff > 0xFFFF)
             return false;
@@ -7672,9 +7669,6 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
 
             uint32 y_diff = abs(collideVehicle->y - y);
             if (y_diff > 0x7FFF)
-                continue;
-
-            if (x_diff + y_diff > 0xFFFF)
                 continue;
 
             uint8 cl = Math::Min(vehicle->var_CD, collideVehicle->var_CD);
