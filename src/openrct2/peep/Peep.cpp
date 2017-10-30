@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Util.hpp"
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../audio/AudioMixer.h"
@@ -22,6 +21,7 @@
 #include "../cheats.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../game.h"
 #include "../input.h"
 #include "../interface/window.h"
@@ -30,10 +30,10 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
-#include "../ride/ride.h"
-#include "../ride/ride_data.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
+#include "../ride/ride.h"
+#include "../ride/ride_data.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"
 #include "../util/util.h"
@@ -66,8 +66,8 @@ uint32 gNextGuestNumber;
 uint8 gPeepWarningThrottle[16];
 
 LocationXYZ16 gPeepPathFindGoalPosition;
-bool      gPeepPathFindIgnoreForeignQueues;
-uint8     gPeepPathFindQueueRideIndex;
+bool          gPeepPathFindIgnoreForeignQueues;
+uint8         gPeepPathFindQueueRideIndex;
 // uint32 gPeepPathFindAltStationNum;
 static bool   _peepPathFindIsStaff;
 static sint8  _peepPathFindNumJunctions;
@@ -82,7 +82,7 @@ static uint8  _peepPathFindFewestNumSteps;
 static struct
 {
     LocationXYZ8 location;
-    uint8    direction;
+    uint8        direction;
 } _peepPathFindHistory[16];
 
 static uint8             _unk_F1AEF0;
@@ -3440,7 +3440,6 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     }
     peep->current_ride_station  = ride_station;
     rct_ride_entry * ride_entry = get_ride_entry(vehicle->ride_subtype);
-
     if (ride_entry == nullptr)
     {
         return;
@@ -4778,7 +4777,7 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride 
             vehicle = GET_VEHICLE(vehicle->prev_vehicle_on_ride);
         }
 
-        LocationXY16 offset             = word_981D6C[peep->direction];
+        LocationXY16 offset         = word_981D6C[peep->direction];
         peep->destination_x         = (offset.x * -12) + vehicle->x;
         peep->destination_y         = (offset.y * -12) + vehicle->y;
         peep->destination_tolerence = 2;
@@ -4916,7 +4915,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
             return false;
         }
 
-        sint32   direction = map_element_get_direction(mapElement);
+        sint32       direction = map_element_get_direction(mapElement);
         LocationXY16 offset    = _992A3C[direction];
 
         stationX += 16 + offset.x;
@@ -10729,9 +10728,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
         uint8  best_sub   = 0xFF;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        uint8    bestJunctions         = 0;
+        uint8        bestJunctions         = 0;
         LocationXYZ8 bestJunctionList[16]  = { 0 };
-        uint8    bestDirectionList[16] = { 0 };
+        uint8        bestDirectionList[16] = { 0 };
         LocationXYZ8 bestXYZ               = { 0, 0, 0 };
 
         if (gPathFindDebug)
@@ -10791,9 +10790,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
              * of the search path.
              * In the future these could be used to visualise the
              * pathfinding on the map. */
-            uint8    endJunctions         = 0;
+            uint8        endJunctions         = 0;
             LocationXYZ8 endJunctionList[16]  = { 0 };
-            uint8    endDirectionList[16] = { 0 };
+            uint8        endDirectionList[16] = { 0 };
 
             bool inPatrolArea = false;
             if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_MECHANIC)
@@ -11116,7 +11115,7 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_map_element * m
  */
 static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
 {
-    LocationXY16          result     = { 0, 0 };
+    LocationXY16      result     = { 0, 0 };
     rct_map_element * mapElement = map_get_first_element_at(*x / 32, *y / 32);
 
     if (mapElement == NULL)
