@@ -1151,7 +1151,21 @@ void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, cons
         window_object_load_error_open(strndup(path, strnlen(path, MAX_PATH)),
                                       ParkLoadResult_GetMissingObjectsCount(result),
                                       ParkLoadResult_GetMissingObjects(result));
-    } else if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
+    }
+    else if (ParkLoadResult_GetError(result) == PARK_LOAD_ERROR_UNSUPPORTED_RCTC_FLAG)
+    {
+        // This option is used when loading parks from the command line
+        // to ensure that the title sequence loads before the window
+        if (loadTitleFirst)
+        {
+            title_load();
+        }
+
+        set_format_arg(0, uint16, ParkLoadResult_GetFlag(result));
+        context_show_error(STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG, STR_NONE);
+
+    }
+    else if (ParkLoadResult_GetError(result) != PARK_LOAD_ERROR_OK) {
         // If loading the SV6 or SV4 failed for a reason other than invalid objects
         // the current park state will be corrupted so just go back to the title screen.
         title_load();

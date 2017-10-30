@@ -3813,6 +3813,8 @@ enum {
 
     STR_CONSOLE = 6157,
 
+    STR_FAILED_TO_LOAD_IMCOMPATIBLE_RCTC_FLAG = 6158,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
