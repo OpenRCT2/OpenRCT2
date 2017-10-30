@@ -27,6 +27,7 @@
 #include "../ParkImporter.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
+#include "TitleScreen.h"
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
@@ -187,12 +188,17 @@ public:
             Reset();
         }
 
+        if (_sequence->Commands[targetPosition].Type == TITLE_SCRIPT_RESTART)
+        {
+            targetPosition = 0;
+        }
         // Set position to the last LOAD command before target position
         for (sint32 i = targetPosition; i >= 0; i--)
         {
             const TitleCommand * command = &_sequence->Commands[i];
-            if (TitleSequenceIsLoadCommand(command))
+            if ((_position == i && _position != targetPosition) || TitleSequenceIsLoadCommand(command))
             {
+                // Break if we have a new load command or if we're already in the range of the correct load command
                 _position = i;
                 break;
             }
@@ -363,9 +369,18 @@ private:
         bool success = false;
         try
         {
-            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
-            parkImporter->Load(path);
-            parkImporter->Import();
+            if (gTestingTitleSequenceInGame)
+            {
+                gLoadKeepWindowsOpen = true;
+                CloseParkSpecificWindows();
+                context_load_park_from_file(path);
+            }
+            else
+            {
+                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(path));
+                parkImporter->Load(path);
+                parkImporter->Import();
+            }
             PrepareParkForPlayback();
             success = true;
         }
@@ -373,6 +388,7 @@ private:
         {
             Console::Error::WriteLine("Unable to load park: %s", path);
         }
+        gLoadKeepWindowsOpen = false;
         return success;
     }
 
@@ -386,11 +402,20 @@ private:
         bool success = false;
         try
         {
-            std::string extension = Path::GetExtension(hintPath);
-            bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
-            auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
-            parkImporter->LoadFromStream(stream, isScenario);
-            parkImporter->Import();
+            if (gTestingTitleSequenceInGame)
+            {
+                gLoadKeepWindowsOpen = true;
+                CloseParkSpecificWindows();
+                context_load_park_from_stream(stream);
+            }
+            else
+            {
+                std::string extension = Path::GetExtension(hintPath);
+                bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
+                auto parkImporter = std::unique_ptr<IParkImporter>(ParkImporter::Create(hintPath));
+                parkImporter->LoadFromStream(stream, isScenario);
+                parkImporter->Import();
+            }
             PrepareParkForPlayback();
             success = true;
         }
@@ -398,7 +423,32 @@ private:
         {
             Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
         }
+        gLoadKeepWindowsOpen = false;
         return success;
+    }
+
+    void CloseParkSpecificWindows()
+    {
+        window_close_by_class(WC_CONSTRUCT_RIDE);
+        window_close_by_class(WC_DEMOLISH_RIDE_PROMPT);
+        window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
+        window_close_by_class(WC_EDITOR_INVENTION_LIST);
+        window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+        window_close_by_class(WC_EDTIOR_OBJECTIVE_OPTIONS);
+        window_close_by_class(WC_EDITOR_SCENARIO_OPTIONS);
+        window_close_by_class(WC_FINANCES);
+        window_close_by_class(WC_FIRE_PROMPT);
+        window_close_by_class(WC_GUEST_LIST);
+        window_close_by_class(WC_INSTALL_TRACK);
+        window_close_by_class(WC_PEEP);
+        window_close_by_class(WC_RIDE);
+        window_close_by_class(WC_RIDE_CONSTRUCTION);
+        window_close_by_class(WC_RIDE_LIST);
+        window_close_by_class(WC_SCENERY);
+        window_close_by_class(WC_STAFF);
+        window_close_by_class(WC_TRACK_DELETE_PROMPT);
+        window_close_by_class(WC_TRACK_DESIGN_LIST);
+        window_close_by_class(WC_TRACK_DESIGN_PLACE);
     }
 
     void PrepareParkForPlayback()
@@ -452,7 +502,13 @@ private:
         if (w != nullptr)
         {
             sint32 z = map_element_height(x, y);
+
+            // Prevent scroll adjustment due to window placement when in-game
+            auto oldScreenFlags = gScreenFlags;
+            gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
             window_set_location(w, x, y, z);
+            gScreenFlags = oldScreenFlags;
+
             viewport_update_position(w);
 
             // Save known tile position in case of window resize
@@ -487,6 +543,8 @@ ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioR
 
 extern "C"
 {
+    bool gTestingTitleSequenceInGame = false;
+
     sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
     {
         return player->GetCurrentPosition();

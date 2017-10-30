@@ -45,6 +45,9 @@ typedef struct ITitleSequencePlayer ITitleSequencePlayer;
 extern "C"
 {
 #endif
+    // When testing title sequences within a normal game
+    extern bool gTestingTitleSequenceInGame;
+
     sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player);
     bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId);
     void title_sequence_player_reset(ITitleSequencePlayer * player);

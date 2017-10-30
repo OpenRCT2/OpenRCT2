@@ -171,7 +171,7 @@ static LocationXY16 get_location()
         sint32 interactionType;
         rct_map_element *mapElement;
 
-        get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
+        get_map_coordinates_from_pos_window(w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
         mapCoord.x -= 16;
         mapCoord.x /= 32;
         mapCoord.y -= 16;

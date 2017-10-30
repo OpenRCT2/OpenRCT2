@@ -280,6 +280,15 @@ void window_title_editor_open(sint32 tab)
 
 static void window_title_editor_close(rct_window *w)
 {
+    uint16 preset = title_get_config_sequence();
+    title_set_current_sequence(preset, false);
+    if (!gTestingTitleSequenceInGame)
+    {
+        ITitleSequencePlayer * player = window_title_editor_get_player();
+        player->Begin(preset);
+    }
+    gTestingTitleSequenceInGame = false;
+
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
@@ -447,14 +456,26 @@ static void window_title_editor_mouseup(rct_window *w, rct_widgetindex widgetInd
         break;
     case WIDX_TITLE_EDITOR_STOP:
         if (_isSequencePlaying) {
-            title_set_current_sequence(0);
+            uint16 preset = title_get_config_sequence();
+            title_set_current_sequence(preset, false);
+            if (!gTestingTitleSequenceInGame)
+            {
+                ITitleSequencePlayer * player = window_title_editor_get_player();
+                player->Begin(preset);
+            }
             _isSequencePlaying = false;
+            gTestingTitleSequenceInGame = false;
         }
         break;
     case WIDX_TITLE_EDITOR_PLAY:
-        if (!_isSequencePlaying && (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
-            title_set_current_sequence((uint16)_selectedTitleSequence);
+        if (!_isSequencePlaying || _selectedTitleSequence != title_get_current_sequence()) {
+            ITitleSequencePlayer * player = window_title_editor_get_player();
+            title_set_current_sequence((uint16)_selectedTitleSequence, true);
+            player->Begin((uint32)_selectedTitleSequence);
             _isSequencePlaying = true;
+            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
+                gTestingTitleSequenceInGame = true;
+            }
         }
         break;
     case WIDX_TITLE_EDITOR_SKIP:
@@ -747,7 +768,7 @@ static void window_title_editor_invalidate(rct_window *w)
     window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].top = w->height - 32;
     window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
 
-    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)) {
+    if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && gScreenFlags != SCREEN_FLAGS_PLAYING) {
         w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
     } else {
         w->disabled_widgets &= ~(1 << WIDX_TITLE_EDITOR_PLAY);
@@ -840,7 +861,7 @@ static void window_title_editor_scrollpaint_saves(rct_window *w, rct_drawpixelin
 static void window_title_editor_scrollpaint_commands(rct_window *w, rct_drawpixelinfo *dpi)
 {
     sint32 position = -1;
-    if (_isSequencePlaying) {
+    if (_isSequencePlaying && (uint16)_selectedTitleSequence == title_get_current_sequence()) {
         ITitleSequencePlayer * player = window_title_editor_get_player();
         position = title_sequence_player_get_current_position(player);
     }

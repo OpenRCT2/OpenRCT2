@@ -377,10 +377,85 @@ namespace OpenRCT2
             return true;
         }
 
-        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail = false) final override
+        bool LoadParkFromFile(const std::string &path, bool loadTitleScreenOnFail) final override
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             return LoadParkFromStream(&fs, path, loadTitleScreenOnFail);
+        }
+
+        bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail) final override
+        {
+            ClassifiedFileInfo info;
+            if (TryClassifyFile(stream, &info))
+            {
+                if (info.Type == FILE_TYPE::SAVED_GAME ||
+                    info.Type == FILE_TYPE::SCENARIO)
+                {
+                    std::unique_ptr<IParkImporter> parkImporter;
+                    if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                    {
+                        // Save is an S4 (RCT1 format)
+                        parkImporter.reset(ParkImporter::CreateS4());
+                    }
+                    else
+                    {
+                        // Save is an S6 (RCT2 format)
+                        parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
+                    }
+
+                    auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                    if (result.Error == PARK_LOAD_ERROR_OK)
+                    {
+                        parkImporter->Import();
+                        game_fix_save_vars();
+                        sprite_position_tween_reset();
+                        gScreenAge = 0;
+                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                        if (info.Type == FILE_TYPE::SAVED_GAME)
+                        {
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
+                                network_close();
+                            }
+                            game_load_init();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
+                                network_send_map();
+                            }
+                        }
+                        else
+                        {
+                            scenario_begin();
+                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            {
+                                network_send_map();
+                            }
+                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            {
+                                network_close();
+                            }
+                        }
+                        // This ensures that the newly loaded save reflects the user's
+                        // 'show real names of guests' option, now that it's a global setting
+                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                        return true;
+                    }
+                    else
+                    {
+                        handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
+                    }
+
+                }
+                else
+                {
+                    Console::Error::WriteLine("Invalid file type.");
+                }
+            }
+            else
+            {
+                Console::Error::WriteLine("Unable to detect file type.");
+            }
+            return false;
         }
 
     private:
@@ -701,81 +776,6 @@ namespace OpenRCT2
             console_update();
         }
 
-        bool LoadParkFromStream(IStream * stream, const std::string &path, bool loadTitleScreenFirstOnFail)
-        {
-            ClassifiedFileInfo info;
-            if (TryClassifyFile(stream, &info))
-            {
-                if (info.Type == FILE_TYPE::SAVED_GAME ||
-                    info.Type == FILE_TYPE::SCENARIO)
-                {
-                    std::unique_ptr<IParkImporter> parkImporter;
-                    if (info.Version <= FILE_TYPE_S4_CUTOFF)
-                    {
-                        // Save is an S4 (RCT1 format)
-                        parkImporter.reset(ParkImporter::CreateS4());
-                    }
-                    else
-                    {
-                        // Save is an S6 (RCT2 format)
-                        parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
-                    }
-
-                    auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                    if (result.Error == PARK_LOAD_ERROR_OK)
-                    {
-                        parkImporter->Import();
-                        game_fix_save_vars();
-                        sprite_position_tween_reset();
-                        gScreenAge = 0;
-                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-                        if (info.Type == FILE_TYPE::SAVED_GAME)
-                        {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
-                            game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                network_send_map();
-                            }
-                        }
-                        else
-                        {
-                            scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                    network_send_map();
-                            }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
-                        }
-                        // This ensures that the newly loaded save reflects the user's
-                        // 'show real names of guests' option, now that it's a global setting
-                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                        return true;
-                    }
-                    else
-                    {
-                        handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
-                    }
-
-                }
-                else
-                {
-                    Console::Error::WriteLine("Invalid file type.");
-                }
-            }
-            else
-            {
-                Console::Error::WriteLine("Unable to detect file type.");
-            }
-            return false;
-        }
-
         /**
         * Copy saved games and landscapes to user directory
         */
@@ -878,6 +878,11 @@ extern "C"
     bool context_load_park_from_file(const utf8 * path)
     {
         return GetContext()->LoadParkFromFile(path);
+    }
+
+    bool context_load_park_from_stream(void * stream)
+    {
+        return GetContext()->LoadParkFromStream((IStream*)stream, "");
     }
 
     void openrct2_write_full_version_info(utf8 * buffer, size_t bufferSize)

@@ -58,9 +58,13 @@ uint16 TitleScreen::GetCurrentSequence()
     return _currentSequence;
 }
 
-void TitleScreen::SetCurrentSequence(uint16 value)
+void TitleScreen::SetCurrentSequence(uint16 value, bool loadSequence)
 {
     _currentSequence = value;
+    if (loadSequence)
+    {
+        TryLoadSequence();
+    }
 }
 
 bool TitleScreen::ShouldHideVersionInfo()
@@ -103,7 +107,7 @@ void TitleScreen::Load()
 
     if (_sequencePlayer != nullptr)
     {
-        _sequencePlayer->Reset();
+        _sequencePlayer->Begin(_currentSequence);
 
         // Force the title sequence to load / update so we
         // don't see a blank screen for a split second.
@@ -187,7 +191,7 @@ void TitleScreen::TitleInitialise()
         IScenarioRepository * scenarioRepository = GetScenarioRepository();
         _sequencePlayer = CreateTitleSequencePlayer(scenarioRepository);
     }
-    size_t seqId = title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+    size_t seqId = title_get_config_sequence();
     if (seqId == SIZE_MAX)
     {
         seqId = title_sequence_manager_get_index_for_config_id("*OPENRCT2");
@@ -283,6 +287,11 @@ extern "C"
         }
     }
 
+    uint16 title_get_config_sequence()
+    {
+        return (uint16)title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+    }
+
     uint16 title_get_current_sequence()
     {
         uint16 result = 0;
@@ -293,11 +302,11 @@ extern "C"
         return result;
     }
 
-    void title_set_current_sequence(uint16 value)
+    void title_set_current_sequence(uint16 value, bool loadSequence)
     {
         if (_singleton != nullptr)
         {
-            _singleton->SetCurrentSequence(value);
+            _singleton->SetCurrentSequence(value, loadSequence);
         }
     }
 

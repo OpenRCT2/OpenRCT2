@@ -1962,7 +1962,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
         );
 
-        const utf8 * name = title_sequence_manager_get_name(title_get_current_sequence());
+        const utf8 * name = title_sequence_manager_get_name(title_get_config_sequence());
         set_format_arg(0, uintptr_t, (uintptr_t)name);
         gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
         gfx_draw_string_left_clipped(

@@ -156,6 +156,8 @@ extern sint32 gGameCommandNestLevel;
 extern bool gGameCommandIsNetworked;
 extern char gCurrentLoadedPath[260];
 
+extern bool gLoadKeepWindowsOpen;
+
 extern uint8 gUnk13CA740;
 extern uint8 gUnk141F568;
 
