@@ -6684,11 +6684,8 @@ static void peep_update_answering(rct_peep * peep)
         peep->var_74++;
         if (peep->var_74 > 2500)
         {
-            if (ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
-            {
-                ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
-                ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
-            }
+            ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
+            ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_FALLING;
             peep_window_state_update(peep);
