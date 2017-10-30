@@ -63,7 +63,7 @@ public:
             break;
         }
 
-        return Path::Combine(basePath, directoryName);
+        return Path::Combine( {basePath, directoryName} );
     }
 
     std::string GetFilePath(PATHID pathid) const override

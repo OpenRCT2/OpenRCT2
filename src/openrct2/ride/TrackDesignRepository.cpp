@@ -328,7 +328,7 @@ public:
             if (!(item->Flags & TRIF_READ_ONLY))
             {
                 std::string directory = Path::GetDirectory(path);
-                std::string newPath = Path::Combine(directory, newName + Path::GetExtension(path));
+                std::string newPath = Path::Combine( {directory, newName + Path::GetExtension(path)} );
                 if (File::Move(path, newPath))
                 {
                     item->Name = newName;
@@ -347,7 +347,7 @@ public:
         std::string fileName = Path::GetFileName(path);
         std::string installDir = _env->GetDirectoryPath(DIRBASE::USER, DIRID::TRACK);
 
-        std::string newPath = Path::Combine(installDir, fileName);
+        std::string newPath = Path::Combine( {installDir, fileName} );
         if (File::Copy(path, newPath, false))
         {
             auto td = _fileIndex.Create(path);

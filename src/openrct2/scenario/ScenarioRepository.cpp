@@ -454,7 +454,7 @@ private:
     {
         auto mpdatPath = _env->GetFilePath(PATHID::MP_DAT);
         auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
-        auto sc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
+        auto sc21Path = Path::Combine( {scenarioDirectory, "sc21.sc4"} );
         if (File::Exists(mpdatPath) && !File::Exists(sc21Path))
         {
             ConvertMegaPark(mpdatPath, sc21Path);

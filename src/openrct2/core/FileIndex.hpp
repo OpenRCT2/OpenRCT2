@@ -155,7 +155,7 @@ private:
         {
             log_verbose("FileIndex:Scanning for %s in '%s'", _pattern.c_str(), directory.c_str());
 
-            auto pattern = Path::Combine(directory, _pattern);
+            auto pattern = Path::Combine( {directory, _pattern} );
             auto scanner = Path::ScanDirectory(pattern, true);
             while (scanner->Next())
             {

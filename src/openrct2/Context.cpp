@@ -235,7 +235,7 @@ namespace OpenRCT2
             if (pathId == PATH_ID_CSS50)
             {
                 auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                result = Path::Combine(dataPath, "css17.dat");
+                result = Path::Combine( {dataPath, "css17.dat"} );
             }
             else if (pathId >= 0 && pathId < PATH_ID_END)
             {
@@ -243,7 +243,7 @@ namespace OpenRCT2
                 if (fileName != nullptr)
                 {
                     auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::Combine(dataPath, fileName);
+                    result = Path::Combine( {dataPath, fileName} );
                 }
             }
             return result;
@@ -796,12 +796,12 @@ namespace OpenRCT2
         {
             log_verbose("CopyOriginalUserFilesOver('%s', '%s', '%s')", srcRoot.c_str(), dstRoot.c_str(), pattern.c_str());
 
-            auto scanPattern = Path::Combine(srcRoot, pattern);
+            auto scanPattern = Path::Combine( {srcRoot, pattern} );
             auto scanner = Path::ScanDirectory(scanPattern, true);
             while (scanner->Next())
             {
                 auto src = std::string(scanner->GetPath());
-                auto dst = Path::Combine(dstRoot, scanner->GetPathRelative());
+                auto dst = Path::Combine( {dstRoot, scanner->GetPathRelative()} );
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
