@@ -44,7 +44,7 @@ uint8 gShowConstuctionRightsRefCount;
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
 
-static rct_map_element *_interaction_element = NULL;
+static rct_tile_element *_interaction_element = NULL;
 
 sint16 gSavedViewX;
 sint16 gSavedViewY;
@@ -229,7 +229,7 @@ void viewport_adjust_for_map_height(sint16* x, sint16* y, sint16 *z)
     LocationXY16 pos;
     for (sint32 i = 0; i < 6; i++) {
         pos = viewport_coord_to_map_coord(start_x, start_y, height);
-        height = map_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
+        height = tile_element_height((0xFFFF) & pos.x, (0xFFFF) & pos.y);
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
@@ -555,7 +555,7 @@ void viewport_update_position(rct_window *window)
     if (at_map_edge_x || at_map_edge_y) {
         // The &0xFFFF is to prevent the sign extension messing the
         // function up.
-        sint32 zz = map_element_height(x & 0xFFFF, y & 0xFFFF);
+        sint32 zz = tile_element_height(x & 0xFFFF, y & 0xFFFF);
         sint32 _2d_x, _2d_y;
         centre_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
 
@@ -605,7 +605,7 @@ void viewport_update_sprite_follow(rct_window *window)
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport) {
         rct_sprite* sprite = get_sprite(window->viewport_target_sprite);
 
-        sint32 height = (map_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
+        sint32 height = (tile_element_height(0xFFFF & sprite->unknown.x, 0xFFFF & sprite->unknown.y) & 0xFFFF) - 16;
         sint32 underground = sprite->unknown.z < height;
 
         viewport_set_underground_flag(underground, window, window->viewport);
@@ -1347,14 +1347,14 @@ static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  * mapElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_map_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **mapElement, rct_viewport **viewport)
 {
     rct_window* window = window_find_from_point(screenX, screenY);
     get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, mapElement, viewport);
 }
 
 void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, sint32 screenY, sint32 flags, sint16 * x, sint16 * y,
-    sint32 * interactionType, rct_map_element ** mapElement, rct_viewport ** viewport)
+    sint32 * interactionType, rct_tile_element ** mapElement, rct_viewport ** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
@@ -1471,7 +1471,7 @@ static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
  * Out:
  *      x: ax
  *      y: bx
- *      map_element: edx ?
+ *      tile_element: edx ?
  *      viewport: edi
  */
 void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
@@ -1488,7 +1488,7 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
     LocationXY16 map_pos = { my_x + 16, my_y + 16 };
 
     for (sint32 i = 0; i < 5; i++) {
-        sint32 z = map_element_height(map_pos.x, map_pos.y);
+        sint32 z = tile_element_height(map_pos.x, map_pos.y);
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
         map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
         map_pos.y = clamp(my_y, map_pos.y, my_y + 31);

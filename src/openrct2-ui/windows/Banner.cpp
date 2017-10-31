@@ -143,19 +143,19 @@ rct_window * window_banner_open(rct_windownumber number)
     sint32 view_x = gBanners[w->number].x << 5;
     sint32 view_y = gBanners[w->number].y << 5;
 
-    rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
     while(1) {
         if (
-            (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
-            (map_element->properties.banner.index == w->number)
+            (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_BANNER) &&
+            (tile_element->properties.banner.index == w->number)
         ) {
             break;
         }
 
-        map_element++;
+        tile_element++;
     }
 
-    sint32 view_z = map_element->base_height<<3;
+    sint32 view_z = tile_element->base_height<<3;
     w->frame_no = view_z;
 
     view_x += 16;
@@ -193,12 +193,12 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     sint32 x = banner->x << 5;
     sint32 y = banner->y << 5;
 
-    rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     while (1){
-        if ((map_element_get_type(map_element) == MAP_ELEMENT_TYPE_BANNER) &&
-            (map_element->properties.banner.index == w->number)) break;
-        map_element++;
+        if ((tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_BANNER) &&
+            (tile_element->properties.banner.index == w->number)) break;
+        tile_element++;
     }
 
     switch (widgetIndex) {
@@ -206,7 +206,7 @@ static void window_banner_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_BANNER_DEMOLISH:
-        game_do_command(x, 1, y, map_element->base_height | (map_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
+        game_do_command(x, 1, y, tile_element->base_height | (tile_element->properties.banner.position << 8), GAME_COMMAND_REMOVE_BANNER, 0, 0);
         break;
     case WIDX_BANNER_TEXT:
         window_text_input_open(w, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, gBanners[w->number].string_idx, 0, 32);

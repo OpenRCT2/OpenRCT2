@@ -20,7 +20,7 @@
 #include "../game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../paint/map_element/map_element.h"
+#include "../paint/tile_element/tile_element.h"
 #include "../world/Climate.h"
 #include "../config/Config.h"
 #include "drawing.h"
@@ -278,7 +278,7 @@ void lightfx_prepare_light_list()
             for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
                 LocationXY16 mapCoord = { 0 };
 
-                rct_map_element *mapElement = 0;
+                rct_tile_element *mapElement = 0;
 
                 sint32 interactionType = 0;
 
@@ -309,7 +309,7 @@ void lightfx_prepare_light_list()
                     mapCoord.x = _interactionMapX + tileOffsetX;
                     mapCoord.y = _interactionMapY + tileOffsetY;
                     interactionType = _interactionSpriteType;
-                    mapElement = RCT2_GLOBAL(0x9AC150, rct_map_element*);
+                    mapElement = RCT2_GLOBAL(0x9AC150, rct_tile_element*);
 #endif //LIGHTFX_UNKNOWN_PART_1
 
                     //RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;

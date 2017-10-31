@@ -23,11 +23,11 @@
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height,
-                                       rct_map_element * mapElement)
+                                       rct_tile_element * mapElement)
 {
     height += 7;
 
-    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
     rct_ride_entry *  rideEntry       = get_ride_entry(ride->subtype);
     rct_vehicle *     vehicle         = NULL;
 
@@ -45,7 +45,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32 imageOffset = map_element_get_direction_with_offset(mapElement, get_current_rotation());
+    uint32 imageOffset = tile_element_get_direction_with_offset(mapElement, get_current_rotation());
     if (vehicle != NULL)
     {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
@@ -85,7 +85,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
 
 /** rct2: 0x008A1584 */
 static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                             rct_map_element * mapElement)
+                             rct_tile_element * mapElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];
 

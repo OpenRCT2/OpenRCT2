@@ -722,7 +722,7 @@ void window_guest_viewport_init(rct_window* w){
             Ride *ride = get_ride(peep->current_ride);
             sint32 x = ride->overall_view.x * 32 + 16;
             sint32 y = ride->overall_view.y * 32 + 16;
-            sint32 height = map_element_height(x, y);
+            sint32 height = tile_element_height(x, y);
             height += 32;
             focus.coordinate.x = x;
             focus.coordinate.y = y;
@@ -1194,7 +1194,7 @@ void window_guest_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
         return;
 
     sint32 dest_x, dest_y;
-    rct_map_element* mapElement;
+    rct_tile_element* mapElement;
     footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
     if (dest_x == LOCATION_NULL)

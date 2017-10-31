@@ -27,7 +27,7 @@
 #include "world/sprite.h"
 #include "world/map_animation.h"
 
-#define RCT1_MAX_MAP_ELEMENTS         0xC000
+#define RCT1_MAX_TILE_ELEMENTS         0xC000
 #define RCT1_MAX_SPRITES              5000
 #define RCT1_MAX_TRAINS_PER_RIDE      12
 #define RCT1_MAX_MAP_SIZE             128
@@ -587,7 +587,7 @@ typedef struct rct1_s4 {
     uint32 ticks;
     uint32 random_a;
     uint32 random_b;
-    rct_map_element map_elements[RCT1_MAX_MAP_ELEMENTS];
+    rct_tile_element tile_elements[RCT1_MAX_TILE_ELEMENTS];
     uint32 unk_counter;
     rct1_sprite sprites[RCT1_MAX_SPRITES];
     uint16 next_sprite_index;

@@ -19,7 +19,7 @@
 #include "../../game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
-#include "../../paint/map_element/map_element.h"
+#include "../../paint/tile_element/tile_element.h"
 #include "../../world/banner.h"
 #include "../../world/scenery.h"
 
@@ -35,7 +35,7 @@ const LocationXY16 BannerBoundBoxes[][2] = {
  *
  *  rct2: 0x006B9CC4
  */
-void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element)
+void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element)
 {
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
     rct_drawpixelinfo* dpi = session->Unk140E9A8;
@@ -46,13 +46,13 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
 
     height -= 16;
 
-    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[map_element->properties.banner.index].type);
+    rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->properties.banner.index].type);
 
     if (banner_scenery == NULL) {
         return;
     }
 
-    direction += map_element->properties.banner.position;
+    direction += tile_element->properties.banner.position;
     direction &= 3;
 
     boundBoxOffsetX = BannerBoundBoxes[direction][0].x;
@@ -62,14 +62,14 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
     uint32 base_id = (direction << 1) + banner_scenery->image;
     uint32 image_id = base_id;
 
-    if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) // if being placed
+    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) // if being placed
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id |= construction_markers[gConfigGeneral.construction_marker_colour];
     }
     else{
         image_id |=
-            (gBanners[map_element->properties.banner.index].colour << 19) |
+            (gBanners[tile_element->properties.banner.index].colour << 19) |
             IMAGE_TYPE_REMAP;
     }
 
@@ -84,7 +84,7 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
     direction ^= 2;
     direction--;
     // If text not showing / ghost
-    if (direction >= 2 || (map_element->flags & MAP_ELEMENT_FLAG_GHOST)) return;
+    if (direction >= 2 || (tile_element->flags & TILE_ELEMENT_FLAG_GHOST)) return;
 
     uint16 scrollingMode = banner_scenery->banner.scrolling_mode;
     if (scrollingMode >= MAX_SCROLLING_TEXT_MODES) {
@@ -97,9 +97,9 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_m
     set_format_arg(4, uint32, 0);
 
     rct_string_id string_id = STR_NO_ENTRY;
-    if (!(gBanners[map_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
+    if (!(gBanners[tile_element->properties.banner.index].flags & BANNER_FLAG_NO_ENTRY))
     {
-        set_format_arg(0, rct_string_id, gBanners[map_element->properties.banner.index].string_idx);
+        set_format_arg(0, rct_string_id, gBanners[tile_element->properties.banner.index].string_idx);
         string_id = STR_BANNER_TEXT_FORMAT;
     }
     if (gConfigGeneral.upper_case_banners) {

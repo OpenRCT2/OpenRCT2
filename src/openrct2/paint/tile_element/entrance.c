@@ -23,7 +23,7 @@
 #include "../../world/footpath.h"
 #include "../paint.h"
 #include "../supports.h"
-#include "map_element.h"
+#include "tile_element.h"
 #include "../../drawing/lightfx.h"
 
 static uint32 _unk9E32BC;
@@ -32,13 +32,13 @@ static uint32 _unk9E32BC;
  *
  *  rct2: 0x0066508C, 0x00665540
  */
-static void ride_entrance_exit_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element)
+static void ride_entrance_exit_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element)
 {
 
-    uint8 is_exit = map_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+    uint8 is_exit = tile_element->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
     if (gTrackDesignSaveMode) {
-        if (map_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
+        if (tile_element->properties.entrance.ride_index != gTrackDesignSaveRideIndex)
             return;
     }
 
@@ -48,7 +48,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
             lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LIGHTFX_LIGHT_TYPE_LANTERN_3);
         }
 
-        switch (map_element_get_direction(map_element)) {
+        switch (tile_element_get_direction(tile_element)) {
         case 0:
             lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
             break;
@@ -65,7 +65,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
 #endif
 
-    Ride* ride = get_ride(map_element->properties.entrance.ride_index);
+    Ride* ride = get_ride(tile_element->properties.entrance.ride_index);
     if (ride->entrance_style == RIDE_ENTRANCE_STYLE_NONE) return;
 
     const rct_ride_entrance_definition *style = &RideEntranceDefinitions[ride->entrance_style];
@@ -84,7 +84,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
     _unk9E32BC = 0;
 
-    if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
+    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST){
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         image_id = construction_markers[gConfigGeneral.construction_marker_colour];
         _unk9E32BC = image_id;
@@ -137,8 +137,8 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     }
 
     if (!is_exit &&
-        !(map_element->flags & MAP_ELEMENT_FLAG_GHOST) &&
-        map_element->properties.entrance.ride_index != 0xFF){
+        !(tile_element->flags & TILE_ELEMENT_FLAG_GHOST) &&
+        tile_element->properties.entrance.ride_index != 0xFF){
 
         set_format_arg(0, uint32, 0);
         set_format_arg(4, uint32, 0);
@@ -185,7 +185,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
  *
  *  rct2: 0x006658ED
  */
-static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element){
+static void park_entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element){
     if (gTrackDesignSaveMode)
         return;
 
@@ -198,17 +198,17 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
     _unk9E32BC = 0;
     uint32 image_id, ghost_id = 0;
-    if (map_element->flags & MAP_ELEMENT_FLAG_GHOST){
+    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST){
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
         _unk9E32BC = ghost_id;
     }
 
-    rct_footpath_entry* path_entry = get_footpath_entry(map_element->properties.entrance.path_type);
+    rct_footpath_entry* path_entry = get_footpath_entry(tile_element->properties.entrance.path_type);
 
     // Index to which part of the entrance
     // Middle, left, right
-    uint8 part_index = map_element->properties.entrance.index & 0xF;
+    uint8 part_index = tile_element->properties.entrance.index & 0xF;
     rct_entrance_type* entrance;
     uint8 di = ((direction / 2 + part_index / 2) & 1) ? 0x1A : 0x20;
 
@@ -285,7 +285,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
  *
  *  rct2: 0x00664FD4
  */
-void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element){
+void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element){
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LABEL;
 
     rct_drawpixelinfo* dpi = session->Unk140E9A8;
@@ -293,9 +293,9 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct
     if (gCurrentViewportFlags & VIEWPORT_FLAG_PATH_HEIGHTS &&
         dpi->zoom_level == 0){
 
-        if (entrance_get_directions(map_element) & 0xF){
+        if (entrance_get_directions(tile_element) & 0xF){
 
-            sint32 z = map_element->base_height * 8 + 3;
+            sint32 z = tile_element->base_height * 8 + 3;
             uint32 image_id = 0x20101689 + get_height_marker_offset() + (z / 16);
             image_id -= gMapBaseZ;
 
@@ -303,13 +303,13 @@ void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct
         }
     }
 
-    switch (map_element->properties.entrance.type){
+    switch (tile_element->properties.entrance.type){
     case ENTRANCE_TYPE_RIDE_ENTRANCE:
     case ENTRANCE_TYPE_RIDE_EXIT:
-        ride_entrance_exit_paint(session, direction, height, map_element);
+        ride_entrance_exit_paint(session, direction, height, tile_element);
         break;
     case ENTRANCE_TYPE_PARK_ENTRANCE:
-        park_entrance_paint(session, direction, height, map_element);
+        park_entrance_paint(session, direction, height, tile_element);
         break;
     }
 }

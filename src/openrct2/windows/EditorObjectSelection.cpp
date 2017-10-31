@@ -515,18 +515,18 @@ static void setup_in_use_selection_flags()
         }
     }
 
-    map_element_iterator iter;
-    map_element_iterator_begin(&iter);
+    tile_element_iterator iter;
+    tile_element_iterator_begin(&iter);
     do {
         uint16 type;
         rct_banner* banner;
 
-        switch (map_element_get_type(iter.element)) {
+        switch (tile_element_get_type(iter.element)) {
         default:
-        case MAP_ELEMENT_TYPE_SURFACE:
-        case MAP_ELEMENT_TYPE_TRACK:
+        case TILE_ELEMENT_TYPE_SURFACE:
+        case TILE_ELEMENT_TYPE_TRACK:
             break;
-        case MAP_ELEMENT_TYPE_PATH:
+        case TILE_ELEMENT_TYPE_PATH:
             type = iter.element->properties.path.type;
             type >>= 4;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
@@ -537,12 +537,12 @@ static void setup_in_use_selection_flags()
                 Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
             }
             break;
-        case MAP_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SCENERY:
             type = iter.element->properties.scenery.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
             Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
             break;
-        case MAP_ELEMENT_TYPE_ENTRANCE:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 break;
 
@@ -552,24 +552,24 @@ static void setup_in_use_selection_flags()
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
             Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
             break;
-        case MAP_ELEMENT_TYPE_WALL:
+        case TILE_ELEMENT_TYPE_WALL:
             type = iter.element->properties.wall.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
             Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
             break;
-        case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
             type = iter.element->properties.scenerymultiple.type & 0x3FF;
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
             Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
             break;
-        case MAP_ELEMENT_TYPE_BANNER:
+        case TILE_ELEMENT_TYPE_BANNER:
             banner = &gBanners[iter.element->properties.banner.index];
             type = banner->type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
             Editor::SelectedObjects[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
             break;
         }
-    } while (map_element_iterator_next(&iter));
+    } while (tile_element_iterator_next(&iter));
 
     for (uint8 ride_index = 0; ride_index < 0xFF; ride_index++) {
         Ride* ride = get_ride(ride_index);

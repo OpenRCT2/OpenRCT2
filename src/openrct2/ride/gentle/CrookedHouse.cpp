@@ -45,9 +45,9 @@ static const rct_crooked_house_bound_box crooked_house_data[] = { { 6, 0, 42, 24
 static void paint_crooked_house_structure(paint_session * session, uint8 direction, uint8 x_offset, uint8 y_offset,
                                           uint32 segment, sint32 height)
 {
-    rct_map_element * original_map_element = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * original_tile_element = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
-    Ride * ride = get_ride(original_map_element->properties.track.ride_index);
+    Ride * ride = get_ride(original_tile_element->properties.track.ride_index);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
 
@@ -69,7 +69,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
 }
 
 static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                rct_map_element * mapElement)
+                                rct_tile_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

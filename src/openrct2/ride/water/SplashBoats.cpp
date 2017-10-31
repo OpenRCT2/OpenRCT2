@@ -481,7 +481,7 @@ static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
 };
 
 static void paint_splash_boats_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_map_element * mapElement)
+                                               sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats25DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -505,7 +505,7 @@ static void paint_splash_boats_track_25_deg_up(paint_session * session, uint8 ri
 }
 
 static void paint_splash_boats_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_map_element * mapElement)
+                                               sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats60DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -529,7 +529,7 @@ static void paint_splash_boats_track_60_deg_up(paint_session * session, uint8 ri
 }
 
 static void paint_splash_boats_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                       uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoatsFlatTo25DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoatsFlatTo25DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -553,7 +553,7 @@ static void paint_splash_boats_track_flat_to_25_deg_up(paint_session * session, 
 }
 
 static void paint_splash_boats_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                       uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats25DegUpToFlatImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpToFlatFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -577,7 +577,7 @@ static void paint_splash_boats_track_25_deg_up_to_flat(paint_session * session, 
 }
 
 static void paint_splash_boats_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats25DegUpTo60DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegUpTo60DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -601,7 +601,7 @@ static void paint_splash_boats_track_25_deg_up_to_60_deg_up(paint_session * sess
 }
 
 static void paint_splash_boats_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats60DegUpTo25DegUpImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats60DegUpTo25DegUpFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -625,7 +625,7 @@ static void paint_splash_boats_track_60_deg_up_to_25_deg_up(paint_session * sess
 }
 
 static void paint_splash_boats_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_map_element * mapElement)
+                                                 sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats25DegDownImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegDownFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -650,13 +650,13 @@ static void paint_splash_boats_track_25_deg_down(paint_session * session, uint8 
 }
 
 static void paint_splash_boats_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_map_element * mapElement)
+                                                 sint32 height, rct_tile_element * mapElement)
 {
     paint_splash_boats_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void paint_splash_boats_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoatsFlatTo25DegDownImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoatsFlatTo25DegDownFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -681,19 +681,19 @@ static void paint_splash_boats_track_flat_to_25_deg_down(paint_session * session
 }
 
 static void paint_splash_boats_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                                uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_splash_boats_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void paint_splash_boats_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                                uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_splash_boats_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
 }
 
 static void paint_splash_boats_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId      = SplashBoats25DegDownToFlatImageId[direction] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = SplashBoats25DegDownToFlatFrontImageId[direction] | session->TrackColours[SCHEME_TRACK];
@@ -730,7 +730,7 @@ static void paint_splash_boats_track_25_deg_down_to_flat(paint_session * session
 /** Start of elements originally from River Rafts */
 /** rct2: 0x0089B170 */
 static void paint_splash_boats_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_map_element * mapElement)
+                                          sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId;
 
@@ -772,7 +772,7 @@ static void paint_splash_boats_track_flat(paint_session * session, uint8 rideInd
 
 /** rct2: 0x0089B1A0 */
 static void paint_splash_boats_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_map_element * mapElement)
+                                       sint32 height, rct_tile_element * mapElement)
 {
     Ride * ride = get_ride(rideIndex);
 
@@ -807,7 +807,7 @@ static void paint_splash_boats_station(paint_session * session, uint8 rideIndex,
 
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                               uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
                                                         session->TrackColours[SCHEME_TRACK], RiverRaftsLeftQuarterTurn5_Top);
@@ -884,7 +884,7 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * s
 
 /** rct2: 0x0089B1D0 */
 static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                                uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     track_paint_util_right_quarter_turn_5_tiles_paint_2(session, height, direction, get_current_rotation(), trackSequence,
                                                         session->TrackColours[SCHEME_TRACK], RiverRaftsRightQuarterTurn5_Top);
@@ -961,7 +961,7 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * 
 
 /** rct2: 0x0089B180 */
 static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_map_element * mapElement)
+                                                 sint32 height, rct_tile_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] = {
         { { SPR_SPLASH_BOATS_S_BEND_TOP_NE_NW_NE_SEQ_0, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_NW_NE_SEQ_0 },
@@ -1050,7 +1050,7 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
 
 /** rct2: 0x0089B190 */
 static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     static const uint32 imageIds[4][4][2] = {
         { { SPR_SPLASH_BOATS_S_BEND_TOP_NE_SE_NE_SEQ_0, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_SE_NE_SEQ_0 },

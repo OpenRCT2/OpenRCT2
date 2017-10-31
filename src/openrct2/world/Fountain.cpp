@@ -99,7 +99,7 @@ static void jumping_fountain_create_next(const rct_jumping_fountain * jumpingFou
 
 extern "C"
 {
-    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_map_element * mapElement)
+    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * mapElement)
     {
         sint32 randomIndex;
         sint32 z = mapElement->base_height * 8;
@@ -300,10 +300,10 @@ static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
         PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW :
         PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH) continue;
+        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH) continue;
         if (mapElement->base_height != z) continue;
         if (footpath_element_path_scenery_is_ghost(mapElement)) continue;
         if (!footpath_element_has_path_scenery(mapElement)) continue;
@@ -315,7 +315,7 @@ static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
             return true;
         }
     }
-    while (!map_element_is_last_for_tile(mapElement++));
+    while (!tile_element_is_last_for_tile(mapElement++));
 
     return false;
 }

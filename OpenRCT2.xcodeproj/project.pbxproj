@@ -373,7 +373,7 @@
 		F76C86881EC4E88400FA49E2 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843C1EC4E7CC00FA49E2 /* banner.c */; };
 		F76C86891EC4E88400FA49E2 /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843D1EC4E7CC00FA49E2 /* entrance.c */; };
 		F76C868A1EC4E88400FA49E2 /* fence.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843E1EC4E7CC00FA49E2 /* fence.c */; };
-		F76C868B1EC4E88400FA49E2 /* map_element.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843F1EC4E7CC00FA49E2 /* map_element.c */; };
+		F76C868B1EC4E88400FA49E2 /* tile_element.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843F1EC4E7CC00FA49E2 /* tile_element.c */; };
 		F76C868D1EC4E88400FA49E2 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84411EC4E7CC00FA49E2 /* path.c */; };
 		F76C868E1EC4E88400FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84421EC4E7CC00FA49E2 /* scenery.c */; };
 		F76C868F1EC4E88400FA49E2 /* scenery_multiple.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84431EC4E7CC00FA49E2 /* scenery_multiple.c */; };
@@ -1255,8 +1255,8 @@
 		F76C843C1EC4E7CC00FA49E2 /* banner.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
 		F76C843D1EC4E7CC00FA49E2 /* entrance.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = entrance.c; sourceTree = "<group>"; };
 		F76C843E1EC4E7CC00FA49E2 /* fence.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fence.c; sourceTree = "<group>"; };
-		F76C843F1EC4E7CC00FA49E2 /* map_element.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = map_element.c; sourceTree = "<group>"; };
-		F76C84401EC4E7CC00FA49E2 /* map_element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = map_element.h; sourceTree = "<group>"; };
+		F76C843F1EC4E7CC00FA49E2 /* tile_element.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_element.c; sourceTree = "<group>"; };
+		F76C84401EC4E7CC00FA49E2 /* tile_element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_element.h; sourceTree = "<group>"; };
 		F76C84411EC4E7CC00FA49E2 /* path.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = path.c; sourceTree = "<group>"; };
 		F76C84421EC4E7CC00FA49E2 /* scenery.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery.c; sourceTree = "<group>"; };
 		F76C84431EC4E7CC00FA49E2 /* scenery_multiple.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery_multiple.c; sourceTree = "<group>"; };
@@ -2204,7 +2204,7 @@
 		F76C843A1EC4E7CC00FA49E2 /* paint */ = {
 			isa = PBXGroup;
 			children = (
-				F76C843B1EC4E7CC00FA49E2 /* map_element */,
+				F76C843B1EC4E7CC00FA49E2 /* tile_element */,
 				F76C84491EC4E7CC00FA49E2 /* sprite */,
 				F76C84461EC4E7CC00FA49E2 /* Paint.cpp */,
 				F76C84471EC4E7CC00FA49E2 /* paint.h */,
@@ -2217,21 +2217,21 @@
 			path = paint;
 			sourceTree = "<group>";
 		};
-		F76C843B1EC4E7CC00FA49E2 /* map_element */ = {
+		F76C843B1EC4E7CC00FA49E2 /* tile_element */ = {
 			isa = PBXGroup;
 			children = (
 				F76C843C1EC4E7CC00FA49E2 /* banner.c */,
 				F76C843D1EC4E7CC00FA49E2 /* entrance.c */,
 				F76C843E1EC4E7CC00FA49E2 /* fence.c */,
-				F76C843F1EC4E7CC00FA49E2 /* map_element.c */,
-				F76C84401EC4E7CC00FA49E2 /* map_element.h */,
+				F76C843F1EC4E7CC00FA49E2 /* tile_element.c */,
+				F76C84401EC4E7CC00FA49E2 /* tile_element.h */,
 				F76C84411EC4E7CC00FA49E2 /* path.c */,
 				F76C84421EC4E7CC00FA49E2 /* scenery.c */,
 				F76C84431EC4E7CC00FA49E2 /* scenery_multiple.c */,
 				F76C84441EC4E7CC00FA49E2 /* surface.c */,
 				F76C84451EC4E7CC00FA49E2 /* surface.h */,
 			);
-			path = map_element;
+			path = tile_element;
 			sourceTree = "<group>";
 		};
 		F76C84491EC4E7CC00FA49E2 /* sprite */ = {
@@ -3447,7 +3447,7 @@
 				F76C86881EC4E88400FA49E2 /* banner.c in Sources */,
 				F76C86891EC4E88400FA49E2 /* entrance.c in Sources */,
 				F76C868A1EC4E88400FA49E2 /* fence.c in Sources */,
-				F76C868B1EC4E88400FA49E2 /* map_element.c in Sources */,
+				F76C868B1EC4E88400FA49E2 /* tile_element.c in Sources */,
 				F76C868D1EC4E88400FA49E2 /* path.c in Sources */,
 				F76C868E1EC4E88400FA49E2 /* scenery.c in Sources */,
 				F76C868F1EC4E88400FA49E2 /* scenery_multiple.c in Sources */,

@@ -152,8 +152,8 @@ public:
         {
             chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
-            chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
-            chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 2560076);
+            chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
+            chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 2560076);
             chunkReader.ReadChunk(&_s6.guests_in_park, 4);
             chunkReader.ReadChunk(&_s6.last_guests_in_park, 8);
             chunkReader.ReadChunk(&_s6.park_rating, 2);
@@ -166,8 +166,8 @@ public:
         {
             chunkReader.ReadChunk(&_s6.objects, sizeof(_s6.objects));
             chunkReader.ReadChunk(&_s6.elapsed_months, 16);
-            chunkReader.ReadChunk(&_s6.map_elements, sizeof(_s6.map_elements));
-            chunkReader.ReadChunk(&_s6.next_free_map_element_pointer_index, 3048816);
+            chunkReader.ReadChunk(&_s6.tile_elements, sizeof(_s6.tile_elements));
+            chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
         }
 
         auto missingObjects = _objectManager->GetInvalidObjects(_s6.objects);
@@ -198,9 +198,9 @@ public:
         gScenarioSrand0    = _s6.scenario_srand_0;
         gScenarioSrand1    = _s6.scenario_srand_1;
 
-        memcpy(gMapElements, _s6.map_elements, sizeof(_s6.map_elements));
+        memcpy(gMapElements, _s6.tile_elements, sizeof(_s6.tile_elements));
 
-        gNextFreeMapElementPointerIndex = _s6.next_free_map_element_pointer_index;
+        gNextFreeMapElementPointerIndex = _s6.next_free_tile_element_pointer_index;
         for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));

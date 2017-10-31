@@ -37,7 +37,7 @@ rct_banner gBanners[MAX_BANNERS];
  */
 static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     Ride *ride;
     sint32 rideIndex, resultRideIndex;
 
@@ -45,7 +45,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
     mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         rideIndex = mapElement->properties.track.ride_index;
@@ -57,7 +57,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
             continue;
 
         resultRideIndex = rideIndex;
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     return resultRideIndex;
 }
@@ -83,7 +83,7 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
 
     // Slight modification to the code so that it now checks height as well
     // This was causing a bug with banners on two paths stacked.
-    rct_map_element* mapElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
+    rct_tile_element* mapElement = map_get_banner_element_at(x / 32, y / 32, baseHeight, direction);
     if (mapElement == nullptr)
     {
         return MONEY32_UNDEFINED;
@@ -104,13 +104,13 @@ static money32 BannerRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 directio
             LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
-            coord.z = map_element_height(coord.x, coord.y);
+            coord.z = tile_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        map_element_remove_banner_entry(mapElement);
+        tile_element_remove_banner_entry(mapElement);
         map_invalidate_tile_zoom1(x, y, z, z + 32);
-        map_element_remove(mapElement);
+        tile_element_remove(mapElement);
     }
 
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -136,12 +136,12 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
 
         bool found = false;
         do
         {
-            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_BANNER)
+            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_BANNER)
                 continue;
 
             if (mapElement->properties.banner.position != direction)
@@ -149,7 +149,7 @@ static money32 BannerSetColour(sint16 x, sint16 y, uint8 baseHeight, uint8 direc
 
             found = true;
             break;
-        } while (!map_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(mapElement++));
 
         if (found == false)
         {
@@ -190,12 +190,12 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         return MONEY32_UNDEFINED;
     }
 
-    rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
 
     bool pathFound = false;
     do
     {
-        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (mapElement->base_height != pathBaseHeight * 2 && mapElement->base_height != (pathBaseHeight - 1) * 2)
@@ -206,7 +206,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
 
         pathFound = true;
         break;
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     if (pathFound == false)
     {
@@ -240,17 +240,17 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
             LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
-            coord.z = map_element_height(coord.x, coord.y);
+            coord.z = tile_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
-        rct_map_element* newMapElement = map_element_insert(x / 32, y / 32, baseHeight, 0);
+        rct_tile_element* newMapElement = tile_element_insert(x / 32, y / 32, baseHeight, 0);
         assert(newMapElement != nullptr);
         gBanners[*bannerIndex].type = type;
         gBanners[*bannerIndex].colour = colour;
         gBanners[*bannerIndex].x = x / 32;
         gBanners[*bannerIndex].y = y / 32;
-        newMapElement->type = MAP_ELEMENT_TYPE_BANNER;
+        newMapElement->type = TILE_ELEMENT_TYPE_BANNER;
         newMapElement->clearance_height = newMapElement->base_height + 2;
         newMapElement->properties.banner.position = direction;
         newMapElement->properties.banner.flags = 0xFF;
@@ -258,7 +258,7 @@ static money32 BannerPlace(sint16 x, sint16 y, uint8 pathBaseHeight, uint8 direc
         newMapElement->properties.banner.index = *bannerIndex;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            newMapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+            newMapElement->flags |= TILE_ELEMENT_FLAG_GHOST;
         }
         map_invalidate_tile_full(x, y);
         map_animation_create(MAP_ANIMATION_TYPE_BANNER, x, y, newMapElement->base_height);
@@ -353,7 +353,7 @@ static money32 BannerSetStyle(uint8 bannerIndex, uint8 colour, uint8 textColour,
 
     rct_banner* banner = &gBanners[bannerIndex];
 
-    rct_map_element* mapElement = banner_get_map_element(bannerIndex);
+    rct_tile_element* mapElement = banner_get_tile_element(bannerIndex);
 
     if (mapElement == nullptr)
     {
@@ -467,17 +467,17 @@ extern "C"
         return bannerIndex;
     }
 
-    rct_map_element *banner_get_map_element(sint32 bannerIndex)
+    rct_tile_element *banner_get_tile_element(sint32 bannerIndex)
     {
         rct_banner *banner = &gBanners[bannerIndex];
-        rct_map_element *mapElement = map_get_first_element_at(banner->x, banner->y);
+        rct_tile_element *mapElement = map_get_first_element_at(banner->x, banner->y);
         do
         {
-            if (map_element_get_banner_index(mapElement) == bannerIndex)
+            if (tile_element_get_banner_index(mapElement) == bannerIndex)
             {
                 return mapElement;
             }
-        } while (!map_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(mapElement++));
         return nullptr;
     }
 
@@ -540,7 +540,7 @@ extern "C"
     {
         for (sint32 bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
         {
-            rct_map_element *mapElement = banner_get_map_element(bannerIndex);
+            rct_tile_element *mapElement = banner_get_tile_element(bannerIndex);
             if (mapElement == nullptr)
                 gBanners[bannerIndex].type = BANNER_NULL;
         }

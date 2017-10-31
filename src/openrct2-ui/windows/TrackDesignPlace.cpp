@@ -406,7 +406,7 @@ static void window_track_place_clear_provisional()
  */
 static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     sint32 z;
 
     mapElement = map_get_surface_element_at(x >> 5, y >> 5);

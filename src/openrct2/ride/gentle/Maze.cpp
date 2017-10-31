@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../interface/viewport.h"
-#include "../../paint/map_element/surface.h"
+#include "../../paint/tile_element/surface.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../../sprites.h"
@@ -52,7 +52,7 @@ enum
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                             rct_map_element * mapElement)
+                             rct_tile_element * mapElement)
 {
     uint16 maze_entry = mapElement->properties.track.maze_entry;
     maze_entry        = rol16(maze_entry, direction * 4);

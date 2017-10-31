@@ -21,7 +21,7 @@
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/sprite.h>
-#include <openrct2/paint/map_element/map_element.h>
+#include <openrct2/paint/tile_element/tile_element.h>
 #include <openrct2/ride/ride.h>
 
 #define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
@@ -29,8 +29,8 @@
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
-rct_map_element *gMapElements = (rct_map_element *) RCT2_ADDRESS_MAP_ELEMENTS;
-rct_map_element **gMapElementTilePointers = (rct_map_element **) RCT2_ADDRESS_TILE_MAP_ELEMENT_POINTERS;
+rct_tile_element *gMapElements = (rct_tile_element *) RCT2_ADDRESS_TILE_ELEMENTS;
+rct_tile_element **gMapElementTilePointers = (rct_tile_element **) RCT2_ADDRESS_TILE_TILE_ELEMENT_POINTERS;
 Ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, Ride);
 rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 sint16 gMapSizeUnits;
@@ -81,13 +81,13 @@ LocationXY16 gMapSelectPositionB;
 LocationXYZ16 gMapSelectArrowPosition;
 uint8 gMapSelectArrowDirection;
 
-void entrance_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }
-void banner_paint(paint_session * session, uint8 direction, int height, rct_map_element *map_element) { }
-void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
-void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
-void scenery_paint(paint_session * session, uint8 direction, int height, rct_map_element *mapElement) { }
-void fence_paint(paint_session * session, uint8 direction, int height, rct_map_element *mapElement) { }
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) { }
+void entrance_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tile_element) { }
+void banner_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tile_element) { }
+void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
+void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
+void scenery_paint(paint_session * session, uint8 direction, int height, rct_tile_element *mapElement) { }
+void fence_paint(paint_session * session, uint8 direction, int height, rct_tile_element *mapElement) { }
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
 
 Ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {
@@ -119,23 +119,23 @@ rct_sprite *get_sprite(size_t sprite_idx) {
     return &sprite_list[sprite_idx];
 }
 
-int map_element_is_last_for_tile(const rct_map_element *element) {
-    return element->flags & MAP_ELEMENT_FLAG_LAST_TILE;
+int tile_element_is_last_for_tile(const rct_tile_element *element) {
+    return element->flags & TILE_ELEMENT_FLAG_LAST_TILE;
 }
 
-int map_element_get_type(const rct_map_element *element) {
-    return element->type & MAP_ELEMENT_TYPE_MASK;
+int tile_element_get_type(const rct_tile_element *element) {
+    return element->type & TILE_ELEMENT_TYPE_MASK;
 }
 
-int map_element_get_direction(const rct_map_element *element) {
-    return element->type & MAP_ELEMENT_DIRECTION_MASK;
+int tile_element_get_direction(const rct_tile_element *element) {
+    return element->type & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-int map_element_get_direction_with_offset(const rct_map_element *element, uint8 offset) {
-    return ((element->type & MAP_ELEMENT_DIRECTION_MASK) + offset) & MAP_ELEMENT_DIRECTION_MASK;
+int tile_element_get_direction_with_offset(const rct_tile_element *element, uint8 offset) {
+    return ((element->type & TILE_ELEMENT_DIRECTION_MASK) + offset) & TILE_ELEMENT_DIRECTION_MASK;
 }
 
-rct_map_element *map_get_first_element_at(int x, int y) {
+rct_tile_element *map_get_first_element_at(int x, int y) {
     if (x < 0 || y < 0 || x > 255 || y > 255) {
         log_error("Trying to access element outside of range");
         return NULL;
@@ -143,33 +143,33 @@ rct_map_element *map_get_first_element_at(int x, int y) {
     return gMapElementTilePointers[x + y * 256];
 }
 
-int map_element_get_station(const rct_map_element * mapElement) {
+int tile_element_get_station(const rct_tile_element * mapElement) {
     return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-void map_element_set_station(rct_map_element * mapElement, uint32 stationIndex)
+void tile_element_set_station(rct_tile_element * mapElement, uint32 stationIndex)
 {
     mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
     mapElement->properties.track.sequence |= (stationIndex << 4);
 }
 
-sint32 map_element_get_track_sequence(const rct_map_element * mapElement)
+sint32 tile_element_get_track_sequence(const rct_tile_element * mapElement)
 {
     return mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
 }
 
-void map_element_set_track_sequence(rct_map_element * mapElement, int trackSequence)
+void tile_element_set_track_sequence(rct_tile_element * mapElement, int trackSequence)
 {
     mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     mapElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
 }
 
-bool map_element_get_green_light(const rct_map_element * mapElement)
+bool tile_element_get_green_light(const rct_tile_element * mapElement)
 {
     return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
 }
 
-void map_element_set_green_light(rct_map_element * mapElement, bool greenLight)
+void tile_element_set_green_light(rct_tile_element * mapElement, bool greenLight)
 {
     mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
     if (greenLight)
@@ -178,28 +178,28 @@ void map_element_set_green_light(rct_map_element * mapElement, bool greenLight)
     }
 }
 
-int map_element_get_brake_booster_speed(const rct_map_element *mapElement)
+int tile_element_get_brake_booster_speed(const rct_tile_element *mapElement)
 {
     return (mapElement->properties.track.sequence >> 4) << 1;
 }
 
-void map_element_set_brake_booster_speed(rct_map_element *mapElement, int speed)
+void tile_element_set_brake_booster_speed(rct_tile_element *mapElement, int speed)
 {
-    mapElement->properties.track.sequence = map_element_get_track_sequence(mapElement) | ((speed >> 1) << 4);
+    mapElement->properties.track.sequence = tile_element_get_track_sequence(mapElement) | ((speed >> 1) << 4);
 }
 
-bool map_element_is_taking_photo(const rct_map_element * mapElement)
+bool tile_element_is_taking_photo(const rct_tile_element * mapElement)
 {
     return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
 }
 
-void map_element_set_onride_photo_timeout(rct_map_element * mapElement)
+void tile_element_set_onride_photo_timeout(rct_tile_element * mapElement)
 {
     mapElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
     mapElement->properties.track.sequence |= (3 << 4);
 }
 
-void map_element_decrement_onride_photo_timout(rct_map_element * mapElement)
+void tile_element_decrement_onride_photo_timout(rct_tile_element * mapElement)
 {
     // We should only touch the upper 4 bits, avoid underflow into the lower 4.
     if (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
@@ -208,9 +208,9 @@ void map_element_decrement_onride_photo_timout(rct_map_element * mapElement)
     }
 }
 
-sint32 map_get_water_height(const rct_map_element * mapElement)
+sint32 map_get_water_height(const rct_tile_element * mapElement)
 {
-    return mapElement->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+    return mapElement->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
 }
 
 bool ride_type_has_flag(int rideType, int flag)
@@ -223,17 +223,17 @@ sint16 get_height_marker_offset()
     return 0;
 }
 
-bool track_element_is_lift_hill(rct_map_element *trackElement)
+bool track_element_is_lift_hill(rct_tile_element *trackElement)
 {
     return trackElement->type & 0x80;
 }
 
-bool track_element_is_cable_lift(rct_map_element *trackElement)
+bool track_element_is_cable_lift(rct_tile_element *trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
-bool track_element_is_inverted(rct_map_element *trackElement)
+bool track_element_is_inverted(rct_tile_element *trackElement)
 {
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
@@ -243,7 +243,7 @@ bool is_csg_loaded()
     return false;
 }
 
-uint8 track_element_get_colour_scheme(const rct_map_element * mapElement)
+uint8 track_element_get_colour_scheme(const rct_tile_element * mapElement)
 {
     return mapElement->properties.track.colour & 0x3;
 }

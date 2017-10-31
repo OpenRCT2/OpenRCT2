@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "map_element.h"
+#include "tile_element.h"
 #include "../../config/Config.h"
 #include "../../game.h"
 #include "../../interface/viewport.h"
@@ -42,7 +42,7 @@ static const LocationXY16 lengths[] = {
  *
  *  rct2: 0x006DFF47
  */
-void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* mapElement) {
+void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* mapElement) {
     //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;
@@ -53,11 +53,11 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
     sint32 baseImageid = 0;
     const sint32 rotation = get_current_rotation();
     if (gTrackDesignSaveMode) {
-        if (!track_design_save_contains_map_element(mapElement)) {
+        if (!track_design_save_contains_tile_element(mapElement)) {
             baseImageid = 0x21700000;
         }
     }
-    if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+    if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         baseImageid = construction_markers[gConfigGeneral.construction_marker_colour];
     }
@@ -104,7 +104,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
         }
     } else {
         // 6DFFC2:
-        uint8 ecx = (map_element_get_scenery_quadrant(mapElement) + rotation) & 3;
+        uint8 ecx = (tile_element_get_scenery_quadrant(mapElement) + rotation) & 3;
         x_offset = ScenerySubTileOffsets[ecx].x;
         y_offset = ScenerySubTileOffsets[ecx].y;
         boxoffset.x = x_offset;
@@ -310,7 +310,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
         }
         if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
             // 6E075C:
-            direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+            direction = (tile_element_get_scenery_quadrant(mapElement) + rotation) % 4;
             paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
             return;
         }
@@ -324,7 +324,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
         return;
     }
     if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
-        direction = (map_element_get_scenery_quadrant(mapElement) + rotation) % 4;
+        direction = (tile_element_get_scenery_quadrant(mapElement) + rotation) % 4;
         paint_util_set_segment_support_height(session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         return;
     }

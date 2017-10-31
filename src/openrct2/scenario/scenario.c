@@ -434,7 +434,7 @@ static sint32 scenario_create_ducks()
     if (!map_is_location_in_park(x, y))
         return 0;
 
-    centreWaterZ = (map_element_height(x, y) >> 16) & 0xFFFF;
+    centreWaterZ = (tile_element_height(x, y) >> 16) & 0xFFFF;
     if (centreWaterZ == 0)
         return 0;
 
@@ -444,7 +444,7 @@ static sint32 scenario_create_ducks()
     c = 0;
     for (i = 0; i < 7; i++) {
         for (j = 0; j < 7; j++) {
-            waterZ = (map_element_height(x2, y2) >> 16) & 0xFFFF;
+            waterZ = (tile_element_height(x2, y2) >> 16) & 0xFFFF;
             if (waterZ == centreWaterZ)
                 c++;
 
@@ -605,11 +605,11 @@ static bool scenario_prepare_rides_for_save()
     }
 
     bool markTrackAsIndestructible;
-    map_element_iterator it;
-    map_element_iterator_begin(&it);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
     do
     {
-        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_TRACK)
         {
             markTrackAsIndestructible = false;
 
@@ -626,15 +626,15 @@ static bool scenario_prepare_rides_for_save()
 
             if (markTrackAsIndestructible)
             {
-                it.element->flags |= MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+                it.element->flags |= TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
             }
             else
             {
-                it.element->flags &= ~MAP_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
+                it.element->flags &= ~TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE;
             }
         }
     }
-    while (map_element_iterator_next(&it));
+    while (tile_element_iterator_next(&it));
 
     return true;
 }
@@ -732,14 +732,14 @@ static sint32 scenario_write_available_objects(FILE *file)
 void scenario_fix_ghosts(rct_s6_data *s6)
 {
     // Remove all ghost elements
-    rct_map_element *destinationElement = s6->map_elements;
+    rct_tile_element *destinationElement = s6->tile_elements;
 
     for (sint32 y = 0; y < 256; y++) {
         for (sint32 x = 0; x < 256; x++) {
-            rct_map_element *originalElement = map_get_first_element_at(x, y);
+            rct_tile_element *originalElement = map_get_first_element_at(x, y);
             do {
-                if (originalElement->flags & MAP_ELEMENT_FLAG_GHOST) {
-                    sint32 bannerIndex = map_element_get_banner_index(originalElement);
+                if (originalElement->flags & TILE_ELEMENT_FLAG_GHOST) {
+                    sint32 bannerIndex = tile_element_get_banner_index(originalElement);
                     if (bannerIndex != -1) {
                         rct_banner *banner = &s6->banners[bannerIndex];
                         if (banner->type != BANNER_NULL) {
@@ -751,10 +751,10 @@ void scenario_fix_ghosts(rct_s6_data *s6)
                 } else {
                     *destinationElement++ = *originalElement;
                 }
-            } while (!map_element_is_last_for_tile(originalElement++));
+            } while (!tile_element_is_last_for_tile(originalElement++));
 
             // Set last element flag in case the original last element was never added
-            (destinationElement - 1)->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+            (destinationElement - 1)->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
         }
     }
 }

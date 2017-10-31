@@ -20,7 +20,7 @@
 #include "../config/Config.h"
 #include "../interface/viewport.h"
 #include "../core/Math.hpp"
-#include "map_element/map_element.h"
+#include "tile_element/tile_element.h"
 #include "sprite/sprite.h"
 
 #include <algorithm>
@@ -188,7 +188,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->mapElement = (rct_map_element*)session->CurrentlyDrawnItem;
+    ps->mapElement = (rct_tile_element*)session->CurrentlyDrawnItem;
 
     return ps;
 }
@@ -219,12 +219,12 @@ void paint_session_generate(paint_session * session)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants) {
-            map_element_paint_setup(session, mapTile.x, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             sprite_paint_setup(session, mapTile.x - 32, mapTile.y + 32);
 
-            map_element_paint_setup(session, mapTile.x, mapTile.y + 32);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y + 32);
             sprite_paint_setup(session, mapTile.x, mapTile.y + 32);
 
             mapTile.x += 32;
@@ -241,12 +241,12 @@ void paint_session_generate(paint_session * session)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants) {
-            map_element_paint_setup(session, mapTile.x, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             sprite_paint_setup(session, mapTile.x - 32, mapTile.y - 32);
 
-            map_element_paint_setup(session, mapTile.x - 32, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x - 32, mapTile.y);
             sprite_paint_setup(session, mapTile.x - 32, mapTile.y);
 
             mapTile.y += 32;
@@ -263,12 +263,12 @@ void paint_session_generate(paint_session * session)
         mapTile.y &= 0xFFE0;
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants) {
-            map_element_paint_setup(session, mapTile.x, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             sprite_paint_setup(session, mapTile.x + 32, mapTile.y - 32);
 
-            map_element_paint_setup(session, mapTile.x, mapTile.y - 32);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y - 32);
             sprite_paint_setup(session, mapTile.x, mapTile.y - 32);
 
             mapTile.x -= 32;
@@ -287,12 +287,12 @@ void paint_session_generate(paint_session * session)
 
         for (; num_vertical_quadrants > 0; --num_vertical_quadrants)
         {
-            map_element_paint_setup(session, mapTile.x, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x, mapTile.y);
             sprite_paint_setup(session, mapTile.x, mapTile.y);
 
             sprite_paint_setup(session, mapTile.x + 32, mapTile.y + 32);
 
-            map_element_paint_setup(session, mapTile.x + 32, mapTile.y);
+            tile_element_paint_setup(session, mapTile.x + 32, mapTile.y);
             sprite_paint_setup(session, mapTile.x + 32, mapTile.y);
 
             mapTile.y -= 32;
@@ -783,30 +783,30 @@ extern "C"
         switch (rotation)
         {
         case 0:
-            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_WEST);
+            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, TILE_ELEMENT_DIRECTION_WEST);
 
             boundBox.x--;
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_WEST);
+            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_WEST);
             break;
 
         case 1:
-            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_SOUTH);
+            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, TILE_ELEMENT_DIRECTION_SOUTH);
 
             boundBox.x--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_SOUTH);
+            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_SOUTH);
             break;
 
         case 2:
-            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_EAST);
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_EAST);
+            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, TILE_ELEMENT_DIRECTION_EAST);
+            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_EAST);
             break;
 
         case 3:
-            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, MAP_ELEMENT_DIRECTION_NORTH);
+            rotate_map_coordinates(&coord_3d.x, &coord_3d.y, TILE_ELEMENT_DIRECTION_NORTH);
 
             boundBox.y--;
-            rotate_map_coordinates(&boundBox.x, &boundBox.y, MAP_ELEMENT_DIRECTION_NORTH);
+            rotate_map_coordinates(&boundBox.x, &boundBox.y, TILE_ELEMENT_DIRECTION_NORTH);
             break;
         }
 
@@ -847,7 +847,7 @@ extern "C"
         ps->var_29 = 0;
         ps->map_x = session->MapPosition.x;
         ps->map_y = session->MapPosition.y;
-        ps->mapElement = (rct_map_element*)session->CurrentlyDrawnItem;
+        ps->mapElement = (rct_tile_element*)session->CurrentlyDrawnItem;
 
         session->UnkF1AD28 = ps;
 

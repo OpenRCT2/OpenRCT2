@@ -92,7 +92,7 @@ void vehicle_visual_launched_freefall(paint_session * session, sint32 x, sint32 
 
 /** rct2: 0x006FD1F8 */
 static void paint_launched_freefall_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_map_element * mapElement)
+                                         sint32 height, rct_tile_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -164,7 +164,7 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
 
 /** rct2: 0x006FD208 */
 static void paint_launched_freefall_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     if (trackSequence == 1)
     {
@@ -174,8 +174,8 @@ static void paint_launched_freefall_tower_section(paint_session * session, uint8
     uint32 imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
-    rct_map_element * nextMapElement = mapElement + 1;
-    if (map_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height)
+    rct_tile_element * nextMapElement = mapElement + 1;
+    if (tile_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height)
     {
         imageId = SPR_LAUNCHED_FREEFALL_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());

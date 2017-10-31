@@ -93,7 +93,7 @@ void money_effect_create(money32 value)
         if (mapPosition.x == LOCATION_NULL)
             return;
 
-        mapPosition.z = map_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;
+        mapPosition.z = tile_element_height(mapPosition.x, mapPosition.y) & 0xFFFF;
     }
     mapPosition.z += 10;
     money_effect_create_at(-value, mapPosition.x, mapPosition.y, mapPosition.z, false);

@@ -152,7 +152,7 @@ static const uint32 car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
 
 /** rct2: 0x006F72C8 */
 static void paint_car_ride_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_map_element * mapElement)
+                                      sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -182,7 +182,7 @@ static void paint_car_ride_track_flat(paint_session * session, uint8 rideIndex, 
 
 /** rct2: 0x006F72D8 */
 static void paint_car_ride_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_map_element * mapElement)
+                                           sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -219,7 +219,7 @@ static void paint_car_ride_track_25_deg_up(paint_session * session, uint8 rideIn
 
 /** rct2: 0x006F72E8 */
 static void paint_car_ride_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_flat_to_25_deg_up[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -256,7 +256,7 @@ static void paint_car_ride_track_flat_to_25_deg_up(paint_session * session, uint
 
 /** rct2: 0x006F72F8 */
 static void paint_car_ride_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_25_deg_up_to_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -293,28 +293,28 @@ static void paint_car_ride_track_25_deg_up_to_flat(paint_session * session, uint
 
 /** rct2: 0x006F7308 */
 static void paint_car_ride_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_map_element * mapElement)
+                                             sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F7318 */
 static void paint_car_ride_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F7328 */
 static void paint_car_ride_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F7338, 0x006F7348, 0x006F7358 */
 static void paint_car_ride_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                   sint32 height, rct_map_element * mapElement)
+                                   sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId;
 
@@ -367,7 +367,7 @@ static void paint_car_ride_station(paint_session * session, uint8 rideIndex, uin
 
 /** rct2: 0x006F7378 */
 static void paint_car_ride_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -403,7 +403,7 @@ static void paint_car_ride_track_right_quarter_turn_3_tiles(paint_session * sess
 
 /** rct2: 0x006F7368 */
 static void paint_car_ride_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     paint_car_ride_track_right_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 1) % 4, height, mapElement);
@@ -411,7 +411,7 @@ static void paint_car_ride_track_left_quarter_turn_3_tiles(paint_session * sessi
 
 /** rct2: 0x006F7388 */
 static void paint_car_ride_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_left_quarter_turn_1_tile[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -441,14 +441,14 @@ static void paint_car_ride_track_left_quarter_turn_1_tile(paint_session * sessio
 
 /** rct2: 0x006F7398 */
 static void paint_car_ride_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F73A8 */
 static void paint_car_ride_track_spinning_tunnel(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_map_element * mapElement)
+                                                 sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
 
@@ -480,7 +480,7 @@ static void paint_car_ride_track_spinning_tunnel(paint_session * session, uint8 
 
 /** rct2: 0x006F73B8 */
 static void paint_car_ride_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_map_element * mapElement)
+                                           sint32 height, rct_tile_element * mapElement)
 {
     LocationXY16 position = session->MapPosition;
 
@@ -530,7 +530,7 @@ static void paint_car_ride_track_60_deg_up(paint_session * session, uint8 rideIn
 
 /** rct2: 0x006F73C8 */
 static void paint_car_ride_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     LocationXY16 position = session->MapPosition;
 
@@ -587,7 +587,7 @@ static void paint_car_ride_track_25_deg_up_to_60_deg_up(paint_session * session,
 
 /** rct2: 0x006F73D8 */
 static void paint_car_ride_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     LocationXY16 position = session->MapPosition;
 
@@ -644,28 +644,28 @@ static void paint_car_ride_track_60_deg_up_to_25_deg_up(paint_session * session,
 
 /** rct2: 0x006F73E8 */
 static void paint_car_ride_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_map_element * mapElement)
+                                             sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F73F8 */
 static void paint_car_ride_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F7408 */
 static void paint_car_ride_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_map_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
 {
     paint_car_ride_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
 }
 
 /** rct2: 0x006F7418 */
 static void paint_car_ride_track_log_bumps(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_map_element * mapElement)
+                                           sint32 height, rct_tile_element * mapElement)
 {
     uint32 imageId = car_ride_track_pieces_log_bumps[direction] | session->TrackColours[SCHEME_TRACK];
 

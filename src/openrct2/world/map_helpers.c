@@ -23,7 +23,7 @@
 sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 {
     sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
-    rct_map_element *mapElement, *mapElement2;
+    rct_tile_element *mapElement, *mapElement2;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
             mapElement = map_get_surface_element_at(x, y);
@@ -178,7 +178,7 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
 
 static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
 {
-    rct_map_element *mapElement = map_get_surface_element_at(x, y);
+    rct_tile_element *mapElement = map_get_surface_element_at(x, y);
     sint32 baseHeight = mapElement->base_height;
     sint32 slope = mapElement->properties.surface.slope;
     sint32 doubleCorner = slope & 16;
@@ -209,7 +209,7 @@ static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
 static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
 {
     sint32 i, x, y, highest, count, cornerHeights[4], doubleCorner, raisedLand = 0;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
             mapElement = map_get_surface_element_at(x, y);
@@ -328,7 +328,7 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
  */
 sint32 tile_smooth(sint32 x, sint32 y)
 {
-    rct_map_element *const surfaceElement = map_get_surface_element_at(x, y);
+    rct_tile_element *const surfaceElement = map_get_surface_element_at(x, y);
 
     // +-----+-----+-----+
     // | NW  |  N  | NE  |
@@ -356,7 +356,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
                 continue;
 
             // Get neighbour height. If the element is not valid (outside of map) assume the same height
-            rct_map_element *neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
+            rct_tile_element *neighbour_element = map_get_surface_element_at(x + x_offset, y + y_offset);
             neighbourHeightOffset.baseheight[index] = neighbour_element ? neighbour_element->base_height : surfaceElement->base_height;
 
             // Make the height relative to the current surface element
@@ -401,7 +401,7 @@ sint32 tile_smooth(sint32 x, sint32 y)
         uint8 waterHeight = map_get_water_height(surfaceElement) * 2;
         if (waterHeight <= surfaceElement->base_height)
         {
-            surfaceElement->properties.surface.terrain &= ~MAP_ELEMENT_WATER_HEIGHT_MASK;
+            surfaceElement->properties.surface.terrain &= ~TILE_ELEMENT_WATER_HEIGHT_MASK;
         }
     }
     else

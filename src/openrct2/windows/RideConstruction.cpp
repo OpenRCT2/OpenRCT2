@@ -1739,7 +1739,7 @@ static void window_ride_construction_construct(rct_window *w)
             _currentTrackBeginX = next_track.x;
             _currentTrackBeginY = next_track.y;
             _currentTrackBeginZ = z;
-            _currentTrackPieceDirection = map_element_get_direction(next_track.element);
+            _currentTrackPieceDirection = tile_element_get_direction(next_track.element);
             _currentTrackPieceType = next_track.element->properties.track.type;
             _currentTrackSelectionFlags = 0;
             _rideConstructionArrowPulseTime = 0;
@@ -1766,7 +1766,7 @@ static void window_ride_construction_construct(rct_window *w)
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
     sint32 x, y, z, direction, type;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     rct_xy_element inputElement, outputElement;
     track_begin_end trackBeginEnd;
     //bool gotoStartPlacementMode;
@@ -1816,7 +1816,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     else if (track_block_get_next(&inputElement, &outputElement, &z, &direction)) {
         x = outputElement.x;
         y = outputElement.y;
-        direction = map_element_get_direction(outputElement.element);
+        direction = tile_element_get_direction(outputElement.element);
         type = outputElement.element->properties.track.type;
         gGotoStartPlacementMode = false;
     } else {
@@ -2052,7 +2052,7 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
 {
     sint16 mapX, mapY, mapZ;
     sint32 interactionType, direction;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     rct_viewport *viewport;
 
     if (!_trackPlaceCtrlState) {
@@ -2296,9 +2296,9 @@ static void window_ride_construction_draw_track_piece(
     sub_6CBCE2(dpi, rideIndex, trackType, trackDirection, d, 4096, 4096, 1024);
 }
 
-static rct_map_element _tempTrackMapElement;
-static rct_map_element _tempSideTrackMapElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0 };
-static rct_map_element *_backupMapElementArrays[5];
+static rct_tile_element _tempTrackMapElement;
+static rct_tile_element _tempSideTrackMapElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0 };
+static rct_tile_element *_backupMapElementArrays[5];
 
 /**
  *
@@ -2396,12 +2396,12 @@ static void sub_6CBCE2(
         map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackMapElement);
 
         // Set the temporary track element
-        _tempTrackMapElement.type = trackDirection | MAP_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
-        _tempTrackMapElement.flags = (bl & 0x0F) | MAP_ELEMENT_FLAG_LAST_TILE;
+        _tempTrackMapElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
+        _tempTrackMapElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackMapElement.base_height = baseZ;
         _tempTrackMapElement.clearance_height = clearanceZ;
         _tempTrackMapElement.properties.track.type = trackType;
-        map_element_set_track_sequence(&_tempTrackMapElement, trackBlock->index);
+        tile_element_set_track_sequence(&_tempTrackMapElement, trackBlock->index);
         _tempTrackMapElement.properties.track.colour = 0;
         _tempTrackMapElement.properties.track.ride_index = rideIndex;
         if (edx & 0x20000)
@@ -2441,7 +2441,7 @@ static void sub_6CBCE2(
 void window_ride_construction_update_active_elements()
 {
     rct_window *w;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     window_ride_construction_update_enabled_track_pieces();
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2458,7 +2458,7 @@ void window_ride_construction_update_active_elements()
         if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
             _selectedTrackType = mapElement->properties.track.type;
             if (track_element_has_speed_setting(mapElement->properties.track.type))
-                _currentBrakeSpeed2 = map_element_get_brake_booster_speed(mapElement);
+                _currentBrakeSpeed2 = tile_element_get_brake_booster_speed(mapElement);
             _currentSeatRotationAngle = track_element_get_seat_rotation(mapElement);
         }
     }
@@ -3619,7 +3619,7 @@ static void loc_6C7502(sint32 al)
  */
 static void ride_construction_set_brakes_speed(sint32 brakesSpeed)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     sint32 x, y, z;
 
     x = _currentTrackBeginX;

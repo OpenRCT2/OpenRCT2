@@ -113,12 +113,12 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
     chunkWriter.WriteChunk(&_s6.elapsed_months, 16, SAWYER_ENCODING::RLECOMPRESSED);
 
     // 5: Map elements + sprites and other fields chunk
-    chunkWriter.WriteChunk(&_s6.map_elements, 0x180000, SAWYER_ENCODING::RLECOMPRESSED);
+    chunkWriter.WriteChunk(&_s6.tile_elements, 0x180000, SAWYER_ENCODING::RLECOMPRESSED);
 
     if (_s6.header.type == S6_TYPE_SCENARIO)
     {
         // 6 to 13:
-        chunkWriter.WriteChunk(&_s6.next_free_map_element_pointer_index, 0x27104C, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.next_free_tile_element_pointer_index, 0x27104C, SAWYER_ENCODING::RLECOMPRESSED);
         chunkWriter.WriteChunk(&_s6.guests_in_park, 4, SAWYER_ENCODING::RLECOMPRESSED);
         chunkWriter.WriteChunk(&_s6.last_guests_in_park, 8, SAWYER_ENCODING::RLECOMPRESSED);
         chunkWriter.WriteChunk(&_s6.park_rating, 2, SAWYER_ENCODING::RLECOMPRESSED);
@@ -130,7 +130,7 @@ void S6Exporter::Save(IStream * stream, bool isScenario)
     else
     {
         // 6: Everything else...
-        chunkWriter.WriteChunk(&_s6.next_free_map_element_pointer_index, 0x2E8570, SAWYER_ENCODING::RLECOMPRESSED);
+        chunkWriter.WriteChunk(&_s6.next_free_tile_element_pointer_index, 0x2E8570, SAWYER_ENCODING::RLECOMPRESSED);
     }
 
     // Determine number of bytes written
@@ -183,9 +183,9 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = gScenarioSrand0;
     _s6.scenario_srand_1 = gScenarioSrand1;
 
-    memcpy(_s6.map_elements, gMapElements, sizeof(_s6.map_elements));
+    memcpy(_s6.tile_elements, gMapElements, sizeof(_s6.tile_elements));
 
-    _s6.next_free_map_element_pointer_index = gNextFreeMapElementPointerIndex;
+    _s6.next_free_tile_element_pointer_index = gNextFreeMapElementPointerIndex;
     // Sprites needs to be reset before they get used.
     // Might as well reset them in here to zero out the space and improve
     // compression ratios. Especially useful for multiplayer servers that

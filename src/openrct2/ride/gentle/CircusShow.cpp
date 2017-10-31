@@ -25,7 +25,7 @@
  */
 static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uint8 direction, sint8 al, sint8 cl, uint16 height)
 {
-    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
@@ -55,7 +55,7 @@ static void paint_circus_show_tent(paint_session * session, uint8 rideIndex, uin
  * rct2: 0x0076FAD4
  */
 static void paint_circus_show(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                              rct_map_element * mapElement)
+                              rct_tile_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

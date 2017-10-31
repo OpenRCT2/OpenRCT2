@@ -109,10 +109,10 @@ typedef struct rct_s6_data {
     uint32 scenario_srand_1;
 
     // SC6[5]
-    rct_map_element map_elements[RCT2_MAX_MAP_ELEMENTS];
+    rct_tile_element tile_elements[RCT2_MAX_TILE_ELEMENTS];
 
     // SC6[6]
-    uint32 next_free_map_element_pointer_index;
+    uint32 next_free_tile_element_pointer_index;
     rct_sprite sprites[RCT2_MAX_SPRITES];
     uint16 sprite_lists_head[6];
     uint16 sprite_lists_count[6];

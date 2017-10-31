@@ -60,7 +60,7 @@ sint32 park_rating_spinner_value;
 static void cheat_set_grass_length(sint32 length)
 {
     sint32 x, y;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     for (y = 0; y < 256; y++) {
         for (x = 0; x < 256; x++) {
@@ -68,7 +68,7 @@ static void cheat_set_grass_length(sint32 length)
             if (!(mapElement->properties.surface.ownership & OWNERSHIP_OWNED))
                 continue;
 
-            if (map_element_get_terrain(mapElement) != TERRAIN_GRASS)
+            if (tile_element_get_terrain(mapElement) != TERRAIN_GRASS)
                 continue;
 
             if (map_get_water_height(mapElement) > 0)
@@ -83,32 +83,32 @@ static void cheat_set_grass_length(sint32 length)
 
 static void cheat_water_plants()
 {
-    map_element_iterator it;
+    tile_element_iterator it;
 
-    map_element_iterator_begin(&it);
+    tile_element_iterator_begin(&it);
     do {
-        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SCENERY) {
+        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SCENERY) {
             it.element->properties.scenery.age = 0;
         }
-    } while (map_element_iterator_next(&it));
+    } while (tile_element_iterator_next(&it));
 
     gfx_invalidate_screen();
 }
 
 static void cheat_fix_vandalism()
 {
-    map_element_iterator it;
+    tile_element_iterator it;
 
-    map_element_iterator_begin(&it);
+    tile_element_iterator_begin(&it);
     do {
-        if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (!footpath_element_has_path_scenery(it.element))
             continue;
 
-        it.element->flags &= ~MAP_ELEMENT_FLAG_BROKEN;
-    } while (map_element_iterator_next(&it));
+        it.element->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+    } while (tile_element_iterator_next(&it));
 
     gfx_invalidate_screen();
 }
@@ -124,12 +124,12 @@ static void cheat_remove_litter()
         sprite_remove((rct_sprite*)litter);
     }
 
-    map_element_iterator it;
+    tile_element_iterator it;
     rct_scenery_entry *sceneryEntry;
 
-    map_element_iterator_begin(&it);
+    tile_element_iterator_begin(&it);
     do {
-        if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         if (!footpath_element_has_path_scenery(it.element))
@@ -139,7 +139,7 @@ static void cheat_remove_litter()
         if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_BIN)
             it.element->properties.path.addition_status = 0xFF;
 
-    } while (map_element_iterator_next(&it));
+    } while (tile_element_iterator_next(&it));
 
     gfx_invalidate_screen();
 }
@@ -443,7 +443,7 @@ static void cheat_own_all_land()
     sint32 max = gMapSizeUnits - 32;
     for (sint32 y = min; y <= max; y += 32) {
         for (sint32 x = min; x <= max; x += 32) {
-            rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+            rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
 
             // Ignore already owned tiles.
             if (surfaceElement->properties.surface.ownership & OWNERSHIP_OWNED)
@@ -467,7 +467,7 @@ static void cheat_own_all_land()
         sint32 x = gPeepSpawns[i].x;
         sint32 y = gPeepSpawns[i].y;
         if (x != PEEP_SPAWN_UNDEFINED) {
-            rct_map_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
+            rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
             surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
             update_park_fences_around_tile(x, y);
             uint16 baseHeight = surfaceElement->base_height * 8;

@@ -75,9 +75,9 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     }
 
     bool sceneryFound = false;
-    rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_SCENERY)
             continue;
         if ((mapElement->type >> 6) != quadrant)
             continue;
@@ -86,12 +86,12 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
         if (mapElement->properties.scenery.type != sceneryType)
             continue;
         if ((flags & GAME_COMMAND_FLAG_GHOST) && 
-            !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+            !(mapElement->flags & TILE_ELEMENT_FLAG_GHOST))
             continue;
 
         sceneryFound = true;
         break;
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     if (sceneryFound == false)
     {
@@ -106,12 +106,12 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
             LocationXYZ16 coord;
             coord.x = x + 16;
             coord.y = y + 16;
-            coord.z = map_element_height(coord.x, coord.y);
+            coord.z = tile_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
         }
 
         map_invalidate_tile_full(x, y);
-        map_element_remove(mapElement);
+        tile_element_remove(mapElement);
     }
     return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
@@ -132,14 +132,14 @@ static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8
         }
     }
 
-    rct_map_element *mapElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
+    rct_tile_element *mapElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
     if (mapElement == nullptr)
     {
         return 0;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(mapElement->flags & MAP_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(mapElement->flags & TILE_ELEMENT_FLAG_GHOST))
     {
         return 0;
     }
@@ -174,7 +174,7 @@ static money32 SmallSceneryPlace(sint16 x,
     {
         supportsRequired = true;
     }
-    sint32 baseHeight = map_element_height(x, y);
+    sint32 baseHeight = tile_element_height(x, y);
     // If on water
     if (baseHeight & 0xFFFF0000)
     {
@@ -236,7 +236,7 @@ static money32 SmallSceneryPlace(sint16 x,
         x2 += ScenerySubTileOffsets[quadrant & 3].x - 1;
         y2 += ScenerySubTileOffsets[quadrant & 3].y - 1;
     }
-    baseHeight = map_element_height(x2, y2);
+    baseHeight = tile_element_height(x2, y2);
     // If on water
     if (baseHeight & 0xFFFF0000)
     {
@@ -269,7 +269,7 @@ static money32 SmallSceneryPlace(sint16 x,
         }
     }
 
-    rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
     if (surfaceElement != nullptr && !gCheatsDisableClearanceChecks && map_get_water_height(surfaceElement) > 0)
     {
@@ -401,15 +401,15 @@ static money32 SmallSceneryPlace(sint16 x,
         LocationXYZ16 coord;
         coord.x = x + 16;
         coord.y = y + 16;
-        coord.z = map_element_height(coord.x, coord.y);
+        coord.z = tile_element_height(coord.x, coord.y);
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
     }
 
-    rct_map_element* newElement = map_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
+    rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
     gSceneryMapElement = newElement;
     uint8 type = quadrant << 6;
-    type |= MAP_ELEMENT_TYPE_SCENERY;
+    type |= TILE_ELEMENT_TYPE_SCENERY;
     type |= rotation;
     newElement->type = type;
     newElement->properties.scenery.type = sceneryType;
@@ -425,7 +425,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
     {
-        newElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+        newElement->flags |= TILE_ELEMENT_FLAG_GHOST;
     }
 
     map_invalidate_tile_full(x, y);
@@ -477,15 +477,15 @@ extern "C"
      *
      *  rct2: 0x006E0D6E, 0x006B8D88
      */
-    sint32 map_place_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price)
+    sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
     {
-        if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SCENERY)
             return 1;
 
         if (!(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
             return 1;
 
-        rct_scenery_entry* scenery = get_small_scenery_entry((*map_element)->properties.scenery.type);
+        rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
 
         if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
@@ -502,11 +502,11 @@ extern "C"
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             return 0;
 
-        map_invalidate_tile(x, y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+        map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
 
-        map_element_remove(*map_element);
+        tile_element_remove(*tile_element);
 
-        (*map_element)--;
+        (*tile_element)--;
         return 0;
     }
 
@@ -514,12 +514,12 @@ extern "C"
      *
      *  rct2: 0x006C5A4F, 0x006CDE57, 0x006A6733, 0x0066637E
      */
-    sint32 map_place_non_scenery_clear_func(rct_map_element** map_element, sint32 x, sint32 y, uint8 flags, money32* price)
+    sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price)
     {
-        if (map_element_get_type(*map_element) != MAP_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(*tile_element) != TILE_ELEMENT_TYPE_SCENERY)
             return 1;
 
-        rct_scenery_entry* scenery = get_small_scenery_entry((*map_element)->properties.scenery.type);
+        rct_scenery_entry* scenery = get_small_scenery_entry((*tile_element)->properties.scenery.type);
 
         if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         {
@@ -536,11 +536,11 @@ extern "C"
         if (!(flags & GAME_COMMAND_FLAG_APPLY))
             return 0;
 
-        map_invalidate_tile(x, y, (*map_element)->base_height * 8, (*map_element)->clearance_height * 8);
+        map_invalidate_tile(x, y, (*tile_element)->base_height * 8, (*tile_element)->clearance_height * 8);
 
-        map_element_remove(*map_element);
+        tile_element_remove(*tile_element);
 
-        (*map_element)--;
+        (*tile_element)--;
         return 0;
     }
 

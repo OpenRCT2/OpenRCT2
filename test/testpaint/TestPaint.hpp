@@ -25,7 +25,7 @@ extern "C"
     #include <openrct2/drawing/drawing.h>
     #include <openrct2/interface/colour.h>
     #include <openrct2/paint/paint.h>
-    #include <openrct2/paint/map_element/map_element.h>
+    #include <openrct2/paint/tile_element/tile_element.h>
 }
 
 #define gRideEntries            RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES, rct_ride_entry*)

@@ -719,7 +719,7 @@ void window_game_bottom_toolbar_invalidate_news_item();
 void window_track_list_open(ride_list_item item);
 rct_window *window_ride_main_open(sint32 rideIndex);
 rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex);
-rct_window *window_ride_open_track(rct_map_element *mapElement);
+rct_window *window_ride_open_track(rct_tile_element *mapElement);
 rct_window *window_ride_open_vehicle(rct_vehicle *vehicle);
 void window_ride_construct(rct_window *w);
 rct_window *window_ride_construction_open();

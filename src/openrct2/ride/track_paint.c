@@ -27,7 +27,7 @@
 #include "ride_data.h"
 #include "TrackData.h"
 #include "track_paint.h"
-#include "../paint/map_element/map_element.h"
+#include "../paint/tile_element/tile_element.h"
 
 /* rct2: 0x007667AC */
 static LocationXY16 loc_7667AC[] = {
@@ -203,7 +203,7 @@ enum
 
 bool gUseOriginalRidePaint = false;
 
-bool track_paint_util_has_fence(enum edge_t edge, LocationXY16 position, rct_map_element * mapElement, Ride * ride, uint8 rotation)
+bool track_paint_util_has_fence(enum edge_t edge, LocationXY16 position, rct_tile_element * mapElement, Ride * ride, uint8 rotation)
 {
     LocationXY16 offset = { 0, 0 };
     switch (edge) {
@@ -225,7 +225,7 @@ bool track_paint_util_has_fence(enum edge_t edge, LocationXY16 position, rct_map
         ((position.x / 32) + offset.x) |
         (((position.y / 32) + offset.y) * (1 << 8));
 
-    sint32 entranceId = map_element_get_station(mapElement);
+    sint32 entranceId = tile_element_get_station(mapElement);
 
     return (ride->entrances[entranceId].xy != entranceLoc && ride->exits[entranceId].xy != entranceLoc);
 }
@@ -247,7 +247,7 @@ void track_paint_util_paint_floor(paint_session * session, uint8 edges, uint32 c
     sub_98197C(session, imageId | colourFlags, 0, 0, 32, 32, 1, height, 0, 0, height, rotation);
 }
 
-void track_paint_util_paint_fences(paint_session * session, uint8 edges, LocationXY16 position, rct_map_element * mapElement, Ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation)
+void track_paint_util_paint_fences(paint_session * session, uint8 edges, LocationXY16 position, rct_tile_element * mapElement, Ride * ride, uint32 colourFlags, uint16 height, const uint32 fenceSprites[4], uint8 rotation)
 {
     uint32 imageId;
 
@@ -281,29 +281,29 @@ bool track_paint_util_should_paint_supports(LocationXY16 position)
     return false;
 }
 
-void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB);
+void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_tile_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB);
 
-void track_paint_util_draw_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement)
+void track_paint_util_draw_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_tile_element * mapElement)
 {
     track_paint_util_draw_station_impl(session, rideIndex, trackSequence, direction, height, height, mapElement, 5, 7);
 }
 
-void track_paint_util_draw_station_2(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
+void track_paint_util_draw_station_2(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, rct_tile_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
     track_paint_util_draw_station_impl(session, rideIndex, trackSequence, direction, height, height, mapElement, fenceOffsetA, fenceOffsetB);
 }
 
-void track_paint_util_draw_station_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement)
+void track_paint_util_draw_station_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_tile_element * mapElement)
 {
     track_paint_util_draw_station_impl(session, rideIndex, trackSequence, direction, height, coverHeight, mapElement, 5, 7);
 }
 
-void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_map_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
+void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height, uint16 coverHeight, rct_tile_element * mapElement, sint32 fenceOffsetA, sint32 fenceOffsetB)
 {
     LocationXY16 position = session->MapPosition;
     Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = map_element_get_green_light(mapElement);
+    const bool hasGreenLight = tile_element_get_green_light(mapElement);
 
     bool hasFence;
     uint32 imageId;
@@ -432,12 +432,12 @@ void track_paint_util_draw_station_impl(paint_session * session, uint8 rideIndex
     }
 }
 
-void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 stationVariant)
+void track_paint_util_draw_station_inverted(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_tile_element * mapElement, uint8 stationVariant)
 {
     LocationXY16 position = session->MapPosition;
     Ride * ride = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
-    const bool hasGreenLight = map_element_get_green_light(mapElement);
+    const bool hasGreenLight = tile_element_get_green_light(mapElement);
 
     bool hasFence;
     uint32 imageId;
@@ -641,7 +641,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
     return true;
 }
 
-void track_paint_util_draw_station_platform(paint_session * session, Ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_map_element * mapElement)
+void track_paint_util_draw_station_platform(paint_session * session, Ride *ride, uint8 direction, sint32 height, sint32 zOffset, rct_tile_element * mapElement)
 {
     LocationXY16 position = session->MapPosition;
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -678,7 +678,7 @@ void track_paint_util_draw_station_platform(paint_session * session, Ride *ride,
     }
 }
 
-void track_paint_util_draw_pier(paint_session * session, Ride * ride, const rct_ride_entrance_definition * entranceStyle, LocationXY16 position, uint8 direction, sint32 height, rct_map_element * mapElement, uint8 rotation)
+void track_paint_util_draw_pier(paint_session * session, Ride * ride, const rct_ride_entrance_definition * entranceStyle, LocationXY16 position, uint8 direction, sint32 height, rct_tile_element * mapElement, uint8 rotation)
 {
     bool hasFence;
     uint32 imageId;
@@ -1620,7 +1620,7 @@ void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thick
     }
 }
 
-void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement)
+void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *mapElement)
 {
     static const uint32 imageIds[4][3] =
     {
@@ -1630,7 +1630,7 @@ void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 di
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_E },
     };
 
-    bool takingPhoto = map_element_is_taking_photo(mapElement);
+    bool takingPhoto = tile_element_is_taking_photo(mapElement);
     uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
     uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction) {
@@ -1657,7 +1657,7 @@ void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 di
     }
 }
 
-void track_paint_util_onride_photo_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement)
+void track_paint_util_onride_photo_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *mapElement)
 {
     static const uint32 imageIds[4][3] =
     {
@@ -1667,7 +1667,7 @@ void track_paint_util_onride_photo_paint(paint_session * session, uint8 directio
         { SPR_ON_RIDE_PHOTO_SIGN_SE_NW, SPR_ON_RIDE_PHOTO_CAMERA_E, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_E },
     };
 
-    bool takingPhoto = map_element_is_taking_photo(mapElement);
+    bool takingPhoto = tile_element_is_taking_photo(mapElement);
     uint32 imageId = imageIds[direction][0] | session->TrackColours[SCHEME_MISC];
     uint32 flashImageId = imageIds[direction][takingPhoto ? 2 : 1] | session->TrackColours[SCHEME_MISC];
     switch (direction) {
@@ -1733,7 +1733,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 
  *
  *  rct2: 0x006C4794
  */
-void track_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement)
+void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *mapElement)
 {
     sint32 rideIndex = mapElement->properties.track.ride_index;
     Ride *ride = get_ride(rideIndex);
@@ -1753,7 +1753,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
     if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) {
         sint32 trackType = mapElement->properties.track.type;
-        sint32 trackSequence = map_element_get_track_sequence(mapElement);
+        sint32 trackSequence = tile_element_get_track_sequence(mapElement);
         sint32 trackColourScheme = track_element_get_colour_scheme(mapElement);
 
         if ((gCurrentViewportFlags & VIEWPORT_FLAG_TRACK_HEIGHTS) && dpi->zoom_level == 0) {
@@ -1772,13 +1772,13 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
         session->TrackColours[SCHEME_SUPPORTS] = SPRITE_ID_PALETTE_COLOUR_1(ride->track_colour_supports[trackColourScheme]);
         session->TrackColours[SCHEME_MISC] = IMAGE_TYPE_REMAP;
         session->TrackColours[SCHEME_3] = 0x20C00000;
-        if (mapElement->type & MAP_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
+        if (mapElement->type & TILE_ELEMENT_TYPE_FLAG_HIGHLIGHT) {
             session->TrackColours[SCHEME_TRACK] = 0x21600000;
             session->TrackColours[SCHEME_SUPPORTS] = 0x21600000;
             session->TrackColours[SCHEME_MISC] = 0x21600000;
             session->TrackColours[SCHEME_3] = 0x21600000;
         }
-        if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+        if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST) {
             uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             session->TrackColours[SCHEME_TRACK] = ghost_id;

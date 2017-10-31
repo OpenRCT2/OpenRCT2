@@ -115,7 +115,7 @@ static void set_height(sint32 x, sint32 y, sint32 height)
 void mapgen_generate_blank(mapgen_settings *settings)
 {
     sint32 x, y;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     map_clear_all_elements();
 
@@ -123,8 +123,8 @@ void mapgen_generate_blank(mapgen_settings *settings)
     for (y = 1; y < settings->mapSize - 1; y++) {
         for (x = 1; x < settings->mapSize - 1; x++) {
             mapElement = map_get_surface_element_at(x, y);
-            map_element_set_terrain(mapElement, settings->floor);
-            map_element_set_terrain_edge(mapElement, settings->wall);
+            tile_element_set_terrain(mapElement, settings->floor);
+            tile_element_set_terrain_edge(mapElement, settings->wall);
             mapElement->base_height = settings->height;
             mapElement->clearance_height = settings->height;
         }
@@ -136,7 +136,7 @@ void mapgen_generate_blank(mapgen_settings *settings)
 void mapgen_generate(mapgen_settings *settings)
 {
     sint32 x, y, mapSize, floorTexture, wallTexture, waterLevel;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     util_srand((sint32)platform_get_ticks());
 
@@ -170,8 +170,8 @@ void mapgen_generate(mapgen_settings *settings)
     for (y = 1; y < mapSize - 1; y++) {
         for (x = 1; x < mapSize - 1; x++) {
             mapElement = map_get_surface_element_at(x, y);
-            map_element_set_terrain(mapElement, floorTexture);
-            map_element_set_terrain_edge(mapElement, wallTexture);
+            tile_element_set_terrain(mapElement, floorTexture);
+            tile_element_set_terrain_edge(mapElement, wallTexture);
             mapElement->base_height = settings->height;
             mapElement->clearance_height = settings->height;
         }
@@ -226,7 +226,7 @@ void mapgen_generate(mapgen_settings *settings)
             mapElement = map_get_surface_element_at(x, y);
 
             if (mapElement->base_height < waterLevel + 6)
-                map_element_set_terrain(mapElement, beachTexture);
+                tile_element_set_terrain(mapElement, beachTexture);
         }
     }
 
@@ -240,15 +240,15 @@ void mapgen_generate(mapgen_settings *settings)
 static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 {
     sint32 surfaceZ;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     rct_scenery_entry *sceneryEntry = get_small_scenery_entry(type);
 
-    surfaceZ = map_element_height(x * 32 + 16, y * 32 + 16) / 8;
-    mapElement = map_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
+    surfaceZ = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
+    mapElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
     assert(mapElement != NULL);
     mapElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
-    mapElement->type = MAP_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
+    mapElement->type = TILE_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
     mapElement->properties.scenery.type = type;
     mapElement->properties.scenery.age = 0;
     scenery_small_set_primary_colour(mapElement, COLOUR_YELLOW);
@@ -304,7 +304,7 @@ static void mapgen_place_trees()
     // Create list of available tiles
     for (sint32 y = 1; y < gMapSize - 1; y++) {
         for (sint32 x = 1; x < gMapSize - 1; x++) {
-            rct_map_element *mapElement = map_get_surface_element_at(x, y);
+            rct_tile_element *mapElement = map_get_surface_element_at(x, y);
 
             // Exclude water tiles
             if (map_get_water_height(mapElement) > 0)
@@ -335,8 +335,8 @@ static void mapgen_place_trees()
         pos = &availablePositions[i];
 
         sint32 type = -1;
-        rct_map_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
-        switch (map_element_get_terrain(mapElement)) {
+        rct_tile_element *mapElement = map_get_surface_element_at(pos->x, pos->y);
+        switch (tile_element_get_terrain(mapElement)) {
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
         case TERRAIN_GRASS_CLUMPS:
@@ -380,7 +380,7 @@ static void mapgen_place_trees()
 static void mapgen_set_water_level(sint32 waterLevel)
 {
     sint32 x, y, mapSize;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     mapSize = gMapSize;
 
@@ -613,7 +613,7 @@ static void mapgen_smooth_height(sint32 iterations)
 static void mapgen_set_height()
 {
     sint32 x, y, heightX, heightY, mapSize;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     mapSize = _heightSize / 2;
     for (y = 1; y < mapSize - 1; y++) {
@@ -960,7 +960,7 @@ void mapgen_generate_from_heightmap(mapgen_settings *settings)
         for (uint32 x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            rct_map_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
+            rct_tile_element *const surfaceElement = map_get_surface_element_at(y + 1, x + 1);
 
             // Read value from bitmap, and convert its range
             uint8 value = dest[x + y * _heightMapData.width];

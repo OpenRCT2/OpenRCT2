@@ -38,7 +38,7 @@ colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
 
-rct_map_element *gSceneryMapElement;
+rct_tile_element *gSceneryMapElement;
 uint8 gSceneryMapElementType;
 
 money32 gSceneryPlaceCost;
@@ -73,11 +73,11 @@ const LocationXY8 ScenerySubTileOffsets[] = {
     { 23,  7 }
 };
 
-void scenery_increase_age(sint32 x, sint32 y, rct_map_element *mapElement);
+void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *mapElement);
 
 void scenery_update_tile(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
@@ -85,13 +85,13 @@ void scenery_update_tile(sint32 x, sint32 y)
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (map_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(mapElement))
                 continue;
         }
 
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SCENERY) {
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SCENERY) {
             scenery_update_age(x, y, mapElement);
-        } else if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH) {
+        } else if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement)) {
                 rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
                 if (sceneryEntry != NULL) {
@@ -104,16 +104,16 @@ void scenery_update_tile(sint32 x, sint32 y)
                 }
             }
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 }
 
 /**
  *
  *  rct2: 0x006E33D9
  */
-void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
+void scenery_update_age(sint32 x, sint32 y, rct_tile_element *mapElement)
 {
-    rct_map_element *mapElementAbove;
+    rct_tile_element *mapElementAbove;
     rct_scenery_entry *sceneryEntry;
 
     sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
@@ -144,17 +144,17 @@ void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
 
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
-        if (map_element_is_ghost(mapElementAbove))
+        if (tile_element_is_ghost(mapElementAbove))
             continue;
 
-        switch (map_element_get_type(mapElementAbove)) {
-        case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-        case MAP_ELEMENT_TYPE_ENTRANCE:
-        case MAP_ELEMENT_TYPE_PATH:
+        switch (tile_element_get_type(mapElementAbove)) {
+        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TILE_ELEMENT_TYPE_PATH:
             map_invalidate_tile_zoom1(x, y, mapElementAbove->base_height * 8, mapElementAbove->clearance_height * 8);
             scenery_increase_age(x, y, mapElement);
             return;
-        case MAP_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SCENERY:
             sceneryEntry = get_small_scenery_entry(mapElementAbove->properties.scenery.type);
             if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
                 scenery_increase_age(x, y, mapElement);
@@ -169,7 +169,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_map_element *mapElement)
     map_invalidate_tile_zoom1(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
 }
 
-void scenery_increase_age(sint32 x, sint32 y, rct_map_element *mapElement)
+void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *mapElement)
 {
     if (mapElement->flags & SMALL_SCENERY_FLAG_ANIMATED)
         return;
@@ -205,13 +205,13 @@ void scenery_remove_ghost_tool_placement(){
 
     if (gSceneryGhostType & (1 << 1)){
         gSceneryGhostType &= ~(1 << 1);
-        rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
         do{
-            if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_PATH)
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (map_element->base_height != z)
+            if (tile_element->base_height != z)
                 continue;
 
             game_do_command(
@@ -223,7 +223,7 @@ void scenery_remove_ghost_tool_placement(){
                 gSceneryGhostPathObjectType & 0xFFFF0000,
                 0);
             break;
-        } while (!map_element_is_last_for_tile(map_element++));
+        } while (!tile_element_is_last_for_tile(tile_element++));
     }
 
     if (gSceneryGhostType & (1 << 2)){
@@ -323,17 +323,17 @@ sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
     }
 }
 
-sint32 scenery_small_get_primary_colour(const rct_map_element *mapElement)
+sint32 scenery_small_get_primary_colour(const rct_tile_element *mapElement)
 {
     return (mapElement->properties.scenery.colour_1 & 0x1F);
 }
 
-sint32 scenery_small_get_secondary_colour(const rct_map_element *mapElement)
+sint32 scenery_small_get_secondary_colour(const rct_tile_element *mapElement)
 {
     return (mapElement->properties.scenery.colour_2 & 0x1F);
 }
 
-void scenery_small_set_primary_colour(rct_map_element *mapElement, uint32 colour)
+void scenery_small_set_primary_colour(rct_tile_element *mapElement, uint32 colour)
 {
     assert(colour <= 31);
     mapElement->properties.scenery.colour_1 &= ~0x1F;
@@ -341,19 +341,19 @@ void scenery_small_set_primary_colour(rct_map_element *mapElement, uint32 colour
 
 }
 
-void scenery_small_set_secondary_colour(rct_map_element *mapElement, uint32 colour)
+void scenery_small_set_secondary_colour(rct_tile_element *mapElement, uint32 colour)
 {
     assert(colour <= 31);
     mapElement->properties.scenery.colour_2 &= ~0x1F;
     mapElement->properties.scenery.colour_2 |= colour;
 }
 
-bool scenery_small_get_supports_needed(const rct_map_element *mapElement)
+bool scenery_small_get_supports_needed(const rct_tile_element *mapElement)
 {
     return (bool)(mapElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
 }
 
-void scenery_small_set_supports_needed(rct_map_element *mapElement)
+void scenery_small_set_supports_needed(rct_tile_element *mapElement)
 {
     mapElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
