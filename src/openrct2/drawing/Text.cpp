@@ -90,7 +90,7 @@ static void DrawText(rct_drawpixelinfo * dpi, sint32 x, sint32 y, TextPaint * pa
     case TextAlignment::LEFT:
         break;
     case TextAlignment::CENTRE:
-        x -= width / 2;
+        x -= (width - 1) / 2;
         break;
     case TextAlignment::RIGHT:
         x -= width;
