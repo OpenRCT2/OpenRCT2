@@ -26,7 +26,7 @@ interface ITitleSequencePlayer
 
     virtual sint32 GetCurrentPosition() const abstract;
 
-    virtual bool Begin(uint32 titleSequenceId) abstract;
+    virtual bool Begin(size_t titleSequenceId) abstract;
     virtual void Reset() abstract;
     virtual bool Update() abstract;
     virtual void Seek(sint32 position) abstract;

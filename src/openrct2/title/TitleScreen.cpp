@@ -53,12 +53,12 @@ ITitleSequencePlayer * TitleScreen::GetSequencePlayer()
     return _sequencePlayer;
 }
 
-uint16 TitleScreen::GetCurrentSequence()
+size_t TitleScreen::GetCurrentSequence()
 {
     return _currentSequence;
 }
 
-void TitleScreen::SetCurrentSequence(uint16 value, bool loadSequence)
+void TitleScreen::SetCurrentSequence(size_t value, bool loadSequence)
 {
     _currentSequence = value;
     if (loadSequence)
@@ -154,9 +154,9 @@ void TitleScreen::Update()
     gInUpdateCode = false;
 }
 
-void TitleScreen::ChangeSequence(sint32 preset)
+void TitleScreen::ChangeSequence(size_t preset)
 {
-    sint32 count = (sint32)title_sequence_manager_get_count();
+    size_t count = title_sequence_manager_get_count();
     if (preset < 0 || preset >= count)
     {
         return;
@@ -208,10 +208,10 @@ void TitleScreen::TryLoadSequence()
 {
     if (_loadedTitleSequenceId != _currentSequence)
     {
-        uint16 numSequences = (uint16)TitleSequenceManager::GetCount();
+        size_t numSequences = TitleSequenceManager::GetCount();
         if (numSequences > 0)
         {
-            uint16 targetSequence = _currentSequence;
+            size_t targetSequence = _currentSequence;
             do
             {
                 if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
@@ -227,8 +227,8 @@ void TitleScreen::TryLoadSequence()
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
         _sequencePlayer->Eject();
-        _currentSequence = UINT16_MAX;
-        _loadedTitleSequenceId = UINT16_MAX;
+        _currentSequence = SIZE_MAX;
+        _loadedTitleSequenceId = SIZE_MAX;
         game_init_all(150);
     }
 }
@@ -261,7 +261,7 @@ extern "C"
         return result;
     }
 
-    void title_sequence_change_preset(sint32 preset)
+    void title_sequence_change_preset(size_t preset)
     {
         if (_singleton != nullptr)
         {
@@ -287,14 +287,14 @@ extern "C"
         }
     }
 
-    uint16 title_get_config_sequence()
+    size_t title_get_config_sequence()
     {
-        return (uint16)title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
+        return title_sequence_manager_get_index_for_config_id(gConfigInterface.current_title_sequence_preset);
     }
 
-    uint16 title_get_current_sequence()
+    size_t title_get_current_sequence()
     {
-        uint16 result = 0;
+        size_t result = 0;
         if (_singleton != nullptr)
         {
             result = _singleton->GetCurrentSequence();
@@ -302,7 +302,7 @@ extern "C"
         return result;
     }
 
-    void title_set_current_sequence(uint16 value, bool loadSequence)
+    void title_set_current_sequence(size_t value, bool loadSequence)
     {
         if (_singleton != nullptr)
         {
@@ -315,7 +315,7 @@ extern "C"
         utf8 buffer[256];
 
         // Write format codes
-        utf8 *ch = buffer;
+        utf8 * ch = buffer;
         ch = utf8_write_codepoint(ch, FORMAT_MEDIUMFONT);
         ch = utf8_write_codepoint(ch, FORMAT_OUTLINE);
         ch = utf8_write_codepoint(ch, FORMAT_WHITE);

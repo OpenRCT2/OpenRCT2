@@ -177,10 +177,10 @@ namespace TitleSequenceManager
         return std::string(path);
     }
 
-    static uint16 GetPredefinedIndex(const std::string &path)
+    static size_t GetPredefinedIndex(const std::string &path)
     {
         const utf8 * filename = Path::GetFileName(path.c_str());
-        for (uint16 i = 0; i < Util::CountOf(PredefinedSequences); i++)
+        for (size_t i = 0; i < Util::CountOf(PredefinedSequences); i++)
         {
             if (String::Equals(filename, PredefinedSequences[i].Filename, true))
             {
@@ -360,13 +360,13 @@ extern "C"
         return name;
     }
 
-    uint16 title_sequence_manager_get_predefined_index(size_t index)
+    size_t title_sequence_manager_get_predefined_index(size_t index)
     {
         auto item = TitleSequenceManager::GetItem(index);
         if (item == nullptr) {
             return 0;
         }
-        uint16 predefinedIndex = item->PredefinedIndex;
+        size_t predefinedIndex = item->PredefinedIndex;
         return predefinedIndex;
     }
 
