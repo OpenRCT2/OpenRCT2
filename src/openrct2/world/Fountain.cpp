@@ -99,10 +99,10 @@ static void jumping_fountain_create_next(const rct_jumping_fountain * jumpingFou
 
 extern "C"
 {
-    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * mapElement)
+    void jumping_fountain_begin(sint32 type, sint32 x, sint32 y, const rct_tile_element * tileElement)
     {
         sint32 randomIndex;
-        sint32 z = mapElement->base_height * 8;
+        sint32 z = tileElement->base_height * 8;
 
         // Change pattern approximately every 51 seconds
         uint32 pattern = (gCurrentTicks >> 11) & 7;
@@ -300,22 +300,22 @@ static bool is_jumping_fountain(sint32 type, sint32 x, sint32 y, sint32 z)
         PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW :
         PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER;
 
-    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH) continue;
-        if (mapElement->base_height != z) continue;
-        if (footpath_element_path_scenery_is_ghost(mapElement)) continue;
-        if (!footpath_element_has_path_scenery(mapElement)) continue;
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH) continue;
+        if (tileElement->base_height != z) continue;
+        if (footpath_element_path_scenery_is_ghost(tileElement)) continue;
+        if (!footpath_element_has_path_scenery(tileElement)) continue;
 
-        uint8 additionIndex = footpath_element_get_path_scenery_index(mapElement);
+        uint8 additionIndex = footpath_element_get_path_scenery_index(tileElement);
         rct_scenery_entry * sceneryEntry = get_footpath_item_entry(additionIndex);
         if (sceneryEntry != reinterpret_cast<void*>(-1) && sceneryEntry->path_bit.flags & pathBitFlagMask)
         {
             return true;
         }
     }
-    while (!tile_element_is_last_for_tile(mapElement++));
+    while (!tile_element_is_last_for_tile(tileElement++));
 
     return false;
 }

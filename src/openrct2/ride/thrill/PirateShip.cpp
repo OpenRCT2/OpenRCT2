@@ -65,7 +65,7 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
 {
     uint32 imageId, baseImageId;
 
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle *    vehicle  = NULL;
@@ -162,13 +162,13 @@ static void paint_pirate_ship_structure(paint_session * session, Ride * ride, ui
     sub_98199C(session, imageId, xOffset, yOffset, bounds.length_x, bounds.length_y, 80, height, bounds.offset_x,
                bounds.offset_y, height, get_current_rotation());
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A85C4 */
 static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                              rct_tile_element * mapElement)
+                              rct_tile_element * tileElement)
 {
     uint8    relativeTrackSequence = track_map_1x5[direction][trackSequence];
     Ride *   ride                  = get_ride(rideIndex);
@@ -204,7 +204,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
     {
         if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
             if (relativeTrackSequence == 2)
             {
                 imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE) |
@@ -221,7 +221,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
                       session->TrackColours[SCHEME_TRACK];
             sub_98196C(session, imageId, 24, 0, 8, 32, 1, height + 9, get_current_rotation());
 
-            hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
             if (relativeTrackSequence == 3)
             {
                 if (hasFence)
@@ -249,7 +249,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
     {
         if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
         {
-            hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
             if (relativeTrackSequence == 2)
             {
                 imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE) |
@@ -266,7 +266,7 @@ static void paint_pirate_ship(paint_session * session, uint8 rideIndex, uint8 tr
                       session->TrackColours[SCHEME_TRACK];
             sub_98196C(session, imageId, 0, 24, 32, 8, 1, height + 9, get_current_rotation());
 
-            hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+            hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
             if (relativeTrackSequence == 3)
             {
                 if (hasFence)

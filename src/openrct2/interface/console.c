@@ -818,9 +818,9 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
             rct_window *w = window_get_main();
             if (w != NULL) {
                 sint32 interactionType;
-                rct_tile_element *mapElement;
+                rct_tile_element *tileElement;
                 LocationXY16 mapCoord = { 0 };
-                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, NULL);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;
@@ -1269,7 +1269,7 @@ static sint32 cc_remove_park_fences(const utf8 **argv, sint32 argc)
 static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
 {
     map_reorganise_elements();
-    sint32 mapElementCount = gNextFreeMapElement - gMapElements - 1;
+    sint32 tileElementCount = gNextFreeTileElement - gTileElements - 1;
 
     sint32 rideCount = 0;
     for (sint32 i = 0; i < MAX_RIDES; ++i) 
@@ -1306,7 +1306,7 @@ static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
     }
 
     console_printf("Sprites: %d/%d", spriteCount, MAX_SPRITES);
-    console_printf("Map Elements: %d/%d", mapElementCount, MAX_TILE_ELEMENTS);
+    console_printf("Map Elements: %d/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console_printf("Banners: %d/%d", bannerCount, MAX_BANNERS);
     console_printf("Rides: %d/%d", rideCount, MAX_RIDES);
     console_printf("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);

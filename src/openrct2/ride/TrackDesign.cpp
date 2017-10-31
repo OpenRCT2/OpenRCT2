@@ -1478,23 +1478,23 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     continue;
                 }
 
-                rct_tile_element * mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
-                if (mapElement == NULL)
+                rct_tile_element * tileElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
+                if (tileElement == NULL)
                 {
                     return false;
                 }
 
-                sint32 height = mapElement->base_height * 8;
-                if (mapElement->properties.surface.slope & 0x0F)
+                sint32 height = tileElement->base_height * 8;
+                if (tileElement->properties.surface.slope & 0x0F)
                 {
                     height += 16;
-                    if (mapElement->properties.surface.slope & 0x10)
+                    if (tileElement->properties.surface.slope & 0x10)
                     {
                         height += 16;
                     }
                 }
 
-                uint8 water_height = map_get_water_height(mapElement) * 16;
+                uint8 water_height = map_get_water_height(tileElement) * 16;
                 if (water_height > 0 && water_height > height)
                 {
                     height = water_height;
@@ -2041,11 +2041,11 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        rct_tile_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+        rct_tile_element * tileElement = map_get_surface_element_at(x >> 5, y >> 5);
         uint8           supportZ     = (z + 32) >> 3;
-        if (supportZ > mapElement->base_height)
+        if (supportZ > tileElement->base_height)
         {
-            uint8 supportHeight    = (supportZ - mapElement->base_height) / 2;
+            uint8 supportHeight    = (supportZ - tileElement->base_height) / 2;
             uint8 maxSupportHeight = RideData5[RIDE_TYPE_MAZE].max_height;
             if (supportHeight > maxSupportHeight)
             {
@@ -2109,21 +2109,21 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         sint32          fx           = floor2(x, 32);
         sint32          fy           = floor2(y, 32);
         sint32          fz           = z >> 3;
-        rct_tile_element * mapElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
-        mapElement->clearance_height            = fz + 4;
-        mapElement->type                        = TILE_ELEMENT_TYPE_TRACK;
-        mapElement->properties.track.type       = TRACK_ELEM_MAZE;
-        mapElement->properties.track.ride_index = rideIndex;
-        mapElement->properties.track.maze_entry = mazeEntry;
+        rct_tile_element * tileElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
+        tileElement->clearance_height            = fz + 4;
+        tileElement->type                        = TILE_ELEMENT_TYPE_TRACK;
+        tileElement->properties.track.type       = TRACK_ELEM_MAZE;
+        tileElement->properties.track.ride_index = rideIndex;
+        tileElement->properties.track.maze_entry = mazeEntry;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            mapElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+            tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
         }
 
-        map_invalidate_element(fx, fy, mapElement);
+        map_invalidate_element(fx, fy, tileElement);
 
         ride->maze_tiles++;
-        ride->station_heights[0] = mapElement->base_height;
+        ride->station_heights[0] = tileElement->base_height;
         ride->station_starts[0].xy = 0;
         if (ride->maze_tiles == 1)
         {
@@ -2286,15 +2286,15 @@ static map_backup * track_design_preview_backup_map()
     {
         memcpy(
             backup->tile_elements,
-            gMapElements,
+            gTileElements,
             sizeof(backup->tile_elements)
         );
         memcpy(
             backup->tile_pointers,
-            gMapElementTilePointers,
+            gTileElementTilePointers,
             sizeof(backup->tile_pointers)
         );
-        backup->next_free_tile_element  = gNextFreeMapElement;
+        backup->next_free_tile_element  = gNextFreeTileElement;
         backup->map_size_units         = gMapSizeUnits;
         backup->map_size_units_minus_2 = gMapSizeMinus2;
         backup->map_size               = gMapSize;
@@ -2310,16 +2310,16 @@ static map_backup * track_design_preview_backup_map()
 static void track_design_preview_restore_map(map_backup * backup)
 {
     memcpy(
-        gMapElements,
+        gTileElements,
         backup->tile_elements,
         sizeof(backup->tile_elements)
     );
     memcpy(
-        gMapElementTilePointers,
+        gTileElementTilePointers,
         backup->tile_pointers,
         sizeof(backup->tile_pointers)
     );
-    gNextFreeMapElement = backup->next_free_tile_element;
+    gNextFreeTileElement = backup->next_free_tile_element;
     gMapSizeUnits       = backup->map_size_units;
     gMapSizeMinus2      = backup->map_size_units_minus_2;
     gMapSize            = backup->map_size;
@@ -2342,7 +2342,7 @@ static void track_design_preview_clear_map()
 
     for (sint32 i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
-        rct_tile_element * tile_element = &gMapElements[i];
+        rct_tile_element * tile_element = &gTileElements[i];
         tile_element->type                            = TILE_ELEMENT_TYPE_SURFACE;
         tile_element->flags                           = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height                     = 2;

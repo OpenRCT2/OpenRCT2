@@ -362,18 +362,18 @@ extern uint8        gMapSelectArrowDirection;
 extern uint8 gMapGroundFlags;
 
 #ifdef NO_RCT2
-extern rct_tile_element gMapElements[];
-extern rct_tile_element *gMapElementTilePointers[];
+extern rct_tile_element gTileElements[];
+extern rct_tile_element *gTileElementTilePointers[];
 #else
-extern rct_tile_element *gMapElements;
-extern rct_tile_element **gMapElementTilePointers;
+extern rct_tile_element *gTileElements;
+extern rct_tile_element **gTileElementTilePointers;
 #endif
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
-extern rct_tile_element *gNextFreeMapElement;
-extern uint32 gNextFreeMapElementPointerIndex;
+extern rct_tile_element *gNextFreeTileElement;
+extern uint32 gNextFreeTileElementPointerIndex;
 
 // Used in the land tool window to enable mountain tool / land smoothing
 extern bool gLandMountainMode;
@@ -429,18 +429,18 @@ bool map_is_location_owned(sint32 x, sint32 y, sint32 z);
 bool map_is_location_in_park(sint32 x, sint32 y);
 bool map_is_location_owned_or_has_rights(sint32 x, sint32 y);
 bool map_surface_is_blocked(sint16 x, sint16 y);
-sint32 tile_element_get_station(const rct_tile_element * mapElement);
-void tile_element_set_station(rct_tile_element * mapElement, uint32 stationIndex);
-sint32 tile_element_get_track_sequence(const rct_tile_element * mapElement);
-void tile_element_set_track_sequence(rct_tile_element * mapElement, sint32 trackSequence);
-bool tile_element_get_green_light(const rct_tile_element * mapElement);
-void tile_element_set_green_light(rct_tile_element * mapElement, bool greenLight);
-sint32 tile_element_get_brake_booster_speed(const rct_tile_element *mapElement);
-void tile_element_set_brake_booster_speed(rct_tile_element *mapElement, sint32 speed);
-bool tile_element_is_taking_photo(const rct_tile_element * mapElement);
-void tile_element_set_onride_photo_timeout(rct_tile_element * mapElement);
-void tile_element_decrement_onride_photo_timout(rct_tile_element * mapElement);
-void tile_element_remove(rct_tile_element *mapElement);
+sint32 tile_element_get_station(const rct_tile_element * tileElement);
+void tile_element_set_station(rct_tile_element * tileElement, uint32 stationIndex);
+sint32 tile_element_get_track_sequence(const rct_tile_element * tileElement);
+void tile_element_set_track_sequence(rct_tile_element * tileElement, sint32 trackSequence);
+bool tile_element_get_green_light(const rct_tile_element * tileElement);
+void tile_element_set_green_light(rct_tile_element * tileElement, bool greenLight);
+sint32 tile_element_get_brake_booster_speed(const rct_tile_element *tileElement);
+void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, sint32 speed);
+bool tile_element_is_taking_photo(const rct_tile_element * tileElement);
+void tile_element_set_onride_photo_timeout(rct_tile_element * tileElement);
+void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement);
+void tile_element_remove(rct_tile_element *tileElement);
 void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
@@ -457,7 +457,7 @@ sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation);
 money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 clear, sint32 flags);
-sint32 map_get_water_height(const rct_tile_element * mapElement);
+sint32 map_get_water_height(const rct_tile_element * tileElement);
 money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags);
 money32 wall_place(sint32 type, sint32 x, sint32 y, sint32 z, sint32 edge, sint32 primaryColour, sint32 secondaryColour, sint32 tertiaryColour, sint32 flags);
@@ -508,10 +508,10 @@ void wall_remove_intersecting_walls(sint32 x, sint32 y, sint32 z0, sint32 z1, si
 void map_update_tiles();
 sint32 map_get_highest_z(sint32 tileX, sint32 tileY);
 
-sint32 tile_element_get_banner_index(rct_tile_element *mapElement);
-void tile_element_remove_banner_entry(rct_tile_element *mapElement);
+sint32 tile_element_get_banner_index(rct_tile_element *tileElement);
+void tile_element_remove_banner_entry(rct_tile_element *tileElement);
 
-bool tile_element_is_underground(rct_tile_element *mapElement);
+bool tile_element_is_underground(rct_tile_element *tileElement);
 
 void map_remove_out_of_range_elements();
 void map_extend_boundary_surface();
@@ -524,7 +524,7 @@ void map_invalidate_tile(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_zoom1(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_zoom0(sint32 x, sint32 y, sint32 z0, sint32 z1);
 void map_invalidate_tile_full(sint32 x, sint32 y);
-void map_invalidate_element(sint32 x, sint32 y, rct_tile_element *mapElement);
+void map_invalidate_element(sint32 x, sint32 y, rct_tile_element *tileElement);
 
 sint32 map_get_tile_side(sint32 mapX, sint32 mapY);
 sint32 map_get_tile_quadrant(sint32 mapX, sint32 mapY);
@@ -548,7 +548,7 @@ rct_tile_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 
 rct_tile_element *map_get_track_element_at_with_direction_from_ride(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 rideIndex);
 
 bool map_is_location_at_edge(sint32 x, sint32 y);
-void map_obstruction_set_error_text(rct_tile_element *mapElement);
+void map_obstruction_set_error_text(rct_tile_element *tileElement);
 uint8 wall_element_get_animation_frame(rct_tile_element *fenceElement);
 void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum);
 uint8 wall_element_get_secondary_colour(rct_tile_element * wallElement);

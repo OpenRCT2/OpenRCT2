@@ -23,11 +23,11 @@
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height,
-                                       rct_tile_element * mapElement)
+                                       rct_tile_element * tileElement)
 {
     height += 7;
 
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
     rct_ride_entry *  rideEntry       = get_ride_entry(ride->subtype);
     rct_vehicle *     vehicle         = NULL;
 
@@ -45,7 +45,7 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32 imageOffset = tile_element_get_direction_with_offset(mapElement, get_current_rotation());
+    uint32 imageOffset = tile_element_get_direction_with_offset(tileElement, get_current_rotation());
     if (vehicle != NULL)
     {
         imageOffset = (vehicle->vehicle_sprite_type << 2) + (((vehicle->sprite_direction >> 3) + get_current_rotation()) % 4);
@@ -79,13 +79,13 @@ static void paint_enterprise_structure(paint_session * session, Ride * ride, sin
         }
     }
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A1584 */
 static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                             rct_tile_element * mapElement)
+                             rct_tile_element * tileElement)
 {
     trackSequence = track_map_4x4[direction][trackSequence];
 
@@ -98,48 +98,48 @@ static void paint_enterprise(paint_session * session, uint8 rideIndex, uint8 tra
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence)
     {
     case 5:
-        paint_enterprise_structure(session, ride, 16, 16, height, mapElement);
+        paint_enterprise_structure(session, ride, 16, 16, height, tileElement);
         break;
     case 6:
-        paint_enterprise_structure(session, ride, 16, -16, height, mapElement);
+        paint_enterprise_structure(session, ride, 16, -16, height, tileElement);
         break;
     case 10:
-        paint_enterprise_structure(session, ride, -16, -16, height, mapElement);
+        paint_enterprise_structure(session, ride, -16, -16, height, tileElement);
         break;
     case 9:
-        paint_enterprise_structure(session, ride, -16, 16, height, mapElement);
+        paint_enterprise_structure(session, ride, -16, 16, height, tileElement);
         break;
 
     case 0:
-        paint_enterprise_structure(session, ride, 48, 48, height, mapElement);
+        paint_enterprise_structure(session, ride, 48, 48, height, tileElement);
         break;
     case 3:
-        paint_enterprise_structure(session, ride, 48, -48, height, mapElement);
+        paint_enterprise_structure(session, ride, 48, -48, height, tileElement);
         break;
     case 15:
-        paint_enterprise_structure(session, ride, -48, -48, height, mapElement);
+        paint_enterprise_structure(session, ride, -48, -48, height, tileElement);
         break;
     case 12:
-        paint_enterprise_structure(session, ride, -48, 48, height, mapElement);
+        paint_enterprise_structure(session, ride, -48, 48, height, tileElement);
         break;
 
     case 7:
-        paint_enterprise_structure(session, ride, 16, -48, height, mapElement);
+        paint_enterprise_structure(session, ride, 16, -48, height, tileElement);
         break;
     case 11:
-        paint_enterprise_structure(session, ride, -16, -48, height, mapElement);
+        paint_enterprise_structure(session, ride, -16, -48, height, tileElement);
         break;
     case 14:
-        paint_enterprise_structure(session, ride, -48, -16, height, mapElement);
+        paint_enterprise_structure(session, ride, -48, -16, height, tileElement);
         break;
     case 13:
-        paint_enterprise_structure(session, ride, -48, 16, height, mapElement);
+        paint_enterprise_structure(session, ride, -48, 16, height, tileElement);
         break;
     }
 

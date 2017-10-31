@@ -26,7 +26,7 @@
 #include "../../world/scenery.h"
 
 // 6B8172:
-static void scenery_multiple_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
+static void scenery_multiple_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
 {
     if (tile->var_7 & 0x20) {
         return;
@@ -48,7 +48,7 @@ static void scenery_multiple_paint_supports(paint_session * session, uint8 direc
 
     wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
 
-    sint32 clearanceHeight = ceil2(mapElement->clearance_height * 8 + 15, 16);
+    sint32 clearanceHeight = ceil2(tileElement->clearance_height * 8 + 15, 16);
 
     if (tile->var_7 & 0x40) {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, clearanceHeight, 0x20);
@@ -183,29 +183,29 @@ static const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) {
-    //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) {
+    //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
-    uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
-    rct_scenery_entry *entry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+    uint32 ebp = tileElement->properties.scenerymultiple.type >> 10;
+    rct_scenery_entry *entry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
     if (entry == NULL)
         return;
 
     uint32 image_id = (ebp << 2) + entry->image + 4 + direction;
     rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
     uint32 dword_F4387C = 0;
-    image_id |= ((mapElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((mapElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id |= ((tileElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((tileElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
-        if (!track_design_save_contains_tile_element(mapElement)) {
+        if (!track_design_save_contains_tile_element(tileElement)) {
             ebp = 0x21700000;
             image_id &= 0x7FFFF;
             dword_F4387C = ebp;
             image_id |= dword_F4387C;
         }
     }
-    if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST) {
+    if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ebp = construction_markers[gConfigGeneral.construction_marker_colour];
         image_id &= 0x7FFFF;
@@ -232,32 +232,32 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     boxlength.z = ah;
     sub_98197C(session, image_id, 0, 0, boxlength.x, boxlength.y, ah, height, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
     if (entry->large_scenery.scrolling_mode == 0xFF || direction == 1 || direction == 2) {
-        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT) {
         if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
-            sint32 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+            sint32 al = ((tileElement->properties.surface.terrain >> 2) - 1) & 3;
             if (al != direction) {
-                scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+                scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
                 return;
             }
         }
         rct_drawpixelinfo* dpi = session->Unk140E9A8;
         if (dpi->zoom_level > 1) {
-            scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+            scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
             return;
         }
         // 6B8331:
         // Draw sign text:
         set_format_arg(0, uint32, 0);
         set_format_arg(4, uint32, 0);
-        sint32 textColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+        sint32 textColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
         if (dword_F4387C) {
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+        uint32 bannerIndex = (tileElement->type & 0xC0) | ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
         rct_banner *banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
@@ -326,18 +326,18 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     rct_drawpixelinfo* dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 0) {
-        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    uint8 al = ((mapElement->properties.surface.terrain >> 2) - 1) & 3;
+    uint8 al = ((tileElement->properties.surface.terrain >> 2) - 1) & 3;
     if (al != direction) {
-        scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+        scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
     // Draw scrolling text:
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
-    uint8 textColour = mapElement->properties.banner.unused & 0x1F;
+    uint8 textColour = tileElement->properties.banner.unused & 0x1F;
     if (dword_F4387C) {
         textColour = COLOUR_GREY;
     }
@@ -346,7 +346,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     // 6B809A:
     set_format_arg(7, uint8, textColour);
-    uint32 bannerIndex = (mapElement->type & 0xC0) | ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+    uint32 bannerIndex = (tileElement->type & 0xC0) | ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
     uint16 scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner *banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);
@@ -369,5 +369,5 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     uint16 scroll = (gCurrentTicks / 2) % string_width;
     sub_98199C(session, scrolling_text_setup(session, stringId, scroll, scrollMode), 0, 0, 1, 1, 21, height + 25, boxoffset.x, boxoffset.y, boxoffset.z, get_current_rotation());
 
-    scenery_multiple_paint_supports(session, direction, height, mapElement, dword_F4387C, tile);
+    scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
 }

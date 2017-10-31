@@ -1610,15 +1610,15 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
     return w;
 }
 
-rct_window *window_ride_open_track(rct_tile_element *mapElement)
+rct_window *window_ride_open_track(rct_tile_element *tileElement)
 {
-    sint32 rideIndex = mapElement->properties.track.ride_index;
+    sint32 rideIndex = tileElement->properties.track.ride_index;
     if (
-        (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
-        (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+        (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
+        (TrackSequenceProperties[tileElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     ) {
         // Open ride window in station view
-        return window_ride_open_station(rideIndex, tile_element_get_station(mapElement));
+        return window_ride_open_station(rideIndex, tile_element_get_station(tileElement));
     } else {
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);
@@ -4096,27 +4096,27 @@ static sint32 window_ride_has_track_colour(Ride *ride, sint32 trackColour)
 
 static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 y)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     uint8 newColourScheme;
     sint32 interactionType, z, direction;
 
     newColourScheme = (uint8)w->ride_colour;
 
     LocationXY16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_RIDE, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
     x = mapCoord.x;
     y = mapCoord.y;
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
-    if (mapElement->properties.track.ride_index != w->number)
+    if (tileElement->properties.track.ride_index != w->number)
         return;
-    if (track_element_get_colour_scheme(mapElement) == newColourScheme)
+    if (track_element_get_colour_scheme(tileElement) == newColourScheme)
         return;
 
-    z = mapElement->base_height * 8;
-    direction = tile_element_get_direction(mapElement);
-    sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, nullptr, 4);
+    z = tileElement->base_height * 8;
+    direction = tile_element_get_direction(tileElement);
+    sub_6C683D(&x, &y, &z, direction, tileElement->properties.track.type, newColourScheme, nullptr, 4);
 }
 
 /**
@@ -5154,7 +5154,7 @@ static void window_ride_measurements_update(rct_window *w)
  */
 static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     sint16 mapX, mapY;
     sint32 interactionType;
 
@@ -5162,14 +5162,14 @@ static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex wid
     _lastSceneryY = y;
     _collectTrackDesignScenery = true; // Default to true in case user does not select anything valid
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, nullptr);
+    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
     switch (interactionType) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_WALL:
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        _collectTrackDesignScenery = !track_design_save_contains_tile_element(mapElement);
-        track_design_save_select_tile_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
+        _collectTrackDesignScenery = !track_design_save_contains_tile_element(tileElement);
+        track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
         break;
     }
 }
@@ -5181,17 +5181,17 @@ static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex wid
     _lastSceneryX = x;
     _lastSceneryY = y;
 
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     sint16 mapX, mapY;
     sint32 interactionType;
 
-    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &mapElement, nullptr);
+    get_map_coordinates_from_pos(x, y, 0xFCCF, &mapX, &mapY, &interactionType, &tileElement, nullptr);
     switch (interactionType) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_WALL:
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        track_design_save_select_tile_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
+        track_design_save_select_tile_element(interactionType, mapX, mapY, tileElement, _collectTrackDesignScenery);
         break;
     }
 }

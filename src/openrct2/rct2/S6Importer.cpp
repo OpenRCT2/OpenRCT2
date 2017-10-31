@@ -198,9 +198,9 @@ public:
         gScenarioSrand0    = _s6.scenario_srand_0;
         gScenarioSrand1    = _s6.scenario_srand_1;
 
-        memcpy(gMapElements, _s6.tile_elements, sizeof(_s6.tile_elements));
+        memcpy(gTileElements, _s6.tile_elements, sizeof(_s6.tile_elements));
 
-        gNextFreeMapElementPointerIndex = _s6.next_free_tile_element_pointer_index;
+        gNextFreeTileElementPointerIndex = _s6.next_free_tile_element_pointer_index;
         for (sint32 i = 0; i < RCT2_MAX_SPRITES; i++)
         {
             memcpy(get_sprite(i), &_s6.sprites[i], sizeof(rct_sprite));

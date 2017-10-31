@@ -69,7 +69,7 @@ static void paint_crooked_house_structure(paint_session * session, uint8 directi
 }
 
 static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                rct_tile_element * mapElement)
+                                rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -82,7 +82,7 @@ static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
                                   fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence)

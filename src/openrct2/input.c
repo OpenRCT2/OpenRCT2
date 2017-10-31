@@ -85,7 +85,7 @@ void process_mouse_over(sint32 x, sint32 y);
 void process_mouse_tool(sint32 x, sint32 y);
 void invalidate_scroll();
 static rct_mouse_data* get_mouse_input();
-void tile_element_right_click(sint32 type, rct_tile_element *mapElement, sint32 x, sint32 y);
+void tile_element_right_click(sint32 type, rct_tile_element *tileElement, sint32 x, sint32 y);
 static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state);
 static void input_widget_left(sint32 x, sint32 y, rct_window *w, rct_widgetindex widgetIndex);
 void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetindex widgetIndex, rct_window* w, rct_widget* widget);

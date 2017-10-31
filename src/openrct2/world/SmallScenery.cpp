@@ -75,23 +75,23 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
     }
 
     bool sceneryFound = false;
-    rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
             continue;
-        if ((mapElement->type >> 6) != quadrant)
+        if ((tileElement->type >> 6) != quadrant)
             continue;
-        if (mapElement->base_height != baseHeight)
+        if (tileElement->base_height != baseHeight)
             continue;
-        if (mapElement->properties.scenery.type != sceneryType)
+        if (tileElement->properties.scenery.type != sceneryType)
             continue;
         if ((flags & GAME_COMMAND_FLAG_GHOST) && 
-            !(mapElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
             continue;
 
         sceneryFound = true;
         break;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     if (sceneryFound == false)
     {
@@ -111,7 +111,7 @@ static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 qu
         }
 
         map_invalidate_tile_full(x, y);
-        tile_element_remove(mapElement);
+        tile_element_remove(tileElement);
     }
     return (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : cost;
 }
@@ -132,22 +132,22 @@ static money32 SmallScenerySetColour(sint16 x, sint16 y, uint8 baseHeight, uint8
         }
     }
 
-    rct_tile_element *mapElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
+    rct_tile_element *tileElement = map_get_small_scenery_element_at(x, y, baseHeight, sceneryType, quadrant);
 
-    if (mapElement == nullptr)
+    if (tileElement == nullptr)
     {
         return 0;
     }
 
-    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(mapElement->flags & TILE_ELEMENT_FLAG_GHOST))
+    if ((flags & GAME_COMMAND_FLAG_GHOST) && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
     {
         return 0;
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        scenery_small_set_primary_colour(mapElement, primaryColour);
-        scenery_small_set_secondary_colour(mapElement, secondaryColour);
+        scenery_small_set_primary_colour(tileElement, primaryColour);
+        scenery_small_set_secondary_colour(tileElement, secondaryColour);
 
         map_invalidate_tile_full(x, y);
     }
@@ -407,7 +407,7 @@ static money32 SmallSceneryPlace(sint16 x,
 
     rct_tile_element* newElement = tile_element_insert(x / 32, y / 32, zLow, collisionQuadrants);
     assert(newElement != nullptr);
-    gSceneryMapElement = newElement;
+    gSceneryTileElement = newElement;
     uint8 type = quadrant << 6;
     type |= TILE_ELEMENT_TYPE_SCENERY;
     type |= rotation;

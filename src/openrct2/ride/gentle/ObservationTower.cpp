@@ -81,7 +81,7 @@ void vehicle_visual_observation_tower(paint_session * session, sint32 x, sint32 
 
 /** rct2: 0x0070DD6C */
 static void paint_observation_tower_base(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -94,7 +94,7 @@ static void paint_observation_tower_base(paint_session * session, uint8 rideInde
     uint32 imageId = SPR_FLOOR_METAL_B | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_TRACK], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_TRACK], height,
                                   fenceSpritesMetalB, get_current_rotation());
 
     if (trackSequence == 0)
@@ -157,7 +157,7 @@ static void paint_observation_tower_base(paint_session * session, uint8 rideInde
 
 /** rct2: 0x0070DD7C */
 static void paint_observation_tower_section(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
     if (trackSequence == 1)
     {
@@ -167,8 +167,8 @@ static void paint_observation_tower_section(paint_session * session, uint8 rideI
     uint32 imageId = SPR_OBSERVATION_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
     sub_98197C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());
 
-    rct_tile_element * nextMapElement = mapElement + 1;
-    if (tile_element_is_last_for_tile(mapElement) || mapElement->clearance_height != nextMapElement->base_height)
+    rct_tile_element * nextTileElement = tileElement + 1;
+    if (tile_element_is_last_for_tile(tileElement) || tileElement->clearance_height != nextTileElement->base_height)
     {
         imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
         sub_98199C(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height, get_current_rotation());

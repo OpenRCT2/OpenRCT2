@@ -55,8 +55,8 @@ money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction
 money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction);
 
 void reset_park_entrance();
-void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *mapElement);
-void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *mapElement);
+void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement);
+void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement);
 
 void fix_park_entrance_locations();
 

@@ -278,13 +278,13 @@ void lightfx_prepare_light_list()
             for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
                 LocationXY16 mapCoord = { 0 };
 
-                rct_tile_element *mapElement = 0;
+                rct_tile_element *tileElement = 0;
 
                 sint32 interactionType = 0;
 
                 rct_window *w = window_get_main();
                 if (w != NULL) {
-                //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
+                //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, NULL);
 
 #ifdef LIGHTFX_UNKNOWN_PART_1
                     _unk9AC154 = ~VIEWPORT_INTERACTION_MASK_SPRITE & 0xFFFF;
@@ -309,7 +309,7 @@ void lightfx_prepare_light_list()
                     mapCoord.x = _interactionMapX + tileOffsetX;
                     mapCoord.y = _interactionMapY + tileOffsetY;
                     interactionType = _interactionSpriteType;
-                    mapElement = RCT2_GLOBAL(0x9AC150, rct_tile_element*);
+                    tileElement = RCT2_GLOBAL(0x9AC150, rct_tile_element*);
 #endif //LIGHTFX_UNKNOWN_PART_1
 
                     //RCT2_GLOBAL(0x9AC154, uint16_t) = VIEWPORT_INTERACTION_MASK_NONE;
@@ -345,8 +345,8 @@ void lightfx_prepare_light_list()
                 sint32 minDist = 0;
                 sint32 baseHeight = -999;
 
-                if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && mapElement) {
-                    baseHeight = mapElement->base_height;
+                if (interactionType != VIEWPORT_INTERACTION_ITEM_SPRITE && tileElement) {
+                    baseHeight = tileElement->base_height;
                 }
 
                 minDist = ((baseHeight * 8) - coord_3d.z) / 2;

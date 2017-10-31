@@ -1132,14 +1132,14 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_PICKUP) {
         sint32 dest_x, dest_y;
-        rct_tile_element* mapElement;
-        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
+        rct_tile_element* tileElement;
+        footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &tileElement);
 
         if (dest_x == LOCATION_NULL)
             return;
 
         game_command_callback = game_command_callback_pickup_staff;
-        game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, mapElement->base_height, GAME_COMMAND_PICKUP_STAFF, dest_x, dest_y);
+        game_do_command(w->number, GAME_COMMAND_FLAG_APPLY, 2, tileElement->base_height, GAME_COMMAND_PICKUP_STAFF, dest_x, dest_y);
     }
     else if (widgetIndex == WIDX_PATROL){
         sint32 dest_x, dest_y;

@@ -25,7 +25,7 @@
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -54,7 +54,7 @@ static void paint_mini_helicopters_track_station(paint_session * session, uint8 
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -62,7 +62,7 @@ static void paint_mini_helicopters_track_station(paint_session * session, uint8 
 
 /** rct2: 0x0081F348 */
 static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16 position = session->MapPosition;
     uint32   imageId;
@@ -93,7 +93,7 @@ static void paint_mini_helicopters_track_flat(paint_session * session, uint8 rid
 
 /** rct2: 0x0081F368 */
 static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16 position = session->MapPosition;
     uint32   imageId;
@@ -134,7 +134,7 @@ static void paint_mini_helicopters_track_flat_to_25_deg_up(paint_session * sessi
 
 /** rct2: 0x0081F358 */
 static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16 position = session->MapPosition;
     uint32   imageId;
@@ -175,7 +175,7 @@ static void paint_mini_helicopters_track_25_deg_up(paint_session * session, uint
 
 /** rct2: 0x0081F378 */
 static void paint_mini_helicopters_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16 position = session->MapPosition;
     uint32   imageId;
@@ -216,29 +216,29 @@ static void paint_mini_helicopters_track_25_deg_up_to_flat(paint_session * sessi
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_mini_helicopters_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_helicopters_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x0081F388 */
 static void paint_mini_helicopters_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_mini_helicopters_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_helicopters_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x0081F3A8 */
 static void paint_mini_helicopters_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_mini_helicopters_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_mini_helicopters_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x0081F3E8 */
 static void paint_mini_helicopters_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                   rct_tile_element * mapElement)
+                                                                   rct_tile_element * tileElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
@@ -271,16 +271,16 @@ static const uint8 mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[
 /** rct2: 0x0081F3F8 */
 static void paint_mini_helicopters_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex,
                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * mapElement)
+                                                                    rct_tile_element * tileElement)
 {
     trackSequence = mini_helicopters_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
     paint_mini_helicopters_track_left_quarter_turn_3_tiles(session, rideIndex, trackSequence, (direction + 3) % 4, height,
-                                                           mapElement);
+                                                           tileElement);
 }
 
 /** rct2: 0x0081F408 */
 static void paint_mini_helicopters_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK],
                                                     trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile,
@@ -295,10 +295,10 @@ static void paint_mini_helicopters_track_left_quarter_turn_1_tile(paint_session 
 /** rct2: 0x0081F418 */
 static void paint_mini_helicopters_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex,
                                                                    uint8 trackSequence, uint8 direction, sint32 height,
-                                                                   rct_tile_element * mapElement)
+                                                                   rct_tile_element * tileElement)
 {
     paint_mini_helicopters_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height,
-                                                          mapElement);
+                                                          tileElement);
 }
 
 /**

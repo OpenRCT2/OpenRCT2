@@ -406,24 +406,24 @@ static void window_track_place_clear_provisional()
  */
 static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     sint32 z;
 
-    mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-    z = mapElement->base_height * 8;
+    tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+    z = tileElement->base_height * 8;
 
     // Increase Z above slope
-    if (mapElement->properties.surface.slope & 0x0F) {
+    if (tileElement->properties.surface.slope & 0x0F) {
         z += 16;
 
         // Increase Z above double slope
-        if (mapElement->properties.surface.slope & 0x10)
+        if (tileElement->properties.surface.slope & 0x10)
             z += 16;
     }
 
     // Increase Z above water
-    if (map_get_water_height(mapElement) > 0)
-        z = Math::Max(z, map_get_water_height(mapElement) << 4);
+    if (map_get_water_height(tileElement) > 0)
+        z = Math::Max(z, map_get_water_height(tileElement) << 4);
 
     return z + place_virtual_track(_trackDesign, PTD_OPERATION_GET_PLACE_Z, true, 0, x, y, z);
 }

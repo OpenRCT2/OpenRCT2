@@ -37,12 +37,12 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height,
-                                          rct_tile_element * mapElement)
+                                          rct_tile_element * tileElement)
 {
-    Ride *           ride      = get_ride(mapElement->properties.track.ride_index);
+    Ride *           ride      = get_ride(tileElement->properties.track.ride_index);
     rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
 
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_vehicle * vehicle = NULL;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -128,13 +128,13 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
         break;
     }
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                  rct_tile_element * mapElement)
+                                  rct_tile_element * tileElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 
@@ -145,19 +145,19 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
                                   fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence)
     {
     case 1:
-        paint_motionsimulator_vehicle(session, 16, -16, direction, height, mapElement);
+        paint_motionsimulator_vehicle(session, 16, -16, direction, height, tileElement);
         break;
     case 2:
-        paint_motionsimulator_vehicle(session, -16, 16, direction, height, mapElement);
+        paint_motionsimulator_vehicle(session, -16, 16, direction, height, tileElement);
         break;
     case 3:
-        paint_motionsimulator_vehicle(session, -16, -16, direction, height, mapElement);
+        paint_motionsimulator_vehicle(session, -16, -16, direction, height, tileElement);
         break;
     }
 

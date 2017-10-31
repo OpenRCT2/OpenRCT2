@@ -132,7 +132,7 @@ static const uint32 go_karts_track_pieces_25_deg_up_to_flat[4][2] = {
 
 /** rct2: 0x0074A748 */
 static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * mapElement)
+                                      sint32 height, rct_tile_element * tileElement)
 {
     uint32 imageId;
     if (direction == 0 || direction == 2)
@@ -164,7 +164,7 @@ static void paint_go_karts_track_flat(paint_session * session, uint8 rideIndex, 
 
 /** rct2: 0x0074A758 */
 static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * mapElement)
+                                           sint32 height, rct_tile_element * tileElement)
 {
     uint32         imageId;
     paint_struct * ps;
@@ -217,7 +217,7 @@ static void paint_go_karts_track_25_deg_up(paint_session * session, uint8 rideIn
 
 /** rct2: 0x0074A768 */
 static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     uint32         imageId;
     paint_struct * ps;
@@ -270,7 +270,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(paint_session * session, uint
 
 /** rct2: 0x */
 static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     uint32         imageId;
     paint_struct * ps;
@@ -323,28 +323,28 @@ static void paint_go_karts_track_25_deg_up_to_flat(paint_session * session, uint
 
 /** rct2: 0x0074A788 */
 static void paint_go_karts_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * mapElement)
+                                             sint32 height, rct_tile_element * tileElement)
 {
-    paint_go_karts_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_go_karts_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x0074A798 */
 static void paint_go_karts_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_go_karts_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_go_karts_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x0074A7A8 */
 static void paint_go_karts_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_go_karts_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, mapElement);
+    paint_go_karts_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
 /** rct2: 0x */
 static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                   sint32 height, rct_tile_element * mapElement)
+                                   sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16                             position      = session->MapPosition;
     Ride *                               ride          = get_ride(rideIndex);
@@ -354,7 +354,7 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
     uint32 imageId;
     const uint32(*sprites)[2] = go_karts_track_pieces_starting_grid;
 
-    if (mapElement->properties.track.type == TRACK_ELEM_END_STATION)
+    if (tileElement->properties.track.type == TRACK_ELEM_END_STATION)
     {
         sprites = go_karts_track_pieces_starting_grid_end;
     }
@@ -371,12 +371,12 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, mapElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, tileElement, ride, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, entranceStyle, direction, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, mapElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, tileElement, ride, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, entranceStyle, direction, height);
     }
 
@@ -396,18 +396,18 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, entranceStyle, direction, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation());
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation());
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, entranceStyle, direction, height);
     }
 
-    if (mapElement->properties.track.type == TRACK_ELEM_END_STATION)
+    if (tileElement->properties.track.type == TRACK_ELEM_END_STATION)
     {
-        const bool hasGreenLight = tile_element_get_green_light(mapElement);
+        const bool hasGreenLight = tile_element_get_green_light(tileElement);
 
         switch (direction)
         {
@@ -454,7 +454,7 @@ static void paint_go_karts_station(paint_session * session, uint8 rideIndex, uin
 
 /** rct2: 0x0074A7E8 */
 static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     uint32 imageId;
 
@@ -523,9 +523,9 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(paint_session * sessio
 
 /** rct2: 0x0074A7F8 */
 static void paint_go_karts_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_go_karts_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, mapElement);
+    paint_go_karts_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
 }
 
 /**

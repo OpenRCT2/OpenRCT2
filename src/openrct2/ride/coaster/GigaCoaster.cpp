@@ -28,9 +28,9 @@
 
 /** rct2: 0x008AD674 */
 static void giga_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                               rct_tile_element * mapElement)
+                               rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -50,7 +50,7 @@ static void giga_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 t
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
     }
-    else if (track_element_is_lift_hill(mapElement))
+    else if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -103,7 +103,7 @@ static void giga_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 t
 }
 
 static void giga_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                  rct_tile_element * mapElement)
+                                  rct_tile_element * tileElement)
 {
     static const uint32 imageIds[4][3] = {
         { 18084, 18076, SPR_STATION_BASE_A_SW_NE },
@@ -112,7 +112,7 @@ static void giga_rc_track_station(paint_session * session, uint8 rideIndex, uint
         { 18085, 18077, SPR_STATION_BASE_A_NW_SE },
     };
 
-    if (mapElement->properties.track.type == TRACK_ELEM_END_STATION)
+    if (tileElement->properties.track.type == TRACK_ELEM_END_STATION)
     {
         sub_98197C_rotated(session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1,
                            height, 0, 6, height + 3);
@@ -125,7 +125,7 @@ static void giga_rc_track_station(paint_session * session, uint8 rideIndex, uint
     sub_98196C_rotated(session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1,
                        height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
-    track_paint_util_draw_station_2(session, rideIndex, trackSequence, direction, height, mapElement, 9, 11);
+    track_paint_util_draw_station_2(session, rideIndex, trackSequence, direction, height, tileElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -133,9 +133,9 @@ static void giga_rc_track_station(paint_session * session, uint8 rideIndex, uint
 
 /** rct2: 0x008AD684 */
 static void giga_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * mapElement)
+                                    sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -161,7 +161,7 @@ static void giga_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, ui
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
     }
-    else if (track_element_is_lift_hill(mapElement))
+    else if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -228,9 +228,9 @@ static void giga_rc_track_25_deg_up(paint_session * session, uint8 rideIndex, ui
 
 /** rct2: 0x008AD694 */
 static void giga_rc_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * mapElement)
+                                    sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -297,9 +297,9 @@ static void giga_rc_track_60_deg_up(paint_session * session, uint8 rideIndex, ui
 
 /** rct2: 0x008AD6A4 */
 static void giga_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -325,7 +325,7 @@ static void giga_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideI
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
     }
-    else if (track_element_is_lift_hill(mapElement))
+    else if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -392,9 +392,9 @@ static void giga_rc_track_flat_to_25_deg_up(paint_session * session, uint8 rideI
 
 /** rct2: 0x008AD6B4 */
 static void giga_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -469,9 +469,9 @@ static void giga_rc_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 
 
 /** rct2: 0x008AD6C4 */
 static void giga_rc_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -546,9 +546,9 @@ static void giga_rc_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 
 
 /** rct2: 0x008AD6D4 */
 static void giga_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_cable_lift(mapElement))
+    if (track_element_is_cable_lift(tileElement))
     {
         switch (direction)
         {
@@ -574,7 +574,7 @@ static void giga_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideI
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
         }
     }
-    else if (track_element_is_lift_hill(mapElement))
+    else if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -641,49 +641,49 @@ static void giga_rc_track_25_deg_up_to_flat(paint_session * session, uint8 rideI
 
 /** rct2: 0x008AD6E4 */
 static void giga_rc_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * mapElement)
+                                      sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD6F4 */
 static void giga_rc_track_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * mapElement)
+                                      sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD704 */
 static void giga_rc_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD714 */
 static void giga_rc_track_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_60_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD724 */
 static void giga_rc_track_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_to_60_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD734 */
 static void giga_rc_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD744 */
 static void giga_rc_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -837,15 +837,15 @@ static void giga_rc_track_left_quarter_turn_5(paint_session * session, uint8 rid
 
 /** rct2: 0x008AD754 */
 static void giga_rc_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * mapElement)
+                                               sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD764 */
 static void giga_rc_track_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -882,7 +882,7 @@ static void giga_rc_track_flat_to_left_bank(paint_session * session, uint8 rideI
 
 /** rct2: 0x008AD774 */
 static void giga_rc_track_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * mapElement)
+                                             sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -919,7 +919,7 @@ static void giga_rc_track_flat_to_right_bank(paint_session * session, uint8 ride
 
 /** rct2: 0x008AD784 */
 static void giga_rc_track_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -956,7 +956,7 @@ static void giga_rc_track_left_bank_to_flat(paint_session * session, uint8 rideI
 
 /** rct2: 0x008AD794 */
 static void giga_rc_track_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                             sint32 height, rct_tile_element * mapElement)
+                                             sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -993,7 +993,7 @@ static void giga_rc_track_right_bank_to_flat(paint_session * session, uint8 ride
 
 /** rct2: 0x008AD7A4 */
 static void giga_rc_track_banked_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1151,15 +1151,15 @@ static void giga_rc_track_banked_left_quarter_turn_5(paint_session * session, ui
 
 /** rct2: 0x008AD7B4 */
 static void giga_rc_track_banked_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_banked_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_banked_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD7C4 */
 static void giga_rc_track_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1203,7 +1203,7 @@ static void giga_rc_track_left_bank_to_25_deg_up(paint_session * session, uint8 
 
 /** rct2: 0x008AD7D4 */
 static void giga_rc_track_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1247,7 +1247,7 @@ static void giga_rc_track_right_bank_to_25_deg_up(paint_session * session, uint8
 
 /** rct2: 0x008AD7E4 */
 static void giga_rc_track_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1291,7 +1291,7 @@ static void giga_rc_track_25_deg_up_to_left_bank(paint_session * session, uint8 
 
 /** rct2: 0x008AD7F4 */
 static void giga_rc_track_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1335,35 +1335,35 @@ static void giga_rc_track_25_deg_up_to_right_bank(paint_session * session, uint8
 
 /** rct2: 0x008AD804 */
 static void giga_rc_track_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_to_right_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD814 */
 static void giga_rc_track_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_to_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD824 */
 static void giga_rc_track_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_right_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD834 */
 static void giga_rc_track_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_left_bank_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD844 */
 static void giga_rc_track_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * mapElement)
+                                    sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -1396,14 +1396,14 @@ static void giga_rc_track_left_bank(paint_session * session, uint8 rideIndex, ui
 
 /** rct2: 0x008AD854 */
 static void giga_rc_track_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                     sint32 height, rct_tile_element * mapElement)
+                                     sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_left_bank(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD864 */
 static void giga_rc_track_left_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1552,7 +1552,7 @@ static void giga_rc_track_left_quarter_turn_5_25_deg_up(paint_session * session,
 
 /** rct2: 0x008AD874 */
 static void giga_rc_track_right_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1701,23 +1701,23 @@ static void giga_rc_track_right_quarter_turn_5_25_deg_up(paint_session * session
 
 /** rct2: 0x008AD884 */
 static void giga_rc_track_left_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_right_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    giga_rc_track_right_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD894 */
 static void giga_rc_track_right_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD8A4 */
 static void giga_rc_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * mapElement)
+                                      sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1841,7 +1841,7 @@ static void giga_rc_track_s_bend_left(paint_session * session, uint8 rideIndex, 
 
 /** rct2: 0x008AD8B4 */
 static void giga_rc_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_tile_element * mapElement)
+                                       sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1965,7 +1965,7 @@ static void giga_rc_track_s_bend_right(paint_session * session, uint8 rideIndex,
 
 /** rct2: 0x008AD8F4 */
 static void giga_rc_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2064,15 +2064,15 @@ static void giga_rc_track_left_quarter_turn_3(paint_session * session, uint8 rid
 
 /** rct2: 0x008AD904 */
 static void giga_rc_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * mapElement)
+                                               sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD914 */
 static void giga_rc_track_left_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2175,15 +2175,15 @@ static void giga_rc_track_left_quarter_turn_3_bank(paint_session * session, uint
 
 /** rct2: 0x008AD924 */
 static void giga_rc_track_right_quarter_turn_3_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3_bank(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_3_bank(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD934 */
 static void giga_rc_track_left_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2253,7 +2253,7 @@ static void giga_rc_track_left_quarter_turn_3_25_deg_up(paint_session * session,
 
 /** rct2: 0x008AD944 */
 static void giga_rc_track_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2326,23 +2326,23 @@ static void giga_rc_track_right_quarter_turn_3_25_deg_up(paint_session * session
 
 /** rct2: 0x008AD954 */
 static void giga_rc_track_left_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_right_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    giga_rc_track_right_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD964 */
 static void giga_rc_track_right_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD974 */
 static void giga_rc_track_left_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2543,7 +2543,7 @@ static void giga_rc_track_left_half_banked_helix_up_small(paint_session * sessio
 
 /** rct2: 0x008AD984 */
 static void giga_rc_track_right_half_banked_helix_up_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -2744,7 +2744,7 @@ static void giga_rc_track_right_half_banked_helix_up_small(paint_session * sessi
 
 /** rct2: 0x008AD994 */
 static void giga_rc_track_left_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
     {
@@ -2752,12 +2752,12 @@ static void giga_rc_track_left_half_banked_helix_down_small(paint_session * sess
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_right_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    giga_rc_track_right_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD9A4 */
 static void giga_rc_track_right_half_banked_helix_down_small(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     if (trackSequence >= 4)
     {
@@ -2765,12 +2765,12 @@ static void giga_rc_track_right_half_banked_helix_down_small(paint_session * ses
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    giga_rc_track_left_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_half_banked_helix_up_small(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD9B4 */
 static void giga_rc_track_left_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -3081,7 +3081,7 @@ static void giga_rc_track_left_half_banked_helix_up_large(paint_session * sessio
 
 /** rct2: 0x008AD9C4 */
 static void giga_rc_track_right_half_banked_helix_up_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -3398,7 +3398,7 @@ static void giga_rc_track_right_half_banked_helix_up_large(paint_session * sessi
 
 /** rct2: 0x008AD9D4 */
 static void giga_rc_track_left_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                            uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
     {
@@ -3406,12 +3406,12 @@ static void giga_rc_track_left_half_banked_helix_down_large(paint_session * sess
         direction = (direction - 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_right_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    giga_rc_track_right_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008AD9E4 */
 static void giga_rc_track_right_half_banked_helix_down_large(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     if (trackSequence >= 7)
     {
@@ -3419,12 +3419,12 @@ static void giga_rc_track_right_half_banked_helix_down_large(paint_session * ses
         direction = (direction + 1) & 3;
     }
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    giga_rc_track_left_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_half_banked_helix_up_large(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADA14 */
 static void giga_rc_track_left_quarter_turn_1_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3460,7 +3460,7 @@ static void giga_rc_track_left_quarter_turn_1_60_deg_up(paint_session * session,
 
 /** rct2: 0x008AD9F4 */
 static void giga_rc_track_right_quarter_turn_1_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3496,21 +3496,21 @@ static void giga_rc_track_right_quarter_turn_1_60_deg_up(paint_session * session
 
 /** rct2: 0x008ADA04 */
 static void giga_rc_track_left_quarter_turn_1_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, mapElement);
+    giga_rc_track_right_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADA24 */
 static void giga_rc_track_right_quarter_turn_1_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    giga_rc_track_left_quarter_turn_1_60_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADA34 */
 static void giga_rc_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                 rct_tile_element * mapElement)
+                                 rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3541,7 +3541,7 @@ static void giga_rc_track_brakes(paint_session * session, uint8 rideIndex, uint8
 
 /** rct2: 0x008ADC84 */
 static void giga_rc_track_25_deg_up_left_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * mapElement)
+                                                sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3581,7 +3581,7 @@ static void giga_rc_track_25_deg_up_left_banked(paint_session * session, uint8 r
 
 /** rct2: 0x008ADC94 */
 static void giga_rc_track_25_deg_up_right_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3621,7 +3621,7 @@ static void giga_rc_track_25_deg_up_right_banked(paint_session * session, uint8 
 
 /** rct2: 0x008ADA44 */
 static void giga_rc_track_on_ride_photo(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                        sint32 height, rct_tile_element * mapElement)
+                                        sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -3654,7 +3654,7 @@ static void giga_rc_track_on_ride_photo(paint_session * session, uint8 rideIndex
                            height + 3);
         break;
     }
-    track_paint_util_onride_photo_paint(session, direction, height + 3, mapElement);
+    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -3662,26 +3662,26 @@ static void giga_rc_track_on_ride_photo(paint_session * session, uint8 rideIndex
 
 /** rct2: 0x008ADCA4 */
 static void giga_rc_track_25_deg_down_left_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_right_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADCB4 */
 static void giga_rc_track_25_deg_down_right_banked(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_25_deg_up_left_banked(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADED4 */
 static void giga_rc_track_flat_to_60_deg_up_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_cable_lift(mapElement))
+        if (track_element_is_cable_lift(tileElement))
         {
             switch (direction)
             {
@@ -3744,7 +3744,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(paint_session * session, u
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        if (track_element_is_cable_lift(mapElement))
+        if (track_element_is_cable_lift(tileElement))
         {
             switch (direction)
             {
@@ -3803,7 +3803,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(paint_session * session, u
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
-        if (track_element_is_cable_lift(mapElement))
+        if (track_element_is_cable_lift(tileElement))
         {
             switch (direction)
             {
@@ -3862,7 +3862,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(paint_session * session, u
         paint_util_set_general_support_height(session, height + 64, 0x20);
         break;
     case 3:
-        if (track_element_is_cable_lift(mapElement))
+        if (track_element_is_cable_lift(tileElement))
         {
             switch (direction)
             {
@@ -3934,7 +3934,7 @@ static void giga_rc_track_flat_to_60_deg_up_long_base(paint_session * session, u
 
 /** rct2: 0x008ADEE4 */
 static void giga_rc_track_60_deg_up_to_flat_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4068,21 +4068,21 @@ static void giga_rc_track_60_deg_up_to_flat_long_base(paint_session * session, u
 
 /** rct2: 0x008ADEF4 */
 static void giga_rc_track_flat_to_60_deg_down_long_base(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_flat_to_60_deg_up_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_flat_to_60_deg_up_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADF04 */
 static void giga_rc_track_60_deg_up_to_flat_long_base122(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_60_deg_up_to_flat_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_60_deg_up_to_flat_long_base(session, rideIndex, 3 - trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADF14 */
 static void giga_rc_track_cable_lift_hill(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * mapElement)
+                                          sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4239,7 +4239,7 @@ static void giga_rc_track_cable_lift_hill(paint_session * session, uint8 rideInd
 
 /** rct2: 0x008ADA64 */
 static void giga_rc_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4363,7 +4363,7 @@ static void giga_rc_track_left_eighth_to_diag(paint_session * session, uint8 rid
 
 /** rct2: 0x008ADA74 */
 static void giga_rc_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_tile_element * mapElement)
+                                               sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4487,23 +4487,23 @@ static void giga_rc_track_right_eighth_to_diag(paint_session * session, uint8 ri
 
 /** rct2: 0x008ADA84 */
 static void giga_rc_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADA94 */
 static void giga_rc_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                     uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    giga_rc_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADAA4 */
 static void giga_rc_track_left_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4627,7 +4627,7 @@ static void giga_rc_track_left_eighth_bank_to_diag(paint_session * session, uint
 
 /** rct2: 0x008ADAB4 */
 static void giga_rc_track_right_eighth_bank_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -4751,28 +4751,28 @@ static void giga_rc_track_right_eighth_bank_to_diag(paint_session * session, uin
 
 /** rct2: 0x008ADAC4 */
 static void giga_rc_track_left_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_right_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_right_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADAD4 */
 static void giga_rc_track_right_eighth_bank_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    giga_rc_track_left_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    giga_rc_track_left_eighth_bank_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADA54 */
 static void giga_rc_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * mapElement)
+                                    sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4797,7 +4797,7 @@ static void giga_rc_track_diag_flat(paint_session * session, uint8 rideIndex, ui
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4822,7 +4822,7 @@ static void giga_rc_track_diag_flat(paint_session * session, uint8 rideIndex, ui
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4847,7 +4847,7 @@ static void giga_rc_track_diag_flat(paint_session * session, uint8 rideIndex, ui
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4904,12 +4904,12 @@ static void giga_rc_track_diag_flat(paint_session * session, uint8 rideIndex, ui
 
 /** rct2: 0x008ADB04 */
 static void giga_rc_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4934,7 +4934,7 @@ static void giga_rc_track_diag_25_deg_up(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4959,7 +4959,7 @@ static void giga_rc_track_diag_25_deg_up(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -4984,7 +4984,7 @@ static void giga_rc_track_diag_25_deg_up(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5041,7 +5041,7 @@ static void giga_rc_track_diag_25_deg_up(paint_session * session, uint8 rideInde
 
 /** rct2: 0x008ADB64 */
 static void giga_rc_track_diag_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5108,12 +5108,12 @@ static void giga_rc_track_diag_60_deg_up(paint_session * session, uint8 rideInde
 
 /** rct2: 0x008ADAE4 */
 static void giga_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5138,7 +5138,7 @@ static void giga_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5163,7 +5163,7 @@ static void giga_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5188,7 +5188,7 @@ static void giga_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5245,7 +5245,7 @@ static void giga_rc_track_diag_flat_to_25_deg_up(paint_session * session, uint8 
 
 /** rct2: 0x008ADB44 */
 static void giga_rc_track_diag_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5312,7 +5312,7 @@ static void giga_rc_track_diag_25_deg_up_to_60_deg_up(paint_session * session, u
 
 /** rct2: 0x008ADB54 */
 static void giga_rc_track_diag_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5379,12 +5379,12 @@ static void giga_rc_track_diag_60_deg_up_to_25_deg_up(paint_session * session, u
 
 /** rct2: 0x008ADAF4 */
 static void giga_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5409,7 +5409,7 @@ static void giga_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5434,7 +5434,7 @@ static void giga_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5459,7 +5459,7 @@ static void giga_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5516,12 +5516,12 @@ static void giga_rc_track_diag_25_deg_up_to_flat(paint_session * session, uint8 
 
 /** rct2: 0x008ADB34 */
 static void giga_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * mapElement)
+                                           sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5546,7 +5546,7 @@ static void giga_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIn
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5571,7 +5571,7 @@ static void giga_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIn
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5596,7 +5596,7 @@ static void giga_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIn
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5653,7 +5653,7 @@ static void giga_rc_track_diag_25_deg_down(paint_session * session, uint8 rideIn
 
 /** rct2: 0x008ADB94 */
 static void giga_rc_track_diag_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * mapElement)
+                                           sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5720,12 +5720,12 @@ static void giga_rc_track_diag_60_deg_down(paint_session * session, uint8 rideIn
 
 /** rct2: 0x008ADB14 */
 static void giga_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5749,7 +5749,7 @@ static void giga_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint
             session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5773,7 +5773,7 @@ static void giga_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint
             session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5797,7 +5797,7 @@ static void giga_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint
             session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -5855,7 +5855,7 @@ static void giga_rc_track_diag_flat_to_25_deg_down(paint_session * session, uint
 
 /** rct2: 0x008ADB74 */
 static void giga_rc_track_diag_25_deg_down_to_60_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5922,7 +5922,7 @@ static void giga_rc_track_diag_25_deg_down_to_60_deg_down(paint_session * sessio
 
 /** rct2: 0x008ADB84 */
 static void giga_rc_track_diag_60_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -5989,12 +5989,12 @@ static void giga_rc_track_diag_60_deg_down_to_25_deg_down(paint_session * sessio
 
 /** rct2: 0x008ADB24 */
 static void giga_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -6019,7 +6019,7 @@ static void giga_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -6044,7 +6044,7 @@ static void giga_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -6069,7 +6069,7 @@ static void giga_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -6126,7 +6126,7 @@ static void giga_rc_track_diag_25_deg_down_to_flat(paint_session * session, uint
 
 /** rct2: 0x008ADBC4 */
 static void giga_rc_track_diag_flat_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6195,7 +6195,7 @@ static void giga_rc_track_diag_flat_to_left_bank(paint_session * session, uint8 
 
 /** rct2: 0x008ADBD4 */
 static void giga_rc_track_diag_flat_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6264,7 +6264,7 @@ static void giga_rc_track_diag_flat_to_right_bank(paint_session * session, uint8
 
 /** rct2: 0x008ADBE4 */
 static void giga_rc_track_diag_left_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6333,7 +6333,7 @@ static void giga_rc_track_diag_left_bank_to_flat(paint_session * session, uint8 
 
 /** rct2: 0x008ADBF4 */
 static void giga_rc_track_diag_right_bank_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6402,7 +6402,7 @@ static void giga_rc_track_diag_right_bank_to_flat(paint_session * session, uint8
 
 /** rct2: 0x008ADC24 */
 static void giga_rc_track_diag_left_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6471,7 +6471,7 @@ static void giga_rc_track_diag_left_bank_to_25_deg_up(paint_session * session, u
 
 /** rct2: 0x008ADC34 */
 static void giga_rc_track_diag_right_bank_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                       uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6540,7 +6540,7 @@ static void giga_rc_track_diag_right_bank_to_25_deg_up(paint_session * session, 
 
 /** rct2: 0x008ADC04 */
 static void giga_rc_track_diag_25_deg_up_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6609,7 +6609,7 @@ static void giga_rc_track_diag_25_deg_up_to_left_bank(paint_session * session, u
 
 /** rct2: 0x008ADC14 */
 static void giga_rc_track_diag_25_deg_up_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                       uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                       uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6678,7 +6678,7 @@ static void giga_rc_track_diag_25_deg_up_to_right_bank(paint_session * session, 
 
 /** rct2: 0x008ADC44 */
 static void giga_rc_track_diag_left_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6745,7 +6745,7 @@ static void giga_rc_track_diag_left_bank_to_25_deg_down(paint_session * session,
 
 /** rct2: 0x008ADC54 */
 static void giga_rc_track_diag_right_bank_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6812,7 +6812,7 @@ static void giga_rc_track_diag_right_bank_to_25_deg_down(paint_session * session
 
 /** rct2: 0x008ADC64 */
 static void giga_rc_track_diag_25_deg_down_to_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6881,7 +6881,7 @@ static void giga_rc_track_diag_25_deg_down_to_left_bank(paint_session * session,
 
 /** rct2: 0x008ADC74 */
 static void giga_rc_track_diag_25_deg_down_to_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -6950,7 +6950,7 @@ static void giga_rc_track_diag_25_deg_down_to_right_bank(paint_session * session
 
 /** rct2: 0x008ADBA4 */
 static void giga_rc_track_diag_left_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7017,7 +7017,7 @@ static void giga_rc_track_diag_left_bank(paint_session * session, uint8 rideInde
 
 /** rct2: 0x008ADBB4 */
 static void giga_rc_track_diag_right_bank(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_tile_element * mapElement)
+                                          sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7084,7 +7084,7 @@ static void giga_rc_track_diag_right_bank(paint_session * session, uint8 rideInd
 
 /** rct2: 0x008ADEC4 */
 static void giga_rc_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_tile_element * mapElement)
+                                       sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7115,7 +7115,7 @@ static void giga_rc_track_block_brakes(paint_session * session, uint8 rideIndex,
 
 /** rct2: 0x008ADCC4 */
 static void giga_rc_track_left_banked_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                               uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7188,7 +7188,7 @@ static void giga_rc_track_left_banked_quarter_turn_3_25_deg_up(paint_session * s
 
 /** rct2: 0x008ADCD4 */
 static void giga_rc_track_right_banked_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7264,25 +7264,25 @@ static void giga_rc_track_right_banked_quarter_turn_3_25_deg_up(paint_session * 
 
 /** rct2: 0x008ADCE4 */
 static void giga_rc_track_left_banked_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     giga_rc_track_right_banked_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
-                                                        mapElement);
+                                                        tileElement);
 }
 
 /** rct2: 0x008ADCF4 */
 static void giga_rc_track_right_banked_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
     giga_rc_track_left_banked_quarter_turn_3_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
-                                                       mapElement);
+                                                       tileElement);
 }
 
 /** rct2: 0x008ADD04 */
 static void giga_rc_track_left_banked_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                               uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                               uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7434,7 +7434,7 @@ static void giga_rc_track_left_banked_quarter_turn_5_25_deg_up(paint_session * s
 
 /** rct2: 0x008ADD14 */
 static void giga_rc_track_right_banked_quarter_turn_5_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -7586,25 +7586,25 @@ static void giga_rc_track_right_banked_quarter_turn_5_25_deg_up(paint_session * 
 
 /** rct2: 0x008ADD24 */
 static void giga_rc_track_left_banked_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     giga_rc_track_right_banked_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction + 1) & 3, height,
-                                                        mapElement);
+                                                        tileElement);
 }
 
 /** rct2: 0x008ADD34 */
 static void giga_rc_track_right_banked_quarter_turn_5_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
     giga_rc_track_left_banked_quarter_turn_5_25_deg_up(session, rideIndex, trackSequence, (direction - 1) & 3, height,
-                                                       mapElement);
+                                                       tileElement);
 }
 
 /** rct2: 0x008ADD44 */
 static void giga_rc_track_25_deg_up_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7646,7 +7646,7 @@ static void giga_rc_track_25_deg_up_to_left_banked_25_deg_up(paint_session * ses
 
 /** rct2: 0x008ADD54 */
 static void giga_rc_track_25_deg_up_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7688,7 +7688,7 @@ static void giga_rc_track_25_deg_up_to_right_banked_25_deg_up(paint_session * se
 
 /** rct2: 0x008ADD64 */
 static void giga_rc_track_left_banked_25_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                             uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7730,7 +7730,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_25_deg_up(paint_session * ses
 
 /** rct2: 0x008ADD74 */
 static void giga_rc_track_right_banked_25_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                              uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                              uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7772,40 +7772,40 @@ static void giga_rc_track_right_banked_25_deg_up_to_25_deg_up(paint_session * se
 
 /** rct2: 0x008ADD84 */
 static void giga_rc_track_25_deg_down_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     giga_rc_track_right_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                      mapElement);
+                                                      tileElement);
 }
 
 /** rct2: 0x008ADD94 */
 static void giga_rc_track_25_deg_down_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     giga_rc_track_left_banked_25_deg_up_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                     mapElement);
+                                                     tileElement);
 }
 
 /** rct2: 0x008ADDA4 */
 static void giga_rc_track_left_banked_25_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                 uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                 uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     giga_rc_track_25_deg_up_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                      mapElement);
+                                                      tileElement);
 }
 
 /** rct2: 0x008ADDB4 */
 static void giga_rc_track_right_banked_25_deg_down_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                                  uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     giga_rc_track_25_deg_up_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                     mapElement);
+                                                     tileElement);
 }
 
 /** rct2: 0x008ADDC4 */
 static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex,
                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * mapElement)
+                                                                    rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7846,7 +7846,7 @@ static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(paint_sessio
 /** rct2: 0x008ADDD4 */
 static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex,
                                                                       uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * mapElement)
+                                                                      rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7887,7 +7887,7 @@ static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(paint_sess
 /** rct2: 0x008ADE04 */
 static void giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(paint_session * session, uint8 rideIndex,
                                                                     uint8 trackSequence, uint8 direction, sint32 height,
-                                                                    rct_tile_element * mapElement)
+                                                                    rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7928,7 +7928,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(paint_sessio
 /** rct2: 0x008ADE14 */
 static void giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(paint_session * session, uint8 rideIndex,
                                                                       uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * mapElement)
+                                                                      rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -7969,42 +7969,42 @@ static void giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(paint_sess
 /** rct2: 0x008ADE24 */
 static void giga_rc_track_left_banked_flat_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex,
                                                                       uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * mapElement)
+                                                                      rct_tile_element * tileElement)
 {
     giga_rc_track_right_banked_25_deg_up_to_right_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                              mapElement);
+                                                              tileElement);
 }
 
 /** rct2: 0x008ADE34 */
 static void giga_rc_track_right_banked_flat_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex,
                                                                         uint8 trackSequence, uint8 direction, sint32 height,
-                                                                        rct_tile_element * mapElement)
+                                                                        rct_tile_element * tileElement)
 {
     giga_rc_track_left_banked_25_deg_up_to_left_banked_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                            mapElement);
+                                                            tileElement);
 }
 
 /** rct2: 0x008ADDE4 */
 static void giga_rc_track_left_banked_25_deg_down_to_left_banked_flat(paint_session * session, uint8 rideIndex,
                                                                       uint8 trackSequence, uint8 direction, sint32 height,
-                                                                      rct_tile_element * mapElement)
+                                                                      rct_tile_element * tileElement)
 {
     giga_rc_track_right_banked_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                              mapElement);
+                                                              tileElement);
 }
 
 /** rct2: 0x008ADDF4 */
 static void giga_rc_track_right_banked_25_deg_down_to_right_banked_flat(paint_session * session, uint8 rideIndex,
                                                                         uint8 trackSequence, uint8 direction, sint32 height,
-                                                                        rct_tile_element * mapElement)
+                                                                        rct_tile_element * tileElement)
 {
     giga_rc_track_left_banked_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height,
-                                                            mapElement);
+                                                            tileElement);
 }
 
 /** rct2: 0x008ADE44 */
 static void giga_rc_track_flat_to_left_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -8046,7 +8046,7 @@ static void giga_rc_track_flat_to_left_banked_25_deg_up(paint_session * session,
 
 /** rct2: 0x008ADE54 */
 static void giga_rc_track_flat_to_right_banked_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -8088,7 +8088,7 @@ static void giga_rc_track_flat_to_right_banked_25_deg_up(paint_session * session
 
 /** rct2: 0x008ADE64 */
 static void giga_rc_track_left_banked_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -8130,7 +8130,7 @@ static void giga_rc_track_left_banked_25_deg_up_to_flat(paint_session * session,
 
 /** rct2: 0x008ADE74 */
 static void giga_rc_track_right_banked_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -8172,34 +8172,34 @@ static void giga_rc_track_right_banked_25_deg_up_to_flat(paint_session * session
 
 /** rct2: 0x008ADE84 */
 static void giga_rc_track_flat_to_left_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_right_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADE94 */
 static void giga_rc_track_flat_to_right_banked_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_left_banked_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADEA4 */
 static void giga_rc_track_left_banked_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_flat_to_right_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008ADEB4 */
 static void giga_rc_track_right_banked_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                           uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                           uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    giga_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    giga_rc_track_flat_to_left_banked_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 static void giga_rc_track_booster(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                  rct_tile_element * mapElement)
+                                  rct_tile_element * tileElement)
 {
     // These offsets could be moved to the g2.dat file when that supports offsets.
     sint8 ne_sw_offsetX = 7;

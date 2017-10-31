@@ -2729,15 +2729,15 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
         return false;
     }
 
-    rct_tile_element * mapElement = get_station_platform(x, y, z, 2);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = get_station_platform(x, y, z, 2);
+    if (tileElement == NULL)
     {
         /* No station platform element found,
          * so no station to synchronise */
         return false;
     }
 
-    sint32 rideIndex = mapElement->properties.track.ride_index;
+    sint32 rideIndex = tileElement->properties.track.ride_index;
     Ride * ride      = get_ride(rideIndex);
     if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -2749,7 +2749,7 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    sint32 stationIndex = tile_element_get_station(mapElement);
+    sint32 stationIndex = tile_element_get_station(tileElement);
 
     rct_synchronised_vehicle * sv = _lastSynchronisedVehicle;
     sv->ride_id                   = rideIndex;
@@ -2829,8 +2829,8 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     sint32      y        = location.y * 32;
     sint32      z        = ride->station_heights[station];
 
-    rct_tile_element * mapElement = map_get_track_element_at(x, y, z);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = map_get_track_element_at(x, y, z);
+    if (tileElement == NULL)
     {
         return false;
     }
@@ -2843,7 +2843,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
      *  is found we allow for space between that and the next.
      */
 
-    sint32 direction = (mapElement->type + 1) & 3;
+    sint32 direction = (tileElement->type + 1) & 3;
     sint32 spaceBetween;
     sint32 maxCheckDistance = RIDE_ADJACENCY_CHECK_DISTANCE;
 
@@ -3113,33 +3113,33 @@ void vehicle_test_reset(rct_vehicle * vehicle)
 
 static bool vehicle_next_tower_element_is_top(rct_vehicle * vehicle)
 {
-    rct_tile_element * mapElement =
+    rct_tile_element * tileElement =
         map_get_track_element_at_of_type(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
 
-    if (mapElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+    if (tileElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
     {
         return true;
     }
 
-    if (mapElement->clearance_height == (mapElement + 1)->base_height)
+    if (tileElement->clearance_height == (tileElement + 1)->base_height)
     {
-        if ((mapElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION)
+        if ((tileElement + 1)->properties.track.type == TRACK_ELEM_TOWER_SECTION)
         {
             return false;
         }
     }
 
-    if ((mapElement + 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE)
+    if ((tileElement + 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE)
     {
         return true;
     }
 
-    if (mapElement->clearance_height != (mapElement + 2)->base_height)
+    if (tileElement->clearance_height != (tileElement + 2)->base_height)
     {
         return true;
     }
 
-    if ((mapElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION)
+    if ((tileElement + 2)->properties.track.type == TRACK_ELEM_TOWER_SECTION)
     {
         return false;
     }
@@ -3991,14 +3991,14 @@ loc_6D8E36:
         return;
     }
 
-    rct_tile_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    rct_tile_element * tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
 
-    if (mapElement == NULL)
+    if (tileElement == NULL)
     {
         return;
     }
 
-    vehicle->current_station = tile_element_get_station(mapElement);
+    vehicle->current_station = tile_element_get_station(tileElement);
     vehicle->num_laps++;
 
     if (vehicle->sub_state != 0)
@@ -4278,10 +4278,10 @@ static void loc_6DA9F9(rct_vehicle * vehicle, sint32 x, sint32 y, sint32 bx, sin
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        rct_tile_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        rct_tile_element * tileElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride * ride         = get_ride(vehicle->ride);
-        vehicle->track_type = (mapElement->properties.track.type << 2) | (ride->boat_hire_return_direction & 3);
+        vehicle->track_type = (tileElement->properties.track.type << 2) | (ride->boat_hire_return_direction & 3);
 
         vehicle->track_progress = 0;
         vehicle->status         = VEHICLE_STATUS_TRAVELLING;
@@ -4657,12 +4657,12 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
 static bool vehicle_is_boat_on_water(rct_vehicle * vehicle, sint32 x, sint32 y)
 {
     sint32            z          = vehicle->track_z >> 3;
-    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
         {
-            sint32 waterZ = map_get_water_height(mapElement) * 2;
+            sint32 waterZ = map_get_water_height(tileElement) * 2;
             if (z != waterZ)
             {
                 return true;
@@ -4670,12 +4670,12 @@ static bool vehicle_is_boat_on_water(rct_vehicle * vehicle, sint32 x, sint32 y)
         }
         else
         {
-            if (z > mapElement->base_height - 2 && z < mapElement->clearance_height + 2)
+            if (z > tileElement->base_height - 2 && z < tileElement->clearance_height + 2)
             {
                 return true;
             }
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
     return false;
 }
 
@@ -5157,8 +5157,8 @@ static void vehicle_update_doing_circus_show(rct_vehicle * vehicle)
  */
 static rct_tile_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 {
-    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == NULL)
     {
         return NULL;
     }
@@ -5179,15 +5179,15 @@ static rct_tile_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 
     do
     {
-        if (z / 8 < mapElement->base_height)
+        if (z / 8 < tileElement->base_height)
             continue;
 
-        if (z / 8 >= mapElement->clearance_height)
+        if (z / 8 >= tileElement->clearance_height)
             continue;
 
-        if (mapElement->flags & bl)
-            return mapElement;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+        if (tileElement->flags & bl)
+            return tileElement;
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     return NULL;
 }
@@ -6719,24 +6719,24 @@ static void update_velocity(rct_vehicle * vehicle)
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehicle, rct_tile_element * mapElement)
+static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
     sint32          x = vehicle->track_x;
     sint32          y = vehicle->track_y;
     sint32          z = vehicle->track_z;
     track_begin_end trackBeginEnd, slowTrackBeginEnd;
-    rct_tile_element slowMapElement = *mapElement;
+    rct_tile_element slowTileElement = *tileElement;
     bool            counter        = true;
     sint32          slowX          = x;
     sint32          slowY          = y;
     do
     {
-        if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd))
+        if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd))
         {
             return;
         }
         if (trackBeginEnd.begin_x == vehicle->track_x && trackBeginEnd.begin_y == vehicle->track_y &&
-            mapElement == trackBeginEnd.begin_element)
+            tileElement == trackBeginEnd.begin_element)
         {
             return;
         }
@@ -6744,18 +6744,18 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehi
         x          = trackBeginEnd.end_x;
         y          = trackBeginEnd.end_y;
         z          = trackBeginEnd.begin_z;
-        mapElement = trackBeginEnd.begin_element;
+        tileElement = trackBeginEnd.begin_element;
 
         //#2081: prevent infinite loop
         counter = !counter;
         if (counter)
         {
-            track_block_get_previous(slowX, slowY, &slowMapElement, &slowTrackBeginEnd);
+            track_block_get_previous(slowX, slowY, &slowTileElement, &slowTrackBeginEnd);
             slowX          = slowTrackBeginEnd.end_x;
             slowY          = slowTrackBeginEnd.end_y;
-            slowMapElement = *(slowTrackBeginEnd.begin_element);
-            if (slowX == x && slowY == y && slowMapElement.base_height == mapElement->base_height &&
-                slowMapElement.type == mapElement->type)
+            slowTileElement = *(slowTrackBeginEnd.begin_element);
+            if (slowX == x && slowY == y && slowTileElement.base_height == tileElement->base_height &&
+                slowTileElement.type == tileElement->type)
             {
                 return;
             }
@@ -6766,15 +6766,15 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehi
     x          = trackBeginEnd.begin_x;
     y          = trackBeginEnd.begin_y;
     z          = trackBeginEnd.begin_z;
-    mapElement = map_get_track_element_at(x, y, z >> 3);
-    if (mapElement == NULL)
+    tileElement = map_get_track_element_at(x, y, z >> 3);
+    if (tileElement == NULL)
     {
         return;
     }
-    mapElement->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
-    map_invalidate_element(x, y, mapElement);
+    tileElement->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    map_invalidate_element(x, y, tileElement);
 
-    sint32 trackType = mapElement->properties.track.type;
+    sint32 trackType = tileElement->properties.track.type;
     if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
     {
         Ride * ride = get_ride(vehicle->ride);
@@ -7198,8 +7198,8 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
  */
 static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 {
-    rct_tile_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-    if (mapElement != NULL && z > mapElement->base_height * 8)
+    rct_tile_element * tileElement = map_get_surface_element_at(x >> 5, y >> 5);
+    if (tileElement != NULL && z > tileElement->base_height * 8)
     {
         rct_steam_particle * steam = (rct_steam_particle *)create_sprite(2);
         if (steam == NULL)
@@ -7364,9 +7364,9 @@ static void sub_6D63D4(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DEDB1
  */
-static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile_element * mapElement)
+static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
-    rct_scenery_entry * wallEntry     = get_wall_entry(mapElement->properties.wall.type);
+    rct_scenery_entry * wallEntry     = get_wall_entry(tileElement->properties.wall.type);
     sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
     if (doorSoundType != 0)
     {
@@ -7382,9 +7382,9 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile
  *
  *  rct2: 0x006DED7A
  */
-static void vehicle_play_scenery_door_close_sound(rct_vehicle * vehicle, rct_tile_element * mapElement)
+static void vehicle_play_scenery_door_close_sound(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
-    rct_scenery_entry * wallEntry     = get_wall_entry(mapElement->properties.wall.type);
+    rct_scenery_entry * wallEntry     = get_wall_entry(tileElement->properties.wall.type);
     sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
     if (doorSoundType != 0)
     {
@@ -7414,24 +7414,24 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
     sint32                        z                = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
     sint32                        direction        = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-    rct_tile_element * mapElement = map_get_wall_element_at(x, y, z, direction);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = map_get_wall_element_at(x, y, z, direction);
+    if (tileElement == NULL)
     {
         return;
     }
 
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
-        mapElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(mapElement, 1);
+        tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
+        wall_element_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
-        vehicle_play_scenery_door_open_sound(vehicle, mapElement);
+        vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
-        mapElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(mapElement, 6);
-        vehicle_play_scenery_door_close_sound(vehicle, mapElement);
+        tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
+        wall_element_set_animation_frame(tileElement, 6);
+        vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
 
@@ -7439,13 +7439,13 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DB38B
  */
-static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * mapElement)
+static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
     // Get bank
-    sint32 bankStart = track_get_actual_bank_3(vehicle, mapElement);
+    sint32 bankStart = track_get_actual_bank_3(vehicle, tileElement);
 
     // Get vangle
-    sint32 trackType   = mapElement->properties.track.type;
+    sint32 trackType   = tileElement->properties.track.type;
     sint32 vangleStart = TrackDefinitions[trackType].vangle_start;
 
     if (vangleStart != _vehicleVAngleEndF64E36 || bankStart != _vehicleBankEndF64E37)
@@ -7477,11 +7477,11 @@ static void loc_6DB481(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DB545
  */
-static void vehicle_trigger_on_ride_photo(rct_vehicle * vehicle, rct_tile_element * mapElement)
+static void vehicle_trigger_on_ride_photo(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
-    tile_element_set_onride_photo_timeout(mapElement);
+    tile_element_set_onride_photo_timeout(tileElement);
 
-    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, vehicle->track_x, vehicle->track_y, mapElement->base_height);
+    map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, vehicle->track_x, vehicle->track_y, tileElement->base_height);
 }
 
 /**
@@ -7499,24 +7499,24 @@ static void vehicle_update_handle_scenery_door(rct_vehicle * vehicle)
     sint32                        direction        = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction ^= 2;
 
-    rct_tile_element * mapElement = map_get_wall_element_at(x, y, z, direction);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = map_get_wall_element_at(x, y, z, direction);
+    if (tileElement == NULL)
     {
         return;
     }
 
     if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
     {
-        mapElement->properties.wall.animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
-        wall_element_set_animation_frame(mapElement, 1);
+        tileElement->properties.wall.animation |= WALL_ANIMATION_FLAG_DIRECTION_BACKWARD;
+        wall_element_set_animation_frame(tileElement, 1);
         map_animation_create(MAP_ANIMATION_TYPE_WALL_DOOR, x, y, z);
-        vehicle_play_scenery_door_open_sound(vehicle, mapElement);
+        vehicle_play_scenery_door_open_sound(vehicle, tileElement);
     }
     else
     {
-        mapElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
-        wall_element_set_animation_frame(mapElement, 6);
-        vehicle_play_scenery_door_close_sound(vehicle, mapElement);
+        tileElement->properties.wall.animation &= ~(WALL_ANIMATION_FLAG_DIRECTION_BACKWARD);
+        wall_element_set_animation_frame(tileElement, 6);
+        vehicle_play_scenery_door_close_sound(vehicle, tileElement);
     }
 }
 
@@ -7837,21 +7837,21 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-    rct_tile_element * mapElement = NULL;
+    rct_tile_element * tileElement = NULL;
     if (map_is_location_valid(vehicle->track_x, vehicle->track_y))
     {
-        mapElement =
+        tileElement =
             map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
 
-    if (mapElement == NULL)
+    if (tileElement == NULL)
     {
         return;
     }
 
     if (_vehicleStationIndex == 0xFF)
     {
-        _vehicleStationIndex = tile_element_get_station(mapElement);
+        _vehicleStationIndex = tile_element_get_station(tileElement);
     }
 
     if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)
@@ -7863,7 +7863,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 
             input.x       = vehicle->track_x;
             input.y       = vehicle->track_y;
-            input.element = mapElement;
+            input.element = tileElement;
             if (!track_block_get_next(&input, &output, &outputZ, &outputDirection))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_12;
@@ -7919,10 +7919,10 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_end;
-    rct_tile_element * mapElement =
+    rct_tile_element * tileElement =
         map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
-    if (mapElement == NULL)
+    if (tileElement == NULL)
     {
         return false;
     }
@@ -7932,11 +7932,11 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_11;
     }
 
-    if (track_element_is_block_start(mapElement))
+    if (track_element_is_block_start(tileElement))
     {
         if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
-            mapElement->flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+            tileElement->flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
             if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
             {
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
@@ -7944,8 +7944,8 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
                     audio_play_sound_at_location(SOUND_49, vehicle->track_x, vehicle->track_y, vehicle->track_z);
                 }
             }
-            map_invalidate_element(vehicle->track_x, vehicle->track_z, mapElement);
-            vehicle_update_block_brakes_open_previous_section(vehicle, mapElement);
+            map_invalidate_element(vehicle->track_x, vehicle->track_z, tileElement);
+            vehicle_update_block_brakes_open_previous_section(vehicle, tileElement);
         }
     }
 
@@ -7974,7 +7974,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
 loc_6DB32A:
 {
     track_begin_end trackBeginEnd;
-    if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, mapElement, &trackBeginEnd))
+    if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, tileElement, &trackBeginEnd))
     {
         return false;
     }
@@ -7982,7 +7982,7 @@ loc_6DB32A:
     regs.ecx   = trackBeginEnd.begin_y;
     regs.edx   = trackBeginEnd.begin_z;
     regs.bl    = trackBeginEnd.begin_direction;
-    mapElement = trackBeginEnd.begin_element;
+    tileElement = trackBeginEnd.begin_element;
 }
     goto loc_6DB41D;
 
@@ -7992,19 +7992,19 @@ loc_6DB358:
     sint32         z, direction;
     xyElement.x       = vehicle->track_x;
     xyElement.y       = vehicle->track_y;
-    xyElement.element = mapElement;
+    xyElement.element = tileElement;
     if (!track_block_get_next(&xyElement, &xyElement, &z, &direction))
     {
         return false;
     }
-    mapElement = xyElement.element;
+    tileElement = xyElement.element;
     regs.eax   = xyElement.x;
     regs.ecx   = xyElement.y;
     regs.edx   = z;
     regs.bl    = direction;
 }
-    if (mapElement->properties.track.type == TRACK_ELEM_LEFT_REVERSER ||
-        mapElement->properties.track.type == TRACK_ELEM_RIGHT_REVERSER)
+    if (tileElement->properties.track.type == TRACK_ELEM_LEFT_REVERSER ||
+        tileElement->properties.track.type == TRACK_ELEM_RIGHT_REVERSER)
     {
         if (!vehicle->is_child && vehicle->velocity <= 0x30000)
         {
@@ -8012,7 +8012,7 @@ loc_6DB358:
         }
     }
 
-    if (!loc_6DB38B(vehicle, mapElement))
+    if (!loc_6DB38B(vehicle, tileElement))
     {
         return false;
     }
@@ -8020,10 +8020,10 @@ loc_6DB358:
     // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
     {
-        sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(mapElement))
+            if (track_element_is_inverted(tileElement))
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -8040,14 +8040,14 @@ loc_6DB41D:
 
     if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) && vehicle->var_CD < 7)
     {
-        trackType = mapElement->properties.track.type;
+        trackType = tileElement->properties.track.type;
         if (trackType == TRACK_ELEM_FLAT)
         {
             loc_6DB481(vehicle);
         }
         else if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
         {
-            if (track_element_is_station(mapElement))
+            if (track_element_is_station(tileElement))
             {
                 loc_6DB481(vehicle);
             }
@@ -8072,25 +8072,25 @@ loc_6DB41D:
     // loc_6DB500
     // Update VEHICLE_UPDATE_FLAG_0
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
     }
 
-    trackType = mapElement->properties.track.type;
+    trackType = tileElement->properties.track.type;
     if (trackType != TRACK_ELEM_BRAKES)
     {
-        vehicle->target_seat_rotation = track_element_get_seat_rotation(mapElement);
+        vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
     }
     vehicle->track_direction = regs.bl & 3;
     vehicle->track_type |= trackType << 2;
-    vehicle->brake_speed = tile_element_get_brake_booster_speed(mapElement);
+    vehicle->brake_speed = tile_element_get_brake_booster_speed(tileElement);
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
     {
-        vehicle_trigger_on_ride_photo(vehicle, mapElement);
+        vehicle_trigger_on_ride_photo(vehicle, tileElement);
     }
     {
-        uint16 rideType = get_ride(mapElement->properties.track.ride_index)->type;
+        uint16 rideType = get_ride(tileElement->properties.track.ride_index)->type;
         if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE)
         {
             vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
@@ -8352,10 +8352,10 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_start;
-    rct_tile_element * mapElement =
+    rct_tile_element * tileElement =
         map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
-    if (mapElement == NULL)
+    if (tileElement == NULL)
         return false;
 
     bool   nextTileBackwards = true;
@@ -8387,19 +8387,19 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
     {
         // loc_6DBB7E:;
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd))
+        if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd))
         {
             return false;
         }
-        mapElement = trackBeginEnd.begin_element;
+        tileElement = trackBeginEnd.begin_element;
 
-        trackType = mapElement->properties.track.type;
+        trackType = tileElement->properties.track.type;
         if (trackType == TRACK_ELEM_LEFT_REVERSER || trackType == TRACK_ELEM_RIGHT_REVERSER)
         {
             return false;
         }
 
-        sint32 trackColour = ((vehicle->update_flags >> 9) ^ mapElement->properties.track.colour) & 4;
+        sint32 trackColour = ((vehicle->update_flags >> 9) ^ tileElement->properties.track.colour) & 4;
         sint32 bank        = TrackDefinitions[trackType].bank_end;
         bank               = track_get_actual_bank_2(ride->type, trackColour, bank);
         sint32 vAngle      = TrackDefinitions[trackType].vangle_end;
@@ -8412,7 +8412,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[ride->type].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(mapElement))
+            if (track_element_is_inverted(tileElement))
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -8432,12 +8432,12 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
 
         input.x       = x;
         input.y       = y;
-        input.element = mapElement;
+        input.element = tileElement;
         if (!track_block_get_next(&input, &output, &outputZ, &direction))
         {
             return false;
         }
-        mapElement = output.element;
+        tileElement = output.element;
         x          = output.x;
         y          = output.y;
         z          = outputZ;
@@ -8462,13 +8462,13 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
         }
     }
 
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         if (_vehicleVelocityF64E08 < 0)
         {
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
-                trackType = mapElement->properties.track.type;
+                trackType = tileElement->properties.track.type;
                 if (!(TrackFlags[trackType] & TRACK_ELEM_FLAG_DOWN))
                 {
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
@@ -8492,15 +8492,15 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
         }
     }
 
-    trackType = mapElement->properties.track.type;
+    trackType = tileElement->properties.track.type;
     if (trackType != TRACK_ELEM_BRAKES)
     {
-        vehicle->target_seat_rotation = track_element_get_seat_rotation(mapElement);
+        vehicle->target_seat_rotation = track_element_get_seat_rotation(tileElement);
     }
     direction &= 3;
     vehicle->track_type = trackType << 2;
     vehicle->track_direction |= direction;
-    vehicle->brake_speed = tile_element_get_brake_booster_speed(mapElement);
+    vehicle->brake_speed = tile_element_get_brake_booster_speed(tileElement);
 
     // There are two bytes before the move info list
     uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
@@ -8678,7 +8678,7 @@ static sint32 vehicle_update_track_motion_mini_golf(rct_vehicle * vehicle, sint3
     rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-    rct_tile_element * mapElement = NULL;
+    rct_tile_element * tileElement = NULL;
 
     gCurrentVehicle          = vehicle;
     _vehicleMotionTrackFlags = 0;
@@ -8811,7 +8811,7 @@ loc_6DC476:
         uint16 trackType        = vehicle->track_type >> 2;
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_end;
-        mapElement =
+        tileElement =
             map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
     sint16 x, y, z;
@@ -8821,29 +8821,29 @@ loc_6DC476:
         sint32         outZ, outDirection;
         input.x       = vehicle->track_x;
         input.y       = vehicle->track_y;
-        input.element = mapElement;
+        input.element = tileElement;
         if (!track_block_get_next(&input, &output, &outZ, &outDirection))
         {
             goto loc_6DC9BC;
         }
-        mapElement = output.element;
+        tileElement = output.element;
         x          = output.x;
         y          = output.y;
         z          = outZ;
         direction  = outDirection;
     }
 
-    if (!loc_6DB38B(vehicle, mapElement))
+    if (!loc_6DB38B(vehicle, tileElement))
     {
         goto loc_6DC9BC;
     }
 
     {
-        sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(mapElement))
+            if (track_element_is_inverted(tileElement))
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -8866,8 +8866,8 @@ loc_6DC476:
     }
 
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
-    vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
-    vehicle->var_CF     = tile_element_get_brake_booster_speed(mapElement);
+    vehicle->track_type = (tileElement->properties.track.type << 2) | (direction & 3);
+    vehicle->var_CF     = tile_element_get_brake_booster_speed(tileElement);
     regs.ax             = 0;
 
 loc_6DC743:
@@ -9068,12 +9068,12 @@ loc_6DCA9A:
         _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
         _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_end;
 
-        mapElement =
+        tileElement =
             map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
     }
     {
         track_begin_end trackBeginEnd;
-        if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, mapElement, &trackBeginEnd))
+        if (!track_block_get_previous(vehicle->track_x, vehicle->track_y, tileElement, &trackBeginEnd))
         {
             goto loc_6DC9BC;
         }
@@ -9081,20 +9081,20 @@ loc_6DCA9A:
         y          = trackBeginEnd.begin_y;
         z          = trackBeginEnd.begin_z;
         direction  = trackBeginEnd.begin_direction;
-        mapElement = trackBeginEnd.begin_element;
+        tileElement = trackBeginEnd.begin_element;
     }
 
-    if (!loc_6DB38B(vehicle, mapElement))
+    if (!loc_6DB38B(vehicle, tileElement))
     {
         goto loc_6DCD4A;
     }
 
     {
-        sint32 rideType = get_ride(mapElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
-            if (track_element_is_inverted(mapElement))
+            if (track_element_is_inverted(tileElement))
             {
                 vehicle->update_flags |= VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
             }
@@ -9117,8 +9117,8 @@ loc_6DCA9A:
         }
     }
 
-    vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
-    vehicle->var_CF     = (mapElement->properties.track.colour >> 4) << 1;
+    vehicle->track_type = (tileElement->properties.track.type << 2) | (direction & 3);
+    vehicle->var_CF     = (tileElement->properties.track.colour >> 4) << 1;
 
     // There are two bytes before the move info list
     regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);

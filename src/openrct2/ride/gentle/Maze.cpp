@@ -52,9 +52,9 @@ enum
  * rct: 0x004ACF4A
  */
 static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                             rct_tile_element * mapElement)
+                             rct_tile_element * tileElement)
 {
-    uint16 maze_entry = mapElement->properties.track.maze_entry;
+    uint16 maze_entry = tileElement->properties.track.maze_entry;
     maze_entry        = rol16(maze_entry, direction * 4);
 
     uint32 rotation = get_current_rotation();

@@ -1766,7 +1766,7 @@ static void window_ride_construction_construct(rct_window *w)
 static void window_ride_construction_mouseup_demolish(rct_window* w)
 {
     sint32 x, y, z, direction, type;
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     rct_xy_element inputElement, outputElement;
     track_begin_end trackBeginEnd;
     //bool gotoStartPlacementMode;
@@ -1796,7 +1796,7 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     z = _currentTrackBeginZ;
     direction = _currentTrackPieceDirection;
     type = _currentTrackPieceType;
-    if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &mapElement, 0)) {
+    if (sub_6C683D(&x, &y, &z, direction & 3, type, 0, &tileElement, 0)) {
         window_ride_construction_update_active_elements();
         return;
     }
@@ -1804,8 +1804,8 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
     // Get the previous track element to go to after the selected track element is deleted
     inputElement.x = x;
     inputElement.y = y;
-    inputElement.element = mapElement;
-    if (track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
+    inputElement.element = tileElement;
+    if (track_block_get_previous(x, y, tileElement, &trackBeginEnd)) {
         x = trackBeginEnd.begin_x;
         y = trackBeginEnd.begin_y;
         z = trackBeginEnd.begin_z;
@@ -1826,13 +1826,13 @@ static void window_ride_construction_mouseup_demolish(rct_window* w)
         direction = _currentTrackPieceDirection;
         type = _currentTrackPieceType;
 
-        if (sub_6C683D(&x, &y, &z, direction, type, 0, &mapElement, 0)) {
+        if (sub_6C683D(&x, &y, &z, direction, type, 0, &tileElement, 0)) {
             window_ride_construction_update_active_elements();
             return;
         }
 
-        const rct_preview_track *trackBlock = get_track_def_from_ride_index(_currentRideIndex, mapElement->properties.track.type);
-        z = (mapElement->base_height * 8) - trackBlock->z;
+        const rct_preview_track *trackBlock = get_track_def_from_ride_index(_currentRideIndex, tileElement->properties.track.type);
+        z = (tileElement->base_height * 8) - trackBlock->z;
         gGotoStartPlacementMode = true;
     }
 
@@ -2052,14 +2052,14 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
 {
     sint16 mapX, mapY, mapZ;
     sint32 interactionType, direction;
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     rct_viewport *viewport;
 
     if (!_trackPlaceCtrlState) {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_COPY_Z) {
-            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &mapElement, &viewport);
+            get_map_coordinates_from_pos(screenX, screenY, 0xFCCA, &mapX, &mapY, &interactionType, &tileElement, &viewport);
             if (interactionType != 0) {
-                _trackPlaceCtrlZ = mapElement->base_height * 8;
+                _trackPlaceCtrlZ = tileElement->base_height * 8;
                 _trackPlaceCtrlState = true;
             }
         }
@@ -2087,14 +2087,14 @@ static bool ride_get_place_position_from_screen_position(sint32 screenX, sint32 
     }
 
     if (!_trackPlaceCtrlState) {
-        sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &mapElement);
+        sub_68A15E(screenX, screenY, &mapX, &mapY, &direction, &tileElement);
         if (mapX == LOCATION_NULL)
             return false;
 
         _trackPlaceZ = 0;
         if (_trackPlaceShiftState) {
-            mapElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
-            mapZ = floor2(mapElement->base_height * 8, 16);
+            tileElement = map_get_surface_element_at(mapX >> 5, mapY >> 5);
+            mapZ = floor2(tileElement->base_height * 8, 16);
             mapZ += _trackPlaceShiftZ;
             mapZ = Math::Max<sint16>(mapZ, 16);
             _trackPlaceZ = mapZ;
@@ -2296,9 +2296,9 @@ static void window_ride_construction_draw_track_piece(
     sub_6CBCE2(dpi, rideIndex, trackType, trackDirection, d, 4096, 4096, 1024);
 }
 
-static rct_tile_element _tempTrackMapElement;
-static rct_tile_element _tempSideTrackMapElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0 };
-static rct_tile_element *_backupMapElementArrays[5];
+static rct_tile_element _tempTrackTileElement;
+static rct_tile_element _tempSideTrackTileElement = { 0x80, 0x8F, 128, 128, 0, 0, 0, 0 };
+static rct_tile_element *_backupTileElementArrays[5];
 
 /**
  *
@@ -2384,40 +2384,40 @@ static void sub_6CBCE2(
         sint32 tileY = y >> 5;
 
         // Replace map elements with temporary ones containing track
-        _backupMapElementArrays[0] = map_get_first_element_at(tileX + 0, tileY + 0);
-        _backupMapElementArrays[1] = map_get_first_element_at(tileX + 1, tileY + 0);
-        _backupMapElementArrays[2] = map_get_first_element_at(tileX - 1, tileY + 0);
-        _backupMapElementArrays[3] = map_get_first_element_at(tileX + 0, tileY + 1);
-        _backupMapElementArrays[4] = map_get_first_element_at(tileX + 0, tileY - 1);
-        map_set_tile_elements(tileX + 0, tileY + 0, &_tempTrackMapElement);
-        map_set_tile_elements(tileX + 1, tileY + 0, &_tempSideTrackMapElement);
-        map_set_tile_elements(tileX - 1, tileY + 0, &_tempSideTrackMapElement);
-        map_set_tile_elements(tileX + 0, tileY + 1, &_tempSideTrackMapElement);
-        map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackMapElement);
+        _backupTileElementArrays[0] = map_get_first_element_at(tileX + 0, tileY + 0);
+        _backupTileElementArrays[1] = map_get_first_element_at(tileX + 1, tileY + 0);
+        _backupTileElementArrays[2] = map_get_first_element_at(tileX - 1, tileY + 0);
+        _backupTileElementArrays[3] = map_get_first_element_at(tileX + 0, tileY + 1);
+        _backupTileElementArrays[4] = map_get_first_element_at(tileX + 0, tileY - 1);
+        map_set_tile_elements(tileX + 0, tileY + 0, &_tempTrackTileElement);
+        map_set_tile_elements(tileX + 1, tileY + 0, &_tempSideTrackTileElement);
+        map_set_tile_elements(tileX - 1, tileY + 0, &_tempSideTrackTileElement);
+        map_set_tile_elements(tileX + 0, tileY + 1, &_tempSideTrackTileElement);
+        map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackTileElement);
 
         // Set the temporary track element
-        _tempTrackMapElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
-        _tempTrackMapElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
-        _tempTrackMapElement.base_height = baseZ;
-        _tempTrackMapElement.clearance_height = clearanceZ;
-        _tempTrackMapElement.properties.track.type = trackType;
-        tile_element_set_track_sequence(&_tempTrackMapElement, trackBlock->index);
-        _tempTrackMapElement.properties.track.colour = 0;
-        _tempTrackMapElement.properties.track.ride_index = rideIndex;
+        _tempTrackTileElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
+        _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
+        _tempTrackTileElement.base_height = baseZ;
+        _tempTrackTileElement.clearance_height = clearanceZ;
+        _tempTrackTileElement.properties.track.type = trackType;
+        tile_element_set_track_sequence(&_tempTrackTileElement, trackBlock->index);
+        _tempTrackTileElement.properties.track.colour = 0;
+        _tempTrackTileElement.properties.track.ride_index = rideIndex;
         if (edx & 0x20000)
         {
-            track_element_set_inverted(&_tempTrackMapElement, true);
+            track_element_set_inverted(&_tempTrackTileElement, true);
         }
 
         // Draw this map tile
         sub_68B2B7(session, x, y);
 
         // Restore map elements
-        map_set_tile_elements(tileX + 0, tileY + 0, _backupMapElementArrays[0]);
-        map_set_tile_elements(tileX + 1, tileY + 0, _backupMapElementArrays[1]);
-        map_set_tile_elements(tileX - 1, tileY + 0, _backupMapElementArrays[2]);
-        map_set_tile_elements(tileX + 0, tileY + 1, _backupMapElementArrays[3]);
-        map_set_tile_elements(tileX + 0, tileY - 1, _backupMapElementArrays[4]);
+        map_set_tile_elements(tileX + 0, tileY + 0, _backupTileElementArrays[0]);
+        map_set_tile_elements(tileX + 1, tileY + 0, _backupTileElementArrays[1]);
+        map_set_tile_elements(tileX - 1, tileY + 0, _backupTileElementArrays[2]);
+        map_set_tile_elements(tileX + 0, tileY + 1, _backupTileElementArrays[3]);
+        map_set_tile_elements(tileX + 0, tileY - 1, _backupTileElementArrays[4]);
 
         trackBlock++;
     }
@@ -2441,7 +2441,7 @@ static void sub_6CBCE2(
 void window_ride_construction_update_active_elements()
 {
     rct_window *w;
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
 
     window_ride_construction_update_enabled_track_pieces();
     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2455,11 +2455,11 @@ void window_ride_construction_update_active_elements()
         sint32 x = _currentTrackBeginX;
         sint32 y = _currentTrackBeginY;
         sint32 z = _currentTrackBeginZ;
-        if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
-            _selectedTrackType = mapElement->properties.track.type;
-            if (track_element_has_speed_setting(mapElement->properties.track.type))
-                _currentBrakeSpeed2 = tile_element_get_brake_booster_speed(mapElement);
-            _currentSeatRotationAngle = track_element_get_seat_rotation(mapElement);
+        if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0)) {
+            _selectedTrackType = tileElement->properties.track.type;
+            if (track_element_has_speed_setting(tileElement->properties.track.type))
+                _currentBrakeSpeed2 = tile_element_get_brake_booster_speed(tileElement);
+            _currentSeatRotationAngle = track_element_get_seat_rotation(tileElement);
         }
     }
 
@@ -3619,18 +3619,18 @@ static void loc_6C7502(sint32 al)
  */
 static void ride_construction_set_brakes_speed(sint32 brakesSpeed)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     sint32 x, y, z;
 
     x = _currentTrackBeginX;
     y = _currentTrackBeginY;
     z = _currentTrackBeginZ;
-    if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &mapElement, 0)) {
+    if (!sub_6C683D(&x, &y, &z, _currentTrackPieceDirection & 3, _currentTrackPieceType, 0, &tileElement, 0)) {
         game_do_command(
             _currentTrackBeginX,
             GAME_COMMAND_FLAG_APPLY | ((brakesSpeed) << 8),
             _currentTrackBeginY,
-            mapElement->properties.track.type,
+            tileElement->properties.track.type,
             GAME_COMMAND_SET_BRAKES_SPEED,
             _currentTrackBeginZ,
             0

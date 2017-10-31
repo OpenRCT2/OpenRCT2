@@ -1067,7 +1067,7 @@ sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 sint32 ride_initialise_construction_window(sint32 rideIndex);
 void ride_construction_invalidate_current_track();
 sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_tile_element** output_element, uint16 flags);
-void ride_set_map_tooltip(rct_tile_element *mapElement);
+void ride_set_map_tooltip(rct_tile_element *tileElement);
 sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
 void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason);
@@ -1137,7 +1137,7 @@ void ride_construction_set_default_next_piece();
 bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, sint32 *z, sint32 *direction);
 bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, sint32 *z, sint32 *direction);
 
-bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *mapElement, track_begin_end *outTrackBeginEnd);
+bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *tileElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
 
 void window_ride_construction_update_active_elements();

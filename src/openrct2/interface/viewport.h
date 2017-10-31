@@ -80,7 +80,7 @@ typedef struct viewport_interaction_info {
     sint32 x;
     sint32 y;
     union {
-        rct_tile_element *mapElement;
+        rct_tile_element *tileElement;
         rct_sprite *sprite;
         rct_peep *peep;
         rct_vehicle *vehicle;
@@ -142,9 +142,9 @@ void show_construction_rights();
 void hide_construction_rights();
 void viewport_set_visibility(uint8 mode);
 
-void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **mapElement, rct_viewport **viewport);
+void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **tileElement, rct_viewport **viewport);
 void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, sint32 screenY, sint32 flags, sint16 * x, sint16 * y,
-    sint32 * interactionType, rct_tile_element ** mapElement, rct_viewport ** viewport);
+    sint32 * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport);
 
 sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interaction_info *info);
 sint32 viewport_interaction_left_over(sint32 x, sint32 y);
@@ -152,9 +152,9 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y);
 sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interaction_info *info);
 sint32 viewport_interaction_right_over(sint32 x, sint32 y);
 sint32 viewport_interaction_right_click(sint32 x, sint32 y);
-void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_tile_element **mapElement);
+void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_tile_element **tileElement);
 
-void viewport_interaction_remove_park_entrance(rct_tile_element *mapElement, sint32 x, sint32 y);
+void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, sint32 x, sint32 y);
 
 void sub_68B2B7(paint_session * session, sint32 x, sint32 y);
 

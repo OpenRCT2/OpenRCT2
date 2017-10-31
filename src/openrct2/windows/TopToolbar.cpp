@@ -1038,21 +1038,21 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
 
     sint16 gridX, gridY;
     sint32 type;
-    rct_tile_element* mapElement;
+    rct_tile_element* tileElement;
     rct_viewport * viewport;
-    get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &mapElement, &viewport);
+    get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &tileElement, &viewport);
 
     switch (type) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     {
-        sint32 entryIndex = mapElement->properties.scenery.type;
+        sint32 entryIndex = tileElement->properties.scenery.type;
         rct_scenery_entry * sceneryEntry = get_small_scenery_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(mapElement)) & 3;
-                gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
+                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
+                gWindowSceneryPrimaryColour = tileElement->properties.scenery.colour_1 & 0x1F;
+                gWindowScenerySecondaryColour = tileElement->properties.scenery.colour_2 & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1060,14 +1060,14 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_WALL:
     {
-        sint32 entryIndex = mapElement->properties.wall.type;
+        sint32 entryIndex = tileElement->properties.wall.type;
         rct_scenery_entry * sceneryEntry = get_wall_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_WALLS, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryPrimaryColour = mapElement->properties.wall.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = wall_element_get_secondary_colour(mapElement);
-                gWindowSceneryTertiaryColour = mapElement->properties.wall.colour_3 & 0x1F;
+                gWindowSceneryPrimaryColour = tileElement->properties.wall.colour_1 & 0x1F;
+                gWindowScenerySecondaryColour = wall_element_get_secondary_colour(tileElement);
+                gWindowSceneryTertiaryColour = tileElement->properties.wall.colour_3 & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1075,14 +1075,14 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     {
-        sint32 entryIndex = mapElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
+        sint32 entryIndex = tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
         rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(mapElement)) & 3;
-                gWindowSceneryPrimaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
-                gWindowScenerySecondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
+                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
+                gWindowSceneryPrimaryColour = tileElement->properties.scenerymultiple.colour[0] & 0x1F;
+                gWindowScenerySecondaryColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1090,7 +1090,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_BANNER:
     {
-        sint32 bannerIndex = mapElement->properties.banner.index;
+        sint32 bannerIndex = tileElement->properties.banner.index;
         rct_banner *banner = &gBanners[bannerIndex];
         rct_scenery_entry * sceneryEntry = get_banner_entry(banner->type);
         if (sceneryEntry != nullptr) {
@@ -1103,7 +1103,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
     {
-        sint32 entryIndex = footpath_element_get_path_scenery_index(mapElement);
+        sint32 entryIndex = footpath_element_get_path_scenery_index(tileElement);
         rct_scenery_entry * sceneryEntry = get_footpath_item_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_PATH_BITS, entryIndex);
@@ -2195,7 +2195,7 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
 
     uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
     money32 cost = 0;
-    rct_tile_element* mapElement;
+    rct_tile_element* tileElement;
 
     switch (scenery_type){
     case 0:
@@ -2218,9 +2218,9 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
         gSceneryPlaceRotation = (uint16)(parameter_3 & 0xFF);
         gSceneryPlaceObject = selected_tab;
 
-        mapElement = gSceneryMapElement;
-        gSceneryGhostPosition.z = mapElement->base_height;
-        gSceneryMapElementType = mapElement->type;
+        tileElement = gSceneryTileElement;
+        gSceneryGhostPosition.z = tileElement->base_height;
+        gSceneryTileElementType = tileElement->type;
         if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND){
             //Set underground on
             viewport_set_visibility(4);
@@ -2281,8 +2281,8 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
         gSceneryGhostPosition.y = map_tile.y;
         gSceneryGhostWallRotation = (parameter_2 & 0xFF);
 
-        mapElement = gSceneryMapElement;
-        gSceneryGhostPosition.z = mapElement->base_height;
+        tileElement = gSceneryTileElement;
+        gSceneryGhostPosition.z = tileElement->base_height;
 
         gSceneryGhostType |= (1 << 2);
         break;
@@ -2305,8 +2305,8 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
         gSceneryGhostPosition.y = map_tile.y;
         gSceneryPlaceRotation = ((parameter_1 >> 8) & 0xFF);
 
-        mapElement = gSceneryMapElement;
-        gSceneryGhostPosition.z = mapElement->base_height;
+        tileElement = gSceneryTileElement;
+        gSceneryGhostPosition.z = tileElement->base_height;
 
         if (gSceneryGroundFlags & ELEMENT_IS_UNDERGROUND){
             //Set underground on

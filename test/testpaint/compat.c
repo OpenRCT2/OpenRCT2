@@ -29,8 +29,8 @@
 #define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
 #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
 
-rct_tile_element *gMapElements = (rct_tile_element *) RCT2_ADDRESS_TILE_ELEMENTS;
-rct_tile_element **gMapElementTilePointers = (rct_tile_element **) RCT2_ADDRESS_TILE_TILE_ELEMENT_POINTERS;
+rct_tile_element *gTileElements = (rct_tile_element *) RCT2_ADDRESS_TILE_ELEMENTS;
+rct_tile_element **gTileElementTilePointers = (rct_tile_element **) RCT2_ADDRESS_TILE_TILE_ELEMENT_POINTERS;
 Ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, Ride);
 rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 sint16 gMapSizeUnits;
@@ -83,11 +83,11 @@ uint8 gMapSelectArrowDirection;
 
 void entrance_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tile_element) { }
 void banner_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tile_element) { }
-void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
-void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
-void scenery_paint(paint_session * session, uint8 direction, int height, rct_tile_element *mapElement) { }
-void fence_paint(paint_session * session, uint8 direction, int height, rct_tile_element *mapElement) { }
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) { }
+void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) { }
+void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) { }
+void scenery_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tileElement) { }
+void fence_paint(paint_session * session, uint8 direction, int height, rct_tile_element *tileElement) { }
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) { }
 
 Ride *get_ride(int index) {
     if (index < 0 || index >= MAX_RIDES) {
@@ -140,77 +140,77 @@ rct_tile_element *map_get_first_element_at(int x, int y) {
         log_error("Trying to access element outside of range");
         return NULL;
     }
-    return gMapElementTilePointers[x + y * 256];
+    return gTileElementTilePointers[x + y * 256];
 }
 
-int tile_element_get_station(const rct_tile_element * mapElement) {
-    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
+int tile_element_get_station(const rct_tile_element * tileElement) {
+    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-void tile_element_set_station(rct_tile_element * mapElement, uint32 stationIndex)
+void tile_element_set_station(rct_tile_element * tileElement, uint32 stationIndex)
 {
-    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    mapElement->properties.track.sequence |= (stationIndex << 4);
+    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
+    tileElement->properties.track.sequence |= (stationIndex << 4);
 }
 
-sint32 tile_element_get_track_sequence(const rct_tile_element * mapElement)
+sint32 tile_element_get_track_sequence(const rct_tile_element * tileElement)
 {
-    return mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
 }
 
-void tile_element_set_track_sequence(rct_tile_element * mapElement, int trackSequence)
+void tile_element_set_track_sequence(rct_tile_element * tileElement, int trackSequence)
 {
-    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    mapElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
+    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
 }
 
-bool tile_element_get_green_light(const rct_tile_element * mapElement)
+bool tile_element_get_green_light(const rct_tile_element * tileElement)
 {
-    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
+    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
 }
 
-void tile_element_set_green_light(rct_tile_element * mapElement, bool greenLight)
+void tile_element_set_green_light(rct_tile_element * tileElement, bool greenLight)
 {
-    mapElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
     if (greenLight)
     {
-        mapElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
+        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
     }
 }
 
-int tile_element_get_brake_booster_speed(const rct_tile_element *mapElement)
+int tile_element_get_brake_booster_speed(const rct_tile_element *tileElement)
 {
-    return (mapElement->properties.track.sequence >> 4) << 1;
+    return (tileElement->properties.track.sequence >> 4) << 1;
 }
 
-void tile_element_set_brake_booster_speed(rct_tile_element *mapElement, int speed)
+void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, int speed)
 {
-    mapElement->properties.track.sequence = tile_element_get_track_sequence(mapElement) | ((speed >> 1) << 4);
+    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
 }
 
-bool tile_element_is_taking_photo(const rct_tile_element * mapElement)
+bool tile_element_is_taking_photo(const rct_tile_element * tileElement)
 {
-    return (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
+    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
 }
 
-void tile_element_set_onride_photo_timeout(rct_tile_element * mapElement)
+void tile_element_set_onride_photo_timeout(rct_tile_element * tileElement)
 {
-    mapElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    mapElement->properties.track.sequence |= (3 << 4);
+    tileElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
+    tileElement->properties.track.sequence |= (3 << 4);
 }
 
-void tile_element_decrement_onride_photo_timout(rct_tile_element * mapElement)
+void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
 {
     // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (mapElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
+    if (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
     {
-        mapElement->properties.track.sequence -= (1 << 4);
+        tileElement->properties.track.sequence -= (1 << 4);
     }
 }
 
-sint32 map_get_water_height(const rct_tile_element * mapElement)
+sint32 map_get_water_height(const rct_tile_element * tileElement)
 {
-    return mapElement->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
+    return tileElement->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
 }
 
 bool ride_type_has_flag(int rideType, int flag)
@@ -243,7 +243,7 @@ bool is_csg_loaded()
     return false;
 }
 
-uint8 track_element_get_colour_scheme(const rct_tile_element * mapElement)
+uint8 track_element_get_colour_scheme(const rct_tile_element * tileElement)
 {
-    return mapElement->properties.track.colour & 0x3;
+    return tileElement->properties.track.colour & 0x3;
 }

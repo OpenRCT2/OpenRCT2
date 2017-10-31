@@ -602,25 +602,25 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
     {
         for (sint16 y = initial_y; y < final_y; y += 32)
         {
-            rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+            rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
 
             do
             {
                 Ride *              ride;
                 rct_scenery_entry * scenery;
 
-                switch (tile_element_get_type(mapElement))
+                switch (tile_element_get_type(tileElement))
                 {
                 case TILE_ELEMENT_TYPE_PATH:
-                    if (!footpath_element_has_path_scenery(mapElement))
+                    if (!footpath_element_has_path_scenery(tileElement))
                         break;
 
-                    scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
+                    scenery = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
                     if (scenery == NULL)
                     {
                         return PEEP_THOUGHT_TYPE_NONE;
                     }
-                    if (footpath_element_path_scenery_is_ghost(mapElement))
+                    if (footpath_element_path_scenery_is_ghost(tileElement))
                         break;
 
                     if (scenery->path_bit.flags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
@@ -628,7 +628,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                         num_fountains++;
                         break;
                     }
-                    if (mapElement->flags & TILE_ELEMENT_FLAG_BROKEN)
+                    if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
                     {
                         num_rubbish++;
                     }
@@ -638,7 +638,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                     num_scenery++;
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
-                    ride = get_ride(mapElement->properties.track.ride_index);
+                    ride = get_ride(tileElement->properties.track.ride_index);
                     if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED &&
                         !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                     {
@@ -663,7 +663,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                     }
                     break;
                 }
-            } while (!tile_element_is_last_for_tile(mapElement++));
+            } while (!tile_element_is_last_for_tile(tileElement++));
         }
     }
 
@@ -1222,19 +1222,19 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             {
                 /* Peep happiness is affected once the peep has been waiting
                  * too long in a queue. */
-                rct_tile_element * mapElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
+                rct_tile_element * tileElement = map_get_first_element_at(peep->next_x / 32, peep->next_y / 32);
                 uint8             found      = 0;
                 do
                 {
-                    if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH)
+                    if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
                         continue;
-                    if (mapElement->base_height != peep->next_z)
+                    if (tileElement->base_height != peep->next_z)
                         continue;
 
                     // Check if the footpath has a queue line TV monitor on it
-                    if (footpath_element_has_path_scenery(mapElement) && !footpath_element_path_scenery_is_ghost(mapElement))
+                    if (footpath_element_has_path_scenery(tileElement) && !footpath_element_path_scenery_is_ghost(tileElement))
                     {
-                        uint8               pathSceneryIndex = footpath_element_get_path_scenery_index(mapElement);
+                        uint8               pathSceneryIndex = footpath_element_get_path_scenery_index(tileElement);
                         rct_scenery_entry * sceneryEntry     = get_footpath_item_entry(pathSceneryIndex);
                         if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_IS_QUEUE_SCREEN)
                         {
@@ -1242,7 +1242,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                         }
                     }
                     break;
-                } while (!tile_element_is_last_for_tile(mapElement++));
+                } while (!tile_element_is_last_for_tile(tileElement++));
 
                 if (found)
                 {
@@ -2050,14 +2050,14 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
     if (!peep)
         return false;
 
-    rct_tile_element * mapElement = map_get_path_element_at(x / 32, y / 32, z);
+    rct_tile_element * tileElement = map_get_path_element_at(x / 32, y / 32, z);
 
-    if (!mapElement)
+    if (!tileElement)
     {
-        mapElement = map_get_surface_element_at(x / 32, y / 32);
+        tileElement = map_get_surface_element_at(x / 32, y / 32);
     }
 
-    if (!mapElement)
+    if (!tileElement)
         return false;
 
     sint32 dest_x = x & 0xFFE0;
@@ -2071,7 +2071,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
     sint32 tile_y = dest_y & 0xFFE0;
     sint32 tile_x = dest_x & 0xFFE0;
 
-    sint32 dest_z = mapElement->base_height * 8 + 16;
+    sint32 dest_z = tileElement->base_height * 8 + 16;
 
     if (!map_is_location_owned(tile_x, tile_y, dest_z))
     {
@@ -4232,15 +4232,15 @@ static void peep_update_ride_sub_state_17(rct_peep * peep)
     sint16 z = ride->station_heights[0];
 
     // Find the station track element
-    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK && z == mapElement->base_height)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK && z == tileElement->base_height)
             break;
 
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
-    uint16 maze_entry  = mapElement->properties.track.maze_entry;
+    uint16 maze_entry  = tileElement->properties.track.maze_entry;
     uint16 open_hedges = 0;
     uint8  var_37      = peep->var_37;
     // var_37 is 3, 7, 11 or 15
@@ -4288,25 +4288,25 @@ static void peep_update_ride_sub_state_17(rct_peep * peep)
 
     uint8 type = 0;
 
-    mapElement = map_get_first_element_at(x / 32, y / 32);
+    tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        if (z != mapElement->base_height)
+        if (z != tileElement->base_height)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
             type = 1;
             break;
         }
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE &&
-            mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE &&
+            tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT)
         {
             type = 2;
             break;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     switch (type)
     {
@@ -4391,14 +4391,14 @@ static void peep_update_ride_sub_state_18(rct_peep * peep)
     y = peep->y & 0xFFE0;
 
     // Find the station track element
-    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        sint16 z = map_height_from_slope(peep->x, peep->y, mapElement->properties.path.type);
-        z += mapElement->base_height * 8;
+        sint16 z = map_height_from_slope(peep->x, peep->y, tileElement->properties.path.type);
+        z += tileElement->base_height * 8;
 
         sint16 z_diff = peep->z - z;
         if (z_diff > 0 || z_diff < -16)
@@ -4407,7 +4407,7 @@ static void peep_update_ride_sub_state_18(rct_peep * peep)
         sprite_move(peep->x, peep->y, z, (rct_sprite *)peep);
         invalidate_sprite_2((rct_sprite *)peep);
         return;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 }
 
 /**
@@ -4908,14 +4908,14 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
         uint16 stationX = stationPosition.x * 32;
         uint16 stationY = stationPosition.y * 32;
 
-        rct_tile_element * mapElement = map_get_track_element_at(stationX, stationY, stationZ);
-        if (mapElement == NULL)
+        rct_tile_element * tileElement = map_get_track_element_at(stationX, stationY, stationZ);
+        if (tileElement == NULL)
         {
             log_error("Couldn't find tile_element");
             return false;
         }
 
-        sint32       direction = tile_element_get_direction(mapElement);
+        sint32       direction = tile_element_get_direction(tileElement);
         LocationXY16 offset    = _992A3C[direction];
 
         stationX += 16 + offset.x;
@@ -8959,21 +8959,21 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
 
         uint8             found          = 0;
-        rct_tile_element * nextMapElement = map_get_first_element_at(next_x / 32, next_y / 32);
+        rct_tile_element * nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
         do
         {
-            if (tile_element_get_type(nextMapElement) != TILE_ELEMENT_TYPE_PATH)
+            if (tile_element_get_type(nextTileElement) != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (nextMapElement->type & 1)
+            if (nextTileElement->type & 1)
                 continue;
 
-            if (footpath_element_is_sloped(nextMapElement))
+            if (footpath_element_is_sloped(nextTileElement))
             {
-                uint8 slopeDirection = footpath_element_get_slope_direction(nextMapElement);
+                uint8 slopeDirection = footpath_element_get_slope_direction(nextTileElement);
                 if (slopeDirection == entranceDirection)
                 {
-                    if (z != nextMapElement->base_height)
+                    if (z != nextTileElement->base_height)
                     {
                         continue;
                     }
@@ -8984,21 +8984,21 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
                 if ((slopeDirection ^ (1 << 1)) != entranceDirection)
                     continue;
 
-                if (z - 2 != nextMapElement->base_height)
+                if (z - 2 != nextTileElement->base_height)
                     continue;
                 found = 1;
                 break;
             }
             else
             {
-                if (z != nextMapElement->base_height)
+                if (z != nextTileElement->base_height)
                 {
                     continue;
                 }
                 found = 1;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(nextMapElement++));
+        } while (!tile_element_is_last_for_tile(nextTileElement++));
 
         if (!found)
         {
@@ -9541,11 +9541,11 @@ static rct_tile_element * get_banner_on_path(rct_tile_element * path_element)
     return NULL;
 }
 
-static sint32 banner_clear_path_edges(rct_tile_element * mapElement, sint32 edges)
+static sint32 banner_clear_path_edges(rct_tile_element * tileElement, sint32 edges)
 {
     if (_peepPathFindIsStaff)
         return edges;
-    rct_tile_element * bannerElement = get_banner_on_path(mapElement);
+    rct_tile_element * bannerElement = get_banner_on_path(tileElement);
     if (bannerElement != NULL)
     {
         do
@@ -9559,19 +9559,19 @@ static sint32 banner_clear_path_edges(rct_tile_element * mapElement, sint32 edge
 /**
  * Gets the connected edges of a path that are permitted (i.e. no 'no entry' signs)
  */
-static sint32 path_get_permitted_edges(rct_tile_element * mapElement)
+static sint32 path_get_permitted_edges(rct_tile_element * tileElement)
 {
-    return banner_clear_path_edges(mapElement, mapElement->properties.path.edges) & 0x0F;
+    return banner_clear_path_edges(tileElement, tileElement->properties.path.edges) & 0x0F;
 }
 
-bool is_valid_path_z_and_direction(rct_tile_element * mapElement, sint32 currentZ, sint32 currentDirection)
+bool is_valid_path_z_and_direction(rct_tile_element * tileElement, sint32 currentZ, sint32 currentDirection)
 {
-    if (footpath_element_is_sloped(mapElement))
+    if (footpath_element_is_sloped(tileElement))
     {
-        sint32 slopeDirection = footpath_element_get_slope_direction(mapElement);
+        sint32 slopeDirection = footpath_element_get_slope_direction(tileElement);
         if (slopeDirection == currentDirection)
         {
-            if (currentZ != mapElement->base_height)
+            if (currentZ != tileElement->base_height)
                 return false;
         }
         else
@@ -9579,13 +9579,13 @@ bool is_valid_path_z_and_direction(rct_tile_element * mapElement, sint32 current
             slopeDirection ^= 2;
             if (slopeDirection != currentDirection)
                 return false;
-            if (currentZ != mapElement->base_height + 2)
+            if (currentZ != tileElement->base_height + 2)
                 return false;
         }
     }
     else
     {
-        if (currentZ != mapElement->base_height)
+        if (currentZ != tileElement->base_height)
             return false;
     }
     return true;
@@ -9602,16 +9602,16 @@ bool is_valid_path_z_and_direction(rct_tile_element * mapElement, sint32 current
  *  rct2: 0x00694BAE
  *
  * Returns the type of the next footpath tile a peep can get to from x,y,z /
- * inputMapElement in the given direction.
+ * inputTileElement in the given direction.
  */
-static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * mapElement,
+static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * tileElement,
                                                 uint8 chosenDirection)
 {
-    rct_tile_element * nextMapElement;
+    rct_tile_element * nextTileElement;
 
-    if (footpath_element_is_sloped(mapElement))
+    if (footpath_element_is_sloped(tileElement))
     {
-        if (footpath_element_get_slope_direction(mapElement) == chosenDirection)
+        if (footpath_element_get_slope_direction(tileElement) == chosenDirection)
         {
             z += 2;
         }
@@ -9619,23 +9619,23 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
 
     x += TileDirectionDelta[chosenDirection].x;
     y += TileDirectionDelta[chosenDirection].y;
-    nextMapElement = map_get_first_element_at(x / 32, y / 32);
+    nextTileElement = map_get_first_element_at(x / 32, y / 32);
     do
     {
-        if (nextMapElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (nextTileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
-        if (tile_element_get_type(nextMapElement) != TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(nextTileElement) != TILE_ELEMENT_TYPE_PATH)
             continue;
-        if (!is_valid_path_z_and_direction(nextMapElement, z, chosenDirection))
+        if (!is_valid_path_z_and_direction(nextTileElement, z, chosenDirection))
             continue;
-        if (footpath_element_is_wide(nextMapElement))
+        if (footpath_element_is_wide(nextTileElement))
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (footpath_element_is_queue(nextMapElement) && nextMapElement->properties.path.ride_index != 0xFF)
+        if (footpath_element_is_queue(nextTileElement) && nextTileElement->properties.path.ride_index != 0xFF)
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
-    } while (!tile_element_is_last_for_tile(nextMapElement++));
+    } while (!tile_element_is_last_for_tile(nextTileElement++));
 
     return PATH_SEARCH_FAILED;
 }
@@ -9658,10 +9658,10 @@ static uint8 footpath_element_next_in_direction(sint16 x, sint16 y, sint16 z, rc
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile_element * inputMapElement,
+static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile_element * inputTileElement,
                                           uint8 chosenDirection, uint8 * outRideIndex, sint32 level)
 {
-    rct_tile_element * mapElement;
+    rct_tile_element * tileElement;
     sint32            direction;
 
     if (level > 25)
@@ -9669,23 +9669,23 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
 
     x += TileDirectionDelta[chosenDirection].x;
     y += TileDirectionDelta[chosenDirection].y;
-    mapElement = map_get_first_element_at(x / 32, y / 32);
-    if (mapElement == nullptr)
+    tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
     {
         return PATH_SEARCH_FAILED;
     }
     do
     {
-        if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
 
-        switch (tile_element_get_type(mapElement))
+        switch (tile_element_get_type(tileElement))
         {
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            if (z != mapElement->base_height)
+            if (z != tileElement->base_height)
                 continue;
-            sint32 rideIndex = mapElement->properties.track.ride_index;
+            sint32 rideIndex = tileElement->properties.track.ride_index;
             Ride * ride      = get_ride(rideIndex);
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             {
@@ -9695,23 +9695,23 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
         }
         break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (z != mapElement->base_height)
+            if (z != tileElement->base_height)
                 continue;
-            switch (mapElement->properties.entrance.type)
+            switch (tileElement->properties.entrance.type)
             {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                direction = tile_element_get_direction(mapElement);
+                direction = tile_element_get_direction(tileElement);
                 if (direction == chosenDirection)
                 {
-                    *outRideIndex = mapElement->properties.entrance.ride_index;
+                    *outRideIndex = tileElement->properties.entrance.ride_index;
                     return PATH_SEARCH_RIDE_ENTRANCE;
                 }
                 break;
             case ENTRANCE_TYPE_RIDE_EXIT:
-                direction = tile_element_get_direction(mapElement);
+                direction = tile_element_get_direction(tileElement);
                 if (direction == chosenDirection)
                 {
-                    *outRideIndex = mapElement->properties.entrance.ride_index;
+                    *outRideIndex = tileElement->properties.entrance.ride_index;
                     return PATH_SEARCH_RIDE_EXIT;
                 }
                 break;
@@ -9720,14 +9720,14 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            if (!is_valid_path_z_and_direction(mapElement, z, chosenDirection))
+            if (!is_valid_path_z_and_direction(tileElement, z, chosenDirection))
                 continue;
-            if (footpath_element_is_wide(mapElement))
+            if (footpath_element_is_wide(tileElement))
                 return PATH_SEARCH_WIDE;
 
-            uint8 edges = path_get_permitted_edges(mapElement);
+            uint8 edges = path_get_permitted_edges(tileElement);
             edges &= ~(1 << (chosenDirection ^ 2));
-            z = mapElement->base_height;
+            z = tileElement->base_height;
 
             for (direction = 0; direction < 4; direction++)
             {
@@ -9738,18 +9738,18 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
                 if (edges != 0)
                     return PATH_SEARCH_JUNCTION;
 
-                if (footpath_element_is_sloped(mapElement))
+                if (footpath_element_is_sloped(tileElement))
                 {
-                    if (footpath_element_get_slope_direction(mapElement) == direction)
+                    if (footpath_element_get_slope_direction(tileElement) == direction)
                     {
                         z += 2;
                     }
                 }
-                return footpath_element_dest_in_dir(x, y, z, mapElement, direction, outRideIndex, level + 1);
+                return footpath_element_dest_in_dir(x, y, z, tileElement, direction, outRideIndex, level + 1);
             }
             return PATH_SEARCH_DEAD_END;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     return PATH_SEARCH_FAILED;
 }
@@ -9770,25 +9770,25 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
  *  rct2: 0x006949A4
  *
  * Returns the destination tile type a peep can get to from x,y,z /
- * inputMapElement in the given direction following single width paths only
+ * inputTileElement in the given direction following single width paths only
  * and stopping as soon as a path junction is encountered.
  * Note that a junction is a path with > 2 reachable neighbouring path tiles,
  * so wide paths have LOTS of junctions.
  * This is useful for finding out what is at the end of a short single
  * width path, for example that leads from a ride exit back to the main path.
  */
-static uint8 footpath_element_destination_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * inputMapElement,
+static uint8 footpath_element_destination_in_direction(sint16 x, sint16 y, sint16 z, rct_tile_element * inputTileElement,
                                                        uint8 chosenDirection, uint8 * outRideIndex)
 {
-    if (footpath_element_is_sloped(inputMapElement))
+    if (footpath_element_is_sloped(inputTileElement))
     {
-        if (footpath_element_get_slope_direction(inputMapElement) == chosenDirection)
+        if (footpath_element_get_slope_direction(inputTileElement) == chosenDirection)
         {
             z += 2;
         }
     }
 
-    return footpath_element_dest_in_dir(x, y, z, inputMapElement, chosenDirection, outRideIndex, 0);
+    return footpath_element_dest_in_dir(x, y, z, inputTileElement, chosenDirection, outRideIndex, 0);
 }
 
 /**
@@ -9965,7 +9965,7 @@ static bool path_is_thin_junction(rct_tile_element * path, sint16 x, sint16 y, u
  *
  *  rct2: 0x0069A997
  */
-static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep * peep, rct_tile_element * currentMapElement,
+static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep * peep, rct_tile_element * currentTileElement,
                                            bool inPatrolArea, uint8 counter, uint16 * endScore, sint32 test_edge,
                                            uint8 * endJunctions, LocationXYZ8 junctionList[16], uint8 directionList[16],
                                            LocationXYZ8 * endXYZ, uint8 * endSteps)
@@ -9973,7 +9973,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
     uint8 searchResult = PATH_SEARCH_FAILED;
 
     bool currentElementIsWide =
-        (footpath_element_is_wide(currentMapElement) && !staff_can_ignore_wide_flag(peep, x, y, z, currentMapElement));
+        (footpath_element_is_wide(currentTileElement) && !staff_can_ignore_wide_flag(peep, x, y, z, currentTileElement));
 
     x += TileDirectionDelta[test_edge].x;
     y += TileDirectionDelta[test_edge].y;
@@ -10017,8 +10017,8 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
     /* Get the next map element of interest in the direction of test_edge. */
     bool              found      = false;
-    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
-    if (mapElement == nullptr)
+    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
+    if (tileElement == nullptr)
     {
         return;
     }
@@ -10027,19 +10027,19 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* Look for all map elements that the peep could walk onto while
          * navigating to the goal, including the goal tile. */
 
-        if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
 
         uint8 rideIndex = 0xFF;
-        switch (tile_element_get_type(mapElement))
+        switch (tile_element_get_type(tileElement))
         {
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            if (z != mapElement->base_height)
+            if (z != tileElement->base_height)
                 continue;
             /* For peeps heading for a shop, the goal is the shop
              * tile. */
-            rideIndex   = mapElement->properties.track.ride_index;
+            rideIndex   = tileElement->properties.track.ride_index;
             Ride * ride = get_ride(rideIndex);
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             {
@@ -10053,11 +10053,11 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             }
         }
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            if (z != mapElement->base_height)
+            if (z != tileElement->base_height)
                 continue;
             sint32 direction;
             searchResult = PATH_SEARCH_OTHER;
-            switch (mapElement->properties.entrance.type)
+            switch (tileElement->properties.entrance.type)
             {
             case ENTRANCE_TYPE_RIDE_ENTRANCE:
                 /* For peeps heading for a ride without a queue, the
@@ -10065,12 +10065,12 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                  * For mechanics heading for the ride entrance
                  * (in the case when the station has no exit),
                  * the goal is the ride entrance tile. */
-                direction = tile_element_get_direction(mapElement);
+                direction = tile_element_get_direction(tileElement);
                 if (direction == test_edge)
                 {
                     /* The rideIndex will be useful for
                      * adding transport rides later. */
-                    rideIndex    = mapElement->properties.entrance.ride_index;
+                    rideIndex    = tileElement->properties.entrance.ride_index;
                     searchResult = PATH_SEARCH_RIDE_ENTRANCE;
                     found        = true;
                     break;
@@ -10085,7 +10085,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             case ENTRANCE_TYPE_RIDE_EXIT:
                 /* For mechanics heading for the ride exit, the
                  * goal is the ride exit tile. */
-                direction = tile_element_get_direction(mapElement);
+                direction = tile_element_get_direction(tileElement);
                 if (direction == test_edge)
                 {
                     searchResult = PATH_SEARCH_RIDE_EXIT;
@@ -10103,16 +10103,16 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
              * queue path.
              * Otherwise, peeps walk on path tiles to get to the goal. */
 
-            if (!is_valid_path_z_and_direction(mapElement, z, test_edge))
+            if (!is_valid_path_z_and_direction(tileElement, z, test_edge))
                 continue;
 
             // Path may be sloped, so set z to path base height.
-            z = mapElement->base_height;
+            z = tileElement->base_height;
 
-            if (footpath_element_is_wide(mapElement))
+            if (footpath_element_is_wide(tileElement))
             {
                 /* Check if staff can ignore this wide flag. */
-                if (!staff_can_ignore_wide_flag(peep, x, y, z, mapElement))
+                if (!staff_can_ignore_wide_flag(peep, x, y, z, tileElement))
                 {
                     searchResult = PATH_SEARCH_WIDE;
                     found        = true;
@@ -10122,7 +10122,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 
             searchResult = PATH_SEARCH_THIN;
 
-            uint8 numEdges = bitcount(path_get_permitted_edges(mapElement));
+            uint8 numEdges = bitcount(path_get_permitted_edges(tileElement));
 
             if (numEdges < 2)
             {
@@ -10134,15 +10134,15 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             }
             else
             { // numEdges == 2
-                if (footpath_element_is_queue(mapElement) &&
-                    mapElement->properties.path.ride_index != gPeepPathFindQueueRideIndex)
+                if (footpath_element_is_queue(tileElement) &&
+                    tileElement->properties.path.ride_index != gPeepPathFindQueueRideIndex)
                 {
-                    if (gPeepPathFindIgnoreForeignQueues && (mapElement->properties.path.ride_index != 0xFF))
+                    if (gPeepPathFindIgnoreForeignQueues && (tileElement->properties.path.ride_index != 0xFF))
                     {
                         // Path is a queue we aren't interested in
                         /* The rideIndex will be useful for
                          * adding transport rides later. */
-                        rideIndex    = mapElement->properties.path.ride_index;
+                        rideIndex    = tileElement->properties.path.ride_index;
                         searchResult = PATH_SEARCH_RIDE_QUEUE;
                     }
                 }
@@ -10163,10 +10163,10 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         }
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
-        /* At this point mapElement is of interest to the pathfinding. */
+        /* At this point tileElement is of interest to the pathfinding. */
 
-        /* Should we check that this mapElement is connected in the
-         * reverse direction? For some mapElement types this was
+        /* Should we check that this tileElement is connected in the
+         * reverse direction? For some tileElement types this was
          * already done above (e.g. ride entrances), but for others not.
          * Ignore for now. */
 
@@ -10279,7 +10279,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         /* At this point the map element is a non-wide path.*/
 
         /* Get all the permitted_edges of the map element. */
-        uint8 edges = path_get_permitted_edges(mapElement);
+        uint8 edges = path_get_permitted_edges(tileElement);
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         if (gPathFindDebug)
@@ -10350,7 +10350,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
         {
             /* Check if this is a thin junction. And perform additional
              * necessary checks. */
-            thin_junction = path_is_thin_junction(mapElement, x, y, z);
+            thin_junction = path_is_thin_junction(tileElement, x, y, z);
 
             if (thin_junction)
             {
@@ -10476,7 +10476,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
             uint8 savedNumJunctions = _peepPathFindNumJunctions;
 
             uint8 height = z;
-            if (footpath_element_is_sloped(mapElement) && footpath_element_get_slope_direction(mapElement) == next_test_edge)
+            if (footpath_element_is_sloped(tileElement) && footpath_element_get_slope_direction(tileElement) == next_test_edge)
             {
                 height += 2;
             }
@@ -10505,7 +10505,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 _peepPathFindHistory[_peepPathFindNumJunctions + 1].direction = next_test_edge;
             }
 
-            peep_pathfind_heuristic_search(x, y, height, peep, mapElement, nextInPatrolArea, counter, endScore, next_test_edge,
+            peep_pathfind_heuristic_search(x, y, height, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge,
                                            endJunctions, junctionList, directionList, endXYZ, endSteps);
             _peepPathFindNumJunctions = savedNumJunctions;
 
@@ -10518,7 +10518,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
         } while ((next_test_edge = bitscanforward(edges)) != -1);
 
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     if (!found)
     {
@@ -11113,9 +11113,9 @@ static sint32 guest_path_find_park_entrance(rct_peep * peep, rct_tile_element * 
 static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
 {
     LocationXY16      result     = { 0, 0 };
-    rct_tile_element * mapElement = map_get_first_element_at(*x / 32, *y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(*x / 32, *y / 32);
 
-    if (mapElement == NULL)
+    if (tileElement == NULL)
     {
         return;
     }
@@ -11123,37 +11123,37 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
     bool found = false;
     do
     {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
             continue;
 
-        if (*z != mapElement->base_height)
+        if (*z != tileElement->base_height)
             continue;
 
         found = true;
         break;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     if (!found)
         return;
 
-    uint8             direction        = tile_element_get_direction_with_offset(mapElement, 2);
+    uint8             direction        = tile_element_get_direction_with_offset(tileElement, 2);
     rct_tile_element * lastPathElement  = NULL;
     rct_tile_element * firstPathElement = NULL;
 
-    sint16 baseZ = mapElement->base_height;
+    sint16 baseZ = tileElement->base_height;
     sint16 nextX = *x;
     sint16 nextY = *y;
     while (1)
     {
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
         {
-            lastPathElement = mapElement;
+            lastPathElement = tileElement;
             result.x        = nextX;
             result.y        = nextY;
             // result.direction = direction;
-            if (footpath_element_is_sloped(mapElement))
+            if (footpath_element_is_sloped(tileElement))
             {
-                if (footpath_element_get_slope_direction(mapElement) == direction)
+                if (footpath_element_get_slope_direction(tileElement) == direction)
                 {
                     baseZ += 2;
                 }
@@ -11162,21 +11162,21 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
         nextX += TileDirectionDelta[direction].x;
         nextY += TileDirectionDelta[direction].y;
 
-        mapElement = map_get_first_element_at(nextX / 32, nextY / 32);
+        tileElement = map_get_first_element_at(nextX / 32, nextY / 32);
         found      = false;
         do
         {
-            if (mapElement == firstPathElement)
+            if (tileElement == firstPathElement)
                 continue;
 
-            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH)
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (baseZ == mapElement->base_height)
+            if (baseZ == tileElement->base_height)
             {
-                if (footpath_element_is_sloped(mapElement))
+                if (footpath_element_is_sloped(tileElement))
                 {
-                    if (footpath_element_get_slope_direction(mapElement) != direction)
+                    if (footpath_element_get_slope_direction(tileElement) != direction)
                     {
                         break;
                     }
@@ -11185,45 +11185,45 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
                 break;
             }
 
-            if (baseZ - 2 == mapElement->base_height)
+            if (baseZ - 2 == tileElement->base_height)
             {
-                if (!footpath_element_is_sloped(mapElement))
+                if (!footpath_element_is_sloped(tileElement))
                     break;
 
-                if (footpath_element_get_slope_direction(mapElement) != (direction ^ 2))
+                if (footpath_element_get_slope_direction(tileElement) != (direction ^ 2))
                     break;
 
                 baseZ -= 2;
                 found = true;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(tileElement++));
 
         if (found == false)
             break;
 
-        if (!footpath_element_is_queue(mapElement))
+        if (!footpath_element_is_queue(tileElement))
             break;
 
-        if (!(mapElement->properties.path.edges & (1 << (direction ^ (1 << 1)))))
+        if (!(tileElement->properties.path.edges & (1 << (direction ^ (1 << 1)))))
             break;
 
         if (firstPathElement == NULL)
-            firstPathElement = mapElement;
+            firstPathElement = tileElement;
 
         // More queue to go.
-        if (mapElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->properties.path.edges & (1 << (direction)))
             continue;
 
         direction++;
         direction &= 3;
         // More queue to go.
-        if (mapElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->properties.path.edges & (1 << (direction)))
             continue;
 
         direction ^= (1 << 1);
         // More queue to go.
-        if (mapElement->properties.path.edges & (1 << (direction)))
+        if (tileElement->properties.path.edges & (1 << (direction)))
             continue;
 
         break;
@@ -11232,16 +11232,16 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
     if ((uint8)*z == 0xFF)
         return;
 
-    mapElement = lastPathElement;
-    if (mapElement == NULL)
+    tileElement = lastPathElement;
+    if (tileElement == NULL)
         return;
 
-    if (!footpath_element_is_queue(mapElement))
+    if (!footpath_element_is_queue(tileElement))
         return;
 
     *x = result.x;
     *y = result.y;
-    *z = mapElement->base_height;
+    *z = tileElement->base_height;
 }
 
 /**
@@ -11269,14 +11269,14 @@ static sint32 guest_path_finding(rct_peep * peep)
     y = peep->next_y;
     z = peep->next_z;
 
-    rct_tile_element * mapElement = map_get_path_element_at(x / 32, y / 32, z);
-    if (mapElement == NULL)
+    rct_tile_element * tileElement = map_get_path_element_at(x / 32, y / 32, z);
+    if (tileElement == NULL)
     {
         return 1;
     }
 
     _peepPathFindIsStaff = false;
-    uint8 edges          = path_get_permitted_edges(mapElement);
+    uint8 edges          = path_get_permitted_edges(tileElement);
 
     if (edges == 0)
     {
@@ -11285,7 +11285,7 @@ static sint32 guest_path_finding(rct_peep * peep)
 
     if (peep->outside_of_park == 0 && peep_heading_for_ride_or_park_exit(peep))
     {
-        /* If this mapElement is adjacent to any non-wide paths,
+        /* If this tileElement is adjacent to any non-wide paths,
          * remove all of the edges to wide paths. */
         uint8 adjustedEdges = edges;
         for (sint32 chosenDirection = 0; chosenDirection < 4; chosenDirection++)
@@ -11296,7 +11296,7 @@ static sint32 guest_path_finding(rct_peep * peep)
 
             /* If there is a wide path in that direction,
                 remove that edge and try another */
-            if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, mapElement, chosenDirection) ==
+            if (footpath_element_next_in_direction(peep->next_x, peep->next_y, peep->next_z, tileElement, chosenDirection) ==
                 PATH_SEARCH_WIDE)
             {
                 adjustedEdges &= ~(1 << chosenDirection);
@@ -11353,9 +11353,9 @@ static sint32 guest_path_finding(rct_peep * peep)
         switch (peep->state)
         {
         case PEEP_STATE_ENTERING_PARK:
-            return guest_path_find_entering_park(peep, mapElement, edges);
+            return guest_path_find_entering_park(peep, tileElement, edges);
         case PEEP_STATE_LEAVING_PARK:
-            return guest_path_find_leaving_park(peep, mapElement, edges);
+            return guest_path_find_leaving_park(peep, tileElement, edges);
         default:
             return guest_path_find_aimless(peep, edges);
         }
@@ -11377,7 +11377,7 @@ static sint32 guest_path_finding(rct_peep * peep)
                 continue;
 
             uint8 rideIndex, pathSearchResult;
-            pathSearchResult = footpath_element_destination_in_direction(peep->next_x, peep->next_y, peep->next_z, mapElement,
+            pathSearchResult = footpath_element_destination_in_direction(peep->next_x, peep->next_y, peep->next_z, tileElement,
                                                                          chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
@@ -11421,7 +11421,7 @@ static sint32 guest_path_finding(rct_peep * peep)
         }
         pathfind_logging_disable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        return guest_path_find_park_entrance(peep, mapElement, edges);
+        return guest_path_find_park_entrance(peep, tileElement, edges);
     }
 
     if (peep->guest_heading_to_ride_id == 0xFF)
@@ -11616,35 +11616,35 @@ static sint32 peep_perform_next_action(rct_peep * peep)
         return peep_return_to_centre_of_tile(peep);
     }
 
-    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
     sint16            base_z     = Math::Max(0, (peep->z / 8) - 2);
     sint16            top_z      = (peep->z / 8) + 1;
 
     do
     {
-        if (base_z > mapElement->base_height)
+        if (base_z > tileElement->base_height)
             continue;
-        if (top_z < mapElement->base_height)
+        if (top_z < tileElement->base_height)
             continue;
-        if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST)
+        if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
         {
-            if (peep_interact_with_path(peep, x, y, mapElement))
+            if (peep_interact_with_path(peep, x, y, tileElement))
                 return 1;
         }
-        else if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+        else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_interact_with_shop(peep, x, y, mapElement))
+            if (peep_interact_with_shop(peep, x, y, tileElement))
                 return 1;
         }
-        else if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE)
+        else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE)
         {
-            if (peep_interact_with_entrance(peep, x, y, mapElement))
+            if (peep_interact_with_entrance(peep, x, y, tileElement))
                 return 1;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     if (peep->type == PEEP_TYPE_STAFF || (peep->next_var_29 & 0x18))
     {
@@ -11666,17 +11666,17 @@ static sint32 peep_perform_next_action(rct_peep * peep)
                 return peep_return_to_centre_of_tile(peep);
             }
 
-            mapElement = map_get_surface_element_at(x / 32, y / 32);
-            if (mapElement == NULL)
+            tileElement = map_get_surface_element_at(x / 32, y / 32);
+            if (tileElement == NULL)
                 return peep_return_to_centre_of_tile(peep);
 
-            sint16 water_height = map_get_water_height(mapElement);
+            sint16 water_height = map_get_water_height(tileElement);
             if (water_height)
                 return peep_return_to_centre_of_tile(peep);
 
             peep->next_x      = x & 0xFFE0;
             peep->next_y      = y & 0xFFE0;
-            peep->next_z      = mapElement->base_height;
+            peep->next_z      = tileElement->base_height;
             peep->next_var_29 = 8;
 
             z = peep_get_height_on_slope(peep, x, y);
@@ -12581,15 +12581,15 @@ static void peep_easter_egg_peep_interactions(rct_peep * peep)
  *
  * @return (CF)
  */
-static bool peep_should_watch_ride(rct_tile_element * mapElement)
+static bool peep_should_watch_ride(rct_tile_element * tileElement)
 {
-    Ride * ride = get_ride(mapElement->properties.track.ride_index);
+    Ride * ride = get_ride(tileElement->properties.track.ride_index);
 
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
-        if (tile_element_is_ghost(mapElement))
+        if (tile_element_is_ghost(tileElement))
             return false;
     }
 
@@ -12648,34 +12648,34 @@ static bool peep_should_watch_ride(rct_tile_element * mapElement)
  */
 static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideToView, uint8 * rideSeatToView)
 {
-    rct_tile_element *mapElement, *surfaceElement;
+    rct_tile_element *tileElement, *surfaceElement;
 
     surfaceElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
 
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction(mapElement) != edge)
+        if (tile_element_get_direction(tileElement) != edge)
             continue;
-        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
-        if (peep->next_z + 4 <= mapElement->base_height)
+        if (peep->next_z + 4 <= tileElement->base_height)
             continue;
-        if (peep->next_z + 1 >= mapElement->clearance_height)
+        if (peep->next_z + 1 >= tileElement->clearance_height)
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     uint16 x = peep->next_x + TileDirectionDelta[edge].x;
     uint16 y = peep->next_y + TileDirectionDelta[edge].y;
@@ -12686,67 +12686,67 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
     surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(mapElement, 2) != edge)
+        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
         // TODO: Check whether this shouldn't be <=, as the other loops use. If so, also extract as loop A.
-        if (peep->next_z + 4 >= mapElement->base_height)
+        if (peep->next_z + 4 >= tileElement->base_height)
             continue;
-        if (peep->next_z + 1 >= mapElement->clearance_height)
+        if (peep->next_z + 1 >= tileElement->clearance_height)
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     // TODO: Extract loop B
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
 
-        if (mapElement->clearance_height + 1 < peep->next_z)
+        if (tileElement->clearance_height + 1 < peep->next_z)
             continue;
-        if (peep->next_z + 6 < mapElement->base_height)
+        if (peep->next_z + 6 < tileElement->base_height)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_should_watch_ride(mapElement))
+            if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
         {
-            if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags &
+            if (!(get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
 
             *rideSeatToView = 0;
-            if (mapElement->clearance_height >= peep->next_z + 8)
+            if (tileElement->clearance_height >= peep->next_z + 8)
             {
                 *rideSeatToView = 0x02;
             }
@@ -12755,31 +12755,31 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     // TODO: Extract loop C
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (mapElement->clearance_height + 1 < peep->next_z)
+        if (tileElement->clearance_height + 1 < peep->next_z)
             continue;
-        if (peep->next_z + 6 < mapElement->base_height)
+        if (peep->next_z + 6 < tileElement->base_height)
             continue;
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
             continue;
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
         {
-            auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+            auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
             if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             {
                 continue;
@@ -12787,7 +12787,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         }
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     x += TileDirectionDelta[edge].x;
     y += TileDirectionDelta[edge].y;
@@ -12799,58 +12799,58 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
     surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
     // TODO: extract loop A
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(mapElement, 2) != edge)
+        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
-        if (peep->next_z + 6 <= mapElement->base_height)
+        if (peep->next_z + 6 <= tileElement->base_height)
             continue;
-        if (peep->next_z >= mapElement->clearance_height)
+        if (peep->next_z >= tileElement->clearance_height)
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     // TODO: Extract loop B
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (mapElement->clearance_height + 1 < peep->next_z)
+        if (tileElement->clearance_height + 1 < peep->next_z)
             continue;
-        if (peep->next_z + 8 < mapElement->base_height)
+        if (peep->next_z + 8 < tileElement->base_height)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_should_watch_ride(mapElement))
+            if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
         {
-            auto sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+            auto sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
             if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
@@ -12858,7 +12858,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             }
 
             *rideSeatToView = 0;
-            if (mapElement->clearance_height >= peep->next_z + 8)
+            if (tileElement->clearance_height >= peep->next_z + 8)
             {
                 *rideSeatToView = 0x02;
             }
@@ -12867,31 +12867,31 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     // TODO: Extract loop C
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (mapElement->clearance_height + 1 < peep->next_z)
+        if (tileElement->clearance_height + 1 < peep->next_z)
             continue;
-        if (peep->next_z + 8 < mapElement->base_height)
+        if (peep->next_z + 8 < tileElement->base_height)
             continue;
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
             continue;
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
         {
-            auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+            auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
             if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             {
                 continue;
@@ -12899,7 +12899,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
         }
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     x += TileDirectionDelta[edge].x;
     y += TileDirectionDelta[edge].y;
@@ -12911,65 +12911,65 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
     surfaceElement = map_get_surface_element_at(x / 32, y / 32);
 
     // TODO: extract loop A
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_WALL)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_WALL)
             continue;
-        if (tile_element_get_direction_with_offset(mapElement, 2) != edge)
+        if (tile_element_get_direction_with_offset(tileElement, 2) != edge)
             continue;
-        auto wallEntry = get_wall_entry(mapElement->properties.wall.type);
+        auto wallEntry = get_wall_entry(tileElement->properties.wall.type);
         if (wallEntry == nullptr || wallEntry->wall.flags2 & WALL_SCENERY_2_FLAG4)
             continue;
-        if (peep->next_z + 8 <= mapElement->base_height)
+        if (peep->next_z + 8 <= tileElement->base_height)
             continue;
-        if (peep->next_z >= mapElement->clearance_height)
+        if (peep->next_z >= tileElement->clearance_height)
             continue;
 
         return false;
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     // TODO: Extract loop B
-    mapElement = surfaceElement;
+    tileElement = surfaceElement;
     do
     {
         // Ghosts are purely this-client-side and should not cause any interaction,
         // as that may lead to a desync.
         if (network_get_mode() != NETWORK_MODE_NONE)
         {
-            if (tile_element_is_ghost(mapElement))
+            if (tile_element_is_ghost(tileElement))
                 continue;
         }
-        if (mapElement->clearance_height + 1 < peep->next_z)
+        if (tileElement->clearance_height + 1 < peep->next_z)
             continue;
-        if (peep->next_z + 10 < mapElement->base_height)
+        if (peep->next_z + 10 < tileElement->base_height)
             continue;
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
         {
-            if (peep_should_watch_ride(mapElement))
+            if (peep_should_watch_ride(tileElement))
             {
-                return loc_690FD0(peep, rideToView, rideSeatToView, mapElement);
+                return loc_690FD0(peep, rideToView, rideSeatToView, tileElement);
             }
         }
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
         {
-            if (!(get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags &
+            if (!(get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF)->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))
             {
                 continue;
             }
 
             *rideSeatToView = 0;
-            if (mapElement->clearance_height >= peep->next_z + 8)
+            if (tileElement->clearance_height >= peep->next_z + 8)
             {
                 *rideSeatToView = 0x02;
             }
@@ -12978,7 +12978,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
 
             return true;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     return false;
 }
@@ -13531,15 +13531,15 @@ static void peep_pick_ride_to_go_on(rct_peep * peep)
             {
                 if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32))
                 {
-                    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+                    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
                     do
                     {
-                        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
+                        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = mapElement->properties.track.ride_index;
+                        sint32 rideIndex = tileElement->properties.track.ride_index;
                         _peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
-                    } while (!tile_element_is_last_for_tile(mapElement++));
+                    } while (!tile_element_is_last_for_tile(tileElement++));
                 }
             }
         }
@@ -13670,19 +13670,19 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
             {
                 if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32))
                 {
-                    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+                    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
                     do
                     {
-                        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
+                        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = mapElement->properties.track.ride_index;
+                        sint32 rideIndex = tileElement->properties.track.ride_index;
                         ride             = get_ride(rideIndex);
                         if (ride->type == rideType)
                         {
                             _peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
-                    } while (!tile_element_is_last_for_tile(mapElement++));
+                    } while (!tile_element_is_last_for_tile(tileElement++));
                 }
             }
         }
@@ -13802,19 +13802,19 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
             {
                 if (x >= 0 && y >= 0 && x < (256 * 32) && y < (256 * 32))
                 {
-                    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+                    rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
                     do
                     {
-                        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
+                        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = mapElement->properties.track.ride_index;
+                        sint32 rideIndex = tileElement->properties.track.ride_index;
                         ride             = get_ride(rideIndex);
                         if (ride_type_has_flag(ride->type, rideTypeFlags))
                         {
                             _peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                         }
-                    } while (!tile_element_is_last_for_tile(mapElement++));
+                    } while (!tile_element_is_last_for_tile(tileElement++));
                 }
             }
         }

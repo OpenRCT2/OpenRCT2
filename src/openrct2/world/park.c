@@ -709,20 +709,20 @@ void update_park_fences(sint32 x, sint32 y)
     if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
         uint8 fence_required = 1;
 
-        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
         // If an entrance element do not place flags around surface
         do {
-            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if (!(mapElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
+            if (!(tileElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
                 fence_required = 0;
                 break;
             }
-        } while (!tile_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(tileElement++));
 
         if (fence_required) {
             // As map_is_location_in_park sets the error text
@@ -933,9 +933,9 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             return 0;
         }
 
-        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
         do {
-            if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+            if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
                 // Do not allow ownership of park entrance.
                 if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
                     return 0;
@@ -943,11 +943,11 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
                 // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
                 if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
                      newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
-                    (mapElement->base_height - 3 > surfaceElement->base_height ||
-                     mapElement->base_height < surfaceElement->base_height))
+                    (tileElement->base_height - 3 > surfaceElement->base_height ||
+                     tileElement->base_height < surfaceElement->base_height))
                     return 0;
             }
-        } while (!tile_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(tileElement++));
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
             return gLandPrice;
