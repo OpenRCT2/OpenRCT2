@@ -68,6 +68,7 @@ public:
     ~HardwareDisplayDrawingEngine() override
     {
         SDL_DestroyTexture(_screenTexture);
+        SDL_DestroyTexture(_scaledScreenTexture);
         SDL_FreeFormat(_screenTextureFormat);
         SDL_DestroyRenderer(_sdlRenderer);
     }
