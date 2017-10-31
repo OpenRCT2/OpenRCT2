@@ -157,7 +157,7 @@ void TitleScreen::Update()
 void TitleScreen::ChangeSequence(size_t preset)
 {
     size_t count = title_sequence_manager_get_count();
-    if (preset < 0 || preset >= count)
+    if (preset >= count)
     {
         return;
     }
