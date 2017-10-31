@@ -102,7 +102,7 @@ namespace Config
     
     static auto Enum_ScaleQuality = ConfigEnum<sint32>(
     {
-        ConfigEnumEntry<sint32>("NEAREST_NEIGHBOR", SCALE_QUALITY_NN),
+        ConfigEnumEntry<sint32>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
         ConfigEnumEntry<sint32>("LINEAR", SCALE_QUALITY_LINEAR),
         ConfigEnumEntry<sint32>("ANISOTROPIC_FILTERING", SCALE_QUALITY_ANISOTROPIC),
         ConfigEnumEntry<sint32>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
