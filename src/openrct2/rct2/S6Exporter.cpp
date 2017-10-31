@@ -183,9 +183,9 @@ void S6Exporter::Export()
     _s6.scenario_srand_0 = gScenarioSrand0;
     _s6.scenario_srand_1 = gScenarioSrand1;
 
-    memcpy(_s6.tile_elements, gMapElements, sizeof(_s6.tile_elements));
+    memcpy(_s6.tile_elements, gTileElements, sizeof(_s6.tile_elements));
 
-    _s6.next_free_tile_element_pointer_index = gNextFreeMapElementPointerIndex;
+    _s6.next_free_tile_element_pointer_index = gNextFreeTileElementPointerIndex;
     // Sprites needs to be reset before they get used.
     // Might as well reset them in here to zero out the space and improve
     // compression ratios. Especially useful for multiplayer servers that

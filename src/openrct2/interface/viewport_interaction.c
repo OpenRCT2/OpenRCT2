@@ -33,11 +33,11 @@
 #include "viewport.h"
 #include "../Context.h"
 
-static void viewport_interaction_remove_scenery(rct_tile_element *mapElement, sint32 x, sint32 y);
-static void viewport_interaction_remove_footpath(rct_tile_element *mapElement, sint32 x, sint32 y);
-static void viewport_interaction_remove_footpath_item(rct_tile_element *mapElement, sint32 x, sint32 y);
-static void viewport_interaction_remove_park_wall(rct_tile_element *mapElement, sint32 x, sint32 y);
-static void viewport_interaction_remove_large_scenery(rct_tile_element *mapElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y);
+static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint32 maxDistance);
 
 /**
@@ -46,7 +46,7 @@ static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint3
  */
 sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interaction_info *info)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     rct_sprite *sprite;
     rct_vehicle *vehicle;
 
@@ -59,11 +59,11 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, NULL);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
-    mapElement = info->mapElement;
-    sprite = (rct_sprite*)mapElement;
+    tileElement = info->tileElement;
+    sprite = (rct_sprite*)tileElement;
 
     switch (info->type) {
     case VIEWPORT_INTERACTION_ITEM_SPRITE:
@@ -81,7 +81,7 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
         }
         break;
     case VIEWPORT_INTERACTION_ITEM_RIDE:
-        ride_set_map_tooltip(mapElement);
+        ride_set_map_tooltip(tileElement);
         break;
     case VIEWPORT_INTERACTION_ITEM_PARK:
         set_map_tooltip_format_arg(0, rct_string_id, gParkName);
@@ -154,7 +154,7 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
         }
         return 1;
     case VIEWPORT_INTERACTION_ITEM_RIDE:
-        window_ride_open_track(info.mapElement);
+        window_ride_open_track(info.tileElement);
         return 1;
     case VIEWPORT_INTERACTION_ITEM_PARK:
         context_open_window(WC_PARK_INFORMATION);
@@ -170,7 +170,7 @@ sint32 viewport_interaction_left_click(sint32 x, sint32 y)
  */
 sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interaction_info *info)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
     rct_scenery_entry *sceneryEntry;
     rct_banner *banner;
     Ride *ride;
@@ -185,18 +185,18 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->mapElement, NULL);
+    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, NULL);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
-    mapElement = info->mapElement;
+    tileElement = info->tileElement;
 
     switch (info->type) {
     case VIEWPORT_INTERACTION_ITEM_SPRITE:
-        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || mapElement->type != 0)
+        if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || tileElement->type != 0)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        mapElement += 6;
-        ride = get_ride(mapElement->type);
+        tileElement += 6;
+        ride = get_ride(tileElement->type);
         if (ride->status == RIDE_STATUS_CLOSED) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, ride->name);
@@ -207,18 +207,18 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     case VIEWPORT_INTERACTION_ITEM_RIDE:
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        ride = get_ride(mapElement->properties.track.ride_index);
+        ride = get_ride(tileElement->properties.track.ride_index);
         if (ride->status != RIDE_STATUS_CLOSED)
             return info->type;
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
             rct_string_id stringId;
-            if (mapElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+            if (tileElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
                 if (ride->num_stations > 1) {
                     stringId = STR_RIDE_STATION_X_ENTRANCE;
                 } else {
@@ -232,7 +232,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
                 }
             }
             set_map_tooltip_format_arg(2, rct_string_id, stringId);
-        } else if (track_element_is_station(mapElement)) {
+        } else if (track_element_is_station(tileElement)) {
             rct_string_id stringId;
             if (ride->num_stations > 1) {
                 stringId = STR_RIDE_STATION_X;
@@ -241,7 +241,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
             }
             set_map_tooltip_format_arg(2, rct_string_id, stringId);
         } else {
-            if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, mapElement->base_height << 4)) {
+            if (!gCheatsSandboxMode && !map_is_location_owned(info->x, info->y, tileElement->base_height << 4)) {
                 return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
             }
 
@@ -254,7 +254,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         set_map_tooltip_format_arg(6, uint32, ride->name_arguments);
         set_map_tooltip_format_arg(10, rct_string_id, RideComponentNames[RideNameConvention[ride->type].station].capitalised);
 
-        stationIndex = tile_element_get_station(mapElement);
+        stationIndex = tile_element_get_station(tileElement);
         for (i = stationIndex; i >= 0; i--)
             if (ride->station_starts[i].xy == RCT_XY8_UNDEFINED)
                 stationIndex--;
@@ -263,7 +263,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         return info->type;
 
     case VIEWPORT_INTERACTION_ITEM_WALL:
-        sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
+        sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
         if (sceneryEntry->wall.scrolling_mode != 255) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
@@ -272,7 +272,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         break;
 
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
         if (sceneryEntry->large_scenery.scrolling_mode != 255) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
@@ -281,7 +281,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         break;
 
     case VIEWPORT_INTERACTION_ITEM_BANNER:
-        banner = &gBanners[mapElement->properties.banner.index];
+        banner = &gBanners[tileElement->properties.banner.index];
         sceneryEntry = get_banner_entry(banner->type);
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
@@ -297,7 +297,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
     switch (info->type) {
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
-        sceneryEntry = get_small_scenery_entry(mapElement->properties.scenery.type);
+        sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
         set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
         return info->type;
@@ -305,14 +305,14 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
         set_map_tooltip_format_arg(2, rct_string_id, STR_FOOTPATH_MAP_TIP);
-        if (mapElement->type & 1)
+        if (tileElement->type & 1)
             set_map_tooltip_format_arg(2, rct_string_id, STR_QUEUE_LINE_MAP_TIP);
         return info->type;
 
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-        sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(mapElement));
+        sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tileElement));
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
-        if (mapElement->flags & TILE_ELEMENT_FLAG_BROKEN) {
+        if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN) {
             set_map_tooltip_format_arg(2, rct_string_id, STR_BROKEN);
             set_map_tooltip_format_arg(4, rct_string_id, sceneryEntry->name);
         } else {
@@ -324,7 +324,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
             break;
 
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
             break;
 
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -332,13 +332,13 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         return info->type;
 
     case VIEWPORT_INTERACTION_ITEM_WALL:
-        sceneryEntry = get_wall_entry(mapElement->properties.scenery.type);
+        sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
         set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
         return info->type;
 
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        sceneryEntry = get_large_scenery_entry(mapElement->properties.scenery.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
         set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
         return info->type;
@@ -360,7 +360,7 @@ sint32 viewport_interaction_right_over(sint32 x, sint32 y)
  */
 sint32 viewport_interaction_right_click(sint32 x, sint32 y)
 {
-    rct_xy_element mapElement;
+    rct_xy_element tileElement;
     viewport_interaction_info info;
 
     switch (viewport_interaction_get_item_right(x, y, &info)) {
@@ -372,31 +372,31 @@ sint32 viewport_interaction_right_click(sint32 x, sint32 y)
             ride_construct(info.sprite->vehicle.ride);
         break;
     case VIEWPORT_INTERACTION_ITEM_RIDE:
-        mapElement.x = info.x;
-        mapElement.y = info.y;
-        mapElement.element = info.mapElement;
-        ride_modify(&mapElement);
+        tileElement.x = info.x;
+        tileElement.y = info.y;
+        tileElement.element = info.tileElement;
+        ride_modify(&tileElement);
         break;
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
-        viewport_interaction_remove_scenery(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_scenery(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        viewport_interaction_remove_footpath(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_footpath(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM:
-        viewport_interaction_remove_footpath_item(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_footpath_item(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_PARK:
-        viewport_interaction_remove_park_entrance(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_park_entrance(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_WALL:
-        viewport_interaction_remove_park_wall(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_park_wall(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        viewport_interaction_remove_large_scenery(info.mapElement, info.x, info.y);
+        viewport_interaction_remove_large_scenery(info.tileElement, info.x, info.y);
         break;
     case VIEWPORT_INTERACTION_ITEM_BANNER:
-        context_open_detail_window(WD_BANNER, info.mapElement->properties.banner.index);
+        context_open_detail_window(WD_BANNER, info.tileElement->properties.banner.index);
         break;
     }
 
@@ -407,14 +407,14 @@ sint32 viewport_interaction_right_click(sint32 x, sint32 y)
  *
  *  rct2: 0x006E08D2
  */
-static void viewport_interaction_remove_scenery(rct_tile_element *mapElement, sint32 x, sint32 y)
+static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
         x,
-        (mapElement->type << 8) | 1,
+        (tileElement->type << 8) | 1,
         y,
-        (mapElement->properties.scenery.type << 8) | mapElement->base_height,
+        (tileElement->properties.scenery.type << 8) | tileElement->base_height,
         GAME_COMMAND_REMOVE_SCENERY,
         0,
         0
@@ -425,46 +425,46 @@ static void viewport_interaction_remove_scenery(rct_tile_element *mapElement, si
  *
  *  rct2: 0x006A614A
  */
-static void viewport_interaction_remove_footpath(rct_tile_element *mapElement, sint32 x, sint32 y)
+static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     sint32 z;
     rct_window *w;
-    rct_tile_element *mapElement2;
+    rct_tile_element *tileElement2;
 
-    z = mapElement->base_height;
+    z = tileElement->base_height;
 
     w = window_find_by_class(WC_FOOTPATH);
     if (w != NULL)
         footpath_provisional_update();
 
-    mapElement2 = map_get_first_element_at(x / 32, y / 32);
+    tileElement2 = map_get_first_element_at(x / 32, y / 32);
     do {
-        if (tile_element_get_type(mapElement2) == TILE_ELEMENT_TYPE_PATH && mapElement2->base_height == z) {
+        if (tile_element_get_type(tileElement2) == TILE_ELEMENT_TYPE_PATH && tileElement2->base_height == z) {
             gGameCommandErrorTitle = STR_CANT_REMOVE_FOOTPATH_FROM_HERE;
             footpath_remove(x, y, z, 1);
             break;
         }
-    } while (!tile_element_is_last_for_tile(mapElement2++));
+    } while (!tile_element_is_last_for_tile(tileElement2++));
 }
 
 /**
  *
  *  rct2: 0x006A61AB
  */
-static void viewport_interaction_remove_footpath_item(rct_tile_element *mapElement, sint32 x, sint32 y)
+static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
     sint32 type;
 
-    type = mapElement->properties.path.type >> 4;
-    if (mapElement->type & 1)
+    type = tileElement->properties.path.type >> 4;
+    if (tileElement->type & 1)
         type |= 0x80;
 
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
     game_do_command(
         x,
-        ((mapElement->properties.path.type & 7) << 8) | 1,
+        ((tileElement->properties.path.type & 7) << 8) | 1,
         y,
-        (type << 8) | mapElement->base_height,
+        (type << 8) | tileElement->base_height,
         GAME_COMMAND_PLACE_PATH,
         0,
         0
@@ -475,10 +475,10 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element *mapEleme
  *
  *  rct2: 0x00666C0E
  */
-void viewport_interaction_remove_park_entrance(rct_tile_element *mapElement, sint32 x, sint32 y)
+void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
-    sint32 rotation = tile_element_get_direction_with_offset(mapElement, 1);
-    switch (mapElement->properties.entrance.index & 0x0F) {
+    sint32 rotation = tile_element_get_direction_with_offset(tileElement, 1);
+    switch (tileElement->properties.entrance.index & 0x0F) {
     case 1:
         x += TileDirectionDelta[rotation].x;
         y += TileDirectionDelta[rotation].y;
@@ -489,25 +489,25 @@ void viewport_interaction_remove_park_entrance(rct_tile_element *mapElement, sin
         break;
     }
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-    game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, mapElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
+    game_do_command(x, GAME_COMMAND_FLAG_APPLY, y, tileElement->base_height / 2, GAME_COMMAND_REMOVE_PARK_ENTRANCE, 0, 0);
 }
 
 /**
  *
  *  rct2: 0x006E57A9
  */
-static void viewport_interaction_remove_park_wall(rct_tile_element *mapElement, sint32 x, sint32 y)
+static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
-    rct_scenery_entry *sceneryEntry = get_wall_entry(mapElement->properties.wall.type);
+    rct_scenery_entry *sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
     if (sceneryEntry->wall.scrolling_mode != 0xFF){
-        context_open_detail_window(WD_SIGN_SMALL, mapElement->properties.wall.banner_index);
+        context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
             GAME_COMMAND_FLAG_APPLY,
             y,
-            tile_element_get_direction(mapElement) | (mapElement->base_height << 8),
+            tile_element_get_direction(tileElement) | (tileElement->base_height << 8),
             GAME_COMMAND_REMOVE_WALL,
             0,
             0
@@ -519,22 +519,22 @@ static void viewport_interaction_remove_park_wall(rct_tile_element *mapElement, 
  *
  *  rct2: 0x006B88DC
  */
-static void viewport_interaction_remove_large_scenery(rct_tile_element *mapElement, sint32 x, sint32 y)
+static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
-    rct_scenery_entry *sceneryEntry = get_large_scenery_entry(mapElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+    rct_scenery_entry *sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
 
     if (sceneryEntry->large_scenery.scrolling_mode != 0xFF){
-        sint32 id = (mapElement->type & 0xC0) |
-            ((mapElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-            ((mapElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+        sint32 id = (tileElement->type & 0xC0) |
+            ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+            ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
         context_open_detail_window(WD_SIGN, id);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
-            1 | (tile_element_get_direction(mapElement) << 8),
+            1 | (tile_element_get_direction(tileElement) << 8),
             y,
-            mapElement->base_height | ((mapElement->properties.scenerymultiple.type >> 10) << 8),
+            tileElement->base_height | ((tileElement->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
             0,
             0
@@ -586,13 +586,13 @@ static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint3
  *
  *  rct2: 0x0068A15E
  */
-void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_tile_element **mapElement)
+void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *direction, rct_tile_element **tileElement)
 {
     sint16 my_x, my_y;
     sint32 interactionType;
-    rct_tile_element *myMapElement;
+    rct_tile_element *myTileElement;
     rct_viewport *viewport;
-    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myMapElement, &viewport);
+    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER, &my_x, &my_y, &interactionType, &myTileElement, &viewport);
 
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
         *x = LOCATION_NULL;
@@ -601,7 +601,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     sint16 originalZ = 0;
     if (interactionType == VIEWPORT_INTERACTION_ITEM_WATER) {
-        originalZ = map_get_water_height(myMapElement) << 4;
+        originalZ = map_get_water_height(myTileElement) << 4;
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
@@ -638,5 +638,5 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
     *x = map_pos.x & ~0x1F;
     *y = map_pos.y & ~0x1F;
     if (direction != NULL) *direction = myDirection;
-    if (mapElement != NULL) *mapElement = myMapElement;
+    if (tileElement != NULL) *tileElement = myTileElement;
 }

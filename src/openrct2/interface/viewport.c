@@ -1025,7 +1025,7 @@ static void store_interaction_info(paint_struct *ps)
         _interactionSpriteType = ps->sprite_type;
         _interactionMapX = ps->map_x;
         _interactionMapY = ps->map_y;
-        _interaction_element = ps->mapElement;
+        _interaction_element = ps->tileElement;
     }
 }
 
@@ -1344,17 +1344,17 @@ static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
  * x: ax
  * y: cx
  * interactionType: bl
- * mapElement: edx
+ * tileElement: edx
  * viewport: edi
  */
-void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **mapElement, rct_viewport **viewport)
+void get_map_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 flags, sint16 *x, sint16 *y, sint32 *interactionType, rct_tile_element **tileElement, rct_viewport **viewport)
 {
     rct_window* window = window_find_from_point(screenX, screenY);
-    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, mapElement, viewport);
+    get_map_coordinates_from_pos_window(window, screenX, screenY, flags, x, y, interactionType, tileElement, viewport);
 }
 
 void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, sint32 screenY, sint32 flags, sint16 * x, sint16 * y,
-    sint32 * interactionType, rct_tile_element ** mapElement, rct_viewport ** viewport)
+    sint32 * interactionType, rct_tile_element ** tileElement, rct_viewport ** viewport)
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
@@ -1392,7 +1392,7 @@ void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, si
     if (interactionType != NULL) *interactionType = _interactionSpriteType;
     if (x != NULL) *x = _interactionMapX;
     if (y != NULL) *y = _interactionMapY;
-    if (mapElement != NULL) *mapElement = _interaction_element;
+    if (tileElement != NULL) *tileElement = _interaction_element;
 }
 
 /**

@@ -55,7 +55,7 @@ static const uint32 swinging_inverter_ship_frame_sprites[] = { SPR_SWINGING_INVE
 static void paint_swinging_inverter_ship_structure(paint_session * session, Ride * ride, uint8 direction, sint8 axisOffset,
                                                    uint16 height)
 {
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
     rct_vehicle *    vehicle  = NULL;
@@ -118,13 +118,13 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
                    boundBox.offset_x, boundBox.offset_y, height, get_current_rotation());
     }
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00760260 */
 static void paint_swinging_inverter_ship(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     uint8 relativeTrackSequence = track_map_1x4[direction][trackSequence];
 

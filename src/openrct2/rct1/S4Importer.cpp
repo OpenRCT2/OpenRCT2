@@ -215,7 +215,7 @@ public:
         ImportRides();
         ImportRideMeasurements();
         ImportSprites();
-        ImportMapElements();
+        ImportTileElements();
         ImportMapAnimations();
         ImportPeepSpawns();
         ImportFinance();
@@ -452,34 +452,34 @@ private:
     {
         size_t maxTiles = 128 * 128;
         size_t tileIndex = 0;
-        rct_tile_element * mapElement = _s4.tile_elements;
+        rct_tile_element * tileElement = _s4.tile_elements;
 
         while (tileIndex < maxTiles)
         {
-            switch (tile_element_get_type(mapElement)) {
+            switch (tile_element_get_type(tileElement)) {
             case TILE_ELEMENT_TYPE_PATH:
             {
-                uint8 pathColour = tile_element_get_direction(mapElement);
-                uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathColour = tile_element_get_direction(tileElement);
+                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
 
                 pathType = (pathType << 2) | pathColour;
-                uint8 pathAdditionsType = mapElement->properties.path.additions & 0x0F;
+                uint8 pathAdditionsType = tileElement->properties.path.additions & 0x0F;
 
                 AddEntryForPath(pathType);
                 AddEntryForPathAddition(pathAdditionsType);
                 break;
             }
             case TILE_ELEMENT_TYPE_SCENERY:
-                AddEntryForSmallScenery(mapElement->properties.scenery.type);
+                AddEntryForSmallScenery(tileElement->properties.scenery.type);
                 break;
             case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-                AddEntryForLargeScenery(mapElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+                AddEntryForLargeScenery(tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
                 break;
             case TILE_ELEMENT_TYPE_WALL:
             {
-                uint8  var_05 = mapElement->properties.wall.colour_3;
-                uint16 var_06 = mapElement->properties.wall.colour_1 |
-                               (mapElement->properties.wall.animation << 8);
+                uint8  var_05 = tileElement->properties.wall.colour_3;
+                uint16 var_06 = tileElement->properties.wall.colour_1 |
+                               (tileElement->properties.wall.animation << 8);
 
                 for (sint32 edge = 0; edge < 4; edge++)
                 {
@@ -495,7 +495,7 @@ private:
             }
             }
 
-            if (tile_element_is_last_for_tile(mapElement++))
+            if (tile_element_is_last_for_tile(tileElement++))
             {
                 tileIndex++;
             }
@@ -1869,18 +1869,18 @@ private:
         }
     }
 
-    void ImportMapElements()
+    void ImportTileElements()
     {
-        Memory::Copy(gMapElements, _s4.tile_elements, RCT1_MAX_TILE_ELEMENTS * sizeof(rct_tile_element));
+        Memory::Copy(gTileElements, _s4.tile_elements, RCT1_MAX_TILE_ELEMENTS * sizeof(rct_tile_element));
         ClearExtraTileEntries();
         FixSceneryColours();
-        FixMapElementZ();
+        FixTileElementZ();
         FixPaths();
         FixWalls();
         FixBanners();
         FixTerrain();
         FixEntrancePositions();
-        FixMapElementEntryTypes();
+        FixTileElementEntryTypes();
     }
 
     void ImportResearch()
@@ -2217,17 +2217,17 @@ private:
     void ClearExtraTileEntries()
     {
         // Reset the map tile pointers
-        Memory::Set(gMapElementTilePointers, 0, sizeof(rct_tile_element*) * MAX_TILE_TILE_ELEMENT_POINTERS);
+        Memory::Set(gTileElementTilePointers, 0, sizeof(rct_tile_element*) * MAX_TILE_TILE_ELEMENT_POINTERS);
 
         // Get the first free map element
-        rct_tile_element * nextFreeMapElement = gMapElements;
+        rct_tile_element * nextFreeTileElement = gTileElements;
         for (size_t i = 0; i < RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE; i++)
         {
-            while (!tile_element_is_last_for_tile(nextFreeMapElement++));
+            while (!tile_element_is_last_for_tile(nextFreeTileElement++));
         }
 
-        rct_tile_element * mapElement = gMapElements;
-        rct_tile_element * * tilePointer = gMapElementTilePointers;
+        rct_tile_element * tileElement = gTileElements;
+        rct_tile_element * * tilePointer = gTileElementTilePointers;
 
         // 128 rows of map data from RCT1 map
         for (sint32 x = 0; x < RCT1_MAX_MAP_SIZE; x++)
@@ -2235,160 +2235,160 @@ private:
             // Assign the first half of this row
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                *tilePointer++ = mapElement;
-                while (!tile_element_is_last_for_tile(mapElement++));
+                *tilePointer++ = tileElement;
+                while (!tile_element_is_last_for_tile(tileElement++));
             }
 
             // Fill the rest of the row with blank tiles
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                nextFreeMapElement->type = TILE_ELEMENT_TYPE_SURFACE;
-                nextFreeMapElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-                nextFreeMapElement->base_height = 2;
-                nextFreeMapElement->clearance_height = 0;
-                nextFreeMapElement->properties.surface.slope = 0;
-                nextFreeMapElement->properties.surface.terrain = 0;
-                nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-                nextFreeMapElement->properties.surface.ownership = 0;
-                *tilePointer++ = nextFreeMapElement++;
+                nextFreeTileElement->type = TILE_ELEMENT_TYPE_SURFACE;
+                nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+                nextFreeTileElement->base_height = 2;
+                nextFreeTileElement->clearance_height = 0;
+                nextFreeTileElement->properties.surface.slope = 0;
+                nextFreeTileElement->properties.surface.terrain = 0;
+                nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+                nextFreeTileElement->properties.surface.ownership = 0;
+                *tilePointer++ = nextFreeTileElement++;
             }
         }
 
         // 128 extra rows left to fill with blank tiles
         for (sint32 y = 0; y < 128 * 256; y++)
         {
-            nextFreeMapElement->type = TILE_ELEMENT_TYPE_SURFACE;
-            nextFreeMapElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
-            nextFreeMapElement->base_height = 2;
-            nextFreeMapElement->clearance_height = 0;
-            nextFreeMapElement->properties.surface.slope = 0;
-            nextFreeMapElement->properties.surface.terrain = 0;
-            nextFreeMapElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-            nextFreeMapElement->properties.surface.ownership = 0;
-            *tilePointer++ = nextFreeMapElement++;
+            nextFreeTileElement->type = TILE_ELEMENT_TYPE_SURFACE;
+            nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
+            nextFreeTileElement->base_height = 2;
+            nextFreeTileElement->clearance_height = 0;
+            nextFreeTileElement->properties.surface.slope = 0;
+            nextFreeTileElement->properties.surface.terrain = 0;
+            nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+            nextFreeTileElement->properties.surface.ownership = 0;
+            *tilePointer++ = nextFreeTileElement++;
         }
 
-        gNextFreeMapElement = nextFreeMapElement;
+        gNextFreeTileElement = nextFreeTileElement;
     }
 
     void FixSceneryColours()
     {
         colour_t colour;
-        rct_tile_element * mapElement = gMapElements;
-        while (mapElement < gNextFreeMapElement)
+        rct_tile_element * tileElement = gTileElements;
+        while (tileElement < gNextFreeTileElement)
         {
-            if (mapElement->base_height != 255)
+            if (tileElement->base_height != 255)
             {
-                switch (tile_element_get_type(mapElement)) {
+                switch (tile_element_get_type(tileElement)) {
                 case TILE_ELEMENT_TYPE_SCENERY:
-                    colour = RCT1::GetColour(scenery_small_get_primary_colour(mapElement));
-                        scenery_small_set_primary_colour(mapElement, colour);
+                    colour = RCT1::GetColour(scenery_small_get_primary_colour(tileElement));
+                        scenery_small_set_primary_colour(tileElement, colour);
 
                     // Copied from [rct2: 0x006A2956]
-                    switch (mapElement->properties.scenery.type) {
+                    switch (tileElement->properties.scenery.type) {
                     case 157: // TGE1 (Geometric Sculpture)
                     case 162: // TGE2 (Geometric Sculpture)
                     case 168: // TGE3 (Geometric Sculpture)
                     case 170: // TGE4 (Geometric Sculpture)
                     case 171: // TGE5 (Geometric Sculpture)
-                        scenery_small_set_secondary_colour(mapElement, COLOUR_WHITE);
+                        scenery_small_set_secondary_colour(tileElement, COLOUR_WHITE);
                         break;
                     }
                     break;
                 case TILE_ELEMENT_TYPE_WALL:
-                    colour = ((mapElement->type & 0xC0) >> 3) |
-                             ((mapElement->properties.wall.type & 0xE0) >> 5);
+                    colour = ((tileElement->type & 0xC0) >> 3) |
+                             ((tileElement->properties.wall.type & 0xE0) >> 5);
                     colour = RCT1::GetColour(colour);
 
-                    mapElement->type &= 0x3F;
-                    mapElement->properties.wall.type &= 0x1F;
-                    mapElement->type |= (colour & 0x18) << 3;
-                    mapElement->properties.wall.type |= (colour & 7) << 5;
+                    tileElement->type &= 0x3F;
+                    tileElement->properties.wall.type &= 0x1F;
+                    tileElement->type |= (colour & 0x18) << 3;
+                    tileElement->properties.wall.type |= (colour & 7) << 5;
                     break;
                 case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-                    colour = RCT1::GetColour(mapElement->properties.scenerymultiple.colour[0] & 0x1F);
-                    mapElement->properties.scenerymultiple.colour[0] &= 0xE0;
-                    mapElement->properties.scenerymultiple.colour[0] |= colour;
+                    colour = RCT1::GetColour(tileElement->properties.scenerymultiple.colour[0] & 0x1F);
+                    tileElement->properties.scenerymultiple.colour[0] &= 0xE0;
+                    tileElement->properties.scenerymultiple.colour[0] |= colour;
 
-                    colour = RCT1::GetColour(mapElement->properties.scenerymultiple.colour[1] & 0x1F);
-                    mapElement->properties.scenerymultiple.colour[1] &= 0xE0;
-                    mapElement->properties.scenerymultiple.colour[1] |= colour;
+                    colour = RCT1::GetColour(tileElement->properties.scenerymultiple.colour[1] & 0x1F);
+                    tileElement->properties.scenerymultiple.colour[1] &= 0xE0;
+                    tileElement->properties.scenerymultiple.colour[1] |= colour;
                     break;
                 }
             }
-            mapElement++;
+            tileElement++;
         }
     }
 
-    void FixMapElementZ()
+    void FixTileElementZ()
     {
-        rct_tile_element * mapElement = gMapElements;
-        while (mapElement < gNextFreeMapElement)
+        rct_tile_element * tileElement = gTileElements;
+        while (tileElement < gNextFreeTileElement)
         {
-            if (mapElement->base_height != 255)
+            if (tileElement->base_height != 255)
             {
-                mapElement->base_height /= 2;
-                mapElement->clearance_height /= 2;
+                tileElement->base_height /= 2;
+                tileElement->clearance_height /= 2;
             }
-            mapElement++;
+            tileElement++;
         }
         gMapBaseZ = 7;
     }
 
     void FixPaths()
     {
-        rct_tile_element * mapElement = gMapElements;
-        while (mapElement < gNextFreeMapElement)
+        rct_tile_element * tileElement = gTileElements;
+        while (tileElement < gNextFreeTileElement)
         {
-            switch (tile_element_get_type(mapElement)) {
+            switch (tile_element_get_type(tileElement)) {
             case TILE_ELEMENT_TYPE_PATH:
             {
                 // Type
-                uint8 pathColour = mapElement->type & 3;
-                uint8 pathType = (mapElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathColour = tileElement->type & 3;
+                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
 
                 pathType = (pathType << 2) | pathColour;
                 uint8 entryIndex = _pathTypeToEntryMap[pathType];
 
-                mapElement->type &= 0xFC;
-                mapElement->flags &= ~0x60;
-                mapElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
-                mapElement->properties.path.type &= 0x0F;
-                footpath_scenery_set_is_ghost(mapElement, false);
+                tileElement->type &= 0xFC;
+                tileElement->flags &= ~0x60;
+                tileElement->flags &= ~TILE_ELEMENT_FLAG_BROKEN;
+                tileElement->properties.path.type &= 0x0F;
+                footpath_scenery_set_is_ghost(tileElement, false);
                 if (RCT1::PathIsQueue(pathType))
                 {
-                    mapElement->type |= 1;
+                    tileElement->type |= 1;
                 }
-                mapElement->properties.path.type |= entryIndex << 4;
+                tileElement->properties.path.type |= entryIndex << 4;
 
                 // Additions
-                uint8 additionType = footpath_element_get_path_scenery(mapElement);
+                uint8 additionType = footpath_element_get_path_scenery(tileElement);
                 if (additionType != RCT1_PATH_ADDITION_NONE)
                 {
                     uint8 normalisedType = RCT1::NormalisePathAddition(additionType);
                     entryIndex = _pathAdditionTypeToEntryMap[normalisedType];
                     if (additionType != normalisedType)
                     {
-                        mapElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
+                        tileElement->flags |= TILE_ELEMENT_FLAG_BROKEN;
                     }
-                    footpath_element_set_path_scenery(mapElement, entryIndex + 1);
+                    footpath_element_set_path_scenery(tileElement, entryIndex + 1);
                 }
                 break;
             }
             case TILE_ELEMENT_TYPE_ENTRANCE:
-                if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
+                if (tileElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
                 {
-                    uint8 pathType = mapElement->properties.entrance.path_type;
+                    uint8 pathType = tileElement->properties.entrance.path_type;
                     if (pathType == 0)
                     {
                         pathType = RCT1_FOOTPATH_TYPE_TARMAC_GRAY;
                     }
                     uint8 entryIndex = _pathTypeToEntryMap[pathType];
-                    mapElement->properties.entrance.path_type = entryIndex & 0x7F;
+                    tileElement->properties.entrance.path_type = entryIndex & 0x7F;
                 }
                 break;
             }
-            mapElement++;
+            tileElement++;
         }
     }
 
@@ -2403,17 +2403,17 @@ private:
         {
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element * mapElement = map_get_first_element_at(x, y);
+                rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_WALL)
+                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
                     {
-                        rct_tile_element originalMapElement = *mapElement;
-                        tile_element_remove(mapElement);
+                        rct_tile_element originalTileElement = *tileElement;
+                        tile_element_remove(tileElement);
 
-                        uint8 var_05 = originalMapElement.properties.wall.colour_3;
-                        uint16 var_06 = originalMapElement.properties.wall.colour_1 |
-                                       (originalMapElement.properties.wall.animation << 8);
+                        uint8 var_05 = originalTileElement.properties.wall.colour_3;
+                        uint16 var_06 = originalTileElement.properties.wall.colour_1 |
+                                       (originalTileElement.properties.wall.animation << 8);
 
                         for (sint32 edge = 0; edge < 4; edge++)
                         {
@@ -2422,8 +2422,8 @@ private:
                             if (typeB != 0x0F)
                             {
                                 sint32 type = typeA | (typeB << 2);
-                                sint32 colourA = ((originalMapElement.type & 0xC0) >> 3) |
-                                               (originalMapElement.properties.wall.type >> 5);
+                                sint32 colourA = ((originalTileElement.type & 0xC0) >> 3) |
+                                               (originalTileElement.properties.wall.type >> 5);
                                 sint32 colourB = 0;
                                 sint32 colourC = 0;
                                 ConvertWall(&type, &colourA, &colourB, &colourC);
@@ -2435,7 +2435,7 @@ private:
                         break;
                     }
                 }
-                while (!tile_element_is_last_for_tile(mapElement++));
+                while (!tile_element_is_last_for_tile(tileElement++));
             }
         }
 
@@ -2484,18 +2484,18 @@ private:
         {
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element * mapElement = map_get_first_element_at(x, y);
+                rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_BANNER)
+                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_BANNER)
                     {
-                        uint8 index = mapElement->properties.banner.index;
+                        uint8 index = tileElement->properties.banner.index;
                         rct_banner * src = &_s4.banners[index];
                         rct_banner * dst = &gBanners[index];
                         ImportBanner(dst, src);
                     }
                 }
-                while (!tile_element_is_last_for_tile(mapElement++));
+                while (!tile_element_is_last_for_tile(tileElement++));
             }
         }
     }
@@ -2562,22 +2562,22 @@ private:
         }
     }
 
-    void FixMapElementEntryTypes()
+    void FixTileElementEntryTypes()
     {
         tile_element_iterator it;
         tile_element_iterator_begin(&it);
         while (tile_element_iterator_next(&it))
         {
-            rct_tile_element * mapElement = it.element;
-            switch (tile_element_get_type(mapElement)) {
+            rct_tile_element * tileElement = it.element;
+            switch (tile_element_get_type(tileElement)) {
             case TILE_ELEMENT_TYPE_SCENERY:
-                mapElement->properties.scenery.type = _smallSceneryTypeToEntryMap[mapElement->properties.scenery.type];
+                tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->properties.scenery.type];
                 break;
             case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
             {
-                uint8 type = mapElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
-                mapElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-                mapElement->properties.scenerymultiple.type |= _largeSceneryTypeToEntryMap[type];
+                uint8 type = tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
+                tileElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
+                tileElement->properties.scenerymultiple.type |= _largeSceneryTypeToEntryMap[type];
                 break;
             }
             }
@@ -2673,16 +2673,16 @@ private:
         {
             for (sint32 y = 0; y < RCT1_MAX_MAP_SIZE; y++)
             {
-                rct_tile_element * mapElement = map_get_first_element_at(x, y);
+                rct_tile_element * tileElement = map_get_first_element_at(x, y);
                 do
                 {
-                    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
+                    if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
                     {
                         // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
-                        if (!track_element_is_lift_hill(mapElement))
+                        if (!track_element_is_lift_hill(tileElement))
                             continue;
 
-                        uint8 trackType = mapElement->properties.track.type;
+                        uint8 trackType = tileElement->properties.track.type;
                         switch (trackType) {
                         case TRACK_ELEM_25_DEG_UP_TO_FLAT:
                         case TRACK_ELEM_60_DEG_UP_TO_FLAT:
@@ -2693,12 +2693,12 @@ private:
                             continue;
                         }
 
-                        uint8 rideIndex = mapElement->properties.track.ride_index;
+                        uint8 rideIndex = tileElement->properties.track.ride_index;
                         Ride * ride = get_ride(rideIndex);
                         ride->num_block_brakes++;
                     }
                 }
-                while (!tile_element_is_last_for_tile(mapElement++));
+                while (!tile_element_is_last_for_tile(tileElement++));
             }
         }
     }

@@ -32,7 +32,7 @@ static const uint16 merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2
 static void paint_merry_go_round_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset,
                                            sint8 yOffset, uint16 height)
 {
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
     height += 7;
 
     Ride *           ride      = get_ride(rideIndex);
@@ -106,7 +106,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
         }
     }
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
@@ -114,7 +114,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
  * rct2: 0x00761B0C
  */
 static void paint_merry_go_round(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                 rct_tile_element * mapElement)
+                                 rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -127,7 +127,7 @@ static void paint_merry_go_round(paint_session * session, uint8 rideIndex, uint8
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
                                   fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence)

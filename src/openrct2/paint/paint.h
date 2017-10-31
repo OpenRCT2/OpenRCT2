@@ -81,7 +81,7 @@ struct paint_struct {
     uint16 pad_2A;
     uint16 map_x;           // 0x2C
     uint16 map_y;           // 0x2E
-    rct_tile_element *mapElement; // 0x30 (or sprite pointer)
+    rct_tile_element *tileElement; // 0x30 (or sprite pointer)
 };
 #ifdef PLATFORM_32BIT
 // TODO: drop packing from this when all rendering is done.

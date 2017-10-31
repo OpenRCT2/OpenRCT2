@@ -39,7 +39,7 @@ static const uint32 space_rings_fence_sprites[] = {
 /** rct2: 0x00768A3B */
 static void paint_space_rings_structure(paint_session * session, Ride * ride, uint8 direction, uint32 segment, sint32 height)
 {
-    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     uint32 vehicleIndex = (segment - direction) & 0x3;
 
@@ -84,13 +84,13 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
         }
     }
 
-    session->CurrentlyDrawnItem = savedMapElement;
+    session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
 /** rct2: 0x00767C40 */
 static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                              rct_tile_element * mapElement)
+                              rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -108,19 +108,19 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
     switch (trackSequence)
     {
     case 7:
-        if (track_paint_util_has_fence(EDGE_SW, position, mapElement, ride, get_current_rotation()))
+        if (track_paint_util_has_fence(EDGE_SW, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, 0, 1, 28, 7, height, 29, 0, height + 2, get_current_rotation());
         }
-        if (track_paint_util_has_fence(EDGE_SE, position, mapElement, ride, get_current_rotation()))
+        if (track_paint_util_has_fence(EDGE_SE, position, tileElement, ride, get_current_rotation()))
         {
             imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
             sub_98197C(session, imageId, 0, 0, 28, 1, 7, height, 0, 29, height + 2, get_current_rotation());
         }
         break;
     default:
-        track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height,
+        track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
                                       space_rings_fence_sprites, get_current_rotation());
         break;
     }

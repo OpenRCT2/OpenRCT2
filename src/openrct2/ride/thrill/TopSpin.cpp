@@ -48,12 +48,12 @@ static sint8 TopSpinSeatPositionOffset[] = {
  *  rct2: 0x0076750D
  */
 static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, uint8 rideIndex, uint8 direction, sint32 height,
-                                   rct_tile_element * mapElement)
+                                   rct_tile_element * tileElement)
 {
     uint16 boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ;
-    // As we will be drawing a vehicle we need to backup the mapElement that
+    // As we will be drawing a vehicle we need to backup the tileElement that
     // is assigned to the drawings.
-    rct_tile_element * curMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * curTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     height += 3;
 
@@ -240,7 +240,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
     sub_98199C(session, image_id, al, cl, lengthX, lengthY, 90, height, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ,
                rotation);
 
-    session->CurrentlyDrawnItem = curMapElement;
+    session->CurrentlyDrawnItem = curTileElement;
     session->InteractionType    = VIEWPORT_INTERACTION_ITEM_RIDE;
 }
 
@@ -248,7 +248,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
  * rct2: 0x0076679C
  */
 static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                           rct_tile_element * mapElement)
+                           rct_tile_element * tileElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
@@ -261,28 +261,28 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
 
-    track_paint_util_paint_fences(session, edges, position, mapElement, ride, session->TrackColours[SCHEME_MISC], height,
+    track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_MISC], height,
                                   fenceSpritesRope, get_current_rotation());
 
     switch (trackSequence)
     {
     case 1:
-        top_spin_paint_vehicle(session, 32, 32, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, 32, 32, rideIndex, direction, height, tileElement);
         break;
     case 3:
-        top_spin_paint_vehicle(session, 32, -32, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, 32, -32, rideIndex, direction, height, tileElement);
         break;
     case 5:
-        top_spin_paint_vehicle(session, 0, -32, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, 0, -32, rideIndex, direction, height, tileElement);
         break;
     case 6:
-        top_spin_paint_vehicle(session, -32, 32, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, -32, 32, rideIndex, direction, height, tileElement);
         break;
     case 7:
-        top_spin_paint_vehicle(session, -32, -32, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, -32, -32, rideIndex, direction, height, tileElement);
         break;
     case 8:
-        top_spin_paint_vehicle(session, -32, 0, rideIndex, direction, height, mapElement);
+        top_spin_paint_vehicle(session, -32, 0, rideIndex, direction, height, tileElement);
         break;
     }
 

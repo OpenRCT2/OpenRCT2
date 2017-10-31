@@ -37,16 +37,16 @@ uint8 gRideEntranceExitGhostStationIndex;
 
 static void ParkEntranceRemoveSegment(sint32 x, sint32 y, sint32 z)
 {
-    rct_tile_element *mapElement;
+    rct_tile_element *tileElement;
 
-    mapElement = map_get_park_entrance_element_at(x, y, z, true);
-    if (mapElement == nullptr)
+    tileElement = map_get_park_entrance_element_at(x, y, z, true);
+    if (tileElement == nullptr)
     {
         return;
     }
 
-    map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
-    tile_element_remove(mapElement);
+    map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+    tile_element_remove(tileElement);
     update_park_fences(x, y);
 }
 
@@ -281,17 +281,17 @@ static money32 RideEntranceExitPlace(sint16 x,
             coord.z = tile_element_height(coord.x, coord.y);
             network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
-            rct_tile_element* mapElement = tile_element_insert(x / 32, y / 32, z / 8, 0xF);
-            assert(mapElement != nullptr);
-            mapElement->clearance_height = clear_z;
-            mapElement->properties.entrance.type = isExit;
-            mapElement->properties.entrance.index = stationNum << 4;
-            mapElement->properties.entrance.ride_index = rideIndex;
-            mapElement->type = TILE_ELEMENT_TYPE_ENTRANCE | direction;
+            rct_tile_element* tileElement = tile_element_insert(x / 32, y / 32, z / 8, 0xF);
+            assert(tileElement != nullptr);
+            tileElement->clearance_height = clear_z;
+            tileElement->properties.entrance.type = isExit;
+            tileElement->properties.entrance.index = stationNum << 4;
+            tileElement->properties.entrance.ride_index = rideIndex;
+            tileElement->type = TILE_ELEMENT_TYPE_ENTRANCE | direction;
 
             if (flags & GAME_COMMAND_FLAG_GHOST)
             {
-                mapElement->flags |= TILE_ELEMENT_FLAG_GHOST;
+                tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
             }
 
             if (isExit)
@@ -313,10 +313,10 @@ static money32 RideEntranceExitPlace(sint16 x,
 
             if (!(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                maze_entrance_hedge_removal(x, y, mapElement);
+                maze_entrance_hedge_removal(x, y, tileElement);
             }
 
-            footpath_connect_edges(x, y, mapElement, flags);
+            footpath_connect_edges(x, y, tileElement, flags);
             footpath_update_queue_chains();
 
             map_invalidate_tile_full(x, y);
@@ -372,8 +372,8 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
         invalidate_test_results(rideIndex);
 
         bool found = false;
-        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
-        if (mapElement == nullptr)
+        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+        if (tileElement == nullptr)
         {
             log_warning("Invalid coordinates for entrance/exit removal x = %d, y = %d", x, y);
             return MONEY32_UNDEFINED;
@@ -381,19 +381,19 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
 
         do
         {
-            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
-            if (mapElement->base_height != ride->station_heights[stationNum])
+            if (tileElement->base_height != ride->station_heights[stationNum])
                 continue;
 
-            if (flags & GAME_COMMAND_FLAG_5 && !(mapElement->flags & TILE_ELEMENT_FLAG_GHOST))
+            if (flags & GAME_COMMAND_FLAG_5 && !(tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
                 continue;
 
             found = true;
             break;
         }
-        while (!tile_element_is_last_for_tile(mapElement++));
+        while (!tile_element_is_last_for_tile(tileElement++));
 
         if (!found)
         {
@@ -407,12 +407,12 @@ static money32 RideEntranceExitRemove(sint16 x, sint16 y, uint8 rideIndex, uint8
         network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
 
         footpath_queue_chain_reset();
-        maze_entrance_hedge_replacement(x, y, mapElement);
-        footpath_remove_edges_at(x, y, mapElement);
+        maze_entrance_hedge_replacement(x, y, tileElement);
+        footpath_remove_edges_at(x, y, tileElement);
 
-        bool isExit = mapElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
+        bool isExit = tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_EXIT;
 
-        tile_element_remove(mapElement);
+        tile_element_remove(tileElement);
 
         if (isExit)
         {
@@ -620,68 +620,68 @@ extern "C"
      * Replaces the outer hedge walls for an entrance placement removal.
      *  rct2: 0x00666D6F
      */
-    void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *mapElement)
+    void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *tileElement)
     {
-        sint32 direction = tile_element_get_direction(mapElement);
+        sint32 direction = tile_element_get_direction(tileElement);
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        sint32 z = mapElement->base_height;
-        sint32 rideIndex = mapElement->properties.track.ride_index;
+        sint32 z = tileElement->base_height;
+        sint32 rideIndex = tileElement->properties.track.ride_index;
 
-        mapElement = map_get_first_element_at(x >> 5, y >> 5);
+        tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
-            if (mapElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (mapElement->properties.track.ride_index != rideIndex) continue;
-            if (mapElement->base_height != z) continue;
-            if (mapElement->properties.track.type != TRACK_ELEM_MAZE) continue;
+            if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
+            if (tileElement->properties.track.ride_index != rideIndex) continue;
+            if (tileElement->base_height != z) continue;
+            if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
 
             // Each maze element is split into 4 sections with 4 different walls
             uint8 mazeSection = direction * 4;
             // Add the top outer wall
-            mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
+            tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 9) & 0x0F));
             // Add the bottom outer wall
-            mapElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
+            tileElement->properties.track.maze_entry |= (1 << ((mazeSection + 12) & 0x0F));
 
-            map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
             return;
-        } while (!tile_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(tileElement++));
     }
 
     /**
      * Removes the hedge walls for an entrance placement.
      *  rct2: 0x00666CBE
      */
-    void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *mapElement)
+    void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *tileElement)
     {
-        sint32 direction = tile_element_get_direction(mapElement);
+        sint32 direction = tile_element_get_direction(tileElement);
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
-        sint32 z = mapElement->base_height;
-        sint32 rideIndex = mapElement->properties.track.ride_index;
+        sint32 z = tileElement->base_height;
+        sint32 rideIndex = tileElement->properties.track.ride_index;
 
-        mapElement = map_get_first_element_at(x >> 5, y >> 5);
+        tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
-            if (mapElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (mapElement->properties.track.ride_index != rideIndex) continue;
-            if (mapElement->base_height != z) continue;
-            if (mapElement->properties.track.type != TRACK_ELEM_MAZE) continue;
+            if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
+            if (tileElement->properties.track.ride_index != rideIndex) continue;
+            if (tileElement->base_height != z) continue;
+            if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
 
             // Each maze element is split into 4 sections with 4 different walls
             uint8 mazeSection = direction * 4;
             // Remove the top outer wall
-            mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
+            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 9) & 0x0F));
             // Remove the bottom outer wall
-            mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
+            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 12) & 0x0F));
             // Remove the intersecting wall
-            mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
+            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 10) & 0x0F));
             // Remove the top hedge section
-            mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
+            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 11) & 0x0F));
             // Remove the bottom hedge section
-            mapElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
+            tileElement->properties.track.maze_entry &= ~(1 << ((mazeSection + 15) & 0x0F));
 
-            map_invalidate_tile(x, y, mapElement->base_height * 8, mapElement->clearance_height * 8);
+            map_invalidate_tile(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
             return;
-        } while (!tile_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(tileElement++));
     }
 
     void fix_park_entrance_locations(void)

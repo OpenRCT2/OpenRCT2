@@ -1070,25 +1070,25 @@ void game_fix_save_vars()
     // and broken saves with incorrect invisible map border tiles
     for (sint32 y = 0; y < 256; y++) {
         for (sint32 x = 0; x < 256; x++) {
-            rct_tile_element *mapElement = map_get_surface_element_at(x, y);
+            rct_tile_element *tileElement = map_get_surface_element_at(x, y);
 
-            if (mapElement == NULL)
+            if (tileElement == NULL)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                mapElement = tile_element_insert(x, y, 14, 0);
-                if (mapElement == NULL) {
+                tileElement = tile_element_insert(x, y, 14, 0);
+                if (tileElement == NULL) {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
                 }
             }
 
             // Fix the invisible border tiles.
-            // At this point, we can be sure that mapElement is not NULL.
+            // At this point, we can be sure that tileElement is not NULL.
             if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize -1)
             {
-                mapElement->base_height = 2;
-                mapElement->clearance_height = 2;
-                mapElement->properties.surface.slope = 0;
+                tileElement->base_height = 2;
+                tileElement->clearance_height = 2;
+                tileElement->properties.surface.slope = 0;
             }
         }
     }

@@ -28,9 +28,9 @@
 
 /** rct2: 0x008A59A8 */
 static void steeplechase_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                    sint32 height, rct_tile_element * mapElement)
+                                    sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -71,7 +71,7 @@ static void steeplechase_track_flat(paint_session * session, uint8 rideIndex, ui
 }
 
 static void steeplechase_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                       sint32 height, rct_tile_element * mapElement)
+                                       sint32 height, rct_tile_element * tileElement)
 {
     static const uint32 imageIds[4][3] = {
         { 28635, SPR_STATION_BASE_B_SW_NE },
@@ -85,7 +85,7 @@ static void steeplechase_track_station(paint_session * session, uint8 rideIndex,
     sub_98199C_rotated(session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 6, 32, 20, 3,
                        height, 0, 0, height);
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, mapElement);
+    track_paint_util_draw_station(session, rideIndex, trackSequence, direction, height, tileElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -93,9 +93,9 @@ static void steeplechase_track_station(paint_session * session, uint8 rideIndex,
 
 /** rct2: 0x008A59B8 */
 static void steeplechase_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -158,9 +158,9 @@ static void steeplechase_track_25_deg_up(paint_session * session, uint8 rideInde
 
 /** rct2: 0x008A59C8 */
 static void steeplechase_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -223,9 +223,9 @@ static void steeplechase_track_flat_to_25_deg_up(paint_session * session, uint8 
 
 /** rct2: 0x008A59D8 */
 static void steeplechase_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                 sint32 height, rct_tile_element * mapElement)
+                                                 sint32 height, rct_tile_element * tileElement)
 {
-    if (track_element_is_lift_hill(mapElement))
+    if (track_element_is_lift_hill(tileElement))
     {
         switch (direction)
         {
@@ -288,28 +288,28 @@ static void steeplechase_track_25_deg_up_to_flat(paint_session * session, uint8 
 
 /** rct2: 0x008A59E8 */
 static void steeplechase_track_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * mapElement)
+                                           sint32 height, rct_tile_element * tileElement)
 {
-    steeplechase_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    steeplechase_track_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A59F8 */
 static void steeplechase_track_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    steeplechase_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    steeplechase_track_25_deg_up_to_flat(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5A08 */
 static void steeplechase_track_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    steeplechase_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    steeplechase_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5A18 */
 static void steeplechase_track_left_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -455,15 +455,15 @@ static void steeplechase_track_left_quarter_turn_5(paint_session * session, uint
 
 /** rct2: 0x008A5A28 */
 static void steeplechase_track_right_quarter_turn_5(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[trackSequence];
-    steeplechase_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    steeplechase_track_left_quarter_turn_5(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5A38 */
 static void steeplechase_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_tile_element * mapElement)
+                                           sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -587,7 +587,7 @@ static void steeplechase_track_s_bend_left(paint_session * session, uint8 rideIn
 
 /** rct2: 0x008A5A48 */
 static void steeplechase_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -713,7 +713,7 @@ static void steeplechase_track_s_bend_right(paint_session * session, uint8 rideI
 
 /** rct2: 0x008A5A88 */
 static void steeplechase_track_left_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -811,15 +811,15 @@ static void steeplechase_track_left_quarter_turn_3(paint_session * session, uint
 
 /** rct2: 0x008A5A98 */
 static void steeplechase_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
-    steeplechase_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, mapElement);
+    steeplechase_track_left_quarter_turn_3(session, rideIndex, trackSequence, (direction - 1) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5AA8 */
 static void steeplechase_track_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                      sint32 height, rct_tile_element * mapElement)
+                                      sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {
@@ -842,7 +842,7 @@ static void steeplechase_track_brakes(paint_session * session, uint8 rideIndex, 
 
 /** rct2: 0x008A5AD8 */
 static void steeplechase_track_left_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                   uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -973,7 +973,7 @@ static void steeplechase_track_left_eighth_to_diag(paint_session * session, uint
 
 /** rct2: 0x008A5AE8 */
 static void steeplechase_track_right_eighth_to_diag(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                    uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                    uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
@@ -1104,28 +1104,28 @@ static void steeplechase_track_right_eighth_to_diag(paint_session * session, uin
 
 /** rct2: 0x008A5AF8 */
 static void steeplechase_track_left_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                         uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    steeplechase_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, mapElement);
+    steeplechase_track_right_eighth_to_diag(session, rideIndex, trackSequence, (direction + 2) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5B08 */
 static void steeplechase_track_right_eighth_to_orthogonal(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                          uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                          uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     trackSequence = mapLeftEighthTurnToOrthogonal[trackSequence];
-    steeplechase_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, mapElement);
+    steeplechase_track_left_eighth_to_diag(session, rideIndex, trackSequence, (direction + 3) & 3, height, tileElement);
 }
 
 /** rct2: 0x008A5AC8 */
 static void steeplechase_track_diag_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_tile_element * mapElement)
+                                         sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1150,7 +1150,7 @@ static void steeplechase_track_diag_flat(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1175,7 +1175,7 @@ static void steeplechase_track_diag_flat(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1200,7 +1200,7 @@ static void steeplechase_track_diag_flat(paint_session * session, uint8 rideInde
         paint_util_set_general_support_height(session, height + 32, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1257,12 +1257,12 @@ static void steeplechase_track_diag_flat(paint_session * session, uint8 rideInde
 
 /** rct2: 0x008A5B38 */
 static void steeplechase_track_diag_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_tile_element * mapElement)
+                                              sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1287,7 +1287,7 @@ static void steeplechase_track_diag_25_deg_up(paint_session * session, uint8 rid
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1312,7 +1312,7 @@ static void steeplechase_track_diag_25_deg_up(paint_session * session, uint8 rid
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1337,7 +1337,7 @@ static void steeplechase_track_diag_25_deg_up(paint_session * session, uint8 rid
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1394,12 +1394,12 @@ static void steeplechase_track_diag_25_deg_up(paint_session * session, uint8 rid
 
 /** rct2: 0x008A5B18 */
 static void steeplechase_track_diag_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1424,7 +1424,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(paint_session * session, u
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1449,7 +1449,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(paint_session * session, u
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1474,7 +1474,7 @@ static void steeplechase_track_diag_flat_to_25_deg_up(paint_session * session, u
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1531,12 +1531,12 @@ static void steeplechase_track_diag_flat_to_25_deg_up(paint_session * session, u
 
 /** rct2: 0x008A5B28 */
 static void steeplechase_track_diag_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                      uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1561,7 +1561,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(paint_session * session, u
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1586,7 +1586,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(paint_session * session, u
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1611,7 +1611,7 @@ static void steeplechase_track_diag_25_deg_up_to_flat(paint_session * session, u
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1668,12 +1668,12 @@ static void steeplechase_track_diag_25_deg_up_to_flat(paint_session * session, u
 
 /** rct2: 0x008A5B68 */
 static void steeplechase_track_diag_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                                sint32 height, rct_tile_element * mapElement)
+                                                sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1698,7 +1698,7 @@ static void steeplechase_track_diag_25_deg_down(paint_session * session, uint8 r
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1723,7 +1723,7 @@ static void steeplechase_track_diag_25_deg_down(paint_session * session, uint8 r
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1748,7 +1748,7 @@ static void steeplechase_track_diag_25_deg_down(paint_session * session, uint8 r
         paint_util_set_general_support_height(session, height + 56, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1805,12 +1805,12 @@ static void steeplechase_track_diag_25_deg_down(paint_session * session, uint8 r
 
 /** rct2: 0x008A5B48 */
 static void steeplechase_track_diag_flat_to_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1834,7 +1834,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(paint_session * session,
             session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1858,7 +1858,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(paint_session * session,
             session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1882,7 +1882,7 @@ static void steeplechase_track_diag_flat_to_25_deg_down(paint_session * session,
             session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1940,12 +1940,12 @@ static void steeplechase_track_diag_flat_to_25_deg_down(paint_session * session,
 
 /** rct2: 0x008A5B58 */
 static void steeplechase_track_diag_25_deg_down_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence,
-                                                        uint8 direction, sint32 height, rct_tile_element * mapElement)
+                                                        uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     switch (trackSequence)
     {
     case 0:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1970,7 +1970,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(paint_session * session,
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 1:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -1995,7 +1995,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(paint_session * session,
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 2:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -2020,7 +2020,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(paint_session * session,
         paint_util_set_general_support_height(session, height + 48, 0x20);
         break;
     case 3:
-        if (track_element_is_lift_hill(mapElement))
+        if (track_element_is_lift_hill(tileElement))
         {
             switch (direction)
             {
@@ -2077,7 +2077,7 @@ static void steeplechase_track_diag_25_deg_down_to_flat(paint_session * session,
 
 /** rct2: 0x008A5AB8 */
 static void steeplechase_track_block_brakes(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_tile_element * mapElement)
+                                            sint32 height, rct_tile_element * tileElement)
 {
     switch (direction)
     {

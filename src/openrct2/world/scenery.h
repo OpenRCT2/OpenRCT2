@@ -252,8 +252,8 @@ extern colour_t gWindowScenerySecondaryColour;
 extern colour_t gWindowSceneryTertiaryColour;
 extern bool gWindowSceneryEyedropperEnabled;
 
-extern rct_tile_element *gSceneryMapElement;
-extern uint8 gSceneryMapElementType;
+extern rct_tile_element *gSceneryTileElement;
+extern uint8 gSceneryTileElementType;
 
 extern money32 gSceneryPlaceCost;
 extern sint16 gSceneryPlaceObject;
@@ -285,7 +285,7 @@ extern money32 gClearSceneryCost;
 
 void init_scenery();
 void scenery_update_tile(sint32 x, sint32 y);
-void scenery_update_age(sint32 x, sint32 y, rct_tile_element *mapElement);
+void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
 bool window_scenery_set_selected_item(sint32 sceneryId);
@@ -299,12 +299,12 @@ rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 
-sint32 scenery_small_get_primary_colour(const rct_tile_element *mapElement);
-sint32 scenery_small_get_secondary_colour(const rct_tile_element *mapElement);
-void scenery_small_set_primary_colour(rct_tile_element *mapElement, uint32 colour);
-void scenery_small_set_secondary_colour(rct_tile_element *mapElement, uint32 colour);
-bool scenery_small_get_supports_needed(const rct_tile_element *mapElement);
-void scenery_small_set_supports_needed(rct_tile_element *mapElement);
+sint32 scenery_small_get_primary_colour(const rct_tile_element *tileElement);
+sint32 scenery_small_get_secondary_colour(const rct_tile_element *tileElement);
+void scenery_small_set_primary_colour(rct_tile_element *tileElement, uint32 colour);
+void scenery_small_set_secondary_colour(rct_tile_element *tileElement, uint32 colour);
+bool scenery_small_get_supports_needed(const rct_tile_element *tileElement);
+void scenery_small_set_supports_needed(rct_tile_element *tileElement);
 
 #ifdef __cplusplus
 }

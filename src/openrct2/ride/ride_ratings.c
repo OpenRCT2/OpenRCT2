@@ -80,7 +80,7 @@ static void ride_ratings_update_state_5();
 static void ride_ratings_begin_proximity_loop();
 static void ride_ratings_calculate(Ride *ride);
 static void ride_ratings_calculate_value(Ride *ride);
-static void ride_ratings_score_close_proximity(rct_tile_element *mapElement);
+static void ride_ratings_score_close_proximity(rct_tile_element *tileElement);
 
 static void ride_ratings_add(rating_tuple * rating, sint32 excitement, sint32 intensity, sint32 nausea);
 
@@ -193,31 +193,31 @@ static void ride_ratings_update_state_2()
     sint32 z = gRideRatingsCalcData.proximity_z / 8;
     sint32 trackType = gRideRatingsCalcData.proximity_track_type;
 
-    rct_tile_element *mapElement = map_get_first_element_at(x, y);
+    rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (mapElement->base_height != z)
+        if (tileElement->base_height != z)
             continue;
 
         if (
             trackType == 255 ||
-            (tile_element_get_track_sequence(mapElement) == 0 && trackType == mapElement->properties.track.type))
+            (tile_element_get_track_sequence(tileElement) == 0 && trackType == tileElement->properties.track.type))
         {
             if (trackType == TRACK_ELEM_END_STATION) {
-                sint32 entranceIndex = tile_element_get_station(mapElement);
+                sint32 entranceIndex = tile_element_get_station(tileElement);
                 gRideRatingsCalcData.station_flags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 if (ride->entrances[entranceIndex].xy == RCT_XY8_UNDEFINED) {
                     gRideRatingsCalcData.station_flags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
             }
 
-            ride_ratings_score_close_proximity(mapElement);
+            ride_ratings_score_close_proximity(tileElement);
 
             rct_xy_element trackElement = {
                 .x = gRideRatingsCalcData.proximity_x,
                 .y = gRideRatingsCalcData.proximity_y,
-                .element = mapElement
+                .element = tileElement
             };
             rct_xy_element nextTrackElement;
             if (!track_block_get_next(&trackElement, &nextTrackElement, NULL, NULL)) {
@@ -228,7 +228,7 @@ static void ride_ratings_update_state_2()
             x = nextTrackElement.x;
             y = nextTrackElement.y;
             z = nextTrackElement.element->base_height * 8;
-            mapElement = nextTrackElement.element;
+            tileElement = nextTrackElement.element;
             if (x == gRideRatingsCalcData.proximity_start_x && y == gRideRatingsCalcData.proximity_start_y && z == gRideRatingsCalcData.proximity_start_z) {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
@@ -236,10 +236,10 @@ static void ride_ratings_update_state_2()
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
             gRideRatingsCalcData.proximity_z = z;
-            gRideRatingsCalcData.proximity_track_type = mapElement->properties.track.type;
+            gRideRatingsCalcData.proximity_track_type = tileElement->properties.track.type;
             return;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -290,20 +290,20 @@ static void ride_ratings_update_state_5()
     sint32 z = gRideRatingsCalcData.proximity_z / 8;
     sint32 trackType = gRideRatingsCalcData.proximity_track_type;
 
-    rct_tile_element *mapElement = map_get_first_element_at(x, y);
+    rct_tile_element *tileElement = map_get_first_element_at(x, y);
     do {
-        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (mapElement->base_height != z)
+        if (tileElement->base_height != z)
             continue;
 
-        if (trackType == 255 || trackType == mapElement->properties.track.type) {
-            ride_ratings_score_close_proximity(mapElement);
+        if (trackType == 255 || trackType == tileElement->properties.track.type) {
+            ride_ratings_score_close_proximity(tileElement);
 
             x = gRideRatingsCalcData.proximity_x;
             y = gRideRatingsCalcData.proximity_y;
             track_begin_end trackBeginEnd;
-            if (!track_block_get_previous(x, y, mapElement, &trackBeginEnd)) {
+            if (!track_block_get_previous(x, y, tileElement, &trackBeginEnd)) {
                 gRideRatingsCalcData.state = RIDE_RATINGS_STATE_CALCULATE;
                 return;
             }
@@ -321,7 +321,7 @@ static void ride_ratings_update_state_5()
             gRideRatingsCalcData.proximity_track_type = trackBeginEnd.begin_element->properties.track.type;
             return;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
     gRideRatingsCalcData.state = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
@@ -377,39 +377,39 @@ static void proximity_score_increment(sint32 type)
  *
  *  rct2: 0x006B6207
  */
-static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *inputMapElement, sint32 direction)
+static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *inputTileElement, sint32 direction)
 {
     sint32 x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
     sint32 y = gRideRatingsCalcData.proximity_y + TileDirectionDelta[direction].y;
     if (x < 0 || y < 0 || x >= (32 * 256) || y >= (32 * 256))
         return;
 
-    rct_tile_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        switch (tile_element_get_type(mapElement)) {
+        switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            if (gRideRatingsCalcData.proximity_base_height <= inputMapElement->base_height) {
-                if (inputMapElement->clearance_height <= mapElement->base_height) {
+            if (gRideRatingsCalcData.proximity_base_height <= inputTileElement->base_height) {
+                if (inputTileElement->clearance_height <= tileElement->base_height) {
                     proximity_score_increment(PROXIMITY_SURFACE_SIDE_CLOSE);
                 }
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            if (abs((sint32)inputMapElement->base_height - (sint32)mapElement->base_height) <= 2) {
+            if (abs((sint32)inputTileElement->base_height - (sint32)tileElement->base_height) <= 2) {
                 proximity_score_increment(PROXIMITY_PATH_SIDE_CLOSE);
             }
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            if (inputMapElement->properties.track.ride_index != mapElement->properties.track.ride_index) {
-                if (abs((sint32)inputMapElement->base_height - (sint32)mapElement->base_height) <= 2) {
+            if (inputTileElement->properties.track.ride_index != tileElement->properties.track.ride_index) {
+                if (abs((sint32)inputTileElement->base_height - (sint32)tileElement->base_height) <= 2) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                 }
             }
             break;
         case TILE_ELEMENT_TYPE_SCENERY:
         case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            if (mapElement->base_height < inputMapElement->clearance_height) {
-                if (inputMapElement->base_height > mapElement->clearance_height) {
+            if (tileElement->base_height < inputTileElement->clearance_height) {
+                if (inputTileElement->base_height > tileElement->clearance_height) {
                     proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
                 } else {
                     proximity_score_increment(PROXIMITY_SCENERY_SIDE_BELOW);
@@ -417,18 +417,18 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
             }
             break;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
 }
 
-static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *inputMapElement, sint32 x, sint32 y)
+static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *inputTileElement, sint32 x, sint32 y)
 {
-    rct_tile_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        switch (tile_element_get_type(mapElement)) {
+        switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_PATH:
         {
-            sint32 zDiff = (sint32)mapElement->base_height - (sint32)inputMapElement->base_height;
+            sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
             if (zDiff >= 0 && zDiff <= 16)
             {
                 proximity_score_increment(PROXIMITY_PATH_TROUGH_VERTICAL_LOOP);
@@ -437,16 +437,16 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
 
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            sint32 unk = (mapElement->type ^ inputMapElement->type) & 1;
+            sint32 unk = (tileElement->type ^ inputTileElement->type) & 1;
             if (unk != 0)
             {
-                sint32 zDiff = (sint32)mapElement->base_height - (sint32)inputMapElement->base_height;
+                sint32 zDiff = (sint32)tileElement->base_height - (sint32)inputTileElement->base_height;
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
                     if (
-                        mapElement->properties.track.type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
-                        mapElement->properties.track.type == TRACK_ELEM_RIGHT_VERTICAL_LOOP
+                        tileElement->properties.track.type == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
+                        tileElement->properties.track.type == TRACK_ELEM_RIGHT_VERTICAL_LOOP
                         )
                     {
                         proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
@@ -455,25 +455,25 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
             }
         } break;
         }
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 }
 
 /**
  *
  *  rct2: 0x006B62DA
  */
-static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputMapElement)
+static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputTileElement)
 {
-    sint32 trackType = inputMapElement->properties.track.type;
+    sint32 trackType = inputTileElement->properties.track.type;
     if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
         sint32 x = gRideRatingsCalcData.proximity_x;
         sint32 y = gRideRatingsCalcData.proximity_y;
-        ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
+        ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
 
-        sint32 direction = tile_element_get_direction(inputMapElement);
+        sint32 direction = tile_element_get_direction(inputTileElement);
         x = gRideRatingsCalcData.proximity_x + TileDirectionDelta[direction].x;
         y = gRideRatingsCalcData.proximity_y + TileDirectionDelta[direction].y;
-        ride_ratings_score_close_proximity_loops_helper(inputMapElement, x, y);
+        ride_ratings_score_close_proximity_loops_helper(inputTileElement, x, y);
     }
 }
 
@@ -481,7 +481,7 @@ static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputMapE
  *
  *  rct2: 0x006B5F9D
  */
-static void ride_ratings_score_close_proximity(rct_tile_element *inputMapElement)
+static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElement)
 {
     if (gRideRatingsCalcData.station_flags & RIDE_RATING_STATION_FLAG_NO_ENTRANCE) {
         return;
@@ -490,15 +490,15 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputMapElement
     gRideRatingsCalcData.proximity_total++;
     sint32 x = gRideRatingsCalcData.proximity_x;
     sint32 y = gRideRatingsCalcData.proximity_y;
-    rct_tile_element *mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        switch (tile_element_get_type(mapElement)) {
+        switch (tile_element_get_type(tileElement)) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            gRideRatingsCalcData.proximity_base_height = mapElement->base_height;
-            if (mapElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
+            gRideRatingsCalcData.proximity_base_height = tileElement->base_height;
+            if (tileElement->base_height * 8 == gRideRatingsCalcData.proximity_z) {
                 proximity_score_increment(PROXIMITY_SURFACE_TOUCH);
             }
-            sint32 waterHeight = map_get_water_height(mapElement);
+            sint32 waterHeight = map_get_water_height(tileElement);
             if (waterHeight != 0) {
                 sint32 z = waterHeight * 16;
                 if (z <= gRideRatingsCalcData.proximity_z) {
@@ -518,69 +518,69 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputMapElement
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            if (mapElement->properties.path.type & 0xF0) {
-                if (mapElement->clearance_height == inputMapElement->base_height) {
+            if (tileElement->properties.path.type & 0xF0) {
+                if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_138B5A6);
                 }
-                if (mapElement->base_height == inputMapElement->clearance_height) {
+                if (tileElement->base_height == inputTileElement->clearance_height) {
                     proximity_score_increment(PROXIMITY_138B5A8);
                 }
             } else {
-                if (mapElement->clearance_height <= inputMapElement->base_height) {
+                if (tileElement->clearance_height <= inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_PATH_OVER);
                 }
-                if (mapElement->clearance_height == inputMapElement->base_height) {
+                if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_ABOVE);
                 }
-                if (mapElement->base_height == inputMapElement->clearance_height) {
+                if (tileElement->base_height == inputTileElement->clearance_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_UNDER);
                 }
             }
             break;
         case TILE_ELEMENT_TYPE_TRACK:
         {
-            sint32 trackType = mapElement->properties.track.type;
+            sint32 trackType = tileElement->properties.track.type;
             if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
-                sint32 sequence = tile_element_get_track_sequence(mapElement);
+                sint32 sequence = tile_element_get_track_sequence(tileElement);
                 if (sequence == 3 || sequence == 6) {
-                    if (mapElement->base_height - inputMapElement->clearance_height <= 10) {
+                    if (tileElement->base_height - inputTileElement->clearance_height <= 10) {
                         proximity_score_increment(PROXIMITY_THROUGH_VERTICAL_LOOP);
                     }
                 }
             }
-            if (inputMapElement->properties.track.ride_index != mapElement->properties.track.ride_index) {
+            if (inputTileElement->properties.track.ride_index != tileElement->properties.track.ride_index) {
                 proximity_score_increment(PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW);
-                if (mapElement->clearance_height == inputMapElement->base_height) {
+                if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                 }
-                if (mapElement->clearance_height + 2 <= inputMapElement->base_height) {
-                    if (mapElement->clearance_height + 10 >= inputMapElement->base_height) {
+                if (tileElement->clearance_height + 2 <= inputTileElement->base_height) {
+                    if (tileElement->clearance_height + 10 >= inputTileElement->base_height) {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                     }
                 }
-                if (inputMapElement->clearance_height == mapElement->base_height) {
+                if (inputTileElement->clearance_height == tileElement->base_height) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
                 }
-                if (inputMapElement->clearance_height + 2 == mapElement->base_height) {
-                    if ((uint8)(inputMapElement->clearance_height + 10) >= mapElement->base_height) {
+                if (inputTileElement->clearance_height + 2 == tileElement->base_height) {
+                    if ((uint8)(inputTileElement->clearance_height + 10) >= tileElement->base_height) {
                         proximity_score_increment(PROXIMITY_FOREIGN_TRACK_CLOSE_ABOVE);
                     }
                 }
             } else {
-                trackType = mapElement->properties.track.type;
+                trackType = tileElement->properties.track.type;
                 bool isStation = (
                     trackType == TRACK_ELEM_END_STATION ||
                     trackType == TRACK_ELEM_MIDDLE_STATION ||
                     trackType == TRACK_ELEM_BEGIN_STATION
                 );
-                if (mapElement->clearance_height == inputMapElement->base_height) {
+                if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
                     if (isStation) {
                         proximity_score_increment(PROXIMITY_OWN_STATION_TOUCH_ABOVE);
                     }
                 }
-                if (mapElement->clearance_height + 2 <= inputMapElement->base_height) {
-                    if (mapElement->clearance_height + 10 >= inputMapElement->base_height) {
+                if (tileElement->clearance_height + 2 <= inputTileElement->base_height) {
+                    if (tileElement->clearance_height + 10 >= inputTileElement->base_height) {
                         proximity_score_increment(PROXIMITY_OWN_TRACK_CLOSE_ABOVE);
                         if (isStation) {
                             proximity_score_increment(PROXIMITY_OWN_STATION_CLOSE_ABOVE);
@@ -588,14 +588,14 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputMapElement
                     }
                 }
 
-                if (inputMapElement->clearance_height == mapElement->base_height) {
+                if (inputTileElement->clearance_height == tileElement->base_height) {
                     proximity_score_increment(PROXIMITY_OWN_TRACK_TOUCH_ABOVE);
                     if (isStation) {
                         proximity_score_increment(PROXIMITY_OWN_STATION_TOUCH_ABOVE);
                     }
                 }
-                if (inputMapElement->clearance_height + 2 <= mapElement->base_height) {
-                    if (inputMapElement->clearance_height + 10 >= mapElement->base_height) {
+                if (inputTileElement->clearance_height + 2 <= tileElement->base_height) {
+                    if (inputTileElement->clearance_height + 10 >= tileElement->base_height) {
                         proximity_score_increment(PROXIMITY_OWN_TRACK_CLOSE_ABOVE);
                         if (isStation) {
                             proximity_score_increment(PROXIMITY_OWN_STATION_CLOSE_ABOVE);
@@ -605,12 +605,12 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputMapElement
             }
         } break;
         } // switch tile_element_get_type
-    } while (!tile_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(tileElement++));
 
-    uint8 direction = tile_element_get_direction(inputMapElement);
-    ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction + 1) & 3);
-    ride_ratings_score_close_proximity_in_direction(inputMapElement, (direction - 1) & 3);
-    ride_ratings_score_close_proximity_loops(inputMapElement);
+    uint8 direction = tile_element_get_direction(inputTileElement);
+    ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction + 1) & 3);
+    ride_ratings_score_close_proximity_in_direction(inputTileElement, (direction - 1) & 3);
+    ride_ratings_score_close_proximity_loops(inputTileElement);
 
     switch (gRideRatingsCalcData.proximity_track_type) {
     case TRACK_ELEM_BRAKES:
@@ -1291,15 +1291,15 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
     for (sint32 yy = max(y - 5, 0); yy <= min(y + 5, 255); yy++) {
         for (sint32 xx = max(x - 5, 0); xx <= min(x + 5, 255); xx++) {
             // Count scenery items on this tile
-            rct_tile_element *mapElement = map_get_first_element_at(xx, yy);
+            rct_tile_element *tileElement = map_get_first_element_at(xx, yy);
             do {
-                if (mapElement->flags & (1 << 4))
+                if (tileElement->flags & (1 << 4))
                     continue;
 
-                sint32 type = tile_element_get_type(mapElement);
+                sint32 type = tile_element_get_type(tileElement);
                 if (type == TILE_ELEMENT_TYPE_SCENERY || type == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
                     numSceneryItems++;
-            } while (!tile_element_is_last_for_tile(mapElement++));
+            } while (!tile_element_is_last_for_tile(tileElement++));
         }
     }
 

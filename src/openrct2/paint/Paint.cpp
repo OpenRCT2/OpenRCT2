@@ -188,7 +188,7 @@ static paint_struct * sub_9819_c(paint_session * session, uint32 image_id, Locat
     ps->var_29 = 0;
     ps->map_x = session->MapPosition.x;
     ps->map_y = session->MapPosition.y;
-    ps->mapElement = (rct_tile_element*)session->CurrentlyDrawnItem;
+    ps->tileElement = (rct_tile_element*)session->CurrentlyDrawnItem;
 
     return ps;
 }
@@ -847,7 +847,7 @@ extern "C"
         ps->var_29 = 0;
         ps->map_x = session->MapPosition.x;
         ps->map_y = session->MapPosition.y;
-        ps->mapElement = (rct_tile_element*)session->CurrentlyDrawnItem;
+        ps->tileElement = (rct_tile_element*)session->CurrentlyDrawnItem;
 
         session->UnkF1AD28 = ps;
 
