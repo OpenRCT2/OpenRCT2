@@ -1232,7 +1232,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
                 num_items
             );
 
-            dropdown_set_checked(title_get_current_sequence(), true);
+            dropdown_set_checked((sint32)title_get_current_sequence(), true);
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             for (size_t i = 0; i < 7; i++) {

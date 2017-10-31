@@ -101,14 +101,14 @@ static rct_widget window_title_command_editor_widgets[] = {
     { WIDGETS_END },
 };
 
-static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
-static void window_title_command_editor_update(rct_window *w);
-static void window_title_command_editor_invalidate(rct_window *w);
-static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_title_command_editor_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_title_command_editor_inputsize(rct_window *w);
+static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex widgetIndex);
+static void window_title_command_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget);
+static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
+static void window_title_command_editor_update(rct_window * w);
+static void window_title_command_editor_invalidate(rct_window * w);
+static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
+static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
+static void window_title_command_editor_inputsize(rct_window * w);
 static sint32 get_command_info_index(sint32 index);
 static TITLE_COMMAND_ORDER get_command_info(sint32 index);
 static LocationXY16 get_location();
@@ -147,7 +147,8 @@ static rct_window_event_list window_title_command_editor_events = {
 
 static sint32 get_command_info_index(sint32 index)
 {
-    for (sint32 i = 0; i < NUM_COMMANDS; i++) {
+    for (sint32 i = 0; i < NUM_COMMANDS; i++)
+    {
         if (_window_title_command_editor_orders[i].command == index)
             return i;
     }
@@ -156,7 +157,8 @@ static sint32 get_command_info_index(sint32 index)
 
 static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 {
-    for (sint32 i = 0; i < NUM_COMMANDS; i++) {
+    for (sint32 i = 0; i < NUM_COMMANDS; i++)
+    {
         if (_window_title_command_editor_orders[i].command == index)
             return _window_title_command_editor_orders[i];
     }
@@ -166,10 +168,11 @@ static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 static LocationXY16 get_location()
 {
     LocationXY16 mapCoord = { 0 };
-    rct_window *w = window_get_main();
-    if (w != nullptr) {
+    rct_window * w = window_get_main();
+    if (w != nullptr)
+    {
         sint32 interactionType;
-        rct_tile_element *tileElement;
+        rct_tile_element * tileElement;
 
         get_map_coordinates_from_pos_window(w, w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
         mapCoord.x -= 16;
@@ -185,8 +188,9 @@ static LocationXY16 get_location()
 static uint8 get_zoom()
 {
     uint8 zoom = 0;
-    rct_window *w = window_get_main();
-    if (w != nullptr) {
+    rct_window * w = window_get_main();
+    if (w != nullptr)
+    {
         zoom = w->viewport->zoom;
     }
     return zoom;
@@ -227,11 +231,13 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
-    if (!insert) {
+    if (!insert)
+    {
         command = _sequence->Commands[index];
     }
 
-    switch (command.Type) {
+    switch (command.Type)
+    {
     case TITLE_SCRIPT_LOAD:
         if (command.SaveIndex >= _sequence->NumSaves)
             command.SaveIndex = SAVE_INDEX_INVALID;
@@ -250,19 +256,22 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
     }
 }
 
-static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex widgetIndex)
+static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_CLOSE:
     case WIDX_CANCEL:
         window_close(w);
         break;
     case WIDX_TEXTBOX_FULL:
         // The only commands that use TEXTBOX_FULL currently are Wait, Rotate, and Zoom. Rotate and Zoom have single-digit maximum values, while Wait has 5-digit maximum values.
-        if (command.Type == TITLE_SCRIPT_WAIT) {
+        if (command.Type == TITLE_SCRIPT_WAIT)
+        {
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
         }
-        else {
+        else
+        {
             window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
         }
         break;
@@ -273,13 +282,16 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         window_start_textbox(w, widgetIndex, STR_STRING, textbox2Buffer, 4);
         break;
     case WIDX_GET:
-        if (command.Type == TITLE_SCRIPT_LOCATION) {
+        if (command.Type == TITLE_SCRIPT_LOCATION)
+        {
             LocationXY16 mapCoord = get_location();
             command.X = (uint8)mapCoord.x;
             command.Y = (uint8)mapCoord.y;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
-        } else if (command.Type == TITLE_SCRIPT_ZOOM) {
+        }
+        else if (command.Type == TITLE_SCRIPT_ZOOM)
+        {
             uint8 zoom = get_zoom();
             command.Zoom = zoom;
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Zoom);
@@ -287,22 +299,27 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
         window_invalidate(w);
         break;
     case WIDX_OKAY:
-        if (_window_title_command_editor_insert) {
+        if (_window_title_command_editor_insert)
+        {
             size_t insertIndex = _window_title_command_editor_index;
             _sequence->NumCommands++;
             _sequence->Commands = Memory::ReallocateArray(_sequence->Commands, _sequence->NumCommands);
-            for (size_t i = _sequence->NumCommands - 1; i > insertIndex; i--) {
+            for (size_t i = _sequence->NumCommands - 1; i > insertIndex; i--)
+            {
                 _sequence->Commands[i] = _sequence->Commands[i - 1];
             }
             _sequence->Commands[insertIndex] = command;
-        } else {
+        }
+        else
+        {
             _sequence->Commands[_window_title_command_editor_index] = command;
             TitleSequenceSave(_sequence);
         }
         TitleSequenceSave(_sequence);
 
-        rct_window *title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
-        if (title_editor_w != nullptr) {
+        rct_window * title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
+        if (title_editor_w != nullptr)
+        {
             title_editor_w->selected_list_item = _window_title_command_editor_index;
         }
         window_close(w);
@@ -310,14 +327,16 @@ static void window_title_command_editor_mouseup(rct_window *w, rct_widgetindex w
     }
 }
 
-static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void window_title_command_editor_mousedown(rct_window * w, rct_widgetindex widgetIndex, rct_widget * widget)
 {
     widget--;
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_COMMAND_DROPDOWN:
     {
         sint32 numItems = NUM_COMMANDS;
-        for (sint32 i = 0; i < numItems; i++) {
+        for (sint32 i = 0; i < numItems; i++)
+        {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
         }
@@ -336,9 +355,11 @@ static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex
         break;
     }
     case WIDX_INPUT_DROPDOWN:
-        if (command.Type == TITLE_SCRIPT_SPEED) {
+        if (command.Type == TITLE_SCRIPT_SPEED)
+        {
             sint32 numItems = 4;
-            for (sint32 i = 0; i < numItems; i++) {
+            for (sint32 i = 0; i < numItems; i++)
+            {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = SpeedNames[i];
             }
@@ -354,9 +375,11 @@ static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex
                 widget->right - widget->left - 3);
 
             dropdown_set_checked(command.Speed - 1, true);
-        } else if (command.Type == TITLE_SCRIPT_LOAD) {
+        } else if (command.Type == TITLE_SCRIPT_LOAD)
+        {
             sint32 numItems = (sint32)_sequence->NumSaves;
-            for (sint32 i = 0; i < numItems; i++) {
+            for (sint32 i = 0; i < numItems; i++)
+            {
                 gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
                 gDropdownItemsArgs[i] = (uintptr_t)_sequence->Saves[i];
             }
@@ -377,18 +400,21 @@ static void window_title_command_editor_mousedown(rct_window *w, rct_widgetindex
     }
 }
 
-static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
+static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
 
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_COMMAND_DROPDOWN:
-        if (dropdownIndex == get_command_info_index(command.Type)) {
+        if (dropdownIndex == get_command_info_index(command.Type))
+        {
             break;
         }
         command.Type = _window_title_command_editor_orders[dropdownIndex].command;
-        switch (command.Type) {
+        switch (command.Type)
+        {
         case TITLE_SCRIPT_LOCATION:
         {
             LocationXY16 mapCoord = get_location();
@@ -415,7 +441,8 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
             break;
         case TITLE_SCRIPT_LOAD:
             command.SaveIndex = 0;
-            if (command.SaveIndex >= _sequence->NumSaves) {
+            if (command.SaveIndex >= _sequence->NumSaves)
+            {
                 command.SaveIndex = 0xFF;
             }
             break;
@@ -423,15 +450,18 @@ static void window_title_command_editor_dropdown(rct_window *w, rct_widgetindex 
         window_invalidate(w);
         break;
     case WIDX_INPUT_DROPDOWN:
-        switch (command.Type) {
+        switch (command.Type)
+        {
         case TITLE_SCRIPT_SPEED:
-            if (dropdownIndex != command.Speed - 1) {
+            if (dropdownIndex != command.Speed - 1)
+            {
                 command.Speed = (uint8)(dropdownIndex + 1);
                 window_invalidate(w);
             }
             break;
         case TITLE_SCRIPT_LOAD:
-            if (dropdownIndex != command.SaveIndex) {
+            if (dropdownIndex != command.SaveIndex)
+            {
                 command.SaveIndex = (uint8)dropdownIndex;
                 window_invalidate(w);
             }
@@ -448,17 +478,22 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
     if (value < 0) value = 0;
     // The Wait command is the only one with acceptable values greater than 255.
     if (value > 255 && command.Type != TITLE_SCRIPT_WAIT) value = 255;
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_TEXTBOX_FULL:
-        if (text == nullptr) {
-            if (*end == '\0') {
-                if (command.Type == TITLE_SCRIPT_WAIT) {
+        if (text == nullptr)
+        {
+            if (*end == '\0')
+            {
+                if (command.Type == TITLE_SCRIPT_WAIT)
+                {
                     if (value < 100) value = 100;
                     if (value > 65000) value = 65000;
                     command.Milliseconds = (uint16)value;
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
                 }
-                else {
+                else
+                {
                     // Both Rotate and Zoom have a maximum value of 3, but Rotate has a min value of 1 not 0.
                     if (value > 3) value = 3;
                     if (value < 1 && command.Type == TITLE_SCRIPT_ROTATE) value = 1;
@@ -467,46 +502,56 @@ static void window_title_command_editor_textinput(rct_window * w, rct_widgetinde
                 }
             }
             window_invalidate(w);
-        } else {
+        }
+        else
+        {
             safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
         }
         break;
     case WIDX_TEXTBOX_X:
-        if (text == nullptr) {
-            if (*end == '\0') {
+        if (text == nullptr)
+        {
+            if (*end == '\0')
+            {
                 command.X = (uint8)value;
             }
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.X);
             window_invalidate(w);
-        } else {
+        }
+        else
+        {
             safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
         }
         break;
     case WIDX_TEXTBOX_Y:
-        if (text == nullptr) {
-            if (*end == '\0') {
+        if (text == nullptr)
+        {
+            if (*end == '\0')
+            {
                 command.Y = (uint8)value;
             }
             snprintf(textbox2Buffer, BUF_SIZE, "%d", command.Y);
             window_invalidate(w);
-        } else {
+        }
+        else
+        {
             safe_strcpy(textbox2Buffer, text, sizeof(textbox2Buffer));
         }
         break;
     }
 }
 
-static void window_title_command_editor_update(rct_window *w)
+static void window_title_command_editor_update(rct_window * w)
 {
     if (gCurrentTextBox.window.classification == w->classification &&
-        gCurrentTextBox.window.number == w->number
-    ) {
+        gCurrentTextBox.window.number == w->number)
+    {
         window_update_textbox_caret();
         widget_invalidate(w, gCurrentTextBox.widget_index);
     }
 }
 
-static void window_title_command_editor_invalidate(rct_window *w)
+static void window_title_command_editor_invalidate(rct_window * w)
 {
     colour_scheme_update_by_class(w, WC_TITLE_EDITOR);
 
@@ -516,7 +561,8 @@ static void window_title_command_editor_invalidate(rct_window *w)
     window_title_command_editor_widgets[WIDX_INPUT].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_GET].type = WWT_EMPTY;
-    switch (command.Type) {
+    switch (command.Type)
+    {
     case TITLE_SCRIPT_LOAD:
     case TITLE_SCRIPT_SPEED:
         window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
@@ -537,14 +583,13 @@ static void window_title_command_editor_invalidate(rct_window *w)
         break;
     }
 
-    if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO) {
+    if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
         w->disabled_widgets |= (1 << WIDX_GET);
-    } else {
+    else
         w->disabled_widgets &= ~(1 << WIDX_GET);
-    }
 }
 
-static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *dpi)
+static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi)
 {
     window_draw_widgets(w, dpi);
 
@@ -560,7 +605,8 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
         w->y + w->widgets[WIDX_COMMAND].top,
         w->widgets[WIDX_COMMAND_DROPDOWN].left - w->widgets[WIDX_COMMAND].left - 4);
 
-    if (command.Type == TITLE_SCRIPT_SPEED) {
+    if (command.Type == TITLE_SCRIPT_SPEED)
+    {
         gfx_draw_string_left_clipped(
             dpi,
             SpeedNames[command.Speed - 1],
@@ -570,8 +616,10 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
             w->y + w->widgets[WIDX_INPUT].top,
             w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
     }
-    else if (command.Type == TITLE_SCRIPT_LOAD) {
-        if (command.SaveIndex == SAVE_INDEX_INVALID) {
+    else if (command.Type == TITLE_SCRIPT_LOAD)
+    {
+        if (command.SaveIndex == SAVE_INDEX_INVALID)
+        {
             gfx_draw_string_left_clipped(
                 dpi,
                 STR_TITLE_COMMAND_EDITOR_NO_SAVE_SELECTED,
@@ -581,7 +629,8 @@ static void window_title_command_editor_paint(rct_window *w, rct_drawpixelinfo *
                 w->y + w->widgets[WIDX_INPUT].top,
                 w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
         }
-        else {
+        else
+        {
             set_format_arg(0, uintptr_t, (uintptr_t)_sequence->Saves[command.SaveIndex]);
             gfx_draw_string_left_clipped(
                 dpi,

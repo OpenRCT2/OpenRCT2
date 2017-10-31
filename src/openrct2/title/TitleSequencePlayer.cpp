@@ -48,14 +48,14 @@ private:
 
     IScenarioRepository * _scenarioRepository = nullptr;
 
-    uint32          _sequenceId = 0;
+    size_t          _sequenceId = 0;
     TitleSequence * _sequence = nullptr;
     sint32          _position = 0;
     sint32          _waitCounter = 0;
 
     sint32          _lastScreenWidth = 0;
     sint32          _lastScreenHeight = 0;
-    LocationXY32        _viewCentreLocation = { 0 };
+    LocationXY32    _viewCentreLocation = { 0 };
 
 public:
     TitleSequencePlayer(IScenarioRepository * scenarioRepository)
@@ -81,7 +81,7 @@ public:
         _sequence = nullptr;
     }
 
-    bool Begin(uint32 titleSequenceId) override
+    bool Begin(size_t titleSequenceId) override
     {
         size_t numSequences = TitleSequenceManager::GetCount();
         if (titleSequenceId >= numSequences)
