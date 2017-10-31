@@ -1475,7 +1475,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             break;
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
             if (dropdownIndex != title_get_current_sequence()) {
-                title_sequence_change_preset(dropdownIndex);
+                title_sequence_change_preset((size_t)dropdownIndex);
                 config_save_default();
                 window_invalidate(w);
             }
