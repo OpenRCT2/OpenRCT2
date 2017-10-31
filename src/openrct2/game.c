@@ -1070,12 +1070,12 @@ void game_fix_save_vars()
     // and broken saves with incorrect invisible map border tiles
     for (sint32 y = 0; y < 256; y++) {
         for (sint32 x = 0; x < 256; x++) {
-            rct_map_element *mapElement = map_get_surface_element_at(x, y);
+            rct_tile_element *mapElement = map_get_surface_element_at(x, y);
 
             if (mapElement == NULL)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
-                mapElement = map_element_insert(x, y, 14, 0);
+                mapElement = tile_element_insert(x, y, 14, 0);
                 if (mapElement == NULL) {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
@@ -1130,7 +1130,7 @@ void game_fix_save_vars()
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 
-    // Fix gParkEntrance locations for which the map_element no longer exists
+    // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
 
     // Fix ride entrances and exits that were moved without updating ride->entrances[] / ride->exits[]

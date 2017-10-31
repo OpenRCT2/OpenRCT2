@@ -16,7 +16,7 @@
 
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
-#include "../../paint/map_element/map_element.h"
+#include "../../paint/tile_element/tile_element.h"
 #include "../../paint/paint.h"
 #include "../../paint/supports.h"
 #include "../../sprites.h"
@@ -201,7 +201,7 @@ static const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
 };
 
 static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                           sint32 height, rct_map_element * mapElement)
+                                           sint32 height, rct_tile_element * mapElement)
 {
     if (direction & 1)
     {
@@ -222,7 +222,7 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
 }
 
 static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                              sint32 height, rct_map_element * mapElement)
+                                              sint32 height, rct_tile_element * mapElement)
 {
     Ride *                               ride          = get_ride(rideIndex);
     const rct_ride_entrance_definition * entranceStyle = &RideEntranceDefinitions[ride->entrance_style];
@@ -268,7 +268,7 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
 }
 
 static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                            sint32 height, rct_map_element * mapElement)
+                                            sint32 height, rct_tile_element * mapElement)
 {
     TESTPAINT_IGNORE_ALL();
 
@@ -360,7 +360,7 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
 }
 
 static void paint_reverse_freefall_rc_vertical(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                               sint32 height, rct_map_element * mapElement)
+                                               sint32 height, rct_tile_element * mapElement)
 {
     uint32 supportsImageId, trackImageId;
     switch (trackSequence)

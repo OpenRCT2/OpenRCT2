@@ -20,7 +20,7 @@
 #include "../../OpenRCT2.h"
 #include "../../peep/Staff.h"
 #include "../../sprites.h"
-#include "map_element.h"
+#include "tile_element.h"
 #include "surface.h"
 
 static const uint8 byte_97B444[] = {
@@ -333,13 +333,13 @@ typedef struct tile_descriptor tile_descriptor;
 
 struct tile_descriptor
 {
-    rct_map_element * map_element;
+    rct_tile_element * tile_element;
     uint8 terrain;
     uint8 slope;
     corner_height corner_heights;
 };
 
-static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * mapElement, sint32 rotation)
+static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * mapElement, sint32 rotation)
 {
     uint8 slope = mapElement->properties.surface.slope;
 
@@ -356,7 +356,7 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_map_element * m
 static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
 
-    if (neighbour.map_element == NULL) {
+    if (neighbour.tile_element == NULL) {
         return;
     }
 
@@ -492,7 +492,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
     regs.dl = height;
 
     // save ecx
-    if (neighbour.map_element == NULL) {
+    if (neighbour.tile_element == NULL) {
         regs.ah = 1;
         regs.ch = 1;
     }
@@ -599,7 +599,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
             return;
     }
 
-    if (neighbour.map_element == 0) {
+    if (neighbour.tile_element == 0) {
         regs.ch = 1;
         regs.ah = 1;
     }
@@ -751,11 +751,11 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
     regs.dl = height;
 
     // save ecx
-    if (neighbour.map_element == NULL) {
+    if (neighbour.tile_element == NULL) {
         regs.ah = 1;
         regs.ch = 1;
     } else {
-        regs.dh = map_get_water_height(neighbour.map_element);
+        regs.dh = map_get_water_height(neighbour.tile_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -863,11 +863,11 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
     regs.dl = height;
 
-    if (neighbour.map_element == 0) {
+    if (neighbour.tile_element == 0) {
         regs.ch = 1;
         regs.ah = 1;
     } else {
-        regs.dh = map_get_water_height(neighbour.map_element);
+        regs.dh = map_get_water_height(neighbour.tile_element);
         if (regs.dl == regs.dh) {
             return;
         }
@@ -986,9 +986,9 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
  *
  * @param direction (cl)
  * @param height (dx)
- * @param map_element (esi)
+ * @param tile_element (esi)
  */
-void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element * mapElement)
+void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * mapElement)
 {
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
@@ -998,7 +998,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     uint16 zoomLevel = dpi->zoom_level;
 
     const uint8 rotation = get_current_rotation();
-    uint32 terrain_type = map_element_get_terrain(mapElement);
+    uint32 terrain_type = tile_element_get_terrain(mapElement);
     uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(mapElement, rotation);
 
     LocationXY16 base = {
@@ -1008,7 +1008,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     corner_height ch = corner_heights[surfaceShape];
     tile_descriptor selfDescriptor = {
-        .map_element = mapElement,
+        .tile_element = mapElement,
         .slope = surfaceShape,
         .terrain = terrain_type,
         .corner_heights = {
@@ -1026,18 +1026,18 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         LocationXY16 offset = viewport_surface_paint_data[i][rotation];
         LocationXY16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
 
-        tileDescriptors[i + 1].map_element = NULL;
+        tileDescriptors[i + 1].tile_element = NULL;
         if (position.x > 0x2000 || position.y > 0x2000) {
             continue;
         }
 
-        rct_map_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
+        rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
         if (surfaceElement == NULL) {
             continue;
         }
 
-        tileDescriptors[i + 1].map_element = surfaceElement;
-        tileDescriptors[i + 1].terrain = map_element_get_terrain(surfaceElement);
+        tileDescriptors[i + 1].tile_element = surfaceElement;
+        tileDescriptors[i + 1].terrain = tile_element_get_terrain(surfaceElement);
         uint32 ebx = viewport_surface_paint_setup_get_relative_slope(surfaceElement, rotation);
         tileDescriptors[i + 1].slope = ebx;
 
@@ -1053,7 +1053,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
         sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
-        sint32 dx = map_element_height(x + 16, y + 16) & 0xFFFF;
+        sint32 dx = tile_element_height(x + 16, y + 16) & 0xFFFF;
         dx += 3;
 
         sint32 image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
@@ -1076,7 +1076,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         sint32 branch = -1;
         if ((mapElement->properties.surface.terrain & 0xE0) == 0) {
-            if (map_element_get_direction(mapElement) == 0) {
+            if (tile_element_get_direction(mapElement) == 0) {
                 if (zoomLevel == 0) {
                     if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0) {
                         branch = mapElement->properties.surface.grass_length & 0x7;
@@ -1195,7 +1195,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
             LocationXY16 pos = session->MapPosition;
             paint_struct * backup = session->UnkF1AD28;
-            sint32 height2 = (map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
+            sint32 height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
             session->UnkF1AD28 = backup;
         }
@@ -1209,7 +1209,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         } else if (mapElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
             paint_struct * backup = session->UnkF1AD28;
             LocationXY16 pos = session->MapPosition;
-            sint32 height2 = map_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
+            sint32 height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
             session->UnkF1AD28 = backup;
         }

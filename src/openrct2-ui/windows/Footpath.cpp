@@ -795,7 +795,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
 
     sint32 interactionType;
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
     LocationXY16 mapCoord = {0};
     get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_FOOTPATH & VIEWPORT_INTERACTION_MASK_TERRAIN,
                                  &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, nullptr);
@@ -850,7 +850,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
 static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, sint32 screenY)
 {
     sint32 x, y, direction;
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -876,7 +876,7 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 
     sint32 z = mapElement->base_height;
 
-    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE)
+    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
     {
         uint8 slope = mapElement->properties.surface.slope;
         if (slope & 0xf)
@@ -899,7 +899,7 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
 static void window_footpath_place_path_at_point(sint32 x, sint32 y)
 {
     sint32 interactionType, presentType, selectedType, z, cost;
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
 
     if (_footpathErrorOccured)
     {
@@ -952,7 +952,7 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
 static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY)
 {
     sint32 x, y, z, direction;
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
 
     footpath_bridge_get_info_from_pos(screenX, screenY, &x, &y, &direction, &mapElement);
     if (x == LOCATION_NULL)
@@ -960,7 +960,7 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
         return;
     }
 
-    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE)
+    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
     {
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
@@ -980,7 +980,7 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
     else
     {
         z = mapElement->base_height;
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
         {
             if (mapElement->properties.path.type & 4)
             {
@@ -1064,7 +1064,7 @@ static void window_footpath_construct()
  *
  *  rct2: 0x006A78EF
  */
-static void footpath_remove_map_element(rct_map_element * mapElement)
+static void footpath_remove_tile_element(rct_tile_element * mapElement)
 {
     sint32 x, y, z;
 
@@ -1123,9 +1123,9 @@ static void footpath_remove_map_element(rct_map_element * mapElement)
  *
  *  rct2: 0x006A7873
  */
-static rct_map_element * footpath_get_map_element_to_remove()
+static rct_tile_element * footpath_get_tile_element_to_remove()
 {
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
     sint32 x, y, z, zLow;
 
     x = gFootpathConstructFromPosition.x / 32;
@@ -1141,7 +1141,7 @@ static rct_map_element * footpath_get_map_element_to_remove()
     mapElement = map_get_first_element_at(x, y);
     do
     {
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_PATH)
         {
             if (mapElement->base_height == z)
             {
@@ -1169,7 +1169,7 @@ static rct_map_element * footpath_get_map_element_to_remove()
             }
         }
     }
-    while (!map_element_is_last_for_tile(mapElement++));
+    while (!tile_element_is_last_for_tile(mapElement++));
 
     return nullptr;
 }
@@ -1180,15 +1180,15 @@ static rct_map_element * footpath_get_map_element_to_remove()
  */
 static void window_footpath_remove()
 {
-    rct_map_element * mapElement;
+    rct_tile_element * mapElement;
 
     _window_footpath_cost = MONEY32_UNDEFINED;
     footpath_provisional_update();
 
-    mapElement = footpath_get_map_element_to_remove();
+    mapElement = footpath_get_tile_element_to_remove();
     if (mapElement != nullptr)
     {
-        footpath_remove_map_element(mapElement);
+        footpath_remove_tile_element(mapElement);
     }
 
     window_footpath_set_enabled_and_pressed_widgets();

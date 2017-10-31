@@ -29,7 +29,7 @@
 #include "Utils.hpp"
 #include "VerticalTunnelCall.hpp"
 
-#include <openrct2/paint/map_element/map_element.h>
+#include <openrct2/paint/tile_element/tile_element.h>
 #include <openrct2/paint/supports.h>
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/Track.h>
@@ -46,7 +46,7 @@ public:
     virtual std::string VariantName(uint8 rideType, uint8 trackType, int variant) abstract;
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_tile_element *mapElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) abstract;
 };
@@ -66,7 +66,7 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_tile_element *mapElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
@@ -92,7 +92,7 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_tile_element *mapElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
@@ -124,7 +124,7 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_tile_element *mapElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         if (variant == 0) {
@@ -156,7 +156,7 @@ public:
     }
 
     virtual void ApplyTo(uint8 rideType, uint8 trackType, int variant,
-                         rct_map_element *mapElement, rct_map_element *surfaceElement,
+                         rct_tile_element *mapElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         ride->entrance_style = variant;
@@ -171,7 +171,7 @@ static void CallOriginal(
     uint8 direction,
     uint8 trackSequence,
     uint16 height,
-    rct_map_element *mapElement
+    rct_tile_element *mapElement
 ) {
     uint32 *trackDirectionList = (uint32 *) RideTypeTrackPaintFunctionsOld[rideType][trackType];
     const uint8 rideIndex = 0;
@@ -195,7 +195,7 @@ static void CallNew(
     uint8 direction,
     uint8 trackSequence,
     uint16 height,
-    rct_map_element *mapElement
+    rct_tile_element *mapElement
 ) {
     TRACK_PAINT_FUNCTION_GETTER newPaintFunctionGetter = RideTypeTrackPaintFunctions[rideType];
     TRACK_PAINT_FUNCTION newPaintFunction = newPaintFunctionGetter(trackType, direction);
@@ -258,14 +258,14 @@ uint8 TestTrack::TestPaintTrackElement(uint8 rideType, uint8 trackType, std::str
 static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    rct_tile_element mapElement = {0};
+    mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
@@ -404,14 +404,14 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    rct_tile_element mapElement = {0};
+    mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
     
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
@@ -483,14 +483,14 @@ static uint8 TestTrackElementSegmentSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    rct_tile_element mapElement = {0};
+    mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
@@ -579,14 +579,14 @@ static uint8 TestTrackElementGeneralSupportHeight(uint8 rideType, uint8 trackTyp
 static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    rct_tile_element mapElement = {0};
+    mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
@@ -695,14 +695,14 @@ static uint8 TestTrackElementSideTunnels(uint8 rideType, uint8 trackType, uint8 
 static uint8 TestTrackElementVerticalTunnels(uint8 rideType, uint8 trackType, uint8 trackSequence, std::string *error) {
     uint16 height = 3 * 16;
 
-    rct_map_element mapElement = {0};
-    mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+    rct_tile_element mapElement = {0};
+    mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     mapElement.properties.track.type = trackType;
     mapElement.base_height = height / 16;
     g_currently_drawn_item = &mapElement;
 
-    rct_map_element surfaceElement = {0};
-    surfaceElement.type = MAP_ELEMENT_TYPE_SURFACE;
+    rct_tile_element surfaceElement = {0};
+    surfaceElement.type = TILE_ELEMENT_TYPE_SURFACE;
     surfaceElement.base_height = 2;
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;

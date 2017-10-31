@@ -194,7 +194,7 @@ void screenshot_giant()
     sint32 centreY = (mapSize / 2) * 32 + 16;
 
     sint32 x = 0, y = 0;
-    sint32 z = map_element_height(centreX, centreY) & 0xFFFF;
+    sint32 z = tile_element_height(centreX, centreY) & 0xFFFF;
     switch (rotation) {
     case 0:
         x = centreY - centreX;
@@ -303,7 +303,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
         customY = (mapSize / 2) * 32 + 16;
 
         sint32 x = 0, y = 0;
-        sint32 z = map_element_height(customX, customY) & 0xFFFF;
+        sint32 z = tile_element_height(customX, customY) & 0xFFFF;
         x = customY - customX;
         y = ((customX + customY) / 2) - z;
 
@@ -427,7 +427,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
                 customY = (mapSize / 2) * 32 + 16;
 
             sint32 x = 0, y = 0;
-            sint32 z = map_element_height(customX, customY) & 0xFFFF;
+            sint32 z = tile_element_height(customX, customY) & 0xFFFF;
             switch (customRotation) {
             case 0:
                 x = customY - customX;

@@ -16,7 +16,7 @@
 
 #include "../paint.h"
 #include "../../interface/viewport.h"
-#include "map_element.h"
+#include "tile_element.h"
 #include "../../drawing/drawing.h"
 #include "../../ride/ride_data.h"
 #include "../../ride/TrackData.h"
@@ -45,7 +45,7 @@ const sint32 SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | 
  *
  *  rct2: 0x0068B35F
  */
-void map_element_paint_setup(paint_session * session, sint32 x, sint32 y)
+void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y)
 {
     if (
         x < gMapSizeUnits &&
@@ -151,12 +151,12 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
-    rct_map_element* map_element = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element* tile_element = map_get_first_element_at(x >> 5, y >> 5);
     uint8 rotation = get_current_rotation();
 
-    /* Check if the first (lowest) map_element is below the clip
+    /* Check if the first (lowest) tile_element is below the clip
      * height. */
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) {
+    if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) {
         blank_tiles_paint(session, x, y);
         return;
     }
@@ -207,16 +207,16 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     if (bx <= dpi->y)
         return;
 
-    const rct_map_element* element = map_element;//push map_element
+    const rct_tile_element* element = tile_element;//push tile_element
 
     sint16 max_height = 0;
     do{
         max_height = max(max_height, element->clearance_height);
-    } while (!map_element_is_last_for_tile(element++));
+    } while (!tile_element_is_last_for_tile(element++));
 
     element--;
 
-    if (map_element_get_type(element) == MAP_ELEMENT_TYPE_SURFACE &&
+    if (tile_element_get_type(element) == TILE_ELEMENT_TYPE_SURFACE &&
         (map_get_water_height(element) > 0))
     {
         max_height = map_get_water_height(element) * 2;
@@ -226,7 +226,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     dx -= max_height + 32;
 
-    element = map_element;//pop map_element
+    element = tile_element;//pop tile_element
     dx -= dpi->height;
     if (dx >= dpi->y)
         return;
@@ -235,59 +235,59 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->SpritePosition.y = y;
     session->DidPassSurface = false;
     do {
-        // Only paint map_elements below the clip height.
-        if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (map_element->base_height > gClipHeight)) break;
+        // Only paint tile_elements below the clip height.
+        if ((gCurrentViewportFlags & VIEWPORT_FLAG_PAINT_CLIP_TO_HEIGHT) && (tile_element->base_height > gClipHeight)) break;
 
-        sint32 direction = map_element_get_direction_with_offset(map_element, rotation);
-        sint32 height = map_element->base_height * 8;
+        sint32 direction = tile_element_get_direction_with_offset(tile_element, rotation);
+        sint32 height = tile_element->base_height * 8;
 
         LocationXY16 dword_9DE574 = session->MapPosition;
-        session->CurrentlyDrawnItem = map_element;
+        session->CurrentlyDrawnItem = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
-        switch (map_element_get_type(map_element))
+        switch (tile_element_get_type(tile_element))
         {
-        case MAP_ELEMENT_TYPE_SURFACE:
-            surface_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_SURFACE:
+            surface_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_PATH:
-            path_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_PATH:
+            path_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_TRACK:
-            track_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_TRACK:
+            track_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_SCENERY:
-            scenery_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_SCENERY:
+            scenery_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_ENTRANCE:
-            entrance_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+            entrance_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_WALL:
-            fence_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_WALL:
+            fence_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            scenery_multiple_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+            scenery_multiple_paint(session, direction, height, tile_element);
             break;
-        case MAP_ELEMENT_TYPE_BANNER:
-            banner_paint(session, direction, height, map_element);
+        case TILE_ELEMENT_TYPE_BANNER:
+            banner_paint(session, direction, height, tile_element);
             break;
         // A corrupt element inserted by OpenRCT2 itself, which skips the drawing of the next element only.
-        case MAP_ELEMENT_TYPE_CORRUPT:
-            if (map_element_is_last_for_tile(map_element))
+        case TILE_ELEMENT_TYPE_CORRUPT:
+            if (tile_element_is_last_for_tile(tile_element))
                 return;
-            map_element++;
+            tile_element++;
             break;
         default:
             // An undefined map element is most likely a corrupt element inserted by 8 cars' MOM feature to skip drawing of all elements after it.
             return;
         }
         session->MapPosition = dword_9DE574;
-    } while (!map_element_is_last_for_tile(map_element++));
+    } while (!tile_element_is_last_for_tile(tile_element++));
 
     if (!gShowSupportSegmentHeights) {
         return;
     }
 
-    if (map_element_get_type(map_element - 1) == MAP_ELEMENT_TYPE_SURFACE) {
+    if (tile_element_get_type(tile_element - 1) == TILE_ELEMENT_TYPE_SURFACE) {
         return;
     }
 

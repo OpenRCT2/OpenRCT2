@@ -514,7 +514,7 @@ typedef struct track_circuit_iterator
     rct_xy_element  current;
     sint32          currentZ;
     sint32          currentDirection;
-    rct_map_element * first;
+    rct_tile_element * first;
     bool            firstIteration;
     bool            looped;
 } track_circuit_iterator;
@@ -528,7 +528,7 @@ extern const rct_trackdefinition TrackDefinitions[256];
 
 extern uint8 gTrackGroundFlags;
 
-sint32 track_is_connected_by_shape(rct_map_element * a, rct_map_element * b);
+sint32 track_is_connected_by_shape(rct_tile_element * a, rct_tile_element * b);
 
 const rct_preview_track * get_track_def_from_ride(Ride * ride, sint32 trackType);
 const rct_preview_track * get_track_def_from_ride_index(sint32 rideIndex, sint32 trackType);
@@ -541,19 +541,19 @@ bool track_circuit_iterator_next(track_circuit_iterator * it);
 void track_get_back(rct_xy_element * input, rct_xy_element * output);
 void track_get_front(rct_xy_element * input, rct_xy_element * output);
 
-bool track_element_is_block_start(rct_map_element * trackElement);
+bool track_element_is_block_start(rct_tile_element * trackElement);
 bool track_element_is_covered(sint32 trackElementType);
-bool track_element_is_station(rct_map_element * trackElement);
-bool track_element_is_lift_hill(rct_map_element * trackElement);
-bool track_element_is_cable_lift(rct_map_element * trackElement);
-void track_element_set_cable_lift(rct_map_element * trackElement);
-void track_element_clear_cable_lift(rct_map_element * trackElement);
-bool track_element_is_inverted(rct_map_element * mapElement);
-void track_element_set_inverted(rct_map_element * mapElement, bool inverted);
+bool track_element_is_station(rct_tile_element * trackElement);
+bool track_element_is_lift_hill(rct_tile_element * trackElement);
+bool track_element_is_cable_lift(rct_tile_element * trackElement);
+void track_element_set_cable_lift(rct_tile_element * trackElement);
+void track_element_clear_cable_lift(rct_tile_element * trackElement);
+bool track_element_is_inverted(rct_tile_element * mapElement);
+void track_element_set_inverted(rct_tile_element * mapElement, bool inverted);
 
-sint32 track_get_actual_bank(rct_map_element * mapElement, sint32 bank);
+sint32 track_get_actual_bank(rct_tile_element * mapElement, sint32 bank);
 sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank);
-sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_map_element * mapElement);
+sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * mapElement);
 
 void game_command_place_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 void game_command_remove_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
@@ -561,10 +561,10 @@ void game_command_set_maze_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint3
 void game_command_set_brakes_speed(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 bool track_element_is_booster(uint8 rideType, uint8 trackType);
 bool track_element_has_speed_setting(uint8 trackType);
-uint8 track_element_get_seat_rotation(const rct_map_element * mapElement);
-void track_element_set_seat_rotation(rct_map_element * mapElement, uint8 seatRotation);
-uint8 track_element_get_colour_scheme(const rct_map_element * mapElement);
-void track_element_set_colour_scheme(rct_map_element * mapElement, uint8 colourScheme);
+uint8 track_element_get_seat_rotation(const rct_tile_element * mapElement);
+void track_element_set_seat_rotation(rct_tile_element * mapElement, uint8 seatRotation);
+uint8 track_element_get_colour_scheme(const rct_tile_element * mapElement);
+void track_element_set_colour_scheme(rct_tile_element * mapElement, uint8 colourScheme);
 
 #ifdef __cplusplus
 }

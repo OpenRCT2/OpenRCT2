@@ -42,9 +42,9 @@
 
 typedef struct map_backup
 {
-    rct_map_element map_elements[MAX_MAP_ELEMENTS];
-    rct_map_element * tile_pointers[MAX_TILE_MAP_ELEMENT_POINTERS];
-    rct_map_element * next_free_map_element;
+    rct_tile_element tile_elements[MAX_TILE_ELEMENTS];
+    rct_tile_element * tile_pointers[MAX_TILE_TILE_ELEMENT_POINTERS];
+    rct_tile_element * next_free_tile_element;
     uint16          map_size_units;
     uint16          map_size_units_minus_2;
     uint16          map_size;
@@ -698,19 +698,19 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
             LocationXY8 tile     = {(uint8) (originX / 32), (uint8) (originY / 32)};
             switch (rotation & 3)
             {
-            case MAP_ELEMENT_DIRECTION_WEST:
+            case TILE_ELEMENT_DIRECTION_WEST:
                 tile.x += scenery->x;
                 tile.y += scenery->y;
                 break;
-            case MAP_ELEMENT_DIRECTION_NORTH:
+            case TILE_ELEMENT_DIRECTION_NORTH:
                 tile.x += scenery->y;
                 tile.y -= scenery->x;
                 break;
-            case MAP_ELEMENT_DIRECTION_EAST:
+            case TILE_ELEMENT_DIRECTION_EAST:
                 tile.x -= scenery->x;
                 tile.y -= scenery->y;
                 break;
-            case MAP_ELEMENT_DIRECTION_SOUTH:
+            case TILE_ELEMENT_DIRECTION_SOUTH:
                 tile.x -= scenery->y;
                 tile.y += scenery->x;
                 break;
@@ -799,7 +799,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                     uint8 quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
                     quadrant &= 3;
 
-                    uint8 bh = rotation | (quadrant << 6) | MAP_ELEMENT_TYPE_SCENERY;
+                    uint8 bh = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SCENERY;
 
                     rct_scenery_entry * small_scenery = get_small_scenery_entry(entry_index);
                     if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
@@ -1102,15 +1102,15 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                             continue;
                         }
 
-                        rct_map_element * map_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
+                        rct_tile_element * tile_element = map_get_path_element_at(mapCoord.x / 32, mapCoord.y / 32, z);
 
-                        if (map_element == NULL)
+                        if (tile_element == NULL)
                         {
                             continue;
                         }
 
                         footpath_queue_chain_reset();
-                        footpath_remove_edges_at(mapCoord.x, mapCoord.y, map_element);
+                        footpath_remove_edges_at(mapCoord.x, mapCoord.y, tile_element);
 
                         bl = 1;
                         if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
@@ -1122,7 +1122,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                             bl = 105;
                         }
 
-                        footpath_connect_edges(mapCoord.x, mapCoord.y, map_element, bl);
+                        footpath_connect_edges(mapCoord.x, mapCoord.y, tile_element, bl);
                         footpath_update_queue_chains();
                         continue;
                     }
@@ -1162,7 +1162,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
         gMapSelectionTiles->x     = -1;
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1316,20 +1316,20 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
                 continue;
             }
 
-            rct_map_element * map_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
-            sint16          map_height    = map_element->base_height * 8;
-            if (map_element->properties.surface.slope & 0xF)
+            rct_tile_element * tile_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
+            sint16          map_height    = tile_element->base_height * 8;
+            if (tile_element->properties.surface.slope & 0xF)
             {
                 map_height += 16;
-                if (map_element->properties.surface.slope & 0x10)
+                if (tile_element->properties.surface.slope & 0x10)
                 {
                     map_height += 16;
                 }
             }
 
-            if (map_get_water_height(map_element) > 0)
+            if (map_get_water_height(tile_element) > 0)
             {
-                sint16 water_height = map_get_water_height(map_element);
+                sint16 water_height = map_get_water_height(tile_element);
                 water_height *= 16;
                 if (water_height > map_height)
                 {
@@ -1366,7 +1366,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         gMapSelectionTiles->x     = -1;
         gMapSelectArrowPosition.x = x;
         gMapSelectArrowPosition.y = y;
-        gMapSelectArrowPosition.z = map_element_height(x, y) & 0xFFFF;
+        gMapSelectArrowPosition.z = tile_element_height(x, y) & 0xFFFF;
         gMapSelectArrowDirection = _currentTrackPieceDirection;
     }
 
@@ -1478,7 +1478,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     continue;
                 }
 
-                rct_map_element * mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
+                rct_tile_element * mapElement = map_get_surface_element_at(tile.x >> 5, tile.y >> 5);
                 if (mapElement == NULL)
                 {
                     return false;
@@ -1562,22 +1562,22 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     (sint16) (x + TileDirectionDelta[rotation].x),
                     (sint16) (y + TileDirectionDelta[rotation].y)
                 };
-                rct_map_element * map_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
+                rct_tile_element * tile_element = map_get_first_element_at(tile.x >> 5, tile.y >> 5);
                 z = gTrackPreviewOrigin.z / 8;
                 z += (entrance->z == (sint8) (uint8) 0x80) ? -1 : entrance->z;
 
                 do
                 {
-                    if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_TRACK)
+                    if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_TRACK)
                     {
                         continue;
                     }
-                    if (map_element->base_height != z)
+                    if (tile_element->base_height != z)
                     {
                         continue;
                     }
 
-                    sint32 stationIndex = map_element_get_station(map_element);
+                    sint32 stationIndex = tile_element_get_station(tile_element);
                     uint8  bl           = 1;
                     if (_trackDesignPlaceOperation == PTD_OPERATION_GET_COST)
                     {
@@ -1607,7 +1607,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
                 }
-                while (!map_element_is_last_for_tile(map_element++));
+                while (!tile_element_is_last_for_tile(tile_element++));
             }
             else
             {
@@ -2041,7 +2041,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
     // Check support height
     if (!gCheatsDisableSupportLimits)
     {
-        rct_map_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+        rct_tile_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
         uint8           supportZ     = (z + 32) >> 3;
         if (supportZ > mapElement->base_height)
         {
@@ -2109,15 +2109,15 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         sint32          fx           = floor2(x, 32);
         sint32          fy           = floor2(y, 32);
         sint32          fz           = z >> 3;
-        rct_map_element * mapElement = map_element_insert(fx >> 5, fy >> 5, fz, 15);
+        rct_tile_element * mapElement = tile_element_insert(fx >> 5, fy >> 5, fz, 15);
         mapElement->clearance_height            = fz + 4;
-        mapElement->type                        = MAP_ELEMENT_TYPE_TRACK;
+        mapElement->type                        = TILE_ELEMENT_TYPE_TRACK;
         mapElement->properties.track.type       = TRACK_ELEM_MAZE;
         mapElement->properties.track.ride_index = rideIndex;
         mapElement->properties.track.maze_entry = mazeEntry;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
-            mapElement->flags |= MAP_ELEMENT_FLAG_GHOST;
+            mapElement->flags |= TILE_ELEMENT_FLAG_GHOST;
         }
 
         map_invalidate_element(fx, fy, mapElement);
@@ -2285,16 +2285,16 @@ static map_backup * track_design_preview_backup_map()
     if (backup != NULL)
     {
         memcpy(
-            backup->map_elements,
+            backup->tile_elements,
             gMapElements,
-            sizeof(backup->map_elements)
+            sizeof(backup->tile_elements)
         );
         memcpy(
             backup->tile_pointers,
             gMapElementTilePointers,
             sizeof(backup->tile_pointers)
         );
-        backup->next_free_map_element  = gNextFreeMapElement;
+        backup->next_free_tile_element  = gNextFreeMapElement;
         backup->map_size_units         = gMapSizeUnits;
         backup->map_size_units_minus_2 = gMapSizeMinus2;
         backup->map_size               = gMapSize;
@@ -2311,15 +2311,15 @@ static void track_design_preview_restore_map(map_backup * backup)
 {
     memcpy(
         gMapElements,
-        backup->map_elements,
-        sizeof(backup->map_elements)
+        backup->tile_elements,
+        sizeof(backup->tile_elements)
     );
     memcpy(
         gMapElementTilePointers,
         backup->tile_pointers,
         sizeof(backup->tile_pointers)
     );
-    gNextFreeMapElement = backup->next_free_map_element;
+    gNextFreeMapElement = backup->next_free_tile_element;
     gMapSizeUnits       = backup->map_size_units;
     gMapSizeMinus2      = backup->map_size_units_minus_2;
     gMapSize            = backup->map_size;
@@ -2340,17 +2340,17 @@ static void track_design_preview_clear_map()
     gMapSizeMinus2 = (264 * 32) - 2;
     gMapSize       = 256;
 
-    for (sint32 i = 0; i < MAX_TILE_MAP_ELEMENT_POINTERS; i++)
+    for (sint32 i = 0; i < MAX_TILE_TILE_ELEMENT_POINTERS; i++)
     {
-        rct_map_element * map_element = &gMapElements[i];
-        map_element->type                            = MAP_ELEMENT_TYPE_SURFACE;
-        map_element->flags                           = MAP_ELEMENT_FLAG_LAST_TILE;
-        map_element->base_height                     = 2;
-        map_element->clearance_height                = 0;
-        map_element->properties.surface.slope        = 0;
-        map_element->properties.surface.terrain      = 0;
-        map_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
-        map_element->properties.surface.ownership    = OWNERSHIP_OWNED;
+        rct_tile_element * tile_element = &gMapElements[i];
+        tile_element->type                            = TILE_ELEMENT_TYPE_SURFACE;
+        tile_element->flags                           = TILE_ELEMENT_FLAG_LAST_TILE;
+        tile_element->base_height                     = 2;
+        tile_element->clearance_height                = 0;
+        tile_element->properties.surface.slope        = 0;
+        tile_element->properties.surface.terrain      = 0;
+        tile_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
+        tile_element->properties.surface.ownership    = OWNERSHIP_OWNED;
     }
     map_update_tile_pointers();
 }

@@ -159,28 +159,28 @@ rct_window * window_sign_open(rct_windownumber number)
     sint32 view_x = gBanners[w->number].x << 5;
     sint32 view_y = gBanners[w->number].y << 5;
 
-    rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
     while (1){
-        if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-            rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+            rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
-                sint32 id = (map_element->type & 0xC0) |
-                    ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-                    ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+                sint32 id = (tile_element->type & 0xC0) |
+                    ((tile_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+                    ((tile_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
                 if (id == w->number)
                     break;
             }
         }
-        map_element++;
+        tile_element++;
     }
 
-    sint32 view_z = map_element->base_height << 3;
+    sint32 view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = map_element->properties.scenerymultiple.colour[0] & 0x1F;
-    w->var_492 = map_element->properties.scenerymultiple.colour[1] & 0x1F;
-    w->var_48C = map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK;
+    w->list_information_type = tile_element->properties.scenerymultiple.colour[0] & 0x1F;
+    w->var_492 = tile_element->properties.scenerymultiple.colour[1] & 0x1F;
+    w->var_48C = tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
 
     view_x += 16;
     view_y += 16;
@@ -219,7 +219,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
     rct_string_id string_id;
 
-    rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex) {
     case WIDX_CLOSE:
@@ -227,23 +227,23 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         break;
     case WIDX_SIGN_DEMOLISH:
         while (1){
-            if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-                rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+                rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
                 if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
-                    sint32 id = (map_element->type & 0xC0) |
-                        ((map_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-                        ((map_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+                    sint32 id = (tile_element->type & 0xC0) |
+                        ((tile_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
+                        ((tile_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
                     if (id == w->number)
                         break;
                 }
             }
-            map_element++;
+            tile_element++;
         }
         game_do_command(
             x,
-            1 | ((map_element->type&0x3) << 8),
+            1 | ((tile_element->type&0x3) << 8),
             y,
-            map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
+            tile_element->base_height | ((tile_element->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
             0,
             0);
@@ -426,25 +426,25 @@ rct_window * window_sign_small_open(rct_windownumber number){
     sint32 view_x = gBanners[w->number].x << 5;
     sint32 view_y = gBanners[w->number].y << 5;
 
-    rct_map_element* map_element = map_get_first_element_at(view_x / 32, view_y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
     while (1){
-        if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
-            rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL) {
+            rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
             if (scenery_entry->wall.scrolling_mode != 0xFF){
-                if (map_element->properties.wall.banner_index == w->number)
+                if (tile_element->properties.wall.banner_index == w->number)
                     break;
             }
         }
-        map_element++;
+        tile_element++;
     }
 
-    sint32 view_z = map_element->base_height << 3;
+    sint32 view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = map_element->properties.wall.colour_1 & 0x1F;
-    w->var_492 = wall_element_get_secondary_colour(map_element);
-    w->var_48C = map_element->properties.wall.type;
+    w->list_information_type = tile_element->properties.wall.colour_1 & 0x1F;
+    w->var_492 = wall_element_get_secondary_colour(tile_element);
+    w->var_48C = tile_element->properties.wall.type;
 
     view_x += 16;
     view_y += 16;
@@ -484,7 +484,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
 
     rct_string_id string_id;
 
-    rct_map_element* map_element = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element* tile_element = map_get_first_element_at(x / 32, y / 32);
 
     switch (widgetIndex) {
     case WIDX_CLOSE:
@@ -492,21 +492,21 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
         break;
     case WIDX_SIGN_DEMOLISH:
         while (1){
-            if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_WALL) {
-                rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_WALL) {
+                rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
                 if (scenery_entry->wall.scrolling_mode != 0xFF){
-                    if (map_element->properties.wall.banner_index == w->number)
+                    if (tile_element->properties.wall.banner_index == w->number)
                         break;
                 }
             }
-            map_element++;
+            tile_element++;
         }
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
             x,
-            1 | ((map_element->type & 0x3) << 8),
+            1 | ((tile_element->type & 0x3) << 8),
             y,
-            (map_element->base_height << 8) | (map_element->type & 0x3),
+            (tile_element->base_height << 8) | (tile_element->type & 0x3),
             GAME_COMMAND_REMOVE_WALL,
             0,
             0);

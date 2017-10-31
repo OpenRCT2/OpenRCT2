@@ -627,25 +627,25 @@ void sprite_remove(rct_sprite *sprite)
 
 static bool litter_can_be_at(sint32 x, sint32 y, sint32 z)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     if (!map_is_location_owned(x & 0xFFE0, y & 0xFFE0, z))
         return false;
 
     mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do {
-        if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_PATH)
+        if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_PATH)
             continue;
 
         sint32 pathZ = mapElement->base_height * 8;
         if (pathZ < z || pathZ >= z + 32)
             continue;
 
-        if (map_element_is_underground(mapElement))
+        if (tile_element_is_underground(mapElement))
             return false;
 
         return true;
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
     return false;
 }
 

@@ -24,7 +24,7 @@
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"
-#include "../../paint/map_element/map_element.h"
+#include "../../paint/tile_element/tile_element.h"
 #include "../paint.h"
 
 static const uint8 byte_9A406C[] = {
@@ -129,13 +129,13 @@ static void fence_paint_wall(paint_session * session, uint32 frameNum, const rct
  * rct2: 0x006E44B0
  * @param direction (cl)
  * @param height (dx)
- * @param map_element (esi)
+ * @param tile_element (esi)
  */
-void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element * map_element)
+void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element * tile_element)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_WALL;
 
-    rct_scenery_entry * sceneryEntry = get_wall_entry(map_element->properties.wall.type);
+    rct_scenery_entry * sceneryEntry = get_wall_entry(tile_element->properties.wall.type);
     if (sceneryEntry == NULL) {
         return;
     }
@@ -146,18 +146,18 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     }
 
 
-    sint32 primaryColour = map_element->properties.wall.colour_1 & 0x1F;
+    sint32 primaryColour = tile_element->properties.wall.colour_1 & 0x1F;
     uint32 imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-        uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
+        uint8 secondaryColour = wall_element_get_secondary_colour(tile_element);
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
     uint32 tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
-        tertiaryColour = map_element->properties.wall.colour_3;
+        tertiaryColour = tile_element->properties.wall.colour_3;
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
@@ -165,17 +165,17 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
     uint32 dword_141F710 = 0;
     if (gTrackDesignSaveMode) {
-        if (!track_design_save_contains_map_element(map_element)) {
+        if (!track_design_save_contains_tile_element(tile_element)) {
             dword_141F710 = 0x21700000;
         }
     }
 
-    if (map_element->flags & MAP_ELEMENT_FLAG_GHOST) {
+    if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         dword_141F710 = construction_markers[gConfigGeneral.construction_marker_colour];
     }
 
-    // Save map_element
+    // Save tile_element
 
     uint8 ah = sceneryEntry->wall.height * 8 - 2;
 
@@ -183,9 +183,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     if (sceneryEntry->wall.flags & WALL_SCENERY_IS_DOOR) {
         LocationXYZ16 offset;
         LocationXYZ16 boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_;
-        uint8 animationFrame = wall_element_get_animation_frame(map_element);
+        uint8 animationFrame = wall_element_get_animation_frame(tile_element);
         // Add the direction as well
-        animationFrame |= (map_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
+        animationFrame |= (tile_element->properties.wall.animation & WALL_ANIMATION_FLAG_DIRECTION_BACKWARD) >> 3;
         uint32 imageId;
         switch (direction) {
             case 0:
@@ -262,9 +262,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
     switch (direction) {
         case 0:
-            if (map_element->type & 0x80) {
+            if (tile_element->type & 0x80) {
                 imageOffset = 3;
-            } else if (map_element->type & 0x40) {
+            } else if (tile_element->type & 0x40) {
                 imageOffset = 5;
             } else {
                 imageOffset = 1;
@@ -276,9 +276,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             break;
 
         case 1:
-            if (map_element->type & 0x80) {
+            if (tile_element->type & 0x80) {
                 imageOffset = 2;
-            } else if (map_element->type & 0x40) {
+            } else if (tile_element->type & 0x40) {
                 imageOffset = 4;
             } else {
                 imageOffset = 0;
@@ -300,9 +300,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             break;
 
         case 2:
-            if (map_element->type & 0x80) {
+            if (tile_element->type & 0x80) {
                 imageOffset = 5;
-            } else if (map_element->type & 0x40) {
+            } else if (tile_element->type & 0x40) {
                 imageOffset = 3;
             } else {
                 imageOffset = 1;
@@ -318,9 +318,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
             break;
 
         case 3:
-            if (map_element->type & 0x80) {
+            if (tile_element->type & 0x80) {
                 imageOffset = 4;
-            } else if (map_element->type & 0x40) {
+            } else if (tile_element->type & 0x40) {
                 imageOffset = 2;
             } else {
                 imageOffset = 0;
@@ -346,7 +346,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
 
-    uint8 secondaryColour = wall_element_get_secondary_colour(map_element);
+    uint8 secondaryColour = wall_element_get_secondary_colour(tile_element);
 
     if (dword_141F710 != 0) {
         secondaryColour = COLOUR_GREY;
@@ -360,7 +360,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ma
 
     uint16 scrollingMode = sceneryEntry->wall.scrolling_mode + ((direction + 1) & 0x3);
 
-    uint8 bannerIndex = map_element->properties.wall.banner_index;
+    uint8 bannerIndex = tile_element->properties.wall.banner_index;
     rct_banner * banner = &gBanners[bannerIndex];
 
     set_format_arg(0, rct_string_id, banner->string_idx);

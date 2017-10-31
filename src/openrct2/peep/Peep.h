@@ -801,7 +801,7 @@ void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint3
 sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * peep);
 void   peep_reset_pathfind_goal(rct_peep * peep);
 
-bool is_valid_path_z_and_direction(rct_map_element * mapElement, sint32 currentZ, sint32 currentDirection);
+bool is_valid_path_z_and_direction(rct_tile_element * mapElement, sint32 currentZ, sint32 currentDirection);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #define PATHFIND_DEBUG 0 // Set to 0 to disable pathfinding debugging;

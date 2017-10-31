@@ -191,7 +191,7 @@ public:
         {
             sint32 x = (ride->overall_view.x * 32) + 16;
             sint32 y = (ride->overall_view.y * 32) + 16;
-            sint32 z = map_element_height(x, y);
+            sint32 z = tile_element_height(x, y);
 
             res->Position = { x, y, z };
         }

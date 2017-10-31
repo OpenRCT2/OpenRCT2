@@ -14,8 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _PAINT_MAP_ELEMENT_H
-#define _PAINT_MAP_ELEMENT_H
+#ifndef _PAINT_TILE_ELEMENT_H
+#define _PAINT_TILE_ELEMENT_H
 
 #include "../../rct2/addresses.h"
 #include "../../common.h"
@@ -100,16 +100,16 @@ void paint_util_force_set_general_support_height(paint_session * session, sint16
 void paint_util_set_segment_support_height(paint_session * session, sint32 segments, uint16 height, uint8 slope);
 uint16 paint_util_rotate_segments(uint16 segments, uint8 rotation);
 
-void map_element_paint_setup(paint_session * session, sint32 x, sint32 y);
+void tile_element_paint_setup(paint_session * session, sint32 x, sint32 y);
 
-void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element);
-void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* map_element);
-void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
-void path_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
-void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* mapElement);
-void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element* mapElement);
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement);
-void track_paint(paint_session * session, uint8 direction, sint32 height, rct_map_element *mapElement);
+void entrance_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element);
+void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tile_element);
+void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement);
+void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement);
+void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* mapElement);
+void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* mapElement);
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement);
+void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *mapElement);
 
 #ifdef __cplusplus
 }

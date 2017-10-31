@@ -818,7 +818,7 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
             rct_window *w = window_get_main();
             if (w != NULL) {
                 sint32 interactionType;
-                rct_map_element *mapElement;
+                rct_tile_element *mapElement;
                 LocationXY16 mapCoord = { 0 };
                 get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &mapElement, NULL);
                 mapCoord.x -= 16;
@@ -1025,7 +1025,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             if (w != NULL) {
                 sint32 x = (sint16)(int_val[0] * 32 + 16);
                 sint32 y = (sint16)(int_val[1] * 32 + 16);
-                sint32 z = map_element_height(x, y);
+                sint32 z = tile_element_height(x, y);
                 window_set_location(w, x, y, z);
                 viewport_update_position(w);
                 console_execute_silent("get location");
@@ -1250,17 +1250,17 @@ static sint32 cc_remove_unused_objects(const utf8 **argv, sint32 argc)
 
 static sint32 cc_remove_park_fences(const utf8 **argv, sint32 argc)
 {
-    map_element_iterator it;
-    map_element_iterator_begin(&it);
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
     do
     {
-        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SURFACE)
+        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SURFACE)
         {
             // Remove all park fence flags
             it.element->properties.surface.ownership &= 0xF0;
         }
     }
-    while (map_element_iterator_next(&it));
+    while (tile_element_iterator_next(&it));
 
     console_printf("Park fences have been removed.");
     return 0;
@@ -1306,7 +1306,7 @@ static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
     }
 
     console_printf("Sprites: %d/%d", spriteCount, MAX_SPRITES);
-    console_printf("Map Elements: %d/%d", mapElementCount, MAX_MAP_ELEMENTS);
+    console_printf("Map Elements: %d/%d", mapElementCount, MAX_TILE_ELEMENTS);
     console_printf("Banners: %d/%d", bannerCount, MAX_BANNERS);
     console_printf("Rides: %d/%d", rideCount, MAX_RIDES);
     console_printf("Staff: %d/%d", staffCount, STAFF_MAX_COUNT);

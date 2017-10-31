@@ -160,7 +160,7 @@ static void window_viewport_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         mainWindow = window_get_main();
         if (mainWindow != nullptr) {
             get_map_coordinates_from_pos(w->x + (w->width / 2), w->y + (w->height / 2), VIEWPORT_INTERACTION_MASK_NONE, &x, &y, nullptr, nullptr, nullptr);
-            window_scroll_to_location(mainWindow, x, y, map_element_height(x, y));
+            window_scroll_to_location(mainWindow, x, y, tile_element_height(x, y));
         }
         break;
     }

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "map_element.h"
+#include "tile_element.h"
 #include "../paint.h"
 #include "../supports.h"
 #include "../../config/Config.h"
@@ -26,7 +26,7 @@
 #include "../../world/scenery.h"
 
 // 6B8172:
-static void scenery_multiple_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
+static void scenery_multiple_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
 {
     if (tile->var_7 & 0x20) {
         return;
@@ -183,7 +183,7 @@ static const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_map_element *mapElement) {
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *mapElement) {
     //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)mapElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 ebp = mapElement->properties.scenerymultiple.type >> 10;
@@ -198,14 +198,14 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
-        if (!track_design_save_contains_map_element(mapElement)) {
+        if (!track_design_save_contains_tile_element(mapElement)) {
             ebp = 0x21700000;
             image_id &= 0x7FFFF;
             dword_F4387C = ebp;
             image_id |= dword_F4387C;
         }
     }
-    if (mapElement->flags & MAP_ELEMENT_FLAG_GHOST) {
+    if (mapElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
         ebp = construction_markers[gConfigGeneral.construction_marker_colour];
         image_id &= 0x7FFFF;

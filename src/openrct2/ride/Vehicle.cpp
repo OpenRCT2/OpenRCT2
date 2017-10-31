@@ -936,8 +936,8 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
                             i->volume    = 0;
                             if (vehicle->x != LOCATION_NULL)
                             {
-                                rct_map_element * map_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
-                                if (map_element != NULL && map_element->base_height * 8 > vehicle->z)
+                                rct_tile_element * tile_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
+                                if (tile_element != NULL && tile_element->base_height * 8 > vehicle->z)
                                 { // vehicle underground
                                     i->volume = 0x30;
                                 }
@@ -1813,35 +1813,35 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
         return;
     }
 
-    rct_map_element * map_element = map_get_surface_element_at(x / 32, y / 32);
-    if (map_element->base_height * 8 <= vehicle->z)
+    rct_tile_element * tile_element = map_get_surface_element_at(x / 32, y / 32);
+    if (tile_element->base_height * 8 <= vehicle->z)
     {
 
         bool cover_found = false;
         do
         {
-            if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_SCENERY_MULTIPLE)
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
             {
                 cover_found = true;
                 break;
             }
 
-            if (map_element_get_type(map_element) == MAP_ELEMENT_TYPE_PATH)
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH)
             {
                 cover_found = true;
                 break;
             }
 
-            if (map_element_get_type(map_element) != MAP_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SCENERY)
                 continue;
 
-            rct_scenery_entry * scenery = get_small_scenery_entry(map_element->properties.scenery.type);
+            rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
             if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
             {
                 cover_found = true;
                 break;
             }
-        } while (!map_element_is_last_for_tile(map_element++));
+        } while (!tile_element_is_last_for_tile(tile_element++));
 
         if (cover_found == false)
         {
@@ -2729,7 +2729,7 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
         return false;
     }
 
-    rct_map_element * mapElement = get_station_platform(x, y, z, 2);
+    rct_tile_element * mapElement = get_station_platform(x, y, z, 2);
     if (mapElement == NULL)
     {
         /* No station platform element found,
@@ -2749,7 +2749,7 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
      * to sync with adjacent stations, so it will return true.
      * Still to determine if a vehicle to sync can be identified. */
 
-    sint32 stationIndex = map_element_get_station(mapElement);
+    sint32 stationIndex = tile_element_get_station(mapElement);
 
     rct_synchronised_vehicle * sv = _lastSynchronisedVehicle;
     sv->ride_id                   = rideIndex;
@@ -2829,7 +2829,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle)
     sint32      y        = location.y * 32;
     sint32      z        = ride->station_heights[station];
 
-    rct_map_element * mapElement = map_get_track_element_at(x, y, z);
+    rct_tile_element * mapElement = map_get_track_element_at(x, y, z);
     if (mapElement == NULL)
     {
         return false;
@@ -3113,10 +3113,10 @@ void vehicle_test_reset(rct_vehicle * vehicle)
 
 static bool vehicle_next_tower_element_is_top(rct_vehicle * vehicle)
 {
-    rct_map_element * mapElement =
+    rct_tile_element * mapElement =
         map_get_track_element_at_of_type(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8, vehicle->track_type >> 2);
 
-    if (mapElement->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+    if (mapElement->flags & TILE_ELEMENT_FLAG_LAST_TILE)
     {
         return true;
     }
@@ -3129,7 +3129,7 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle * vehicle)
         }
     }
 
-    if ((mapElement + 1)->flags & MAP_ELEMENT_FLAG_LAST_TILE)
+    if ((mapElement + 1)->flags & TILE_ELEMENT_FLAG_LAST_TILE)
     {
         return true;
     }
@@ -3991,14 +3991,14 @@ loc_6D8E36:
         return;
     }
 
-    rct_map_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
+    rct_tile_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z / 8);
 
     if (mapElement == NULL)
     {
         return;
     }
 
-    vehicle->current_station = map_element_get_station(mapElement);
+    vehicle->current_station = tile_element_get_station(mapElement);
     vehicle->num_laps++;
 
     if (vehicle->sub_state != 0)
@@ -4278,7 +4278,7 @@ static void loc_6DA9F9(rct_vehicle * vehicle, sint32 x, sint32 y, sint32 bx, sin
         vehicle->track_x = bx;
         vehicle->track_y = dx;
 
-        rct_map_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
+        rct_tile_element * mapElement = map_get_track_element_at(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3);
 
         Ride * ride         = get_ride(vehicle->ride);
         vehicle->track_type = (mapElement->properties.track.type << 2) | (ride->boat_hire_return_direction & 3);
@@ -4657,10 +4657,10 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
 static bool vehicle_is_boat_on_water(rct_vehicle * vehicle, sint32 x, sint32 y)
 {
     sint32            z          = vehicle->track_z >> 3;
-    rct_map_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
+    rct_tile_element * mapElement = map_get_first_element_at(x >> 5, y >> 5);
     do
     {
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE)
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE)
         {
             sint32 waterZ = map_get_water_height(mapElement) * 2;
             if (z != waterZ)
@@ -4675,7 +4675,7 @@ static bool vehicle_is_boat_on_water(rct_vehicle * vehicle, sint32 x, sint32 y)
                 return true;
             }
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
     return false;
 }
 
@@ -5155,9 +5155,9 @@ static void vehicle_update_doing_circus_show(rct_vehicle * vehicle)
  *  rct2: 0x0068B8BD
  * @returns the map element that the vehicle will collide with or NULL if no collisions.
  */
-static rct_map_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
+static rct_tile_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 {
-    rct_map_element * mapElement = map_get_first_element_at(x / 32, y / 32);
+    rct_tile_element * mapElement = map_get_first_element_at(x / 32, y / 32);
     if (mapElement == NULL)
     {
         return NULL;
@@ -5187,7 +5187,7 @@ static rct_map_element * vehicle_check_collision(sint16 x, sint16 y, sint16 z)
 
         if (mapElement->flags & bl)
             return mapElement;
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     return NULL;
 }
@@ -5405,7 +5405,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
             continue;
         }
 
-        rct_map_element * collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
+        rct_tile_element * collideElement = vehicle_check_collision(curVehicle->x, curVehicle->y, curVehicle->z);
         if (collideElement == NULL)
         {
             curVehicle->sub_state = 1;
@@ -5416,7 +5416,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
             continue;
         }
 
-        sint32 z           = map_element_height(curVehicle->x, curVehicle->y);
+        sint32 z           = tile_element_height(curVehicle->x, curVehicle->y);
         sint16 waterHeight = (z >> 16) & 0xFFFF;
         z                  = (sint16)(z & 0xFFFF);
         sint16 zDiff;
@@ -6648,7 +6648,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
 
     sint32 trackType = vehicle->track_type >> 2;
 
-    rct_map_element * trackElement =
+    rct_tile_element * trackElement =
         map_get_track_element_at_of_type(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType);
 
     if (trackElement == NULL)
@@ -6660,13 +6660,13 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
     {
     case TRACK_ELEM_BLOCK_BRAKES:
         if (ride_is_block_sectioned(ride))
-            apply_block_brakes(vehicle, trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
+            apply_block_brakes(vehicle, trackElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED);
         else
             apply_non_stop_block_brake(vehicle, true);
 
         break;
     case TRACK_ELEM_END_STATION:
-        if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
+        if (trackElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_10;
 
         break;
@@ -6679,7 +6679,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
         {
             if (trackType == TRACK_ELEM_CABLE_LIFT_HILL || track_element_is_lift_hill(trackElement))
             {
-                if (trackElement->flags & MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
+                if (trackElement->flags & TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED)
                 {
                     apply_block_brakes(vehicle, true);
                 }
@@ -6719,13 +6719,13 @@ static void update_velocity(rct_vehicle * vehicle)
     _vehicleVelocityF64E0C = (nextVelocity >> 10) * 42;
 }
 
-static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehicle, rct_map_element * mapElement)
+static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehicle, rct_tile_element * mapElement)
 {
     sint32          x = vehicle->track_x;
     sint32          y = vehicle->track_y;
     sint32          z = vehicle->track_z;
     track_begin_end trackBeginEnd, slowTrackBeginEnd;
-    rct_map_element slowMapElement = *mapElement;
+    rct_tile_element slowMapElement = *mapElement;
     bool            counter        = true;
     sint32          slowX          = x;
     sint32          slowY          = y;
@@ -6771,7 +6771,7 @@ static void vehicle_update_block_brakes_open_previous_section(rct_vehicle * vehi
     {
         return;
     }
-    mapElement->flags &= ~MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+    mapElement->flags &= ~TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
     map_invalidate_element(x, y, mapElement);
 
     sint32 trackType = mapElement->properties.track.type;
@@ -7198,7 +7198,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
  */
 static void steam_particle_create(sint16 x, sint16 y, sint16 z)
 {
-    rct_map_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
+    rct_tile_element * mapElement = map_get_surface_element_at(x >> 5, y >> 5);
     if (mapElement != NULL && z > mapElement->base_height * 8)
     {
         rct_steam_particle * steam = (rct_steam_particle *)create_sprite(2);
@@ -7364,7 +7364,7 @@ static void sub_6D63D4(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DEDB1
  */
-static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_map_element * mapElement)
+static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile_element * mapElement)
 {
     rct_scenery_entry * wallEntry     = get_wall_entry(mapElement->properties.wall.type);
     sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
@@ -7382,7 +7382,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_map_
  *
  *  rct2: 0x006DED7A
  */
-static void vehicle_play_scenery_door_close_sound(rct_vehicle * vehicle, rct_map_element * mapElement)
+static void vehicle_play_scenery_door_close_sound(rct_vehicle * vehicle, rct_tile_element * mapElement)
 {
     rct_scenery_entry * wallEntry     = get_wall_entry(mapElement->properties.wall.type);
     sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
@@ -7414,7 +7414,7 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
     sint32                        z                = (vehicle->track_z - trackBlock->z + trackCoordinates->z_end) >> 3;
     sint32                        direction        = (vehicle->track_direction + trackCoordinates->rotation_end) & 3;
 
-    rct_map_element * mapElement = map_get_wall_element_at(x, y, z, direction);
+    rct_tile_element * mapElement = map_get_wall_element_at(x, y, z, direction);
     if (mapElement == NULL)
     {
         return;
@@ -7439,7 +7439,7 @@ static void vehicle_update_scenery_door(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DB38B
  */
-static bool loc_6DB38B(rct_vehicle * vehicle, rct_map_element * mapElement)
+static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * mapElement)
 {
     // Get bank
     sint32 bankStart = track_get_actual_bank_3(vehicle, mapElement);
@@ -7477,9 +7477,9 @@ static void loc_6DB481(rct_vehicle * vehicle)
  *
  *  rct2: 0x006DB545
  */
-static void vehicle_trigger_on_ride_photo(rct_vehicle * vehicle, rct_map_element * mapElement)
+static void vehicle_trigger_on_ride_photo(rct_vehicle * vehicle, rct_tile_element * mapElement)
 {
-    map_element_set_onride_photo_timeout(mapElement);
+    tile_element_set_onride_photo_timeout(mapElement);
 
     map_animation_create(MAP_ANIMATION_TYPE_TRACK_ONRIDEPHOTO, vehicle->track_x, vehicle->track_y, mapElement->base_height);
 }
@@ -7499,7 +7499,7 @@ static void vehicle_update_handle_scenery_door(rct_vehicle * vehicle)
     sint32                        direction        = (vehicle->track_direction + trackCoordinates->rotation_begin) & 3;
     direction ^= 2;
 
-    rct_map_element * mapElement = map_get_wall_element_at(x, y, z, direction);
+    rct_tile_element * mapElement = map_get_wall_element_at(x, y, z, direction);
     if (mapElement == NULL)
     {
         return;
@@ -7837,7 +7837,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_3;
 
-    rct_map_element * mapElement = NULL;
+    rct_tile_element * mapElement = NULL;
     if (map_is_location_valid(vehicle->track_x, vehicle->track_y))
     {
         mapElement =
@@ -7851,7 +7851,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 
     if (_vehicleStationIndex == 0xFF)
     {
-        _vehicleStationIndex = map_element_get_station(mapElement);
+        _vehicleStationIndex = tile_element_get_station(mapElement);
     }
 
     if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)
@@ -7919,7 +7919,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
 
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_end;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_end;
-    rct_map_element * mapElement =
+    rct_tile_element * mapElement =
         map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (mapElement == NULL)
@@ -7936,7 +7936,7 @@ static bool vehicle_update_track_motion_forwards_get_new_track(rct_vehicle * veh
     {
         if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
-            mapElement->flags |= MAP_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
+            mapElement->flags |= TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
             if (trackType == TRACK_ELEM_BLOCK_BRAKES || trackType == TRACK_ELEM_END_STATION)
             {
                 if (!(rideEntry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_POWERED))
@@ -8084,7 +8084,7 @@ loc_6DB41D:
     }
     vehicle->track_direction = regs.bl & 3;
     vehicle->track_type |= trackType << 2;
-    vehicle->brake_speed = map_element_get_brake_booster_speed(mapElement);
+    vehicle->brake_speed = tile_element_get_brake_booster_speed(mapElement);
     if (trackType == TRACK_ELEM_ON_RIDE_PHOTO)
     {
         vehicle_trigger_on_ride_photo(vehicle, mapElement);
@@ -8352,7 +8352,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
 {
     _vehicleVAngleEndF64E36 = TrackDefinitions[trackType].vangle_start;
     _vehicleBankEndF64E37   = TrackDefinitions[trackType].bank_start;
-    rct_map_element * mapElement =
+    rct_tile_element * mapElement =
         map_get_track_element_at_of_type_seq(vehicle->track_x, vehicle->track_y, vehicle->track_z >> 3, trackType, 0);
 
     if (mapElement == NULL)
@@ -8500,7 +8500,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
     direction &= 3;
     vehicle->track_type = trackType << 2;
     vehicle->track_direction |= direction;
-    vehicle->brake_speed = map_element_get_brake_booster_speed(mapElement);
+    vehicle->brake_speed = tile_element_get_brake_booster_speed(mapElement);
 
     // There are two bytes before the move info list
     uint16 trackTotalProgress = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);
@@ -8678,7 +8678,7 @@ static sint32 vehicle_update_track_motion_mini_golf(rct_vehicle * vehicle, sint3
     rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
-    rct_map_element * mapElement = NULL;
+    rct_tile_element * mapElement = NULL;
 
     gCurrentVehicle          = vehicle;
     _vehicleMotionTrackFlags = 0;
@@ -8867,7 +8867,7 @@ loc_6DC476:
 
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
     vehicle->track_type = (mapElement->properties.track.type << 2) | (direction & 3);
-    vehicle->var_CF     = map_element_get_brake_booster_speed(mapElement);
+    vehicle->var_CF     = tile_element_get_brake_booster_speed(mapElement);
     regs.ax             = 0;
 
 loc_6DC743:

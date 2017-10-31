@@ -501,7 +501,7 @@ private:
         rct_window * w = window_get_main();
         if (w != nullptr)
         {
-            sint32 z = map_element_height(x, y);
+            sint32 z = tile_element_height(x, y);
 
             // Prevent scroll adjustment due to window placement when in-game
             auto oldScreenFlags = gScreenFlags;

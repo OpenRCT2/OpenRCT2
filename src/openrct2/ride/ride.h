@@ -371,11 +371,11 @@ typedef struct track_begin_end {
     sint32 begin_y;
     sint32 begin_z;
     sint32 begin_direction;
-    rct_map_element *begin_element;
+    rct_tile_element *begin_element;
     sint32 end_x;
     sint32 end_y;
     sint32 end_direction;
-    rct_map_element *end_element;
+    rct_tile_element *end_element;
 } track_begin_end;
 #ifdef PLATFORM_32BIT
 assert_struct_size(track_begin_end, 36);
@@ -1066,13 +1066,13 @@ sint32 ride_is_valid_for_open(sint32 rideIndex, sint32 goingToBeOpen, sint32 isA
 sint32 ride_is_valid_for_test(sint32 rideIndex, sint32 goingToBeOpen, sint32 isApplying);
 sint32 ride_initialise_construction_window(sint32 rideIndex);
 void ride_construction_invalidate_current_track();
-sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_map_element** output_element, uint16 flags);
-void ride_set_map_tooltip(rct_map_element *mapElement);
+sint32 sub_6C683D(sint32* x, sint32* y, sint32* z, sint32 direction, sint32 type, uint16 extra_params, rct_tile_element** output_element, uint16 flags);
+void ride_set_map_tooltip(rct_tile_element *mapElement);
 sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint16 sampleRate, uint32 position, uint8 *tuneId);
 void ride_music_update_final();
 void ride_prepare_breakdown(sint32 rideIndex, sint32 breakdownReason);
-rct_map_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex);
-rct_map_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z);
+rct_tile_element *ride_get_station_start_track_element(Ride *ride, sint32 stationIndex);
+rct_tile_element *ride_get_station_exit_element(Ride *ride, sint32 x, sint32 y, sint32 z);
 void ride_set_status(sint32 rideIndex, sint32 status);
 void game_command_set_ride_status(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void ride_set_name(sint32 rideIndex, const char *name);
@@ -1137,7 +1137,7 @@ void ride_construction_set_default_next_piece();
 bool track_block_get_next(rct_xy_element *input, rct_xy_element *output, sint32 *z, sint32 *direction);
 bool track_block_get_next_from_zero(sint16 x, sint16 y, sint16 z_start, uint8 rideIndex, uint8 direction_start, rct_xy_element *output, sint32 *z, sint32 *direction);
 
-bool track_block_get_previous(sint32 x, sint32 y, rct_map_element *mapElement, track_begin_end *outTrackBeginEnd);
+bool track_block_get_previous(sint32 x, sint32 y, rct_tile_element *mapElement, track_begin_end *outTrackBeginEnd);
 bool track_block_get_previous_from_zero(sint16 x, sint16 y, sint16 z, uint8 rideIndex, uint8 direction, track_begin_end *outTrackBeginEnd);
 
 void window_ride_construction_update_active_elements();
@@ -1195,7 +1195,7 @@ void game_command_callback_place_ride_entrance_or_exit(sint32 eax, sint32 ebx, s
 void ride_delete(uint8 rideIndex);
 money16 ride_get_price(Ride * ride);
 
-rct_map_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tolerance);
+rct_tile_element *get_station_platform(sint32 x, sint32 y, sint32 z, sint32 z_tolerance);
 bool ride_has_adjacent_station(Ride *ride);
 bool ride_has_ratings(const Ride * ride);
 

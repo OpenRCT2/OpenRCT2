@@ -107,7 +107,7 @@ private:
             "../../drawing/drawing.h",
             "../../paint/supports.h",
             "../../interface/viewport.h",
-            "../../paint/map_element/map_element.h",
+            "../../paint/tile_element/tile_element.h",
             "../../paint/paint.h",
             "../../sprites.h",
             "../../world/map.h",
@@ -137,7 +137,7 @@ private:
             {
                 const uint32 * paintFunctionList = RideTypeTrackPaintFunctionsOld[_rideType];
                 WriteLine(0, "/** rct2: 0x%08X, 0x%08X, 0x%08X */", paintFunctionList[TRACK_ELEM_END_STATION], paintFunctionList[TRACK_ELEM_BEGIN_STATION], paintFunctionList[TRACK_ELEM_MIDDLE_STATION]);
-                WriteLine(0, "static void " + _rideName + "_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
+                WriteLine(0, "static void " + _rideName + "_track_station(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_tile_element * mapElement)");
                 WriteLine(0, "{");
                 WriteLine(0, "}");
                 WriteLine();
@@ -148,7 +148,7 @@ private:
     void GenerateTrackFunction(int trackType)
     {
         WriteLine(0, "/** rct2: 0x%08X */", RideTypeTrackPaintFunctionsOld[_rideType][trackType]);
-        WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_map_element * mapElement)");
+        WriteLine(0, "static void " + GetTrackFunctionName(trackType) + "(uint8 rideIndex, uint8 trackSequence, uint8 direction, int height, rct_tile_element * mapElement)");
         WriteLine(0, "{");
         if (!GenerateMirrorCall(1, trackType))
         {
@@ -405,8 +405,8 @@ private:
         std::vector<SegmentSupportCall> segmentSupportCalls[4];
         support_height generalSupports[4] = { 0 };
         for (int direction = 0; direction < 4; direction++) {
-            rct_map_element mapElement = { 0 };
-            mapElement.flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+            rct_tile_element mapElement = { 0 };
+            mapElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
             mapElement.properties.track.type = trackType;
             mapElement.base_height = 3;
             if (_invertedTrack)
@@ -736,7 +736,7 @@ private:
                         int direction,
                         int trackSequence,
                         int height,
-                        rct_map_element * mapElement,
+                        rct_tile_element * mapElement,
                         TunnelCall tileTunnelCalls[4][4],
                         sint16 verticalTunnelHeights[4])
     {
@@ -1005,7 +1005,7 @@ private:
         return true;
     }
 
-    void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_map_element *mapElement)
+    void CallOriginal(int trackType, int direction, int trackSequence, int height, rct_tile_element *mapElement)
     {
         TestPaint::ResetEnvironment();
         TestPaint::ResetSupportHeights();

@@ -37,12 +37,12 @@ enum
  *  rct2: 0x0076522A
  */
 static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX, sint8 offsetY, uint8 direction, sint32 height,
-                                          rct_map_element * mapElement)
+                                          rct_tile_element * mapElement)
 {
     Ride *           ride      = get_ride(mapElement->properties.track.ride_index);
     rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
 
-    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_vehicle * vehicle = NULL;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
@@ -134,7 +134,7 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
 
 /** rct2: 0x008A85C4 */
 static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                  rct_map_element * mapElement)
+                                  rct_tile_element * mapElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 

@@ -160,17 +160,17 @@ void park_reset_history()
 sint32 park_calculate_size()
 {
     sint32 tiles;
-    map_element_iterator it;
+    tile_element_iterator it;
 
     tiles = 0;
-    map_element_iterator_begin(&it);
+    tile_element_iterator_begin(&it);
     do {
-        if (map_element_get_type(it.element) == MAP_ELEMENT_TYPE_SURFACE) {
+        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SURFACE) {
             if (it.element->properties.surface.ownership & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED)) {
                 tiles++;
             }
         }
-    } while (map_element_iterator_next(&it));
+    } while (tile_element_iterator_next(&it));
 
     if (tiles != gParkSize) {
         gParkSize = tiles;
@@ -702,27 +702,27 @@ void update_park_fences(sint32 x, sint32 y)
     if (y <= 0 || y >= gMapSizeUnits)
         return;
 
-    rct_map_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
     if (sufaceElement == NULL)return;
 
     uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
     if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
         uint8 fence_required = 1;
 
-        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
         // If an entrance element do not place flags around surface
         do {
-            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (mapElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 continue;
 
-            if (!(mapElement->flags & MAP_ELEMENT_FLAG_GHOST)) {
+            if (!(mapElement->flags & TILE_ELEMENT_FLAG_GHOST)) {
                 fence_required = 0;
                 break;
             }
-        } while (!map_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(mapElement++));
 
         if (fence_required) {
             // As map_is_location_in_park sets the error text
@@ -851,7 +851,7 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 }
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
-    rct_map_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
+    rct_tile_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
     if (surfaceElement == NULL)
         return MONEY32_UNDEFINED;
 
@@ -933,9 +933,9 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
             return 0;
         }
 
-        rct_map_element* mapElement = map_get_first_element_at(x / 32, y / 32);
+        rct_tile_element* mapElement = map_get_first_element_at(x / 32, y / 32);
         do {
-            if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) {
+            if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
                 // Do not allow ownership of park entrance.
                 if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
                     return 0;
@@ -947,7 +947,7 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
                      mapElement->base_height < surfaceElement->base_height))
                     return 0;
             }
-        } while (!map_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(mapElement++));
 
         if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
             return gLandPrice;
@@ -989,7 +989,7 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
 
     x = (x0 + x1) / 2 + 16;
     y = (y0 + y1) / 2 + 16;
-    z = map_element_height(x, y);
+    z = tile_element_height(x, y);
     gCommandPosition.x = x;
     gCommandPosition.y = y;
     gCommandPosition.z = z;

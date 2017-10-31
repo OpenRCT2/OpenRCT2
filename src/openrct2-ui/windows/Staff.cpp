@@ -1132,7 +1132,7 @@ void window_staff_overview_tool_down(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_PICKUP) {
         sint32 dest_x, dest_y;
-        rct_map_element* mapElement;
+        rct_tile_element* mapElement;
         footpath_get_coordinates_from_pos(x, y + 16, &dest_x, &dest_y, nullptr, &mapElement);
 
         if (dest_x == LOCATION_NULL)

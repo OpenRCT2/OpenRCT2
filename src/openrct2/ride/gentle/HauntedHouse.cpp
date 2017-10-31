@@ -38,7 +38,7 @@ static haunted_house_bound_box haunted_house_data[] = { { 6, 0, 42, 24 }, { 0 },
 static void paint_haunted_house_structure(paint_session * session, uint8 rideIndex, uint8 direction, sint8 xOffset,
                                           sint8 yOffset, uint8 part, uint16 height)
 {
-    rct_map_element * savedMapElement = static_cast<rct_map_element *>(session->CurrentlyDrawnItem);
+    rct_tile_element * savedMapElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     uint8 frameNum = 0;
 
@@ -91,7 +91,7 @@ static void paint_haunted_house_structure(paint_session * session, uint8 rideInd
  * rct2: 0x0076E9B0
  */
 static void paint_haunted_house(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                                rct_map_element * mapElement)
+                                rct_tile_element * mapElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 

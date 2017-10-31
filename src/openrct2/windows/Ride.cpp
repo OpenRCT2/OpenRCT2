@@ -1440,15 +1440,15 @@ static void window_ride_disable_tabs(rct_window *w)
 
 static void window_ride_update_overall_view(uint8 ride_index) {
     // Calculate x, y, z bounds of the entire ride using its track elements
-    map_element_iterator it;
+    tile_element_iterator it;
 
-    map_element_iterator_begin(&it);
+    tile_element_iterator_begin(&it);
 
     sint32 minx = INT_MAX, miny = INT_MAX, minz = INT_MAX;
     sint32 maxx = INT_MIN, maxy = INT_MIN, maxz = INT_MIN;
 
-    while (map_element_iterator_next(&it)) {
-        if (map_element_get_type(it.element) != MAP_ELEMENT_TYPE_TRACK)
+    while (tile_element_iterator_next(&it)) {
+        if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
         if (it.element->properties.track.ride_index != ride_index)
@@ -1610,15 +1610,15 @@ rct_window *window_ride_open_station(sint32 rideIndex, sint32 stationIndex)
     return w;
 }
 
-rct_window *window_ride_open_track(rct_map_element *mapElement)
+rct_window *window_ride_open_track(rct_tile_element *mapElement)
 {
     sint32 rideIndex = mapElement->properties.track.ride_index;
     if (
-        (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE) ||
+        (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
         (TrackSequenceProperties[mapElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     ) {
         // Open ride window in station view
-        return window_ride_open_station(rideIndex, map_element_get_station(mapElement));
+        return window_ride_open_station(rideIndex, tile_element_get_station(mapElement));
     } else {
         // Open ride window in overview mode.
         return window_ride_main_open(rideIndex);
@@ -4096,7 +4096,7 @@ static sint32 window_ride_has_track_colour(Ride *ride, sint32 trackColour)
 
 static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     uint8 newColourScheme;
     sint32 interactionType, z, direction;
 
@@ -4115,7 +4115,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
         return;
 
     z = mapElement->base_height * 8;
-    direction = map_element_get_direction(mapElement);
+    direction = tile_element_get_direction(mapElement);
     sub_6C683D(&x, &y, &z, direction, mapElement->properties.track.type, newColourScheme, nullptr, 4);
 }
 
@@ -5154,7 +5154,7 @@ static void window_ride_measurements_update(rct_window *w)
  */
 static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     sint16 mapX, mapY;
     sint32 interactionType;
 
@@ -5168,8 +5168,8 @@ static void window_ride_measurements_tooldown(rct_window *w, rct_widgetindex wid
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_WALL:
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        _collectTrackDesignScenery = !track_design_save_contains_map_element(mapElement);
-        track_design_save_select_map_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
+        _collectTrackDesignScenery = !track_design_save_contains_tile_element(mapElement);
+        track_design_save_select_tile_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
         break;
     }
 }
@@ -5181,7 +5181,7 @@ static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex wid
     _lastSceneryX = x;
     _lastSceneryY = y;
 
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     sint16 mapX, mapY;
     sint32 interactionType;
 
@@ -5191,7 +5191,7 @@ static void window_ride_measurements_tooldrag(rct_window *w, rct_widgetindex wid
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     case VIEWPORT_INTERACTION_ITEM_WALL:
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        track_design_save_select_map_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
+        track_design_save_select_tile_element(interactionType, mapX, mapY, mapElement, _collectTrackDesignScenery);
         break;
     }
 }

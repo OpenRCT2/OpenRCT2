@@ -926,7 +926,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     sint16 grid_x, grid_y;
     sint32 type;
     // edx
-    rct_map_element* map_element;
+    rct_tile_element* tile_element;
     uint16 flags =
         VIEWPORT_INTERACTION_MASK_SCENERY &
         VIEWPORT_INTERACTION_MASK_WALL &
@@ -936,12 +936,12 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
 
     // not used
     rct_viewport* viewport;
-    get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &map_element, &viewport);
+    get_map_coordinates_from_pos(x, y, flags, &grid_x, &grid_y, &type, &tile_element, &viewport);
 
     switch (type){
     case VIEWPORT_INTERACTION_ITEM_SCENERY:
     {
-        rct_scenery_entry* scenery_entry = get_small_scenery_entry(map_element->properties.scenery.type);
+        rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
         // If can't repaint
         if (!(scenery_entry->small_scenery.flags &
@@ -952,9 +952,9 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
             grid_x,
-            1 | (map_element->type << 8),
+            1 | (tile_element->type << 8),
             grid_y,
-            map_element->base_height | (map_element->properties.scenery.type << 8),
+            tile_element->base_height | (tile_element->properties.scenery.type << 8),
             GAME_COMMAND_SET_SCENERY_COLOUR,
             0,
             gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
@@ -962,7 +962,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     }
     case VIEWPORT_INTERACTION_ITEM_WALL:
     {
-        rct_scenery_entry* scenery_entry = get_wall_entry(map_element->properties.wall.type);
+        rct_scenery_entry* scenery_entry = get_wall_entry(tile_element->properties.wall.type);
 
         // If can't repaint
         if (!(scenery_entry->wall.flags &
@@ -975,7 +975,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
             grid_x,
             1 | (gWindowSceneryPrimaryColour << 8),
             grid_y,
-            (map_element->type & MAP_ELEMENT_DIRECTION_MASK) | (map_element->base_height << 8),
+            (tile_element->type & TILE_ELEMENT_DIRECTION_MASK) | (tile_element->base_height << 8),
             GAME_COMMAND_SET_WALL_COLOUR,
             0,
             gWindowScenerySecondaryColour | (gWindowSceneryTertiaryColour << 8));
@@ -983,7 +983,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     }
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     {
-        rct_scenery_entry* scenery_entry = get_large_scenery_entry(map_element->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK);
+        rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
 
         // If can't repaint
         if (!(scenery_entry->large_scenery.flags &
@@ -993,9 +993,9 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
         game_do_command(
             grid_x,
-            1 | ((map_element->type & MAP_ELEMENT_DIRECTION_MASK) << 8),
+            1 | ((tile_element->type & TILE_ELEMENT_DIRECTION_MASK) << 8),
             grid_y,
-            map_element->base_height | ((map_element->properties.scenerymultiple.type >> 10) << 8),
+            tile_element->base_height | ((tile_element->properties.scenerymultiple.type >> 10) << 8),
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
             0,
             gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
@@ -1003,7 +1003,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     }
     case VIEWPORT_INTERACTION_ITEM_BANNER:
     {
-        rct_banner* banner = &gBanners[map_element->properties.banner.index];
+        rct_banner* banner = &gBanners[tile_element->properties.banner.index];
         rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
 
         // If can't repaint
@@ -1016,7 +1016,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
             grid_x,
             1,
             grid_y,
-            map_element->base_height | ((map_element->properties.banner.position & 0x3) << 8),
+            tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
             GAME_COMMAND_SET_BANNER_COLOUR,
             0,
             gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
@@ -1038,7 +1038,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
 
     sint16 gridX, gridY;
     sint32 type;
-    rct_map_element* mapElement;
+    rct_tile_element* mapElement;
     rct_viewport * viewport;
     get_map_coordinates_from_pos(x, y, flags, &gridX, &gridY, &type, &mapElement, &viewport);
 
@@ -1050,7 +1050,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
+                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(mapElement)) & 3;
                 gWindowSceneryPrimaryColour = mapElement->properties.scenery.colour_1 & 0x1F;
                 gWindowScenerySecondaryColour = mapElement->properties.scenery.colour_2 & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
@@ -1075,12 +1075,12 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     {
-        sint32 entryIndex = mapElement->properties.scenerymultiple.type & MAP_ELEMENT_LARGE_TYPE_MASK;
+        sint32 entryIndex = mapElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
         rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
             if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryRotation = (get_current_rotation() + map_element_get_direction(mapElement)) & 3;
+                gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(mapElement)) & 3;
                 gWindowSceneryPrimaryColour = mapElement->properties.scenerymultiple.colour[0] & 0x1F;
                 gWindowScenerySecondaryColour = mapElement->properties.scenerymultiple.colour[1] & 0x1F;
                 gWindowSceneryEyedropperEnabled = false;
@@ -1156,7 +1156,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         if (!gSceneryCtrlPressed) {
             if (input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z)) {
                 // CTRL pressed
-                rct_map_element* map_element;
+                rct_tile_element* tile_element;
                 uint16 flags =
                     VIEWPORT_INTERACTION_MASK_TERRAIN &
                     VIEWPORT_INTERACTION_MASK_RIDE &
@@ -1165,11 +1165,11 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                     VIEWPORT_INTERACTION_MASK_WALL &
                     VIEWPORT_INTERACTION_MASK_LARGE_SCENERY;
                 sint32 interaction_type;
-                get_map_coordinates_from_pos(x, y, flags, nullptr, nullptr, &interaction_type, &map_element, nullptr);
+                get_map_coordinates_from_pos(x, y, flags, nullptr, nullptr, &interaction_type, &tile_element, nullptr);
 
                 if (interaction_type != VIEWPORT_INTERACTION_ITEM_NONE) {
                     gSceneryCtrlPressed = true;
-                    gSceneryCtrlPressZ = map_element->base_height * 8;
+                    gSceneryCtrlPressZ = tile_element->base_height * 8;
                 }
             }
         }
@@ -1223,14 +1223,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
                 // If SHIFT pressed
                 if (gSceneryShiftPressed) {
-                    rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                    rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                    if (map_element == nullptr) {
+                    if (tile_element == nullptr) {
                         *grid_x = LOCATION_NULL;
                         return;
                     }
 
-                    sint16 z = (map_element->base_height * 8) & 0xFFF0;
+                    sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                     z += gSceneryShiftPressZOffset;
 
                     z = Math::Max<sint16>(z, 16);
@@ -1278,9 +1278,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
                 VIEWPORT_INTERACTION_MASK_TERRAIN &
                 VIEWPORT_INTERACTION_MASK_WATER;
             sint32 interaction_type = 0;
-            rct_map_element* map_element;
+            rct_tile_element* tile_element;
 
-            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
+            get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
             if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
                 *grid_x = LOCATION_NULL;
@@ -1288,21 +1288,21 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = map_element->properties.surface.terrain & MAP_ELEMENT_WATER_HEIGHT_MASK;
+            uint16 water_height = tile_element->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
             if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }
 
             // If SHIFT pressed
             if (gSceneryShiftPressed) {
-                map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == nullptr) {
+                if (tile_element == nullptr) {
                     *grid_x = LOCATION_NULL;
                     return;
                 }
 
-                sint16 z = (map_element->base_height * 8) & 0xFFF0;
+                sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
                 z = Math::Max<sint16>(z, 16);
@@ -1351,18 +1351,18 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
         sint32 interaction_type = 0;
-        rct_map_element* map_element;
+        rct_tile_element* tile_element;
 
-        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
+        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
             *grid_x = LOCATION_NULL;
             return;
         }
 
-        *parameter_1 = 0 | ((map_element->properties.path.type & 0x7) << 8);
-        *parameter_2 = map_element->base_height | ((map_element->properties.path.type >> 4) << 8);
-        if (map_element->type & 1) {
+        *parameter_1 = 0 | ((tile_element->properties.path.type & 0x7) << 8);
+        *parameter_2 = tile_element->base_height | ((tile_element->properties.path.type >> 4) << 8);
+        if (tile_element->type & 1) {
             *parameter_2 |= LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
@@ -1383,14 +1383,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             // If SHIFT pressed
             if (gSceneryShiftPressed) {
-                rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == nullptr) {
+                if (tile_element == nullptr) {
                     *grid_x = LOCATION_NULL;
                     return;
                 }
 
-                sint16 z = (map_element->base_height * 8) & 0xFFF0;
+                sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
                 z = Math::Max<sint16>(z, 16);
@@ -1436,14 +1436,14 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             // If SHIFT pressed
             if (gSceneryShiftPressed) {
-                rct_map_element* map_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
+                rct_tile_element* tile_element = map_get_surface_element_at(*grid_x / 32, *grid_y / 32);
 
-                if (map_element == nullptr) {
+                if (tile_element == nullptr) {
                     *grid_x = LOCATION_NULL;
                     return;
                 }
 
-                sint16 z = (map_element->base_height * 8) & 0xFFF0;
+                sint16 z = (tile_element->base_height * 8) & 0xFFF0;
                 z += gSceneryShiftPressZOffset;
 
                 z = Math::Max<sint16>(z, 16);
@@ -1487,9 +1487,9 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             VIEWPORT_INTERACTION_MASK_FOOTPATH &
             VIEWPORT_INTERACTION_MASK_FOOTPATH_ITEM;
         sint32 interaction_type = 0;
-        rct_map_element* map_element;
+        rct_tile_element* tile_element;
 
-        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &map_element, nullptr);
+        get_map_coordinates_from_pos(x, y, flags, grid_x, grid_y, &interaction_type, &tile_element, nullptr);
 
         if (interaction_type == VIEWPORT_INTERACTION_ITEM_NONE) {
             *grid_x = LOCATION_NULL;
@@ -1500,10 +1500,10 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         rotation -= get_current_rotation();
         rotation &= 0x3;
 
-        sint16 z = map_element->base_height;
+        sint16 z = tile_element->base_height;
 
-        if (map_element->properties.path.type & (1 << 2)) {
-            if (rotation != ((map_element->properties.path.type & 3) ^ 2)) {
+        if (tile_element->properties.path.type & (1 << 2)) {
+            if (rotation != ((tile_element->properties.path.type & 3) ^ 2)) {
                 z += 2;
             }
         }
@@ -2195,7 +2195,7 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
 
     uint8 scenery_type = (selected_tab & 0xFF00) >> 8;
     money32 cost = 0;
-    rct_map_element* mapElement;
+    rct_tile_element* mapElement;
 
     switch (scenery_type){
     case 0:

@@ -574,7 +574,7 @@ static void window_map_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32
     map_window_screen_to_map(x, y, &mapX, &mapY);
     mapX = Math::Clamp(0, mapX, 8191);
     mapY = Math::Clamp(0, mapY, 8191);
-    mapZ = map_element_height(x, y);
+    mapZ = tile_element_height(x, y);
 
     mainWindow = window_get_main();
     if (mainWindow != nullptr) {
@@ -1213,7 +1213,7 @@ static void window_map_set_land_rights_tool_update(sint32 x, sint32 y)
  */
 static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *mapX, sint16 *mapY, sint16 *mapZ, sint32 *direction)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     sub_68A15E(x, y, mapX, mapY, direction, &mapElement);
     if (*mapX == LOCATION_NULL)
@@ -1284,7 +1284,7 @@ static void window_map_place_park_entrance_tool_update(sint32 x, sint32 y)
 static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
 {
     sint32 mapX, mapY, mapZ, direction;
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
 
     map_invalidate_selection_rect();
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
@@ -1294,7 +1294,7 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
         return;
 
     mapZ = mapElement->base_height * 8;
-    if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_SURFACE) {
+    if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_SURFACE) {
         if ((mapElement->properties.surface.slope & 0x0F) != 0)
             mapZ += 16;
         if (mapElement->properties.surface.slope & 0x10)
@@ -1347,7 +1347,7 @@ static void window_map_place_park_entrance_tool_down(sint32 x, sint32 y)
  */
 static void window_map_set_peep_spawn_tool_down(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement, *surfaceMapElement;
+    rct_tile_element *mapElement, *surfaceMapElement;
     sint32 mapX, mapY, mapZ, direction;
 
     footpath_get_coordinates_from_pos(x, y, &mapX, &mapY, &direction, &mapElement);
@@ -1445,27 +1445,27 @@ static const uint16 TerrainColour[] = {
 };
 
 static const uint16 ElementTypeMaskColour[] = {
-    0xFFFF,         // MAP_ELEMENT_TYPE_SURFACE
-    0x0000,         // MAP_ELEMENT_TYPE_PATH
-    0x00FF,         // MAP_ELEMENT_TYPE_TRACK
-    0xFF00,         // MAP_ELEMENT_TYPE_SCENERY
-    0x0000,         // MAP_ELEMENT_TYPE_ENTRANCE
-    0xFFFF,         // MAP_ELEMENT_TYPE_WALL
-    0x0000,         // MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
-    0xFFFF,         // MAP_ELEMENT_TYPE_BANNER
-    0x0000,         // MAP_ELEMENT_TYPE_CORRUPT
+    0xFFFF,         // TILE_ELEMENT_TYPE_SURFACE
+    0x0000,         // TILE_ELEMENT_TYPE_PATH
+    0x00FF,         // TILE_ELEMENT_TYPE_TRACK
+    0xFF00,         // TILE_ELEMENT_TYPE_SCENERY
+    0x0000,         // TILE_ELEMENT_TYPE_ENTRANCE
+    0xFFFF,         // TILE_ELEMENT_TYPE_WALL
+    0x0000,         // TILE_ELEMENT_TYPE_SCENERY_MULTIPLE
+    0xFFFF,         // TILE_ELEMENT_TYPE_BANNER
+    0x0000,         // TILE_ELEMENT_TYPE_CORRUPT
 };
 
 static const uint16 ElementTypeAddColour[] = {
-    MAP_COLOUR(PALETTE_INDEX_0),                        // MAP_ELEMENT_TYPE_SURFACE
-    MAP_COLOUR(PALETTE_INDEX_17),                       // MAP_ELEMENT_TYPE_PATH
-    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0),   // MAP_ELEMENT_TYPE_TRACK
-    MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),    // MAP_ELEMENT_TYPE_SCENERY
-    MAP_COLOUR(PALETTE_INDEX_186),                      // MAP_ELEMENT_TYPE_ENTRANCE
-    MAP_COLOUR(PALETTE_INDEX_0),                        // MAP_ELEMENT_TYPE_WALL
-    MAP_COLOUR(PALETTE_INDEX_99),                       // MAP_ELEMENT_TYPE_SCENERY_MULTIPLE
-    MAP_COLOUR(PALETTE_INDEX_0),                        // MAP_ELEMENT_TYPE_BANNER
-    MAP_COLOUR(PALETTE_INDEX_68),                       // MAP_ELEMENT_TYPE_CORRUPT
+    MAP_COLOUR(PALETTE_INDEX_0),                        // TILE_ELEMENT_TYPE_SURFACE
+    MAP_COLOUR(PALETTE_INDEX_17),                       // TILE_ELEMENT_TYPE_PATH
+    MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0),   // TILE_ELEMENT_TYPE_TRACK
+    MAP_COLOUR_2(PALETTE_INDEX_0, PALETTE_INDEX_99),    // TILE_ELEMENT_TYPE_SCENERY
+    MAP_COLOUR(PALETTE_INDEX_186),                      // TILE_ELEMENT_TYPE_ENTRANCE
+    MAP_COLOUR(PALETTE_INDEX_0),                        // TILE_ELEMENT_TYPE_WALL
+    MAP_COLOUR(PALETTE_INDEX_99),                       // TILE_ELEMENT_TYPE_SCENERY_MULTIPLE
+    MAP_COLOUR(PALETTE_INDEX_0),                        // TILE_ELEMENT_TYPE_BANNER
+    MAP_COLOUR(PALETTE_INDEX_68),                       // TILE_ELEMENT_TYPE_CORRUPT
 };
 
 enum {
@@ -1578,11 +1578,11 @@ static const uint8 RideColourKey[] = {
 
 static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     uint16 colour;
 
     mapElement = map_get_surface_element_at(x >> 5, y >> 5);
-    colour = TerrainColour[map_element_get_terrain(mapElement)];
+    colour = TerrainColour[tile_element_get_terrain(mapElement)];
     if (map_get_water_height(mapElement) > 0)
         colour = WaterColour;
 
@@ -1590,10 +1590,10 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
         colour = PALETTE_INDEX_10 | (colour & 0xFF00);
 
     const sint32 maxSupportedMapElementType = (sint32)Util::CountOf(ElementTypeAddColour);
-    while (!map_element_is_last_for_tile(mapElement++)) {
-        sint32 mapElementType = map_element_get_type(mapElement) >> 2;
+    while (!tile_element_is_last_for_tile(mapElement++)) {
+        sint32 mapElementType = tile_element_get_type(mapElement) >> 2;
         if (mapElementType >= maxSupportedMapElementType) {
-            mapElementType = MAP_ELEMENT_TYPE_CORRUPT >> 2;
+            mapElementType = TILE_ELEMENT_TYPE_CORRUPT >> 2;
         }
         colour &= ElementTypeMaskColour[mapElementType];
         colour |= ElementTypeAddColour[mapElementType];
@@ -1604,15 +1604,15 @@ static uint16 map_window_get_pixel_colour_peep(sint32 x, sint32 y)
 
 static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
 {
-    rct_map_element *mapElement;
+    rct_tile_element *mapElement;
     Ride *ride;
     uint32 colour;
 
     colour = FALLBACK_COLOUR(PALETTE_INDEX_13);
     mapElement = map_get_surface_element_at(x >> 5, y >> 5);
     do {
-        switch (map_element_get_type(mapElement)) {
-        case MAP_ELEMENT_TYPE_SURFACE:
+        switch (tile_element_get_type(mapElement)) {
+        case TILE_ELEMENT_TYPE_SURFACE:
             if (map_get_water_height(mapElement) > 0) {
                 colour &= 0xFFFF;
                 colour |= FALLBACK_COLOUR(PALETTE_INDEX_194);
@@ -1622,19 +1622,19 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
                 colour |= PALETTE_INDEX_10 << 16;
             }
             break;
-        case MAP_ELEMENT_TYPE_PATH:
+        case TILE_ELEMENT_TYPE_PATH:
             colour = MAP_COLOUR(PALETTE_INDEX_14);
             break;
-        case MAP_ELEMENT_TYPE_ENTRANCE:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
             if (mapElement->properties.entrance.type == ENTRANCE_TYPE_PARK_ENTRANCE)
                 break;
             // fall-through
-        case MAP_ELEMENT_TYPE_TRACK:
+        case TILE_ELEMENT_TYPE_TRACK:
             ride = get_ride(mapElement->properties.track.ride_index);
             colour = RideKeyColours[RideColourKey[ride->type]];
             break;
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     if ((colour & 0xFFFF) == 0)
         colour >>= 16;

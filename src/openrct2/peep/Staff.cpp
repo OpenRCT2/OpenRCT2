@@ -27,7 +27,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../object_list.h"
-#include "../paint/map_element/map_element.h"
+#include "../paint/tile_element/tile_element.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../world/entrance.h"
@@ -674,7 +674,7 @@ sint32 staff_is_location_on_patrol_edge(rct_peep * mechanic, sint32 x, sint32 y)
     return onZoneEdge;
 }
 
-sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, rct_map_element * path)
+sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z, rct_tile_element * path)
 {
     /* Wide flags can potentially wall off parts of a staff patrol zone
      * for the heuristic search.
@@ -743,12 +743,12 @@ sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z,
         }
 
         /* Search through all adjacent map elements */
-        rct_map_element * test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
+        rct_tile_element * test_element = map_get_first_element_at(adjac_x / 32, adjac_y / 32);
         bool              pathfound    = false;
         bool              widefound    = false;
         do
         {
-            if (map_element_get_type(test_element) != MAP_ELEMENT_TYPE_PATH)
+            if (tile_element_get_type(test_element) != TILE_ELEMENT_TYPE_PATH)
             {
                 continue;
             }
@@ -772,7 +772,7 @@ sint32 staff_can_ignore_wide_flag(rct_peep * staff, sint32 x, sint32 y, uint8 z,
                     widecount++;
                 }
             }
-        } while (!map_element_is_last_for_tile(test_element++));
+        } while (!tile_element_is_last_for_tile(test_element++));
     }
 
     switch (total)
@@ -954,18 +954,18 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
 
     sint16 nextZ = ((peep->z + 8) & 0xFFF0) / 8;
 
-    rct_map_element * mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
+    rct_tile_element * mapElement = map_get_first_element_at(nextTile.x / 32, nextTile.y / 32);
 
     do
     {
         if (mapElement->base_height != nextZ)
             continue;
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE ||
-            map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE ||
+            tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     nextTile.x = (peep->x & 0xFFE0) + TileDirectionDelta[nextDirection].x;
     nextTile.y = (peep->y & 0xFFE0) + TileDirectionDelta[nextDirection].y;
@@ -976,12 +976,12 @@ static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
     {
         if (mapElement->base_height != nextZ)
             continue;
-        if (map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_ENTRANCE ||
-            map_element_get_type(mapElement) == MAP_ELEMENT_TYPE_TRACK)
+        if (tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_ENTRANCE ||
+            tile_element_get_type(mapElement) == TILE_ELEMENT_TYPE_TRACK)
         {
             return 0xFF;
         }
-    } while (!map_element_is_last_for_tile(mapElement++));
+    } while (!tile_element_is_last_for_tile(mapElement++));
 
     return nextDirection;
 }
@@ -996,17 +996,17 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
     if (!(peep->next_var_29 & 0x18))
     {
 
-        rct_map_element * mapElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
+        rct_tile_element * mapElement = map_get_surface_element_at(peep->next_x / 32, peep->next_y / 32);
 
         if (peep->next_z != mapElement->base_height)
             return 0xFF;
 
         if (peep->next_var_29 & 0x4)
         {
-            if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
+            if ((mapElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
                 return 0xFF;
         }
-        else if ((mapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != 0)
+        else if ((mapElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != 0)
             return 0xFF;
     }
 
@@ -1026,9 +1026,9 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
         if (chosenTile.x > 0x1FFF || chosenTile.y > 0x1FFF)
             continue;
 
-        rct_map_element * mapElement = map_get_surface_element_at(chosenTile.x / 32, chosenTile.y / 32);
+        rct_tile_element * mapElement = map_get_surface_element_at(chosenTile.x / 32, chosenTile.y / 32);
 
-        if (map_element_get_terrain(mapElement) != 0)
+        if (tile_element_get_terrain(mapElement) != 0)
             continue;
 
         if (abs(mapElement->base_height - peep->next_z) > 2)
@@ -1100,7 +1100,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
         }
         else
         {
-            rct_map_element * mapElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+            rct_tile_element * mapElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
             if (mapElement == NULL)
                 return 1;
@@ -1269,7 +1269,7 @@ static uint8 staff_mechanic_direction_path_rand(rct_peep * peep, uint8 pathDirec
  *
  *  rct2: 0x006C0121
  */
-static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirections, rct_map_element * pathElement)
+static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirections, rct_tile_element * pathElement)
 {
 
     uint8 direction      = 0xFF;
@@ -1326,12 +1326,12 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
         gPeepPathFindGoalPosition.x = chosenTile.x;
         gPeepPathFindGoalPosition.y = chosenTile.y;
 
-        // Find the exit/entrance map_element
+        // Find the exit/entrance tile_element
         bool              entranceFound = false;
-        rct_map_element * mapElement    = map_get_first_element_at(chosenTile.x / 32, chosenTile.y / 32);
+        rct_tile_element * mapElement    = map_get_first_element_at(chosenTile.x / 32, chosenTile.y / 32);
         do
         {
-            if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_ENTRANCE)
+            if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_ENTRANCE)
                 continue;
 
             if (mapElement->base_height != z)
@@ -1343,7 +1343,7 @@ static uint8 staff_mechanic_direction_path(rct_peep * peep, uint8 validDirection
 
             entranceFound = true;
             break;
-        } while (!map_element_is_last_for_tile(mapElement++));
+        } while (!tile_element_is_last_for_tile(mapElement++));
 
         if (entranceFound == false)
         {
@@ -1394,7 +1394,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     }
     else
     {
-        rct_map_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == NULL)
             return 1;
 
@@ -1426,7 +1426,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
  *
  *  rct2: 0x006C050B
  */
-static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_map_element * pathElement)
+static uint8 staff_direction_path(rct_peep * peep, uint8 validDirections, rct_tile_element * pathElement)
 {
     uint8 direction      = 0xFF;
     uint8 pathDirections = pathElement->properties.path.edges & 0xF;
@@ -1482,7 +1482,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     }
     else
     {
-        rct_map_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
+        rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
         if (pathElement == NULL)
             return 1;
 

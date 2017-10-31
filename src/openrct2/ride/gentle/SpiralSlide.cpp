@@ -53,7 +53,7 @@ enum
 };
 
 static void spiral_slide_paint_tile_right(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_map_element * mapElement)
+                                          sint32 height, rct_tile_element * mapElement)
 {
     uint32 image_id = 0;
 
@@ -70,7 +70,7 @@ static void spiral_slide_paint_tile_right(paint_session * session, uint8 rideInd
 }
 
 static void spiral_slide_paint_tile_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                         sint32 height, rct_map_element * mapElement)
+                                         sint32 height, rct_tile_element * mapElement)
 {
     uint32 image_id = 0;
 
@@ -87,7 +87,7 @@ static void spiral_slide_paint_tile_left(paint_session * session, uint8 rideInde
 }
 
 static void spiral_slide_paint_tile_front(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
-                                          sint32 height, rct_map_element * mapElement)
+                                          sint32 height, rct_tile_element * mapElement)
 {
     uint32 image_id = 0;
 
@@ -194,7 +194,7 @@ static const uint32 spiral_slide_fence_sprites[] = {
  * rct: 0x007485C8
  */
 static void paint_spiral_slide(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
-                               rct_map_element * mapElement)
+                               rct_tile_element * mapElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
 

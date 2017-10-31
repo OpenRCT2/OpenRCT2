@@ -26,8 +26,8 @@
 
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {
-    rct_map_element *const firstElement = map_get_nth_element_at(x, y, first);
-    rct_map_element *const secondElement = map_get_nth_element_at(x, y, second);
+    rct_tile_element *const firstElement = map_get_nth_element_at(x, y, first);
+    rct_tile_element *const secondElement = map_get_nth_element_at(x, y, second);
 
     if (firstElement == NULL) {
         log_error("First element is out of range for the tile");
@@ -43,15 +43,15 @@ static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second
     }
 
     // Swap their memory
-    rct_map_element temp = *firstElement;
+    rct_tile_element temp = *firstElement;
     *firstElement = *secondElement;
     *secondElement = temp;
 
     // Swap the 'last map element for tile' flag if either one of them was last
-    if (map_element_is_last_for_tile(firstElement) || map_element_is_last_for_tile(secondElement))
+    if (tile_element_is_last_for_tile(firstElement) || tile_element_is_last_for_tile(secondElement))
     {
-        firstElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
-        secondElement->flags ^= MAP_ELEMENT_FLAG_LAST_TILE;
+        firstElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
+        secondElement->flags ^= TILE_ELEMENT_FLAG_LAST_TILE;
     }
 
     return true;
@@ -74,16 +74,16 @@ sint32 tile_inspector_insert_corrupt_at(sint32 x, sint32 y, sint16 elementIndex,
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Create new corrupt element
-        rct_map_element *corruptElement = map_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
+        rct_tile_element *corruptElement = tile_element_insert(x, y, -1, 0); // Ugly hack: -1 guarantees this to be placed first
         if (corruptElement == NULL)
         {
             log_warning("Failed to insert corrupt element.");
             return MONEY32_UNDEFINED;
         }
-        corruptElement->type = MAP_ELEMENT_TYPE_CORRUPT;
+        corruptElement->type = TILE_ELEMENT_TYPE_CORRUPT;
 
         // Set the base height to be the same as the selected element
-        rct_map_element *const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
+        rct_tile_element *const selectedElement = map_get_nth_element_at(x, y, elementIndex + 1);
         if (!selectedElement) {
             return MONEY32_UNDEFINED;
         }
@@ -139,11 +139,11 @@ sint32 tile_inspector_remove_element_at(sint32 x, sint32 y, sint16 elementIndex,
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Forcefully remove the element
-        rct_map_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
+        rct_tile_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
         if (!mapElement) {
             return MONEY32_UNDEFINED;
         }
-        map_element_remove(mapElement);
+        tile_element_remove(mapElement);
         map_invalidate_tile_full(x << 5, y << 5);
 
         // Update the window
@@ -203,17 +203,17 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
     {
         uint8 newRotation, pathEdges, pathCorners;
 
-        rct_map_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
+        rct_tile_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
         if (!mapElement) {
             return MONEY32_UNDEFINED;
         }
-        switch (map_element_get_type(mapElement))
+        switch (tile_element_get_type(mapElement))
         {
-        case MAP_ELEMENT_TYPE_PATH:
+        case TILE_ELEMENT_TYPE_PATH:
             if (footpath_element_is_sloped(mapElement))
             {
-                newRotation = (footpath_element_get_slope_direction(mapElement) + 1) & MAP_ELEMENT_DIRECTION_MASK;
-                mapElement->properties.path.type &= ~MAP_ELEMENT_DIRECTION_MASK;
+                newRotation = (footpath_element_get_slope_direction(mapElement) + 1) & TILE_ELEMENT_DIRECTION_MASK;
+                mapElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;
                 mapElement->properties.path.type |= newRotation;
             }
             pathEdges = mapElement->properties.path.edges & 0x0F;
@@ -222,15 +222,15 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             mapElement->properties.path.edges |= ((pathEdges << 1) | (pathEdges >> 3)) & 0x0F;
             mapElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
             break;
-        case MAP_ELEMENT_TYPE_TRACK:
-        case MAP_ELEMENT_TYPE_SCENERY:
-        case MAP_ELEMENT_TYPE_ENTRANCE:
-        case MAP_ELEMENT_TYPE_WALL:
-            newRotation = map_element_get_direction_with_offset(mapElement, 1);
-            mapElement->type &= ~MAP_ELEMENT_DIRECTION_MASK;
+        case TILE_ELEMENT_TYPE_TRACK:
+        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TILE_ELEMENT_TYPE_WALL:
+            newRotation = tile_element_get_direction_with_offset(mapElement, 1);
+            mapElement->type &= ~TILE_ELEMENT_DIRECTION_MASK;
             mapElement->type |= newRotation;
             break;
-        case MAP_ELEMENT_TYPE_BANNER:
+        case TILE_ELEMENT_TYPE_BANNER:
             mapElement->properties.banner.flags ^= 1 << mapElement->properties.banner.position;
             mapElement->properties.banner.position++;
             mapElement->properties.banner.position &= 3;
@@ -249,7 +249,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
     return 0;
 }
 
-sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element element, sint32 flags)
+sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_tile_element element, sint32 flags)
 {
     // Make sure there is enough space for the new element
     if (!map_check_free_elements_and_reorganise(1))
@@ -259,14 +259,14 @@ sint32 tile_inspector_paste_element_at(sint32 x, sint32 y, rct_map_element eleme
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_map_element *const pastedElement = map_element_insert(x, y, element.base_height, 0);
+        rct_tile_element *const pastedElement = tile_element_insert(x, y, element.base_height, 0);
 
-        bool lastForTile = map_element_is_last_for_tile(pastedElement);
+        bool lastForTile = tile_element_is_last_for_tile(pastedElement);
         *pastedElement = element;
-        pastedElement->flags &= ~MAP_ELEMENT_FLAG_LAST_TILE;
+        pastedElement->flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
         if (lastForTile)
         {
-            pastedElement->flags |= MAP_ELEMENT_FLAG_LAST_TILE;
+            pastedElement->flags |= TILE_ELEMENT_FLAG_LAST_TILE;
         }
 
         map_invalidate_tile_full(x << 5, y << 5);
@@ -295,22 +295,22 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 {
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        const rct_map_element *const firstElement = map_get_first_element_at(x, y);
+        const rct_tile_element *const firstElement = map_get_first_element_at(x, y);
 
         // Count elements on tile
         sint32 numElement = 0;
-        const rct_map_element *elementIterator = firstElement;
+        const rct_tile_element *elementIterator = firstElement;
         do
         {
             numElement++;
-        } while (!map_element_is_last_for_tile(elementIterator++));
+        } while (!tile_element_is_last_for_tile(elementIterator++));
 
         // Bubble sort
         for (sint32 loopStart = 1; loopStart < numElement; loopStart++)
         {
             sint32 currentId = loopStart;
-            const rct_map_element *currentElement = firstElement + currentId;
-            const rct_map_element *otherElement = currentElement - 1;
+            const rct_tile_element *currentElement = firstElement + currentId;
+            const rct_tile_element *otherElement = currentElement - 1;
 
             // While current element's base height is lower, or (when their baseheight is the same) the other map element's clearance height is lower...
             while (currentId > 0 &&
@@ -348,7 +348,7 @@ sint32 tile_inspector_sort_elements_at(sint32 x, sint32 y, sint32 flags)
 
 sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementIndex, sint8 heightOffset, sint32 flags)
 {
-    rct_map_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
     if (!mapElement) {
         return MONEY32_UNDEFINED;
     }
@@ -378,7 +378,7 @@ sint32 tile_inspector_any_base_height_offset(sint32 x, sint32 y, sint16 elementI
 
 sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool showFences, sint32 flags)
 {
-    rct_map_element *const surfaceelement = map_get_surface_element_at(x, y);
+    rct_tile_element *const surfaceelement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceelement == NULL)
@@ -405,7 +405,7 @@ sint32 tile_inspector_surface_show_park_fences(sint32 x, sint32 y, bool showFenc
 
 sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerIndex, sint32 flags)
 {
-    rct_map_element *const surfaceElement = map_get_surface_element_at(x, y);
+    rct_tile_element *const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == NULL)
@@ -461,7 +461,7 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
 
 sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
 {
-    rct_map_element *const surfaceElement = map_get_surface_element_at(x, y);
+    rct_tile_element *const surfaceElement = map_get_surface_element_at(x, y);
 
     // No surface element on tile
     if (surfaceElement == NULL)
@@ -497,9 +497,9 @@ sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
 
 sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, bool sloped, sint32 flags)
 {
-    rct_map_element *const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!pathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
+    if (!pathElement || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
     {
         return MONEY32_UNDEFINED;
     }
@@ -526,9 +526,9 @@ sint32 tile_inspector_path_set_sloped(sint32 x, sint32 y, sint32 elementIndex, b
 
 sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 edgeIndex, sint32 flags)
 {
-    rct_map_element *const pathElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const pathElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!pathElement || map_element_get_type(pathElement) != MAP_ELEMENT_TYPE_PATH)
+    if (!pathElement || tile_element_get_type(pathElement) != TILE_ELEMENT_TYPE_PATH)
     {
         return MONEY32_UNDEFINED;
     }
@@ -551,9 +551,9 @@ sint32 tile_inspector_path_toggle_edge(sint32 x, sint32 y, sint32 elementIndex, 
 
 sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, sint32 slopeValue, sint32 flags)
 {
-    rct_map_element *const wallElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const wallElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!wallElement || map_element_get_type(wallElement) != MAP_ELEMENT_TYPE_WALL)
+    if (!wallElement || tile_element_get_type(wallElement) != TILE_ELEMENT_TYPE_WALL)
     {
         return MONEY32_UNDEFINED;
     }
@@ -580,14 +580,14 @@ sint32 tile_inspector_wall_set_slope(sint32 x, sint32 y, sint32 elementIndex, si
 // Broxzier: Copied from track_remove and stripped of unneeded code, but I think this should be smaller
 sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elementIndex, sint8 offset, sint32 flags)
 {
-    rct_map_element *const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
     if (offset == 0)
     {
         return MONEY32_UNDEFINED;
     }
 
-    if (!trackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
+    if (!trackElement || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
     {
         return MONEY32_UNDEFINED;
     }
@@ -598,13 +598,13 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
         sint16 originX = x << 5;
         sint16 originY = y << 5;
         sint16 originZ = trackElement->base_height * 8;
-        uint8 rotation = map_element_get_direction(trackElement);
+        uint8 rotation = tile_element_get_direction(trackElement);
         uint8 rideIndex = trackElement->properties.track.ride_index;
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += map_element_get_track_sequence(trackElement);
+        trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8 originDirection = map_element_get_direction(trackElement);
+        uint8 originDirection = tile_element_get_direction(trackElement);
         switch (originDirection)
         {
         case 0:
@@ -657,19 +657,19 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
             map_invalidate_tile_full(elemX, elemY);
 
             bool found = false;
-            rct_map_element *mapElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            rct_tile_element *mapElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (mapElement->base_height != elemZ / 8)
                     continue;
 
-                if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+                if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((map_element_get_direction(mapElement)) != rotation)
+                if ((tile_element_get_direction(mapElement)) != rotation)
                     continue;
 
-                if (map_element_get_track_sequence(mapElement) != trackBlock->index)
+                if (tile_element_get_track_sequence(mapElement) != trackBlock->index)
                     continue;
 
                 if (mapElement->properties.track.type != type)
@@ -677,7 +677,7 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 
                 found = true;
                 break;
-            } while (!map_element_is_last_for_tile(mapElement++));
+            } while (!tile_element_is_last_for_tile(mapElement++));
 
             if (!found)
             {
@@ -706,9 +706,9 @@ sint32 tile_inspector_track_base_height_offset(sint32 x, sint32 y, sint32 elemen
 // Broxzier: Basically a copy of the above function, with just two different lines... should probably be combined somehow
 sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, bool entireTrackBlock, bool setChain, sint32 flags)
 {
-    rct_map_element *const trackElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const trackElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!trackElement || map_element_get_type(trackElement) != MAP_ELEMENT_TYPE_TRACK)
+    if (!trackElement || tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK)
     {
         return MONEY32_UNDEFINED;
     }
@@ -730,13 +730,13 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
         sint16 originX = x << 5;
         sint16 originY = y << 5;
         sint16 originZ = trackElement->base_height * 8;
-        uint8 rotation = map_element_get_direction(trackElement);
+        uint8 rotation = tile_element_get_direction(trackElement);
         uint8 rideIndex = trackElement->properties.track.ride_index;
         Ride* ride = get_ride(rideIndex);
         const rct_preview_track* trackBlock = get_track_def_from_ride(ride, type);
-        trackBlock += map_element_get_track_sequence(trackElement);
+        trackBlock += tile_element_get_track_sequence(trackElement);
 
-        uint8 originDirection = map_element_get_direction(trackElement);
+        uint8 originDirection = tile_element_get_direction(trackElement);
         switch (originDirection)
         {
         case 0:
@@ -789,19 +789,19 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
             map_invalidate_tile_full(elemX, elemY);
 
             bool found = false;
-            rct_map_element *mapElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
+            rct_tile_element *mapElement = map_get_first_element_at(elemX >> 5, elemY >> 5);
             do
             {
                 if (mapElement->base_height != elemZ / 8)
                     continue;
 
-                if (map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_TRACK)
+                if (tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_TRACK)
                     continue;
 
-                if ((map_element_get_direction(mapElement)) != rotation)
+                if ((tile_element_get_direction(mapElement)) != rotation)
                     continue;
 
-                if (map_element_get_track_sequence(mapElement) != trackBlock->index)
+                if (tile_element_get_track_sequence(mapElement) != trackBlock->index)
                     continue;
 
                 if (mapElement->properties.track.type != type)
@@ -809,7 +809,7 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
                 found = true;
                 break;
-            } while (!map_element_is_last_for_tile(mapElement++));
+            } while (!tile_element_is_last_for_tile(mapElement++));
 
             if (!found)
             {
@@ -838,9 +838,9 @@ sint32 tile_inspector_track_set_chain(sint32 x, sint32 y, sint32 elementIndex, b
 
 sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags)
 {
-    rct_map_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!mapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+    if (!mapElement || tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_SCENERY)
     {
         return MONEY32_UNDEFINED;
     }
@@ -848,7 +848,7 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         // Set quadrant index
-        mapElement->type &= ~MAP_ELEMENT_QUADRANT_MASK;
+        mapElement->type &= ~TILE_ELEMENT_QUADRANT_MASK;
         mapElement->type |= quarterIndex << 6;
 
         // Update collision
@@ -867,9 +867,9 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 
 sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 elementIndex, sint32 quarterIndex, sint32 flags)
 {
-    rct_map_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const mapElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!mapElement || map_element_get_type(mapElement) != MAP_ELEMENT_TYPE_SCENERY)
+    if (!mapElement || tile_element_get_type(mapElement) != TILE_ELEMENT_TYPE_SCENERY)
     {
         return MONEY32_UNDEFINED;
     }
@@ -890,9 +890,9 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 
 sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 elementIndex, sint32 edgeIndex, sint32 flags)
 {
-    rct_map_element *const bannerElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const bannerElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!bannerElement || map_element_get_type(bannerElement) != MAP_ELEMENT_TYPE_BANNER)
+    if (!bannerElement || tile_element_get_type(bannerElement) != TILE_ELEMENT_TYPE_BANNER)
     {
         return MONEY32_UNDEFINED;
     }
@@ -912,21 +912,21 @@ sint32 tile_inspector_banner_toggle_blocking_edge(sint32 x, sint32 y, sint32 ele
 
 sint32 tile_inspector_corrupt_clamp(sint32 x, sint32 y, sint32 elementIndex, sint32 flags)
 {
-    rct_map_element *const corruptElement = map_get_nth_element_at(x, y, elementIndex);
+    rct_tile_element *const corruptElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!corruptElement || map_element_get_type(corruptElement) != MAP_ELEMENT_TYPE_CORRUPT)
+    if (!corruptElement || tile_element_get_type(corruptElement) != TILE_ELEMENT_TYPE_CORRUPT)
     {
         return MONEY32_UNDEFINED;
     }
 
-    if (map_element_is_last_for_tile(corruptElement))
+    if (tile_element_is_last_for_tile(corruptElement))
     {
         return MONEY32_UNDEFINED;
     }
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        rct_map_element *const nextElement = corruptElement + 1;
+        rct_tile_element *const nextElement = corruptElement + 1;
         corruptElement->base_height = corruptElement->clearance_height = nextElement->base_height;
 
         if ((uint32)x == windowTileInspectorTileX && (uint32)y == windowTileInspectorTileY)

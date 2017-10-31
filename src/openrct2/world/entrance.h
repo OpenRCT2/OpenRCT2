@@ -37,7 +37,7 @@ void game_command_remove_park_entrance(sint32 *eax, sint32 *ebx, sint32 *ecx, si
 
 typedef struct LocationXYZ16 LocationXYZ16;
 typedef struct LocationXYZD16 LocationXYZD16;
-typedef struct rct_map_element rct_map_element;
+typedef struct rct_tile_element rct_tile_element;
 
 extern bool gParkEntranceGhostExists;
 extern LocationXYZ16 gParkEntranceGhostPosition;
@@ -55,8 +55,8 @@ money32 park_entrance_place_ghost(sint32 x, sint32 y, sint32 z, sint32 direction
 money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction);
 
 void reset_park_entrance();
-void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_map_element *mapElement);
-void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_map_element *mapElement);
+void maze_entrance_hedge_replacement(sint32 x, sint32 y, rct_tile_element *mapElement);
+void maze_entrance_hedge_removal(sint32 x, sint32 y, rct_tile_element *mapElement);
 
 void fix_park_entrance_locations();
 
