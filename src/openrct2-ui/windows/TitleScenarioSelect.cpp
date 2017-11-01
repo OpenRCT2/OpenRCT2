@@ -145,18 +145,25 @@ static bool is_locking_enabled(rct_window *w);
 
 static scenarioselect_callback _callback;
 static bool _showLockedInformation = false;
+static bool _titleEditor = false;
 
 /**
  *
  *  rct2: 0x006781B5
  */
-rct_window * window_scenarioselect_open(scenarioselect_callback callback)
+rct_window * window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor)
 {
     rct_window* window;
     sint32 windowWidth;
     sint32 windowHeight = 334;
 
     _callback = callback;
+
+    if (_titleEditor != titleEditor)
+    {
+        _titleEditor = titleEditor;
+        window_close_by_class(WC_SCENARIO_SELECT);
+    }
 
     window = window_bring_to_front_by_class(WC_SCENARIO_SELECT);
     if (window != nullptr)
@@ -166,18 +173,17 @@ rct_window * window_scenarioselect_open(scenarioselect_callback callback)
     scenario_repository_scan();
 
     // Shrink the window if we're showing scenarios by difficulty level.
-    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY) {
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY && !_titleEditor)
         windowWidth = 610;
-    } else {
+    else
         windowWidth = 733;
-    }
 
     window = window_create_centred(
         windowWidth,
         windowHeight,
         &window_scenarioselect_events,
         WC_SCENARIO_SELECT,
-        WF_10
+        WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0)
     );
     window->widgets = window_scenarioselect_widgets;
     window->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2)
@@ -202,18 +208,25 @@ static void window_scenarioselect_init_tabs(rct_window *w)
 {
     sint32 showPages = 0;
     size_t numScenarios = scenario_repository_get_count();
-    for (size_t i = 0; i < numScenarios; i++) {
+    for (size_t i = 0; i < numScenarios; i++)
+    {
         const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor)
+        {
+            if (_titleEditor && scenario->source_game == SCENARIO_SOURCE_OTHER)
+                continue;
             showPages |= 1 << scenario->source_game;
-        } else {
+        }
+        else
+        {
             sint32 category = scenario->category;
-            if (category > SCENARIO_CATEGORY_OTHER) {
+            if (category > SCENARIO_CATEGORY_OTHER)
+            {
                 category = SCENARIO_CATEGORY_OTHER;
             }
             showPages |= 1 << category;
         }
-        }
+    }
 
     sint32 firstPage = bitscanforward(showPages);
     if (firstPage != -1) {
@@ -294,6 +307,10 @@ static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIn
                 audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
                 gFirstTimeSaving = true;
                 _callback(listItem->scenario.scenario->path);
+                if (_titleEditor)
+                {
+                    window_close(w);
+                }
             }
             break;
         }
@@ -383,7 +400,7 @@ static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
         sint32 x = (widget->left + widget->right) / 2 + w->x;
         sint32 y = (widget->top + widget->bottom) / 2 + w->y - 3;
 
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor) {
             set_format_arg(0, rct_string_id, ScenarioOriginStringIds[i]);
         } else { // old-style
             set_format_arg(0, rct_string_id, ScenarioCategoryStringIds[i]);
@@ -460,7 +477,7 @@ static void window_scenarioselect_scrollpaint(rct_window *w, rct_drawpixelinfo *
     rct_string_id highlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
     rct_string_id unhighlighted_format = (theme_get_flags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT) ? STR_WHITE_STRING : STR_BLACK_STRING;
 
-    bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN;
+    bool wide = gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor;
 
     rct_widget *listWidget = &w->widgets[WIDX_SCENARIOLIST];
     sint32 listWidth = listWidget->right - listWidget->left - 12;
@@ -573,15 +590,17 @@ static void initialise_list_items(rct_window *w)
     uint8 currentHeading = UINT8_MAX;
     for (size_t i = 0; i < numScenarios; i++) {
         const scenario_index_entry *scenario = scenario_repository_get_by_index(i);
-        if (!is_scenario_visible(w, scenario)) {
+
+        if (!is_scenario_visible(w, scenario))
             continue;
-        }
+        if (_titleEditor && scenario->source_game == SCENARIO_SOURCE_OTHER)
+            continue;
 
         sc_list_item *listItem;
 
         // Category heading
         rct_string_id headingStringId = STR_NONE;
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor) {
             if (w->selected_tab != SCENARIO_SOURCE_REAL && currentHeading != scenario->category) {
                 currentHeading = scenario->category;
                 headingStringId = ScenarioCategoryStringIds[currentHeading];
@@ -676,7 +695,7 @@ static void initialise_list_items(rct_window *w)
 
 static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scenario)
 {
-    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+    if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN || _titleEditor) {
         if (scenario->source_game != w->selected_tab) {
             return false;
         }
@@ -694,14 +713,14 @@ static bool is_scenario_visible(rct_window *w, const scenario_index_entry *scena
 
 static bool is_locking_enabled(rct_window *w)
 {
-    if (gConfigGeneral.scenario_select_mode != SCENARIO_SELECT_MODE_ORIGIN) {
+    if (gConfigGeneral.scenario_select_mode != SCENARIO_SELECT_MODE_ORIGIN)
         return false;
-    }
-    if (!gConfigGeneral.scenario_unlocking_enabled) {
+    if (!gConfigGeneral.scenario_unlocking_enabled)
         return false;
-    }
-    if (w->selected_tab >= 6) {
+    if (w->selected_tab >= 6)
         return false;
-    }
+    if (_titleEditor)
+        return false;
+    
     return true;
 }

@@ -221,7 +221,7 @@ static void window_server_start_mouseup(rct_window *w, rct_widgetindex widgetInd
         window_invalidate(w);
         break;
     case WIDX_START_SERVER:
-        window_scenarioselect_open(window_server_start_scenarioselect_callback);
+        window_scenarioselect_open(window_server_start_scenarioselect_callback, false);
         break;
     case WIDX_LOAD_SERVER:
         network_set_password(_password);

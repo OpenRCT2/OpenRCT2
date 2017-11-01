@@ -32,6 +32,7 @@ typedef struct TitleCommand
         uint8 Zoom;         // ZOOM
         uint8 Speed;        // SPEED
         uint16 Milliseconds;      // WAIT
+        utf8 Scenario[64];        // LOADSC
     };
 } TitleCommand;
 
@@ -70,6 +71,7 @@ enum TITLE_SCRIPT
     TITLE_SCRIPT_LOOP,
     TITLE_SCRIPT_ENDLOOP,
     TITLE_SCRIPT_LOADRCT1,
+    TITLE_SCRIPT_LOADSC,
 };
 
 #ifdef __cplusplus

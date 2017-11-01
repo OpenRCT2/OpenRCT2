@@ -30,6 +30,8 @@
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
 - Feature: Vehicles with matching capabilities are now always switchable.
+- Feature: Add search box to track design window.
+- Feature: Add load scenario command to title sequences.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1185] Close button colour of prompt windows does not match.

@@ -143,7 +143,7 @@ static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex
         else {
             window_close_by_class(WC_LOADSAVE);
             window_close_by_class(WC_SERVER_LIST);
-            window_scenarioselect_open(window_title_menu_scenarioselect_callback);
+            window_scenarioselect_open(window_title_menu_scenarioselect_callback, false);
         }
         break;
     case WIDX_CONTINUE_SAVED_GAME:
