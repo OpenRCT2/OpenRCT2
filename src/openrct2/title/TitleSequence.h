@@ -34,7 +34,7 @@ typedef struct TitleCommand
         uint8 Zoom;         // ZOOM
         uint8 Speed;        // SPEED
         uint16 Milliseconds;      // WAIT
-        utf8 Scenario[64];        // LOADSC
+        utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH];        // LOADSC
     };
 } TitleCommand;
 
