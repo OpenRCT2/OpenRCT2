@@ -523,8 +523,8 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
         {
             if (!whitespace)
             {
-                if (part == 0 && (cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0) ||
-                                 (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0))
+                if (part == 0 && (cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0 ||
+                                  cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0))
                 {
                     load = true;
                 }
