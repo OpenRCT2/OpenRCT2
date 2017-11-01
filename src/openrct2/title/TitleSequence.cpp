@@ -29,6 +29,7 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
+#include "../scenario/ScenarioRepository.h"
 #include "../util/util.h"
 #include "TitleSequence.h"
 
@@ -479,7 +480,12 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             else if (_stricmp(token, "LOADSC") == 0)
             {
                 command.Type = TITLE_SCRIPT_LOADSC;
-                safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                // Confirm the scenario exists
+                auto scenario = GetScenarioRepository()->GetByFilename(part1);
+                if (scenario != nullptr)
+                {
+                    safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                }
             }
         }
         if (command.Type != TITLE_SCRIPT_UNDEFINED)
