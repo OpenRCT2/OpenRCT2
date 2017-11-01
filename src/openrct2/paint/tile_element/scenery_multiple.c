@@ -186,8 +186,8 @@ static const boundbox s98E3C4[] = {
 void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) {
     //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
-    uint32 ebp = tileElement->properties.scenerymultiple.type >> 10;
-    rct_scenery_entry *entry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+    uint32 ebp = scenery_large_get_sequence(tileElement);
+    rct_scenery_entry *entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
     if (entry == NULL)
         return;
 
@@ -237,7 +237,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT) {
         if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
-            sint32 al = ((tileElement->properties.surface.terrain >> 2) - 1) & 3;
+            sint32 al = (scenery_large_get_sequence(tileElement) - 1) & 3;
             if (al != direction) {
                 scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
                 return;
@@ -329,7 +329,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
         scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    uint8 al = ((tileElement->properties.surface.terrain >> 2) - 1) & 3;
+    uint8 al = (scenery_large_get_sequence(tileElement) - 1) & 3;
     if (al != direction) {
         scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;

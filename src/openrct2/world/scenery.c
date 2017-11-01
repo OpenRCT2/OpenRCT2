@@ -357,3 +357,63 @@ void scenery_small_set_supports_needed(rct_tile_element *tileElement)
 {
     tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
+
+colour_t scenery_large_get_primary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.scenerymultiple.colour[0] & TILE_ELEMENT_COLOUR_MASK;
+}
+
+colour_t scenery_large_get_secondary_colour(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.scenerymultiple.colour[1] & TILE_ELEMENT_COLOUR_MASK;
+}
+
+void scenery_large_set_primary_colour(rct_tile_element * tileElement, colour_t colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.scenerymultiple.colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.scenerymultiple.colour[0] |= colour;
+}
+
+void scenery_large_set_secondary_colour(rct_tile_element * tileElement, colour_t colour)
+{
+    assert(colour <= 31);
+    tileElement->properties.scenerymultiple.colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
+    tileElement->properties.scenerymultiple.colour[1] |= colour;
+}
+
+sint32 scenery_large_get_banner_id(rct_tile_element * tileElement)
+{
+    return (tileElement->type & 0xC0) |
+        (((tileElement->properties.scenerymultiple.colour[0]) &~ TILE_ELEMENT_COLOUR_MASK) >> 2) |
+        (((tileElement->properties.scenerymultiple.colour[1]) &~ TILE_ELEMENT_COLOUR_MASK) >> 5);
+}
+
+void scenery_large_set_banner_id(rct_tile_element * tileElement, uint8 bannerIndex)
+{
+    tileElement->type |= bannerIndex & 0xC0;
+    tileElement->properties.scenerymultiple.colour[0] |= (bannerIndex & 0x38) << 2;
+    tileElement->properties.scenerymultiple.colour[1] |= (bannerIndex & 7) << 5;
+}
+
+sint32 scenery_large_get_type(rct_tile_element * tileElement)
+{
+    return (tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+}
+
+sint32 scenery_large_get_sequence(rct_tile_element * tileElement)
+{
+    return (tileElement->properties.scenerymultiple.type >> 10);
+}
+
+void scenery_large_set_type(rct_tile_element * tileElement, uint16 type)
+{
+    tileElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
+    tileElement->properties.scenerymultiple.type |= (type & TILE_ELEMENT_LARGE_TYPE_MASK);
+}
+
+void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence)
+{
+    tileElement->properties.scenerymultiple.type &= TILE_ELEMENT_LARGE_TYPE_MASK;
+    tileElement->properties.scenerymultiple.type |= (sequence << 10);
+}

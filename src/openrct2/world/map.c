@@ -893,7 +893,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         if (tile_element->base_height != base_height)
             continue;
 
-        if ((tile_element->properties.scenerymultiple.type >> 10) != tileIndex)
+        if (scenery_large_get_sequence(tile_element) != tileIndex)
             continue;
 
         if ((tile_element_get_direction(tile_element)) != tile_element_direction)
@@ -916,7 +916,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         tile_element_remove_banner_entry(tile_element);
     }
 
-    rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & 0x3FF);
+    rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
     LocationXYZ16 firstTile = {
         .x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
         .y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
@@ -970,7 +970,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
             if (tile_element_get_direction(sceneryElement) != tile_element_direction)
                 continue;
 
-            if ((sceneryElement->properties.scenerymultiple.type >> 10) != i)
+            if (scenery_large_get_sequence(sceneryElement) != i)
                 continue;
 
             if (sceneryElement->base_height != currentTile.z / 8)
@@ -1039,7 +1039,7 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
         return;
     }
 
-    rct_scenery_entry *scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & 0x3FF);
+    rct_scenery_entry * scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
 
     // Work out the base tile coordinates (Tile with index 0)
     LocationXYZ16 baseTile = {
@@ -1167,7 +1167,7 @@ restart_from_beginning:
                 sint32 eax = x * 32;
                 sint32 ebx = flags | ((tile_element_get_direction(tileElement)) << 8);
                 sint32 ecx = y * 32;
-                sint32 edx = tileElement->base_height | ((tileElement->properties.scenerymultiple.type >> 10) << 8);
+                sint32 edx = tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8);
                 sint32 edi = 0, ebp = 0;
                 cost = game_do_command(eax, ebx | (1 << 7), ecx, edx, GAME_COMMAND_REMOVE_LARGE_SCENERY, edi, ebp);
 
@@ -2728,10 +2728,13 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         rct_tile_element* tile_element = map_get_surface_element_at(curTile.x / 32, curTile.y / 32);
         if(tile_element != NULL){
             sint32 height = tile_element->base_height * 8;
+            sint32 type = scenery_large_get_type(tile_element);
 
-            if(tile_element->properties.scenerymultiple.type & 0xF){
+            if (type & 0xF)
+            {
                 height += 16;
-                if(tile_element->properties.scenerymultiple.type & 0x10){
+                if (type & 0x10)
+                {
                     height += 16;
                 }
             }
@@ -2833,9 +2836,8 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             new_tile_element->clearance_height = zHigh;
             new_tile_element->type = TILE_ELEMENT_TYPE_SCENERY_MULTIPLE | rotation;
 
-            new_tile_element->properties.scenerymultiple.type =
-                (tile_num << 10) |
-                entry_index;
+            scenery_large_set_type(new_tile_element, entry_index);
+            scenery_large_set_sequence(new_tile_element, tile_num);
 
             new_tile_element->properties.scenerymultiple.colour[0] = colour1;
             new_tile_element->properties.scenerymultiple.colour[1] = colour2;
@@ -3474,7 +3476,7 @@ sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
 
     switch (tile_element_get_type(tileElement)) {
     case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
             return -1;
 
@@ -3649,7 +3651,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
                 x,
                 (GAME_COMMAND_FLAG_APPLY) | (tile_element_get_direction(element) << 8),
                 y,
-                (element->base_height) | (((element->properties.scenerymultiple.type >> 8) >> 2) << 8),
+                (element->base_height) | (scenery_large_get_sequence(element) << 8),
                 GAME_COMMAND_REMOVE_LARGE_SCENERY,
                 0,
                 0
@@ -3740,7 +3742,7 @@ rct_tile_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, si
             continue;
         if (tileElement->base_height != z)
             continue;
-        if ((tileElement->properties.scenerymultiple.type >> 10) != sequence)
+        if (scenery_large_get_sequence(tileElement) != sequence)
             continue;
         if ((tile_element_get_direction(tileElement)) != direction)
             continue;
@@ -3864,7 +3866,7 @@ bool map_large_scenery_get_origin(
     if (tileElement == NULL)
         return false;
 
-    sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+    sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
     tile = &sceneryEntry->large_scenery.tiles[sequence];
 
     offsetX = tile->x_offset;
@@ -3895,7 +3897,7 @@ bool sign_set_colour(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequ
         return false;
     }
 
-    sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+    sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
     sceneryTiles = sceneryEntry->large_scenery.tiles;
 
     // Iterate through each tile of the large scenery element
@@ -4249,7 +4251,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
             banner->y * 32,
             tileElement->base_height,
             tile_element_get_direction(tileElement),
-            tileElement->properties.scenerymultiple.type >> 10,
+            scenery_large_get_sequence(tileElement),
             mainColour,
             textColour
         )) {

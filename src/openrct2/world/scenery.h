@@ -299,12 +299,30 @@ rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 
-sint32 scenery_small_get_primary_colour(const rct_tile_element *tileElement);
-sint32 scenery_small_get_secondary_colour(const rct_tile_element *tileElement);
-void scenery_small_set_primary_colour(rct_tile_element *tileElement, uint32 colour);
-void scenery_small_set_secondary_colour(rct_tile_element *tileElement, uint32 colour);
-bool scenery_small_get_supports_needed(const rct_tile_element *tileElement);
-void scenery_small_set_supports_needed(rct_tile_element *tileElement);
+sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement);
+sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement);
+void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour);
+void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour);
+bool scenery_small_get_supports_needed(const rct_tile_element * tileElement);
+void scenery_small_set_supports_needed(rct_tile_element * tileElement);
+
+colour_t scenery_large_get_primary_colour(const rct_tile_element * tileElement);
+colour_t scenery_large_get_secondary_colour(const rct_tile_element * tileElement);
+void scenery_large_set_primary_colour(rct_tile_element * tileElement, colour_t colour);
+void scenery_large_set_secondary_colour(rct_tile_element * tileElement, colour_t colour);
+sint32 scenery_large_get_banner_id(rct_tile_element * tileElement);
+void scenery_large_set_banner_id(rct_tile_element * tileElement, uint8 bannerIndex);
+sint32 scenery_large_get_type(rct_tile_element * tileElement);
+sint32 scenery_large_get_sequence(rct_tile_element * tileElement);
+void scenery_large_set_type(rct_tile_element * tileElement, uint16 type);
+void scenery_large_set_sequence(rct_tile_element * tileElement, uint16 sequence);
+
+colour_t wall_get_primary_colour(const rct_tile_element * tileElement);
+colour_t wall_get_secondary_colour(rct_tile_element * wallElement);
+colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement);
+void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour);
+void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour);
+void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour);
 
 #ifdef __cplusplus
 }

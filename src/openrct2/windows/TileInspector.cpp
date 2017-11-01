@@ -1874,15 +1874,15 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         {
             // Details
             // Type
-            sint16 largeSceneryType = tileElement->properties.scenerymultiple.type & 0x03FF;
+            sint16 largeSceneryType = scenery_large_get_type(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_TYPE, &largeSceneryType, COLOUR_DARK_GREEN, x, y);
 
             // Part ID
-            sint16 pieceID = (tileElement->properties.scenerymultiple.type & 0xFC00) >> 10;
+            sint16 pieceID = scenery_large_get_sequence(tileElement);
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_LARGE_SCENERY_PIECE_ID, &pieceID, COLOUR_DARK_GREEN, x, y + 11);
 
             // Banner info
-            rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+            rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
             if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF) {
                 const sint32 bannerIndex = (tileElement->type & 0xC0) |
                     ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |

@@ -986,7 +986,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     }
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     {
-        rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+        rct_scenery_entry * scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
 
         // If can't repaint
         if (!(scenery_entry->large_scenery.flags &
@@ -998,7 +998,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
             grid_x,
             1 | ((tile_element->type & TILE_ELEMENT_DIRECTION_MASK) << 8),
             grid_y,
-            tile_element->base_height | ((tile_element->properties.scenerymultiple.type >> 10) << 8),
+            tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
             GAME_COMMAND_SET_LARGE_SCENERY_COLOUR,
             0,
             gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
@@ -1078,7 +1078,7 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     }
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
     {
-        sint32 entryIndex = tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
+        sint32 entryIndex = scenery_large_get_type(tileElement);
         rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
         if (sceneryEntry != nullptr) {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
