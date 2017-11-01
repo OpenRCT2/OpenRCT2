@@ -282,7 +282,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         break;
 
     case VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY:
-        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         if (sceneryEntry->large_scenery.scrolling_mode != 255) {
             set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
             set_map_tooltip_format_arg(2, rct_string_id, sceneryEntry->name);
@@ -531,7 +531,7 @@ static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement,
  */
 static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElement, sint32 x, sint32 y)
 {
-    rct_scenery_entry *sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+    rct_scenery_entry *sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
 
     if (sceneryEntry->large_scenery.scrolling_mode != 0xFF){
         sint32 id = (tileElement->type & 0xC0) |
@@ -544,7 +544,7 @@ static void viewport_interaction_remove_large_scenery(rct_tile_element *tileElem
             x,
             1 | (tile_element_get_direction(tileElement) << 8),
             y,
-            tileElement->base_height | ((tileElement->properties.scenerymultiple.type >> 10) << 8),
+            tileElement->base_height | (scenery_large_get_sequence(tileElement) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
             0,
             0

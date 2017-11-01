@@ -210,8 +210,8 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             }
             break;
         case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            entryType = tileElement->properties.scenerymultiple.type & 0x3FF;
-            sequence = tileElement->properties.scenerymultiple.type >> 10;
+            entryType = scenery_large_get_type(tileElement);
+            sequence = scenery_large_get_sequence(tileElement);
             entry = get_large_scenery_entry(entryType);
             tile = &entry->large_scenery.tiles[sequence];
             {

@@ -163,7 +163,7 @@ rct_window * window_sign_open(rct_windownumber number)
 
     while (1){
         if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-            rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+            rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
                 sint32 id = (tile_element->type & 0xC0) |
                     ((tile_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
@@ -178,9 +178,9 @@ rct_window * window_sign_open(rct_windownumber number)
     sint32 view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = tile_element->properties.scenerymultiple.colour[0] & 0x1F;
-    w->var_492 = tile_element->properties.scenerymultiple.colour[1] & 0x1F;
-    w->var_48C = tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
+    w->list_information_type = scenery_large_get_primary_colour(tile_element);
+    w->var_492 = scenery_large_get_secondary_colour(tile_element);
+    w->var_48C = scenery_large_get_type(tile_element);
 
     view_x += 16;
     view_y += 16;
@@ -228,11 +228,10 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_SIGN_DEMOLISH:
         while (1){
             if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
-                rct_scenery_entry* scenery_entry = get_large_scenery_entry(tile_element->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
-                if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
-                    sint32 id = (tile_element->type & 0xC0) |
-                        ((tile_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-                        ((tile_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+                rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
+                if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+                {
+                    sint32 id = scenery_large_get_banner_id(tile_element);
                     if (id == w->number)
                         break;
                 }
@@ -243,7 +242,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             x,
             1 | ((tile_element->type&0x3) << 8),
             y,
-            tile_element->base_height | ((tile_element->properties.scenerymultiple.type >> 10) << 8),
+            tile_element->base_height | (scenery_large_get_sequence(tile_element) << 8),
             GAME_COMMAND_REMOVE_LARGE_SCENERY,
             0,
             0);

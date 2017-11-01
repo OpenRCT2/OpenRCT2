@@ -559,7 +559,7 @@ static void setup_in_use_selection_flags()
             Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
             break;
         case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            type = iter.element->properties.scenerymultiple.type & 0x3FF;
+            type = scenery_large_get_sequence(iter.element);
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
             Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
             break;

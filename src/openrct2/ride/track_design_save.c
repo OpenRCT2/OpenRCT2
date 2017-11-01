@@ -214,7 +214,7 @@ static sint32 tile_element_get_total_element_count(rct_tile_element *tileElement
         return 1;
 
     case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-        sceneryEntry = get_large_scenery_entry(tileElement->properties.scenerymultiple.type & 0x3FF);
+        sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         tile = sceneryEntry->large_scenery.tiles;
         elementCount = 0;
         do {
@@ -304,13 +304,13 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
     sint32 x0, y0, z0, z;
     sint32 direction, sequence;
 
-    sint32 entryType = tileElement->properties.scenerymultiple.type & 0x3FF;
+    sint32 entryType = scenery_large_get_type(tileElement);
     rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = tileElement->properties.scenerymultiple.type >> 10;
+    sequence = scenery_large_get_sequence(tileElement);
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL)) {
         return;
@@ -487,13 +487,13 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
     sint32 x0, y0, z0, z;
     sint32 direction, sequence;
 
-    sint32 entryType = tileElement->properties.scenerymultiple.type & 0x3FF;
+    sint32 entryType = scenery_large_get_type(tileElement);
     rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_LARGE_SCENERY].entries[entryType];
     sceneryTiles = get_large_scenery_entry(entryType)->large_scenery.tiles;
 
     z = tileElement->base_height;
     direction = tileElement->type & 3;
-    sequence = tileElement->properties.scenerymultiple.type >> 10;
+    sequence = scenery_large_get_sequence(tileElement);
 
     if (!map_large_scenery_get_origin(x, y, z, direction, sequence, &x0, &y0, &z0, NULL)) {
         return;

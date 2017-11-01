@@ -473,7 +473,7 @@ private:
                 AddEntryForSmallScenery(tileElement->properties.scenery.type);
                 break;
             case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-                AddEntryForLargeScenery(tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK);
+                AddEntryForLargeScenery(scenery_large_get_type(tileElement));
                 break;
             case TILE_ELEMENT_TYPE_WALL:
             {
@@ -2575,9 +2575,8 @@ private:
                 break;
             case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
             {
-                uint8 type = tileElement->properties.scenerymultiple.type & TILE_ELEMENT_LARGE_TYPE_MASK;
-                tileElement->properties.scenerymultiple.type &= ~TILE_ELEMENT_LARGE_TYPE_MASK;
-                tileElement->properties.scenerymultiple.type |= _largeSceneryTypeToEntryMap[type];
+                uint8 type = scenery_large_get_type(tileElement);
+                scenery_large_set_type(tileElement, _largeSceneryTypeToEntryMap[type]);
                 break;
             }
             }
