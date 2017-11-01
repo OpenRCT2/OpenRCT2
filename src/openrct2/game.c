@@ -295,7 +295,7 @@ void game_update()
     screenshot_check();
     game_handle_keyboard_input();
 
-    if (game_is_not_paused() && gTestingTitleSequenceInGame)
+    if (game_is_not_paused() && gPreviewingTitleSequenceInGame)
     {
         title_sequence_player_update((ITitleSequencePlayer*)title_get_sequence_player());
     }

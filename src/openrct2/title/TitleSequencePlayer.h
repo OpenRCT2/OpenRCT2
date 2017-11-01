@@ -46,7 +46,7 @@ extern "C"
 {
 #endif
     // When testing title sequences within a normal game
-    extern bool gTestingTitleSequenceInGame;
+    extern bool gPreviewingTitleSequenceInGame;
 
     sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player);
     bool title_sequence_player_begin(ITitleSequencePlayer * player, uint32 titleSequenceId);

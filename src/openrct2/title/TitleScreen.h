@@ -28,7 +28,9 @@ class TitleScreen final
 public:
     ITitleSequencePlayer *  GetSequencePlayer();
     size_t                  GetCurrentSequence();
-    void                    SetCurrentSequence(size_t value, bool loadSequence);
+    bool                    PreviewSequence(size_t value);
+    void                    StopPreviewingSequence();
+    bool                    IsPreviewingSequence();
     bool                    ShouldHideVersionInfo();
     void                    SetHideVersionInfo(bool value);
 
@@ -38,16 +40,17 @@ public:
     void Load();
     void Update();
     void CreateWindows();
-    void ChangeSequence(size_t preset);
+    void ChangePresetSequence(size_t preset);
 
 private:
     ITitleSequencePlayer *  _sequencePlayer = nullptr;
     size_t                  _loadedTitleSequenceId = SIZE_MAX;
     size_t                  _currentSequence = SIZE_MAX;
     bool                    _hideVersionInfo = false;
+    bool                    _previewingSequence = false;
 
     void TitleInitialise();
-    void TryLoadSequence();
+    bool TryLoadSequence(bool loadPreview = false);
 };
 #endif
 
@@ -63,7 +66,9 @@ extern "C"
     void title_set_hide_version_info(bool value);
     size_t title_get_config_sequence();
     size_t title_get_current_sequence();
-    void title_set_current_sequence(size_t value, bool loadSequence);
+    bool title_preview_sequence(size_t value);
+    void title_stop_previewing_sequence();
+    bool title_is_previewing_sequence();
     void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y);
 #ifdef __cplusplus
 }

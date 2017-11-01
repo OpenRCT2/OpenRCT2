@@ -581,6 +581,13 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
     {
         const TitleCommand * command = &seq->Commands[i];
         switch (command->Type) {
+        case TITLE_SCRIPT_LOADMM:
+            sb.Append("LOADMM");
+            break;
+        case TITLE_SCRIPT_LOADRCT1:
+            String::Format(buffer, sizeof(buffer), "LOADRCT1 %u", command->SaveIndex);
+            sb.Append(buffer);
+            break;
         case TITLE_SCRIPT_LOAD:
             if (command->SaveIndex == 0xFF)
             {
