@@ -274,6 +274,7 @@ void window_title_editor_open(sint32 tab)
 
     if (_selectedTitleSequence >= title_sequence_manager_get_count())
         _selectedTitleSequence = 0;
+
     window_title_editor_load_sequence(_selectedTitleSequence);
 }
 
@@ -379,10 +380,12 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
             const utf8 * extension = path_get_extension(handle->HintPath);
             bool isScenario = park_importer_extension_is_scenario(extension);
             park_importer_load_from_stream(handle->Stream, handle->HintPath);
+
             if (isScenario)
                 scenario_begin();
             else
                 game_load_init();
+
             TitleSequenceCloseParkHandle(handle);
             window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
         }
@@ -1081,6 +1084,7 @@ static ITitleSequencePlayer * window_title_editor_get_player()
 static bool window_title_editor_check_can_edit()
 {
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
+
     if (_isSequenceReadOnly)
         context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
     else if (_isSequencePlaying)
@@ -1099,6 +1103,7 @@ static bool save_filename_exists(const utf8 * filename)
     for (size_t i = 0; i < seq->NumSaves; i++)
     {
         const utf8 * savePath = seq->Saves[i];
+
         if (_stricmp(savePath, filename) == 0)
             return true;
     }
