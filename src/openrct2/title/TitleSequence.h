@@ -18,6 +18,8 @@
 
 #include "../common.h"
 
+#define TITLE_COMMAND_SCENARIO_LENGTH 64
+
 typedef struct TitleCommand
 {
     uint8 Type;
