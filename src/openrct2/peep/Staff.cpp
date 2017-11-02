@@ -1671,6 +1671,9 @@ uint32 staff_get_available_entertainer_costumes()
     // For some reason the flags are +4 from the actual costume IDs
     entertainerCostumes >>= 4;
 
+    // Fix #6593: force enable the default costumes, which normally get enabled through the default scenery groups.
+    entertainerCostumes |= (1 << ENTERTAINER_COSTUME_PANDA) | (1 << ENTERTAINER_COSTUME_TIGER) | (1 << ENTERTAINER_COSTUME_ELEPHANT);
+
     return entertainerCostumes;
 }
 
