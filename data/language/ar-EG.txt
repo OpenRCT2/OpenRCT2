@@ -1388,8 +1388,8 @@ STR_1382    :Curved Lift Hill (right)
 STR_1383    :Quarter Loop
 STR_1384    :{YELLOW}{STRINGID}
 STR_1385    :{SMALLFONT}{BLACK}Other track configurations
-STR_1386    :Special...
-STR_1387    :Can't change land type...
+STR_1386    :خاص...
+STR_1387    :لا يمكن تغيير نوع الأرض...
 STR_1388    :{OUTLINE}{GREEN}+ {CURRENCY}
 STR_1389    :{OUTLINE}{RED}- {CURRENCY}
 STR_1390    :{CURRENCY2DP}
@@ -1399,7 +1399,7 @@ STR_1393    :{SMALLFONT}{BLACK}Vehicle details and options
 STR_1394    :{SMALLFONT}{BLACK}Operating options
 STR_1395    :{SMALLFONT}{BLACK}Maintenance options
 STR_1396    :{SMALLFONT}{BLACK}Color scheme options
-STR_1397    :{SMALLFONT}{BLACK}Sound & music options
+STR_1397    :{SMALLFONT}{BLACK}إعدادات الصوت والموسيقي
 STR_1398    :{SMALLFONT}{BLACK}Measurements and test data
 STR_1399    :{SMALLFONT}{BLACK}Graphs
 STR_1400    :مدخل
@@ -1449,19 +1449,19 @@ STR_1443    :Watering gardens
 STR_1444    :Watching {STRINGID}
 STR_1445    :Watching construction of {STRINGID}
 STR_1446    :Looking at scenery
-STR_1447    :Leaving the park
+STR_1447    :يغادر الظلام
 STR_1448    :Watching new ride being constructed
 STR_1449    :{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1450    :{INLINE_SPRITE}{09}{20}{00}{00}{SPRITE} {STRINGID}{NEWLINE}({STRINGID})
 STR_1451    :{STRINGID}{NEWLINE}({STRINGID})
-STR_1452    :Guest's name
-STR_1453    :Enter name for this guest:
-STR_1454    :Can't name guest...
-STR_1455    :Invalid name for guest
-STR_1456    :{WINDOW_COLOUR_2}Cash spent: {BLACK}{CURRENCY2DP}
-STR_1457    :{WINDOW_COLOUR_2}Cash in pocket: {BLACK}{CURRENCY2DP}
-STR_1458    :{WINDOW_COLOUR_2}Time in park: {BLACK}{REALTIME}
-STR_1459    :Track style
+STR_1452    :إسم الضيف
+STR_1453    :أدخل أسم لهذا الضيف:
+STR_1454    :لا يمكن تسمية الضيف...
+STR_1455    :إسم خاطئ للضيف
+STR_1456    :{WINDOW_COLOUR_2}النقود المنفقة: {BLACK}{CURRENCY2DP}
+STR_1457    :{WINDOW_COLOUR_2}المال في المحفظة: {BLACK}{CURRENCY2DP}
+STR_1458    :{WINDOW_COLOUR_2}الوقت في الحديقة: {BLACK}{REALTIME}
+STR_1459    :ستايل المسار
 STR_1460    :{SMALLFONT}{BLACK}'U' shaped open track
 STR_1461    :{SMALLFONT}{BLACK}'O' shaped enclosed track
 STR_1462    :Too steep for lift hill
@@ -1470,11 +1470,11 @@ STR_1464    :Helix up (small)
 STR_1465    :Helix up (large)
 STR_1466    :Helix down (small)
 STR_1467    :Helix down (large)
-STR_1468    :Staff
+STR_1468    :العاملون
 STR_1469    :Ride must start and end with stations
 STR_1470    :Station not long enough
-STR_1471    :{WINDOW_COLOUR_2}Speed:
-STR_1472    :{SMALLFONT}{BLACK}Speed of this ride
+STR_1471    :{WINDOW_COLOUR_2}السرعة:
+STR_1472    :{SMALLFONT}{BLACK}السرعة لهذه الرحلة
 STR_1473    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1474    :{WINDOW_COLOUR_2}Excitement rating: {BLACK}Not yet available
 STR_1475    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}{COMMA2DP32}  ({STRINGID})
@@ -1482,34 +1482,34 @@ STR_1476    :{WINDOW_COLOUR_2}Intensity rating: {BLACK}Not yet available
 STR_1477    :{WINDOW_COLOUR_2}Intensity rating: {OUTLINE}{RED}{COMMA2DP32}  ({STRINGID})
 STR_1478    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}{COMMA2DP32}  ({STRINGID})
 STR_1479    :{WINDOW_COLOUR_2}Nausea rating: {BLACK}Not yet available
-STR_1480    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
-STR_1481    :{SMALLFONT}{OPENQUOTES}I've spent all my money{ENDQUOTES}
-STR_1482    :{SMALLFONT}{OPENQUOTES}I feel sick{ENDQUOTES}
-STR_1483    :{SMALLFONT}{OPENQUOTES}I feel very sick{ENDQUOTES}
+STR_1480    :{SMALLFONT}{OPENQUOTES}لا يمكنني تحمل كلفة {STRINGID}{ENDQUOTES}
+STR_1481    :{SMALLFONT}{OPENQUOTES}لقد أنفقت كل مالي{ENDQUOTES}
+STR_1482    :{SMALLFONT}{OPENQUOTES}أنا أشعر بالتعب{ENDQUOTES}
+STR_1483    :{SMALLFONT}{OPENQUOTES}أنا أشعر بالتنعب الشديد{ENDQUOTES}
 STR_1484    :{SMALLFONT}{OPENQUOTES}I want to go on something more thrilling than {STRINGID}{ENDQUOTES}
 STR_1485    :{SMALLFONT}{OPENQUOTES}{STRINGID} looks too intense for me{ENDQUOTES}
-STR_1486    :{SMALLFONT}{OPENQUOTES}I haven't finished my {STRINGID} yet{ENDQUOTES}
+STR_1486    :{SMALLFONT}{OPENQUOTES}لقد إنتهيت من {STRINGID} yet{ENDQUOTES}
 STR_1487    :{SMALLFONT}{OPENQUOTES}Just looking at {STRINGID} makes me feel sick{ENDQUOTES}
 STR_1488    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to go on {STRINGID}{ENDQUOTES}
-STR_1489    :{SMALLFONT}{OPENQUOTES}I want to go home{ENDQUOTES}
+STR_1489    :{SMALLFONT}{OPENQUOTES}أنا أود الذهاب للمنزل{ENDQUOTES}
 STR_1490    :{SMALLFONT}{OPENQUOTES}{STRINGID} is really good value{ENDQUOTES}
 STR_1491    :{SMALLFONT}{OPENQUOTES}I've already got {STRINGID}{ENDQUOTES}
 STR_1492    :{SMALLFONT}{OPENQUOTES}I can't afford {STRINGID}{ENDQUOTES}
 STR_1493    :{SMALLFONT}{OPENQUOTES}I'm not hungry{ENDQUOTES}
 STR_1494    :{SMALLFONT}{OPENQUOTES}I'm not thirsty{ENDQUOTES}
-STR_1495    :{SMALLFONT}{OPENQUOTES}Help! I'm drowning!{ENDQUOTES}
-STR_1496    :{SMALLFONT}{OPENQUOTES}I'm lost!{ENDQUOTES}
+STR_1495    :{SMALLFONT}{OPENQUOTES}النجدة! أنا أغرق!{ENDQUOTES}
+STR_1496    :{SMALLFONT}{OPENQUOTES}أنا تائه!{ENDQUOTES}
 STR_1497    :{SMALLFONT}{OPENQUOTES}{STRINGID} was great{ENDQUOTES}
 STR_1498    :{SMALLFONT}{OPENQUOTES}I've been queuing for {STRINGID} for ages{ENDQUOTES}
-STR_1499    :{SMALLFONT}{OPENQUOTES}I'm tired{ENDQUOTES}
-STR_1500    :{SMALLFONT}{OPENQUOTES}I'm hungry{ENDQUOTES}
-STR_1501    :{SMALLFONT}{OPENQUOTES}I'm thirsty{ENDQUOTES}
-STR_1502    :{SMALLFONT}{OPENQUOTES}I need to go to the toilet{ENDQUOTES}
+STR_1499    :{SMALLFONT}{OPENQUOTES}أنا مرهق{ENDQUOTES}
+STR_1500    :{SMALLFONT}{OPENQUOTES}أنا جائع{ENDQUOTES}
+STR_1501    :{SMALLFONT}{OPENQUOTES}أنا عطشان{ENDQUOTES}
+STR_1502    :{SMALLFONT}{OPENQUOTES}أنا سوف أذهب إلي الحمام{ENDQUOTES}
 STR_1503    :{SMALLFONT}{OPENQUOTES}I can't find {STRINGID}{ENDQUOTES}
 STR_1504    :{SMALLFONT}{OPENQUOTES}I'm not paying that much to use {STRINGID}{ENDQUOTES}
 STR_1505    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} while it's raining{ENDQUOTES}
 STR_1506    :{SMALLFONT}{OPENQUOTES}The litter here is really bad{ENDQUOTES}
-STR_1507    :{SMALLFONT}{OPENQUOTES}I can't find the park exit{ENDQUOTES}
+STR_1507    :{SMALLFONT}{OPENQUOTES}لا يمكنني إيجاد مخرج الحديقة{ENDQUOTES}
 STR_1508    :{SMALLFONT}{OPENQUOTES}I want to get off {STRINGID}{ENDQUOTES}
 STR_1509    :{SMALLFONT}{OPENQUOTES}I want to get out of {STRINGID}{ENDQUOTES}
 STR_1510    :{SMALLFONT}{OPENQUOTES}I'm not going on {STRINGID} - It isn't safe{ENDQUOTES}
@@ -1552,7 +1552,7 @@ STR_1546    :
 STR_1547    :
 STR_1548    :
 STR_1549    :
-STR_1550    :{SMALLFONT}{OPENQUOTES}Wow!{ENDQUOTES}
+STR_1550    :{SMALLFONT}{OPENQUOTES}واو!{ENDQUOTES}
 STR_1551    :{SMALLFONT}{OPENQUOTES}I have the strangest feeling someone is watching me{ENDQUOTES}
 STR_1552    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a balloon from {STRINGID}{ENDQUOTES}
 STR_1553    :{SMALLFONT}{OPENQUOTES}I'm not paying that much for a cuddly toy from {STRINGID}{ENDQUOTES}
@@ -1664,23 +1664,23 @@ STR_1658    :{WINDOW_COLOUR_2}intensity: {BLACK}less than {COMMA16}
 STR_1659    :{WINDOW_COLOUR_2}intensity: {BLACK}between {COMMA16} and {COMMA16}
 STR_1660    :{WINDOW_COLOUR_2}intensity: {BLACK}more than {COMMA16}
 STR_1661    :{WINDOW_COLOUR_2}Nausea tolerance: {BLACK}{STRINGID}
-STR_1662    :{WINDOW_COLOUR_2}Happiness:
+STR_1662    :{WINDOW_COLOUR_2}السعادة:
 STR_1663    :{WINDOW_COLOUR_2}Nausea:
-STR_1664    :{WINDOW_COLOUR_2}Energy:
-STR_1665    :{WINDOW_COLOUR_2}Hunger:
-STR_1666    :{WINDOW_COLOUR_2}Thirst:
-STR_1667    :{WINDOW_COLOUR_2}Toilet:
-STR_1668    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}Unknown
-STR_1669    :{WINDOW_COLOUR_2}Satisfaction: {BLACK}{COMMA16}%
+STR_1664    :{WINDOW_COLOUR_2}الطاقة:
+STR_1665    :{WINDOW_COLOUR_2}الجوع:
+STR_1666    :{WINDOW_COLOUR_2}الجوع:
+STR_1667    :{WINDOW_COLOUR_2}الحمام:
+STR_1668    :{WINDOW_COLOUR_2}الرضا: {BLACK}غير معروف
+STR_1669    :{WINDOW_COLOUR_2}الرضا: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}Total customers: {BLACK}{COMMA32}
-STR_1671    :{WINDOW_COLOUR_2}Total profit: {BLACK}{CURRENCY2DP}
+STR_1671    :{WINDOW_COLOUR_2}الربح الكلي: {BLACK}{CURRENCY2DP}
 STR_1672    :فرامل
 STR_1673    :Spinning Control Toggle Track
 STR_1674    :سرعة الفرملة
 STR_1675    :{POP16}{VELOCITY}
 STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
-STR_1677    :{WINDOW_COLOUR_2}Popularity: {BLACK}Unknown
-STR_1678    :{WINDOW_COLOUR_2}Popularity: {BLACK}{COMMA16}%
+STR_1677    :{WINDOW_COLOUR_2}الشهرة: {BLACK}غير معروف
+STR_1678    :{WINDOW_COLOUR_2}الشهرة: {BLACK}{COMMA16}%
 STR_1679    :Helix up (left)
 STR_1680    :Helix up (right)
 STR_1681    :Helix down (left)
@@ -1693,21 +1693,21 @@ STR_1687    :Water splash
 STR_1688    :Base size 4 x 1
 STR_1689    :Block brakes
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
-STR_1691    :{WINDOW_COLOUR_2}  Cost: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  Cost: {BLACK}from {CURRENCY}
-STR_1693    :{SMALLFONT}{BLACK}Guests
-STR_1694    :{SMALLFONT}{BLACK}Staff
-STR_1695    :{SMALLFONT}{BLACK}Income and costs
-STR_1696    :{SMALLFONT}{BLACK}Customer information
+STR_1691    :{WINDOW_COLOUR_2}  السعر: {BLACK}{CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  السعر: {BLACK}من {CURRENCY}
+STR_1693    :{SMALLFONT}{BLACK}الضيوف
+STR_1694    :{SMALLFONT}{BLACK}العاملين
+STR_1695    :{SMALLFONT}{BLACK}الدخل و المصروفات
+STR_1696    :{SMALLFONT}{BLACK}معلومات العميل
 STR_1697    :Cannot place these on queue line area
 STR_1698    :Can only place these on queue area
 STR_1699    :Too many people in game
-STR_1700    :Hire new Handyman
-STR_1701    :Hire new Mechanic
-STR_1702    :Hire new Security Guard
-STR_1703    :Hire new Entertainer
-STR_1704    :Can't hire new staff...
-STR_1705    :{SMALLFONT}{BLACK}Sack this staff member
+STR_1700    :أجر رجل مساعد جديد
+STR_1701    :أجر ميانيكي جديد
+STR_1702    :أجر حارس أمن جديد
+STR_1703    :أجر مُرفه جديد
+STR_1704    :لا يمكن تأجير عاملين جدد...
+STR_1705    :{SMALLFONT}{BLACK}طرد هذا العامل
 STR_1706    :{SMALLFONT}{BLACK}Move this person to a new location
 STR_1707    :Too many staff in game
 STR_1708    :{SMALLFONT}{BLACK}Set patrol area for this staff member
@@ -1718,38 +1718,38 @@ STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Sweep footpaths
 STR_1713    :{INLINE_SPRITE}{248}{19}{00}{00}{WINDOW_COLOUR_2}Water gardens
 STR_1714    :{INLINE_SPRITE}{249}{19}{00}{00}{WINDOW_COLOUR_2}Empty litter bins
 STR_1715    :{INLINE_SPRITE}{250}{19}{00}{00}{WINDOW_COLOUR_2}Mow grass
-STR_1716    :Invalid name for park
-STR_1717    :Can't rename park...
+STR_1716    :إسم خاطئ للحديقة
+STR_1717    :لا يمكن إعادة تسمية الحديقة...
 STR_1718    :أسم الحديقة
-STR_1719    :Enter name for park:
-STR_1720    :{SMALLFONT}{BLACK}Name park
+STR_1719    :أدخل الأسم الجديد للحديقة:
+STR_1720    :{SMALLFONT}{BLACK}سمي الحديقة
 STR_1721    :الحديقة مغلقة
 STR_1722    :الحديقة مفتوحة
-STR_1723    :Can't open park...
-STR_1724    :Can't close park...
-STR_1725    :Can't buy land...
-STR_1726    :Land not for sale!
-STR_1727    :Construction rights not for sale!
+STR_1723    :لا يمكن فتح الحديقة...
+STR_1724    :لا يمكن إغلاق الحديقة...
+STR_1725    :لا يمكن شراء الأرض...
+STR_1726    :الأرض ليست للبيع!
+STR_1727    :حقوق الإنشاء ليست للبيع!
 STR_1728    :Can't buy construction rights here...
-STR_1729    :Land not owned by park!
-STR_1730    :{RED}Closed - - 
+STR_1729    :الأرض ليست مملوكة للحديقة!
+STR_1730    :{RED}مغلقة - - 
 STR_1731    :{WHITE}{STRINGID} - - 
-STR_1732    :Build
-STR_1733    :Mode
-STR_1734    :{WINDOW_COLOUR_2}Number of laps:
+STR_1732    :بناء
+STR_1733    :الوضع
+STR_1734    :{WINDOW_COLOUR_2}عدد اللفات:
 STR_1735    :{SMALLFONT}{BLACK}Number of laps of circuit
 STR_1736    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1737    :{COMMA16}
 STR_1738    :Can't change number of laps...
-STR_1739    :Race won by guest {INT32}
+STR_1739    :السياق فاز به الضيف {INT32}
 STR_1740    :Race won by {STRINGID}
 STR_1741    :لم يبني بعد !
 STR_1742    :{WINDOW_COLOUR_2}Max. people on ride:
 STR_1743    :{SMALLFONT}{BLACK}Maximum number of people allowed on this ride at one time
 STR_1744    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1745    :{COMMA16}
-STR_1746    :Can't change this...
-STR_1747    :{WINDOW_COLOUR_2}Time limit:
+STR_1746    :لا يمكن تغيير هذا...
+STR_1747    :{WINDOW_COLOUR_2}حد الوقت:
 STR_1748    :{SMALLFONT}{BLACK}Time limit for ride
 STR_1749    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{DURATION}
 STR_1750    :{DURATION}
