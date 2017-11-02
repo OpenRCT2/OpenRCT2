@@ -159,8 +159,7 @@ public:
                 }
                 else
                 {
-                    SkipToNextLoadCommand();
-                    if (_position == entryPosition)
+                    if (!SkipToNextLoadCommand() || _position == entryPosition)
                     {
                         Console::Error::WriteLine("Unable to load any parks from %s.", _sequence->Name);
                         return false;
@@ -234,15 +233,17 @@ private:
         }
     }
 
-    void SkipToNextLoadCommand()
+    bool SkipToNextLoadCommand()
     {
+        sint32 entryPosition = _position;
         const TitleCommand * command;
         do
         {
             IncrementPosition();
             command = &_sequence->Commands[_position];
         }
-        while (!TitleSequenceIsLoadCommand(command));
+        while (!TitleSequenceIsLoadCommand(command) && _position != entryPosition);
+        return _position != entryPosition;
     }
 
     bool ExecuteCommand(const TitleCommand * command)
@@ -369,7 +370,7 @@ private:
         bool success = false;
         try
         {
-            if (gTestingTitleSequenceInGame)
+            if (gPreviewingTitleSequenceInGame)
             {
                 gLoadKeepWindowsOpen = true;
                 CloseParkSpecificWindows();
@@ -402,7 +403,7 @@ private:
         bool success = false;
         try
         {
-            if (gTestingTitleSequenceInGame)
+            if (gPreviewingTitleSequenceInGame)
             {
                 gLoadKeepWindowsOpen = true;
                 CloseParkSpecificWindows();
@@ -543,7 +544,7 @@ ITitleSequencePlayer * CreateTitleSequencePlayer(IScenarioRepository * scenarioR
 
 extern "C"
 {
-    bool gTestingTitleSequenceInGame = false;
+    bool gPreviewingTitleSequenceInGame = false;
 
     sint32 title_sequence_player_get_current_position(ITitleSequencePlayer * player)
     {

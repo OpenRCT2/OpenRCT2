@@ -193,7 +193,6 @@ static rct_widget window_title_editor_widgets[] = {
 static size_t _selectedTitleSequence = 0;
 static bool _isSequenceReadOnly;
 static TitleSequence * _editingTitleSequence = nullptr;
-static bool _isSequencePlaying = false;
 static const utf8 * _sequenceName;
 
 static utf8 * _renameSavePath = nullptr;
@@ -280,21 +279,13 @@ void window_title_editor_open(sint32 tab)
 
 static void window_title_editor_close(rct_window * w)
 {
-    size_t preset = title_get_config_sequence();
-    title_set_current_sequence(preset, false);
-    if (!gTestingTitleSequenceInGame)
-    {
-        ITitleSequencePlayer * player = window_title_editor_get_player();
-        player->Begin(preset);
-    }
-    gTestingTitleSequenceInGame = false;
+    title_stop_previewing_sequence();
 
     // Close the related windows
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 
     FreeTitleSequence(_editingTitleSequence);
     _editingTitleSequence = nullptr;
-    _isSequencePlaying = false;
     _sequenceName = nullptr;
 
     SafeFree(_renameSavePath);
@@ -343,7 +334,7 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
     // Editor tab
     //////////////////////////////////////////////////////////////////////////////////////////////////////
     case WIDX_TITLE_EDITOR_ADD_SAVE:
-        if (!_isSequenceReadOnly && !_isSequencePlaying && !commandEditorOpen)
+        if (!_isSequenceReadOnly && !title_is_previewing_sequence() && !commandEditorOpen)
         {
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
@@ -433,7 +424,7 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
     case WIDX_TITLE_EDITOR_SKIP_TO:
     {
         sint32 position = w->selected_list_item;
-        if (_isSequencePlaying && position != -1 && position < (sint32)_editingTitleSequence->NumCommands)
+        if (title_is_previewing_sequence() && position != -1 && position < (sint32)_editingTitleSequence->NumCommands)
         {
             ITitleSequencePlayer * player = window_title_editor_get_player();
             title_sequence_player_seek(player, position);
@@ -472,7 +463,7 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
         }
         break;
     case WIDX_TITLE_EDITOR_REPLAY:
-        if (_isSequencePlaying)
+        if (title_is_previewing_sequence())
         {
             ITitleSequencePlayer * player = window_title_editor_get_player();
             title_sequence_player_reset(player);
@@ -480,34 +471,26 @@ static void window_title_editor_mouseup(rct_window * w, rct_widgetindex widgetIn
         }
         break;
     case WIDX_TITLE_EDITOR_STOP:
-        if (_isSequencePlaying)
+        if (title_is_previewing_sequence())
         {
-            size_t preset = title_get_config_sequence();
-            title_set_current_sequence(preset, false);
-            if (!gTestingTitleSequenceInGame)
-            {
-                ITitleSequencePlayer * player = window_title_editor_get_player();
-                player->Begin(preset);
-            }
-            _isSequencePlaying = false;
-            gTestingTitleSequenceInGame = false;
+            title_stop_previewing_sequence();
         }
         break;
     case WIDX_TITLE_EDITOR_PLAY:
-        if (!_isSequencePlaying || _selectedTitleSequence != title_get_current_sequence())
+        if (!title_is_previewing_sequence() || _selectedTitleSequence != title_get_current_sequence())
         {
-            ITitleSequencePlayer * player = window_title_editor_get_player();
-            title_set_current_sequence(_selectedTitleSequence, true);
-            player->Begin((uint32)_selectedTitleSequence);
-            _isSequencePlaying = true;
-            if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            if (!title_preview_sequence(_selectedTitleSequence))
             {
-                gTestingTitleSequenceInGame = true;
+                context_show_error(STR_ERR_FAILED_TO_LOAD_TITLE_SEQUENCE, STR_NONE);
+            }
+            else if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+            {
+                gPreviewingTitleSequenceInGame = true;
             }
         }
         break;
     case WIDX_TITLE_EDITOR_SKIP:
-        if (_isSequencePlaying)
+        if (title_is_previewing_sequence())
         {
             ITitleSequencePlayer * player = window_title_editor_get_player();
             sint32 position = title_sequence_player_get_current_position(player) + 1;
@@ -830,8 +813,7 @@ static void window_title_editor_invalidate(rct_window * w)
         w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_PLAY);
     else
         w->disabled_widgets &= ~(1 << WIDX_TITLE_EDITOR_PLAY);
-
-    if (!_isSequencePlaying)
+    if (!title_is_previewing_sequence())
         w->disabled_widgets |= (1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP) | (1 << WIDX_TITLE_EDITOR_SKIP_TO);
     else
         w->disabled_widgets &= ~((1 << WIDX_TITLE_EDITOR_REPLAY) | (1 << WIDX_TITLE_EDITOR_STOP) | (1 << WIDX_TITLE_EDITOR_SKIP) | (1 << WIDX_TITLE_EDITOR_SKIP_TO));
@@ -929,7 +911,7 @@ static void window_title_editor_scrollpaint_saves(rct_window * w, rct_drawpixeli
 static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpixelinfo * dpi)
 {
     sint32 position = -1;
-    if (_isSequencePlaying && (uint16)_selectedTitleSequence == title_get_current_sequence())
+    if (title_is_previewing_sequence() && _selectedTitleSequence == title_get_current_sequence())
     {
         ITitleSequencePlayer * player = window_title_editor_get_player();
         position = title_sequence_player_get_current_position(player);
@@ -968,7 +950,10 @@ static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpix
                 commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SAVE;
                 error = true;
             }
-            set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[command->SaveIndex]);
+            else
+            {
+                set_format_arg(0, uintptr_t, _editingTitleSequence->Saves[command->SaveIndex]);
+            }
             break;
         case TITLE_SCRIPT_LOADMM:
             commandName = STR_TITLE_EDITOR_COMMAND_LOAD_SFMM;
@@ -1087,7 +1072,7 @@ static bool window_title_editor_check_can_edit()
 
     if (_isSequenceReadOnly)
         context_show_error(STR_ERROR_CANT_CHANGE_TITLE_SEQUENCE, STR_NONE);
-    else if (_isSequencePlaying)
+    else if (title_is_previewing_sequence())
         context_show_error(STR_TITLE_EDITOR_ERR_CANT_EDIT_WHILE_PLAYING, STR_TITLE_EDITOR_PRESS_STOP_TO_CONTINUE_EDITING);
     else if (commandEditorOpen)
         context_show_error(STR_TITLE_EDITOR_ERR_CANT_CHANGE_WHILE_EDITOR_IS_OPEN, STR_NONE);

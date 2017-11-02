@@ -58,13 +58,41 @@ size_t TitleScreen::GetCurrentSequence()
     return _currentSequence;
 }
 
-void TitleScreen::SetCurrentSequence(size_t value, bool loadSequence)
+bool TitleScreen::PreviewSequence(size_t value)
 {
     _currentSequence = value;
-    if (loadSequence)
+    _previewingSequence = TryLoadSequence(true);
+    if (_previewingSequence)
     {
-        TryLoadSequence();
+        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        {
+            gPreviewingTitleSequenceInGame = true;
+        }
     }
+    else
+    {
+        _currentSequence = title_get_config_sequence();
+        if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        {
+            TryLoadSequence();
+        }
+    }
+    return _previewingSequence;
+}
+
+void TitleScreen::StopPreviewingSequence()
+{
+    if (_previewingSequence)
+    {
+        _previewingSequence = false;
+        _currentSequence = title_get_config_sequence();
+        gPreviewingTitleSequenceInGame = false;
+    }
+}
+
+bool TitleScreen::IsPreviewingSequence()
+{
+    return _previewingSequence;
 }
 
 bool TitleScreen::ShouldHideVersionInfo()
@@ -154,9 +182,9 @@ void TitleScreen::Update()
     gInUpdateCode = false;
 }
 
-void TitleScreen::ChangeSequence(size_t preset)
+void TitleScreen::ChangePresetSequence(size_t preset)
 {
-    size_t count = title_sequence_manager_get_count();
+    size_t count = TitleSequenceManager::GetCount();
     if (preset >= count)
     {
         return;
@@ -166,7 +194,8 @@ void TitleScreen::ChangeSequence(size_t preset)
     SafeFree(gConfigInterface.current_title_sequence_preset);
     gConfigInterface.current_title_sequence_preset = _strdup(configId);
 
-    _currentSequence = preset;
+    if (!_previewingSequence)
+        _currentSequence = preset;
     window_invalidate_all();
 }
 
@@ -200,13 +229,13 @@ void TitleScreen::TitleInitialise()
             seqId = 0;
         }
     }
-    title_sequence_change_preset((sint32)seqId);
+    ChangePresetSequence((sint32)seqId);
     TryLoadSequence();
 }
 
-void TitleScreen::TryLoadSequence()
+bool TitleScreen::TryLoadSequence(bool loadPreview)
 {
-    if (_loadedTitleSequenceId != _currentSequence)
+    if (_loadedTitleSequenceId != _currentSequence || loadPreview)
     {
         size_t numSequences = TitleSequenceManager::GetCount();
         if (numSequences > 0)
@@ -217,20 +246,32 @@ void TitleScreen::TryLoadSequence()
                 if (_sequencePlayer->Begin(targetSequence) && _sequencePlayer->Update())
                 {
                     _loadedTitleSequenceId = targetSequence;
+                    if (targetSequence != _currentSequence && !loadPreview)
+                    {
+                        // Forcefully change the preset to a preset that works.
+                        const utf8 * configId = title_sequence_manager_get_config_id(targetSequence);
+                        SafeFree(gConfigInterface.current_title_sequence_preset);
+                        gConfigInterface.current_title_sequence_preset = _strdup(configId);
+                    }
                     _currentSequence = targetSequence;
                     gfx_invalidate_screen();
-                    return;
+                    return true;
                 }
                 targetSequence = (targetSequence + 1) % numSequences;
             }
-            while (targetSequence != _currentSequence);
+            while (targetSequence != _currentSequence && !loadPreview);
         }
         Console::Error::WriteLine("Unable to play any title sequences.");
         _sequencePlayer->Eject();
         _currentSequence = SIZE_MAX;
         _loadedTitleSequenceId = SIZE_MAX;
-        game_init_all(150);
+        if (!loadPreview)
+        {
+            game_init_all(150);
+        }
+        return false;
     }
+    return true;
 }
 
 extern "C"
@@ -265,7 +306,7 @@ extern "C"
     {
         if (_singleton != nullptr)
         {
-            _singleton->ChangeSequence(preset);
+            _singleton->ChangePresetSequence(preset);
         }
     }
 
@@ -302,12 +343,30 @@ extern "C"
         return result;
     }
 
-    void title_set_current_sequence(size_t value, bool loadSequence)
+    bool title_preview_sequence(size_t value)
     {
         if (_singleton != nullptr)
         {
-            _singleton->SetCurrentSequence(value, loadSequence);
+            return _singleton->PreviewSequence(value);
         }
+        return false;
+    }
+
+    void title_stop_previewing_sequence()
+    {
+        if (_singleton != nullptr)
+        {
+            _singleton->StopPreviewingSequence();
+        }
+    }
+
+    bool title_is_previewing_sequence()
+    {
+        if (_singleton != nullptr)
+        {
+            return _singleton->IsPreviewingSequence();
+        }
+        return false;
     }
 
     void DrawOpenRCT2(rct_drawpixelinfo * dpi, sint32 x, sint32 y)

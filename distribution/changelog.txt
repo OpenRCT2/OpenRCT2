@@ -58,6 +58,8 @@
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
+- Fix: Title sequence editor now gracefully fails to preview a title sequence and lets the user know with an error message.
+- Fix: When preset title sequence fails to load, the preset will forcibly be changed to the first sequence to successfully load.
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: [#6423] Polish is now rendered using the sprite font, rather than TTF.
