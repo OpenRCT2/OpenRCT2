@@ -181,6 +181,8 @@ public:
         {
             return ParkLoadResult::CreateMissingObjects(missingObjects);
         }
+
+        _s6Path = path;
         return ParkLoadResult::CreateOK();
     }
 
@@ -356,7 +358,8 @@ public:
             gParkEntrances[i].z         = _s6.park_entrance_z[i];
             gParkEntrances[i].direction = _s6.park_entrance_direction[i];
         }
-        String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
+        // _s6.scenario_filename is wrong for some RCT2 expansion scenarios, so we use the real filename
+        String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s6Path));
         memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
