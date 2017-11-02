@@ -27,7 +27,7 @@ enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
 };
 
 static rct_widget window_title_options_widgets[] = {
-    { WWT_DROPDOWN_BUTTON, 2, 0, 79, 0, 13, STR_OPTIONS, STR_OPTIONS_TIP },
+    { WWT_CLOSEBOX, 2, 0, 79, 0, 14, STR_OPTIONS, STR_OPTIONS_TIP },
     { WIDGETS_END },
 };
 
@@ -72,7 +72,7 @@ rct_window * window_title_options_open()
 {
     rct_window * window = window_create(
         context_get_width() - 80, 0,
-        80, 12,
+        80, 15,
         &window_title_options_events,
         WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT
