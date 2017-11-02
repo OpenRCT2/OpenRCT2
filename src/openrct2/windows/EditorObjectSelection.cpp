@@ -1228,10 +1228,10 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
 
         x = w->x + widget->left;
         y = w->y + widget->top;
-        gfx_draw_sprite(dpi, SPR_TAB_RIDE_16 + i, x, y, 0);
+        gfx_draw_sprite(dpi, SPR_TAB_SCENERY_RIDES + i, x, y, 0);
     }
 
-    const sint32 ride_tabs[] = { SPR_TAB_RIDE_16, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
+    const sint32 ride_tabs[] = { SPR_TAB_RIDE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0, SPR_TAB_RIDES_GENTLE_0, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0, SPR_TAB_RIDES_THRILL_0, SPR_TAB_RIDES_WATER_0, SPR_TAB_RIDES_SHOP_0, SPR_TAB_FINANCES_RESEARCH_0 };
     const sint32 ThrillRidesTabAnimationSequence[] = {
         5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
     };
