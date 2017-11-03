@@ -396,6 +396,9 @@ extern uint16 gSpriteListHead[6];
 extern uint16 gSpriteListCount[6];
 extern uint16 gSpriteSpatialIndex[0x10001];
 
+
+extern const rct_string_id litterNames[12];
+
 rct_sprite *create_sprite(uint8 bl);
 void reset_sprite_list();
 void reset_sprite_spatial_index();

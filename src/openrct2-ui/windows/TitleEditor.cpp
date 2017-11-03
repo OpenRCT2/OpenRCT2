@@ -979,7 +979,15 @@ static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpix
             set_format_arg(0, rct_string_id, SpeedNames[command->Speed - 1]);
             break;
         case TITLE_SCRIPT_FOLLOW:
-            commandName = STR_TITLE_EDITOR_COMMAND_TYPE_FOLLOW;
+            commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
+            if (command->SpriteIndex == SPRITE_INDEX_NULL)
+            {
+                commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
+            }
+            else
+            {
+                set_format_arg(0, uintptr_t, (uintptr_t)command->SpriteName);
+            }
             break;
         case TITLE_SCRIPT_WAIT:
             commandName = STR_TITLE_EDITOR_COMMAND_WAIT;

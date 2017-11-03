@@ -319,6 +319,7 @@ typedef struct rct_window {
     sint8 var_4B9;
     uint8 colours[6];           // 0x4BA
     uint8 visibility;           // VISIBILITY_CACHE
+    uint16 viewport_smart_follow_sprite; // Smart following of sprites. Handles setting viewport target sprite etc
 } rct_window;
 
 #define RCT_WINDOW_RIGHT(w) (w->x + w->width)
@@ -793,6 +794,9 @@ void window_ride_construction_keyboard_shortcut_previous_track();
 void window_ride_construction_keyboard_shortcut_next_track();
 void window_ride_construction_keyboard_shortcut_build_current();
 void window_ride_construction_keyboard_shortcut_demolish_current();
+
+void window_follow_sprite(rct_window * w, size_t spriteIndex);
+void window_unfollow_sprite(rct_window * w);
 
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);

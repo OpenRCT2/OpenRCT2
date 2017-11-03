@@ -1345,8 +1345,13 @@ void game_load_init()
     {
         viewport_init_all();
         game_create_windows();
+        mainWindow = window_get_main();
     }
-    mainWindow = window_get_main();
+    else
+    {
+        mainWindow = window_get_main();
+        window_unfollow_sprite(mainWindow);
+    }
 
     if (mainWindow != nullptr)
     {

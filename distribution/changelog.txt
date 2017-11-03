@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#3510] Auto-append extension if none is specified.
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
+- Feature: [#4906] Add follow sprite command to title sequences.
 - Feature: [#5826] Add the show_limits command to show map data counts and limits.
 - Feature: [#6078] Game now converts mp.dat to SC21.SC4 (Mega Park) automatically.
 - Feature: [#6125] Path can now be placed in park entrances.

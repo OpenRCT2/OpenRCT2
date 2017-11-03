@@ -531,6 +531,7 @@ static void input_viewport_drag_begin(rct_window * w, sint32 x, sint32 y)
     context_get_cursor_position(&gInputDragLastX, &gInputDragLastY);
     context_hide_cursor();
 
+    window_unfollow_sprite(w);
     // gInputFlags |= INPUT_FLAG_5;
 }
 

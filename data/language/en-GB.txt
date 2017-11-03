@@ -4488,8 +4488,14 @@ STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
 STR_6179    :Select
 STR_6180    :No scenario selected
 STR_6181    :{RED}Missing scenario
-STR_6182    :Follow sprite
-STR_6183    :Select sprite
+STR_6182    :Follow{MOVE_X}{87}{STRING}
+STR_6183    :Follow{MOVE_X}{87}No sprite selected
+STR_6184    :Follow Sprite
+STR_6185    :Select Sprite
+STR_6186    :No sprite selected
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vomit
+STR_6189    :Duck
 
 #############
 # Scenarios #

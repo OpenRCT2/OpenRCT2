@@ -384,7 +384,8 @@ extern "C"
         gfx_draw_string(dpi, buffer, COLOUR_BLACK, x + 5, y + 5 - 13);
 
         // Invalidate screen area
-        gfx_set_dirty_blocks(x, y, x + 500, y + 30);
+        sint16 width = (sint16)gfx_get_string_width(buffer);
+        gfx_set_dirty_blocks(x, y, x + width, y + 30); // 30 is an arbitrary height to catch both strings
 
         // Write platform information
         snprintf(ch, 256 - (ch - buffer), "%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
