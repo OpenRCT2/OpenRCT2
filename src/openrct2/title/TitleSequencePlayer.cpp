@@ -566,7 +566,7 @@ private:
     void FixViewLocation()
     {
         rct_window * w = window_get_main();
-        if (w != nullptr)
+        if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
         {
             if (w->width != _lastScreenWidth ||
                 w->height != _lastScreenHeight)
