@@ -190,7 +190,7 @@ static rct_widget window_title_editor_widgets[] = {
     { WIDGETS_END },
 };
 
-static size_t _selectedTitleSequence = 0;
+static size_t _selectedTitleSequence = SIZE_MAX;
 static bool _isSequenceReadOnly;
 static TitleSequence * _editingTitleSequence = nullptr;
 static const utf8 * _sequenceName;
@@ -223,6 +223,9 @@ void window_title_editor_open(sint32 tab)
     window = window_bring_to_front_by_class(WC_TITLE_EDITOR);
     if (window != nullptr)
         return;
+
+    if (_selectedTitleSequence == SIZE_MAX)
+        _selectedTitleSequence = title_get_config_sequence();
 
     window = window_create_auto_pos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
