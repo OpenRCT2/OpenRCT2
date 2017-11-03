@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <cmath>
 #include <vector>
 #include <openrct2/common.h>
 #include <SDL.h>
