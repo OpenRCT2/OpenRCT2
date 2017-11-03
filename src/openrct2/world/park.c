@@ -1001,10 +1001,10 @@ sint32 map_buy_land_rights(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 se
         for (y = y0; y <= y1; y += 32) {
             for (x = x0; x <= x1; x += 32) {
                 cost = map_buy_land_rights_for_tile(x, y, setting, flags);
-                if (cost == MONEY32_UNDEFINED)
-                    return MONEY32_UNDEFINED;
-
-                totalCost += cost;
+                if (cost != MONEY32_UNDEFINED)
+                {
+                    totalCost += cost;
+                }
             }
         }
     }
