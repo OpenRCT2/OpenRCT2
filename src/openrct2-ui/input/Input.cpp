@@ -101,6 +101,10 @@ static void game_handle_key_scroll()
     const uint8 * keysState = context_get_keys_state();
     get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
+    if (scrollX != 0 || scrollY != 0)
+    {
+        window_unfollow_sprite(mainWindow);
+    }
     input_scroll_viewport(scrollX, scrollY);
 }
 

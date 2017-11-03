@@ -360,6 +360,10 @@ static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex 
         {
             tool_set(w, WIDX_BACKGROUND, TOOL_CROSSHAIR);
         }
+        else
+        {
+            tool_cancel();
+        }
         break;
     case WIDX_OKAY:
         if (_window_title_command_editor_insert)
@@ -683,15 +687,9 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
         {
             command.SpriteIndex = spriteIndex;
             window_follow_sprite(w, (size_t)command.SpriteIndex);
+            tool_cancel();
+            window_invalidate(w);
         }
-        else
-        {
-            command.SpriteIndex = SPRITE_INDEX_NULL;
-            command.SpriteName[0] = '\0';
-            window_unfollow_sprite(w);
-        }
-        tool_cancel();
-        window_invalidate(w);
     }
 }
 
