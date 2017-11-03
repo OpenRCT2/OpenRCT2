@@ -4467,6 +4467,7 @@ STR_6154    :Není doporučeno spouštět OpenRCT2 v řežimu zvýšených oprá
 STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainstalujte, nebo konfigurujte z příkazové řádky.
 STR_6156    :Tento název je rezervován a nelze jej použít.
 STR_6157    :Konzole
+STR_6158    :Tento soubor nelze načíst...{NEWLINE}Nekompatibilní verze RCTC: {COMMA16}
 
 ###############################################################################
 ## RCT2 Objects

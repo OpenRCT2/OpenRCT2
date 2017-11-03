@@ -1795,12 +1795,12 @@ STR_1788    :{INLINE_SPRITE}{07}{20}{00}{00} シェリフのコスチューム
 STR_1789    :{INLINE_SPRITE}{08}{20}{00}{00} 海賊のコスチューム
 STR_1790    :{SMALLFONT}{BLACK}このスタッフのタイプの制服の色を選択：
 STR_1791    :{WINDOW_COLOUR_2}制服の色:
-STR_1792    :Responding to {STRINGID} breakdown call
-STR_1793    :Heading to {STRINGID} for an inspection
+STR_1792    :{STRINGID}の故障の電話を返事中
+STR_1793    :点検のために{STRINGID}に向かっています
 STR_1794    :{STRINGID}を修理している
-STR_1795    :Answering radio call
-STR_1796    :Has broken down and requires fixing
-STR_1797    :This option cannot be changed for this ride
+STR_1795    :電話を返事中
+STR_1796    :故障中、修理するはず
+STR_1797    :この設定はこのライドに変更できません。
 STR_1798    :回転プール
 STR_1799    :{POP16}{POP16}{POP16}{POP16}{POP16}{CURRENCY2DP}
 STR_1800    :非常停止
@@ -1881,20 +1881,20 @@ STR_1874    :{WINDOW_COLOUR_2}毎時利潤: {BLACK}{CURRENCY2DP}
 STR_1875    :{BLACK} {SPRITE}{BLACK} {STRINGID}
 STR_1876    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{251}{19}{00}{00}ライドを点検する
 STR_1877    :{WINDOW_COLOUR_2}{INLINE_SPRITE}{252}{19}{00}{00}ライドを修理する
-STR_1878    :{WINDOW_COLOUR_2}改めるの:
+STR_1878    :{WINDOW_COLOUR_2}点検時間:
 STR_1879    :毎10分
 STR_1880    :毎20分
 STR_1881    :毎30分
 STR_1882    :毎45分
 STR_1883    :毎1時間
 STR_1884    :毎2時間
-STR_1885    :改めない
-STR_1886    :{STRINGID}を改めります
+STR_1885    :点検なし
+STR_1886    :{STRINGID}を点検中
 STR_1887    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}{COMMA16}分
 STR_1888    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}4時間以外
 STR_1889    :{WINDOW_COLOUR_2}停止時間: {MOVE_X}{255}{BLACK}{COMMA16}%
-STR_1890    :{SMALLFONT}{BLACK}Select how often a mechanic should check this ride
-STR_1891    :No {STRINGID} in park yet!
+STR_1890    :{SMALLFONT}{BLACK}整備士が点検する時間の選定
+STR_1891    :パークで{STRINGID}がまだいません！
 # The following two strings were used to display an error when the disc was missing.
 # This has been replaced in OpenRCT2.
 STR_1892    :<removed string - do not use>
@@ -1923,9 +1923,9 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}借入額:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Can't borrow any more money!
+STR_1918    :もうお金を借りることはできません！
 STR_1919    :十分な資金がありません！
-STR_1920    :Can't pay back loan!
+STR_1920    :貸金を返済することはできません！
 STR_1921    :{SMALLFONT}{BLACK}新しいゲームを始める
 STR_1922    :{SMALLFONT}{BLACK}ゲームを再開する
 STR_1923    :{SMALLFONT}{BLACK}チュートリアル
@@ -1934,7 +1934,7 @@ STR_1925    :ここに人を置けない...
 STR_1926    :{SMALLFONT}
 STR_1927    :{YELLOW}{STRINGID}は壊れています。
 STR_1928    :{RED}{STRINGID}がクラッシュしました！
-STR_1929    :{RED}{STRINGID} still hasn't been fixed{NEWLINE}Check where your mechanics are and consider organizing them better
+STR_1929    :{RED}{STRINGID}はまだ修理しませんでした。{NEWLINE}整備士がどこにいるのかを確認し、それらを整理することを検討して下さい。
 STR_1930    :{SMALLFONT}{BLACK}Turn on/off tracking information for this guest - (If tracking is on, guest's movements will be reported in the message area)
 STR_1931    :{STRINGID}は{STRINGID}の行列に入れました。
 STR_1932    :{STRINGID}は{STRINGID}を乗っています。
@@ -1942,7 +1942,7 @@ STR_1933    :{STRINGID}は{STRINGID}を入っています。
 STR_1934    :{STRINGID}は{STRINGID}を降りました。
 STR_1935    :{STRINGID}はパークを立ち去りました。
 STR_1936    :{STRINGID}は{STRINGID}を買いました。
-STR_1937    :{SMALLFONT}{BLACK}Show information about the subject of this message
+STR_1937    :{SMALLFONT}{BLACK}このメッセージの話題にインフォメーションの表示する
 STR_1938    :{SMALLFONT}{BLACK}ゲストの表示
 STR_1939    :{SMALLFONT}{BLACK}スタッフの表示
 STR_1940    :{SMALLFONT}{BLACK}ゲストの幸福度・体力・空腹度などの表示
@@ -1961,10 +1961,10 @@ STR_1952    :収益グラフ
 STR_1953    :広告宣伝費
 STR_1954    :費用合計
 STR_1955    :{WINDOW_COLOUR_2}周回数:
-STR_1956    :{SMALLFONT}{BLACK}Number of circuits of track per ride
+STR_1956    :{SMALLFONT}{BLACK}ライドのトラックの周回数です。
 STR_1957    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1958    :{COMMA16}
-STR_1959    :Can't change number of circuits...
+STR_1959    :周回数が変更できません…
 STR_1960    :{WINDOW_COLOUR_2}風船の価格:
 STR_1961    :{WINDOW_COLOUR_2}縫い包みの価格:
 STR_1962    :{WINDOW_COLOUR_2}パークの地図の価格:
@@ -2240,7 +2240,7 @@ STR_2231    :ドロップに・ホールド・ブレーキ
 STR_2232    :ケーブル・リフト・ヒル
 STR_2233    :{SMALLFONT}{BLACK}パーク・インフォメーション
 STR_2234    :最近のメッセージ
-STR_2235    :{SMALLFONT}{STRINGID} {STRINGID}
+STR_2235    :{SMALLFONT}{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_2236    :1月
 STR_2237    :2月
 STR_2238    :3月
@@ -2294,7 +2294,7 @@ STR_2285    :初期の研究
 STR_2286    :デサイン中
 STR_2287    :デサインを終わる
 STR_2288    :未知
-STR_2289    :{STRINGID} {STRINGID}
+STR_2289    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_2290    :<removed string - do not use>
 STR_2291    :新しいシナリオを始める
 STR_2292    :{WINDOW_COLOUR_2}参加したライド:
@@ -2518,15 +2518,15 @@ STR_2509    :ライドの高さ表示の切り替え
 STR_2510    :歩道の高さ表示の切り替え
 STR_2511    :Adjust land
 STR_2512    :Adjust water
-STR_2513    :Build scenery
-STR_2514    :Build paths
-STR_2515    :Build new ride
-STR_2516    :Show financial information
-STR_2517    :Show research information
-STR_2518    :Show rides list
-STR_2519    :Show park information
-STR_2520    :Show guest list
-STR_2521    :Show staff list
+STR_2513    :景色物建設
+STR_2514    :歩道建設
+STR_2515    :ライド建設
+STR_2516    :財務表の表示
+STR_2517    :研究の表示
+STR_2518    :ライドリストの表示
+STR_2519    :パーク・インフォメーションの表示
+STR_2520    :ゲスト名鑑の表示
+STR_2521    :スタッフ名鑑の表示
 STR_2522    :最近のメッセージを見る
 STR_2523    :地図を見る
 STR_2524    :スクリーンショット
@@ -2742,8 +2742,8 @@ STR_2732    :{COMMA16}ft
 STR_2733    :{COMMA16}m
 STR_2734    :{COMMA16}mph
 STR_2735    :{COMMA16}km/h
-STR_2736    :{MONTH} {COMMA16}年
-STR_2737    :{STRINGID} {MONTH} {COMMA16}年
+STR_2736    :{POP16}{COMMA16}年{PUSH16}{PUSH16}{MONTH}
+STR_2737    :{STRINGID} {POP16}{COMMA16}年 {PUSH16}{PUSH16}{MONTH}
 STR_2738    :タイトルの音楽:
 STR_2739    :なし
 STR_2740    :RollerCoaster Tycoon 1
@@ -3126,8 +3126,8 @@ STR_3114    :{SMALLFONT}{BLACK}デサイン選定スクリーンに戻る
 STR_3115    :{SMALLFONT}{BLACK}トラックデザインをセーブする
 STR_3116    :{SMALLFONT}{BLACK}トラックデザインをセーブする (Not possible until ride has been tested and statistics have been generated)
 STR_3117    :{BLACK}整備士を連絡中…
-STR_3118    :{BLACK}{STRINGID}はライドに向かいます
-STR_3119    :{BLACK}{STRINGID}はライドを修理しています
+STR_3118    :{BLACK}{STRINGID}はライドに向かっています
+STR_3119    :{BLACK}{STRINGID}はライドを修理中
 STR_3120    :{SMALLFONT}{BLACK}Locate nearest available mechanic, or mechanic fixing ride
 STR_3121    :Unable to locate mechanic, or all nearby mechanics are busy
 STR_3122    :{WINDOW_COLOUR_2}お気に入りのライド: {BLACK}{COMMA16}ゲスト
@@ -3821,7 +3821,7 @@ STR_5478    :コントロール
 STR_5479    :ツールバー
 STR_5480    :ツールバーにボタンの表示:
 STR_5481    :スタイル
-STR_5482    :{WINDOW_COLOUR_2}Time since last inspection: {BLACK}1 minute
+STR_5482    :{WINDOW_COLOUR_2}最後の点検からの経過時間: {BLACK}1分
 STR_5483    :{BLACK}(残り{COMMA16}週間)
 STR_5484    :{BLACK}(残り{COMMA16}週間)
 STR_5485    :{SMALLFONT}{STRING}
@@ -3834,11 +3834,11 @@ STR_5491    :発明品リスト
 STR_5492    :シナリオ設定
 STR_5493    :メッセージを送る
 STR_5494    :<not used anymore>
-STR_5495    :プレーヤー 名鑑
-STR_5496    :プレーヤー:
+STR_5495    :プレイヤー 名鑑
+STR_5496    :プレイヤー:
 STR_5497    :ピング:
 STR_5498    :サーバリスト
-STR_5499    :プレーヤー 名:
+STR_5499    :プレイヤー 名:
 STR_5500    :新しいサーバ
 STR_5501    :サーバをスタートする
 STR_5502    :マルチプレイ
@@ -3895,7 +3895,7 @@ STR_5552    :{POP16}{POP16}{COMMA16}年 {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONT
 STR_5553    :Steamオーバーレイが開いている時に一時停止する
 STR_5554    :{SMALLFONT}{BLACK}Enable mountain tool
 STR_5555    :Show vehicles from other track types
-STR_5556    :{SMALLFONT}{BLACK}プレーヤーを蹴る
+STR_5556    :{SMALLFONT}{BLACK}プレイヤーを蹴る
 STR_5557    :非同期化後に接続を維持する（マルチプレイ）
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
@@ -3914,7 +3914,7 @@ STR_5571    :Join Game
 STR_5572    :Add To Favourites
 STR_5573    :Remove From Favourites
 STR_5574    :サーバーの名前:
-STR_5575    :プレーヤーの制限:
+STR_5575    :プレイヤーの制限:
 STR_5576    :ポート:
 STR_5577    :大韓民国ウォン (₩)
 STR_5578    :ロシア・ルーブル (₽)
@@ -3927,25 +3927,25 @@ STR_5584    :SI
 STR_5585    :{SMALLFONT}{BLACK}Unlocks ride operation limits, allowing for things like {VELOCITY} lift hills
 STR_5586    :Automatically open shops and stalls
 STR_5587    :{SMALLFONT}{BLACK}Shops and stalls will be automatically opened after building them
-STR_5588    :{SMALLFONT}{BLACK}Play with other players
-STR_5589    :Notification Settings
-STR_5590    :Park awards
-STR_5591    :Marketing campaign has finished
-STR_5592    :Park warnings
-STR_5593    :Park rating warnings
-STR_5594    :Ride has broken down
-STR_5595    :Ride has crashed
-STR_5596    :Ride warnings
-STR_5597    :Ride / scenery researched
-STR_5598    :Guest warnings
-STR_5599    :Guest is lost
-STR_5600    :Guest has left the park
-STR_5601    :Guest is queuing for ride
-STR_5602    :Guest is on ride
-STR_5603    :Guest has left ride
-STR_5604    :Guest has bought item
-STR_5605    :Guest has used facility
-STR_5606    :Guest has died
+STR_5588    :{SMALLFONT}{BLACK}他のプレイヤーと一緒にゲームする
+STR_5589    :知らせ設定
+STR_5590    :パークの賞罰
+STR_5591    :広告宣伝が終わる
+STR_5592    :パークの警告
+STR_5593    :パーク評価値の警告
+STR_5594    :ライドが壊れる
+STR_5595    :ライドがクラッシュする
+STR_5596    :ライドが警告
+STR_5597    :ライドや景色物の研究
+STR_5598    :ゲストの警告
+STR_5599    :ゲストが迷い込む
+STR_5600    :ゲストがパークを立ち去る
+STR_5601    :ゲストがライドの行列に入る
+STR_5602    :ゲストがライドを乗る
+STR_5603    :ゲストがライドを出る
+STR_5604    :ゲストが売り物を買った
+STR_5605    :ゲストが設備を使った
+STR_5606    :ゲストが死んだ
 STR_5607    :{SMALLFONT}{BLACK}Forcefully remove selected map element.
 STR_5608    :BH
 STR_5609    :CH
@@ -3998,7 +3998,7 @@ STR_5655    :ゲスト
 STR_5656    :スタッフ
 STR_5657    :パーク設定
 STR_5658    :パーク資金
-STR_5659    :プレーヤーを蹴る
+STR_5659    :プレイヤーを蹴る
 STR_5660    :グループを変更する
 STR_5661    :Set Player Group
 STR_5662    :N/A
@@ -4007,7 +4007,7 @@ STR_5664    :カンニング
 STR_5665    :Toggle Scenery Cluster
 STR_5666    :Passwordless Login
 STR_5701    :{WINDOW_COLOUR_2}最後のアクション: {BLACK}{STRINGID}
-STR_5702    :{SMALLFONT}{BLACK}プレーヤーの最後のアクションをに移動
+STR_5702    :{SMALLFONT}{BLACK}プレイヤーの最後のアクションをに移動
 STR_5703    :ホストを蹴られません
 STR_5704    :最後のアクション:
 STR_5705    :Can't set to this group
@@ -4018,7 +4018,7 @@ STR_5709    :グループ名を変える
 STR_5710    :グループ名
 STR_5711    :グループ名を入力してください。
 STR_5712    :Can't modify permission that you do not have yourself
-STR_5713    :プレーヤーを蹴る
+STR_5713    :プレイヤーを蹴る
 STR_5714    :設定ウィンドウの表示
 STR_5715    :新しいゲーム
 STR_5716    :マルチプレイモードではできません
@@ -4043,7 +4043,7 @@ STR_5733    :近傍法スケーリングを使う
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}レンダリング
 STR_5735    :ネットワーク・ステータス
-STR_5736    :プレヤー
+STR_5736    :プレイヤー
 STR_5737    :閉鎖中, まだ{COMMA16}人の乗客
 STR_5738    :閉鎖中, まだ{COMMA16}人の乗客
 STR_5739    :{WINDOW_COLOUR_2}人の乗客: {BLACK}{COMMA16}
@@ -4467,6 +4467,7 @@ STR_6154    :高い権限でOpenRCT2を実行することは推奨されませ�
 STR_6155    :KDialogやZenityがインストールしませんでした。どれかがインストールして下さい又は、コマンドラインから設定して下さい。
 STR_6156    :その名が残しました。
 STR_6157    :コンソール
+STR_6158    :ファイルのロードことが失敗しました…{NEWLINE}互換性なしのRCTCバージョン: {COMMA16}
 
 
 #####################

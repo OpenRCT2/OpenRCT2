@@ -4459,6 +4459,7 @@ STR_6154    :Het wordt afgeraden om OpenRCT2 te gebruiken met verhoogde privileg
 STR_6155    :KDialog en Zenity zijn geen beide geïnstalleerd. Je moet minstens één van de twee installeren, of het pad naar de RCT2-bestanden handmatig toevoegen in config.ini.
 STR_6156    :Deze naam is gereserveerd
 STR_6157    :Console
+STR_6158    :Kan dit bestand niet laden...{NEWLINE}Incompatibele RCTC-versie: {COMMA16}
 
 #############
 # Scenarios #
