@@ -106,7 +106,7 @@ static rct_widget window_title_command_editor_widgets[] = {
     { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+12,  WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO,                    STR_NONE }, // Select scenario
 
     { WWT_DROPDOWN_BUTTON,      1,  WS,         WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE, STR_NONE }, // Select sprite
-    { WWT_VIEWPORT,             1, WS,          WW-WS - 1,  BY2,    BY2+22, STR_NONE,                   STR_NONE }, // Viewport
+    { WWT_VIEWPORT,             1,  WS,         WW-WS-1,    BY2,    BY2+22, STR_NONE,                   STR_NONE }, // Viewport
 
     { WWT_DROPDOWN_BUTTON,      1,  10,         80,         WH-21,  WH-10,  STR_OK,                     STR_NONE }, // OKAY
     { WWT_DROPDOWN_BUTTON,      1,  WW-80,      WW-10,      WH-21,  WH-10,  STR_CANCEL,                 STR_NONE }, // Cancel
@@ -173,7 +173,7 @@ static void scenario_select_callback(const utf8 * path)
 
 static sint32 get_command_info_index(sint32 index)
 {
-    for (sint32 i = 0; i < NUM_COMMANDS; i++)
+    for (sint32 i = 0; i < (sint32)NUM_COMMANDS; i++)
     {
         if (_window_title_command_editor_orders[i].command == index)
             return i;
@@ -183,7 +183,7 @@ static sint32 get_command_info_index(sint32 index)
 
 static TITLE_COMMAND_ORDER get_command_info(sint32 index)
 {
-    for (sint32 i = 0; i < NUM_COMMANDS; i++)
+    for (sint32 i = 0; i < (sint32)NUM_COMMANDS; i++)
     {
         if (_window_title_command_editor_orders[i].command == index)
             return _window_title_command_editor_orders[i];
@@ -267,7 +267,7 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
     window_init_scroll_widgets(window);
 
     rct_widget *const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
-    viewport_create(window, window->x + viewportWidget->left, window->y + viewportWidget->top, viewportWidget->right - viewportWidget->left, viewportWidget->bottom - viewportWidget->top, 0, 0, 0, 0, 0, -1);
+    viewport_create(window, window->x + viewportWidget->left + 1, window->y + viewportWidget->top + 1, viewportWidget->right - viewportWidget->left - 1, viewportWidget->bottom - viewportWidget->top - 1, 0, 0, 0, 0, 0, -1);
 
     _window_title_command_editor_index = index;
     _window_title_command_editor_insert = insert;
@@ -292,6 +292,12 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
         break;
     case TITLE_SCRIPT_WAIT:
         snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Milliseconds);
+        break;
+    case TITLE_SCRIPT_FOLLOW:
+        if (command.SpriteIndex != SPRITE_INDEX_NULL)
+        {
+            window_follow_sprite(window, (size_t)command.SpriteIndex);
+        }
         break;
     }
 }
@@ -391,8 +397,8 @@ static void window_title_command_editor_mousedown(rct_window * w, rct_widgetinde
     {
     case WIDX_COMMAND_DROPDOWN:
     {
-        sint32 numItems = NUM_COMMANDS;
-        for (sint32 i = 0; i < numItems; i++)
+        size_t numItems = NUM_COMMANDS;
+        for (size_t i = 0; i < numItems; i++)
         {
             gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
@@ -432,7 +438,8 @@ static void window_title_command_editor_mousedown(rct_window * w, rct_widgetinde
                 widget->right - widget->left - 3);
 
             dropdown_set_checked(command.Speed - 1, true);
-        } else if (command.Type == TITLE_SCRIPT_LOAD)
+        }
+        else if (command.Type == TITLE_SCRIPT_LOAD)
         {
             sint32 numItems = (sint32)_sequence->NumSaves;
             for (sint32 i = 0; i < numItems; i++)
@@ -471,6 +478,10 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
     switch (widgetIndex)
     {
     case WIDX_COMMAND_DROPDOWN:
+        if (command.SpriteIndex != SPRITE_INDEX_NULL)
+        {
+            window_unfollow_sprite(w);
+        }
         if (dropdownIndex == get_command_info_index(command.Type))
         {
             break;
@@ -497,6 +508,9 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
             break;
         case TITLE_SCRIPT_FOLLOW:
             command.SpriteIndex = SPRITE_INDEX_NULL;
+            command.SpriteName[0] = '\0';
+            window_unfollow_sprite(w);
+            w->viewport->flags &= ~VIEWPORT_FOCUS_TYPE_SPRITE;
             break;
         case TITLE_SCRIPT_SPEED:
             command.Speed = 1;
@@ -626,9 +640,56 @@ static void window_title_command_editor_tool_down(rct_window * w, rct_widgetinde
 
     if (info.type == VIEWPORT_INTERACTION_ITEM_SPRITE)
     {
-        command.SpriteIndex = info.sprite->unknown.sprite_index;
-        w->viewport_target_sprite = command.SpriteIndex;
-        w->viewport->flags |= VIEWPORT_FOCUS_TYPE_SPRITE;
+        uint16 spriteIndex = info.sprite->unknown.sprite_index;
+        uint16 spriteIdentifier = info.sprite->unknown.sprite_identifier;
+        bool validSprite = false;
+        if (spriteIdentifier == SPRITE_IDENTIFIER_PEEP)
+        {
+            validSprite = true;
+            rct_peep * peep = GET_PEEP(spriteIndex);
+            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, peep->name_string_idx, &peep->id);
+        }
+        else if (spriteIdentifier == SPRITE_IDENTIFIER_VEHICLE)
+        {
+            validSprite = true;
+            rct_vehicle * vehicle = GET_VEHICLE(spriteIndex);
+            Ride * ride = get_ride(vehicle->ride);
+            set_format_arg(16, uint32, ride->name_arguments);
+            format_string(command.SpriteName, USER_STRING_MAX_LENGTH, ride->name, &ride->name_arguments);
+        }
+        else if (spriteIdentifier == SPRITE_IDENTIFIER_LITTER)
+        {
+            rct_litter * litter = &(get_sprite(spriteIndex)->litter);
+            if (litter->type < Util::CountOf(litterNames))
+            {
+                validSprite = true;
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, litterNames[litter->type], nullptr);
+            }
+        }
+        else if (spriteIdentifier == SPRITE_IDENTIFIER_MISC)
+        {
+            if (info.sprite->IsBalloon())
+            {
+                validSprite = true;
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
+            }
+            else if (info.sprite->IsDuck())
+            {
+                validSprite = true;
+                format_string(command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
+            }
+        }
+        if (validSprite)
+        {
+            command.SpriteIndex = spriteIndex;
+            window_follow_sprite(w, (size_t)command.SpriteIndex);
+        }
+        else
+        {
+            command.SpriteIndex = SPRITE_INDEX_NULL;
+            command.SpriteName[0] = '\0';
+            window_unfollow_sprite(w);
+        }
         tool_cancel();
         window_invalidate(w);
     }
@@ -674,17 +735,20 @@ static void window_title_command_editor_invalidate(rct_window * w)
     case TITLE_SCRIPT_FOLLOW:
         window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_DROPDOWN_BUTTON;
         window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_VIEWPORT;
+
         // Draw button pressed while the tool is active
-        w->pressed_widgets &= ~(1 << WIDX_SELECT_SPRITE);
         if (sprite_selector_tool_is_active())
             w->pressed_widgets |= (1 << WIDX_SELECT_SPRITE);
+        else
+            w->pressed_widgets &= ~(1 << WIDX_SELECT_SPRITE);
+
         break;
     }
 
     if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
-        w->disabled_widgets |= (1 << WIDX_GET);
+        w->disabled_widgets |= (1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE);
     else
-        w->disabled_widgets &= ~(1 << WIDX_GET);
+        w->disabled_widgets &= ~((1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE));
 }
 
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi)
@@ -722,7 +786,32 @@ static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo 
     }
     if (command.Type == TITLE_SCRIPT_FOLLOW)
     {
-        window_draw_viewport(dpi, w);
+        uint8 colour = COLOUR_BLACK;
+        rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
+        if (command.SpriteIndex != SPRITE_INDEX_NULL)
+        {
+            window_draw_viewport(dpi, w);
+            set_format_arg(0, uintptr_t, (uintptr_t)command.SpriteName);
+        }
+        else
+        {
+            colour = w->colours[1];
+            spriteString = STR_TITLE_COMMAND_EDITOR_FOLLOW_NO_SPRITE;
+        }
+
+        gfx_set_dirty_blocks(
+            w->x + w->widgets[WIDX_VIEWPORT].left,
+            w->y + w->widgets[WIDX_VIEWPORT].top,
+            w->x + w->widgets[WIDX_VIEWPORT].right,
+            w->y + w->widgets[WIDX_VIEWPORT].bottom);
+        gfx_draw_string_left_clipped(
+            dpi,
+            spriteString,
+            gCommonFormatArgs,
+            colour,
+            w->x + w->widgets[WIDX_VIEWPORT].left + 2,
+            w->y + w->widgets[WIDX_VIEWPORT].top + 1,
+            w->widgets[WIDX_VIEWPORT].right - w->widgets[WIDX_VIEWPORT].left - 2);
     }
     else if (command.Type == TITLE_SCRIPT_LOAD)
     {

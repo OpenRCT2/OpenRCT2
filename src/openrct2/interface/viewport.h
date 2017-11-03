@@ -120,6 +120,10 @@ void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 hei
 void viewport_update_pointers();
 void viewport_update_position(rct_window *window);
 void viewport_update_sprite_follow(rct_window *window);
+void viewport_update_smart_sprite_follow(rct_window * window);
+void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep);
+void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep);
+void viewport_update_smart_vehicle_follow(rct_window * window, rct_vehicle * vehicle);
 void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom);
 void viewport_paint(rct_viewport* viewport, rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16 right, sint16 bottom);
 

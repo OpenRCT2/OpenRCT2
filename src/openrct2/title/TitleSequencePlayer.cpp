@@ -382,11 +382,21 @@ private:
         }
     }
 
-    void FollowSprite(uint16 SpriteIndex) {
-        rct_window *const MainWindow = window_get_main();
-        if (MainWindow != nullptr)
+    void FollowSprite(uint16 spriteIndex)
+    {
+        rct_window * w = window_get_main();
+        if (w != nullptr)
         {
-            MainWindow->viewport_target_sprite = SpriteIndex;
+            window_follow_sprite(w, spriteIndex);
+        }
+    }
+
+    void UnfollowSprite()
+    {
+        rct_window * w = window_get_main();
+        if (w != nullptr)
+        {
+            window_unfollow_sprite(w);
         }
     }
 
@@ -547,9 +557,6 @@ private:
             _lastScreenHeight = w->height;
             _viewCentreLocation.x = x;
             _viewCentreLocation.y = y;
-
-            // Stop following sprites
-            w->viewport_target_sprite = SPRITE_INDEX_NULL;
         }
     }
 

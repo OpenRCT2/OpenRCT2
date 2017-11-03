@@ -460,6 +460,7 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             {
                 command.Type = TITLE_SCRIPT_FOLLOW;
                 command.SpriteIndex = atoi(part1) & 0xFFFF;
+                safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
             }
             else if (_stricmp(token, "WAIT") == 0)
             {
@@ -513,7 +514,8 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
     sint32 cindex = 0;
     sint32 whitespace = 1;
     sint32 comment = 0;
-    sint32 load = 0;
+    bool load = false;
+    bool sprite = false;
     for (; part < 3;)
     {
         sint32 c = 0;
@@ -531,7 +533,7 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
             parts[part * 128 + cindex] = 0;
             comment = 1;
         }
-        else if (c == ' ' && !comment && !load)
+        else if (c == ' ' && !comment && !load && (!sprite || part != 2))
         {
             if (!whitespace)
             {
@@ -539,6 +541,10 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
                                   (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
                 {
                     load = true;
+                }
+                else if (part == 0 && cindex == 6 && _strnicmp(parts, "FOLLOW", 6) == 0)
+                {
+                    sprite = true;
                 }
                 parts[part * 128 + cindex] = 0;
                 part++;
@@ -608,7 +614,8 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             if (command->SaveIndex == 0xFF)
             {
                 sb.Append("LOAD <No save file>");
-            } else
+            }
+            else
             {
                 sb.Append("LOAD ");
                 sb.Append(seq->Saves[command->SaveIndex]);
@@ -638,8 +645,9 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
             sb.Append(buffer);
             break;
         case TITLE_SCRIPT_FOLLOW:
-            String::Format(buffer, sizeof(buffer), "FOLLOW %u", command->SpriteIndex);
+            String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command->SpriteIndex);
             sb.Append(buffer);
+            sb.Append(command->SpriteName);
             break;
         case TITLE_SCRIPT_SPEED:
             String::Format(buffer, sizeof(buffer), "SPEED %u", command->Speed);

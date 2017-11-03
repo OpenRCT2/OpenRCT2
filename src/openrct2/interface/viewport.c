@@ -517,6 +517,11 @@ void viewport_update_position(rct_window * window)
     rct_viewport * viewport = window->viewport;
     if (!viewport) return;
 
+    if (window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL)
+    {
+        viewport_update_smart_sprite_follow(window);
+    }
+
     if (window->viewport_target_sprite != SPRITE_INDEX_NULL)
     {
         viewport_update_sprite_follow(window);
@@ -620,8 +625,142 @@ void viewport_update_sprite_follow(rct_window *window)
         centre_2d_coordinates(sprite->unknown.x, sprite->unknown.y, sprite->unknown.z, &centre_x, &centre_y,
                               window->viewport);
 
+        window->saved_view_x = centre_x;
+        window->saved_view_y = centre_y;
         viewport_move(centre_x, centre_y, window, window->viewport);
     }
+}
+
+void viewport_update_smart_sprite_follow(rct_window * window)
+{
+    rct_sprite * sprite = try_get_sprite(window->viewport_smart_follow_sprite);
+    if (sprite == NULL)
+    {
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+    }
+    else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+    {
+        rct_peep * peep = GET_PEEP(window->viewport_smart_follow_sprite);
+
+        if (peep->type == PEEP_TYPE_GUEST)
+            viewport_update_smart_guest_follow(window, peep);
+        else if (peep->type == PEEP_TYPE_STAFF)
+            viewport_update_smart_staff_follow(window, peep);
+    }
+    else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_VEHICLE)
+    {
+        rct_vehicle * vehicle = GET_VEHICLE(window->viewport_smart_follow_sprite);
+        viewport_update_smart_vehicle_follow(window, vehicle);
+    }
+    else if (sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC ||
+             sprite->unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+    {
+        window->viewport_focus_sprite.sprite_id = window->viewport_smart_follow_sprite;
+        window->viewport_target_sprite = window->viewport_smart_follow_sprite;
+    }
+    else
+    {
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+    }
+}
+
+void viewport_update_smart_guest_follow(rct_window * window, rct_peep * peep)
+{
+    union
+    {
+        sprite_focus sprite;
+        coordinate_focus coordinate;
+    } focus = { 0 }; // The focus will be either a sprite or a coordinate.
+
+    focus.sprite.sprite_id = window->viewport_smart_follow_sprite;
+
+    if (peep->state == PEEP_STATE_PICKED)
+    {
+        //focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        return;
+    }
+    else
+    {
+        uint8 final_check = 1;
+        if (peep->state == PEEP_STATE_ON_RIDE
+            || peep->state == PEEP_STATE_ENTERING_RIDE
+            || (peep->state == PEEP_STATE_LEAVING_RIDE && peep->x == LOCATION_NULL))
+        {
+
+            Ride * ride = get_ride(peep->current_ride);
+            if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+            {
+                rct_vehicle * train = GET_VEHICLE(ride->vehicles[peep->current_train]);
+                sint32 car = peep->current_car;
+
+                for (; car != 0; car--)
+                {
+                    train = GET_VEHICLE(train->next_vehicle_on_train);
+                }
+
+                focus.sprite.sprite_id = train->sprite_index;
+                final_check = 0;
+            }
+        }
+        if (peep->x == LOCATION_NULL && final_check)
+        {
+            Ride * ride = get_ride(peep->current_ride);
+            sint32 x = ride->overall_view.x * 32 + 16;
+            sint32 y = ride->overall_view.y * 32 + 16;
+            sint32 height = tile_element_height(x, y);
+            height += 32;
+            focus.coordinate.x = x;
+            focus.coordinate.y = y;
+            focus.coordinate.z = height;
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_COORDINATE;
+        }
+        else
+        {
+            focus.sprite.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+            focus.sprite.pad_486 &= 0xFFFF;
+        }
+        focus.coordinate.rotation = get_current_rotation();
+    }
+
+    window->viewport_focus_sprite = focus.sprite;
+    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
+}
+
+void viewport_update_smart_staff_follow(rct_window * window, rct_peep * peep)
+{
+    sprite_focus focus = { 0 };
+
+    focus.sprite_id = window->viewport_smart_follow_sprite;
+
+    if (peep->state == PEEP_STATE_PICKED)
+    {
+        //focus.sprite.sprite_id = SPRITE_INDEX_NULL;
+        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        return;
+    }
+    else
+    {
+        focus.type |= VIEWPORT_FOCUS_TYPE_SPRITE | VIEWPORT_FOCUS_TYPE_COORDINATE;
+    }
+
+    window->viewport_focus_sprite = focus;
+    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
+}
+
+void viewport_update_smart_vehicle_follow(rct_window * window, rct_vehicle * vehicle)
+{
+    // Can be expanded in the future if needed
+    sprite_focus focus = { 0 };
+
+    focus.sprite_id = window->viewport_smart_follow_sprite;
+
+    window->viewport_focus_sprite = focus;
+    window->viewport_target_sprite = window->viewport_focus_sprite.sprite_id;
 }
 
 /**

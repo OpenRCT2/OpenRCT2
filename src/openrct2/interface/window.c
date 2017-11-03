@@ -473,6 +473,7 @@ rct_window *window_create(sint32 x, sint32 y, sint32 width, sint32 height, rct_w
     w->var_492 = 0;
     w->selected_tab = 0;
     w->var_4AE = 0;
+    w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
     RCT2_NEW_WINDOW++;
 
     colour_scheme_update(w);
@@ -1359,6 +1360,9 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
     };
 
     assert(w != NULL);
+
+    window_unfollow_sprite(w);
+
     if (w->viewport) {
         sint16 height = tile_element_height(x, y);
         if (z < height - 16) {
@@ -2682,4 +2686,18 @@ void window_init_all()
     }
 
     gWindowNextSlot = g_window_list;
+}
+
+void window_follow_sprite(rct_window * w, size_t spriteIndex)
+{
+    if (spriteIndex < MAX_SPRITES || spriteIndex == SPRITE_INDEX_NULL)
+    {
+        w->viewport_smart_follow_sprite = (uint16)spriteIndex;
+    }
+}
+
+void window_unfollow_sprite(rct_window * w)
+{
+    w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
+    w->viewport_target_sprite = SPRITE_INDEX_NULL;
 }

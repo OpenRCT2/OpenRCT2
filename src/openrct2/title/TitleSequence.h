@@ -17,6 +17,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../localisation/localisation.h"
 
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
 
@@ -32,7 +33,11 @@ typedef struct TitleCommand
         };
         uint8  Rotations;                                // ROTATE (counter-clockwise)
         uint8  Zoom;                                     // ZOOM
-        uint16 SpriteIndex;                              // FOLLOW
+        struct                                           // FOLLOW
+        {
+            uint16 SpriteIndex;
+            utf8 SpriteName[USER_STRING_MAX_LENGTH];
+        };
         uint8  Speed;                                    // SPEED
         uint16 Milliseconds;                             // WAIT
         utf8   Scenario[TITLE_COMMAND_SCENARIO_LENGTH];  // LOADSC
