@@ -161,11 +161,11 @@ extern "C"
     static rct_gx   _csg = { 0 };
     static bool     _csgLoaded = false;
 
+    static size_t   _g1ElementsCount = 0;
     #ifdef NO_RCT2
-        static size_t           g1ElementsCount    = 0;
-        static rct_g1_element * g1Elements         = nullptr;
+        static rct_g1_element * _g1Elements = nullptr;
     #else
-        static rct_g1_element * g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
+        static rct_g1_element * _g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
     bool gTinyFontAntiAliased = false;
 
@@ -190,12 +190,12 @@ extern "C"
             }
 
             // Read element headers
-            g1ElementsCount = 324206;
+            _g1ElementsCount = 324206;
 #ifdef NO_RCT2
-            g1Elements = Memory::AllocateArray<rct_g1_element>(g1ElementsCount);
+            _g1Elements = Memory::AllocateArray<rct_g1_element>(_g1ElementsCount);
 #endif
             bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
-            read_and_convert_gxdat(&fs, header.num_entries, is_rctc, g1Elements);
+            read_and_convert_gxdat(&fs, header.num_entries, is_rctc, _g1Elements);
             gTinyFontAntiAliased = is_rctc;
 
             // Read element data
@@ -204,7 +204,7 @@ extern "C"
             // Fix entry data offsets
             for (uint32 i = 0; i < header.num_entries; i++)
             {
-                g1Elements[i].offset += (uintptr_t)_g1Buffer;
+                _g1Elements[i].offset += (uintptr_t)_g1Buffer;
             }
             return true;
         }
@@ -224,7 +224,7 @@ extern "C"
     {
         SafeFree(_g1Buffer);
     #ifdef NO_RCT2
-        SafeFree(g1Elements);
+        SafeFree(_g1Elements);
     #endif
     }
 
@@ -488,11 +488,11 @@ extern "C"
                 assert(tertiary_colour < PALETTE_TO_G1_OFFSET_COUNT);
     #endif // DEBUG_LEVEL_2
                 uint32 tertiary_offset = palette_to_g1_offset[tertiary_colour];
-                rct_g1_element* tertiary_palette = &g1Elements[tertiary_offset];
+                rct_g1_element* tertiary_palette = &_g1Elements[tertiary_offset];
                 memcpy(palette_pointer + 0x2E, &tertiary_palette->offset[0xF3], 12);
             }
-            rct_g1_element* primary_palette = &g1Elements[primary_offset];
-            rct_g1_element* secondary_palette = &g1Elements[secondary_offset];
+            rct_g1_element* primary_palette = &_g1Elements[primary_offset];
+            rct_g1_element* secondary_palette = &_g1Elements[secondary_offset];
 
             memcpy(palette_pointer + 0xF3, &primary_palette->offset[0xF3], 12);
             memcpy(palette_pointer + 0xCA, &secondary_palette->offset[0xF3], 12);
@@ -690,8 +690,8 @@ extern "C"
     void FASTCALL gfx_draw_sprite_raw_masked_software(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 maskImage, sint32 colourImage)
     {
         sint32 left, top, right, bottom, width, height;
-        rct_g1_element *imgMask = &g1Elements[maskImage & 0x7FFFF];
-        rct_g1_element *imgColour = &g1Elements[colourImage & 0x7FFFF];
+        rct_g1_element *imgMask = &_g1Elements[maskImage & 0x7FFFF];
+        rct_g1_element *imgColour = &_g1Elements[colourImage & 0x7FFFF];
 
         assert(imgMask->flags & G1_FLAG_BMP);
         assert(imgColour->flags & G1_FLAG_BMP);
@@ -756,11 +756,11 @@ extern "C"
 
         if (image_id < SPR_G2_BEGIN)
         {
-            if (image_id >= (sint32)g1ElementsCount)
+            if (image_id >= (sint32)_g1ElementsCount)
             {
                 return nullptr;
             }
-            return &g1Elements[image_id];
+            return &_g1Elements[image_id];
         }
         if (image_id < SPR_CSG_BEGIN)
         {
@@ -801,9 +801,9 @@ extern "C"
 
         if (imageId >= 0 || imageId < SPR_G2_BEGIN)
         {
-            if (imageId < (sint32)g1ElementsCount)
+            if (imageId < (sint32)_g1ElementsCount)
             {
-                g1Elements[imageId] = *g1;
+                _g1Elements[imageId] = *g1;
             }
         }
     }
