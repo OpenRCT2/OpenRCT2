@@ -32,7 +32,7 @@ namespace Imaging
     static void PngWarning(png_structp png_ptr, const char * b);
     static void PngError(png_structp png_ptr, const char * b);
 
-    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path)
+    bool PngRead(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
     {
         png_structp png_ptr;
         png_infop info_ptr;
@@ -78,8 +78,8 @@ namespace Imaging
 
             // Read header
             png_uint_32 pngWidth, pngHeight;
-            int bitDepth, colourType, interlaceType;
-            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, &bitDepth, &colourType, &interlaceType, nullptr, nullptr);
+            int colourType, interlaceType;
+            png_get_IHDR(png_ptr, info_ptr, &pngWidth, &pngHeight, bitDepth, &colourType, &interlaceType, nullptr, nullptr);
 
             // Read pixels as 32bpp RGBA data
             png_size_t rowBytes = png_get_rowbytes(png_ptr, info_ptr);
@@ -102,9 +102,9 @@ namespace Imaging
                     }
                 }
             }
-            else if (bitDepth == 8 && !expand)
+            else if (*bitDepth == 8 && !expand)
             {
-                // 8-bit paletted
+                // 8-bit paletted or grayscale
                 Guard::Assert(rowBytes == pngWidth, GUARD_LINE);
                 for (png_uint_32 i = 0; i < pngHeight; i++)
                 {
@@ -302,9 +302,9 @@ namespace Imaging
 
 extern "C"
 {
-    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path)
+    bool image_io_png_read(uint8 * * pixels, uint32 * width, uint32 * height, bool expand, const utf8 * path, sint32 * bitDepth)
     {
-        return Imaging::PngRead(pixels, width, height, expand, path);
+        return Imaging::PngRead(pixels, width, height, expand, path, bitDepth);
     }
 
     bool image_io_png_write(const rct_drawpixelinfo * dpi, const rct_palette * palette, const utf8 * path)

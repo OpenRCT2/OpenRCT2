@@ -311,15 +311,23 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 {
     uint8 *pixels;
     uint32 width, height;
-    if (!image_io_png_read(&pixels, &width, &height, !keep_palette, path))
+    sint32 bitDepth;
+    if (!image_io_png_read(&pixels, &width, &height, !keep_palette, path, &bitDepth))
     {
-        fprintf(stderr, "Error reading PNG");
+        fprintf(stderr, "Error reading PNG\n");
         return false;
     }
 
     if (width > 256 || height > 256)
     {
-        fprintf(stderr, "Only images 256x256 or less are supported.");
+        fprintf(stderr, "Only images 256x256 or less are supported.\n");
+        free(pixels);
+        return false;
+    }
+
+    if (keep_palette && (bitDepth != 8))
+    {
+        fprintf(stderr, "Image is not palletted, it has bit depth of %d\n", bitDepth);
         free(pixels);
         return false;
     }
@@ -336,7 +344,8 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
     sint16 *rgbaSrc_orig = rgbaSrc;
     if (!keep_palette)
     {
-        for (uint32 x = 0; x < height * width * 4; x++){
+        for (uint32 x = 0; x < height * width * 4; x++)
+        {
             rgbaSrc[x] = (sint16) pixels[x];
         }
     }
@@ -380,13 +389,16 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 
                 if (mode == MODE_DITHERING)
                 {
-                    if (!is_transparent_pixel(rgbaSrc) && is_changable_pixel(get_palette_index(rgbaSrc))){
+                    if (!is_transparent_pixel(rgbaSrc) && is_changable_pixel(get_palette_index(rgbaSrc)))
+                    {
                         sint16 dr = rgbaSrc[0] - (sint16)(spriteFilePalette[paletteIndex].r);
                         sint16 dg = rgbaSrc[1] - (sint16)(spriteFilePalette[paletteIndex].g);
                         sint16 db = rgbaSrc[2] - (sint16)(spriteFilePalette[paletteIndex].b);
 
-                        if (x + 1 < width){
-                            if (!is_transparent_pixel(rgbaSrc + 4) && is_changable_pixel(get_palette_index(rgbaSrc + 4))){
+                        if (x + 1 < width)
+                        {
+                            if (!is_transparent_pixel(rgbaSrc + 4) && is_changable_pixel(get_palette_index(rgbaSrc + 4)))
+                            {
                                 // Right
                                 rgbaSrc[4] += dr * 7 / 16;
                                 rgbaSrc[5] += dg * 7 / 16;
@@ -394,9 +406,12 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                             }
                         }
 
-                        if (y + 1 < height){
-                            if (x > 0){
-                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width - 1)))){
+                        if (y + 1 < height)
+                        {
+                            if (x > 0)
+                            {
+                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width - 1))))
+                                {
                                     // Bottom left
                                     rgbaSrc[4 * (width - 1)] += dr * 3 / 16;
                                     rgbaSrc[4 * (width - 1) + 1] += dg * 3 / 16;
@@ -405,14 +420,17 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                             }
 
                             // Bottom
-                            if (!is_transparent_pixel(rgbaSrc + 4 * width) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * width))){
+                            if (!is_transparent_pixel(rgbaSrc + 4 * width) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * width)))
+                            {
                                 rgbaSrc[4 * width] += dr * 5 / 16;
                                 rgbaSrc[4 * width + 1] += dg * 5 / 16;
                                 rgbaSrc[4 * width + 2] += db * 5 / 16;
                             }
 
-                            if (x + 1 < width){
-                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width + 1)))){
+                            if (x + 1 < width)
+                            {
+                                if (!is_transparent_pixel(rgbaSrc + 4 * (width - 1)) && is_changable_pixel(get_palette_index(rgbaSrc + 4 * (width + 1))))
+                                {
                                     // Bottom right
                                     rgbaSrc[4 * (width + 1)] += dr * 1 / 16;
                                     rgbaSrc[4 * (width + 1) + 1] += dg * 1 / 16;
