@@ -22,6 +22,7 @@
 
 /* Begin PBXBuildFile section */
 		4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
+		4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DFF401FAC69D200CB093A /* Date.cpp */; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
 		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
@@ -613,6 +614,8 @@
 /* Begin PBXFileReference section */
 		4C4C1E971F58226500560300 /* TrackDesign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesign.cpp; sourceTree = "<group>"; };
 		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
+		4C5DFF401FAC69D200CB093A /* Date.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Date.cpp; sourceTree = "<group>"; };
+		4C5DFF411FAC69D200CB093A /* Date.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Date.h; sourceTree = "<group>"; };
 		4C6AC20D1F9E1693004324AA /* Station.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Station.cpp; sourceTree = "<group>"; };
 		4C6AC20E1F9E1693004324AA /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
 		4C6AC2101F9E1CB3004324AA /* CableLift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CableLift.cpp; sourceTree = "<group>"; };
@@ -1888,6 +1891,8 @@
 				F76C836C1EC4E7CC00FA49E2 /* common.h */,
 				F76C83761EC4E7CC00FA49E2 /* Context.cpp */,
 				F76C83771EC4E7CC00FA49E2 /* Context.h */,
+				4C5DFF401FAC69D200CB093A /* Date.cpp */,
+				4C5DFF411FAC69D200CB093A /* Date.h */,
 				F76C839B1EC4E7CC00FA49E2 /* diagnostic.c */,
 				F76C839C1EC4E7CC00FA49E2 /* diagnostic.h */,
 				F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */,
@@ -3228,6 +3233,7 @@
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
+				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
 				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				4C93F14D1F8B744400A9330D /* MultiDimensionRollerCoaster.cpp in Sources */,
