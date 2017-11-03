@@ -228,17 +228,13 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     sint32 colour = ColourMapA[w->colours[0]].darkest;
     gfx_fill_rect(dpi, x, y, x + 369, y + 216, colour);
 
-    auto g1backup = gfx_get_g1_element(SPR_TEMP);
-    
     rct_g1_element g1temp = { 0 };
     g1temp.offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;
     g1temp.flags = G1_FLAG_BMP;
-
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     gfx_draw_sprite(dpi, 0, x, y, 0);
-    gfx_set_g1_element(SPR_TEMP, g1backup);
 
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + widget->bottom - 12;

@@ -467,14 +467,12 @@ static void window_track_place_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Draw mini tile preview
     rct_drawpixelinfo clippedDpi;
     if (clip_drawpixelinfo(&clippedDpi, dpi, w->x + 4, w->y + 18, 168, 78)) {
-        auto g1backup = gfx_get_g1_element(SPR_TEMP);
         rct_g1_element g1temp = { 0 };
         g1temp.offset = _window_track_place_mini_preview;
         g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
         g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
         gfx_set_g1_element(SPR_TEMP, &g1temp);
         gfx_draw_sprite(&clippedDpi, SPRITE_ID_PALETTE_COLOUR_1(NOT_TRANSLUCENT(w->colours[0])), 0, 0, 0);
-        gfx_set_g1_element(SPR_TEMP, g1backup);
     }
 
     // Price
