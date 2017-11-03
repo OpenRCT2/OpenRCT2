@@ -56,6 +56,7 @@
 - Fix: [#6452] Scenario text cut off when switching between 32 and 64-bit builds.
 - Fix: [#6460] Crash when reading corrupt object files.
 - Fix: [#6481] Can't take screenshots of parks with colons in the name.
+- Fix: [#6500] Failure to load resources when config file is missing.
 - Fix: [#6593] Cannot hire entertainers when default scenery groups are not selected (original bug).
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
