@@ -3840,66 +3840,75 @@ rct_tile_element * map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z
 rct_tile_element * map_get_ride_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost)
 {
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do
+    if (tileElement != NULL)
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
-            continue;
+        do
+        {
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
 
-        if (tileElement->base_height != z)
-            continue;
+            if (tileElement->base_height != z)
+                continue;
 
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
-            continue;
+            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_ENTRANCE)
+                continue;
 
-        if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
-            continue;
+            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+                continue;
 
-        return tileElement;
+            return tileElement;
+        }
+        while (!tile_element_is_last_for_tile(tileElement++));
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
-
     return NULL;
 }
 
 rct_tile_element * map_get_ride_exit_element_at(sint32 x, sint32 y, sint32 z, bool ghost)
 {
     rct_tile_element * tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do
+    if (tileElement != NULL)
     {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
-            continue;
+        do
+        {
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
 
-        if (tileElement->base_height != z)
-            continue;
+            if (tileElement->base_height != z)
+                continue;
 
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
-            continue;
+            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_RIDE_EXIT)
+                continue;
 
-        if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
-            continue;
+            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+                continue;
 
-        return tileElement;
+            return tileElement;
+        }
+        while (!tile_element_is_last_for_tile(tileElement++));
     }
-    while (!tile_element_is_last_for_tile(tileElement++));
-
     return NULL;
 }
 
 rct_tile_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z, sint32 type, uint8 quadrant)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
-            continue;
-        if (tileElement->type >> 6 != quadrant)
-            continue;
-        if (tileElement->base_height != z)
-            continue;
-        if (tileElement->properties.scenery.type != type)
-            continue;
+    if (tileElement != NULL)
+    {
+        do
+        {
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+                continue;
+            if (tileElement->type >> 6 != quadrant)
+                continue;
+            if (tileElement->base_height != z)
+                continue;
+            if (tileElement->properties.scenery.type != type)
+                continue;
 
-        return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+            return tileElement;
+        }
+        while (!tile_element_is_last_for_tile(tileElement++));
+    }
     return NULL;
 }
 
