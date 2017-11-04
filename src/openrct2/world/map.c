@@ -3811,24 +3811,29 @@ rct_tile_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, si
     return NULL;
 }
 
-rct_tile_element *map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost)
+rct_tile_element * map_get_park_entrance_element_at(sint32 x, sint32 y, sint32 z, bool ghost)
 {
     rct_tile_element* tileElement = map_get_first_element_at(x >> 5, y >> 5);
-    do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
-            continue;
+    if (tileElement != NULL)
+    {
+        do
+        {
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_ENTRANCE)
+                continue;
 
-        if (tileElement->base_height != z)
-            continue;
+            if (tileElement->base_height != z)
+                continue;
 
-        if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
-            continue;
+            if (tileElement->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
+                continue;
 
-        if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
-            continue;
+            if ((ghost == false) && (tileElement->flags & TILE_ELEMENT_FLAG_GHOST))
+                continue;
 
-        return tileElement;
-    } while (!tile_element_is_last_for_tile(tileElement++));
+            return tileElement;
+        }
+        while (!tile_element_is_last_for_tile(tileElement++));
+    }
     return NULL;
 }
 
