@@ -358,8 +358,16 @@ public:
             gParkEntrances[i].z         = _s6.park_entrance_z[i];
             gParkEntrances[i].direction = _s6.park_entrance_direction[i];
         }
-        // _s6.scenario_filename is wrong for some RCT2 expansion scenarios, so we use the real filename
-        String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s6Path));
+        if (_s6.header.type == S6_TYPE_SCENARIO)
+        {
+            // _s6.scenario_filename is wrong for some RCT2 expansion scenarios, so we use the real filename
+            String::Set(gScenarioFileName, sizeof(gScenarioFileName), Path::GetFileName(_s6Path));
+        }
+        else
+        {
+            // For savegames the filename can be arbitrary, so we have no choice but to rely on the name provided
+            String::Set(gScenarioFileName, sizeof(gScenarioFileName), _s6.scenario_filename);
+        }
         memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
