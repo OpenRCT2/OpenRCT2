@@ -767,11 +767,7 @@ extern "C"
             const uint32 idx = image_id - SPR_G2_BEGIN;
             if (idx >= _g2.header.num_entries)
             {
-                // TODO I guess we still want to warn the user, but an assert is not very good.
-                //      Logging to stdout isn't ideal either as it would flood the console with
-                //      the same message.
-                // openrct2_assert(idx < _g2.header.num_entries,
-                //     "Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
+                log_warning("Invalid entry in g2.dat requested, idx = %u. You may have to update your g2.dat.", idx);
                 return nullptr;
             }
             return &_g2.elements[idx];
