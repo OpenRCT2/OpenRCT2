@@ -1006,7 +1006,7 @@ static rct_window *ride_create_or_find_construction_window(sint32 rideIndex)
     if (w == NULL || w->number != rideIndex) {
         window_close_construction_windows();
         _currentRideIndex = rideIndex;
-        w = window_ride_construction_open();
+        w = context_open_window(WC_RIDE_CONSTRUCTION);
     } else {
         ride_construction_invalidate_current_track();
         _currentRideIndex = rideIndex;
