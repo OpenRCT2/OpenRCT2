@@ -467,7 +467,7 @@ extern "C"
 
             uint16 palette_offset = palette_to_g1_offset[palette_ref];
             auto g1 = gfx_get_g1_element(palette_offset);
-            if (g1 == NULL)
+            if (g1 == nullptr)
             {
                 return nullptr;
             }
