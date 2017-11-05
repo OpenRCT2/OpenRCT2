@@ -142,6 +142,7 @@ private:
     ApplyPaletteShader *    _applyPaletteShader     = nullptr;
     OpenGLFramebuffer *     _screenFramebuffer      = nullptr;
     OpenGLFramebuffer *     _scaleFramebuffer       = nullptr;
+    OpenGLFramebuffer *     _smoothScaleFramebuffer = nullptr;
 
 public:
     SDL_Color Palette[256];
@@ -258,7 +259,12 @@ public:
         _applyPaletteShader->SetTexture(_drawingContext->GetFinalFramebuffer().GetTexture());
         _applyPaletteShader->Draw();
 
-        if (_scaleFramebuffer != nullptr)
+        if (_smoothScaleFramebuffer != nullptr)
+        {
+            _smoothScaleFramebuffer->Copy(*_scaleFramebuffer, GL_NEAREST);
+            _screenFramebuffer->Copy(*_smoothScaleFramebuffer, GL_LINEAR);
+        }
+        else if (_scaleFramebuffer != nullptr)
         {
             _screenFramebuffer->Copy(*_scaleFramebuffer, GL_LINEAR);
         }
@@ -395,9 +401,19 @@ private:
             delete _scaleFramebuffer;
             _scaleFramebuffer = nullptr;
         }
+        if (_smoothScaleFramebuffer != nullptr)
+        {
+            delete _smoothScaleFramebuffer;
+            _smoothScaleFramebuffer = nullptr;
+        }
         if (GetContext()->GetUiContext()->GetScaleQuality() > 0)
         {
             _scaleFramebuffer = new OpenGLFramebuffer(_width, _height, false, false);
+        }
+        if (GetContext()->GetUiContext()->GetScaleQuality() == SCALE_QUALITY_SMOOTH_NN)
+        {
+            uint32 scale = std::ceil(gConfigGeneral.window_scale);
+            _smoothScaleFramebuffer = new OpenGLFramebuffer(_width * scale, _height * scale, false, false);
         }
     }
 

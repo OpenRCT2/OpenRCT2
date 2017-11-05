@@ -103,12 +103,7 @@ public:
             }
         }
 
-        sint32 scaleQuality = gConfigGeneral.scale_quality;
-        if (gConfigGeneral.use_nn_at_integer_scales &&
-            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-        {
-            scaleQuality = SCALE_QUALITY_NN;
-        }
+        sint32 scaleQuality = GetContext()->GetUiContext()->GetScaleQuality();
         if (scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
             scaleQuality = SCALE_QUALITY_LINEAR;

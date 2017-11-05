@@ -497,11 +497,13 @@ public:
         {
             _scaleQuality = SCALE_QUALITY_NN;
         }
+        
+        sint32 scaleQuality = _scaleQuality;
         if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {
-            _scaleQuality = SCALE_QUALITY_LINEAR;
+            scaleQuality = SCALE_QUALITY_LINEAR;
         }
-        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", _scaleQuality);
+        snprintf(scaleQualityBuffer, sizeof(scaleQualityBuffer), "%u", scaleQuality);
         SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, scaleQualityBuffer);
 
         sint32 width, height;
