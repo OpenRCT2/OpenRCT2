@@ -40,11 +40,11 @@ enum {
     PROXIMITY_WATER_LOW,                        // 0x0138B59A
     PROXIMITY_WATER_HIGH,                       // 0x0138B59C
     PROXIMITY_SURFACE_TOUCH,                    // 0x0138B59E
-    PROXIMITY_PATH_OVER,                        // 0x0138B5A0
-    PROXIMITY_PATH_TOUCH_ABOVE,                 // 0x0138B5A2
-    PROXIMITY_PATH_TOUCH_UNDER,                 // 0x0138B5A4
-    PROXIMITY_138B5A6,                          // 0x0138B5A6
-    PROXIMITY_138B5A8,                          // 0x0138B5A8
+    PROXIMITY_PATH_ZERO_OVER,                   // 0x0138B5A0
+    PROXIMITY_PATH_ZERO_TOUCH_ABOVE,            // 0x0138B5A2
+    PROXIMITY_PATH_ZERO_TOUCH_UNDER,            // 0x0138B5A4
+    PROXIMITY_PATH_TOUCH_ABOVE,                 // 0x0138B5A6
+    PROXIMITY_PATH_TOUCH_UNDER,                 // 0x0138B5A8
     PROXIMITY_OWN_TRACK_TOUCH_ABOVE,            // 0x0138B5AA
     PROXIMITY_OWN_TRACK_CLOSE_ABOVE,            // 0x0138B5AC
     PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW,     // 0x0138B5AE
@@ -518,22 +518,24 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             }
             break;
         case TILE_ELEMENT_TYPE_PATH:
+            // Bonus for normal path
             if (tileElement->properties.path.type & 0xF0) {
-                if (tileElement->clearance_height == inputTileElement->base_height) {
-                    proximity_score_increment(PROXIMITY_138B5A6);
-                }
-                if (tileElement->base_height == inputTileElement->clearance_height) {
-                    proximity_score_increment(PROXIMITY_138B5A8);
-                }
-            } else {
-                if (tileElement->clearance_height <= inputTileElement->base_height) {
-                    proximity_score_increment(PROXIMITY_PATH_OVER);
-                }
                 if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_ABOVE);
                 }
                 if (tileElement->base_height == inputTileElement->clearance_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_UNDER);
+                }
+            } else {
+                // Bonus for path in first object entry
+                if (tileElement->clearance_height <= inputTileElement->base_height) {
+                    proximity_score_increment(PROXIMITY_PATH_ZERO_OVER);
+                }
+                if (tileElement->clearance_height == inputTileElement->base_height) {
+                    proximity_score_increment(PROXIMITY_PATH_ZERO_TOUCH_ABOVE);
+                }
+                if (tileElement->base_height == inputTileElement->clearance_height) {
+                    proximity_score_increment(PROXIMITY_PATH_ZERO_TOUCH_UNDER);
                 }
             }
             break;
@@ -924,11 +926,11 @@ static uint32 ride_ratings_get_proximity_score()
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_LOW                   ]    ,      10, 0x020000);
     result += get_proximity_score_helper_1(scores[PROXIMITY_WATER_HIGH                  ]    ,      40, 0x00A000);
     result += get_proximity_score_helper_1(scores[PROXIMITY_SURFACE_TOUCH               ]    ,      70, 0x01B6DB);
-    result += get_proximity_score_helper_1(scores[PROXIMITY_PATH_OVER                   ] + 8,      12, 0x064000);
-    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_TOUCH_ABOVE            ]    ,  40              );
-    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_TOUCH_UNDER            ]    ,  45              );
-    result += get_proximity_score_helper_2(scores[PROXIMITY_138B5A6                     ]    ,  10, 20, 0x03C000);
-    result += get_proximity_score_helper_2(scores[PROXIMITY_138B5A8                     ]    ,  10, 20, 0x044000);
+    result += get_proximity_score_helper_1(scores[PROXIMITY_PATH_ZERO_OVER              ] + 8,      12, 0x064000);
+    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_ZERO_TOUCH_ABOVE       ]    ,  40              );
+    result += get_proximity_score_helper_3(scores[PROXIMITY_PATH_ZERO_TOUCH_UNDER       ]    ,  45              );
+    result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_TOUCH_ABOVE            ]    ,  10, 20, 0x03C000);
+    result += get_proximity_score_helper_2(scores[PROXIMITY_PATH_TOUCH_UNDER            ]    ,  10, 20, 0x044000);
     result += get_proximity_score_helper_2(scores[PROXIMITY_OWN_TRACK_TOUCH_ABOVE       ]    ,  10, 15, 0x035555);
     result += get_proximity_score_helper_1(scores[PROXIMITY_OWN_TRACK_CLOSE_ABOVE       ]    ,       5, 0x060000);
     result += get_proximity_score_helper_2(scores[PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW]    ,  10, 15, 0x02AAAA);
