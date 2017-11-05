@@ -101,17 +101,7 @@ static void game_handle_key_scroll()
     const uint8 * keysState = context_get_keys_state();
     get_keyboard_map_scroll(keysState, &scrollX, &scrollY);
 
-    // Scroll viewport
-    if (scrollX != 0)
-    {
-        mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, true);
-    }
-    if (scrollY != 0)
-    {
-        mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-        input_set_flag(INPUT_FLAG_VIEWPORT_SCROLLING, true);
-    }
+    input_scroll_viewport(scrollX, scrollY);
 }
 
 static sint32 input_scancode_to_rct_keycode(sint32 sdl_key)
