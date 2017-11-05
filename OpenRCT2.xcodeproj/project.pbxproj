@@ -207,8 +207,6 @@
 		C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED851F33E3520061AA04 /* EditorMain.cpp */; };
 		C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */; };
 		C666EE1F1F33E3800061AA04 /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */; };
-		C666EE2D1F33E3800061AA04 /* NetworkStatus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */; };
-		C666EE321F33E3800061AA04 /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */; };
 		C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA61F33E3520061AA04 /* RideConstruction.cpp */; };
 		C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA91F33E3520061AA04 /* Scenery.cpp */; };
 		C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB21F33E3520061AA04 /* TileInspector.cpp */; };
@@ -820,8 +818,6 @@
 		C666ED851F33E3520061AA04 /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
 		C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
-		C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkStatus.cpp; sourceTree = "<group>"; };
-		C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
 		C666EDA61F33E3520061AA04 /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideConstruction.cpp; sourceTree = "<group>"; };
 		C666EDA91F33E3520061AA04 /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C666EDB21F33E3520061AA04 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
@@ -2524,8 +2520,6 @@
 				C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
-				C666ED9A1F33E3520061AA04 /* NetworkStatus.cpp */,
-				C666ED9F1F33E3520061AA04 /* ObjectLoadError.cpp */,
 				C666EDA61F33E3520061AA04 /* RideConstruction.cpp */,
 				C666EDA91F33E3520061AA04 /* Scenery.cpp */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
