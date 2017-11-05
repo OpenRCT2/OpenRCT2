@@ -816,7 +816,10 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
             uint8 *buffer;
             int bufferLength;
 
-            if (!sprite_file_import(imagePath, x_offset==NULL ? 0 : json_integer_value(x_offset), y_offset==NULL ? 0 : json_integer_value(y_offset), keep_palette, &spriteElement, &buffer, &bufferLength, gSpriteMode))
+            if (!sprite_file_import(imagePath,
+                                    x_offset == NULL ? 0 : json_integer_value(x_offset),
+                                    y_offset == NULL ? 0 : json_integer_value(y_offset),
+                                    keep_palette, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);
                 json_decref(sprite_list);
