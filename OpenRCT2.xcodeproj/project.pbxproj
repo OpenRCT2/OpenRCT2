@@ -207,7 +207,6 @@
 		C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED851F33E3520061AA04 /* EditorMain.cpp */; };
 		C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */; };
 		C666EE1F1F33E3800061AA04 /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */; };
-		C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA61F33E3520061AA04 /* RideConstruction.cpp */; };
 		C666EE3C1F33E3800061AA04 /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDA91F33E3520061AA04 /* Scenery.cpp */; };
 		C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB21F33E3520061AA04 /* TileInspector.cpp */; };
 		C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBA1F33E3520061AA04 /* Tooltip.cpp */; };
@@ -244,6 +243,7 @@
 		C6D2BEE71F9BAACE008B557C /* MapTooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */; };
 		C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */; };
 		C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */; };
+		C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C6E415501FAFD6DB00D4A52A /* RideConstruction.cpp */; };
 		C6E96E361E0408B40076A04F /* libzip.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; };
 		C6E96E371E040E040076A04F /* libzip.dylib in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = C6E96E351E0408B40076A04F /* libzip.dylib */; settings = {ATTRIBUTES = (CodeSignOnCopy, ); }; };
 		D41B73EF1C2101890080A7B9 /* libcurl.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = D41B73EE1C2101890080A7B9 /* libcurl.tbd */; };
@@ -818,7 +818,6 @@
 		C666ED851F33E3520061AA04 /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
 		C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
-		C666EDA61F33E3520061AA04 /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideConstruction.cpp; sourceTree = "<group>"; };
 		C666EDA91F33E3520061AA04 /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C666EDB21F33E3520061AA04 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
 		C666EDBA1F33E3520061AA04 /* Tooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tooltip.cpp; sourceTree = "<group>"; };
@@ -870,6 +869,7 @@
 		C6D2BEE41F9BAACD008B557C /* MapTooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapTooltip.cpp; sourceTree = "<group>"; };
 		C6D2BEE51F9BAACD008B557C /* MazeConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MazeConstruction.cpp; sourceTree = "<group>"; };
 		C6D2BEE91F9BB83B008B557C /* NetworkStatus.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkStatus.cpp; sourceTree = "<group>"; };
+		C6E415501FAFD6DB00D4A52A /* RideConstruction.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideConstruction.cpp; sourceTree = "<group>"; };
 		C6E96E331E0408A80076A04F /* zip.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zip.h; sourceTree = "<group>"; };
 		C6E96E341E0408A80076A04F /* zipconf.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = zipconf.h; sourceTree = "<group>"; };
 		C6E96E351E0408B40076A04F /* libzip.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; path = libzip.dylib; sourceTree = "<group>"; };
@@ -2520,7 +2520,6 @@
 				C666ED8C1F33E3520061AA04 /* GameBottomToolbar.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
-				C666EDA61F33E3520061AA04 /* RideConstruction.cpp */,
 				C666EDA91F33E3520061AA04 /* Scenery.cpp */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
 				C666EDB21F33E3520061AA04 /* TileInspector.cpp */,
@@ -2712,6 +2711,7 @@
 				C654DF251F69C0430040F43D /* Player.cpp */,
 				C685E5181F8907840090598F /* Research.cpp */,
 				C6D2BEE11F9BAA6C008B557C /* Ride.cpp */,
+				C6E415501FAFD6DB00D4A52A /* RideConstruction.cpp */,
 				C632C81E1F8A445700781F6D /* RideList.cpp */,
 				C666EE611F37ACB10061AA04 /* SavePrompt.cpp */,
 				C666EE621F37ACB10061AA04 /* ServerList.cpp */,
@@ -3187,6 +3187,7 @@
 				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
 				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
 				4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */,
+				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
@@ -3478,7 +3479,6 @@
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
 				F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */,
 				F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */,
-				C666EE391F33E3800061AA04 /* RideConstruction.cpp in Sources */,
 				F76C87311EC4E88400FA49E2 /* scenario.c in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
