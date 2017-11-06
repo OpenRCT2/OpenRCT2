@@ -4469,6 +4469,7 @@ STR_6154    :È sconsigliato eseguire OpenRCT2 con permessi di amministratore.
 STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configurare attraverso la linea di comando.
 STR_6156    :Il nome è riservato
 STR_6157    :Console
+STR_6158    :Impossibile caricare questo file...{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
 
 
 #############
