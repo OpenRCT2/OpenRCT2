@@ -5576,8 +5576,10 @@ sint32 ride_get_refund_price(sint32 ride_id)
             GAME_COMMAND_SET_MAZE_TRACK,
             z,
             0);
+        // Above gamecommand may remove the tile element which will cause the next game command to 
+        // return MONEY32_UNDEFINED as it does not need to be called.
 
-        refundPrice += game_do_command(
+        money32 removePrice = game_do_command(
             x,
             GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (1 << 8),
             y + 16,
@@ -5586,7 +5588,16 @@ sint32 ride_get_refund_price(sint32 ride_id)
             z,
             0);
 
-        refundPrice += game_do_command(
+        if (removePrice == MONEY32_UNDEFINED &&
+            gGameCommandErrorText == 0)
+        {
+            tile_element_iterator_restart_for_tile(&it);
+            continue;
+        }
+
+        refundPrice += removePrice;
+
+        removePrice = game_do_command(
             x + 16,
             GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (2 << 8),
             y + 16,
@@ -5594,8 +5605,16 @@ sint32 ride_get_refund_price(sint32 ride_id)
             GAME_COMMAND_SET_MAZE_TRACK,
             z,
             0);
+        if (refundPrice == MONEY32_UNDEFINED &&
+            gGameCommandErrorText == 0)
+        {
+            tile_element_iterator_restart_for_tile(&it);
+            continue;
+        }
 
-        refundPrice += game_do_command(
+        refundPrice += removePrice;
+
+        removePrice = game_do_command(
             x + 16,
             GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_2 | (3 << 8),
             y,
@@ -5603,6 +5622,11 @@ sint32 ride_get_refund_price(sint32 ride_id)
             GAME_COMMAND_SET_MAZE_TRACK,
             z,
             0);
+
+        if (removePrice != MONEY32_UNDEFINED)
+        {
+            refundPrice += removePrice;
+        }
         tile_element_iterator_restart_for_tile(&it);
     }
     gGamePaused = oldpaused;
