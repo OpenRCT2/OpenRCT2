@@ -14,9 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef __ANDROID__
+#if !defined(__ANDROID__) && !defined(NO_LIBZIP)
 #include <zip.h>
-#include "IStream.hpp"
 #include "MemoryStream.h"
 #include "Zip.h"
 

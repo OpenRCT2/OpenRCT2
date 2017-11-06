@@ -77,7 +77,7 @@ matrix:
           services:
             - docker
         - os: linux
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=docker64
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_OPENGL=ON -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on -DDISABLE_LIBZIP=on" TARGET=docker64
           services:
             - docker
         - os: osx
