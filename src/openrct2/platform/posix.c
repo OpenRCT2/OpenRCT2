@@ -288,20 +288,20 @@ bool platform_lock_single_instance()
     #define   LOCK_UN   8    /* unlock */
     
     int lockfd;
-        struct flock lock;
+    struct flock lock;
 
-        lock.l_start = 0;
-        lock.l_len = 0;
-        lock.l_type = F_WRLCK;
-        lock.l_whence = SEEK_SET;
+    lock.l_start = 0;
+    lock.l_len = 0;
+    lock.l_type = F_WRLCK;
+    lock.l_whence = SEEK_SET;
 
     if (fnctl(pidFile, F_SETLK, &lock) == -1) {
         if (errno == EWOULDBLOCK) {
             log_warning("Another OpenRCT2 session has been found running.");
                 return false;
         }
-            log_error("flock returned an uncatched errno: %d", errno);
-            return false;
+        log_error("flock returned an uncatched errno: %d", errno);
+        return false;
     return true;
 }
 
