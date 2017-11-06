@@ -14,9 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <stdio.h>
-
 #include "../common.h"
+#include "interop.h"
+
+#if !defined(NO_RCT2)
+
+#include <stdio.h>
 
 #if defined(_WIN32)
     #define WIN32_LEAN_AND_MEAN
@@ -38,14 +41,11 @@
 #include "../util/util.h"
 #include "addresses.h"
 #include "hook.h"
-#include "interop.h"
 
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__))
     static sint32 fdData = -1;
 #endif
-#if !defined(NO_RCT2)
     static char * segments = (char *)(GOOD_PLACE_FOR_DATA_SEGMENT);
-#endif
 
 static void rct2_interop_get_segment_data_path(char * buffer, size_t bufferSize)
 {
@@ -66,10 +66,8 @@ bool rct2_interop_setup_segment()
     // in some configurations err and len may be unused
     UNUSED(err);
     UNUSED(len);
-#if !defined(NO_RCT2)
     UNUSED(segments);
-#endif
-#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__)) && !defined(NO_RCT2)
+#if defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__))
     #define RDATA_OFFSET 0x004A4000
     #define DATASEG_OFFSET 0x005E2000
 
@@ -119,7 +117,7 @@ bool rct2_interop_setup_segment()
     }
 #endif // defined(USE_MMAP) && (defined(__unix__) || defined(__APPLE__))
 
-#if defined(__unix__) && !defined(NO_RCT2)
+#if defined(__unix__)
     sint32 pageSize = getpagesize();
     sint32 numPages = (len + pageSize - 1) / pageSize;
     uint8 *dummy = malloc(numPages);
@@ -198,7 +196,7 @@ bool rct2_interop_setup_segment()
     fclose(file);
 #endif // defined(USE_MMAP) && defined(_WIN32)
 
-#if !defined(NO_RCT2) && defined(USE_MMAP)
+#if defined(USE_MMAP)
     // Check that the expected data is at various addresses.
     // Start at 0x9a6000, which is start of .data, to skip the region containing addresses to DLL
     // calls, which can be changed by windows/wine loader.
@@ -230,3 +228,11 @@ void rct2_interop_dispose()
     close(fdData);
 #endif
 }
+
+#else
+
+bool rct2_interop_setup_segment() { return true; }
+void rct2_interop_setup_hooks() {}
+void rct2_interop_dispose() {}
+
+#endif // !defined(NO_RCT2)
