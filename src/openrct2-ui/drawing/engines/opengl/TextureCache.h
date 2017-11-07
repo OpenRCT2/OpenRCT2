@@ -198,7 +198,6 @@ private:
 
     std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
     std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
-    std::unordered_map<uint32, CachedTextureInfo> _paletteTextureMap;
 
     GLuint _paletteTexture            = 0;
 
