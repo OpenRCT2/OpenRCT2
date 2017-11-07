@@ -350,5 +350,8 @@
 		"x_offset": -14,
 		"y_offset": -2,
 		"palette": "keep"
+    },
+    {
+        "path": "icons/filter_by_name.png"
     }
 ]

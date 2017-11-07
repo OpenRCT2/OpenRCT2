@@ -4477,6 +4477,9 @@ STR_6167    :{SMALLFONT}{BLACK}Advanced
 STR_6168    :Title Sequence
 STR_6169    :Scenario selection
 STR_6170    :Tweaks
+STR_6171    :Search
+STR_6172    :{SMALLFONT}{BLACK}Search
+STR_6173    :Please provide the name to search:
 
 #############
 # Scenarios #

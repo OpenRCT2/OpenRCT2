@@ -3818,6 +3818,10 @@ enum {
     STR_OPTIONS_SCENARIO_SELECTION = 6169,
     STR_OPTIONS_TWEAKS = 6170,
 
+    STR_GUESTS_FILTER_BY_NAME = 6171,
+    STR_GUESTS_FILTER_BY_NAME_TIP = 6172,
+    STR_GUESTS_ENTER_NAME_TO_SEARCH = 6173,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
