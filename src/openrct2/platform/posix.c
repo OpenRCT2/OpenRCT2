@@ -287,7 +287,6 @@ bool platform_lock_single_instance()
     #define   LOCK_NB   4    /* don't block when locking */
     #define   LOCK_UN   8    /* unlock */
     
-    int lockfd;
     struct flock lock;
 
     lock.l_start = 0;
@@ -295,7 +294,7 @@ bool platform_lock_single_instance()
     lock.l_type = F_WRLCK;
     lock.l_whence = SEEK_SET;
 
-    if (fnctl(pidFile, F_SETLK, &lock) == -1) {
+    if (fcntl(pidFile, F_SETLK, &lock) == -1) {
         if (errno == EWOULDBLOCK) {
             log_warning("Another OpenRCT2 session has been found running.");
                 return false;
@@ -303,7 +302,7 @@ bool platform_lock_single_instance()
         log_error("flock returned an uncatched errno: %d", errno);
         return false;
     return true;
-}
+    }
 
 typedef struct enumerate_file_info {
     char active;
