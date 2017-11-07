@@ -337,6 +337,7 @@ static void window_track_list_update(rct_window *w)
         track_list_load_designs(_window_track_list_item);
         w->selected_list_item = 0;
         window_invalidate(w);
+        w->track_list.reload_track_designs = false;
     }
 }
 
