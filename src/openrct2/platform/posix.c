@@ -301,8 +301,9 @@ bool platform_lock_single_instance()
         }
         log_error("flock returned an uncatched errno: %d", errno);
         return false;
-    return true;
     }
+    return true;
+}
 
 typedef struct enumerate_file_info {
     char active;
