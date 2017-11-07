@@ -26,13 +26,8 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
     rct_tile_element *tileElement, *tileElement2;
     for (y = t; y < b; y++) {
         for (x = l; x < r; x++) {
-<<<<<<< HEAD
             tileElement = map_get_surface_element_at(x, y);
-            tileElement->properties.surface.slope &= ~0x1F;
-=======
-            mapElement = map_get_surface_element_at(x, y);
-            mapElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
->>>>>>> Substitute MAP_ELEMENT_SLOPE_MASK in slope ops
+            tileElement->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_MASK;
 
             // Raise to edge height - 2
             highest = tileElement->base_height;
@@ -119,59 +114,60 @@ sint32 map_smooth(sint32 l, sint32 t, sint32 r, sint32 b)
             }
 
             if (doubleCorner != -1) {
-                tileElement->properties.surface.slope |= 16;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
                 switch (doubleCorner) {
                 case 0:
-                    tileElement->properties.surface.slope |= 2 | 4 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_DN;
                     break;
                 case 1:
-                    tileElement->properties.surface.slope |= 1 | 2 | 4;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_DN;
                     break;
                 case 2:
-                    tileElement->properties.surface.slope |= 1 | 2 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_DN;
                     break;
                 case 3:
-                    tileElement->properties.surface.slope |= 1 | 4 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_DN;
                     break;
                 }
             } else {
                 // Corners
                 tileElement2 = map_get_surface_element_at(x + 1, y + 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 1;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_UP;
 
                 tileElement2 = map_get_surface_element_at(x - 1, y + 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP;
 
                 tileElement2 = map_get_surface_element_at(x + 1, y - 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 2;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP;
 
                 tileElement2 = map_get_surface_element_at(x - 1, y - 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 4;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
 
                 // Sides
                 tileElement2 = map_get_surface_element_at(x + 1, y + 0);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 1 | 2;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_SIDE_UP;
 
                 tileElement2 = map_get_surface_element_at(x - 1, y + 0);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 4 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_SIDE_UP;
 
                 tileElement2 = map_get_surface_element_at(x + 0, y - 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 2 | 4;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_SIDE_UP;
 
                 tileElement2 = map_get_surface_element_at(x + 0, y + 1);
                 if (tileElement2->base_height > tileElement->base_height)
-                    tileElement->properties.surface.slope |= 1 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_SIDE_UP;
 
                 // Raise
-                if (tileElement->properties.surface.slope == (1 | 2 | 4 | 8)) {
-                    tileElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
+                if (tileElement->properties.surface.slope == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
+                {
+                    tileElement->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_MASK;
                     tileElement->base_height = tileElement->clearance_height += 2;
                 }
             }
@@ -186,23 +182,23 @@ static sint32 map_get_corner_height(sint32 x, sint32 y, sint32 corner)
     rct_tile_element *tileElement = map_get_surface_element_at(x, y);
     sint32 baseHeight = tileElement->base_height;
     sint32 slope = tileElement->properties.surface.slope;
-    sint32 doubleCorner = slope & 16;
+    sint32 doubleCorner = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
     if (doubleCorner) {
-        if (!(slope & 1)) doubleCorner = 4;
-        else if (!(slope & 2)) doubleCorner = 8;
-        else if (!(slope & 4)) doubleCorner = 1;
-        else if (!(slope & 8)) doubleCorner = 2;
+        if (!(slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP)) doubleCorner = 4;
+        else if (!(slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP)) doubleCorner = 8;
+        else if (!(slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP)) doubleCorner = 1;
+        else if (!(slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP)) doubleCorner = 2;
     }
 
     switch (corner) {
     case 0:
-        return baseHeight + ((slope & 1) ? (doubleCorner == 1 ? 4 : 2) : 0);
+        return baseHeight + ((slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) ? (doubleCorner == 1 ? 4 : 2) : 0);
     case 1:
-        return baseHeight + ((slope & 8) ? (doubleCorner == 8 ? 4 : 2) : 0);
+        return baseHeight + ((slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) ? (doubleCorner == 8 ? 4 : 2) : 0);
     case 2:
-        return baseHeight + ((slope & 2) ? (doubleCorner == 2 ? 4 : 2) : 0);
+        return baseHeight + ((slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) ? (doubleCorner == 2 ? 4 : 2) : 0);
     case 3:
-        return baseHeight + ((slope & 4) ? (doubleCorner == 4 ? 4 : 2) : 0);
+        return baseHeight + ((slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) ? (doubleCorner == 4 ? 4 : 2) : 0);
     default:
         return baseHeight;
     }
@@ -271,19 +267,19 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
             }
 
             if (doubleCorner != -1) {
-                tileElement->properties.surface.slope |= 16;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
                 switch (doubleCorner) {
                 case 0:
-                    tileElement->properties.surface.slope |= 2 | 4 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_DN;
                     break;
                 case 1:
-                    tileElement->properties.surface.slope |= 1 | 2 | 4;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_DN;
                     break;
                 case 2:
-                    tileElement->properties.surface.slope |= 1 | 2 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_DN;
                     break;
                 case 3:
-                    tileElement->properties.surface.slope |= 1 | 4 | 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_DN;
                     break;
                 }
             } else {
@@ -293,31 +289,31 @@ static sint32 map_smooth_wavy(sint32 l, sint32 t, sint32 r, sint32 b)
                     map_get_corner_height(x + 1, y + 0, 1) > tileElement->base_height ||
                     map_get_corner_height(x + 0, y + 1, 2) > tileElement->base_height
                 )
-                    tileElement->properties.surface.slope |= 1;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_UP;
 
                 if (
                     map_get_corner_height(x - 1, y + 1, 2) > tileElement->base_height ||
                     map_get_corner_height(x - 1, y + 0, 0) > tileElement->base_height ||
                     map_get_corner_height(x + 0, y + 1, 3) > tileElement->base_height
                 )
-                    tileElement->properties.surface.slope |= 8;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP;
 
                 if (
                     map_get_corner_height(x + 1, y - 1, 1) > tileElement->base_height ||
                     map_get_corner_height(x + 1, y + 0, 3) > tileElement->base_height ||
                     map_get_corner_height(x + 0, y - 1, 0) > tileElement->base_height
                 )
-                    tileElement->properties.surface.slope |= 2;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP;
 
                 if (
                     map_get_corner_height(x - 1, y - 1, 0) > tileElement->base_height ||
                     map_get_corner_height(x - 1, y + 0, 2) > tileElement->base_height ||
                     map_get_corner_height(x + 0, y - 1, 1) > tileElement->base_height
                 )
-                    tileElement->properties.surface.slope |= 4;
+                    tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
 
                 // Raise
-                if (tileElement->properties.surface.slope == (1 | 2 | 4 | 8))
+                if (tileElement->properties.surface.slope == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
                     tileElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
                     tileElement->base_height = tileElement->clearance_height += 2;
@@ -380,17 +376,19 @@ sint32 tile_smooth(sint32 x, sint32 y)
     sint8 thresholdSE = clamp(neighbourHeightOffset.E, 0, 1) + clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1);
     sint8 thresholdSW = clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1) + clamp(neighbourHeightOffset.W, 0, 1);
 
-    uint8 slope = 0;
+    uint8 slope = TILE_ELEMENT_SLOPE_FLAT;
     slope |= (thresholdNW >= 1) ? SLOPE_NW_THRESHOLD_FLAGS : 0;
     slope |= (thresholdNE >= 1) ? SLOPE_NE_THRESHOLD_FLAGS : 0;
     slope |= (thresholdSE >= 1) ? SLOPE_SE_THRESHOLD_FLAGS : 0;
     slope |= (thresholdSW >= 1) ? SLOPE_SW_THRESHOLD_FLAGS : 0;
 
-    // Set diagonal when three corners have been raised, and the middle one can be raised one more
-    if ((slope == 0b0111 && neighbourHeightOffset.NW >= 4) || (slope == 0b1011 && neighbourHeightOffset.SW >= 4) ||
-        (slope == 0b1101 && neighbourHeightOffset.SE >= 4) || (slope == 0b1110 && neighbourHeightOffset.NE >= 4))
+    // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
+    if ((slope == TILE_ELEMENT_SLOPE_NW_CORNER_UP && neighbourHeightOffset.NW >= 4) ||
+        (slope == TILE_ELEMENT_SLOPE_SW_CORNER_DN && neighbourHeightOffset.SW >= 4) ||
+        (slope == TILE_ELEMENT_SLOPE_SE_CORNER_DN && neighbourHeightOffset.SE >= 4) ||
+        (slope == TILE_ELEMENT_SLOPE_NE_CORNER_DN && neighbourHeightOffset.NE >= 4))
     {
-        slope |= 1 << 4;
+        slope |= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
     }
 
     // Check if the calculated slope is the same already
@@ -401,8 +399,8 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Remove old slope value
-    surfaceElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
-    if ((slope & 0xF) == 0xF)
+    surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_MASK;
+    if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
     {
         // All corners are raised, raise the entire tile instead.
         surfaceElement->base_height = (surfaceElement->clearance_height += 2);
@@ -418,9 +416,9 @@ sint32 tile_smooth(sint32 x, sint32 y)
         surfaceElement->properties.surface.slope |= slope;
 
         // Set correct clearance height
-        if (slope & 0x10)
+        if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
-        else if (slope & 0x0F)
+        else if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
     }
 

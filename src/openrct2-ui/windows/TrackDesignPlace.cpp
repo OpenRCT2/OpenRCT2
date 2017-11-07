@@ -421,11 +421,11 @@ static sint32 window_track_place_get_base_z(sint32 x, sint32 y)
     z = tileElement->base_height * 8;
 
     // Increase Z above slope
-    if (tileElement->properties.surface.slope & 0x0F) {
+    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) {
         z += 16;
 
         // Increase Z above double slope
-        if (tileElement->properties.surface.slope & 0x10)
+        if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             z += 16;
     }
 

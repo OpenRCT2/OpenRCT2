@@ -343,8 +343,8 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * 
 {
     uint8 slope = tileElement->properties.surface.slope;
 
-    uint16 di = (slope & 0x0F) << rotation;
-    uint8 ebx = slope & 0x10;
+    uint16 di = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    uint8 ebx = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
 
     di = ((di >> 4) | di) & 0x0F;
     return ebx | di;

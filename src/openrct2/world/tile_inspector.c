@@ -414,10 +414,10 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         const uint8 originalSlope = surfaceElement->properties.surface.slope;
-        const bool diagonal = (originalSlope & 0x10) >> 4;
+        const bool diagonal = (originalSlope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4;
 
         surfaceElement->properties.surface.slope ^= 1 << cornerIndex;
-        if (surfaceElement->properties.surface.slope & 0x0F)
+        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }
@@ -427,18 +427,18 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
         }
 
         // All corners are raised
-        if ((surfaceElement->properties.surface.slope & 0x0F) == 0x0F)
+        if ((surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_MASK;
 
             if (diagonal)
             {
-                switch (originalSlope & 0x0F)
+                switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
-                case 0b1011: surfaceElement->properties.surface.slope |= (1 << 0); break;
-                case 0b0111: surfaceElement->properties.surface.slope |= (1 << 1); break;
-                case 0b1110: surfaceElement->properties.surface.slope |= (1 << 2); break;
-                case 0b1101: surfaceElement->properties.surface.slope |= (1 << 3); break;
+                case TILE_ELEMENT_SLOPE_SW_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_NW_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_NE_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_SE_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP; break;
                 }
             }
 
@@ -469,12 +469,12 @@ sint32 tile_inspector_surface_toggle_diagonal(sint32 x, sint32 y, sint32 flags)
 
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
-        surfaceElement->properties.surface.slope ^= 0x10;
-        if (surfaceElement->properties.surface.slope & 0x10)
+        surfaceElement->properties.surface.slope ^= TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+        if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 4;
         }
-        else if (surfaceElement->properties.surface.slope & 0x0F)
+        else if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             surfaceElement->clearance_height = surfaceElement->base_height + 2;
         }

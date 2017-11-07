@@ -401,7 +401,7 @@ void map_init(sint32 size)
         tile_element->flags = TILE_ELEMENT_FLAG_LAST_TILE;
         tile_element->base_height = 14;
         tile_element->clearance_height = 14;
-        tile_element->properties.surface.slope = 0;
+        tile_element->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
         tile_element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
         tile_element->properties.surface.ownership = 0;
         tile_element->properties.surface.terrain = 0;
@@ -529,9 +529,9 @@ sint32 tile_element_height(sint32 x, sint32 y)
         (tileElement->base_height << 3);
 
     uint32 slope = (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK);
-    uint8 extra_height = (slope & 0x10) >> 4; // 0x10 is the 5th bit - sets slope to double height
+    uint8 extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
     // Remove the extra height bit
-    slope &= 0xF;
+    slope &= TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
 
     sint8 quad = 0, quad_extra = 0; // which quadrant the element is in?
                             // quad_extra is for extra height tiles
@@ -551,18 +551,22 @@ sint32 tile_element_height(sint32 x, sint32 y)
     // We arbitrarily take the SW corner to be closest to the viewer
 
     // One corner up
-    if ((slope == 1) || (slope == 2) || (slope == 4) || (slope == 8)) {
+    if (slope == TILE_ELEMENT_SLOPE_NE_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_SE_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_SW_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_NW_CORNER_UP)
+    {
         switch (slope) {
-        case 1:    // NE corner up
+        case TILE_ELEMENT_SLOPE_NE_CORNER_UP:
             quad = xl + yl - TILE_SIZE;
             break;
-        case 2:    // SE corner up
+        case TILE_ELEMENT_SLOPE_SE_CORNER_UP:
             quad = xl - yl;
             break;
-        case 4:   // SW corner up
+        case TILE_ELEMENT_SLOPE_SW_CORNER_UP:
             quad = TILE_SIZE - yl - xl;
             break;
-        case 8:   // NW corner up
+        case TILE_ELEMENT_SLOPE_NW_CORNER_UP:
             quad = yl - xl;
             break;
         }
@@ -574,37 +578,40 @@ sint32 tile_element_height(sint32 x, sint32 y)
 
     // One side up
     switch (slope) {
-    case 3:   // E side up
+    case TILE_ELEMENT_SLOPE_E_SIDE_UP:
         height += xl / 2 + 1;
         break;
-    case 6:   // S side up
+    case TILE_ELEMENT_SLOPE_S_SIDE_UP:
         height += (TILE_SIZE - yl) / 2;
         break;
-    case 9:    // N side up
+    case TILE_ELEMENT_SLOPE_N_SIDE_UP:
         height += yl / 2;
         height++;
         break;
-    case 12:  // W side up
+    case TILE_ELEMENT_SLOPE_W_SIDE_UP:
         height += (TILE_SIZE - xl) / 2;
         break;
     }
 
     // One corner down
-    if ((slope == 7) || (slope == 11) || (slope == 13) || (slope == 14)) {
+    if ((slope == TILE_ELEMENT_SLOPE_NW_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_SW_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_SE_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_NE_CORNER_DN)) {
         switch (slope) {
-        case 7:   // NW corner down
+        case TILE_ELEMENT_SLOPE_NW_CORNER_DN:
             quad_extra = xl + TILE_SIZE - yl;
             quad = xl - yl;
             break;
-        case 11:  // SW corner down
+        case TILE_ELEMENT_SLOPE_SW_CORNER_DN:
             quad_extra = xl + yl;
             quad = xl + yl - TILE_SIZE - 1;
             break;
-        case 13:  // SE corner down
+        case TILE_ELEMENT_SLOPE_SE_CORNER_DN:
             quad_extra = TILE_SIZE - xl + yl;
             quad = yl - xl;
             break;
-        case 14:  // NE corner down
+        case TILE_ELEMENT_SLOPE_NE_CORNER_DN:
             quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
             quad = TILE_SIZE - yl - xl - 1;
             break;
@@ -624,15 +631,16 @@ sint32 tile_element_height(sint32 x, sint32 y)
     }
 
     // Valleys
-    if ((slope == 5) || (slope == 10)) {
+    if ((slope == TILE_ELEMENT_SLOPE_NW_SE_VALLEY) ||
+            (slope == TILE_ELEMENT_SLOPE_NE_SW_VALLEY)) {
         switch (slope) {
-        case 5:  // NW-SE valley
+        case TILE_ELEMENT_SLOPE_NW_SE_VALLEY:
             if (xl + yl <= TILE_SIZE + 1) {
                 return height;
             }
             quad = TILE_SIZE - xl - yl;
             break;
-        case 10: // NE-SW valley
+        case TILE_ELEMENT_SLOPE_NE_SW_VALLEY:
             quad = xl - yl;
             break;
         }
@@ -763,17 +771,17 @@ void map_update_path_wide_flags()
  */
 sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope)
 {
-    if (!(slope & 4))
+    if (!(slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP))
         return 0;
 
-    switch (slope & 3) {
-    case 0:
+    switch (slope & TILE_ELEMENT_SLOPE_E_SIDE_UP) {
+    case TILE_ELEMENT_SLOPE_FLAT:
         return (31 - (x & 31)) / 2;
-    case 1:
+    case TILE_ELEMENT_SLOPE_NE_CORNER_UP:
         return (y & 31) / 2;
-    case 2:
+    case TILE_ELEMENT_SLOPE_SE_CORNER_UP:
         return (x & 31) / 2;
-    case 3:
+    case TILE_ELEMENT_SLOPE_E_SIDE_UP:
         return (31 - (y & 31)) / 2;
     }
     return 0;
@@ -1450,33 +1458,33 @@ static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
 {
     switch (direction) {
     case 0:
-        if (slope & 1) {
+        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) {
             z += 2;
-            if (slope == 27) {
+            if (slope == (TILE_ELEMENT_SLOPE_SW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 1:
-        if (slope & 2) {
+        if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
             z += 2;
-            if (slope == 23) {
+            if (slope == (TILE_ELEMENT_SLOPE_NW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 2:
-        if (slope & 4) {
+        if (slope & TILE_ELEMENT_SLOPE_SW_CORNER_DN) {
             z += 2;
-            if (slope == 30) {
+            if (slope == (TILE_ELEMENT_SLOPE_NE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 3:
-        if (slope & 8) {
+        if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_DN) {
             z += 2;
-            if (slope == 29) {
+            if (slope == (TILE_ELEMENT_SLOPE_SE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
@@ -1680,7 +1688,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         surfaceElement->properties.surface.slope &= TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         surfaceElement->properties.surface.slope |= style;
         sint32 slope = surfaceElement->properties.surface.terrain & TILE_ELEMENT_SLOPE_MASK;
-        if(slope != 0 && slope <= height / 2)
+        if(slope != TILE_ELEMENT_SLOPE_FLAT && slope <= height / 2)
             surfaceElement->properties.surface.terrain &= TILE_ELEMENT_SURFACE_TERRAIN_MASK;
         map_invalidate_tile_full(x, y);
     }
@@ -1783,9 +1791,9 @@ static uint8 map_get_highest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, 
             rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (tile_element != NULL) {
                 uint8 base_height = tile_element->base_height;
-                if (tile_element->properties.surface.slope & 0xF)
+                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     base_height += 2;
-                if (tile_element->properties.surface.slope & 0x10)
+                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                     base_height += 2;
                 if (max_height < base_height)
                     max_height = base_height;
@@ -1863,9 +1871,9 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
             rct_tile_element *tile_element = map_get_surface_element_at(xi / 32, yi / 32);
             if (tile_element != NULL) {
                 uint8 height = tile_element->base_height;
-                if (tile_element->properties.surface.slope & 0xF)
+                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                     height += 2;
-                if (tile_element->properties.surface.slope & 0x10)
+                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                     height += 2;
                 if (height >= max_height) {
                     height =  tile_element->base_height;
@@ -3258,24 +3266,24 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 sint32 cl = al;
                 sint32 ch = al;
                 uint8 slope = tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
-                if (slope & 1) {
+                if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) {
                     al += 2;
-                    if (slope == 0x1B)
+                    if (slope == (TILE_ELEMENT_SLOPE_SW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         al += 2;
                 }
-                if (slope & 2) {
+                if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
                     ah += 2;
-                    if (slope == 0x17)
+                    if (slope == (TILE_ELEMENT_SLOPE_NW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ah += 2;
                 }
-                if (slope & 4) {
+                if (slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
                     cl += 2;
-                    if (slope == 0x1E)
+                    if (slope == (TILE_ELEMENT_SLOPE_NE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         cl += 2;
                 }
-                if (slope & 8) {
+                if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) {
                     ch += 2;
-                    if (slope == 0x1D)
+                    if (slope == (TILE_ELEMENT_SLOPE_SE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ch += 2;
                 }
                 sint32 bh = zLow + 4;
@@ -3381,7 +3389,7 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
 
     sint32 z0 = tileElement->base_height;
     sint32 z1 = tileElement->base_height + 2;
-    if (tileElement->properties.surface.slope & 0x10)
+    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         z1 += 2;
 
     // Check objects above grass
@@ -3545,22 +3553,22 @@ void map_extend_boundary_surface()
         newTileElement->properties.surface.ownership = 0;
 
         z = existingTileElement->base_height;
-        slope = existingTileElement->properties.surface.slope & 9;
-        if (slope == 9) {
+        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_N_SIDE_UP;
+        if (slope == TILE_ELEMENT_SLOPE_N_SIDE_UP) {
             z += 2;
-            slope = 0;
-            if (existingTileElement->properties.surface.slope & 0x10) {
-                slope = 1;
-                if (existingTileElement->properties.surface.slope & 0x04) {
-                    slope = 8;
-                    if (existingTileElement->properties.surface.slope & 0x02) {
-                        slope = 0;
+            slope = TILE_ELEMENT_SLOPE_FLAT;
+            if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
+                slope = TILE_ELEMENT_SLOPE_NE_CORNER_UP;
+                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
+                    slope = TILE_ELEMENT_SLOPE_NW_CORNER_UP;
+                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
+                        slope = TILE_ELEMENT_SLOPE_FLAT;
                     }
                 }
             }
         }
-        if (slope & 1) slope |= 2;
-        if (slope & 8) slope |= 4;
+        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
 
         newTileElement->properties.surface.slope |= slope;
         newTileElement->base_height = z;
@@ -3589,22 +3597,22 @@ void map_extend_boundary_surface()
 >>>>>>> Refactor slope flags
 
         z = existingTileElement->base_height;
-        slope = existingTileElement->properties.surface.slope & 3;
-        if (slope == 3) {
+        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_E_SIDE_UP;
+        if (slope == TILE_ELEMENT_SLOPE_E_SIDE_UP) {
             z += 2;
-            slope = 0;
-            if (existingTileElement->properties.surface.slope & 0x10) {
-                slope = 1;
-                if (existingTileElement->properties.surface.slope & 0x04) {
-                    slope = 2;
-                    if (existingTileElement->properties.surface.slope & 0x08) {
-                        slope = 0;
+            slope = TILE_ELEMENT_SLOPE_FLAT;
+            if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
+                slope = TILE_ELEMENT_SLOPE_NE_CORNER_UP;
+                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
+                    slope = TILE_ELEMENT_SLOPE_SE_CORNER_UP;
+                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) {
+                        slope = TILE_ELEMENT_SLOPE_FLAT;
                     }
                 }
             }
         }
-        if (slope & 1) slope |= 8;
-        if (slope & 2) slope |= 4;
+        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
 
         newTileElement->properties.surface.slope |= slope;
         newTileElement->base_height = z;
@@ -3625,7 +3633,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
     case TILE_ELEMENT_TYPE_SURFACE:
         element->base_height = 2;
         element->clearance_height = 2;
-        element->properties.surface.slope = 0;
+        element->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
         element->properties.surface.terrain = 0;
         element->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
         element->properties.surface.ownership = 0;
@@ -3714,9 +3722,9 @@ sint32 map_get_highest_z(sint32 tileX, sint32 tileY)
     z = tileElement->base_height * 8;
 
     // Raise z so that is above highest point of land and water on tile
-    if ((tileElement->properties.surface.slope & 0x0F) != 0)
+    if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != TILE_ELEMENT_SLOPE_FLAT)
         z += 16;
-    if ((tileElement->properties.surface.slope & 0x10) != 0)
+    if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += 16;
 
     z = max(z, map_get_water_height(tileElement) * 16);
@@ -4084,7 +4092,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
 
     sint16 base_z = tileElement->base_height;
     sint16 clear_z = tileElement->base_height + 2;
-    if (tileElement->properties.surface.slope & (1 << 4))
+    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         clear_z += 2;
 
     while (!tile_element_is_last_for_tile(tileElement++)){

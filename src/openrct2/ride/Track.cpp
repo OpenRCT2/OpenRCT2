@@ -1312,8 +1312,11 @@ static money32 track_place(sint32 rideIndex,
             water_height -= 2;
             if (water_height == tileElement->base_height)
             {
-                bh = tileElement->properties.surface.slope & 0x0F;
-                if (bh == 7 || bh == 11 || bh == 13 || bh == 14)
+                bh = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
+                if (bh == TILE_ELEMENT_SLOPE_NW_CORNER_DN ||
+                    bh == TILE_ELEMENT_SLOPE_SW_CORNER_DN ||
+                    bh == TILE_ELEMENT_SLOPE_SE_CORNER_DN ||
+                    bh == TILE_ELEMENT_SLOPE_NE_CORNER_DN)
                 {
                     gGameCommandErrorText = STR_CAN_ONLY_BUILD_THIS_ON_WATER;
                     return MONEY32_UNDEFINED;

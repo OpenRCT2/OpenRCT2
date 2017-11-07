@@ -465,13 +465,13 @@ static void mapgen_set_height()
             tileElement->clearance_height = tileElement->base_height;
 
             if (q00 > baseHeight)
-                tileElement->properties.surface.slope |= 4;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
             if (q01 > baseHeight)
-                tileElement->properties.surface.slope |= 8;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP;
             if (q10 > baseHeight)
-                tileElement->properties.surface.slope |= 2;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP;
             if (q11 > baseHeight)
-                tileElement->properties.surface.slope |= 1;
+                tileElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_UP;
         }
     }
 }

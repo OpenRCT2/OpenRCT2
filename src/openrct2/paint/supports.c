@@ -374,7 +374,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
     if (slope & (1 << 5)) {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
-    } else if (slope & (1 << 4)) {
+    } else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
         // Steep diagonal (place the correct shaped support for the slope)
         height -= 2;
         if (height < 0) {
@@ -397,7 +397,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             hasSupports = true;
         }
         z += 32;
-    } else if ((slope & 0x0F) != 0) {
+    } else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
         // 1 to 3 quarters up
         height--;
         if (height < 0) {

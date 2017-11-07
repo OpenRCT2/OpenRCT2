@@ -1318,10 +1318,10 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
             rct_tile_element * tile_element = map_get_surface_element_at(mapCoord.x / 32, mapCoord.y / 32);
             sint16          map_height    = tile_element->base_height * 8;
-            if (tile_element->properties.surface.slope & 0xF)
+            if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
             {
                 map_height += 16;
-                if (tile_element->properties.surface.slope & 0x10)
+                if (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                 {
                     map_height += 16;
                 }
@@ -1485,10 +1485,10 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                 }
 
                 sint32 height = tileElement->base_height * 8;
-                if (tileElement->properties.surface.slope & 0x0F)
+                if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
                     height += 16;
-                    if (tileElement->properties.surface.slope & 0x10)
+                    if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
                     {
                         height += 16;
                     }
