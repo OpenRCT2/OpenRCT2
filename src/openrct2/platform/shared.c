@@ -49,6 +49,23 @@
     mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
+#if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
+char *strndup(const char *src, size_t size)
+{
+    size_t len = strnlen(src, size);
+    char *dst = (char *)malloc(len + 1);
+
+    if (dst == NULL)
+    {
+        return NULL;
+    }
+
+    dst = memcpy(dst, src, len);
+    dst[len] = '\0';
+    return (char *)dst;
+}
+#endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
+
 #ifdef _WIN32 
 static uint32 _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
