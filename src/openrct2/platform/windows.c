@@ -750,21 +750,6 @@ uint8 platform_get_locale_date_format()
     return DATE_FORMAT_DAY_MONTH_YEAR;
 }
 
-char *strndup(const char *src, size_t size)
-{
-    size_t len = strnlen(src, size);
-    char *dst = (char *)malloc(len + 1);
-
-    if (dst == NULL)
-    {
-        return NULL;
-    }
-
-    dst = memcpy(dst, src, len);
-    dst[len] = '\0';
-    return (char *)dst;
-}
-
 void platform_get_exe_path(utf8 *outPath, size_t outSize)
 {
     wchar_t exePath[MAX_PATH];
