@@ -455,6 +455,10 @@ private:
     void PrepareParkForPlayback()
     {
         rct_window * w = window_get_main();
+        if (w == nullptr)
+        {
+            return;
+        }
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
         w->saved_view_x = gSavedViewX;
         w->saved_view_y = gSavedViewY;
