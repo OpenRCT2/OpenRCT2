@@ -25,14 +25,14 @@
 
 #include <stdlib.h>
 #include <time.h>
-#include "../config/Config.h"
 #include "../Context.h"
+#include "../OpenRCT2.h"
+#include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
 #include "../game.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
-#include "../OpenRCT2.h"
 #include "../util/util.h"
 #include "../world/Climate.h"
 #include "platform.h"
@@ -49,29 +49,29 @@
     mach_timebase_info_data_t _mach_base_info = { 0 };
 #endif
 
-#if !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
-char *strndup(const char *src, size_t size)
+#if !((defined(_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
+char * strndup(const char * src, size_t size)
 {
     size_t len = strnlen(src, size);
-    char *dst = (char *)malloc(len + 1);
+    char * dst = (char *)malloc(len + 1);
 
     if (dst == NULL)
     {
         return NULL;
     }
 
-    dst = memcpy(dst, src, len);
+    dst      = memcpy(dst, src, len);
     dst[len] = '\0';
     return (char *)dst;
 }
 #endif // !((defined (_POSIX_C_SOURCE) && _POSIX_C_SOURCE >= 200809L) || (defined(_XOPEN_SOURCE) && _XOPEN_SOURCE >= 700))
 
-#ifdef _WIN32 
-static uint32 _frequency = 0;
+#ifdef _WIN32
+static uint32        _frequency = 0;
 static LARGE_INTEGER _entryTimestamp;
 #endif
 
-typedef void(*update_palette_func)(const uint8*, sint32, sint32);
+typedef void (*update_palette_func)(const uint8 *, sint32, sint32);
 
 rct_palette_entry gPalette[256];
 
@@ -80,9 +80,12 @@ static uint8 soft_light(uint8 a, uint8 b)
     float fa = a / 255.0f;
     float fb = b / 255.0f;
     float fr;
-    if (fb < 0.5f) {
+    if (fb < 0.5f)
+    {
         fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
-    } else {
+    }
+    else
+    {
         fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
     }
     return (uint8)(clamp(0.0f, fr, 1.0f) * 255.0f);
@@ -90,19 +93,22 @@ static uint8 soft_light(uint8 a, uint8 b)
 
 static uint8 lerp(uint8 a, uint8 b, float t)
 {
-    if (t <= 0) return a;
-    if (t >= 1) return b;
+    if (t <= 0)
+        return a;
+    if (t >= 1)
+        return b;
 
-    sint32 range = b - a;
+    sint32 range  = b - a;
     sint32 amount = (sint32)(range * t);
     return (uint8)(a + amount);
 }
 
-void platform_update_palette(const uint8* colours, sint32 start_index, sint32 num_colours)
+void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 num_colours)
 {
     colours += start_index * 4;
 
-    for (sint32 i = start_index; i < num_colours + start_index; i++) {
+    for (sint32 i = start_index; i < num_colours + start_index; i++)
+    {
         uint8 r = colours[2];
         uint8 g = colours[1];
         uint8 b = colours[0];
@@ -116,16 +122,17 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
 #endif
         {
             float night = gDayNightCycle;
-            if (night >= 0 && gClimateLightningFlash == 0) {
+            if (night >= 0 && gClimateLightningFlash == 0)
+            {
                 r = lerp(r, soft_light(r, 8), night);
                 g = lerp(g, soft_light(g, 8), night);
                 b = lerp(b, soft_light(b, 128), night);
             }
         }
 
-        gPalette[i].red = r;
+        gPalette[i].red   = r;
         gPalette[i].green = g;
-        gPalette[i].blue = b;
+        gPalette[i].blue  = b;
         gPalette[i].alpha = 0;
         colours += 4;
     }
@@ -136,7 +143,8 @@ void platform_update_palette(const uint8* colours, sint32 start_index, sint32 nu
     gPalette[255].green = 255;
     gPalette[255].blue  = 255;
 
-    if (!gOpenRCT2Headless) {
+    if (!gOpenRCT2Headless)
+    {
         drawing_engine_set_palette(gPalette);
     }
 }
@@ -168,7 +176,7 @@ void platform_refresh_video(bool recreate_window)
 
 static void platform_ticks_init()
 {
-#ifdef _WIN32 
+#ifdef _WIN32
     LARGE_INTEGER freq;
     QueryPerformanceFrequency(&freq);
     _frequency = (uint32)(freq.QuadPart / 1000);
@@ -190,7 +198,8 @@ uint32 platform_get_ticks()
     return (uint32)(((mach_absolute_time() * _mach_base_info.numer) / _mach_base_info.denom) / 1000000);
 #else
     struct timespec ts;
-    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0) {
+    if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
+    {
         log_fatal("clock_gettime failed");
         exit(-1);
     }
@@ -207,13 +216,17 @@ void platform_sleep(uint32 ms)
 #endif
 }
 
-uint8 platform_get_currency_value(const char *currCode) {
-    if (currCode == NULL || strlen(currCode) < 3) {
-            return CURRENCY_POUNDS;
+uint8 platform_get_currency_value(const char * currCode)
+{
+    if (currCode == NULL || strlen(currCode) < 3)
+    {
+        return CURRENCY_POUNDS;
     }
 
-    for (sint32 currency = 0; currency < CURRENCY_END; ++currency) {
-        if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0) {
+    for (sint32 currency = 0; currency < CURRENCY_END; ++currency)
+    {
+        if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
+        {
             return currency;
         }
     }
@@ -222,7 +235,8 @@ uint8 platform_get_currency_value(const char *currCode) {
 }
 
 #ifndef __ANDROID__
-float platform_get_default_scale() {
+float platform_get_default_scale()
+{
     return 1;
 }
 #endif
@@ -239,7 +253,8 @@ void core_init()
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
         kern_return_t ret = mach_timebase_info(&_mach_base_info);
-        if (ret != 0) {
+        if (ret != 0)
+        {
             log_fatal("Unable to get mach_timebase_info.");
             exit(-1);
         }
