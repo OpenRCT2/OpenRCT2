@@ -510,73 +510,76 @@ static void viewport_set_underground_flag(sint32 underground, rct_window* window
  *
  *  rct2: 0x006E7A3A
  */
-void viewport_update_position(rct_window *window)
+void viewport_update_position(rct_window * window)
 {
     window_event_resize_call(window);
 
-    rct_viewport* viewport = window->viewport;
-    if (!viewport)return;
+    rct_viewport * viewport = window->viewport;
+    if (!viewport) return;
 
-    if (window->viewport_target_sprite != SPRITE_INDEX_NULL) {
+    if (window->viewport_target_sprite != SPRITE_INDEX_NULL)
+    {
         viewport_update_sprite_follow(window);
         return;
     }
 
-    sint16 x = viewport->view_width / 2 + window->saved_view_x;
-    sint16 y = viewport->view_height / 2 + window->saved_view_y;
-    sint16 z;
-
-    viewport_adjust_for_map_height(&x, &y, &z);
-
     viewport_set_underground_flag(0, window, viewport);
 
-    //Clamp to the map minimum value
-    sint32 at_map_edge_x = 0;
-    if (x < MAP_MINIMUM_X_Y){
-        x = MAP_MINIMUM_X_Y;
-        at_map_edge_x = 1;
+    sint16 x = window->saved_view_x + viewport->view_width / 2;
+    sint16 y = window->saved_view_y + viewport->view_height / 2;
+    LocationXY16 mapCoord;
+
+    mapCoord = viewport_coord_to_map_coord(x, y, 0);
+
+    // Clamp to the map minimum value
+    sint32 at_map_edge = 0;
+    if (mapCoord.x < MAP_MINIMUM_X_Y)
+    {
+        mapCoord.x = MAP_MINIMUM_X_Y;
+        at_map_edge = 1;
     }
-    sint32 at_map_edge_y = 0;
-    if (y < MAP_MINIMUM_X_Y){
-        y = MAP_MINIMUM_X_Y;
-        at_map_edge_y = 1;
+    if (mapCoord.y < MAP_MINIMUM_X_Y)
+    {
+        mapCoord.y = MAP_MINIMUM_X_Y;
+        at_map_edge = 1;
     }
 
-    //Clamp to the map maximum value (scenario specific)
-    if (x > gMapSizeMinus2){
-        x = gMapSizeMinus2;
-        at_map_edge_x = 1;
+    // Clamp to the map maximum value (scenario specific)
+    if (mapCoord.x > gMapSizeMinus2)
+    {
+        mapCoord.x = gMapSizeMinus2;
+        at_map_edge = 1;
     }
-    if (y > gMapSizeMinus2){
-        y = gMapSizeMinus2;
-        at_map_edge_y = 1;
+    if (mapCoord.y > gMapSizeMinus2)
+    {
+        mapCoord.y = gMapSizeMinus2;
+        at_map_edge = 1;
     }
 
-    if (at_map_edge_x || at_map_edge_y) {
-        // The &0xFFFF is to prevent the sign extension messing the
-        // function up.
-        sint32 zz = tile_element_height(x & 0xFFFF, y & 0xFFFF);
+    if (at_map_edge)
+    {
         sint32 _2d_x, _2d_y;
-        centre_2d_coordinates(x, y, zz, &_2d_x, &_2d_y, viewport);
+        centre_2d_coordinates(mapCoord.x, mapCoord.y, 0, &_2d_x, &_2d_y, viewport);
 
-        if (at_map_edge_x)
-            window->saved_view_x = _2d_x;
-        if (at_map_edge_y)
-            window->saved_view_y = _2d_y;
+        window->saved_view_x = _2d_x;
+        window->saved_view_y = _2d_y;
     }
 
     x = window->saved_view_x;
     y = window->saved_view_y;
-    if (window->flags & WF_SCROLLING_TO_LOCATION){
+    if (window->flags & WF_SCROLLING_TO_LOCATION)
+    {
         // Moves the viewport if focusing in on an item
         uint8 flags = 0;
         x -= viewport->view_x;
-        if (x < 0){
+        if (x < 0)
+        {
             x = -x;
             flags |= 1;
         }
         y -= viewport->view_y;
-        if (y < 0){
+        if (y < 0)
+        {
             y = -y;
             flags |= 2;
         }
@@ -584,13 +587,16 @@ void viewport_update_position(rct_window *window)
         y = (y + 7) / 8;
 
         //If we are at the final zoom position
-        if (!x && !y){
+        if (!x && !y)
+        {
             window->flags &= ~WF_SCROLLING_TO_LOCATION;
         }
-        if (flags & 1){
+        if (flags & 1)
+        {
             x = -x;
         }
-        if (flags & 2){
+        if (flags & 2)
+        {
             y = -y;
         }
         x += viewport->view_x;

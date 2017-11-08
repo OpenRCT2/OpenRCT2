@@ -22,7 +22,9 @@
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
+- Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
+- Fix: [#2254] Edge scrolling horizontally now has the same speed as vertical edge scrolling.
 - Fix: [#6199] Inverted Hairpin Coaster vehicle tab is not centred.
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.

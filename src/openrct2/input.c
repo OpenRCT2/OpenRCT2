@@ -1508,15 +1508,7 @@ void game_handle_edge_scroll()
     else if (cursorState->y >= context_get_height() - 1)
         scrollY = 1;
 
-    // Scroll viewport
-    if (scrollX != 0) {
-        mainWindow->saved_view_x += scrollX * (12 << mainWindow->viewport->zoom);
-        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
-    }
-    if (scrollY != 0) {
-        mainWindow->saved_view_y += scrollY * (12 << mainWindow->viewport->zoom);
-        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
-    }
+    input_scroll_viewport(scrollX, scrollY);
 }
 
 void input_set_flag(INPUT_FLAGS flag, bool on)
@@ -1561,4 +1553,63 @@ void input_reset_place_obj_modifier()
 bool input_test_place_object_modifier(PLACE_OBJECT_MODIFIER modifier)
 {
     return gInputPlaceObjectModifier & modifier;
+}
+
+void input_scroll_viewport(sint32 scrollX, sint32 scrollY)
+{
+    rct_window * mainWindow = window_get_main();
+    rct_viewport * viewport = mainWindow->viewport;
+
+    sint32 dx = scrollX * (12 << viewport->zoom);
+    sint32 dy = scrollY * (12 << viewport->zoom);
+
+    if (scrollX != 0)
+    {
+        // Speed up scrolling horizontally when at the edge of the map
+        // so that the speed is consistent with vertical edge scrolling.
+        sint32 x = mainWindow->saved_view_x + viewport->view_width / 2 + dx;
+        sint32 y = mainWindow->saved_view_y + viewport->view_height / 2;
+        sint32 y_dy = mainWindow->saved_view_y + viewport->view_height / 2 + dy;
+        LocationXY16 mapCoord, mapCoord_dy;
+
+        mapCoord = viewport_coord_to_map_coord(x, y, 0);
+        mapCoord_dy = viewport_coord_to_map_coord(x, y_dy, 0);
+
+        // Check if we're crossing the boundary
+        // Clamp to the map minimum value
+        sint32 at_map_edge = 0;
+        sint32 at_map_edge_dy = 0;
+        if (mapCoord.x < MAP_MINIMUM_X_Y || mapCoord.y < MAP_MINIMUM_X_Y)
+        {
+            at_map_edge = 1;
+        }
+        if (mapCoord_dy.x < MAP_MINIMUM_X_Y || mapCoord_dy.y < MAP_MINIMUM_X_Y)
+        {
+            at_map_edge_dy = 1;
+        }
+
+        // Clamp to the map maximum value (scenario specific)
+        if (mapCoord.x > gMapSizeMinus2 || mapCoord.y > gMapSizeMinus2)
+        {
+            at_map_edge = 1;
+        }
+        if (mapCoord_dy.x > gMapSizeMinus2 || mapCoord_dy.y > gMapSizeMinus2)
+        {
+            at_map_edge_dy = 1;
+        }
+
+        // If we crossed the boundary, multiply the distance by 2
+        if (at_map_edge && at_map_edge_dy)
+        {
+            dx *= 2;
+        }
+
+        mainWindow->saved_view_x += dx;
+        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+    }
+    if (scrollY != 0)
+    {
+        mainWindow->saved_view_y += dy;
+        _inputFlags |= INPUT_FLAG_VIEWPORT_SCROLLING;
+    }
 }
