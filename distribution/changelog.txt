@@ -41,8 +41,9 @@
 - Fix: [#6198] You cannot cancel RCT1 directory selection.
 - Fix: [#6202] Guests can break occupied benches (original bug).
 - Fix: [#6251] Splash Boats renders flat-to-25-degree pieces in tunnels incorrectly.
-- Fix: [#6261, #6344, #6520] Broken pathfinding after removing park entrances with the tile inspector
+- Fix: [#6261, #6344, #6520] Broken pathfinding after removing park entrances with the tile inspector.
 - Fix: [#6271] Wrong booster speed tooltip text.
+- Fix: [#6301] Track list freezes after deleting track in Track Manager.
 - Fix: [#6308] Cannot create title sequence if title sequences folder does not exist.
 - Fix: [#6318] Cannot sack staff that have not been placed
 - Fix: [#6320] Crash when CSS1.DAT is absent.
