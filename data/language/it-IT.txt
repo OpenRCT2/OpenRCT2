@@ -4127,7 +4127,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS mentre si gioca
 STR_5816    :{SMALLFONT}{BLACK}Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
-STR_5817    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Imposta il tipo di scalatura della grafica
+STR_5817    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Imposta il tipo di scalatura della grafica.{NEWLINE}{NEWLINE}Nearest Neighbour è nitida ma causa distorsioni su scale non intere.{NEWLINE}Lineare e anisotropica sono uniformi ma sfocate.{NEWLINE}N.N. smussato è nitido anche a scale non intere ma è più esoso di risorse grafiche.
 STR_5818    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
 STR_5819    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
 STR_5820    :{SMALLFONT}{BLACK}Riduce a icona il gioco{NEWLINE}se il focus viene perso in modalità schermo intero
@@ -4470,6 +4470,7 @@ STR_6155    :Né KDialog né Zenity sono installati. Installarne uno o configura
 STR_6156    :Il nome è riservato
 STR_6157    :Console
 STR_6158    :Impossibile caricare questo file...{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
+STR_6159    :Nearest Neighbour smussato
 
 
 #############
