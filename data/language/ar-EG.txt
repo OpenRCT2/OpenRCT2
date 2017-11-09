@@ -4125,7 +4125,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type
+STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type{NEWLINE}{NEWLINE}Nearest Neighbour is sharp but causes distortion at non-integer scales.{NEWLINE}Linear and Anisotropic are smooth but blurry.{NEWLINE}Smooth NN is sharp even at non-integer scales but can cause a minor performance hit.
 STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
@@ -4466,6 +4466,8 @@ STR_6154    :لا يٌفضل تشغيل اللعبة مع هذه الأذون ا
 STR_6155    :ليس هناك KDialog أو Zenity مثبت. الرجاء تثبيت إحداهما، أو إعداده من سطر الأوامر.
 STR_6156    :الأسم محجوز
 STR_6157    :وحدة التحكم
+STR_6158    :فشل في تحميل هذا الملف...{NEWLINE}نسخة الملف غير متوافقة: {COMMA16}
+STR_6159    :تنعيم الجار الأقرب
 #############
 # Scenarios #
 #############
