@@ -59,6 +59,7 @@
 #include "intro.h"
 #include "localisation/date.h"
 #include "localisation/language.h"
+#include "network/DiscordService.h"
 #include "network/http.h"
 #include "network/network.h"
 #include "network/twitch.h"
@@ -87,6 +88,9 @@ namespace OpenRCT2
         IObjectManager *            _objectManager = nullptr;
         ITrackDesignRepository *    _trackDesignRepository = nullptr;
         IScenarioRepository *       _scenarioRepository = nullptr;
+#ifdef __ENABLE_DISCORD__
+        DiscordService *            _discordService = nullptr;
+#endif
 
         // Game states
         TitleScreen * _titleScreen = nullptr;
@@ -133,6 +137,9 @@ namespace OpenRCT2
 
             delete _titleScreen;
 
+#ifdef __ENABLE_DISCORD__
+            delete _discordService;
+#endif
             delete _scenarioRepository;
             delete _trackDesignRepository;
             delete _objectManager;
@@ -298,6 +305,9 @@ namespace OpenRCT2
             _objectManager = CreateObjectManager(_objectRepository);
             _trackDesignRepository = CreateTrackDesignRepository(_env);
             _scenarioRepository = CreateScenarioRepository(_env);
+#ifdef __ENABLE_DISCORD__
+            _discordService = new DiscordService();
+#endif
 
             if (!language_open(gConfigGeneral.language))
             {
@@ -770,6 +780,13 @@ namespace OpenRCT2
             {
                 game_update();
             }
+
+#ifdef __ENABLE_DISCORD__
+            if (_discordService != nullptr)
+            {
+                _discordService->Update();
+            }
+#endif
 
             twitch_update();
             chat_update();
