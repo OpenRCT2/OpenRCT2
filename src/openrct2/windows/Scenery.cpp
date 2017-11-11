@@ -23,17 +23,17 @@
 #include "../interface/viewport.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
+#include "../object_list.h"
+#include "../sprites.h"
 #include "../world/scenery.h"
 #include "dropdown.h"
 #include "error.h"
-#include "../sprites.h"
-#include "../object_list.h"
+#include "Scenery.h"
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180
 #define SCENERY_BUTTON_WIDTH    66
 #define SCENERY_BUTTON_HEIGHT   80
-#define SCENERY_WINDOW_TABS     MAX_SCENERY_GROUP_OBJECTS + 1   // The + 1 is for the 'Miscellaneous' tab
 
 enum {
     WINDOW_SCENERY_TAB_1,
@@ -1261,4 +1261,13 @@ bool window_scenery_set_selected_item(sint32 sceneryId)
         }
     }
     return result;
+}
+
+// Used after removing objects, in order to avoid crashes.
+void window_scenery_reset_selected_scenery_items()
+{
+    for (size_t i = 0; i < SCENERY_WINDOW_TABS; i++)
+    {
+        gWindowSceneryTabSelections[i] = -1;
+    }
 }
