@@ -565,3 +565,28 @@ void window_ride_construction_update_active_elements()
     context_broadcast_intent(intent);
     intent_release(intent);
 }
+
+void game_command_callback_place_banner(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
+{
+    if (ebx != MONEY32_UNDEFINED) {
+        sint32 bannerId = edi;
+
+        audio_play_sound_at_location(SOUND_PLACE_ITEM, gCommandPosition.x, gCommandPosition.y, gCommandPosition.z);
+        context_open_detail_window(WD_BANNER, bannerId);
+    }
+}
+
+/**
+ *
+ *  rct2: 0x0066DB3D
+ */
+bool scenery_tool_is_active()
+{
+    sint32 toolWindowClassification = gCurrentToolWidget.window_classification;
+    rct_widgetindex toolWidgetIndex = gCurrentToolWidget.widget_index;
+    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+        if (toolWindowClassification == WC_TOP_TOOLBAR && toolWidgetIndex == WC_TOP_TOOLBAR__WIDX_SCENERY)
+            return true;
+
+    return false;
+}

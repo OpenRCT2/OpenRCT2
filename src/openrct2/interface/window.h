@@ -713,7 +713,6 @@ void window_update_viewport_ride_music();
 void window_relocate_windows(sint32 width, sint32 height);
 void window_resize_gui(sint32 width, sint32 height);
 void window_resize_gui_scenario_editor(sint32 width, sint32 height);
-void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_ride_construct(rct_window *w);
@@ -780,9 +779,6 @@ void window_update_textbox();
 
 bool window_is_visible(rct_window* w);
 
-bool land_tool_is_active();
-bool water_tool_is_active();
-bool clear_scenery_tool_is_active();
 bool scenery_tool_is_active();
 
 //Cheat: in-game land ownership editor

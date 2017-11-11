@@ -258,12 +258,12 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
         {
             if (gScreenFlags == 0)
             {
-                window_top_toolbar_open();
+                context_open_window(WC_TOP_TOOLBAR);
                 window_game_bottom_toolbar_open();
             }
             else
             {
-                window_top_toolbar_open();
+                context_open_window(WC_TOP_TOOLBAR);
                 window_editor_bottom_toolbar_open();
             }
         }

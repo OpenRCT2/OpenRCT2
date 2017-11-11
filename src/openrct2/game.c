@@ -145,7 +145,7 @@ void game_reduce_game_speed()
 void game_create_windows()
 {
     context_open_window(WC_MAIN_WINDOW);
-    window_top_toolbar_open();
+    context_open_window(WC_TOP_TOOLBAR);
     window_game_bottom_toolbar_open();
     window_resize_gui(context_get_width(), context_get_height());
 }
