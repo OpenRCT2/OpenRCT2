@@ -2240,7 +2240,7 @@ STR_2231    :낙하 브레이크
 STR_2232    :케이블 리프트 힐
 STR_2233    :{SMALLFONT}{BLACK}공원 정보
 STR_2234    :최근 메시지
-STR_2235    :{SMALLFONT}{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_2235    :{SMALLFONT}{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
 STR_2236    :1월
 STR_2237    :2월
 STR_2238    :3월
@@ -2294,7 +2294,7 @@ STR_2285    :초기 연구
 STR_2286    :디자인 중
 STR_2287    :디자인 완성
 STR_2288    :알 수 없음
-STR_2289    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_2289    :{POP16}{STRINGID} {PUSH16}{PUSH16}{STRINGID}
 STR_2290    :{SMALLFONT}{BLACK}{STRINGID} {STRINGID}
 STR_2291    :새 게임을 시작할 시나리오를 선택하세요
 STR_2292    :{WINDOW_COLOUR_2}탑승했던 놀이기구:
@@ -4515,12 +4515,12 @@ STR_DTLS    :몇 개의 놀이기구와 확장할 공간이 있는 작은 놀이
 <Pokey Park>
 STR_SCNR    :Pokey Park
 STR_PARK    :비좁은 공원
-STR_DTLS    :대대적인 확장을 해야하는 비좁은 놀이공원
+STR_DTLS    :대대적인 확장을 해야하는 비좁은 놀이공원입니다.
 
 <White Water Park>
 STR_SCNR    :White Water Park
 STR_PARK    :맑은 물 공원
-STR_DTLS    :훌륭한 물 놀이기구를 몇 개 갖고있지만 확장이 필요한 공원
+STR_DTLS    :훌륭한 물 놀이기구를 몇 개 갖고있지만 확장이 필요한 공원입니다.
 
 <Millennium Mines>
 STR_SCNR    :Millennium Mines
@@ -4530,7 +4530,7 @@ STR_DTLS    :버려져있는 커다란 탄광을 관광시설에서 놀이공원
 <Karts & Coasters>
 STR_SCNR    :Karts & Coasters
 STR_PARK    :카트 & 코스터
-STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲 속에 숨겨져 있는 대형 놀이공원
+STR_DTLS    :몇 개의 고 카트 트랙과 우든 롤러코스터만이 숲 속에 숨겨져 있는 대형 놀이공원입니다.
 
 <Mel's World>
 STR_SCNR    :Mel's World
@@ -4565,7 +4565,7 @@ STR_DTLS    :번개치는 산꼭대기의 아름다운 산은 경치를 즐기�
 <Ivory Towers>
 STR_SCNR    :Ivory Towers
 STR_PARK    :상아 탑
-STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원
+STR_DTLS    :문제가 몇 가지 있지만 잘 구성된 공원입니다.
 
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
@@ -4616,17 +4616,17 @@ STR_DTLS    :지역 당국은 특정 놀이기구는 파괴할 수 없다는 조
 <Fun Fortress>
 STR_SCNR    :Fun Fortress
 STR_PARK    :즐거운 요새
-STR_DTLS    :이 성은 놀이공원으로 탈바꿈하기 위해 온전히 당신의 소유가 되었습니다.
+STR_DTLS    :이 성은 이제 당신의 소유입니다. 이 성을 놀이공원으로 바꾸어보세요.
 
 <Future World>
 STR_SCNR    :Future World
 STR_PARK    :미래 세계
-STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 많은 공간이 있습니다.
+STR_DTLS    :이 미래지향적인 공원에는 새로운 놀이기구를 그 외계 지형 위에 지을 넓은 공간이 있습니다.
 
 <Gentle Glen>
 STR_SCNR    :Gentle Glen
 STR_PARK    :얌전한 골짜기
-STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장하는 것이 여러분의 임무입니다.
+STR_DTLS    :이 지역의 주민들은 격렬하지 않고 얌전한 놀이기구를 선호하기 때문에 이 공원을 그들의 취향에 맞게 확장해보세요.
 
 <Jolly Jungle>
 STR_SCNR    :Jolly Jungle
@@ -4666,7 +4666,7 @@ STR_DTLS    :광대한 협곡을 테마파크로 개발할 수 있습니다.
 <Thunderstorm Park>
 STR_SCNR    :Thunderstorm Park
 STR_PARK    :폭풍우 공원
-STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 밑에 두기로 했습니다.
+STR_DTLS    :날씨가 너무 습해서 거대한 피라미드를 짓고 몇몇 놀이기구를 그 속에 두기로 했습니다.
 
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
@@ -11638,7 +11638,7 @@ STR_DTLS    :재정적 제한이 없는 이 사막 공원을 사람들이 극한
 <Factory Capers>
 STR_SCNR    :공장 놀이터
 STR_PARK    :공장 놀이터
-STR_DTLS    :버려진 공장 지대에 기계를 주제로 한 놀이공원을 만들어보세요
+STR_DTLS    :버려진 공장 지대에 기계를 주제로 한 놀이공원을 만들어보세요.
 
 <Fungus Woods>
 STR_SCNR    :버섯 숲
@@ -11658,7 +11658,7 @@ STR_DTLS    :당신의 목표는 아름다운 그래비티 정원에 롤러코�
 <Infernal Views>
 STR_SCNR    :지옥 풍경
 STR_PARK    :지옥 풍경
-STR_DTLS    :마그마 강이 흐르는 용암으로 위태롭게 둘러싸인 공원
+STR_DTLS    :마그마 강이 흐르는 용암으로 위태롭게 둘러싸인 공원입니다.
 
 <Lucky Lake>
 STR_SCNR    :행운의 호수

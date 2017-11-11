@@ -5172,7 +5172,7 @@ STR_PARK    :Alcatraz
 STR_DTLS    :Het beruchte gevangeniseiland, dat ooit volzat met illegale drankstokers en gangsters, is nu te koop. Je hebt besloten het te veranderen in een toeristentrekpleister. Geld speelt geen rol!
 
 <Roaring Twenties - Schneider Cup>
-STR_SCNR    : Roaring Twenties - Schneider Cup
+STR_SCNR    :  Roaring Twenties - Schneider Cup
 STR_PARK    :Schneider Shores
 STR_DTLS    :Het is al bijna 75 jaar geleden dat je grootvader de Schneider Cup won. Je hebt besloten zijn prestatie te eren met een themapark dat is geïnspireerd door de beroemde watervliegtuigenrace.
 
