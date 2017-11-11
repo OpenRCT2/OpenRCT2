@@ -80,7 +80,7 @@ rct_window * window_editor_main_open()
     gShowConstuctionRightsRefCount = 0;
     gFootpathSelectedType = 0;
 
-    window_top_toolbar_open();
+    context_open_window(WC_TOP_TOOLBAR);
     window_editor_bottom_toolbar_open();
 
     return window_get_main();

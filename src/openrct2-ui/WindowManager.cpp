@@ -111,6 +111,8 @@ public:
             return window_title_menu_open();
         case WC_TITLE_OPTIONS:
             return window_title_options_open();
+        case WC_TOP_TOOLBAR:
+            return window_top_toolbar_open();
         case WC_VIEW_CLIPPING:
             return window_view_clipping_open();
         case WC_VIEWPORT:

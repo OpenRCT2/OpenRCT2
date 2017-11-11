@@ -136,3 +136,7 @@ rct_window * window_ride_construction_open();
 void window_ride_construction_update_active_elements_impl();
 void window_ride_construction_update_enabled_track_pieces();
 
+rct_window * window_top_toolbar_open();
+bool land_tool_is_active();
+bool clear_scenery_tool_is_active();
+bool water_tool_is_active();
