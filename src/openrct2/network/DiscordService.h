@@ -21,7 +21,7 @@
 #include "../common.h"
 #include <limits>
 
-class DiscordService
+class DiscordService final
 {
 private:
     uint32 _ticksSinceLastRefresh = std::numeric_limits<uint32>::max();
