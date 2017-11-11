@@ -81,6 +81,8 @@ public:
             return window_park_entrance_open();
         case WC_RECENT_NEWS:
             return window_news_open();
+        case WC_RIDE_CONSTRUCTION:
+            return window_ride_construction_open();
         case WC_RESEARCH:
             return window_research_open();
         case WC_RIDE_LIST:
@@ -280,6 +282,14 @@ public:
 
         case INTENT_ACTION_UPDATE_MAZE_CONSTRUCTION:
             window_maze_construction_update_pressed_widgets();
+            break;
+
+        case INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_PIECES:
+            window_ride_construction_update_enabled_track_pieces();
+            break;
+
+        case INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS:
+            window_ride_construction_update_active_elements_impl();
             break;
         }
     }

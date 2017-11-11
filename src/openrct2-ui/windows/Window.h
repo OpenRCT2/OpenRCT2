@@ -131,3 +131,8 @@ void window_text_input_open(rct_window * call_w, rct_widgetindex call_widget, rc
 void window_text_input_raw_open(rct_window * call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength);
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects);
+
+rct_window * window_ride_construction_open();
+void window_ride_construction_update_active_elements_impl();
+void window_ride_construction_update_enabled_track_pieces();
+

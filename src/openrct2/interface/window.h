@@ -717,7 +717,6 @@ void window_top_toolbar_open();
 void window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 void window_ride_construct(rct_window *w);
-rct_window *window_ride_construction_open();
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
@@ -805,6 +804,10 @@ void window_ride_construction_keyboard_shortcut_demolish_current();
 bool sub_6CA2DF(sint32 *trackType, sint32 *trackDirection, sint32 *rideIndex, sint32 *_liftHillAndAlternativeState, sint32 *x, sint32 *y, sint32 *z, sint32 *properties);
 money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32 trackDirection, sint32 liftHillAndAlternativeState, sint32 x, sint32 y, sint32 z);
 
+extern uint64 _enabledRidePieces;
+extern uint8 _rideConstructionState2;
+extern bool _stationConstructed;
+extern bool _deferClose;
 
 #ifdef __cplusplus
 }
