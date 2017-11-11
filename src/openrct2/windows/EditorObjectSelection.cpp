@@ -31,11 +31,12 @@
 #include "../object_list.h"
 #include "../rct1.h"
 #include "../ride/ride_data.h"
+#include "../sprites.h"
 #include "../util/util.h"
 #include "../windows/Intent.h"
-#include "dropdown.h"
-#include "../sprites.h"
 #include "_legacy.h"
+#include "dropdown.h"
+#include "Scenery.h"
 
 enum {
     FILTER_RCT2 = (1 << 0),
@@ -735,6 +736,8 @@ static void window_editor_object_selection_close(rct_window *w)
     context_broadcast_intent(&intent);
 
     visible_list_dispose();
+
+    window_scenery_reset_selected_scenery_items();
 }
 
 /**
@@ -1919,6 +1922,8 @@ sint32 editor_remove_unused_objects()
     {
         editor_object_flags_free();
     }
+
+    window_scenery_reset_selected_scenery_items();
 
     return numUnselectedObjects;
 }
