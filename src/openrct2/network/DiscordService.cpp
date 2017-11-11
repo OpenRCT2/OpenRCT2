@@ -17,18 +17,19 @@
 #ifdef __ENABLE_DISCORD__
 
 #include <discord-rpc.h>
+#include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../scenario/scenario.h"
 #include "../world/park.h"
 #include "DiscordService.h"
 #include "network.h"
 
 constexpr const char * APPLICATION_ID = "378612438200877056";
 constexpr const char * STEAM_APP_ID = nullptr;
+constexpr const uint32 REFRESH_INTERVAL = 5 * GAME_UPDATE_FPS; // 5 seconds
 
 static void OnReady()
 {
@@ -71,6 +72,19 @@ void DiscordService::Update()
 {
     Discord_RunCallbacks();
 
+    if (_ticksSinceLastRefresh >= REFRESH_INTERVAL)
+    {
+        _ticksSinceLastRefresh = 0;
+        RefreshPresence();
+    }
+    else
+    {
+        _ticksSinceLastRefresh++;
+    }
+}
+
+void DiscordService::RefreshPresence()
+{
     DiscordRichPresence discordPresence;
     Memory::Set(&discordPresence, 0, sizeof(discordPresence));
     discordPresence.largeImageKey = "logo";
@@ -110,7 +124,7 @@ void DiscordService::Update()
         details = "In Track Designer";
         break;
     case SCREEN_FLAGS_TRACK_MANAGER:
-        details = "In Track Manager";
+        details = "In Track Designs Manager";
         break;
     }
 

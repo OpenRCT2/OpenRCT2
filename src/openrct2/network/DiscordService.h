@@ -18,13 +18,22 @@
 
 #ifdef __ENABLE_DISCORD__
 
+#include "../common.h"
+#include <limits>
+
 class DiscordService
 {
+private:
+    uint32 _ticksSinceLastRefresh = std::numeric_limits<uint32>::max();
+
 public:
     DiscordService();
     ~DiscordService();
 
     void Update();
+
+private:
+    void RefreshPresence();
 };
 
 #endif
