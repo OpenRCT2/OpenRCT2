@@ -21,6 +21,7 @@
 /* End PBXAggregateTarget section */
 
 /* Begin PBXBuildFile section */
+		4C31B2E41FB6115600F6A38A /* MapGen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C31B2E21FB6115600F6A38A /* MapGen.cpp */; };
 		4C4C1E981F58226500560300 /* TrackDesign.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C4C1E971F58226500560300 /* TrackDesign.cpp */; };
 		4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C5DFF401FAC69D200CB093A /* Date.cpp */; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
@@ -455,7 +456,6 @@
 		F76C87A01EC4E88400FA49E2 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85681EC4E7CD00FA49E2 /* map.c */; };
 		F76C87A21EC4E88400FA49E2 /* map_animation.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C856A1EC4E7CD00FA49E2 /* map_animation.c */; };
 		F76C87A41EC4E88500FA49E2 /* map_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C856C1EC4E7CD00FA49E2 /* map_helpers.c */; };
-		F76C87A61EC4E88500FA49E2 /* mapgen.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C856E1EC4E7CD00FA49E2 /* mapgen.c */; };
 		F76C87A81EC4E88500FA49E2 /* money_effect.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85701EC4E7CD00FA49E2 /* money_effect.c */; };
 		F76C87A91EC4E88500FA49E2 /* park.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85711EC4E7CD00FA49E2 /* park.c */; };
 		F76C87AB1EC4E88500FA49E2 /* particle.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85731EC4E7CD00FA49E2 /* particle.c */; };
@@ -613,6 +613,9 @@
 
 /* Begin PBXFileReference section */
 		4C31B2E61FB7352900F6A38A /* Scenery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Scenery.h; sourceTree = "<group>"; };
+		4C31B2E21FB6115600F6A38A /* MapGen.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MapGen.cpp; sourceTree = "<group>"; };
+		4C31B2E31FB6115600F6A38A /* MapGen.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapGen.h; sourceTree = "<group>"; };
+		4C31B2E51FB6116100F6A38A /* Location.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Location.h; sourceTree = "<group>"; };
 		4C4C1E971F58226500560300 /* TrackDesign.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDesign.cpp; sourceTree = "<group>"; };
 		4C4C1E991F5832AA00560300 /* TrackDesign.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackDesign.h; sourceTree = "<group>"; };
 		4C5DFF401FAC69D200CB093A /* Date.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Date.cpp; sourceTree = "<group>"; };
@@ -1367,8 +1370,6 @@
 		F76C856B1EC4E7CD00FA49E2 /* map_animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = map_animation.h; sourceTree = "<group>"; };
 		F76C856C1EC4E7CD00FA49E2 /* map_helpers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = map_helpers.c; sourceTree = "<group>"; };
 		F76C856D1EC4E7CD00FA49E2 /* map_helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = map_helpers.h; sourceTree = "<group>"; };
-		F76C856E1EC4E7CD00FA49E2 /* mapgen.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = mapgen.c; sourceTree = "<group>"; };
-		F76C856F1EC4E7CD00FA49E2 /* mapgen.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = mapgen.h; sourceTree = "<group>"; };
 		F76C85701EC4E7CD00FA49E2 /* money_effect.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = money_effect.c; sourceTree = "<group>"; };
 		F76C85711EC4E7CD00FA49E2 /* park.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = park.c; sourceTree = "<group>"; };
 		F76C85721EC4E7CD00FA49E2 /* park.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = park.h; sourceTree = "<group>"; };
@@ -2554,14 +2555,15 @@
 				F76C85651EC4E7CD00FA49E2 /* footpath.h */,
 				F76C85661EC4E7CD00FA49E2 /* Fountain.cpp */,
 				F76C85671EC4E7CD00FA49E2 /* Fountain.h */,
+				4C31B2E51FB6116100F6A38A /* Location.h */,
 				F76C85681EC4E7CD00FA49E2 /* map.c */,
 				F76C85691EC4E7CD00FA49E2 /* map.h */,
 				F76C856A1EC4E7CD00FA49E2 /* map_animation.c */,
 				F76C856B1EC4E7CD00FA49E2 /* map_animation.h */,
 				F76C856C1EC4E7CD00FA49E2 /* map_helpers.c */,
 				F76C856D1EC4E7CD00FA49E2 /* map_helpers.h */,
-				F76C856E1EC4E7CD00FA49E2 /* mapgen.c */,
-				F76C856F1EC4E7CD00FA49E2 /* mapgen.h */,
+				4C31B2E21FB6115600F6A38A /* MapGen.cpp */,
+				4C31B2E31FB6115600F6A38A /* MapGen.h */,
 				F76C85701EC4E7CD00FA49E2 /* money_effect.c */,
 				F76C85711EC4E7CD00FA49E2 /* park.c */,
 				F76C85721EC4E7CD00FA49E2 /* park.h */,
@@ -3312,6 +3314,7 @@
 				4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */,
 				4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */,
 				4C93F1991F8B748200A9330D /* Chairlift.cpp in Sources */,
+				4C31B2E41FB6115600F6A38A /* MapGen.cpp in Sources */,
 				4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */,
 				C64644FE1F3FA4120026AC2D /* Main.cpp in Sources */,
 				4C93F16B1F8B745700A9330D /* CircusShow.cpp in Sources */,
@@ -3533,7 +3536,6 @@
 				F76C87A01EC4E88400FA49E2 /* map.c in Sources */,
 				F76C87A21EC4E88400FA49E2 /* map_animation.c in Sources */,
 				F76C87A41EC4E88500FA49E2 /* map_helpers.c in Sources */,
-				F76C87A61EC4E88500FA49E2 /* mapgen.c in Sources */,
 				F76C87A81EC4E88500FA49E2 /* money_effect.c in Sources */,
 				F76C87A91EC4E88500FA49E2 /* park.c in Sources */,
 				F76C87AB1EC4E88500FA49E2 /* particle.c in Sources */,

@@ -24,7 +24,7 @@
 #include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/util/util.h>
-#include <openrct2/world/mapgen.h>
+#include <openrct2/world/MapGen.h>
 #include <openrct2/windows/dropdown.h>
 
 enum {
