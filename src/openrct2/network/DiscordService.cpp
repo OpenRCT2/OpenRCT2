@@ -19,7 +19,6 @@
 #include <discord-rpc.h>
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
@@ -48,8 +47,7 @@ static void OnErrored(int errorCode, const char * message)
 
 DiscordService::DiscordService()
 {
-    DiscordEventHandlers handlers;
-    Memory::Set(&handlers, 0, sizeof(handlers));
+    DiscordEventHandlers handlers = {};
     handlers.ready = OnReady;
     handlers.disconnected = OnDisconnected;
     handlers.errored = OnErrored;
@@ -63,7 +61,7 @@ DiscordService::~DiscordService()
 
 static std::string GetParkName()
 {
-    utf8 parkName[128];
+    utf8 parkName[128] = {};
     format_string(parkName, sizeof(parkName), gParkName, &gParkNameArgs);
     return std::string(parkName);
 }
@@ -85,8 +83,7 @@ void DiscordService::Update()
 
 void DiscordService::RefreshPresence()
 {
-    DiscordRichPresence discordPresence;
-    Memory::Set(&discordPresence, 0, sizeof(discordPresence));
+    DiscordRichPresence discordPresence = {};
     discordPresence.largeImageKey = "logo";
 
     std::string state;
