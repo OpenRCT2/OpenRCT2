@@ -106,7 +106,10 @@ if(EXISTS discord-rpc)
     add_subdirectory(discord-rpc)
     add_definitions(-D__ENABLE_DISCORD__)
     include_directories(discord-rpc/include)
-	set(HAVE_DISCORD_RPC TRUE)
+    set(HAVE_DISCORD_RPC TRUE)
+    message("Building with discord-rpc support")
+else()
+    message("No discord-rpc detected, to enable clone discord-rpc to root directory")
 endif()
 
 # Include sub-projects
