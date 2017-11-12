@@ -140,3 +140,9 @@ rct_window * window_top_toolbar_open();
 bool land_tool_is_active();
 bool clear_scenery_tool_is_active();
 bool water_tool_is_active();
+
+rct_window * window_scenery_open();
+bool window_scenery_set_selected_item(sint32 sceneryId);
+void window_scenery_set_default_placement_configuration();
+void window_scenery_init();
+void window_scenery_reset_selected_scenery_items();
