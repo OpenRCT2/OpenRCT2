@@ -198,6 +198,10 @@ if (UNIX OR STATIC OR ${CMAKE_SYSTEM_NAME} MATCHES "BSD")
     target_link_libraries(${PROJECT} ${ICONV_LIBRARIES})
 endif()
 
+if (HAVE_DISCORD_RPC)
+    target_link_libraries(libopenrct2 discord-rpc)
+endif()
+
 # Includes
 target_include_directories(${PROJECT} SYSTEM PRIVATE ${LIBZIP_INCLUDE_DIRS})
 target_include_directories(${PROJECT} PUBLIC ${JANSSON_INCLUDE_DIRS})
