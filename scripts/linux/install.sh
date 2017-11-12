@@ -97,6 +97,8 @@ if [[ "$(uname)" == "Darwin" ]]; then
 		brew install jansson sdl2 sdl2_ttf speex --universal
 	fi
 elif [[ $(uname) == "Linux" ]]; then
+	# Clone discord-rpc for Discord's Rich Presence support
+	git clone https://github.com/discordapp/discord-rpc
 	# prevent build.sh from re-doing all the steps again
 	case "$TARGET" in
 		"ubuntu_i686")

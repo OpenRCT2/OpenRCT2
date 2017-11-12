@@ -102,6 +102,12 @@ set(COMMON_COMPILE_OPTIONS "${COMMON_COMPILE_OPTIONS} -fstrict-overflow")
 ADD_CHECK_C_COMPILER_FLAG(CMAKE_C_FLAGS C_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
 ADD_CHECK_CXX_COMPILER_FLAG(CMAKE_CXX_FLAGS CXX_WARN_STRICT_OVERFLOW -Wstrict-overflow=1)
 
+if(EXISTS discord-rpc)
+    add_subdirectory(discord-rpc)
+    add_definitions(-D__ENABLE_DISCORD__)
+    include_directories(discord-rpc/include)
+	set(HAVE_DISCORD_RPC TRUE)
+endif()
 
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
