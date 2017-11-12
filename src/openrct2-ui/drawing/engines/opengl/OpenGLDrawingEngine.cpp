@@ -16,6 +16,7 @@
 
 #ifndef DISABLE_OPENGL
 
+#include <cmath>
 #include <unordered_map>
 #include <SDL.h>
 
