@@ -342,7 +342,7 @@ static void window_top_toolbar_mouseup(rct_window *w, rct_widgetindex widgetInde
     case WIDX_SCENERY:
         if (!tool_set(w, WIDX_SCENERY, TOOL_ARROW)) {
             input_set_flag(INPUT_FLAG_6, true);
-            window_scenery_open();
+            context_open_window(WC_SCENERY);
         }
         break;
     case WIDX_PATH:

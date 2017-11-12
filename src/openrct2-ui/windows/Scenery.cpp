@@ -14,21 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../network/network.h"
-#include "../core/Math.hpp"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../audio/audio.h"
-#include "../input.h"
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../object_list.h"
-#include "../sprites.h"
-#include "../world/scenery.h"
-#include "dropdown.h"
-#include "error.h"
-#include "Scenery.h"
+#include <openrct2/audio/audio.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/input.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/network/network.h>
+#include <openrct2/object_list.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/world/scenery.h>
 
 #define WINDOW_SCENERY_WIDTH    634
 #define WINDOW_SCENERY_HEIGHT   180
@@ -179,9 +178,6 @@ static rct_widget window_scenery_widgets[] = {
     { WIDGETS_END },
 };
 
-// rct2: 0x00F64F2C
-sint16 window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
-
 void window_scenery_update_scroll(rct_window *w);
 
 /**
@@ -230,7 +226,7 @@ static void init_scenery_entry(rct_scenery_entry *sceneryEntry, sint32 index, ui
  *
  *  rct2: 0x006DFA00
  */
-void init_scenery()
+void window_scenery_init()
 {
     bool enabledScenerySets[SCENERY_WINDOW_TABS] = { false };
 
@@ -378,13 +374,13 @@ void init_scenery()
  *
  *  rct2: 0x006DFEE4
  */
-void scenery_set_default_placement_configuration()
+void window_scenery_set_default_placement_configuration()
 {
     gWindowSceneryRotation = 3;
     gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
     gWindowScenerySecondaryColour = COLOUR_YELLOW;
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
-    init_scenery();
+    window_scenery_init();
 
     for (sint32 i = 0; i < SCENERY_WINDOW_TABS; i++)
         gWindowSceneryTabSelections[i] = -1;
@@ -409,16 +405,16 @@ void scenery_set_default_placement_configuration()
  *
  *  rct2: 0x006E0FEF
  */
-void window_scenery_open()
+rct_window * window_scenery_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_SCENERY);
     if (window != nullptr)
-        return;
+        return window;
 
-    init_scenery();
+    window_scenery_init();
 
     window = window_create(
         context_get_width() - WINDOW_SCENERY_WIDTH,
@@ -481,6 +477,8 @@ void window_scenery_open()
     window->max_width = WINDOW_SCENERY_WIDTH;
     window->min_height = WINDOW_SCENERY_HEIGHT;
     window->max_height = WINDOW_SCENERY_HEIGHT;
+
+    return window;
 }
 
 /**

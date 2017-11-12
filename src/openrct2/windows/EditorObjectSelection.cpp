@@ -36,7 +36,6 @@
 #include "../windows/Intent.h"
 #include "_legacy.h"
 #include "dropdown.h"
-#include "Scenery.h"
 
 enum {
     FILTER_RCT2 = (1 << 0),
@@ -737,7 +736,8 @@ static void window_editor_object_selection_close(rct_window *w)
 
     visible_list_dispose();
 
-    window_scenery_reset_selected_scenery_items();
+    intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
+    context_broadcast_intent(&intent);
 }
 
 /**
@@ -1926,7 +1926,8 @@ sint32 editor_remove_unused_objects()
         editor_object_flags_free();
     }
 
-    window_scenery_reset_selected_scenery_items();
+    auto intent = Intent(INTENT_ACTION_REFRESH_SCENERY);
+    context_broadcast_intent(&intent);
 
     return numUnselectedObjects;
 }
