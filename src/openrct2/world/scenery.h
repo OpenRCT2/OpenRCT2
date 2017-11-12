@@ -288,7 +288,6 @@ void scenery_update_tile(sint32 x, sint32 y);
 void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement);
 void scenery_set_default_placement_configuration();
 void scenery_remove_ghost_tool_placement();
-bool window_scenery_set_selected_item(sint32 sceneryId);
 
 rct_scenery_entry *get_small_scenery_entry(sint32 entryIndex);
 rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex);
