@@ -19,6 +19,7 @@
 
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
+#include "../object.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -40,6 +41,18 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     if (_legacyType.large_scenery.price <= 0)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Price can not be free or negative.");
+    }
+
+    // Add path bits to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
+    // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
+    const std::string identifier = GetIdentifier();
+    const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
+    uint8 source = (objectEntry->flags & 0xF0) >> 4;
+    static const rct_object_entry * scgPathX = object_list_find_by_name("SCGPATHX");
+
+    if (scgPathX != nullptr && source != 8)
+    {
+        SetPrimarySceneryGroup((rct_object_entry *)scgPathX);
     }
 }
 
