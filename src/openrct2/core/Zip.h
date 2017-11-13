@@ -19,6 +19,7 @@
 #ifdef __cplusplus
 
 #include "../common.h"
+#include "IStream.hpp"
 
 /**
  * Represents a zip file.

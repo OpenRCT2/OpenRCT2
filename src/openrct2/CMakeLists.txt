@@ -13,6 +13,7 @@ option(DISABLE_HTTP_TWITCH "Disable HTTP and Twitch support.")
 option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
+option(DISABLE_LIBZIP "Don't use libzip." OFF)
 
 if (NOT DISABLE_RCT2)
     if (WIN32)
@@ -30,7 +31,6 @@ endif ()
 
 # Third party libraries
 PKG_CHECK_MODULES(JANSSON REQUIRED jansson>=2.5)
-PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
 PKG_CHECK_MODULES(ZLIB REQUIRED zlib)
 
 PKG_CHECK_MODULES(PNG libpng>=1.6)
@@ -42,6 +42,10 @@ if (NOT PNG_FOUND)
             PKG_CHECK_MODULES(PNG REQUIRED libpng12)
         endif ()
     endif ()
+endif ()
+
+if (NOT DISABLE_LIBZIP)
+    PKG_CHECK_MODULES(LIBZIP REQUIRED libzip>=1.0)
 endif ()
 
 # Third party libraries (optional)
@@ -264,6 +268,9 @@ if (ENABLE_LIGHTFX)
 endif ()
 if (DISABLE_RCT2)
     add_definitions(-DNO_RCT2)
+endif ()
+if (DISABLE_LIBZIP)
+    add_definitions(-DNO_LIBZIP)
 endif ()
 
 if (NOT DISABLE_RCT2)
