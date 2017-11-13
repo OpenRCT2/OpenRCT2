@@ -391,7 +391,7 @@ void news_item_open_subject(sint32 type, sint32 subject)
                 if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, TOOL_ARROW))
                 {
                     input_set_flag(INPUT_FLAG_6, true);
-                    window_scenery_open();
+                    context_open_window(WC_SCENERY);
                 }
             }
         }

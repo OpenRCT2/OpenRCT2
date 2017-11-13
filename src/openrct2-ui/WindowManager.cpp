@@ -93,6 +93,8 @@ public:
             return window_options_open();
         case WC_SAVE_PROMPT:
             return window_save_prompt_open();
+        case WC_SCENERY:
+            return window_scenery_open();
         case WC_SERVER_LIST:
             return window_server_list_open();
         case WC_SERVER_START:
@@ -292,6 +294,14 @@ public:
 
         case INTENT_ACTION_RIDE_CONSTRUCTION_UPDATE_ACTIVE_ELEMENTS:
             window_ride_construction_update_active_elements_impl();
+            break;
+
+        case INTENT_ACTION_INIT_SCENERY:
+            window_scenery_init();
+            break;
+
+        case INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG:
+            window_scenery_set_default_placement_configuration();
             break;
         }
     }

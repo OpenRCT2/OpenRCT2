@@ -720,7 +720,6 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
-void window_scenery_open();
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 
