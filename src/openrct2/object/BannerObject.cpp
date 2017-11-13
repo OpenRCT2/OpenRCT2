@@ -20,6 +20,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
 #include "../object.h"
+#include "../object_list.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -45,11 +46,11 @@ void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     // Add banners to 'Signs and items for footpaths' group, rather than lumping them in the Miscellaneous tab.
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
     const std::string identifier = GetIdentifier();
-    const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
-    uint8 source = (objectEntry->flags & 0xF0) >> 4;
+    uint8 source = object_entry_get_source_game(object_list_find_by_name(identifier.c_str()));
+
     static const rct_object_entry * scgPathX = object_list_find_by_name("SCGPATHX");
 
-    if (scgPathX != nullptr && source != 8)
+    if (scgPathX != nullptr && source != OBJECT_SOURCE_RCT2)
     {
         SetPrimarySceneryGroup((rct_object_entry *)scgPathX);
     }
