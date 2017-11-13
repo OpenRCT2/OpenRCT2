@@ -2933,21 +2933,21 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         // Excitement Factor
-        factor = rideEntry->excitement_multipler;
+        factor = rideEntry->excitement_multiplier;
         if (factor > 0) {
             y += 10;
             gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
         }
 
         // Intensity Factor
-        factor = rideEntry->intensity_multipler;
+        factor = rideEntry->intensity_multiplier;
         if (factor > 0) {
             y += 10;
             gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
         }
 
         // Nausea Factor
-        factor = rideEntry->nausea_multipler;
+        factor = rideEntry->nausea_multiplier;
         if (factor > 0) {
             y += 10;
             gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);

@@ -61,9 +61,9 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         ReadLegacyVehicle(context, stream, entry);
     }
     stream->Seek(4, STREAM_SEEK_CURRENT);
-    _legacyType.excitement_multipler = stream->ReadValue<sint8>();
-    _legacyType.intensity_multipler = stream->ReadValue<sint8>();
-    _legacyType.nausea_multipler = stream->ReadValue<sint8>();
+    _legacyType.excitement_multiplier = stream->ReadValue<sint8>();
+    _legacyType.intensity_multiplier = stream->ReadValue<sint8>();
+    _legacyType.nausea_multiplier = stream->ReadValue<sint8>();
     _legacyType.max_height = stream->ReadValue<uint8>();
     _legacyType.enabledTrackPieces = stream->ReadValue<uint64>();
     _legacyType.category[0] = stream->ReadValue<uint8>();
@@ -106,15 +106,15 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     GetImageTable()->Read(context, stream);
 
     // Validate properties
-    if (_legacyType.excitement_multipler > 75)
+    if (_legacyType.excitement_multiplier > 75)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Excitement multiplier too high.");
     }
-    if (_legacyType.intensity_multipler > 75)
+    if (_legacyType.intensity_multiplier > 75)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Intensity multiplier too high.");
     }
-    if (_legacyType.nausea_multipler > 75)
+    if (_legacyType.nausea_multiplier > 75)
     {
         context->LogError(OBJECT_ERROR_INVALID_PROPERTY, "Nausea multiplier too high.");
     }

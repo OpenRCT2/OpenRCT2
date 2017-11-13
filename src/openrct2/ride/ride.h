@@ -117,9 +117,9 @@ typedef struct rct_ride_entry {
     uint8 pad_019;                                      // 0x019
     rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY]; // 0x01A
     vehicle_colour_preset_list *vehicle_preset_list;    // 0x1AE
-    sint8 excitement_multipler;                         // 0x1B2
-    sint8 intensity_multipler;                          // 0x1B3
-    sint8 nausea_multipler;                             // 0x1B4
+    sint8 excitement_multiplier;                         // 0x1B2
+    sint8 intensity_multiplier;                          // 0x1B3
+    sint8 nausea_multiplier;                             // 0x1B4
     uint8 max_height;                                   // 0x1B5
     uint64 enabledTrackPieces;                          // 0x1B6
     uint8 category[RCT2_MAX_CATEGORIES_PER_RIDE];       // 0x1BE

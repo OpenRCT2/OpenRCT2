@@ -832,9 +832,9 @@ static void ride_ratings_apply_adjustments(Ride *ride, rating_tuple *ratings)
 
     // Apply ride entry multipliers
     ride_ratings_add(ratings,
-        (((sint32)ratings->excitement * rideEntry->excitement_multipler) >> 7),
-        (((sint32)ratings->intensity  * rideEntry->intensity_multipler) >> 7),
-        (((sint32)ratings->nausea     * rideEntry->nausea_multipler) >> 7));
+        (((sint32)ratings->excitement * rideEntry->excitement_multiplier) >> 7),
+        (((sint32)ratings->intensity  * rideEntry->intensity_multiplier) >> 7),
+        (((sint32)ratings->nausea     * rideEntry->nausea_multiplier) >> 7));
 
     // Apply total air time
 #ifdef ORIGINAL_RATINGS
