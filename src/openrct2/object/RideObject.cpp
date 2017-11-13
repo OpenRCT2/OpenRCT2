@@ -455,11 +455,8 @@ void RideObject::PerformFixes()
     {
         _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
     }
-    // The Steel Twister could take 8 cars per train in RCT1.
-    else if (String::Equals(identifier, "BMSD    ") ||
-             String::Equals(identifier, "BMSU    ") ||
-             String::Equals(identifier, "BMFL    ") ||
-             String::Equals(identifier, "BMRB    "))
+    // The Steel Twister could take 8 cars per train in RCT1. (The other two vehicles are already correct.)
+    else if (String::Equals(identifier, "BMSD    ") || String::Equals(identifier, "BMSU    "))
     {
         _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
     }
