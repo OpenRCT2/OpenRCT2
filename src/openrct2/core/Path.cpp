@@ -86,18 +86,18 @@ namespace Path
 
     const utf8 * GetFileName(const utf8 * path)
     {
-        const utf8 * lastPathSeperator = nullptr;
+        const utf8 * lastPathSeparator = nullptr;
         for (const utf8 * ch = path; *ch != '\0'; ch++)
         {
             if (*ch == *PATH_SEPARATOR || *ch == '/')
             {
-                lastPathSeperator = ch;
+                lastPathSeparator = ch;
             }
         }
 
-        return lastPathSeperator == nullptr ?
+        return lastPathSeparator == nullptr ?
             path :
-            lastPathSeperator + 1;
+            lastPathSeparator + 1;
     }
 
     std::string GetFileNameWithoutExtension(const std::string &path)

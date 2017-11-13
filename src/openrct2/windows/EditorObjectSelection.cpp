@@ -258,7 +258,7 @@ enum {
     DDIX_FILTER_WW,
     DDIX_FILTER_TT,
     DDIX_FILTER_CUSTOM,
-    DDIX_FILTER_SEPERATOR,
+    DDIX_FILTER_SEPARATOR,
     DDIX_FILTER_SELECTED,
     DDIX_FILTER_NONSELECTED,
 };
@@ -878,10 +878,10 @@ void window_editor_object_selection_mousedown(rct_window *w, rct_widgetindex wid
         // Track manager cannot select multiple, so only show selection filters if not in track manager
         if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
             num_items = 7;
-            gDropdownItemsFormat[DDIX_FILTER_SEPERATOR] = 0;
+            gDropdownItemsFormat[DDIX_FILTER_SEPARATOR] = 0;
             gDropdownItemsFormat[DDIX_FILTER_SELECTED] = STR_TOGGLE_OPTION;
             gDropdownItemsFormat[DDIX_FILTER_NONSELECTED] = STR_TOGGLE_OPTION;
-            gDropdownItemsArgs[DDIX_FILTER_SEPERATOR] = STR_NONE;
+            gDropdownItemsArgs[DDIX_FILTER_SEPARATOR] = STR_NONE;
             gDropdownItemsArgs[DDIX_FILTER_SELECTED] = STR_SELECTED_ONLY;
             gDropdownItemsArgs[DDIX_FILTER_NONSELECTED] = STR_NON_SELECTED_ONLY;
         }
