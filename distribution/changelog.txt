@@ -62,6 +62,7 @@
 - Fix: [#6481] Can't take screenshots of parks with colons in the name.
 - Fix: [#6500] Failure to load resources when config file is missing.
 - Fix: [#6593] Cannot hire entertainers when default scenery groups are not selected (original bug).
+- Fix: [#6657] Guest list is missing tracking icon after reopening.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
