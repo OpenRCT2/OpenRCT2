@@ -118,6 +118,11 @@ bool object_entry_is_empty(const rct_object_entry *entry)
     return false;
 }
 
+uint8 object_entry_get_source_game(const rct_object_entry * objectEntry)
+{
+    return (objectEntry->flags & 0xF0) >> 4;
+}
+
 /**
  *
  *  rct2: 0x006AB344

@@ -1803,8 +1803,11 @@ static bool filter_source(const ObjectRepositoryItem * item)
     if (_FILTER_ALL)
         return true;
 
-    uint8 source = (item->ObjectEntry.flags & 0xF0) >> 4;
-    return (_FILTER_RCT2 && source == 8) || (_FILTER_WW && source == 1) || (_FILTER_TT && source == 2) || (_FILTER_CUSTOM && source != 8 && source != 1 && source != 2);
+    uint8 source = object_entry_get_source_game(&item->ObjectEntry);
+    return (_FILTER_RCT2 && source == OBJECT_SOURCE_RCT2) ||
+           (_FILTER_WW && source == OBJECT_SOURCE_WACKY_WORLDS) ||
+           (_FILTER_TT && source == OBJECT_SOURCE_TIME_TWISTER) ||
+           (_FILTER_CUSTOM && source != OBJECT_SOURCE_RCT2 && source != OBJECT_SOURCE_WACKY_WORLDS && source != OBJECT_SOURCE_TIME_TWISTER);
 }
 
 static bool filter_chunks(const ObjectRepositoryItem * item)
