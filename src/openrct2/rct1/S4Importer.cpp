@@ -1388,7 +1388,7 @@ private:
 
         dst->destination_x = src->destination_x;
         dst->destination_y = src->destination_y;
-        dst->destination_tolerence = src->destination_tolerence;
+        dst->destination_tolerance = src->destination_tolerance;
         dst->direction = src->direction;
 
         dst->energy = src->energy;

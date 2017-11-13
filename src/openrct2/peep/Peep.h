@@ -519,7 +519,7 @@ typedef struct rct_peep
     uint8   trousers_colour;       // 0x31
     uint16  destination_x;         // 0x32 Location that the peep is trying to get to
     uint16  destination_y;         // 0x34
-    uint8   destination_tolerence; // 0x36 How close to destination before next action/state 0 = exact
+    uint8   destination_tolerance; // 0x36 How close to destination before next action/state 0 = exact
     uint8   var_37;
     uint8   energy;           // 0x38
     uint8   energy_target;    // 0x39

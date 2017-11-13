@@ -1157,10 +1157,10 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
     peep->direction             = direction;
     peep->destination_x         = chosenTile.x + 16;
     peep->destination_y         = chosenTile.y + 16;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
     if (peep->state == PEEP_STATE_QUEUING)
     {
-        peep->destination_tolerence = (scenario_rand() & 7) + 2;
+        peep->destination_tolerance = (scenario_rand() & 7) + 2;
     }
     return 0;
 }
@@ -1417,7 +1417,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     peep->direction             = direction;
     peep->destination_x         = chosenTile.x + 16;
     peep->destination_y         = chosenTile.y + 16;
-    peep->destination_tolerence = (scenario_rand() & 7) + 2;
+    peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
     return 0;
 }
@@ -1502,7 +1502,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     peep->direction             = direction;
     peep->destination_x         = chosenTile.x + 16;
     peep->destination_y         = chosenTile.y + 16;
-    peep->destination_tolerence = (scenario_rand() & 7) + 2;
+    peep->destination_tolerance = (scenario_rand() & 7) + 2;
 
     return 0;
 }

@@ -1693,7 +1693,7 @@ static sint32 peep_update_action(sint16 * x, sint16 * y, sint16 * xy_distance, r
 
     if (peep->action >= 0xFE)
     {
-        if (*xy_distance <= peep->destination_tolerence)
+        if (*xy_distance <= peep->destination_tolerance)
         {
             return 0;
         }
@@ -2395,7 +2395,7 @@ static void peep_try_get_up_from_sitting(rct_peep * peep)
     // Set destination to the centre of the tile.
     peep->destination_x         = (peep->x & 0xFFE0) + 16;
     peep->destination_y         = (peep->y & 0xFFE0) + 16;
-    peep->destination_tolerence = 5;
+    peep->destination_tolerance = 5;
     peep_update_current_action_sprite_type(peep);
 }
 
@@ -2462,7 +2462,7 @@ static void peep_update_sitting(rct_peep * peep)
             // Set destination to the centre of the tile
             peep->destination_x         = (peep->x & 0xFFE0) + 16;
             peep->destination_y         = (peep->y & 0xFFE0) + 16;
-            peep->destination_tolerence = 5;
+            peep->destination_tolerance = 5;
             peep_update_current_action_sprite_type(peep);
             return;
         }
@@ -2646,7 +2646,7 @@ static void peep_go_to_ride_entrance(rct_peep * peep, Ride * ride)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
 
     peep_decrement_num_riders(peep);
     peep->state     = PEEP_STATE_ENTERING_RIDE;
@@ -2667,7 +2667,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
 {
     Ride * ride = get_ride(peep->current_ride);
 
-    if (peep->destination_tolerence != 0)
+    if (peep->destination_tolerance != 0)
     {
         invalidate_sprite_2((rct_sprite *)peep);
 
@@ -2685,7 +2685,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
         }
         else
         {
-            peep->destination_tolerence = 0;
+            peep->destination_tolerance = 0;
             peep->sprite_direction ^= (1 << 4);
         }
     }
@@ -2774,7 +2774,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
 
     if (ride->status != RIDE_STATUS_OPEN || ride->vehicle_change_timeout != 0)
     {
-        if (peep->destination_tolerence == 0)
+        if (peep->destination_tolerance == 0)
         {
             remove_peep_from_queue(peep);
             peep_decrement_num_riders(peep);
@@ -2797,7 +2797,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
             if (peep->cash_in_pocket <= 0)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
-                if (peep->destination_tolerence == 0)
+                if (peep->destination_tolerance == 0)
                 {
                     remove_peep_from_queue(peep);
                     peep_decrement_num_riders(peep);
@@ -2810,7 +2810,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
             if (ridePrice > peep->cash_in_pocket)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD_0, peep->current_ride);
-                if (peep->destination_tolerence == 0)
+                if (peep->destination_tolerance == 0)
                 {
                     remove_peep_from_queue(peep);
                     peep_decrement_num_riders(peep);
@@ -2826,7 +2826,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
                 if (value * 2 < ridePrice)
                 {
                     peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_VALUE, peep->current_ride);
-                    if (peep->destination_tolerence == 0)
+                    if (peep->destination_tolerance == 0)
                     {
                         remove_peep_from_queue(peep);
                         peep_decrement_num_riders(peep);
@@ -2935,7 +2935,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
 
             peep->destination_x         = x;
             peep->destination_y         = y;
-            peep->destination_tolerence = 3;
+            peep->destination_tolerance = 3;
 
             ride->cur_num_customers++;
             peep_on_enter_or_exit_ride(peep, peep->current_ride, 0);
@@ -3047,7 +3047,7 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
     {
         peep->destination_x         = vehicle->x;
         peep->destination_y         = vehicle->y;
-        peep->destination_tolerence = 15;
+        peep->destination_tolerance = 15;
         peep->sub_state             = 4;
         return;
     }
@@ -3132,7 +3132,7 @@ static void peep_go_to_ride_exit(rct_peep * peep, Ride * ride, sint16 x, sint16 
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
 
     peep->sprite_direction = exit_direction * 8;
     peep->sub_state = 8;
@@ -3224,7 +3224,7 @@ static void peep_update_ride_sub_state_2_rejoin_queue(rct_peep * peep, Ride * ri
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
 
     peep_decrement_num_riders(peep);
     peep->state     = PEEP_STATE_QUEUING_FRONT;
@@ -3609,7 +3609,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
     peep->sub_state             = 13;
 }
 
@@ -3657,7 +3657,7 @@ static void peep_update_ride_prepare_for_state_9(rct_peep * peep)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
     peep->sub_state             = 9;
 }
 
@@ -4446,7 +4446,7 @@ static void peep_update_ride_sub_state_20(rct_peep * peep)
             y                           = peep->next_y + 16;
             peep->destination_x         = x;
             peep->destination_y         = y;
-            peep->destination_tolerence = 3;
+            peep->destination_tolerance = 3;
             peep->happiness_target      = Math::Min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
             peep->happiness             = peep->happiness_target;
         }
@@ -4476,7 +4476,7 @@ static void peep_update_ride_sub_state_20(rct_peep * peep)
     y                           = peep->next_y + 16;
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
 
     peep->happiness_target = Math::Min(peep->happiness_target + 30, PEEP_MAX_HAPPINESS);
     peep->happiness        = peep->happiness_target;
@@ -4778,7 +4778,7 @@ static bool peep_update_fixing_sub_state_1(bool firstRun, rct_peep * peep, Ride 
         LocationXY16 offset         = word_981D6C[peep->direction];
         peep->destination_x         = (offset.x * -12) + vehicle->x;
         peep->destination_y         = (offset.y * -12) + vehicle->y;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
     }
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -4930,7 +4930,7 @@ static bool peep_update_fixing_sub_state_7(bool firstRun, rct_peep * peep, Ride 
 
         peep->destination_x         = stationX;
         peep->destination_y         = stationY;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
     }
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -5043,7 +5043,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
 
         peep->destination_x         = destinationX;
         peep->destination_y         = destinationY;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
     }
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -5166,7 +5166,7 @@ static bool peep_update_fixing_sub_state_12(bool firstRun, rct_peep * peep, Ride
 
         peep->destination_x         = stationX;
         peep->destination_y         = stationY;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
     }
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -5260,7 +5260,7 @@ static bool peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ride
 
         peep->destination_x         = exitX;
         peep->destination_y         = exitY;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
     }
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -5339,7 +5339,7 @@ static void peep_update_queuing(rct_peep * peep)
         if (is_front)
         {
             // Happens every time peep goes onto ride.
-            peep->destination_tolerence = 0;
+            peep->destination_tolerance = 0;
             peep_decrement_num_riders(peep);
             peep->state = PEEP_STATE_QUEUING_FRONT;
             peep_window_state_update(peep);
@@ -5695,7 +5695,7 @@ static void peep_update_1(rct_peep * peep)
     peep_window_state_update(peep);
     peep->destination_x         = peep->x;
     peep->destination_y         = peep->y;
-    peep->destination_tolerence = 10;
+    peep->destination_tolerance = 10;
     peep->var_76                = 0;
     peep->direction             = peep->sprite_direction >> 3;
 }
@@ -5740,7 +5740,7 @@ static void peep_update_leaving_park(rct_peep * peep)
     }
 
     peep->outside_of_park       = 1;
-    peep->destination_tolerence = 5;
+    peep->destination_tolerance = 5;
     decrement_guests_in_park();
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
     peep->var_37 = 1;
@@ -5850,7 +5850,7 @@ static void peep_update_watching(rct_peep * peep)
         // Send peep to the centre of current tile.
         peep->destination_x         = (peep->x & 0xFFE0) + 16;
         peep->destination_y         = (peep->y & 0xFFE0) + 16;
-        peep->destination_tolerence = 5;
+        peep->destination_tolerance = 5;
         peep_update_current_action_sprite_type(peep);
     }
 }
@@ -5982,7 +5982,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
 
     return 1;
 }
@@ -6075,7 +6075,7 @@ static sint32 peep_update_walking_find_bin(rct_peep * peep)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
 
     return 1;
 }
@@ -6598,7 +6598,7 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
 
         peep->destination_x         = x;
         peep->destination_y         = y;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
         peep->sprite_direction      = direction << 3;
 
         peep->z         = tile_element->base_height * 4;
@@ -6724,7 +6724,7 @@ static void peep_update_answering(rct_peep * peep)
 
         peep->destination_x         = x;
         peep->destination_y         = y;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
         peep->sprite_direction      = direction << 3;
 
         peep->z         = tile_element->base_height * 4;
@@ -6829,7 +6829,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
             peep->sub_state             = 0;
             peep->destination_x         = (peep->x & 0xFFE0) + _992A5C[chosen_position].x;
             peep->destination_y         = (peep->y & 0xFFE0) + _992A5C[chosen_position].y;
-            peep->destination_tolerence = 3;
+            peep->destination_tolerance = 3;
 
             return 1;
         } while (!tile_element_is_last_for_tile(tile_element++));
@@ -6899,7 +6899,7 @@ static sint32 peep_update_patrolling_find_bin(rct_peep * peep)
     peep->sub_state             = 0;
     peep->destination_x         = (peep->x & 0xFFE0) + _992A4C[chosen_position].x;
     peep->destination_y         = (peep->y & 0xFFE0) + _992A4C[chosen_position].y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
     return 1;
 }
 
@@ -6933,7 +6933,7 @@ static sint32 peep_update_patrolling_find_grass(rct_peep * peep)
     // Original code used .y for both x and y. Changed to .x to make more sense (both x and y are 28)
     peep->destination_x         = peep->next_x + _9929C8[0].x;
     peep->destination_y         = peep->next_y + _9929C8[0].y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
     return 1;
 }
 
@@ -6967,7 +6967,7 @@ static sint32 peep_update_patrolling_find_sweeping(rct_peep * peep)
         peep->var_37                = 0;
         peep->destination_x         = sprite->litter.x;
         peep->destination_y         = sprite->litter.y;
-        peep->destination_tolerence = 5;
+        peep->destination_tolerance = 5;
         return 1;
     }
 
@@ -7333,7 +7333,7 @@ static void peep_update_walking(rct_peep * peep)
 
     peep->destination_x         = x;
     peep->destination_y         = y;
-    peep->destination_tolerence = 3;
+    peep->destination_tolerance = 3;
 
     if (peep->current_seat & 1)
     {
@@ -8771,7 +8771,7 @@ static sint32 peep_return_to_centre_of_tile(rct_peep * peep)
     peep->direction ^= (1 << 1);
     peep->destination_x         = (peep->x & 0xFFE0) + 16;
     peep->destination_y         = (peep->y & 0xFFE0) + 16;
-    peep->destination_tolerence = 5;
+    peep->destination_tolerance = 5;
     return 1;
 }
 
@@ -8905,7 +8905,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
 
             peep->destination_x += TileDirectionDelta[peep->direction].x;
             peep->destination_y += TileDirectionDelta[peep->direction].y;
-            peep->destination_tolerence = 9;
+            peep->destination_tolerance = 9;
             invalidate_sprite_2((rct_sprite *)peep);
             sprite_move(x, y, peep->z, (rct_sprite *)peep);
             invalidate_sprite_2((rct_sprite *)peep);
@@ -9044,7 +9044,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         peep->var_37 = 1;
         peep->destination_x += TileDirectionDelta[peep->direction].x;
         peep->destination_y += TileDirectionDelta[peep->direction].y;
-        peep->destination_tolerence = 7;
+        peep->destination_tolerance = 7;
 
         invalidate_sprite_2((rct_sprite *)peep);
         sprite_move(x, y, peep->z, (rct_sprite *)peep);
@@ -9292,7 +9292,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
         peep_window_state_update(peep);
 
         peep->sub_state             = 10;
-        peep->destination_tolerence = 2;
+        peep->destination_tolerance = 2;
         peep->time_in_queue         = 0;
         if (peep->peep_flags & PEEP_FLAGS_TRACKING)
         {
@@ -9364,7 +9364,7 @@ static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_t
         }
         peep->destination_x         = (x & 0xFFE0) + 16;
         peep->destination_y         = (y & 0xFFE0) + 16;
-        peep->destination_tolerence = 3;
+        peep->destination_tolerance = 3;
 
         peep_decrement_num_riders(peep);
         peep->current_ride = rideIndex;
@@ -9424,10 +9424,10 @@ static sint32 peep_move_one_tile(uint8 direction, rct_peep * peep)
     peep->direction             = direction;
     peep->destination_x         = x + 16;
     peep->destination_y         = y + 16;
-    peep->destination_tolerence = 2;
+    peep->destination_tolerance = 2;
     if (peep->state != PEEP_STATE_QUEUING)
     {
-        peep->destination_tolerence = (peep_rand() & 7) + 2;
+        peep->destination_tolerance = (peep_rand() & 7) + 2;
     }
     return 0;
 }
