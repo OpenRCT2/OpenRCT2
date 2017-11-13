@@ -201,6 +201,7 @@ rct_window * window_guest_list_open()
     _window_guest_list_selected_page = 0;
     _window_guest_list_num_pages = 1;
     _window_guest_list_tracking_only = false;
+    window_guest_list_widgets[WIDX_TRACKING].type = WWT_FLATBTN;
     window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
     window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;
     window->var_492 = 0;
