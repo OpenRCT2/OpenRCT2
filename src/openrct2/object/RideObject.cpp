@@ -445,6 +445,24 @@ void RideObject::PerformFixes()
     {
         _legacyType.max_cars_in_train = 3 + _legacyType.zero_cars;
     }
+    // The Wooden Roller Coaster could take 7 cars per train in RCT1.
+    else if (String::Equals(identifier, "PTCT1   "))
+    {
+        _legacyType.max_cars_in_train = 7 + _legacyType.zero_cars;
+    }
+    // The Looping Roller Coaster could take 8 cars per train in RCT1.
+    else if (String::Equals(identifier, "SCHT1   "))
+    {
+        _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
+    }
+    // The Steel Twister could take 8 cars per train in RCT1.
+    else if (String::Equals(identifier, "BMSD    ") ||
+             String::Equals(identifier, "BMSU    ") ||
+             String::Equals(identifier, "BMFL    ") ||
+             String::Equals(identifier, "BMRB    "))
+    {
+        _legacyType.max_cars_in_train = 8 + _legacyType.zero_cars;
+    }
     // Wacky Worlds' Crocodile Ride (a log flume vehicle) is incorrectly locked to 5 cars.
     else if (String::Equals(identifier, "CROCFLUM"))
     {
