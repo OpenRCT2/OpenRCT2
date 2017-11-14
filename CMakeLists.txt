@@ -22,6 +22,13 @@ option(WITH_TESTS "Build tests")
 option(PORTABLE "Create a portable build (-rpath=$ORIGIN)" OFF)
 option(DOWNLOAD_TITLE_SEQUENCES "Download title sequences during installation." ON)
 
+if (FORCE32)
+    set(TARGET_M "-m32")
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} ${TARGET_M}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M}")
+    set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
+endif ()
+
 # Define current git branch
 execute_process(
     COMMAND git rev-parse --abbrev-ref HEAD
