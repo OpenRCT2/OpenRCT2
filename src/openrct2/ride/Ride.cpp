@@ -2737,6 +2737,7 @@ rct_peep *ride_get_assigned_mechanic(Ride *ride)
 
 #define MAKE_TUNEID_LIST(...) (uint8[]){(Util::CountOf(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
 
+// clang-format off
 // 0x009AEF28
 static uint8 * ride_music_style_tuneids[] =
 {
@@ -2787,6 +2788,7 @@ static uint8 * ride_music_style_tuneids[] =
     MAKE_TUNEID_LIST(TUNE_SPACE_ROCK),                               // MUSIC_STYLE_ROCK_STYLE_3
     MAKE_TUNEID_LIST(TUNE_SWEAT_DREAMS),                             // MUSIC_STYLE_CANDY_STYLE
 };
+// clang-format on
 
 /**
  *
@@ -3653,6 +3655,7 @@ sint32 ride_music_params_update(sint16 x, sint16 y, sint16 z, uint8 rideIndex, u
 
 #define INIT_MUSIC_INFO(path_id, offset) (rct_ride_music_info[]){path_id, offset, 0}
 
+// clang-format off
 //0x009AF1C8
 rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
     INIT_MUSIC_INFO(PATH_ID_CSS4,  1378),
@@ -3702,6 +3705,7 @@ rct_ride_music_info* gRideMusicInfoList[NUM_DEFAULT_MUSIC_TRACKS] = {
     INIT_MUSIC_INFO(PATH_ID_CSS45, 2756),
     INIT_MUSIC_INFO(PATH_ID_CSS46, 2756),
 };
+// clang-format on
 
 /**
 *  Play/update ride music based on structs updated in 0x006BC3AC
