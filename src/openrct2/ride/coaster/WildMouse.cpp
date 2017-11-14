@@ -203,7 +203,7 @@ static void wild_mouse_track_station(paint_session * session, uint8 rideIndex, u
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    sint32 trackType = tileElement->properties.track.type;
+    sint32 trackType = track_element_get_type(tileElement);
     sub_98197C_rotated(session, direction, baseImageIds[direction] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2,
                        height - 2, 0, 2, height);
     if (trackType == TRACK_ELEM_END_STATION)

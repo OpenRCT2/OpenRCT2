@@ -1616,7 +1616,7 @@ rct_window *window_ride_open_track(rct_tile_element *tileElement)
     sint32 rideIndex = track_element_get_ride_index(tileElement);
     if (
         (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
-        (TrackSequenceProperties[tileElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+        (TrackSequenceProperties[track_element_get_type(tileElement)][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
     ) {
         // Open ride window in station view
         return window_ride_open_station(rideIndex, tile_element_get_station(tileElement));
@@ -4117,7 +4117,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
 
     z = tileElement->base_height * 8;
     direction = tile_element_get_direction(tileElement);
-    sub_6C683D(&x, &y, &z, direction, tileElement->properties.track.type, newColourScheme, nullptr, 4);
+    sub_6C683D(&x, &y, &z, direction, track_element_get_type(tileElement), newColourScheme, nullptr, 4);
 }
 
 /**

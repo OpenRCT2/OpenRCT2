@@ -571,12 +571,12 @@ sint32 track_is_connected_by_shape(rct_tile_element * a, rct_tile_element * b)
 {
     sint32 trackType, aBank, aAngle, bBank, bAngle;
 
-    trackType = a->properties.track.type;
+    trackType = track_element_get_type(a);
     aBank     = TrackDefinitions[trackType].bank_end;
     aAngle    = TrackDefinitions[trackType].vangle_end;
     aBank     = track_get_actual_bank(a, aBank);
 
-    trackType = b->properties.track.type;
+    trackType = track_element_get_type(b);
     bBank     = TrackDefinitions[trackType].bank_start;
     bAngle    = TrackDefinitions[trackType].vangle_start;
     bBank     = track_get_actual_bank(b, bBank);
@@ -688,7 +688,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->properties.track.type == TRACK_ELEM_END_STATION)
+            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -714,7 +714,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->properties.track.type == TRACK_ELEM_END_STATION)
+            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -777,7 +777,7 @@ static bool track_add_station_element(sint32 x, sint32 y, sint32 z, sint32 direc
                 {
                     targetTrackType = TRACK_ELEM_MIDDLE_STATION;
                 }
-                stationElement->properties.track.type = targetTrackType;
+                track_element_set_type(stationElement, targetTrackType);
 
                 map_invalidate_element(x, y, stationElement);
 
@@ -830,7 +830,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
     y = stationY0;
     while ((stationElement = find_station_element(x, y, z, direction, rideIndex)) != nullptr)
     {
-        if (stationElement->properties.track.type == TRACK_ELEM_END_STATION)
+        if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
         {
             if (flags & GAME_COMMAND_FLAG_APPLY)
             {
@@ -857,7 +857,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
         stationElement = find_station_element(x, y, z, direction, rideIndex);
         if (stationElement != nullptr)
         {
-            if (stationElement->properties.track.type == TRACK_ELEM_END_STATION)
+            if (track_element_get_type(stationElement) == TRACK_ELEM_END_STATION)
             {
                 if (flags & GAME_COMMAND_FLAG_APPLY)
                 {
@@ -944,7 +944,7 @@ static bool track_remove_station_element(sint32 x, sint32 y, sint32 z, sint32 di
                         }
                     }
                 }
-                stationElement->properties.track.type = targetTrackType;
+                track_element_set_type(stationElement, targetTrackType);
 
                 map_invalidate_element(x, y, stationElement);
             }
@@ -1492,7 +1492,7 @@ static money32 track_place(sint32 rideIndex,
 
         tile_element_set_track_sequence(tileElement, trackBlock->index);
         track_element_set_ride_index(tileElement, rideIndex);
-        tileElement->properties.track.type       = type;
+        track_element_set_type(tileElement, type);
         tileElement->properties.track.colour     = 0;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
@@ -1667,7 +1667,7 @@ static money32 track_remove(uint8 type,
 
         // Probably should add a check for ghost here as well!
 
-        uint8 track_type = tileElement->properties.track.type;
+        uint8 track_type = track_element_get_type(tileElement);
         switch (track_type)
         {
         case TRACK_ELEM_BEGIN_STATION:
@@ -1696,7 +1696,7 @@ static money32 track_remove(uint8 type,
     }
 
     uint8 rideIndex = track_element_get_ride_index(tileElement);
-    type = tileElement->properties.track.type;
+    type = track_element_get_type(tileElement);
     bool isLiftHill = track_element_is_lift_hill(tileElement);
 
     Ride                    * ride       = get_ride(rideIndex);
@@ -1778,7 +1778,7 @@ static money32 track_remove(uint8 type,
             if (tile_element_get_track_sequence(tileElement) != trackBlock->index)
                 continue;
 
-            if (tileElement->properties.track.type != type)
+            if (track_element_get_type(tileElement) != type)
                 continue;
 
             found = 1;
@@ -2098,7 +2098,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
         assert(tileElement != nullptr);
         tileElement->clearance_height            = clearanceHeight;
         tileElement->type                        = TILE_ELEMENT_TYPE_TRACK;
-        tileElement->properties.track.type       = TRACK_ELEM_MAZE;
+        track_element_set_type(tileElement, TRACK_ELEM_MAZE);
         track_element_set_ride_index(tileElement, rideIndex);
         tileElement->properties.track.maze_entry = 0xFFFF;
 
@@ -2313,7 +2313,7 @@ void game_command_set_brakes_speed(sint32 * eax,
             continue;
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->properties.track.type != trackType)
+        if (track_element_get_type(tileElement) != trackType)
             continue;
 
         tile_element_set_brake_booster_speed(tileElement, brakesSpeed);
@@ -2454,7 +2454,7 @@ bool track_element_is_lift_hill(rct_tile_element * trackElement)
  */
 bool track_element_is_block_start(rct_tile_element * trackElement)
 {
-    switch (trackElement->properties.track.type)
+    switch (track_element_get_type(trackElement))
     {
     case TRACK_ELEM_END_STATION:
     case TRACK_ELEM_CABLE_LIFT_HILL:
@@ -2534,7 +2534,7 @@ sint32 track_get_actual_bank_2(sint32 rideType, bool isInverted, sint32 bank)
 sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
     bool isInverted         = (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) && track_element_is_inverted(tileElement);
-    sint32 trackType        = tileElement->properties.track.type;
+    sint32 trackType        = track_element_get_type(tileElement);
     sint32 rideType         = get_ride(track_element_get_ride_index(tileElement))->type;
     sint32 bankStart        = TrackDefinitions[trackType].bank_start;
     return track_get_actual_bank_2(rideType, isInverted, bankStart);
@@ -2542,7 +2542,7 @@ sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * tileEle
 
 bool track_element_is_station(rct_tile_element * trackElement)
 {
-    switch (trackElement->properties.track.type)
+    switch (track_element_get_type(trackElement))
     {
     case TRACK_ELEM_END_STATION:
     case TRACK_ELEM_BEGIN_STATION:
@@ -2700,4 +2700,14 @@ uint8 track_element_get_ride_index(const rct_tile_element * tileElement)
 void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex)
 {
     tileElement->properties.track.ride_index = rideIndex;
+}
+
+uint8 track_element_get_type(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.type;
+}
+
+void track_element_set_type(rct_tile_element * tileElement, uint8 type)
+{
+    tileElement->properties.track.type = type;
 }

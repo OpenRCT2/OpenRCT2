@@ -1269,7 +1269,7 @@ static void loc_6A6D7E(
                         continue;
                     }
 
-                    const uint8 trackType = tileElement->properties.track.type;
+                    const uint8 trackType = track_element_get_type(tileElement);
                     const uint8 trackSequence = tile_element_get_track_sequence(tileElement);
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
                         return;
@@ -1361,7 +1361,7 @@ static void loc_6A6C85(
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
             return;
         }
-        const uint8 trackType = tileElement->properties.track.type;
+        const uint8 trackType = track_element_get_type(tileElement);
         const uint8 trackSequence = tile_element_get_track_sequence(tileElement);
         if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
             return;

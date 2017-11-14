@@ -66,7 +66,7 @@ static bool WallCheckObstructionWithTrack(rct_scenery_entry * wall,
                                           rct_tile_element * trackElement,
                                           bool * wallAcrossTrack)
 {
-    sint32 trackType = trackElement->properties.track.type;
+    sint32 trackType = track_element_get_type(trackElement);
     sint32 sequence = tile_element_get_track_sequence(trackElement);
     sint32 direction = (edge - tile_element_get_direction(trackElement)) & TILE_ELEMENT_DIRECTION_MASK;
     Ride * ride = get_ride(track_element_get_ride_index(trackElement));

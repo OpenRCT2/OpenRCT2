@@ -407,7 +407,7 @@ private:
         for (int direction = 0; direction < 4; direction++) {
             rct_tile_element tileElement = { 0 };
             tileElement.flags |= TILE_ELEMENT_FLAG_LAST_TILE;
-            tileElement.properties.track.type = trackType;
+            track_element_set_type(tileElement, trackType);
             tileElement.base_height = 3;
             if (_invertedTrack)
             {
