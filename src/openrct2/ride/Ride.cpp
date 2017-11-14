@@ -20,6 +20,8 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Editor.h"
 #include "../game.h"
 #include "../input.h"
@@ -275,7 +277,7 @@ rct_ride_entry * get_ride_entry_by_ride(Ride *ride)
 void reset_type_to_ride_entry_index_map()
 {
     size_t stride = MAX_RIDE_OBJECTS + 1;
-    uint8 * entryTypeTable = malloc(RIDE_TYPE_COUNT * stride);
+    uint8 * entryTypeTable = (uint8 *)malloc(RIDE_TYPE_COUNT * stride);
     memset(entryTypeTable, 0xFF, RIDE_TYPE_COUNT * stride);
 
     for (uint8 i = 0; i < MAX_RIDE_OBJECTS; i++) {
@@ -287,7 +289,7 @@ void reset_type_to_ride_entry_index_map()
             uint8 rideType = rideEntry->ride_type[j];
             if (rideType < RIDE_TYPE_COUNT) {
                 uint8 * entryArray = &entryTypeTable[rideType * stride];
-                uint8 * nextEntry = memchr(entryArray, 0xFF, stride);
+                uint8 * nextEntry = (uint8 *)memchr(entryArray, 0xFF, stride);
                 *nextEntry = i;
             }
         }
@@ -343,7 +345,7 @@ sint32 ride_get_max_queue_time(Ride *ride)
     sint32 i, queueTime = 0;
     for (i = 0; i < MAX_STATIONS; i++)
         if (ride->entrances[i].xy != RCT_XY8_UNDEFINED)
-            queueTime = max(queueTime, ride->queue_time[i]);
+            queueTime = Math::Max(queueTime, (sint32)ride->queue_time[i]);
     return queueTime;
 }
 
@@ -1182,7 +1184,7 @@ void ride_remove_peeps(sint32 rideIndex)
             peep->state = PEEP_STATE_FALLING;
             peep_switch_to_special_sprite(peep, 0);
 
-            peep->happiness = min(peep->happiness, peep->happiness_target) / 2;
+            peep->happiness = Math::Min(peep->happiness, peep->happiness_target) / 2;
             peep->happiness_target = peep->happiness;
             peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_STATS;
         }
@@ -2289,7 +2291,7 @@ static void ride_breakdown_update(sint32 rideIndex)
             totalDowntime += ride->downtime_history[i];
         }
 
-        ride->downtime = min(totalDowntime / 2, 100);
+        ride->downtime = Math::Min(totalDowntime / 2, 100);
 
         for (sint32 i = DOWNTIME_HISTORY_SIZE - 1; i > 0; i--)
         {
@@ -2307,7 +2309,7 @@ static void ride_breakdown_update(sint32 rideIndex)
 
     // Calculate breakdown probability?
     sint32 unreliabilityAccumulator = ride->unreliability_factor + get_age_penalty(ride);
-    ride->reliability = max(0, ride->reliability - unreliabilityAccumulator);
+    ride->reliability = Math::Max(0, ride->reliability - unreliabilityAccumulator);
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
 
     // Random probability of a breakdown. Roughly this is 1 in
@@ -2733,7 +2735,7 @@ rct_peep *ride_get_assigned_mechanic(Ride *ride)
 
 #pragma region Music functions
 
-#define MAKE_TUNEID_LIST(...) (uint8[]){(countof(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
+#define MAKE_TUNEID_LIST(...) (uint8[]){(Util::CountOf(((uint8[]){__VA_ARGS__}))), __VA_ARGS__}
 
 // 0x009AEF28
 static uint8 * ride_music_style_tuneids[] =
@@ -2930,8 +2932,8 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
 
     if (measurement->flags & RIDE_MEASUREMENT_FLAG_G_FORCES) {
         vehicle_get_g_forces(vehicle, &verticalG, &lateralG);
-        verticalG = clamp(-127, verticalG / 8, 127);
-        lateralG = clamp(-127, lateralG / 8, 127);
+        verticalG = Math::Clamp(-127, verticalG / 8, 127);
+        lateralG = Math::Clamp(-127, lateralG / 8, 127);
 
         if (gScenarioTicks & 1) {
             verticalG = (verticalG + measurement->vertical[measurement->current_item]) / 2;
@@ -2942,8 +2944,8 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
         measurement->lateral[measurement->current_item] = lateralG & 0xFF;
     }
 
-    velocity = min(abs((vehicle->velocity * 5) >> 16), 255);
-    altitude = min(vehicle->z / 8, 255);
+    velocity = Math::Min(abs((vehicle->velocity * 5) >> 16), 255);
+    altitude = Math::Min(vehicle->z / 8, 255);
 
     if (gScenarioTicks & 1) {
         velocity = (velocity + measurement->velocity[measurement->current_item]) / 2;
@@ -2955,7 +2957,7 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
 
     if (gScenarioTicks & 1) {
         measurement->current_item++;
-        measurement->num_items = max(measurement->num_items, measurement->current_item);
+        measurement->num_items = Math::Max(measurement->num_items, measurement->current_item);
     }
 }
 
@@ -3172,7 +3174,7 @@ void ride_set_vehicle_colours_to_random_preset(Ride *ride, uint8 preset_index)
         ride->vehicle_colours_extended[0] = preset->additional_2;
     } else {
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
-        sint32 count = min(presetList->count, 32);
+        sint32 count = Math::Min((sint32)presetList->count, 32);
         for (sint32 i = 0; i < count; i++) {
             vehicle_colour *preset = &presetList->list[i];
             ride->vehicle_colours[i].body_colour = preset->main;
@@ -3465,7 +3467,7 @@ static sint32 ride_music_params_update_label_51(uint32 a1, uint8 * tuneId, uint8
     if (a1 < gRideMusicInfoList[*tuneId]->length)
     {
         rct_ride_music_params * ride_music_params = gRideMusicParamsListEnd;
-        if (ride_music_params < &gRideMusicParamsList[countof(gRideMusicParamsList)])
+        if (ride_music_params < &gRideMusicParamsList[Util::CountOf(gRideMusicParamsList)])
         {
             ride_music_params->ride_id   = rideIndex;
             ride_music_params->tune_id   = *tuneId;
@@ -3933,7 +3935,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             ride->min_waiting_time = value;
-            ride->max_waiting_time = max(value, ride->max_waiting_time);
+            ride->max_waiting_time = Math::Max(value, ride->max_waiting_time);
         }
         break;
     case RIDE_SETTING_MAX_WAITING_TIME:
@@ -3944,7 +3946,7 @@ static money32 ride_set_setting(uint8 rideIndex, uint8 setting, uint8 value, uin
 
         if (flags & GAME_COMMAND_FLAG_APPLY) {
             ride->max_waiting_time = value;
-            ride->min_waiting_time = min(value, ride->min_waiting_time);
+            ride->min_waiting_time = Math::Min(value, ride->min_waiting_time);
         }
         break;
     case RIDE_SETTING_OPERATION_OPTION:
@@ -4523,7 +4525,7 @@ static sint32 count_free_misc_sprite_slots()
 {
     sint32 miscSpriteCount = gSpriteListCount[SPRITE_LIST_MISC];
     sint32 remainingSpriteCount = gSpriteListCount[SPRITE_LIST_NULL];
-    return max(0, miscSpriteCount + remainingSpriteCount - 300);
+    return Math::Max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
 static const LocationXY16 word_9A3AB4[4] = {
@@ -6016,13 +6018,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
     }
     uint8 type = *ebx >> 8;
     uint8 value = *edx >> 8;
-    sint32 index = *edi;
-
-    if (index < 0) {
-        log_warning("Invalid game command, index %d out of bounds", index);
-        *ebx = MONEY32_UNDEFINED;
-        return;
-    }
+    uint32 index = *edi;
 
     Ride *ride = get_ride(ride_id);
     if (ride->type == RIDE_TYPE_NULL) {
@@ -6044,7 +6040,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
     *ebx = 0;
     switch(type) {
     case 0:
-        if (index >= countof(ride->track_colour_main)) {
+        if (index >= Util::CountOf(ride->track_colour_main)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6055,7 +6051,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         }
         break;
     case 1:
-        if (index >= countof(ride->track_colour_additional)) {
+        if (index >= Util::CountOf(ride->track_colour_additional)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6066,7 +6062,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         }
         break;
     case 2:
-        if (index >= countof(ride->vehicle_colours)) {
+        if (index >= Util::CountOf(ride->vehicle_colours)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6077,7 +6073,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         }
         break;
     case 3:
-        if (index >= countof(ride->vehicle_colours)) {
+        if (index >= Util::CountOf(ride->vehicle_colours)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6088,7 +6084,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         }
         break;
     case 4:
-        if (index >= countof(ride->track_colour_supports)) {
+        if (index >= Util::CountOf(ride->track_colour_supports)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6102,7 +6098,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         if (apply) {
             ride->colour_scheme_type &= ~(RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN | RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR);
             ride->colour_scheme_type |= value;
-            for (sint32 i = 1; i < countof(ride->vehicle_colours); i++) {
+            for (uint32 i = 1; i < Util::CountOf(ride->vehicle_colours); i++) {
                 ride->vehicle_colours[i] = ride->vehicle_colours[0];
                 ride->vehicle_colours_extended[i] = ride->vehicle_colours_extended[0];
             }
@@ -6117,7 +6113,7 @@ void game_command_set_ride_appearance(sint32 *eax, sint32 *ebx, sint32 *ecx, sin
         }
         break;
     case 7:
-        if (index >= countof(ride->vehicle_colours_extended)) {
+        if (index >= Util::CountOf(ride->vehicle_colours_extended)) {
             log_warning("Invalid game command, index %d out of bounds", index);
             *ebx = MONEY32_UNDEFINED;
             return;
@@ -6980,8 +6976,8 @@ static void ride_update_vehicle_colours(sint32 rideIndex)
                 coloursExtended = ride->vehicle_colours_extended[i];
                 break;
             case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-                colours = ride->vehicle_colours[min(carIndex, MAX_CARS_PER_TRAIN - 1)];
-                coloursExtended = ride->vehicle_colours_extended[min(carIndex, MAX_CARS_PER_TRAIN - 1)];
+                colours = ride->vehicle_colours[Math::Min(carIndex, MAX_CARS_PER_TRAIN - 1)];
+                coloursExtended = ride->vehicle_colours_extended[Math::Min(carIndex, MAX_CARS_PER_TRAIN - 1)];
                 break;
             }
 
@@ -7062,7 +7058,7 @@ static sint32 ride_get_smallest_station_length(Ride *ride)
     uint32 result = -1;
     for (sint32 i = 0; i < MAX_STATIONS; i++) {
         if (ride->station_starts[i].xy != RCT_XY8_UNDEFINED) {
-            result = min(result, (uint32)(ride->station_length[i]));
+            result = Math::Min(result, (uint32)(ride->station_length[i]));
         }
     }
     return (sint32)result;
@@ -7150,11 +7146,11 @@ void ride_update_max_vehicles(sint32 rideIndex)
     }
     rct_ride_entry_vehicle *vehicleEntry;
     uint8 numCarsPerTrain, numVehicles;
-    sint32 maxNumTrains;
+    uint8 maxNumTrains;
 
     if (rideEntry->cars_per_flat_ride == 0xFF) {
         sint32 trainLength;
-        ride->num_cars_per_train = max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
+        ride->num_cars_per_train = Math::Max(rideEntry->min_cars_in_train, ride->num_cars_per_train);
         ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
 
         // Calculate maximum train length based on smallest station length
@@ -7164,11 +7160,11 @@ void ride_update_max_vehicles(sint32 rideIndex)
 
         stationLength = (stationLength * 0x44180) - 0x16B2A;
         sint32 maxFriction = RideData5[ride->type].max_friction << 8;
-        sint32 maxCarsPerTrain = 1;
-        for (sint32 numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
+        uint8 maxCarsPerTrain = 1;
+        for (uint8 numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
             trainLength = 0;
             sint32 totalFriction = 0;
-            for (sint32 i = 0; i < numCars; i++) {
+            for (uint8 i = 0; i < numCars; i++) {
                 vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, numCars, i)];
                 trainLength += vehicleEntry->spacing;
                 totalFriction += vehicleEntry->car_friction;
@@ -7179,17 +7175,17 @@ void ride_update_max_vehicles(sint32 rideIndex)
                 break;
             }
         }
-        sint32 newCarsPerTrain = max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
-        maxCarsPerTrain = max(maxCarsPerTrain, rideEntry->min_cars_in_train);
+        uint8 newCarsPerTrain = Math::Max(ride->proposed_num_cars_per_train, rideEntry->min_cars_in_train);
+        maxCarsPerTrain = Math::Max(maxCarsPerTrain, rideEntry->min_cars_in_train);
         if (!gCheatsDisableTrainLengthLimit) {
-            newCarsPerTrain = min(maxCarsPerTrain, newCarsPerTrain);
+            newCarsPerTrain = Math::Min(maxCarsPerTrain, newCarsPerTrain);
         }
         ride->min_max_cars_per_train = maxCarsPerTrain | (rideEntry->min_cars_in_train << 4);
 
         switch (ride->mode) {
         case RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED:
         case RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED:
-            maxNumTrains = clamp(1, ride->num_stations + ride->num_block_brakes - 1, 31);
+            maxNumTrains = Math::Clamp(1, ride->num_stations + ride->num_block_brakes - 1, 31);
             break;
         case RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE:
         case RIDE_MODE_POWERED_LAUNCH_PASSTROUGH:
@@ -7220,7 +7216,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
                 (ride->mode != RIDE_MODE_STATION_TO_STATION && ride->mode != RIDE_MODE_CONTINUOUS_CIRCUIT) ||
                 !(RideData4[ride->type].flags & RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)
             ) {
-                maxNumTrains = min(maxNumTrains, 31);
+                maxNumTrains = Math::Min(maxNumTrains, (uint8)31);
             } else {
                 vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, newCarsPerTrain, 0)];
                 sint32 speed = vehicleEntry->powered_max_speed;
@@ -7248,7 +7244,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
         }
         ride->max_trains = maxNumTrains;
 
-        numCarsPerTrain = min(ride->proposed_num_cars_per_train, newCarsPerTrain);
+        numCarsPerTrain = Math::Min(ride->proposed_num_cars_per_train, newCarsPerTrain);
     } else {
         ride->max_trains = rideEntry->cars_per_flat_ride;
         ride->min_max_cars_per_train = rideEntry->max_cars_in_train | (rideEntry->min_cars_in_train << 4);
@@ -7259,7 +7255,7 @@ void ride_update_max_vehicles(sint32 rideIndex)
     if (gCheatsDisableTrainLengthLimit) {
         maxNumTrains = 31;
     }
-    numVehicles = min(ride->proposed_num_vehicles, maxNumTrains);
+    numVehicles = Math::Min(ride->proposed_num_vehicles, maxNumTrains);
 
     // Refresh new current num vehicles / num cars per vehicle
     if (numVehicles != ride->num_vehicles || numCarsPerTrain != ride->num_cars_per_train) {
@@ -7396,7 +7392,7 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
         invalidate_test_results(rideIndex);
         rideEntry = get_ride_entry(ride->subtype);
         if (!gCheatsDisableTrainLengthLimit) {
-            value = clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
+            value = Math::Clamp(rideEntry->min_cars_in_train, value, rideEntry->max_cars_in_train);
         }
         ride->proposed_num_cars_per_train = value;
         break;
@@ -7418,21 +7414,23 @@ static money32 ride_set_vehicles(uint8 rideIndex, uint8 setting, uint8 value, ui
         ride->subtype = value;
         rideEntry = get_ride_entry(ride->subtype);
 
-        uint8 preset = ex;
-        if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
-            preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
-        }
+        {
+            uint8 preset = ex;
+            if (!(flags & GAME_COMMAND_FLAG_NETWORKED)) {
+                preset = ride_get_unused_preset_vehicle_colour(ride->type, ride->subtype);
+            }
 
-        // Validate preset
-        vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
-        if (preset >= presetList->count) {
-            log_error("Unknown vehicle colour preset.");
-            return MONEY32_UNDEFINED;
-        }
+            // Validate preset
+            vehicle_colour_preset_list *presetList = rideEntry->vehicle_preset_list;
+            if (preset >= presetList->count) {
+                log_error("Unknown vehicle colour preset.");
+                return MONEY32_UNDEFINED;
+            }
 
-        ride_set_vehicle_colours_to_random_preset(ride, preset);
-        if (!gCheatsDisableTrainLengthLimit) {
-            ride->proposed_num_cars_per_train = clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+            ride_set_vehicle_colours_to_random_preset(ride, preset);
+            if (!gCheatsDisableTrainLengthLimit) {
+                ride->proposed_num_cars_per_train = Math::Clamp(rideEntry->min_cars_in_train, ride->proposed_num_cars_per_train, rideEntry->max_cars_in_train);
+            }
         }
         break;
     default:
@@ -7490,9 +7488,9 @@ void sub_6CB945(sint32 rideIndex)
                 continue;
 
             LocationXYZ16 location = {
-                .x = ride->station_starts[stationId].x * 32,
-                .y = ride->station_starts[stationId].y * 32,
-                .z = ride->station_heights[stationId]
+                static_cast<sint16>(ride->station_starts[stationId].x * 32),
+                static_cast<sint16>(ride->station_starts[stationId].y * 32),
+                static_cast<sint16>(ride->station_heights[stationId])
             };
             uint8 direction = 0xFF;
 
@@ -7594,8 +7592,8 @@ void sub_6CB945(sint32 rideIndex)
         }
 
         LocationXY16 location = {
-            .x = (*locationList & 0xFF) * 32,
-            .y = ((*locationList >> 8) & 0xFF) * 32
+            static_cast<sint16>((*locationList & 0xFF) * 32),
+            static_cast<sint16>(((*locationList >> 8) & 0xFF) * 32)
         };
 
         rct_tile_element *tileElement = map_get_first_element_at(location.x >> 5, location.y >> 5);
