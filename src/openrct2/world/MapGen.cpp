@@ -273,7 +273,7 @@ static void mapgen_place_trees()
         if (sceneryEntry == NULL)
             continue;
 
-        sint32 j;
+        uint32 j;
         for (j = 0; j < Util::CountOf(GrassTrees); j++)
         {
             if (strncmp(GrassTrees[j], entry->name, 8) == 0)
@@ -720,7 +720,7 @@ static uint8 perm[512];
 
 static void noise_rand()
 {
-    for (sint32 i = 0; i < Util::CountOf(perm); i++)
+    for (uint32 i = 0; i < Util::CountOf(perm); i++)
     {
         perm[i] = util_rand() & 0xFF;
     }
