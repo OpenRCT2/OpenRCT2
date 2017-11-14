@@ -4510,6 +4510,17 @@ STR_6200    :Reset date
 STR_6201    :{MONTH}
 STR_6202    :Enable virtual floor
 STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
+STR_6204    :Brick
+STR_6205    :Iron
+STR_6206    :Grey stucco
+STR_6207    :Yellow stucco
+STR_6208    :Red stucco
+STR_6209    :Purple stucco
+STR_6210    :Green stucco
+STR_6211    :Brown sandstone
+STR_6212    :Grey sandstone
+STR_6213    :Skyscraper A
+STR_6214    :Skyscraper B
 
 #############
 # Scenarios #

@@ -97,7 +97,7 @@ void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uin
 {
     uint8 defaultIndex = 0;
 
-    for (uint8 i = 0; i < TERRAIN_EDGE_COUNT; i++) {
+    for (uint8 i = 0; i < TERRAIN_EDGE_RCT2_COUNT; i++) {
         gDropdownItemsFormat[i] = DROPDOWN_FORMAT_LAND_PICKER;
         gDropdownItemsArgs[i] = SPR_WALL_TEXTURE_ROCK + WallTextureOrder[i];
         if (WallTextureOrder[i] == currentEdgeType)
@@ -109,9 +109,9 @@ void land_tool_show_edge_style_dropdown(rct_window * w, rct_widget * widget, uin
        widget->bottom - widget->top,
        w->colours[2],
        0,
-       TERRAIN_EDGE_COUNT,
+       TERRAIN_EDGE_RCT2_COUNT,
        47, 36,
-       gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_COUNT]
+       gAppropriateImageDropdownItemsPerRow[TERRAIN_EDGE_RCT2_COUNT]
     );
 
     gDropdownDefaultIndex = defaultIndex;
