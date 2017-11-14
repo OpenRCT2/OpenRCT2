@@ -1452,7 +1452,7 @@ static void window_ride_update_overall_view(uint8 ride_index) {
         if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        if (it.element->properties.track.ride_index != ride_index)
+        if (track_element_get_ride_index(it.element) != ride_index)
             continue;
 
         sint32 x = it.x * 32;
@@ -1613,7 +1613,7 @@ static rct_window * window_ride_open_station(sint32 rideIndex, sint32 stationInd
 
 rct_window *window_ride_open_track(rct_tile_element *tileElement)
 {
-    sint32 rideIndex = tileElement->properties.track.ride_index;
+    sint32 rideIndex = track_element_get_ride_index(tileElement);
     if (
         (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) ||
         (TrackSequenceProperties[tileElement->properties.track.type][0] & TRACK_SEQUENCE_FLAG_ORIGIN)
@@ -4110,7 +4110,7 @@ static void window_ride_set_track_colour_scheme(rct_window *w, sint32 x, sint32 
 
     if (interactionType != VIEWPORT_INTERACTION_ITEM_RIDE)
         return;
-    if (tileElement->properties.track.ride_index != w->number)
+    if (track_element_get_ride_index(tileElement) != w->number)
         return;
     if (track_element_get_colour_scheme(tileElement) == newColourScheme)
         return;

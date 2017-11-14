@@ -27,6 +27,7 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/ride/Track.h>
 #include <openrct2/world/entrance.h>
 #include <openrct2/world/footpath.h>
 #include <openrct2/world/scenery.h>
@@ -1632,7 +1633,7 @@ static uint16 map_window_get_pixel_colour_ride(sint32 x, sint32 y)
                 break;
             // fall-through
         case TILE_ELEMENT_TYPE_TRACK:
-            ride = get_ride(tileElement->properties.track.ride_index);
+            ride = get_ride(track_element_get_ride_index(tileElement));
             colour = RideKeyColours[RideColourKey[ride->type]];
             break;
         }
