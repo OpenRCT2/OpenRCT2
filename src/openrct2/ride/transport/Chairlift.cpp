@@ -127,7 +127,7 @@ static rct_tile_element * chairlift_paint_util_map_get_track_element_at_from_rid
     {
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
-        if (tileElement->properties.track.ride_index != rideIndex)
+        if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
         if (tileElement->base_height != z && tileElement->base_height != z - 1)
             continue;

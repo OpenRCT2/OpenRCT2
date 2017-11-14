@@ -220,7 +220,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        ride = get_ride(tileElement->properties.track.ride_index);
+        ride = get_ride(track_element_get_ride_index(tileElement));
         if (ride->status != RIDE_STATUS_CLOSED)
             return info->type;
 

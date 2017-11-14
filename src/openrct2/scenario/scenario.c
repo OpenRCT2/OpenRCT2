@@ -48,6 +48,7 @@
 #include "ScenarioSources.h"
 #include "scenario.h"
 #include "../Context.h"
+#include "../ride/Track.h"
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS,
@@ -615,7 +616,7 @@ static bool scenario_prepare_rides_for_save()
 
             if (isFiveCoasterObjective)
             {
-                ride = get_ride(it.element->properties.track.ride_index);
+                ride = get_ride(track_element_get_ride_index(it.element));
 
                 // In the previous step, this flag was set on the first five roller coasters.
                 if (ride != NULL && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)

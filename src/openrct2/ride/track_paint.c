@@ -1735,7 +1735,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session * session, uint8 
  */
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *tileElement)
 {
-    sint32 rideIndex = tileElement->properties.track.ride_index;
+    sint32 rideIndex = track_element_get_ride_index(tileElement);
     Ride *ride = get_ride(rideIndex);
     if (ride->type == RIDE_TYPE_NULL) {
         log_error("Attempted to paint invalid ride: %d", rideIndex);

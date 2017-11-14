@@ -1720,7 +1720,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
         case TILE_INSPECTOR_PAGE_TRACK: {
             // Details
             // Ride
-            sint16 rideId = tileElement->properties.track.ride_index;
+            sint16 rideId = track_element_get_ride_index(tileElement);
             Ride *ride = get_ride(rideId);
             rct_string_id rideType = RideNaming[ride->type].name;
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_TRACK_RIDE_TYPE, &rideType, COLOUR_DARK_GREEN, x, y);

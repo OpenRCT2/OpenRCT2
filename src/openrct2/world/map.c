@@ -1577,7 +1577,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         do{
             if(tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                 continue;
-            sint32 rideIndex = tileElement->properties.track.ride_index;
+            sint32 rideIndex = track_element_get_ride_index(tileElement);
             sint32 maxHeight = get_ride_entry_by_ride(get_ride(rideIndex))->max_height;
             if(maxHeight == 0)
                 maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
@@ -3165,7 +3165,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
         errorStringId = STR_FOOTPATH_IN_THE_WAY;
         break;
     case TILE_ELEMENT_TYPE_TRACK:
-        ride = get_ride(tileElement->properties.track.ride_index);
+        ride = get_ride(track_element_get_ride_index(tileElement));
         errorStringId = STR_X_IN_THE_WAY;
         set_format_arg(0, rct_string_id, ride->name);
         set_format_arg(2, uint32, ride->name_arguments);
@@ -4497,7 +4497,7 @@ rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y,
     do {
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
-        if (tileElement->properties.track.ride_index != rideIndex) continue;
+        if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (tileElement->properties.track.type != trackType) continue;
 
         return tileElement;
@@ -4518,7 +4518,7 @@ rct_tile_element *map_get_track_element_at_from_ride(sint32 x, sint32 y, sint32 
     do {
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
-        if (tileElement->properties.track.ride_index != rideIndex) continue;
+        if (track_element_get_ride_index(tileElement) != rideIndex) continue;
 
         return tileElement;
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -4540,7 +4540,7 @@ rct_tile_element *map_get_track_element_at_with_direction_from_ride(sint32 x, si
     do {
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
-        if (tileElement->properties.track.ride_index != rideIndex) continue;
+        if (track_element_get_ride_index(tileElement) != rideIndex) continue;
         if (tile_element_get_direction(tileElement) != direction) continue;
 
         return tileElement;
