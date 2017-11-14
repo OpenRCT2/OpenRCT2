@@ -39,9 +39,9 @@ static struct
     uint32 width, height;
     uint8 * mono_bitmap;
 } _heightMapData = {
-    .width = 0,
-    .height = 0,
-    .mono_bitmap = NULL
+    0,
+    0,
+    nullptr
 };
 
 #pragma endregion Height map struct
@@ -246,7 +246,7 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 
     surfaceZ    = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
     tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
-    assert(tileElement != NULL);
+    assert(tileElement != nullptr);
     tileElement->clearance_height = surfaceZ + (sceneryEntry->small_scenery.height >> 3);
 
     tileElement->type                    = TILE_ELEMENT_TYPE_SCENERY | (util_rand() & 3);
@@ -270,7 +270,7 @@ static void mapgen_place_trees()
         rct_scenery_entry         * sceneryEntry = get_small_scenery_entry(i);
         rct_object_entry_extended * entry        = &object_entry_groups[OBJECT_TYPE_SMALL_SCENERY].entries[i];
 
-        if (sceneryEntry == NULL)
+        if (sceneryEntry == nullptr)
             continue;
 
         uint32 j;
@@ -944,7 +944,7 @@ bool mapgen_load_heightmap(const utf8 * path)
 void mapgen_unload_heightmap()
 {
     free(_heightMapData.mono_bitmap);
-    _heightMapData.mono_bitmap = NULL;
+    _heightMapData.mono_bitmap = nullptr;
     _heightMapData.width       = 0;
     _heightMapData.height      = 0;
 }
@@ -1000,7 +1000,7 @@ static void mapgen_smooth_heightmap(uint8 * src, sint32 strength)
 void mapgen_generate_from_heightmap(mapgen_settings * settings)
 {
     openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
-    openrct2_assert(_heightMapData.mono_bitmap != NULL, "No height map loaded");
+    openrct2_assert(_heightMapData.mono_bitmap != nullptr, "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
