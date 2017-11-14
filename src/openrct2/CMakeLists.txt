@@ -241,13 +241,8 @@ else ()
     set(PIE_FLAG "-fpie")
 endif ()
 
-if (FORCE32)
-    set(TARGET_M "-m32")
-endif ()
-
-set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${COMMON_COMPILE_OPTIONS} ${TARGET_M} -Wimplicit")
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${COMMON_COMPILE_OPTIONS} ${TARGET_M}")
-set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
+set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -std=gnu11 ${COMMON_COMPILE_OPTIONS} -Wimplicit")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=gnu++14 ${COMMON_COMPILE_OPTIONS}")
 
 # Defines
 if (USE_MMAP)
