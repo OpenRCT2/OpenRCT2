@@ -656,27 +656,15 @@ static void window_editor_scenario_options_financial_mousedown(rct_window *w, rc
         break;
     case WIDX_INTEREST_RATE_INCREASE:
         if (gBankLoanInterestRate < 80) {
-            if (gBankLoanInterestRate < 0) {
-                game_do_command(
-                    0,
-                    GAME_COMMAND_FLAG_APPLY,
-                    EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
-                    0,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                    0,
-                    0
-                );
-            } else {
-                game_do_command(
-                    0,
-                    GAME_COMMAND_FLAG_APPLY,
-                    EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
-                    gBankLoanInterestRate + 1,
-                    GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
-                    0,
-                    0
-                );
-            }
+            game_do_command(
+                0,
+                GAME_COMMAND_FLAG_APPLY,
+                EDIT_SCENARIOOPTIONS_SETANNUALINTERESTRATE,
+                gBankLoanInterestRate + 1,
+                GAME_COMMAND_EDIT_SCENARIO_OPTIONS,
+                0,
+                0
+            );
         } else {
             context_show_error(STR_CANT_INCREASE_INTEREST_RATE, STR_NONE);
         }
