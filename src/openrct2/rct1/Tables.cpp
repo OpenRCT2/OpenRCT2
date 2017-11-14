@@ -149,20 +149,20 @@ namespace RCT1
         static const uint8 map[] =
         {
             TERRAIN_EDGE_ROCK,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_BRICK
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_IRON
+            TERRAIN_EDGE_BRICK,
+            TERRAIN_EDGE_IRON,
             TERRAIN_EDGE_WOOD_RED,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_GREY
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_YELLOW
+            TERRAIN_EDGE_GREY,
+            TERRAIN_EDGE_YELLOW,
             TERRAIN_EDGE_WOOD_BLACK,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_RED
+            TERRAIN_EDGE_RED,
             TERRAIN_EDGE_ICE,
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_PURPLE
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_GREEN
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_STONE_BROWN
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_STONE_GREY
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_SKYSCRAPER_A
-            TERRAIN_EDGE_ROCK,            // Originally TERRAIN_EDGE_SKYSCRAPER_B
+            TERRAIN_EDGE_PURPLE,
+            TERRAIN_EDGE_GREEN,
+            TERRAIN_EDGE_STONE_BROWN,
+            TERRAIN_EDGE_STONE_GREY,
+            TERRAIN_EDGE_SKYSCRAPER_A,
+            TERRAIN_EDGE_SKYSCRAPER_B,
             TERRAIN_EDGE_ROCK             // Unused
         };
         Guard::ArgumentInRange<size_t>(terrainEdge, 0, Util::CountOf(map), "Unsupported RCT1 terrain edge.");
