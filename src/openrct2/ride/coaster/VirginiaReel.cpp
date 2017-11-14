@@ -234,7 +234,7 @@ static void paint_virginia_reel_track_flat(paint_session * session, uint8 rideIn
                                            sint32 height, rct_tile_element * tileElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_flat;
-    if (tileElement->type & 0x80)
+    if (track_element_is_lift_hill(tileElement))
     {
         sprites = virginia_reel_track_pieces_flat_lift_hill;
     }
@@ -262,7 +262,7 @@ static void paint_virginia_reel_track_25_deg_up(paint_session * session, uint8 r
                                                 sint32 height, rct_tile_element * tileElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_25_deg_up;
-    if (tileElement->type & 0x80)
+    if (track_element_is_lift_hill(tileElement))
     {
         sprites = virginia_reel_track_pieces_25_deg_up_lift_hill;
     }
@@ -313,7 +313,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(paint_session * session,
                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
-    if (tileElement->type & 0x80)
+    if (track_element_is_lift_hill(tileElement))
     {
         sprites = virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill;
     }
@@ -359,7 +359,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(paint_session * session,
                                                         uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     const uint32 * sprites = virginia_reel_track_pieces_25_deg_up_to_flat;
-    if (tileElement->type & 0x80)
+    if (track_element_is_lift_hill(tileElement))
     {
         sprites = virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill;
     }

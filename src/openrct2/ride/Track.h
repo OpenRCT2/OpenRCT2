@@ -545,6 +545,7 @@ bool track_element_is_block_start(rct_tile_element * trackElement);
 bool track_element_is_covered(sint32 trackElementType);
 bool track_element_is_station(rct_tile_element * trackElement);
 bool track_element_is_lift_hill(rct_tile_element * trackElement);
+void track_element_set_lift_hill(rct_tile_element * trackElement, bool on);
 bool track_element_is_cable_lift(rct_tile_element * trackElement);
 void track_element_set_cable_lift(rct_tile_element * trackElement);
 void track_element_clear_cable_lift(rct_tile_element * trackElement);

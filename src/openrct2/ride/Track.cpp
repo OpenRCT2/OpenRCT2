@@ -1493,7 +1493,8 @@ static money32 track_place(sint32 rideIndex,
         tile_element_set_track_sequence(tileElement, trackBlock->index);
         track_element_set_ride_index(tileElement, rideIndex);
         track_element_set_type(tileElement, type);
-        tileElement->properties.track.colour     = 0;
+        // TODO: Find out why this is set to 0.
+        tileElement->properties.track.colour = 0;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
@@ -2445,6 +2446,18 @@ void track_get_front(rct_xy_element * input, rct_xy_element * output)
 bool track_element_is_lift_hill(rct_tile_element * trackElement)
 {
     return trackElement->type & TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+}
+
+void track_element_set_lift_hill(rct_tile_element * trackElement, bool on)
+{
+    if (on)
+    {
+        trackElement->type |= TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+    }
+    else
+    {
+        trackElement->type &= ~TRACK_ELEMENT_FLAG_CHAIN_LIFT;
+    }
 }
 
 /**
