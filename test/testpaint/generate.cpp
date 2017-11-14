@@ -411,7 +411,7 @@ private:
             tileElement.base_height = 3;
             if (_invertedTrack)
             {
-                tileElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+                track_element_set_inverted(tileElement, true);
             }
             g_currently_drawn_item = &tileElement;
 
@@ -450,7 +450,7 @@ private:
             if (_rideType == RIDE_TYPE_GIGA_COASTER)
             {
                 tileElement.type = 0;
-                tileElement.properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+                track_element_set_cable_lift(tileElement);
                 PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &tileElement);
                 numCalls = PaintIntercept::GetCalls(callBuffer);
@@ -463,7 +463,7 @@ private:
                 RCT2_GLOBAL(0x009DE56A, sint16) = 64 + 32;
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64;
                 tileElement.type = 0;
-                tileElement.properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+                track_element_clear_cable_lift(tileElement);
                 PaintIntercept::ClearCalls();
                 CallOriginal(trackType, direction, trackSequence, height, &tileElement);
                 numCalls = PaintIntercept::GetCalls(callBuffer);
