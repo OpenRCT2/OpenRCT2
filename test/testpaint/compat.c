@@ -247,3 +247,18 @@ uint8 track_element_get_colour_scheme(const rct_tile_element * tileElement)
 {
     return tileElement->properties.track.colour & 0x3;
 }
+
+uint16 track_element_get_maze_entry(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.maze_entry;
+}
+
+uint8 track_element_get_ride_index(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.ride_index;
+}
+
+void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex)
+{
+    tileElement->properties.track.ride_index = rideIndex;
+}

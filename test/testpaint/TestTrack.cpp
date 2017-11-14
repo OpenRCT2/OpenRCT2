@@ -69,10 +69,13 @@ public:
                          rct_tile_element *tileElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
-        if (variant == 0) {
-            tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
-        } else {
-            tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+        if (variant == 0)
+        {
+            track_element_clear_cable_lift(tileElement);
+        }
+        else
+        {
+            track_element_set_cable_lift(tileElement);
         }
     }
 };
@@ -127,10 +130,13 @@ public:
                          rct_tile_element *tileElement, rct_tile_element *surfaceElement,
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
-        if (variant == 0) {
-            tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
-        } else {
-            tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+        if (variant == 0)
+        {
+            track_element_clear_cable_lift(tileElement);
+        }
+        else
+        {
+            track_element_set_cable_lift(tileElement);
         }
     }
 };
