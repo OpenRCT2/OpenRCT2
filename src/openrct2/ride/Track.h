@@ -565,6 +565,17 @@ uint8 track_element_get_seat_rotation(const rct_tile_element * tileElement);
 void track_element_set_seat_rotation(rct_tile_element * tileElement, uint8 seatRotation);
 uint8 track_element_get_colour_scheme(const rct_tile_element * tileElement);
 void track_element_set_colour_scheme(rct_tile_element * tileElement, uint8 colourScheme);
+sint32 tile_element_get_station(const rct_tile_element * tileElement);
+void tile_element_set_station(rct_tile_element * tileElement, uint32 stationIndex);
+sint32 tile_element_get_track_sequence(const rct_tile_element * tileElement);
+void tile_element_set_track_sequence(rct_tile_element * tileElement, sint32 trackSequence);
+bool tile_element_get_green_light(const rct_tile_element * tileElement);
+void tile_element_set_green_light(rct_tile_element * tileElement, bool greenLight);
+sint32 tile_element_get_brake_booster_speed(const rct_tile_element *tileElement);
+void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, sint32 speed);
+bool tile_element_is_taking_photo(const rct_tile_element * tileElement);
+void tile_element_set_onride_photo_timeout(rct_tile_element * tileElement);
+void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement);
 
 #ifdef __cplusplus
 }
