@@ -2330,8 +2330,8 @@ static void sub_6CBCE2(
         _tempTrackTileElement.clearance_height = clearanceZ;
         _tempTrackTileElement.properties.track.type = trackType;
         tile_element_set_track_sequence(&_tempTrackTileElement, trackBlock->index);
-        _tempTrackTileElement.properties.track.colour = 0;
-        _tempTrackTileElement.properties.track.ride_index = rideIndex;
+        track_element_set_colour_scheme(&_tempTrackTileElement, 0);
+        track_element_set_ride_index(&_tempTrackTileElement, rideIndex);
         if (edx & 0x20000)
         {
             track_element_set_inverted(&_tempTrackTileElement, true);
