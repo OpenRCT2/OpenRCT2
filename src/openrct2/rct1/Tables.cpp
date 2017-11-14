@@ -1426,21 +1426,3 @@ namespace RCT1
         return map[sceneryType];
     }
 }
-
-extern "C"
-{
-    uint8 rct1_get_ride_type(uint8 rideType)
-    {
-        return RCT1::GetRideType(rideType);
-    }
-
-    const char * rct1_get_ride_type_object(uint8 rideType)
-    {
-        return RCT1::GetRideTypeObject(rideType);
-    }
-
-    const char * rct1_get_vehicle_object(uint8 vehicleType)
-    {
-        return RCT1::GetVehicleObject(vehicleType);
-    }
-}
