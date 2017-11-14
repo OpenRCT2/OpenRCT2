@@ -2682,7 +2682,7 @@ private:
                         if (!track_element_is_lift_hill(tileElement))
                             continue;
 
-                        uint8 trackType = tileElement->properties.track.type;
+                        uint8 trackType = track_element_get_type(tileElement);
                         switch (trackType) {
                         case TRACK_ELEM_25_DEG_UP_TO_FLAT:
                         case TRACK_ELEM_60_DEG_UP_TO_FLAT:

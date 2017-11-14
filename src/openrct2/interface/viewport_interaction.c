@@ -228,7 +228,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
 
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
             rct_string_id stringId;
-            if (tileElement->properties.track.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
+            if (tileElement->properties.entrance.type == ENTRANCE_TYPE_RIDE_ENTRANCE) {
                 if (ride->num_stations > 1) {
                     stringId = STR_RIDE_STATION_X_ENTRANCE;
                 } else {

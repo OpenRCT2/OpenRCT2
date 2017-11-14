@@ -4452,7 +4452,7 @@ rct_tile_element *map_get_track_element_at_of_type(sint32 x, sint32 y, sint32 z,
     do {
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
-        if (tileElement->properties.track.type != trackType) continue;
+        if (track_element_get_type(tileElement) != trackType) continue;
 
         return tileElement;
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -4475,7 +4475,7 @@ rct_tile_element *map_get_track_element_at_of_type_seq(sint32 x, sint32 y, sint3
         if (tileElement == NULL) break;
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
-        if (tileElement->properties.track.type != trackType) continue;
+        if (track_element_get_type(tileElement) != trackType) continue;
         if (tile_element_get_track_sequence(tileElement) != sequence) continue;
 
         return tileElement;
@@ -4498,7 +4498,7 @@ rct_tile_element *map_get_track_element_at_of_type_from_ride(sint32 x, sint32 y,
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
         if (tileElement->base_height != z) continue;
         if (track_element_get_ride_index(tileElement) != rideIndex) continue;
-        if (tileElement->properties.track.type != trackType) continue;
+        if (track_element_get_type(tileElement) != trackType) continue;
 
         return tileElement;
     } while (!tile_element_is_last_for_tile(tileElement++));

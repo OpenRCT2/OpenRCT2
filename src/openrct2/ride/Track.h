@@ -579,6 +579,8 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement);
 uint16 track_element_get_maze_entry(const rct_tile_element * tileElement);
 uint8 track_element_get_ride_index(const rct_tile_element * tileElement);
 void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex);
+uint8 track_element_get_type(const rct_tile_element * tileElement);
+void track_element_set_type(rct_tile_element * tileElement, uint8 rideIndex);
 
 #ifdef __cplusplus
 }

@@ -472,7 +472,7 @@ static void wooden_rc_track_station(paint_session * session, uint8 rideIndex, ui
         { SPR_WOODEN_RC_STATION_NW_SE, SPR_WOODEN_RC_STATION_RAILS_NW_SE },
     };
 
-    sint32 trackType = tileElement->properties.track.type;
+    sint32 trackType = track_element_get_type(tileElement);
     if (trackType == TRACK_ELEM_END_STATION)
     {
         wooden_rc_track_paint(session, _wooden_rc_block_brakes_image_ids[direction][0],

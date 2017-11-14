@@ -120,7 +120,7 @@ static void multi_dimension_rc_track_station(paint_session * session, uint8 ride
 
     LocationXY16 position = session->MapPosition;
 
-    if (tileElement->properties.track.type == TRACK_ELEM_END_STATION)
+    if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION)
     {
         sub_98197C_rotated(session, direction, imageIds[direction][1] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 26, 1,
                            height, 0, 3, height + 3);

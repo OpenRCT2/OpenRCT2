@@ -633,7 +633,7 @@ extern "C"
             if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
             if (track_element_get_ride_index(tileElement) != rideIndex) continue;
             if (tileElement->base_height != z) continue;
-            if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
+            if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
 
             // Each maze element is split into 4 sections with 4 different walls
             uint8 mazeSection = direction * 4;
@@ -664,7 +664,7 @@ extern "C"
             if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
             if (track_element_get_ride_index(tileElement) != rideIndex) continue;
             if (tileElement->base_height != z) continue;
-            if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
+            if (track_element_get_type(tileElement) != TRACK_ELEM_MAZE) continue;
 
             // Each maze element is split into 4 sections with 4 different walls
             uint8 mazeSection = direction * 4;

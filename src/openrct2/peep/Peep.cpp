@@ -5008,9 +5008,7 @@ static bool peep_update_fixing_sub_state_9(bool firstRun, rct_peep * peep, Ride 
         track_begin_end trackBeginEnd;
         while (track_block_get_previous(input.x, input.y, input.element, &trackBeginEnd))
         {
-            uint8 trackType = trackBeginEnd.begin_element->properties.track.type;
-            if (trackType == TRACK_ELEM_BEGIN_STATION || trackType == TRACK_ELEM_MIDDLE_STATION ||
-                trackType == TRACK_ELEM_END_STATION)
+            if (track_element_is_station(trackBeginEnd.begin_element))
             {
                 input.x       = trackBeginEnd.begin_x;
                 input.y       = trackBeginEnd.begin_y;

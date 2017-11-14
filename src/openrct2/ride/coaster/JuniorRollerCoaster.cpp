@@ -1654,7 +1654,7 @@ void junior_rc_paint_station(paint_session * session, uint8 rideIndex, uint8 tra
         sub_98197C(session, imageId, 0, 0, 32, 28, 1, height - 2, 0, 2, height, get_current_rotation());
 
         // height += 2 (height)
-        if (tileElement->properties.track.type == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
@@ -1676,7 +1676,7 @@ void junior_rc_paint_station(paint_session * session, uint8 rideIndex, uint8 tra
         sub_98197C(session, imageId, 0, 0, 28, 32, 1, height - 2, 2, 0, height, get_current_rotation());
 
         // height += 2 (height)
-        if (tileElement->properties.track.type == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
+        if (track_element_get_type(tileElement) == TRACK_ELEM_END_STATION && rideType == RIDE_TYPE_JUNIOR_ROLLER_COASTER)
         {
             imageId = junior_rc_track_pieces_block_brake[isBraked][direction] | session->TrackColours[SCHEME_TRACK];
         }
