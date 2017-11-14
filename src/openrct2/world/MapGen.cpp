@@ -91,8 +91,6 @@ static const uint8 BaseTerrain[] = {TERRAIN_GRASS, TERRAIN_SAND, TERRAIN_SAND_LI
 
 static void mapgen_place_trees();
 static void mapgen_set_water_level(sint32 waterLevel);
-static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight);
-static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height);
 static void mapgen_smooth_height(sint32 iterations);
 static void mapgen_set_height();
 
@@ -411,26 +409,6 @@ static void mapgen_set_water_level(sint32 waterLevel)
     }
 }
 
-static void mapgen_blobs(sint32 count, sint32 lowSize, sint32 highSize, sint32 lowHeight, sint32 highHeight)
-{
-    sint32 i;
-    sint32 sizeRange   = highSize - lowSize;
-    sint32 heightRange = highHeight - lowHeight;
-
-    sint32 border      = 2 + (util_rand() % 24);
-    sint32 borderRange = _heightSize - (border * 2);
-    for (i = 0; i < count; i++)
-    {
-        sint32 radius = lowSize + (util_rand() % sizeRange);
-        mapgen_blob(
-            border + (util_rand() % borderRange),
-            border + (util_rand() % borderRange),
-            (sint32) (M_PI * radius * radius),
-            lowHeight + (util_rand() % heightRange)
-        );
-    }
-}
-
 /**
  * Sets any holes within a new created blob to the specified height.
  */
@@ -540,95 +518,6 @@ static void mapgen_blob_fill(sint32 height)
     }
 
     free(landX);
-}
-
-/**
- * Sets a rough circular blob of tiles of the specified size to the specified height.
- */
-static void mapgen_blob(sint32 cx, sint32 cy, sint32 size, sint32 height)
-{
-    sint32 x, y, currentSize, direction;
-
-    x           = cx;
-    y           = cy;
-    currentSize = 1;
-    direction   = 0;
-    set_height(x, y, BLOB_HEIGHT);
-
-    while (currentSize < size)
-    {
-        if (util_rand() % 2 == 0)
-        {
-            set_height(x, y, BLOB_HEIGHT);
-            currentSize++;
-        }
-
-        switch (direction)
-        {
-        case 0:
-            if (y == 0)
-            {
-                currentSize = size;
-                break;
-            }
-
-            y--;
-            if (get_height(x + 1, y) != BLOB_HEIGHT)
-                direction = 1;
-            else if (get_height(x, y - 1) != BLOB_HEIGHT)
-                direction = 0;
-            else if (get_height(x - 1, y) != BLOB_HEIGHT)
-                direction = 3;
-            break;
-        case 1:
-            if (x == _heightSize - 1)
-            {
-                currentSize = size;
-                break;
-            }
-
-            x++;
-            if (get_height(x, y + 1) != BLOB_HEIGHT)
-                direction = 2;
-            else if (get_height(x + 1, y) != BLOB_HEIGHT)
-                direction = 1;
-            else if (get_height(x, y - 1) != BLOB_HEIGHT)
-                direction = 0;
-            break;
-        case 2:
-            if (y == _heightSize - 1)
-            {
-                currentSize = size;
-                break;
-            }
-
-            y++;
-            if (get_height(x - 1, y) != BLOB_HEIGHT)
-                direction = 3;
-            else if (get_height(x, y + 1) != BLOB_HEIGHT)
-                direction = 2;
-            else if (get_height(x + 1, y) != BLOB_HEIGHT)
-                direction = 1;
-            break;
-        case 3:
-            if (x == 0)
-            {
-                currentSize = size;
-                break;
-            }
-
-            x--;
-            if (get_height(x, y - 1) != BLOB_HEIGHT)
-                direction = 0;
-            else if (get_height(x - 1, y) != BLOB_HEIGHT)
-                direction = 3;
-            else if (get_height(x, y + 1) != BLOB_HEIGHT)
-                direction = 2;
-            break;
-        }
-    }
-
-    mapgen_blob_fill(height);
 }
 
 /**
