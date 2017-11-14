@@ -191,25 +191,8 @@ void mapgen_generate(mapgen_settings * settings)
     _height     = (uint8 *) malloc(_heightSize * _heightSize * sizeof(uint8));
     memset(_height, 0, _heightSize * _heightSize * sizeof(uint8));
 
-    if (1)
-    {
-        mapgen_simplex(settings);
-        mapgen_smooth_height(2 + (util_rand() % 6));
-    }
-    else
-    {
-        // Keep overwriting the map with rough circular blobs of different sizes and heights.
-        // This procedural method can produce intersecting contour like land and lakes.
-        // Large blobs, general shape of map
-        mapgen_blobs(6, _heightSize / 2, _heightSize * 4, 4, 16);
-        // Medium blobs
-        mapgen_blobs(12, _heightSize / 16, _heightSize / 8, 4, 18);
-        // Small blobs, small hills and lakes
-        mapgen_blobs(32, _heightSize / 32, _heightSize / 16, 4, 18);
-
-        // Smooth the land so that there aren't cliffs round every blob.
-        mapgen_smooth_height(2);
-    }
+    mapgen_simplex(settings);
+    mapgen_smooth_height(2 + (util_rand() % 6));
 
     // Set the game map to the height map
     mapgen_set_height();
