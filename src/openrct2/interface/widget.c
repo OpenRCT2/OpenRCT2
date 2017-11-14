@@ -456,8 +456,9 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex w
     sint32 t = w->y + widget->top;
     sint32 r = w->x + widget->right;
 
-    // TODO: -2 seems odd
-    if (widget->text == (rct_string_id)-2 || widget->text == STR_NONE)
+    // TODO -2 seems to link to the string id for [TBR].
+    const rct_string_id strTbr = (rct_string_id)-2;
+    if (widget->text == strTbr || widget->text == STR_NONE)
         return;
 
     if (widget_is_disabled(w, widgetIndex))
