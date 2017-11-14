@@ -2324,13 +2324,15 @@ static void sub_6CBCE2(
         map_set_tile_elements(tileX + 0, tileY - 1, &_tempSideTrackTileElement);
 
         // Set the temporary track element
-        _tempTrackTileElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK | ((edx & 0x10000) ? 0x80 : 0);
+        _tempTrackTileElement.type = trackDirection | TILE_ELEMENT_TYPE_TRACK;
+        track_element_set_lift_hill(&_tempTrackTileElement, (edx & 0x10000) ? true : false);
         _tempTrackTileElement.flags = (bl & 0x0F) | TILE_ELEMENT_FLAG_LAST_TILE;
         _tempTrackTileElement.base_height = baseZ;
         _tempTrackTileElement.clearance_height = clearanceZ;
         track_element_set_type(&_tempTrackTileElement, trackType);
         tile_element_set_track_sequence(&_tempTrackTileElement, trackBlock->index);
-        track_element_set_colour_scheme(&_tempTrackTileElement, 0);
+        // TODO: Find out why this is set to 0.
+        _tempTrackTileElement.properties.track.colour = 0;
         track_element_set_ride_index(&_tempTrackTileElement, rideIndex);
         if (edx & 0x20000)
         {
