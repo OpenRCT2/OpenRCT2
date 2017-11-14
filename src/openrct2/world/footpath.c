@@ -1264,7 +1264,7 @@ static void loc_6A6D7E(
                 break;
             case TILE_ELEMENT_TYPE_TRACK:
                 if (z == tileElement->base_height) {
-                    Ride *ride = get_ride(tileElement->properties.track.ride_index);
+                    Ride *ride = get_ride(track_element_get_ride_index(tileElement));
                     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
                         continue;
                     }
@@ -1279,7 +1279,7 @@ static void loc_6A6D7E(
                         return;
                     }
                     if (query) {
-                        neighbour_list_push(neighbourList, 1, direction, tileElement->properties.track.ride_index, 255);
+                        neighbour_list_push(neighbourList, 1, direction, track_element_get_ride_index(tileElement), 255);
                     }
                     goto loc_6A6FD2;
                 }
@@ -1357,7 +1357,7 @@ static void loc_6A6C85(
     }
 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK) {
-        Ride *ride = get_ride(tileElement->properties.track.ride_index);
+        Ride *ride = get_ride(track_element_get_ride_index(tileElement));
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE)) {
             return;
         }
@@ -2174,7 +2174,7 @@ static void footpath_remove_edges_towards(sint32 x, sint32 y, sint32 z0, sint32 
 void footpath_remove_edges_at(sint32 x, sint32 y, rct_tile_element *tileElement)
 {
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK) {
-        sint32 rideIndex = tileElement->properties.track.ride_index;
+        sint32 rideIndex = track_element_get_ride_index(tileElement);
         Ride *ride = get_ride(rideIndex);
         if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE))
             return;

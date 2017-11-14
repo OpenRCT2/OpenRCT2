@@ -28,6 +28,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
+#include "../ride/Track.h"
 
 rct_banner gBanners[MAX_BANNERS];
 
@@ -48,7 +49,7 @@ static sint32 banner_get_ride_index_at(sint32 x, sint32 y, sint32 z)
         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
             continue;
 
-        rideIndex = tileElement->properties.track.ride_index;
+        rideIndex = track_element_get_ride_index(tileElement);
         ride = get_ride(rideIndex);
         if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             continue;

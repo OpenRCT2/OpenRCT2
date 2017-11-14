@@ -584,7 +584,7 @@ static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct
             return true;
         break;
     case TILE_ELEMENT_TYPE_TRACK:
-        if (tileElement->properties.track.ride_index == rideIndex)
+        if (track_element_get_ride_index(tileElement) == rideIndex)
             return true;
         break;
     case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -815,7 +815,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
             do {
                 if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                     continue;
-                if (tileElement->properties.track.ride_index == rideIndex){
+                if (track_element_get_ride_index(tileElement) == rideIndex){
                     mapFound = true;
                     break;
                 }
@@ -848,9 +848,9 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
             tileElement = map_get_first_element_at(x / 32, y / 32);
             do {
                 if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK) continue;
-                if (tileElement->properties.track.ride_index != rideIndex) continue;
+                if (track_element_get_ride_index(tileElement) != rideIndex) continue;
 
-                maze->maze_entry = tileElement->properties.track.maze_entry;
+                maze->maze_entry = track_element_get_maze_entry(tileElement);
                 maze->x = (x - startX) / 32;
                 maze->y = (y - startY) / 32;
                 maze++;

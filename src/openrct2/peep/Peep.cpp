@@ -171,7 +171,7 @@ static bool   peep_update_fixing_sub_state_14(bool firstRun, rct_peep * peep, Ri
 static void   peep_update_ride_inspected(sint32 rideIndex);
 static void   peep_release_balloon(rct_peep * peep, sint16 spawn_height);
 
-bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * esi);
+bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * tileElement);
 
 #ifdef DEBUG_DESYNC
 #define peep_rand() scenario_rand_data(peep)
@@ -638,7 +638,7 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                     num_scenery++;
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
-                    ride = get_ride(tileElement->properties.track.ride_index);
+                    ride = get_ride(track_element_get_ride_index(tileElement));
                     if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RIDE_STATUS_CLOSED &&
                         !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
                     {
@@ -4238,7 +4238,7 @@ static void peep_update_ride_sub_state_17(rct_peep * peep)
 
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    uint16 maze_entry  = tileElement->properties.track.maze_entry;
+    uint16 maze_entry  = track_element_get_maze_entry(tileElement);
     uint16 open_hedges = 0;
     uint8  var_37      = peep->var_37;
     // var_37 is 3, 7, 11 or 15
@@ -9328,7 +9328,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
  */
 static sint32 peep_interact_with_shop(rct_peep * peep, sint16 x, sint16 y, rct_tile_element * tile_element)
 {
-    uint8  rideIndex = tile_element->properties.track.ride_index;
+    uint8  rideIndex = track_element_get_ride_index(tile_element);
     Ride * ride      = get_ride(rideIndex);
 
     if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
@@ -9681,7 +9681,7 @@ static uint8 footpath_element_dest_in_dir(sint16 x, sint16 y, sint16 z, rct_tile
         {
             if (z != tileElement->base_height)
                 continue;
-            sint32 rideIndex = tileElement->properties.track.ride_index;
+            sint32 rideIndex = track_element_get_ride_index(tileElement);
             Ride * ride      = get_ride(rideIndex);
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             {
@@ -10035,7 +10035,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 continue;
             /* For peeps heading for a shop, the goal is the shop
              * tile. */
-            rideIndex   = tileElement->properties.track.ride_index;
+            rideIndex   = track_element_get_ride_index(tileElement);
             Ride * ride = get_ride(rideIndex);
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))
             {
@@ -12577,7 +12577,7 @@ static void peep_easter_egg_peep_interactions(rct_peep * peep)
  */
 static bool peep_should_watch_ride(rct_tile_element * tileElement)
 {
-    Ride * ride = get_ride(tileElement->properties.track.ride_index);
+    Ride * ride = get_ride(track_element_get_ride_index(tileElement));
 
     // Ghosts are purely this-client-side and should not cause any interaction,
     // as that may lead to a desync.
@@ -12977,17 +12977,17 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
     return false;
 }
 
-bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * esi)
+bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct_tile_element * tileElement)
 {
-    Ride * ride = get_ride(esi->properties.track.ride_index);
+    Ride * ride = get_ride(track_element_get_ride_index(tileElement));
 
-    *rideToView = esi->properties.track.ride_index;
+    *rideToView = track_element_get_ride_index(tileElement);
     if (ride->excitement == RIDE_RATING_UNDEFINED)
     {
         *rideSeatToView = 1;
         if (ride->status != RIDE_STATUS_OPEN)
         {
-            if (esi->clearance_height > peep->next_z + 8)
+            if (tileElement->clearance_height > peep->next_z + 8)
             {
                 *rideSeatToView |= (1 << 1);
             }
@@ -13000,7 +13000,7 @@ bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct
         *rideSeatToView = 0;
         if (ride->status == RIDE_STATUS_OPEN && !(ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN))
         {
-            if (esi->clearance_height > peep->next_z + 8)
+            if (tileElement->clearance_height > peep->next_z + 8)
             {
                 *rideSeatToView = 0x02;
             }
@@ -13531,7 +13531,7 @@ static void peep_pick_ride_to_go_on(rct_peep * peep)
                         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = tileElement->properties.track.ride_index;
+                        sint32 rideIndex = track_element_get_ride_index(tileElement);
                         _peepRideConsideration[rideIndex >> 5] |= (1u << (rideIndex & 0x1F));
                     } while (!tile_element_is_last_for_tile(tileElement++));
                 }
@@ -13670,7 +13670,7 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
                         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = tileElement->properties.track.ride_index;
+                        sint32 rideIndex = track_element_get_ride_index(tileElement);
                         ride             = get_ride(rideIndex);
                         if (ride->type == rideType)
                         {
@@ -13802,7 +13802,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
                         if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
                             continue;
 
-                        sint32 rideIndex = tileElement->properties.track.ride_index;
+                        sint32 rideIndex = track_element_get_ride_index(tileElement);
                         ride             = get_ride(rideIndex);
                         if (ride_type_has_flag(ride->type, rideTypeFlags))
                         {

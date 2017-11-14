@@ -626,12 +626,12 @@ extern "C"
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         sint32 z = tileElement->base_height;
-        sint32 rideIndex = tileElement->properties.track.ride_index;
+        sint32 rideIndex = track_element_get_ride_index(tileElement);
 
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
             if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (tileElement->properties.track.ride_index != rideIndex) continue;
+            if (track_element_get_ride_index(tileElement) != rideIndex) continue;
             if (tileElement->base_height != z) continue;
             if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
 
@@ -657,12 +657,12 @@ extern "C"
         x += TileDirectionDelta[direction].x;
         y += TileDirectionDelta[direction].y;
         sint32 z = tileElement->base_height;
-        sint32 rideIndex = tileElement->properties.track.ride_index;
+        sint32 rideIndex = track_element_get_ride_index(tileElement);
 
         tileElement = map_get_first_element_at(x >> 5, y >> 5);
         do {
             if (tileElement->type != TILE_ELEMENT_TYPE_TRACK) continue;
-            if (tileElement->properties.track.ride_index != rideIndex) continue;
+            if (track_element_get_ride_index(tileElement) != rideIndex) continue;
             if (tileElement->base_height != z) continue;
             if (tileElement->properties.track.type != TRACK_ELEM_MAZE) continue;
 

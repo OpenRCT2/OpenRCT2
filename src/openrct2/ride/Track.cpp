@@ -614,7 +614,7 @@ static rct_tile_element * find_station_element(sint32 x, sint32 y, sint32 z, sin
             continue;
         if (tile_element_get_direction(tileElement) != direction)
             continue;
-        if (tileElement->properties.track.ride_index != rideIndex)
+        if (track_element_get_ride_index(tileElement) != rideIndex)
             continue;
         if (!track_element_is_station(tileElement))
             continue;
@@ -1491,7 +1491,7 @@ static money32 track_place(sint32 rideIndex,
         tileElement->type = map_type;
 
         tile_element_set_track_sequence(tileElement, trackBlock->index);
-        tileElement->properties.track.ride_index = rideIndex;
+        track_element_set_ride_index(tileElement, rideIndex);
         tileElement->properties.track.type       = type;
         tileElement->properties.track.colour     = 0;
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -1695,7 +1695,7 @@ static money32 track_remove(uint8 type,
         return MONEY32_UNDEFINED;
     }
 
-    uint8 rideIndex = tileElement->properties.track.ride_index;
+    uint8 rideIndex = track_element_get_ride_index(tileElement);
     type = tileElement->properties.track.type;
     bool isLiftHill = track_element_is_lift_hill(tileElement);
 
@@ -2099,7 +2099,7 @@ static money32 set_maze_track(uint16 x, uint8 flags, uint8 direction, uint16 y, 
         tileElement->clearance_height            = clearanceHeight;
         tileElement->type                        = TILE_ELEMENT_TYPE_TRACK;
         tileElement->properties.track.type       = TRACK_ELEM_MAZE;
-        tileElement->properties.track.ride_index = rideIndex;
+        track_element_set_ride_index(tileElement, rideIndex);
         tileElement->properties.track.maze_entry = 0xFFFF;
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -2507,16 +2507,16 @@ void track_element_set_inverted(rct_tile_element * tileElement, bool inverted)
 
 sint32 track_get_actual_bank(rct_tile_element * tileElement, sint32 bank)
 {
-    Ride * ride        = get_ride(tileElement->properties.track.ride_index);
-    sint32 trackColour = tileElement->properties.track.colour;
-    return track_get_actual_bank_2(ride->type, trackColour, bank);
+    Ride * ride     = get_ride(track_element_get_ride_index(tileElement));
+    bool isInverted = track_element_is_inverted(tileElement);
+    return track_get_actual_bank_2(ride->type, isInverted, bank);
 }
 
-sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank)
+sint32 track_get_actual_bank_2(sint32 rideType, bool isInverted, sint32 bank)
 {
     if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
     {
-        if (trackColour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED)
+        if (isInverted)
         {
             if (bank == TRACK_BANK_NONE)
             {
@@ -2533,12 +2533,11 @@ sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank)
 
 sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
-    uint8  colourThingToXor = (vehicle->update_flags >> 9) & 0xFF;
+    bool isInverted         = (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) && track_element_is_inverted(tileElement);
     sint32 trackType        = tileElement->properties.track.type;
-    sint32 rideType         = get_ride(tileElement->properties.track.ride_index)->type;
-    sint32 trackColour      = tileElement->properties.track.colour ^ colourThingToXor;
+    sint32 rideType         = get_ride(track_element_get_ride_index(tileElement))->type;
     sint32 bankStart        = TrackDefinitions[trackType].bank_start;
-    return track_get_actual_bank_2(rideType, trackColour, bankStart);
+    return track_get_actual_bank_2(rideType, isInverted, bankStart);
 }
 
 bool track_element_is_station(rct_tile_element * trackElement)
@@ -2658,12 +2657,12 @@ void tile_element_set_green_light(rct_tile_element * tileElement, bool greenLigh
     }
 }
 
-sint32 tile_element_get_brake_booster_speed(const rct_tile_element *tileElement)
+sint32 tile_element_get_brake_booster_speed(const rct_tile_element * tileElement)
 {
     return (tileElement->properties.track.sequence >> 4) << 1;
 }
 
-void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, sint32 speed)
+void tile_element_set_brake_booster_speed(rct_tile_element * tileElement, sint32 speed)
 {
     tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
 }
@@ -2686,4 +2685,19 @@ void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
     {
         tileElement->properties.track.sequence -= (1 << 4);
     }
+}
+
+uint16 track_element_get_maze_entry(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.maze_entry;
+}
+
+uint8 track_element_get_ride_index(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.ride_index;
+}
+
+void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex)
+{
+    tileElement->properties.track.ride_index = rideIndex;
 }

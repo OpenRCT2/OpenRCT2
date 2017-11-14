@@ -552,7 +552,7 @@ bool track_element_is_inverted(rct_tile_element * tileElement);
 void track_element_set_inverted(rct_tile_element * tileElement, bool inverted);
 
 sint32 track_get_actual_bank(rct_tile_element * tileElement, sint32 bank);
-sint32 track_get_actual_bank_2(sint32 rideType, sint32 trackColour, sint32 bank);
+sint32 track_get_actual_bank_2(sint32 rideType, bool isInverted, sint32 bank);
 sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * tileElement);
 
 void game_command_place_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
@@ -576,6 +576,9 @@ void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, sint32 
 bool tile_element_is_taking_photo(const rct_tile_element * tileElement);
 void tile_element_set_onride_photo_timeout(rct_tile_element * tileElement);
 void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement);
+uint16 track_element_get_maze_entry(const rct_tile_element * tileElement);
+uint8 track_element_get_ride_index(const rct_tile_element * tileElement);
+void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideIndex);
 
 #ifdef __cplusplus
 }

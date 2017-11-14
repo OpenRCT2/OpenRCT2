@@ -2737,7 +2737,7 @@ static bool try_add_synchronised_station(sint32 x, sint32 y, sint32 z)
         return false;
     }
 
-    sint32 rideIndex = tileElement->properties.track.ride_index;
+    sint32 rideIndex = track_element_get_ride_index(tileElement);
     Ride * ride      = get_ride(rideIndex);
     if (!(ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -8020,7 +8020,7 @@ loc_6DB358:
     // Update VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES flag
     vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
     {
-        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
             if (track_element_is_inverted(tileElement))
@@ -8090,7 +8090,7 @@ loc_6DB41D:
         vehicle_trigger_on_ride_photo(vehicle, tileElement);
     }
     {
-        uint16 rideType = get_ride(tileElement->properties.track.ride_index)->type;
+        uint16 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
         if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE)
         {
             vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
@@ -8399,9 +8399,9 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
             return false;
         }
 
-        sint32 trackColour = ((vehicle->update_flags >> 9) ^ tileElement->properties.track.colour) & 4;
+        bool isInverted    = (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) && track_element_is_inverted(tileElement);
         sint32 bank        = TrackDefinitions[trackType].bank_end;
-        bank               = track_get_actual_bank_2(ride->type, trackColour, bank);
+        bank               = track_get_actual_bank_2(ride->type, isInverted, bank);
         sint32 vAngle      = TrackDefinitions[trackType].vangle_end;
         if (_vehicleVAngleEndF64E36 != vAngle || _vehicleBankEndF64E37 != bank)
         {
@@ -8839,7 +8839,7 @@ loc_6DC476:
     }
 
     {
-        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
@@ -9090,7 +9090,7 @@ loc_6DCA9A:
     }
 
     {
-        sint32 rideType = get_ride(tileElement->properties.track.ride_index)->type;
+        sint32 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES;
         if (RideData4[rideType].flags & RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE)
         {
@@ -9118,7 +9118,7 @@ loc_6DCA9A:
     }
 
     vehicle->track_type = (tileElement->properties.track.type << 2) | (direction & 3);
-    vehicle->var_CF     = (tileElement->properties.track.colour >> 4) << 1;
+    vehicle->var_CF     = track_element_get_seat_rotation(tileElement) << 1;
 
     // There are two bytes before the move info list
     regs.ax = vehicle_get_move_info_size(vehicle->var_CD, vehicle->track_type);

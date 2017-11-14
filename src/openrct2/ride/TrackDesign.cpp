@@ -2113,7 +2113,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         tileElement->clearance_height            = fz + 4;
         tileElement->type                        = TILE_ELEMENT_TYPE_TRACK;
         tileElement->properties.track.type       = TRACK_ELEM_MAZE;
-        tileElement->properties.track.ride_index = rideIndex;
+        track_element_set_ride_index(tileElement, rideIndex);
         tileElement->properties.track.maze_entry = mazeEntry;
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {

@@ -400,7 +400,7 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
             }
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            if (inputTileElement->properties.track.ride_index != tileElement->properties.track.ride_index) {
+            if (track_element_get_ride_index(inputTileElement) != track_element_get_ride_index(tileElement)) {
                 if (abs((sint32)inputTileElement->base_height - (sint32)tileElement->base_height) <= 2) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_SIDE_CLOSE);
                 }
@@ -550,7 +550,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
                     }
                 }
             }
-            if (inputTileElement->properties.track.ride_index != tileElement->properties.track.ride_index) {
+            if (track_element_get_ride_index(inputTileElement) != track_element_get_ride_index(tileElement)) {
                 proximity_score_increment(PROXIMITY_FOREIGN_TRACK_ABOVE_OR_BELOW);
                 if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_FOREIGN_TRACK_TOUCH_ABOVE);
