@@ -2871,67 +2871,6 @@ sint32 tile_element_get_station(const rct_tile_element * tileElement)
     return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK) >> 4;
 }
 
-void tile_element_set_station(rct_tile_element * tileElement, uint32 stationIndex)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK;
-    tileElement->properties.track.sequence |= (stationIndex << 4);
-}
-
-sint32 tile_element_get_track_sequence(const rct_tile_element * tileElement)
-{
-    return tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-}
-
-void tile_element_set_track_sequence(rct_tile_element * tileElement, sint32 trackSequence)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (trackSequence & MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK);
-}
-
-bool tile_element_get_green_light(const rct_tile_element * tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT) != 0;
-}
-
-void tile_element_set_green_light(rct_tile_element * tileElement, bool greenLight)
-{
-    tileElement->properties.track.sequence &= ~MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    if (greenLight)
-    {
-        tileElement->properties.track.sequence |= MAP_ELEM_TRACK_SEQUENCE_GREEN_LIGHT;
-    }
-}
-
-sint32 tile_element_get_brake_booster_speed(const rct_tile_element *tileElement)
-{
-    return (tileElement->properties.track.sequence >> 4) << 1;
-}
-
-void tile_element_set_brake_booster_speed(rct_tile_element *tileElement, sint32 speed)
-{
-    tileElement->properties.track.sequence = tile_element_get_track_sequence(tileElement) | ((speed >> 1) << 4);
-}
-
-bool tile_element_is_taking_photo(const rct_tile_element * tileElement)
-{
-    return (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK) != 0;
-}
-
-void tile_element_set_onride_photo_timeout(rct_tile_element * tileElement)
-{
-    tileElement->properties.track.sequence &= MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK;
-    tileElement->properties.track.sequence |= (3 << 4);
-}
-
-void tile_element_decrement_onride_photo_timout(rct_tile_element * tileElement)
-{
-    // We should only touch the upper 4 bits, avoid underflow into the lower 4.
-    if (tileElement->properties.track.sequence & MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK)
-    {
-        tileElement->properties.track.sequence -= (1 << 4);
-    }
-}
-
 /**
  *
  *  rct2: 0x0068B280
