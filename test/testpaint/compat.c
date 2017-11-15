@@ -262,3 +262,13 @@ void track_element_set_ride_index(rct_tile_element * tileElement, uint8 rideInde
 {
     tileElement->properties.track.ride_index = rideIndex;
 }
+
+uint8 track_element_get_type(const rct_tile_element * tileElement)
+{
+    return tileElement->properties.track.type;
+}
+
+void track_element_set_type(rct_tile_element * tileElement, uint8 type)
+{
+    tileElement->properties.track.type = type;
+}
