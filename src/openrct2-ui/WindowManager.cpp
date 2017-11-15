@@ -158,6 +158,8 @@ public:
             return window_network_status_open_password();
         case WV_EDITOR_BOTTOM_TOOLBAR:
             return window_editor_bottom_toolbar_open();
+        case WV_EDITOR_MAIN:
+            return window_editor_main_open();
         default:
             return nullptr;
         }

@@ -208,7 +208,6 @@
 		C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */; };
 		C666EE0B1F33E3650061AA04 /* _legacy.c in Sources */ = {isa = PBXBuildFile; fileRef = C666ED791F33E3520061AA04 /* _legacy.c */; };
 		C666EE141F33E3800061AA04 /* Dropdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED821F33E3520061AA04 /* Dropdown.cpp */; };
-		C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED851F33E3520061AA04 /* EditorMain.cpp */; };
 		C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */; };
 		C666EE451F33E3800061AA04 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDB21F33E3520061AA04 /* TileInspector.cpp */; };
 		C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBA1F33E3520061AA04 /* Tooltip.cpp */; };
@@ -234,6 +233,7 @@
 		C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE681F37ACB10061AA04 /* TitleOptions.cpp */; };
 		C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE691F37ACB10061AA04 /* Viewport.cpp */; };
 		C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */; };
+		C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD671FBBD137004FAE4C /* EditorMain.cpp */; };
 		C685E5191F8907850090598F /* NewRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5141F8907840090598F /* NewRide.cpp */; };
 		C685E51A1F8907850090598F /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5151F8907840090598F /* Staff.cpp */; };
 		C685E51B1F8907850090598F /* Guest.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C685E5161F8907840090598F /* Guest.cpp */; };
@@ -824,7 +824,6 @@
 		C666ED781F33E3520061AA04 /* _legacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _legacy.h; sourceTree = "<group>"; };
 		C666ED791F33E3520061AA04 /* _legacy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _legacy.c; sourceTree = "<group>"; };
 		C666ED821F33E3520061AA04 /* Dropdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dropdown.cpp; sourceTree = "<group>"; };
-		C666ED851F33E3520061AA04 /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
 		C666EDB21F33E3520061AA04 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
 		C666EDBA1F33E3520061AA04 /* Tooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tooltip.cpp; sourceTree = "<group>"; };
@@ -851,6 +850,7 @@
 		C666EE691F37ACB10061AA04 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		C666EE6A1F37ACB10061AA04 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
 		C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorBottomToolbar.cpp; sourceTree = "<group>"; };
+		C67CCD671FBBD137004FAE4C /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C685E5141F8907840090598F /* NewRide.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = NewRide.cpp; sourceTree = "<group>"; };
 		C685E5151F8907840090598F /* Staff.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Staff.cpp; sourceTree = "<group>"; };
 		C685E5161F8907840090598F /* Guest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
@@ -2521,7 +2521,6 @@
 				C666ED781F33E3520061AA04 /* _legacy.h */,
 				C666ED821F33E3520061AA04 /* Dropdown.cpp */,
 				F76C85171EC4E7CD00FA49E2 /* dropdown.h */,
-				C666ED851F33E3520061AA04 /* EditorMain.cpp */,
 				C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
@@ -2687,6 +2686,7 @@
 				C654DF1D1F69C0430040F43D /* DemolishRidePrompt.cpp */,
 				C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */,
 				C64644EF1F3FA4120026AC2D /* EditorInventionsList.cpp */,
+				C67CCD671FBBD137004FAE4C /* EditorMain.cpp */,
 				C64644F01F3FA4120026AC2D /* EditorObjectiveOptions.cpp */,
 				C64644F11F3FA4120026AC2D /* EditorScenarioOptions.cpp */,
 				C654DF1E1F69C0430040F43D /* Error.cpp */,
@@ -3196,6 +3196,7 @@
 				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
 				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
 				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
+				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
 				4C93F1581F8B744400A9330D /* WoodenRollerCoaster.cpp in Sources */,
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
@@ -3378,7 +3379,6 @@
 				F76C86011EC4E88300FA49E2 /* rect.c in Sources */,
 				F76C86021EC4E88300FA49E2 /* scrolling_text.c in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
-				C666EE181F33E3800061AA04 /* EditorMain.cpp in Sources */,
 				F76C86031EC4E88300FA49E2 /* Sprite.cpp in Sources */,
 				F76C86041EC4E88300FA49E2 /* string.c in Sources */,
 				F76C86051EC4E88300FA49E2 /* Editor.cpp in Sources */,
