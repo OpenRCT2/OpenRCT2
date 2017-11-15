@@ -264,7 +264,7 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
             else
             {
                 context_open_window(WC_TOP_TOOLBAR);
-                window_editor_bottom_toolbar_open();
+                context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
             }
         }
     }

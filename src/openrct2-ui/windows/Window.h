@@ -149,3 +149,5 @@ void window_scenery_reset_selected_scenery_items();
 
 rct_window * window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
+
+rct_window * window_editor_bottom_toolbar_open();

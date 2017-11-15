@@ -81,7 +81,7 @@ rct_window * window_editor_main_open()
     gFootpathSelectedType = 0;
 
     context_open_window(WC_TOP_TOOLBAR);
-    window_editor_bottom_toolbar_open();
+    context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
 
     return window_get_main();
 }

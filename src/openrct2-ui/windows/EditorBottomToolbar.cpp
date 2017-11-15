@@ -14,21 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <openrct2-ui/windows/Window.h>
+
 #include <string>
 
-#include "../Context.h"
-#include "../OpenRCT2.h"
-
-#include "../audio/audio.h"
-#include "../game.h"
-#include "../Editor.h"
-#include "../input.h"
-#include "../sprites.h"
-#include "../localisation/localisation.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../windows/Intent.h"
-#include "../world/scenery.h"
+#include <openrct2/Context.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/audio/audio.h>
+#include <openrct2/game.h>
+#include <openrct2/Editor.h>
+#include <openrct2/input.h>
+#include <openrct2/sprites.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/world/scenery.h>
 
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1
@@ -128,7 +129,7 @@ static const rct_string_id EditorStepNames[] = {
 * Creates the main editor top toolbar window.
 * rct2: 0x0066F052 (part of 0x0066EF38)
 */
-void window_editor_bottom_toolbar_open()
+rct_window * window_editor_bottom_toolbar_open()
 {
     rct_window * window = window_create(0, context_get_height() - 32,
         context_get_width(), 32,
@@ -144,6 +145,8 @@ void window_editor_bottom_toolbar_open()
 
     window_init_scroll_widgets(window);
     reset_researched_scenery_items();
+
+    return window;
 }
 
 /**
