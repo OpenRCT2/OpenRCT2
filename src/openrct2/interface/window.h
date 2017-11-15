@@ -510,6 +510,7 @@ enum {
     WV_MAZE_CONSTRUCTION,
     WV_NETWORK_PASSWORD,
     WV_EDITOR_BOTTOM_TOOLBAR,
+    WV_EDITOR_MAIN,
 };
 
 enum {
@@ -722,7 +723,6 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 void window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 
-rct_window * window_editor_main_open();
 void window_editor_object_selection_open();
 
 void window_bubble_list_item(rct_window* w, sint32 item_position);

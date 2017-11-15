@@ -30,6 +30,7 @@ rct_window * window_clear_scenery_open();
 rct_window * custom_currency_window_open();
 rct_window * window_debug_paint_open();
 rct_window * window_editor_inventions_list_open();
+rct_window * window_editor_main_open();
 rct_window * window_editor_objective_options_open();
 rct_window * window_editor_scenario_options_open();
 rct_window * window_footpath_open();

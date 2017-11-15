@@ -14,11 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../interface/viewport.h"
-#include "../interface/widget.h"
-#include "../world/footpath.h"
+#include <openrct2/Context.h>
+#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/world/footpath.h>
 
 static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 

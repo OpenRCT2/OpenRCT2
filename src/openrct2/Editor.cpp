@@ -86,7 +86,7 @@ namespace Editor
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gS6Info.category = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        rct_window * mainWindow = window_editor_main_open();
+        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
         gScreenAge = 0;
@@ -142,7 +142,7 @@ namespace Editor
         gS6Info.category    = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
         news_item_init_queue();
-        window_editor_main_open();
+        context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         gScreenAge = 0;
     }
@@ -163,7 +163,7 @@ namespace Editor
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
-        rct_window * mainWindow = window_editor_main_open();
+        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
     }
@@ -184,7 +184,7 @@ namespace Editor
         SetAllLandOwned();
         gS6Info.editor_step = EDITOR_STEP_OBJECT_SELECTION;
         viewport_init_all();
-        rct_window * mainWindow = window_editor_main_open();
+        rct_window * mainWindow = context_open_window_view(WV_EDITOR_MAIN);
         window_set_location(mainWindow, 2400, 2400, 112);
         load_palette();
     }
@@ -238,7 +238,7 @@ namespace Editor
         gScreenAge   = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        window_editor_main_open();
+        context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         return true;
     }
@@ -252,7 +252,7 @@ namespace Editor
         gScreenAge   = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        window_editor_main_open();
+        context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         return true;
     }
@@ -286,7 +286,7 @@ namespace Editor
         gScreenAge   = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        window_editor_main_open();
+        context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         return true;
     }
