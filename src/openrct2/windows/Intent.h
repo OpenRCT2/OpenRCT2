@@ -81,6 +81,7 @@ extern "C" {
         INTENT_ACTION_INIT_SCENERY,
         INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG,
         INTENT_ACTION_REFRESH_SCENERY,
+        INTENT_ACTION_INVALIDATE_TICKER_NEWS,
     };
 
     Intent *intent_create(rct_windowclass clss);

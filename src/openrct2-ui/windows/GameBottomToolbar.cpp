@@ -14,21 +14,22 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../OpenRCT2.h"
-#include "../world/Climate.h"
-#include "../core/Math.hpp"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../game.h"
-#include "../input.h"
-#include "../interface/themes.h"
-#include "../interface/widget.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "../management/NewsItem.h"
-#include "../peep/Staff.h"
-#include "../sprites.h"
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/themes.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/management/NewsItem.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/peep/Staff.h>
+#include <openrct2/sprites.h>
+#include <openrct2/world/Climate.h>
 
 enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
     WIDX_LEFT_OUTSET,
@@ -125,7 +126,7 @@ static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w);
  * Creates the main game bottom toolbar window.
  *  rct2: 0x0066B52F (part of 0x0066B3E8)
  */
-void window_game_bottom_toolbar_open()
+rct_window * window_game_bottom_toolbar_open()
 {
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
@@ -155,6 +156,8 @@ void window_game_bottom_toolbar_open()
     // Reset the middle widget to not show by default.
     // If it is required to be shown news_update will reshow it.
     window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
+
+    return window;
 }
 
 /**

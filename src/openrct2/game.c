@@ -146,7 +146,7 @@ void game_create_windows()
 {
     context_open_window(WC_MAIN_WINDOW);
     context_open_window(WC_TOP_TOOLBAR);
-    window_game_bottom_toolbar_open();
+    context_open_window(WC_BOTTOM_TOOLBAR);
     window_resize_gui(context_get_width(), context_get_height());
 }
 
