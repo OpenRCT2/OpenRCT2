@@ -116,7 +116,7 @@ if(EXISTS "${ROOT_DIR}/discord-rpc")
     set(HAVE_DISCORD_RPC TRUE)
     message("Building with discord-rpc support")
 else()
-    message("No discord-rpc detected, to enable clone discord-rpc to root directory")
+	message("No discord-rpc detected, to enable clone discord-rpc to root directory: ${ROOT_DIR}")
 endif()
 
 # Include sub-projects
