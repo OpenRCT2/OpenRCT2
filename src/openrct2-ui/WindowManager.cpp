@@ -39,6 +39,8 @@ public:
         {
         case WC_ABOUT:
             return window_about_open();
+        case WC_BOTTOM_TOOLBAR:
+            return window_game_bottom_toolbar_open();
         case WC_CHANGELOG:
             return window_changelog_open();
         case WC_CHEATS:
@@ -306,6 +308,10 @@ public:
 
         case INTENT_ACTION_REFRESH_SCENERY:
             window_scenery_reset_selected_scenery_items();
+            break;
+
+        case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
+            window_game_bottom_toolbar_invalidate_news_item();
             break;
         }
     }

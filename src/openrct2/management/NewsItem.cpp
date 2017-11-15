@@ -95,7 +95,8 @@ void news_item_init_queue()
         gPeepWarningThrottle[i] = 0;
     }
 
-    window_game_bottom_toolbar_invalidate_news_item();
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    context_broadcast_intent(&intent);
 }
 
 static void news_item_tick_current()
@@ -139,7 +140,8 @@ void news_item_update_current()
     if (news_item_is_queue_empty())
         return;
 
-    window_game_bottom_toolbar_invalidate_news_item();
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    context_broadcast_intent(&intent);
 
     // Update the current news item
     news_item_tick_current();
@@ -183,7 +185,8 @@ void news_item_close_current()
     newsItems[10].Type = NEWS_ITEM_NULL;
 
     // Invalidate current news item bar
-    window_game_bottom_toolbar_invalidate_news_item();
+    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+    context_broadcast_intent(&intent);
 }
 
 static void news_item_shift_history_up()
@@ -436,7 +439,8 @@ void news_item_disable_news(uint8 type, uint32 assoc)
                 newsItem->Flags |= NEWS_FLAG_HAS_BUTTON;
                 if (i == 0)
                 {
-                    window_game_bottom_toolbar_invalidate_news_item();
+                    auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);
+                    context_broadcast_intent(&intent);
                 }
             }
         }

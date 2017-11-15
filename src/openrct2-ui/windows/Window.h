@@ -146,3 +146,6 @@ bool window_scenery_set_selected_item(sint32 sceneryId);
 void window_scenery_set_default_placement_configuration();
 void window_scenery_init();
 void window_scenery_reset_selected_scenery_items();
+
+rct_window * window_game_bottom_toolbar_open();
+void window_game_bottom_toolbar_invalidate_news_item();

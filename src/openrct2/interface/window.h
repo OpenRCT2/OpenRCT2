@@ -713,8 +713,6 @@ void window_update_viewport_ride_music();
 void window_relocate_windows(sint32 width, sint32 height);
 void window_resize_gui(sint32 width, sint32 height);
 void window_resize_gui_scenario_editor(sint32 width, sint32 height);
-void window_game_bottom_toolbar_open();
-void window_game_bottom_toolbar_invalidate_news_item();
 void window_ride_construct(rct_window *w);
 void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);

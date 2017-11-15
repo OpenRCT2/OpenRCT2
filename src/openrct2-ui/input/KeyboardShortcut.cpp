@@ -259,7 +259,7 @@ static void shortcut_remove_top_bottom_toolbar_toggle()
             if (gScreenFlags == 0)
             {
                 context_open_window(WC_TOP_TOOLBAR);
-                window_game_bottom_toolbar_open();
+                context_open_window(WC_BOTTOM_TOOLBAR);
             }
             else
             {
