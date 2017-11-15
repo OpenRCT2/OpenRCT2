@@ -156,6 +156,8 @@ public:
             return window_maze_construction_open();
         case WV_NETWORK_PASSWORD:
             return window_network_status_open_password();
+        case WV_EDITOR_BOTTOM_TOOLBAR:
+            return window_editor_bottom_toolbar_open();
         default:
             return nullptr;
         }
