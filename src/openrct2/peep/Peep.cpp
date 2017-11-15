@@ -7425,7 +7425,7 @@ static void peep_update(rct_peep * peep)
     uint32 stepsToTake = peep->energy;
     if (stepsToTake < 95 && peep->state == PEEP_STATE_QUEUING)
         stepsToTake = 95;
-    if ((peep->peep_flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING && peep->state != PEEP_STATE_ENTERING_RIDE)
+    if ((peep->peep_flags & PEEP_FLAGS_SLOW_WALK) && peep->state != PEEP_STATE_QUEUING && peep->state != PEEP_STATE_ENTERING_RIDE && peep->state != PEEP_STATE_LEAVING_RIDE)
         stepsToTake /= 2;
     if (peep->action == 255 && (peep->next_var_29 & 4))
     {
