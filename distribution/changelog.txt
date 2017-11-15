@@ -19,7 +19,7 @@
 - Feature: [#6433] Turn 'unlock all prices' into a regular (non-cheat, persistent) option.
 - Feature: [#6530] Land rights tool no longer blocks when a tile is not for purchase.
 - Feature: [#6568] Add smooth nearest neighbour scaling.
-- Feature: [#6651] Integrate Discord Rich Presence.
+- Feature: [#6651, #6658] Integrate Discord Rich Presence.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
