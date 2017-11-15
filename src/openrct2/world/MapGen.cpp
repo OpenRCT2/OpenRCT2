@@ -18,11 +18,11 @@
 #include <math.h>
 
 #include "../Context.h"
+#include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
-#include "../Imaging.h"
-#include "../core/Guard.hpp"
 #include "../game.h"
+#include "../Imaging.h"
 #include "../localisation/string_ids.h"
 #include "../object.h"
 #include "../platform/platform.h"
