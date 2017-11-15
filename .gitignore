@@ -286,6 +286,9 @@ data/g2.dat
 # KDE folder settings
 .directory
 
+# discord rich presence client library
+discord-rpc
+
 ###############
 ## JetBrains ##
 ###############
