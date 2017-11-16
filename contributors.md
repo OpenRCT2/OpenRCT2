@@ -93,6 +93,7 @@ The following people are not part of the project team, but have been contributin
 * William Wallace (Willox)
 * Christian Friedrich Coors (ccoors)
 * Robbin Voortman (rvoortman)
+* (telk5093)
 
 ## Toolchain
 * (Balletie) - macOS
@@ -127,7 +128,7 @@ The following people are not part of the project team, but have been contributin
 * German - (danidoedel), (atmaxinger), (Yepoleb), Daniel Kessel (dkessel), Leon (AllGoodNamesAreTaken), (raidcookie)
 * Italian - Luca Andrea Rossi (LucaRed)
 * Japanese - Aaron van Geffen (AaronVanGeffen), Nick Hall (nickhall), (jhako), Harry Lam (daihakken)
-* Korean - "TELK" (telk5093), (NeverDruid); small fixes: (kexplo)
+* Korean - (telk5093), (NeverDruid); small fixes: (kexplo)
 * Polish - Adrian Wielgosik (adrian17), (lopezloo), Michał Janiszewski (janisozaur)
 * Portuguese (BR) - (kaudy), (renansimoes)
 * Russian - (Soosisya)

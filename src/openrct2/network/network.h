@@ -127,7 +127,7 @@ public:
     void SaveGroups();
     void LoadGroups();
 
-    std::string BeginLog(const std::string &directory, const std::string &filenameFormat);
+    std::string BeginLog(const std::string &directory, const std::string &midName, const std::string &filenameFormat);
     void AppendLog(const std::string &logPath, const std::string &s);
 
     void BeginChatLog();
@@ -254,7 +254,7 @@ private:
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     std::string _serverLogPath;
-    std::string _serverLogFilenameFormat = "-%Y%m%d-%H%M%S.txt";
+    std::string _serverLogFilenameFormat = "%Y%m%d-%H%M%S.txt";
     OpenRCT2::IPlatformEnvironment * _env = nullptr;
 
     void UpdateServer();
