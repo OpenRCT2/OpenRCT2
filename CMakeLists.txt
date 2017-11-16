@@ -29,6 +29,11 @@ if (FORCE32)
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
 endif ()
 
+if (PORTABLE OR WIN32)
+    set(CMAKE_INSTALL_LIBDIR "${CMAKE_INSTALL_BINDIR}")
+    set(CMAKE_INSTALL_RPATH "$ORIGIN")
+endif ()
+
 # Define current git branch
 execute_process(
     COMMAND git rev-parse --abbrev-ref HEAD
@@ -155,18 +160,8 @@ IF (DOWNLOAD_TITLE_SEQUENCES)
     install(CODE "execute_process(COMMAND \"${CMAKE_COMMAND}\" -E chdir \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/ \"${CMAKE_COMMAND}\" -E tar xvf title-sequences.zip)")
     install(CODE "file(REMOVE \$ENV{DESTDIR}${CMAKE_INSTALL_FULL_DATADIR}/${PROJECT}/title/title-sequences.zip)")
 endif ()
-if (WIN32)
-    install(TARGETS "libopenrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                                  ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-else ()
-    if (PORTABLE)
-        install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_BINDIR}"
-                                      ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    else ()
-        install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
-                                      ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
-    endif ()
-endif ()
+install(TARGETS "libopenrct2" LIBRARY DESTINATION "${CMAKE_INSTALL_LIBDIR}"
+                              ARCHIVE DESTINATION "${CMAKE_INSTALL_LIBDIR}")
 install(TARGETS "openrct2" RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(TARGETS "openrct2-cli" OPTIONAL RUNTIME DESTINATION "${CMAKE_INSTALL_BINDIR}")
 install(FILES "${CMAKE_CURRENT_BINARY_DIR}/g2.dat" DESTINATION "${CMAKE_INSTALL_DATADIR}/openrct2")
