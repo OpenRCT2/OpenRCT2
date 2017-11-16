@@ -272,3 +272,18 @@ void track_element_set_type(rct_tile_element * tileElement, uint8 type)
 {
     tileElement->properties.track.type = type;
 }
+
+bool track_element_is_cable_lift(rct_tile_element * trackElement)
+{
+    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void track_element_set_cable_lift(rct_tile_element * trackElement)
+{
+    trackElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
+
+void track_element_clear_cable_lift(rct_tile_element * trackElement)
+{
+    trackElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
+}
