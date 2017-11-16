@@ -170,6 +170,7 @@ typedef struct paint_session
     tunnel_entry            RightTunnels[TUNNEL_MAX_COUNT];
     uint8                   RightTunnelCount;
     uint8                   VerticalTunnelHeight;
+    rct_tile_element *      SurfaceElement;
     rct_tile_element *      PathElementOnSameHeight;
     rct_tile_element *      TrackElementOnSameHeight;
     bool                    DidPassSurface;

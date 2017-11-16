@@ -558,7 +558,7 @@ static uint32 miniature_railway_track_to_grooved(uint32 imageId)
     return imageId - SPR_MINIATURE_RAILWAY_FLAT_SW_NE + SPR_G2_MINIATURE_RAILWAY_GROOVED_SW_NE;
 }
 
-static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, rct_map_element *path, uint8 direction)
+static uint32 miniature_railway_track_to_grooved_indent(uint32 imageId, rct_tile_element *path, uint8 direction)
 {
     if (!path)
     {

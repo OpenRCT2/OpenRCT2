@@ -250,13 +250,13 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             session->PathElementOnSameHeight = 0;
             session->TrackElementOnSameHeight = 0;
             rct_tile_element * tile_element_sub_iterator = tile_element;
-            while (!map_element_is_last_for_tile(tile_element_sub_iterator++))
+            while (!tile_element_is_last_for_tile(tile_element_sub_iterator++))
             {
                 if (tile_element_sub_iterator->base_height != tile_element->base_height)
                 {
                     break;
                 }
-                switch (map_element_get_type(tile_element_sub_iterator))
+                switch (tile_element_get_type(tile_element_sub_iterator))
                 {
                 case TILE_ELEMENT_TYPE_PATH:
                     session->PathElementOnSameHeight = tile_element_sub_iterator;
