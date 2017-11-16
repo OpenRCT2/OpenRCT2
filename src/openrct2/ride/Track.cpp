@@ -1493,8 +1493,7 @@ static money32 track_place(sint32 rideIndex,
         tile_element_set_track_sequence(tileElement, trackBlock->index);
         track_element_set_ride_index(tileElement, rideIndex);
         track_element_set_type(tileElement, type);
-        // tileElement->properties.track.colour used to be set to 0 here, which is odd, considering it is memset to 0
-        // in tile_element_insert.
+
         if (flags & GAME_COMMAND_FLAG_GHOST)
         {
             tileElement->flags |= TILE_ELEMENT_FLAG_GHOST;
