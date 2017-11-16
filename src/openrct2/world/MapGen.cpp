@@ -16,6 +16,7 @@
 
 #include "../common.h"
 #include <math.h>
+#include <vector>
 
 #include "../Context.h"
 #include "../core/Guard.hpp"
@@ -186,7 +187,7 @@ void mapgen_generate(mapgen_settings * settings)
 
     // Create the temporary height map and initialise
     _heightSize = mapSize * 2;
-    _height     = (uint8 *) malloc(_heightSize * _heightSize * sizeof(uint8));
+    _height     = new uint8[_heightSize * _heightSize];
     memset(_height, 0, _heightSize * _heightSize * sizeof(uint8));
 
     mapgen_simplex(settings);
@@ -194,12 +195,10 @@ void mapgen_generate(mapgen_settings * settings)
 
     // Set the game map to the height map
     mapgen_set_height();
-    free(_height);
+    delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize - 1, mapSize - 1))
-    {
-    }
+    while (map_smooth(1, 1, mapSize - 1, mapSize - 1)) {}
 
     // Add the water
     mapgen_set_water_level(waterLevel);
@@ -259,9 +258,9 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
 static void mapgen_place_trees()
 {
     sint32 numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
-    sint32 * grassTreeIds  = (sint32 *) malloc(Util::CountOf(GrassTrees) * sizeof(sint32));
-    sint32 * desertTreeIds = (sint32 *) malloc(Util::CountOf(DesertTrees) * sizeof(sint32));
-    sint32 * snowTreeIds   = (sint32 *) malloc(Util::CountOf(SnowTrees) * sizeof(sint32));
+    std::vector<sint32> grassTreeIds(Util::CountOf(GrassTrees), 0);
+    std::vector<sint32> desertTreeIds(Util::CountOf(DesertTrees), 0);
+    std::vector<sint32> snowTreeIds(Util::CountOf(SnowTrees), 0);
 
     for (sint32 i = 0; i < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]; i++)
     {
@@ -307,8 +306,9 @@ static void mapgen_place_trees()
     }
 
     sint32 availablePositionsCount = 0;
-    LocationXY32 tmp, * pos, * availablePositions;
-    availablePositions = (LocationXY32 *)malloc(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
+    LocationXY32 tmp, * pos;
+
+    std::vector<LocationXY32> availablePositions(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
 
     // Create list of available tiles
     for (sint32 y = 1; y < gMapSize - 1; y++)
@@ -381,11 +381,6 @@ static void mapgen_place_trees()
         if (type != -1)
             mapgen_place_tree(type, pos->x, pos->y);
     }
-
-    free(availablePositions);
-    free(grassTreeIds);
-    free(desertTreeIds);
-    free(snowTreeIds);
 }
 
 /**
@@ -416,7 +411,7 @@ static void mapgen_smooth_height(sint32 iterations)
 {
     sint32 i, x, y, xx, yy, avg;
     sint32 arraySize = _heightSize * _heightSize * sizeof(uint8);
-    uint8 * copyHeight = (uint8 *)malloc(arraySize);
+    uint8 * copyHeight = new uint8[arraySize];
 
     for (i = 0; i < iterations; i++)
     {
@@ -439,7 +434,7 @@ static void mapgen_smooth_height(sint32 iterations)
         }
     }
 
-    free(copyHeight);
+    delete[] copyHeight;
 }
 
 /**
@@ -695,8 +690,8 @@ bool mapgen_load_heightmap(const utf8 * path)
     }
 
     // Allocate memory for the height map values, one byte pixel
-    free(_heightMapData.mono_bitmap);
-    _heightMapData.mono_bitmap = (uint8 *) malloc(width * height);
+    delete[] _heightMapData.mono_bitmap;
+    _heightMapData.mono_bitmap = new uint8[width * height];
     _heightMapData.width       = width;
     _heightMapData.height      = height;
 
@@ -721,8 +716,7 @@ bool mapgen_load_heightmap(const utf8 * path)
  */
 void mapgen_unload_heightmap()
 {
-    free(_heightMapData.mono_bitmap);
-    _heightMapData.mono_bitmap = nullptr;
+    SafeDeleteArray(_heightMapData.mono_bitmap);
     _heightMapData.width       = 0;
     _heightMapData.height      = 0;
 }
@@ -733,7 +727,7 @@ void mapgen_unload_heightmap()
 static void mapgen_smooth_heightmap(uint8 * src, sint32 strength)
 {
     // Create buffer to store one channel
-    uint8 * dest = (uint8 *) malloc(_heightMapData.width * _heightMapData.height);
+    uint8 * dest = new uint8[_heightMapData.width * _heightMapData.height];
 
     for (sint32 i = 0; i < strength; i++)
     {
@@ -772,7 +766,7 @@ static void mapgen_smooth_heightmap(uint8 * src, sint32 strength)
         }
     }
 
-    free(dest);
+    delete[] dest;
 }
 
 void mapgen_generate_from_heightmap(mapgen_settings * settings)
@@ -782,7 +776,7 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
-    uint8 * dest = (uint8 *) malloc(_heightMapData.width * _heightMapData.height);
+    uint8 * dest = new uint8[_heightMapData.width * _heightMapData.height];
     memcpy(dest, _heightMapData.mono_bitmap, _heightMapData.width * _heightMapData.width);
 
     map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
@@ -813,7 +807,7 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
         if (minValue == maxValue)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_CANNOT_NORMALIZE);
-            free(dest);
+            delete[] dest;
             return;
         }
     }
@@ -870,7 +864,7 @@ void mapgen_generate_from_heightmap(mapgen_settings * settings)
     }
 
     // Clean up
-    free(dest);
+    delete[] dest;
 }
 
 #pragma endregion
