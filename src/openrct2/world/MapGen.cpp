@@ -21,6 +21,7 @@
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
+#include "../core/String.hpp"
 #include "../core/Util.hpp"
 #include "../game.h"
 #include "../Imaging.h"
@@ -646,7 +647,7 @@ bool mapgen_load_heightmap(const utf8 * path)
     uint32 numChannels;
     uint32 width, height;
 
-    if (strcicmp(extension, ".png") == 0)
+    if (String::Equals(extension, ".png", false))
     {
         sint32 bitDepth;
         if (!image_io_png_read(&pixels, &width, &height, true, path, &bitDepth))
