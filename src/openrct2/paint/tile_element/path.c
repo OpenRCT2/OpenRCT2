@@ -827,8 +827,21 @@ void path_paint_pole_support(paint_session * session, rct_tile_element * tileEle
         boundBoxSize.y = 26;
     }
 
+    // By default, add 1 to the z bounding box to always clip above the surface
+    uint8 boundingBoxZOffset = 1;
+
+    // If we are on the same tile as a straight track, add the offset 2 so we 
+    //  can clip above gravel part of the track sprite
+    if (session->TrackElementOnSameHeight)
+    {
+        if (session->TrackElementOnSameHeight->properties.track.type == TRACK_ELEM_FLAT)
+        {
+            boundingBoxZOffset = 2;
+        }
+    }
+
     if (!hasFences || !session->DidPassSurface) {
-        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
     } else {
         uint32 image_id;
         if (footpath_element_is_sloped(tileElement)) {
@@ -837,12 +850,12 @@ void path_paint_pole_support(paint_session * session, rct_tile_element * tileEle
             image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
         }
 
-        sub_98197C(session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, image_id | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
 
         if (!footpath_element_is_queue(tileElement) && !(footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
             // don't draw
         } else {
-            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
         }
     }
 
@@ -941,8 +954,21 @@ void path_paint_box_support(paint_session * session, rct_tile_element* tileEleme
         boundBoxSize.y = 26;
     }
 
+    // By default, add 1 to the z bounding box to always clip above the surface
+    uint8 boundingBoxZOffset = 1;
+
+    // If we are on the same tile as a straight track, add the offset 2 so we 
+    //  can clip above gravel part of the track sprite
+    if (session->TrackElementOnSameHeight)
+    {
+        if (session->TrackElementOnSameHeight->properties.track.type == TRACK_ELEM_FLAT)
+        {
+            boundingBoxZOffset = 2;
+        }
+    }
+
     if (!hasFences || !session->DidPassSurface) {
-        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
     }
     else {
         uint32 bridgeImage;
@@ -954,10 +980,10 @@ void path_paint_box_support(paint_session * session, rct_tile_element* tileEleme
             bridgeImage |= imageFlags;
         }
 
-        sub_98197C(session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+        sub_98197C(session, bridgeImage | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
 
         if (footpath_element_is_queue(tileElement) || (footpathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE)) {
-            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + 1, get_current_rotation());
+            sub_98199C(session, imageId | imageFlags, 0, 0, boundBoxSize.x, boundBoxSize.y, 0, height, boundBoxOffset.x, boundBoxOffset.y, height + boundingBoxZOffset, get_current_rotation());
         }
     }
 
