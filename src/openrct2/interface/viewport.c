@@ -20,6 +20,7 @@
 #include "../game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
+#include "../OpenRCT2.h"
 #include "../paint/paint.h"
 #include "../paint/supports.h"
 #include "../peep/Staff.h"
@@ -76,7 +77,10 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi);
  */
 void viewport_init_all()
 {
-    colours_init_maps();
+    if (!gOpenRCT2NoGraphics)
+    {
+        colours_init_maps();
+    }
     if (gWindowNextSlot != NULL) {
         window_close_all();
     }
