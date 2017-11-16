@@ -545,6 +545,7 @@ void wall_element_set_secondary_colour(rct_tile_element * wallElement, uint8 sec
 
 uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);
+uint8 tile_element_get_ride_index(const rct_tile_element * tileElement);
 
 #ifdef __cplusplus
 }

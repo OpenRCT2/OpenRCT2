@@ -4629,3 +4629,18 @@ uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z)
 
     return destOwnership;
 }
+
+uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
+{
+    switch (tile_element_get_type(tileElement))
+    {
+    case TILE_ELEMENT_TYPE_TRACK:
+        return track_element_get_ride_index(tileElement);
+    case TILE_ELEMENT_TYPE_ENTRANCE:
+        return tileElement->properties.entrance.ride_index;
+    case TILE_ELEMENT_TYPE_PATH:
+        return tileElement->properties.path.ride_index;
+    default:
+        return 0xFF;
+    }
+}
