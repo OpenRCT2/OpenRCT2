@@ -282,7 +282,16 @@ bool platform_lock_single_instance()
         log_warning("Cannot open lock file for writing.");
         return false;
     }
-    if (flock(pidFile, LOCK_EX | LOCK_NB) == -1) {
+    
+    struct flock lock;
+
+    lock.l_start = 0;
+    lock.l_len = 0;
+    lock.l_type = F_WRLCK;
+    lock.l_whence = SEEK_SET;
+
+    if (fcntl(pidFile, F_SETLK, &lock) == -1) 
+    {
         if (errno == EWOULDBLOCK) {
             log_warning("Another OpenRCT2 session has been found running.");
             return false;
