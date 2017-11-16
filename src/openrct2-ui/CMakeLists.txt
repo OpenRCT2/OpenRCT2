@@ -7,10 +7,6 @@ endif ()
 # Options
 option(DISABLE_OPENGL "Disable OpenGL support.")
 
-if (PORTABLE)
-    set(CMAKE_INSTALL_RPATH "$ORIGIN")
-endif ()
-
 # Third party libraries
 PKG_CHECK_MODULES(SDL2 REQUIRED sdl2)
 PKG_CHECK_MODULES(SPEEX REQUIRED speexdsp)
