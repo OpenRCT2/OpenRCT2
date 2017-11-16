@@ -28,6 +28,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/network/network.h>
+#include <openrct2/ride/ride.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
@@ -37,7 +38,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/entrance.h>
 #include <openrct2/world/footpath.h>
-#include "../../openrct2/ride/ride.h"
 
 #pragma region Widgets
 
