@@ -37,6 +37,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/entrance.h>
 #include <openrct2/world/footpath.h>
+#include "../../openrct2/ride/ride.h"
 
 #pragma region Widgets
 
@@ -2331,13 +2332,12 @@ static void sub_6CBCE2(
         _tempTrackTileElement.clearance_height = clearanceZ;
         track_element_set_type(&_tempTrackTileElement, trackType);
         tile_element_set_track_sequence(&_tempTrackTileElement, trackBlock->index);
-        // TODO: Find out why this is set to 0.
-        _tempTrackTileElement.properties.track.colour = 0;
+        track_element_clear_cable_lift(&_tempTrackTileElement);
+        track_element_set_inverted(&_tempTrackTileElement, (edx & 0x20000) ? true : false);
+        track_element_set_colour_scheme(&_tempTrackTileElement, RIDE_COLOUR_SCHEME_MAIN);
+        // Skipping seat rotation, should not be necessary for a temporary piece.
         track_element_set_ride_index(&_tempTrackTileElement, rideIndex);
-        if (edx & 0x20000)
-        {
-            track_element_set_inverted(&_tempTrackTileElement, true);
-        }
+
 
         // Draw this map tile
         sub_68B2B7(session, x, y);
