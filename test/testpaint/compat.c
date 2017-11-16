@@ -238,6 +238,18 @@ bool track_element_is_inverted(rct_tile_element *trackElement)
     return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
 }
 
+void track_element_set_inverted(rct_tile_element * tileElement, bool inverted)
+{
+    if (inverted)
+    {
+        tileElement->properties.track.colour |= TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+    else
+    {
+        tileElement->properties.track.colour &= ~TRACK_ELEMENT_COLOUR_FLAG_INVERTED;
+    }
+}
+
 bool is_csg_loaded()
 {
     return false;
@@ -271,11 +283,6 @@ uint8 track_element_get_type(const rct_tile_element * tileElement)
 void track_element_set_type(rct_tile_element * tileElement, uint8 type)
 {
     tileElement->properties.track.type = type;
-}
-
-bool track_element_is_cable_lift(rct_tile_element * trackElement)
-{
-    return trackElement->properties.track.colour & TRACK_ELEMENT_COLOUR_FLAG_CABLE_LIFT;
 }
 
 void track_element_set_cable_lift(rct_tile_element * trackElement)
