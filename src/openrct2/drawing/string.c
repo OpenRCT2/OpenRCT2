@@ -228,19 +228,22 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
  */
 static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
 
-    sint32 eax;
+    sint32 colour32 = 0;
+    const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
+    if (g1 != NULL)
+    {
+        colour32 = ((uint32 *)g1->offset)[colour & 0xFF];
+    }
 
-    rct_g1_element g1_element = g1Elements[SPR_TEXT_PALETTE];
-    eax = ((uint32*)g1_element.offset)[colour & 0xFF];
-
-    if (!(*current_font_flags & 2)) {
-        eax = eax & 0x0FF0000FF;
+    if (!(*current_font_flags & 2))
+    {
+        colour32 = colour32 & 0x0FF0000FF;
     }
     // Adjust text palette. Store current colour?
-    palette_pointer[1] = eax & 0xFF;
-    palette_pointer[2] = (eax >> 8) & 0xFF;
-    palette_pointer[3] = (eax >> 16) & 0xFF;
-    palette_pointer[4] = (eax >> 24) & 0xFF;
+    palette_pointer[1] = colour32 & 0xFF;
+    palette_pointer[2] = (colour32 >> 8) & 0xFF;
+    palette_pointer[3] = (colour32 >> 16) & 0xFF;
+    palette_pointer[4] = (colour32 >> 24) & 0xFF;
 }
 
 /**
@@ -602,17 +605,20 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     case FORMAT_ADJUST_PALETTE:
     {
         uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
-        rct_g1_element *g1Element = &g1Elements[eax];
-        uint32 ebx = g1Element->offset[249] + 256;
-        if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {
-            ebx = ebx & 0xFF;
-        }
-        info->palette[1] = ebx & 0xFF;
-        info->palette[2] = (ebx >> 8) & 0xFF;
+        const rct_g1_element * g1 = gfx_get_g1_element(eax);
+        if (g1 != NULL)
+        {
+            uint32 ebx = g1->offset[249] + 256;
+            if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {
+                ebx = ebx & 0xFF;
+            }
+            info->palette[1] = ebx & 0xFF;
+            info->palette[2] = (ebx >> 8) & 0xFF;
 
-        // Adjust the text palette
-        memcpy(info->palette + 3, &(g1Element->offset[247]), 2);
-        memcpy(info->palette + 5, &(g1Element->offset[250]), 2);
+            // Adjust the text palette
+            memcpy(info->palette + 3, &(g1->offset[247]), 2);
+            memcpy(info->palette + 5, &(g1->offset[250]), 2);
+        }
         break;
     }
     case FORMAT_3:
@@ -668,11 +674,14 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     case FORMAT_INLINE_SPRITE:
     {
         uint32 imageId = *((uint32*)(nextCh));
-        rct_g1_element *g1Element = &g1Elements[imageId & 0x7FFFF];
-        if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
-            gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
+        const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
+        if (g1 != NULL)
+        {
+            if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
+                gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
+            }
+            info->x += g1->width;
         }
-        info->x += g1Element->width;
         nextCh += 4;
         break;
     }

@@ -492,20 +492,23 @@ void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE
  */
 void gfx_transpose_palette(sint32 pal, uint8 product)
 {
-    rct_g1_element g1 = g1Elements[pal];
-    sint32 width = g1.width;
-    sint32 x = g1.x_offset;
-    uint8* dest_pointer = &gGamePalette[x * 4];
-    uint8* source_pointer = g1.offset;
+    const rct_g1_element * g1 = gfx_get_g1_element(pal);
+    if (g1 != NULL)
+    {
+        sint32 width = g1->width;
+        sint32 x = g1->x_offset;
+        uint8 * dest_pointer = &gGamePalette[x * 4];
+        uint8 * source_pointer = g1->offset;
 
-    for (; width > 0; width--) {
-        dest_pointer[0] = (source_pointer[0] * product) >> 8;
-        dest_pointer[1] = (source_pointer[1] * product) >> 8;
-        dest_pointer[2] = (source_pointer[2] * product) >> 8;
-        source_pointer += 3;
-        dest_pointer += 4;
+        for (; width > 0; width--) {
+            dest_pointer[0] = (source_pointer[0] * product) >> 8;
+            dest_pointer[1] = (source_pointer[1] * product) >> 8;
+            dest_pointer[2] = (source_pointer[2] * product) >> 8;
+            source_pointer += 3;
+            dest_pointer += 4;
+        }
+        platform_update_palette(gGamePalette, 10, 236);
     }
-    platform_update_palette(gGamePalette, 10, 236);
 }
 
 /**
@@ -527,18 +530,21 @@ void load_palette()
         palette = water_type->image_id;
     }
 
-    rct_g1_element g1 = g1Elements[palette];
-    sint32 width = g1.width;
-    sint32 x = g1.x_offset;
-    uint8* dest_pointer = &gGamePalette[x * 4];
-    uint8* source_pointer = g1.offset;
-
-    for (; width > 0; width--) {
-        dest_pointer[0] = source_pointer[0];
-        dest_pointer[1] = source_pointer[1];
-        dest_pointer[2] = source_pointer[2];
-        source_pointer += 3;
-        dest_pointer += 4;
+    const rct_g1_element * g1 = gfx_get_g1_element(palette);
+    if (g1 != NULL)
+    {
+        sint32 width = g1->width;
+        sint32 x = g1->x_offset;
+        uint8 * src = g1->offset;
+        uint8 * dst = &gGamePalette[x * 4];
+        for (; width > 0; width--)
+        {
+            dst[0] = src[0];
+            dst[1] = src[1];
+            dst[2] = src[2];
+            src += 3;
+            dst += 4;
+        }
     }
     platform_update_palette(gGamePalette, 10, 236);
     gfx_invalidate_screen();
@@ -642,16 +648,17 @@ bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x
 void gfx_invalidate_pickedup_peep()
 {
     uint32 sprite = gPickupPeepImage;
-    if (sprite != UINT32_MAX) {
-        sprite = sprite & 0x7FFFF;
-
-        rct_g1_element *g1_elements = &g1Elements[sprite];
-        sint32 left = gPickupPeepX + g1_elements->x_offset;
-        sint32 top = gPickupPeepY + g1_elements->y_offset;
-        sint32 right = left + g1_elements->width;
-        sint32 bottom = top + g1_elements->height;
-
-        gfx_set_dirty_blocks(left, top, right, bottom);
+    if (sprite != UINT32_MAX)
+    {
+        const rct_g1_element * g1 = gfx_get_g1_element(sprite & 0x7FFFF);
+        if (g1 != NULL)
+        {
+            sint32 left = gPickupPeepX + g1->x_offset;
+            sint32 top = gPickupPeepY + g1->y_offset;
+            sint32 right = left + g1->width;
+            sint32 bottom = top + g1->height;
+            gfx_set_dirty_blocks(left, top, right, bottom);
+        }
     }
 }
 

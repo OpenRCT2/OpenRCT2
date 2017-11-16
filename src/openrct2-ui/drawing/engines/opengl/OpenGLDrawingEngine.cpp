@@ -559,7 +559,11 @@ void OpenGLDrawingContext::DrawLine(uint32 colour, sint32 x1, sint32 y1, sint32 
 void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 tertiaryColour)
 {
     sint32 g1Id = image & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+    auto g1Element = gfx_get_g1_element(g1Id);
+    if (g1Element == nullptr)
+    {
+        return;
+    }
 
     if (_dpi->zoom_level != 0)
     {
@@ -699,8 +703,12 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
 
 void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskImage, uint32 colourImage)
 {
-    rct_g1_element * g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
-    rct_g1_element * g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
+    auto g1ElementMask = gfx_get_g1_element(maskImage & 0x7FFFF);
+    auto g1ElementColour = gfx_get_g1_element(colourImage & 0x7FFFF);
+    if (g1ElementMask == nullptr || g1ElementColour == nullptr)
+    {
+        return;
+    }
 
     auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
     auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
@@ -760,7 +768,11 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     assert((colour & 0xFF) > 0u);
 
     sint32 g1Id = image & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+    auto g1Element = gfx_get_g1_element(g1Id);
+    if (g1Element == nullptr)
+    {
+        return;
+    }
 
     auto texture = _textureCache->GetOrLoadImageTexture(image);
 
@@ -804,8 +816,11 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
 
 void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * palette)
 {
-    sint32 g1Id = image & 0x7FFFF;
-    rct_g1_element * g1Element = gfx_get_g1_element(g1Id);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    if (g1Element == nullptr)
+    {
+        return;
+    }
 
     auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 

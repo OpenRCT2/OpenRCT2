@@ -118,8 +118,8 @@ void TextureCache::GeneratePaletteTexture()
     {
         GLint y = PaletteToY(i);
         uint16 image = palette_to_g1_offset[i];
-        const rct_g1_element &element = g1Elements[image];
-        gfx_draw_sprite_software(&dpi, image, -element.x_offset, y - element.y_offset, 0);
+        auto element = gfx_get_g1_element(image);
+        gfx_draw_sprite_software(&dpi, image, -element->x_offset, y - element->y_offset, 0);
     }
 
     glBindTexture(GL_TEXTURE_RECTANGLE, _paletteTexture);
@@ -223,7 +223,7 @@ CachedTextureInfo TextureCache::AllocateImage(sint32 imageWidth, sint32 imageHei
 
 rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32 image, uint32 tertiaryColour)
 {
-    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
     sint32 width = g1Element->width;
     sint32 height = g1Element->height;
 
@@ -234,7 +234,7 @@ rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32 image, uint32 tertiaryColou
 
 rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32 image, uint8 * palette)
 {
-    rct_g1_element * g1Element = gfx_get_g1_element(image & 0x7FFFF);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFF);
     sint32 width = g1Element->width;
     sint32 height = g1Element->height;
 

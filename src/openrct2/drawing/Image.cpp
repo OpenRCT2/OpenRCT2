@@ -220,7 +220,7 @@ extern "C"
         uint32 imageId = baseImageId;
         for (uint32 i = 0; i < count; i++)
         {
-            g1Elements[imageId] = images[i];
+            gfx_set_g1_element(imageId, &images[i]);
             drawing_engine_invalidate_image(imageId);
             imageId++;
         }
@@ -237,7 +237,8 @@ extern "C"
             for (uint32 i = 0; i < count; i++)
             {
                 uint32 imageId = baseImageId + i;
-                g1Elements[imageId] = { 0 };
+                rct_g1_element g1 = { 0 };
+                gfx_set_g1_element(imageId, &g1);
                 drawing_engine_invalidate_image(imageId);
             }
 
