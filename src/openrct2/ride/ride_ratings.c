@@ -202,7 +202,7 @@ static void ride_ratings_update_state_2()
 
         if (
             trackType == 255 ||
-            (tile_element_get_track_sequence(tileElement) == 0 && trackType == tile_element_get_type(tileElement)))
+            (tile_element_get_track_sequence(tileElement) == 0 && trackType == track_element_get_type(tileElement)))
         {
             if (trackType == TRACK_ELEM_END_STATION) {
                 sint32 entranceIndex = tile_element_get_station(tileElement);
@@ -236,7 +236,7 @@ static void ride_ratings_update_state_2()
             gRideRatingsCalcData.proximity_x = x;
             gRideRatingsCalcData.proximity_y = y;
             gRideRatingsCalcData.proximity_z = z;
-            gRideRatingsCalcData.proximity_track_type = tile_element_get_type(tileElement);
+            gRideRatingsCalcData.proximity_track_type = track_element_get_type(tileElement);
             return;
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
@@ -297,7 +297,7 @@ static void ride_ratings_update_state_5()
         if (tileElement->base_height != z)
             continue;
 
-        if (trackType == 255 || trackType == tile_element_get_type(tileElement)) {
+        if (trackType == 255 || trackType == track_element_get_type(tileElement)) {
             ride_ratings_score_close_proximity(tileElement);
 
             x = gRideRatingsCalcData.proximity_x;
@@ -444,8 +444,8 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
                 if (zDiff >= 0 && zDiff <= 16)
                 {
                     proximity_score_increment(PROXIMITY_TRACK_THROUGH_VERTICAL_LOOP);
-                    if (tile_element_get_type(tileElement) == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
-                        tile_element_get_type(tileElement) == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
+                    if (track_element_get_type(tileElement) == TRACK_ELEM_LEFT_VERTICAL_LOOP ||
+                        track_element_get_type(tileElement) == TRACK_ELEM_RIGHT_VERTICAL_LOOP)
                     {
                         proximity_score_increment(PROXIMITY_INTERSECTING_VERTICAL_LOOP);
                     }
@@ -462,7 +462,7 @@ static void ride_ratings_score_close_proximity_loops_helper(rct_tile_element *in
  */
 static void ride_ratings_score_close_proximity_loops(rct_tile_element *inputTileElement)
 {
-    sint32 trackType = tile_element_get_type(inputTileElement);
+    sint32 trackType = track_element_get_type(inputTileElement);
     if (trackType == TRACK_ELEM_LEFT_VERTICAL_LOOP || trackType == TRACK_ELEM_RIGHT_VERTICAL_LOOP) {
         sint32 x = gRideRatingsCalcData.proximity_x;
         sint32 y = gRideRatingsCalcData.proximity_y;
