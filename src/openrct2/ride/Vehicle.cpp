@@ -8399,7 +8399,7 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
             return false;
         }
 
-        bool isInverted    = (vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) && track_element_is_inverted(tileElement);
+        bool isInverted    = ((vehicle->update_flags & VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES) > 0) ^ track_element_is_inverted(tileElement);
         sint32 bank        = TrackDefinitions[trackType].bank_end;
         bank               = track_get_actual_bank_2(ride->type, isInverted, bank);
         sint32 vAngle      = TrackDefinitions[trackType].vangle_end;
