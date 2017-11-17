@@ -304,7 +304,7 @@ static money32 SmallSceneryPlace(sint16 x,
         !supportsRequired &&
         !isOnWater &&
         surfaceElement != nullptr &&
-        (surfaceElement->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK))
+        (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK))
     {
 
         gGameCommandErrorText = STR_LEVEL_LAND_REQUIRED;

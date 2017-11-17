@@ -322,7 +322,7 @@ void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain)
         element->type &= ~128;
 
     // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    element->properties.surface.slope &= ~MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+    element->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
     element->properties.surface.slope |= (terrain & 7) << 5;
 }
 
@@ -3582,19 +3582,11 @@ void map_extend_boundary_surface()
         existingTileElement = map_get_surface_element_at(x - 1, y);
         newTileElement = map_get_surface_element_at(x, y);
 
-<<<<<<< HEAD
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
         newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;
-=======
-        newMapElement->type = (newMapElement->type & 0x7C) | (existingMapElement->type & 0x83);
-        newMapElement->properties.surface.slope = existingMapElement->properties.surface.slope & MAP_ELEMENT_SLOPE_EDGE_STYLE_MASK;
-        newMapElement->properties.surface.terrain = existingMapElement->properties.surface.terrain;
-        newMapElement->properties.surface.grass_length = existingMapElement->properties.surface.grass_length;
-        newMapElement->properties.surface.ownership = 0;
->>>>>>> Refactor slope flags
 
         z = existingTileElement->base_height;
         slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP;

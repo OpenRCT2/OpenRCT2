@@ -707,11 +707,11 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         if (footpath_element_is_sloped(tile_element)) {
             // Diagonal path
 
-            if ((surface->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) != byte_98D800[tile_element->properties.path.type & 0x03]) {
+            if ((surface->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != byte_98D800[tile_element->properties.path.type & 0x03]) {
                 word_F3F038 = true;
             }
         } else {
-            if (surface->properties.surface.slope & MAP_ELEMENT_SLOPE_MASK) {
+            if (surface->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) {
                 word_F3F038 = true;
             }
         }
