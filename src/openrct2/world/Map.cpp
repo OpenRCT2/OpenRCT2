@@ -4760,7 +4760,42 @@ void map_remove_virtual_floor()
 
 void map_invalidate_virtual_floor_tiles()
 {
-    // TODO: invalidate tiles covered by the current virtual floor
+    if (gMapVirtualFloorHeight == 0)
+    {
+        return;
+    }
+
+    LocationXY16 min_position = { 0x7FFF, 0x7FFF };
+    LocationXY16 max_position = { 0, 0 };
+    
+    if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
+    {
+        min_position   = gMapSelectPositionA;
+        max_position   = gMapSelectPositionB;
+    }
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    {
+        for (LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
+        {
+            min_position.x = std::min(min_position.x, tile->x);
+            min_position.y = std::min(min_position.y, tile->y);
+            max_position.x = std::max(max_position.x, tile->x);
+            max_position.y = std::max(max_position.y, tile->y);
+        }
+    }
+
+    min_position.x  -= gMapVirtualFloorBaseSize + 1;
+    min_position.y  -= gMapVirtualFloorBaseSize + 1;
+    max_position.x  += gMapVirtualFloorBaseSize + 1;
+    max_position.y  += gMapVirtualFloorBaseSize + 1;
+
+    for (sint16 x = min_position.x; x < max_position.x; x++)
+    {
+        for (sint16 y = min_position.y; y < max_position.y; y++)
+        {
+            map_invalidate_tile_full(x, y);
+        }
+    }
 }
 
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
