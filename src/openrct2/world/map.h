@@ -542,8 +542,6 @@ bool map_is_location_at_edge(sint32 x, sint32 y);
 void map_obstruction_set_error_text(rct_tile_element *tileElement);
 uint8 wall_element_get_animation_frame(rct_tile_element *fenceElement);
 void wall_element_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum);
-uint8 wall_element_get_secondary_colour(rct_tile_element * wallElement);
-void wall_element_set_secondary_colour(rct_tile_element * wallElement, uint8 secondaryColour);
 
 uint32 map_get_available_peep_spawn_index_list(uint32* peepSpawnIndexList);
 uint16 check_max_allowable_land_rights_for_tile(uint8 x, uint8 y, uint8 base_z);

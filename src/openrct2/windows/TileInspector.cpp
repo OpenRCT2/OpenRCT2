@@ -1883,10 +1883,9 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Banner info
             rct_scenery_entry *largeSceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
-            if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF) {
-                const sint32 bannerIndex = (tileElement->type & 0xC0) |
-                    ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-                    ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+            if (largeSceneryEntry->large_scenery.scrolling_mode != 0xFF)
+            {
+                const sint32 bannerIndex = scenery_large_get_banner_id(tileElement);
                 //window_sign_open(bannerIndex);
                 gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_ENTRY_BANNER_TEXT, &gBanners[bannerIndex].string_idx, COLOUR_DARK_GREEN, x, y + 22);
             }

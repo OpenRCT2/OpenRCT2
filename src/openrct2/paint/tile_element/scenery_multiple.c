@@ -183,7 +183,7 @@ static const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement)
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tileElement)
 {
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 sequenceNum = scenery_large_get_sequence(tileElement);
@@ -194,7 +194,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     uint32 image_id = (sequenceNum << 2) + entry->image + 4 + direction;
     rct_large_scenery_tile *tile = &entry->large_scenery.tiles[sequenceNum];
     uint32 dword_F4387C = 0;
-    image_id |= ((tileElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((tileElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    image_id |= SPRITE_ID_PALETTE_COLOUR_2(scenery_large_get_primary_colour(tileElement), scenery_large_get_secondary_colour(tileElement));
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
@@ -252,12 +252,12 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
         // Draw sign text:
         set_format_arg(0, uint32, 0);
         set_format_arg(4, uint32, 0);
-        sint32 textColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
+        sint32 textColour = scenery_large_get_secondary_colour(tileElement);
         if (dword_F4387C) {
             textColour = COLOUR_GREY;
         }
         textColour = (textColour << 19) | IMAGE_TYPE_REMAP;
-        uint32 bannerIndex = (tileElement->type & 0xC0) | ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+        uint32 bannerIndex = scenery_large_get_banner_id(tileElement);
         rct_banner *banner = &gBanners[bannerIndex];
         rct_string_id stringId = banner->string_idx;
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE) {
@@ -337,7 +337,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     // Draw scrolling text:
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
-    uint8 textColour = tileElement->properties.banner.unused & 0x1F;
+    uint8 textColour = scenery_large_get_secondary_colour(tileElement);
     if (dword_F4387C) {
         textColour = COLOUR_GREY;
     }
@@ -346,7 +346,7 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     // 6B809A:
     set_format_arg(7, uint8, textColour);
-    uint32 bannerIndex = (tileElement->type & 0xC0) | ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) | ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+    uint32 bannerIndex = scenery_large_get_banner_id(tileElement);
     uint16 scrollMode = entry->large_scenery.scrolling_mode + ((direction + 1) & 0x3);
     rct_banner *banner = &gBanners[bannerIndex];
     set_format_arg(0, rct_string_id, banner->string_idx);

@@ -1050,12 +1050,14 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     {
         sint32 entryIndex = tileElement->properties.scenery.type;
         rct_scenery_entry * sceneryEntry = get_small_scenery_entry(entryIndex);
-        if (sceneryEntry != nullptr) {
+        if (sceneryEntry != nullptr)
+        {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_SMALL_SCENERY, entryIndex);
-            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+            {
                 gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
-                gWindowSceneryPrimaryColour = tileElement->properties.scenery.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = tileElement->properties.scenery.colour_2 & 0x1F;
+                gWindowSceneryPrimaryColour = scenery_small_get_primary_colour(tileElement);
+                gWindowScenerySecondaryColour = scenery_small_get_secondary_colour(tileElement);
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1065,12 +1067,14 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     {
         sint32 entryIndex = tileElement->properties.wall.type;
         rct_scenery_entry * sceneryEntry = get_wall_entry(entryIndex);
-        if (sceneryEntry != nullptr) {
+        if (sceneryEntry != nullptr)
+        {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_WALLS, entryIndex);
-            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
-                gWindowSceneryPrimaryColour = tileElement->properties.wall.colour_1 & 0x1F;
-                gWindowScenerySecondaryColour = wall_element_get_secondary_colour(tileElement);
-                gWindowSceneryTertiaryColour = tileElement->properties.wall.colour_3 & 0x1F;
+            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+            {
+                gWindowSceneryPrimaryColour = wall_get_primary_colour(tileElement);
+                gWindowScenerySecondaryColour = wall_get_secondary_colour(tileElement);
+                gWindowSceneryTertiaryColour = wall_get_tertiary_colour(tileElement);
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
@@ -1080,12 +1084,14 @@ static void scenery_eyedropper_tool_down(sint16 x, sint16 y, rct_widgetindex wid
     {
         sint32 entryIndex = scenery_large_get_type(tileElement);
         rct_scenery_entry * sceneryEntry = get_large_scenery_entry(entryIndex);
-        if (sceneryEntry != nullptr) {
+        if (sceneryEntry != nullptr)
+        {
             sint32 sceneryId = get_scenery_id_from_entry_index(OBJECT_TYPE_LARGE_SCENERY, entryIndex);
-            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId)) {
+            if (sceneryId != -1 && window_scenery_set_selected_item(sceneryId))
+            {
                 gWindowSceneryRotation = (get_current_rotation() + tile_element_get_direction(tileElement)) & 3;
-                gWindowSceneryPrimaryColour = tileElement->properties.scenerymultiple.colour[0] & 0x1F;
-                gWindowScenerySecondaryColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
+                gWindowSceneryPrimaryColour = scenery_large_get_primary_colour(tileElement);
+                gWindowScenerySecondaryColour = scenery_large_get_secondary_colour(tileElement);
                 gWindowSceneryEyedropperEnabled = false;
             }
         }
