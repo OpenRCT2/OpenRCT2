@@ -533,8 +533,8 @@ static money32 WallPlace(uint8 wallType,
 
         tileElement->type = edgeSlope | edge | TILE_ELEMENT_TYPE_WALL;
 
-        tileElement->properties.wall.colour_1 = primaryColour;
-        wall_element_set_secondary_colour(tileElement, secondaryColour);
+        wall_set_primary_colour(tileElement, primaryColour);
+        wall_set_secondary_colour(tileElement, secondaryColour);
 
         if (wallAcrossTrack)
         {
@@ -670,8 +670,8 @@ static money32 WallSetColour(sint16 x,
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         rct_scenery_entry * scenery_entry = get_wall_entry(wallElement->properties.wall.type);
-        wallElement->properties.wall.colour_1 = primaryColour;
-        wall_element_set_secondary_colour(wallElement, secondaryColour);
+        wall_set_primary_colour(wallElement, primaryColour);
+        wall_set_secondary_colour(wallElement, secondaryColour);
 
         if (scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
@@ -696,19 +696,43 @@ extern "C"
         wallElement->properties.wall.animation |= (frameNum & 0xF) << 3;
     }
 
-    uint8 wall_element_get_secondary_colour(rct_tile_element * wallElement)
+    colour_t wall_get_primary_colour(const rct_tile_element * tileElement)
     {
-        uint8 secondaryColour = (wallElement->properties.wall.colour_1 & 0xE0) >> 5;
+        return tileElement->properties.wall.colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    }
+
+    colour_t wall_get_secondary_colour(rct_tile_element * wallElement)
+    {
+        uint8 secondaryColour = (wallElement->properties.wall.colour_1 &~ TILE_ELEMENT_COLOUR_MASK) >> 5;
         secondaryColour |= (wallElement->flags & 0x60) >> 2;
         return secondaryColour;
     }
 
-    void wall_element_set_secondary_colour(rct_tile_element * wallElement, uint8 secondaryColour)
+    colour_t wall_get_tertiary_colour(const rct_tile_element * tileElement)
     {
-        wallElement->properties.wall.colour_1 &= 0x1F;
+        return tileElement->properties.wall.colour_3 & TILE_ELEMENT_COLOUR_MASK;
+    }
+
+    void wall_set_primary_colour(rct_tile_element * tileElement, colour_t colour)
+    {
+        assert(colour <= 31);
+        tileElement->properties.wall.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+        tileElement->properties.wall.colour_1 |= colour;
+    }
+
+    void wall_set_secondary_colour(rct_tile_element * wallElement, colour_t secondaryColour)
+    {
+        wallElement->properties.wall.colour_1 &= TILE_ELEMENT_COLOUR_MASK;
         wallElement->properties.wall.colour_1 |= (secondaryColour & 0x7) << 5;
-        wallElement->flags &= 0x9F;
+        wallElement->flags &= ~0x60;
         wallElement->flags |= (secondaryColour & 0x18) << 2;
+    }
+
+    void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour)
+    {
+        assert(colour <= 31);
+        tileElement->properties.wall.colour_3 &= ~TILE_ELEMENT_COLOUR_MASK;
+        tileElement->properties.wall.colour_3 |= colour;
     }
 
     /**

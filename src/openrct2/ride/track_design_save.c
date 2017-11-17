@@ -327,11 +327,13 @@ static void track_design_save_add_large_scenery(sint32 x, sint32 y, rct_tile_ele
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != NULL) {
-            if (sequence == 0) {
+        if (tileElement != NULL)
+        {
+            if (sequence == 0)
+            {
                 uint8 flags = tileElement->type & 3;
-                uint8 primaryColour = tileElement->properties.scenerymultiple.colour[0] & 0x1F;
-                uint8 secondaryColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
+                uint8 primaryColour = scenery_large_get_primary_colour(tileElement);
+                uint8 secondaryColour = scenery_large_get_secondary_colour(tileElement);
 
                 track_design_save_push_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
@@ -349,8 +351,8 @@ static void track_design_save_add_wall(sint32 x, sint32 y, rct_tile_element *til
     flags |= tileElement->type & 3;
     flags |= tileElement->properties.wall.colour_3 << 2;
 
-    uint8 secondaryColour = wall_element_get_secondary_colour(tileElement);
-    uint8 primaryColour = tileElement->properties.wall.colour_1 & 0x1F;
+    uint8 secondaryColour = wall_get_secondary_colour(tileElement);
+    uint8 primaryColour = wall_get_primary_colour(tileElement);
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);
@@ -510,11 +512,13 @@ static void track_design_save_remove_large_scenery(sint32 x, sint32 y, rct_tile_
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != NULL) {
-            if (sequence == 0) {
+        if (tileElement != NULL)
+        {
+            if (sequence == 0)
+            {
                 uint8 flags = tileElement->type & 3;
-                uint8 primaryColour = tileElement->properties.scenerymultiple.colour[0] & 0x1F;
-                uint8 secondaryColour = tileElement->properties.scenerymultiple.colour[1] & 0x1F;
+                uint8 primaryColour = scenery_large_get_primary_colour(tileElement);
+                uint8 secondaryColour = scenery_large_get_secondary_colour(tileElement);
 
                 track_design_save_pop_tile_element_desc(entry, x, y, z, flags, primaryColour, secondaryColour);
             }
@@ -532,8 +536,8 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *
     flags |= tileElement->type & 3;
     flags |= tileElement->properties.wall.colour_3 << 2;
 
-    uint8 secondaryColour = wall_element_get_secondary_colour(tileElement);
-    uint8 primaryColour = tileElement->properties.wall.colour_1 & 0x1F;
+    uint8 secondaryColour = wall_get_secondary_colour(tileElement);
+    uint8 primaryColour = wall_get_primary_colour(tileElement);
 
     track_design_save_pop_tile_element(x, y, tileElement);
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags, primaryColour, secondaryColour);

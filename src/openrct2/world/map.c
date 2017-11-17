@@ -1080,10 +1080,8 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
                 tile_element_direction,
                 i);
 
-            tileElement->properties.scenerymultiple.colour[0] &= 0xE0;
-            tileElement->properties.scenerymultiple.colour[0] |= colour1;
-            tileElement->properties.scenerymultiple.colour[1] &= 0xE0;
-            tileElement->properties.scenerymultiple.colour[1] |= colour2;
+            scenery_large_set_primary_colour(tileElement, colour1);
+            scenery_large_set_secondary_colour(tileElement, colour2);
 
             map_invalidate_tile_full(currentTile.x, currentTile.y);
         }
@@ -2648,8 +2646,8 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
     sint32 x = (sint16)*eax;
     sint32 y = (sint16)*ecx;
     sint32 z = (sint16)*ebp;
-    uint8 colour1 = *edx;
-    uint8 colour2 = *edx >> 8;
+    colour_t colour1 = *edx & TILE_ELEMENT_COLOUR_MASK;
+    colour_t colour2 = (*edx >> 8) & TILE_ELEMENT_COLOUR_MASK;
     uint8 flags = *ebx;
     uint8 rotation = *ebx >> 8;
     uint8 entry_index = *edi;
@@ -2840,13 +2838,12 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             scenery_large_set_type(new_tile_element, entry_index);
             scenery_large_set_sequence(new_tile_element, tile_num);
 
-            new_tile_element->properties.scenerymultiple.colour[0] = colour1;
-            new_tile_element->properties.scenerymultiple.colour[1] = colour2;
+            scenery_large_set_primary_colour(new_tile_element, colour1);
+            scenery_large_set_secondary_colour(new_tile_element, colour2);
 
-            if (banner_id != 0xFF) {
-                new_tile_element->type |= banner_id & 0xC0;
-                new_tile_element->properties.scenerymultiple.colour[0] |= (banner_id & 0x38) << 2;
-                new_tile_element->properties.scenerymultiple.colour[1] |= (banner_id & 7) << 5;
+            if (banner_id != 0xFF)
+            {
+                scenery_large_set_banner_id(new_tile_element, banner_id);
             }
 
             if (flags & GAME_COMMAND_FLAG_GHOST) {
@@ -3481,10 +3478,7 @@ sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
         if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
             return -1;
 
-        return
-            (tileElement->type & TILE_ELEMENT_QUADRANT_MASK) |
-            ((tileElement->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-            ((tileElement->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+        return scenery_large_get_banner_id(tileElement);
     case TILE_ELEMENT_TYPE_WALL:
         sceneryEntry = get_wall_entry(tileElement->properties.wall.type);
         if (sceneryEntry == NULL || sceneryEntry->wall.scrolling_mode == 0xFF)
@@ -3581,7 +3575,7 @@ void map_extend_boundary_surface()
         newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
-        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & 0xE0;
+        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;
@@ -3912,11 +3906,10 @@ bool sign_set_colour(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 sequ
         y = y0 + offsetY;
         z = (z0 + tile->z_offset) / 8;
         tileElement = map_get_large_scenery_segment(x, y, z, direction, sequence);
-        if (tileElement != NULL) {
-            tileElement->properties.scenerymultiple.colour[0] &= 0xE0;
-            tileElement->properties.scenerymultiple.colour[1] &= 0xE0;
-            tileElement->properties.scenerymultiple.colour[0] |= mainColour;
-            tileElement->properties.scenerymultiple.colour[1] |= textColour;
+        if (tileElement != NULL)
+        {
+            scenery_large_set_primary_colour(tileElement, mainColour);
+            scenery_large_set_secondary_colour(tileElement, textColour);
 
             map_invalidate_tile(x, y, tileElement->base_height * 8 , tileElement->clearance_height * 8);
         }
@@ -4230,8 +4223,8 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
             *ebx = 0;
             return;
         }
-        tile_element->properties.wall.colour_1 = mainColour;
-        wall_element_set_secondary_colour(tile_element, textColour);
+        wall_set_primary_colour(tile_element, mainColour);
+        wall_set_secondary_colour(tile_element, textColour);
 
         map_invalidate_tile(x, y, tile_element->base_height * 8, tile_element->clearance_height * 8);
     } else { // large sign

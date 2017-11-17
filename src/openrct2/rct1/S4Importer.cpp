@@ -2306,13 +2306,12 @@ private:
                     tileElement->properties.wall.type |= (colour & 7) << 5;
                     break;
                 case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-                    colour = RCT1::GetColour(tileElement->properties.scenerymultiple.colour[0] & 0x1F);
-                    tileElement->properties.scenerymultiple.colour[0] &= 0xE0;
-                    tileElement->properties.scenerymultiple.colour[0] |= colour;
+                    colour = RCT1::GetColour(scenery_large_get_primary_colour(tileElement));
+                    scenery_large_set_primary_colour(tileElement, colour);
 
-                    colour = RCT1::GetColour(tileElement->properties.scenerymultiple.colour[1] & 0x1F);
-                    tileElement->properties.scenerymultiple.colour[1] &= 0xE0;
-                    tileElement->properties.scenerymultiple.colour[1] |= colour;
+                    colour = RCT1::GetColour(scenery_large_get_secondary_colour(tileElement));
+                    scenery_large_set_secondary_colour(tileElement, colour);
+
                     break;
                 }
             }

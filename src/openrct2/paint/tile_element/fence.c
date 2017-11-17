@@ -146,12 +146,12 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
     }
 
 
-    sint32 primaryColour = tile_element->properties.wall.colour_1 & 0x1F;
+    sint32 primaryColour = wall_get_primary_colour(tile_element);
     uint32 imageColourFlags = primaryColour << 19 | IMAGE_TYPE_REMAP;
     uint32 dword_141F718 = imageColourFlags + 0x23800006;
 
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR) {
-        uint8 secondaryColour = wall_element_get_secondary_colour(tile_element);
+        uint8 secondaryColour = wall_get_secondary_colour(tile_element);
         imageColourFlags |= secondaryColour << 24 | IMAGE_TYPE_REMAP_2_PLUS;
     }
 
@@ -346,7 +346,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
     set_format_arg(0, uint32, 0);
     set_format_arg(4, uint32, 0);
 
-    uint8 secondaryColour = wall_element_get_secondary_colour(tile_element);
+    uint8 secondaryColour = wall_get_secondary_colour(tile_element);
 
     if (dword_141F710 != 0) {
         secondaryColour = COLOUR_GREY;

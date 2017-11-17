@@ -325,37 +325,36 @@ sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
     }
 }
 
-sint32 scenery_small_get_primary_colour(const rct_tile_element *tileElement)
+sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement)
 {
-    return (tileElement->properties.scenery.colour_1 & 0x1F);
+    return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-sint32 scenery_small_get_secondary_colour(const rct_tile_element *tileElement)
+sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
 {
-    return (tileElement->properties.scenery.colour_2 & 0x1F);
+    return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void scenery_small_set_primary_colour(rct_tile_element *tileElement, uint32 colour)
+void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour)
 {
     assert(colour <= 31);
-    tileElement->properties.scenery.colour_1 &= ~0x1F;
+    tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
     tileElement->properties.scenery.colour_1 |= colour;
-
 }
 
-void scenery_small_set_secondary_colour(rct_tile_element *tileElement, uint32 colour)
+void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour)
 {
     assert(colour <= 31);
-    tileElement->properties.scenery.colour_2 &= ~0x1F;
+    tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
     tileElement->properties.scenery.colour_2 |= colour;
 }
 
-bool scenery_small_get_supports_needed(const rct_tile_element *tileElement)
+bool scenery_small_get_supports_needed(const rct_tile_element * tileElement)
 {
     return (bool)(tileElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
 }
 
-void scenery_small_set_supports_needed(rct_tile_element *tileElement)
+void scenery_small_set_supports_needed(rct_tile_element * tileElement)
 {
     tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }

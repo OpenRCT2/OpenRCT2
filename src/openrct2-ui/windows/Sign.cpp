@@ -161,13 +161,15 @@ rct_window * window_sign_open(rct_windownumber number)
 
     rct_tile_element* tile_element = map_get_first_element_at(view_x / 32, view_y / 32);
 
-    while (1){
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+    while (1)
+    {
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        {
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
-            if (scenery_entry->large_scenery.scrolling_mode != 0xFF){
-                sint32 id = (tile_element->type & 0xC0) |
-                    ((tile_element->properties.scenerymultiple.colour[0] & 0xE0) >> 2) |
-                    ((tile_element->properties.scenerymultiple.colour[1] & 0xE0) >> 5);
+            if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
+            {
+                sint32 id = scenery_large_get_banner_id(tile_element);
+
                 if (id == w->number)
                     break;
             }
@@ -226,8 +228,10 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_SIGN_DEMOLISH:
-        while (1){
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+        while (1)
+        {
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+            {
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
                 if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
                 {
@@ -441,8 +445,8 @@ rct_window * window_sign_small_open(rct_windownumber number){
     sint32 view_z = tile_element->base_height << 3;
     w->frame_no = view_z;
 
-    w->list_information_type = tile_element->properties.wall.colour_1 & 0x1F;
-    w->var_492 = wall_element_get_secondary_colour(tile_element);
+    w->list_information_type = wall_get_primary_colour(tile_element);
+    w->var_492 = wall_get_secondary_colour(tile_element);
     w->var_48C = tile_element->properties.wall.type;
 
     view_x += 16;
