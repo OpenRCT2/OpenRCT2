@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "../world/map.h"
-#include "ride.h"
+#include "Ride.h"
 
 #ifdef __cplusplus
 extern "C" {

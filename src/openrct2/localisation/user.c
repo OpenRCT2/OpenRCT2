@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../game.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../util/util.h"
 #include "localisation.h"
 #include "user.h"

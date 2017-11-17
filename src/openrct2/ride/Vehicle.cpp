@@ -36,7 +36,7 @@
 #include "../world/sprite.h"
 #include "Vehicle.h"
 #include "CableLift.h"
-#include "ride.h"
+#include "Ride.h"
 #include "ride_data.h"
 #include "Station.h"
 #include "Track.h"

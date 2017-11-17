@@ -21,7 +21,7 @@
 
 #include "../interface/colour.h"
 #include "../rct1.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 
 namespace RCT1
 {

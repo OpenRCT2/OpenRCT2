@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 
 class RideObject final : public Object
 {

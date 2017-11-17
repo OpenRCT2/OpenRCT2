@@ -22,7 +22,7 @@
 #include "../cheats.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../world/park.h"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>

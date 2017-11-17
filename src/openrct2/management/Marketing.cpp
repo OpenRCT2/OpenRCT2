@@ -19,7 +19,7 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../cheats.h"
 #include "Finance.h"

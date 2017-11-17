@@ -25,7 +25,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
 #include "../rct2.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/Track.h"
 
 RideObject::~RideObject()

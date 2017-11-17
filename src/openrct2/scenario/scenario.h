@@ -24,7 +24,7 @@
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../rct2/addresses.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
 #include "../world/banner.h"
 #include "../world/map.h"

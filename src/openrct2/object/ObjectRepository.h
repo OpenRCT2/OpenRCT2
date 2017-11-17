@@ -23,7 +23,7 @@
 #include "../common.h"
 
 #include "../object.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 
 #ifdef __cplusplus
     interface   IStream;
