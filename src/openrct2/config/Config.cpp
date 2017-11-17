@@ -28,6 +28,7 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ui/UiContext.h"
+#include "../util/util.h"
 #include "Config.h"
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
@@ -352,13 +353,13 @@ namespace Config
         {
             // If the `player_name` setting is missing or equal to the empty string
             // use the logged-in user's username instead
-            auto playerName = reader->GetString("player_name", "");
-            if (playerName.empty())
+            auto playerName = reader->GetCString("player_name", "");
+            if (String::ToStd(playerName).empty())
             {
-                playerName = String::ToStd(platform_get_username());
-                if (playerName.empty())
+                playerName = platform_get_username();
+                if (String::ToStd(playerName).empty())
                 {
-                    playerName = "Player";
+                    safe_strcpy(playerName, "Player", sizeof(playerName));
                 }
             }
 
