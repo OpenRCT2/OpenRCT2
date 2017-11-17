@@ -183,33 +183,33 @@ static const boundbox s98E3C4[] = {
 *
 * rct2: 0x006B7F0C
 */
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement) {
-    //RCT2_CALLPROC_X(0x6B7F0C, 0, 0, direction, height, (sint32)tileElement, 0, 0); return;
+void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement)
+{
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
-    uint32 ebp = scenery_large_get_sequence(tileElement);
+    uint32 sequenceNum = scenery_large_get_sequence(tileElement);
     rct_scenery_entry *entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
     if (entry == NULL)
         return;
 
-    uint32 image_id = (ebp << 2) + entry->image + 4 + direction;
-    rct_large_scenery_tile *tile = &entry->large_scenery.tiles[ebp];
+    uint32 image_id = (sequenceNum << 2) + entry->image + 4 + direction;
+    rct_large_scenery_tile *tile = &entry->large_scenery.tiles[sequenceNum];
     uint32 dword_F4387C = 0;
     image_id |= ((tileElement->properties.scenerymultiple.colour[0] & 0x1F) << 19) | ((tileElement->properties.scenerymultiple.colour[1] & 0x1F) << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     LocationXYZ16 boxlength;
     LocationXYZ16 boxoffset;
     if (gTrackDesignSaveMode) {
         if (!track_design_save_contains_tile_element(tileElement)) {
-            ebp = 0x21700000;
+            sequenceNum = 0x21700000;
             image_id &= 0x7FFFF;
-            dword_F4387C = ebp;
+            dword_F4387C = sequenceNum;
             image_id |= dword_F4387C;
         }
     }
     if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        ebp = construction_markers[gConfigGeneral.construction_marker_colour];
+        sequenceNum = construction_markers[gConfigGeneral.construction_marker_colour];
         image_id &= 0x7FFFF;
-        dword_F4387C = ebp;
+        dword_F4387C = sequenceNum;
         image_id |= dword_F4387C;
     }
     sint32 ah = tile->z_clearance;
@@ -237,8 +237,8 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
     }
     if (entry->large_scenery.flags & LARGE_SCENERY_FLAG_3D_TEXT) {
         if (entry->large_scenery.tiles[1].x_offset != (sint16)(uint16)0xFFFF) {
-            sint32 al = (scenery_large_get_sequence(tileElement) - 1) & 3;
-            if (al != direction) {
+            sint32 sequenceDirection = (scenery_large_get_sequence(tileElement) - 1) & 3;
+            if (sequenceDirection != direction) {
                 scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
                 return;
             }
@@ -329,8 +329,8 @@ void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 hei
         scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
-    uint8 al = (scenery_large_get_sequence(tileElement) - 1) & 3;
-    if (al != direction) {
+    uint8 sequenceDirection2 = (scenery_large_get_sequence(tileElement) - 1) & 3;
+    if (sequenceDirection2 != direction) {
         scenery_multiple_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;
     }
