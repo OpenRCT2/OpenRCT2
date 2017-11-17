@@ -3496,7 +3496,7 @@ STR_5153    :Thèmes...
 STR_5154    :Affichage matériel
 STR_5155    :Autoriser le test de circuits incomplets
 STR_5156    :{SMALLFONT}{BLACK}Autorise le test de la plupart des attractions même si le circuit est incomplet. Ne s'applique pas aux modes à blocs de voie.
-STR_5157    :Débloquer tous les prix
+STR_5157    :<removed string - do not use>
 STR_5158    :Retour au menu
 STR_5159    :Quitter OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, année {POP16}{COMMA16}
@@ -4126,7 +4126,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Affiche le nombre d'images par seconde durant le jeu
 STR_5816    :{SMALLFONT}{BLACK}Définit le ratio de mise à l'échelle du jeu.{NEWLINE}Utile lors de l'utilisation de résolutions élevées
-STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit le type de mise à l'échelle
+STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit le type de mise à l'échelle de l'interface graphique{NEWLINE}{NEWLINE}Voisinage proche est plus net mais peut causer des distorsions sur des mises à l'échelle non entières.{NEWLINE}Linéaire et Anisotrope sont lisses mais flous.{NEWLINE}Voisinage proche lisse est net même sur des mises à l'échelle non entières mais peut causer un dégradement des performances mineure.
 STR_5818    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
 STR_5819    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
 STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
@@ -4460,6 +4460,19 @@ STR_6144    :Afficher visuels non valides (re-dessinés)
 STR_6145    :{SMALLFONT}{BLACK}Définir la limite de vitesse pour les propulseurs
 STR_6146    :Activer tous les pièces du tracé qui peuvent être dessinés
 STR_6147    :{SMALLFONT}{BLACK}Active toutes les pièces du tracé auquel le type d'attraction est capable dans la fenêtre de construction, peu importe que le véhicule les supportent ou non.
+STR_6148    :Connection au serveur maître...
+STR_6149    :Impossible de se connecter au serveur maître
+STR_6150    :Réponse invalide du serveur maître (pas de numéro JSON)
+STR_6151    :Le serveur maître n'a pas réussi à renvoyer les serveurs
+STR_6152    :Réponse invalide du serveur maître (pas de tableau JSON)
+STR_6153    :Payer pour entrer au parc / Payer par attraction
+STR_6154    :Il n'est pas recommendé de démarrer OpenRCT2 avec des permissions élevées.
+STR_6155    :Ni KDialog ni Zenity ne sont installés. Veuillez installer l'un des deux, ou configurez depuis la ligne de commande.
+STR_6156    :Le nom est réservé
+STR_6157    :Console
+STR_6158    :Erreur lors de l'ouverture de ce fichier...{NEWLINE}Version incompatible de RCTC : {COMMA16}
+STR_6158    :Lisser le voisinage proche
+
 
 #############
 # Scenarios #
