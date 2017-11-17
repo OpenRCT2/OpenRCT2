@@ -258,7 +258,6 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
  */
 static void mapgen_place_trees()
 {
-    sint32 numGrassTreeIds = 0, numDesertTreeIds = 0, numSnowTreeIds = 0;
     std::vector<sint32> grassTreeIds(Util::CountOf(GrassTrees), 0);
     std::vector<sint32> desertTreeIds(Util::CountOf(DesertTrees), 0);
     std::vector<sint32> snowTreeIds(Util::CountOf(SnowTrees), 0);
@@ -279,7 +278,7 @@ static void mapgen_place_trees()
         }
         if (j != Util::CountOf(GrassTrees))
         {
-            grassTreeIds[numGrassTreeIds++] = i;
+            grassTreeIds.push_back(i);
             continue;
         }
 
@@ -290,7 +289,7 @@ static void mapgen_place_trees()
         }
         if (j != Util::CountOf(DesertTrees))
         {
-            desertTreeIds[numDesertTreeIds++] = i;
+            desertTreeIds.push_back(i);
             continue;
         }
 
@@ -301,7 +300,7 @@ static void mapgen_place_trees()
         }
         if (j != Util::CountOf(SnowTrees))
         {
-            snowTreeIds[numSnowTreeIds++] = i;
+            snowTreeIds.push_back(i);
             continue;
         }
     }
@@ -355,27 +354,27 @@ static void mapgen_place_trees()
         case TERRAIN_GRASS:
         case TERRAIN_DIRT:
         case TERRAIN_GRASS_CLUMPS:
-            if (numGrassTreeIds == 0)
+            if (grassTreeIds.size() == 0)
                 break;
 
-            type = grassTreeIds[util_rand() % numGrassTreeIds];
+            type = grassTreeIds[util_rand() % grassTreeIds.size()];
             break;
 
         case TERRAIN_SAND:
         case TERRAIN_SAND_DARK:
         case TERRAIN_SAND_LIGHT:
-            if (numDesertTreeIds == 0)
+            if (desertTreeIds.size() == 0)
                 break;
 
             if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % numDesertTreeIds];
+                type = desertTreeIds[util_rand() % desertTreeIds.size()];
             break;
 
         case TERRAIN_ICE:
-            if (numSnowTreeIds == 0)
+            if (snowTreeIds.size() == 0)
                 break;
 
-            type = snowTreeIds[util_rand() % numSnowTreeIds];
+            type = snowTreeIds[util_rand() % snowTreeIds.size()];
             break;
         }
 
