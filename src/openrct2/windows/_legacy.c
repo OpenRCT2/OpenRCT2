@@ -198,17 +198,27 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
 
+        if (!scenery_tool_is_active())
+        {
+            map_set_virtual_floor_height(z);
+        }
+
         return result;
     } else {
         result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z, 0);
         if (result == MONEY32_UNDEFINED)
             return result;
 
+        sint16 z_begin = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+                             FlatTrackCoordinates[trackType].z_begin :
+                            TrackCoordinates[trackType].z_begin;
+        sint16 z_end = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
+                            FlatTrackCoordinates[trackType].z_end :
+                            TrackCoordinates[trackType].z_end;
+
         _unkF440C5.x = x;
         _unkF440C5.y = y;
-        z += ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-             FlatTrackCoordinates[trackType].z_begin:
-             TrackCoordinates[trackType].z_begin;
+        z += z_begin;
 
         _unkF440C5.z = z;
         _unkF440C5.direction = trackDirection;
@@ -216,6 +226,12 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         viewport_set_visibility((gTrackGroundFlags & TRACK_ELEMENT_LOCATION_IS_UNDERGROUND) ? 1 : 3);
         if (_currentTrackSlopeEnd != 0)
             viewport_set_visibility(2);
+
+        if (!scenery_tool_is_active())
+        {
+            // Set height to where the next track piece would begin  
+            map_set_virtual_floor_height(z - z_begin + z_end);
+        }
 
         return result;
     }
