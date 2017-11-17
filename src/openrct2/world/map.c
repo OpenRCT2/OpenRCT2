@@ -2725,15 +2725,16 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             continue;
         }
 
-        rct_tile_element* tile_element = map_get_surface_element_at(curTile.x / 32, curTile.y / 32);
-        if(tile_element != NULL){
+        rct_tile_element * tile_element = map_get_surface_element_at(curTile.x / 32, curTile.y / 32);
+        if(tile_element != NULL)
+        {
             sint32 height = tile_element->base_height * 8;
-            sint32 type = scenery_large_get_type(tile_element);
+            sint32 slope = tile_element->properties.surface.slope;
 
-            if (type & 0xF)
+            if (slope & 0xF)
             {
                 height += 16;
-                if (type & 0x10)
+                if (slope & 0x10)
                 {
                     height += 16;
                 }
