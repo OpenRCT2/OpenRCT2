@@ -328,9 +328,9 @@ static void mapgen_place_trees()
     }
 
     // Shuffle list
-    for (sint32 i = 0; i < availablePositions.size(); i++)
+    for (uint32 i = 0; i < availablePositions.size(); i++)
     {
-        sint32 rindex = util_rand() % availablePositions.size();
+        uint32 rindex = util_rand() % availablePositions.size();
         if (rindex == i)
             continue;
 
