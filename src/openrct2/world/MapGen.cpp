@@ -305,10 +305,9 @@ static void mapgen_place_trees()
         }
     }
 
-    sint32 availablePositionsCount = 0;
-    LocationXY32 tmp, * pos;
+    LocationXY32 tmp, pos;
 
-    std::vector<LocationXY32> availablePositions(MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL * sizeof(tmp));
+    std::vector<LocationXY32> availablePositions;
 
     // Create list of available tiles
     for (sint32 y = 1; y < gMapSize - 1; y++)
@@ -321,16 +320,17 @@ static void mapgen_place_trees()
             if (map_get_water_height(tileElement) > 0)
                 continue;
 
-            pos = &availablePositions[availablePositionsCount++];
-            pos->x = x;
-            pos->y = y;
+            pos.x = x;
+            pos.y = y;
+            availablePositions.push_back(pos);
+
         }
     }
 
     // Shuffle list
-    for (sint32 i = 0; i < availablePositionsCount; i++)
+    for (sint32 i = 0; i < availablePositions.size(); i++)
     {
-        sint32 rindex = util_rand() % availablePositionsCount;
+        sint32 rindex = util_rand() % availablePositions.size();
         if (rindex == i)
             continue;
 
@@ -341,14 +341,14 @@ static void mapgen_place_trees()
 
     // Place trees
     float  treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    sint32 numTrees        = Math::Max(4, (sint32) (availablePositionsCount * treeToLandRatio));
+    sint32 numTrees        = Math::Max(4, (sint32) (availablePositions.size() * treeToLandRatio));
 
     for (sint32 i = 0; i < numTrees; i++)
     {
-        pos = &availablePositions[i];
+        pos = availablePositions[i];
 
         sint32 type = -1;
-        rct_tile_element * tileElement = map_get_surface_element_at(pos->x, pos->y);
+        rct_tile_element * tileElement = map_get_surface_element_at(pos.x, pos.y);
         switch (tile_element_get_terrain(tileElement))
         {
         case TERRAIN_GRASS:
@@ -379,7 +379,7 @@ static void mapgen_place_trees()
         }
 
         if (type != -1)
-            mapgen_place_tree(type, pos->x, pos->y);
+            mapgen_place_tree(type, pos.x, pos.y);
     }
 }
 
