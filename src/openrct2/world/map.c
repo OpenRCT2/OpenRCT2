@@ -551,22 +551,22 @@ sint32 tile_element_height(sint32 x, sint32 y)
     // We arbitrarily take the SW corner to be closest to the viewer
 
     // One corner up
-    if (slope == TILE_ELEMENT_SLOPE_NE_CORNER_UP ||
-        slope == TILE_ELEMENT_SLOPE_SE_CORNER_UP ||
-        slope == TILE_ELEMENT_SLOPE_SW_CORNER_UP ||
-        slope == TILE_ELEMENT_SLOPE_NW_CORNER_UP)
+    if (slope == TILE_ELEMENT_SLOPE_N_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_E_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_S_CORNER_UP ||
+        slope == TILE_ELEMENT_SLOPE_W_CORNER_UP)
     {
         switch (slope) {
-        case TILE_ELEMENT_SLOPE_NE_CORNER_UP:
+        case TILE_ELEMENT_SLOPE_N_CORNER_UP:
             quad = xl + yl - TILE_SIZE;
             break;
-        case TILE_ELEMENT_SLOPE_SE_CORNER_UP:
+        case TILE_ELEMENT_SLOPE_E_CORNER_UP:
             quad = xl - yl;
             break;
-        case TILE_ELEMENT_SLOPE_SW_CORNER_UP:
+        case TILE_ELEMENT_SLOPE_S_CORNER_UP:
             quad = TILE_SIZE - yl - xl;
             break;
-        case TILE_ELEMENT_SLOPE_NW_CORNER_UP:
+        case TILE_ELEMENT_SLOPE_W_CORNER_UP:
             quad = yl - xl;
             break;
         }
@@ -578,40 +578,40 @@ sint32 tile_element_height(sint32 x, sint32 y)
 
     // One side up
     switch (slope) {
-    case TILE_ELEMENT_SLOPE_E_SIDE_UP:
+    case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
         height += xl / 2 + 1;
         break;
-    case TILE_ELEMENT_SLOPE_S_SIDE_UP:
+    case TILE_ELEMENT_SLOPE_SE_SIDE_UP:
         height += (TILE_SIZE - yl) / 2;
         break;
-    case TILE_ELEMENT_SLOPE_N_SIDE_UP:
+    case TILE_ELEMENT_SLOPE_NW_SIDE_UP:
         height += yl / 2;
         height++;
         break;
-    case TILE_ELEMENT_SLOPE_W_SIDE_UP:
+    case TILE_ELEMENT_SLOPE_SW_SIDE_UP:
         height += (TILE_SIZE - xl) / 2;
         break;
     }
 
     // One corner down
-    if ((slope == TILE_ELEMENT_SLOPE_NW_CORNER_DN) ||
-            (slope == TILE_ELEMENT_SLOPE_SW_CORNER_DN) ||
-            (slope == TILE_ELEMENT_SLOPE_SE_CORNER_DN) ||
-            (slope == TILE_ELEMENT_SLOPE_NE_CORNER_DN)) {
+    if ((slope == TILE_ELEMENT_SLOPE_W_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_S_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_E_CORNER_DN) ||
+            (slope == TILE_ELEMENT_SLOPE_N_CORNER_DN)) {
         switch (slope) {
-        case TILE_ELEMENT_SLOPE_NW_CORNER_DN:
+        case TILE_ELEMENT_SLOPE_W_CORNER_DN:
             quad_extra = xl + TILE_SIZE - yl;
             quad = xl - yl;
             break;
-        case TILE_ELEMENT_SLOPE_SW_CORNER_DN:
+        case TILE_ELEMENT_SLOPE_S_CORNER_DN:
             quad_extra = xl + yl;
             quad = xl + yl - TILE_SIZE - 1;
             break;
-        case TILE_ELEMENT_SLOPE_SE_CORNER_DN:
+        case TILE_ELEMENT_SLOPE_E_CORNER_DN:
             quad_extra = TILE_SIZE - xl + yl;
             quad = yl - xl;
             break;
-        case TILE_ELEMENT_SLOPE_NE_CORNER_DN:
+        case TILE_ELEMENT_SLOPE_N_CORNER_DN:
             quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
             quad = TILE_SIZE - yl - xl - 1;
             break;
@@ -631,16 +631,16 @@ sint32 tile_element_height(sint32 x, sint32 y)
     }
 
     // Valleys
-    if ((slope == TILE_ELEMENT_SLOPE_NW_SE_VALLEY) ||
-            (slope == TILE_ELEMENT_SLOPE_NE_SW_VALLEY)) {
+    if ((slope == TILE_ELEMENT_SLOPE_W_E_VALLEY) ||
+            (slope == TILE_ELEMENT_SLOPE_N_S_VALLEY)) {
         switch (slope) {
-        case TILE_ELEMENT_SLOPE_NW_SE_VALLEY:
+        case TILE_ELEMENT_SLOPE_W_E_VALLEY:
             if (xl + yl <= TILE_SIZE + 1) {
                 return height;
             }
             quad = TILE_SIZE - xl - yl;
             break;
-        case TILE_ELEMENT_SLOPE_NE_SW_VALLEY:
+        case TILE_ELEMENT_SLOPE_N_S_VALLEY:
             quad = xl - yl;
             break;
         }
@@ -771,17 +771,17 @@ void map_update_path_wide_flags()
  */
 sint32 map_height_from_slope(sint32 x, sint32 y, sint32 slope)
 {
-    if (!(slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP))
+    if (!(slope & TILE_ELEMENT_SLOPE_S_CORNER_UP))
         return 0;
 
-    switch (slope & TILE_ELEMENT_SLOPE_E_SIDE_UP) {
+    switch (slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP) {
     case TILE_ELEMENT_SLOPE_FLAT:
         return (31 - (x & 31)) / 2;
-    case TILE_ELEMENT_SLOPE_NE_CORNER_UP:
+    case TILE_ELEMENT_SLOPE_N_CORNER_UP:
         return (y & 31) / 2;
-    case TILE_ELEMENT_SLOPE_SE_CORNER_UP:
+    case TILE_ELEMENT_SLOPE_E_CORNER_UP:
         return (x & 31) / 2;
-    case TILE_ELEMENT_SLOPE_E_SIDE_UP:
+    case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
         return (31 - (y & 31)) / 2;
     }
     return 0;
@@ -1458,33 +1458,33 @@ static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
 {
     switch (direction) {
     case 0:
-        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) {
+        if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) {
             z += 2;
-            if (slope == (TILE_ELEMENT_SLOPE_SW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
+            if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 1:
-        if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
+        if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP) {
             z += 2;
-            if (slope == (TILE_ELEMENT_SLOPE_NW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
+            if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 2:
-        if (slope & TILE_ELEMENT_SLOPE_SW_CORNER_DN) {
+        if (slope & TILE_ELEMENT_SLOPE_S_CORNER_DN) {
             z += 2;
-            if (slope == (TILE_ELEMENT_SLOPE_NE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
+            if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
         break;
     case 3:
-        if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_DN) {
+        if (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN) {
             z += 2;
-            if (slope == (TILE_ELEMENT_SLOPE_SE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
+            if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
             }
         }
@@ -3266,24 +3266,24 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 sint32 cl = al;
                 sint32 ch = al;
                 uint8 slope = tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
-                if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) {
+                if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) {
                     al += 2;
-                    if (slope == (TILE_ELEMENT_SLOPE_SW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         al += 2;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
+                if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP) {
                     ah += 2;
-                    if (slope == (TILE_ELEMENT_SLOPE_NW_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (TILE_ELEMENT_SLOPE_W_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ah += 2;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
+                if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
                     cl += 2;
-                    if (slope == (TILE_ELEMENT_SLOPE_NE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         cl += 2;
                 }
-                if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) {
+                if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP) {
                     ch += 2;
-                    if (slope == (TILE_ELEMENT_SLOPE_SE_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
+                    if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ch += 2;
                 }
                 sint32 bh = zLow + 4;
@@ -3553,22 +3553,22 @@ void map_extend_boundary_surface()
         newTileElement->properties.surface.ownership = 0;
 
         z = existingTileElement->base_height;
-        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_N_SIDE_UP;
-        if (slope == TILE_ELEMENT_SLOPE_N_SIDE_UP) {
+        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_NW_SIDE_UP;
+        if (slope == TILE_ELEMENT_SLOPE_NW_SIDE_UP) {
             z += 2;
             slope = TILE_ELEMENT_SLOPE_FLAT;
             if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
-                slope = TILE_ELEMENT_SLOPE_NE_CORNER_UP;
-                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
-                    slope = TILE_ELEMENT_SLOPE_NW_CORNER_UP;
-                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) {
+                slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
+                    slope = TILE_ELEMENT_SLOPE_W_CORNER_UP;
+                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_E_CORNER_UP) {
                         slope = TILE_ELEMENT_SLOPE_FLAT;
                     }
                 }
             }
         }
-        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP;
-        if (slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
 
         newTileElement->properties.surface.slope |= slope;
         newTileElement->base_height = z;
@@ -3597,22 +3597,22 @@ void map_extend_boundary_surface()
 >>>>>>> Refactor slope flags
 
         z = existingTileElement->base_height;
-        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_E_SIDE_UP;
-        if (slope == TILE_ELEMENT_SLOPE_E_SIDE_UP) {
+        slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP;
+        if (slope == TILE_ELEMENT_SLOPE_NE_SIDE_UP) {
             z += 2;
             slope = TILE_ELEMENT_SLOPE_FLAT;
             if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
-                slope = TILE_ELEMENT_SLOPE_NE_CORNER_UP;
-                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_SW_CORNER_UP) {
-                    slope = TILE_ELEMENT_SLOPE_SE_CORNER_UP;
-                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_NW_CORNER_UP) {
+                slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
+                if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
+                    slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
+                    if (existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_W_CORNER_UP) {
                         slope = TILE_ELEMENT_SLOPE_FLAT;
                     }
                 }
             }
         }
-        if (slope & TILE_ELEMENT_SLOPE_NE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP;
-        if (slope & TILE_ELEMENT_SLOPE_SE_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP;
+        if (slope & TILE_ELEMENT_SLOPE_E_CORNER_UP) slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP;
 
         newTileElement->properties.surface.slope |= slope;
         newTileElement->base_height = z;

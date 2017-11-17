@@ -435,10 +435,10 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
             {
                 switch (originalSlope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
                 {
-                case TILE_ELEMENT_SLOPE_SW_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NE_CORNER_UP; break;
-                case TILE_ELEMENT_SLOPE_NW_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SE_CORNER_UP; break;
-                case TILE_ELEMENT_SLOPE_NE_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_SW_CORNER_UP; break;
-                case TILE_ELEMENT_SLOPE_SE_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_NW_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_S_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_N_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_W_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_E_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_N_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_S_CORNER_UP; break;
+                case TILE_ELEMENT_SLOPE_E_CORNER_DN: surfaceElement->properties.surface.slope |= TILE_ELEMENT_SLOPE_W_CORNER_UP; break;
                 }
             }
 
