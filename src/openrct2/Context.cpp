@@ -408,48 +408,54 @@ namespace OpenRCT2
                         parkImporter.reset(ParkImporter::CreateS6(_objectRepository, _objectManager));
                     }
 
-                    auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
-                    if (result.Error == PARK_LOAD_ERROR_OK)
+                    try
                     {
-                        parkImporter->Import();
-                        game_fix_save_vars();
-                        sprite_position_tween_reset();
-                        gScreenAge = 0;
-                        gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
-                        if (info.Type == FILE_TYPE::SAVED_GAME)
+                        auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());
+                        if (result.Error == PARK_LOAD_ERROR_OK)
                         {
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
+                            parkImporter->Import();
+                            game_fix_save_vars();
+                            sprite_position_tween_reset();
+                            gScreenAge = 0;
+                            gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
+                            if (info.Type == FILE_TYPE::SAVED_GAME)
                             {
-                                network_close();
+                                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                                {
+                                    network_close();
+                                }
+                                game_load_init();
+                                if (network_get_mode() == NETWORK_MODE_SERVER)
+                                {
+                                    network_send_map();
+                                }
                             }
-                            game_load_init();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
+                            else
                             {
-                                network_send_map();
+                                scenario_begin();
+                                if (network_get_mode() == NETWORK_MODE_SERVER)
+                                {
+                                    network_send_map();
+                                }
+                                if (network_get_mode() == NETWORK_MODE_CLIENT)
+                                {
+                                    network_close();
+                                }
                             }
+                            // This ensures that the newly loaded save reflects the user's
+                            // 'show real names of guests' option, now that it's a global setting
+                            peep_update_names(gConfigGeneral.show_real_names_of_guests);
+                            return true;
                         }
                         else
                         {
-                            scenario_begin();
-                            if (network_get_mode() == NETWORK_MODE_SERVER)
-                            {
-                                network_send_map();
-                            }
-                            if (network_get_mode() == NETWORK_MODE_CLIENT)
-                            {
-                                network_close();
-                            }
+                            handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
                         }
-                        // This ensures that the newly loaded save reflects the user's
-                        // 'show real names of guests' option, now that it's a global setting
-                        peep_update_names(gConfigGeneral.show_real_names_of_guests);
-                        return true;
                     }
-                    else
+                    catch (const Exception& e)
                     {
-                        handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
+                        Console::Error::WriteLine(e.GetMessage());
                     }
-
                 }
                 else
                 {
