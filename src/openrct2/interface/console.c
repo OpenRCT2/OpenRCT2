@@ -35,7 +35,7 @@
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"

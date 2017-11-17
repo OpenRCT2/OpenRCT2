@@ -31,7 +31,7 @@
 #include "../interface/viewport.h"
 #include "../intro.h"
 #include "../localisation/language.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../util/util.h"
 
 using namespace OpenRCT2::Audio;

@@ -53,7 +53,7 @@
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
-#include "ride.h"
+#include "Ride.h"
 #include "ride_data.h"
 
 #pragma region Ride classification table

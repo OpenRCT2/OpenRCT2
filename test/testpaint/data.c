@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <openrct2/common.h>
-#include <openrct2/ride/ride.h>
+#include <openrct2/ride/Ride.h>
 
 const utf8string RideNames[RIDE_TYPE_COUNT] = {
     "SpiralRollerCoaster",

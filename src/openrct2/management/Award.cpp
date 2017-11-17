@@ -19,7 +19,7 @@
 #include "../interface/window.h"
 #include "../localisation/string_ids.h"
 #include "../peep/Peep.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../scenario/scenario.h"
 #include "Award.h"
 #include "NewsItem.h"

@@ -34,7 +34,7 @@
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "ride.h"
+#include "Ride.h"
 #include "ride_data.h"
 #include "Track.h"
 #include "TrackData.h"

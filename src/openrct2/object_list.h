@@ -1,7 +1,7 @@
 #pragma once
 
 #include "rct2/addresses.h"
-#include "ride/ride.h"
+#include "ride/Ride.h"
 #include "world/banner.h"
 #include "world/entrance.h"
 #include "world/footpath.h"

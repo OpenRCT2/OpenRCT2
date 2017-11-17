@@ -40,7 +40,7 @@
 #include "../object.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
 #include "../ride/TrackData.h"
 #include "../scenario/scenario.h"

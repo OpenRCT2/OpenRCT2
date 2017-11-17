@@ -27,7 +27,7 @@
 #include "../game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 
 rct_banner gBanners[MAX_BANNERS];
 
