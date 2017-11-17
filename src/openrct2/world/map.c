@@ -1474,7 +1474,7 @@ static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
         }
         break;
     case 2:
-        if (slope & TILE_ELEMENT_SLOPE_S_CORNER_DN) {
+        if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
             z += 2;
             if (slope == (TILE_ELEMENT_SLOPE_N_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;
@@ -1482,7 +1482,7 @@ static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
         }
         break;
     case 3:
-        if (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN) {
+        if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP) {
             z += 2;
             if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)) {
                 z += 2;

@@ -18,10 +18,10 @@
 #define _MAP_HELPERS_H_
 
 enum {
-    SLOPE_SW_THRESHOLD_FLAGS = (1 << 0),
-    SLOPE_NW_THRESHOLD_FLAGS = (1 << 1),
-    SLOPE_NE_THRESHOLD_FLAGS = (1 << 2),
-    SLOPE_SE_THRESHOLD_FLAGS = (1 << 3)
+    SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
+    SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
+    SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
+    SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
 };
 
 #ifdef __cplusplus

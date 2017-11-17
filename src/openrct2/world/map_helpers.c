@@ -387,13 +387,13 @@ sint32 tile_smooth(sint32 x, sint32 y)
     sint8 thresholdS = clamp(neighbourHeightOffset.SE, 0, 1) + clamp(neighbourHeightOffset.S, 0, 1) + clamp(neighbourHeightOffset.SW, 0, 1);
 
     uint8 slope = TILE_ELEMENT_SLOPE_FLAT;
-    slope |= (thresholdW >= 1) ? SLOPE_NW_THRESHOLD_FLAGS : 0;
-    slope |= (thresholdN >= 1) ? SLOPE_NE_THRESHOLD_FLAGS : 0;
-    slope |= (thresholdE >= 1) ? SLOPE_SE_THRESHOLD_FLAGS : 0;
-    slope |= (thresholdS >= 1) ? SLOPE_SW_THRESHOLD_FLAGS : 0;
+    slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;
+    slope |= (thresholdN >= 1) ? SLOPE_N_THRESHOLD_FLAGS : 0;
+    slope |= (thresholdE >= 1) ? SLOPE_E_THRESHOLD_FLAGS : 0;
+    slope |= (thresholdS >= 1) ? SLOPE_S_THRESHOLD_FLAGS : 0;
 
     // Set diagonal when three corners (one corner down) have been raised, and the middle one can be raised one more
-    if ((slope == TILE_ELEMENT_SLOPE_W_CORNER_UP && neighbourHeightOffset.W >= 4) ||
+    if ((slope == TILE_ELEMENT_SLOPE_W_CORNER_DN && neighbourHeightOffset.W >= 4) ||
         (slope == TILE_ELEMENT_SLOPE_S_CORNER_DN && neighbourHeightOffset.S >= 4) ||
         (slope == TILE_ELEMENT_SLOPE_E_CORNER_DN && neighbourHeightOffset.E >= 4) ||
         (slope == TILE_ELEMENT_SLOPE_N_CORNER_DN && neighbourHeightOffset.N >= 4))

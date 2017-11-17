@@ -1303,7 +1303,7 @@ static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, s
     *slope = TILE_ELEMENT_SLOPE_FLAT;
     if (gFootpathConstructSlope != 0)
     {
-        *slope = gFootpathConstructDirection | TILE_ELEMENT_SLOPE_S_CORNER_DN;
+        *slope = gFootpathConstructDirection | TILE_ELEMENT_SLOPE_S_CORNER_UP;
         if (gFootpathConstructSlope != 2)
         {
             *z -= 2;
