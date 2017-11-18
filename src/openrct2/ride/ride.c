@@ -7615,11 +7615,11 @@ void sub_6CB945(sint32 rideIndex)
             rct_tile_element *trackElement = map_get_first_element_at(nextLocation.x >> 5, nextLocation.y >> 5);
             do {
                 if (tile_element_get_type(trackElement) != TILE_ELEMENT_TYPE_TRACK) continue;
-                if (track_element_get_ride_index(tileElement) != rideIndex) continue;
+                if (track_element_get_ride_index(trackElement) != rideIndex) continue;
                 if (trackElement->base_height != tileElement->base_height) continue;
 
-                uint8 trackType = track_element_get_type(tileElement);
-                uint8 trackSequence = tile_element_get_track_sequence(tileElement);
+                uint8 trackType = track_element_get_type(trackElement);
+                uint8 trackSequence = tile_element_get_track_sequence(trackElement);
 
                 uint8 direction = (tile_element_get_direction(tileElement) - tile_element_get_direction(trackElement) + 2) & 3;
 
@@ -7628,7 +7628,7 @@ void sub_6CB945(sint32 rideIndex)
                 }
 
                 uint8 stationId = 0;
-                if (track_element_get_type(tileElement) != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
+                if (trackType != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
                     stationId = tile_element_get_station(trackElement);
                 }
 
