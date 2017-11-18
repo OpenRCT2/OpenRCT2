@@ -100,10 +100,9 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        uint8 * data = stream->ReadArray<uint8>(dataLength);
+        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
         stream->SetPosition(originalPosition);
-        sint32 fileTypeVersion = sawyercoding_detect_file_type(data, dataLength);
-        Memory::Free(data);
+        sint32 fileTypeVersion = sawyercoding_detect_file_type(data.get(), dataLength);
 
         sint32 type = fileTypeVersion & FILE_TYPE_MASK;
         sint32 version = fileTypeVersion & FILE_VERSION_MASK;
@@ -136,16 +135,16 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     try
     {
         size_t dataLength = (size_t)stream->GetLength();
-        uint8 * data = stream->ReadArray<uint8>(dataLength);
+        std::unique_ptr<uint8> data(stream->ReadArray<uint8>(dataLength));
         stream->SetPosition(originalPosition);
 
-        if (sawyercoding_validate_track_checksum(data, dataLength))
+        if (sawyercoding_validate_track_checksum(data.get(), dataLength))
         {
-            uint8 * td6data = Memory::Allocate<uint8>(0x10000);
-            size_t td6len = sawyercoding_decode_td6(data, td6data, dataLength);
+			std::unique_ptr<uint8>td6data(Memory::Allocate<uint8>(0x10000));
+            size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
-                uint8 version = (td6data[7] >> 2) & 3;
+                uint8 version = (td6data.get()[7] >> 2) & 3;
                 if (version <= 2)
                 {
                     result->Type = FILE_TYPE::TRACK_DESIGN;
@@ -153,9 +152,7 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
                     success = true;
                 }
             }
-            Memory::Free(td6data);
         }
-        Memory::Free(data);
     }
     catch (Exception)
     {
