@@ -1109,7 +1109,7 @@ void game_fix_save_vars()
             {
                 tileElement->base_height = 2;
                 tileElement->clearance_height = 2;
-                tileElement->properties.surface.slope = 0;
+                tileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
             }
         }
     }

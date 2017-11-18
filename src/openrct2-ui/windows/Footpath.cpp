@@ -672,11 +672,11 @@ static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi)
         uint8 slope     = 0;
         if (gFootpathConstructSlope == 2)
         {
-            slope = 1;
+            slope = TILE_ELEMENT_SLOPE_N_CORNER_UP;
         }
         else if (gFootpathConstructSlope == 6)
         {
-            slope = 2;
+            slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
         }
         sint32 image = footpath_construction_preview_images[slope][direction];
 
@@ -831,10 +831,10 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
         footpath_provisional_update();
 
         // Set provisional path
-        sint32 slope = default_path_slope[tileElement->properties.surface.slope & 0x1F];
+        sint32 slope = default_path_slope[tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK];
         if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
         {
-            slope = tileElement->properties.surface.slope & 7;
+            slope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_W_CORNER_DN;
         }
         sint32 pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
@@ -879,11 +879,11 @@ static void window_footpath_set_selection_start_bridge_at_point(sint32 screenX, 
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE)
     {
         uint8 slope = tileElement->properties.surface.slope;
-        if (slope & 0xf)
+        if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             z += 2;
         } // Add 2 for a slope
-        if (slope & 0x10)
+        if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             z += 2; // Add another 2 for a steep slope
     }
 
@@ -920,7 +920,7 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
     }
 
     // Set path
-    presentType  = default_path_slope[tileElement->properties.path.type & 0x1F];
+    presentType  = default_path_slope[tileElement->properties.path.type & TILE_ELEMENT_PATH_TYPE_MASK];
     if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
     {
         presentType = tileElement->properties.path.type & 7;
@@ -966,12 +966,12 @@ static void window_footpath_start_bridge_at_point(sint32 screenX, sint32 screenY
         // expect the path to be slightly raised as well.
         uint8 slope = tileElement->properties.surface.slope;
         z = tileElement->base_height;
-        if (slope & 0x10)
+        if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
         {
             // Steep diagonal slope
             z += 4;
         }
-        else if (slope & 0x0f)
+        else if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
             // Normal slope
             z += 2;
@@ -1238,11 +1238,11 @@ static void window_footpath_set_enabled_and_pressed_widgets()
 
         // Set pressed slope widget
         sint32 slope = gFootpathConstructSlope;
-        if (slope == 6)
+        if (slope == TILE_ELEMENT_SLOPE_SE_SIDE_UP)
         {
             pressedWidgets |= (1 << WIDX_SLOPEDOWN);
         }
-        else if (slope == 0)
+        else if (slope == TILE_ELEMENT_SLOPE_FLAT)
         {
             pressedWidgets |= (1 << WIDX_LEVEL);
         }
@@ -1300,14 +1300,14 @@ static void footpath_get_next_path_info(sint32 * type, sint32 * x, sint32 * y, s
     *y     = gFootpathConstructFromPosition.y + TileDirectionDelta[direction].y;
     *z     = gFootpathConstructFromPosition.z / 8;
     *type  = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
-    *slope = 0;
+    *slope = TILE_ELEMENT_SLOPE_FLAT;
     if (gFootpathConstructSlope != 0)
     {
-        *slope = gFootpathConstructDirection | 4;
+        *slope = gFootpathConstructDirection | TILE_ELEMENT_SLOPE_S_CORNER_UP;
         if (gFootpathConstructSlope != 2)
         {
             *z -= 2;
-            *slope ^= 2;
+            *slope ^= TILE_ELEMENT_SLOPE_E_CORNER_UP;
         }
     }
 }

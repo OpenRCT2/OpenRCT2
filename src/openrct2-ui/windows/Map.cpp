@@ -1220,9 +1220,9 @@ static void place_park_entrance_get_map_position(sint32 x, sint32 y, sint16 *map
     *mapZ = map_get_water_height(tileElement);
     if (*mapZ == 0) {
         *mapZ = tileElement->base_height / 2;
-        if ((tileElement->properties.surface.slope & 0x0F) != 0) {
+        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
             (*mapZ)++;
-            if (tileElement->properties.surface.slope & 0x10) {
+            if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
                 (*mapZ)++;
             }
         }
@@ -1298,9 +1298,9 @@ static void window_map_set_peep_spawn_tool_update(sint32 x, sint32 y)
 
     mapZ = tileElement->base_height * 8;
     if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SURFACE) {
-        if ((tileElement->properties.surface.slope & 0x0F) != 0)
+        if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
-        if (tileElement->properties.surface.slope & 0x10)
+        if (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             mapZ += 16;
     }
 

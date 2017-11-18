@@ -397,7 +397,7 @@ static money32 WallPlace(uint8 wallType,
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & (1 << 4))
+            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 
@@ -427,7 +427,7 @@ static money32 WallPlace(uint8 wallType,
                 return MONEY32_UNDEFINED;
             }
 
-            if (surfaceElement->properties.surface.slope & (1 << 4))
+            if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT)
             {
                 newEdge = (newEdge - 1) & 3;
 

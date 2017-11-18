@@ -1440,7 +1440,7 @@ static void window_tile_inspector_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_E, tileElement->properties.surface.slope & (1 << ((3 - get_current_rotation()) & 3)));
         widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_S, tileElement->properties.surface.slope & (1 << ((0 - get_current_rotation()) & 3)));
         widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_CORNER_W, tileElement->properties.surface.slope & (1 << ((1 - get_current_rotation()) & 3)));
-        widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->properties.surface.slope & 0x10);
+        widget_set_checkbox_value(w, WIDX_SURFACE_CHECK_DIAGONAL, tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT);
         break;
     case TILE_INSPECTOR_PAGE_PATH:
         w->widgets[WIDX_PATH_SPINNER_HEIGHT].top = GBBT(propertiesAnchor, 0) + 3;

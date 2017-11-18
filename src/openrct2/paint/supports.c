@@ -374,7 +374,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
     if (slope & (1 << 5)) {
         // Above scenery (just put a base piece above it)
         drawFlatPiece = true;
-    } else if (slope & (1 << 4)) {
+    } else if (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) {
         // Steep diagonal (place the correct shaped support for the slope)
         height -= 2;
         if (height < 0) {
@@ -388,7 +388,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
         if (imageId == 0) {
             drawFlatPiece = true;
         } else {
-            imageId += word_97B3C4[slope & 0x1F];
+            imageId += word_97B3C4[slope & TILE_ELEMENT_SLOPE_MASK];
             imageId |= imageColourFlags;
             sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
 
@@ -397,7 +397,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
             hasSupports = true;
         }
         z += 32;
-    } else if ((slope & 0x0F) != 0) {
+    } else if ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0) {
         // 1 to 3 quarters up
         height--;
         if (height < 0) {
@@ -411,7 +411,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
         if (imageId == 0) {
             drawFlatPiece = true;
         } else {
-            imageId += word_97B3C4[slope & 0x1F];
+            imageId += word_97B3C4[slope & TILE_ELEMENT_SLOPE_MASK];
             imageId |= imageColourFlags;
 
             sub_98197C(session, imageId, 0, 0, 32, 32, 11, z, 0, 0, z + 2, rotation);
@@ -536,7 +536,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
             baseHeight += 32;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[session->Support.slope & 0x1F];
+            imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SLOPE_MASK];
 
             sub_98197C(session, 
                 imageId | imageColourFlags,
@@ -572,7 +572,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
             baseHeight += 16;
             goTo662E8B = true;
         } else {
-            imageId += word_97B3C4[session->Support.slope & 0x1F];
+            imageId += word_97B3C4[session->Support.slope & TILE_ELEMENT_SLOPE_MASK];
 
             sub_98197C(session, 
                 imageId | imageColourFlags,
@@ -754,7 +754,7 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
         sint8 yOffset = loc_97AF20[segment].y;
 
         uint32 image_id = _97B15C[supportType].base_id;
-        image_id += metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
+        image_id += metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SLOPE_MASK];
         image_id |= imageColourFlags;
 
         sub_98196C(session, image_id, xOffset, yOffset, 0, 0, 5, supportSegments[segment].height, rotation);
@@ -947,7 +947,7 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
         || (_97B15C[supportType].base_id == 0)) {
         baseHeight = supportSegments[segment].height;
     } else {
-        uint32 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
+        uint32 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SLOPE_MASK];
         uint32 imageId = _97B15C[supportType].base_id + imageOffset;
 
         sub_98196C(session, 
@@ -1114,7 +1114,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
             return false;
         }
 
-        uint32 imageId = (supportType * 24) + word_97B3C4[session->Support.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 imageId = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SLOPE_MASK] + pathEntry->bridge_image;
 
         sub_98197C(session, 
             imageId | imageColourFlags,
@@ -1145,7 +1145,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
             return false;
         }
 
-        uint32 ebx = (supportType * 24) + word_97B3C4[session->Support.slope & 0x1F] + pathEntry->bridge_image;
+        uint32 ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SLOPE_MASK] + pathEntry->bridge_image;
 
         sub_98197C(session, 
             ebx | imageColourFlags,
@@ -1275,7 +1275,7 @@ bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32
         || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE)) {
         baseHeight = supportSegments[segment].height;
     } else {
-        uint8 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & 0x1F];
+        uint8 imageOffset = metal_supports_slope_image_map[supportSegments[segment].slope & TILE_ELEMENT_SLOPE_MASK];
         baseHeight = supportSegments[segment].height;
 
         sub_98196C(session, 

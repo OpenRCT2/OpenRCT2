@@ -343,8 +343,8 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * 
 {
     uint8 slope = tileElement->properties.surface.slope;
 
-    uint16 di = (slope & 0x0F) << rotation;
-    uint8 ebx = slope & 0x10;
+    uint16 di = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    uint8 ebx = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
 
     di = ((di >> 4) | di) & 0x0F;
     return ebx | di;
@@ -1330,7 +1330,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
         // loc_66122C:
-        uint8 al_edgeStyle = tileElement->properties.surface.slope & 0xE0;
+        uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         uint8 di_type = tileElement->type & 0x80;
 
         uint32 eax = al_edgeStyle + di_type * 2;
@@ -1375,7 +1375,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            uint8 al_edgeStyle = tileElement->properties.surface.slope & 0xE0;
+            uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
             uint8 di_type = tileElement->type & 0x80;
 
             uint32 eax = al_edgeStyle + di_type * 2;

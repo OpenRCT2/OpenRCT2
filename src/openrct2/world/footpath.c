@@ -188,8 +188,8 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
 
     bl = 15;
     zHigh = z + 4;
-    if (slope & 4) {
-        bl = byte_98D7EC[slope & 3];
+    if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
+        bl = byte_98D7EC[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
         zHigh += 2;
     }
 
@@ -234,8 +234,8 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
             tileElement = tile_element_insert(x / 32, y / 32, z, 0x0F);
             assert(tileElement != NULL);
             tileElement->type = TILE_ELEMENT_TYPE_PATH;
-            tileElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
-            tileElement->properties.path.type = (type << 4) | (slope & 7);
+            tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP) ? 2 : 0);
+            tileElement->properties.path.type = (type << 4) | (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             tileElement->type |= type >> 7;
             tileElement->properties.path.additions = pathItemType;
             tileElement->properties.path.addition_status = 255;
@@ -391,7 +391,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
     if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(x, y, z * 8))
         return MONEY32_UNDEFINED;
 
-    if (slope & 8) {
+    if (slope & TILE_ELEMENT_SLOPE_W_CORNER_UP) {
         gGameCommandErrorText = STR_LAND_SLOPE_UNSUITABLE;
         return MONEY32_UNDEFINED;
     }
@@ -420,7 +420,7 @@ static money32 footpath_place_real(sint32 type, sint32 x, sint32 y, sint32 z, si
         {
             direction = direction & 0xF;
             // It is possible, let's remove walls between the old and new piece of path
-            wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & 0xf) ? 2 : 0), direction ^ 2);
+            wall_remove_intersecting_walls(x, y, z, z + 4 + ((slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) ? 2 : 0), direction ^ 2);
             wall_remove_intersecting_walls(
                 x - TileDirectionDelta[direction].x,
                 y - TileDirectionDelta[direction].y,
@@ -588,8 +588,8 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
     gFootpathPrice += 120;
     uint8 bl = 15;
     sint32 zHigh = z + 4;
-    if (slope & 4) {
-        bl = byte_98D7EC[slope & 3];
+    if (slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) {
+        bl = byte_98D7EC[slope & TILE_ELEMENT_SLOPE_NE_SIDE_UP];
         zHigh += 2;
     }
 
@@ -642,8 +642,8 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
             tileElement = tile_element_insert(x / 32, y / 32, z, 0x0F);
             assert(tileElement != NULL);
             tileElement->type = TILE_ELEMENT_TYPE_PATH;
-            tileElement->clearance_height = z + 4 + ((slope & 4) ? 2 : 0);
-            tileElement->properties.path.type = (type << 4) | (slope & 7);
+            tileElement->clearance_height = z + 4 + ((slope & TILE_ELEMENT_SLOPE_S_CORNER_UP) ? 2 : 0);
+            tileElement->properties.path.type = (type << 4) | (slope & TILE_ELEMENT_SLOPE_W_CORNER_DN);
             tileElement->type |= type >> 7;
             tileElement->properties.path.additions = 0;
             tileElement->properties.path.addition_status = 255;

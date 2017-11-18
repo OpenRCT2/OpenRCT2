@@ -2246,7 +2246,7 @@ private:
                 nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
                 nextFreeTileElement->base_height = 2;
                 nextFreeTileElement->clearance_height = 0;
-                nextFreeTileElement->properties.surface.slope = 0;
+                nextFreeTileElement->properties.surface.slope = TILE_ELEMENT_SLOPE_FLAT;
                 nextFreeTileElement->properties.surface.terrain = 0;
                 nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
                 nextFreeTileElement->properties.surface.ownership = 0;
@@ -2261,7 +2261,7 @@ private:
             nextFreeTileElement->flags = TILE_ELEMENT_FLAG_LAST_TILE;
             nextFreeTileElement->base_height = 2;
             nextFreeTileElement->clearance_height = 0;
-            nextFreeTileElement->properties.surface.slope = 0;
+            nextFreeTileElement->properties.surface.slope =TILE_ELEMENT_SLOPE_FLAT;
             nextFreeTileElement->properties.surface.terrain = 0;
             nextFreeTileElement->properties.surface.grass_length = GRASS_LENGTH_CLEAR_0;
             nextFreeTileElement->properties.surface.ownership = 0;

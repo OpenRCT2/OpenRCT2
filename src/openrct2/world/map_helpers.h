@@ -17,6 +17,13 @@
 #ifndef _MAP_HELPERS_H_
 #define _MAP_HELPERS_H_
 
+enum {
+    SLOPE_S_THRESHOLD_FLAGS = (1 << 0),
+    SLOPE_W_THRESHOLD_FLAGS = (1 << 1),
+    SLOPE_N_THRESHOLD_FLAGS = (1 << 2),
+    SLOPE_E_THRESHOLD_FLAGS = (1 << 3)
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
