@@ -817,6 +817,32 @@ bool scenery_is_invented(uint16 sceneryItem)
     return invented;
 }
 
+bool scenery_set_is_invented(sint32 scenerySetIndex)
+{
+    auto invented = false;
+    const auto scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
+    if (scenerySetEntry != nullptr && scenerySetEntry->entry_count > 0)
+    {
+        if (gCheatsIgnoreResearchStatus)
+        {
+            invented = true;
+        }
+        else
+        {
+            for (auto i = 0; i < scenerySetEntry->entry_count; i++)
+            {
+                auto sceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+                if (scenery_is_invented(sceneryEntryIndex))
+                {
+                    invented = true;
+                    break;
+                }
+            }
+        }
+    }
+    return invented;
+}
+
 void reset_researched_scenery_items()
 {
     for (sint32 i = 0; i < MAX_RESEARCHED_SCENERY_ITEMS; i++)

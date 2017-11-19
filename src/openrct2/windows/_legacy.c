@@ -77,9 +77,6 @@ const rct_object_entry DefaultSelectedObjects[26] = {
         { 0x00000087, { "SCGWATER" }, 0 }       // Water Feature Theming
 };
 
-// rct2: 0x00F64F2C
-sint16 window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
-
 void game_command_callback_pickup_guest(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp)
 {
     switch (ecx)
