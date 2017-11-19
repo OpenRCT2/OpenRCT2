@@ -1659,10 +1659,10 @@ uint32 staff_get_available_entertainer_costumes()
     uint32 entertainerCostumes = 0;
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        if (scenery_set_is_invented(i))
+        if (scenery_group_is_invented(i))
         {
-            rct_scenery_set_entry * scenery_entry = get_scenery_group_entry(i);
-            entertainerCostumes |= scenery_entry->entertainer_costumes;
+            const auto sgEntry = get_scenery_group_entry(i);
+            entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }
 

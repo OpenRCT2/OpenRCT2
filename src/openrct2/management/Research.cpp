@@ -817,11 +817,11 @@ bool scenery_is_invented(uint16 sceneryItem)
     return invented;
 }
 
-bool scenery_set_is_invented(sint32 scenerySetIndex)
+bool scenery_group_is_invented(sint32 sgIndex)
 {
     auto invented = false;
-    const auto scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
-    if (scenerySetEntry != nullptr && scenerySetEntry->entry_count > 0)
+    const auto sgEntry = get_scenery_group_entry(sgIndex);
+    if (sgEntry != nullptr && sgEntry->entry_count > 0)
     {
         if (gCheatsIgnoreResearchStatus)
         {
@@ -829,9 +829,9 @@ bool scenery_set_is_invented(sint32 scenerySetIndex)
         }
         else
         {
-            for (auto i = 0; i < scenerySetEntry->entry_count; i++)
+            for (auto i = 0; i < sgEntry->entry_count; i++)
             {
-                auto sceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
                 if (scenery_is_invented(sceneryEntryIndex))
                 {
                     invented = true;
