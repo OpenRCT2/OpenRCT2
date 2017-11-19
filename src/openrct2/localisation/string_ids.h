@@ -20,6 +20,7 @@
 #include "../common.h"
 
 #define STR_NONE ((rct_string_id)-1)
+#define STR_VIEWPORT ((rct_string_id)-2)
 
 enum {
     STR_EMPTY = 0,

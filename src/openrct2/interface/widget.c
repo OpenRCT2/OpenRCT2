@@ -456,10 +456,7 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex w
     sint32 t = w->y + widget->top;
     sint32 r = w->x + widget->right;
 
-    // TODO: Remove after 15 January 2018 if no issues are reported
-    assert(widget->text != (rct_string_id)-2);
-
-    if (widget->text == STR_NONE)
+    if (widget->text == STR_NONE || widget->text == STR_VIEWPORT)
         return;
 
     if (widget_is_disabled(w, widgetIndex))
