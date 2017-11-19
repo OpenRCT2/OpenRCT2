@@ -29,6 +29,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/date.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/string_ids.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
@@ -209,7 +210,7 @@ enum {
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_VIEWPORT,         1,  3,      290,    60,     166,    0xFFFFFFFE,                     STR_NONE                                    },
+    { WWT_VIEWPORT,         1,  3,      290,    60,     166,    STR_VIEWPORT,                   STR_NONE                                    },
     { WWT_DROPDOWN,         1,  35,     256,    46,     57,     0xFFFFFFFF,                     STR_VIEW_SELECTION                          },
     { WWT_DROPDOWN_BUTTON,  1,  245,    255,    47,     56,     STR_DROPDOWN_GLYPH,             STR_VIEW_SELECTION                          },
     { WWT_12,               1,  3,      290,    167,    177,    0xFFFFFFFF,                     STR_NONE                                    },

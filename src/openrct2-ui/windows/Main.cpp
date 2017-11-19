@@ -19,10 +19,11 @@
 
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
+#include <openrct2/localisation/string_ids.h>
 #include <openrct2/world/footpath.h>
 
 static rct_widget window_main_widgets[] = {
-    { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, 0xFFFFFFFE, 0xFFFF },
+    { WWT_VIEWPORT, 0, 0x0000, -1, 0x0000, -1, STR_VIEWPORT, 0xFFFF },
     { WIDGETS_END },
 };
 
