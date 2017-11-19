@@ -32,8 +32,6 @@
 #define SCENERY_PATH_SCENERY_ID_MIN  0x100
 #define SCENERY_PATH_SCENERY_ID_MAX  0x10F
 
-#define SCENERY_WINDOW_TABS 20 // (MAX_SCENERY_GROUP_OBJECTS + 1). The + 1 is for the 'Miscellaneous' tab
-
 #pragma pack(push, 1)
 typedef struct rct_small_scenery_entry {
     uint32 flags;           // 0x06
@@ -296,8 +294,6 @@ extern sint16 gSceneryCtrlPressZ;
 extern uint8 gSceneryGroundFlags;
 
 extern const LocationXY8 ScenerySubTileOffsets[];
-
-extern sint16 window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
 
 extern money32 gClearSceneryCost;
 

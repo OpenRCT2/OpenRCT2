@@ -118,6 +118,7 @@ void research_insert_scenery_group_entry(uint8 entryIndex, bool researched);
 bool ride_type_is_invented(sint32 rideType);
 bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
+bool scenery_group_is_invented(sint32 sgIndex);
 bool scenery_is_invented(uint16 sceneryItem);
 void reset_researched_scenery_items();
 void reset_researched_ride_types_and_entries();

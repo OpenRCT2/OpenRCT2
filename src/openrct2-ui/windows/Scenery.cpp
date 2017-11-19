@@ -33,6 +33,7 @@
 #define WINDOW_SCENERY_HEIGHT   180
 #define SCENERY_BUTTON_WIDTH    66
 #define SCENERY_BUTTON_HEIGHT   80
+#define SCENERY_WINDOW_TABS     (MAX_SCENERY_GROUP_OBJECTS + 1) // The + 1 is for the 'Miscellaneous' tab
 
 enum {
     WINDOW_SCENERY_TAB_1,
@@ -179,6 +180,9 @@ static rct_widget window_scenery_widgets[] = {
 };
 
 void window_scenery_update_scroll(rct_window *w);
+
+// rct2: 0x00F64F2C
+static sint16 window_scenery_tab_entries[SCENERY_WINDOW_TABS][SCENERY_ENTRIES_BY_TAB + 1];
 
 /**
  * Was part of 0x006DFA00

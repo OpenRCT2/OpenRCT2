@@ -1656,15 +1656,13 @@ bool staff_set_colour(uint8 staffType, colour_t value)
 
 uint32 staff_get_available_entertainer_costumes()
 {
-    init_scenery();
-
     uint32 entertainerCostumes = 0;
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        if (window_scenery_tab_entries[i][0] != -1)
+        if (scenery_group_is_invented(i))
         {
-            rct_scenery_set_entry * scenery_entry = get_scenery_group_entry(i);
-            entertainerCostumes |= scenery_entry->entertainer_costumes;
+            const auto sgEntry = get_scenery_group_entry(i);
+            entertainerCostumes |= sgEntry->entertainer_costumes;
         }
     }
 
