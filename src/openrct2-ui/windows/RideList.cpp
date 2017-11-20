@@ -368,19 +368,30 @@ static void window_ride_list_mousedown(rct_window *w, rct_widgetindex widgetInde
  */
 static void window_ride_list_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex)
 {
-    if (widgetIndex == WIDX_OPEN_CLOSE_ALL) {
+    if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
+    {
         if (dropdownIndex == 0)
+        {
             window_ride_list_close_all(w);
+        }
         else if (dropdownIndex == 1)
+        {
             window_ride_list_open_all(w);
-    } else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN) {
+        }
+
+        window_invalidate(w);
+    }
+    else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
+    {
         if (dropdownIndex == -1)
             return;
 
         sint32 informationType = INFORMATION_TYPE_STATUS;
         uint32 arg = (uint32)gDropdownItemsArgs[dropdownIndex];
-        for (size_t i = 0; i < Util::CountOf(ride_info_type_string_mapping); i++) {
-            if (arg == ride_info_type_string_mapping[i]) {
+        for (size_t i = 0; i < Util::CountOf(ride_info_type_string_mapping); i++)
+        {
+            if (arg == ride_info_type_string_mapping[i])
+            {
                 informationType = (sint32)i;
             }
         }
