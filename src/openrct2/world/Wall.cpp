@@ -209,7 +209,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
                 return false;
             }
             break;
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             entryType = scenery_large_get_type(tileElement);
             sequence = scenery_large_get_sequence(tileElement);
             entry = get_large_scenery_entry(entryType);
@@ -223,7 +223,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
                 }
             }
             break;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             entryType = tileElement->properties.scenery.type;
             entry = get_small_scenery_entry(entryType);
             if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS)

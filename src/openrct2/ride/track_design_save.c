@@ -209,11 +209,11 @@ static sint32 tile_element_get_total_element_count(rct_tile_element *tileElement
 
     switch (tile_element_get_type(tileElement)) {
     case TILE_ELEMENT_TYPE_PATH:
-    case TILE_ELEMENT_TYPE_SCENERY:
+    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
     case TILE_ELEMENT_TYPE_WALL:
         return 1;
 
-    case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         tile = sceneryEntry->large_scenery.tiles;
         elementCount = 0;
@@ -619,13 +619,13 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
                     else if (tileElement->properties.path.addition_status == rideIndex)
                         interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
                     break;
-                case TILE_ELEMENT_TYPE_SCENERY:
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                     interactionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
                     break;
                 case TILE_ELEMENT_TYPE_WALL:
                     interactionType = VIEWPORT_INTERACTION_ITEM_WALL;
                     break;
-                case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     interactionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
                     break;
                 }

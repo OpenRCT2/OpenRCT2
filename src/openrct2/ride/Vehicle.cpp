@@ -1820,7 +1820,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
         bool cover_found = false;
         do
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 cover_found = true;
                 break;
@@ -1832,7 +1832,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 break;
             }
 
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
             rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);

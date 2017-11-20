@@ -799,7 +799,7 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                     uint8 quadrant = (scenery->flags >> 2) + _currentTrackPieceDirection;
                     quadrant &= 3;
 
-                    uint8 bh = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SCENERY;
+                    uint8 bh = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SMALL_SCENERY;
 
                     rct_scenery_entry * small_scenery = get_small_scenery_entry(entry_index);
                     if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&

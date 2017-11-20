@@ -310,16 +310,16 @@ void research_finish_item(uint32 entryIndex)
     else
     {
         // Scenery
-        rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
-        if (scenerySetEntry != nullptr)
+        rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(entryIndex & 0xFFFF);
+        if (sceneryGroupEntry != nullptr)
         {
-            for (sint32 i = 0; i < scenerySetEntry->entry_count; i++)
+            for (sint32 i = 0; i < sceneryGroupEntry->entry_count; i++)
             {
-                sint32 subSceneryEntryIndex = scenerySetEntry->scenery_entries[i];
+                sint32 subSceneryEntryIndex = sceneryGroupEntry->scenery_entries[i];
                 gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
             }
 
-            set_format_arg(0, rct_string_id, scenerySetEntry->name);
+            set_format_arg(0, rct_string_id, sceneryGroupEntry->name);
 
             if (!gSilentResearch)
             {
@@ -447,7 +447,7 @@ void research_reset_current_item()
 
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
-        rct_scenery_set_entry * scenery_set = get_scenery_group_entry(i);
+        rct_scenery_group_entry * scenery_set = get_scenery_group_entry(i);
         if (scenery_set == nullptr)
         {
             continue;
@@ -664,8 +664,8 @@ void research_populate_list_random()
     // Scenery
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(i);
-        if (scenerySetEntry == nullptr)
+        rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(i);
+        if (sceneryGroupEntry == nullptr)
         {
             continue;
         }
@@ -699,8 +699,8 @@ void research_populate_list_researched()
     // Scenery
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
-        rct_scenery_set_entry * scenerySetEntry = get_scenery_group_entry(i);
-        if (scenerySetEntry == nullptr)
+        rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(i);
+        if (sceneryGroupEntry == nullptr)
         {
             continue;
         }
@@ -891,7 +891,7 @@ rct_string_id research_item_get_name(uint32 researchItem)
     }
     else
     {
-        rct_scenery_set_entry * sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
+        rct_scenery_group_entry * sceneryEntry = get_scenery_group_entry(researchItem & 0xFF);
         if (sceneryEntry == nullptr)
         {
             return 0;

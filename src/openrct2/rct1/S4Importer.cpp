@@ -469,10 +469,10 @@ private:
                 AddEntryForPathAddition(pathAdditionsType);
                 break;
             }
-            case TILE_ELEMENT_TYPE_SCENERY:
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 AddEntryForSmallScenery(tileElement->properties.scenery.type);
                 break;
-            case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                 AddEntryForLargeScenery(scenery_large_get_type(tileElement));
                 break;
             case TILE_ELEMENT_TYPE_WALL:
@@ -1770,7 +1770,7 @@ private:
         LoadObjects(OBJECT_TYPE_WALLS, _wallEntries);
         LoadObjects(OBJECT_TYPE_PATHS, _pathEntries);
         LoadObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries);
-        LoadObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries);
+        LoadObjects(OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries);
         LoadObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
             "BN1     ",
             "BN2     ",
@@ -1804,7 +1804,7 @@ private:
             entry.checksum = 0;
 
             Object * object = objectManager->LoadObject(&entry);
-            if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
+            if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
             {
                 log_error("Failed to load %s.", objectName);
                 throw Exception("Failed to load object.");
@@ -1823,7 +1823,7 @@ private:
         GetInvalidObjects(OBJECT_TYPE_WALLS, _wallEntries.GetEntries(), missingObjects);
         GetInvalidObjects(OBJECT_TYPE_PATHS, _pathEntries.GetEntries(), missingObjects);
         GetInvalidObjects(OBJECT_TYPE_PATH_BITS, _pathAdditionEntries.GetEntries(), missingObjects);
-        GetInvalidObjects(OBJECT_TYPE_SCENERY_SETS, _sceneryGroupEntries.GetEntries(), missingObjects);
+        GetInvalidObjects(OBJECT_TYPE_SCENERY_GROUP, _sceneryGroupEntries.GetEntries(), missingObjects);
         GetInvalidObjects(OBJECT_TYPE_BANNERS, std::vector<const char *>({
             "BN1     ",
             "BN2     ",
@@ -1859,7 +1859,7 @@ private:
             else
             {
                 Object * object = objectRepository->LoadObject(ori);
-                if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_SETS)
+                if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
                 {
                     missingObjects.push_back(entry);
                     Console::Error::WriteLine("[%s] Object could not be loaded.", objectName);
@@ -2280,7 +2280,7 @@ private:
             if (tileElement->base_height != 255)
             {
                 switch (tile_element_get_type(tileElement)) {
-                case TILE_ELEMENT_TYPE_SCENERY:
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                     colour = RCT1::GetColour(scenery_small_get_primary_colour(tileElement));
                         scenery_small_set_primary_colour(tileElement, colour);
 
@@ -2305,7 +2305,7 @@ private:
                     tileElement->type |= (colour & 0x18) << 3;
                     tileElement->properties.wall.type |= (colour & 7) << 5;
                     break;
-                case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
                     colour = RCT1::GetColour(scenery_large_get_primary_colour(tileElement));
                     scenery_large_set_primary_colour(tileElement, colour);
 
@@ -2569,10 +2569,10 @@ private:
         {
             rct_tile_element * tileElement = it.element;
             switch (tile_element_get_type(tileElement)) {
-            case TILE_ELEMENT_TYPE_SCENERY:
+            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                 tileElement->properties.scenery.type = _smallSceneryTypeToEntryMap[tileElement->properties.scenery.type];
                 break;
-            case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             {
                 uint8 type = scenery_large_get_type(tileElement);
                 scenery_large_set_type(tileElement, _largeSceneryTypeToEntryMap[type]);
@@ -2591,7 +2591,7 @@ private:
         case OBJECT_TYPE_WALLS:         return &_wallEntries;
         case OBJECT_TYPE_PATHS:         return &_pathEntries;
         case OBJECT_TYPE_PATH_BITS:     return &_pathAdditionEntries;
-        case OBJECT_TYPE_SCENERY_SETS:  return &_sceneryGroupEntries;
+        case OBJECT_TYPE_SCENERY_GROUP:  return &_sceneryGroupEntries;
         case OBJECT_TYPE_WATER:         return &_waterEntry;
         }
         return nullptr;

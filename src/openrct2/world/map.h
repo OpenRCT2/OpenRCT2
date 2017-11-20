@@ -142,10 +142,10 @@ enum {
     TILE_ELEMENT_TYPE_SURFACE = (0 << 2),
     TILE_ELEMENT_TYPE_PATH = (1 << 2),
     TILE_ELEMENT_TYPE_TRACK = (2 << 2),
-    TILE_ELEMENT_TYPE_SCENERY = (3 << 2),
+    TILE_ELEMENT_TYPE_SMALL_SCENERY = (3 << 2),
     TILE_ELEMENT_TYPE_ENTRANCE = (4 << 2),
     TILE_ELEMENT_TYPE_WALL = (5 << 2),
-    TILE_ELEMENT_TYPE_SCENERY_MULTIPLE = (6 << 2),
+    TILE_ELEMENT_TYPE_LARGE_SCENERY = (6 << 2),
     TILE_ELEMENT_TYPE_BANNER = (7 << 2),
     // The corrupt element type is used for skipping drawing other following
     // elements on a given tile.

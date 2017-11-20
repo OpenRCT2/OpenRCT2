@@ -89,7 +89,7 @@ void scenery_update_tile(sint32 x, sint32 y)
                 continue;
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY) {
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
             scenery_update_age(x, y, tileElement);
         } else if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH) {
             if (footpath_element_has_path_scenery(tileElement) && !footpath_element_path_scenery_is_ghost(tileElement)) {
@@ -148,13 +148,13 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
             continue;
 
         switch (tile_element_get_type(tileElementAbove)) {
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_PATH:
             map_invalidate_tile_zoom1(x, y, tileElementAbove->base_height * 8, tileElementAbove->clearance_height * 8);
             scenery_increase_age(x, y, tileElement);
             return;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             sceneryEntry = get_small_scenery_entry(tileElementAbove->properties.scenery.type);
             if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
                 scenery_increase_age(x, y, tileElement);
@@ -305,12 +305,12 @@ rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex)
     return (rct_scenery_entry*)gFootpathAdditionEntries[entryIndex];
 }
 
-rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex)
+rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex)
 {
-    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SCENERY_SETS]) {
+    if (entryIndex >= object_entry_group_counts[OBJECT_TYPE_SCENERY_GROUP]) {
         return NULL;
     }
-    return (rct_scenery_set_entry*)gSceneryGroupEntries[entryIndex];
+    return (rct_scenery_group_entry*)gSceneryGroupEntries[entryIndex];
 }
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)

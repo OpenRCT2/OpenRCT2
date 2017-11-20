@@ -115,7 +115,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 void path_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement);
 void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tileElement);
 void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tileElement);
-void scenery_multiple_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement);
+void large_scenery_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement);
 void track_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element *tileElement);
 
 #ifdef __cplusplus

@@ -164,7 +164,7 @@ rct_window * window_sign_open(rct_windownumber number)
 
     while (1)
     {
-        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
             if (scenery_entry->large_scenery.scrolling_mode != 0xFF)
@@ -231,7 +231,7 @@ static void window_sign_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_SIGN_DEMOLISH:
         while (1)
         {
-            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+            if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
             {
                 rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
                 if (scenery_entry->large_scenery.scrolling_mode != 0xFF)

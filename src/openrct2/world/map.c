@@ -895,7 +895,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         return;
     }
     do {
-        if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
         if (tile_element->base_height != base_height)
@@ -972,7 +972,7 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         element_found = false;
         do
         {
-            if (tile_element_get_type(sceneryElement) != TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+            if (tile_element_get_type(sceneryElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
                 continue;
 
             if (tile_element_get_direction(sceneryElement) != tile_element_direction)
@@ -1134,7 +1134,7 @@ restart_from_beginning:
                 if (flags & 1)
                     goto restart_from_beginning;
             } break;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             if (clear & (1 << 0)) {
                 sint32 eax = x * 32;
                 sint32 ebx = (tileElement->type << 8) | flags;
@@ -1168,7 +1168,7 @@ restart_from_beginning:
                     goto restart_from_beginning;
 
             } break;
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             if (clear & (1 << 1)) {
                 sint32 eax = x * 32;
                 sint32 ebx = flags | ((tile_element_get_direction(tileElement)) << 8);
@@ -1202,7 +1202,7 @@ static void map_reset_clear_large_scenery_flag(){
         for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
             tileElement = map_get_first_element_at(x, y);
             do {
-                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_LARGE_SCENERY) {
                     tileElement->flags &= ~(1 << 6);
                 }
             } while (!tile_element_is_last_for_tile(tileElement++));
@@ -1448,7 +1448,7 @@ static sint32 map_set_land_height_clear_func(rct_tile_element** tile_element, si
     if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SURFACE)
         return 0;
 
-    if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SCENERY)
+    if (tile_element_get_type(*tile_element) == TILE_ELEMENT_TYPE_SMALL_SCENERY)
         return 0;
 
     return 1;
@@ -1558,7 +1558,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         //Check for obstructing scenery
         tileElement = map_get_first_element_at(x / 32, y / 32);
         do {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (height > tileElement->clearance_height)
                 continue;
@@ -1643,7 +1643,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
 
             if (elementType == TILE_ELEMENT_TYPE_WALL)
                 continue;
-            if (elementType == TILE_ELEMENT_TYPE_SCENERY)
+            if (elementType == TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (tileElement->flags & 0x10)
                 continue;
@@ -2841,7 +2841,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
             map_animation_create(MAP_ANIMATION_TYPE_LARGE_SCENERY, curTile.x, curTile.y, zLow);
 
             new_tile_element->clearance_height = zHigh;
-            new_tile_element->type = TILE_ELEMENT_TYPE_SCENERY_MULTIPLE | rotation;
+            new_tile_element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY | rotation;
 
             scenery_large_set_type(new_tile_element, entry_index);
             scenery_large_set_sequence(new_tile_element, tile_num);
@@ -3178,7 +3178,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
         set_format_arg(0, rct_string_id, ride->name);
         set_format_arg(2, uint32, ride->name_arguments);
         break;
-    case TILE_ELEMENT_TYPE_SCENERY:
+    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
         errorStringId = STR_X_IN_THE_WAY;
         set_format_arg(0, rct_string_id, sceneryEntry->name);
@@ -3201,7 +3201,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
         errorStringId = STR_X_IN_THE_WAY;
         set_format_arg(0, rct_string_id, sceneryEntry->name);
         break;
-    case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type);
         errorStringId = STR_X_IN_THE_WAY;
         set_format_arg(0, rct_string_id, sceneryEntry->name);
@@ -3481,7 +3481,7 @@ sint32 tile_element_get_banner_index(rct_tile_element *tileElement)
     rct_scenery_entry* sceneryEntry;
 
     switch (tile_element_get_type(tileElement)) {
-    case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
         if (sceneryEntry->large_scenery.scrolling_mode == 0xFF)
             return -1;
@@ -3648,7 +3648,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
                 0
         );
         break;
-    case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
         game_do_command(
                 x,
@@ -3741,7 +3741,7 @@ rct_tile_element *map_get_large_scenery_segment(sint32 x, sint32 y, sint32 z, si
         return NULL;
     }
     do {
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
         if (tileElement->base_height != z)
             continue;
@@ -3840,7 +3840,7 @@ rct_tile_element *map_get_small_scenery_element_at(sint32 x, sint32 y, sint32 z,
     {
         do
         {
-            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
             if (tileElement->type >> 6 != quadrant)
                 continue;
@@ -4098,7 +4098,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
             tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_WALL)
             continue;
 
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             return true;
 
         rct_scenery_entry* scenery = get_small_scenery_entry(tileElement->properties.scenery.type);
@@ -4237,7 +4237,7 @@ void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* 
         map_invalidate_tile(x, y, tile_element->base_height * 8, tile_element->clearance_height * 8);
     } else { // large sign
         rct_tile_element *tileElement = banner_get_tile_element(bannerId);
-        if (tileElement == NULL || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY_MULTIPLE) {
+        if (tileElement == NULL || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY) {
             gGameCommandErrorText = STR_ERR_CANT_SET_BANNER_TEXT;
             *ebx = MONEY32_UNDEFINED;
             return;
