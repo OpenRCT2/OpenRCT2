@@ -634,7 +634,7 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
     right += _clipLeft;
     bottom += _clipTop;
 
-    auto texture = _textureCache->GetOrLoadImageTexture(image);
+    const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     int paletteCount;
     ivec3 palettes{};
@@ -673,10 +673,10 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         DrawRectCommand& command = _commandBuffers.transparent.allocate();
 
         command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-        command.texColourAtlas = texture->index;
-        command.texColourBounds = texture->normalizedBounds;
-        command.texMaskAtlas = texture->index;
-        command.texMaskBounds = texture->normalizedBounds;
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
+        command.texMaskAtlas = texture.index;
+        command.texMaskBounds = texture.normalizedBounds;
         command.palettes = palettes;
         command.colour = palettes.x - (special ? 1 : 0);
         command.bounds = { left, top, right, bottom };
@@ -688,8 +688,8 @@ void OpenGLDrawingContext::DrawSprite(uint32 image, sint32 x, sint32 y, uint32 t
         DrawRectCommand& command = _commandBuffers.rects.allocate();
 
         command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-        command.texColourAtlas = texture->index;
-        command.texColourBounds = texture->normalizedBounds;
+        command.texColourAtlas = texture.index;
+        command.texColourBounds = texture.normalizedBounds;
         command.texMaskAtlas = 0;
         command.texMaskBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
         command.palettes = palettes;
@@ -709,8 +709,8 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
         return;
     }
 
-    auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
-    auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
+    const auto textureMask = _textureCache->GetOrLoadImageTexture(maskImage);
+    const auto textureColour = _textureCache->GetOrLoadImageTexture(colourImage);
 
     uint8 zoomLevel = (1 << _dpi->zoom_level);
 
@@ -751,10 +751,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(sint32 x, sint32 y, uint32 maskIm
     DrawRectCommand& command = _commandBuffers.rects.allocate();
 
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
-    command.texColourAtlas = textureColour->index;
-    command.texColourBounds = textureColour->normalizedBounds;
-    command.texMaskAtlas = textureMask->index;
-    command.texMaskBounds = textureMask->normalizedBounds;
+    command.texColourAtlas = textureColour.index;
+    command.texColourBounds = textureColour.normalizedBounds;
+    command.texMaskAtlas = textureMask.index;
+    command.texMaskBounds = textureMask.normalizedBounds;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_MASK;
     command.colour = 0;
@@ -773,7 +773,7 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
         return;
     }
 
-    auto texture = _textureCache->GetOrLoadImageTexture(image);
+    const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;
@@ -804,8 +804,8 @@ void OpenGLDrawingContext::DrawSpriteSolid(uint32 image, sint32 x, sint32 y, uin
     command.clip = { _clipLeft, _clipTop, _clipRight, _clipBottom };
     command.texColourAtlas = 0;
     command.texColourBounds = { 0.0f, 0.0f, 0.0f, 0.0f };
-    command.texMaskAtlas = texture->index;
-    command.texMaskBounds = texture->normalizedBounds;
+    command.texMaskAtlas = texture.index;
+    command.texMaskBounds = texture.normalizedBounds;
     command.palettes = { 0, 0, 0 };
     command.flags = DrawRectCommand::FLAG_NO_TEXTURE | DrawRectCommand::FLAG_MASK;
     command.colour = colour & 0xFF;
@@ -821,7 +821,7 @@ void OpenGLDrawingContext::DrawGlyph(uint32 image, sint32 x, sint32 y, uint8 * p
         return;
     }
 
-    auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
+    const auto texture = _textureCache->GetOrLoadGlyphTexture(image, palette);
 
     sint32 drawOffsetX = g1Element->x_offset;
     sint32 drawOffsetY = g1Element->y_offset;

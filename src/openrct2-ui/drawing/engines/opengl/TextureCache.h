@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include <vector>
+#include <array>
 #include <SDL_pixels.h>
 #include <openrct2/common.h>
 #include "OpenGLAPI.h"
@@ -60,14 +61,18 @@ constexpr sint32 TEXTURE_CACHE_MAX_ATLAS_SIZE = 2048;
 // Must be a power of 2!
 constexpr sint32 TEXTURE_CACHE_SMALLEST_SLOT = 32;
 
-// Location of an image (texture atlas index, slot and normalized coordinates)
-struct CachedTextureInfo
+struct BasicTextureInfo
 {
     GLuint index;
+    vec4 normalizedBounds;
+};
+
+// Location of an image (texture atlas index, slot and normalized coordinates)
+struct AtlasTextureInfo : public BasicTextureInfo
+{
     GLuint slot;
     ivec4 bounds;
-    vec4 normalizedBounds;
-    vec4 computedBounds;
+    uint32 image;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -107,7 +112,7 @@ public:
         }
     }
 
-    CachedTextureInfo Allocate(sint32 actualWidth, sint32 actualHeight)
+    AtlasTextureInfo Allocate(sint32 actualWidth, sint32 actualHeight)
     {
         assert(_freeSlots.size() > 0);
 
@@ -116,16 +121,16 @@ public:
 
         auto bounds = GetSlotCoordinates(slot, actualWidth, actualHeight);
 
-        return
-        {
-            _index,
-            slot,
-            bounds,
-            NormalizeCoordinates(bounds)
-        };
+        AtlasTextureInfo info;
+        info.index = _index;
+        info.slot = slot;
+        info.bounds = bounds;
+        info.normalizedBounds = NormalizeCoordinates(bounds);
+
+        return info;
     }
 
-    void Free(const CachedTextureInfo& info)
+    void Free(const AtlasTextureInfo& info)
     {
         assert(_index == info.index);
 
@@ -195,18 +200,18 @@ private:
     GLuint _atlasesTextureIndices     = 0;
     GLint _atlasesTextureIndicesLimit = 0;
     std::vector<Atlas> _atlases;
-
-    std::unordered_map<GlyphId, CachedTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
-    std::unordered_map<uint32, CachedTextureInfo> _imageTextureMap;
+    std::unordered_map<GlyphId, AtlasTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
+    std::vector<AtlasTextureInfo> _textureCache;
+    std::array<uint32, 0x7FFFF> _indexMap;
 
     GLuint _paletteTexture            = 0;
 
 public:
-    TextureCache() = default;
+    TextureCache();
     ~TextureCache();
     void InvalidateImage(uint32 image);
-    const CachedTextureInfo* GetOrLoadImageTexture(uint32 image);
-    CachedTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
+    BasicTextureInfo GetOrLoadImageTexture(uint32 image);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32 image, uint8 * palette);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
@@ -216,9 +221,9 @@ private:
     void CreateTextures();
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
-    CachedTextureInfo LoadImageTexture(uint32 image);
-    CachedTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
-    CachedTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
+    AtlasTextureInfo LoadImageTexture(uint32 image);
+    AtlasTextureInfo LoadGlyphTexture(uint32 image, uint8 * palette);
+    AtlasTextureInfo AllocateImage(sint32 imageWidth, sint32 imageHeight);
     rct_drawpixelinfo GetImageAsDPI(uint32 image, uint32 tertiaryColour);
     rct_drawpixelinfo GetGlyphAsDPI(uint32 image, uint8 * palette);
     void FreeTextures();
