@@ -89,7 +89,7 @@ validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
 static rct_widget window_ride_construction_widgets[] = {
-    { WWT_FRAME,            0,  0,      165,    0,      393,    0xFFFFFFFF,                                 STR_NONE                                                },
+    { WWT_FRAME,            0,  0,      165,    0,      393,    STR_NONE,                                   STR_NONE                                                },
     { WWT_CAPTION,          0,  1,      164,    1,      14,     STR_RIDE_CONSTRUCTION_WINDOW_TITLE,         STR_WINDOW_TITLE_TIP                                    },
     { WWT_CLOSEBOX,         0,  153,    163,    2,      13,     STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP                                    },
     { WWT_GROUPBOX,         0,  3,      162,    17,     73,     STR_RIDE_CONSTRUCTION_DIRECTION,            STR_NONE                                                },
@@ -112,12 +112,12 @@ static rct_widget window_ride_construction_widgets[] = {
     { WWT_FLATBTN,          1,  47,     70,     132,    155,    SPR_RIDE_CONSTRUCTION_LEFT_BANK,            STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP           },
     { WWT_FLATBTN,          1,  71,     94,     132,    155,    SPR_RIDE_CONSTRUCTION_NO_BANK,              STR_RIDE_CONSTRUCTION_NO_ROLL_TIP                       },
     { WWT_FLATBTN,          1,  95,     118,    132,    155,    SPR_RIDE_CONSTRUCTION_RIGHT_BANK,           STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP          },
-    { WWT_IMGBTN,           1,  3,      162,    164,    333,    0xFFFFFFFF,                                 STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP    },
+    { WWT_IMGBTN,           1,  3,      162,    164,    333,    STR_NONE,                                   STR_RIDE_CONSTRUCTION_CONSTRUCT_SELECTED_SECTION_TIP    },
     { WWT_FLATBTN,          1,  60,     105,    338,    361,    SPR_DEMOLISH_CURRENT_SECTION,               STR_RIDE_CONSTRUCTION_REMOVE_HIGHLIGHTED_SECTION_TIP    },
     { WWT_FLATBTN,          1,  50,     71,     29,     52,     SPR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE,     STR_RIDE_CONSTRUCTION_LEFT_CURVE_LARGE_TIP              },
     { WWT_FLATBTN,          1,  20,     43,     338,    361,    SPR_PREVIOUS,                               STR_RIDE_CONSTRUCTION_MOVE_TO_PREVIOUS_SECTION_TIP      },
     { WWT_FLATBTN,          1,  122,    145,    338,    361,    SPR_NEXT,                                   STR_RIDE_CONSTRUCTION_MOVE_TO_NEXT_SECTION_TIP          },
-    { WWT_GROUPBOX,         0,  3,      162,    362,    389,    0xFFFFFFFF,                                 STR_NONE                                                },
+    { WWT_GROUPBOX,         0,  3,      162,    362,    389,    STR_NONE,                                   STR_NONE                                                },
     { WWT_DROPDOWN_BUTTON,  1,  9,      78,     372,    383,    STR_RIDE_CONSTRUCTION_ENTRANCE,             STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
     { WWT_DROPDOWN_BUTTON,  1,  87,     156,    372,    383,    STR_RIDE_CONSTRUCTION_EXIT,                 STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
     { WWT_FLATBTN,          1,  94,     115,    29,     52,     SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE,    STR_RIDE_CONSTRUCTION_RIGHT_CURVE_LARGE_TIP             },

@@ -34,10 +34,10 @@ enum WINDOW_WATER_WIDGET_IDX {
 validate_global_widx(WC_WATER, WIDX_PREVIEW);
 
 static rct_widget window_water_widgets[] = {
-    { WWT_FRAME,    0,  0,  75, 0,  76, 0xFFFFFFFF,                             STR_NONE },                         // panel / background
-    { WWT_CAPTION,  0,  1,  74, 1,  14, STR_WATER,                              STR_WINDOW_TITLE_TIP },             // title bar
-    { WWT_CLOSEBOX, 0,  63, 73, 2,  13, STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },             // close x button
-    { WWT_IMGBTN,   0,  16, 59, 17, 48, SPR_LAND_TOOL_SIZE_0,                   STR_NONE },                         // preview box
+    { WWT_FRAME,    0,  0,  75, 0,  76, STR_NONE,                                     STR_NONE },                         // panel / background
+    { WWT_CAPTION,  0,  1,  74, 1,  14, STR_WATER,                                    STR_WINDOW_TITLE_TIP },             // title bar
+    { WWT_CLOSEBOX, 0,  63, 73, 2,  13, STR_CLOSE_X,                                  STR_CLOSE_WINDOW_TIP },             // close x button
+    { WWT_IMGBTN,   0,  16, 59, 17, 48, SPR_LAND_TOOL_SIZE_0,                         STR_NONE },                         // preview box
     { WWT_TRNBTN,   2,  17, 32, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,    STR_ADJUST_SMALLER_WATER_TIP },     // decrement size
     { WWT_TRNBTN,   2,  43, 58, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,    STR_ADJUST_LARGER_WATER_TIP },      // increment size
     { WIDGETS_END },

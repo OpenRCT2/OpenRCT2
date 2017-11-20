@@ -59,7 +59,7 @@ enum {
 };
 
 static rct_widget window_server_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      340,    0,      90,     0xFFFFFFFF,                 STR_NONE },                 // panel / background
+    { WWT_FRAME,            0,  0,      340,    0,      90,     STR_NONE,                   STR_NONE },                 // panel / background
     { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_SERVER_LIST,            STR_WINDOW_TITLE_TIP },     // title bar
     { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     // close x button
     { WWT_TEXT_BOX,         1,  100,    344,    20,     31,     STR_NONE,                   STR_NONE },                 // player name text box

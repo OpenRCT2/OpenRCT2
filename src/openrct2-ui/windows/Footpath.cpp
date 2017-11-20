@@ -71,13 +71,13 @@ enum WINDOW_FOOTPATH_WIDGET_IDX
 };
 
 static rct_widget window_footpath_widgets[] = {
-    {WWT_FRAME,    0, 0,  105, 0,   380, 0xFFFFFFFF,                        STR_NONE},
+    {WWT_FRAME,    0, 0,  105, 0,   380, STR_NONE,                          STR_NONE},
     {WWT_CAPTION,  0, 1,  104, 1,   14,  STR_FOOTPATHS,                     STR_WINDOW_TITLE_TIP},
     {WWT_CLOSEBOX, 0, 93, 103, 2,   13,  STR_CLOSE_X,                       STR_CLOSE_WINDOW_TIP},
     // Type group
     {WWT_GROUPBOX, 0, 3,  102, 17,  71,  STR_TYPE,                          STR_NONE},
-    {WWT_FLATBTN,  1, 6,  52,  30,  65,  0xFFFFFFFF,                        STR_FOOTPATH_TIP},
-    {WWT_FLATBTN,  1, 53, 99,  30,  65,  0xFFFFFFFF,                        STR_QUEUE_LINE_PATH_TIP},
+    {WWT_FLATBTN,  1, 6,  52,  30,  65,  STR_NONE,                          STR_FOOTPATH_TIP},
+    {WWT_FLATBTN,  1, 53, 99,  30,  65,  STR_NONE,                          STR_QUEUE_LINE_PATH_TIP},
 
     // Direction group
     {WWT_GROUPBOX, 0, 3,  102, 75,  151, STR_DIRECTION,                     STR_NONE},
@@ -91,11 +91,11 @@ static rct_widget window_footpath_widgets[] = {
     {WWT_FLATBTN,  1, 17, 40,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_DOWN,  STR_SLOPE_DOWN_TIP},
     {WWT_FLATBTN,  1, 41, 64,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_LEVEL, STR_LEVEL_TIP},
     {WWT_FLATBTN,  1, 65, 88,  167, 190, SPR_RIDE_CONSTRUCTION_SLOPE_UP,    STR_SLOPE_UP_TIP},
-    {WWT_FLATBTN,  1, 8,  97,  202, 291, 0xFFFFFFFF,                        STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP},
+    {WWT_FLATBTN,  1, 8,  97,  202, 291, STR_NONE,                          STR_CONSTRUCT_THE_SELECTED_FOOTPATH_SECTION_TIP},
     {WWT_FLATBTN,  1, 30, 75,  295, 318, SPR_DEMOLISH_CURRENT_SECTION,      STR_REMOVE_PREVIOUS_FOOTPATH_SECTION_TIP},
 
     // Mode group
-    {WWT_GROUPBOX, 0, 3,  102, 321, 374, 0xFFFFFFFF,                        STR_NONE},
+    {WWT_GROUPBOX, 0, 3,  102, 321, 374, STR_NONE,                          STR_NONE},
     {WWT_FLATBTN,  1, 13, 48,  332, 367, SPR_CONSTRUCTION_FOOTPATH_LAND,    STR_CONSTRUCT_FOOTPATH_ON_LAND_TIP},
     {WWT_FLATBTN,  1, 57, 92,  332, 367, SPR_CONSTRUCTION_FOOTPATH_BRIDGE,  STR_CONSTRUCT_BRIDGE_OR_TUNNEL_FOOTPATH_TIP},
     {WIDGETS_END},

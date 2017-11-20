@@ -23,7 +23,7 @@
 #include <openrct2/localisation/localisation.h>
 
 static rct_widget window_map_tooltip_widgets[] = {
-    { WWT_IMGBTN, 0, 0, 199, 0, 29, 0xFFFFFFFF, STR_NONE },
+    { WWT_IMGBTN, 0, 0, 199, 0, 29, STR_NONE, STR_NONE },
     { WIDGETS_END }
 };
 

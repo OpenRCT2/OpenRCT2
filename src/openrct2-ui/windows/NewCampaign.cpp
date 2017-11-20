@@ -42,7 +42,7 @@ enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
 };
 
 static rct_widget window_new_campaign_widgets[] = {
-    { WWT_FRAME,            0,      0,      349,    0,      106,        0xFFFFFFFF,                                     STR_NONE },             // panel / background
+    { WWT_FRAME,            0,      0,      349,    0,      106,        STR_NONE,                                       STR_NONE },             // panel / background
     { WWT_CAPTION,          0,      1,      348,    1,      14,         0,                                              STR_WINDOW_TITLE_TIP }, // title bar
     { WWT_CLOSEBOX,         0,      337,    347,    2,      13,         STR_CLOSE_X,                                    STR_CLOSE_WINDOW_TIP }, // close x button
     { WWT_24,               0,      0,      139,    24,     35,         0,                                              STR_NONE },             // ride label

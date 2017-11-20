@@ -149,14 +149,14 @@ enum WINDOW_TITLE_EDITOR_WIDGET_IDX {
 #define WH2 127
 
 static rct_widget window_title_editor_widgets[] = {
-    { WWT_FRAME,            0,  0,      WW-1,   0,      WH2-1,  0xFFFFFFFF,             STR_NONE },                             // panel / background
-    { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_TITLE_EDITOR_TITLE, STR_WINDOW_TITLE_TIP },                 // title bar
-    { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },                 // close button
-    { WWT_RESIZE,           1,  0,      WW-1,   43,     WH2-1,  0xFFFFFFFF,             STR_NONE },                             // tab content panel
+    { WWT_FRAME,            0,  0,      WW-1,   0,      WH2-1,  STR_NONE,                     STR_NONE },                             // panel / background
+    { WWT_CAPTION,          0,  1,      WW-2,   1,      14,     STR_TITLE_EDITOR_TITLE,       STR_WINDOW_TITLE_TIP },                 // title bar
+    { WWT_CLOSEBOX,         0,  WW-13,  WW-3,   2,      13,     STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP },                 // close button
+    { WWT_RESIZE,           1,  0,      WW-1,   43,     WH2-1,  STR_NONE,                     STR_NONE },                             // tab content panel
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_THEMES_TAB_SETTINGS_TIP },  // presets tab
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SAVES_TAB_TIP },       // saves tab
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_TITLE_EDITOR_SCRIPT_TAB_TIP },      // script tab
-    { WWT_SCROLL,           1,  BX+BW+9,WW-4,   48,     WH-4,   SCROLL_BOTH,            STR_NONE },                             // command/save list
+    { WWT_SCROLL,           1,  BX+BW+9,WW-4,   48,     WH-4,   SCROLL_BOTH,                  STR_NONE },                             // command/save list
 
     // Presets Tab
     { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                           STR_NONE },                     // Preset title sequences
