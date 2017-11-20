@@ -28,7 +28,7 @@
 #include "../sprites.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
-#include "../world/tile_inspector.h"
+#include "../world/TileInspector.h"
 #include "dropdown.h"
 #include "tile_inspector.h"
 
