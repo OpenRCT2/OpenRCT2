@@ -53,6 +53,8 @@ const utf8 * Object::GetString(uint8 index) const
     const utf8 * sz = GetOverrideString(index);
     if (sz == nullptr)
     {
+        // DAT objects do not contain separate ride and vehicle names
+        index = (index < OBJ_STRING_ID_VEHICLE_NAME) ? index : OBJ_STRING_ID_NAME;
         sz = GetStringTable()->GetString(index);
     }
     return sz != nullptr ? sz : "";

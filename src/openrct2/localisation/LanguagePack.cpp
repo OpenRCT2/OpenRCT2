@@ -569,6 +569,7 @@ public:
             if (String::Equals(identifier, "STR_NAME")) { stringId = 0; }
             else if (String::Equals(identifier, "STR_DESC")) { stringId = 1; }
             else if (String::Equals(identifier, "STR_CPTY")) { stringId = 2; }
+            else if (String::Equals(identifier, "STR_VEHN")) { stringId = 3; }
 
             else if (String::Equals(identifier, "STR_SCNR")) { stringId = 0; }
             else if (String::Equals(identifier, "STR_PARK")) { stringId = 1; }
