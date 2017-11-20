@@ -29,6 +29,7 @@
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/scenery.h"
+#include "../world/LargeScenery.h"
 #include "../world/sprite.h"
 #include "viewport.h"
 #include "../Context.h"

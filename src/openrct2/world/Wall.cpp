@@ -23,9 +23,11 @@
 #include "../localisation/string_ids.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
+#include "LargeScenery.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
+#include "Wall.h"
 
 /**
  * Gets whether the given track type can have a wall placed on the edge of the given direction.
@@ -549,7 +551,7 @@ static money32 WallPlace(uint8 wallType,
 
         if (wallEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
-            tileElement->properties.wall.colour_3 = tertiaryColour;
+            wall_set_tertiary_colour(tileElement, tertiaryColour);
         }
 
         if (flags & GAME_COMMAND_FLAG_GHOST)
@@ -675,7 +677,7 @@ static money32 WallSetColour(sint16 x,
 
         if (scenery_entry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
         {
-            wallElement->properties.wall.colour_3 = tertiaryColour;
+            wall_set_tertiary_colour(wallElement, tertiaryColour);
         }
         map_invalidate_tile_zoom1(x, y, z, z + 72);
     }

@@ -41,6 +41,7 @@
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
+#include "../world/LargeScenery.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "Peep.h"

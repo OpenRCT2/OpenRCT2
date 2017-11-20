@@ -23,6 +23,7 @@
 #include "../../localisation/localisation.h"
 #include "../../util/util.h"
 #include "../../world/map.h"
+#include "../../world/LargeScenery.h"
 #include "../../world/scenery.h"
 
 // 6B8172:

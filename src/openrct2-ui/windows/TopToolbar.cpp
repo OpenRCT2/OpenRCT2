@@ -40,7 +40,10 @@
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/footpath.h>
+#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/scenery.h>
+#include <openrct2/world/SmallScenery.h>
+#include <openrct2/world/Wall.h>
 
 enum {
     WIDX_PAUSE,

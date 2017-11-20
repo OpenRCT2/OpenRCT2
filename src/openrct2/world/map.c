@@ -36,11 +36,13 @@
 #include "banner.h"
 #include "Climate.h"
 #include "footpath.h"
+#include "LargeScenery.h"
 #include "map.h"
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
 #include "TileInspector.h"
+#include "Wall.h"
 
 /**
  * Replaces 0x00993CCC, 0x00993CCE

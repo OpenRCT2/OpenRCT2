@@ -33,6 +33,7 @@
 #include "map_helpers.h"
 #include "MapGen.h"
 #include "scenery.h"
+#include "SmallScenery.h"
 
 #pragma region Height map struct
 

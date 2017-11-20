@@ -15,17 +15,18 @@
 #pragma endregion
 
 #include "../../common.h"
-#include "../../world/map.h"
-#include "../../drawing/drawing.h"
-#include "../../world/scenery.h"
-#include "../../game.h"
-#include "../../ride/Track.h"
 #include "../../config/Config.h"
+#include "../../drawing/drawing.h"
+#include "../../game.h"
 #include "../../localisation/localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
+#include "../../ride/Track.h"
+#include "../../world/map.h"
+#include "../../world/scenery.h"
+#include "../../world/Wall.h"
 #include "../paint.h"
+#include "tile_element.h"
 
 static const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
@@ -157,7 +158,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
 
     uint32 tertiaryColour = 0;
     if (sceneryEntry->wall.flags & WALL_SCENERY_HAS_TERNARY_COLOUR) {
-        tertiaryColour = tile_element->properties.wall.colour_3;
+        tertiaryColour = wall_get_tertiary_colour(tile_element);
         imageColourFlags &= 0x0DFFFFFFF;
     }
 
