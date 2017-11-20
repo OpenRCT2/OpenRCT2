@@ -7038,7 +7038,7 @@ uint8 ride_entry_get_vehicle_at_position(sint32 rideEntryIndex,sint32 numCarsPer
 }
 
 // Finds track pieces that a given ride entry has sprites for
-uint64 ride_entry_get_supported_track_pieces(rct_ride_entry* rideEntry)
+uint64 ride_entry_get_supported_track_pieces(const rct_ride_entry * rideEntry)
 {
     uint64 supportedPieces = 0xFFFFFFFFFFFFFFFFULL;
     uint16 trackPieceRequiredSprites[55] = {

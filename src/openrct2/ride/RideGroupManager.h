@@ -30,6 +30,8 @@ extern "C"
 
 #define MAX_RIDE_GROUPS_PER_RIDE_TYPE 2
 
+extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
+
 typedef struct RideGroup
 {
     uint8 RideType;
@@ -42,22 +44,24 @@ typedef struct RideGroup
 class RideGroupManager
 {
     public:
-    static const RideGroup * GetRideGroup(uint8 trackType, rct_ride_entry * rideEntry);
-    static bool RideTypeHasRideGroups(uint8 trackType);
-    static const RideGroup * RideGroupFind(uint8 rideType, uint8 index);
+    static const RideGroup * GetRideGroup(const uint8 trackType, const rct_ride_entry * rideEntry);
+    static bool RideTypeHasRideGroups(const uint8 trackType);
+    static const RideGroup * RideGroupFind(const uint8 rideType, const uint8 index);
     static bool RideGroupsAreEqual(const RideGroup * a, const RideGroup * b);
     static bool RideGroupIsInvented(const RideGroup * rideGroup);
 
-    static const std::vector<const char *> GetPreferredRideEntryOrder(uint8 rideType);
-    static sint32 VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b);
+    static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8 rideType);
+    static sint32 VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b);
+    static bool RideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry);
 };
-
 
 extern "C"
 {
 #endif
-    const RideGroup * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry);
-    bool ride_type_has_ride_groups(uint8 rideType);
+    const RideGroup * get_ride_group(const uint8 rideType, const rct_ride_entry * rideEntry);
+    bool ride_type_has_ride_groups(const uint8 rideType);
+
+    bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
 #ifdef __cplusplus
 }
 #endif
