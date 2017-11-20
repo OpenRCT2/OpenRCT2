@@ -234,7 +234,7 @@ static void window_install_track_paint(rct_window *w, rct_drawpixelinfo *dpi)
     g1temp.height = 217;
     g1temp.flags = G1_FLAG_BMP;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
-    gfx_draw_sprite(dpi, 0, x, y, 0);
+    gfx_draw_sprite(dpi, SPR_TEMP, x, y, 0);
 
     x = w->x + (widget->left + widget->right) / 2;
     y = w->y + widget->bottom - 12;

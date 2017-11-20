@@ -19,7 +19,9 @@
 
 enum {
     SPR_NONE = -1,
-    SPR_TEMP = 0,
+
+    // Used for on-demand drawing of dynamic memory
+    SPR_TEMP = 0x70000,
 
     SPR_SCROLLING_TEXT_START = 1542,
     SPR_SCROLLING_TEXT_DEFAULT = 1574,

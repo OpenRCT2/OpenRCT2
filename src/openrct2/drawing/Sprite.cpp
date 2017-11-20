@@ -167,6 +167,7 @@ extern "C"
     #else
         static rct_g1_element * _g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
     #endif
+    static rct_g1_element _g1Temp = { 0 };
     bool gTinyFontAntiAliased = false;
 
     /**
@@ -754,7 +755,11 @@ extern "C"
             return nullptr;
         }
 
-        if (image_id < SPR_G2_BEGIN)
+        if (image_id == SPR_TEMP)
+        {
+            return &_g1Temp;
+        }
+        else if (image_id < SPR_G2_BEGIN)
         {
             if (image_id >= (sint32)_g1ElementsCount)
             {
@@ -791,11 +796,15 @@ extern "C"
     {
         openrct2_assert(!gOpenRCT2NoGraphics, "gfx_set_g1_element called on headless instance");
 #ifdef DEBUG
-        openrct2_assert(imageId >= 0 && imageId < SPR_G2_BEGIN, "gfx_set_g1_element called with unexpected image id");
+        openrct2_assert((imageId >= 0 && imageId < SPR_G2_BEGIN) || imageId == SPR_TEMP, "gfx_set_g1_element called with unexpected image id");
         openrct2_assert(g1 != nullptr, "g1 was nullptr");
 #endif
 
-        if (imageId >= 0 || imageId < SPR_G2_BEGIN)
+        if (imageId == SPR_TEMP)
+        {
+            _g1Temp = *g1;
+        }
+        else if (imageId >= 0 || imageId < SPR_G2_BEGIN)
         {
             if (imageId < (sint32)_g1ElementsCount)
             {
