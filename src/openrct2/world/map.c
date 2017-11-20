@@ -40,7 +40,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
-#include "tile_inspector.h"
+#include "TileInspector.h"
 
 /**
  * Replaces 0x00993CCC, 0x00993CCE
