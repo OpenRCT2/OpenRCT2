@@ -424,7 +424,7 @@ private:
                         sceneryEntry = (rct_scenery_entry *)loadedObject->GetLegacyData();
                         sceneryEntry->path_bit.scenery_tab_id = GetPrimarySceneryGroupEntryIndex(loadedObject);
                         break;
-                    case OBJECT_TYPE_SCENERY_SETS:
+                    case OBJECT_TYPE_SCENERY_GROUP:
                         auto sgObject = dynamic_cast<SceneryGroupObject *>(loadedObject);
                         sgObject->UpdateEntryIndexes();
                         break;

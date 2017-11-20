@@ -178,7 +178,7 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             continue;
         if (tileElement->flags & (1 << 4))
             continue;
@@ -433,7 +433,7 @@ static bool map_animation_invalidate_large_scenery(sint32 x, sint32 y, sint32 ba
     do {
         if (tileElement->base_height != baseZ)
             continue;
-        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_LARGE_SCENERY)
             continue;
 
         sceneryEntry = get_large_scenery_entry(tileElement->properties.scenery.type & 0x3FF);

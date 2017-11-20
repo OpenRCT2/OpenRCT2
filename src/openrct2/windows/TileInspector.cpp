@@ -1989,7 +1989,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
         case TILE_ELEMENT_TYPE_TRACK:
             typeName = "Track";
             break;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             snprintf(
                 buffer, sizeof(buffer),
                 "Scenery (%s)",
@@ -2008,7 +2008,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
             );
             typeName = buffer;
             break;
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             typeName = "Scenery multiple";
             break;
         case TILE_ELEMENT_TYPE_BANNER:

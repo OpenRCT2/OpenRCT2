@@ -1171,7 +1171,7 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
             research_reset_current_item();
             gSilentResearch = false;
         }
-        else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+        else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
             research_insert(true, groupIndex, RESEARCH_CATEGORY_SCENERYSET);
 
             gSilentResearch = true;

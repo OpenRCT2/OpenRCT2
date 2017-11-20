@@ -196,7 +196,7 @@ typedef struct rct_scenery_entry {
 assert_struct_size(rct_scenery_entry, 6 + 21);
 #endif
 
-typedef struct rct_scenery_set_entry {
+typedef struct rct_scenery_group_entry {
     rct_string_id name;             // 0x00
     uint32 image;                   // 0x02
     uint16 scenery_entries[0x80];   // 0x06
@@ -205,8 +205,8 @@ typedef struct rct_scenery_set_entry {
     uint8 var_108;                  // 0x108, order?
     uint8 pad_109;
     uint32 entertainer_costumes;    // 0x10A
-} rct_scenery_set_entry;
-assert_struct_size(rct_scenery_set_entry, 14 + 2 * 0x80);
+} rct_scenery_group_entry;
+assert_struct_size(rct_scenery_group_entry, 14 + 2 * 0x80);
 #pragma pack(pop)
 
 enum {
@@ -308,7 +308,7 @@ rct_scenery_entry *get_large_scenery_entry(sint32 entryIndex);
 rct_scenery_entry *get_wall_entry(sint32 entryIndex);
 rct_scenery_entry *get_banner_entry(sint32 entryIndex);
 rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex);
-rct_scenery_set_entry *get_scenery_group_entry(sint32 entryIndex);
+rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
 

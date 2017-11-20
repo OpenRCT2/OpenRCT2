@@ -135,7 +135,7 @@ protected:
             }
             stream->WriteValue<uint8>(item.RideGroupIndex);
             break;
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             stream->WriteValue<uint16>(item.NumThemeObjects);
             for (uint16 i = 0; i < item.NumThemeObjects; i++)
             {
@@ -166,7 +166,7 @@ protected:
             }
             item.RideGroupIndex = stream->ReadValue<uint8>();
             break;
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             item.NumThemeObjects = stream->ReadValue<uint16>();
             item.ThemeObjects = Memory::AllocateArray<rct_object_entry>(item.NumThemeObjects);
             for (uint16 i = 0; i < item.NumThemeObjects; i++)
@@ -436,7 +436,7 @@ private:
 
         uint8 objectType = item->ObjectEntry.flags & 0x0F;
         switch (objectType) {
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             Memory::Free(item->ThemeObjects);
             item->ThemeObjects = nullptr;
             break;

@@ -537,7 +537,7 @@ static void setup_in_use_selection_flags()
                 Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
             }
             break;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             type = iter.element->properties.scenery.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
             Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
@@ -557,7 +557,7 @@ static void setup_in_use_selection_flags()
             assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
             Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
             break;
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             type = scenery_large_get_type(iter.element);
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
             Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
@@ -673,7 +673,7 @@ static void remove_selected_objects_from_research(const rct_object_entry* instal
             research_remove(entry_index | rideEntry->ride_type[j] << 8 | 0x10000);
         }
     }
-    else if (entry_type == OBJECT_TYPE_SCENERY_SETS){
+    else if (entry_type == OBJECT_TYPE_SCENERY_GROUP){
         research_remove(entry_index);
     }
 }
@@ -1571,7 +1571,7 @@ static sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flag
         }
 
         uint8 objectType = item->ObjectEntry.flags & 0xF;
-        if (objectType == OBJECT_TYPE_SCENERY_SETS && (flags & (1 << 2))) {
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2))) {
             for (sint32 j = 0; j < item->NumThemeObjects; j++) {
                 window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j]);
             }
@@ -1601,7 +1601,7 @@ static sint32 window_editor_object_selection_select_object(uint8 bh, sint32 flag
             return 0;
         }
 
-        if (objectType == OBJECT_TYPE_SCENERY_SETS && (flags & (1 << 2))) {
+        if (objectType == OBJECT_TYPE_SCENERY_GROUP && (flags & (1 << 2))) {
             for (uint16 j = 0; j < item->NumThemeObjects; j++) {
                 if (!window_editor_object_selection_select_object(++bh, flags, &item->ThemeObjects[j])) {
                     _maxObjectsWasHit = true;
@@ -1695,7 +1695,7 @@ static void editor_load_selected_objects()
                         uint8 rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         research_insert(1, 0x10000 | (rideType << 8) | entryIndex, rideEntry->category[0]);
                     }
-                    else if (objectType == OBJECT_TYPE_SCENERY_SETS) {
+                    else if (objectType == OBJECT_TYPE_SCENERY_GROUP) {
                         research_insert(1, entryIndex, RESEARCH_CATEGORY_SCENERYSET);
                     }
                 }
@@ -1909,7 +1909,7 @@ sint32 editor_remove_unused_objects()
             const ObjectRepositoryItem * item = &items[i];
             uint8 objectType = item->ObjectEntry.flags & 0xF;
 
-            if (objectType == OBJECT_TYPE_PARK_ENTRANCE || objectType == OBJECT_TYPE_SCENARIO_TEXT || objectType == OBJECT_TYPE_WATER || objectType == OBJECT_TYPE_SCENERY_SETS)
+            if (objectType == OBJECT_TYPE_PARK_ENTRANCE || objectType == OBJECT_TYPE_SCENARIO_TEXT || objectType == OBJECT_TYPE_WATER || objectType == OBJECT_TYPE_SCENERY_GROUP)
             {
                 continue;
             }

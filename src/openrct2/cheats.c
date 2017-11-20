@@ -87,7 +87,7 @@ static void cheat_water_plants()
 
     tile_element_iterator_begin(&it);
     do {
-        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SCENERY) {
+        if (tile_element_get_type(it.element) == TILE_ELEMENT_TYPE_SMALL_SCENERY) {
             it.element->properties.scenery.age = 0;
         }
     } while (tile_element_iterator_next(&it));

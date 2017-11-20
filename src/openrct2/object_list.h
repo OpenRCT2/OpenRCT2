@@ -32,7 +32,7 @@ extern "C" {
     extern rct_banner                   *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
     extern rct_footpath_entry           *gFootpathEntries[MAX_PATH_OBJECTS];
     extern rct_path_bit_scenery_entry   *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
-    extern rct_scenery_set_entry        *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
+    extern rct_scenery_group_entry      *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
     extern rct_entrance_type            *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
     extern rct_water_type               *gWaterEntries[MAX_WATER_OBJECTS];
     extern rct_stex_entry               *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
@@ -46,7 +46,7 @@ extern "C" {
     #define gBannerSceneryEntries       RCT2_ADDRESS(RCT2_ADDRESS_BANNER_SCENERY_ENTRIES,   rct_banner*)
     #define gFootpathEntries            RCT2_ADDRESS(RCT2_ADDRESS_PATH_TYPES,               rct_footpath_entry*)
     #define gFootpathAdditionEntries    RCT2_ADDRESS(RCT2_ADDRESS_PATH_BIT_SCENERY_ENTRIES, rct_path_bit_scenery_entry*)
-    #define gSceneryGroupEntries        RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES,      rct_scenery_set_entry*)
+    #define gSceneryGroupEntries        RCT2_ADDRESS(RCT2_ADDRESS_SCENERY_SET_ENTRIES,      rct_scenery_group_entry*)
     #define gParkEntranceEntries        RCT2_ADDRESS(RCT2_ADDRESS_PARK_ENTRANCE_ENTRIES,    rct_entrance_type*)
     #define gWaterEntries               RCT2_ADDRESS(RCT2_ADDRESS_WATER_ENTRIES,            rct_water_type*)
     #define gStexEntries                RCT2_ADDRESS(RCT2_ADDRESS_SCENARIO_TEXT_ENTRIES,    rct_stex_entry*)

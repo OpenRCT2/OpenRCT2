@@ -1137,7 +1137,7 @@ void game_fix_save_vars()
             }
         } else {
             uint8 entryIndex = researchItem->entryIndex;
-            rct_scenery_set_entry *sceneryGroupEntry = get_scenery_group_entry(entryIndex);
+            rct_scenery_group_entry *sceneryGroupEntry = get_scenery_group_entry(entryIndex);
             if (sceneryGroupEntry == NULL) {
                 research_remove(researchItem->entryIndex);
                 i--;

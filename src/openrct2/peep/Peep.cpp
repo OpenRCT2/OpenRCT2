@@ -633,8 +633,8 @@ static uint8 peep_assess_surroundings(sint16 centre_x, sint16 centre_y, sint16 c
                         num_rubbish++;
                     }
                     break;
-                case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-                case TILE_ELEMENT_TYPE_SCENERY:
+                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
                     num_scenery++;
                     break;
                 case TILE_ELEMENT_TYPE_TRACK:
@@ -5529,7 +5529,7 @@ static void peep_update_watering(rct_peep * peep)
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
                 continue;
 
             if (abs(((sint32)peep->next_z) - tile_element->base_height) > 4)
@@ -6787,7 +6787,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
 
         do
         {
-            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SCENERY)
+            if (tile_element_get_type(tile_element) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
             {
                 continue;
             }
@@ -12729,7 +12729,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             }
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             if (!(get_large_scenery_entry(scenery_large_get_type(tileElement))->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))
@@ -12840,7 +12840,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             }
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             auto sceneryEntry = get_large_scenery_entry(scenery_large_get_type(tileElement));
             if (!(sceneryEntry == nullptr || sceneryEntry->large_scenery.flags &
@@ -12952,7 +12952,7 @@ static bool peep_find_ride_to_look_at(rct_peep * peep, uint8 edge, uint8 * rideT
             }
         }
 
-        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+        if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_LARGE_SCENERY)
         {
             if (!(get_large_scenery_entry(scenery_large_get_type(tileElement))->large_scenery.flags &
                   LARGE_SCENERY_FLAG_PHOTOGENIC))

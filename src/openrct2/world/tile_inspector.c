@@ -223,7 +223,7 @@ sint32 tile_inspector_rotate_element_at(sint32 x, sint32 y, sint32 elementIndex,
             tileElement->properties.path.edges |= ((pathCorners << 1) | (pathCorners >> 3)) & 0xF0;
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
         case TILE_ELEMENT_TYPE_ENTRANCE:
         case TILE_ELEMENT_TYPE_WALL:
             newRotation = tile_element_get_direction_with_offset(tileElement, 1);
@@ -840,7 +840,7 @@ sint32 tile_inspector_scenery_set_quarter_location(sint32 x, sint32 y, sint32 el
 {
     rct_tile_element *const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!tileElement || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+    if (!tileElement || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
     {
         return MONEY32_UNDEFINED;
     }
@@ -869,7 +869,7 @@ sint32 tile_inspector_scenery_set_quarter_collision(sint32 x, sint32 y, sint32 e
 {
     rct_tile_element *const tileElement = map_get_nth_element_at(x, y, elementIndex);
 
-    if (!tileElement || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SCENERY)
+    if (!tileElement || tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_SMALL_SCENERY)
     {
         return MONEY32_UNDEFINED;
     }

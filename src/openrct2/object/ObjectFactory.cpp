@@ -186,7 +186,7 @@ namespace ObjectFactory
         case OBJECT_TYPE_PATH_BITS:
             result = new FootpathItemObject(entry);
             break;
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             result = new SceneryGroupObject(entry);
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:

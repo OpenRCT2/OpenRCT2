@@ -239,13 +239,13 @@ void window_scenery_init()
         if (scenerySetIndex == MAX_SCENERY_GROUP_OBJECTS)
             continue;
 
-        rct_scenery_set_entry* scenerySetEntry = get_scenery_group_entry(scenerySetIndex);
-        if (scenerySetEntry == nullptr)
+        rct_scenery_group_entry* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
+        if (sceneryGroupEntry == nullptr)
             continue;
 
         sint32 sceneryTabEntryCount = 0;
-        for (sint32 i = 0; i < scenerySetEntry->entry_count; i++) {
-            uint16 sceneryEntryId = scenerySetEntry->scenery_entries[i];
+        for (sint32 i = 0; i < sceneryGroupEntry->entry_count; i++) {
+            uint16 sceneryEntryId = sceneryGroupEntry->scenery_entries[i];
             if (scenery_is_invented(sceneryEntryId) || gCheatsIgnoreResearchStatus) {
                 window_scenery_tab_entries[scenerySetIndex][sceneryTabEntryCount] = sceneryEntryId;
                 window_scenery_tab_entries[scenerySetIndex][++sceneryTabEntryCount] = -1;
@@ -316,7 +316,7 @@ void window_scenery_init()
     sint32 usedValues = 0;
 
     for (sint32 scenerySetId = 0; scenerySetId < MAX_SCENERY_GROUP_OBJECTS; scenerySetId++) {
-        rct_scenery_set_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
+        rct_scenery_group_entry* sceneryEntry = get_scenery_group_entry(scenerySetId);
         if (sceneryEntry == nullptr)
             continue;
 
@@ -902,7 +902,7 @@ void window_scenery_invalidate(rct_window *w)
     uint16 tabIndex = gWindowSceneryActiveTabIndex;
     uint32 titleStringId = STR_MISCELLANEOUS;
     if (tabIndex < SCENERY_WINDOW_TABS - 1) {
-        rct_scenery_set_entry * sgEntry = get_scenery_group_entry(tabIndex);
+        rct_scenery_group_entry * sgEntry = get_scenery_group_entry(tabIndex);
         if (sgEntry != nullptr) {
             titleStringId = sgEntry->name;
         }

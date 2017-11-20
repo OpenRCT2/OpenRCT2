@@ -280,7 +280,7 @@ static void research_scenery_sets_setup(){
         if (!find_object_in_entry_group(object, &entry_type, &entry_index))
             continue;
 
-        if (entry_type != OBJECT_TYPE_SCENERY_SETS)
+        if (entry_type != OBJECT_TYPE_SCENERY_GROUP)
             continue;
 
         rct_research_item* research = gResearchItems;

@@ -406,8 +406,8 @@ static void ride_ratings_score_close_proximity_in_direction(rct_tile_element *in
                 }
             }
             break;
-        case TILE_ELEMENT_TYPE_SCENERY:
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             if (tileElement->base_height < inputTileElement->clearance_height) {
                 if (inputTileElement->base_height > tileElement->clearance_height) {
                     proximity_score_increment(PROXIMITY_SCENERY_SIDE_ABOVE);
@@ -1297,7 +1297,7 @@ static sint32 ride_ratings_get_scenery_score(Ride *ride)
                     continue;
 
                 sint32 type = tile_element_get_type(tileElement);
-                if (type == TILE_ELEMENT_TYPE_SCENERY || type == TILE_ELEMENT_TYPE_SCENERY_MULTIPLE)
+                if (type == TILE_ELEMENT_TYPE_SMALL_SCENERY || type == TILE_ELEMENT_TYPE_LARGE_SCENERY)
                     numSceneryItems++;
             } while (!tile_element_is_last_for_tile(tileElement++));
         }

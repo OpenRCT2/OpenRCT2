@@ -291,7 +291,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         case TILE_ELEMENT_TYPE_TRACK:
             track_paint(session, direction, height, tile_element);
             break;
-        case TILE_ELEMENT_TYPE_SCENERY:
+        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             scenery_paint(session, direction, height, tile_element);
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
@@ -300,8 +300,8 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         case TILE_ELEMENT_TYPE_WALL:
             fence_paint(session, direction, height, tile_element);
             break;
-        case TILE_ELEMENT_TYPE_SCENERY_MULTIPLE:
-            scenery_multiple_paint(session, direction, height, tile_element);
+        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            large_scenery_paint(session, direction, height, tile_element);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             banner_paint(session, direction, height, tile_element);

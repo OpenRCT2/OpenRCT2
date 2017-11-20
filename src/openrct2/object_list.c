@@ -59,7 +59,7 @@ sint32 object_entry_group_encoding[] = {
     rct_banner                  *gBannerSceneryEntries[MAX_BANNER_OBJECTS];
     rct_footpath_entry          *gFootpathEntries[MAX_PATH_OBJECTS];
     rct_path_bit_scenery_entry  *gFootpathAdditionEntries[MAX_PATH_ADDITION_OBJECTS];
-    rct_scenery_set_entry       *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
+    rct_scenery_group_entry     *gSceneryGroupEntries[MAX_SCENERY_GROUP_OBJECTS];
     rct_entrance_type           *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
     rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
     rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];

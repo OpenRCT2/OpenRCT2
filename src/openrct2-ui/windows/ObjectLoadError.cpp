@@ -132,7 +132,7 @@ static rct_string_id get_object_type_string(const rct_object_entry *entry)
         case OBJECT_TYPE_PATH_BITS:
             result = STR_OBJECT_SELECTION_PATH_EXTRAS;
             break;
-        case OBJECT_TYPE_SCENERY_SETS:
+        case OBJECT_TYPE_SCENERY_GROUP:
             result = STR_OBJECT_SELECTION_SCENERY_GROUPS;
             break;
         case OBJECT_TYPE_PARK_ENTRANCE:
