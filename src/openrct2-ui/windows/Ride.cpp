@@ -192,29 +192,29 @@ enum {
 #define RCT1_LIGHT_OFFSET 4
 
 #define MAIN_RIDE_WIDGETS \
-    { WWT_FRAME,            0,  0,      315,    0,      206,    0xFFFFFFFF,                     STR_NONE                                    }, \
+    { WWT_FRAME,            0,  0,      315,    0,      206,    STR_NONE,                       STR_NONE                                    }, \
     { WWT_CAPTION,          0,  1,      314,    1,      14,     STR_RIDE_WINDOW_TITLE,          STR_WINDOW_TITLE_TIP                        }, \
     { WWT_CLOSEBOX,         0,  303,    313,    2,      13,     STR_CLOSE_X,                    STR_CLOSE_WINDOW_TIP                        }, \
-    { WWT_RESIZE,           1,  0,      315,    43,     179,    0xFFFFFFFF,                     STR_NONE                                    }, \
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
-    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OPERATING_OPTIONS_TIP                   }, \
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MAINTENANCE_OPTIONS_TIP                 }, \
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
-    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
-    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_GRAPHS_TIP                              }, \
-    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_INCOME_AND_COSTS_TIP                    }, \
-    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_CUSTOMER_INFORMATION_TIP                }
+    { WWT_RESIZE,           1,  0,      315,    43,     179,    STR_NONE,                       STR_NONE                                    }, \
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VIEW_OF_RIDE_ATTRACTION_TIP             }, \
+    { WWT_TAB,              1,  34,     64,     17,     46,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_VEHICLE_DETAILS_AND_OPTIONS_TIP         }, \
+    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_OPERATING_OPTIONS_TIP                   }, \
+    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_MAINTENANCE_OPTIONS_TIP                 }, \
+    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_COLOUR_SCHEME_OPTIONS_TIP               }, \
+    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_SOUND_AND_MUSIC_OPTIONS_TIP             }, \
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_MEASUREMENTS_AND_TEST_DATA_TIP          }, \
+    { WWT_TAB,              1,  220,    250,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_GRAPHS_TIP                              }, \
+    { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_INCOME_AND_COSTS_TIP                    }, \
+    { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,     STR_CUSTOMER_INFORMATION_TIP                }
 
 // 0x009ADC34
 static rct_widget window_ride_main_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_VIEWPORT,         1,  3,      290,    60,     166,    STR_VIEWPORT,                   STR_NONE                                    },
-    { WWT_DROPDOWN,         1,  35,     256,    46,     57,     0xFFFFFFFF,                     STR_VIEW_SELECTION                          },
+    { WWT_DROPDOWN,         1,  35,     256,    46,     57,     STR_NONE,                       STR_VIEW_SELECTION                          },
     { WWT_DROPDOWN_BUTTON,  1,  245,    255,    47,     56,     STR_DROPDOWN_GLYPH,             STR_VIEW_SELECTION                          },
-    { WWT_12,               1,  3,      290,    167,    177,    0xFFFFFFFF,                     STR_NONE                                    },
-    { WWT_FLATBTN,          1,  291,    314,    46,     69,     0xFFFFFFFF,                     STR_OPEN_CLOSE_OR_TEST_RIDE                 },
+    { WWT_12,               1,  3,      290,    167,    177,    STR_NONE,                       STR_NONE                                    },
+    { WWT_FLATBTN,          1,  291,    314,    46,     69,     STR_NONE,                       STR_OPEN_CLOSE_OR_TEST_RIDE                 },
     { WWT_FLATBTN,          1,  291,    314,    70,     93,     SPR_CONSTRUCTION,               STR_CONSTRUCTION                            },
     { WWT_FLATBTN,          1,  291,    314,    94,     117,    SPR_RENAME,                     STR_NAME_RIDE_TIP                           },
     { WWT_FLATBTN,          1,  291,    314,    118,    141,    SPR_LOCATE,                     STR_LOCATE_SUBJECT_TIP                      },
@@ -234,7 +234,7 @@ static rct_widget window_ride_main_widgets[] = {
 // 0x009ADDA8
 static rct_widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_DROPDOWN,         1,  7,      308,    50,     61,     STR_NONE,                                   STR_NONE                                        },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
     { WWT_SCROLL,           1,  7,      308,    141,    183,    0,                                          STR_NONE                                        },
     { WWT_SPINNER,          1,  7,      151,    190,    201,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP                            },
@@ -256,7 +256,7 @@ static rct_widget window_ride_operating_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    76,     80,     STR_NUMERIC_UP,                             STR_SELECT_LIFT_HILL_CHAIN_SPEED_TIP            },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    81,     85,     STR_NUMERIC_DOWN,                           STR_SELECT_LIFT_HILL_CHAIN_SPEED_TIP            },
     { WWT_CHECKBOX,         1,  7,      86,     109,    120,    STR_WAIT_FOR,                               STR_WAIT_FOR_PASSENGERS_BEFORE_DEPARTING_TIP    },
-    { WWT_CHECKBOX,         1,  7,      308,    124,    135,    0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_CHECKBOX,         1,  7,      308,    124,    135,    STR_NONE,                                   STR_NONE                                        },
     { WWT_CHECKBOX,         1,  7,      156,    139,    150,    STR_MINIMUM_WAITING_TIME,                   STR_MINIMUM_LENGTH_BEFORE_DEPARTING_TIP         },
     { WWT_SPINNER,          1,  157,    308,    139,    150,    STR_ARG_10_STRINGID,                        STR_NONE                                        },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    140,    144,    STR_NUMERIC_UP,                             STR_NONE                                        },
@@ -266,11 +266,11 @@ static rct_widget window_ride_operating_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    155,    159,    STR_NUMERIC_UP,                             STR_NONE                                        },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    160,    164,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
     { WWT_CHECKBOX,         1,  7,      308,    169,    180,    STR_SYNCHRONISE_WITH_ADJACENT_STATIONS,     STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP      },
-    { WWT_24,               1,  7,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_24,               1,  7,      149,    61,     72,     STR_NONE,                                   STR_NONE                                        },
     { WWT_24,               1,  7,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
-    { WWT_DROPDOWN,         1,  7,      308,    47,     58,     0xFFFFFFFF,                                 STR_SELECT_OPERATING_MODE                       },
+    { WWT_DROPDOWN,         1,  7,      308,    47,     58,     STR_NONE,                                   STR_SELECT_OPERATING_MODE                       },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    48,     57,     STR_DROPDOWN_GLYPH,                         STR_SELECT_OPERATING_MODE                       },
-    { WWT_DROPDOWN,         1,  87,     308,    109,    120,    0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_DROPDOWN,         1,  87,     308,    109,    120,    STR_NONE,                                   STR_NONE                                        },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    110,    119,    STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
     { WWT_24,               1,  7,      149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
     { WWT_SPINNER,          1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE                                        },
@@ -284,7 +284,7 @@ static rct_widget window_ride_maintenance_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_DROPDOWN,         1,  107,    308,    71,     82,     0,                              STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    72,     81,     STR_DROPDOWN_GLYPH,             STR_SELECT_HOW_OFTEN_A_MECHANIC_SHOULD_CHECK_THIS_RIDE      },
-    { WWT_FLATBTN,          1,  289,    312,    108,    131,    0xFFFFFFFF,                     STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP                   },
+    { WWT_FLATBTN,          1,  289,    312,    108,    131,    STR_NONE,                       STR_LOCATE_NEAREST_AVAILABLE_MECHANIC_TIP                   },
     { WWT_FLATBTN,          1,  265,    288,    108,    131,    SPR_NO_ENTRY,                   STR_DEBUG_FORCE_BREAKDOWN_TIP                               },
     { WIDGETS_END },
 };
@@ -292,26 +292,26 @@ static rct_widget window_ride_maintenance_widgets[] = {
 // 0x009AE2A4
 static rct_widget window_ride_colour_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_SPINNER,          1,  3,      70,     47,     93,     0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_SPINNER,          1,  3,      70,     47,     93,     STR_NONE,                       STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  74,     312,    49,     60,     STR_ARG_14_STRINGID,            STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_COLOUR_SCHEME_TO_CHANGE_TIP                             },
-    { WWT_COLOURBTN,        1,  79,     90,     74,     85,     0xFFFFFFFF,                     STR_SELECT_MAIN_COLOUR_TIP                                  },
-    { WWT_COLOURBTN,        1,  99,     110,    74,     85,     0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
-    { WWT_COLOURBTN,        1,  119,    130,    74,     85,     0xFFFFFFFF,                     STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP                     },
-    { WWT_DROPDOWN,         1,  74,     312,    49,     60,     0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_COLOURBTN,        1,  79,     90,     74,     85,     STR_NONE,                       STR_SELECT_MAIN_COLOUR_TIP                                  },
+    { WWT_COLOURBTN,        1,  99,     110,    74,     85,     STR_NONE,                       STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
+    { WWT_COLOURBTN,        1,  119,    130,    74,     85,     STR_NONE,                       STR_SELECT_SUPPORT_STRUCTURE_COLOUR_TIP                     },
+    { WWT_DROPDOWN,         1,  74,     312,    49,     60,     STR_NONE,                       STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  301,    311,    50,     59,     STR_DROPDOWN_GLYPH,             STR_NONE                                                    },
     { WWT_FLATBTN,          1,  289,    312,    68,     91,     SPR_PAINTBRUSH,                 STR_PAINT_INDIVIDUAL_AREA_TIP                               },
-    { WWT_SPINNER,          1,  245,    312,    101,    147,    0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_SPINNER,          1,  245,    312,    101,    147,    STR_NONE,                       STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  3,      241,    103,    114,    0,                              STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  230,    240,    104,    113,    STR_DROPDOWN_GLYPH,             STR_SELECT_STYLE_OF_ENTRANCE_EXIT_STATION_TIP               },
     { WWT_SCROLL,           1,  3,      70,     157,    203,    0,                              STR_NONE                                                    },
     { WWT_DROPDOWN,         1,  74,     312,    157,    168,    STR_ARG_6_STRINGID,             STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  301,    311,    158,    167,    STR_DROPDOWN_GLYPH,             STR_SELECT_VEHICLE_COLOUR_SCHEME_TIP                        },
-    { WWT_DROPDOWN,         1,  74,     312,    173,    184,    0xFFFFFFFF,                     STR_NONE                                                    },
+    { WWT_DROPDOWN,         1,  74,     312,    173,    184,    STR_NONE,                       STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  301,    311,    174,    183,    STR_DROPDOWN_GLYPH,             STR_SELECT_VEHICLE_TO_MODIFY_TIP                            },
-    { WWT_COLOURBTN,        1,  79,     90,     190,    201,    0xFFFFFFFF,                     STR_SELECT_MAIN_COLOUR_TIP                                  },
-    { WWT_COLOURBTN,        1,  99,     110,    190,    201,    0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
-    { WWT_COLOURBTN,        1,  119,    130,    190,    201,    0xFFFFFFFF,                     STR_SELECT_ADDITIONAL_COLOUR_2_TIP                          },
+    { WWT_COLOURBTN,        1,  79,     90,     190,    201,    STR_NONE,                       STR_SELECT_MAIN_COLOUR_TIP                                  },
+    { WWT_COLOURBTN,        1,  99,     110,    190,    201,    STR_NONE,                       STR_SELECT_ADDITIONAL_COLOUR_1_TIP                          },
+    { WWT_COLOURBTN,        1,  119,    130,    190,    201,    STR_NONE,                       STR_SELECT_ADDITIONAL_COLOUR_2_TIP                          },
     { WIDGETS_END },
 };
 
@@ -349,12 +349,12 @@ static rct_widget window_ride_graphs_widgets[] = {
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_24,               1,  5,      144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
+    { WWT_24,               1,  5,      144,    50,     61,     STR_NONE,                                   STR_NONE                                                    },
     { WWT_SPINNER,          1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    51,     55,     STR_NUMERIC_UP,                             STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    56,     60,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },
     { WWT_CHECKBOX,         1,  5,      310,    61,     72,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
-    { WWT_24,               1,  5,      144,    89,     100,    0xFFFFFFFF,                                 STR_NONE                                                    },
+    { WWT_24,               1,  5,      144,    89,     100,    STR_NONE,                                   STR_NONE                                                    },
     { WWT_SPINNER,          1,  147,    308,    89,     100,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    90,     94,     STR_NUMERIC_UP,                             STR_NONE                                                    },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    95,     99,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },

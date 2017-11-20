@@ -38,10 +38,10 @@ enum WINDOW_CLEAR_SCENERY_WIDGET_IDX {
 validate_global_widx(WC_CLEAR_SCENERY, WIDX_PREVIEW);
 
 static rct_widget window_clear_scenery_widgets[] = {
-    { WWT_FRAME,    0,  0,  97, 0,  93, 0xFFFFFFFF,                                 STR_NONE },                         // panel / background
-    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                          STR_WINDOW_TITLE_TIP },             // title bar
-    { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                STR_CLOSE_WINDOW_TIP },             // close x button
-    { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                       STR_NONE },                         // preview box
+    { WWT_FRAME,    0,  0,  97, 0,  93, STR_NONE,                                         STR_NONE },                         // panel / background
+    { WWT_CAPTION,  0,  1,  96, 1,  14, STR_CLEAR_SCENERY,                                STR_WINDOW_TITLE_TIP },             // title bar
+    { WWT_CLOSEBOX, 0,  85, 95, 2,  13, STR_CLOSE_X,                                      STR_CLOSE_WINDOW_TIP },             // close x button
+    { WWT_IMGBTN,   0,  27, 70, 17, 48, SPR_LAND_TOOL_SIZE_0,                             STR_NONE },                         // preview box
     { WWT_TRNBTN,   1,  28, 43, 18, 33, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_DECREASE,        STR_ADJUST_SMALLER_LAND_TIP },      // decrement size
     { WWT_TRNBTN,   1,  54, 69, 32, 47, IMAGE_TYPE_REMAP | SPR_LAND_TOOL_INCREASE,        STR_ADJUST_LARGER_LAND_TIP },       // increment size
     { WWT_FLATBTN,  1,  7,  30, 53, 76, IMAGE_TYPE_REMAP | SPR_G2_BUTTON_TREES,           STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP }, // small scenery

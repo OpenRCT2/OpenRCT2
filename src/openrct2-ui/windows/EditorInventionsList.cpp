@@ -48,22 +48,22 @@ enum {
 };
 
 static rct_widget window_editor_inventions_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    STR_NONE,               STR_NONE                },
-    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,     STR_WINDOW_TITLE_TIP    },
-    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP    },
-    { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,               STR_NONE                },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE                },
-    { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,        STR_NONE                },
-    { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,        STR_NONE                },
-    { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,       STR_NONE                },
+    { WWT_FRAME,            0,  0,      599,    0,      399,    STR_NONE,                   STR_NONE                },
+    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_INVENTION_LIST,         STR_WINDOW_TITLE_TIP    },
+    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP    },
+    { WWT_RESIZE,           1,  0,      599,    43,     399,    STR_NONE,                   STR_NONE                },
+    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_NONE                },
+    { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,            STR_NONE                },
+    { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,            STR_NONE                },
+    { WWT_FLATBTN,          1,  431,    544,    106,    219,    STR_NONE,                   STR_NONE                },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,         STR_RANDOM_SHUFFLE_TIP  },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,        STR_NONE                },
+    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,           STR_NONE                },
     { WIDGETS_END }
 };
 
 static rct_widget window_editor_inventions_list_drag_widgets[] = {
-    { WWT_IMGBTN,           0,  0,      149,    0,      13,     STR_NONE,               STR_NONE                },
+    { WWT_IMGBTN,           0,  0,      149,    0,      13,     STR_NONE,                   STR_NONE                },
     { WIDGETS_END }
 };
 

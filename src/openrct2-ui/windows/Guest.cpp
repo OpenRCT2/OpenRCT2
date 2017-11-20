@@ -69,19 +69,19 @@ validate_global_widx(WC_PEEP, WIDX_ACTION_LBL);
 validate_global_widx(WC_PEEP, WIDX_PICKUP);
 
 static rct_widget window_guest_overview_widgets[] = {
-    {WWT_FRAME,    0, 0,   191, 0,   156, 0xFFFFFFFF, STR_NONE},                            // Panel / Background
+    {WWT_FRAME,    0, 0,   191, 0,   156, STR_NONE, STR_NONE},                            // Panel / Background
     {WWT_CAPTION,  0, 1,   190, 1,   14,  STR_STRINGID,         STR_WINDOW_TITLE_TIP},      // Title
     {WWT_CLOSEBOX, 0, 179, 189, 2,   13,  STR_CLOSE_X,          STR_CLOSE_WINDOW_TIP},      // Close x button
-    {WWT_RESIZE,   1, 0,   191, 43,  156, 0xFFFFFFFF, STR_NONE},                            // Resize
+    {WWT_RESIZE,   1, 0,   191, 43,  156, STR_NONE, STR_NONE},                            // Resize
     {WWT_TAB,      1, 3,   33,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VIEW_TIP},           // Tab 1
     {WWT_TAB,      1, 73,  64,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_NEEDS_TIP},          // Tab 2
     {WWT_TAB,      1, 65,  95,  17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_VISITED_RIDES_TIP},  // Tab 3
     {WWT_TAB,      1, 96,  126, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
     {WWT_TAB,      1, 127, 157, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
     {WWT_TAB,      1, 158, 188, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
-    {WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                // Label Thought marquee
-    {WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                // Viewport
-    {WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                // Label Action
+    {WWT_12,       1, 3,   166, 45,  56,  STR_NONE, STR_NONE},                // Label Thought marquee
+    {WWT_VIEWPORT, 1, 3,   166, 57,  143, STR_NONE, STR_NONE},                // Viewport
+    {WWT_12,       1, 3,   166, 144, 154, STR_NONE, STR_NONE},                // Label Action
     {WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
     {WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
     {WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button

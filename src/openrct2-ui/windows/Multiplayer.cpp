@@ -58,10 +58,10 @@ enum WINDOW_MULTIPLAYER_WIDGET_IDX {
 };
 
 #define MAIN_MULTIPLAYER_WIDGETS \
-    { WWT_FRAME,            0,  0,      339,    0,      239,    0xFFFFFFFF,                 STR_NONE },                 /* panel / background   */  \
-    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_MULTIPLAYER,            STR_WINDOW_TITLE_TIP },     /* title bar            */  \
-    { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
-    { WWT_RESIZE,           1,  0,      339,    43,     239,    0xFFFFFFFF,                 STR_NONE },                 /* content panel        */  \
+    { WWT_FRAME,            0,  0,      339,    0,      239,    STR_NONE,                         STR_NONE },                 /* panel / background   */  \
+    { WWT_CAPTION,          0,  1,      338,    1,      14,     STR_MULTIPLAYER,                  STR_WINDOW_TITLE_TIP },     /* title bar            */  \
+    { WWT_CLOSEBOX,         0,  327,    337,    2,      13,     STR_CLOSE_X,                      STR_CLOSE_WINDOW_TIP },     /* close x button       */  \
+    { WWT_RESIZE,           1,  0,      339,    43,     239,    STR_NONE,                         STR_NONE },                 /* content panel        */  \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_SHOW_SERVER_INFO_TIP }, /* tab                  */  \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_PLAYERS_TIP },          /* tab                  */  \
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,       STR_GROUPS_TIP },           /* tab                  */  \
@@ -80,14 +80,14 @@ static rct_widget window_multiplayer_players_widgets[] = {
 
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
-    { WWT_DROPDOWN,         1,  141,    315,    46,     57,     0xFFFFFFFF,                 STR_NONE },                 // default group
+    { WWT_DROPDOWN,         1,  141,    315,    46,     57,     STR_NONE,                   STR_NONE },                 // default group
     { WWT_DROPDOWN_BUTTON,  1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
     { WWT_DROPDOWN_BUTTON,  1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
     { WWT_DROPDOWN_BUTTON,  1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
     { WWT_DROPDOWN_BUTTON,  1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
-    { WWT_DROPDOWN,         1,  72,     246,    80,     91,     0xFFFFFFFF,                 STR_NONE },                 // selected group
+    { WWT_DROPDOWN,         1,  72,     246,    80,     91,     STR_NONE,                   STR_NONE },                 // selected group
     { WWT_DROPDOWN_BUTTON,  1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
-    { WWT_SCROLL,           1,  3,      316,    94,     300,    SCROLL_VERTICAL,                            STR_NONE },                 // permissions list
+    { WWT_SCROLL,           1,  3,      316,    94,     300,    SCROLL_VERTICAL,            STR_NONE },                 // permissions list
     { WIDGETS_END }
 };
 
