@@ -36,6 +36,9 @@
 #include <openrct2/util/util.h>
 #include <openrct2/windows/Intent.h>
 
+#define AVAILABILITY_STRING_SIZE 256
+#define WH 382
+
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
 static ride_list_item _windowNewRideListItems[384];
@@ -178,10 +181,10 @@ enum {
 };
 
 static rct_widget window_new_ride_widgets[] = {
-    { WWT_FRAME,            0,  0,      600,    0,      369,    0xFFFFFFFF,                             STR_NONE                            },
+    { WWT_FRAME,            0,  0,      600,    0,      WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
     { WWT_CAPTION,          0,  1,      599,    1,      14,     0xFFFFFFFF,                             STR_WINDOW_TITLE_TIP                },
     { WWT_CLOSEBOX,         0,  588,    598,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP                },
-    { WWT_RESIZE,           1,  0,      600,    43,     369,    0xFFFFFFFF,                             STR_NONE                            },
+    { WWT_RESIZE,           1,  0,      600,    43,     WH - 1, 0xFFFFFFFF,                             STR_NONE                            },
     { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_TRANSPORT_RIDES_TIP             },
     { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_GENTLE_RIDES_TIP                },
     { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_ROLLER_COASTERS_TIP             },
@@ -211,6 +214,7 @@ static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
 static void window_new_ride_invalidate(rct_window *w);
 static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
+static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ride_entry * rideEntry, char * out);
 
 // 0x0098E354
 static rct_window_event_list window_new_ride_events = {
@@ -370,7 +374,9 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (gConfigInterface.select_by_track_type && (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))) {
+        if (gConfigInterface.select_by_track_type &&
+            (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry)))
+        {
             if (strcmp(preferredVehicleName, "        \0") == 0) {
                 safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
                 preferredVehicleName[8] = 0;
@@ -385,7 +391,9 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         }
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) { // Separate, draw apart
+        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) &&
+            !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
+        { // Separate, draw apart
             allowDrawingOverLastButton = false;
             nextListItem->type = rideType;
             nextListItem->entry_index = rideEntryIndex;
@@ -459,7 +467,7 @@ rct_window *window_new_ride_open()
     window_close_by_class(WC_TRACK_DESIGN_LIST);
     window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
-    w = window_create_auto_pos(601, 370, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
+    w = window_create_auto_pos(601, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
     w->enabled_widgets =
         (1 << WIDX_CLOSE) |
@@ -596,7 +604,7 @@ static void window_new_ride_refresh_widget_sizing(rct_window *w)
         window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WWT_EMPTY;
 
         width = 601;
-        height = 370;
+        height = WH;
     } else {
         window_new_ride_widgets[WIDX_RIDE_LIST].type = WWT_EMPTY;
         window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WWT_GROUPBOX;
@@ -823,7 +831,7 @@ static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi)
         ride_list_item item;
         item.ride_type_and_entry = static_cast<uint16>(w->new_ride.highlighted_ride_id);
         if (item.type != RIDE_TYPE_NULL || item.entry_index != 255)
-            window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 52, w->width - 6);
+            window_new_ride_paint_ride_information(w, dpi, item, w->x + 3, w->y + w->height - 64, w->width - 6);
     } else {
         window_research_development_page_paint(w, dpi, WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP);
     }
@@ -912,7 +920,8 @@ static sint32 get_num_track_designs(ride_list_item item)
 
     if (item.type < 0x80) {
         rideEntry = get_ride_entry(item.entry_index);
-        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
+        {
             get_ride_entry_name(entry, item.entry_index);
             entryPtr = entry;
         }
@@ -943,7 +952,17 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
     gfx_draw_string_left_wrapped(dpi, gCommonFormatArgs, x, y, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, COLOUR_BLACK);
 
     // Number of designs available
-    if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK)) {
+    if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        char availabilityString[AVAILABILITY_STRING_SIZE];
+        window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
+
+        if (availabilityString[0] != 0)
+        {
+            const char * drawString = _strdup(availabilityString);
+            gfx_draw_string_left(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39);
+        }
+
         // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
         if (network_get_mode() != NETWORK_MODE_NONE) {
             _lastTrackDesignCount = 0;
@@ -965,7 +984,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
             stringId = STR_X_DESIGNS_AVAILABLE;
             break;
         }
-        gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 39);
+
+        gfx_draw_string_left(dpi, stringId, &_lastTrackDesignCount, COLOUR_BLACK, x, y + 51);
     }
 
     // Price
@@ -985,7 +1005,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
         if (!ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
             stringId = STR_NEW_RIDE_COST_FROM;
 
-        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, x + width, y + 39);
+        gfx_draw_string_right(dpi, stringId, &price, COLOUR_BLACK, x + width, y + 51);
     }
 }
 
@@ -1023,4 +1043,65 @@ static void window_new_ride_select(rct_window *w)
     }
 
     ride_construct_new(item);
+}
+
+static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ride_entry * rideEntry, char * out)
+{
+    rct_ride_entry * currentRideEntry;
+    const RideGroup * rideGroup, * currentRideGroup;
+    sint32 rideEntryIndex;
+
+    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
+    {
+        out[0] = 0;
+        return;
+    }
+    if (rideType == RIDE_TYPE_MAZE || rideType == RIDE_TYPE_MINI_GOLF)
+    {
+        out[0] = 0;
+        return;
+    }
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE && !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
+    {
+        out[0] = 0;
+        return;
+    }
+
+    memset(out, 0, AVAILABILITY_STRING_SIZE);
+
+    uint8 * rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
+
+    for (uint8 *currentRideEntryIndex = rideEntryIndexPtr, numItems = 0; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL; currentRideEntryIndex++)
+    {
+        rideEntryIndex = *currentRideEntryIndex;
+        currentRideEntry = get_ride_entry(rideEntryIndex);
+        // Skip if vehicle wants to be separate, unless subtype switching is enabled
+        if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !RideGroupManager::RideTypeShouldLoseSeparateFlag(currentRideEntry))
+            continue;
+
+        // Skip if vehicle type is not invented yet
+        if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
+            continue;
+
+        // Skip if vehicle does not belong to the same ride group
+        if (RideGroupManager::RideTypeHasRideGroups(rideType))
+        {
+            rideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)rideEntry);
+            currentRideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)currentRideEntry);
+
+            if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
+                continue;
+        }
+
+        const char * vehicleName = language_get_string(currentRideEntry->naming.name);
+
+        if (numItems > 0)
+        {
+            safe_strcat(out, ", ", AVAILABILITY_STRING_SIZE);
+        }
+
+        safe_strcat(out, vehicleName, AVAILABILITY_STRING_SIZE);
+
+        numItems++;
+    }
 }
