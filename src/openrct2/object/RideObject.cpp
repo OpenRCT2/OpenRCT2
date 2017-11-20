@@ -127,6 +127,10 @@ void RideObject::Load()
     GetStringTable()->Sort();
     _legacyType.naming.name = language_allocate_object_string(GetName());
     _legacyType.naming.description = language_allocate_object_string(GetDescription());
+#if defined(NO_RCT2)
+    _legacyType.capacity = language_allocate_object_string(GetCapacity());
+    _legacyType.vehicleName = language_allocate_object_string(GetVehicleName());
+#endif
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
@@ -302,10 +306,18 @@ void RideObject::Unload()
 {
     language_free_object_string(_legacyType.naming.name);
     language_free_object_string(_legacyType.naming.description);
+#ifdef NO_RCT2
+    language_free_object_string(_legacyType.capacity);
+    language_free_object_string(_legacyType.vehicleName);
+#endif
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 
     _legacyType.naming.name = 0;
     _legacyType.naming.description = 0;
+#ifdef NO_RCT2
+    _legacyType.capacity = 0;
+    _legacyType.vehicleName = 0;
+#endif
     _legacyType.images_offset = 0;
 }
 
@@ -331,6 +343,11 @@ const utf8 * RideObject::GetDescription() const
 const utf8 * RideObject::GetCapacity() const
 {
     return GetString(OBJ_STRING_ID_CAPACITY);
+}
+
+const utf8 * RideObject::GetVehicleName() const
+{
+    return GetString(OBJ_STRING_ID_VEHICLE_NAME);
 }
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
