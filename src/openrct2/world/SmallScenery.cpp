@@ -14,15 +14,15 @@
 *****************************************************************************/
 #pragma endregion
 
+#include "../cheats.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
-
+#include "../ride/TrackDesign.h"
 #include "footpath.h"
-#include "scenery.h"
 #include "map.h"
 #include "park.h"
-#include "../cheats.h"
-#include "../ride/TrackDesign.h"
+#include "scenery.h"
+#include "SmallScenery.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)
 {
@@ -561,5 +561,39 @@ extern "C"
             (*edi >> 16) & 0xFF,
             *ebx & 0xFF
         );
+    }
+
+    sint32 scenery_small_get_primary_colour(const rct_tile_element * tileElement)
+    {
+        return tileElement->properties.scenery.colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    }
+
+    sint32 scenery_small_get_secondary_colour(const rct_tile_element * tileElement)
+    {
+        return tileElement->properties.scenery.colour_2 & TILE_ELEMENT_COLOUR_MASK;
+    }
+
+    void scenery_small_set_primary_colour(rct_tile_element * tileElement, uint32 colour)
+    {
+        assert(colour <= 31);
+        tileElement->properties.scenery.colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
+        tileElement->properties.scenery.colour_1 |= colour;
+    }
+
+    void scenery_small_set_secondary_colour(rct_tile_element * tileElement, uint32 colour)
+    {
+        assert(colour <= 31);
+        tileElement->properties.scenery.colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
+        tileElement->properties.scenery.colour_2 |= colour;
+    }
+
+    bool scenery_small_get_supports_needed(const rct_tile_element * tileElement)
+    {
+        return (bool)(tileElement->properties.scenery.colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    }
+
+    void scenery_small_set_supports_needed(rct_tile_element * tileElement)
+    {
+        tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
     }
 }

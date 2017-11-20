@@ -33,6 +33,7 @@
 #include "../ride/RideGroupManager.h"
 #include "../sprites.h"
 #include "../util/util.h"
+#include "../world/LargeScenery.h"
 #include "../windows/Intent.h"
 #include "_legacy.h"
 #include "dropdown.h"

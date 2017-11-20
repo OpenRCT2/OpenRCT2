@@ -16,6 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../Context.h"
 #include "../game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
@@ -23,13 +24,15 @@
 #include "../util/sawyercoding.h"
 #include "../util/util.h"
 #include "../windows/Intent.h"
+#include "../world/LargeScenery.h"
 #include "../world/scenery.h"
+#include "../world/SmallScenery.h"
+#include "../world/Wall.h"
 #include "ride_data.h"
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"
 #include "TrackDesignRepository.h"
-#include "../Context.h"
 
 #define TRACK_MAX_SAVED_TILE_ELEMENTS 1500
 #define TRACK_NEARBY_SCENERY_DISTANCE 1
@@ -349,7 +352,7 @@ static void track_design_save_add_wall(sint32 x, sint32 y, rct_tile_element *til
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
-    flags |= tileElement->properties.wall.colour_3 << 2;
+    flags |= wall_get_tertiary_colour(tileElement) << 2;
 
     uint8 secondaryColour = wall_get_secondary_colour(tileElement);
     uint8 primaryColour = wall_get_primary_colour(tileElement);
@@ -534,7 +537,7 @@ static void track_design_save_remove_wall(sint32 x, sint32 y, rct_tile_element *
 
     uint8 flags = 0;
     flags |= tileElement->type & 3;
-    flags |= tileElement->properties.wall.colour_3 << 2;
+    flags |= wall_get_tertiary_colour(tileElement) << 2;
 
     uint8 secondaryColour = wall_get_secondary_colour(tileElement);
     uint8 primaryColour = wall_get_primary_colour(tileElement);

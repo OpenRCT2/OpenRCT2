@@ -29,6 +29,7 @@
 		4C729BC51FC2E5F3001DFF2F /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BC31FC2E5F3001DFF2F /* TileInspector.cpp */; };
 		4C729BC71FC2E6AB001DFF2F /* Particle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BC61FC2E6AB001DFF2F /* Particle.cpp */; };
 		4C729BC91FC2E6E9001DFF2F /* MoneyEffect.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BC81FC2E6E9001DFF2F /* MoneyEffect.cpp */; };
+		4C729BC01FC2E1BE001DFF2F /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -625,6 +626,10 @@
 		4C729BC41FC2E5F3001DFF2F /* TileInspector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileInspector.h; sourceTree = "<group>"; };
 		4C729BC61FC2E6AB001DFF2F /* Particle.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Particle.cpp; sourceTree = "<group>"; };
 		4C729BC81FC2E6E9001DFF2F /* MoneyEffect.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MoneyEffect.cpp; sourceTree = "<group>"; };
+		4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeScenery.cpp; sourceTree = "<group>"; };
+		4C729BBF1FC2E1BE001DFF2F /* LargeScenery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LargeScenery.h; sourceTree = "<group>"; };
+		4C729BC11FC2E1C9001DFF2F /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
+		4C729BC21FC2E1CF001DFF2F /* SmallScenery.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SmallScenery.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -2543,6 +2548,8 @@
 				F76C85651EC4E7CD00FA49E2 /* footpath.h */,
 				F76C85661EC4E7CD00FA49E2 /* Fountain.cpp */,
 				F76C85671EC4E7CD00FA49E2 /* Fountain.h */,
+				4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */,
+				4C729BBF1FC2E1BE001DFF2F /* LargeScenery.h */,
 				4C31B2E51FB6116100F6A38A /* Location.h */,
 				F76C85681EC4E7CD00FA49E2 /* map.c */,
 				F76C85691EC4E7CD00FA49E2 /* map.h */,
@@ -2561,9 +2568,11 @@
 				4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */,
 				4C729BC31FC2E5F3001DFF2F /* TileInspector.cpp */,
 				4C729BC41FC2E5F3001DFF2F /* TileInspector.h */,
+				4C729BC21FC2E1CF001DFF2F /* SmallScenery.h */,
 				F76C85761EC4E7CD00FA49E2 /* sprite.c */,
 				F76C85771EC4E7CD00FA49E2 /* sprite.h */,
 				F76C857A1EC4E7CD00FA49E2 /* Wall.cpp */,
+				4C729BC11FC2E1C9001DFF2F /* Wall.h */,
 				F76C857B1EC4E7CD00FA49E2 /* water.h */,
 			);
 			path = world;
@@ -3294,6 +3303,7 @@
 				C6D2BEEA1F9BB83C008B557C /* NetworkStatus.cpp in Sources */,
 				C64645011F3FA4120026AC2D /* Water.cpp in Sources */,
 				F76C88851EC5324E00FA49E2 /* OpenGLFramebuffer.cpp in Sources */,
+				4C729BC01FC2E1BE001DFF2F /* LargeScenery.cpp in Sources */,
 				4C93F1451F8B744400A9330D /* JuniorRollerCoaster.cpp in Sources */,
 				C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */,
 				F76C88861EC5324E00FA49E2 /* OpenGLShaderProgram.cpp in Sources */,

@@ -22,7 +22,9 @@
 #include <openrct2/localisation/string_ids.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
+#include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/scenery.h>
+#include <openrct2/world/Wall.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/sprites.h>
 

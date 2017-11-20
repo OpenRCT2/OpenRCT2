@@ -23,6 +23,7 @@
 #include "../../paint/supports.h"
 #include "../../world/map.h"
 #include "../../world/scenery.h"
+#include "../../world/SmallScenery.h"
 
 static const LocationXY16 offsets[] = {
     {  3,  3 },
