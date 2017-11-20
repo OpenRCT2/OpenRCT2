@@ -88,7 +88,7 @@ static const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_
 static const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
 static const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 
-const RideGroup * RideGroupManager::GetRideGroup(uint8 rideType, rct_ride_entry * rideEntry)
+const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
 {
     switch (rideType) {
         case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
@@ -116,7 +116,7 @@ const RideGroup * RideGroupManager::GetRideGroup(uint8 rideType, rct_ride_entry 
     }
 }
 
-bool RideGroupManager::RideTypeHasRideGroups(uint8 rideType)
+bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
 {
     if (!gConfigInterface.select_by_track_type) {
         return false;
@@ -134,7 +134,7 @@ bool RideGroupManager::RideTypeHasRideGroups(uint8 rideType)
     }
 }
 
-const RideGroup * RideGroupManager::RideGroupFind(uint8 rideType, uint8 index)
+const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const uint8 index)
 {
     RideGroup * rideGroup;
 
@@ -195,7 +195,7 @@ bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
     return false;
 }
 
-const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(uint8 rideType)
+const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8 rideType)
 {
     static const std::vector<const char *> preferredRideEntryOrder[] =
     {
@@ -300,7 +300,7 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(uin
  * which picture is shown on the new ride tab and which train type is selected
  * by default.
  */
-sint32 RideGroupManager::VehiclePreferenceCompare(uint8 rideType, const char * a, const char * b)
+sint32 RideGroupManager::VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b)
 {
     std::vector<const char *> rideEntryOrder = RideGroupManager::GetPreferredRideEntryOrder(rideType);
     for (const char * object : rideEntryOrder)
@@ -317,15 +317,140 @@ sint32 RideGroupManager::VehiclePreferenceCompare(uint8 rideType, const char * a
     return 0;
 }
 
+bool RideGroupManager::RideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry)
+{
+    if (!gConfigInterface.select_by_track_type)
+    {
+        return false;
+    }
+
+    bool remove_flag = true;
+    for (size_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+    {
+        if (rideEntry->ride_type[j] == RIDE_TYPE_NULL)
+        {
+            continue;
+        }
+        if (ride_type_has_flag(rideEntry->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE))
+        {
+            remove_flag = false;
+        }
+        if (rideEntry->ride_type[j] == RIDE_TYPE_MAZE || rideEntry->ride_type[j] == RIDE_TYPE_MINI_GOLF)
+        {
+            remove_flag = false;
+        }
+    }
+    return remove_flag;
+}
+
 extern "C"
 {
-    const RideGroup * get_ride_group(uint8 rideType, rct_ride_entry * rideEntry)
+    const RideGroup * get_ride_group(uint8 rideType, const rct_ride_entry * rideEntry)
     {
         return RideGroupManager::GetRideGroup(rideType, rideEntry);
     }
 
-    bool ride_type_has_ride_groups(uint8 rideType)
+    bool ride_type_has_ride_groups(const uint8 rideType)
     {
         return RideGroupManager::RideTypeHasRideGroups(rideType);
     }
+
+    bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry)
+    {
+        return RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry);
+    }
 }
+
+const uint8 gRideCategories[] = {
+    RIDE_CATEGORY_ROLLERCOASTER, // Spiral Roller coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Stand Up Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Suspended Swinging
+    RIDE_CATEGORY_ROLLERCOASTER, // Inverted
+    RIDE_CATEGORY_ROLLERCOASTER, // Steel Mini Coaster
+    RIDE_CATEGORY_TRANSPORT,     // Mini Railroad
+    RIDE_CATEGORY_TRANSPORT,     // Monorail
+    RIDE_CATEGORY_ROLLERCOASTER, // Mini Suspended Coaster
+    RIDE_CATEGORY_WATER,         // Boat ride
+    RIDE_CATEGORY_ROLLERCOASTER, // Wooden Wild Mine/Mouse
+    RIDE_CATEGORY_ROLLERCOASTER, // Steeplechase/Motorbike/Soap Box Derby
+    RIDE_CATEGORY_GENTLE,        // Car Ride
+    RIDE_CATEGORY_THRILL,        // Launched Freefall
+    RIDE_CATEGORY_ROLLERCOASTER, // Bobsleigh Coaster
+    RIDE_CATEGORY_GENTLE,        // Observation Tower
+    RIDE_CATEGORY_ROLLERCOASTER, // Looping Roller Coaster
+    RIDE_CATEGORY_WATER,         // Dinghy Slide
+    RIDE_CATEGORY_ROLLERCOASTER, // Mine Train Coaster
+    RIDE_CATEGORY_TRANSPORT,     // Chairlift
+    RIDE_CATEGORY_ROLLERCOASTER, // Corkscrew Roller Coaster
+    RIDE_CATEGORY_GENTLE,        // Maze
+    RIDE_CATEGORY_GENTLE,        // Spiral Slide
+    RIDE_CATEGORY_THRILL,        // Go Karts
+    RIDE_CATEGORY_WATER,         // Log Flume
+    RIDE_CATEGORY_WATER,         // River Rapids
+    RIDE_CATEGORY_GENTLE,        // Dodgems
+    RIDE_CATEGORY_THRILL,        // Pirate Ship
+    RIDE_CATEGORY_THRILL,        // Swinging Inverter Ship
+    RIDE_CATEGORY_SHOP,          // Food Stall
+    255,                         // (none)
+    RIDE_CATEGORY_SHOP,          // Drink Stall
+    255,                         // (none)
+    RIDE_CATEGORY_SHOP,          // Shop (all types)
+    RIDE_CATEGORY_GENTLE,        // Merry Go Round
+    255,                         // Unknown
+    RIDE_CATEGORY_SHOP,          // Information Kiosk
+    RIDE_CATEGORY_SHOP,          // Bathroom
+    RIDE_CATEGORY_GENTLE,        // Ferris Wheel
+    RIDE_CATEGORY_THRILL,        // Motion Simulator
+    RIDE_CATEGORY_THRILL,        // 3D Cinema
+    RIDE_CATEGORY_THRILL,        // Top Spin
+    RIDE_CATEGORY_GENTLE,        // Space Rings
+    RIDE_CATEGORY_ROLLERCOASTER, // Reverse Freefall Coaster
+    RIDE_CATEGORY_TRANSPORT,     // Lift
+    RIDE_CATEGORY_ROLLERCOASTER, // Vertical Drop Roller Coaster
+    RIDE_CATEGORY_SHOP,          // ATM
+    RIDE_CATEGORY_THRILL,        // Twist
+    RIDE_CATEGORY_GENTLE,        // Haunted House
+    RIDE_CATEGORY_SHOP,          // First Aid
+    RIDE_CATEGORY_GENTLE,        // Circus Show
+    RIDE_CATEGORY_GENTLE,        // Ghost Train
+    RIDE_CATEGORY_ROLLERCOASTER, // Twister Roller Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Wooden Roller Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Side-Friction Roller Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Wild Mouse
+    RIDE_CATEGORY_ROLLERCOASTER, // Multi Dimension Coaster
+    255,                         // (none)
+    RIDE_CATEGORY_ROLLERCOASTER, // Flying Roller Coaster
+    255,                         // (none)
+    RIDE_CATEGORY_ROLLERCOASTER, // Virginia Reel
+    RIDE_CATEGORY_WATER,         // Splash Boats
+    RIDE_CATEGORY_GENTLE,        // Mini Helicopters
+    RIDE_CATEGORY_ROLLERCOASTER, // Lay-down Roller Coaster
+    RIDE_CATEGORY_TRANSPORT,     // Suspended Monorail
+    255,                         // (none)
+    RIDE_CATEGORY_ROLLERCOASTER, // Reverser Roller Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Heartline Twister Roller Coaster
+    RIDE_CATEGORY_GENTLE,        // Mini Golf
+    RIDE_CATEGORY_ROLLERCOASTER, // Giga Coaster
+    RIDE_CATEGORY_THRILL,        // Roto-Drop
+    RIDE_CATEGORY_GENTLE,        // Flying Saucers
+    RIDE_CATEGORY_GENTLE,        // Crooked House
+    RIDE_CATEGORY_GENTLE,        // Monorail Cycles
+    RIDE_CATEGORY_ROLLERCOASTER, // Compact Inverted Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Water Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Air Powered Vertical Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Inverted Hairpin Coaster
+    RIDE_CATEGORY_THRILL,        // Magic Carpet
+    RIDE_CATEGORY_WATER,         // Submarine Ride
+    RIDE_CATEGORY_WATER,         // River Rafts
+    255,                         // (none)
+    RIDE_CATEGORY_THRILL,        // Enterprise
+    255,                         // (none)
+    255,                         // (none)
+    255,                         // (none)
+    255,                         // (none)
+    RIDE_CATEGORY_ROLLERCOASTER, // Inverted Impulse Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Mini Roller Coaster
+    RIDE_CATEGORY_ROLLERCOASTER, // Mine Ride
+    255,                         // 59 Unknown Ride
+    RIDE_CATEGORY_ROLLERCOASTER  // LIM Launched Roller Coaster
+};

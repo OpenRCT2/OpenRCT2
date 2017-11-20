@@ -1224,10 +1224,6 @@ enum {
 extern "C" {
 #endif
 
-extern const uint8 gRideCategories[RIDE_TYPE_COUNT];
-
-bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
-
 ParkLoadResult * load_from_sv4(const char *path);
 ParkLoadResult * load_from_sc4(const char *path);
 
