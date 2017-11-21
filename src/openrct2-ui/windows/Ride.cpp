@@ -236,13 +236,13 @@ static rct_widget window_ride_vehicle_widgets[] = {
     MAIN_RIDE_WIDGETS,
     { WWT_DROPDOWN,         1,  7,      308,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_DROPDOWN_BUTTON,  1,  297,    307,    51,     60,     STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
-    { WWT_SCROLL,           1,  7,      308,    141,    183,    0,                                          STR_NONE                                        },
-    { WWT_SPINNER,          1,  7,      151,    190,    201,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP                            },
-    { WWT_DROPDOWN_BUTTON,  1,  140,    150,    191,    195,    STR_NUMERIC_UP,                             STR_NONE                                        },
-    { WWT_DROPDOWN_BUTTON,  1,  140,    150,    196,    200,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
-    { WWT_SPINNER,          1,  164,    308,    190,    201,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP                      },
-    { WWT_DROPDOWN_BUTTON,  1,  297,    307,    191,    195,    STR_NUMERIC_UP,                             STR_NONE                                        },
-    { WWT_DROPDOWN_BUTTON,  1,  297,    307,    196,    200,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
+    { WWT_SCROLL,           1,  7,      308,    147,    189,    0,                                          STR_NONE                                        },
+    { WWT_SPINNER,          1,  7,      151,    196,    207,    STR_RIDE_VEHICLE_COUNT,                     STR_MAX_VEHICLES_TIP                            },
+    { WWT_DROPDOWN_BUTTON,  1,  140,    150,    197,    201,    STR_NUMERIC_UP,                             STR_NONE                                        },
+    { WWT_DROPDOWN_BUTTON,  1,  140,    150,    202,    206,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
+    { WWT_SPINNER,          1,  164,    308,    196,    207,    STR_1_CAR_PER_TRAIN,                        STR_MAX_CARS_PER_TRAIN_TIP                      },
+    { WWT_DROPDOWN_BUTTON,  1,  297,    307,    197,    201,    STR_NUMERIC_UP,                             STR_NONE                                        },
+    { WWT_DROPDOWN_BUTTON,  1,  297,    307,    202,    206,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
     { WIDGETS_END },
 };
 
@@ -2659,7 +2659,7 @@ static void window_ride_vehicle_mouseup(rct_window *w, rct_widgetindex widgetInd
  */
 static void window_ride_vehicle_resize(rct_window *w)
 {
-    window_set_resize(w, 316, 208, 316, 208);
+    window_set_resize(w, 316, 214, 316, 214);
 }
 
 /**
@@ -2932,24 +2932,28 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     y += 5;
 
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
+    {
         // Excitement Factor
         factor = rideEntry->excitement_multiplier;
-        if (factor > 0) {
+        if (factor > 0)
+        {
             y += 10;
             gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
         }
 
         // Intensity Factor
         factor = rideEntry->intensity_multiplier;
-        if (factor > 0) {
+        if (factor > 0)
+        {
             y += 10;
             gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
         }
 
         // Nausea Factor
         factor = rideEntry->nausea_multiplier;
-        if (factor > 0) {
+        if (factor > 0)
+        {
             y += 10;
             gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
         }
