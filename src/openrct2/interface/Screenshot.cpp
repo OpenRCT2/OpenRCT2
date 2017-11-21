@@ -348,17 +348,28 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
 
 sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 {
-    bool giantScreenshot = (argc == 5 || argc == 6) && _stricmp(argv[2], "giant") == 0;
-    if (argc != 4 && argc != 5 && argc != 8 && argc != 9 && !giantScreenshot) {
-        printf("Usage: openrct2 screenshot <file> <ouput_image> <width> <height> [<x> <y> <zoom> <rotation>] [<weather>]\n");
-        printf("Usage: openrct2 screenshot <file> <ouput_image> giant <zoom> <rotation> [<weather>]\n");
+    // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
+    for (sint32 i = 0; i < argc; i++)
+    {
+        if (argv[i][0] == '-')
+        {
+            // Setting argc to i works, because options can only be at the end of the command
+            argc = i;
+            break;
+        }
+    }
+
+    bool giantScreenshot = (argc == 5) && _stricmp(argv[2], "giant") == 0;
+    if (argc != 4 && argc != 8 && !giantScreenshot) {
+        std::printf("Usage: openrct2 screenshot <file> <ouput_image> <width> <height> [<x> <y> <zoom> <rotation>]\n");
+        std::printf("Usage: openrct2 screenshot <file> <ouput_image> giant <zoom> <rotation>\n");
         return -1;
     }
 
     bool customLocation = false;
     bool centreMapX = false;
     bool centreMapY = false;
-    sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0, customWeather = -1;
+    sint32 resolutionWidth, resolutionHeight, customX = 0, customY = 0, customZoom, customRotation = 0;
 
     const char *inputPath = argv[0];
     const char *outputPath = argv[1];
@@ -371,20 +382,19 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         centreMapY = true;
         customZoom = atoi(argv[3]);
         customRotation = atoi(argv[4]) & 3;
-        if (argc == 6)
-            customWeather = atoi(argv[5]);
     }
     else
     {
         resolutionWidth = atoi(argv[2]);
         resolutionHeight = atoi(argv[3]);
-        if (argc >= 8)
+        if (argc == 8)
         {
             customLocation = true;
             if (argv[4][0] == 'c')
                 centreMapX = true;
             else
                 customX = atoi(argv[4]);
+
             if (argv[5][0] == 'c')
                 centreMapY = true;
             else
@@ -392,14 +402,10 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
 
             customZoom = atoi(argv[6]);
             customRotation = atoi(argv[7]) & 3;
-            if (argc == 9)
-                customWeather = atoi(argv[8]);
         }
         else
         {
             customZoom = 0;
-            if (argc == 5)
-                customWeather = atoi(argv[4]);
         }
     }
 
@@ -408,7 +414,18 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
     if (context->Initialise())
     {
         drawing_engine_init();
-        context->LoadParkFromFile(inputPath);
+
+        try
+        {
+            context->LoadParkFromFile(inputPath);
+        }
+        catch (const std::exception &e)
+        {
+            std::printf("%s", e.what());
+            drawing_engine_dispose();
+            delete context;
+            return -1;
+        }
 
         gIntroState = INTRO_STATE_NONE;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
@@ -470,14 +487,15 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
             gCurrentRotation = gSavedViewRotation;
         }
 
-        if (customWeather != -1)
+        if (gScreenshotWeather != 0)
         {
-            if (customWeather < -1 || customWeather >= 6)
+            if (gScreenshotWeather < 1 || gScreenshotWeather > 6)
             {
-                printf("Weather can only be set to an integer value from 0 till 5.");
+                printf("Weather can only be set to an integer value from 1 till 6.");
                 return -1;
             }
 
+            uint8 customWeather = gScreenshotWeather - 1;
             climate_force_weather(customWeather);
         }
 

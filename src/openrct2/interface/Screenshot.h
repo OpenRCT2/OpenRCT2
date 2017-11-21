@@ -25,6 +25,7 @@ extern "C"
 {
 #endif
     extern uint8 gScreenshotCountdown;
+    extern sint32 gScreenshotWeather;
 
     void screenshot_check();
     sint32 screenshot_dump();
