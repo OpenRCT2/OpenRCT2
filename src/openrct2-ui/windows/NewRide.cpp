@@ -38,6 +38,7 @@
 
 #define AVAILABILITY_STRING_SIZE 256
 #define WH 382
+#define WW 601
 
 static uint8 _windowNewRideCurrentTab;
 static ride_list_item _windowNewRideHighlightedItem[6];
@@ -467,7 +468,7 @@ rct_window *window_new_ride_open()
     window_close_by_class(WC_TRACK_DESIGN_LIST);
     window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
-    w = window_create_auto_pos(601, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
+    w = window_create_auto_pos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
     w->enabled_widgets =
         (1 << WIDX_CLOSE) |
@@ -960,7 +961,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
         if (availabilityString[0] != 0)
         {
             const char * drawString = _strdup(availabilityString);
-            gfx_draw_string_left(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39);
+            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39, WW - 2);
         }
 
         // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
