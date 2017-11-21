@@ -2919,7 +2919,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Description
     y += gfx_draw_string_left_wrapped(dpi, &rideEntry->naming.description, x, y, 300, STR_BLACK_STRING, COLOUR_BLACK);
-    y += 5;
+    y += 2;
 
     // Capacity
     void * loadedObject = object_manager_get_loaded_object_by_index(ride->subtype);
@@ -2930,7 +2930,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
         set_format_arg(2, utf8 *, capacity);
         gfx_draw_string_left(dpi, STR_CAPACITY, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
-    y += 5;
+    y += 2;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
         // Excitement Factor
