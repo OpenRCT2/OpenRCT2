@@ -2689,7 +2689,7 @@ STR_2680    :Todas as pesquisas completas
 STR_2681    :{MEDIUMFONT}{BLACK}Incrementa seu dinheiro em {CURRENCY}
 STR_2682    :<not used anymore>
 STR_2683    :<not used anymore>
-STR_2684    :{SMALLFONT}{BLACK}Um grande grupo de visitantes está chegando
+STR_2684    :{SMALLFONT}{BLACK}Um grande grupo de visitantes está chegando (250 visitantes)
 STR_2685    :Parâmetros de ruído simples
 STR_2686    :Baixo:
 STR_2687    :Alto:
@@ -3495,7 +3495,7 @@ STR_5153    :Editar Temas...
 STR_5154    :Exibição por Hardware
 STR_5155    :Permitir o teste de atrações incompletas
 STR_5156    :{SMALLFONT}{BLACK}Permite testar a maioria dos tipos de atrações, mesmo quando a atração está inacabada, não se aplica bloquear os modos seccionados
-STR_5157    :Destravar todos os preços
+STR_5157    :<removed string - do not use>
 STR_5158    :Sair para o menu
 STR_5159    :Sair do OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Ano {POP16}{COMMA16}
@@ -3780,7 +3780,7 @@ STR_5438    :Impossível fazer mudanças enquanto editor de comando está aberto
 STR_5439    :Um comando de espera com pelo menos 4 segundos é necessário com um comando de reinicialização
 STR_5440    :Minimizar tela inteira quando perder o foco
 STR_5441    :{SMALLFONT}{BLACK}Identifica as atrações por tipo de pista,{NEWLINE}assim os veículos podem ser alterados {NEWLINE}depois (como no RCT1)
-STR_5442    :Forçar a classificação do parque:
+STR_5442    :Forçar a classifi-{NEWLINE}cação do parque:
 STR_5443    :Velocidade{MOVE_X}{87}{STRINGID}
 STR_5444    :Velocidade:
 STR_5445    :Velocidade
@@ -4125,7 +4125,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra o contador de FPS dentro do jogo
 STR_5816    :{SMALLFONT}{BLACK}Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
-STR_5817    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Define o tipo de escala da interface de usuário
+STR_5817    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Define o tipo de escala da interface de usuário{NEWLINE}{NEWLINE}Vizinho Mais Próximo é nítido mas causa distorção em números não inteiros.{NEWLINE}Linear e Anisotrópico são suaves mas embaçados.{NEWLINE}Suavizar Vizinho Mais Próximo é nítido mesmo em escalas não inteiras mas podem causar uma pequena queda no desempenho.
 STR_5818    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Usa a escala do vizinho mais próximo{NEWLINE}quando o fator de escala da janela está definido{NEWLINE}com valores integrais (1, 2, 3, etc)
 STR_5819    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
 STR_5820    :{SMALLFONT}{BLACK}Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
@@ -4181,7 +4181,7 @@ STR_5869    :{WINDOW_COLOUR_2}Website do Provedor: {BLACK}{STRING}
 STR_5870    :{SMALLFONT}{BLACK}Mostra informações do servidor
 STR_5871    :Plantas não envelhecem
 STR_5872    :{SMALLFONT}{BLACK}Desabilita o envelhecimento das plantas para que elas não murchem.
-STR_5873    :Permitir corrente de elevação em todas as peças de pista
+STR_5873    :Permitir corrente de elevação em todas{NEWLINE}as peças de pista
 STR_5874    :{SMALLFONT}{BLACK}Permite que qualquer parte da pista tenha corrente de elevação
 STR_5875    :Engine de desenho:
 STR_5876    :{SMALLFONT}{BLACK}Engine que será usada para desenhar o jogo.
@@ -4372,7 +4372,7 @@ STR_6060    :Mostrar compras do visitante como animação
 STR_6061    :{SMALLFONT}{BLACK}Mostra efeito animado de dinheiro{NEWLINE}quando visitantes fazem compras.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
-STR_6064    :Own all land
+STR_6064    :Comprar todo o terreno
 STR_6065    :Registrar ações do usuário
 STR_6066    :{SMALLFONT}{BLACK}Registra todas as ações do usuário em arquivos no diretório do usuário.
 STR_6067    :Servidor iniciado.
@@ -4409,7 +4409,7 @@ STR_6097    :{STRING} adicionou uma pista da atração '{STRING}'.
 STR_6098    :{STRING} removeu uma pista da atração.
 STR_6099    :Você conectou ao servidor.
 STR_6100    :Você desconectou do servidor.
-STR_6101    :Atrações não perdem valor ao longo do tempo
+STR_6101    :Atrações não perdem valor ao longo do{NEWLINE}tempo
 STR_6102    :{SMALLFONT}{BLACK}O valor de uma atração não diminuirá com o tempo, então visitantes não pensarão de repente que uma atração é muito cara.
 STR_6103    :{SMALLFONT}{BLACK}Esta opção é desabilitada durante jogo de rede.
 STR_6104    :Montanha-Russa Parafuso
@@ -4456,6 +4456,19 @@ STR_6144    :Mostrar sujeira visual
 STR_6145    :{SMALLFONT}{BLACK}Define limite de velocidade para aceleradores
 STR_6146    :Habilitar todas peças de pista desenháveis
 STR_6147    :{SMALLFONT}{BLACK}Habilita todas as peças de pista que o tipo de atração é capaz na janela de construção, independentemente do veículo suportá-los ou não.
+STR_6148    :Conectando ao servidor principal...
+STR_6149    :Não foi possível conectar ao servidor principal
+STR_6150    :Resposta inválida do servidor principal (sem número JSON)
+STR_6151    :Servidor principal falhou ao retornar servidores
+STR_6152    :Resposta inválida do servidor principal (sem matriz JSON)
+STR_6153    :Entrada paga / Brinquedos pagos
+STR_6154    :Não é recomendado rodar o OpenRCT2 com permissões elevadas.
+STR_6155    :Nem KDialog ou Zenity estão instalados. Por favor instale um, ou configure pela linha de comando.
+STR_6156    :Nome está reservado
+STR_6157    :Console
+STR_6158    :Falha ao carregar este arquivo...{NEWLINE}Versão do RCTC incompatível: {COMMA16}
+STR_6159    :Suavizar Vizinho Mais Próximo
+STR_6160    :{WINDOW_COLOUR_2}Veículos disponíveis: {BLACK}{STRING}
 
 #############
 # Scenarios #

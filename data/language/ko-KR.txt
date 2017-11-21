@@ -4466,6 +4466,7 @@ STR_6156    :이미 사용 중인 이름입니다
 STR_6157    :콘솔
 STR_6158    :이 파일을 불러오지 못했습니다...{NEWLINE}호환되지 않는 RCT 클래식 버전: {COMMA16}
 STR_6159    :부드러운 최대 인접 픽셀
+STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
 
 #############
 # Scenarios #
