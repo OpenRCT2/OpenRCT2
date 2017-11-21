@@ -186,7 +186,7 @@ rct_window * window_save_prompt_open()
 
     // Pause the game
     gGamePaused |= GAME_PAUSED_MODAL;
-    audio_pause_sounds();
+    audio_stop_all_music_and_sounds();
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 
     stringId = window_save_prompt_labels[prompt_mode][0];

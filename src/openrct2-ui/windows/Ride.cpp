@@ -4997,7 +4997,7 @@ static void setup_scenery_selection(rct_window* w)
     gGamePaused |= GAME_PAUSED_SAVING_TRACK;
     gTrackDesignSaveMode = true;
 
-    audio_pause_sounds();
+    audio_stop_all_music_and_sounds();
 
     rct_window* w_main = window_get_main();
 
