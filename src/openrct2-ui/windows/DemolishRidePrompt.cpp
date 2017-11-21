@@ -106,10 +106,6 @@ static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIn
     case WIDX_DEMOLISH:
     {
         ride_demolish(w->number, GAME_COMMAND_FLAG_APPLY);
-
-        // Prevents demolished rides sticking around in the ride list window
-        auto intent = Intent(INTENT_ACTION_REFRESH_RIDE_LIST);
-        context_broadcast_intent(&intent);
         break;
     }
     case WIDX_CANCEL:

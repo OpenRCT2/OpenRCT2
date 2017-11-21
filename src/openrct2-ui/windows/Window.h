@@ -80,6 +80,7 @@ rct_window * window_new_campaign_open(sint16 campaignType);
 
 rct_window * window_install_track_open(const utf8* path);
 void window_guest_list_init_vars();
+void window_guest_list_refresh_list();
 rct_window * window_guest_list_open();
 rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
 rct_window * window_staff_fire_prompt_open(rct_peep* peep);

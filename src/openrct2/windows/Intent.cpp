@@ -62,7 +62,7 @@ Intent * Intent::putExtra(uint32 key, close_callback value)
     return this;
 }
 
-rct_windowclass Intent::GetWindowClass()
+rct_windowclass Intent::GetWindowClass() const
 {
     return this->_Class;
 }

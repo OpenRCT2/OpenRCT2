@@ -213,6 +213,13 @@ rct_window * window_guest_list_open()
     return window;
 }
 
+void window_guest_list_refresh_list()
+{
+    _window_guest_list_last_find_groups_wait = 0;
+    _window_guest_list_last_find_groups_tick = 0;
+    window_guest_list_find_groups();
+}
+
 /**
  *
  *  rct2: 0x006993BA

@@ -16,14 +16,16 @@
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "GameAction.h"
-
 #include "../cheats.h"
+#include "../Context.h"
+#include "../core/MemoryStream.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/park.h"
+#include "GameAction.h"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
@@ -196,6 +198,7 @@ public:
             res->Position = { x, y, z };
         }
 
+        // Close windows related to the demolished ride
         if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED))
         {
             window_close_by_number(WC_RIDE_CONSTRUCTION, _rideIndex);
@@ -204,7 +207,10 @@ public:
         window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex);
         window_close_by_class(WC_NEW_CAMPAIGN);
 
-        window_invalidate_by_class(WC_RIDE_LIST);
+        // Refresh windows that display the ride name
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         return res;
     }
