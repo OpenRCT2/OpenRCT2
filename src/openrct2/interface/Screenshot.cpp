@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <chrono>
+#include <cstdlib>
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
@@ -380,28 +381,28 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         customLocation = true;
         centreMapX = true;
         centreMapY = true;
-        customZoom = atoi(argv[3]);
-        customRotation = atoi(argv[4]) & 3;
+        customZoom = std::atoi(argv[3]);
+        customRotation = std::atoi(argv[4]) & 3;
     }
     else
     {
-        resolutionWidth = atoi(argv[2]);
-        resolutionHeight = atoi(argv[3]);
+        resolutionWidth = std::atoi(argv[2]);
+        resolutionHeight = std::atoi(argv[3]);
         if (argc == 8)
         {
             customLocation = true;
             if (argv[4][0] == 'c')
                 centreMapX = true;
             else
-                customX = atoi(argv[4]);
+                customX = std::atoi(argv[4]);
 
             if (argv[5][0] == 'c')
                 centreMapY = true;
             else
-                customY = atoi(argv[5]);
+                customY = std::atoi(argv[5]);
 
-            customZoom = atoi(argv[6]);
-            customRotation = atoi(argv[7]) & 3;
+            customZoom = std::atoi(argv[6]);
+            customRotation = std::atoi(argv[7]) & 3;
         }
         else
         {
@@ -421,7 +422,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         }
         catch (const std::exception &e)
         {
-            std::printf("%s", e.what());
+            std::printf("%s\n", e.what());
             drawing_engine_dispose();
             delete context;
             return -1;
@@ -491,7 +492,9 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
         {
             if (gScreenshotWeather < 1 || gScreenshotWeather > 6)
             {
-                printf("Weather can only be set to an integer value from 1 till 6.");
+                std::printf("Weather can only be set to an integer value from 1 till 6.");
+                drawing_engine_dispose();
+                delete context;
                 return -1;
             }
 
