@@ -33,16 +33,14 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
     _legacyType.entry_count = stream->ReadValue<uint8>();
-    _legacyType.var_107 = stream->ReadValue<uint8>();
-    _legacyType.var_108 = stream->ReadValue<uint8>();
+    _legacyType.pad_107 = stream->ReadValue<uint8>();
+    _legacyType.priority = stream->ReadValue<uint8>();
     _legacyType.pad_109 = stream->ReadValue<uint8>();
     _legacyType.entertainer_costumes = stream->ReadValue<uint32>();
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
     ReadItems(stream);
     GetImageTable()->Read(context, stream);
-
-    _legacyType.var_107 = _numItems;
 }
 
 void SceneryGroupObject::Load()

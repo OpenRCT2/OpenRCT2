@@ -201,8 +201,8 @@ typedef struct rct_scenery_group_entry {
     uint32 image;                   // 0x02
     uint16 scenery_entries[0x80];   // 0x06
     uint8 entry_count;              // 0x106
-    uint8 var_107;
-    uint8 var_108;                  // 0x108, order?
+    uint8 pad_107;
+    uint8 priority;                 // 0x108
     uint8 pad_109;
     uint32 entertainer_costumes;    // 0x10A
 } rct_scenery_group_entry;

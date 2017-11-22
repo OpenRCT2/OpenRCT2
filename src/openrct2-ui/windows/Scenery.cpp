@@ -321,7 +321,7 @@ void window_scenery_init()
             continue;
 
         tabIndexes[usedValues] = scenerySetId;
-        order[usedValues] = sceneryEntry->var_108;
+        order[usedValues] = sceneryEntry->priority;
 
         usedValues++;
     }
