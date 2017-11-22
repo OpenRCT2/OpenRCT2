@@ -53,7 +53,7 @@ typedef struct rct_unk_sprite {
     // Height from centre of sprite to bottom
     uint8 sprite_height_negative;   // 0x09
     uint16 sprite_index;            // 0x0A
-    uint16 flags;           // 0x0C
+    uint16 flags;                   // 0x0C
     sint16 x;                       // 0x0E
     sint16 y;                       // 0x10
     sint16 z;                       // 0x12
@@ -65,17 +65,13 @@ typedef struct rct_unk_sprite {
     sint16 sprite_top;              // 0x18
     sint16 sprite_right;            // 0x1A
     sint16 sprite_bottom;           // 0x1C
-    uint8  sprite_direction; //direction of sprite? 0x1e
-    uint8 pad_1F[3]; // 0x1f
+    uint8  sprite_direction;        // 0x1e
+    uint8 pad_1F[3];
     rct_string_id name_string_idx;  // 0x22
-    uint16 var_24;
+    uint16 pad_24;
     uint16 frame;                   // 0x26
-    uint8 var_28[3];
-    uint8 var_2B;
-    uint8 pad_2C[0x45];
-    uint8 var_71;
 } rct_unk_sprite;
-assert_struct_size(rct_unk_sprite, 0x72);
+assert_struct_size(rct_unk_sprite, 0x28);
 
 typedef struct rct_litter {
     uint8 sprite_identifier;        // 0x00
