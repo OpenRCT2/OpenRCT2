@@ -43,7 +43,7 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, sint32 x, sint3
 
         sprite->frame          = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live   = (scenario_rand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = scenario_rand_max(Util::CountOf(vehicle_particle_base_sprites));
+        sprite->crashed_sprite_base = scenario_rand_max((uint32)Util::CountOf(vehicle_particle_base_sprites));
         sprite->acceleration_x = ((sint16) (scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_y = ((sint16) (scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
