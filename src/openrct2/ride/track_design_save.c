@@ -1006,8 +1006,10 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     sint16 start_z = z + trackCoordinates->z_begin;
     gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
 
+    const uint16 maxTrackElements = 8192;
+
     size_t numTrackElements = 0;
-    td6->track_elements = calloc(8192, sizeof(rct_td6_track_element));
+    td6->track_elements = calloc(maxTrackElements, sizeof(rct_td6_track_element));
     rct_td6_track_element *track = td6->track_elements;
     do {
         track->type = track_element_get_type(trackElement.element);
@@ -1050,6 +1052,13 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         if (sub_6C683D(&trackElement.x, &trackElement.y, &z, direction, track_type, 0, &trackElement.element, 0))
         {
             break;
+        }
+
+        if (maxTrackElements == numTrackElements)
+        {
+            free(td6->track_elements);
+            gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
+            return 0;
         }
     }
     while (trackElement.element != initialMap);
