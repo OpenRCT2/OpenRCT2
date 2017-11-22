@@ -120,7 +120,6 @@ typedef struct rct_balloon {
     uint8 frame;                    // 0x27
     uint8 pad_28[4];
     uint8 colour;                   // 0x2C
-    uint8 var_2D;
 
 #ifdef __cplusplus
     void Update();
@@ -129,7 +128,7 @@ typedef struct rct_balloon {
 #endif
 
 } rct_balloon;
-assert_struct_size(rct_balloon, 0x2e);
+assert_struct_size(rct_balloon, 0x2D);
 
 typedef struct rct_duck {
     uint8 sprite_identifier;        // 0x00
@@ -259,8 +258,7 @@ typedef struct rct_crashed_vehicle_particle {
     uint16 name_string_idx;         // 0x22
     uint16 time_to_live;            // 0x24
     uint16 frame;                   // 0x26
-    uint8 var_28[3];
-    uint8 var_2B;
+    uint8 pad_28[4];
     uint8 colour[2];
     uint16 crashed_sprite_base;     // 0x2E
     sint16 velocity_x;              // 0x30
@@ -298,7 +296,7 @@ typedef struct rct_crash_splash {
     uint8  sprite_direction; //direction of sprite? 0x1e
     uint8 pad_1F[3]; // 0x1f
     uint16 name_string_idx;         // 0x22
-    uint16 var_24;
+    uint16 pad_24;
     uint16 frame;                   // 0x26
 } rct_crash_splash;
 assert_struct_size(rct_crash_splash, 0x28);
