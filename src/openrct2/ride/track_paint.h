@@ -238,7 +238,7 @@ enum {
     MAZE_ENTRY_FLAG_6 = (1 << 6),
     MAZE_ENTRY_FLAG_7 = (1 << 7),
     MAZE_ENTRY_FLAG_8 = (1 << 8),
-    MAZE_ENTRY_FLAG_9 = (1 << 10),
+    MAZE_ENTRY_FLAG_9 = (1 << 9),
     MAZE_ENTRY_FLAG_10 = (1 << 10),
     MAZE_ENTRY_FLAG_11 = (1 << 11),
     MAZE_ENTRY_FLAG_12 = (1 << 12),
