@@ -166,7 +166,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
         {
             rct_balloon balloon = misc->balloon;
 
-            uint32 imageId = 22651 + ((balloon.frame / 256) & 7);
+            uint32 imageId = 22651 + (balloon.frame & 7);
             if (balloon.popped != 0) {
                 imageId += 8;
             }

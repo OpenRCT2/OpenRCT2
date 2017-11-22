@@ -108,7 +108,7 @@ typedef struct rct_balloon {
     uint8 linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     uint8 sprite_height_negative;   // 0x09
     uint16 sprite_index;            // 0x0A
-    uint16 flags;           // 0x0C
+    uint16 flags;                   // 0x0C
     sint16 x;                       // 0x0E
     sint16 y;                       // 0x10
     sint16 z;                       // 0x12
@@ -116,13 +116,8 @@ typedef struct rct_balloon {
     uint8 sprite_height_positive;   // 0x15
     uint8 pad_16[0xE];
     uint16 popped;                  // 0x24
-    union {
-        uint16 frame;               // 0x26
-        struct {
-            uint8 var_26a;
-            uint8 var_26b;
-        };
-    };
+    uint8 time_to_move;             // 0x26
+    uint8 frame;                    // 0x27
     uint8 pad_28[4];
     uint8 colour;                   // 0x2C
     uint8 var_2D;
@@ -214,7 +209,7 @@ assert_struct_size(rct_jumping_fountain, 0x48);
 typedef struct rct_money_effect {
     uint8 sprite_identifier;        // 0x00
     uint8 misc_identifier;          // 0x01
-    uint16 var_02;                  // 0x02
+    uint16 next_in_quadrant;        // 0x02
     uint16 next;                    // 0x04
     uint16 previous;                // 0x06
     uint8 linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
@@ -275,10 +270,8 @@ typedef struct rct_crashed_vehicle_particle {
     sint32 acceleration_x;          // 0x38
     sint32 acceleration_y;          // 0x3C
     sint32 acceleration_z;          // 0x40
-    uint8 pad_44[0x2D];
-    uint8 var_71;
 } rct_crashed_vehicle_particle;
-assert_struct_size(rct_crashed_vehicle_particle, 0x45 + 0x2D);
+assert_struct_size(rct_crashed_vehicle_particle, 0x44);
 
 typedef struct rct_crash_splash {
     uint8 sprite_identifier;        // 0x00
