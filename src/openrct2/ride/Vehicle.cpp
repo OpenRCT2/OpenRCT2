@@ -7367,7 +7367,7 @@ static void sub_6D63D4(rct_vehicle * vehicle)
 static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
     rct_scenery_entry * wallEntry     = get_wall_entry(tileElement->properties.wall.type);
-    sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
+    sint32              doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
         sint32 soundId = DoorOpenSoundIds[doorSoundType - 1];
@@ -7385,7 +7385,7 @@ static void vehicle_play_scenery_door_open_sound(rct_vehicle * vehicle, rct_tile
 static void vehicle_play_scenery_door_close_sound(rct_vehicle * vehicle, rct_tile_element * tileElement)
 {
     rct_scenery_entry * wallEntry     = get_wall_entry(tileElement->properties.wall.type);
-    sint32              doorSoundType = (wallEntry->wall.flags2 >> 1) & 3;
+    sint32              doorSoundType = wall_entry_get_door_sound(wallEntry);
     if (doorSoundType != 0)
     {
         sint32 soundId = DoorCloseSoundIds[doorSoundType - 1];

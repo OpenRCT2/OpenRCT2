@@ -152,16 +152,17 @@ typedef enum {
     WALL_SCENERY_CANT_BUILD_ON_SLOPE = (1 << 2),        // 0x4
     WALL_SCENERY_IS_BANNER = (1 << 3),      // 0x8  // Probably indicates translucency
     WALL_SCENERY_IS_DOOR = (1 << 4),        // 0x10
-    WALL_SCENERY_FLAG6 = (1 << 5),      // 0x20
+    WALL_SCENERY_LONG_DOOR_ANIMATION = (1 << 5),      // 0x20
     WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6),       // 0x40
     WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),         // 0x80
 } WALL_SCENERY_FLAGS;
 
 typedef enum {
     WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR = (1 << 0),     // 0x1
-    // Flags 2 and 3 are the door sound type
-    WALL_SCENERY_2_FLAG4 = (1 << 3),        // 0x8
-    WALL_SCENERY_2_FLAG5 = (1 << 4),        // 0x10
+    WALL_SCENERY_2_DOOR_SOUND_MASK = 0x6,
+    WALL_SCENERY_2_DOOR_SOUND_SHIFT = 1,
+    WALL_SCENERY_2_IS_OPAQUE = (1 << 3),        // 0x8
+    WALL_SCENERY_2_ANIMATED = (1 << 4),        // 0x10
 } WALL_SCENERY_2_FLAGS;
 
 typedef struct rct_path_bit_scenery_entry {
@@ -316,6 +317,7 @@ rct_scenery_entry *get_footpath_item_entry(sint32 entryIndex);
 rct_scenery_group_entry *get_scenery_group_entry(sint32 entryIndex);
 
 sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex);
+sint32 wall_entry_get_door_sound(const rct_scenery_entry * wallEntry);
 
 #ifdef __cplusplus
 }

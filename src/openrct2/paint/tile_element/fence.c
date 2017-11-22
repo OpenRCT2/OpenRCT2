@@ -142,7 +142,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
     }
     uint32 frameNum = 0;
 
-    if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG5) {
+    if (sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) {
         frameNum = (gCurrentTicks & 7) * 2;
     }
 

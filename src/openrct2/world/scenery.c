@@ -325,6 +325,7 @@ sint32 get_scenery_id_from_entry_index(uint8 objectType, sint32 entryIndex)
     }
 }
 
-
-
-
+sint32 wall_entry_get_door_sound(const rct_scenery_entry * wallEntry)
+{
+    return (wallEntry->wall.flags2 & WALL_SCENERY_2_DOOR_SOUND_MASK) >> WALL_SCENERY_2_DOOR_SOUND_SHIFT;
+}

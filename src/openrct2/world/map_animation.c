@@ -485,7 +485,7 @@ static bool map_animation_invalidate_wall_door(sint32 x, sint32 y, sint32 baseZ)
                 removeAnimation = false;
                 if (currentFrame != 5) {
                     currentFrame++;
-                    if (currentFrame == 13 && !(sceneryEntry->wall.flags & WALL_SCENERY_FLAG6))
+                    if (currentFrame == 13 && !(sceneryEntry->wall.flags & WALL_SCENERY_LONG_DOOR_ANIMATION))
                         currentFrame = 15;
 
                     invalidate = true;
@@ -521,7 +521,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
 
         sceneryEntry = get_wall_entry(tileElement->properties.scenery.type);
 
-        if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_FLAG5) && sceneryEntry->wall.scrolling_mode == 255)
+        if (!(sceneryEntry->wall.flags2 & WALL_SCENERY_2_ANIMATED) && sceneryEntry->wall.scrolling_mode == 255)
             continue;
 
         sint32 z = tileElement->base_height * 8;
