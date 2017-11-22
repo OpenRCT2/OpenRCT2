@@ -31,11 +31,11 @@ private:
 public:
     explicit Intent(rct_windowclass windowclass);
     rct_windowclass GetWindowClass() const;
-    void * GetPointerExtra(uint32 key);
-    std::string GetStringExtra(uint32 key);
-    uint32 GetUIntExtra(uint32 key);
-    sint32 GetSIntExtra(uint32 key);
-    close_callback GetCloseCallbackExtra(uint32 key);
+    void * GetPointerExtra(uint32 key) const;
+    std::string GetStringExtra(uint32 key) const;
+    uint32 GetUIntExtra(uint32 key) const;
+    sint32 GetSIntExtra(uint32 key) const;
+    close_callback GetCloseCallbackExtra(uint32 key) const;
     Intent * putExtra(uint32 key, uint32 value);
     Intent * putExtra(uint32 key, void * value);
     Intent * putExtra(uint32 key, sint32 value);
@@ -68,6 +68,7 @@ extern "C" {
         INTENT_EXTRA_MESSAGE,
         INTENT_EXTRA_LIST,
         INTENT_EXTRA_LIST_COUNT,
+        INTENT_EXTRA_PAGE,
     };
 
     enum {
@@ -83,6 +84,9 @@ extern "C" {
         INTENT_ACTION_REFRESH_SCENERY,
         INTENT_ACTION_INVALIDATE_TICKER_NEWS,
         INTENT_ACTION_REFRESH_GUEST_LIST,
+        INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD,
+        INTENT_ACTION_SET_TILE_INSPECTOR_PAGE,
+        INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS,
     };
 
     Intent *intent_create(rct_windowclass clss);

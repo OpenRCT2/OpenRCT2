@@ -1255,7 +1255,9 @@ void game_load_init()
     load_palette();
 
     if (!gOpenRCT2Headless) {
-        window_tile_inspector_clear_clipboard();
+        intent = intent_create(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        context_broadcast_intent(intent);
+        intent_release(intent);
         window_update_all();
     }
 
@@ -1536,7 +1538,11 @@ void game_init_all(sint32 mapSize)
 
     context_init();
     scenery_set_default_placement_configuration();
-    window_tile_inspector_clear_clipboard();
+
+    Intent * intent = intent_create(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+    context_broadcast_intent(intent);
+    intent_release(intent);
+
     load_palette();
 }
 

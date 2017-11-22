@@ -14,24 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Guard.hpp"
-#include "../core/Math.hpp"
-#include "../core/Util.hpp"
+#include <openrct2-ui/windows/Window.h>
 
-#include "../common.h"
-#include "../game.h"
-#include "../input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../ride/ride_data.h"
-#include "../ride/Track.h"
-#include "../sprites.h"
-#include "../world/footpath.h"
-#include "../world/LargeScenery.h"
-#include "../world/scenery.h"
-#include "../world/TileInspector.h"
-#include "dropdown.h"
-#include "tile_inspector.h"
+#include <openrct2/common.h>
+#include <openrct2/core/Guard.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/game.h>
+#include <openrct2/input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/Track.h>
+#include <openrct2/sprites.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/windows/tile_inspector.h>
+#include <openrct2/world/footpath.h>
+#include <openrct2/world/LargeScenery.h>
+#include <openrct2/world/scenery.h>
+#include <openrct2/world/TileInspector.h>
 
 static const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_GRASS,
@@ -445,9 +446,6 @@ static struct {
     { COR_GBDT, COR_GBDB, COR_GBPT, COR_GBPB, STR_TILE_INSPECTOR_GROUPBOX_CORRUPT_INFO }
 };
 
-uint32 windowTileInspectorTileX;
-uint32 windowTileInspectorTileY;
-sint32 windowTileInspectorElementCount = 0;
 static sint16 windowTileInspectorHighlightedIndex = -1;
 static bool windowTileInspectorTileSelected = false;
 static sint32 windowTileInspectorToolMouseX = 0;
@@ -531,14 +529,14 @@ static uint64 PageDisabledWidgets[] = {
     (1ULL << WIDX_BUTTON_ROTATE),
 };
 
-void window_tile_inspector_open()
+rct_window * window_tile_inspector_open()
 {
     rct_window* window;
 
     // Check if window is already open
     window = window_bring_to_front_by_class(WC_TILE_INSPECTOR);
     if (window != nullptr)
-        return;
+        return window;
 
     window = window_create(
         0,
@@ -562,6 +560,8 @@ void window_tile_inspector_open()
 
     tool_set(window, WIDX_BACKGROUND, TOOL_CROSSHAIR);
     window_tile_inspector_auto_set_buttons(window);
+
+    return window;
 }
 
 void window_tile_inspector_clear_clipboard()
