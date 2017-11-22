@@ -318,9 +318,9 @@ extern "C"
         {
             sprite->duck.sprite_identifier = SPRITE_IDENTIFIER_MISC;
             sprite->duck.misc_identifier = SPRITE_MISC_DUCK;
-            sprite->duck.var_14 = 9;
-            sprite->duck.var_09 = 0xC;
-            sprite->duck.var_15 = 9;
+            sprite->duck.sprite_width = 9;
+            sprite->duck.sprite_height_negative = 12;
+            sprite->duck.sprite_height_positive = 9;
             sint32 offsetXY = scenario_rand() & 0x1E;
             targetX += offsetXY;
             targetY += offsetXY;

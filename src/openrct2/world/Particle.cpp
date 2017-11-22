@@ -15,9 +15,13 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../util/util.h"
+#include "../core/Util.hpp"
 #include "../scenario/scenario.h"
 #include "sprite.h"
+
+extern "C" {
+    extern const uint32 vehicle_particle_base_sprites[5];
+}
 
 /**
  *
@@ -38,8 +42,8 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, sint32 x, sint3
         sprite->misc_identifier = SPRITE_MISC_CRASHED_VEHICLE_PARTICLE;
 
         sprite->frame          = (scenario_rand() & 0xFF) * 12;
-        sprite->var_24         = (scenario_rand() & 0x7F) + 140;
-        sprite->var_2E         = ((scenario_rand() & 0xFF) * 5) >> 8;
+        sprite->time_to_live   = (scenario_rand() & 0x7F) + 140;
+        sprite->crashed_sprite_base = scenario_rand_max(Util::CountOf(vehicle_particle_base_sprites));
         sprite->acceleration_x = ((sint16) (scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_y = ((sint16) (scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
@@ -56,8 +60,8 @@ void crashed_vehicle_particle_create(rct_vehicle_colour colours, sint32 x, sint3
 void crashed_vehicle_particle_update(rct_crashed_vehicle_particle * particle)
 {
     invalidate_sprite_0((rct_sprite *) particle);
-    particle->var_24--;
-    if (particle->var_24 == 0)
+    particle->time_to_live--;
+    if (particle->time_to_live == 0)
     {
         sprite_remove((rct_sprite *) particle);
         return;

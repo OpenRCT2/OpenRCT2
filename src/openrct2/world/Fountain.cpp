@@ -186,9 +186,9 @@ extern "C"
             jumpingFountain->var_2E = direction;
             jumpingFountain->fountain_flags = flags;
             jumpingFountain->sprite_direction = direction << 3;
-            jumpingFountain->var_14 = 33;
-            jumpingFountain->var_09 = 36;
-            jumpingFountain->var_15 = 12;
+            jumpingFountain->sprite_width = 33;
+            jumpingFountain->sprite_height_negative = 36;
+            jumpingFountain->sprite_height_positive = 12;
             jumpingFountain->sprite_identifier = SPRITE_IDENTIFIER_MISC;
             sprite_move(x, y, z, (rct_sprite *)jumpingFountain);
             jumpingFountain->misc_identifier = type == JUMPING_FOUNTAIN_TYPE_SNOW ?

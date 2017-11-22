@@ -7211,7 +7211,7 @@ static void steam_particle_create(sint16 x, sint16 y, sint16 z)
         steam->sprite_identifier      = SPRITE_IDENTIFIER_MISC;
         steam->misc_identifier        = SPRITE_MISC_STEAM_PARTICLE;
         steam->frame                  = 256;
-        steam->var_24                 = 0;
+        steam->time_to_move           = 0;
         sprite_move(x, y, z, (rct_sprite *)steam);
     }
 }

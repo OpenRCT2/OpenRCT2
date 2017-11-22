@@ -396,8 +396,9 @@ static void sprite_steam_particle_update(rct_steam_particle *steam)
 {
     invalidate_sprite_2((rct_sprite*)steam);
 
-    steam->var_24 += 0x5555;
-    if (steam->var_24 < 0x5555) {
+    // Move up 1 z every 3 ticks (Starts after 4 ticks)
+    steam->time_to_move += 0x5555;
+    if (steam->time_to_move < 0x5555) {
         sprite_move(
             steam->x,
             steam->y,

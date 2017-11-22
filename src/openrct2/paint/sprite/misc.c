@@ -28,7 +28,7 @@ static const sint8 money_wave[] = {
 };
 
 /** rct2: 0x0097ED90 */
-static const uint32 vehicle_particle_base_sprites[] = {
+const uint32 vehicle_particle_base_sprites[] = {
     22577, 22589, 22601, 22613, 22625
 };
 
@@ -69,7 +69,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             }
 
             rct_crashed_vehicle_particle particle = misc->crashed_vehicle_particle;
-            uint32 imageId = vehicle_particle_base_sprites[particle.var_2E] + particle.frame / 256;
+            uint32 imageId = vehicle_particle_base_sprites[particle.crashed_sprite_base] + particle.frame / 256;
             imageId = imageId | (particle.colour[0] << 19) | (particle.colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
             sub_98196C(session, imageId, 0, 0, 1, 1, 0, misc->unknown.z, get_current_rotation());
             break;

@@ -118,9 +118,9 @@ extern "C"
         rct_sprite* sprite = create_sprite(2);
         if (sprite != nullptr)
         {
-            sprite->balloon.var_14 = 13;
-            sprite->balloon.var_09 = 22;
-            sprite->balloon.var_15 = 11;
+            sprite->balloon.sprite_width = 13;
+            sprite->balloon.sprite_height_negative = 22;
+            sprite->balloon.sprite_height_positive = 11;
             sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
             sprite_move(x, y, z, sprite);
             sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
