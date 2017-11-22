@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "core/Console.hpp"
 #include "core/FileStream.hpp"
 #include "core/Path.hpp"
 #include "FileClassifier.h"
@@ -88,6 +89,7 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
     }
     catch (Exception)
     {
+		Console::WriteLine("Exception in FileClassifier S6.");
     }
     stream->SetPosition(originalPosition);
     return success;
@@ -122,6 +124,7 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
     }
     catch (Exception)
     {
+		Console::WriteLine("Exception in FileClassifier S4.");
     }
 
     stream->SetPosition(originalPosition);
@@ -156,6 +159,7 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
     }
     catch (Exception)
     {
+		Console::WriteLine("Exception in FileClassifier TD4_TD6.");
     }
 
     return success;
