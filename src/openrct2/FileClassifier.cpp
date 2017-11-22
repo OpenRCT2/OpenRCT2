@@ -87,9 +87,9 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
         result->Version = s6Header.version;
         success = true;
     }
-    catch (Exception)
+    catch (const Exception& e)
     {
-		Console::WriteLine("Exception in FileClassifier S6.");
+        Console::Error::WriteLine(e.GetMessage());
     }
     stream->SetPosition(originalPosition);
     return success;
@@ -122,9 +122,9 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
             success = true;
         }
     }
-    catch (Exception)
+    catch (const Exception& e)
     {
-		Console::WriteLine("Exception in FileClassifier S4.");
+        Console::Error::WriteLine(e.GetMessage());
     }
 
     stream->SetPosition(originalPosition);
@@ -143,7 +143,7 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
 
         if (sawyercoding_validate_track_checksum(data.get(), dataLength))
         {
-			std::unique_ptr<uint8>td6data(Memory::Allocate<uint8>(0x10000));
+            std::unique_ptr<uint8>td6data(Memory::Allocate<uint8>(0x10000));
             size_t td6len = sawyercoding_decode_td6(data.get(), td6data.get(), dataLength);
             if (td6data != nullptr && td6len >= 8)
             {
@@ -157,9 +157,9 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
             }
         }
     }
-    catch (Exception)
+    catch (const Exception& e)
     {
-		Console::WriteLine("Exception in FileClassifier TD4_TD6.");
+        Console::Error::WriteLine(e.GetMessage());
     }
 
     return success;
