@@ -67,7 +67,7 @@ rct_windowclass Intent::GetWindowClass() const
     return this->_Class;
 }
 
-void * Intent::GetPointerExtra(uint32 key)
+void * Intent::GetPointerExtra(uint32 key) const
 {
     if (_Data.count(key) == 0)
     {
@@ -79,7 +79,7 @@ void * Intent::GetPointerExtra(uint32 key)
     return (void *) data.pointerVal;
 }
 
-uint32 Intent::GetUIntExtra(uint32 key)
+uint32 Intent::GetUIntExtra(uint32 key) const
 {
     if (_Data.count(key) == 0)
     {
@@ -91,7 +91,7 @@ uint32 Intent::GetUIntExtra(uint32 key)
     return data.intVal.unsignedInt;
 }
 
-sint32 Intent::GetSIntExtra(uint32 key)
+sint32 Intent::GetSIntExtra(uint32 key) const
 {
     if (_Data.count(key) == 0)
     {
@@ -103,7 +103,7 @@ sint32 Intent::GetSIntExtra(uint32 key)
     return data.intVal.signedInt;
 }
 
-std::string Intent::GetStringExtra(uint32 key)
+std::string Intent::GetStringExtra(uint32 key) const
 {
     if (_Data.count(key) == 0)
     {
@@ -115,7 +115,7 @@ std::string Intent::GetStringExtra(uint32 key)
     return data.stringVal;
 }
 
-close_callback Intent::GetCloseCallbackExtra(uint32 key)
+close_callback Intent::GetCloseCallbackExtra(uint32 key) const
 {
     if (_Data.count(key) == 0)
     {

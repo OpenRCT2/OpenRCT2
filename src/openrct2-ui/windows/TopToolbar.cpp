@@ -3091,7 +3091,7 @@ static void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
             console_open();
             break;
         case DDIDX_TILE_INSPECTOR:
-            window_tile_inspector_open();
+            context_open_window(WC_TILE_INSPECTOR);
             break;
         case DDIDX_OBJECT_SELECTION:
             window_close_all();

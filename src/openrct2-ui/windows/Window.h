@@ -19,6 +19,7 @@
 #include <openrct2/common.h>
 
 #include <openrct2/interface/window.h>
+#include <openrct2/windows/tile_inspector.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);
 typedef void (*scenarioselect_callback)(const utf8 *path);
@@ -153,3 +154,8 @@ rct_window * window_game_bottom_toolbar_open();
 void window_game_bottom_toolbar_invalidate_news_item();
 
 rct_window * window_editor_bottom_toolbar_open();
+
+rct_window * window_tile_inspector_open();
+void window_tile_inspector_clear_clipboard();
+void window_tile_inspector_set_page(rct_window *w, tile_inspector_page page);
+void window_tile_inspector_auto_set_buttons(rct_window *w);

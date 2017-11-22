@@ -107,6 +107,8 @@ public:
             return window_staff_list_open();
         case WC_THEMES:
             return window_themes_open();
+        case WC_TILE_INSPECTOR:
+            return window_tile_inspector_open();
         case WC_TITLE_EXIT:
             return window_title_exit_open();
         case WC_TITLE_LOGO:
@@ -321,6 +323,24 @@ public:
         case INTENT_ACTION_REFRESH_GUEST_LIST:
             window_guest_list_refresh_list();
             break;
+
+        case INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD:
+            window_tile_inspector_clear_clipboard();
+            break;
+
+        case INTENT_ACTION_SET_TILE_INSPECTOR_PAGE:
+        {
+            auto window = window_find_by_class(WC_TILE_INSPECTOR);
+            window_tile_inspector_set_page(window, static_cast<tile_inspector_page>(intent.GetUIntExtra(INTENT_EXTRA_PAGE)));
+            break;
+        }
+
+        case INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS:
+        {
+            auto window = window_find_by_class(WC_TILE_INSPECTOR);
+            window_tile_inspector_auto_set_buttons(window);
+            break;
+        }
         }
     }
 

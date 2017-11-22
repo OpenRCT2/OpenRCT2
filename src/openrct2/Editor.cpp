@@ -476,7 +476,9 @@ namespace Editor
 
         gWindowUpdateTicks = 0;
         load_palette();
-        window_tile_inspector_clear_clipboard();
+
+        intent = Intent(INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD);
+        context_broadcast_intent(&intent);
     }
 
     /**

@@ -15,14 +15,33 @@
 #pragma endregion
 
 #include "../common.h"
+#include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../game.h"
 #include "../interface/window.h"
 #include "../ride/Track.h"
+#include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
 #include "map.h"
 #include "TileInspector.h"
+
+uint32 windowTileInspectorTileX;
+uint32 windowTileInspectorTileY;
+sint32 windowTileInspectorElementCount = 0;
+
+static void window_tile_inspector_set_page(rct_window * w, const tile_inspector_page page)
+{
+    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_PAGE);
+    intent.putExtra(INTENT_EXTRA_PAGE, page);
+    context_broadcast_intent(&intent);
+}
+
+static void window_tile_inspector_auto_set_buttons(rct_window * w)
+{
+    auto intent = Intent(INTENT_ACTION_SET_TILE_INSPECTOR_BUTTONS);
+    context_broadcast_intent(&intent);
+}
 
 static bool map_swap_elements_at(sint32 x, sint32 y, sint16 first, sint16 second)
 {

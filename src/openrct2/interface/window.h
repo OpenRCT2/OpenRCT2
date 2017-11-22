@@ -720,9 +720,6 @@ void ride_construction_toolupdate_entrance_exit(sint32 screenX, sint32 screenY);
 void ride_construction_toolupdate_construct(sint32 screenX, sint32 screenY);
 void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY);
 
-void window_tile_inspector_open();
-void window_tile_inspector_clear_clipboard();
-
 void window_editor_object_selection_open();
 
 void window_bubble_list_item(rct_window* w, sint32 item_position);
