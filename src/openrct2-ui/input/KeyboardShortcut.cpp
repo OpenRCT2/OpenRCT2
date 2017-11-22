@@ -311,6 +311,14 @@ static void shortcut_invisible_people_toggle()
     toggle_view_flag(VIEWPORT_FLAG_INVISIBLE_PEEPS);
 }
 
+static void shortcut_gridlines_toggle()
+{
+    if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+        return;
+
+    toggle_view_flag(VIEWPORT_FLAG_GRIDLINES);
+}
+
 static void shortcut_height_marks_on_land_toggle()
 {
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
@@ -807,6 +815,7 @@ namespace
         shortcut_ride_construction_demolish_current,
         shortcut_load_game,
         shortcut_clear_scenery,
+        shortcut_gridlines_toggle,
     };
 }
 

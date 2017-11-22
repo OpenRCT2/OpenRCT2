@@ -4469,6 +4469,7 @@ STR_6157    :Console
 STR_6158    :Failed to load this file...{NEWLINE}Incompatible RCTC version: {COMMA16}
 STR_6159    :Smooth Nearest Neighbour
 STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
+STR_6161    :Gridlines display toggle
 
 #############
 # Scenarios #

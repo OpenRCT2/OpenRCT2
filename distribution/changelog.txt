@@ -11,6 +11,7 @@
 - Feature: [#6292] Allow building queue lines in the Scenario Editor.
 - Feature: [#6295] TrueType fonts are now rendered with light font hinting by default.
 - Feature: [#6307] Arrows are now shown when placing park entrances.
+- Feature: [#6313] Add keyboard shortcut for toggle gridlines.
 - Feature: [#6324] Add command to deselect unused objects from the object selection.
 - Feature: [#6325] Allow using g1.dat from RCT Classic.
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
