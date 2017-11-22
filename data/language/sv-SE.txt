@@ -4465,6 +4465,7 @@ STR_6156    :Namn är reserverat
 STR_6157    :Utvecklarkonsol
 STR_6158    :Misslyckades att ladda denna fil...{NEWLINE}Inkompatibel RCTC-version: {COMMA16}
 STR_6159    :Jämna närmsta heltal
+STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING} 
 
 #############
 # Scenarion #
