@@ -304,8 +304,10 @@ static void window_banner_invalidate(rct_window *w)
 
     // Scenery item not sure why we use this instead of banner?
     rct_scenery_entry* sceneryEntry = get_banner_entry(banner->type);
-
-    if (sceneryEntry->banner.flags & 1) colour_btn->type = WWT_COLOURBTN;
+    if (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+    {
+        colour_btn->type = WWT_COLOURBTN;
+    }
 
     w->pressed_widgets &= ~(1ULL<<WIDX_BANNER_NO_ENTRY);
     w->disabled_widgets &= ~(

@@ -1011,21 +1011,18 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
     {
         rct_banner* banner = &gBanners[tile_element->properties.banner.index];
         rct_scenery_entry* scenery_entry = get_banner_entry(banner->type);
-
-        // If can't repaint
-        if (!(scenery_entry->banner.flags &
-            (1 << 0)))
-            return;
-
-        gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
-        game_do_command(
-            grid_x,
-            1,
-            grid_y,
-            tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
-            GAME_COMMAND_SET_BANNER_COLOUR,
-            0,
-            gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+        if (scenery_entry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+        {
+            gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
+            game_do_command(
+                grid_x,
+                1,
+                grid_y,
+                tile_element->base_height | ((tile_element->properties.banner.position & 0x3) << 8),
+                GAME_COMMAND_SET_BANNER_COLOUR,
+                0,
+                gWindowSceneryPrimaryColour | (gWindowScenerySecondaryColour << 8));
+        }
         break;
     }
     default:

@@ -252,6 +252,11 @@ enum {
     SCENERY_GHOST_FLAG_4 = (1 << SCENERY_TYPE_BANNER)
 };
 
+enum
+{
+    BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
+};
+
 #define SCENERY_ENTRIES_BY_TAB 256
 
 #ifdef __cplusplus

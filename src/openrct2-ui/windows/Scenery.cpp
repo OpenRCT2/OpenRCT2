@@ -965,9 +965,10 @@ void window_scenery_invalidate(rct_window *w)
 
         if (tabSelectedSceneryId >= 0x400) {
             sceneryEntry = get_banner_entry(tabSelectedSceneryId - 0x400);
-
-            if (sceneryEntry->banner.flags & 1)
+            if (sceneryEntry->banner.flags & BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR)
+            {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
+            }
         } else if (tabSelectedSceneryId >= 0x300) {
             sceneryEntry = get_large_scenery_entry(tabSelectedSceneryId - 0x300);
 
