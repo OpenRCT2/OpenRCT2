@@ -50,11 +50,15 @@ const utf8 * Object::GetOverrideString(uint8 index) const
 
 const utf8 * Object::GetString(uint8 index) const
 {
-    const utf8 * sz = GetOverrideString(index);
-    if (sz == nullptr)
+    auto sz = GetOverrideString(index);
+    if (sz == nullptr && index == OBJ_STRING_ID_VEHICLE_NAME)
     {
-        // DAT objects do not contain separate ride and vehicle names
-        index = (index < OBJ_STRING_ID_VEHICLE_NAME) ? index : OBJ_STRING_ID_NAME;
+        // If no vehicle name is specified, fall back to the ride name. This is also required if we fall back
+        // to the .DAT name (which does not contain separate ride and vehicle names).
+        return GetName();
+    }
+    else if (sz == nullptr)
+    {
         sz = GetStringTable()->GetString(index);
     }
     return sz != nullptr ? sz : "";
