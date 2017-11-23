@@ -18,6 +18,7 @@
 - Feature: [#6411] Add command to remove the park fence.
 - Feature: [#6414] Raise maximum launch speed of the Corkscrew RC back to 96 km/h (for RCT1 parity).
 - Feature: [#6433] Turn 'unlock all prices' into a regular (non-cheat, persistent) option.
+- Feature: [#6516] Ability to search by filename in the object selection window.
 - Feature: [#6530] Land rights tool no longer blocks when a tile is not for purchase.
 - Feature: [#6568] Add smooth nearest neighbour scaling.
 - Feature: [#6651, #6658] Integrate Discord Rich Presence.

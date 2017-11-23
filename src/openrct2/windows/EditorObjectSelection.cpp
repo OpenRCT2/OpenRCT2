@@ -61,7 +61,7 @@ enum {
 static uint32 _filter_flags;
 static uint16 _filter_object_counts[11];
 
-static char _filter_string[41];
+static char _filter_string[MAX_PATH];
 
 #define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
 #define _FILTER_RCT2 (_filter_flags & FILTER_RCT2)
@@ -824,8 +824,7 @@ static void window_editor_object_selection_mouseup(rct_window *w, rct_widgetinde
         break;
     }
     case WIDX_FILTER_STRING_BUTTON:
-        //window_text_input_open(w, widgetIndex, STR_OBJECT_SEARCH, STR_OBJECT_SEARCH_DESC, STR_STRING, (uint32)_filter_string, 40);
-        window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, 40);
+        window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
         break;
     case WIDX_FILTER_CLEAR_BUTTON:
         memset(_filter_string, 0, sizeof(_filter_string));
@@ -1734,13 +1733,7 @@ static void window_editor_object_selection_textinput(rct_window *w, rct_widgetin
     if (strcmp(_filter_string, text) == 0)
         return;
 
-    if (strlen(text) == 0) {
-        memset(_filter_string, 0, sizeof(_filter_string));
-    }
-    else {
-        memset(_filter_string, 0, sizeof(_filter_string));
-        safe_strcpy(_filter_string, text, sizeof(_filter_string));
-    }
+    safe_strcpy(_filter_string, text, sizeof(_filter_string));
 
     filter_update_counts();
 
@@ -1783,9 +1776,11 @@ static bool filter_string(const ObjectRepositoryItem * item)
     // Get object name (ride/vehicle for rides) and type name (rides only)
     char name_lower[MAX_PATH];
     char type_lower[MAX_PATH];
+    char object_path[MAX_PATH];
     char filter_lower[sizeof(_filter_string)];
     safe_strcpy(name_lower, name, MAX_PATH);
     safe_strcpy(type_lower, rideTypeName, MAX_PATH);
+    safe_strcpy(object_path, item->Path, MAX_PATH);
     safe_strcpy(filter_lower, _filter_string, sizeof(_filter_string));
 
     // Make use of lowercase characters only
@@ -1793,10 +1788,17 @@ static bool filter_string(const ObjectRepositoryItem * item)
         name_lower[i] = (char)tolower(name_lower[i]);
     for (sint32 i = 0; type_lower[i] != '\0'; i++)
         type_lower[i] = (char)tolower(type_lower[i]);
+    for (sint32 i = 0; object_path[i] != '\0'; i++)
+        object_path[i] = (char)tolower(object_path[i]);
     for (sint32 i = 0; filter_lower[i] != '\0'; i++)
         filter_lower[i] = (char)tolower(filter_lower[i]);
 
-    return strstr(name_lower, filter_lower) != nullptr || (((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr);
+    // Check if the searched string exists in the name, ride type, or filename
+    bool inName = strstr(name_lower, filter_lower) != nullptr;
+    bool inRideType = ((item->ObjectEntry.flags & 0x0F) == OBJECT_TYPE_RIDE) && strstr(type_lower, filter_lower) != nullptr;
+    bool inPath = strstr(object_path, filter_lower) != nullptr;
+
+    return inName || inRideType || inPath;
 }
 
 static bool filter_source(const ObjectRepositoryItem * item)
