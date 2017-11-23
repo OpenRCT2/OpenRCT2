@@ -20,6 +20,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/Editor.h>
 #include <openrct2/interface/widget.h>
@@ -29,16 +30,19 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
+#include <vector>
 
 enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_BACK,
+    WIDX_FILTER_STRING,
     WIDX_TRACK_LIST,
+    // TODO: Clear filter button
     WIDX_TRACK_PREVIEW,
     WIDX_ROTATE,
     WIDX_TOGGLE_SCENERY,
-    WIDX_BACK,
 };
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
@@ -47,11 +51,12 @@ static rct_widget window_track_list_widgets[] = {
     { WWT_FRAME,            0,  0,      599,    0,      399,    0xFFFFFFFF,             STR_NONE                                },
     { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_SELECT_DESIGN,      STR_WINDOW_TITLE_TIP                    },
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP                    },
-    { WWT_SCROLL,           0,  4,      221,    33,     395,    SCROLL_VERTICAL,                        STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP     },
+    { WWT_13,               0,  4,      221,    18,     29,     STR_SELECT_OTHER_RIDE,  STR_NONE                                },
+    { WWT_TEXT_BOX,         1,  4,      221,    31,     42,     STR_NONE,               STR_NONE                                },
+    { WWT_SCROLL,           0,  4,      221,    44,     395,    SCROLL_VERTICAL,        STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP     },
     { WWT_FLATBTN,          0,  224,    595,    18,     236,    0xFFFFFFFF,             STR_NONE                                },
     { WWT_FLATBTN,          0,  574,    597,    374,    397,    SPR_ROTATE_ARROW,       STR_ROTATE_90_TIP                       },
     { WWT_FLATBTN,          0,  574,    597,    350,    373,    SPR_SCENERY,            STR_TOGGLE_SCENERY_TIP                  },
-    { WWT_13,               0,  4,      221,    18,     29,     STR_SELECT_OTHER_RIDE,  STR_NONE                                },
     { WIDGETS_END },
 };
 
@@ -61,6 +66,7 @@ static void window_track_list_update(rct_window *w);
 static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
+static void window_track_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_track_list_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
 static void window_track_list_invalidate(rct_window *w);
 static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -86,7 +92,7 @@ static rct_window_event_list window_track_list_events = {
     window_track_list_scrollmousedown,
     nullptr,
     window_track_list_scrollmouseover,
-    nullptr,
+    window_track_list_textinput,
     nullptr,
     nullptr,
     window_track_list_tooltip,
@@ -101,11 +107,13 @@ static rct_window_event_list window_track_list_events = {
 
 ride_list_item _window_track_list_item;
 
-static track_design_file_ref *_trackDesigns = nullptr;
-static size_t _trackDesignsCount = 0;
-static uint16 _loadedTrackDesignIndex;
-static rct_track_td6 *_loadedTrackDesign;
-static uint8 *_trackDesignPreviewPixels;
+static track_design_file_ref * _trackDesigns                         = nullptr;
+static size_t                  _trackDesignsCount                    = 0;
+static utf8                    _filterString[USER_STRING_MAX_LENGTH];
+static std::vector<uint16>     _filteredTrackIds;
+static uint16                  _loadedTrackDesignIndex;
+static rct_track_td6         * _loadedTrackDesign;
+static uint8                 * _trackDesignPreviewPixels;
 
 static void track_list_load_designs(ride_list_item item);
 static bool track_list_load_design_for_preview(utf8 *path);
@@ -118,18 +126,24 @@ rct_window * window_track_list_open(ride_list_item item)
 {
     window_close_construction_windows();
     _window_track_list_item = item;
+
+    String::Set(_filterString, sizeof(_filterString), "");
     track_list_load_designs(item);
 
     sint32 x, y;
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+    {
         sint32 screenWidth = context_get_width();
         sint32 screenHeight = context_get_height();
         x = screenWidth / 2 - 300;
         y = Math::Max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
-    } else {
+    }
+    else
+    {
         x = 0;
         y = TOP_TOOLBAR_HEIGHT + 2;
     }
+
     rct_window *w = window_create(
         x,
         y,
@@ -139,15 +153,26 @@ rct_window * window_track_list_open(ride_list_item item)
         WC_TRACK_DESIGN_LIST,
         0
     );
+
+    window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
     w->widgets = window_track_list_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_ROTATE) | (1 << WIDX_TOGGLE_SCENERY) | (1 << WIDX_BACK);
+    w->enabled_widgets =
+        (1ULL << WIDX_CLOSE) |
+        (1ULL << WIDX_BACK) |
+        (1ULL << WIDX_FILTER_STRING) |
+        (1ULL << WIDX_ROTATE) |
+        (1ULL << WIDX_TOGGLE_SCENERY);
+
     window_init_scroll_widgets(w);
     w->track_list.track_list_being_updated = false;
     w->track_list.reload_track_designs = false;
+
+    // Start with first track highlighted
     w->selected_list_item = 0;
     if (_trackDesignsCount != 0 && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         w->selected_list_item = 1;
     }
+
     gTrackDesignSceneryToggle = false;
     window_push_others_right(w);
     _currentTrackPieceDirection = 2;
@@ -195,7 +220,7 @@ static void window_track_list_close(rct_window *w)
  *
  *  rct2: 0x006CFB82
  */
-static void window_track_list_select(rct_window *w, sint32 index)
+static void window_track_list_select(rct_window *w, sint32 listIndex)
 {
     // Displays a message if the ride can't load, fix #4080
     if (_loadedTrackDesign == nullptr) {
@@ -205,12 +230,12 @@ static void window_track_list_select(rct_window *w, sint32 index)
 
     audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
-        if (index == 0) {
+        if (listIndex == 0) {
             window_close(w);
             ride_construct_new(_window_track_list_item);
             return;
         }
-        index--;
+        listIndex--;
     }
 
     rct_track_td6 *td6 = _loadedTrackDesign;
@@ -218,7 +243,8 @@ static void window_track_list_select(rct_window *w, sint32 index)
         gTrackDesignSceneryToggle = true;
     }
 
-    track_design_file_ref *tdRef = &_trackDesigns[index];
+    uint16 trackDesignIndex = _filteredTrackIds[listIndex];
+    track_design_file_ref *tdRef = &_trackDesigns[trackDesignIndex];
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
         intent.putExtra(INTENT_EXTRA_TRACK_DESIGN, tdRef);
@@ -236,14 +262,14 @@ static void window_track_list_select(rct_window *w, sint32 index)
 
 static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint32 y)
 {
-    sint32 maxItems = (sint32)_trackDesignsCount;
+    size_t maxItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         // Extra item: custom design
         maxItems++;
     }
 
     sint32 index = y / 10;
-    if (index < 0 || index >= maxItems) {
+    if (index < 0 || (uint32)index >= maxItems) {
         index = -1;
     }
     return index;
@@ -275,6 +301,9 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
             context_open_window(WC_CONSTRUCT_RIDE);
         }
         break;
+    case WIDX_FILTER_STRING:
+        window_start_textbox(w, widgetIndex, STR_STRING, _filterString, sizeof(_filterString));
+        break;
     }
 }
 
@@ -284,7 +313,7 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
  */
 static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height)
 {
-    size_t numItems = _trackDesignsCount;
+    size_t numItems = _filteredTrackIds.size();
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         // Extra item: custom design
         numItems++;
@@ -313,13 +342,66 @@ static void window_track_list_scrollmousedown(rct_window *w, sint32 scrollIndex,
  */
 static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y)
 {
-    if (!w->track_list.track_list_being_updated) {
+    if (!w->track_list.track_list_being_updated)
+    {
         sint32 i = window_track_list_get_list_item_index_from_position(x, y);
-        if (i != -1 && w->selected_list_item != i) {
+        if (i != -1 && w->selected_list_item != i)
+        {
             w->selected_list_item = i;
             window_invalidate(w);
         }
     }
+}
+
+static void window_track_list_filter_list()
+{
+    _filteredTrackIds.clear();
+
+    // Nothing to filter, so fill the list with all indices
+    if (String::LengthOf(_filterString) == 0)
+    {
+        for (uint16 i = 0; i < _trackDesignsCount; i++)
+            _filteredTrackIds.push_back(i);
+
+        return;
+    }
+
+    // Convert filter to lowercase
+    utf8 filterStringLower[sizeof(_filterString)];
+    String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
+    for (sint32 i = 0; filterStringLower[i] != '\0'; i++)
+        filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
+
+    // Fill the set with indices for tracks that match the filter
+    for (uint16 i = 0; i < _trackDesignsCount; i++)
+    {
+        utf8 trackNameLower[USER_STRING_MAX_LENGTH];
+        String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
+        for (sint32 j = 0; trackNameLower[j] != '\0'; j++)
+            trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
+
+        if (strstr(trackNameLower, filterStringLower) != nullptr)
+        {
+            _filteredTrackIds.push_back(i);
+        }
+    }
+}
+
+static void window_track_list_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
+{
+    if (widgetIndex != WIDX_FILTER_STRING || text == nullptr)
+        return;
+
+    if (String::Equals(_filterString, text))
+        return;
+
+    String::Set(_filterString, sizeof(_filterString), text);
+
+    window_track_list_filter_list();
+
+    w->scrolls->v_top = 0;
+
+    window_invalidate(w);
 }
 
 /**
@@ -333,6 +415,13 @@ static void window_track_list_tooltip(rct_window* w, rct_widgetindex widgetIndex
 
 static void window_track_list_update(rct_window *w)
 {
+    if (gCurrentTextBox.window.classification == w->classification &&
+        gCurrentTextBox.window.number == w->number)
+    {
+        window_update_textbox_caret();
+        widget_invalidate(w, WIDX_FILTER_STRING);
+    }
+
     if (w->track_list.reload_track_designs) {
         track_list_load_designs(_window_track_list_item);
         w->selected_list_item = 0;
@@ -391,14 +480,21 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 {
     window_draw_widgets(w, dpi);
 
-    sint32 trackIndex = w->selected_list_item;
-    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
-        if (_trackDesignsCount == 0 || trackIndex == -1) {
+    sint32 listItemIndex = w->selected_list_item;
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+    {
+        if (_trackDesignsCount == 0 || listItemIndex == -1)
             return;
-        }
-    } else if (trackIndex-- == 0) {
-        return;
     }
+    else {
+        if (listItemIndex == 0)
+            return;
+
+        // Because the first item in the list is "Build a custom design", lower the index by one
+        listItemIndex--;
+    }
+
+    sint32 trackIndex = _filteredTrackIds[listItemIndex];
 
     // Track preview
     sint32 x, y, colour;
@@ -592,14 +688,19 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
         listIndex++;
     }
 
-    for (size_t i = 0; i < _trackDesignsCount; i++, listIndex++) {
-        if (y + 10 >= dpi->y && y < dpi->y + dpi->height) {
+    for (auto i : _filteredTrackIds)
+    {
+        if (y + 10 >= dpi->y && y < dpi->y + dpi->height)
+        {
             rct_string_id stringId;
-            if (listIndex == (size_t)w->selected_list_item) {
+            if (listIndex == (size_t)w->selected_list_item)
+            {
                 // Highlight
                 gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
-            } else {
+            }
+            else
+            {
                 stringId = STR_BLACK_STRING;
             }
 
@@ -608,7 +709,9 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
             set_format_arg(2, utf8*, _trackDesigns[i].name);
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y - 1);
         }
+
         y += 10;
+        listIndex++;
     }
 }
 
@@ -630,6 +733,8 @@ static void track_list_load_designs(ride_list_item item)
         const RideGroup * rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
         _trackDesignsCount = track_repository_get_items_for_ride_group(&_trackDesigns, item.type, rideGroup);
     }
+
+    window_track_list_filter_list();
 }
 
 static bool track_list_load_design_for_preview(utf8 *path)
