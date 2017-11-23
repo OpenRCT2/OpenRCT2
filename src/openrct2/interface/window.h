@@ -547,7 +547,7 @@ enum {
 #define WC_PEEP__WIDX_PATROL                            11
 #define WC_PEEP__WIDX_ACTION_LBL                        12
 #define WC_PEEP__WIDX_PICKUP                            13
-#define WC_TRACK_DESIGN_LIST__WIDX_ROTATE               7
+#define WC_TRACK_DESIGN_LIST__WIDX_ROTATE               8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE              3
 #define WC_MAP__WIDX_LAND_TOOL                          13
 #define WC_MAP__WIDX_ROTATE_90                          20
