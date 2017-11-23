@@ -61,7 +61,7 @@ class TrackDesignFileIndex final : public FileIndex<TrackRepositoryItem>
 {
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x58444954; // TIDX
-    static constexpr uint16 VERSION = 1;
+    static constexpr uint16 VERSION = 2;
     static constexpr auto PATTERN = "*.td4;*.td6";
 
 public:

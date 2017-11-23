@@ -76,49 +76,71 @@ static const RideGroup ride_group_junior_rc = {
     /*.Naming =*/ { STR_JUNIOR_RC_GROUP, STR_JUNIOR_RC_GROUP_DESC },
 };
 
-static const RideGroup ride_group_midi_coaster = {
+static const RideGroup ride_group_classic_mini_coaster = {
     /*.RideType =*/ RIDE_TYPE_JUNIOR_ROLLER_COASTER,
     /*.MaximumHeight =*/ 15,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_CURVE) | (1ULL << TRACK_FLAT_ROLL_BANKING) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_BOOSTER),
-    /*.Naming =*/ { STR_MIDI_COASTER_GROUP, STR_MIDI_COASTER_GROUP_DESC },
+    /*.Naming =*/ { STR_CLASSIC_MINI_COASTER_GROUP, STR_CLASSIC_MINI_COASTER_GROUP_DESC },
+};
+
+static const RideGroup ride_group_steel_wild_mouse = {
+    /*.RideType =*/ RIDE_TYPE_WILD_MOUSE,
+    /*.MaximumHeight =*/ 16,
+    /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES),
+    /*.Naming =*/ { STR_RIDE_NAME_WILD_MOUSE, STR_RIDE_DESCRIPTION_WILD_MOUSE },
+};
+
+static const RideGroup ride_group_spinning_wild_mouse = {
+    /*.RideType =*/ RIDE_TYPE_WILD_MOUSE,
+    /*.MaximumHeight =*/ 16,
+    /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
+    /*.Naming =*/ { STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
 };
 
 static const RideGroup corkscrew_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_corkscrew_rc, ride_group_hypercoaster };
-static const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_junior_rc, ride_group_midi_coaster };
+static const RideGroup junior_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_junior_rc, ride_group_classic_mini_coaster };
 static const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_car_ride, ride_group_monster_trucks };
 static const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
+static const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
 
-const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
+    const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
 {
-    switch (rideType) {
-        case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
-            if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
-                return (RideGroup *) &ride_group_corkscrew_rc;
-            else
-                return (RideGroup *) &ride_group_hypercoaster;
-        case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
-            if (ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
-                return (RideGroup *) &ride_group_midi_coaster;
-            else
-                return (RideGroup *) &ride_group_junior_rc;
-        case RIDE_TYPE_CAR_RIDE:
-            if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
-                return (RideGroup *) &ride_group_monster_trucks;
-            else
-                return (RideGroup *) &ride_group_car_ride;
-        case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-            if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
-                return (RideGroup *) &ride_group_steel_twister_rc;
-            else
-                return (RideGroup *) &ride_group_hyper_twister;
-        default:
-            return nullptr;
+    switch (rideType)
+    {
+    case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
+            return &ride_group_corkscrew_rc;
+        else
+            return &ride_group_hypercoaster;
+    case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+        if (ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP))
+            return &ride_group_classic_mini_coaster;
+        else
+            return &ride_group_junior_rc;
+    case RIDE_TYPE_CAR_RIDE:
+        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
+            return &ride_group_monster_trucks;
+        else
+            return &ride_group_car_ride;
+    case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_VERTICAL_LOOP))
+            return &ride_group_steel_twister_rc;
+        else
+            return &ride_group_hyper_twister;
+    case RIDE_TYPE_WILD_MOUSE:
+        if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
+            return &ride_group_steel_wild_mouse;
+        else
+            return &ride_group_spinning_wild_mouse;
+    default:
+        return nullptr;
     }
 }
 
 bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
 {
-    if (!gConfigInterface.select_by_track_type) {
+    if (!gConfigInterface.select_by_track_type)
+    {
         return false;
     }
 
@@ -128,6 +150,7 @@ bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
         case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
         case RIDE_TYPE_CAR_RIDE:
         case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+        case RIDE_TYPE_WILD_MOUSE:
             return true;
         default:
             return false;
@@ -136,27 +159,24 @@ bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
 
 const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const uint8 index)
 {
-    RideGroup * rideGroup;
+    if (index >= MAX_RIDE_GROUPS_PER_RIDE_TYPE)
+        return nullptr;
 
     switch(rideType)
     {
-        case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
-            rideGroup = (RideGroup *) &corkscrew_rc_groups[index];
-            break;
-        case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
-            rideGroup = (RideGroup *) &junior_rc_groups[index];
-            break;
-        case RIDE_TYPE_CAR_RIDE:
-            rideGroup = (RideGroup *) &car_ride_groups[index];
-            break;
-        case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-            rideGroup = (RideGroup *) &twister_rc_groups[index];
-            break;
-        default:
-            return nullptr;
+    case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+        return &corkscrew_rc_groups[index];
+    case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+        return &junior_rc_groups[index];
+    case RIDE_TYPE_CAR_RIDE:
+        return &car_ride_groups[index];
+    case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+        return &twister_rc_groups[index];
+    case RIDE_TYPE_WILD_MOUSE:
+        return &steel_wild_mouse_groups[index];
+    default:
+        return nullptr;
     }
-
-    return rideGroup;
 }
 
 bool RideGroupManager::RideGroupsAreEqual(const RideGroup * a, const RideGroup * b)
