@@ -370,6 +370,8 @@ public:
         }
         memcpy(gScenarioExpansionPacks, _s6.saved_expansion_pack_names, sizeof(_s6.saved_expansion_pack_names));
         memcpy(gBanners, _s6.banners, sizeof(_s6.banners));
+        // Clear all of the strings, since we will probably have a higher limit on user strings in the future than RCT2.
+        user_string_clear_all();
         memcpy(gUserStrings, _s6.custom_strings, sizeof(_s6.custom_strings));
         gCurrentTicks = _s6.game_ticks_1;
 

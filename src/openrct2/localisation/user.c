@@ -20,7 +20,7 @@
 #include "localisation.h"
 #include "user.h"
 
-utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
+utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 
 static bool user_string_exists(const utf8 *text);
 
@@ -40,20 +40,23 @@ void user_string_clear_all()
 rct_string_id user_string_allocate(sint32 base, const utf8 *text)
 {
     sint32 highBits = (base & 0x7F) << 9;
-    bool allowDuplicates = base & 0x80;
+    bool allowDuplicates = base & USER_STRING_DUPLICATION_PERMITTED;
 
     if (!allowDuplicates && user_string_exists(text)) {
         gGameCommandErrorText = STR_CHOSEN_NAME_IN_USE_ALREADY;
         return 0;
     }
 
-    char *userString = gUserStrings;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+    char * userString;
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    {
+        userString = gUserStrings[i];
+
         if (userString[0] != 0)
             continue;
 
         safe_strcpy(userString, text, USER_STRING_MAX_LENGTH);
-        return 0x8000 + (i | highBits);
+        return USER_STRING_START + (i | highBits);
     }
     gGameCommandErrorText = STR_TOO_MANY_NAMES_DEFINED;
     return 0;
@@ -69,13 +72,15 @@ void user_string_free(rct_string_id id)
         return;
 
     id %= MAX_USER_STRINGS;
-    gUserStrings[id * USER_STRING_MAX_LENGTH] = 0;
+    gUserStrings[id][0] = 0;
 }
 
 static bool user_string_exists(const utf8 *text)
 {
-    char *userString = gUserStrings;
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
+    char * userString;
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    {
+        userString = gUserStrings[i];
         if (userString[0] == 0)
             continue;
 
@@ -92,10 +97,9 @@ bool is_user_string_id(rct_string_id stringId)
 
 void reset_user_strings()
 {
-    char *userString = gUserStrings;
-
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++, userString += USER_STRING_MAX_LENGTH) {
-        userString[0] = 0;
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    {
+        gUserStrings[i][0] = 0;
     }
 
     ride_reset_all_names();

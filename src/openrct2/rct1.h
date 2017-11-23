@@ -706,7 +706,7 @@ typedef struct rct1_s4 {
     rct1_research_item research_items_LL[180];
     uint8 unk_19A020[5468];
     rct_banner banners[100];
-    char string_table[1024][32];
+    char string_table[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32 game_time_counter;
     rct1_ride rides[255];
     uint16 unk_game_time_counter;

@@ -13899,7 +13899,7 @@ static void peep_give_real_name(rct_peep * peep)
         dx += 0x1000;
     }
     dx /= 4;
-    dx += 0xA000;
+    dx += REAL_NAME_START;
     peep->name_string_idx = dx;
 }
 
@@ -13921,12 +13921,12 @@ static sint32 peep_compare(const void * sprite_index_a, const void * sprite_inde
     {
         return peep_a->id - peep_b->id;
     }
-    const bool both_have_generated_names = (peep_a->name_string_idx >= 0xA000 && peep_a->name_string_idx < 0xE000 &&
-                                            peep_b->name_string_idx >= 0xA000 && peep_b->name_string_idx < 0xE000);
+    const bool both_have_generated_names = (peep_a->name_string_idx >= REAL_NAME_START && peep_a->name_string_idx <= REAL_NAME_END &&
+                                            peep_b->name_string_idx >= REAL_NAME_START && peep_b->name_string_idx <= REAL_NAME_END);
     if (both_have_generated_names)
     {
-        rct_string_id peep_a_format = peep_a->name_string_idx + 0xA000;
-        rct_string_id peep_b_format = peep_b->name_string_idx + 0xA000;
+        rct_string_id peep_a_format = peep_a->name_string_idx + REAL_NAME_START;
+        rct_string_id peep_b_format = peep_b->name_string_idx + REAL_NAME_START;
 
         uint16 peep_a_name = (peep_a_format % Util::CountOf(real_names));
         uint16 peep_b_name = (peep_b_format % Util::CountOf(real_names));
@@ -14096,7 +14096,7 @@ void peep_update_names(bool realNames)
         uint16     spriteIndex;
         FOR_ALL_GUESTS(spriteIndex, peep)
         {
-            if (peep->name_string_idx >= 0xA000 && peep->name_string_idx < 0xE000)
+            if (peep->name_string_idx >= REAL_NAME_START && peep->name_string_idx <= REAL_NAME_END)
             {
                 peep->name_string_idx = STR_GUEST_X;
             }

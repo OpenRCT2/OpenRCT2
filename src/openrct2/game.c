@@ -1016,11 +1016,13 @@ void game_convert_strings_to_utf8()
     rct2_to_utf8_self(gScenarioDetails, 256);
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++) {
-        utf8 *userString = &gUserStrings[i * USER_STRING_MAX_LENGTH];
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    {
+        utf8 * userString = gUserStrings[i];
 
-        if (!str_is_null_or_empty(userString)) {
-            rct2_to_utf8_self(userString, 32);
+        if (!str_is_null_or_empty(userString))
+        {
+            rct2_to_utf8_self(userString, RCT12_USER_STRING_MAX_LENGTH);
             utf8_remove_formatting(userString, true);
         }
     }
@@ -1052,11 +1054,13 @@ void game_convert_strings_to_rct2(rct_s6_data *s6)
     utf8_to_rct2_self(s6->scenario_description, sizeof(s6->scenario_description));
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++) {
-        char *userString = &s6->custom_strings[i * USER_STRING_MAX_LENGTH];
+    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    {
+        char * userString = s6->custom_strings[i];
 
-        if (!str_is_null_or_empty(userString)) {
-            utf8_to_rct2_self(userString, 32);
+        if (!str_is_null_or_empty(userString))
+        {
+            utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
         }
     }
 

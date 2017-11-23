@@ -1089,11 +1089,11 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
         if (*size > 0) {
             *(*dest) = '\0';
         }
-    } else if (format < 0x8000) {
+    } else if (format < USER_STRING_START) {
         // Language string
         const utf8 * rawString = language_get_string(format);
         format_string_part_from_raw(dest, size, rawString, args);
-    } else if (format < 0x9000) {
+    } else if (format <= USER_STRING_END) {
         // Custom string
         format -= 0x8000;
 
@@ -1101,11 +1101,11 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
         *args += (format & 0xC00) >> 9;
         format &= ~0xC00;
 
-        format_append_string_n(dest, size, &gUserStrings[format * 32], 32);
+        format_append_string_n(dest, size, gUserStrings[format], USER_STRING_MAX_LENGTH);
         if ((*size) > 0) *(*dest) = '\0';
-    } else if (format < 0xE000) {
+    } else if (format <= REAL_NAME_END) {
         // Real name
-        format -= -0xA000;
+        format -= -REAL_NAME_START;
 
         format_append_string(dest, size, real_names[format % countof(real_names)]);
         if ((*size) == 0) return;

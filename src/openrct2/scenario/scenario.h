@@ -254,7 +254,7 @@ typedef struct rct_s6_data {
     char scenario_filename[256];
     uint8 saved_expansion_pack_names[3256];
     rct_banner banners[RCT2_MAX_BANNERS_IN_PARK];
-    char custom_strings[0x8000];
+    char custom_strings[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32 game_ticks_1;
     rct2_ride rides[RCT2_MAX_RIDES_IN_PARK];
     uint16 saved_age;
