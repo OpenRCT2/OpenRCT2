@@ -47,6 +47,10 @@ interface IReadObjectContext
     virtual void LogError(uint32 code, const utf8 * text) abstract;
 };
 
+#ifdef __WARN_SUGGEST_FINAL_TYPES__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
 class Object
 {
 private:
@@ -83,6 +87,9 @@ public:
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 };
+#ifdef __WARN_SUGGEST_FINAL_TYPES__
+    #pragma GCC diagnostic pop
+#endif
 
 enum OBJECT_ERROR : uint32
 {
