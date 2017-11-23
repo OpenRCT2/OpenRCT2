@@ -30,7 +30,7 @@ private:
     std::map<uint32, IntentData> _Data;
 public:
     explicit Intent(rct_windowclass windowclass);
-    rct_windowclass GetWindowClass();
+    rct_windowclass GetWindowClass() const;
     void * GetPointerExtra(uint32 key);
     std::string GetStringExtra(uint32 key);
     uint32 GetUIntExtra(uint32 key);
@@ -82,6 +82,7 @@ extern "C" {
         INTENT_ACTION_SET_DEFAULT_SCENERY_CONFIG,
         INTENT_ACTION_REFRESH_SCENERY,
         INTENT_ACTION_INVALIDATE_TICKER_NEWS,
+        INTENT_ACTION_REFRESH_GUEST_LIST,
     };
 
     Intent *intent_create(rct_windowclass clss);

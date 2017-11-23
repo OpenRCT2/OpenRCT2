@@ -16,14 +16,18 @@
 
 #pragma once
 
-#include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
-#include "GameAction.h"
-
 #include "../cheats.h"
+#include "../Context.h"
+#include "../core/MemoryStream.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
+#include "../localisation/string_ids.h"
+#include "../ui/UiContext.h"
+#include "../ui/WindowManager.h"
 #include "../world/park.h"
+#include "GameAction.h"
+
+using namespace OpenRCT2;
 
 struct RideSetNameAction : public GameActionBase<GAME_COMMAND_SET_RIDE_NAME, GameActionResult>
 {
@@ -92,10 +96,10 @@ public:
 
         gfx_invalidate_screen();
 
-        // Force ride list window refresh
-        rct_window *w = window_find_by_class(WC_RIDE_LIST);
-        if (w != NULL)
-            w->no_list_items = 0;
+        // Refresh windows that display ride name
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
+        windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         auto res = std::make_unique<GameActionResult>();
         res->Position.x = ride->overall_view.x * 32 + 16;

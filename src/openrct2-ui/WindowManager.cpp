@@ -267,9 +267,9 @@ public:
         }
     }
 
-    void BroadcastIntent(Intent * intent) override
+    void BroadcastIntent(const Intent &intent) override
     {
-        switch (intent->GetWindowClass())
+        switch (intent.GetWindowClass())
         {
         case INTENT_ACTION_MAP:
             window_map_reset();
@@ -316,6 +316,10 @@ public:
 
         case INTENT_ACTION_INVALIDATE_TICKER_NEWS:
             window_game_bottom_toolbar_invalidate_news_item();
+            break;
+
+        case INTENT_ACTION_REFRESH_GUEST_LIST:
+            window_guest_list_refresh_list();
             break;
         }
     }

@@ -1042,7 +1042,7 @@ extern "C"
     void context_broadcast_intent(Intent * intent)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
-        windowManager->BroadcastIntent(intent);
+        windowManager->BroadcastIntent(*intent);
     }
 
     void context_force_close_window_by_class(rct_windowclass windowClass)
