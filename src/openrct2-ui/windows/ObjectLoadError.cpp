@@ -98,7 +98,7 @@ static rct_window_event_list window_object_load_error_events = {
 
 static rct_object_entry * _invalid_entries = nullptr;
 static sint32 highlighted_index = -1;
-static utf8* file_path = nullptr;
+static utf8 * file_path = nullptr;
 
 /**
 *  Returns an rct_string_id that represents an rct_object_entry's type.
@@ -207,7 +207,7 @@ rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects
 
     // Refresh list items and path
     window->no_list_items = (uint16)numMissingObjects;
-    file_path = path;
+    file_path = strndup(path, strnlen(path, MAX_PATH));
 
     window_invalidate(window);
     return window;
