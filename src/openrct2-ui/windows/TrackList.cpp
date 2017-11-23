@@ -38,8 +38,8 @@ enum {
     WIDX_CLOSE,
     WIDX_BACK,
     WIDX_FILTER_STRING,
+    WIDX_FILTER_CLEAR,
     WIDX_TRACK_LIST,
-    // TODO: Clear filter button
     WIDX_TRACK_PREVIEW,
     WIDX_ROTATE,
     WIDX_TOGGLE_SCENERY,
@@ -48,15 +48,16 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
 static rct_widget window_track_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    0xFFFFFFFF,             STR_NONE                                },
-    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_SELECT_DESIGN,      STR_WINDOW_TITLE_TIP                    },
-    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP                    },
-    { WWT_13,               0,  4,      221,    18,     29,     STR_SELECT_OTHER_RIDE,  STR_NONE                                },
-    { WWT_TEXT_BOX,         1,  4,      221,    31,     42,     STR_NONE,               STR_NONE                                },
-    { WWT_SCROLL,           0,  4,      221,    44,     395,    SCROLL_VERTICAL,        STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP     },
-    { WWT_FLATBTN,          0,  224,    595,    18,     236,    0xFFFFFFFF,             STR_NONE                                },
-    { WWT_FLATBTN,          0,  574,    597,    374,    397,    SPR_ROTATE_ARROW,       STR_ROTATE_90_TIP                       },
-    { WWT_FLATBTN,          0,  574,    597,    350,    373,    SPR_SCENERY,            STR_TOGGLE_SCENERY_TIP                  },
+    { WWT_FRAME,            0,  0,      599,    0,      399,    0xFFFFFFFF,                 STR_NONE                            },
+    { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_SELECT_DESIGN,          STR_WINDOW_TITLE_TIP                },
+    { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                },
+    { WWT_13,               0,  4,      221,    18,     29,     STR_SELECT_OTHER_RIDE,      STR_NONE                            },
+    { WWT_TEXT_BOX,         1,  4,      127,    31,     42,     STR_NONE,                   STR_NONE                            },
+    { WWT_DROPDOWN_BUTTON,  0,  130,    221,    31,     42,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },
+    { WWT_SCROLL,           0,  4,      221,    44,     395,    SCROLL_VERTICAL,            STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP },
+    { WWT_FLATBTN,          0,  224,    595,    18,     236,    0xFFFFFFFF,                 STR_NONE                            },
+    { WWT_FLATBTN,          0,  574,    597,    374,    397,    SPR_ROTATE_ARROW,           STR_ROTATE_90_TIP                   },
+    { WWT_FLATBTN,          0,  574,    597,    350,    373,    SPR_SCENERY,                STR_TOGGLE_SCENERY_TIP              },
     { WIDGETS_END },
 };
 
@@ -160,6 +161,7 @@ rct_window * window_track_list_open(ride_list_item item)
         (1ULL << WIDX_CLOSE) |
         (1ULL << WIDX_BACK) |
         (1ULL << WIDX_FILTER_STRING) |
+        (1ULL << WIDX_FILTER_CLEAR) |
         (1ULL << WIDX_ROTATE) |
         (1ULL << WIDX_TOGGLE_SCENERY);
 
@@ -183,6 +185,40 @@ rct_window * window_track_list_open(ride_list_item item)
     _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
 
     return w;
+}
+
+static void window_track_list_filter_list()
+{
+    _filteredTrackIds.clear();
+
+    // Nothing to filter, so fill the list with all indices
+    if (String::LengthOf(_filterString) == 0)
+    {
+        for (uint16 i = 0; i < _trackDesignsCount; i++)
+            _filteredTrackIds.push_back(i);
+
+        return;
+    }
+
+    // Convert filter to lowercase
+    utf8 filterStringLower[sizeof(_filterString)];
+    String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
+    for (sint32 i = 0; filterStringLower[i] != '\0'; i++)
+        filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
+
+    // Fill the set with indices for tracks that match the filter
+    for (uint16 i = 0; i < _trackDesignsCount; i++)
+    {
+        utf8 trackNameLower[USER_STRING_MAX_LENGTH];
+        String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
+        for (sint32 j = 0; trackNameLower[j] != '\0'; j++)
+            trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
+
+        if (strstr(trackNameLower, filterStringLower) != nullptr)
+        {
+            _filteredTrackIds.push_back(i);
+        }
+    }
 }
 
 /**
@@ -304,6 +340,22 @@ static void window_track_list_mouseup(rct_window *w, rct_widgetindex widgetIndex
     case WIDX_FILTER_STRING:
         window_start_textbox(w, widgetIndex, STR_STRING, _filterString, sizeof(_filterString));
         break;
+    case WIDX_FILTER_CLEAR:
+        // Keep the highlighted item selected
+        if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+        {
+            w->selected_list_item = _filteredTrackIds[w->selected_list_item];
+        }
+        else
+        {
+            if (w->selected_list_item != 0)
+                w->selected_list_item = _filteredTrackIds[w->selected_list_item - 1] + 1;
+        }
+
+        String::Set(_filterString, sizeof(_filterString), "");
+        window_track_list_filter_list();
+        window_invalidate(w);
+        break;
     }
 }
 
@@ -349,40 +401,6 @@ static void window_track_list_scrollmouseover(rct_window *w, sint32 scrollIndex,
         {
             w->selected_list_item = i;
             window_invalidate(w);
-        }
-    }
-}
-
-static void window_track_list_filter_list()
-{
-    _filteredTrackIds.clear();
-
-    // Nothing to filter, so fill the list with all indices
-    if (String::LengthOf(_filterString) == 0)
-    {
-        for (uint16 i = 0; i < _trackDesignsCount; i++)
-            _filteredTrackIds.push_back(i);
-
-        return;
-    }
-
-    // Convert filter to lowercase
-    utf8 filterStringLower[sizeof(_filterString)];
-    String::Set(filterStringLower, sizeof(filterStringLower), _filterString);
-    for (sint32 i = 0; filterStringLower[i] != '\0'; i++)
-        filterStringLower[i] = (utf8)tolower(filterStringLower[i]);
-
-    // Fill the set with indices for tracks that match the filter
-    for (uint16 i = 0; i < _trackDesignsCount; i++)
-    {
-        utf8 trackNameLower[USER_STRING_MAX_LENGTH];
-        String::Set(trackNameLower, sizeof(trackNameLower), _trackDesigns[i].name);
-        for (sint32 j = 0; trackNameLower[j] != '\0'; j++)
-            trackNameLower[j] = (utf8)tolower(trackNameLower[j]);
-
-        if (strstr(trackNameLower, filterStringLower) != nullptr)
-        {
-            _filteredTrackIds.push_back(i);
         }
     }
 }
