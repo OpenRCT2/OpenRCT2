@@ -32,7 +32,7 @@
 #include "util/util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
-
+#include "object/ObjectRepository.h"
 
 namespace Editor
 {
@@ -409,7 +409,7 @@ namespace Editor
                 object_manager_unload_all_objects();
             }
 
-            window_editor_object_selection_open();
+            context_open_window(WC_EDITOR_OBJECT_SELECTION);
             break;
         case EDITOR_STEP_INVENTIONS_LIST_SET_UP:
             if (window_find_by_class(WC_EDITOR_INVENTION_LIST))

@@ -1221,7 +1221,7 @@ static sint32 cc_open(const utf8 **argv, sint32 argc) {
         if (strcmp(argv[0], "object_selection") == 0 && invalidArguments(&invalidTitle, !title)) {
             // Only this window should be open for safety reasons
             window_close_all();
-            window_editor_object_selection_open();
+            context_open_window(WC_EDITOR_OBJECT_SELECTION);
         } else if (strcmp(argv[0], "inventions_list") == 0 && invalidArguments(&invalidTitle, !title)) {
             context_open_window(WC_EDITOR_INVENTION_LIST);
         } else if (strcmp(argv[0], "scenario_options") == 0 && invalidArguments(&invalidTitle, !title)) {

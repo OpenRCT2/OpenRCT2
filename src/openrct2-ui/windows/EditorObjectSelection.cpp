@@ -14,29 +14,32 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../Context.h"
-#include "../object/ObjectManager.h"
-#include "../object/ObjectRepository.h"
-#include "../OpenRCT2.h"
-#include "../core/Util.hpp"
-#include "../core/Memory.hpp"
+#include <openrct2-ui/windows/Window.h>
 
 #include <ctype.h>
-#include "../audio/audio.h"
-#include "../Game.h"
-#include "../Editor.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../object_list.h"
-#include "../ride/ride_data.h"
-#include "../ride/RideGroupManager.h"
-#include "../sprites.h"
-#include "../util/util.h"
-#include "../world/LargeScenery.h"
-#include "../windows/Intent.h"
-#include "_legacy.h"
-#include "dropdown.h"
+
+#include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/Editor.h>
+#include <openrct2/Game.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object_list.h>
+#include <openrct2/OpenRCT2.h>
+#include <openrct2/platform/platform.h>
+#include <openrct2/ride/RideGroupManager.h>
+#include <openrct2/ride/ride_data.h>
+#include <openrct2/sprites.h>
+#include <openrct2/util/util.h>
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/windows/Intent.h>
+#include <openrct2/windows/_legacy.h>
+#include <openrct2/world/LargeScenery.h>
 
 enum {
     FILTER_RCT2 = (1 << 0),
@@ -391,16 +394,16 @@ static void visible_list_refresh(rct_window *w)
  *
  *  rct2: 0x006AA64E
  */
-void window_editor_object_selection_open()
+rct_window * window_editor_object_selection_open()
 {
     rct_window* window;
 
     window = window_bring_to_front_by_class(WC_EDITOR_OBJECT_SELECTION);
     if (window != nullptr)
-        return;
+        return window;
 
     if (!sub_6AB211())
-        return;
+        return nullptr;
     reset_selected_object_count_and_size();
 
     window = window_create_centred(
@@ -440,6 +443,8 @@ void window_editor_object_selection_open()
     window->max_height = 1000;
 
     visible_list_refresh(window);
+
+    return window;
 }
 
 /**
