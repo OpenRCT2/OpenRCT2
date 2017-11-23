@@ -50,6 +50,7 @@ interface IReadObjectContext
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wsuggest-final-types"
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 class Object
 {
