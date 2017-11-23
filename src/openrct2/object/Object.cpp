@@ -64,7 +64,16 @@ const utf8 * Object::GetString(uint8 index) const
     return sz != nullptr ? sz : "";
 }
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic push
+    #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#endif
+
 const utf8 * Object::GetName() const
 {
     return GetString(OBJ_STRING_ID_NAME);
 }
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+    #pragma GCC diagnostic pop
+#endif
