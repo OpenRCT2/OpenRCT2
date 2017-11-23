@@ -743,10 +743,11 @@ void scenario_fix_ghosts(rct_s6_data *s6)
                     sint32 bannerIndex = tile_element_get_banner_index(originalElement);
                     if (bannerIndex != -1) {
                         rct_banner *banner = &s6->banners[bannerIndex];
-                        if (banner->type != BANNER_NULL) {
+                        if (banner->type != BANNER_NULL)
+                        {
                             banner->type = BANNER_NULL;
                             if (is_user_string_id(banner->string_idx))
-                                s6->custom_strings[(banner->string_idx % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
+                                s6->custom_strings[(banner->string_idx % RCT12_MAX_USER_STRINGS)][0] = 0;
                         }
                     }
                 } else {
@@ -772,8 +773,9 @@ void scenario_remove_trackless_rides(rct_s6_data *s6)
         }
 
         ride->type = RIDE_TYPE_NULL;
-        if (is_user_string_id(ride->name)) {
-            s6->custom_strings[(ride->name % MAX_USER_STRINGS) * USER_STRING_MAX_LENGTH] = 0;
+        if (is_user_string_id(ride->name))
+        {
+            s6->custom_strings[(ride->name % RCT12_MAX_USER_STRINGS)][0] = 0;
         }
     }
 }

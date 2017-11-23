@@ -37,6 +37,10 @@
 #define RCT12_EXPENDITURE_TYPE_COUNT        14
 #define RCT12_FINANCE_GRAPH_SIZE            128
 
+#define RCT12_MAX_USER_STRINGS              1024
+#define RCT12_USER_STRING_MAX_LENGTH        32
+
+
 #pragma pack(push, 1)
 
 typedef struct rct12_award

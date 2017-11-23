@@ -109,6 +109,11 @@ wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
 
+#define USER_STRING_START 0x8000
+#define USER_STRING_END   0x8FFF
+#define REAL_NAME_START   0xA000
+#define REAL_NAME_END     0xDFFF
+
 // Constants used by user_string_allocate
 enum {
     USER_STRING_HIGH_ID_NUMBER = 1 << 2,
@@ -119,7 +124,7 @@ enum {
 extern const char real_name_initials[16];
 extern const char *real_names[1024];
 
-extern utf8 gUserStrings[MAX_USER_STRINGS * USER_STRING_MAX_LENGTH];
+extern utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 extern char gCommonStringFormatBuffer[256];
 extern uint8 gCommonFormatArgs[80];
 extern uint8 gMapTooltipFormatArgs[40];

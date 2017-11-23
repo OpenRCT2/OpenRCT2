@@ -2617,7 +2617,7 @@ private:
     std::string GetUserString(rct_string_id stringId)
     {
         utf8 buffer[128] = { 0 };
-        const char * originalString = _s4.string_table[(stringId - 0x8000) % 1024];
+        const char * originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
         rct2_to_utf8(buffer, originalString);
         return std::string(buffer);
     }

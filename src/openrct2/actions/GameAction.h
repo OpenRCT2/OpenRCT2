@@ -24,6 +24,7 @@
 #include "../core/IStream.hpp"
 
 #include "../game.h"
+#include "../localisation/string_ids.h"
 #include "../world/map.h"
 
 /**
@@ -71,8 +72,8 @@ public:
     typedef std::unique_ptr<GameActionResult> Ptr;
 
     GA_ERROR        Error = GA_ERROR::OK;
-    rct_string_id   ErrorTitle = (rct_string_id)-1;
-    rct_string_id   ErrorMessage = (rct_string_id)-1;
+    rct_string_id   ErrorTitle = STR_NONE;
+    rct_string_id   ErrorMessage = STR_NONE;
     uint8           ErrorMessageArgs[12] = { 0 };
     LocationXYZ32   Position = { 0 };
     money32         Cost = 0;
