@@ -53,6 +53,8 @@ public:
             return window_debug_paint_open();
         case WC_EDITOR_INVENTION_LIST:
             return window_editor_inventions_list_open();
+        case WC_EDITOR_OBJECT_SELECTION:
+            return window_editor_object_selection_open();
         case WC_EDTIOR_OBJECTIVE_OPTIONS:
             return window_editor_objective_options_open();
         case WC_EDITOR_SCENARIO_OPTIONS:

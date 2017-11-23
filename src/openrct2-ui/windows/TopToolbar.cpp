@@ -3106,7 +3106,7 @@ static void top_toolbar_debug_menu_dropdown(sint16 dropdownIndex)
             break;
         case DDIDX_OBJECT_SELECTION:
             window_close_all();
-            window_editor_object_selection_open();
+            context_open_window(WC_EDITOR_OBJECT_SELECTION);
             break;
         case DDIDX_INVENTIONS_LIST:
             context_open_window(WC_EDITOR_INVENTION_LIST);

@@ -159,3 +159,5 @@ rct_window * window_tile_inspector_open();
 void window_tile_inspector_clear_clipboard();
 void window_tile_inspector_set_page(rct_window *w, tile_inspector_page page);
 void window_tile_inspector_auto_set_buttons(rct_window *w);
+
+rct_window * window_editor_object_selection_open();
