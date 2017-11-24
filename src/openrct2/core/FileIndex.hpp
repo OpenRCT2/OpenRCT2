@@ -183,8 +183,12 @@ private:
         Console::WriteLine("Building %s (%zu items)", _name.c_str(), scanResult.Files.size());
 
         auto startTime = std::chrono::high_resolution_clock::now();
+        // Start at 1, so that we can reach 100% completion status
+        size_t i = 1;
         for (auto filePath : scanResult.Files)
         {
+            Console::WriteFormat("File %4d of %d, done %3d%%\r", i, scanResult.Files.size(), i * 100 / scanResult.Files.size());
+            i++;
             log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
             auto item = Create(filePath);
             if (std::get<0>(item))
@@ -192,6 +196,7 @@ private:
                 items.push_back(std::get<1>(item));
             }
         }
+        Console::WriteLine();
 
         WriteIndexFile(scanResult.Stats, items);
 
