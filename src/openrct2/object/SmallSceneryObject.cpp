@@ -158,6 +158,7 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 void SmallSceneryObject::PerformFixes()
 {
     std::string identifier = GetIdentifier();
+    static const rct_object_entry * scgWalls = object_list_find_by_name("SCGWALLS");
 
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
     if (String::Equals(identifier, "XXBBCL01") ||
@@ -165,13 +166,25 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "XXBBBR01") ||
         String::Equals(identifier, "ARBASE2 "))
     {
-        static const rct_object_entry * scgWalls = object_list_find_by_name("SCGWALLS");
         if (scgWalls != nullptr)
         {
             SetPrimarySceneryGroup((rct_object_entry *)scgWalls);
         }
 
         _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
+    }
+
+    // ToonTowner's regular roofs. Put them in the Walls and Roofs group.
+    if (String::Equals(identifier, "TTRFTL02") ||
+        String::Equals(identifier, "TTRFTL03") ||
+        String::Equals(identifier, "TTRFTL04") ||
+        String::Equals(identifier, "TTRFTL07") ||
+        String::Equals(identifier, "TTRFTL08"))
+    {
+        if (scgWalls != nullptr)
+        {
+            SetPrimarySceneryGroup((rct_object_entry *)scgWalls);
+        }
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
@@ -189,6 +202,23 @@ void SmallSceneryObject::PerformFixes()
         if (scgPirat != nullptr)
         {
             SetPrimarySceneryGroup((rct_object_entry *)scgPirat);
+        }
+    }
+
+    // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
+    if (String::Equals(identifier, "TTRFWD01") ||
+        String::Equals(identifier, "TTRFWD02") ||
+        String::Equals(identifier, "TTRFWD03") ||
+        String::Equals(identifier, "TTRFWD04") ||
+        String::Equals(identifier, "TTRFWD05") ||
+        String::Equals(identifier, "TTRFWD06") ||
+        String::Equals(identifier, "TTRFWD07") ||
+        String::Equals(identifier, "TTRFWD08"))
+    {
+        static const rct_object_entry * scgMine = object_list_find_by_name("SCGMINE ");
+        if (scgMine != nullptr)
+        {
+            SetPrimarySceneryGroup((rct_object_entry *)scgMine);
         }
     }
 }
