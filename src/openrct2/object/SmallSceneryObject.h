@@ -42,6 +42,7 @@ public:
 
 private:
     static uint8 * ReadFrameOffsets(IStream * stream);
+    void PerformFixes();
 };
 
 #endif
