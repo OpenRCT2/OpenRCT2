@@ -263,7 +263,7 @@ static money32 SmallSceneryPlace(sint16 x,
     if (flags & GAME_COMMAND_FLAG_APPLY && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         footpath_remove_litter(x, y, targetHeight);
-        if (!gCheatsDisableClearanceChecks && (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS))
+        if (!gCheatsDisableClearanceChecks && (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_WALLS))
         {
             wall_remove_at(x, y, targetHeight, targetHeight + sceneryEntry->small_scenery.height);
         }

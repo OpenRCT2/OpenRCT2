@@ -68,7 +68,7 @@ typedef enum {
     SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS = (1 << 15),           // 0x8000
     SMALL_SCENERY_FLAG17 = (1 << 16),                           // 0x10000
     SMALL_SCENERY_FLAG_STACKABLE = (1 << 17),                   // 0x20000; means scenery item can be placed in the air and over water
-    SMALL_SCENERY_FLAG_ALLOW_WALLS = (1 << 18),                 // 0x40000
+    SMALL_SCENERY_FLAG_NO_WALLS = (1 << 18),                    // 0x40000
     SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 19),        // 0x80000
     SMALL_SCENERY_FLAG_NO_SUPPORTS = (1 << 20),                 // 0x100000
     SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED = (1 << 21),         // 0x200000
