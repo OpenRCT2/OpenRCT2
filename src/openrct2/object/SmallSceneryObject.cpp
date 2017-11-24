@@ -17,10 +17,12 @@
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
+#include "../core/String.hpp"
 #include "SmallSceneryObject.h"
 
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
+#include "../world/scenery.h"
 
 SmallSceneryObject::~SmallSceneryObject()
 {
@@ -81,6 +83,8 @@ void SmallSceneryObject::Load()
     {
         _legacyType.small_scenery.frame_offsets = _frameOffsets;
     }
+
+    PerformFixes();
 }
 
 void SmallSceneryObject::Unload()
@@ -149,4 +153,24 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
     }
     data.push_back(frameOffset);
     return Memory::Duplicate(data.data(), data.size());
+}
+
+void SmallSceneryObject::PerformFixes()
+{
+    std::string identifier = GetIdentifier();
+
+    // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
+    if (String::Equals(identifier, "XXBBCL01") ||
+        String::Equals(identifier, "XXBBMD01") ||
+        String::Equals(identifier, "XXBBBR01") ||
+        String::Equals(identifier, "ARBASE2 "))
+    {
+        static const rct_object_entry * scgWalls = object_list_find_by_name("SCGWALLS");
+        if (scgWalls != nullptr)
+        {
+            SetPrimarySceneryGroup((rct_object_entry *)scgWalls);
+        }
+
+        _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
+    }
 }
