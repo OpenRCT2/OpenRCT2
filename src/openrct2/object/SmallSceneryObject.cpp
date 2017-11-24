@@ -221,4 +221,16 @@ void SmallSceneryObject::PerformFixes()
             SetPrimarySceneryGroup((rct_object_entry *)scgMine);
         }
     }
+
+    // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
+    if (String::Equals(identifier, "TTRFGL01") ||
+        String::Equals(identifier, "TTRFGL02") ||
+        String::Equals(identifier, "TTRFGL03"))
+    {
+        static const rct_object_entry * scgAbstr = object_list_find_by_name("SCGABSTR");
+        if (scgAbstr != nullptr)
+        {
+            SetPrimarySceneryGroup((rct_object_entry *)scgAbstr);
+        }
+    }
 }
