@@ -93,7 +93,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
                 y_offset = 3;
                 boxlength.x = 26;
                 boxlength.y = 26;
-                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_ALLOW_WALLS) {
+                if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_WALLS) {
                     x_offset = 1;
                     y_offset = 1;
                     boxlength.x = 30;
