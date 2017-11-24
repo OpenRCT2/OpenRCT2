@@ -173,4 +173,22 @@ void SmallSceneryObject::PerformFixes()
 
         _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
     }
+
+    // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
+    if (String::Equals(identifier, "TTPIRF02") ||
+        String::Equals(identifier, "TTPIRF03") ||
+        String::Equals(identifier, "TTPIRF04") ||
+        String::Equals(identifier, "TTPIRF05") ||
+        String::Equals(identifier, "TTPIRF07") ||
+        String::Equals(identifier, "TTPIRF08") ||
+        String::Equals(identifier, "TTPRF09 ") ||
+        String::Equals(identifier, "TTPRF10 ") ||
+        String::Equals(identifier, "TTPRF11 "))
+    {
+        static const rct_object_entry * scgPirat = object_list_find_by_name("SCGPIRAT");
+        if (scgPirat != nullptr)
+        {
+            SetPrimarySceneryGroup((rct_object_entry *)scgPirat);
+        }
+    }
 }
