@@ -1662,8 +1662,8 @@ private:
     {
         dst->fountain_flags = src->fountain_flags;
         dst->iteration = src->iteration;
-        dst->var_26a = src->var_26a;
-        dst->var_26b = src->var_26b;
+        dst->num_ticks_alive = src->num_ticks_alive;
+        dst->frame = src->frame;
     }
 
     void ImportBalloon(rct_balloon * dst, rct_balloon * src)

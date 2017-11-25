@@ -32,6 +32,7 @@ extern "C" {
     void litter_paint(paint_session * session, rct_litter *litter, sint32 imageDirection);
     void peep_paint(paint_session * session, rct_peep *peep, sint32 imageDirection);
 
+    extern const uint32 vehicle_particle_base_sprites[5];
 #ifdef __cplusplus
 }
 #endif

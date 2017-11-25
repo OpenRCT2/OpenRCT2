@@ -175,7 +175,7 @@ typedef struct rct_jumping_fountain {
     uint8 linked_list_type_offset;  // 0x08 Valid values are SPRITE_LINKEDLIST_OFFSET_...
     uint8 sprite_height_negative;
     uint16 sprite_index;            // 0x0A
-    uint16 flags;           // 0x0C
+    uint16 flags;                   // 0x0C
     sint16 x;                       // 0x0E
     sint16 y;                       // 0x10
     sint16 z;                       // 0x12
@@ -184,15 +184,9 @@ typedef struct rct_jumping_fountain {
     uint8 pad_16[0x8];
     uint8 sprite_direction;         // 0x1E
     uint8 pad_1F[0x7];
-    union {
-        uint16 var_26;
-        struct {
-            uint8 var_26a;
-            uint8 var_26b;
-        };
-    };
-    uint8 pad_28[0x6];
-    uint8 var_2E;
+    uint8 num_ticks_alive;          // 0x26
+    uint8 frame;                    // 0x27
+    uint8 pad_28[0x7];              // 0x28 Originally var_2E was set to direction but it was unused.
     uint8 fountain_flags;           // 0x2F
     sint16 target_x;                // 0x30
     sint16 target_y;                // 0x32

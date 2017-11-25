@@ -121,7 +121,7 @@ void misc_paint(paint_session * session, rct_sprite *misc, sint32 imageDirection
             }
 
             uint32 baseImageId = (jumpingFountain.misc_identifier == SPRITE_MISC_JUMPING_FOUNTAIN_SNOW) ? 23037 : 22973;
-            uint32 imageId = baseImageId + ebx * 16 + jumpingFountain.var_26b;
+            uint32 imageId = baseImageId + ebx * 16 + jumpingFountain.frame;
             if (al & 1) {
                 switch (ebx) {
                     case 0:

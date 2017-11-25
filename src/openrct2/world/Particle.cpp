@@ -17,11 +17,8 @@
 #include "../audio/audio.h"
 #include "../core/Util.hpp"
 #include "../scenario/scenario.h"
+#include "../paint/sprite/sprite.h"
 #include "sprite.h"
-
-extern "C" {
-    extern const uint32 vehicle_particle_base_sprites[5];
-}
 
 /**
  *

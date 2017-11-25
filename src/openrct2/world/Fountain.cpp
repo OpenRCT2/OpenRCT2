@@ -183,7 +183,6 @@ extern "C"
         if (jumpingFountain != nullptr)
         {
             jumpingFountain->iteration = iteration;
-            jumpingFountain->var_2E = direction;
             jumpingFountain->fountain_flags = flags;
             jumpingFountain->sprite_direction = direction << 3;
             jumpingFountain->sprite_width = 33;
@@ -194,42 +193,46 @@ extern "C"
             jumpingFountain->misc_identifier = type == JUMPING_FOUNTAIN_TYPE_SNOW ?
                 SPRITE_MISC_JUMPING_FOUNTAIN_SNOW :
                 SPRITE_MISC_JUMPING_FOUNTAIN_WATER;
-            jumpingFountain->var_26 = 0;
+            jumpingFountain->num_ticks_alive = 0;
+            jumpingFountain->frame = 0;
         }
     }
 
     void jumping_fountain_update(rct_jumping_fountain * jumpingFountain)
     {
-        sint32 original_var_26a = jumpingFountain->var_26a;
-        jumpingFountain->var_26a += 160;
-        if (original_var_26a <= 255 - 160)
+        jumpingFountain->num_ticks_alive++;
+        // Originaly this would not update the frame on the following
+        // ticks: 1, 3, 6, 9, 11, 14, 17, 19, 22, 25
+        // This change was to simplefy the code base. There is a small increase
+        // in speed of the fountain jump because of this change.
+        if ((jumpingFountain->num_ticks_alive % 3) == 0)
         {
             return;
         }
 
         invalidate_sprite_0((rct_sprite *)jumpingFountain);
-        jumpingFountain->var_26b++;
+        jumpingFountain->frame++;
 
         switch (jumpingFountain->misc_identifier) {
         case SPRITE_MISC_JUMPING_FOUNTAIN_WATER:
-            if (jumpingFountain->var_26b == 11 && (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (jumpingFountain->frame == 11 && (jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
             {
                 jumping_fountain_continue(jumpingFountain);
             }
-            if (jumpingFountain->var_26b == 16 && !(jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
+            if (jumpingFountain->frame == 16 && !(jumpingFountain->fountain_flags & FOUNTAIN_FLAG::FAST))
             {
                 jumping_fountain_continue(jumpingFountain);
             }
             break;
         case SPRITE_MISC_JUMPING_FOUNTAIN_SNOW:
-            if (jumpingFountain->var_26b == 16)
+            if (jumpingFountain->frame == 16)
             {
                 jumping_fountain_continue(jumpingFountain);
             }
             break;
         }
 
-        if (jumpingFountain->var_26b == 16)
+        if (jumpingFountain->frame == 16)
         {
             sprite_remove((rct_sprite*)jumpingFountain);
         }
