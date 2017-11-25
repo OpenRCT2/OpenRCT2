@@ -187,7 +187,7 @@ private:
         size_t i = 1;
         for (auto filePath : scanResult.Files)
         {
-            Console::WriteFormat("File %4d of %d, done %3d%%\r", i, scanResult.Files.size(), i * 100 / scanResult.Files.size());
+            Console::WriteFormat("File %5d of %d, done %3d%%\r", i, scanResult.Files.size(), i * 100 / scanResult.Files.size());
             i++;
             log_verbose("FileIndex:Indexing '%s'", filePath.c_str());
             auto item = Create(filePath);
