@@ -7196,6 +7196,99 @@ STR_NAME    :Dolfijnenstandbeeld
 
 [TUS]
 STR_NAME    :Eenhoornstandbeeld
+
+[GEOROOF1]
+STR_NAME    :Glazen dak
+
+[GEOROOF2]
+STR_NAME    :Glazen dak
+
+## Start CC
+# TT Glass Roofs
+[TTRFGL01]
+STR_NAME    :Glazen dak
+
+[TTRFGL02]
+STR_NAME    :Glazen dak
+
+[TTRFGL03]
+STR_NAME    :Glazen dak
+
+# TT Red tile roofs with stucco
+[TTRFTL02]
+STR_NAME    :Dak
+
+[TTRFTL03]
+STR_NAME    :Dak
+
+[TTRFTL04]
+STR_NAME    :Dak
+
+[TTRFTL07]
+STR_NAME    :Dak
+
+[TTRFTL08]
+STR_NAME    :Dak
+
+## TT Pirate roofs and eaves
+[TTPIRF02]
+STR_NAME    :Dak
+
+[TTPIRF03]
+STR_NAME    :Dak
+
+[TTPIRF04]
+STR_NAME    :Dak
+
+[TTPIRF05]
+STR_NAME    :Dak
+
+[TTPIRF07]
+STR_NAME    :Dak
+
+[TTPIRF08]
+STR_NAME    :Dak
+
+[TTPRF09]
+STR_NAME    :Dak
+
+[TTPRF10]
+STR_NAME    :Dak
+
+[TTPRF11]
+STR_NAME    :Dak
+
+# TT wooden (Mine) roofs
+[TTRFWD01]
+STR_NAME    :Dak
+
+[TTRFWD02]
+STR_NAME    :Dak
+
+[TTRFWD03]
+STR_NAME    :Dak
+
+[TTRFWD04]
+STR_NAME    :Dak
+
+[TTRFWD05]
+STR_NAME    :Dak
+
+[TTRFWD06]
+STR_NAME    :Dak
+
+[TTRFWD07]
+STR_NAME    :Dak
+
+[TTRFWD08]
+STR_NAME    :Dak
+
+# Brick base block
+[XXBBBR01]
+STR_NAME    :Basisblok
+
+## End CC
+
 #################
 # Large objects #
 #################
@@ -7210,6 +7303,15 @@ STR_NAME    :'Nitro'-bord
 
 [SHS1]
 STR_NAME    :Rijtjeshuis
+
+[SSIG2]
+STR_NAME    :3D-bord
+
+[SSIG3]
+STR_NAME    :Verticaal 3D-bord
+
+[SSIG4]
+STR_NAME    :3D-bord
 
 #########
 # Walls #
@@ -7336,6 +7438,10 @@ STR_NAME    :Hoog houten hek
 
 [WWTWA]
 STR_NAME    :Houten hek
+
+#CC
+[MG-PRAR]
+STR_NAME    :Muur met doorgang
 
 ##################
 # Path additions #
