@@ -14,14 +14,16 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../../OpenRCT2.h"
 #include "../../cheats.h"
 #include "../../config/Config.h"
+#include "../../core/Math.hpp"
+#include "../../core/Util.hpp"
 #include "../../interface/viewport.h"
-#include "../../OpenRCT2.h"
 #include "../../peep/Staff.h"
 #include "../../sprites.h"
-#include "tile_element.h"
 #include "surface.h"
+#include "tile_element.h"
 
 static const uint8 byte_97B444[] = {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -502,7 +504,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
         return;
     }
 
-    assert(terrain < countof(_terrainEdgeSpriteIds));
+    assert(terrain < Util::CountOf(_terrainEdgeSpriteIds));
 
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
         uint8 incline = (regs.cl - regs.al) + 1;
@@ -516,7 +518,7 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
     uint32 base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
 
     const uint8 rotation = get_current_rotation();
-    uint8 cur_height = min(regs.ch, regs.ah);
+    uint8 cur_height = Math::Min(regs.ch, regs.ah);
     if (regs.ch != regs.ah) {
         // neighbour tile corners aren't level
         uint32 image_offset = 3;
@@ -618,7 +620,7 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
     }
 
     const uint8 rotation = get_current_rotation();
-    uint8 curHeight = min(regs.ah, regs.ch);
+    uint8 curHeight = Math::Min(regs.ah, regs.ch);
     if (regs.ch != regs.ah) {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
@@ -778,7 +780,7 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
     base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
 
     const uint8 rotation = get_current_rotation();
-    uint8 cur_height = min(regs.ch, regs.ah);
+    uint8 cur_height = Math::Min(regs.ch, regs.ah);
     if (regs.ch != regs.ah) {
         // neighbour tile corners aren't level
         uint32 image_offset = 3;
@@ -890,7 +892,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
     }
 
     const uint8 rotation = get_current_rotation();
-    uint8 curHeight = min(regs.ah, regs.ch);
+    uint8 curHeight = Math::Min(regs.ah, regs.ch);
     if (regs.ch != regs.ah) {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
@@ -999,23 +1001,23 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     const uint8 rotation = get_current_rotation();
     uint32 terrain_type = tile_element_get_terrain(tileElement);
-    uint32 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
+    uint8 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
 
     LocationXY16 base = {
-        .x = session->SpritePosition.x,
-        .y = session->SpritePosition.y
+        session->SpritePosition.x,
+        session->SpritePosition.y
     };
 
     corner_height ch = corner_heights[surfaceShape];
     tile_descriptor selfDescriptor = {
-        .tile_element = tileElement,
-        .slope = surfaceShape,
-        .terrain = terrain_type,
-        .corner_heights = {
-            .top = height / 16 + ch.top,
-            .right = height / 16 + ch.right,
-            .bottom = height / 16 + ch.bottom,
-            .left = height / 16 + ch.left,
+        tileElement,
+        (uint8)terrain_type,
+        surfaceShape,
+        {
+            (uint8)(height / 16 + ch.top),
+            (uint8)(height / 16 + ch.right),
+            (uint8)(height / 16 + ch.bottom),
+            (uint8)(height / 16 + ch.left),
         }
     };
 
@@ -1024,7 +1026,11 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     for (sint32 i = 0; i < 4; i++) {
         LocationXY16 offset = viewport_surface_paint_data[i][rotation];
-        LocationXY16 position = {.x = base.x + offset.x, .y = base.y + offset.y};
+        LocationXY16 position = 
+        {
+            base.x + offset.x, 
+            base.y + offset.y
+        };
 
         tileDescriptors[i + 1].tile_element = NULL;
         if (position.x > 0x2000 || position.y > 0x2000) {
@@ -1085,7 +1091,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             }
         }
 
-        assert(surfaceShape < countof(byte_97B444));
+        assert(surfaceShape < Util::CountOf(byte_97B444));
         uint8 image_offset = byte_97B444[surfaceShape];
         sint32 image_id;
         uint32 ebp = terrain_type;
@@ -1101,10 +1107,10 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             default:
                 // loc_660C9F
                 if (rotation & 1) {
-                    assert(ebp < countof(byte_97B84A));
+                    assert(ebp < Util::CountOf(byte_97B84A));
                     ebp = byte_97B84A[ebp];
                 }
-                assert(ebp < countof(dword_97B750));
+                assert(ebp < Util::CountOf(dword_97B750));
                 image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
                 if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
@@ -1161,7 +1167,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
 
         if (staff_is_patrol_area_set(200 + staffType, x, y)) {
-            assert(surfaceShape < countof(byte_97B444));
+            assert(surfaceShape < Util::CountOf(byte_97B444));
 
             image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
             image_id |= patrolColour << 19;
@@ -1190,7 +1196,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
         // loc_660E9A:
         if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED) {
-            assert(surfaceShape < countof(byte_97B444));
+            assert(surfaceShape < Util::CountOf(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
         } else if (tileElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
             LocationXY16 pos = session->MapPosition;
@@ -1204,7 +1210,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
         && !(tileElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
         if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
-            assert(surfaceShape < countof(byte_97B444));
+            assert(surfaceShape < Util::CountOf(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
         } else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
             paint_struct * backup = session->UnkF1AD28;
@@ -1426,9 +1432,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22872;
                     image_2 = 22876;
                     image_3 = 22874;
-                    offset = (LocationXY8) {1, 31};
-                    box_size = (struct LocationXY16) {.x=30, .y=1};
-                    box_offset = (struct LocationXY16) {.x=1, .y=31};
+                    offset = {1, 31};
+                    box_size = {30, 1};
+                    box_offset = {1, 31};
                     break;
 
                 case 1:
@@ -1440,9 +1446,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22873;
                     image_2 = 22877;
                     image_3 = 22875;
-                    offset = (LocationXY8) {31, 0};
-                    box_size = (struct LocationXY16) {.x=1, .y=30};
-                    box_offset = (struct LocationXY16) {.x=31, .y=1};
+                    offset = {31, 0};
+                    box_size = {1, 30};
+                    box_offset = {31, 1};
                     break;
 
                 case 2:
@@ -1454,9 +1460,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22872;
                     image_2 = 22874;
                     image_3 = 22876;
-                    offset = (LocationXY8) {1, 0};
-                    box_size = (struct LocationXY16) {30, 1};
-                    box_offset = (struct LocationXY16) {1, 1};
+                    offset = {1, 0};
+                    box_size = {30, 1};
+                    box_offset ={1, 1};
                     // TODO: Fences on top tile get clipped after a while
                     break;
 
@@ -1469,9 +1475,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     image_1 = 22873;
                     image_2 = 22875;
                     image_3 = 22877;
-                    offset = (LocationXY8) {1, 1};
-                    box_size = (struct LocationXY16) {1, 30};
-                    box_offset = (struct LocationXY16) {1, 1};
+                    offset = {1, 1};
+                    box_size = {1, 30};
+                    box_offset = {1, 1};
                     break;
             }
 
