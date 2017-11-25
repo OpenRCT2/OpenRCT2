@@ -42,19 +42,19 @@ void rct_balloon::Update()
     invalidate_sprite_2((rct_sprite *)this);
     if (popped == 1)
     {
-        frame += 256;
-        if (frame >= 1280)
+        frame++;
+        if (frame >= 5)
         {
             sprite_remove((rct_sprite *)this);
         }
     }
     else
     {
-        sint32 original_var26a = var_26a;
-        var_26a += 85;
-        if (original_var26a >= 255 - 85)
+        time_to_move++;
+        if (time_to_move >= 3)
         {
-            var_26b++;
+            time_to_move = 0;
+            frame++;
             sprite_move(x, y, z + 1, (rct_sprite*)this);
 
             sint32 maxZ = 1967 - ((x ^ y) & 31);
@@ -118,12 +118,13 @@ extern "C"
         rct_sprite* sprite = create_sprite(2);
         if (sprite != nullptr)
         {
-            sprite->balloon.var_14 = 13;
-            sprite->balloon.var_09 = 22;
-            sprite->balloon.var_15 = 11;
+            sprite->balloon.sprite_width = 13;
+            sprite->balloon.sprite_height_negative = 22;
+            sprite->balloon.sprite_height_positive = 11;
             sprite->balloon.sprite_identifier = SPRITE_IDENTIFIER_MISC;
             sprite_move(x, y, z, sprite);
             sprite->balloon.misc_identifier = SPRITE_MISC_BALLOON;
+            sprite->balloon.time_to_move = 0;
             sprite->balloon.frame = 0;
             sprite->balloon.colour = colour;
             sprite->balloon.popped = (isPopped ? 1 : 0);

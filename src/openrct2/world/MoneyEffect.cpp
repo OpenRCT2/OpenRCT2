@@ -42,9 +42,9 @@ void money_effect_create_at(money32 value, sint32 x, sint32 y, sint32 z, bool ve
 
     moneyEffect->value             = value;
     moneyEffect->vertical          = (vertical ? 1 : 0);
-    moneyEffect->var_14            = 64;
-    moneyEffect->var_09            = 20;
-    moneyEffect->var_15            = 30;
+    moneyEffect->sprite_width      = 64;
+    moneyEffect->sprite_height_negative = 20;
+    moneyEffect->sprite_height_positive = 30;
     moneyEffect->sprite_identifier = SPRITE_IDENTIFIER_MISC;
     sprite_move(x, y, z, (rct_sprite *) moneyEffect);
     moneyEffect->misc_identifier   = SPRITE_MISC_MONEY_EFFECT;
