@@ -1265,8 +1265,10 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
         if (!widget)
             break;
 
-        sint32 mid_point_x = (widget->left + widget->right) / 2 + w->x;
-        audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
+        {
+            sint32 mid_point_x = (widget->left + widget->right) / 2 + w->x;
+            audio_play_sound(SOUND_CLICK_2, 0, mid_point_x);
+        }
         if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
             break;
 
