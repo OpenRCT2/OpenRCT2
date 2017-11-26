@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
 #include <openrct2/config/Config.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
@@ -345,7 +346,7 @@ static void window_staff_list_tooldown(rct_window *w, rct_widgetindex widgetInde
 
         uint16 spriteIndex;
         rct_peep *peep, *closestPeep = nullptr;
-        sint32 closestPeepDistance = INT_MAX;
+        sint32 closestPeepDistance = std::numeric_limits<sint32>::max();
         FOR_ALL_STAFF(spriteIndex, peep) {
             if (peep->staff_type != selectedPeepType)
                 continue;

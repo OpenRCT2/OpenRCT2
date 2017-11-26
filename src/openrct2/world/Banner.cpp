@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
+
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
@@ -513,7 +515,7 @@ extern "C"
         }
 
         rideIndex = -1;
-        sint32 resultDistance = INT_MAX;
+        sint32 resultDistance = std::numeric_limits<sint32>::max();
         FOR_ALL_RIDES(i, ride)
         {
             if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_IS_SHOP))

@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
+
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../audio/AudioMixer.h"
@@ -13703,7 +13705,7 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
 
     // Pick the closest ride
     sint32 closestRideIndex    = -1;
-    sint32 closestRideDistance = INT_MAX;
+    sint32 closestRideDistance = std::numeric_limits<sint32>::max();
     for (sint32 i = 0; i < numPotentialRides; i++)
     {
         ride            = get_ride(potentialRides[i]);
@@ -13835,7 +13837,7 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
 
     // Pick the closest ride
     sint32 closestRideIndex    = -1;
-    sint32 closestRideDistance = INT_MAX;
+    sint32 closestRideDistance = std::numeric_limits<sint32>::max();
     for (sint32 i = 0; i < numPotentialRides; i++)
     {
         ride            = get_ride(potentialRides[i]);
