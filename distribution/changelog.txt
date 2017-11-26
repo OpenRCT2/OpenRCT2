@@ -24,6 +24,7 @@
 - Feature: [#6651, #6658] Integrate Discord Rich Presence.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
+- Feature: Add search box to track design window.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
