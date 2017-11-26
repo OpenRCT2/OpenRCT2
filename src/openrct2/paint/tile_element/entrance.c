@@ -232,32 +232,37 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
         if (ghost_id != 0)
             break;
 
-        rct_string_id park_text_id = STR_BANNER_TEXT_CLOSED;
-        set_format_arg(0, uint32, 0);
-        set_format_arg(4, uint32, 0);
+        {
+            rct_string_id park_text_id = STR_BANNER_TEXT_CLOSED;
+            set_format_arg(0, uint32, 0);
+            set_format_arg(4, uint32, 0);
 
-        if (gParkFlags & PARK_FLAGS_PARK_OPEN){
-            set_format_arg(0, rct_string_id, gParkName);
-            set_format_arg(2, uint32, gParkNameArgs);
+            if (gParkFlags & PARK_FLAGS_PARK_OPEN){
+                set_format_arg(0, rct_string_id, gParkName);
+                set_format_arg(2, uint32, gParkNameArgs);
 
-            park_text_id = STR_BANNER_TEXT_FORMAT;
+                park_text_id = STR_BANNER_TEXT_FORMAT;
+            }
+
+            utf8 park_name[256];
+            if (gConfigGeneral.upper_case_banners) {
+                format_string_to_upper(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
+            } else {
+                format_string(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
+            }
+
+            gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
+
+            uint16 string_width = gfx_get_string_width(park_name);
+            uint16 scroll = (gCurrentTicks / 2) % string_width;
+
+            if (entrance->scrolling_mode == 0xFF)
+                break;
+
+            sint32 stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
+            uint8 text_height = height + entrance->text_height;
+            sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height, get_current_rotation());
         }
-
-        utf8 park_name[256];
-        if (gConfigGeneral.upper_case_banners) {
-            format_string_to_upper(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
-        } else {
-            format_string(park_name, sizeof(park_name), park_text_id, gCommonFormatArgs);
-        }
-
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_TINY;
-        uint16 string_width = gfx_get_string_width(park_name);
-        uint16 scroll = (gCurrentTicks / 2) % string_width;
-
-        if (entrance->scrolling_mode == 0xFF)
-            break;
-
-        sub_98199C(session, scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2), 0, 0, 0x1C, 0x1C, 0x2F, height + entrance->text_height, 2, 2, height + entrance->text_height, get_current_rotation());
         break;
     case 1:
     case 2:
