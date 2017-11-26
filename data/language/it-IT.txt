@@ -4471,6 +4471,8 @@ STR_6156    :Il nome è riservato
 STR_6157    :Console
 STR_6158    :Impossibile caricare questo file...{NEWLINE}Versione di RCTC incompatibile: {COMMA16}
 STR_6159    :Nearest Neighbour smussato
+STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
+STR_6161    :Mostra/nascondi griglia
 
 
 #############
