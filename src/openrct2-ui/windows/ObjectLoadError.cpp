@@ -154,29 +154,35 @@ static rct_string_id get_object_type_string(const rct_object_entry *entry)
 *  Returns a newline-separated string listing all object names.
 *  Used for placing all names on the clipboard.
 */
-static utf8* combine_object_names(rct_window *w)
+static void copy_object_names_to_clipboard(rct_window *w)
 {
-    if (w->no_list_items > OBJECT_ENTRY_COUNT || w->no_list_items == 0) {
-        // Something's gone wrong, this shouldn't happen
-        // We don't want to allocate stupidly large amounts of memory
-        // for no reason, so bail
-        return nullptr;
-    }
-    utf8* buffer;
+    // Something has gone wrong, this shouldn't happen.
+    // We don't want to allocate stupidly large amounts of memory for no reason
+    assert(w->no_list_items > 0 && w->no_list_items <= OBJECT_ENTRY_COUNT);
 
     // No system has a newline over 2 characters
     size_t line_sep_len = strnlen(PLATFORM_NEWLINE, 2);
     size_t buffer_len = (w->no_list_items * (8 + line_sep_len)) + 1;
-    buffer = (utf8*)malloc(buffer_len);
-    buffer[0] = '\0';
+    utf8* buffer = new utf8[buffer_len]{};
+
     size_t cur_len = 0;
     for (uint16 i = 0; i < w->no_list_items; i++) {
         cur_len += (8 + line_sep_len);
         assert(cur_len < buffer_len);
-        strncat(buffer, _invalid_entries[i].name, 8);
+
+        uint16 nameLength = 8;
+        for (; nameLength > 0; nameLength--)
+        {
+            if (_invalid_entries[i].name[nameLength - 1] != ' ')
+                break;
+        }
+
+        strncat(buffer, _invalid_entries[i].name, nameLength);
         strncat(buffer, PLATFORM_NEWLINE, line_sep_len);
     }
-    return buffer;
+
+    platform_place_string_on_clipboard(buffer);
+    delete buffer;
 }
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects)
@@ -229,23 +235,24 @@ static void window_object_load_error_update(rct_window *w)
 
 static void window_object_load_error_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    utf8* selected_name;
-    utf8* combined_list;
     switch (widgetIndex) {
         case WIDX_CLOSE:
             window_close(w);
             break;
         case WIDX_COPY_CURRENT:
-            if (w->selected_list_item > -1) {
-                selected_name = strndup(_invalid_entries[w->selected_list_item].name, 8);
+            if (w->selected_list_item > -1 && w->selected_list_item < w->no_list_items)
+            {
+                utf8 * selected_name = strndup(_invalid_entries[w->selected_list_item].name, 8);
+                utf8 * strp = strchr(selected_name, ' ');
+                if (strp != nullptr)
+                    *strp = '\0';
+
                 platform_place_string_on_clipboard(selected_name);
                 SafeFree(selected_name);
             }
             break;
         case WIDX_COPY_ALL:
-            combined_list = combine_object_names(w);
-            platform_place_string_on_clipboard(combined_list);
-            SafeFree(combined_list);
+            copy_object_names_to_clipboard(w);
             break;
     }
 }
