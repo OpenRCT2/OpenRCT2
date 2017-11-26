@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits.h>
+
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../cheats.h"

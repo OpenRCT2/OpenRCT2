@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <limits>
+
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
@@ -1446,8 +1448,8 @@ static void window_ride_update_overall_view(uint8 ride_index) {
 
     tile_element_iterator_begin(&it);
 
-    sint32 minx = INT_MAX, miny = INT_MAX, minz = INT_MAX;
-    sint32 maxx = INT_MIN, maxy = INT_MIN, maxz = INT_MIN;
+    sint32 minx = std::numeric_limits<sint32>::max(), miny = std::numeric_limits<sint32>::max(), minz = std::numeric_limits<sint32>::max();
+    sint32 maxx = std::numeric_limits<sint32>::min(), maxy = std::numeric_limits<sint32>::min(), maxz = std::numeric_limits<sint32>::min();
 
     while (tile_element_iterator_next(&it)) {
         if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
