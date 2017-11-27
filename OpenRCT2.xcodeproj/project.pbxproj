@@ -153,6 +153,10 @@
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
 		C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */; };
 		C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2711FA3E25C0095FB9D /* TextInput.cpp */; };
+		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
+		C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62D83861FCC7D19008C04F1 /* EditorObjectSelection.cpp */; };
+		C62D838A1FD36D6F008C04F1 /* EditorObjectSelectionSession.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C62D83881FD36D6E008C04F1 /* EditorObjectSelectionSession.cpp */; };
+		C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */ = {isa = PBXBuildFile; fileRef = C62D83891FD36D6F008C04F1 /* EditorObjectSelectionSession.h */; };
 		C632C81F1F8A445700781F6D /* RideList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C632C81E1F8A445700781F6D /* RideList.cpp */; };
 		C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B811F477022006CCEE3 /* DataSerialiser.h */; };
 		C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */; };
@@ -199,7 +203,6 @@
 		C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED751F33DBB20061AA04 /* ShortcutKeys.cpp */; };
 		C666EE0B1F33E3650061AA04 /* _legacy.c in Sources */ = {isa = PBXBuildFile; fileRef = C666ED791F33E3520061AA04 /* _legacy.c */; };
 		C666EE141F33E3800061AA04 /* Dropdown.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED821F33E3520061AA04 /* Dropdown.cpp */; };
-		C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */; };
 		C666EE4D1F33E3800061AA04 /* Tooltip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EDBA1F33E3520061AA04 /* Tooltip.cpp */; };
 		C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE551F37ACB10061AA04 /* About.cpp */; };
 		C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE561F37ACB10061AA04 /* Changelog.cpp */; };
@@ -765,6 +768,10 @@
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
 		C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
 		C61FB2711FA3E25C0095FB9D /* TextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
+		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
+		C62D83861FCC7D19008C04F1 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
+		C62D83881FD36D6E008C04F1 /* EditorObjectSelectionSession.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelectionSession.cpp; sourceTree = "<group>"; };
+		C62D83891FD36D6F008C04F1 /* EditorObjectSelectionSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EditorObjectSelectionSession.h; sourceTree = "<group>"; };
 		C632C81E1F8A445700781F6D /* RideList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RideList.cpp; sourceTree = "<group>"; };
 		C6352B811F477022006CCEE3 /* DataSerialiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiser.h; sourceTree = "<group>"; };
 		C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiserTraits.h; sourceTree = "<group>"; };
@@ -816,7 +823,6 @@
 		C666ED781F33E3520061AA04 /* _legacy.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = _legacy.h; sourceTree = "<group>"; };
 		C666ED791F33E3520061AA04 /* _legacy.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = _legacy.c; sourceTree = "<group>"; };
 		C666ED821F33E3520061AA04 /* Dropdown.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Dropdown.cpp; sourceTree = "<group>"; };
-		C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorObjectSelection.cpp; sourceTree = "<group>"; };
 		C666EDBA1F33E3520061AA04 /* Tooltip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Tooltip.cpp; sourceTree = "<group>"; };
 		C666EE551F37ACB10061AA04 /* About.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = About.cpp; sourceTree = "<group>"; };
 		C666EE561F37ACB10061AA04 /* Changelog.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Changelog.cpp; sourceTree = "<group>"; };
@@ -1829,6 +1835,8 @@
 				F76C839C1EC4E7CC00FA49E2 /* diagnostic.h */,
 				F76C83B11EC4E7CC00FA49E2 /* Editor.cpp */,
 				F76C83B21EC4E7CC00FA49E2 /* Editor.h */,
+				C62D83881FD36D6E008C04F1 /* EditorObjectSelectionSession.cpp */,
+				C62D83891FD36D6F008C04F1 /* EditorObjectSelectionSession.h */,
 				F76C83B31EC4E7CC00FA49E2 /* FileClassifier.cpp */,
 				F76C83B41EC4E7CC00FA49E2 /* FileClassifier.h */,
 				4CE4623F1FD0710E0001CD98 /* Game.cpp */,
@@ -2462,7 +2470,6 @@
 				C666ED781F33E3520061AA04 /* _legacy.h */,
 				C666ED821F33E3520061AA04 /* Dropdown.cpp */,
 				F76C85171EC4E7CD00FA49E2 /* dropdown.h */,
-				C666ED871F33E3520061AA04 /* EditorObjectSelection.cpp */,
 				C654DF3E1F69C18C0040F43D /* Intent.cpp */,
 				C654DF3F1F69C18C0040F43D /* Intent.h */,
 				F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */,
@@ -2632,6 +2639,7 @@
 				C64644EF1F3FA4120026AC2D /* EditorInventionsList.cpp */,
 				C67CCD671FBBD137004FAE4C /* EditorMain.cpp */,
 				C64644F01F3FA4120026AC2D /* EditorObjectiveOptions.cpp */,
+				C62D83861FCC7D19008C04F1 /* EditorObjectSelection.cpp */,
 				C64644F11F3FA4120026AC2D /* EditorScenarioOptions.cpp */,
 				C654DF1E1F69C0430040F43D /* Error.cpp */,
 				C654DF1F1F69C0430040F43D /* Finances.cpp */,
@@ -2720,6 +2728,7 @@
 				C6352B861F477022006CCEE3 /* Endianness.h in Headers */,
 				C6352B941F477032006CCEE3 /* PlaceParkEntranceAction.hpp in Headers */,
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
+				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
 			);
@@ -3192,6 +3201,7 @@
 				4C93F17D1F8B747300A9330D /* Shop.cpp in Sources */,
 				4C93F1921F8B747A00A9330D /* TopSpin.cpp in Sources */,
 				C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */,
+				C62D83871FCC7D1A008C04F1 /* EditorObjectSelection.cpp in Sources */,
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
 				4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */,
@@ -3301,6 +3311,7 @@
 				F76C85D61EC4E88300FA49E2 /* FileScanner.cpp in Sources */,
 				F76C85D91EC4E88300FA49E2 /* Guard.cpp in Sources */,
 				D48AFDB71EF78DBF0081C644 /* BenchGfxCommmands.cpp in Sources */,
+				C62D838A1FD36D6F008C04F1 /* EditorObjectSelectionSession.cpp in Sources */,
 				F76C85DB1EC4E88300FA49E2 /* IStream.cpp in Sources */,
 				F76C85DD1EC4E88300FA49E2 /* Json.cpp in Sources */,
 				F76C85E11EC4E88300FA49E2 /* MemoryStream.cpp in Sources */,
@@ -3347,7 +3358,6 @@
 				F76C86361EC4E88300FA49E2 /* real_names.c in Sources */,
 				F76C86381EC4E88300FA49E2 /* user.c in Sources */,
 				F76C863A1EC4E88300FA49E2 /* utf8.c in Sources */,
-				C666EE1A1F33E3800061AA04 /* EditorObjectSelection.cpp in Sources */,
 				F76C86451EC4E88300FA49E2 /* Http.cpp in Sources */,
 				F76C86471EC4E88300FA49E2 /* Network.cpp in Sources */,
 				F76C86491EC4E88300FA49E2 /* NetworkAction.cpp in Sources */,
