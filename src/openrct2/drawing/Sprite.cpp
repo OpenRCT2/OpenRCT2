@@ -804,7 +804,7 @@ extern "C"
         {
             _g1Temp = *g1;
         }
-        else if (imageId >= 0 || imageId < SPR_G2_BEGIN)
+        else if (imageId >= 0 && imageId < SPR_G2_BEGIN)
         {
             if (imageId < (sint32)_g1ElementsCount)
             {
