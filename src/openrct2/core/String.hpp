@@ -90,12 +90,12 @@ namespace String
     const utf8 * SkipBOM(const utf8 * buffer);
 
     size_t      GetCodepointLength(codepoint_t codepoint);
-    codepoint_t GetNextCodepoint(utf8 * ptr, utf8 * * nextPtr = nullptr);
-    codepoint_t GetNextCodepoint(const utf8 * ptr, const utf8 * * nextPtr = nullptr);
+    codepoint_t GetNextCodepoint(utf8 * ptr, sint32 len, utf8 * * nextPtr = nullptr);
+    codepoint_t GetNextCodepoint(const utf8 * ptr, sint32 len, const utf8 * * nextPtr = nullptr);
     utf8 *      WriteCodepoint(utf8 * dst, codepoint_t codepoint);
 
-    utf8 *          Trim(utf8 * str);
-    const utf8 *    TrimStart(const utf8 * str);
-    utf8 *          TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src);
+    utf8 *          Trim(utf8 * str, size_t len);
+    const utf8 *    TrimStart(const utf8 * str, size_t len);
+    utf8 *          TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src, size_t len);
     std::string     Trim(const std::string &s);
 }

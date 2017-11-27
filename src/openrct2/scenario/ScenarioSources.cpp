@@ -341,7 +341,7 @@ namespace ScenarioSources
         }
 
         // Trim (for the sake of the above and WW / TT scenarios
-        String::TrimStart(buffer, bufferSize, name);
+        String::TrimStart(buffer, bufferSize, name, nameLength);
 
         // American scenario titles should be converted to British name
         // Don't worry, names will be translated using language packs later

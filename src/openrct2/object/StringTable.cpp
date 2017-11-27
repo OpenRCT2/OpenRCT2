@@ -60,7 +60,8 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
             {
                 entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
             }
-            String::Trim(stringAsUtf8);
+            size_t len = strlen(stringAsUtf8);
+            String::Trim(stringAsUtf8, len);
 
             entry.Text = stringAsUtf8;
             _strings.push_back(entry);

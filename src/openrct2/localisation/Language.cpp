@@ -71,7 +71,7 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
     const utf8 * ch = text;
     utf8 * dstCh = text;
     sint32 codepoint;
-    while ((codepoint = String::GetNextCodepoint(ch, &ch)) != 0)
+    while ((codepoint = String::GetNextCodepoint(ch, 4, &ch)) != 0)
     {
         if (!utf8_is_format_code(codepoint) || (allowcolours && utf8_is_colour_code(codepoint)))
         {
