@@ -455,6 +455,8 @@ public:
         {
             log_error("Found %d disjoint null sprites", disjoint_sprites_count);
         }
+
+        FixEntryPoints();
     }
 
     void ImportRides()
@@ -700,6 +702,37 @@ public:
     void Initialise()
     {
         game_init_all(_s6.map_size);
+    }
+
+    /**
+     * Clears incorrectly set guest entry points.
+     */
+    void FixEntryPoints()
+    {
+        // Many WW and TT have scenario_filename fields containing an incorrect filename. Check for both this filename
+        // and the corrected filename.
+
+        // In this park, gPeepSpawns[0] is incorrect, and gPeepSpawns[1] is correct.
+        if (String::Equals(_s6.scenario_filename, "WW South America - Rio Carnival.SC6") ||
+            String::Equals(_s6.scenario_filename, "South America - Rio Carnival.SC6"))
+        {
+            gPeepSpawns[0] = { 2160, 3167, 6, 1 };
+
+            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
+            {
+                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            }
+        }
+        // In this park, gPeepSpawns[0] is correct. Just clear the rest.
+        else if (String::Equals(_s6.scenario_filename, "Great Wall of China Tourism Enhancement.SC6") ||
+                 String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
+        {
+            for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
+            {
+                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            }
+        }
+
     }
 };
 
