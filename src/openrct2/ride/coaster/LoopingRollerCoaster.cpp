@@ -26,6 +26,9 @@
 #include "../TrackData.h"
 #include "../track_paint.h"
 
+#define LOOPING_RC_BOOSTER_NE_SW (SPR_CSG_BEGIN + 55679)
+#define LOOPING_RC_BOOSTER_NW_SE (SPR_CSG_BEGIN + 55680)
+
 /** rct2: 0x008A6370 */
 static void looping_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
                                   rct_tile_element * tileElement)
@@ -85,11 +88,14 @@ static void looping_rc_track_flat(paint_session * session, uint8 rideIndex, uint
 static void looping_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                      sint32 height, rct_tile_element * tileElement)
 {
+    const uint32 stationTrackNESW = is_csg_loaded() ? LOOPING_RC_BOOSTER_NE_SW : 15016;
+    const uint32 stationTrackNWSE = is_csg_loaded() ? LOOPING_RC_BOOSTER_NW_SE : 15017;
+
     static const uint32 imageIds[4][2] = {
-        { 15016, SPR_STATION_BASE_B_SW_NE },
-        { 15017, SPR_STATION_BASE_B_NW_SE },
-        { 15016, SPR_STATION_BASE_B_SW_NE },
-        { 15017, SPR_STATION_BASE_B_NW_SE },
+        { stationTrackNESW, SPR_STATION_BASE_B_SW_NE },
+        { stationTrackNWSE, SPR_STATION_BASE_B_NW_SE },
+        { stationTrackNESW, SPR_STATION_BASE_B_SW_NE },
+        { stationTrackNWSE, SPR_STATION_BASE_B_NW_SE },
     };
 
     sub_98197C_rotated(session, direction, imageIds[direction][0] | session->TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1,
@@ -8420,20 +8426,15 @@ static void looping_rc_track_booster(paint_session * session, uint8 rideIndex, u
         return;
     }
 
-    uint32 sprite_ne_sw = SPR_CSG_BEGIN + 55679;
-    uint32 sprite_nw_se = SPR_CSG_BEGIN + 55680;
-
     switch (direction)
     {
     case 0:
     case 2:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | sprite_ne_sw, 0, 0, 32, 20, 3, height, 0,
-                           6, height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | LOOPING_RC_BOOSTER_NE_SW, 0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     case 1:
     case 3:
-        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | sprite_nw_se, 0, 0, 32, 20, 3, height, 0,
-                           6, height);
+        sub_98197C_rotated(session, direction, session->TrackColours[SCHEME_TRACK] | LOOPING_RC_BOOSTER_NW_SE, 0, 0, 32, 20, 3, height, 0, 6, height);
         break;
     }
     if (track_paint_util_should_paint_supports(session->MapPosition))
