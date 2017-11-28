@@ -182,7 +182,7 @@ static void copy_object_names_to_clipboard(rct_window *w)
     }
 
     platform_place_string_on_clipboard(buffer);
-    delete buffer;
+    delete[] buffer;
 }
 
 rct_window * window_object_load_error_open(utf8 * path, size_t numMissingObjects, const rct_object_entry * missingObjects)
