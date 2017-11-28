@@ -105,6 +105,7 @@ private:
         case PATHID::NETWORK_USERS:
         case PATHID::SCORES:
         case PATHID::SCORES_LEGACY:
+        default:
             return DIRBASE::USER;
         }
     }

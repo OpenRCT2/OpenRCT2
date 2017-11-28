@@ -385,6 +385,10 @@ char *safe_strcat(char *destination, const char *source, size_t size)
 char *safe_strcat_path(char *destination, const char *source, size_t size)
 {
     path_end_with_separator(destination, size);
+    if (source[0] == *PATH_SEPARATOR)
+    {
+        source = source + 1;
+    }
     return safe_strcat(destination, source, size);
 }
 

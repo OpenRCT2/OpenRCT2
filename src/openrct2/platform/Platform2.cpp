@@ -18,6 +18,8 @@
 #ifdef _WIN32
     #define WIN32_LEAN_AND_MEAN
     #include <windows.h>
+    #include <shlobj.h>
+    #undef GetEnvironmentVariable
 #else
     #include <pwd.h>
 #endif
@@ -25,6 +27,7 @@
 
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../core/Util.hpp"
 #include "Platform2.h"
 #include "platform.h"
 
@@ -38,10 +41,22 @@ namespace Platform
     std::string GetEnvironmentVariable(const std::string &name)
     {
 #ifdef _WIN32
+        std::wstring result;
         auto wname = String::ToUtf16(name);
-        wchar_t wvalue[MAX_PATH];
-        GetEnvironmentVariableW(wname.c_str(), wvalue, sizeof(wvalue));
-        return String::ToUtf8(wvalue);
+        wchar_t wvalue[256];
+        auto valueSize = GetEnvironmentVariableW(wname.c_str(), wvalue, (DWORD)Util::CountOf(wvalue));
+        if (valueSize < Util::CountOf(wvalue))
+        {
+            result = wvalue;
+        }
+        else
+        {
+            auto wlvalue = new wchar_t[valueSize];
+            GetEnvironmentVariableW(wname.c_str(), wlvalue, valueSize);
+            result = wlvalue;
+            delete wlvalue;
+        }
+        return String::ToUtf8(result);
 #else
         return String::ToStd(getenv(name.c_str()));
 #endif
@@ -78,10 +93,12 @@ namespace Platform
         case SPECIAL_FOLDER::USER_CONFIG:
         case SPECIAL_FOLDER::USER_DATA:
             {
-                wchar_t wpath[MAX_PATH];
-                if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+                wchar_t * wpath = nullptr;
+                if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_CREATE, nullptr, &wpath)))
                 {
-                    return ToUtf8(std::wstring(wpath));
+                    auto path = String::ToUtf8(std::wstring(wpath));
+                    CoTaskMemFree(wpath);
+                    return path;
                 }
                 else
                 {
@@ -90,10 +107,12 @@ namespace Platform
             }
         case SPECIAL_FOLDER::USER_HOME:
             {
-                wchar_t wpath[MAX_PATH];
-                if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_PROFILE | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+                wchar_t * wpath = nullptr;
+                if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Profile, KF_FLAG_CREATE, nullptr, &wpath)))
                 {
-                    return ToUtf8(std::wstring(wpath));
+                    auto path = String::ToUtf8(std::wstring(wpath));
+                    CoTaskMemFree(wpath);
+                    return path;
                 }
                 else
                 {
@@ -161,6 +180,8 @@ namespace Platform
         case SPECIAL_FOLDER::USER_HOME:
             return getpwuid(getuid())->pw_dir;
 #endif
+        default:
+            return std::string();
         }
     }
 

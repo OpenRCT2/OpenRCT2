@@ -153,6 +153,7 @@ void core_init();
         #define WIN32_LEAN_AND_MEAN
     #endif
     #include <windows.h>
+    #undef CreateDirectory
     #undef CreateWindow
     #undef GetMessage
 
