@@ -115,22 +115,25 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment(DIRBASE_VALUES basePa
     return new PlatformEnvironment(basePaths);
 }
 
+static std::string GetOpenRCT2DirectoryName()
+{
+#if defined(__ANDROID__)
+    return "openrct2-user";
+#else
+    return "OpenRCT2";
+#endif
+}
+
 IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
 {
-    platform_resolve_user_data_path();
-    config_set_defaults();
-    if (!config_open_default())
-    {
-        config_save_default();
-    }
+    auto subDirectory = GetOpenRCT2DirectoryName();
 
+    // Set default paths
     std::string basePaths[DIRBASE_COUNT];
-    basePaths[(size_t)DIRBASE::RCT1] = String::ToStd(gConfigGeneral.rct1_path);
-    basePaths[(size_t)DIRBASE::RCT2] = String::ToStd(gConfigGeneral.rct2_path);
     basePaths[(size_t)DIRBASE::OPENRCT2] = Platform::GetInstallPath();
-    basePaths[(size_t)DIRBASE::USER] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), "openrct2");
-    basePaths[(size_t)DIRBASE::CONFIG] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), "openrct2");
-    basePaths[(size_t)DIRBASE::CACHE] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), "openrct2");
+    basePaths[(size_t)DIRBASE::USER] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_DATA), subDirectory);
+    basePaths[(size_t)DIRBASE::CONFIG] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CONFIG), subDirectory);
+    basePaths[(size_t)DIRBASE::CACHE] = Path::Combine(Platform::GetFolderPath(SPECIAL_FOLDER::USER_CACHE), subDirectory);
 
     // Override paths that have been specified via the command line
     if (!String::IsNullOrEmpty(gCustomRCT2DataPath))
@@ -148,7 +151,17 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
         basePaths[(size_t)DIRBASE::CACHE] = gCustomUserDataPath;
     }
 
-    IPlatformEnvironment * env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+    auto env = OpenRCT2::CreatePlatformEnvironment(basePaths);
+
+    // Now load the config so we can get the RCT1 and RCT2 paths
+    auto configPath = env->GetFilePath(PATHID::CONFIG);
+    config_set_defaults();
+    if (!config_open(configPath.c_str()))
+    {
+        config_save(configPath.c_str());
+    }
+    env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
+    env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
 
     // Log base paths
     log_verbose("DIRBASE::RCT1    : %s", env->GetDirectoryPath(DIRBASE::RCT1).c_str());

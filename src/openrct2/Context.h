@@ -94,6 +94,7 @@ namespace OpenRCT2
 
         virtual Audio::IAudioContext *  GetAudioContext() abstract;
         virtual Ui::IUiContext *        GetUiContext() abstract;
+        virtual IPlatformEnvironment *  GetPlatformEnvironment() abstract;
 
         virtual sint32 RunOpenRCT2(int argc, const char * * argv) abstract;
 

@@ -460,52 +460,6 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
     safe_strcat_path(outPath, "changelog.txt", outSize);
 }
 
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - C:\Users\%USERNAME%\OpenRCT2 (as from SHGetFolderPathW)
- */
-void platform_resolve_user_data_path()
-{
-    wchar_t wOutPath[MAX_PATH];
-
-    if (gCustomUserDataPath[0] != 0) {
-        wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
-        if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
-            log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
-            exit(-1);
-        }
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-        safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
-        free(outPathTemp);
-        free(customUserDataPathW);
-
-        path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
-        return;
-    }
-
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-        safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
-        free(outPathTemp);
-
-        safe_strcat_path(_userDataDirectoryPath, "OpenRCT2", sizeof(_userDataDirectoryPath));
-        path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
-    } else {
-        log_fatal("Unable to resolve user data path.");
-        exit(-1);
-    }
-}
-
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize)
-{
-    safe_strcpy(outPath, _userDataDirectoryPath, outSize);
-    if (subDirectory != NULL && subDirectory[0] != 0) {
-        safe_strcat_path(outPath, subDirectory, outSize);
-        path_end_with_separator(outPath, outSize);
-    }
-}
-
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)
 {
     wchar_t * wSteamPath;

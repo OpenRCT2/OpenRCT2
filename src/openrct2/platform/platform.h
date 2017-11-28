@@ -120,7 +120,6 @@ bool platform_file_move(const utf8 *srcPath, const utf8 *dstPath);
 bool platform_file_delete(const utf8 *path);
 uint32 platform_get_ticks();
 void platform_sleep(uint32 ms);
-void platform_resolve_user_data_path();
 void platform_resolve_openrct_data_path();
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize);
 void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize);
@@ -167,7 +166,6 @@ void core_init();
 #endif // _WIN32
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__) || defined(__ANDROID__)
-    void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir);
     void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size);
 #endif
 

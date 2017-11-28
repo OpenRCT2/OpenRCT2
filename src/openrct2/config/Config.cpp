@@ -27,6 +27,7 @@
 #include "../interface/window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../ui/UiContext.h"
 #include "Config.h"
 #include "IniReader.hpp"
@@ -665,7 +666,12 @@ extern "C"
         }
 
         config_release();
-        return Config::ReadFile(path);
+        auto result = Config::ReadFile(path);
+        if (result)
+        {
+            currency_load_custom_currency_config();
+        }
+        return result;
     }
 
     bool config_save(const utf8 * path)
@@ -705,18 +711,6 @@ extern "C"
     {
         platform_get_user_directory(outPath, nullptr, size);
         Path::Append(outPath, size, "config.ini");
-    }
-
-    bool config_open_default()
-    {
-        utf8 path[MAX_PATH];
-        config_get_default_path(path, sizeof(path));
-        if (config_open(path))
-        {
-            currency_load_custom_currency_config();
-            return true;
-        }
-        return false;
     }
 
     bool config_save_default()

@@ -251,7 +251,6 @@ extern "C"
     void config_get_default_path(utf8 *outPath, size_t size);
     void config_set_defaults();
     void config_release();
-    bool config_open_default();
     bool config_save_default();
     bool config_find_or_browse_install_directory();
 #ifdef __cplusplus

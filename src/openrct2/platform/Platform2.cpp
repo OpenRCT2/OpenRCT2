@@ -68,11 +68,11 @@ namespace Platform
         }
     }
 
-#ifdef _WIN32
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
         switch (folder)
         {
+#if defined(_WIN32)
         // We currently store everything under Documents/OpenRCT2
         case SPECIAL_FOLDER::USER_CACHE:
         case SPECIAL_FOLDER::USER_CONFIG:
@@ -110,14 +110,24 @@ namespace Platform
                     }
                 }
             }
-        }
-
-    }
+#elif defined (__ANDROID__)
+        // Andorid builds currently only read from /sdcard/openrct2*
+        case SPECIAL_FOLDER::USER_CACHE:
+        case SPECIAL_FOLDER::USER_CONFIG:
+        case SPECIAL_FOLDER::USER_DATA:
+        case SPECIAL_FOLDER::USER_HOME:
+            return "/sdcard";
+#elif defined (__MACOS__)
+        // macOS stores everything in ~/Library/Application Support/OpenRCT2
+        case SPECIAL_FOLDER::USER_CACHE:
+        case SPECIAL_FOLDER::USER_CONFIG:
+        case SPECIAL_FOLDER::USER_DATA:
+        case SPECIAL_FOLDER::USER_HOME:
+            {
+                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                return Path::Combine(home, "/Library/Application Support");
+            }
 #else
-    std::string GetFolderPath(SPECIAL_FOLDER folder)
-    {
-        switch (folder)
-        {
         case SPECIAL_FOLDER::USER_CACHE:
             {
                 auto path = GetEnvironmentPath("XDG_CACHE_HOME");
@@ -150,9 +160,9 @@ namespace Platform
             }
         case SPECIAL_FOLDER::USER_HOME:
             return getpwuid(getuid())->pw_dir;
+#endif
         }
     }
-#endif
 
     std::string GetInstallPath()
     {

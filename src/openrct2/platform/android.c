@@ -29,10 +29,6 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
     safe_strcpy(outPath, "/sdcard/openrct2", outSize);
 }
 
-void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
-    safe_strcpy(buffer, "/sdcard/openrct2-user/", size);
-}
-
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {

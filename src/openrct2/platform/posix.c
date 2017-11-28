@@ -683,54 +683,6 @@ static wchar_t *regular_to_wchar(const char* src)
     return w_buffer;
 }
 
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - <platform dependent>
- */
-void platform_resolve_user_data_path()
-{
-
-    if (gCustomUserDataPath[0] != 0) {
-        if (!platform_ensure_directory_exists(gCustomUserDataPath)) {
-            log_error("Failed to create directory \"%s\", make sure you have permissions.", gCustomUserDataPath);
-            return;
-        }
-        char *path;
-        if ((path = realpath(gCustomUserDataPath, NULL)) == NULL) {
-            log_error("Could not resolve path \"%s\"", gCustomUserDataPath);
-            return;
-        }
-
-        safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
-        free(path);
-
-        // Ensure path ends with separator
-        path_end_with_separator(_userDataDirectoryPath, MAX_PATH);
-        log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
-        if (!platform_directory_exists(_userDataDirectoryPath)) {
-            log_error("Custom user data directory %s does not exist", _userDataDirectoryPath);
-        }
-        return;
-    }
-
-    char buffer[MAX_PATH];
-    log_verbose("buffer = '%s'", buffer);
-
-    const char *homedir = getpwuid(getuid())->pw_dir;
-    platform_posix_sub_user_data_path(buffer, MAX_PATH, homedir);
-
-    log_verbose("OpenRCT2 user data directory = '%s'", buffer);
-    sint32 len = strnlen(buffer, MAX_PATH);
-    wchar_t *w_buffer = regular_to_wchar(buffer);
-    w_buffer[len] = '\0';
-    utf8 *path = widechar_to_utf8(w_buffer);
-    free(w_buffer);
-    safe_strcpy(_userDataDirectoryPath, path, MAX_PATH);
-    free(path);
-    log_verbose("User data path resolved to: %s", _userDataDirectoryPath);
-}
-
 void platform_get_openrct_data_path(utf8 *outPath, size_t outSize)
 {
     safe_strcpy(outPath, _openrctDataDirectoryPath, outSize);
@@ -776,25 +728,6 @@ void platform_resolve_openrct_data_path()
 
     platform_posix_sub_resolve_openrct_data_path(_openrctDataDirectoryPath, sizeof(_openrctDataDirectoryPath));
     log_verbose("Trying to use OpenRCT2 data in %s", _openrctDataDirectoryPath);
-}
-
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize)
-{
-    char buffer[MAX_PATH];
-    safe_strcpy(buffer, _userDataDirectoryPath, sizeof(buffer));
-    if (subDirectory != NULL && subDirectory[0] != 0) {
-        log_verbose("adding subDirectory '%s'", subDirectory);
-        safe_strcat_path(buffer, subDirectory, sizeof(buffer));
-        path_end_with_separator(buffer, sizeof(buffer));
-    }
-    sint32 len = strnlen(buffer, MAX_PATH);
-    wchar_t *w_buffer = regular_to_wchar(buffer);
-    w_buffer[len] = '\0';
-    utf8 *path = widechar_to_utf8(w_buffer);
-    free(w_buffer);
-    safe_strcpy(outPath, path, outSize);
-    free(path);
-    log_verbose("outPath + subDirectory = '%s'", buffer);
 }
 
 time_t platform_file_get_modified_time(const utf8* path){

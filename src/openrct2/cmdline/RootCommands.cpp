@@ -361,20 +361,13 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator * enumerator)
         return EXITCODE_FAIL;
     }
 
-    // Check user path that will contain the config
-    utf8 userPath[MAX_PATH];
-    platform_resolve_user_data_path();
-    platform_get_user_directory(userPath, nullptr, sizeof(userPath));
-    if (!platform_ensure_directory_exists(userPath)) {
-        Console::Error::WriteLine("Unable to access or create directory '%s'.", userPath);
-        return EXITCODE_FAIL;
-    }
-
     // Update RCT2 path in config
+    auto env = OpenRCT2::CreatePlatformEnvironment();
+    auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
     config_set_defaults();
-    config_open_default();
+    config_open(configPath.c_str());
     String::DiscardDuplicate(&gConfigGeneral.rct2_path, path);
-    if (config_save_default())
+    if (config_save(configPath.c_str()))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path);
         Console::WriteLine();

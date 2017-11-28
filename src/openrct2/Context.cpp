@@ -158,6 +158,11 @@ namespace OpenRCT2
             return _uiContext;
         }
 
+        IPlatformEnvironment * GetPlatformEnvironment() override
+        {
+            return _env;
+        }
+
         sint32 RunOpenRCT2(int argc, const char * * argv) override
         {
             if (Initialise())
@@ -1132,5 +1137,20 @@ extern "C"
     bool platform_place_string_on_clipboard(utf8* target)
     {
         return GetContext()->GetUiContext()->SetClipboardText(target);
+    }
+
+    /**
+     * This function is deprecated.
+     * Use IPlatformEnvironment instad.
+     */
+    void platform_get_user_directory(utf8 * outPath, const utf8 * subDirectory, size_t outSize)
+    {
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto path = env->GetDirectoryPath(DIRBASE::USER);
+        if (!String::IsNullOrEmpty(subDirectory))
+        {
+            path = Path::Combine(path, subDirectory);
+        }
+        String::Set(outPath, outSize, path.c_str());
     }
 }

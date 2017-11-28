@@ -81,36 +81,6 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - $XDG_CONFIG_HOME/OpenRCT2
- *   - /home/[uid]/.config/OpenRCT2
- */
-void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
-    const char *configdir = getenv("XDG_CONFIG_HOME");
-    log_verbose("configdir = '%s'", configdir);
-    if (configdir == NULL)
-    {
-        log_verbose("configdir was null, used getuid, now is = '%s'", homedir);
-        if (homedir == NULL)
-        {
-            log_fatal("Couldn't find user data directory");
-            exit(-1);
-            return;
-        }
-
-        safe_strcpy(buffer, homedir, size);
-        safe_strcat_path(buffer, ".config", size);
-    }
-    else
-    {
-        safe_strcpy(buffer, configdir, size);
-    }
-    safe_strcat_path(buffer, "OpenRCT2", size);
-    path_end_with_separator(buffer, size);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
  *   - <exePath>/data
  *   - /usr/local/share/openrct2
  *   - /var/lib/openrct2
