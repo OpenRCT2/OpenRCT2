@@ -3501,7 +3501,7 @@ STR_5153    :编辑配色主题...
 STR_5154    :使用硬件渲染
 STR_5155    :允许测试未完成的轨道设计
 STR_5156    :{SMALLFONT}{BLACK}允许测试大多数轨道设计, 即使那些轨道未完成的设计. 但这不适用于区域刹车模式
-STR_5157    :Unlock all prices
+STR_5157    :<removed string - do not use>
 STR_5158    :回到主菜单
 STR_5159    :退出OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
@@ -4131,7 +4131,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}游戏内显示FPS帧数
 STR_5816    :{SMALLFONT}{BLACK}设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
-STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放类型
+STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放类型{NEWLINE}{NEWLINE}如果窗口缩放因子不是整数倍, 则最近邻像素是高锐度但失真的.{NEWLINE}线性和各向异性是平滑但模糊的.{NEWLINE}即使是非整数的缩放因子Smooth NN也是锐利的, 只是会导致轻微的性能下降.
 STR_5818    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}使用最近相邻缩放{NEWLINE}当窗口缩放比例设置为{NEWLINE}整数值时 (例如1, 2, 3等等)
 STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
@@ -4463,6 +4463,20 @@ STR_6144    :显示无效块
 STR_6145    :{SMALLFONT}{BLACK}设置加速器的速度限制
 STR_6146    :启用所有可喷涂的轨道部件
 STR_6147    :{SMALLFONT}{BLACK}不管车辆是否支持, 在建造窗口中启用游乐设施支持的所有类型的轨道部件.
+STR_6148    :正在连接主服务器...
+STR_6149    :无法连接主服务器
+STR_6150    :主服务器返回不正确的响应信息 (没有 JSON 数字)
+STR_6151    :主服务器没能返回服务
+STR_6152    :主服务器返回不正确的响应信息 (没有 JSON 数组)
+STR_6153    :付费进入游乐园 / 为每一个游乐设施付费
+STR_6154    :不推荐用高权限来运行OpenRCT2.
+STR_6155    :KDialog和Zenity库均没有安装. 请至少安装其一, 或者在命令行配置它们.
+STR_6156    :名称已被使用
+STR_6157    :控制台
+STR_6158    :不能读取此文件...{NEWLINE}不兼容的RCT版本: {COMMA16}
+STR_6159    :平滑最近相邻
+STR_6160    :{WINDOW_COLOUR_2}可用车辆: {BLACK}{STRING}
+STR_6161    :网格显示切换
 
 #############
 # Scenarios #
