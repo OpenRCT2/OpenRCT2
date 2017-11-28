@@ -280,8 +280,8 @@ static sint32 _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
 static void * _loadedObject = nullptr;
 static uint8 * _objectSelectionFlags = nullptr;
-static sint32 _numSelectedObjectsForType[11];
-static sint32 _numAvailableObjectsForType[11];
+static sint32 _numSelectedObjectsForType[OBJECT_TYPE_COUNT];
+static sint32 _numAvailableObjectsForType[OBJECT_TYPE_COUNT];
 static bool _maxObjectsWasHit;
 
 static void visible_list_dispose()
@@ -502,16 +502,16 @@ static void setup_track_designer_objects()
  */
 static void setup_in_use_selection_flags()
 {
-    for (uint8 object_type = 0; object_type < 11; object_type++){
+    for (uint8 object_type = 0; object_type < OBJECT_TYPE_COUNT; object_type++){
         for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
-            Editor::SelectedObjects[object_type][i] = 0;
+            Editor::SelectedObjects[object_type][i] = OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED;
         }
     }
 
-    for (uint8 object_type = 0; object_type < 11; object_type++){
+    for (uint8 object_type = 0; object_type < OBJECT_TYPE_COUNT; object_type++){
         for (uint16 i = 0; i < object_entry_group_counts[object_type]; i++){
             if (object_entry_groups[object_type].chunks[i] != nullptr) {
-                Editor::SelectedObjects[object_type][i] |= (1 << 1);
+                Editor::SelectedObjects[object_type][i] |= OBJECT_SELECTION_FLAG_2;
             }
         }
     }
@@ -531,43 +531,43 @@ static void setup_in_use_selection_flags()
             type = iter.element->properties.path.type;
             type >>= 4;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
 
             if (footpath_element_has_path_scenery(iter.element)) {
                 uint8 path_additions = footpath_element_get_path_scenery_index(iter.element);
-                Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= 1;
+                Editor::SelectedObjects[OBJECT_TYPE_PATH_BITS][path_additions] |= OBJECT_SELECTION_FLAG_SELECTED;
             }
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             type = iter.element->properties.scenery.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_SMALL_SCENERY]);
-            Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_SMALL_SCENERY][type] |= OBJECT_SELECTION_FLAG_SELECTED;
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 break;
 
-            Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= OBJECT_SELECTION_FLAG_SELECTED;
 
             type = iter.element->properties.entrance.path_type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_PATHS]);
-            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_PATHS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
             break;
         case TILE_ELEMENT_TYPE_WALL:
             type = iter.element->properties.wall.type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_WALLS]);
-            Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_WALLS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
             type = scenery_large_get_type(iter.element);
             assert(type < object_entry_group_counts[OBJECT_TYPE_LARGE_SCENERY]);
-            Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_LARGE_SCENERY][type] |= OBJECT_SELECTION_FLAG_SELECTED;
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             banner = &gBanners[iter.element->properties.banner.index];
             type = banner->type;
             assert(type < object_entry_group_counts[OBJECT_TYPE_BANNERS]);
-            Editor::SelectedObjects[OBJECT_TYPE_BANNERS][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_BANNERS][type] |= OBJECT_SELECTION_FLAG_SELECTED;
             break;
         }
     } while (tile_element_iterator_next(&iter));
@@ -576,7 +576,7 @@ static void setup_in_use_selection_flags()
         Ride* ride = get_ride(ride_index);
         if (ride->type != RIDE_TYPE_NULL) {
             uint8 type = ride->subtype;
-            Editor::SelectedObjects[OBJECT_TYPE_RIDE][type] |= (1 << 0);
+            Editor::SelectedObjects[OBJECT_TYPE_RIDE][type] |= OBJECT_SELECTION_FLAG_SELECTED;
         }
     }
 
@@ -589,12 +589,12 @@ static void setup_in_use_selection_flags()
 
         uint8 entryType, entryIndex;
         if (find_object_in_entry_group(&item->ObjectEntry, &entryType, &entryIndex)) {
-            if (Editor::SelectedObjects[entryType][entryIndex] & (1 << 0)) {
+            if (Editor::SelectedObjects[entryType][entryIndex] & OBJECT_SELECTION_FLAG_SELECTED) {
                 *selectionFlags |=
                     OBJECT_SELECTION_FLAG_IN_USE |
                     OBJECT_SELECTION_FLAG_SELECTED;
             }
-            if (Editor::SelectedObjects[entryType][entryIndex] & (1 << 1)) {
+            if (Editor::SelectedObjects[entryType][entryIndex] & OBJECT_SELECTION_FLAG_2) {
                 *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
             }
         }
