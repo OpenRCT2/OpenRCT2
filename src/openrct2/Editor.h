@@ -25,7 +25,7 @@
 
 namespace Editor
 {
-    extern uint8 * SelectedObjects[OBJECT_ENTRY_GROUP_COUNT];
+    extern uint8 * SelectedObjects[OBJECT_TYPE_COUNT];
 
     void Load();
     void ConvertSaveToScenario();

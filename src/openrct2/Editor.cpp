@@ -48,7 +48,7 @@ namespace Editor
     static uint8 _editorSelectedWaters[MAX_WATER_OBJECTS];
     static uint8 _editorSelectedStexs[MAX_SCENARIO_TEXT_OBJECTS];
 
-    uint8 * SelectedObjects[OBJECT_ENTRY_GROUP_COUNT] =
+    uint8 * SelectedObjects[OBJECT_TYPE_COUNT] =
     {
         _editorSelectedRides,
         _editorSelectedSmallScenery,
