@@ -18,11 +18,23 @@
 
 #ifdef __cplusplus
 
+#include <string>
 #include "../common.h"
+
+enum class SPECIAL_FOLDER
+{
+    USER_CACHE,
+    USER_CONFIG,
+    USER_DATA,
+    USER_HOME,
+};
 
 namespace Platform
 {
     uint32 GetTicks();
+    std::string GetEnvironmentVariable(const std::string &name);
+    std::string GetFolderPath(SPECIAL_FOLDER folder);
+    std::string GetInstallPath();
 }
 
 #endif

@@ -29,8 +29,10 @@ namespace OpenRCT2
         RCT2,               // Base directory for original RollerCoaster Tycoon 2 content.
         OPENRCT2,           // Base directory for OpenRCT2 installation.
         USER,               // Base directory for OpenRCT2 user content.
+        CONFIG,             // Base directory for OpenRCT2 configuration.
+        CACHE,              // Base directory for OpenRCT2 cache files.
     };
-    constexpr sint32 DIRBASE_COUNT = 4;
+    constexpr sint32 DIRBASE_COUNT = 6;
     using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
 
     enum class DIRID

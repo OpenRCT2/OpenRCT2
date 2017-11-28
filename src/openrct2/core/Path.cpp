@@ -79,6 +79,11 @@ namespace Path
         return buffer;
     }
 
+    void CreateDirectory(const std::string &path)
+    {
+        platform_ensure_directory_exists(path.c_str());
+    }
+
     std::string GetFileName(const std::string &path)
     {
         return GetFileName(path.c_str());

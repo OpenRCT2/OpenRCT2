@@ -33,6 +33,7 @@ namespace Path
     std::string GetDirectory(const std::string &path);
     utf8 * GetDirectory(const utf8 * path);
     utf8 * GetDirectory(utf8 * buffer, size_t bufferSize, const utf8 * path);
+    void CreateDirectory(const std::string &path);
     std::string GetFileName(const std::string &path);
     const utf8 * GetFileName(const utf8 * path);
     std::string GetFileNameWithoutExtension(const std::string &path);

@@ -253,6 +253,7 @@ private:
         try
         {
             log_verbose("FileIndex:Writing index: '%s'", _indexPath.c_str());
+            Path::CreateDirectory(Path::GetDirectory(_indexPath));
             auto fs = FileStream(_indexPath, FILE_MODE_WRITE);
     
             // Write header

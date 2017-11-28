@@ -14,8 +14,18 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "Platform2.h"
+#include <cstring>
+#ifdef _WIN32
+    #define WIN32_LEAN_AND_MEAN
+    #include <windows.h>
+#else
+    #include <pwd.h>
+#endif
 
+
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
+#include "Platform2.h"
 #include "platform.h"
 
 namespace Platform
@@ -23,5 +33,132 @@ namespace Platform
     uint32 GetTicks()
     {
         return platform_get_ticks();
+    }
+
+    std::string GetEnvironmentVariable(const std::string &name)
+    {
+#ifdef _WIN32
+        auto wname = String::ToUtf16(name);
+        wchar_t wvalue[MAX_PATH];
+        GetEnvironmentVariableW(wname.c_str(), wvalue, sizeof(wvalue));
+        return String::ToUtf8(wvalue);
+#else
+        return String::ToStd(getenv(name.c_str()));
+#endif
+    }
+
+    static std::string GetEnvironmentPath(const char * name)
+    {
+        auto value = getenv(name);
+        if (value == nullptr)
+        {
+            return std::string();
+        }
+        else
+        {
+            auto colon = std::strchr(value, ':');
+            if (colon == nullptr)
+            {
+                return std::string(value);
+            }
+            else
+            {
+                return std::string(value, colon);
+            }
+        }
+    }
+
+#ifdef _WIN32
+    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    {
+        switch (folder)
+        {
+        // We currently store everything under Documents/OpenRCT2
+        case SPECIAL_FOLDER::USER_CACHE:
+        case SPECIAL_FOLDER::USER_CONFIG:
+        case SPECIAL_FOLDER::USER_DATA:
+            {
+                wchar_t wpath[MAX_PATH];
+                if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+                {
+                    return ToUtf8(std::wstring(wpath));
+                }
+                else
+                {
+                    return GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                }
+            }
+        case SPECIAL_FOLDER::USER_HOME:
+            {
+                wchar_t wpath[MAX_PATH];
+                if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_PROFILE | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+                {
+                    return ToUtf8(std::wstring(wpath));
+                }
+                else
+                {
+                    // Try default environment variables
+                    auto homedrive = GetEnvironmentVariable("HOMEDRIVE");
+                    auto homepath = GetEnvironmentVariable("HOMEPATH");
+                    if (!homedrive.empty() && !homepath.empty())
+                    {
+                        return Path::Combine(homedrive, homepath);
+                    }
+                    else
+                    {
+                        return "C:\\";
+                    }
+                }
+            }
+        }
+
+    }
+#else
+    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    {
+        switch (folder)
+        {
+        case SPECIAL_FOLDER::USER_CACHE:
+            {
+                auto path = GetEnvironmentPath("XDG_CACHE_HOME");
+                if (path.empty())
+                {
+                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = Path::Combine(home, ".cache");
+                }
+                return path;
+            }
+        case SPECIAL_FOLDER::USER_CONFIG:
+            {
+                auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
+                if (path.empty())
+                {
+                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = Path::Combine(home, ".config");
+                }
+                return path;
+            }
+        case SPECIAL_FOLDER::USER_DATA:
+            {
+                auto path = GetEnvironmentPath("XDG_DATA_HOME");
+                if (path.empty())
+                {
+                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = Path::Combine(home, ".local/share");
+                }
+                return path;
+            }
+        case SPECIAL_FOLDER::USER_HOME:
+            return getpwuid(getuid())->pw_dir;
+        }
+    }
+#endif
+
+    std::string GetInstallPath()
+    {
+        utf8 path[260];
+        platform_resolve_openrct_data_path();
+        platform_get_openrct_data_path(path, sizeof(path));
+        return path;
     }
 }
