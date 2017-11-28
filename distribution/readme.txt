@@ -45,8 +45,7 @@ When you are sure it is not already reported you should:
    tracker for that fork which is most likely another GitHub repository.
  * Make it reproducible for the developers. In other words, create a savegame
    in which you can reproduce the issue once loaded. It is very useful to give
-   us the crash.dmp, crash.sav, crash.log and crash screenshot which are
-   created on crashes.
+   us the dump file as well, and a screenshot.
  * Check whether the bug is already reported on our bug tracker. This includes
    searching for recently closed bug reports as the bug might already be fixed.
 
@@ -67,7 +66,7 @@ following information in your bug report:
 
 3.0) Supported platforms
 ---- -------------------
-OpenRCT2 is currently supported on Windows Vista and above, many distributions of
+OpenRCT2 is currently supported on Windows 7 and above, many distributions of
 Linux, macOS 10.9 or higher, Android, FreeBSD and OpenBSD. OpenRCT2 will only work on
 little-endian architectures.
 Further instructions can be found on GitHub.
