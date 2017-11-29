@@ -3496,7 +3496,7 @@ STR_5153    :編輯配色主題...
 STR_5154    :使用硬體渲染
 STR_5155    :容許測試未建造好的軌道設計
 STR_5156    :{SMALLFONT}{BLACK}容許測試大部份軌道設計, 即使未建造好的也可以. 但不能適用於區域煞車模式
-STR_5157    :允許設置進入樂園及乘坐遊樂設施的價格
+STR_5157    :<removed string - do not use>
 STR_5158    :回到主選單
 STR_5159    :離開OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, {POP16}第{COMMA16}年
@@ -4126,7 +4126,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}在遊戲中顯示每秒顯示張數數目
 STR_5816    :{SMALLFONT}{BLACK}設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
-STR_5817    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}設定介面縮放種類
+STR_5817    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}設定介面縮放種類{NEWLINE}{NEWLINE}最近鄰居法的渲染銳利, 但會導致於非整數的縮放時失真.{NEWLINE}線性及各向異性的渲染平滑但模糊{NEWLINE}平滑式最近鄰居法的渲染於非整數的縮放時也銳利, 但會輕微影響效能.
 STR_5818    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}當縮放遊戲的比例設置成為整數(例如1,2,3等){NEWLINE}將會使用最近鄰居法去縮放介面
 STR_5819    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :{SMALLFONT}{BLACK}當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
@@ -4457,6 +4457,20 @@ STR_6144    :顥示沒有更新的畫面區域
 STR_6145    :{SMALLFONT}{BLACK}為加速裝置設置速度限制
 STR_6146    :啟用所有可以渲染的軌道選項
 STR_6147    :{SMALLFONT}{BLACK}在建造視窗中啟用所有該遊樂設施可以建設的軌道選項, 並忽略車輛能否於那些軌道上行走.
+STR_6148    :正在連接到主列表伺服器...
+STR_6149    :無法連接到主列表伺服器
+STR_6150    :主列表伺服器傳回不正確的回應 (無JSON 號碼)
+STR_6151    :主列表伺服器傳回列表失敗
+STR_6152    :主列表伺服器傳回不正確的回應 (無JSON 陣列)
+STR_6153    :付費進入樂園 / 按乘搭遊樂設施的次數付費
+STR_6154    :不建議以管理員權限運行OpenRCT2.
+STR_6155    :本系統中並未安裝KDialog或Zenity. 請安裝其中一款, 或於命令提示字元中配置.
+STR_6156    :名字已被預留
+STR_6157    :命令提示字元
+STR_6158    :無法載入此檔案...{NEWLINE}不兼容的RCTC版本: {COMMA16}
+STR_6159    :平滑式最近鄰居法
+STR_6160    :{WINDOW_COLOUR_2}可供使用的車輛種類: {BLACK}{STRING} 
+STR_6161    :啟用/禁用網格顯示
 
 #############
 # Scenarios #
