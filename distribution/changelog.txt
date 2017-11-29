@@ -14,6 +14,7 @@
 - Feature: [#6313] Add keyboard shortcut for toggle gridlines.
 - Feature: [#6324] Add command to deselect unused objects from the object selection.
 - Feature: [#6325] Allow using g1.dat from RCT Classic.
+- Feautre: [#6329] Render level crossings when the Miniature Railway crossed a path.
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
 - Feature: [#6411] Add command to remove the park fence.
 - Feature: [#6414] Raise maximum launch speed of the Corkscrew RC back to 96 km/h (for RCT1 parity).
@@ -22,6 +23,8 @@
 - Feature: [#6530] Land rights tool no longer blocks when a tile is not for purchase.
 - Feature: [#6568] Add smooth nearest neighbour scaling.
 - Feature: [#6651, #6658] Integrate Discord Rich Presence.
+- Feature: [#6709] The New Ride window now shows available vehicles for a ride type.
+- Feature: [#6731] Object indexing progress is now reported via command line output.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
 - Feature: Add search box to track design window.
@@ -29,7 +32,7 @@
 - Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
 - Fix: [#2254] Edge scrolling horizontally now has the same speed as vertical edge scrolling.
-- Fix: [#6199] Inverted Hairpin Coaster vehicle tab is not centred.
+- Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
@@ -47,6 +50,7 @@
 - Fix: [#6193] All rings in Space Rings use the same secondary colour.
 - Fix: [#6196, #6223] Guest's energy underflows and never decreases.
 - Fix: [#6198] You cannot cancel RCT1 directory selection.
+- Fix: [#6199] Inverted Hairpin Coaster vehicle tab is not centred.
 - Fix: [#6202] Guests can break occupied benches (original bug).
 - Fix: [#6251] Splash Boats renders flat-to-25-degree pieces in tunnels incorrectly.
 - Fix: [#6261, #6344, #6520] Broken pathfinding after removing park entrances with the tile inspector.
@@ -78,6 +82,7 @@
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: [#6423] Polish is now rendered using the sprite font, rather than TTF.
+- Improved: [#6746] Draw friction wheels instead of chain lift on Looping Roller Coaster stations
 - Improved: Load/save window now refreshes list if native file dialog is closed/cancelled.
 - Improved: Major translation updates for Japanese and Polish.
 - Improved: Added 24x24, 48x48, and 96x96 icon resolutions.
