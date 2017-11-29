@@ -1254,7 +1254,7 @@ bool ride_has_ratings(const Ride * ride);
 
 const char * ride_type_get_enum_name(sint32 rideType);
 
-uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry);
+uint8 ride_entry_get_first_non_null_ride_type(const rct_ride_entry * rideEntry);
 bool ride_type_supports_boosters(uint8 rideType);
 sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed);
 void fix_invalid_vehicle_sprite_sizes();

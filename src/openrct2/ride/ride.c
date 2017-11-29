@@ -8127,7 +8127,7 @@ const char * ride_type_get_enum_name(sint32 rideType)
  *  Searches for a non-null ride type in a ride entry.
  *  If none is found, it will still return RIDE_TYPE_NULL.
  */
-uint8 ride_entry_get_first_non_null_ride_type(rct_ride_entry * rideEntry)
+uint8 ride_entry_get_first_non_null_ride_type(const rct_ride_entry * rideEntry)
 {
     for (uint8 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
