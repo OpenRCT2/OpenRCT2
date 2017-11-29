@@ -20,6 +20,10 @@
     #include <windows.h>
     #include <shlobj.h>
     #undef GetEnvironmentVariable
+
+    #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+        #define __USE_SHGETKNOWNFOLDERPATH__
+    #endif
 #else
     #include <pwd.h>
 #endif
@@ -62,6 +66,7 @@ namespace Platform
 #endif
     }
 
+#ifndef _WIN32
     static std::string GetEnvironmentPath(const char * name)
     {
         auto value = getenv(name);
@@ -82,6 +87,50 @@ namespace Platform
             }
         }
     }
+#endif
+
+    static std::string GetHomePathViaEnvironment()
+    {
+#ifdef _WIN32
+        std::string result;
+        auto homedrive = GetEnvironmentVariable("HOMEDRIVE");
+        auto homepath = GetEnvironmentVariable("HOMEPATH");
+        if (!homedrive.empty() && !homepath.empty())
+        {
+            result = Path::Combine(homedrive, homepath);
+        }
+        return result;
+#else
+        return GetEnvironmentVariable("HOME");
+#endif
+    }
+
+#ifdef _WIN32
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
+    static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
+    {
+        std::string path;
+        wchar_t * wpath = nullptr;
+        if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
+        {
+            path = String::ToUtf8(std::wstring(wpath));
+        }
+        CoTaskMemFree(wpath);
+        return path;
+    }
+#else
+    static std::string WIN32_GetFolderPath(int nFolder)
+    {
+        std::string path;
+        wchar_t wpath[MAX_PATH];
+        if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
+        {
+            path = String::ToUtf8(std::wstring(wpath));
+        }
+        return path;
+    }
+#endif
+#endif
 
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
@@ -93,41 +142,33 @@ namespace Platform
         case SPECIAL_FOLDER::USER_CONFIG:
         case SPECIAL_FOLDER::USER_DATA:
             {
-                wchar_t * wpath = nullptr;
-                if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Documents, KF_FLAG_CREATE, nullptr, &wpath)))
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
+                auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
+#else
+                auto path = WIN32_GetFolderPath(CSIDL_PERSONAL);
+#endif
+                if (path.empty())
                 {
-                    auto path = String::ToUtf8(std::wstring(wpath));
-                    CoTaskMemFree(wpath);
-                    return path;
+                    path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
                 }
-                else
-                {
-                    return GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                }
+                return path;
             }
         case SPECIAL_FOLDER::USER_HOME:
             {
-                wchar_t * wpath = nullptr;
-                if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Profile, KF_FLAG_CREATE, nullptr, &wpath)))
+#ifdef __USE_SHGETKNOWNFOLDERPATH__
+                auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
+#else
+                auto path = WIN32_GetFolderPath(CSIDL_PROFILE);
+#endif
+                if (path.empty())
                 {
-                    auto path = String::ToUtf8(std::wstring(wpath));
-                    CoTaskMemFree(wpath);
-                    return path;
-                }
-                else
-                {
-                    // Try default environment variables
-                    auto homedrive = GetEnvironmentVariable("HOMEDRIVE");
-                    auto homepath = GetEnvironmentVariable("HOMEPATH");
-                    if (!homedrive.empty() && !homepath.empty())
+                    path = GetHomePathViaEnvironment();
+                    if (path.empty())
                     {
-                        return Path::Combine(homedrive, homepath);
-                    }
-                    else
-                    {
-                        return "C:\\";
+                        path = "C:\\";
                     }
                 }
+                return path;
             }
 #elif defined (__ANDROID__)
         // Andorid builds currently only read from /sdcard/openrct2*

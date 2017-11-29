@@ -48,7 +48,6 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
