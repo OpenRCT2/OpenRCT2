@@ -171,7 +171,7 @@ namespace Platform
                 return path;
             }
 #elif defined (__ANDROID__)
-        // Andorid builds currently only read from /sdcard/openrct2*
+        // Android builds currently only read from /sdcard/openrct2*
         case SPECIAL_FOLDER::USER_CACHE:
         case SPECIAL_FOLDER::USER_CONFIG:
         case SPECIAL_FOLDER::USER_DATA:
@@ -185,7 +185,7 @@ namespace Platform
         case SPECIAL_FOLDER::USER_HOME:
             {
                 auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                return Path::Combine(home, "/Library/Application Support");
+                return Path::Combine(home, "Library/Application Support");
             }
 #else
         case SPECIAL_FOLDER::USER_CACHE:
@@ -219,7 +219,22 @@ namespace Platform
                 return path;
             }
         case SPECIAL_FOLDER::USER_HOME:
-            return getpwuid(getuid())->pw_dir;
+            {
+                std::string path;
+                auto pw = getpwuid(getuid());
+                if (pw != nullptr)
+                {
+                    path = pw->pw_dir;
+                }
+                else
+                {
+                    path = GetHomePathViaEnvironment();
+                }
+                if (path.empty())
+                {
+                    return "/";
+                }
+            }
 #endif
         default:
             return std::string();

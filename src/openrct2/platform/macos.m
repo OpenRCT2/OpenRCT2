@@ -59,26 +59,6 @@ void platform_get_exe_path(utf8 *outPath, size_t outSize)
 /**
  * Default directory fallback is:
  *   - (command line argument)
- *   - ~/Library/Application Support/OpenRCT2
- */
-void platform_posix_sub_user_data_path(char *buffer, size_t size, const char *homedir) {
-    if (homedir == NULL)
-    {
-        log_fatal("Couldn't find user data directory");
-        exit(-1);
-        return;
-    }
-
-    safe_strcpy(buffer, homedir, size);
-    safe_strcat_path(buffer, "Library", size);
-    safe_strcat_path(buffer, "Application Support", size);
-    safe_strcat_path(buffer, "OpenRCT2", size);
-    path_end_with_separator(buffer, size);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
  *   - <exePath>/data
  *   - <Resources Folder>
  */
