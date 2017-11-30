@@ -36,6 +36,7 @@
 
 #define TRACK_MAX_SAVED_TILE_ELEMENTS 1500
 #define TRACK_NEARBY_SCENERY_DISTANCE 1
+#define TRACK_TD6_MAX_ELEMENTS 8192
 
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
@@ -1006,10 +1007,8 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     sint16 start_z = z + trackCoordinates->z_begin;
     gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
 
-    const uint16 maxTrackElements = 8192;
-
     size_t numTrackElements = 0;
-    td6->track_elements = calloc(maxTrackElements, sizeof(rct_td6_track_element));
+    td6->track_elements = calloc(TRACK_TD6_MAX_ELEMENTS, sizeof(rct_td6_track_element));
     rct_td6_track_element *track = td6->track_elements;
     do {
         track->type = track_element_get_type(trackElement.element);
@@ -1054,11 +1053,11 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             break;
         }
 
-        if (maxTrackElements == numTrackElements)
+        if (TRACK_TD6_MAX_ELEMENTS == numTrackElements)
         {
             free(td6->track_elements);
             gGameCommandErrorText = STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
-            return 0;
+            return false;
         }
     }
     while (trackElement.element != initialMap);
