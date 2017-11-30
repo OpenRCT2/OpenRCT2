@@ -274,7 +274,7 @@ void update_palette_effects()
         {
             waterId = water_type->palette_index_2;
         }
-        g1      = gfx_get_g1_element(shade + waterId);
+        g1 = gfx_get_g1_element(shade + waterId);
         if (g1 != nullptr)
         {
             uint8 * vs = &g1->offset[j * 3];
@@ -1200,10 +1200,10 @@ void game_fix_save_vars()
     uint16 spriteIndex;
     uint16 peepCount = 0;
     FOR_ALL_GUESTS(spriteIndex, peep)
-            {
-                if (!peep->outside_of_park)
-                    peepCount++;
-            }
+    {
+        if (!peep->outside_of_park)
+            peepCount++;
+    }
 
     gNumGuestsInPark = peepCount;
 
