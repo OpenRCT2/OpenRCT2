@@ -162,8 +162,8 @@ static void copy_object_names_to_clipboard(rct_window *w)
 
     // No system has a newline over 2 characters
     size_t line_sep_len = strnlen(PLATFORM_NEWLINE, 2);
-    size_t buffer_len = (w->no_list_items * (8 + line_sep_len)) + 1;
-    utf8* buffer = new utf8[buffer_len]{};
+    size_t buffer_len   = (w->no_list_items * (8 + line_sep_len)) + 1;
+    utf8 * buffer       = new utf8[buffer_len]{};
 
     size_t cur_len = 0;
     for (uint16 i = 0; i < w->no_list_items; i++) {
