@@ -814,11 +814,16 @@ static void window_top_toolbar_invalidate(rct_window *w)
         window_top_toolbar_widgets[WIDX_MUTE].image = IMAGE_TYPE_REMAP | SPR_G2_TOOLBAR_UNMUTE;
 
     // Zoomed out/in disable. Not sure where this code is in the original.
-    if (window_get_main()->viewport->zoom == 0){
+    if (window_get_main()->viewport->zoom == 0)
+    {
         w->disabled_widgets |= (1 << WIDX_ZOOM_IN);
-    } else if (window_get_main()->viewport->zoom == 3){
+    }
+    else if (window_get_main()->viewport->zoom >= MAX_ZOOM_LEVEL)
+    {
         w->disabled_widgets |= (1 << WIDX_ZOOM_OUT);
-    } else {
+    }
+    else
+    {
         w->disabled_widgets &= ~((1 << WIDX_ZOOM_IN) | (1 << WIDX_ZOOM_OUT));
     }
 }

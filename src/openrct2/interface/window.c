@@ -1511,7 +1511,7 @@ void window_zoom_set(rct_window *w, sint32 zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
 
-    zoomLevel = clamp(0, zoomLevel, 3);
+    zoomLevel = clamp(0, zoomLevel, MAX_ZOOM_LEVEL);
     if (v->zoom == zoomLevel)
         return;
 

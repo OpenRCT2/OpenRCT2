@@ -88,6 +88,7 @@ typedef struct viewport_interaction_info {
 } viewport_interaction_info;
 
 #define MAX_VIEWPORT_COUNT WINDOW_LIMIT_MAX
+#define MAX_ZOOM_LEVEL 3
 
 #ifdef __cplusplus
 extern "C" {
