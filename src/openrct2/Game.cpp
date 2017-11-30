@@ -180,12 +180,12 @@ void update_palette_effects()
         // Change palette to lighter colour during lightning
         sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
-        if (water_type != NULL)
+        if (water_type != nullptr)
         {
             palette = water_type->image_id;
         }
         const rct_g1_element * g1 = gfx_get_g1_element(palette);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             sint32 xoffset = g1->x_offset;
             xoffset = xoffset * 4;
@@ -207,13 +207,13 @@ void update_palette_effects()
             // Change palette back to normal after lightning
             sint32 palette = SPR_GAME_PALETTE_DEFAULT;
 
-            if (water_type != NULL)
+            if (water_type != nullptr)
             {
                 palette = water_type->image_id;
             }
 
             const rct_g1_element * g1 = gfx_get_g1_element(palette);
-            if (g1 != NULL)
+            if (g1 != nullptr)
             {
                 sint32 xoffset = g1->x_offset;
                 xoffset = xoffset * 4;
@@ -245,12 +245,12 @@ void update_palette_effects()
         uint32 j     = gPaletteEffectFrame;
         j = (((uint16) ((~j / 2) * 128) * 15) >> 16);
         uint32 waterId = SPR_GAME_PALETTE_WATER;
-        if (water_type != NULL)
+        if (water_type != nullptr)
         {
             waterId = water_type->palette_index_1;
         }
         const rct_g1_element * g1 = gfx_get_g1_element(shade + waterId);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             uint8 * vs = &g1->offset[j * 3];
             uint8 * vd = &gGamePalette[230 * 4];
@@ -270,12 +270,12 @@ void update_palette_effects()
         }
 
         waterId = SPR_GAME_PALETTE_3;
-        if (water_type != NULL)
+        if (water_type != nullptr)
         {
             waterId = water_type->palette_index_2;
         }
         g1      = gfx_get_g1_element(shade + waterId);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             uint8 * vs = &g1->offset[j * 3];
             uint8 * vd = &gGamePalette[235 * 4];
@@ -297,7 +297,7 @@ void update_palette_effects()
         j       = ((uint16) (gPaletteEffectFrame * -960) * 3) >> 16;
         waterId = SPR_GAME_PALETTE_4;
         g1      = gfx_get_g1_element(shade + waterId);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             uint8 * vs = &g1->offset[j * 3];
             uint8 * vd = &gGamePalette[243 * 4];
@@ -1217,11 +1217,11 @@ void game_fix_save_vars()
         {
             rct_tile_element * tileElement = map_get_surface_element_at(x, y);
 
-            if (tileElement == NULL)
+            if (tileElement == nullptr)
             {
                 log_error("Null map element at x = %d and y = %d. Fixing...", x, y);
                 tileElement = tile_element_insert(x, y, 14, 0);
-                if (tileElement == NULL)
+                if (tileElement == nullptr)
                 {
                     log_error("Unable to fix: Map element limit reached.");
                     return;
@@ -1260,7 +1260,7 @@ void game_fix_save_vars()
         {
             uint8          entryIndex  = researchItem->entryIndex & 0xFF;
             rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-            if (rideEntry == NULL)
+            if (rideEntry == nullptr)
             {
                 research_remove(researchItem->entryIndex);
                 i--;
@@ -1270,7 +1270,7 @@ void game_fix_save_vars()
         {
             uint8                   entryIndex          = researchItem->entryIndex;
             rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(entryIndex);
-            if (sceneryGroupEntry == NULL)
+            if (sceneryGroupEntry == nullptr)
             {
                 research_remove(researchItem->entryIndex);
                 i--;
@@ -1349,7 +1349,7 @@ void game_load_init()
     }
     mainWindow = window_get_main();
 
-    if (mainWindow != NULL)
+    if (mainWindow != nullptr)
     {
         mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
         mainWindow->saved_view_x           = gSavedViewX;
@@ -1472,7 +1472,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     utf8 filter[MAX_PATH];
 
-    utf8 ** autosaveFiles = NULL;
+    utf8 ** autosaveFiles = nullptr;
 
     size_t i = 0;
 
