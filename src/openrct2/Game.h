@@ -164,9 +164,7 @@ void game_reduce_game_speed();
 
 void game_create_windows();
 void game_update();
-bool game_logic_begin();
 void game_logic_update();
-void game_logic_finish();
 void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
@@ -187,8 +185,6 @@ void * create_save_game_as_intent();
 void save_game_as();
 void handle_park_load_failure_with_title_opt(const ParkLoadResult * result, const utf8 * path, bool loadTitleFirst);
 void handle_park_load_failure(const ParkLoadResult * result, const utf8 * path);
-void rct2_exit();
-void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
 void game_convert_strings_to_utf8();
 void game_convert_news_items_to_utf8();

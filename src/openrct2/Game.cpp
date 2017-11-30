@@ -1594,36 +1594,6 @@ void game_autosave()
     scenario_save(path, saveFlags);
 }
 
-/**
-*
-*  rct2: 0x006E3838
-*/
-void rct2_exit_reason(rct_string_id title, rct_string_id body)
-{
-    // Before this would set a quit message
-
-    char exit_title[255];
-    format_string(exit_title, 256, title, 0);
-
-    char exit_body[255];
-    format_string(exit_body, 256, body, 0);
-
-    log_error(exit_title);
-    log_error(exit_body);
-
-    rct2_exit();
-}
-
-
-/**
- *
- *  rct2: 0x006E3879
- */
-void rct2_exit()
-{
-    openrct2_finish();
-}
-
 static void game_load_or_quit_no_save_prompt_callback(sint32 result, const utf8 * path)
 {
     if (result == MODAL_RESULT_OK)
@@ -1668,7 +1638,7 @@ void game_load_or_quit_no_save_prompt()
         title_load();
         break;
     default:
-        rct2_exit();
+        openrct2_finish();
         break;
     }
 }
