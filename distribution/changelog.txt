@@ -41,6 +41,7 @@
 - Fix: [#5636] Pausing the game shows mute button as active.
 - Fix: [#5741] Land rights indicators disappear when switching views.
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
+- Fix: [#5838] Crash when saving very large track designs.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
 - Fix: [#6115] Random title screen music not random on launch.
 - Fix: [#6118, #6245, #6366] Tracked animated vehicles not animating.
