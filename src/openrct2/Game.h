@@ -19,7 +19,8 @@
 #include "common.h"
 #include "scenario/scenario.h"
 
-enum GAME_COMMAND {
+enum GAME_COMMAND
+{
     GAME_COMMAND_SET_RIDE_APPEARANCE,
     GAME_COMMAND_SET_LAND_HEIGHT,
     GAME_COMMAND_TOGGLE_PAUSE,
@@ -95,30 +96,33 @@ enum GAME_COMMAND {
     GAME_COMMAND_COUNT
 };
 
-enum {
-    GAME_COMMAND_FLAG_APPLY = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
-    GAME_COMMAND_FLAG_2 = (1 << 2),
+enum
+{
+    GAME_COMMAND_FLAG_APPLY               = (1 << 0), // If this flag is set, the command is applied, otherwise only the cost is retrieved
+    GAME_COMMAND_FLAG_2                   = (1 << 2),
     GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED = (1 << 3), // Allow while paused
-    GAME_COMMAND_FLAG_4 = (1 << 4),
-    GAME_COMMAND_FLAG_5 = (1 << 5),
-    GAME_COMMAND_FLAG_GHOST = (1 << 6),
-    GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
-    GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
+    GAME_COMMAND_FLAG_4                   = (1 << 4),
+    GAME_COMMAND_FLAG_5                   = (1 << 5),
+    GAME_COMMAND_FLAG_GHOST               = (1 << 6),
+    GAME_COMMAND_FLAG_PATH_SCENERY        = (1 << 7),
+    GAME_COMMAND_FLAG_NETWORKED           = (1u << 31) // Game command is coming from network
 };
 
-enum {
-    GAME_PAUSED_NORMAL          = 1 << 0,
-    GAME_PAUSED_MODAL           = 1 << 1,
-    GAME_PAUSED_SAVING_TRACK    = 1 << 2,
+enum
+{
+    GAME_PAUSED_NORMAL       = 1 << 0,
+    GAME_PAUSED_MODAL        = 1 << 1,
+    GAME_PAUSED_SAVING_TRACK = 1 << 2,
 };
 
-enum {
-    ERROR_TYPE_NONE = 0,
-    ERROR_TYPE_GENERIC = 254,
+enum
+{
+    ERROR_TYPE_NONE      = 0,
+    ERROR_TYPE_GENERIC   = 254,
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-typedef void (GAME_COMMAND_POINTER)(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
+typedef void (GAME_COMMAND_POINTER)(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 
 typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 
@@ -126,29 +130,29 @@ typedef void (GAME_COMMAND_CALLBACK_POINTER)(sint32 eax, sint32 ebx, sint32 ecx,
 extern "C" {
 #endif
 
-extern GAME_COMMAND_CALLBACK_POINTER* game_command_callback;
-sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback);
-GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(sint32 index);
+extern GAME_COMMAND_CALLBACK_POINTER * game_command_callback;
+sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(sint32 index);
 extern sint32 game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
 extern rct_string_id gGameCommandErrorText;
-extern uint8 gErrorType;
+extern uint8         gErrorType;
 extern rct_string_id gErrorStringId;
 
-extern GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT];
+extern GAME_COMMAND_POINTER * new_game_command_table[GAME_COMMAND_COUNT];
 
 extern uint32 gCurrentTicks;
 
 extern uint16 gTicksSinceLastUpdate;
-extern uint8 gGamePaused;
+extern uint8  gGamePaused;
 extern sint32 gGameSpeed;
-extern float gDayNightCycle;
-extern bool gInUpdateCode;
-extern bool gInMapInitCode;
+extern float  gDayNightCycle;
+extern bool   gInUpdateCode;
+extern bool   gInMapInitCode;
 extern sint32 gGameCommandNestLevel;
-extern bool gGameCommandIsNetworked;
-extern char gCurrentLoadedPath[260];
+extern bool   gGameCommandIsNetworked;
+extern char   gCurrentLoadedPath[260];
 
 extern bool gLoadKeepWindowsOpen;
 
@@ -167,14 +171,14 @@ void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
 sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
-sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+sint32 game_do_command_p(sint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 
-void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int* edx, int* edi, int* ebp);
+void game_log_multiplayer_command(int command, int * eax, int * ebx, int * ecx, int * edx, int * edi, int * ebp);
 
 void game_load_or_quit_no_save_prompt();
 ParkLoadResult * load_from_sv6(const char * path);
 void game_load_init();
-void game_pause_toggle(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
+void game_pause_toggle(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();
@@ -188,7 +192,7 @@ void rct2_exit_reason(rct_string_id title, rct_string_id body);
 void game_autosave();
 void game_convert_strings_to_utf8();
 void game_convert_news_items_to_utf8();
-void game_convert_strings_to_rct2(rct_s6_data *s6);
+void game_convert_strings_to_rct2(rct_s6_data * s6);
 void game_fix_save_vars();
 void game_init_all(sint32 mapSize);
 
