@@ -1708,6 +1708,11 @@ private:
         {
             gPeepSpawns[i] = _s4.peep_spawn[i];
         }
+
+        for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
+        {
+            gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+        }
     }
 
     void ImportMapAnimations()

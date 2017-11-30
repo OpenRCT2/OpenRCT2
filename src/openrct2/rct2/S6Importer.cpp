@@ -229,7 +229,9 @@ public:
         // rct1_park_entrance_y
         // pad_013573EE
         // rct1_park_entrance_z
-        memcpy(gPeepSpawns, _s6.peep_spawns, sizeof(_s6.peep_spawns));
+
+        ImportPeepSpawns();
+        
         gGuestChangeModifier  = _s6.guest_count_change_modifier;
         gResearchFundingLevel = _s6.current_research_level;
         // pad_01357400
@@ -455,8 +457,6 @@ public:
         {
             log_error("Found %d disjoint null sprites", disjoint_sprites_count);
         }
-
-        FixEntryPoints();
     }
 
     void ImportRides()
@@ -705,9 +705,10 @@ public:
     }
 
     /**
-     * Clears incorrectly set guest entry points.
+     * Imports guest entry points.
+     * Includes fixes for incorrectly set guest entry points in some scenarios.
      */
-    void FixEntryPoints()
+    void ImportPeepSpawns()
     {
         // Many WW and TT have scenario_filename fields containing an incorrect filename. Check for both this filename
         // and the corrected filename.
@@ -728,6 +729,18 @@ public:
                  String::Equals(_s6.scenario_filename, "Asia - Great Wall of China Tourism Enhancement.SC6"))
         {
             for (size_t i = 1; i < MAX_PEEP_SPAWNS; i++)
+            {
+                gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            }
+        }
+        else
+        {
+            for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+            {
+                gPeepSpawns[i] = _s6.peep_spawns[i];
+            }
+            
+            for (size_t i = RCT12_MAX_PEEP_SPAWNS; i < MAX_PEEP_SPAWNS; i++)
             {
                 gPeepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
             }
