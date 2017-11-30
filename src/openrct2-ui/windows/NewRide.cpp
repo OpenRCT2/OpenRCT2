@@ -25,7 +25,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/management/NewsItem.h>

@@ -33,7 +33,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/console.h"
 #include "../localisation/localisation.h"
 #include "../management/NewsItem.h"

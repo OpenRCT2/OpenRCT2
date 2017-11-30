@@ -17,7 +17,7 @@
 #include "../common.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"

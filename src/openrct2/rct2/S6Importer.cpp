@@ -31,7 +31,7 @@
 #include "../ride/Station.h"
 
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

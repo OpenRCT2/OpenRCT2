@@ -28,7 +28,7 @@
 
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"

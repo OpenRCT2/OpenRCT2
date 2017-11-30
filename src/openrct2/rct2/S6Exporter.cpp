@@ -28,7 +28,7 @@
 #include <functional>
 
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

@@ -21,7 +21,7 @@
 #include "../Context.h"
 #include "../audio/audio.h"
 #include "../input.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"

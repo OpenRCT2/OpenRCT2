@@ -19,7 +19,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/drawing.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>

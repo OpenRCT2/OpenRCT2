@@ -22,7 +22,7 @@
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../localisation/localisation.h"
 #include "../management/NewsItem.h"

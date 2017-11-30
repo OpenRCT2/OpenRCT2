@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../config/Config.h"
-#include "../../game.h"
+#include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../ride/ride_data.h"

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../game.h"
+#include "../Game.h"
 #include "Station.h"
 #include "Track.h"
 

@@ -30,7 +30,7 @@
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
 #include "../drawing/lightfx.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
 #include "../util/util.h"

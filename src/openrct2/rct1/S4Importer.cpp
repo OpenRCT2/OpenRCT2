@@ -38,7 +38,7 @@
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../Editor.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

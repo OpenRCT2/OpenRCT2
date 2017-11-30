@@ -19,7 +19,7 @@
 #include "core/Math.hpp"
 #include "Editor.h"
 #include "FileClassifier.h"
-#include "game.h"
+#include "Game.h"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
 #include "management/NewsItem.h"

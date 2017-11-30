@@ -19,7 +19,7 @@
 #include "../OpenRCT2.h"
 
 #include "../cheats.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/string_ids.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"

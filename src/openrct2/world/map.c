@@ -18,7 +18,7 @@
 #include "../cheats.h"
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/Cursors.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

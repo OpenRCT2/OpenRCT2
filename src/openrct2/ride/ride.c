@@ -23,7 +23,7 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../Editor.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

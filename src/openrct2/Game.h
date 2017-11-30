@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _GAME_H_
-#define _GAME_H_
+#pragma once
 
 #include "common.h"
 #include "scenario/scenario.h"
@@ -195,6 +194,4 @@ void game_init_all(sint32 mapSize);
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

@@ -24,7 +24,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/input.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/viewport.h>

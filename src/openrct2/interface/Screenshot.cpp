@@ -24,7 +24,7 @@
 #include "Screenshot.h"
 
 #include "../drawing/drawing.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../intro.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"

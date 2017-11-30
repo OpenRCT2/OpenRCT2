@@ -17,7 +17,7 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../drawing/drawing.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"

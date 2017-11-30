@@ -19,7 +19,7 @@
 #include "../sprites.h"
 
 #include "../audio/audio.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/date.h"
 #include "../scenario/scenario.h"
 #include "sprite.h"

@@ -16,7 +16,7 @@
 
 #include "../cheats.h"
 #include "../Editor.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"

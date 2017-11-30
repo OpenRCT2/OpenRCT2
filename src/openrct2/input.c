@@ -17,7 +17,7 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "Context.h"
-#include "game.h"
+#include "Game.h"
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"

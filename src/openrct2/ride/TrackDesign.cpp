@@ -25,7 +25,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"

@@ -26,7 +26,7 @@
 #include <time.h>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/Editor.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/platform/platform.h>

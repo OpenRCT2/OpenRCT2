@@ -18,9 +18,11 @@
 #include "cheats.h"
 #include "config/Config.h"
 #include "Context.h"
+#include "core/Math.hpp"
+#include "core/Util.hpp"
 #include "Editor.h"
 #include "FileClassifier.h"
-#include "game.h"
+#include "Game.h"
 #include "input.h"
 #include "interface/Screenshot.h"
 #include "interface/viewport.h"
@@ -104,7 +106,7 @@ rct_string_id gErrorStringId;
 
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 {
-    for (sint32 i = 0; i < countof(game_command_callback_table); i++ ) {
+    for (sint32 i = 0; i < Util::CountOf(game_command_callback_table); i++ ) {
         if (game_command_callback_table[i] == callback) {
             return i;
         }
@@ -114,7 +116,7 @@ sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER* callback)
 
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(sint32 index)
 {
-    if (index < countof(game_command_callback_table)) {
+    if (index < Util::CountOf(game_command_callback_table)) {
         return game_command_callback_table[index];
     }
     return 0;
@@ -122,7 +124,7 @@ GAME_COMMAND_CALLBACK_POINTER* game_command_callback_get_callback(sint32 index)
 
 void game_increase_game_speed()
 {
-    gGameSpeed = min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    gGameSpeed = Math::Min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -130,7 +132,7 @@ void game_increase_game_speed()
 
 void game_reduce_game_speed()
 {
-    gGameSpeed = max(1, gGameSpeed - 1);
+    gGameSpeed = Math::Max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -310,7 +312,7 @@ void game_update()
 {
     gInUpdateCode = true;
 
-    sint32 numUpdates;
+    uint32 numUpdates;
 
     // 0x006E3AEC // screen_game_process_mouse_input();
     screenshot_check();
@@ -326,7 +328,7 @@ void game_update()
         numUpdates = 1 << (gGameSpeed - 1);
     } else {
         numUpdates = gTicksSinceLastUpdate / GAME_UPDATE_TIME_MS;
-        numUpdates = clamp(1, numUpdates, GAME_MAX_UPDATES);
+        numUpdates = Math::Clamp(1u, numUpdates, (uint32)GAME_MAX_UPDATES);
     }
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED && network_get_authstatus() == NETWORK_AUTH_OK) {
@@ -542,7 +544,7 @@ sint32 game_do_command_p(sint32 command, sint32 *eax, sint32 *ebx, sint32 *ecx, 
     original_edi = *edi;
     original_ebp = *ebp;
 
-    if (command >= countof(new_game_command_table)) {
+    if (command >= Util::CountOf(new_game_command_table)) {
         return MONEY32_UNDEFINED;
     }
 
@@ -862,7 +864,7 @@ void game_log_multiplayer_command(int command, int *eax, int* ebx, int* ecx, int
             if (nameChunkOffset < 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset = min(nameChunkOffset, countof(banner_name) - 12);
+            nameChunkOffset = Math::Min(nameChunkOffset, (sint32)(Util::CountOf(banner_name) - 12));
             memcpy(banner_name + nameChunkOffset + 0, edx, 4);
             memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
             memcpy(banner_name + nameChunkOffset + 8, edi, 4);
