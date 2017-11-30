@@ -106,7 +106,7 @@ rct_string_id gErrorStringId;
 
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
 {
-    for (sint32 i = 0; i < Util::CountOf(game_command_callback_table); i++)
+    for (uint32 i = 0; i < Util::CountOf(game_command_callback_table); i++)
     {
         if (game_command_callback_table[i] == callback)
         {
@@ -116,7 +116,7 @@ sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback)
     return 0;
 }
 
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(sint32 index)
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
 {
     if (index < Util::CountOf(game_command_callback_table))
     {
@@ -374,7 +374,7 @@ void game_update()
     }
 
     // Update the game one or more times
-    for (sint32 i = 0; i < numUpdates; i++)
+    for (uint32 i = 0; i < numUpdates; i++)
     {
         game_logic_update();
 
@@ -569,7 +569,7 @@ sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 es
 * @param flags (ebx)
 * @param command (esi)
 */
-sint32 game_do_command_p(sint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
 {
     sint32 cost, flags;
     sint32 original_ebx, original_edx, original_esi, original_edi, original_ebp;

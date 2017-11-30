@@ -132,7 +132,7 @@ extern "C" {
 
 extern GAME_COMMAND_CALLBACK_POINTER * game_command_callback;
 sint32 game_command_callback_get_index(GAME_COMMAND_CALLBACK_POINTER * callback);
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(sint32 index);
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index);
 extern sint32 game_command_playerid;
 
 extern rct_string_id gGameCommandErrorTitle;
@@ -169,7 +169,7 @@ void reset_all_sprite_quadrant_placements();
 void update_palette_effects();
 
 sint32 game_do_command(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
-sint32 game_do_command_p(sint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 
 void game_log_multiplayer_command(int command, int * eax, int * ebx, int * ecx, int * edx, int * edi, int * ebp);
 
