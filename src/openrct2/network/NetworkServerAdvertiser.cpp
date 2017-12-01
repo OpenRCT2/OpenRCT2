@@ -33,6 +33,8 @@
 #include "../world/park.h"
 #include "http.h"
 
+#ifndef DISABLE_HTTP
+
 enum MASTER_SERVER_STATUS
 {
     MASTER_SERVER_STATUS_OK                 = 200,
@@ -44,7 +46,7 @@ enum MASTER_SERVER_STATUS
 constexpr sint32 MASTER_SERVER_REGISTER_TIME = 120 * 1000; // 2 minutes
 constexpr sint32 MASTER_SERVER_HEARTBEAT_TIME = 60 * 1000; // 1 minute
 
-class NetworkServerAdvertiser : public INetworkServerAdvertiser
+class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 private:
     uint16 _port;
@@ -66,7 +68,7 @@ public:
         _key = GenerateAdvertiseKey();
     }
 
-    ADVERTISE_STATUS GetStatus() override
+    ADVERTISE_STATUS GetStatus() const override
     {
         return _status;
     }
@@ -254,5 +256,21 @@ INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
 {
     return new NetworkServerAdvertiser(port);
 }
+
+#else // DISABLE_HTTP
+
+class DummyNetworkServerAdvertiser final : public INetworkServerAdvertiser
+{
+public:
+    virtual ADVERTISE_STATUS    GetStatus() const override { return ADVERTISE_STATUS_DISABLED; };
+    virtual void                Update() override {};
+};
+
+INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
+{
+    return new DummyNetworkServerAdvertiser();
+}
+
+#endif // DISABLE_HTTP
 
 #endif // DISABLE_NETWORK
