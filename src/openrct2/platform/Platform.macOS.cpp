@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#ifdef __MACOS__
+#if defined(__APPLE__) && defined(__MACH__)
 
 #include "../core/Path.hpp"
 #include "Platform2.h"
