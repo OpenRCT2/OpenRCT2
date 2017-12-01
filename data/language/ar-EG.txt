@@ -4468,25 +4468,30 @@ STR_6156    :الأسم محجوز
 STR_6157    :وحدة التحكم
 STR_6158    :فشل في تحميل هذا الملف...{NEWLINE}نسخة الملف غير متوافقة: {COMMA16}
 STR_6159    :تنعيم الجار الأقرب
+STR_6160    :{WINDOW_COLOUR_2}المركبات المتوفرة: {BLACK}{STRING}
+STR_6161    :إظهار/إخفاء شبكة الإرشاد
+STR_6162    :الفأر البري الدوار
+STR_6163    :سيارات بشكل فأر تسرع  في اللفات الضيقة والنزلات الصغيرة، تدور بشكل لطيف للإرباك الراكبين
+
 #############
 # Scenarios #
 #############
 
 ## RCT Original
 <Forest Frontiers>
-STR_SCNR    :Forest Frontiers
-STR_PARK    :Forest Frontiers
-STR_DTLS    :Deep in the forest, build a thriving theme park in a large cleared area
+STR_SCNR    :حدود الغابات
+STR_PARK    :حدود الغابات
+STR_DTLS    :عميقا في الغابة، بناء متنزه مزدهر في منطقة خالية كبيرة
 
 <Dynamite Dunes>
-STR_SCNR    :Dynamite Dunes
-STR_PARK    :Dynamite Dunes
-STR_DTLS    :Built in the middle of the desert, this theme park contains just one roller coaster but has space for expansion
+STR_SCNR    :كثبان الديناميت
+STR_PARK    :كثبان الديناميت
+STR_DTLS    :بنيت في وسط الصحراء، هذا المتنزه يحتوي على أفعوانية دوارة واحدة فقط ولكن لديه مساحة للتوسع
 
 <Leafy Lake>
-STR_SCNR    :Leafy Lake
-STR_PARK    :Leafy Lake
-STR_DTLS    :Starting from scratch, build a theme park around a large lake
+STR_SCNR    :بحيرة ليفي
+STR_PARK    :بحيرة ليفي
+STR_DTLS    :إبدء من لاشئ، إبني حديقة مزدهرة حول بركة كبيرة
 
 <Diamond Heights>
 STR_SCNR    :Diamond Heights
