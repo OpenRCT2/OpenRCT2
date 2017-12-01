@@ -127,7 +127,7 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
 
 void game_increase_game_speed()
 {
-    gGameSpeed     = Math::Min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
+    gGameSpeed = Math::Min(gConfigGeneral.debugging_tools ? 5 : 4, gGameSpeed + 1);
     if (gGameSpeed == 5)
         gGameSpeed = 8;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -135,7 +135,7 @@ void game_increase_game_speed()
 
 void game_reduce_game_speed()
 {
-    gGameSpeed     = Math::Max(1, gGameSpeed - 1);
+    gGameSpeed = Math::Max(1, gGameSpeed - 1);
     if (gGameSpeed == 7)
         gGameSpeed = 4;
     window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -242,7 +242,7 @@ void update_palette_effects()
                 }
             }
         }
-        uint32 j     = gPaletteEffectFrame;
+        uint32 j = gPaletteEffectFrame;
         j = (((uint16) ((~j / 2) * 128) * 15) >> 16);
         uint32 waterId = SPR_GAME_PALETTE_WATER;
         if (water_type != nullptr)
@@ -507,7 +507,7 @@ void game_logic_update()
             title_text = gErrorStringId;
             body_text  = 0xFFFF;
         }
-        gErrorType               = ERROR_TYPE_NONE;
+        gErrorType = ERROR_TYPE_NONE;
 
         context_show_error(title_text, body_text);
     }
@@ -960,7 +960,7 @@ void game_log_multiplayer_command(int command, int * eax, int * ebx, int * ecx, 
             if (nameChunkOffset < 0)
                 nameChunkOffset = 2;
             nameChunkOffset *= 12;
-            nameChunkOffset     = Math::Min(nameChunkOffset, (sint32) (Util::CountOf(banner_name) - 12));
+            nameChunkOffset  = Math::Min(nameChunkOffset, (sint32) (Util::CountOf(banner_name) - 12));
             memcpy(banner_name + nameChunkOffset + 0, edx, 4);
             memcpy(banner_name + nameChunkOffset + 4, ebp, 4);
             memcpy(banner_name + nameChunkOffset + 8, edi, 4);
@@ -1075,7 +1075,7 @@ static void utf8_to_rct2_self(char * buffer, size_t length)
     char tempBuffer[512];
     utf8_to_rct2(tempBuffer, buffer);
 
-    size_t     i     = 0;
+    size_t       i   = 0;
     const char * src = tempBuffer;
     char       * dst = buffer;
     while (*src != 0 && i < length - 1)
@@ -1474,8 +1474,6 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     utf8 ** autosaveFiles = nullptr;
 
-    size_t i = 0;
-
     if (processLandscapeFolder)
     {
         platform_get_user_directory(filter, "landscape", sizeof(filter));
@@ -1506,7 +1504,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     autosaveFiles = (utf8 **) malloc(sizeof(utf8 *) * autosavesCount);
 
     fileEnumHandle = platform_enumerate_files_begin(filter);
-    for (i = 0; i < autosavesCount; i++)
+    for (size_t i = 0; i < autosavesCount; i++)
     {
         autosaveFiles[i] = (utf8 *) malloc(sizeof(utf8) * MAX_PATH);
         memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
@@ -1532,8 +1530,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     // Calculate how many saves we need to delete.
     numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
 
-    i = 0;
-    while (numAutosavesToDelete > 0)
+    for (size_t i = 0; numAutosavesToDelete > 0;)
     {
         platform_file_delete(autosaveFiles[i]);
 
@@ -1542,7 +1539,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     }
 
 
-    for (i = 0; i < autosavesCount; i++)
+    for (size_t i = 0; i < autosavesCount; i++)
     {
         free(autosaveFiles[i]);
     }
