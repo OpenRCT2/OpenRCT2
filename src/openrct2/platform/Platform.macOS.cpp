@@ -14,32 +14,31 @@
 *****************************************************************************/
 #pragma endregion
 
-#pragma once
+#ifdef __MACOS__
 
-#ifdef __cplusplus
-
-#include <string>
-#include "../common.h"
-
-enum class SPECIAL_FOLDER
-{
-    USER_CACHE,
-    USER_CONFIG,
-    USER_DATA,
-    USER_HOME,
-};
+#include "../core/Path.hpp"
+#include "Platform2.h"
 
 namespace Platform
 {
-    uint32 GetTicks();
-    std::string GetEnvironmentVariable(const std::string &name);
-    std::string GetFolderPath(SPECIAL_FOLDER folder);
-    std::string GetInstallPath();
-
-#if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
-    std::string GetEnvironmentPath(const char * name);
-    std::string GetHomePath();
-#endif
+    std::string GetFolderPath(SPECIAL_FOLDER folder)
+    {
+        // macOS stores everything in ~/Library/Application Support/OpenRCT2
+        switch (folder)
+        {
+        case SPECIAL_FOLDER::USER_CACHE:
+        case SPECIAL_FOLDER::USER_CONFIG:
+        case SPECIAL_FOLDER::USER_DATA:
+            {
+                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                return Path::Combine(home, "Library/Application Support");
+            }
+        case SPECIAL_FOLDER::USER_HOME:
+            return GetHomePath();
+        default:
+            return std::string();
+        }
+    }
 }
 
 #endif

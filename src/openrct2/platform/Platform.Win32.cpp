@@ -14,20 +14,16 @@
 *****************************************************************************/
 #pragma endregion
 
-#include <cstring>
 #ifdef _WIN32
-    #define WIN32_LEAN_AND_MEAN
-    #include <windows.h>
-    #include <shlobj.h>
-    #undef GetEnvironmentVariable
 
-    #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-        #define __USE_SHGETKNOWNFOLDERPATH__
-    #endif
-#else
-    #include <pwd.h>
+#define WIN32_LEAN_AND_MEAN
+#include <windows.h>
+#include <shlobj.h>
+#undef GetEnvironmentVariable
+
+#if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+    #define __USE_SHGETKNOWNFOLDERPATH__
 #endif
-
 
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -44,7 +40,6 @@ namespace Platform
 
     std::string GetEnvironmentVariable(const std::string &name)
     {
-#ifdef _WIN32
         std::wstring result;
         auto wname = String::ToUtf16(name);
         wchar_t wvalue[256];
@@ -58,40 +53,13 @@ namespace Platform
             auto wlvalue = new wchar_t[valueSize];
             GetEnvironmentVariableW(wname.c_str(), wlvalue, valueSize);
             result = wlvalue;
-            delete wlvalue;
+            delete[] wlvalue;
         }
         return String::ToUtf8(result);
-#else
-        return String::ToStd(getenv(name.c_str()));
-#endif
     }
-
-#ifndef _WIN32
-    static std::string GetEnvironmentPath(const char * name)
-    {
-        auto value = getenv(name);
-        if (value == nullptr)
-        {
-            return std::string();
-        }
-        else
-        {
-            auto colon = std::strchr(value, ':');
-            if (colon == nullptr)
-            {
-                return std::string(value);
-            }
-            else
-            {
-                return std::string(value, colon);
-            }
-        }
-    }
-#endif
 
     static std::string GetHomePathViaEnvironment()
     {
-#ifdef _WIN32
         std::string result;
         auto homedrive = GetEnvironmentVariable("HOMEDRIVE");
         auto homepath = GetEnvironmentVariable("HOMEPATH");
@@ -100,12 +68,8 @@ namespace Platform
             result = Path::Combine(homedrive, homepath);
         }
         return result;
-#else
-        return GetEnvironmentVariable("HOME");
-#endif
     }
 
-#ifdef _WIN32
 #ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
@@ -130,13 +94,11 @@ namespace Platform
         return path;
     }
 #endif
-#endif
 
     std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
         switch (folder)
         {
-#if defined(_WIN32)
         // We currently store everything under Documents/OpenRCT2
         case SPECIAL_FOLDER::USER_CACHE:
         case SPECIAL_FOLDER::USER_CONFIG:
@@ -170,72 +132,6 @@ namespace Platform
                 }
                 return path;
             }
-#elif defined (__ANDROID__)
-        // Android builds currently only read from /sdcard/openrct2*
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
-        case SPECIAL_FOLDER::USER_HOME:
-            return "/sdcard";
-#elif defined (__MACOS__)
-        // macOS stores everything in ~/Library/Application Support/OpenRCT2
-        case SPECIAL_FOLDER::USER_CACHE:
-        case SPECIAL_FOLDER::USER_CONFIG:
-        case SPECIAL_FOLDER::USER_DATA:
-        case SPECIAL_FOLDER::USER_HOME:
-            {
-                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                return Path::Combine(home, "Library/Application Support");
-            }
-#else
-        case SPECIAL_FOLDER::USER_CACHE:
-            {
-                auto path = GetEnvironmentPath("XDG_CACHE_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".cache");
-                }
-                return path;
-            }
-        case SPECIAL_FOLDER::USER_CONFIG:
-            {
-                auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".config");
-                }
-                return path;
-            }
-        case SPECIAL_FOLDER::USER_DATA:
-            {
-                auto path = GetEnvironmentPath("XDG_DATA_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".local/share");
-                }
-                return path;
-            }
-        case SPECIAL_FOLDER::USER_HOME:
-            {
-                std::string path;
-                auto pw = getpwuid(getuid());
-                if (pw != nullptr)
-                {
-                    path = pw->pw_dir;
-                }
-                else
-                {
-                    path = GetHomePathViaEnvironment();
-                }
-                if (path.empty())
-                {
-                    return "/";
-                }
-            }
-#endif
         default:
             return std::string();
         }
@@ -243,9 +139,11 @@ namespace Platform
 
     std::string GetInstallPath()
     {
-        utf8 path[260];
+        utf8 path[MAX_PATH];
         platform_resolve_openrct_data_path();
         platform_get_openrct_data_path(path, sizeof(path));
         return path;
     }
 }
+
+#endif
