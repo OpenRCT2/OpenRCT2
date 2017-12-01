@@ -64,6 +64,26 @@ const utf8 * Object::GetString(uint8 index) const
     return sz != nullptr ? sz : "";
 }
 
+rct_object_entry Object::GetScgWallsHeader()
+{
+    return Object::CreateHeader("SCGWALLS", 207140231, 3518650219);
+}
+
+rct_object_entry Object::GetScgPathXHeader()
+{
+    return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
+}
+
+rct_object_entry Object::CreateHeader(const char name[9], uint32 flags, uint32 checksum)
+{
+    rct_object_entry header = { 0 };
+    header.flags = flags;
+    Memory::Copy(header.name, name, 8);
+    header.checksum = checksum;
+    return header;
+}
+
+
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"

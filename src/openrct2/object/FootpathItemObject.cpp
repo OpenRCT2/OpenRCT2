@@ -48,11 +48,11 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     // Since this is already done the other way round for original items, avoid adding those to prevent duplicates.
     const std::string identifier = GetIdentifier();
     const rct_object_entry * objectEntry = object_list_find_by_name(identifier.c_str());
-    static const rct_object_entry * scgPathX = object_list_find_by_name("SCGPATHX");
+    static const rct_object_entry scgPathX = Object::GetScgPathXHeader();
 
-    if (objectEntry != nullptr && scgPathX != nullptr && object_entry_get_source_game(objectEntry) != OBJECT_SOURCE_RCT2)
+    if (objectEntry != nullptr && object_entry_get_source_game(objectEntry) != OBJECT_SOURCE_RCT2)
     {
-        SetPrimarySceneryGroup((rct_object_entry *)scgPathX);
+        SetPrimarySceneryGroup(&scgPathX);
     }
 }
 

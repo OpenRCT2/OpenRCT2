@@ -158,7 +158,7 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
 void SmallSceneryObject::PerformFixes()
 {
     std::string identifier = GetIdentifier();
-    static const rct_object_entry * scgWalls = object_list_find_by_name("SCGWALLS");
+    static const rct_object_entry scgWalls = Object::GetScgWallsHeader();
 
     // ToonTowner's base blocks. Make them allow supports on top and put them in the Walls and Roofs group.
     if (String::Equals(identifier, "XXBBCL01") ||
@@ -166,10 +166,7 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "XXBBBR01") ||
         String::Equals(identifier, "ARBASE2 "))
     {
-        if (scgWalls != nullptr)
-        {
-            SetPrimarySceneryGroup((rct_object_entry *)scgWalls);
-        }
+        SetPrimarySceneryGroup(&scgWalls);
 
         _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP;
     }
@@ -181,10 +178,7 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "TTRFTL07") ||
         String::Equals(identifier, "TTRFTL08"))
     {
-        if (scgWalls != nullptr)
-        {
-            SetPrimarySceneryGroup((rct_object_entry *)scgWalls);
-        }
+        SetPrimarySceneryGroup(&scgWalls);
     }
 
     // ToonTowner's Pirate roofs. Make them show up in the Pirate Theming.
@@ -198,11 +192,8 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "TTPRF10 ") ||
         String::Equals(identifier, "TTPRF11 "))
     {
-        static const rct_object_entry * scgPirat = object_list_find_by_name("SCGPIRAT");
-        if (scgPirat != nullptr)
-        {
-            SetPrimarySceneryGroup((rct_object_entry *)scgPirat);
-        }
+        static const rct_object_entry scgPirat = GetScgPiratHeader();
+        SetPrimarySceneryGroup(&scgPirat);
     }
 
     // ToonTowner's wooden roofs. Make them show up in the Mine Theming.
@@ -215,11 +206,8 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "TTRFWD07") ||
         String::Equals(identifier, "TTRFWD08"))
     {
-        static const rct_object_entry * scgMine = object_list_find_by_name("SCGMINE ");
-        if (scgMine != nullptr)
-        {
-            SetPrimarySceneryGroup((rct_object_entry *)scgMine);
-        }
+        static const rct_object_entry scgMine = GetScgMineHeader();
+        SetPrimarySceneryGroup(&scgMine);
     }
 
     // ToonTowner's glass roofs. Make them show up in the Abstract Theming.
@@ -227,10 +215,22 @@ void SmallSceneryObject::PerformFixes()
         String::Equals(identifier, "TTRFGL02") ||
         String::Equals(identifier, "TTRFGL03"))
     {
-        static const rct_object_entry * scgAbstr = object_list_find_by_name("SCGABSTR");
-        if (scgAbstr != nullptr)
-        {
-            SetPrimarySceneryGroup((rct_object_entry *)scgAbstr);
-        }
+        static const rct_object_entry scgAbstr = GetScgAbstrHeader();
+        SetPrimarySceneryGroup(&scgAbstr);
     }
+}
+
+rct_object_entry SmallSceneryObject::GetScgPiratHeader()
+{
+    return Object::CreateHeader("SCGPATHX", 207140231, 21592567);
+}
+
+rct_object_entry SmallSceneryObject::GetScgMineHeader()
+{
+    return Object::CreateHeader("SCGMINE ", 207140231, 3638141733);
+}
+
+rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
+{
+    return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
 }
