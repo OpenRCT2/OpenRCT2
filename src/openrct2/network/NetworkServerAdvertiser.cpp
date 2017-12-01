@@ -51,7 +51,7 @@ class NetworkServerAdvertiser final : public INetworkServerAdvertiser
 private:
     uint16 _port;
 
-    ADVERTISE_STATUS    _status = ADVERTISE_STATUS::ADVERTISE_STATUS_UNREGISTERED;
+    ADVERTISE_STATUS    _status = ADVERTISE_STATUS::UNREGISTERED;
     uint32              _lastAdvertiseTime = 0;
     uint32              _lastHeartbeatTime = 0;
 
@@ -76,20 +76,20 @@ public:
     void Update() override
     {
         switch (_status) {
-        case ADVERTISE_STATUS::ADVERTISE_STATUS_UNREGISTERED:
+        case ADVERTISE_STATUS::UNREGISTERED:
             if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
             {
                 SendRegistration();
             }
             break;
-        case ADVERTISE_STATUS::ADVERTISE_STATUS_REGISTERED:
+        case ADVERTISE_STATUS::REGISTERED:
             if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
             {
                 SendHeartbeat();
             }
             break;
         // exhaust enum values to satisfy clang
-        case ADVERTISE_STATUS::ADVERTISE_STATUS_DISABLED:
+        case ADVERTISE_STATUS::DISABLED:
             break;
         }
     }
@@ -169,7 +169,7 @@ private:
                 if (json_is_string(jsonToken))
                 {
                     _token = std::string(json_string_value(jsonToken));
-                    _status = ADVERTISE_STATUS::ADVERTISE_STATUS_REGISTERED;
+                    _status = ADVERTISE_STATUS::REGISTERED;
                 }
             }
             else
@@ -197,7 +197,7 @@ private:
             }
             else if (status == MASTER_SERVER_STATUS_INVALID_TOKEN)
             {
-                _status = ADVERTISE_STATUS::ADVERTISE_STATUS_UNREGISTERED;
+                _status = ADVERTISE_STATUS::UNREGISTERED;
                 Console::WriteLine("Master server heartbeat failed: Invalid Token");
             }
         }
@@ -262,7 +262,7 @@ INetworkServerAdvertiser * CreateServerAdvertiser(uint16 port)
 class DummyNetworkServerAdvertiser final : public INetworkServerAdvertiser
 {
 public:
-    virtual ADVERTISE_STATUS    GetStatus() const override { return ADVERTISE_STATUS::ADVERTISE_STATUS_DISABLED; };
+    virtual ADVERTISE_STATUS    GetStatus() const override { return ADVERTISE_STATUS::DISABLED; };
     virtual void                Update() override {};
 };
 
