@@ -87,6 +87,10 @@ public:
     virtual const utf8 *    GetName() const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
+
+    rct_object_entry GetScgWallsHeader();
+    rct_object_entry GetScgPathXHeader();
+
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__
     #pragma GCC diagnostic pop

@@ -43,6 +43,9 @@ public:
 private:
     static uint8 * ReadFrameOffsets(IStream * stream);
     void PerformFixes();
+    rct_object_entry GetScgPiratHeader();
+    rct_object_entry GetScgMineHeader();
+    rct_object_entry GetScgAbstrHeader();
 };
 
 #endif

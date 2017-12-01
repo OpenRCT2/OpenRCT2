@@ -64,6 +64,24 @@ const utf8 * Object::GetString(uint8 index) const
     return sz != nullptr ? sz : "";
 }
 
+rct_object_entry Object::GetScgWallsHeader()
+{
+    rct_object_entry scgWalls = { 0 };
+    scgWalls.flags = 207140231;
+    Memory::Copy(scgWalls.name, "SCGWALLS", 8);
+    scgWalls.checksum = 3518650219;
+    return scgWalls;
+}
+
+rct_object_entry Object::GetScgPathXHeader()
+{
+    rct_object_entry scgPathX = { 0 };
+    scgPathX.flags = 207140231;
+    Memory::Copy(scgPathX.name, "SCGPATHX", 8);
+    scgPathX.checksum = 890227440;
+    return scgPathX;
+}
+
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
     #pragma GCC diagnostic push
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
