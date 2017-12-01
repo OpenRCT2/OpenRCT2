@@ -117,6 +117,12 @@
 		4CB832A71EFBDCCE00B88761 /* land_tool.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A51EFBDCCE00B88761 /* land_tool.c */; };
 		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
 		4CB832AC1EFFB8D100B88761 /* ttf.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A91EFFB8D100B88761 /* ttf.c */; };
+		4CE462431FD1612C0001CD98 /* android.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462421FD1612B0001CD98 /* android.c */; };
+		4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462441FD161360001CD98 /* Platform.Android.cpp */; };
+		4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */; };
+		4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */; };
+		4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
+		4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
 		4CF788C01F1B787700C611BF /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF788BE1F1B787700C611BF /* Painter.cpp */; };
 		4CFBCD5E1F27CD8000D74FB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */; };
 		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
@@ -392,7 +398,6 @@
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
 		F76C86A51EC4E88400FA49E2 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C845C1EC4E7CC00FA49E2 /* linux.c */; };
 		F76C86A61EC4E88400FA49E2 /* macos.m in Sources */ = {isa = PBXBuildFile; fileRef = F76C845D1EC4E7CC00FA49E2 /* macos.m */; };
-		F76C86A81EC4E88400FA49E2 /* Platform2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845F1EC4E7CC00FA49E2 /* Platform2.cpp */; };
 		F76C86AA1EC4E88400FA49E2 /* posix.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84611EC4E7CC00FA49E2 /* posix.c */; };
 		F76C86AB1EC4E88400FA49E2 /* shared.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84621EC4E7CC00FA49E2 /* shared.c */; };
 		F76C86AC1EC4E88400FA49E2 /* windows.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84631EC4E7CC00FA49E2 /* windows.c */; };
@@ -728,6 +733,12 @@
 		4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf_sdlport.c; sourceTree = "<group>"; };
 		4CB832A91EFFB8D100B88761 /* ttf.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = ttf.c; sourceTree = "<group>"; };
 		4CB832AA1EFFB8D100B88761 /* ttf.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ttf.h; sourceTree = "<group>"; };
+		4CE462421FD1612B0001CD98 /* android.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = android.c; sourceTree = "<group>"; };
+		4CE462441FD161360001CD98 /* Platform.Android.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Android.cpp; sourceTree = "<group>"; };
+		4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Linux.cpp; sourceTree = "<group>"; };
+		4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.macOS.cpp; sourceTree = "<group>"; };
+		4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Posix.cpp; sourceTree = "<group>"; };
+		4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Win32.cpp; sourceTree = "<group>"; };
 		4CF788BE1F1B787700C611BF /* Painter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Painter.cpp; sourceTree = "<group>"; };
 		4CF788BF1F1B787700C611BF /* Painter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painter.h; sourceTree = "<group>"; };
 		4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenery.cpp; sourceTree = "<group>"; };
@@ -1286,7 +1297,6 @@
 		F76C845C1EC4E7CC00FA49E2 /* linux.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = linux.c; sourceTree = "<group>"; };
 		F76C845D1EC4E7CC00FA49E2 /* macos.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = macos.m; sourceTree = "<group>"; };
 		F76C845E1EC4E7CC00FA49E2 /* platform.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = platform.h; sourceTree = "<group>"; };
-		F76C845F1EC4E7CC00FA49E2 /* Platform2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Platform2.cpp; sourceTree = "<group>"; };
 		F76C84601EC4E7CC00FA49E2 /* Platform2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Platform2.h; sourceTree = "<group>"; };
 		F76C84611EC4E7CC00FA49E2 /* posix.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = posix.c; sourceTree = "<group>"; };
 		F76C84621EC4E7CC00FA49E2 /* shared.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = shared.c; sourceTree = "<group>"; };
@@ -2250,12 +2260,17 @@
 		F76C84591EC4E7CC00FA49E2 /* platform */ = {
 			isa = PBXGroup;
 			children = (
+				4CE462421FD1612B0001CD98 /* android.c */,
 				F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */,
 				F76C845B1EC4E7CC00FA49E2 /* crash.h */,
 				F76C845C1EC4E7CC00FA49E2 /* linux.c */,
 				F76C845D1EC4E7CC00FA49E2 /* macos.m */,
+				4CE462441FD161360001CD98 /* Platform.Android.cpp */,
 				F76C845E1EC4E7CC00FA49E2 /* platform.h */,
-				F76C845F1EC4E7CC00FA49E2 /* Platform2.cpp */,
+				4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */,
+				4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */,
+				4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */,
+				4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */,
 				F76C84601EC4E7CC00FA49E2 /* Platform2.h */,
 				F76C84611EC4E7CC00FA49E2 /* posix.c */,
 				F76C84621EC4E7CC00FA49E2 /* shared.c */,
@@ -3185,6 +3200,7 @@
 				C666EE6B1F37ACB10061AA04 /* About.cpp in Sources */,
 				C666ED771F33DBB20061AA04 /* ShortcutKeys.cpp in Sources */,
 				4C93F1AA1F8B748900A9330D /* SubmarineRide.cpp in Sources */,
+				4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */,
 				C666EE6C1F37ACB10061AA04 /* Changelog.cpp in Sources */,
 				4C93F1441F8B744400A9330D /* InvertedRollerCoaster.cpp in Sources */,
 				C64644FC1F3FA4120026AC2D /* Footpath.cpp in Sources */,
@@ -3199,6 +3215,8 @@
 				4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
 				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
+				4CE462431FD1612C0001CD98 /* android.c in Sources */,
+				4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */,
 				4C93F1501F8B744400A9330D /* SideFrictionRollerCoaster.cpp in Sources */,
 				4C93F13D1F8B744400A9330D /* CompactInvertedCoaster.cpp in Sources */,
 				C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */,
@@ -3206,6 +3224,7 @@
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
+				4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */,
 				4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */,
@@ -3253,6 +3272,7 @@
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
 				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
 				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
+				4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */,
 				C654DF391F69C0430040F43D /* TitleCommandEditor.cpp in Sources */,
 				4C93F13B1F8B744400A9330D /* BobsleighCoaster.cpp in Sources */,
 				4C93F1701F8B745700A9330D /* GhostTrain.cpp in Sources */,
@@ -3264,6 +3284,7 @@
 				F76C88811EC5324E00FA49E2 /* DrawLineShader.cpp in Sources */,
 				4C93F13A1F8B744400A9330D /* AirPoweredVerticalCoaster.cpp in Sources */,
 				4C93F1421F8B744400A9330D /* InvertedHairpinCoaster.cpp in Sources */,
+				4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */,
 				C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */,
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
 				4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */,
@@ -3471,7 +3492,6 @@
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A51EC4E88400FA49E2 /* linux.c in Sources */,
 				F76C86A61EC4E88400FA49E2 /* macos.m in Sources */,
-				F76C86A81EC4E88400FA49E2 /* Platform2.cpp in Sources */,
 				F76C86AA1EC4E88400FA49E2 /* posix.c in Sources */,
 				F76C86AB1EC4E88400FA49E2 /* shared.c in Sources */,
 				F76C86AC1EC4E88400FA49E2 /* windows.c in Sources */,
