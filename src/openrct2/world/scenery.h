@@ -258,7 +258,7 @@ enum
     BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),
 };
 
-#define SCENERY_ENTRIES_BY_TAB 256
+#define SCENERY_ENTRIES_BY_TAB 1024
 
 #ifdef __cplusplus
 extern "C" {
