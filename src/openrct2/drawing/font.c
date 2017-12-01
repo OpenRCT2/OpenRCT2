@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Guard.hpp"
 #include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
@@ -122,7 +123,11 @@ sint32 font_sprite_get_codepoint_offset(sint32 codepoint)
 
 sint32 font_sprite_get_codepoint_width(sint32 fontSpriteBase, sint32 codepoint)
 {
-    return _spriteFontCharacterWidths[fontSpriteBase + font_sprite_get_codepoint_offset(codepoint)];
+    uint32 spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
+#ifdef NO_RCT2
+    openrct2_assert(spriteFontIdx < countof(_spriteFontCharacterWidths), "Invalid font index %u", spriteFontIdx);
+#endif
+    return _spriteFontCharacterWidths[spriteFontIdx];
 }
 
 sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint)
