@@ -16,6 +16,7 @@
 
 #ifdef __ANDROID__
 
+#include <cassert>
 #include "Platform2.h"
 
 namespace Platform
@@ -37,6 +38,17 @@ namespace Platform
 
     std::string GetDocsPath()
     {
+        return std::string();
+    }
+
+    std::string GetInstallPath()
+    {
+        return "/sdcard/openrct2";
+    }
+
+    std::string GetCurrentExecutablePath()
+    {
+        assert(false, "GetCurrentExecutablePath() not implemented for Android.");
         return std::string();
     }
 }

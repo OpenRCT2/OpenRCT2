@@ -24,11 +24,6 @@
 #include <jni.h>
 #include <SDL.h>
 
-void platform_get_exe_path(utf8 *outPath, size_t outSize)
-{
-    safe_strcpy(outPath, "/sdcard/openrct2", outSize);
-}
-
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
 {
@@ -36,11 +31,6 @@ bool platform_get_font_path(TTFFontDescriptor *font, utf8 *buffer, size_t size)
     return false;
 }
 #endif
-
-void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
-    safe_strcpy(out, "/sdcard/openrct2", size);
-}
-
 
 uint16 platform_get_locale_language() {
     return LANGUAGE_ENGLISH_UK;

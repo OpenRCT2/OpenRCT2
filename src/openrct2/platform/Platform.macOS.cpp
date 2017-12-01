@@ -44,6 +44,62 @@ namespace Platform
     {
         return std::string();
     }
+
+    std::string GetInstallPath()
+    {
+        auto path = std::string(gCustomOpenrctDataPath);
+        if (!path.empty())
+        {
+            path = Path::GetAbsolute(customPath);
+        }
+        else
+        {
+            auto exePath = GetCurrentExecutablePath();
+            auto exeDirectory = Path::GetDirectory(exePath);
+            path = Path::Combine(exeDirectory, "data");
+            if (!Directory::Exists(path))
+            {
+                path = GetBundlePath();
+                if (path.empty())
+                {
+                    path = "/";
+                }
+            }
+        }
+        return path;
+    }
+
+    std::string GetCurrentExecutablePath()
+    {
+        char exePath[MAX_PATH];
+        uint32 size = MAX_PATH;
+        int result = _NSGetExecutablePath(exePath, &size);
+        if (result == 0)
+        {
+            return exePath;
+        }
+        else
+        {
+            return std::string();
+        }
+    }
+
+    static std::string GetBundlePath()
+    {
+        @autoreleasepool
+        {
+            NSBundle * bundle = [NSBundle mainBundle];
+            if (bundle)
+            {
+                auto resources = bundle.resourcePath.UTF8String;
+                if (Path::DirectoryExists(resources))
+                {
+                    return resources;
+                }
+            }
+            return std::string();
+        }
+    }
 }
 
 #endif
