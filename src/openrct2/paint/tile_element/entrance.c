@@ -260,7 +260,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
                 break;
 
             sint32 stsetup = scrolling_text_setup(session, park_text_id, scroll, entrance->scrolling_mode + direction / 2);
-            uint8 text_height = height + entrance->text_height;
+            sint32 text_height = height + entrance->text_height;
             sub_98199C(session, stsetup, 0, 0, 0x1C, 0x1C, 0x2F, text_height, 2, 2, text_height, get_current_rotation());
         }
         break;
