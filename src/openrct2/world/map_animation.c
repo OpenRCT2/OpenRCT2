@@ -22,6 +22,7 @@
 #include "map_animation.h"
 #include "map.h"
 #include "scenery.h"
+#include "SmallScenery.h"
 #include "sprite.h"
 
 typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
@@ -184,12 +185,14 @@ static bool map_animation_invalidate_small_scenery(sint32 x, sint32 y, sint32 ba
             continue;
 
         sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
-        if (sceneryEntry->small_scenery.flags & (SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)) {
+        if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 | SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 | SMALL_SCENERY_FLAG_SWAMP_GOO | SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
+        {
             map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
             return false;
         }
 
-        if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_IS_CLOCK) {
+        if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_IS_CLOCK))
+        {
             // Peep, looking at scenery
             if (!(gCurrentTicks & 0x3FF) && game_is_not_paused()) {
                 sint32 direction = tile_element_get_direction(tileElement);

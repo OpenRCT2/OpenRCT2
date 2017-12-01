@@ -33,6 +33,7 @@
 #include "../util/util.h"
 #include "../world/map_animation.h"
 #include "../world/scenery.h"
+#include "../world/SmallScenery.h"
 #include "../world/sprite.h"
 #include "Vehicle.h"
 #include "CableLift.h"
@@ -1836,7 +1837,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 continue;
 
             rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
-            if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+            if (scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 cover_found = true;
                 break;

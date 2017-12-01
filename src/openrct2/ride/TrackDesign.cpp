@@ -34,6 +34,7 @@
 #include "../util/util.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"
+#include "../world/SmallScenery.h"
 #include "ride.h"
 #include "ride_data.h"
 #include "Track.h"
@@ -525,10 +526,10 @@ static void track_design_mirror_scenery(rct_track_td6 * td6)
         case OBJECT_TYPE_SMALL_SCENERY:
             scenery->y = -scenery->y;
 
-            if (scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)
+            if (scenery_small_has_flag(scenery_entry, SMALL_SCENERY_FLAG_DIAGONAL))
             {
                 scenery->flags ^= (1 << 0);
-                if (!(scenery_entry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE))
+                if (!scenery_small_has_flag(scenery_entry, SMALL_SCENERY_FLAG_FULL_TILE))
                 {
                     scenery->flags ^= (1 << 2);
                 }
@@ -802,11 +803,11 @@ track_design_place_scenery(rct_td6_scenery_element * scenery_start, uint8 rideIn
                     uint8 bh = rotation | (quadrant << 6) | TILE_ELEMENT_TYPE_SMALL_SCENERY;
 
                     rct_scenery_entry * small_scenery = get_small_scenery_entry(entry_index);
-                    if (!(!(small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-                          (small_scenery->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL)) &&
-                        (small_scenery->small_scenery.flags &
-                         (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE |
-                          SMALL_SCENERY_FLAG_THREE_QUARTERS)))
+                    if (!(!scenery_small_has_flag(small_scenery, SMALL_SCENERY_FLAG_FULL_TILE) &&
+                        scenery_small_has_flag(small_scenery, SMALL_SCENERY_FLAG_DIAGONAL)) &&
+                        scenery_small_has_flag(small_scenery,
+                         SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE |
+                          SMALL_SCENERY_FLAG_THREE_QUARTERS))
                     {
                         bh &= 0x3F;
                     }

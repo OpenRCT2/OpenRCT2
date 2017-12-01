@@ -41,6 +41,7 @@
 #include "map_animation.h"
 #include "park.h"
 #include "scenery.h"
+#include "SmallScenery.h"
 #include "TileInspector.h"
 #include "Wall.h"
 
@@ -4108,7 +4109,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         {
             return false;
         }
-        if (scenery->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+        if (scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

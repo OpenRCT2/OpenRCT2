@@ -23,6 +23,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
 #include "../world/scenery.h"
+#include "../world/SmallScenery.h"
 
 SmallSceneryObject::~SmallSceneryObject()
 {
@@ -48,7 +49,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+    if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _frameOffsets = ReadFrameOffsets(stream);
     }
@@ -79,7 +80,7 @@ void SmallSceneryObject::Load()
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS)
+    if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS))
     {
         _legacyType.small_scenery.frame_offsets = _frameOffsets;
     }
@@ -98,12 +99,11 @@ void SmallSceneryObject::Unload()
 
 void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
-    uint32 flags = _legacyType.small_scenery.flags;
     uint32 imageId = _legacyType.image;
-    if (flags & SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+    if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
         imageId |= 0x20D00000;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }
@@ -113,28 +113,28 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     sint32 y = (height / 2) + (_legacyType.small_scenery.height / 2);
     y = Math::Min(y, height - 16);
 
-    if ((flags & SMALL_SCENERY_FLAG_FULL_TILE) &&
-        (flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+    if ((scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_FULL_TILE)) &&
+        (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)))
     {
         y -= 12;
     }
 
     gfx_draw_sprite(dpi, imageId, x, y, 0);
 
-    if (_legacyType.small_scenery.flags & SMALL_SCENERY_FLAG_HAS_GLASS)
+    if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_GLASS))
     {
         imageId = _legacyType.image + 0x44500004;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }
         gfx_draw_sprite(dpi, imageId, x, y, 0);
     }
 
-    if (flags & SMALL_SCENERY_FLAG_ANIMATED_FG)
+    if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_ANIMATED_FG))
     {
         imageId = _legacyType.image + 4;
-        if (flags & SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        if (scenery_small_has_flag(&_legacyType, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
             imageId |= 0x92000000;
         }

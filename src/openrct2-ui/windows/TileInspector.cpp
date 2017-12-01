@@ -32,6 +32,7 @@
 #include <openrct2/world/footpath.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/scenery.h>
+#include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/TileInspector.h>
 
 static const rct_string_id TerrainTypeStringIds[] = {
@@ -1754,7 +1755,9 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
             gfx_draw_string_left(dpi, STR_TILE_INSPECTOR_SCENERY_AGE, &age, COLOUR_DARK_GREEN, x, y);
 
             // Quadrant value
-            if (!(get_small_scenery_entry(tileElement->properties.scenery.type)->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)) {
+            const rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
+            if (!(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
+            {
                 sint16 quadrant = (tileElement->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
                 static rct_string_id quadrant_string_idx[] = {
                     STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,

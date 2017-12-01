@@ -27,6 +27,7 @@
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
+#include "SmallScenery.h"
 #include "Wall.h"
 
 /**
@@ -228,7 +229,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             entryType = tileElement->properties.scenery.type;
             entry = get_small_scenery_entry(entryType);
-            if (entry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_WALLS)
+            if (scenery_small_has_flag(entry, SMALL_SCENERY_FLAG_NO_WALLS))
             {
                 map_obstruction_set_error_text(tileElement);
                 return false;

@@ -213,11 +213,10 @@ static money32 SmallSceneryPlace(sint16 x,
         return MONEY32_UNDEFINED;
     }
 
-    if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE || 
-        !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL))
+    if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE) ||
+        !scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL))
     {
-        if (sceneryEntry->small_scenery.flags & 
-            (SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
+        if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL | SMALL_SCENERY_FLAG_HALF_SPACE | SMALL_SCENERY_FLAG_THREE_QUARTERS))
         {
             quadrant = 0;
         }
@@ -226,7 +225,7 @@ static money32 SmallSceneryPlace(sint16 x,
     // Check if sub tile height is any different compared to actual surface tile height
     sint32 x2 = x;
     sint32 y2 = y;
-    if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+    if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
     {
         x2 += 16;
         y2 += 16;
@@ -263,7 +262,7 @@ static money32 SmallSceneryPlace(sint16 x,
     if (flags & GAME_COMMAND_FLAG_APPLY && !(flags & GAME_COMMAND_FLAG_GHOST))
     {
         footpath_remove_litter(x, y, targetHeight);
-        if (!gCheatsDisableClearanceChecks && (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_NO_WALLS))
+        if (!gCheatsDisableClearanceChecks && (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_NO_WALLS)))
         {
             wall_remove_at(x, y, targetHeight, targetHeight + sceneryEntry->small_scenery.height);
         }
@@ -281,7 +280,7 @@ static money32 SmallSceneryPlace(sint16 x,
         }
     }
 
-    if (!gCheatsDisableClearanceChecks && !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE))
+    if (!gCheatsDisableClearanceChecks && !(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE)))
     {
         if (isOnWater)
         {
@@ -300,7 +299,7 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     if (!gCheatsDisableClearanceChecks &&
-        (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE) &&
+        (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) &&
         !supportsRequired &&
         !isOnWater &&
         surfaceElement != nullptr &&
@@ -312,7 +311,7 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     if (!gCheatsDisableSupportLimits &&
-        !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_STACKABLE) &&
+        !(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_STACKABLE)) &&
         supportsRequired)
     {
 
@@ -341,16 +340,16 @@ static money32 SmallSceneryPlace(sint16 x,
     sint32 zHigh = zLow + ceil2(sceneryEntry->small_scenery.height, 8) / 8;
     uint8 collisionQuadrants = 0xF;
     uint8 blSupports = 0;
-    if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE))
+    if (!(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
     {
         collisionQuadrants = 1 << (quadrant ^ 2);
     }
-    if (!(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_HALF_SPACE))
+    if (!(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HALF_SPACE)))
     {
-        if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_DIAGONAL &&
-            sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_FULL_TILE)
+        if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_DIAGONAL) &&
+            scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE))
         {
-            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_THREE_QUARTERS)
+            if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_THREE_QUARTERS))
             {
                 collisionQuadrants = 0xF & rol8(0xBB, ((quadrant ^ 2) + rotation) & 3);
             }
@@ -429,7 +428,7 @@ static money32 SmallSceneryPlace(sint16 x,
     }
 
     map_invalidate_tile_full(x, y);
-    if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_ANIMATED)
+    if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED))
     {
         map_animation_create(2, x, y, newElement->base_height);
     }
@@ -595,5 +594,10 @@ extern "C"
     void scenery_small_set_supports_needed(rct_tile_element * tileElement)
     {
         tileElement->properties.scenery.colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    }
+
+    bool scenery_small_has_flag(const rct_scenery_entry * sceneryEntry, uint32 flags)
+    {
+        return (bool)(sceneryEntry->small_scenery.flags & flags);
     }
 }
