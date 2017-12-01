@@ -90,6 +90,7 @@ public:
 
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
+    rct_object_entry CreateHeader(const char name[9], uint32 flags, uint32 checksum);
 
 };
 #ifdef __WARN_SUGGEST_FINAL_TYPES__

@@ -222,27 +222,15 @@ void SmallSceneryObject::PerformFixes()
 
 rct_object_entry SmallSceneryObject::GetScgPiratHeader()
 {
-    static rct_object_entry scgPirat = { 0 };
-    scgPirat.flags = 207140231;
-    Memory::Copy(scgPirat.name, "SCGPIRAT", 8);
-    scgPirat.checksum = 21592567;
-    return scgPirat;
+    return Object::CreateHeader("SCGPATHX", 207140231, 21592567);
 }
 
 rct_object_entry SmallSceneryObject::GetScgMineHeader()
 {
-    static rct_object_entry scgMine = { 0 };
-    scgMine.flags = 207140231;
-    Memory::Copy(scgMine.name, "SCGMINE ", 8);
-    scgMine.checksum = 3638141733;
-    return scgMine;
+    return Object::CreateHeader("SCGMINE ", 207140231, 3638141733);
 }
 
 rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
 {
-    static rct_object_entry scgAbstr = { 0 };
-    scgAbstr.flags = 207140231;
-    Memory::Copy(scgAbstr.name, "SCGABSTR", 8);
-    scgAbstr.checksum = 932253451;
-    return scgAbstr;
+    return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
 }
