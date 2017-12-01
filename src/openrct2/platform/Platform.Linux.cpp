@@ -27,34 +27,11 @@ namespace Platform
         switch (folder)
         {
         case SPECIAL_FOLDER::USER_CACHE:
-            {
-                auto path = GetEnvironmentPath("XDG_CACHE_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".cache");
-                }
-                return path;
-            }
         case SPECIAL_FOLDER::USER_CONFIG:
-            {
-                auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".config");
-                }
-                return path;
-            }
         case SPECIAL_FOLDER::USER_DATA:
             {
-                auto path = GetEnvironmentPath("XDG_DATA_HOME");
-                if (path.empty())
-                {
-                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".local/share");
-                }
-                return path;
+                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                return Path::Combine(home, ".config");
             }
         case SPECIAL_FOLDER::USER_HOME:
             return GetHomePath();
