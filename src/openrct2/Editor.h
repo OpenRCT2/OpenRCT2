@@ -40,8 +40,6 @@ namespace Editor
     void GameCommandEditScenarioOptions(sint32*, sint32*, sint32*, sint32*, sint32*, sint32*, sint32*);
 }
 
-bool editor_check_object_group_at_least_one_selected(sint32 objectType);
-
 extern "C"
  {
 #endif
@@ -84,12 +82,6 @@ extern "C"
     };
 
     void editor_open_windows_for_current_step();
-
-    /**
-    * Removes all unused objects from the object selection.
-    * @return The number of removed objects.
-    */
-    sint32 editor_remove_unused_objects();
     
     void game_command_edit_scenario_options(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 #ifdef __cplusplus
