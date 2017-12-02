@@ -48,7 +48,6 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #define SINGLE_INSTANCE_MUTEX_NAME "RollerCoaster Tycoon 2_GSKMUTEX"
 
-static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 static utf8 _openrctDataDirectoryPath[MAX_PATH] = { 0 };
 
 #define OPENRCT2_DLL_MODULE_NAME "openrct2.dll"
@@ -458,52 +457,6 @@ void platform_get_changelog_path(utf8 *outPath, size_t outSize)
 {
     safe_strcpy(outPath, gExePath, outSize);
     safe_strcat_path(outPath, "changelog.txt", outSize);
-}
-
-/**
- * Default directory fallback is:
- *   - (command line argument)
- *   - C:\Users\%USERNAME%\OpenRCT2 (as from SHGetFolderPathW)
- */
-void platform_resolve_user_data_path()
-{
-    wchar_t wOutPath[MAX_PATH];
-
-    if (gCustomUserDataPath[0] != 0) {
-        wchar_t *customUserDataPathW = utf8_to_widechar(gCustomUserDataPath);
-        if (GetFullPathNameW(customUserDataPathW, countof(wOutPath), wOutPath, NULL) == 0) {
-            log_fatal("Unable to resolve path '%s'.", gCustomUserDataPath);
-            exit(-1);
-        }
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-        safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
-        free(outPathTemp);
-        free(customUserDataPathW);
-
-        path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
-        return;
-    }
-
-    if (SUCCEEDED(SHGetFolderPathW(NULL, CSIDL_PERSONAL | CSIDL_FLAG_CREATE, NULL, 0, wOutPath))) {
-        utf8 *outPathTemp = widechar_to_utf8(wOutPath);
-        safe_strcpy(_userDataDirectoryPath, outPathTemp, sizeof(_userDataDirectoryPath));
-        free(outPathTemp);
-
-        safe_strcat_path(_userDataDirectoryPath, "OpenRCT2", sizeof(_userDataDirectoryPath));
-        path_end_with_separator(_userDataDirectoryPath, sizeof(_userDataDirectoryPath));
-    } else {
-        log_fatal("Unable to resolve user data path.");
-        exit(-1);
-    }
-}
-
-void platform_get_user_directory(utf8 *outPath, const utf8 *subDirectory, size_t outSize)
-{
-    safe_strcpy(outPath, _userDataDirectoryPath, outSize);
-    if (subDirectory != NULL && subDirectory[0] != 0) {
-        safe_strcat_path(outPath, subDirectory, outSize);
-        path_end_with_separator(outPath, outSize);
-    }
 }
 
 bool platform_get_steam_path(utf8 * outPath, size_t outSize)

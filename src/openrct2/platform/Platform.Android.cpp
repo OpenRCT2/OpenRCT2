@@ -14,14 +14,26 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "Platform2.h"
+#ifdef __ANDROID__
 
-#include "platform.h"
+#include "Platform2.h"
 
 namespace Platform
 {
-    uint32 GetTicks()
+    std::string GetFolderPath(SPECIAL_FOLDER folder)
     {
-        return platform_get_ticks();
+        // Android builds currently only read from /sdcard/openrct2*
+        switch (folder)
+        {
+        case SPECIAL_FOLDER::USER_CACHE:
+        case SPECIAL_FOLDER::USER_CONFIG:
+        case SPECIAL_FOLDER::USER_DATA:
+        case SPECIAL_FOLDER::USER_HOME:
+            return "/sdcard";
+        default:
+            return std::string();
+        }
     }
 }
+
+#endif
