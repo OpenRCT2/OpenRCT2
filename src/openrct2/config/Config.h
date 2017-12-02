@@ -34,7 +34,6 @@ typedef struct GeneralConfiguration
     float       window_scale;
     sint32      drawing_engine;
     sint32      scale_quality;
-    bool        use_nn_at_integer_scales;
     bool        uncap_fps;
     bool        show_fps;
     bool        minimize_fullscreen_focus_loss;
@@ -213,7 +212,6 @@ enum SCALE_QUALITY
 {
     SCALE_QUALITY_NN,
     SCALE_QUALITY_LINEAR,
-    SCALE_QUALITY_ANISOTROPIC,
     SCALE_QUALITY_SMOOTH_NN
 };
 

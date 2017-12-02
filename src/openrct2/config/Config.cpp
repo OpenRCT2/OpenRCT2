@@ -104,7 +104,6 @@ namespace Config
     {
         ConfigEnumEntry<sint32>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
         ConfigEnumEntry<sint32>("LINEAR", SCALE_QUALITY_LINEAR),
-        ConfigEnumEntry<sint32>("ANISOTROPIC_FILTERING", SCALE_QUALITY_ANISOTROPIC),
         ConfigEnumEntry<sint32>("SMOOTH_NEAREST_NEIGHBOUR", SCALE_QUALITY_SMOOTH_NN),
     });
 
@@ -193,7 +192,6 @@ namespace Config
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
             model->scale_quality = reader->GetEnum<sint32>("scale_quality", SCALE_QUALITY_SMOOTH_NN, Enum_ScaleQuality);
-            model->use_nn_at_integer_scales = reader->GetBoolean("use_nn_at_integer_scales", true);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
             model->auto_open_shops = reader->GetBoolean("auto_open_shops", false);
@@ -263,7 +261,6 @@ namespace Config
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
         writer->WriteEnum<sint32>("scale_quality", model->scale_quality, Enum_ScaleQuality);
-        writer->WriteBoolean("use_nn_at_integer_scales", model->use_nn_at_integer_scales);
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
         writer->WriteBoolean("auto_open_shops", model->auto_open_shops);
