@@ -72,7 +72,7 @@ extern "C" {
 
 void font_sprite_initialise_characters();
 sint32 font_sprite_get_codepoint_offset(sint32 codepoint);
-sint32 font_sprite_get_codepoint_width(sint32 fontSpriteBase, sint32 codepoint);
+sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint);
 sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint);
 sint32 font_get_size_from_sprite_base(uint16 spriteBase);
 sint32 font_get_line_height(sint32 fontSpriteBase);
