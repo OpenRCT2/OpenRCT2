@@ -128,17 +128,15 @@ sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint)
     {
         fontSpriteBase = (uint16)FONT_SPRITE_BASE_MEDIUM;
     }
-
+#ifdef NO_RCT2
     sint32 spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
-    if (spriteFontIdx >= 0 && spriteFontIdx < countof(_spriteFontCharacterWidths))
-    {
-        return _spriteFontCharacterWidths[spriteFontIdx];
-    }
-    else
+    if (spriteFontIdx < 0 || spriteFontIdx >= countof(_spriteFontCharacterWidths))
     {
         log_warning("Invalid font index %u", spriteFontIdx);
-        return _spriteFontCharacterWidths[0];
+        spriteFontIdx = 0;
     }
+#endif
+    return _spriteFontCharacterWidths[spriteFontIdx];
 }
 
 sint32 font_sprite_get_codepoint_sprite(sint32 fontSpriteBase, sint32 codepoint)
