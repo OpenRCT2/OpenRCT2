@@ -22,6 +22,8 @@
  *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
  */
 
+#include <cmath>
+
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
@@ -1522,14 +1524,28 @@ static void window_options_invalidate(rct_window *w)
             w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
         }
 
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
+        // Disable Steam Overlay checkbox when using software rendering.
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
+        {
+            w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+        else
+        {
+            w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+
+        // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
+        // In the latter case, nearest neighbour rendering will be used to scale.
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE ||
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
             w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
             w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
-        } else {
+        }
+        else
+        {
             w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
             w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
         }
 
         widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
@@ -1577,6 +1593,7 @@ static void window_options_invalidate(rct_window *w)
             w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
+
         widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
         // construction marker: white/translucent
         static const rct_string_id construction_marker_colours[] = {
@@ -1832,7 +1849,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 
         colour = w->colours[1];
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE ||
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
             colour |= 0x40;
         }
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
