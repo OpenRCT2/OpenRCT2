@@ -33,6 +33,7 @@
 #include "windows/Intent.h"
 #include "world/Climate.h"
 #include "object/ObjectRepository.h"
+#include "EditorObjectSelectionSession.h"
 
 namespace Editor
 {

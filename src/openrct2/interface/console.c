@@ -20,6 +20,7 @@
 #include "../Context.h"
 #include "../drawing/drawing.h"
 #include "../Editor.h"
+#include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
 #include "../input.h"
 #include "../interface/themes.h"
