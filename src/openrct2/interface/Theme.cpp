@@ -304,7 +304,7 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
     uint8 numColours = (uint8)json_array_size(jsonColours);
     numColours = Math::Min(numColours, wtDesc->NumColours);
 
-    UIThemeWindowEntry result;
+    UIThemeWindowEntry result { };
     result.WindowClass = wtDesc->WindowClass;
     result.Theme = wtDesc->DefaultTheme;
 
@@ -524,7 +524,7 @@ namespace ThemeManager
         NumPredefinedThemes = 0;
         for (auto predefinedTheme : PredefinedThemes)
         {
-            AvailableTheme theme;
+            AvailableTheme theme {};
             theme.Name = predefinedTheme.Theme->Name;
             outThemes->push_back(std::move(theme));
 
@@ -538,7 +538,7 @@ namespace ThemeManager
             auto fileInfo = scanner->GetFileInfo();
             auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
 
-            AvailableTheme theme;
+            AvailableTheme theme {};
             theme.Name = name;
             theme.Path = GetThemeFileName(theme.Name);
             outThemes->push_back(std::move(theme));
@@ -747,7 +747,7 @@ uint8 theme_get_colour(rct_windowclass wc, uint8 index)
 
 void theme_set_colour(rct_windowclass wc, uint8 index, colour_t colour)
 {
-    UIThemeWindowEntry entry;
+    UIThemeWindowEntry entry { };
     entry.WindowClass = wc;
 
     auto currentEntry = (UIThemeWindowEntry *)ThemeManager::CurrentTheme->GetEntry(wc);

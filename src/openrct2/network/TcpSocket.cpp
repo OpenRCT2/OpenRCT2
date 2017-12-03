@@ -24,6 +24,9 @@
 #include <thread>
 
 // clang-format off
+// MSVC: include <math.h> here otherwise PI gets defined twice
+#include <cmath>
+
 #ifdef _WIN32
     // winsock2 must be included before windows.h
     #include <winsock2.h>
@@ -91,8 +94,7 @@ private:
 
 public:
     TcpSocket()
-    {
-    }
+    = default;
 
     ~TcpSocket() override
     {
@@ -125,7 +127,7 @@ public:
             throw std::runtime_error("Socket not closed.");
         }
 
-        sockaddr_storage ss;
+        sockaddr_storage ss { };
         sint32 ss_len;
         if (!ResolveAddress(address, port, &ss, &ss_len))
         {
@@ -185,7 +187,7 @@ public:
         {
             throw std::runtime_error("Socket not listening.");
         }
-        struct sockaddr_storage client_addr;
+        struct sockaddr_storage client_addr { };
         socklen_t client_len = sizeof(struct sockaddr_storage);
 
         ITcpSocket * tcpSocket = nullptr;
@@ -238,7 +240,7 @@ public:
             // Resolve address
             _status = SOCKET_STATUS_RESOLVING;
 
-            sockaddr_storage ss;
+            sockaddr_storage ss { };
             sint32 ss_len;
             if (!ResolveAddress(address, port, &ss, &ss_len))
             {
@@ -290,7 +292,7 @@ public:
 #pragma warning(disable : 4548) // expression before comma has no effect; expected expression with side-effect
                 FD_SET(_socket, &writeFD);
 #pragma warning(pop)
-                timeval timeout;
+                timeval timeout { };
                 timeout.tv_sec = 0;
                 timeout.tv_usec = 0;
                 if (select((sint32)(_socket + 1), nullptr, &writeFD, nullptr, &timeout) > 0)

@@ -26,8 +26,7 @@ NetworkGroup::NetworkGroup()
 }
 
 NetworkGroup::~NetworkGroup()
-{
-}
+= default;
 
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {

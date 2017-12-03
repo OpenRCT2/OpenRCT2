@@ -471,9 +471,7 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine * engine)
 }
 
 X8DrawingContext::~X8DrawingContext()
-{
-
-}
+= default;
 
 IDrawingEngine * X8DrawingContext::GetEngine()
 {

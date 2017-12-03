@@ -668,7 +668,7 @@ bool Network::CheckSRAND(uint32 tick, uint32 srand0)
         server_srand0_tick = 0;
         // Check that the server and client sprite hashes match
         const char *client_sprite_hash = sprite_checksum();
-        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash);
+        const bool sprites_mismatch = server_sprite_hash[0] != '\0' && strcmp(client_sprite_hash, server_sprite_hash) != 0;
         // Check PRNG values and sprite hashes, if exist
         if ((srand0 != server_srand0) || sprites_mismatch) {
 #ifdef DEBUG_DESYNC
@@ -1956,7 +1956,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
             connection.AuthStatus = NETWORK_AUTH_BADNAME;
         } else
         if (!passwordless) {
-            if ((!password || strlen(password) == 0) && _password.size() > 0) {
+            if ((!password || strlen(password) == 0) && !_password.empty()) {
                 connection.AuthStatus = NETWORK_AUTH_REQUIREPASSWORD;
             } else
             if (password && _password != password) {

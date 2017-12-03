@@ -19,14 +19,16 @@
 #include "NetworkTypes.h"
 #include "NetworkPacket.h"
 
+#include <memory>
+
 std::unique_ptr<NetworkPacket> NetworkPacket::Allocate()
 {
-    return std::unique_ptr<NetworkPacket>(new NetworkPacket); // change to make_unique in c++14
+    return std::make_unique<NetworkPacket>(); // change to make_unique in c++14
 }
 
 std::unique_ptr<NetworkPacket> NetworkPacket::Duplicate(NetworkPacket &packet)
 {
-    return std::unique_ptr<NetworkPacket>(new NetworkPacket(packet)); // change to make_unique in c++14
+    return std::make_unique<NetworkPacket>(packet); // change to make_unique in c++14
 }
 
 uint8 * NetworkPacket::GetData()

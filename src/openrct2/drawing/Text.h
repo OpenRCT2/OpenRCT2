@@ -39,8 +39,8 @@ class StaticLayout
 {
 private:
     utf8string  _buffer;
-    TextPaint   _paint;
-    sint32      _lineCount;
+    TextPaint   _paint{};
+    sint32      _lineCount{};
     sint32      _lineHeight;
     sint32      _maxWidth;
 

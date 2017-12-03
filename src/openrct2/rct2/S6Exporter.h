@@ -44,7 +44,7 @@ public:
     void ExportRide(rct2_ride * dst, const Ride * src);
 
 private:
-    rct_s6_data _s6;
+    rct_s6_data _s6{};
 
     void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);

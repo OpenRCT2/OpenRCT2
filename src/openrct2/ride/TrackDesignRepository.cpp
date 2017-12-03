@@ -54,7 +54,7 @@ std::string GetNameFromTrackPath(const std::string &path)
 {
     std::string name = Path::GetFileNameWithoutExtension(path);
     //The track name should be the file name until the first instance of a dot
-    name = name.substr(0, name.find_first_of("."));
+    name = name.substr(0, name.find_first_of('.'));
     return name;
 }
 
@@ -149,7 +149,7 @@ public:
         Guard::ArgumentNotNull(env);
     }
 
-    ~TrackDesignRepository() = default;
+    ~TrackDesignRepository() override = default;
 
     size_t GetCount() const override
     {

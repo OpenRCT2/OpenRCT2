@@ -90,7 +90,7 @@ static void vehicle_kill_all_passengers(rct_vehicle * vehicle);
 static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle);
 
 #define NO_SCREAM 254
-#define VEHICLE_INVALID_ID -1
+#define VEHICLE_INVALID_ID (-1)
 
 #define VEHICLE_MAX_SPIN_SPEED  1536
 #define VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING 700
@@ -1832,7 +1832,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
 
     rct_tile_element * tile_element = map_get_surface_element_at({x, y});
     // If vehicle above ground.
-    if (tile_element->base_height * 8 <= z) 
+    if (tile_element->base_height * 8 <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
@@ -1866,7 +1866,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 cover_found = true;
                 break;
             }
-            // Iterate through each tile_element. 
+            // Iterate through each tile_element.
         } while (!tile_element_is_last_for_tile(tile_element++));
 
         if (cover_found == false)
@@ -3163,11 +3163,7 @@ static bool vehicle_next_tower_element_is_top(rct_vehicle * vehicle)
         return true;
     }
 
-    if (track_element_get_type(tileElement + 2) == TRACK_ELEM_TOWER_SECTION)
-    {
-        return false;
-    }
-    return true;
+    return track_element_get_type(tileElement + 2) != TRACK_ELEM_TOWER_SECTION;
 }
 
 /**
@@ -7511,12 +7507,7 @@ static bool loc_6DB38B(rct_vehicle * vehicle, rct_tile_element * tileElement)
     sint32 trackType   = track_element_get_type(tileElement);
     sint32 vangleStart = TrackDefinitions[trackType].vangle_start;
 
-    if (vangleStart != _vehicleVAngleEndF64E36 || bankStart != _vehicleBankEndF64E37)
-    {
-        return false;
-    }
-
-    return true;
+    return !(vangleStart != _vehicleVAngleEndF64E36 || bankStart != _vehicleBankEndF64E37);
 }
 
 static void loc_6DB481(rct_vehicle * vehicle)
@@ -9521,7 +9512,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
     uint16 trackType = vehicle->track_direction >> 2;
 
     if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
-    {    
+    {
         speedModifier = (vehicle->var_CD == 5) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
     else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)

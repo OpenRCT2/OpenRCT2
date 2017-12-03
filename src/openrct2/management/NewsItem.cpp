@@ -123,12 +123,7 @@ static bool news_item_is_current_old()
         remove_time = 256;
     }
 
-    if (news_item_get(0)->Ticks >= remove_time)
-    {
-        return true;
-    }
-
-    return false;
+    return news_item_get(0)->Ticks >= remove_time;
 }
 
 /**

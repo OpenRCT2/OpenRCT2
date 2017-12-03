@@ -463,11 +463,7 @@ namespace CommandLine
             }
             else if (shortOption[1] != '\0')
             {
-                if (!ParseOptionValue(option, &shortOption[1]))
-                {
-                    return false;
-                }
-                return true;
+                return ParseOptionValue(option, &shortOption[1]);
             }
         }
 
