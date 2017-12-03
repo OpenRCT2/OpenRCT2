@@ -166,6 +166,9 @@ public:
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         ride->entrance_style = variant;
+
+        Ride * rct2ride = RCT2_ADDRESS(0x013628F8, Ride);
+        rct2ride->entrance_style = variant;
     }
 };
 
@@ -345,6 +348,7 @@ static uint8 TestTrackElementPaintCalls(uint8 rideType, uint8 trackType, uint8 t
 
         for (int currentRotation = 0; currentRotation < 4; currentRotation++) {
             gCurrentRotation = currentRotation;
+            RCT2_CurrentRotation = currentRotation;
             for (int direction = 0; direction < 4; direction++) {
                 RCT2_GLOBAL(0x009DE56A, sint16) = 64; // x
                 RCT2_GLOBAL(0x009DE56E, sint16) = 64; // y

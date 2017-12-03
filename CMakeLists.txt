@@ -132,6 +132,9 @@ add_custom_target(g2 DEPENDS ${PROJECT} g2.dat)
 # Include tests
 if (WITH_TESTS)
     enable_testing()
+    if (UNIX AND (NOT USE_MMAP) AND FORCE32)
+        include("${ROOT_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
+    endif ()
     include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
 endif ()
 

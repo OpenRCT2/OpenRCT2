@@ -269,8 +269,6 @@ extern bool gTinyFontAntiAliased;
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
 
-extern rct_drawpixelinfo *unk_140E9A8;
-
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x, sint32 y, sint32 width, sint32 height);
 void gfx_set_dirty_blocks(sint16 left, sint16 top, sint16 right, sint16 bottom);

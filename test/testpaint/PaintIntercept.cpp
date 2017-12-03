@@ -15,11 +15,11 @@
 #pragma endregion
 
 
+#include "hook.h"
 #include "PaintIntercept.hpp"
 #include "FunctionCall.hpp"
 
 #include <openrct2/common.h>
-#include <openrct2/rct2/hook.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/paint/supports.h>
 #include <openrct2/sprites.h>
@@ -233,7 +233,7 @@ namespace PaintIntercept {
 
     static uint8 InterceptPaint6C(registers *regs)
     {
-        if ((regs->ebp & 0x03) != get_current_rotation())
+        if ((regs->ebp & 0x03) != RCT2_CurrentRotation)
         {
             // Log error
             log_error("Ebp is different from current rotation");
@@ -273,7 +273,7 @@ namespace PaintIntercept {
     }
 
     static uint8 InterceptPaintFull(uint8 function, registers *regs) {
-        if ((regs->ebp & 0x03) != get_current_rotation()) {
+        if ((regs->ebp & 0x03) != RCT2_CurrentRotation) {
             // Log error
             log_error("Ebp is different from current rotation");
         }

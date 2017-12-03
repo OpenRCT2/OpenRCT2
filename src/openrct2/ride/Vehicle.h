@@ -20,6 +20,7 @@
 #include "../common.h"
 #include "../world/map.h"
 
+#pragma pack(push, 1)
 typedef struct rct_vehicle_colour {
     uint8 body_colour;
     uint8 trim_colour;
@@ -75,6 +76,7 @@ typedef struct rct_ride_entry_vehicle {
     sint8* peep_loading_positions;  // 0x61 , 0x7B
     uint16 peep_loading_positions_count;
 } rct_ride_entry_vehicle;
+#pragma pack(pop)
 
 typedef struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00

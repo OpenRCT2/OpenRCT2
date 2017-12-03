@@ -39,8 +39,6 @@ uint32 gPickupPeepImage;
 sint32 gPickupPeepX;
 sint32 gPickupPeepY;
 
-rct_drawpixelinfo *unk_140E9A8;
-
 /**
  * 12 elements from 0xF3 are the peep top colour, 12 elements from 0xCA are peep trouser colour
  *

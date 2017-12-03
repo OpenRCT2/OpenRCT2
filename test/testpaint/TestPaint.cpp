@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "hook.h"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
@@ -27,7 +28,6 @@
 #include <openrct2/paint/supports.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/interface/viewport.h>
-#include <openrct2/rct2/hook.h>
 
 namespace TestPaint
 {
@@ -47,7 +47,7 @@ namespace TestPaint
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
+        RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo *) = &dpi;
         gPaintSession.Unk140E9A8 = &dpi;
 
         Ride ride = {0};
@@ -59,10 +59,18 @@ namespace TestPaint
         rideEntry.vehicles[0] = vehicleEntry;
 
         gRideList[0] = ride;
+        RCT2_ADDRESS(0x013628F8, Ride)[0] = ride;
+
         gRideEntries[0] = &rideEntry;
 
         g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
         gPaintSession.Unk141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+
+        gCurrentViewportFlags = 0;
+        RCT2_GLOBAL(0x0141E9E4, uint32) = 0;
+
+        gScenarioTicks = 0;
+        RCT2_GLOBAL(0x00F663AC, uint32) = 0;
     }
 
     void ResetTunnels() {
