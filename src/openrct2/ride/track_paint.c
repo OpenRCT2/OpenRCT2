@@ -1779,7 +1779,7 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             session->TrackColours[SCHEME_3] = 0x21600000;
         }
         if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) {
-            uint32 ghost_id = construction_markers[gConfigGeneral.construction_marker_colour];
+            uint32 ghost_id = gConstructionMarker;
             session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
             session->TrackColours[SCHEME_TRACK] = ghost_id;
             session->TrackColours[SCHEME_SUPPORTS] = ghost_id;

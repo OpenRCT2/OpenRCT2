@@ -98,8 +98,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_RENDERING_GROUP = WIDX_PAGE_START,
     WIDX_TILE_SMOOTHING_CHECKBOX,
     WIDX_GRIDLINES_CHECKBOX,
-    WIDX_CONSTRUCTION_MARKER,
-    WIDX_CONSTRUCTION_MARKER_DROPDOWN,
     WIDX_DAY_NIGHT_CHECKBOX,
     WIDX_ENABLE_LIGHT_FX_CHECKBOX,
     WIDX_UPPER_CASE_BANNERS_CHECKBOX,
@@ -243,17 +241,15 @@ static rct_widget window_options_display_widgets[] = {
 static rct_widget window_options_rendering_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
-    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 151,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
+    { WWT_GROUPBOX,         1,  5,      304,    FRAME_RENDERING_START + 0,      FRAME_RENDERING_START + 136,    STR_RENDERING_GROUP,            STR_NONE },                             // Rendering group
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
-    { WWT_DROPDOWN,         1,  155,    299,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 55,     STR_NONE,                       STR_NONE },                             // Construction marker
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    FRAME_RENDERING_START + 46,     FRAME_RENDERING_START + 54,     STR_DROPDOWN_GLYPH,             STR_CONSTRUCTION_MARKER_COLOUR_TIP },
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
-    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
-    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
-    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 135,    FRAME_RENDERING_START + 146,    STR_SHOW_GUEST_PURCHASES, STR_SHOW_GUEST_PURCHASES_TIP },
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
+    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
+    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 101,    FRAME_RENDERING_START + 116,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
+    { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
 #undef FRAME_RENDERING_START
     { WIDGETS_END },
 };
@@ -481,8 +477,6 @@ static uint64 window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
     (1 << WIDX_GRIDLINES_CHECKBOX) |
-    (1 << WIDX_CONSTRUCTION_MARKER) |
-    (1 << WIDX_CONSTRUCTION_MARKER_DROPDOWN) |
     (1 << WIDX_DAY_NIGHT_CHECKBOX) |
     (1 << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
     (1 << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
@@ -1016,21 +1010,6 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         }
         break;
 
-    case WINDOW_OPTIONS_PAGE_RENDERING:
-        switch (widgetIndex) {
-        case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_CONSTRUCTION_MARKER_COLOUR_WHITE;
-            gDropdownItemsArgs[1] = STR_CONSTRUCTION_MARKER_COLOUR_TRANSLUCENT;
-
-            window_options_show_dropdown(w, widget, 2);
-
-            dropdown_set_checked(gConfigGeneral.construction_marker_colour, true);
-            break;
-        }
-        break;
-
     case WINDOW_OPTIONS_PAGE_CULTURE:
         switch (widgetIndex) {
         case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1313,18 +1292,6 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         }
         break;
 
-    case WINDOW_OPTIONS_PAGE_RENDERING:
-        switch (widgetIndex) {
-        case WIDX_CONSTRUCTION_MARKER_DROPDOWN:
-            if (dropdownIndex != (gConfigGeneral.construction_marker_colour ? 1 : 0)) {
-                gConfigGeneral.construction_marker_colour = dropdownIndex != 0;
-                config_save_default();
-                gfx_invalidate_screen();
-            }
-            break;
-        }
-        break;
-
     case WINDOW_OPTIONS_PAGE_CULTURE:
         switch (widgetIndex) {
         case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1587,17 +1554,9 @@ static void window_options_invalidate(rct_window *w)
         }
 
         widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-        // construction marker: white/translucent
-        static const rct_string_id construction_marker_colours[] = {
-            STR_CONSTRUCTION_MARKER_COLOUR_WHITE,
-            STR_CONSTRUCTION_MARKER_COLOUR_TRANSLUCENT,
-        };
-        window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER].text = construction_marker_colours[gConfigGeneral.construction_marker_colour];
 
         window_options_rendering_widgets[WIDX_TILE_SMOOTHING_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_GRIDLINES_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER].type = WWT_DROPDOWN;
-        window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_rendering_widgets[WIDX_DAY_NIGHT_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_ENABLE_LIGHT_FX_CHECKBOX].type = WWT_CHECKBOX;
         window_options_rendering_widgets[WIDX_UPPER_CASE_BANNERS_CHECKBOX].type = WWT_CHECKBOX;
@@ -1847,9 +1806,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
         break;
     }
-    case WINDOW_OPTIONS_PAGE_RENDERING:
-        gfx_draw_string_left(dpi, STR_CONSTRUCTION_MARKER, w, w->colours[1], w->x + 10, w->y + window_options_rendering_widgets[WIDX_CONSTRUCTION_MARKER].top + 1);
-        break;
     case WINDOW_OPTIONS_PAGE_CULTURE:
         gfx_draw_string_left(dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
 

@@ -41,7 +41,6 @@ typedef struct GeneralConfiguration
     // Map rendering
     bool        landscape_smoothing;
     bool        always_show_gridlines;
-    bool        construction_marker_colour;
     bool        day_night_cycle;
     bool        enable_light_fx;
     bool        upper_case_banners;

@@ -3062,9 +3062,9 @@ STR_3051    :Golf hole C
 STR_3052    :Golf hole D
 STR_3053    :Golf hole E
 STR_3054    :Loading...
-STR_3055    :White
-STR_3056    :Translucent
-STR_3057    :{WINDOW_COLOUR_2}Construction Marker:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Brick walls
 STR_3059    :Hedges
 STR_3060    :Ice blocks
@@ -4129,7 +4129,7 @@ STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display t
 STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
-STR_5821    :{SMALLFONT}{BLACK}Changes the colour of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
 STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm

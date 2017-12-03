@@ -144,7 +144,6 @@ namespace Config
             model->always_show_gridlines = reader->GetBoolean("always_show_gridlines", false);
             model->autosave_frequency = reader->GetSint32("autosave", AUTOSAVE_EVERY_5MINUTES);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
-            model->construction_marker_colour = reader->GetBoolean("construction_marker_colour", false);
             model->currency_format = reader->GetEnum<sint32>("currency_format", platform_get_locale_currency(), Enum_Currency);
             model->custom_currency_rate = reader->GetSint32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<sint32>("custom_currency_affix", CURRENCY_SUFFIX, Enum_CurrencySymbolAffix);
@@ -219,7 +218,6 @@ namespace Config
         writer->WriteBoolean("always_show_gridlines", model->always_show_gridlines);
         writer->WriteSint32("autosave", model->autosave_frequency);
         writer->WriteBoolean("confirmation_prompt", model->confirmation_prompt);
-        writer->WriteBoolean("construction_marker_colour", model->construction_marker_colour);
         writer->WriteEnum<sint32>("currency_format", model->currency_format, Enum_Currency);
         writer->WriteSint32("custom_currency_rate", model->custom_currency_rate);
         writer->WriteEnum<sint32>("custom_currency_affix", model->custom_currency_affix, Enum_CurrencySymbolAffix);
