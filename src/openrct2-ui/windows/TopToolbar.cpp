@@ -955,7 +955,7 @@ static void repaint_scenery_tool_down(sint16 x, sint16 y, rct_widgetindex widget
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
         // If can't repaint
-        if (!scenery_small_has_flag(scenery_entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+        if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
             return;
 
         gGameCommandErrorTitle = STR_CANT_REPAINT_THIS;
@@ -1152,7 +1152,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     if (scenery_type == SCENERY_TYPE_SMALL) {
         rct_scenery_entry* scenery_entry = get_small_scenery_entry(selected_scenery);
 
-        if (scenery_small_has_flag(scenery_entry, SMALL_SCENERY_FLAG_STACKABLE))
+        if (scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_STACKABLE))
         {
             can_raise_item = true;
         }
@@ -1222,7 +1222,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
     {
         // Small scenery
         rct_scenery_entry* scenery = get_small_scenery_entry(selected_scenery);
-        if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
         {
             uint8 cl = 0;
 
@@ -1272,7 +1272,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
 
             uint8 rotation = gWindowSceneryRotation;
 
-            if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+            if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
             {
                 rotation = util_rand() & 0xFF;
             }
@@ -1346,7 +1346,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
         *grid_y &= 0xFFE0;
         uint8 rotation = gWindowSceneryRotation;
 
-        if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
         {
             rotation = util_rand() & 0xFF;
         }
@@ -1580,7 +1580,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
 
             if (isCluster)
             {
-                if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+                if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
                 {
                     parameter_2 &= 0xFF00;
                     parameter_2 |= util_rand() & 3;
@@ -1589,7 +1589,7 @@ static void window_top_toolbar_scenery_tool_down(sint16 x, sint16 y, rct_window 
                 cur_grid_x += ((util_rand() % 16) - 8) * 32;
                 cur_grid_y += ((util_rand() % 16) - 8) * 32;
 
-                if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
+                if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_ROTATABLE))
                 {
                     gSceneryPlaceRotation = (gSceneryPlaceRotation + 1) & 3;
                 }
@@ -2413,7 +2413,7 @@ static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
         scenery = get_small_scenery_entry(selected_scenery);
 
         gMapSelectType = MAP_SELECT_TYPE_FULL;
-        if (!scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryClusterEnabled)
+        if (!scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE) && !gWindowSceneryClusterEnabled)
         {
             gMapSelectType = MAP_SELECT_TYPE_QUARTER_0 + ((parameter2 & 0xFF) ^ 2);
         }

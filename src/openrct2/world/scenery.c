@@ -123,13 +123,13 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
         return;
     }
 
-    if (gCheatsDisablePlantAging && (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)))
+    if (gCheatsDisablePlantAging && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)))
     {
         return;
     }
 
     if (
-        !scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
+        !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
         (gClimateCurrentWeather < WEATHER_RAIN) ||
         (tileElement->properties.scenery.age < 5)
     ) {
@@ -157,7 +157,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
             return;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             sceneryEntry = get_small_scenery_entry(tileElementAbove->properties.scenery.type);
-            if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
             {
                 scenery_increase_age(x, y, tileElement);
                 return;

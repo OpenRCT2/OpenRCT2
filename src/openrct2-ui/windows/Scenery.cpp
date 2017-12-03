@@ -936,7 +936,7 @@ void window_scenery_invalidate(rct_window *w)
             }
 
             rct_scenery_entry* sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
-            if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE)) {
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ROTATABLE)) {
                 window_scenery_widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WWT_FLATBTN;
             }
         }
@@ -994,11 +994,11 @@ void window_scenery_invalidate(rct_window *w)
         } else if (tabSelectedSceneryId < 0x100) {
             sceneryEntry = get_small_scenery_entry(tabSelectedSceneryId);
 
-            if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR | SMALL_SCENERY_FLAG_HAS_GLASS))
             {
                 window_scenery_widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
 
-                if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                     window_scenery_widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WWT_COLOURBTN;
             }
         }
@@ -1196,31 +1196,31 @@ void window_scenery_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 sc
                 sceneryEntry = get_small_scenery_entry(currentSceneryGlobalId);
                 uint32 imageId = sceneryEntry->image + gWindowSceneryRotation;
 
-                if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)) {
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR)) {
                     imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
-                    if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)) {
+                    if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR)) {
                         imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
                     }
                 }
 
                 uint16 spriteTop = (sceneryEntry->small_scenery.height / 4) + 0x2B;
 
-                if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE) &&
-                    scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)) {
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE) &&
+                    scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE)) {
                     spriteTop -= 0x0C;
                 }
 
                 gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
 
-                if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS)) {
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_HAS_GLASS)) {
                     imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004) +
                         (GlassPaletteIds[gWindowSceneryPrimaryColour] << 19);
 
                     gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
                 }
 
-                if (scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED_FG)) {
+                if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_ANIMATED_FG)) {
                     imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
                     gfx_draw_sprite(&clipdpi, imageId, 0x20, spriteTop, w->colours[1]);
                 }

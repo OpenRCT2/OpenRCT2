@@ -1837,7 +1837,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 continue;
 
             rct_scenery_entry * scenery = get_small_scenery_entry(tile_element->properties.scenery.type);
-            if (scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+            if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             {
                 cover_found = true;
                 break;

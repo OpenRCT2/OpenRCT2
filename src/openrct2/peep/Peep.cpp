@@ -5541,7 +5541,7 @@ static void peep_update_watering(rct_peep * peep)
 
             rct_scenery_entry * scenery_entry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
-            if (!scenery_small_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (!scenery_small_entry_has_flag(scenery_entry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
                 continue;
 
             tile_element->properties.scenery.age = 0;
@@ -6805,7 +6805,7 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
 
             rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tile_element->properties.scenery.type);
 
-            if (sceneryEntry == nullptr || !scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
+            if (sceneryEntry == nullptr || !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED))
             {
                 continue;
             }

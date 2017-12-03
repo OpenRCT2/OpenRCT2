@@ -4109,7 +4109,7 @@ bool map_surface_is_blocked(sint16 x, sint16 y){
         {
             return false;
         }
-        if (scenery_small_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
+        if (scenery_small_entry_has_flag(scenery, SMALL_SCENERY_FLAG_FULL_TILE))
             return true;
     }
     return false;

@@ -1756,7 +1756,7 @@ static void window_tile_inspector_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
             // Quadrant value
             const rct_scenery_entry * sceneryEntry = get_small_scenery_entry(tileElement->properties.scenery.type);
-            if (!(scenery_small_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
+            if (!(scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_FULL_TILE)))
             {
                 sint16 quadrant = (tileElement->type & TILE_ELEMENT_QUADRANT_MASK) >> 6;
                 static rct_string_id quadrant_string_idx[] = {
