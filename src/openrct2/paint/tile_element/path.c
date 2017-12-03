@@ -686,12 +686,12 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
     }
 
     if (footpath_element_path_scenery_is_ghost(tile_element)) {
-        sceneryImageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
+        sceneryImageFlags = gConstructionMarker;
     }
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        imageFlags = construction_markers[gConfigGeneral.construction_marker_colour];
+        imageFlags = gConstructionMarker;
     }
 
     sint16 x = session->MapPosition.x, y = session->MapPosition.y;

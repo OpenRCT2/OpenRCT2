@@ -211,7 +211,7 @@ extern "C" {
 extern uint8 gClipHeight;
 
 /** rct2: 0x00993CC4 */
-extern const uint32 construction_markers[];
+extern const uint32 gConstructionMarker;
 extern bool gShowDirtyVisuals;
 extern bool gPaintBoundingBoxes;
 
