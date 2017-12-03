@@ -30,8 +30,13 @@ namespace Platform
         case SPECIAL_FOLDER::USER_CONFIG:
         case SPECIAL_FOLDER::USER_DATA:
             {
-                auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                return Path::Combine(home, ".config");
+                auto path = GetEnvironmentPath("XDG_CONFIG_HOME");
+                if (path.empty())
+                {
+                    auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
+                    path = Path::Combine(home, ".config");
+                }
+                return path;
             }
         case SPECIAL_FOLDER::USER_HOME:
             return GetHomePath();
