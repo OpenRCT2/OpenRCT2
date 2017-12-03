@@ -7685,6 +7685,9 @@ void ride_set_to_default_inspection_interval(sint32 rideIndex)
  */
 void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 {
+    // It is unnecessary to deal with ride crash in headless server
+    if (gOpenRCT2Headless) return;
+
     Ride *ride = get_ride(rideIndex);
     rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
 
