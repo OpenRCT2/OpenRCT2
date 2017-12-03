@@ -167,7 +167,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TITLE_SEQUENCE_DROPDOWN,
     WIDX_TITLE_SEQUENCE_BUTTON,
     WIDX_AUTO_STAFF_PLACEMENT,
-    WIDX_HANDYMEN_MOW_DEFAULT,
     WIDX_AUTO_OPEN_SHOPS,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
@@ -329,16 +328,15 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    160,    169,    STR_DROPDOWN_GLYPH,                         STR_TITLE_SEQUENCE_TIP },                           // Title sequence dropdown button
     { WWT_DROPDOWN_BUTTON,  1,  26,     185,    174,    185,    STR_EDIT_TITLE_SEQUENCES_BUTTON,            STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },              // Edit title sequences button
     { WWT_CHECKBOX,         2,  10,     299,    189,    200,    STR_AUTO_STAFF_PLACEMENT,                   STR_AUTO_STAFF_PLACEMENT_TIP },                     // Auto staff placement
-    { WWT_CHECKBOX,         2,  10,     299,    204,    215,    STR_HANDYMEN_MOW_BY_DEFAULT,                STR_HANDYMEN_MOW_BY_DEFAULT_TIP },                  // Handymen mow by default
-    { WWT_CHECKBOX,         2,  10,     299,    219,    230,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
-    { WWT_DROPDOWN,         1,  155,    299,    234,    245,    STR_NONE,                                   STR_NONE },                                         // Default inspection time dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    235,    244,    STR_DROPDOWN_GLYPH,                         STR_DEFAULT_INSPECTION_INTERVAL_TIP },              // Default inspection time dropdown button
-    { WWT_SPINNER,          1,  155,    299,    249,    260,    STR_NONE,                                   STR_NONE },                                         // Window limit
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    250,    254,    STR_NUMERIC_UP,                             STR_NONE },                                         // Window limit up
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    255,    259,    STR_NUMERIC_DOWN,                           STR_NONE },                                         // Window limit down
-    { WWT_12,               1,  10,     298,    264,    275,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_DROPDOWN_BUTTON,  1,  10,     289,    278,    289,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_DROPDOWN_BUTTON,  1,  289,    299,    278,    289,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_CHECKBOX,         2,  10,     299,    209,    210,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
+    { WWT_DROPDOWN,         1,  155,    299,    224,    235,    STR_NONE,                                   STR_NONE },                                         // Default inspection time dropdown
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    225,    234,    STR_DROPDOWN_GLYPH,                         STR_DEFAULT_INSPECTION_INTERVAL_TIP },              // Default inspection time dropdown button
+    { WWT_SPINNER,          1,  155,    299,    239,    250,    STR_NONE,                                   STR_NONE },                                         // Window limit
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    240,    244,    STR_NUMERIC_UP,                             STR_NONE },                                         // Window limit up
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    245,    249,    STR_NUMERIC_DOWN,                           STR_NONE },                                         // Window limit down
+    { WWT_12,               1,  10,     298,    254,    265,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_DROPDOWN_BUTTON,  1,  10,     289,    268,    279,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_DROPDOWN_BUTTON,  1,  289,    299,    268,    279,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -541,7 +539,6 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_AUTOSAVE_DROPDOWN) |
     (1 << WIDX_TEST_UNFINISHED_TRACKS) |
     (1 << WIDX_AUTO_STAFF_PLACEMENT) |
-    (1 << WIDX_HANDYMEN_MOW_DEFAULT) |
     (1 << WIDX_DEBUGGING_TOOLS) |
     (1 << WIDX_TITLE_SEQUENCE) |
     (1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
@@ -829,11 +826,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_AUTO_STAFF_PLACEMENT:
             gConfigGeneral.auto_staff_placement ^= 1;
-            config_save_default();
-            window_invalidate(w);
-            break;
-        case WIDX_HANDYMEN_MOW_DEFAULT:
-            gConfigGeneral.handymen_mow_default = !gConfigGeneral.handymen_mow_default;
             config_save_default();
             window_invalidate(w);
             break;
@@ -1732,7 +1724,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-        widget_set_checkbox_value(w, WIDX_HANDYMEN_MOW_DEFAULT, gConfigGeneral.handymen_mow_default);
         widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
         widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
@@ -1744,7 +1735,6 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_HANDYMEN_MOW_DEFAULT].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
