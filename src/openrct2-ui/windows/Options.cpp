@@ -382,7 +382,6 @@ static const rct_string_id window_options_title_music_names[] = {
 };
 
 static const rct_string_id window_options_scale_quality_names[] = {
-    STR_SCALING_QUALITY_NN,
     STR_SCALING_QUALITY_LINEAR,
     STR_SCALING_QUALITY_SMOOTH_NN
 };
@@ -1014,14 +1013,13 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         case WIDX_SCALE_QUALITY_DROPDOWN:
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_NN;
-            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_LINEAR;
-            gDropdownItemsArgs[2] = STR_SCALING_QUALITY_SMOOTH_NN;
+            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
+            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
 
-            window_options_show_dropdown(w, widget, 3);
+            window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(gConfigGeneral.scale_quality, true);
+            // Note: offset by one to compensate for lack of NN option.
+            dropdown_set_checked(gConfigGeneral.scale_quality - 1, true);
             break;
         }
         break;
@@ -1311,8 +1309,10 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             }
             break;
         case WIDX_SCALE_QUALITY_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.scale_quality) {
-                gConfigGeneral.scale_quality = (uint8)dropdownIndex;
+            // Note: offset by one to compensate for lack of NN option.
+            if ((dropdownIndex + 1) != gConfigGeneral.scale_quality)
+            {
+                gConfigGeneral.scale_quality = (uint8)dropdownIndex + 1;
                 config_save_default();
                 gfx_invalidate_screen();
                 context_trigger_resize();
@@ -1553,7 +1553,7 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
         widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 
-        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality];
+        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality - 1];
 
         window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
         window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
