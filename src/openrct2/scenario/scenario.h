@@ -23,7 +23,6 @@
 #include "../object.h"
 #include "../rct12.h"
 #include "../rct2.h"
-#include "../rct2/addresses.h"
 #include "../ride/ride.h"
 #include "../ride/ride_ratings.h"
 #include "../world/banner.h"
@@ -366,11 +365,7 @@ extern "C" {
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
 
-#if defined(NO_RCT2)
 extern uint32 gScenarioTicks;
-#else
-#define gScenarioTicks                      RCT2_GLOBAL(RCT2_ADDRESS_SCENARIO_TICKS, uint32)
-#endif
 extern uint32 gScenarioSrand0;
 extern uint32 gScenarioSrand1;
 

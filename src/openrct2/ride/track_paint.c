@@ -1787,35 +1787,12 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             session->TrackColours[SCHEME_3] = ghost_id;
         }
 
-        bool useOriginalRidePaint = false;
-#ifndef NO_RCT2
-        useOriginalRidePaint = gUseOriginalRidePaint;
-#endif
         TRACK_PAINT_FUNCTION_GETTER paintFunctionGetter = RideTypeTrackPaintFunctions[ride->type];
-        if (paintFunctionGetter != NULL && !useOriginalRidePaint) {
+        if (paintFunctionGetter != NULL) {
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType, direction);
             if (paintFunction != NULL) {
                 paintFunction(session, rideIndex, trackSequence, direction, height, tileElement);
             }
-        }
-        else {
-#ifndef NO_RCT2
-            uint32 *trackDirectionList = (uint32 *)RideTypeTrackPaintFunctionsOld[ride->type][trackType];
-
-            if (trackDirectionList != NULL) {
-                // Have to call from this point as it pushes esi and expects callee to pop it
-                RCT2_CALLPROC_X(
-                    0x006C4934,
-                    ride->type,
-                    (sint32)trackDirectionList,
-                    direction,
-                    height,
-                    (sint32)tileElement,
-                    rideIndex * sizeof(Ride),
-                    trackSequence
-                );
-            }
-#endif
         }
     }
 

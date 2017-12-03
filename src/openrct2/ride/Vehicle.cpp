@@ -28,7 +28,6 @@
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"
 #include "../rct12.h"
-#include "../rct2/hook.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../world/map_animation.h"

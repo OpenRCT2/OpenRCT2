@@ -20,13 +20,10 @@
 #include "../common.h"
 #include "../world/map.h"
 
-#pragma pack(push, 1)
-/* size: 0x2 */
 typedef struct rct_vehicle_colour {
     uint8 body_colour;
     uint8 trim_colour;
 } rct_vehicle_colour;
-assert_struct_size(rct_vehicle_colour, 2);
 
 /**
  * Ride type vehicle structure.
@@ -76,13 +73,8 @@ typedef struct rct_ride_entry_vehicle {
     uint8 draw_order;
     uint8 num_vertical_frames_override; // 0x60 , 0x7A, A custom number that can be used rather than letting RCT2 determine it. Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     sint8* peep_loading_positions;  // 0x61 , 0x7B
-#ifdef NO_RCT2
     uint16 peep_loading_positions_count;
-#endif
 } rct_ride_entry_vehicle;
-#if defined(PLATFORM_32BIT) && !defined(NO_RCT2)
-assert_struct_size(rct_ride_entry_vehicle, 0x65);
-#endif
 
 typedef struct rct_vehicle {
     uint8 sprite_identifier;        // 0x00
@@ -201,8 +193,6 @@ typedef struct rct_vehicle {
     uint8 seat_rotation;            // 0xD8
     uint8 target_seat_rotation;     // 0xD9
 } rct_vehicle;
-assert_struct_size(rct_vehicle, 0xDA);
-#pragma pack(pop)
 
 typedef struct train_ref {
     rct_vehicle *head;

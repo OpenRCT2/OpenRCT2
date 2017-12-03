@@ -52,11 +52,9 @@ sint16 gSavedViewY;
 uint8 gSavedViewZoom;
 uint8 gSavedViewRotation;
 
-#ifdef NO_RCT2
 paint_entry *gNextFreePaintStruct;
 uint8 gCurrentRotation;
 uint32 gCurrentViewportFlags = 0;
-#endif
 
 static uint32 _currentImageType;
 

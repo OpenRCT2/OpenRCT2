@@ -71,9 +71,7 @@ bool gFirstTimeSaving = true;
 uint16 gSavedAge;
 uint32 gLastAutoSaveUpdate = 0;
 
-#if defined(NO_RCT2)
 uint32 gScenarioTicks;
-#endif
 uint32 gScenarioSrand0;
 uint32 gScenarioSrand1;
 

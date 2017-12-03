@@ -490,14 +490,6 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
  */
 bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool * underground)
 {
-#ifndef NO_RCT2
-    if (gUseOriginalRidePaint) {
-        sint32 eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-        RCT2_CALLFUNC_X(0x00662D5C, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-        return eax & 0xFF;
-    }
-#endif
-
     bool _9E32B1 = false;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
@@ -876,14 +868,6 @@ bool metal_a_supports_paint_setup(paint_session * session, uint8 supportType, ui
  */
 bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, uint8 segment, sint32 special, sint32 height, uint32 imageColourFlags)
 {
-#ifndef NO_RCT2
-    if (gUseOriginalRidePaint) {
-        sint32 eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-        RCT2_CALLFUNC_X(0x00663584, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-        return eax & 0xFF;
-    }
-#endif
-
     support_height * supportSegments = session->SupportSegments;
     uint8 originalSegment = segment;
 
@@ -1065,15 +1049,6 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
 bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags,
                                  rct_footpath_entry * pathEntry, bool * underground)
 {
-#ifndef NO_RCT2
-    if (gUseOriginalRidePaint) {
-        RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
-        sint32 eax = special, ebx = 0, ecx = 0, edx = height, esi = 0, _edi = supportType, ebp = imageColourFlags;
-        RCT2_CALLFUNC_X(0x006A2ECC, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-        return eax & 0xFF;
-    }
-#endif
-
     if (underground != NULL) {
         *underground = false; // AND
     }
@@ -1245,15 +1220,6 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
 bool path_b_supports_paint_setup(paint_session * session, sint32 segment, sint32 special, sint32 height, uint32 imageColourFlags,
                                  rct_footpath_entry * pathEntry)
 {
-#ifndef NO_RCT2
-    if (gUseOriginalRidePaint) {
-        RCT2_GLOBAL(0xF3EF6C, rct_footpath_entry *) = pathEntry;
-        sint32 eax = special, ebx = segment, ecx = 0, edx = height, esi = 0, _edi = 0, ebp = imageColourFlags;
-        RCT2_CALLFUNC_X(0x006A326B, &eax, &ebx, &ecx, &edx, &esi, &_edi, &ebp);
-        return eax & 0xFF;
-    }
-#endif
-
     support_height * supportSegments = session->SupportSegments;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {

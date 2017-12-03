@@ -3056,7 +3056,6 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
     }
 
     sint8 load_position = 0;
-#ifdef NO_RCT2
     // Safe, in case current seat > number of loading positions
     uint16 numSeatPositions = vehicle_type->peep_loading_positions_count;
     if (numSeatPositions != 0)
@@ -3068,10 +3067,6 @@ static void peep_update_ride_sub_state_1(rct_peep * peep)
         }
         load_position = vehicle_type->peep_loading_positions[loadPositionIndex];
     }
-#else
-    // Unsafe as we don't know the number of loading positions
-    load_position = vehicle_type->peep_loading_positions[peep->current_seat];
-#endif
 
     switch (vehicle->sprite_direction / 8)
     {

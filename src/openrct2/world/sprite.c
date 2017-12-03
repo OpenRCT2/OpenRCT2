@@ -21,20 +21,13 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "Fountain.h"
 #include "sprite.h"
 
-#ifdef NO_RCT2
 uint16 gSpriteListHead[6];
 uint16 gSpriteListCount[6];
 static rct_sprite _spriteList[MAX_SPRITES];
-#else
-uint16 *gSpriteListHead = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_HEAD, uint16);
-uint16 *gSpriteListCount = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LISTS_COUNT, uint16);
-static rct_sprite *_spriteList = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
-#endif
 
 static bool _spriteFlashingList[MAX_SPRITES];
 

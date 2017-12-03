@@ -51,7 +51,6 @@ sint32 object_entry_group_encoding[] = {
     CHUNK_ENCODING_ROTATE
 };
 
-#ifdef NO_RCT2
     rct_ride_entry              *gRideEntries[MAX_RIDE_OBJECTS];
     rct_small_scenery_entry     *gSmallSceneryEntries[MAX_SMALL_SCENERY_OBJECTS];
     rct_large_scenery_entry     *gLargeSceneryEntries[MAX_LARGE_SCENERY_OBJECTS];
@@ -63,9 +62,7 @@ sint32 object_entry_group_encoding[] = {
     rct_entrance_type           *gParkEntranceEntries[MAX_PARK_ENTRANCE_OBJECTS];
     rct_water_type              *gWaterEntries[MAX_WATER_OBJECTS];
     rct_stex_entry              *gStexEntries[MAX_SCENARIO_TEXT_OBJECTS];
-#endif
 
-#ifdef NO_RCT2
     static rct_object_entry_extended _objectEntriesRides[MAX_RIDE_OBJECTS];
     static rct_object_entry_extended _objectEntriesSmallScenery[MAX_SMALL_SCENERY_OBJECTS];
     static rct_object_entry_extended _objectEntriesLargeScenery[MAX_LARGE_SCENERY_OBJECTS];
@@ -77,19 +74,6 @@ sint32 object_entry_group_encoding[] = {
     static rct_object_entry_extended _objectEntriesParkEntrances[MAX_PARK_ENTRANCE_OBJECTS];
     static rct_object_entry_extended _objectEntriesWaters[MAX_WATER_OBJECTS];
     static rct_object_entry_extended _objectEntriesStexs[MAX_SCENARIO_TEXT_OBJECTS];
-#else
-    #define _objectEntriesRides             RCT2_ADDRESS(0x00F3F03C             ,rct_object_entry_extended)
-    #define _objectEntriesSmallScenery      RCT2_ADDRESS(0x00F3F03C + (128 * 20),rct_object_entry_extended)
-    #define _objectEntriesLargeScenery      RCT2_ADDRESS(0x00F3F03C + (380 * 20),rct_object_entry_extended)
-    #define _objectEntriesWalls             RCT2_ADDRESS(0x00F3F03C + (508 * 20),rct_object_entry_extended)
-    #define _objectEntriesBanners           RCT2_ADDRESS(0x00F3F03C + (636 * 20),rct_object_entry_extended)
-    #define _objectEntriesFootpaths         RCT2_ADDRESS(0x00F3F03C + (668 * 20),rct_object_entry_extended)
-    #define _objectEntriesFootpathAdditions RCT2_ADDRESS(0x00F3F03C + (684 * 20),rct_object_entry_extended)
-    #define _objectEntriesSceneryGroups     RCT2_ADDRESS(0x00F3F03C + (699 * 20),rct_object_entry_extended)
-    #define _objectEntriesParkEntrances     RCT2_ADDRESS(0x00F3F03C + (718 * 20),rct_object_entry_extended)
-    #define _objectEntriesWaters            RCT2_ADDRESS(0x00F3F03C + (719 * 20),rct_object_entry_extended)
-    #define _objectEntriesStexs             RCT2_ADDRESS(0x00F3F03C + (720 * 20),rct_object_entry_extended)
-#endif // NO_RCT2
 
 
 // 0x98D97C chunk address', 0x98D980 object_entries

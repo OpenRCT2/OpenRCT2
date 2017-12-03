@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../rct2/addresses.h"
 #include "../audio/audio.h"
 #include "../cheats.h"
 #include "../config/Config.h"
@@ -95,13 +94,8 @@ sint16 gMapSize;
 sint16 gMapSizeMaxXY;
 sint16 gMapBaseZ;
 
-#if defined(NO_RCT2)
 rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
-#else
-rct_tile_element *gTileElements = RCT2_ADDRESS(RCT2_ADDRESS_TILE_ELEMENTS, rct_tile_element);
-rct_tile_element **gTileElementTilePointers = RCT2_ADDRESS(RCT2_ADDRESS_TILE_TILE_ELEMENT_POINTERS, rct_tile_element*);
-#endif
 LocationXY16 gMapSelectionTiles[300];
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 

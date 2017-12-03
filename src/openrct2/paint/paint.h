@@ -17,12 +17,10 @@
 #ifndef _PAINT_H
 #define _PAINT_H
 
-#include "../rct2/addresses.h"
 #include "../common.h"
 #include "../world/map.h"
 #include "../interface/colour.h"
 #include "../drawing/drawing.h"
-
 
 typedef struct attached_paint_struct attached_paint_struct;
 typedef struct paint_struct paint_struct;
@@ -180,28 +178,6 @@ typedef struct paint_session
 } paint_session;
 
 extern paint_session gPaintSession;
-
-#ifndef NO_RCT2
-#define gPaintStructs               RCT2_ADDRESS(0x00EE788C, paint_entry)
-#define g_currently_drawn_item      RCT2_GLOBAL(0x009DE578, void*)
-#define gEndOfPaintStructArray      RCT2_GLOBAL(0x00EE7880, paint_entry *)
-#define gPaintSpritePosition        RCT2_GLOBAL(0x009DE568, LocationXY16)
-#define gPaintInteractionType       RCT2_GLOBAL(RCT2_ADDRESS_PAINT_SETUP_CURRENT_TYPE, uint8)
-#define gSupportSegments            RCT2_ADDRESS(RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS, support_height)
-#define gSupport                    RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_PAINT_TILE_MAX_HEIGHT, support_height)
-#define gWoodenSupportsPrependTo    RCT2_GLOBAL(0x009DEA58, paint_struct *)
-#define gPaintMapPosition           RCT2_GLOBAL(0x009DE574, LocationXY16)
-#define gLeftTunnels                RCT2_ADDRESS(0x009E3138, tunnel_entry)
-#define gLeftTunnelCount            RCT2_GLOBAL(0x0141F56A, uint8)
-#define gRightTunnels               RCT2_ADDRESS(0x009E30B6, tunnel_entry)
-#define gRightTunnelCount           RCT2_GLOBAL(0x0141F56B, uint8)
-#define gVerticalTunnelHeight       RCT2_GLOBAL(0x009E323C, uint8)
-#define gSurfaceElement             RCT2_GLOBAL(0x009E3250, rct_tile_element *)
-#define gDidPassSurface             RCT2_GLOBAL(0x009DE57C, bool)
-#define g141E9DB                    RCT2_GLOBAL(0x0141E9DB, uint8)
-#define gUnk141E9DC                 RCT2_GLOBAL(0x0141E9DC, uint16)
-#define gTrackColours               RCT2_ADDRESS(0x00F44198, uint32)
-#endif
 
 #ifdef __cplusplus
 extern "C" {

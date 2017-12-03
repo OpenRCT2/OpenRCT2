@@ -388,13 +388,8 @@ extern uint8        gMapSelectArrowDirection;
 
 extern uint8 gMapGroundFlags;
 
-#ifdef NO_RCT2
 extern rct_tile_element gTileElements[];
 extern rct_tile_element *gTileElementTilePointers[];
-#else
-extern rct_tile_element *gTileElements;
-extern rct_tile_element **gTileElementTilePointers;
-#endif
 
 extern LocationXY16 gMapSelectionTiles[300];
 extern rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];

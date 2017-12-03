@@ -3823,7 +3823,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -3860,7 +3859,6 @@
 				GCC_C_LANGUAGE_STANDARD = gnu11;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -3900,7 +3898,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -3939,7 +3936,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					OPENGL_NO_LINK,
 					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -3976,7 +3972,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
 					"$(inherited)",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;
@@ -4009,7 +4004,6 @@
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					OPENGL_NO_LINK,
 					"OPENRCT2_BUILD_INFO_HEADER=\"\\\"$(DERIVED_FILE_DIR)/gitversion.h\\\"\"",
-					NO_RCT2,
 					__ENABLE_LIGHTFX__,
 				);
 				GCC_WARN_64_TO_32_BIT_CONVERSION = NO;

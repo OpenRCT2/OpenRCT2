@@ -27,7 +27,6 @@
 #include "../ui/UiContext.h"
 
 #include "../platform/platform.h"
-#include "../rct2/addresses.h"
 #include "../util/util.h"
 #include "drawing.h"
 
@@ -162,11 +161,7 @@ extern "C"
     static bool     _csgLoaded = false;
 
     static size_t   _g1ElementsCount = 0;
-    #ifdef NO_RCT2
-        static rct_g1_element * _g1Elements = nullptr;
-    #else
-        static rct_g1_element * _g1Elements = RCT2_ADDRESS(RCT2_ADDRESS_G1_ELEMENTS, rct_g1_element);
-    #endif
+    static rct_g1_element * _g1Elements = nullptr;
     static rct_g1_element _g1Temp = { 0 };
     bool gTinyFontAntiAliased = false;
 
@@ -192,9 +187,7 @@ extern "C"
 
             // Read element headers
             _g1ElementsCount = 324206;
-#ifdef NO_RCT2
             _g1Elements = Memory::AllocateArray<rct_g1_element>(_g1ElementsCount);
-#endif
             bool is_rctc = header.num_entries == SPR_RCTC_G1_END;
             read_and_convert_gxdat(&fs, header.num_entries, is_rctc, _g1Elements);
             gTinyFontAntiAliased = is_rctc;
@@ -224,9 +217,7 @@ extern "C"
     void gfx_unload_g1()
     {
         SafeFree(_g1Buffer);
-    #ifdef NO_RCT2
         SafeFree(_g1Elements);
-    #endif
     }
 
     void gfx_unload_g2()

@@ -2732,11 +2732,7 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
                     selectedIndex = numItems;
 
                 gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-#ifdef NO_RCT2
                 gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->vehicleName;
-#else
-                gDropdownItemsArgs[numItems] = (rideEntryIndex << 16) | currentRideEntry->naming.name;
-#endif
 
                 numItems++;
             }
@@ -2832,11 +2828,7 @@ static void window_ride_vehicle_invalidate(rct_window *w)
     carsPerTrain = ride->num_cars_per_train - rideEntry->zero_cars;
 
     // Vehicle type
-#ifdef NO_RCT2
     window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->vehicleName;
-#else
-    window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->naming.name;
-#endif
     // Always show a dropdown button when changing subtypes is allowed
     if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
         window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
@@ -2932,9 +2924,7 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     y += 5;
 
     // Capacity
-#ifdef NO_RCT2
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
-#endif
     y += 5;
 
     if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))

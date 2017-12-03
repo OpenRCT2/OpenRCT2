@@ -392,14 +392,8 @@ extern "C" {
 rct_sprite *try_get_sprite(size_t spriteIndex);
 rct_sprite *get_sprite(size_t sprite_idx);
 
-#ifdef NO_RCT2
 extern uint16 gSpriteListHead[6];
 extern uint16 gSpriteListCount[6];
-#else
-extern uint16 *gSpriteListHead;
-extern uint16 *gSpriteListCount;
-#endif
-
 extern uint16 gSpriteSpatialIndex[0x10001];
 
 rct_sprite *create_sprite(uint8 bl);

@@ -17,7 +17,6 @@
 #ifndef _GAME_H_
 #define _GAME_H_
 
-#include "rct2/addresses.h"
 #include "common.h"
 #include "scenario/scenario.h"
 
@@ -140,11 +139,7 @@ extern rct_string_id gErrorStringId;
 
 extern GAME_COMMAND_POINTER* new_game_command_table[GAME_COMMAND_COUNT];
 
-#ifndef NO_RCT2
-#define gCurrentTicks               RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_TICKS, uint32)
-#else
 extern uint32 gCurrentTicks;
-#endif
 
 extern uint16 gTicksSinceLastUpdate;
 extern uint8 gGamePaused;

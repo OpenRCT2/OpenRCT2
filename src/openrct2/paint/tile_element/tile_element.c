@@ -143,11 +143,6 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     session->LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
     session->RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
     session->VerticalTunnelHeight = 0xFF;
-
-#ifndef NO_RCT2
-    RCT2_GLOBAL(0x009DE56A, uint16) = x;
-    RCT2_GLOBAL(0x009DE56E, uint16) = y;
-#endif
     session->MapPosition.x = x;
     session->MapPosition.y = y;
 
