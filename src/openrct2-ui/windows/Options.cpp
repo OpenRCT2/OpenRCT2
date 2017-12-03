@@ -22,6 +22,8 @@
  *      Padding between the widgets and the window needs reducing, an artifact from originally being inside group boxes.
  */
 
+#include <cmath>
+
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
@@ -87,7 +89,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_DRAWING_ENGINE_DROPDOWN,
     WIDX_SCALE_QUALITY,
     WIDX_SCALE_QUALITY_DROPDOWN,
-    WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX,
     WIDX_STEAM_OVERLAY_PAUSE,
     WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
@@ -212,7 +213,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_GROUPBOX,         1,  5,      304,    53,     205,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
+    { WWT_GROUPBOX,         1,  5,      304,    53,     192,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
 
     { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE },                 // Fullscreen
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
@@ -229,13 +230,12 @@ static rct_widget window_options_display_widgets[] = {
 
         { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
         { WWT_DROPDOWN_BUTTON,  1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
-        { WWT_CHECKBOX,         1,  25,     290,    143,    154,    STR_USE_NN_AT_INTEGER_SCALE,    STR_USE_NN_AT_INTEGER_SCALE_TIP },  // Use nn scaling at integer scales
 
-        { WWT_CHECKBOX,         1,  25,     290,    158,    169,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
+        { WWT_CHECKBOX,         1,  25,     290,    150,    151,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
 
-    { WWT_CHECKBOX,         1,  10,     290,    174,    185,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
-    { WWT_CHECKBOX,         1,  155,    299,    174,    185,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
-    { WWT_CHECKBOX,         1,  10,     290,    189,    200,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
+    { WWT_CHECKBOX,         1,  11,     290,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
+    { WWT_CHECKBOX,         1,  155,    299,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
+    { WWT_CHECKBOX,         1,  11,     290,    176,    187,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
 
 
     { WIDGETS_END },
@@ -382,9 +382,7 @@ static const rct_string_id window_options_title_music_names[] = {
 };
 
 static const rct_string_id window_options_scale_quality_names[] = {
-    STR_SCALING_QUALITY_NN,
     STR_SCALING_QUALITY_LINEAR,
-    STR_SCALING_QUALITY_ANISOTROPIC,
     STR_SCALING_QUALITY_SMOOTH_NN
 };
 
@@ -480,8 +478,7 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_SCALE_UP) |
     (1 << WIDX_SCALE_DOWN) |
     (1 << WIDX_SCALE_QUALITY) |
-    (1 << WIDX_SCALE_QUALITY_DROPDOWN) |
-    (1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX),
+    (1 << WIDX_SCALE_QUALITY_DROPDOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_TILE_SMOOTHING_CHECKBOX) |
@@ -649,12 +646,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             gConfigGeneral.steam_overlay_pause ^= 1;
             config_save_default();
             window_invalidate(w);
-            break;
-        case WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX:
-            gConfigGeneral.use_nn_at_integer_scales ^= 1;
-            config_save_default();
-            gfx_invalidate_screen();
-            context_trigger_resize();
             break;
         }
         break;
@@ -1022,16 +1013,13 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         case WIDX_SCALE_QUALITY_DROPDOWN:
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
             gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsFormat[3] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_NN;
-            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_LINEAR;
-            gDropdownItemsArgs[2] = STR_SCALING_QUALITY_ANISOTROPIC;
-            gDropdownItemsArgs[3] = STR_SCALING_QUALITY_SMOOTH_NN;
+            gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
+            gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
 
-            window_options_show_dropdown(w, widget, 4);
+            window_options_show_dropdown(w, widget, 2);
 
-            dropdown_set_checked(gConfigGeneral.scale_quality, true);
+            // Note: offset by one to compensate for lack of NN option.
+            dropdown_set_checked(gConfigGeneral.scale_quality - 1, true);
             break;
         }
         break;
@@ -1321,8 +1309,10 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             }
             break;
         case WIDX_SCALE_QUALITY_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.scale_quality) {
-                gConfigGeneral.scale_quality = (uint8)dropdownIndex;
+            // Note: offset by one to compensate for lack of NN option.
+            if ((dropdownIndex + 1) != gConfigGeneral.scale_quality)
+            {
+                gConfigGeneral.scale_quality = (uint8)dropdownIndex + 1;
                 config_save_default();
                 gfx_invalidate_screen();
                 context_trigger_resize();
@@ -1534,25 +1524,36 @@ static void window_options_invalidate(rct_window *w)
             w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
         }
 
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
+        // Disable Steam Overlay checkbox when using software rendering.
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE)
+        {
+            w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+        else
+        {
+            w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
+        }
+
+        // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
+        // In the latter case, nearest neighbour rendering will be used to scale.
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE ||
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
             w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY);
             w->disabled_widgets |= (1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            w->disabled_widgets |= (1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX);
-            w->disabled_widgets |= (1 << WIDX_STEAM_OVERLAY_PAUSE);
-        } else {
+        }
+        else
+        {
             w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY);
             w->disabled_widgets &= ~(1 << WIDX_SCALE_QUALITY_DROPDOWN);
-            w->disabled_widgets &= ~(1 << WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX);
-            w->disabled_widgets &= ~(1 << WIDX_STEAM_OVERLAY_PAUSE);
         }
 
         widget_set_checkbox_value(w, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
         widget_set_checkbox_value(w, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
         widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
         widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-        widget_set_checkbox_value(w, WIDX_SCALE_USE_NN_AT_INTEGER_SCALES_CHECKBOX, gConfigGeneral.use_nn_at_integer_scales);
 
-        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality];
+        window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality - 1];
 
         window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
         window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1592,6 +1593,7 @@ static void window_options_invalidate(rct_window *w)
             w->enabled_widgets |= (1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             w->disabled_widgets &= ~(1 << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
+
         widget_set_checkbox_value(w, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
         // construction marker: white/translucent
         static const rct_string_id construction_marker_colours[] = {
@@ -1847,7 +1849,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
 
         colour = w->colours[1];
-        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE) {
+        if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE ||
+            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        {
             colour |= 0x40;
         }
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);

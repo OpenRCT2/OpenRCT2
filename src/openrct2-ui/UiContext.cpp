@@ -492,12 +492,11 @@ public:
     {
         char scaleQualityBuffer[4];
         _scaleQuality = gConfigGeneral.scale_quality;
-        if (gConfigGeneral.use_nn_at_integer_scales &&
-            gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
+        if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
             _scaleQuality = SCALE_QUALITY_NN;
         }
-        
+
         sint32 scaleQuality = _scaleQuality;
         if (_scaleQuality == SCALE_QUALITY_SMOOTH_NN)
         {

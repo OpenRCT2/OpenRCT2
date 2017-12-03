@@ -4032,13 +4032,13 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :{SMALLFONT}{BLACK}Sets the current weather in park
-STR_5727    :Scaling quality
+STR_5727    :Scaling quality:
 STR_5728    :Requires hardware display option
 STR_5729    :{SMALLFONT}{BLACK}Requires hardware display option
-STR_5730    :Nearest neighbour
+STR_5730    :<removed string - do not use>
 STR_5731    :Linear
-STR_5732    :Anisotropic
-STR_5733    :Use NN scaling at integer scales
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Network Status
@@ -4125,8 +4125,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
 STR_5816    :{SMALLFONT}{BLACK}Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Sets UI scaling type{NEWLINE}{NEWLINE}Nearest Neighbour is sharp but causes distortion at non-integer scales.{NEWLINE}Linear and Anisotropic are smooth but blurry.{NEWLINE}Smooth NN is sharp even at non-integer scales but can cause a minor performance hit.
-STR_5818    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Use nearest neighbour scaling{NEWLINE}when window scaling factor set{NEWLINE}to integer values (1, 2, 3, etc)
+STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbour scaling is sharp, but can cause a minor performance hit.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5821    :{SMALLFONT}{BLACK}Changes the colour of the construction marker when building rides,{NEWLINE}paths, shops, scenery, etc.
