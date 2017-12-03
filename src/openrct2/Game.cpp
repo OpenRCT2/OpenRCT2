@@ -301,7 +301,7 @@ void update_palette_effects()
         {
             uint8 * vs = &g1->offset[j * 3];
             uint8 * vd = &gGamePalette[243 * 4];
-            sint32      n = 3;
+            sint32  n  = 3;
             for (sint32 i = 0; i < n; i++)
             {
                 vd[0] = vs[0];
@@ -649,13 +649,19 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
                 return cost;
             }
 
-            if (network_get_mode() != NETWORK_MODE_NONE && !(flags & GAME_COMMAND_FLAG_NETWORKED) && !(flags & GAME_COMMAND_FLAG_GHOST) && !(flags & GAME_COMMAND_FLAG_5) && gGameCommandNestLevel == 1 /* Send only top-level commands */)
+            if (network_get_mode() != NETWORK_MODE_NONE &&
+                !(flags & GAME_COMMAND_FLAG_NETWORKED) &&
+                !(flags & GAME_COMMAND_FLAG_GHOST) &&
+                !(flags & GAME_COMMAND_FLAG_5) &&
+                gGameCommandNestLevel == 1) /* Send only top-level commands */
             {
+                // Disable these commands over the network
                 if (command != GAME_COMMAND_LOAD_OR_QUIT)
-                { // Disable these commands over the network
+                {
                     network_send_gamecmd(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp, game_command_callback_get_index(game_command_callback));
                     if (network_get_mode() == NETWORK_MODE_CLIENT)
-                    { // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it
+                    {
+                        // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it.
                         game_command_callback = 0;
                         // Decrement nest count
                         gGameCommandNestLevel--;
