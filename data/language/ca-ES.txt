@@ -3495,7 +3495,7 @@ STR_5153    :Edita temes...
 STR_5154    :Renderitzat per maquinari
 STR_5155    :Permet provar atraccions per acabar
 STR_5156    :{SMALLFONT}{BLACK}Permet provar la majoria d'atraccions fins i tot si la via no està acabada. No s'aplica als modes de bloc de seccions.
-STR_5157    :Desbloca preus
+STR_5157    :<removed string - do not use>
 STR_5158    :Surt al menú principal
 STR_5159    :Surt de l'OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, any {POP16}{COMMA16}
@@ -4035,7 +4035,7 @@ STR_5726    :{SMALLFONT}{BLACK}Escolliu el temps que farà al parc.
 STR_5727    :Qualitat d'escalat
 STR_5728    :Requereix l'opció de renderitzat amb maquinari
 STR_5729    :{SMALLFONT}{BLACK}Requereix que s'activi l'opció per realitzar el renderitzat via maquinari gràfic.
-STR_5730    :Pròxim
+STR_5730    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}
 STR_5731    :Lineal
 STR_5732    :Anisotròpic
 STR_5733    :Empra l'escalat pròxim per escales enteres
@@ -4125,8 +4125,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra el comptador de FPS del joc.
 STR_5816    :{SMALLFONT}{BLACK}Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
-STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.
-STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}nearest neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
+STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Estableix el tipus d'escalat de la interfície gràfica.{NEWLINE}{NEWLINE}El mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} crea imatges nítides però les distorsiona  en escales no enteres.{NEWLINE}Lineal i anisotròpic són més suaus però la imatge pot semblar borrosa.{NEWLINE}{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau genera imatges nítides, fins i tot amb escales no enteres (pot causar problemes de rendiment).
+STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
 STR_5821    :{SMALLFONT}{BLACK}Canvia el color del marcador de construcció quan s'estan construint{NEWLINE}atraccions, camins, botigues, estands, decoracions...
@@ -4456,6 +4456,23 @@ STR_6144    :Mostra el redibuixat
 STR_6145    :{SMALLFONT}{BLACK}Estableix la velocitat límit pels acceleradors.
 STR_6146    :Activa totes les seccions de via dibuixables
 STR_6147    :{SMALLFONT}{BLACK}Activa totes les peces de via que permet construir aquest tipus d'atracció a la finestra de construcció, sense importar si el vehicle les admet.
+STR_6148    :S'està connectant amb el servidor mestre...
+STR_6149    :No s'ha pogut connectar amb el servidor mestre.
+STR_6150    :Resposta del servidor mestre no vàlida (sense número JSON)
+STR_6151    :El servidor mestre no ha retornat una llista de servidors
+STR_6152    :Resposta del servidor mestre no vàlida (sense taula JSON)
+STR_6153    :Paga per entrar al parc / Paga per atracció
+STR_6154    :No es recomana executar l'OpenRCT2 amb privilegis elevats.
+STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d'ordres.
+STR_6156    :El nom està reservat.
+STR_6157    :Consola
+STR_6158    :Aquest arxiu no s'ha pogut carregar...{NEWLINE}Versió RCTC incompatible: {COMMA16}
+STR_6159    :{LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET} suau
+STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
+STR_6161    :Mostra les línies de la quadrícula
+STR_6162    :{LEFTGUILLEMET}Wild Mouse{RIGHTGUILLEMET} giratori
+STR_6163    :Vagons amb forma de ratolí que es mouen a tota velocitat per giravolts i petits descensos, girant suaument per desorientar els passatgers.
+STR_6164    :{WHITE}{CROSS}
 
 #############
 # Scenarios #

@@ -3492,7 +3492,7 @@ STR_5153    :Editar temas...
 STR_5154    :Renderizado por hardware
 STR_5155    :Permitir tests de atracciones sin finalizar
 STR_5156    :{SMALLFONT}{BLACK}Permite probar la mayoría de atracciones incluso cuando aún no se han terminado de construir. No aplica a los modos de funcionamiento de secciones de bloques
-STR_5157    :Desbloquear precios
+STR_5157    :<removed string - do not use>
 STR_5158    :Salir al menú principal
 STR_5159    :Salir de OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Año {POP16}{COMMA16}
@@ -4121,7 +4121,7 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Muestra la cantidad de FPS en el juego.
 STR_5816    :{SMALLFONT}{BLACK}Establece la relación de escala del juego.{NEWLINE}Suele ser util cuando se juega en pantallas con resoluciones altas.
-STR_5817    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Establece el tipo de escala usado para la interfaz.
+STR_5817    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Establecer tipo de escalado de UI{NEWLINE}{NEWLINE}"Escalado Próximo": Nítido pero causa distorsión en escalas no enteras.{NEWLINE}"Escalado Lineal y Anisotrópico": son suaves pero borrosos.{NEWLINE}"Escalado Próximo Suave": nítido incluso en escalas no enteras, pero puede causar un golpe de rendimiento menor.
 STR_5818    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Usar escala "vecino próximo" (nearest-neighbour) si el coeficiente de la escala toma valores enteros.
 STR_5819    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
 STR_5820    :{SMALLFONT}{BLACK}Minimizar el juego si se pierde el foco en el modo de pantalla completa.
@@ -4452,6 +4452,20 @@ STR_6144    :Mostrar redibujado
 STR_6145    :{SMALLFONT}{BLACK}Fijar límite de velocidad para los impulsores
 STR_6146    :Habilitar todas las piezas de vía Dibujables
 STR_6147    :{SMALLFONT}{BLACK}Habilitar todas las piezas de vías que el tipo de atraccion es apto en la ventana de construcción, independientemente de si el vehículo es compatible.
+STR_6148    :Conectando con Servidor Maestro...
+STR_6149    :No se pudo conectar al Servidor Maestro
+STR_6150    :Respuesta no valida desde Servidor Maestro (no JSON number)
+STR_6151    :Servidor Maestro no devolvió Lista de Servidores
+STR_6152    :Respuesta no validad de Servidor Maestro (no JSON array)
+STR_6153    :Pagar por entrada / Pagar por atracción
+STR_6154    :No es recomendable iniciar OpenRCT2 con privilegios elevados.
+STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno desde la línea de comando.
+STR_6156    :El nombre está reservado
+STR_6157    :Consola
+STR_6158    :No se pudo cargar este archivo...{NEWLINE}Version RCT incompatible: {COMMA16}
+STR_6159    :Próximo Suave
+STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
+STR_6161    :Alternar Líneas de Cuadrícula
 
 ##############
 # Escenarios #
