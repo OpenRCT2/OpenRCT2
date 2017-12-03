@@ -1536,12 +1536,9 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     // Calculate how many saves we need to delete.
     numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
 
-    for (size_t i = 0; numAutosavesToDelete > 0;)
+    for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
         platform_file_delete(autosaveFiles[i]);
-
-        i++;
-        numAutosavesToDelete--;
     }
 
 
