@@ -7685,9 +7685,6 @@ void ride_set_to_default_inspection_interval(sint32 rideIndex)
  */
 void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
 {
-    // It is unnecessary to deal with ride crash in headless server
-    if (gOpenRCT2Headless) return;
-
     Ride *ride = get_ride(rideIndex);
     rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[vehicleIndex]);
 
@@ -7698,7 +7695,7 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
         rct_window * w = context_open_intent(intent);
         intent_release(intent);
 
-        if (w->viewport != NULL) {
+        if (w != NULL && w->viewport != NULL) {
             w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }
     }
