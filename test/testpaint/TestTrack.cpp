@@ -166,9 +166,7 @@ public:
                          Ride *ride, rct_ride_entry *rideEntry
     ) override {
         ride->entrance_style = variant;
-
-        Ride * rct2ride = RCT2_ADDRESS(0x013628F8, Ride);
-        rct2ride->entrance_style = variant;
+        RCT2_Rides[0].entrance_style = variant;
     }
 };
 

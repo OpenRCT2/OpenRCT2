@@ -25,10 +25,11 @@
 #include <openrct2/ride/ride.h>
 #include "addresses.h"
 
-#define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
-#define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element*)
+#define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
+#define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element *)
+rct_sprite *sprite_list =           RCT2_ADDRESS(0x010E63BC, rct_sprite);
+
 Ride gRideList[MAX_RIDES];
-rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
 sint16 gMapSizeUnits;
 sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;

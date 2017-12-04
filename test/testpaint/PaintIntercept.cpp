@@ -18,6 +18,7 @@
 #include "hook.h"
 #include "PaintIntercept.hpp"
 #include "FunctionCall.hpp"
+#include "TestPaint.hpp"
 
 #include <openrct2/common.h>
 #include <openrct2/interface/viewport.h>
@@ -279,9 +280,9 @@ namespace PaintIntercept {
         }
 
         LocationXYZ16 boundOffset = {
-            RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X, sint16),
-            RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y, sint16),
-            RCT2_GLOBAL(RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z, sint16)
+            RCT2_PaintBoundBoxOffsetX,
+            RCT2_PaintBoundBoxOffsetY,
+            RCT2_PaintBoundBoxOffsetZ
         };
 
         paint_struct *out = PaintFull(

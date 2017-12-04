@@ -35,14 +35,6 @@
 #define RCT2_ADDRESS(address, type)             ((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address)))
 #define RCT2_GLOBAL(address, type)              (*((type*)(GOOD_PLACE_FOR_DATA_SEGMENT - 0x8a4000 + (address))))
 
-#define RCT2_ADDRESS_RIDE_ENTRIES                   0x009ACFA4
-#define RCT2_ADDRESS_CURRENT_ROTATION               0x0141E9E0
-#define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
-#define RCT2_ADDRESS_CURRENT_SUPPORT_SEGMENTS       0x0141E9B4
-#define RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_X        0x009DEA52
-#define RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Y        0x009DEA54
-#define RCT2_ADDRESS_PAINT_BOUNDBOX_OFFSET_Z        0x009DEA56
-
 #ifdef __cplusplus
 extern "C"
 {
