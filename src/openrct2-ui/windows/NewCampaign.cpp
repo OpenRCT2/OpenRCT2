@@ -202,27 +202,26 @@ rct_window * window_new_campaign_open(sint16 campaignType)
 static void window_new_campaign_get_shop_items()
 {
     sint32 i, numItems;
-    Ride *ride;
+    Ride * ride;
 
     uint64 items = 0;
-    FOR_ALL_RIDES(i, ride) {
+    FOR_ALL_RIDES(i, ride)
+    {
         rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == nullptr) {
+        if (rideEntry == nullptr)
+        {
             continue;
         }
         uint8 itemType = rideEntry->shop_item;
-        if (itemType != SHOP_ITEM_NONE)
-            items |= 1LL << itemType;
+        if (itemType != SHOP_ITEM_NONE && shop_item_is_food_or_drink(itemType))
+            items |= 1ULL << itemType;
     }
-
-    // Remove certain items?
-    items &= 0x0011FF78036BA3E0;
 
     //
     numItems = 0;
     for (i = 0; i < 64; i++)
     {
-        if (items & (1LL << i))
+        if (items & (1ULL << i))
         {
             window_new_campaign_shop_items[numItems++] = i;
         }
