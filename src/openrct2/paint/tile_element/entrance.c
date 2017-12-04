@@ -86,7 +86,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST){
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        image_id = gConstructionMarker;
+        image_id = CONSTRUCTION_MARKER;
         _unk9E32BC = image_id;
         if (transparant_image_id)
             transparant_image_id = image_id;
@@ -200,7 +200,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     uint32 image_id, ghost_id = 0;
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST){
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        ghost_id = gConstructionMarker;
+        ghost_id = CONSTRUCTION_MARKER;
         _unk9E32BC = ghost_id;
     }
 

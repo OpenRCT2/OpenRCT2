@@ -60,7 +60,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
     }
     if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        baseImageid = gConstructionMarker;
+        baseImageid = CONSTRUCTION_MARKER;
     }
     uint32 dword_F64EB0 = baseImageid;
 

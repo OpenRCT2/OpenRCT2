@@ -686,12 +686,12 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
     }
 
     if (footpath_element_path_scenery_is_ghost(tile_element)) {
-        sceneryImageFlags = gConstructionMarker;
+        sceneryImageFlags = CONSTRUCTION_MARKER;
     }
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        imageFlags = gConstructionMarker;
+        imageFlags = CONSTRUCTION_MARKER;
     }
 
     sint16 x = session->MapPosition.x, y = session->MapPosition.y;

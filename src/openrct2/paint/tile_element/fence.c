@@ -173,7 +173,7 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
 
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        dword_141F710 = gConstructionMarker;
+        dword_141F710 = CONSTRUCTION_MARKER;
     }
 
     // Save tile_element
