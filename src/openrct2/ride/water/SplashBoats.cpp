@@ -1138,6 +1138,38 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
+static void paint_splash_boats_track_on_ride_photo(
+    paint_session * session,
+    uint8 rideIndex,
+    uint8 trackSequence,
+    uint8 direction,
+    sint32 height,
+    rct_tile_element * tileElement)
+{
+    switch (direction)
+    {
+    case 0:
+        sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+        break;
+    case 1:
+        sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+        break;
+    case 2:
+        sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+        break;
+    case 3:
+        sub_98196C_rotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+        break;
+    }
+
+    paint_splash_boats_track_flat(session, rideIndex, trackSequence, direction, height, tileElement);
+
+    track_paint_util_onride_photo_paint(session, direction, height + 3, tileElement);
+    paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_6);
+    paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
+    paint_util_set_general_support_height(session, height + 48, 0x20);
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(sint32 trackType, sint32 direction)
 {
     switch (trackType)
@@ -1182,6 +1214,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(sint32 trackType, sin
         return paint_splash_boats_track_s_bend_left;
     case TRACK_ELEM_S_BEND_RIGHT:
         return paint_splash_boats_track_s_bend_right;
+
+    // Added by OpenRCT2
+    case TRACK_ELEM_ON_RIDE_PHOTO:
+        return paint_splash_boats_track_on_ride_photo;
     }
 
     return NULL;
