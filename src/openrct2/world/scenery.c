@@ -14,19 +14,20 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../game.h"
 #include "../common.h"
-#include "../localisation/localisation.h"
-#include "../scenario/scenario.h"
 #include "../cheats.h"
+#include "../game.h"
+#include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../object_list.h"
+#include "../scenario/scenario.h"
 #include "Climate.h"
+#include "footpath.h"
 #include "Fountain.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
-#include "footpath.h"
+#include "SmallScenery.h"
 
 uint8 gWindowSceneryActiveTabIndex;
 uint16 gWindowSceneryTabSelections[20];
@@ -122,13 +123,13 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
         return;
     }
 
-    if (gCheatsDisablePlantAging &&
-        (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED)) {
+    if (gCheatsDisablePlantAging && (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED)))
+    {
         return;
     }
 
     if (
-        !(sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
+        !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
         (gClimateCurrentWeather < WEATHER_RAIN) ||
         (tileElement->properties.scenery.age < 5)
     ) {
@@ -156,7 +157,8 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
             return;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             sceneryEntry = get_small_scenery_entry(tileElementAbove->properties.scenery.type);
-            if (sceneryEntry->small_scenery.flags & SMALL_SCENERY_FLAG_VOFFSET_CENTRE) {
+            if (scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
+            {
                 scenery_increase_age(x, y, tileElement);
                 return;
             }
