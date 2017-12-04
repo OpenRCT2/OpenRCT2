@@ -103,7 +103,15 @@ static sint32 screenshot_get_next_path(char *path, size_t size)
 #endif
 
     // Glue together path and filename
-    snprintf(path, size, "%s%s %d-%02d-%02d %02d-%02d-%02d.png", screenshotPath, park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
+    safe_strcpy(path, screenshotPath, size);
+    path_end_with_separator(path, size);
+    auto fileNameCh = strchr(path, '\0');
+    if (fileNameCh == nullptr)
+    {
+        log_error("Unable to generate a screenshot filename.");
+        return -1;
+    }
+    snprintf(fileNameCh, size - strlen(path), "%s %d-%02d-%02d %02d-%02d-%02d.png", park_name, currentDate.year, currentDate.month, currentDate.day, currentTime.hour, currentTime.minute, currentTime.second);
 
     if (!platform_file_exists(path)) {
         return 0; // path ok
