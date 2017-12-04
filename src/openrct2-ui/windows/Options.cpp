@@ -225,7 +225,7 @@ static rct_widget window_options_display_widgets[] = {
         { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
         { WWT_DROPDOWN_BUTTON,  1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
 
-        { WWT_CHECKBOX,         1,  25,     290,    150,    151,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
+        { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
 
     { WWT_CHECKBOX,         1,  11,     290,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    299,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
