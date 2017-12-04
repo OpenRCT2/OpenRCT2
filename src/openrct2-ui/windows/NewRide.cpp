@@ -1098,11 +1098,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
                 continue;
         }
 
-#ifdef NO_RCT2
         const char * vehicleName = language_get_string(currentRideEntry->vehicleName);
-#else
-        const char * vehicleName = language_get_string(currentRideEntry->naming.name);
-#endif
 
         if (numItems > 0)
         {

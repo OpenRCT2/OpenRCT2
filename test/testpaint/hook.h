@@ -14,19 +14,35 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _RCT2_INTEROP_H_
-#define _RCT2_INTEROP_H_
+#ifndef _HOOK_H_
+#define _HOOK_H_
+
+#ifndef NO_RCT2
+
+#include <openrct2/common.h>
+
+enum {
+    X86_FLAG_CARRY = 1 << 0,
+    X86_FLAG_PARITY = 1 << 2,
+
+    X86_FLAG_ADJUST = 1 << 4,
+
+    X86_FLAG_ZERO = 1 << 6,
+    X86_FLAG_SIGN = 1 << 7,
+};
+
+typedef uint8 (hook_function)(registers *regs);
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
-bool rct2_interop_setup_segment();
-void rct2_interop_setup_hooks();
-void rct2_interop_dispose();
+void addhook(uintptr_t address, hook_function *function);
 
 #ifdef __cplusplus
 }
+#endif
+
 #endif
 
 #endif

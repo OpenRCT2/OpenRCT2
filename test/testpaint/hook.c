@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
+#include <openrct2/common.h>
 
 #ifndef NO_RCT2
 
@@ -24,7 +24,6 @@
     #include <sys/mman.h>
 #endif // _WIN32
 
-#include "../platform/platform.h"
 #include "hook.h"
 
 void* _hookTableAddress = 0;

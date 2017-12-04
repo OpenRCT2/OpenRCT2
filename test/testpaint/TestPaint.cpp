@@ -17,6 +17,7 @@
 #include <algorithm>
 #include <vector>
 
+#include "hook.h"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"
@@ -27,7 +28,6 @@
 #include <openrct2/paint/supports.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/interface/viewport.h>
-#include <openrct2/rct2/hook.h>
 
 namespace TestPaint
 {
@@ -47,22 +47,33 @@ namespace TestPaint
 
         rct_drawpixelinfo dpi = { 0 };
         dpi.zoom_level = 1;
-        unk_140E9A8 = &dpi;
+        RCT2_Unk140E9A8 = &dpi;
         gPaintSession.Unk140E9A8 = &dpi;
 
-        Ride ride = {0};
-        ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
-
-        rct_ride_entry rideEntry = {0};
-        rct_ride_entry_vehicle vehicleEntry { 0 };
-        vehicleEntry.base_image_id = 0x70000;
-        rideEntry.vehicles[0] = vehicleEntry;
-
-        gRideList[0] = ride;
-        gRideEntries[0] = &rideEntry;
+        {
+            Ride ride = {0};
+            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            static rct_ride_entry rideEntry = {0};
+            rct_ride_entry_vehicle vehicleEntry { 0 };
+            vehicleEntry.base_image_id = 0x70000;
+            rideEntry.vehicles[0] = vehicleEntry;
+            gRideList[0] = ride;
+            gRideEntries[0] = &rideEntry;
+        }
+        {
+            rct2_ride ride = {0};
+            ride.entrance_style = RIDE_ENTRANCE_STYLE_PLAIN;
+            RCT2_Rides[0] = ride;
+        }
 
         g141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
         gPaintSession.Unk141E9DB = G141E9DB_FLAG_1 | G141E9DB_FLAG_2;
+
+        gCurrentViewportFlags = 0;
+        RCT2_CurrentViewportFlags = 0;
+
+        gScenarioTicks = 0;
+        RCT2_ScenarioTicks = 0;
     }
 
     void ResetTunnels() {

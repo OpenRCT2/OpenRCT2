@@ -90,6 +90,7 @@
 - Improved: Major translation updates for Japanese and Polish.
 - Improved: Added 24x24, 48x48, and 96x96 icon resolutions.
 - Technical: [#6384] On macOS, address NSFileHandlingPanel deprecation by using NSModalResponse instead.
+- Technical: [#6772] RCT2 interop removed.
 
 0.1.1 (2017-08-09)
 ------------------------------------------------------------------------

@@ -42,11 +42,7 @@ bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 
 static size_t _trackSavedTileElementsCount;
-#ifdef NO_RCT2
-    static rct_tile_element *_trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
-#else
-    static rct_tile_element **_trackSavedTileElements = (rct_tile_element**)0x00F63674;
-#endif
+static rct_tile_element *_trackSavedTileElements[TRACK_MAX_SAVED_TILE_ELEMENTS];
 
 static size_t _trackSavedTileElementsDescCount;
 static rct_td6_scenery_element _trackSavedTileElementsDesc[TRACK_MAX_SAVED_TILE_ELEMENTS];
@@ -68,12 +64,7 @@ void track_design_save_init()
     _trackSavedTileElementsCount = 0;
     _trackSavedTileElementsDescCount = 0;
 
-#ifdef NO_RCT2
     memset(_trackSavedTileElements, 0, sizeof(_trackSavedTileElements));
-#else
-    memset(_trackSavedTileElements, 0, sizeof(rct_tile_element*) * TRACK_MAX_SAVED_TILE_ELEMENTS);
-#endif
-
     memset(_trackSavedTileElementsDesc, 0, sizeof(_trackSavedTileElementsDesc));
 }
 
@@ -262,11 +253,6 @@ static void track_design_save_push_tile_element(sint32 x, sint32 y, rct_tile_ele
     if (_trackSavedTileElementsCount < TRACK_MAX_SAVED_TILE_ELEMENTS) {
         _trackSavedTileElements[_trackSavedTileElementsCount++] = tileElement;
         map_invalidate_tile_full(x, y);
-
-#ifndef NO_RCT2
-        // Required as drawing still uses 0xFFFFFFFF as a list terminator
-        _trackSavedTileElements[_trackSavedTileElementsCount] = NULL;
-#endif
     }
 }
 
@@ -432,11 +418,7 @@ static void track_design_save_pop_tile_element(sint32 x, sint32 y, rct_tile_elem
             );
         }
         _trackSavedTileElementsCount--;
-#ifdef NO_RCT2
         _trackSavedTileElements[_trackSavedTileElementsCount] = NULL;
-#else
-        _trackSavedTileElements[_trackSavedTileElementsCount] = NULL;
-#endif
     }
 }
 

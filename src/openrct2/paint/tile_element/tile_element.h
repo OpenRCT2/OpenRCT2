@@ -17,7 +17,6 @@
 #ifndef _PAINT_TILE_ELEMENT_H
 #define _PAINT_TILE_ELEMENT_H
 
-#include "../../rct2/addresses.h"
 #include "../../common.h"
 #include "../../world/map.h"
 

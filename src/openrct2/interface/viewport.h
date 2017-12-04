@@ -110,15 +110,9 @@ extern sint16 gSavedViewY;
 extern uint8 gSavedViewZoom;
 extern uint8 gSavedViewRotation;
 
-#ifdef NO_RCT2
 extern paint_entry *gNextFreePaintStruct;
 extern uint8 gCurrentRotation;
 extern uint32 gCurrentViewportFlags;
-#else
-    #define gNextFreePaintStruct RCT2_GLOBAL(0x00EE7888, paint_entry*)
-    #define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
-    #define gCurrentViewportFlags   RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_VIEWPORT_FLAGS, uint32)
-#endif
 
 void viewport_init_all();
 void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 * out_y, rct_viewport * viewport);

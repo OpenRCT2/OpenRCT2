@@ -37,7 +37,6 @@
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../rct1.h"
-#include "../rct2/addresses.h"
 #include "../scenario/scenario.h"
 #include "../util/util.h"
 #include "../windows/Intent.h"
@@ -134,11 +133,7 @@ static const sint32 RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0
 };
 
-#ifdef NO_RCT2
 Ride gRideList[MAX_RIDES];
-#else
-Ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, Ride);
-#endif
 
 rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 

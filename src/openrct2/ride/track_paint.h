@@ -17,7 +17,6 @@
 #ifndef _TRACK_PAINT_H
 #define _TRACK_PAINT_H
 
-#include "../rct2/addresses.h"
 #include "ride_data.h"
 #include "../common.h"
 #include "../paint/tile_element/tile_element.h"

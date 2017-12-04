@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../core/Guard.hpp"
-#include "../rct2/addresses.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
 #include "drawing.h"
@@ -24,11 +23,7 @@
 
 static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
-#ifdef NO_RCT2
 static uint8 _spriteFontCharacterWidths[896];
-#else
-static uint8 *_spriteFontCharacterWidths = RCT2_ADDRESS(RCT2_ADDRESS_FONT_CHAR_WIDTH, uint8);
-#endif
 
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
@@ -130,13 +125,11 @@ sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint)
     }
 
     sint32 spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
-#ifdef NO_RCT2
     if (spriteFontIdx < 0 || spriteFontIdx >= countof(_spriteFontCharacterWidths))
     {
         log_warning("Invalid font index %u", spriteFontIdx);
         spriteFontIdx = 0;
     }
-#endif
     return _spriteFontCharacterWidths[spriteFontIdx];
 }
 

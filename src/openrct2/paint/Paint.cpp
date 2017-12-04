@@ -31,12 +31,6 @@ uint8 gClipHeight = 128; // Default to middle value
 paint_session gPaintSession;
 static bool _paintSessionInUse;
 
-#ifndef NO_RCT2
-#define _paintQuadrants (RCT2_ADDRESS(0x00F1A50C, paint_struct*))
-#define _paintQuadrantBackIndex RCT2_GLOBAL(0xF1AD0C, uint32)
-#define _paintQuadrantFrontIndex RCT2_GLOBAL(0xF1AD10, uint32)
-#endif
-
 static const uint8 BoundBoxDebugColours[] =
 {
     0,   // NONE

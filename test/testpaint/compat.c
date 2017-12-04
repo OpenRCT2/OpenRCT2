@@ -23,21 +23,21 @@
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/tile_element/tile_element.h>
 #include <openrct2/ride/ride.h>
+#include "addresses.h"
 
-#define RCT2_ADDRESS_SPRITE_LIST                    0x010E63BC
+#define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
+#define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element *)
+rct_sprite *sprite_list =           RCT2_ADDRESS(0x010E63BC, rct_sprite);
 
-#define gRideEntries                RCT2_ADDRESS(RCT2_ADDRESS_RIDE_ENTRIES,                rct_ride_entry*)
-#define gCurrentRotation        RCT2_GLOBAL(RCT2_ADDRESS_CURRENT_ROTATION, uint8)
-
-rct_tile_element *gTileElements = (rct_tile_element *) RCT2_ADDRESS_TILE_ELEMENTS;
-rct_tile_element **gTileElementTilePointers = (rct_tile_element **) RCT2_ADDRESS_TILE_TILE_ELEMENT_POINTERS;
-Ride *gRideList = RCT2_ADDRESS(RCT2_ADDRESS_RIDE_LIST, Ride);
-rct_sprite *sprite_list = RCT2_ADDRESS(RCT2_ADDRESS_SPRITE_LIST, rct_sprite);
+Ride gRideList[MAX_RIDES];
 sint16 gMapSizeUnits;
 sint16 gMapBaseZ;
 bool gTrackDesignSaveMode = false;
 uint8 gTrackDesignSaveRideIndex = 255;
 uint8 gClipHeight = 255;
+uint32 gCurrentViewportFlags;
+uint32 gScenarioTicks;
+uint8 gCurrentRotation;
 
 const LocationXY16 TileDirectionDelta[] = {
     {-32, 0},

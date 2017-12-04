@@ -21,11 +21,6 @@
 #include "../interface/colour.h"
 #include "font.h"
 
-// For g1 only enable packing when still relying on vanilla
-#ifndef NO_RCT2
-#pragma pack(push, 1)
-#endif
-// Size: 0x10
 typedef struct rct_g1_element {
     uint8* offset;          // 0x00
     sint16 width;           // 0x04
@@ -35,16 +30,7 @@ typedef struct rct_g1_element {
     uint16 flags;           // 0x0C
     uint16 zoomed_offset;   // 0x0E
 } rct_g1_element;
-#ifndef NO_RCT2
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_g1_element, 0x10);
-#endif
-#pragma pack(pop)
-#endif
 
-// Enable packing for remaining elements
-#pragma pack(push, 1)
-// Size: 0x10
 typedef struct rct_drawpixelinfo {
     uint8* bits;        // 0x00
     sint16 x;           // 0x04
@@ -54,11 +40,7 @@ typedef struct rct_drawpixelinfo {
     sint16 pitch;       // 0x0C         note: this is actually (pitch - width)
     uint16 zoom_level;  // 0x0E
 } rct_drawpixelinfo;
-#ifdef PLATFORM_32BIT
-assert_struct_size(rct_drawpixelinfo, 0x10);
-#endif
 
-// Size: 0x10
 typedef struct rct_g1_element_32bit {
     uint32 offset;                  // 0x00 note: uint32 always!
     sint16 width;                   // 0x04
@@ -209,6 +191,8 @@ typedef struct translucent_window_palette {
     FILTER_PALETTE_ID shadow;
 } translucent_window_palette;
 
+#pragma pack(push, 1)
+
 typedef struct rct_g1_header {
     uint32 num_entries;
     uint32 total_size;
@@ -284,12 +268,6 @@ extern bool gTinyFontAntiAliased;
 
 extern rct_drawpixelinfo gScreenDPI;
 extern rct_drawpixelinfo gWindowDPI;
-
-#ifdef NO_RCT2
-extern rct_drawpixelinfo *unk_140E9A8;
-#else
-#define unk_140E9A8 RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo*)
-#endif
 
 //
 bool clip_drawpixelinfo(rct_drawpixelinfo *dst, rct_drawpixelinfo *src, sint32 x, sint32 y, sint32 width, sint32 height);

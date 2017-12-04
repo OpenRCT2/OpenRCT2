@@ -66,7 +66,6 @@
 #include "object_list.h"
 #include "platform/platform.h"
 #include "rct1.h"
-#include "rct2/interop.h"
 #include "util/util.h"
 
 using namespace OpenRCT2;
@@ -133,7 +132,6 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             EVP_MD_CTX_destroy(gHashCTX);
 #endif // DISABLE_NETWORK
-            rct2_interop_dispose();
 
             delete _titleScreen;
 
@@ -276,12 +274,6 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (!rct2_interop_setup_segment())
-            {
-                log_fatal("Unable to load RCT2 data sector");
-                return false;
-            }
-
             if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
@@ -367,8 +359,6 @@ namespace OpenRCT2
             chat_init();
             theme_manager_initialise();
             CopyOriginalUserFilesOver();
-
-            rct2_interop_setup_hooks();
 
             if (!gOpenRCT2NoGraphics)
             {

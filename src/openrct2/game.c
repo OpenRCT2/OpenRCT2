@@ -79,9 +79,7 @@ bool gLoadKeepWindowsOpen = false;
 uint8 gUnk13CA740;
 uint8 gUnk141F568;
 
-#ifdef NO_RCT2
 uint32 gCurrentTicks;
-#endif
 
 GAME_COMMAND_CALLBACK_POINTER* game_command_callback = 0;
 static GAME_COMMAND_CALLBACK_POINTER* const game_command_callback_table[] = {

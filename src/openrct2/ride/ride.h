@@ -125,14 +125,9 @@ typedef struct rct_ride_entry {
     uint8 category[RCT2_MAX_CATEGORIES_PER_RIDE];       // 0x1BE
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
-#if defined(NO_RCT2)
     rct_string_id capacity;
     rct_string_id vehicleName;
-#endif
 } rct_ride_entry;
-#if defined(PLATFORM_32BIT) && !defined(NO_RCT2)
-assert_struct_size(rct_ride_entry, 0x1c2);
-#endif
 
 /**
  * Ride structure.
@@ -1014,11 +1009,7 @@ extern uint32 gSamePriceThroughoutParkB;
 
 extern const uint8 gRideClassifications[MAX_RIDES];
 
-#ifdef NO_RCT2
 extern Ride gRideList[MAX_RIDES];
-#else
-extern Ride *gRideList;
-#endif
 
 extern rct_ride_measurement gRideMeasurements[MAX_RIDE_MEASUREMENTS];
 extern uint16 gRideCount;
