@@ -147,14 +147,11 @@
 		C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */; };
 		C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */; };
 		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
-		C612A8991D64825300B634CA /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = C612A8971D64825300B634CA /* vehicle_data.c */; };
-		C6136C551E21893500F3ED2B /* view_clipping.c in Sources */ = {isa = PBXBuildFile; fileRef = C6136C541E21893500F3ED2B /* view_clipping.c */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
 		C61FB2721FA3E25D0095FB9D /* ObjectLoadError.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */; };
 		C61FB2731FA3E25D0095FB9D /* TextInput.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB2711FA3E25C0095FB9D /* TextInput.cpp */; };
-		C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61FB7221CF86356004CE991 /* NetworkUser.cpp */; };
 		C632C81F1F8A445700781F6D /* RideList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C632C81E1F8A445700781F6D /* RideList.cpp */; };
 		C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B811F477022006CCEE3 /* DataSerialiser.h */; };
 		C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */ = {isa = PBXBuildFile; fileRef = C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */; };
@@ -178,23 +175,6 @@
 		C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F51F3FA4120026AC2D /* StaffList.cpp */; };
 		C64645001F3FA4120026AC2D /* ViewClipping.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F61F3FA4120026AC2D /* ViewClipping.cpp */; };
 		C64645011F3FA4120026AC2D /* Water.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C64644F71F3FA4120026AC2D /* Water.cpp */; };
-		C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */; };
-		C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */ = {isa = PBXBuildFile; fileRef = C649B3D31DF04ED2008AC826 /* format_codes.c */; };
-		C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8E91CDBC3B7009F9BFC /* observation_tower.c */; };
-		C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EA1CDBC3B7009F9BFC /* space_rings.c */; };
-		C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */; };
-		C64FDA941D6D9A2100F259B9 /* facility.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8ED1CDBC3B7009F9BFC /* facility.c */; };
-		C64FDA961D6D9A2100F259B9 /* shop.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8EF1CDBC3B7009F9BFC /* shop.c */; };
-		C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */; };
-		C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F21CDBC3B7009F9BFC /* enterprise.c */; };
-		C64FDA991D6D9A2100F259B9 /* go_karts.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8F31CDBC3B7009F9BFC /* go_karts.c */; };
-		C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FE1CDBC3B7009F9BFC /* lift.c */; };
-		C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */; };
-		C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9001CDBC3B7009F9BFC /* monorail.c */; };
-		C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */; };
-		C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9031CDBC3B7009F9BFC /* boat_ride.c */; };
-		C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9041CDBC3B7009F9BFC /* dingy_slide.c */; };
-		C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */ = {isa = PBXBuildFile; fileRef = C686F9051CDBC3B7009F9BFC /* log_flume.c */; };
 		C651A8D91F30204300443BCA /* Text.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C651A8D71F30204300443BCA /* Text.cpp */; };
 		C654DF2D1F69C0430040F43D /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF1C1F69C0430040F43D /* Banner.cpp */; };
 		C654DF2E1F69C0430040F43D /* DemolishRidePrompt.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C654DF1D1F69C0430040F43D /* DemolishRidePrompt.cpp */; };
@@ -408,9 +388,6 @@
 		F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */; };
 		F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84711EC4E7CC00FA49E2 /* SawyerChunkWriter.cpp */; };
 		F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */; };
-		F76C86BD1EC4E88400FA49E2 /* addresses.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84771EC4E7CC00FA49E2 /* addresses.c */; };
-		F76C86BF1EC4E88400FA49E2 /* hook.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84791EC4E7CC00FA49E2 /* hook.c */; };
-		F76C86C11EC4E88400FA49E2 /* interop.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C847B1EC4E7CC00FA49E2 /* interop.c */; };
 		F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */; };
 		F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */; };
 		F76C86FC1EC4E88400FA49E2 /* ride.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84BA1EC4E7CC00FA49E2 /* ride.c */; };
@@ -781,14 +758,11 @@
 		C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = PaintIntercept.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CD231DB5120900FE4015 /* TestPaint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TestPaint.cpp; sourceTree = "<group>"; };
 		C606CD241DB5120900FE4015 /* TestPaint.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; path = TestPaint.hpp; sourceTree = "<group>"; };
-		C612A8971D64825300B634CA /* vehicle_data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = vehicle_data.c; sourceTree = "<group>"; };
-		C6136C541E21893500F3ED2B /* view_clipping.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = view_clipping.c; sourceTree = "<group>"; };
 		C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TopToolbar.cpp; sourceTree = "<group>"; };
 		C61ADB201FB7DC060024F2EF /* Scenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenery.cpp; sourceTree = "<group>"; };
 		C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = GameBottomToolbar.cpp; sourceTree = "<group>"; };
 		C61FB2701FA3E25C0095FB9D /* ObjectLoadError.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectLoadError.cpp; sourceTree = "<group>"; };
 		C61FB2711FA3E25C0095FB9D /* TextInput.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TextInput.cpp; sourceTree = "<group>"; };
-		C61FB7221CF86356004CE991 /* NetworkUser.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = NetworkUser.cpp; sourceTree = "<group>"; usesTabs = 0; };
 		C632C81E1F8A445700781F6D /* RideList.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = RideList.cpp; sourceTree = "<group>"; };
 		C6352B811F477022006CCEE3 /* DataSerialiser.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiser.h; sourceTree = "<group>"; };
 		C6352B821F477022006CCEE3 /* DataSerialiserTraits.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataSerialiserTraits.h; sourceTree = "<group>"; };
@@ -813,8 +787,6 @@
 		C64644F51F3FA4120026AC2D /* StaffList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = StaffList.cpp; sourceTree = "<group>"; };
 		C64644F61F3FA4120026AC2D /* ViewClipping.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ViewClipping.cpp; sourceTree = "<group>"; };
 		C64644F71F3FA4120026AC2D /* Water.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Water.cpp; sourceTree = "<group>"; };
-		C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = AudioMixer.cpp; sourceTree = "<group>"; };
-		C649B3D31DF04ED2008AC826 /* format_codes.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = format_codes.c; sourceTree = "<group>"; };
 		C64FDA5D1D6D99F400F259B9 /* PaintTest */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.executable"; includeInIndex = 0; path = PaintTest; sourceTree = BUILT_PRODUCTS_DIR; };
 		C651A8D71F30204300443BCA /* Text.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Text.cpp; sourceTree = "<group>"; };
 		C651A8D81F30204300443BCA /* Text.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Text.h; sourceTree = "<group>"; };
@@ -873,21 +845,6 @@
 		C685E5161F8907840090598F /* Guest.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Guest.cpp; sourceTree = "<group>"; };
 		C685E5171F8907840090598F /* Map.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Map.cpp; sourceTree = "<group>"; };
 		C685E5181F8907840090598F /* Research.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Research.cpp; sourceTree = "<group>"; };
-		C686F8E91CDBC3B7009F9BFC /* observation_tower.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = observation_tower.c; sourceTree = "<group>"; };
-		C686F8EA1CDBC3B7009F9BFC /* space_rings.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = space_rings.c; sourceTree = "<group>"; };
-		C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = spiral_slide.c; sourceTree = "<group>"; };
-		C686F8ED1CDBC3B7009F9BFC /* facility.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = facility.c; sourceTree = "<group>"; };
-		C686F8EF1CDBC3B7009F9BFC /* shop.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = shop.c; sourceTree = "<group>"; };
-		C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = 3d_cinema.c; sourceTree = "<group>"; };
-		C686F8F21CDBC3B7009F9BFC /* enterprise.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = enterprise.c; sourceTree = "<group>"; };
-		C686F8F31CDBC3B7009F9BFC /* go_karts.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = go_karts.c; sourceTree = "<group>"; };
-		C686F8FE1CDBC3B7009F9BFC /* lift.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = lift.c; sourceTree = "<group>"; };
-		C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = miniature_railway.c; sourceTree = "<group>"; };
-		C686F9001CDBC3B7009F9BFC /* monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = monorail.c; sourceTree = "<group>"; };
-		C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = suspended_monorail.c; sourceTree = "<group>"; };
-		C686F9031CDBC3B7009F9BFC /* boat_ride.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = boat_ride.c; sourceTree = "<group>"; };
-		C686F9041CDBC3B7009F9BFC /* dingy_slide.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = dingy_slide.c; sourceTree = "<group>"; };
-		C686F9051CDBC3B7009F9BFC /* log_flume.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = log_flume.c; sourceTree = "<group>"; };
 		C68D98BB1FC6B8AB008E8378 /* TileInspector.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileInspector.cpp; sourceTree = "<group>"; };
 		C6D2BEE11F9BAA6C008B557C /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
 		C6D2BEE31F9BAACC008B557C /* TrackList.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackList.cpp; sourceTree = "<group>"; };
@@ -1316,12 +1273,6 @@
 		F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerEncoding.cpp; sourceTree = "<group>"; };
 		F76C84741EC4E7CC00FA49E2 /* SawyerEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerEncoding.h; sourceTree = "<group>"; };
 		F76C84751EC4E7CC00FA49E2 /* rct12.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct12.h; sourceTree = "<group>"; };
-		F76C84771EC4E7CC00FA49E2 /* addresses.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = addresses.c; sourceTree = "<group>"; };
-		F76C84781EC4E7CC00FA49E2 /* addresses.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = addresses.h; sourceTree = "<group>"; };
-		F76C84791EC4E7CC00FA49E2 /* hook.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = hook.c; sourceTree = "<group>"; };
-		F76C847A1EC4E7CC00FA49E2 /* hook.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
-		F76C847B1EC4E7CC00FA49E2 /* interop.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = interop.c; sourceTree = "<group>"; };
-		F76C847C1EC4E7CC00FA49E2 /* interop.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = interop.h; sourceTree = "<group>"; };
 		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
@@ -1553,26 +1504,6 @@
 		C685E5131F8907440090598F /* Recovered References */ = {
 			isa = PBXGroup;
 			children = (
-				C686F8E91CDBC3B7009F9BFC /* observation_tower.c */,
-				C686F8EA1CDBC3B7009F9BFC /* space_rings.c */,
-				C686F8EB1CDBC3B7009F9BFC /* spiral_slide.c */,
-				C686F8ED1CDBC3B7009F9BFC /* facility.c */,
-				C686F8EF1CDBC3B7009F9BFC /* shop.c */,
-				C686F8F11CDBC3B7009F9BFC /* 3d_cinema.c */,
-				C686F8F21CDBC3B7009F9BFC /* enterprise.c */,
-				C686F8F31CDBC3B7009F9BFC /* go_karts.c */,
-				C686F8FE1CDBC3B7009F9BFC /* lift.c */,
-				C686F8FF1CDBC3B7009F9BFC /* miniature_railway.c */,
-				C686F9001CDBC3B7009F9BFC /* monorail.c */,
-				C686F9011CDBC3B7009F9BFC /* suspended_monorail.c */,
-				C686F9031CDBC3B7009F9BFC /* boat_ride.c */,
-				C686F9041CDBC3B7009F9BFC /* dingy_slide.c */,
-				C686F9051CDBC3B7009F9BFC /* log_flume.c */,
-				C647C68F1E1D0CA000C7FB21 /* AudioMixer.cpp */,
-				C649B3D31DF04ED2008AC826 /* format_codes.c */,
-				C61FB7221CF86356004CE991 /* NetworkUser.cpp */,
-				C6136C541E21893500F3ED2B /* view_clipping.c */,
-				C612A8971D64825300B634CA /* vehicle_data.c */,
 			);
 			name = "Recovered References";
 			sourceTree = "<group>";
@@ -2307,12 +2238,6 @@
 		F76C84761EC4E7CC00FA49E2 /* rct2 */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84771EC4E7CC00FA49E2 /* addresses.c */,
-				F76C84781EC4E7CC00FA49E2 /* addresses.h */,
-				F76C84791EC4E7CC00FA49E2 /* hook.c */,
-				F76C847A1EC4E7CC00FA49E2 /* hook.h */,
-				F76C847B1EC4E7CC00FA49E2 /* interop.c */,
-				F76C847C1EC4E7CC00FA49E2 /* interop.h */,
 				F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */,
 				F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */,
 				F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */,
@@ -3117,24 +3042,9 @@
 				C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */,
 				C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */,
 				C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */,
-				C64FDA911D6D9A2100F259B9 /* observation_tower.c in Sources */,
-				C64FDA921D6D9A2100F259B9 /* space_rings.c in Sources */,
-				C64FDA931D6D9A2100F259B9 /* spiral_slide.c in Sources */,
-				C64FDA941D6D9A2100F259B9 /* facility.c in Sources */,
-				C64FDA961D6D9A2100F259B9 /* shop.c in Sources */,
-				C64FDA971D6D9A2100F259B9 /* 3d_cinema.c in Sources */,
-				C64FDA981D6D9A2100F259B9 /* enterprise.c in Sources */,
-				C64FDA991D6D9A2100F259B9 /* go_karts.c in Sources */,
 				C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */,
 				C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */,
 				C606CCC71DB4054000FE4015 /* String.cpp in Sources */,
-				C64FDAA31D6D9A2100F259B9 /* lift.c in Sources */,
-				C64FDAA41D6D9A2100F259B9 /* miniature_railway.c in Sources */,
-				C64FDAA51D6D9A2100F259B9 /* monorail.c in Sources */,
-				C64FDAA61D6D9A2100F259B9 /* suspended_monorail.c in Sources */,
-				C64FDAA71D6D9A2100F259B9 /* boat_ride.c in Sources */,
-				C64FDAA81D6D9A2100F259B9 /* dingy_slide.c in Sources */,
-				C64FDAA91D6D9A2100F259B9 /* log_flume.c in Sources */,
 				C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -3502,9 +3412,6 @@
 				F76C86B61EC4E88400FA49E2 /* SawyerChunkReader.cpp in Sources */,
 				F76C86B81EC4E88400FA49E2 /* SawyerChunkWriter.cpp in Sources */,
 				F76C86BA1EC4E88400FA49E2 /* SawyerEncoding.cpp in Sources */,
-				F76C86BD1EC4E88400FA49E2 /* addresses.c in Sources */,
-				F76C86BF1EC4E88400FA49E2 /* hook.c in Sources */,
-				F76C86C11EC4E88400FA49E2 /* interop.c in Sources */,
 				F76C86C31EC4E88400FA49E2 /* S6Exporter.cpp in Sources */,
 				F76C86C51EC4E88400FA49E2 /* S6Importer.cpp in Sources */,
 				C6352B921F477032006CCEE3 /* GameActionCompat.cpp in Sources */,
@@ -3572,11 +3479,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				F7D7749E1EC6713200BE6EBC /* Cli.cpp in Sources */,
-				C647C6911E1D0CA000C7FB21 /* AudioMixer.cpp in Sources */,
-				C649B3D41DF04ED2008AC826 /* format_codes.c in Sources */,
-				C61FB7241CF86356004CE991 /* NetworkUser.cpp in Sources */,
-				C6136C551E21893500F3ED2B /* view_clipping.c in Sources */,
-				C612A8991D64825300B634CA /* vehicle_data.c in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
