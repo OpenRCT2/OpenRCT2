@@ -55,7 +55,7 @@ extern "C"
 #define RCT2_CurrentViewportFlags   RCT2_GLOBAL(0x0141E9E4, uint32)
 #define RCT2_CurrentRotation        RCT2_GLOBAL(0x0141E9E0, uint8)
 #define RCT2_ScenarioTicks          RCT2_GLOBAL(0x00F663AC, uint32)
-#define RCT2_Rides                  RCT2_ADDRESS(0x013628F8, Ride)
+#define RCT2_Rides                  RCT2_ADDRESS(0x013628F8, rct2_ride)
 #define RCT2_Unk140E9A8             RCT2_GLOBAL(0x0140E9A8, rct_drawpixelinfo *)
 #define RCT2_PaintBoundBoxOffsetX   RCT2_GLOBAL(0x009DEA52, sint16)
 #define RCT2_PaintBoundBoxOffsetY   RCT2_GLOBAL(0x009DEA54, sint16)
