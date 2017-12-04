@@ -262,7 +262,7 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
             window_new_campaign_get_shop_items();
             if (window_new_campaign_shop_items[0] != 255) {
                 sint32 numItems = 0;
-                for (sint32 i = 0; i < 40; i++) {
+                for (sint32 i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++) {
                     if (window_new_campaign_shop_items[i] == 255)
                         break;
 
@@ -284,11 +284,12 @@ static void window_new_campaign_mousedown(rct_window *w, rct_widgetindex widgetI
             }
         } else {
             sint32 numItems = 0;
-            for (sint32 i = 0; i < 40; i++) {
+            for (sint32 i = 0; i < DROPDOWN_ITEMS_MAX_SIZE; i++)
+            {
                 if (window_new_campaign_rides[i] == 255)
                     break;
 
-                Ride *ride = get_ride(window_new_campaign_rides[i]);
+                Ride * ride = get_ride(window_new_campaign_rides[i]);
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = ((uint64)ride->name_arguments << 16ULL) | ride->name;
                 numItems++;
