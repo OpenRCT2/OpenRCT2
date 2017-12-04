@@ -65,7 +65,7 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_t
     if (tile_element->flags & TILE_ELEMENT_FLAG_GHOST) // if being placed
     {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        image_id |= gConstructionMarker;
+        image_id |= CONSTRUCTION_MARKER;
     }
     else{
         image_id |=

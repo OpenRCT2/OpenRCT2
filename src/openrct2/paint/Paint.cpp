@@ -28,9 +28,6 @@
 // Global for paint clipping height
 uint8 gClipHeight = 128; // Default to middle value
 
-// Global for (white) construction marker mask.
-uint32 const gConstructionMarker = COLOUR_DARK_GREEN << 19 | COLOUR_GREY << 24 | IMAGE_TYPE_REMAP;
-
 paint_session gPaintSession;
 static bool _paintSessionInUse;
 

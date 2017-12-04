@@ -208,7 +208,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     }
     if (tileElement->flags & TILE_ELEMENT_FLAG_GHOST) {
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
-        sequenceNum = gConstructionMarker;
+        sequenceNum = CONSTRUCTION_MARKER;
         image_id &= 0x7FFFF;
         dword_F4387C = sequenceNum;
         image_id |= dword_F4387C;
