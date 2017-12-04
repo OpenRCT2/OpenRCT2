@@ -25,6 +25,7 @@
 - Feature: [#6651, #6658] Integrate Discord Rich Presence.
 - Feature: [#6709] The New Ride window now shows available vehicles for a ride type.
 - Feature: [#6731] Object indexing progress is now reported via command line output.
+- Feature: [#6779] On-ride photo segment for Splash Boats.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
 - Feature: Add search box to track design window.
