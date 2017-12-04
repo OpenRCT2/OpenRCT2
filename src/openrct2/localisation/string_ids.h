@@ -1353,7 +1353,6 @@ enum {
     STR_CANT_PAY_BACK_LOAN = 1920,
     STR_START_NEW_GAME_TIP = 1921,
     STR_CONTINUE_SAVED_GAME_TIP = 1922,
-    STR_SHOW_TUTORIAL_TIP = 1923,
     STR_EXIT = 1924,
     STR_ERR_CANT_PLACE_PERSON_HERE = 1925,
 // STR_1926    :{SMALLFONT} // Used in window_game_bottom_toolbar_onpaint and window_news_onscrollpaint
@@ -2289,8 +2288,6 @@ enum {
     STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY = 2853,
     STR_ENTRANCE_NOT_CONNECTED = 2854,
     STR_EXIT_NOT_CONNECTED = 2855,
-// STR_2856    :{WINDOW_COLOUR_2}Tutorial
-// STR_2857    :{WINDOW_COLOUR_2}(Press a key or mouse button to take control)
     STR_CANT_START_MARKETING_CAMPAIGN = 2858,
 // STR_2859    :Another instance of OpenRCT2 is already running
     STR_LICENSED_TO_INFOGRAMES_INTERACTIVE_INC = 2861,
@@ -2755,9 +2752,6 @@ enum {
 // STR_3382    :File copy failed
     STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN = 3383,
     STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME = 3384,
-// STR_3385    :Beginners Tutorial
-// STR_3386    :Custom Rides Tutorial
-// STR_3387    :Roller Coaster Building Tutorial
 // STR_3388    :Unable to switch to selected mode
     STR_SAVE_TRACK_SCENERY_UNABLE_TO_SELECT_ADDITIONAL_ITEM_OF_SCENERY = 3389,
     STR_SAVE_TRACK_SCENERY_TOO_MANY_ITEMS_SELECTED = 3390,
