@@ -20,12 +20,12 @@
 #include "../common.h"
 #include "../world/map.h"
 
-#pragma pack(push, 1)
 typedef struct rct_vehicle_colour {
     uint8 body_colour;
     uint8 trim_colour;
 } rct_vehicle_colour;
 
+#pragma pack(push, 1)
 /**
  * Ride type vehicle structure.
  * size: 0x65
