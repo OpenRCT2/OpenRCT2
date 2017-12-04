@@ -532,3 +532,24 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 
     return numHorizontalFrames;
 }
+
+void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    printf("RideObject::ReadJson(context, root)\n");
+    _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
+    _legacyType.category[0] = RIDE_CATEGORY_SHOP;
+
+    auto stringTable = GetStringTable();
+    stringTable->SetString(0, 0, "RCT1 toilets");
+    stringTable->SetString(1, 0, "Desc");
+    stringTable->SetString(2, 0, "Capacity");
+    stringTable->SetString(3, 0, "Vehicle");
+
+    auto imageTable = GetImageTable();
+    auto g1 = *(gfx_get_g1_element(0x60000 + 64231));
+    // auto g12 = gfx_get_g1_element(0x60000 + 64322);
+    // imageTable->AddImage(g1, (size_t)(g12->offset - g1->offset));
+    g1.x_offset = 0;
+    g1.y_offset = 0;
+    imageTable->AddImage(&g1, 0x4000);
+}

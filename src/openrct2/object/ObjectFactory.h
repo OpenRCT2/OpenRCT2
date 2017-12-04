@@ -25,4 +25,6 @@ namespace ObjectFactory
     Object * CreateObjectFromLegacyFile(const utf8 * path);
     Object * CreateObjectFromLegacyData(const rct_object_entry * entry, const void * data, size_t dataSize);
     Object * CreateObject(const rct_object_entry &entry);
+
+    Object * CreateObjectFromJsonFile(const std::string &path);
 }

@@ -80,7 +80,7 @@ class ObjectFileIndex final : public FileIndex<ObjectRepositoryItem>
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x5844494F; // OIDX
     static constexpr uint16 VERSION = 17;
-    static constexpr auto PATTERN = "*.dat;*.pob";
+    static constexpr auto PATTERN = "*.dat;*.pob;*.json";
 
 public:
     explicit ObjectFileIndex(IPlatformEnvironment * env) :
@@ -98,21 +98,36 @@ public:
 public:
     std::tuple<bool, ObjectRepositoryItem> Create(const std::string &path) const override
     {
-        auto object = ObjectFactory::CreateObjectFromLegacyFile(path.c_str());
-        if (object != nullptr)
+        auto extension = Path::GetExtension(path);
+        if (String::Equals(extension, ".json", true))
         {
-            ObjectRepositoryItem item = { 0 };
-            item.ObjectEntry = *object->GetObjectEntry();
-            item.Path = String::Duplicate(path);
-            item.Name = String::Duplicate(object->GetName());
-            object->SetRepositoryItem(&item);
-            delete object;
-            return std::make_tuple(true, item);
+            auto object = ObjectFactory::CreateObjectFromJsonFile(path);
+            if (object != nullptr)
+            {
+                ObjectRepositoryItem item = { 0 };
+                item.ObjectEntry = *object->GetObjectEntry();
+                item.Path = String::Duplicate(path);
+                item.Name = String::Duplicate(object->GetName());
+                object->SetRepositoryItem(&item);
+                delete object;
+                return std::make_tuple(true, item);
+            }
         }
         else
         {
-            return std::make_tuple(false, ObjectRepositoryItem());
+            auto object = ObjectFactory::CreateObjectFromLegacyFile(path.c_str());
+            if (object != nullptr)
+            {
+                ObjectRepositoryItem item = { 0 };
+                item.ObjectEntry = *object->GetObjectEntry();
+                item.Path = String::Duplicate(path);
+                item.Name = String::Duplicate(object->GetName());
+                object->SetRepositoryItem(&item);
+                delete object;
+                return std::make_tuple(true, item);
+            }
         }
+        return std::make_tuple(false, ObjectRepositoryItem());
     }
 
 protected:
@@ -260,8 +275,15 @@ public:
     {
         Guard::ArgumentNotNull(ori, GUARD_LINE);
 
-        Object * object = ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
-        return object;
+        auto extension = Path::GetExtension(ori->Path);
+        if (String::Equals(extension, ".json", true))
+        {
+            return ObjectFactory::CreateObjectFromJsonFile(ori->Path);
+        }
+        else
+        {
+            return ObjectFactory::CreateObjectFromLegacyFile(ori->Path);
+        }
     }
 
     void RegisterLoadedObject(const ObjectRepositoryItem * ori, Object * object) override

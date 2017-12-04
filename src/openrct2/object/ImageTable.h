@@ -37,4 +37,5 @@ public:
     void                    Read(IReadObjectContext * context, IStream * stream);
     const rct_g1_element *  GetImages() const { return _entries.data(); }
     uint32                  GetCount() const { return (uint32)_entries.size(); }
+    void                    AddImage(const rct_g1_element * g1, size_t length);
 };

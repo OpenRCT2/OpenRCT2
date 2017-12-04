@@ -16,6 +16,7 @@
 
 #include "../core/Console.hpp"
 #include "../core/FileStream.hpp"
+#include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
 #include "../core/String.hpp"
@@ -200,6 +201,44 @@ namespace ObjectFactory
             break;
         default:
             throw std::runtime_error("Invalid object type");
+        }
+        return result;
+    }
+
+    Object * CreateObjectFromJsonFile(const std::string &path)
+    {
+        log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
+
+        Object * result = nullptr;
+        try
+        {
+            auto jRoot = Json::ReadFromFile(path.c_str());
+            auto jObjectType = json_object_get(jRoot, "objectType");
+            if (json_is_string(jObjectType))
+            {
+                auto objectType = std::string(json_string_value(jObjectType));
+                if (objectType == "ride")
+                {
+                    std::string objectName = "#RCT1TOI";
+                    rct_object_entry entry = { 0 };
+                    memcpy(entry.name, objectName.c_str(), 8);
+                    result = new RideObject(entry);
+                    auto readContext = ReadObjectContext(objectName.c_str());
+                    result->ReadJson(&readContext, jRoot);
+                    if (readContext.WasError())
+                    {
+                        throw Exception("Object has errors");
+                    }
+                }
+            }
+            json_decref(jRoot);
+        }
+        catch (Exception)
+        {
+            Console::Error::WriteLine("Unable to open or read '%s'", path);
+
+            delete result;
+            result = nullptr;
         }
         return result;
     }
