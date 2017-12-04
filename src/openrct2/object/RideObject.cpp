@@ -134,7 +134,7 @@ void RideObject::Load()
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    sint32 cur_vehicle_images_offset = _legacyType.images_offset + 3;
+    sint32 cur_vehicle_images_offset = _legacyType.images_offset + MAX_RIDE_TYPES_PER_RIDE_ENTRY;
     for (sint32 i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
     {
         rct_ride_entry_vehicle * vehicleEntry = &_legacyType.vehicles[i];
@@ -324,14 +324,15 @@ void RideObject::Unload()
 void RideObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const
 {
     uint32 imageId = _legacyType.images_offset;
-    if (_legacyType.ride_type[0] == 0xFF)
+
+    for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        imageId++;
-        if (_legacyType.ride_type[1] == 0xFF)
-        {
+        if (_legacyType.ride_type[i] != RIDE_TYPE_NULL)
+            break;
+        else
             imageId++;
-        }
     }
+
     gfx_draw_sprite(dpi, imageId, 0, 0, 0);
 }
 

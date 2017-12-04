@@ -96,7 +96,7 @@ assert_struct_size(rct_ride_name, 4);
  */
 typedef struct rct_ride_entry {
     rct_ride_name naming;
-    uint32 images_offset;                               // 0x004
+    uint32 images_offset;                               // 0x004. The first three images are previews. They correspond to the ride_type[] array.
     uint32 flags;                                       // 0x008
     uint8 ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];// 0x00C
     uint8 min_cars_in_train;                            // 0x00F

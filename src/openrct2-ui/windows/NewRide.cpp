@@ -863,13 +863,17 @@ static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 
         // Draw ride image with feathered border
         rideEntry = get_ride_entry(listItem->entry_index);
-        sint32 image_id = rideEntry->images_offset;
-        if (listItem->type != rideEntry->ride_type[0]) {
-            image_id++;
-            if (listItem->type != rideEntry->ride_type[1])
-                image_id++;
+        sint32 imageId = rideEntry->images_offset;
+
+        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        {
+            if (rideEntry->ride_type[i] == listItem->type)
+                break;
+            else
+                imageId++;
         }
-        gfx_draw_sprite_raw_masked(dpi, x + 2, y + 2, SPR_NEW_RIDE_MASK, image_id);
+
+        gfx_draw_sprite_raw_masked(dpi, x + 2, y + 2, SPR_NEW_RIDE_MASK, imageId);
 
         // Next position
         x += 116;
