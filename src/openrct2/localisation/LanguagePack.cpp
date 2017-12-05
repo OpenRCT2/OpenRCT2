@@ -135,29 +135,29 @@ public:
         _stringData = _stringDataSB.GetString();
 
         size_t stringDataBaseAddress = (size_t)_stringData;
-        for (size_t i = 0; i < _strings.size(); i++)
+        for (auto &string : _strings)
         {
-            if (_strings[i] != nullptr)
+            if (string != nullptr)
             {
-                _strings[i] = (utf8*)(stringDataBaseAddress + (size_t)_strings[i]);
+                string = (utf8*)(stringDataBaseAddress + (size_t)string);
             }
         }
-        for (size_t i = 0; i < _objectOverrides.size(); i++)
+        for (auto &objectOverride : _objectOverrides)
         {
             for (sint32 j = 0; j < ObjectOverrideMaxStringCount; j++)
             {
-                const utf8 * * strPtr = &(_objectOverrides[i].strings[j]);
+                const utf8 * * strPtr = &(objectOverride.strings[j]);
                 if (*strPtr != nullptr)
                 {
                     *strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
                 }
             }
         }
-        for (size_t i = 0; i < _scenarioOverrides.size(); i++)
+        for (auto &scenarioOverride : _scenarioOverrides)
         {
             for (sint32 j = 0; j < ScenarioOverrideMaxStringCount; j++)
             {
-                const utf8 **strPtr = &(_scenarioOverrides[i].strings[j]);
+                const utf8 * * strPtr = &(scenarioOverride.strings[j]);
                 if (*strPtr != nullptr)
                 {
                     *strPtr = (utf8*)(stringDataBaseAddress + (size_t)*strPtr);
@@ -291,12 +291,11 @@ public:
     {
         Guard::ArgumentNotNull(objectIdentifier);
 
-        for (size_t i = 0; i < _objectOverrides.size(); i++)
+        for (auto &oo : _objectOverrides)
         {
-            ObjectOverride *oo = &_objectOverrides[i];
-            if (strncmp(oo->name, objectIdentifier, 8) == 0)
+            if (strncmp(oo.name, objectIdentifier, 8) == 0)
             {
-                return oo;
+                return &oo;
             }
         }
         return nullptr;
@@ -306,15 +305,14 @@ public:
     {
         Guard::ArgumentNotNull(scenarioIdentifier);
 
-        for (size_t i = 0; i < _scenarioOverrides.size(); i++)
+        for (auto &so : _scenarioOverrides)
         {
-            ScenarioOverride *so = &_scenarioOverrides[i];
             // At this point ScenarioOverrides were not yet rewritten to point at
             // strings, but rather still hold offsets from base.
-            const utf8 *name = _stringDataSB.GetBuffer() + (size_t)so->name;
+            const utf8 *name = _stringDataSB.GetBuffer() + (size_t)so.name;
             if (_stricmp(name, scenarioIdentifier) == 0)
             {
-                return so;
+                return &so;
             }
         }
         return nullptr;
@@ -621,9 +619,9 @@ public:
         if (_currentGroup == nullptr)
         {
             // Make sure the list is big enough to contain this string id
-            while (_strings.size() <= (size_t)stringId)
+            if ((size_t)stringId >= _strings.size())
             {
-                _strings.push_back(nullptr);
+                _strings.resize(stringId + 1);
             }
 
             _strings[stringId] = relativeOffset;

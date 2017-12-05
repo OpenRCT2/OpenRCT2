@@ -160,11 +160,11 @@ void audio_populate_devices()
     std::vector<std::string> devices = audioContext->GetOutputDevices();
 
     // Replace blanks with localised unknown string
-    for (size_t i = 0; i < devices.size(); i++)
+    for (auto &device : devices)
     {
-        if (devices[i].empty())
+        if (device.empty())
         {
-            devices[i] = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
+            device = language_get_string(STR_OPTIONS_SOUND_VALUE_DEFAULT);
         }
     }
 

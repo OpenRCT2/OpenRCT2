@@ -367,15 +367,14 @@ public:
 
     const scenario_index_entry * GetByFilename(const utf8 * filename) const override
     {
-        for (size_t i = 0; i < _scenarios.size(); i++)
+        for (const auto &scenario : _scenarios)
         {
-            const scenario_index_entry * scenario = &_scenarios[i];
-            const utf8 * scenarioFilename = Path::GetFileName(scenario->path);
+            const utf8 * scenarioFilename = Path::GetFileName(scenario.path);
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(filename, scenarioFilename, true))
             {
-                return &_scenarios[i];
+                return &scenario;
             }
         }
         return nullptr;
@@ -383,12 +382,11 @@ public:
 
     const scenario_index_entry * GetByPath(const utf8 * path) const override
     {
-        for (size_t i = 0; i < _scenarios.size(); i++)
+        for (const auto &scenario : _scenarios)
         {
-            const scenario_index_entry * scenario = &_scenarios[i];
-            if (Path::Equals(path, scenario->path))
+            if (Path::Equals(path, scenario.path))
             {
-                return scenario;
+                return &scenario;
             }
         }
         return nullptr;
@@ -616,9 +614,8 @@ private:
                 if (scBasic.Flags & SCENARIO_FLAGS_COMPLETED)
                 {
                     bool notFound = true;
-                    for (size_t j = 0; j < _highscores.size(); j++)
+                    for (auto &highscore : _highscores)
                     {
-                        scenario_highscore_entry * highscore = _highscores[j];
                         if (String::Equals(scBasic.Path, highscore->fileName, true))
                         {
                             notFound = false;
@@ -675,9 +672,8 @@ private:
 
     void AttachHighscores()
     {
-        for (size_t i = 0; i < _highscores.size(); i++)
+        for (auto &highscore : _highscores)
         {
-            scenario_highscore_entry * highscore = _highscores[i];
             scenario_index_entry * scenerio = GetByFilename(highscore->fileName);
             if (scenerio != nullptr)
             {

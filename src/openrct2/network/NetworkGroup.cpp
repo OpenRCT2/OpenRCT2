@@ -33,19 +33,24 @@ NetworkGroup::~NetworkGroup()
 NetworkGroup NetworkGroup::FromJson(const json_t * json)
 {
     NetworkGroup group;
-    json_t * jsonId = json_object_get(json, "id");
-    json_t * jsonName = json_object_get(json, "name");
+    json_t * jsonId          = json_object_get(json, "id");
+    json_t * jsonName        = json_object_get(json, "name");
     json_t * jsonPermissions = json_object_get(json, "permissions");
+
     if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr)
     {
         throw Exception("Missing group data");
     }
-    group.Id = (uint8)json_integer_value(jsonId);
+
+    group.Id    = (uint8)json_integer_value(jsonId);
     group._name = std::string(json_string_value(jsonName));
-    for (size_t i = 0; i < group.ActionsAllowed.size(); i++) {
-        group.ActionsAllowed[i] = 0;
+    for (auto &action : group.ActionsAllowed)
+    {
+        action = 0;
     }
-    for (size_t i = 0; i < json_array_size(jsonPermissions); i++) {
+
+    for (size_t i = 0; i < json_array_size(jsonPermissions); i++)
+    {
         json_t * jsonPermissionValue = json_array_get(jsonPermissions, i);
         const char * perm_name = json_string_value(jsonPermissionValue);
         if (perm_name == nullptr) {
@@ -91,9 +96,9 @@ void NetworkGroup::Read(NetworkPacket &packet)
 {
     packet >> Id;
     SetName(packet.ReadString());
-    for (size_t i = 0; i < ActionsAllowed.size(); i++)
+    for (auto action : ActionsAllowed)
     {
-        packet >> ActionsAllowed[i];
+        packet >> action;
     }
 }
 

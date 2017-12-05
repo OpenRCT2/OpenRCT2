@@ -337,12 +337,11 @@ void UITheme::SetName(const utf8 * name)
 
 const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
 {
-    for (size_t i = 0; i < Entries.size(); i++)
+    for (const auto &entry : Entries)
     {
-        const UIThemeWindowEntry * entry = &Entries[i];
-        if (entry->WindowClass == windowClass)
+        if (entry.WindowClass == windowClass)
         {
-            return entry;
+            return &entry;
         }
     }
     return nullptr;
@@ -351,12 +350,11 @@ const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
 void UITheme::SetEntry(const UIThemeWindowEntry * newEntry)
 {
     // Try to replace existing entry
-    for (size_t i = 0; i < Entries.size(); i++)
+    for (auto &entry : Entries)
     {
-        UIThemeWindowEntry * entry = &Entries[i];
-        if (entry->WindowClass == newEntry->WindowClass)
+        if (entry.WindowClass == newEntry->WindowClass)
         {
-            *entry = *newEntry;
+            entry = *newEntry;
             return;
         }
     }

@@ -350,9 +350,9 @@ public:
 private:
     void ClearItems()
     {
-        for (uint32 i = 0; i < _items.size(); i++)
+        for (auto &item : _items)
         {
-            FreeItem(&_items[i]);
+            FreeItem(&item);
         }
         _items.clear();
         _itemMap.clear();
