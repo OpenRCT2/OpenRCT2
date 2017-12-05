@@ -181,10 +181,10 @@ static void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT mask
     }
 }
 
+#ifdef __SSE4_1__
 static void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                         uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
 {
-#ifdef __SSE4_1__
     const __m128i zero128 = {};
     for (sint32 yy = 0; yy < height; yy++)
     {
@@ -213,10 +213,8 @@ static void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT mask
         _mm_storeu_si128((__m128i *)(dst + dstStep), blended1);
         _mm_storeu_si128((__m128i *)(dst + 16 + dstStep), blended2);
     }
-#else
-    openrct2_assert(false, "This build does not support SSE4.1, but ended up calling it");
-#endif // __SSE4_1__
 }
+#endif // __SSE4_1__
 
 extern "C"
 {
