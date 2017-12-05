@@ -341,6 +341,74 @@ struct tile_descriptor
     corner_height corner_heights;
 };
 
+struct tile_surface_boundary_data
+{
+    sint32       bit_1;
+    sint32       bit_8;
+    sint32       bit_4;
+    sint32       bit_2;
+    uint32       image[5];
+    LocationXY8  offset;
+    LocationXY16 box_offset;
+    LocationXY16 box_size;
+};
+
+static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
+{
+    { // Bottom right
+        1, 8, 4, 2,
+        {
+            SPR_TERRAIN_BOUNDARY_FENCES_1,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+        },
+        { 1, 31 },
+        { 1,  31 },
+        { 30,  1 }
+    },
+    { // Bottom left
+        1, 2, 4, 8,
+        {
+            SPR_TERRAIN_BOUNDARY_FENCES_2,
+            SPR_TERRAIN_BOUNDARY_FENCES_6,
+            SPR_TERRAIN_BOUNDARY_FENCES_4,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+        },
+        { 31, 0 },
+        { 31,  1 },
+        { 1,  30 }
+    },
+    { // Top left
+        4, 2, 8, 1,
+        {
+            SPR_TERRAIN_BOUNDARY_FENCES_1,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+        },
+        { 1, 0 },
+        { 1,  1 },
+        { 30,  1 }
+    },
+    { // Top right
+        4, 8, 2, 1,
+        {
+            SPR_TERRAIN_BOUNDARY_FENCES_2,
+            SPR_TERRAIN_BOUNDARY_FENCES_4,
+            SPR_TERRAIN_BOUNDARY_FENCES_6,
+            SPR_TERRAIN_BOUNDARY_FENCES_3,
+            SPR_TERRAIN_BOUNDARY_FENCES_5,
+        },
+        { 1, 1 },
+        { 1,  1 },
+        { 1,  30 }
+    },
+};
+
 static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * tileElement, sint32 rotation)
 {
     uint8 slope = tileElement->properties.surface.slope;
@@ -1028,8 +1096,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         LocationXY16 offset = viewport_surface_paint_data[i][rotation];
         LocationXY16 position = 
         {
-            base.x + offset.x, 
-            base.y + offset.y
+            (sint16)(base.x + offset.x), 
+            (sint16)(base.y + offset.y)
         };
 
         tileDescriptors[i + 1].tile_element = NULL;
@@ -1395,9 +1463,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
     }
 
-    if ((tileElement->properties.surface.ownership & 0x0F) &&
-        !gTrackDesignSaveMode
-    ) {
+    if ((tileElement->properties.surface.ownership & 0x0F) && !gTrackDesignSaveMode)
+    {
         // Owned land boundary fences
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_PARK;
 
@@ -1408,114 +1475,70 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         uint8 al = regs.al | regs.ah;
 
-        for (sint32 i = 0; i < 4; i++) {
-            sint32 bit = al & 1;
+        for (sint32 i = 0; i < 4; i++)
+        {
+            const sint32 bit = al & 1;
             al >>= 1;
 
-            if (bit == 0) {
+            if (bit == 0)
+            {
                 continue;
             }
 
+            const tile_surface_boundary_data& fenceData = _tileSurfaceBoundaries[i];
 
-            sint32 bit_1, bit_8, bit_4, bit_2;
-            LocationXY8 offset;
-            LocationXY16 box_offset, box_size;
-            uint32 image_1, image_2, image_3;
-            switch (i) {
-                default:
-                case 0:
-                    // Bottom right
-                    bit_1 = 1;
-                    bit_8 = 8;
-                    bit_4 = 4;
-                    bit_2 = 2;
-                    image_1 = 22872;
-                    image_2 = 22876;
-                    image_3 = 22874;
-                    offset = {1, 31};
-                    box_size = {30, 1};
-                    box_offset = {1, 31};
-                    break;
-
-                case 1:
-                    // Bottom left
-                    bit_1 = 1;
-                    bit_8 = 2;
-                    bit_4 = 4;
-                    bit_2 = 8;
-                    image_1 = 22873;
-                    image_2 = 22877;
-                    image_3 = 22875;
-                    offset = {31, 0};
-                    box_size = {1, 30};
-                    box_offset = {31, 1};
-                    break;
-
-                case 2:
-                    // Top left
-                    bit_1 = 4;
-                    bit_8 = 2;
-                    bit_4 = 8;
-                    bit_2 = 1;
-                    image_1 = 22872;
-                    image_2 = 22874;
-                    image_3 = 22876;
-                    offset = {1, 0};
-                    box_size = {30, 1};
-                    box_offset ={1, 1};
-                    // TODO: Fences on top tile get clipped after a while
-                    break;
-
-                case 3:
-                    // Top right
-                    bit_1 = 4;
-                    bit_8 = 8;
-                    bit_4 = 2;
-                    bit_2 = 1;
-                    image_1 = 22873;
-                    image_2 = 22875;
-                    image_3 = 22877;
-                    offset = {1, 1};
-                    box_size = {1, 30};
-                    box_offset = {1, 1};
-                    break;
-            }
-
-            uint32 image_4, image_5;
-            if (i == 0 || i == 1) {
-                image_4 = image_3;
-                image_5 = image_2;
-            } else {
-                image_4 = image_2;
-                image_5 = image_3;
-            }
-
-            sint32 local_ebx = surfaceShape;
             sint32 local_height = height;
             sint32 image_id = 0;
-            if (!(local_ebx & bit_1)) { // first
-                if (local_ebx & bit_8) { // second
-                    image_id = image_3;
-                } else {
-                    image_id = image_1;
+
+            if (!(surfaceShape & fenceData.bit_1))
+            { // first
+                if (surfaceShape & fenceData.bit_8)
+                { // second
+                    image_id = fenceData.image[2];
                 }
-            } else if (!(local_ebx & bit_8)) { // loc_6619A2:
-                image_id = image_2;
-            } else {
+                else
+                {
+                    image_id = fenceData.image[0];
+                }
+            }
+            else if (!(surfaceShape & fenceData.bit_8))
+            { // loc_6619A2:
+                image_id = fenceData.image[1];
+            }
+            else
+            {
                 local_height += 16;
 
-                if (!(local_ebx & 0x10)) { // loc_6619B5 (first)
-                    image_id = image_1;
-                } else if (local_ebx & bit_4) { // loc_6619B5 (second)
-                    image_id = image_4;
-                } else if (local_ebx & bit_2) { // loc_6619B5 (third)
-                    image_id = image_5;
-                } else {
-                    image_id = image_1;
+                if (!(surfaceShape & 0x10))
+                { // loc_6619B5 (first)
+                    image_id = fenceData.image[0];
+                }
+                else if (surfaceShape & fenceData.bit_4)
+                { // loc_6619B5 (second)
+                    image_id = fenceData.image[3];
+                }
+                else if (surfaceShape & fenceData.bit_2)
+                { // loc_6619B5 (third)
+                    image_id = fenceData.image[4];
+                }
+                else
+                {
+                    image_id = fenceData.image[0];
                 }
             }
 
-            sub_98197C(session, image_id, offset.x, offset.y, box_size.x, box_size.y, 9, local_height, box_offset.x, box_offset.y, local_height + 1, rotation);
+            sub_98197C(session,
+                image_id,
+                fenceData.offset.x,
+                fenceData.offset.y,
+                fenceData.box_size.x,
+                fenceData.box_size.y,
+                9,
+                local_height,
+                fenceData.box_offset.x,
+                fenceData.box_offset.y,
+                local_height + 1,
+                rotation);
         }
     }
 
