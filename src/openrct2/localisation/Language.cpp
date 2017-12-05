@@ -245,7 +245,7 @@ void language_free_object_string(rct_string_id stringId)
     {
         if (_languageCurrent != nullptr)
         {
-            _languageCurrent->SetString(stringId, nullptr);
+            _languageCurrent->RemoveString(stringId);
         }
         _availableObjectStringIds.push(stringId);
     }
@@ -275,6 +275,6 @@ rct_string_id language_allocate_object_string(const std::string &target)
 
     rct_string_id stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
-    _languageCurrent->SetString(stringId, target.c_str());
+    _languageCurrent->SetString(stringId, target);
     return stringId;
 }

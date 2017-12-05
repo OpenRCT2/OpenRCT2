@@ -554,4 +554,3 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 
     return numHorizontalFrames;
 }
-
