@@ -42,9 +42,9 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
-    const utf8 * GetDescription() const;
-    const utf8 * GetCapacity() const;
-    const utf8 * GetVehicleName() const;
+    std::string GetDescription() const;
+    std::string GetCapacity() const;
+    std::string GetVehicleName() const;
 
     void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 

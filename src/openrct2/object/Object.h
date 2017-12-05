@@ -65,8 +65,8 @@ protected:
     const StringTable * GetStringTable() const { return &_stringTable; }
     ImageTable  *       GetImageTable() { return &_imageTable; }
 
-    const utf8 *        GetOverrideString(uint8 index) const;
-    const utf8 *        GetString(uint8 index) const;
+    std::string         GetOverrideString(uint8 index) const;
+    std::string         GetString(uint8 index) const;
 
 public:
     explicit Object(const rct_object_entry &entry);
@@ -84,7 +84,7 @@ public:
     virtual void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const { }
 
     virtual uint8           GetObjectType() const final { return _objectEntry.flags & 0x0F; }
-    virtual const utf8 *    GetName() const;
+    virtual std::string     GetName() const;
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 

@@ -35,7 +35,7 @@ Object::~Object()
     Memory::Free(_identifier);
 }
 
-const utf8 * Object::GetOverrideString(uint8 index) const
+std::string Object::GetOverrideString(uint8 index) const
 {
     const char * identifier = GetIdentifier();
     rct_string_id stringId = language_get_object_override_string_id(identifier, index);
@@ -45,23 +45,23 @@ const utf8 * Object::GetOverrideString(uint8 index) const
     {
         result = language_get_string(stringId);
     }
-    return result;
+    return String::ToStd(result);
 }
 
-const utf8 * Object::GetString(uint8 index) const
+std::string Object::GetString(uint8 index) const
 {
     auto sz = GetOverrideString(index);
-    if (sz == nullptr && index == OBJ_STRING_ID_VEHICLE_NAME)
+    if (sz.empty() && index == OBJ_STRING_ID_VEHICLE_NAME)
     {
         // If no vehicle name is specified, fall back to the ride name. This is also required if we fall back
         // to the .DAT name (which does not contain separate ride and vehicle names).
         return GetName();
     }
-    else if (sz == nullptr)
+    else if (sz.empty())
     {
         sz = GetStringTable()->GetString(index);
     }
-    return sz != nullptr ? sz : "";
+    return sz;
 }
 
 rct_object_entry Object::GetScgWallsHeader()
@@ -89,7 +89,7 @@ rct_object_entry Object::CreateHeader(const char name[9], uint32 flags, uint32 c
     #pragma GCC diagnostic ignored "-Wsuggest-final-methods"
 #endif
 
-const utf8 * Object::GetName() const
+std::string Object::GetName() const
 {
     return GetString(OBJ_STRING_ID_NAME);
 }

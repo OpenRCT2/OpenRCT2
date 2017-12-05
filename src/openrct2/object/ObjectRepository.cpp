@@ -709,12 +709,12 @@ extern "C"
                     Object * object = objectRepository->LoadObject(ori);
                     if (object != nullptr)
                     {
-                        StexObject * stexObject = static_cast<StexObject*>(object);
-                        const utf8 * scenarioName = stexObject->GetScenarioName();
-                        const utf8 * scenarioDetails = stexObject->GetScenarioDetails();
+                        auto stexObject = static_cast<StexObject*>(object);
+                        auto scenarioName = stexObject->GetScenarioName();
+                        auto scenarioDetails = stexObject->GetScenarioDetails();
 
-                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName);
-                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails);
+                        String::Set(scenarioEntry->name, sizeof(scenarioEntry->name), scenarioName.c_str());
+                        String::Set(scenarioEntry->details, sizeof(scenarioEntry->details), scenarioDetails.c_str());
 
                         delete object;
                     }
@@ -754,39 +754,6 @@ extern "C"
             Object * baseObject = static_cast<Object *>(object);
             baseObject->Unload();
             delete baseObject;
-        }
-    }
-
-    const utf8 * object_get_description(const void * object)
-    {
-        const Object * baseObject = static_cast<const Object *>(object);
-        switch (baseObject->GetObjectType()) {
-        case OBJECT_TYPE_RIDE:
-        {
-            const RideObject * rideObject = static_cast<const RideObject *>(baseObject);
-            return rideObject->GetDescription();
-        }
-        case OBJECT_TYPE_SCENARIO_TEXT:
-        {
-            const StexObject * stexObject = static_cast<const StexObject *>(baseObject);
-            return stexObject->GetScenarioDetails();
-        }
-        default:
-            return "";
-        }
-    }
-
-    const utf8 * object_get_capacity(const void * object)
-    {
-        const Object * baseObject = static_cast<const Object *>(object);
-        switch (baseObject->GetObjectType()) {
-        case OBJECT_TYPE_RIDE:
-        {
-            auto rideObject = static_cast<const RideObject *>(baseObject);
-            return rideObject->GetCapacity();
-        }
-        default:
-            return "";
         }
     }
 
