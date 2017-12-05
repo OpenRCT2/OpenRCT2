@@ -100,14 +100,20 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
 
 void ImageTable::AddImage(const rct_g1_element * g1)
 {
-    auto length = g1_calculate_data_size(g1);
-    auto dstOffset = _dataSize;
-    _dataSize += length;
-    _data = Memory::Reallocate(_data, _dataSize);
-    auto dst = (uint8 *)((size_t)_data + dstOffset);
-    Memory::Copy(dst, g1->offset, length);
-
     rct_g1_element newg1 = *g1;
-    newg1.offset = dst;
+    auto length = g1_calculate_data_size(g1);
+    if (length == 0)
+    {
+        newg1.offset = 0;
+    }
+    else
+    {
+        auto dstOffset = _dataSize;
+        _dataSize += length;
+        _data = Memory::Reallocate(_data, _dataSize);
+        auto dst = (uint8 *)((size_t)_data + dstOffset);
+        Memory::Copy(dst, g1->offset, length);
+        newg1.offset = dst;
+    }
     _entries.push_back(newg1);
 }

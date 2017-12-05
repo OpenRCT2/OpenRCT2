@@ -878,6 +878,28 @@ size_t g1_calculate_data_size(const rct_g1_element * g1)
         } while (!endOfLine);
         return ptr - g1->offset;
     }
+    else if (g1->flags & G1_FLAG_RLE_COMPRESSION)
+    {
+        if (g1->offset == nullptr)
+        {
+            return 0;
+        }
+        else
+        {
+            uint16 * offsets = (uint16 *)g1->offset;
+            uint8 * ptr = g1->offset + offsets[g1->height - 1];
+            bool endOfLine = false;
+            do
+            {
+                uint8 chunk0 = *ptr++;
+                ptr++; // offset
+                uint8 chunkSize = chunk0 & 0x7F;
+                ptr += chunkSize;
+                endOfLine = (chunk0 & 0x80) != 0;
+            } while (!endOfLine);
+            return ptr - g1->offset;
+        }
+    }
     else
     {
         return g1->width * g1->height;

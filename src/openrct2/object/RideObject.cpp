@@ -534,13 +534,87 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
     return numHorizontalFrames;
 }
 
+static std::vector<sint32> ParseRange(std::string s)
+{
+    // Currently only supports [###] or [###..###]
+    std::vector<sint32> result;
+    if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
+    {
+        s = s.substr(1, s.length() - 2);
+        auto parts = String::Split(s, "..");
+        if (parts.size() == 1)
+        {
+            result.push_back(std::stoi(parts[0]));
+        }
+        else
+        {
+            auto left = std::stoi(parts[0]);
+            auto right = std::stoi(parts[1]);
+            if (left <= right)
+            {
+                for (auto i = left; i <= right; i++)
+                {
+                    result.push_back(i);
+                }
+            }
+            else
+            {
+                for (auto i = right; i >= left; i--)
+                {
+                    result.push_back(i);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+static std::vector<rct_g1_element> ParseImages(std::string s)
+{
+    std::vector<rct_g1_element> result;
+    if (s.empty())
+    {
+        rct_g1_element emptyg1 = { 0 };
+        result.push_back(emptyg1);
+    }
+    else if (String::StartsWith(s, "$CSG"))
+    {
+        if (is_csg_loaded())
+        {
+            auto range = ParseRange(s.substr(4));
+            if (range.size() > 0)
+            {
+                for (auto i : range)
+                {
+                    auto g1 = gfx_get_g1_element(SPR_CSG_BEGIN + i);
+                    result.push_back(*g1);
+                }
+            }
+        }
+    }
+    return result;
+}
+
+static std::vector<std::string> GetJsonStringArray(const json_t * arr)
+{
+    std::vector<std::string> result;
+    if (json_is_array(arr))
+    {
+        auto count = json_array_size(arr);
+        for (size_t i = 0; i < count; i++)
+        {
+            auto element = json_string_value(json_array_get(arr, i));
+            result.push_back(element);
+        }
+    }
+    return result;
+}
+
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     printf("RideObject::ReadJson(context, root)\n");
     auto rideType = json_string_value(json_object_get(json_object_get(root, "properties"), "type"));
     auto category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
-    sint32 previewImg = 0;
-    sint32 imageStart = 0;
 
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
@@ -549,14 +623,10 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         String::Equals(rideType, "toilets")) // object tool should be fixed to generate toilets, not restroom.
     {
         _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
-        previewImg = SPR_CSG_RIDE_PREVIEW_TOILETS;
-        imageStart = SPR_CSG_TOILETS_BEGIN;
     }
     else if (String::Equals(rideType, "foodstall"))
     {
         _legacyType.ride_type[0] = RIDE_TYPE_FOOD_STALL;
-        previewImg = SPR_CSG_RIDE_PREVIEW_ICE_CREAM_STALL;
-        imageStart = SPR_CSG_ICE_CREAM_STALL_BEGIN;
         _legacyType.shop_item = SHOP_ITEM_ICE_CREAM;
     }
     _legacyType.ride_type[1] = RIDE_TYPE_NULL;
@@ -581,21 +651,18 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     stringTable->SetString(3, 0, "Vehicle");
 
     auto imageTable = GetImageTable();
-    
-    if (is_csg_loaded())
+    auto jsonImages = json_object_get(root, "images");
+    auto imageElements = GetJsonStringArray(jsonImages);
+    for (const auto &ie : imageElements)
     {
-        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        auto images = ParseImages(ie);
+        for (const auto &g1 : images)
         {
-            auto g1 = gfx_get_g1_element(previewImg);
-            imageTable->AddImage(g1);
+            imageTable->AddImage(&g1);
         }
-        for (int i = 0; i < 6; i++)
-        {
-            auto g1 = gfx_get_g1_element(imageStart + i);
-            imageTable->AddImage(g1);
-        }
-        rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
-        vehicle0->sprite_flags |= VEHICLE_SPRITE_FLAG_FLAT;
-        vehicle0->base_image_id = 0;
     }
+
+    rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
+    vehicle0->sprite_flags |= VEHICLE_SPRITE_FLAG_FLAT;
+    vehicle0->base_image_id = 0;
 }
