@@ -17,17 +17,21 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <ctype.h>
+#include <string>
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Editor.h>
+#include <openrct2/EditorObjectSelectionSession.h>
 #include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
+#include <openrct2/object/RideObject.h>
+#include <openrct2/object/StexObject.h>
 #include <openrct2/ObjectList.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
@@ -36,7 +40,6 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/EditorObjectSelectionSession.h>
 
 enum {
     FILTER_RCT2 = (1 << 0),
@@ -240,6 +243,8 @@ static bool filter_string(const ObjectRepositoryItem * item);
 static bool filter_source(const ObjectRepositoryItem * item);
 static bool filter_chunks(const ObjectRepositoryItem * item);
 static void filter_update_counts();
+
+static std::string object_get_description(const void * object);
 
 enum {
     RIDE_SORT_TYPE,
@@ -1057,10 +1062,10 @@ static void window_editor_object_selection_paint(rct_window *w, rct_drawpixelinf
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, gCommonFormatArgs, COLOUR_BLACK, x, y, width);
 
     // Draw description of object
-    const char *description = object_get_description(_loadedObject);
-    if (description != nullptr) {
+    auto description = object_get_description(_loadedObject);
+    if (!description.empty()) {
         set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, const char *, description);
+        set_format_arg(2, const char *, description.c_str());
 
         x = w->x + w->widgets[WIDX_LIST].right + 4;
         y += 15;
@@ -1448,4 +1453,23 @@ static rct_string_id get_ride_type_string_id(const ObjectRepositoryItem * item)
         }
     }
     return result;
+}
+
+static std::string object_get_description(const void * object)
+{
+    const Object * baseObject = static_cast<const Object *>(object);
+    switch (baseObject->GetObjectType()) {
+    case OBJECT_TYPE_RIDE:
+    {
+        const RideObject * rideObject = static_cast<const RideObject *>(baseObject);
+        return rideObject->GetDescription();
+    }
+    case OBJECT_TYPE_SCENARIO_TEXT:
+    {
+        auto stexObject = static_cast<const StexObject *>(baseObject);
+        return stexObject->GetScenarioDetails();
+    }
+    default:
+        return "";
+    }
 }

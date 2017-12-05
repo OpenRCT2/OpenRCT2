@@ -328,17 +328,17 @@ void RideObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 heigh
     gfx_draw_sprite(dpi, imageId, 0, 0, 0);
 }
 
-const utf8 * RideObject::GetDescription() const
+std::string RideObject::GetDescription() const
 {
     return GetString(OBJ_STRING_ID_DESCRIPTION);
 }
 
-const utf8 * RideObject::GetCapacity() const
+std::string RideObject::GetCapacity() const
 {
     return GetString(OBJ_STRING_ID_CAPACITY);
 }
 
-const utf8 * RideObject::GetVehicleName() const
+std::string RideObject::GetVehicleName() const
 {
     return GetString(OBJ_STRING_ID_VEHICLE_NAME);
 }
@@ -554,4 +554,3 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 
     return numHorizontalFrames;
 }
-
