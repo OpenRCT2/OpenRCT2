@@ -542,6 +542,9 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     sint32 previewImg = 0;
     sint32 imageStart = 0;
 
+    _legacyType.shop_item = SHOP_ITEM_NONE;
+    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+
     if (String::Equals(rideType, "restroom") ||
         String::Equals(rideType, "toilets")) // object tool should be fixed to generate toilets, not restroom.
     {
@@ -553,13 +556,13 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     {
         _legacyType.ride_type[0] = RIDE_TYPE_FOOD_STALL;
         previewImg = SPR_CSG_RIDE_PREVIEW_ICE_CREAM_STALL;
-        imageStart = 61281;
+        imageStart = SPR_CSG_ICE_CREAM_STALL_BEGIN;
+        _legacyType.shop_item = SHOP_ITEM_ICE_CREAM;
     }
     _legacyType.ride_type[1] = RIDE_TYPE_NULL;
     _legacyType.ride_type[2] = RIDE_TYPE_NULL;
 
-    _legacyType.shop_item = SHOP_ITEM_NONE;
-    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+
 
     if (String::Equals(rideType, "stall"))
     {
