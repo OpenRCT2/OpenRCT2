@@ -558,6 +558,9 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.ride_type[1] = RIDE_TYPE_NULL;
     _legacyType.ride_type[2] = RIDE_TYPE_NULL;
 
+    _legacyType.shop_item = SHOP_ITEM_NONE;
+    _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
+
     if (String::Equals(rideType, "stall"))
     {
         _legacyType.category[0] = RIDE_CATEGORY_SHOP;
