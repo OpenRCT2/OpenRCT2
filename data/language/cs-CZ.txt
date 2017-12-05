@@ -4034,14 +4034,13 @@ STR_5723    :Déšť
 STR_5724    :Bouřka
 STR_5725    :{BLACK}Vynutit počasí:
 STR_5726    :{SMALLFONT}{BLACK}Nastaví momentální počasí v parku
-STR_5727    :Metoda škálování
+STR_5727    :Metoda škálování:
 STR_5728    :Vyžaduje hardwarové zobrazování
 STR_5729    :{SMALLFONT}{BLACK}Vyžaduje hardwarové zobrazování
-STR_5730    :Nejbližší soused
+STR_5730    :<removed string - do not use>
 STR_5731    :Lineární
-STR_5732    :Anizotropní
-STR_5733    :U celočíselného škálování používat NS metodu
-# tooltip for tab in options window
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 STR_5734    :{SMALLFONT}{BLACK}Vykreslování
 STR_5735    :Stav připojení
 STR_5736    :Hráč
@@ -4126,8 +4125,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Zobrazovat počítadlo FPS ve hře
 STR_5816    :{SMALLFONT}{BLACK}Nastaví poměr stran pro škálování{NEWLINE} velikosti herního okna.{NEWLINE}Nejužitečnější je tato volba při hře ve vysokém rozlišení.
-STR_5817    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Nastaví typ škálování UI prvků{NEWLINE}{NEWLINE}Typ "nejbližší soused" má ostrý obraz, ale na neceločíselném škálování je zkreslený.{NEWLINE}Lineární a anizotropické typy škálování vytvářejí uhlazený, ale rozmazaný obraz.{NEWLINE}Vyhlazený nejbližší soused zaručuje ostrý obraz i při neceločíselných hodnotách škálovíní, ale může způsobovat výkonostní propad.
-STR_5818    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Použít škálování pomocí{NEWLINE}algoritmu nejbližších sousedů, v případě,{NEWLINE}že koeficient škálování nabývá celočíselných hodnot (1, 2, 3, atd.)
+STR_5817    :{SMALLFONT}{BLACK}Nastaví typ škálování UI prvků. Vyžaduje hardwarové vykreslování.{NEWLINE}Lineární škálování má hladký, ale rozmazaný obraz. Metoda vyhlazeného nejbližšího souseda má ostrý obraz, ale může způsobovat mírný výkonostní propad.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Vyžaduje hardwarové zobrazování]{NEWLINE}Pozastavit hru, pokud je {NEWLINE}zapnutý Steam in-game overlay
 STR_5820    :{SMALLFONT}{BLACK}Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
 STR_5821    :{SMALLFONT}{BLACK}Mění barvu naznačeného místa stavby pří stavbě atrakcí, cest, kulis{NEWLINE}, obchodů, stánků a dalších

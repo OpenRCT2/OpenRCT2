@@ -4031,13 +4031,13 @@ STR_5723    :폭우
 STR_5724    :천둥번개
 STR_5725    :{BLACK}날씨 고정:
 STR_5726    :{SMALLFONT}{BLACK}공원의 현재 날씨를 설정합니다.
-STR_5727    :크기 조절 방식
+STR_5727    :크기 조절 방식:
 STR_5728    :하드웨어 디스플레이 설정 필요
 STR_5729    :{SMALLFONT}{BLACK}하드웨어 디스플레이를 설정해야 합니다.
-STR_5730    :최대 인접 픽셀 사용
-STR_5731    :선형으로
-STR_5732    :비등방성으로
-STR_5733    :정수배 확대시 NN 스케일링 사용
+STR_5730    :<removed string - do not use>
+STR_5731    :<removed string - do not use>
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}렌더링
 STR_5735    :네트워크 상태
@@ -4123,8 +4123,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}게임 화면에 FPS를 표시합니다.
 STR_5816    :{SMALLFONT}{BLACK}게임 화면을 조절할 비율을 설정합니다.{NEWLINE}고해상도에서 플레이할 때 사용하면 좋습니다.
-STR_5817    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}게임 UI를 조절할 방식을 선택합니다.{NEWLINE}{NEWLINE}최대 인접 픽셀은 날카롭지만 창 크기 조절 배수가 정수배가 아니면 왜곡되어 보입니다.{NEWLINE}선형과 비등방성은 부드럽지만 흐릿하게 보일 것입니다.{NEWLINE}정수배 확대시 NN 스케일링 사용 설정은 정수배가 아닐 때에만 부드럽게 보이지만 약간의 성능 하락이 생길 수 있습니다.
-STR_5818    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}창 크기 조절 배수를 정수 값으로 사용할 경우 최근접 인접 픽셀 방식을 사용하여 UI의 크기를 조절합니다.
+STR_5817    :{SMALLFONT}{BLACK}게임 UI 크기 조절 방식을 설정합니다. 하드웨어 디스플레이로 설정해야 합니다.{NEWLINE}선형은 부드럽지만 흐릿하게 보이고, 부드러운 최근 인접 픽셀은 또렷하지만 약간의 성능 하락이 있습니다.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}스팀 인게임 오버레이가 열려있으면 게임을 일시정지시킵니다.
 STR_5820    :{SMALLFONT}{BLACK}전체 화면 모드에서 커서가 게임 밖으로 나가면 게임을 최소화시킵니다.
 STR_5821    :{SMALLFONT}{BLACK}놀이기구, 보도, 상점, 풍경 등을 건설할 때 건설 예정지를 표시하는 방식을 변경합니다.
