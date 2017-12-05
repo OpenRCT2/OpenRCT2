@@ -587,12 +587,12 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
             auto g1 = gfx_get_g1_element(previewImg);
-            imageTable->AddImage(g1, g1_calculate_data_size(g1));
+            imageTable->AddImage(g1);
         }
         for (int i = 0; i < 6; i++)
         {
             auto g1 = gfx_get_g1_element(imageStart + i);
-            imageTable->AddImage(g1, g1_calculate_data_size(g1));
+            imageTable->AddImage(g1);
         }
         rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
         vehicle0->sprite_flags |= VEHICLE_SPRITE_FLAG_FLAT;

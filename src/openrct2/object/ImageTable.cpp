@@ -98,8 +98,9 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
     }
 }
 
-void ImageTable::AddImage(const rct_g1_element * g1, size_t length)
+void ImageTable::AddImage(const rct_g1_element * g1)
 {
+    auto length = g1_calculate_data_size(g1);
     auto dstOffset = _dataSize;
     _dataSize += length;
     _data = Memory::Reallocate(_data, _dataSize);
