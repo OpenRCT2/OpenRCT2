@@ -540,16 +540,24 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.category[0] = RIDE_CATEGORY_SHOP;
 
     auto stringTable = GetStringTable();
+    auto jsonStrings = json_object_get(root, "strings");
+    auto jsonDescription = json_object_get(jsonStrings, "description");
+    auto enDescription = json_object_get(jsonDescription, "en-GB");
+
     stringTable->SetString(0, 0, "RCT1 toilets");
-    stringTable->SetString(1, 0, "Desc");
+    stringTable->SetString(1, 0, String::Duplicate(json_string_value(enDescription)));
     stringTable->SetString(2, 0, "Capacity");
     stringTable->SetString(3, 0, "Vehicle");
 
     auto imageTable = GetImageTable();
-    auto g1 = *(gfx_get_g1_element(0x60000 + 64231));
-    // auto g12 = gfx_get_g1_element(0x60000 + 64322);
-    // imageTable->AddImage(g1, (size_t)(g12->offset - g1->offset));
-    g1.x_offset = 0;
-    g1.y_offset = 0;
-    imageTable->AddImage(&g1, 0x4000);
+    
+    if (is_csg_loaded())
+    {
+        auto g1 = *(gfx_get_g1_element(0x60000 + 64231));
+        // auto g12 = gfx_get_g1_element(0x60000 + 64322);
+        // imageTable->AddImage(g1, (size_t)(g12->offset - g1->offset));
+        g1.x_offset = 0;
+        g1.y_offset = 0;
+        imageTable->AddImage(&g1, 0x4000);
+    }
 }

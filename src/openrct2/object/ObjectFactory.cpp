@@ -235,7 +235,7 @@ namespace ObjectFactory
         }
         catch (Exception)
         {
-            Console::Error::WriteLine("Unable to open or read '%s'", path);
+            Console::Error::WriteLine("Unable to open or read '%s'", path.c_str());
 
             delete result;
             result = nullptr;
