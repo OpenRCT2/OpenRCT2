@@ -100,7 +100,7 @@
 		4C93F19B1F8B748200A9330D /* MiniatureRailway.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */; };
 		4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1971F8B748200A9330D /* Monorail.cpp */; };
 		4C93F19D1F8B748200A9330D /* SuspendedMonorail.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */; };
-		4C93F1A51F8B748900A9330D /* BoatRide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19E1F8B748900A9330D /* BoatRide.cpp */; };
+		4C93F1A51F8B748900A9330D /* BoatHire.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19E1F8B748900A9330D /* BoatHire.cpp */; };
 		4C93F1A61F8B748900A9330D /* DingySlide.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F19F1F8B748900A9330D /* DingySlide.cpp */; };
 		4C93F1A71F8B748900A9330D /* LogFlume.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A01F8B748900A9330D /* LogFlume.cpp */; };
 		4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1A11F8B748900A9330D /* RiverRapids.cpp */; };
@@ -686,7 +686,7 @@
 		4C93F1961F8B748200A9330D /* MiniatureRailway.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = MiniatureRailway.cpp; sourceTree = "<group>"; };
 		4C93F1971F8B748200A9330D /* Monorail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Monorail.cpp; sourceTree = "<group>"; };
 		4C93F1981F8B748200A9330D /* SuspendedMonorail.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SuspendedMonorail.cpp; sourceTree = "<group>"; };
-		4C93F19E1F8B748900A9330D /* BoatRide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatRide.cpp; sourceTree = "<group>"; };
+		4C93F19E1F8B748900A9330D /* BoatHire.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = BoatHire.cpp; sourceTree = "<group>"; };
 		4C93F19F1F8B748900A9330D /* DingySlide.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DingySlide.cpp; sourceTree = "<group>"; };
 		4C93F1A01F8B748900A9330D /* LogFlume.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LogFlume.cpp; sourceTree = "<group>"; };
 		4C93F1A11F8B748900A9330D /* RiverRapids.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RiverRapids.cpp; sourceTree = "<group>"; };
@@ -2394,7 +2394,7 @@
 		F76C84EA1EC4E7CD00FA49E2 /* water */ = {
 			isa = PBXGroup;
 			children = (
-				4C93F19E1F8B748900A9330D /* BoatRide.cpp */,
+				4C93F19E1F8B748900A9330D /* BoatHire.cpp */,
 				4C93F19F1F8B748900A9330D /* DingySlide.cpp */,
 				4C93F1A01F8B748900A9330D /* LogFlume.cpp */,
 				4C93F1A11F8B748900A9330D /* RiverRapids.cpp */,
@@ -3071,7 +3071,7 @@
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
 				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
-				4C93F1A51F8B748900A9330D /* BoatRide.cpp in Sources */,
+				4C93F1A51F8B748900A9330D /* BoatHire.cpp in Sources */,
 				4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */,
 				F76C88791EC5324E00FA49E2 /* AudioContext.cpp in Sources */,
 				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,

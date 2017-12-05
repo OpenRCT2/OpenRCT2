@@ -38,10 +38,10 @@ const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
     true,   // 2 Suspended Swinging
     true,   // 3 Inverted
     true,   // 4 Steel Mini Coaster
-    true,   // 5 Mini Railroad
+    true,   // 5 Mini Railway
     true,   // 6 Monorail
     true,   // 7 Mini Suspended Coaster
-    false,  // 8 Boat Ride
+    false,  // 8 Boat Hire
     true,   // 9 Wooden Wild Mine/Mouse
     true,   // a Steeplechase/Motorbike/Soap Box Derby
     true,   // b Car Ride
@@ -139,10 +139,10 @@ const uint8 initialUpkeepCosts[RIDE_TYPE_COUNT] = {
     40, // 02 Suspended Swinging
     40, // 03 Inverted
     40, // 04 Steel Mini Coaster
-    60, // 05 Mini Railroad
+    60, // 05 Mini Railway
     65, // 06 Monorail
     40, // 07 Mini Suspended Coaster
-    50, // 08 Boat Ride
+    50, // 08 Boat Hire
     40, // 09 Wooden Wild Mine/Mouse
     40, // 0a Steeplechase/Motorbike/Soap Box Derby
     70, // 0b Car Ride
@@ -233,10 +233,10 @@ const uint8 costPerTrackPiece[RIDE_TYPE_COUNT] = {
     80, // 02 Suspended Swinging
     80, // 03 Inverted
     80, // 04 Steel Mini Coaster
-    0,  // 05 Mini Railroad
+    0,  // 05 Mini Railway
     0,  // 06 Monorail
     80, // 07 Mini Suspended Coaster
-    0,  // 08 Boat Ride
+    0,  // 08 Boat Hire
     80, // 09 Wooden Wild Mine/Mouse
     80, // 0a Steeplechase/Motorbike/Soap Box Derby
     0,  // 0b Car Ride
@@ -330,10 +330,10 @@ const uint8 costPerVehicle[RIDE_TYPE_COUNT] = {
     20, // 02 Suspended Swinging
     13, // 03 Inverted
     8,  // 04 Steel Mini Coaster
-    10, // 05 Mini Railroad
+    10, // 05 Mini Railway
     10, // 06 Monorail
     10, // 07 Mini Suspended Coaster
-    4,  // 08 Boat Ride
+    4,  // 08 Boat Hire
     9,  // 09 Wooden Wild Mine/Mouse
     10, // 0a Steeplechase/Motorbike/Soap Box Derby
     8,  // 0b Car Ride
@@ -428,10 +428,10 @@ const bool chargeUpkeepForTrainLength[RIDE_TYPE_COUNT] = {
     true,   // 02 Suspended Swinging
     true,   // 03 Inverted
     true,   // 04 Steel Mini Coaster
-    true,   // 05 Mini Railroad
+    true,   // 05 Mini Railway
     true,   // 06 Monorail
     true,   // 07 Mini Suspended Coaster
-    false,  // 08 Boat Ride
+    false,  // 08 Boat Hire
     true,   // 09 Wooden Wild Mine/Mouse
     true,   // 0a Steeplechase/Motorbike/Soap Box Derby
     true,   // 0b Car Ride
@@ -523,10 +523,10 @@ const uint8 costPerStation[RIDE_TYPE_COUNT] = {
     10, // 02 Suspended Swinging
     10, // 03 Inverted
     5,  // 04 Steel Mini Coaster
-    5,  // 05 Mini Railroad
+    5,  // 05 Mini Railway
     10, // 06 Monorail
     10, // 07 Mini Suspended Coaster
-    0,  // 08 Boat Ride
+    0,  // 08 Boat Hire
     10, // 09 Wooden Wild Mine/Mouse
     10, // 0a Steeplechase/Motorbike/Soap Box Derby
     5,  // 0b Car Ride
@@ -618,10 +618,10 @@ const uint8 rideBonusValue[RIDE_TYPE_COUNT] = {
     90,  // 02 Suspended Swinging
     100, // 03 Inverted
     60,  // 04 Steel Mini Coaster
-    50,  // 05 Mini Railroad
+    50,  // 05 Mini Railway
     60,  // 06 Monorail
     50,  // 07 Mini Suspended Coaster
-    40,  // 08 Boat Ride
+    40,  // 08 Boat Hire
     55,  // 09 Wooden Wild Mine/Mouse
     60,  // 0a Steeplechase/Motorbike/Soap
     50,  // 0b Car Ride
@@ -729,10 +729,10 @@ const rct_ride_name_convention RideNameConvention[RIDE_TYPE_COUNT] = {
     { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 02 Suspended Swinging
     { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 03 Inverted
     { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 04 Steel Mini Coaster
-    { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 05 Mini Railroad
+    { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 05 Mini Railway
     { RIDE_COMPONENT_TYPE_TRAIN,        RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 06 Monorail
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 07 Mini Suspended Coaster
-    { RIDE_COMPONENT_TYPE_BOAT,         RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,   RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }, // 08 Boat Ride
+    { RIDE_COMPONENT_TYPE_BOAT,         RIDE_COMPONENT_TYPE_DOCKING_PLATFORM,   RIDE_COMPONENT_TYPE_DOCKING_PLATFORM }, // 08 Boat Hire
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 09 Wooden Wild Mine/Mouse
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 0a Steeplechase/Motorbike/Soap Box Derby
     { RIDE_COMPONENT_TYPE_CAR,          RIDE_COMPONENT_TYPE_TRACK,              RIDE_COMPONENT_TYPE_STATION }, // 0b Car Ride
@@ -826,7 +826,7 @@ const rct_ride_name RideNaming[] =  {
     { STR_RIDE_NAME_MINIATURE_RAILWAY,              STR_RIDE_DESCRIPTION_MINIATURE_RAILWAY              }, // RIDE_TYPE_MINIATURE_RAILWAY
     { STR_RIDE_NAME_MONORAIL,                       STR_RIDE_DESCRIPTION_MONORAIL                       }, // RIDE_TYPE_MONORAIL
     { STR_RIDE_NAME_MINI_SUSPENDED_COASTER,         STR_RIDE_DESCRIPTION_MINI_SUSPENDED_COASTER         }, // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    { STR_RIDE_NAME_BOAT_RIDE,                      STR_RIDE_DESCRIPTION_BOAT_RIDE                      }, // RIDE_TYPE_BOAT_RIDE
+    { STR_RIDE_NAME_BOAT_HIRE,                      STR_RIDE_DESCRIPTION_BOAT_HIRE                      }, // RIDE_TYPE_BOAT_HIRE
     { STR_RIDE_NAME_WOODEN_WILD_MOUSE,              STR_RIDE_DESCRIPTION_WOODEN_WILD_MOUSE              }, // RIDE_TYPE_WOODEN_WILD_MOUSE
     { STR_RIDE_NAME_STEEPLECHASE,                   STR_RIDE_DESCRIPTION_STEEPLECHASE                   }, // RIDE_TYPE_STEEPLECHASE
     { STR_RIDE_NAME_CAR_RIDE,                       STR_RIDE_DESCRIPTION_CAR_RIDE                       }, // RIDE_TYPE_CAR_RIDE
@@ -921,10 +921,10 @@ const uint8 RideAvailableModes[] = {
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 02 Suspended Swinging
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 03 Inverted
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE, 0xFF,                           // 04 Steel Mini Coaster
-    RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,                                                                                                  // 05 Mini Railroad
+    RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,                                                                                                  // 05 Mini Railway
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_SHUTTLE, 0xFF,                                                                                                  // 06 Monorail
     RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,                                                                                                                     // 07 Mini Suspended Coaster
-    RIDE_MODE_BOAT_HIRE, 0xFF,                                                                                                                              // 08 Boat Ride
+    RIDE_MODE_BOAT_HIRE, 0xFF,                                                                                                                              // 08 Boat Hire
     RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,                                                                                                                     // 09 Wooden Wild Mine/Mouse
     RIDE_MODE_CONTINUOUS_CIRCUIT, RIDE_MODE_CONTINUOUS_CIRCUIT_BLOCK_SECTIONED, 0xFF,                                                                       // 0A Steeplechase/Motorbike/Soap Box Derby
     RIDE_MODE_CONTINUOUS_CIRCUIT, 0xFF,                                                                                                                     // 0B Car Ride
@@ -1019,10 +1019,10 @@ const uint8 RideAvailableBreakdowns[] = {
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 02 Suspended Swinging
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 03 Inverted
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 04 Steel Mini Coaster
-    (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                         // 05 Mini Railroad
+    (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                         // 05 Mini Railway
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_DOORS_STUCK_CLOSED) | (1 << BREAKDOWN_DOORS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                               // 06 Monorail
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_RESTRAINTS_STUCK_CLOSED) | (1 << BREAKDOWN_RESTRAINTS_STUCK_OPEN) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),   // 07 Mini Suspended Coaster
-    (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                                                           // 08 Boat Ride
+    (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                                                           // 08 Boat Hire
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),                                                                                       // 09 Wooden Wild Mine/Mouse
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION) | (1 << BREAKDOWN_BRAKES_FAILURE),                                                                                       // 0A Steeplechase/Motorbike/Soap Box Derby
     (1 << BREAKDOWN_SAFETY_CUT_OUT) | (1 << BREAKDOWN_VEHICLE_MALFUNCTION),                                                                                                                         // 0B Car Ride
@@ -1134,7 +1134,7 @@ const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
     {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                   MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MINIATURE_RAILWAY
     {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_TRANSPORT_RIDE | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER,                                                                                                                                   MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_MONORAIL
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,                                                                                                                                                                                                                                                                                                               MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_BOAT_RIDE
+    {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT,                                                                                                                                                                                                                                                                                                               MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_BOAT_HIRE
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                  MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_WILD_MOUSE
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                         MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEPLECHASE
     {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                     MUSIC_STYLE_SUMMER,             0                                               },  // RIDE_TYPE_CAR_RIDE
@@ -1229,7 +1229,7 @@ const ride_cost RideTrackCosts[RIDE_TYPE_COUNT] =   {
     {   35,     6   },  // RIDE_TYPE_MINIATURE_RAILWAY
     {   42,     5   },  // RIDE_TYPE_MONORAIL
     {   60,     5   },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   55,     5   },  // RIDE_TYPE_BOAT_RIDE
+    {   55,     5   },  // RIDE_TYPE_BOAT_HIRE
     {   50,     6   },  // RIDE_TYPE_WOODEN_WILD_MOUSE
     {   57,     4   },  // RIDE_TYPE_STEEPLECHASE
     {   25,     5   },  // RIDE_TYPE_CAR_RIDE
@@ -1324,7 +1324,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   7,      32,     5,      39,     9,      50,     50,     0   },  // RIDE_TYPE_MINIATURE_RAILWAY
     {   8,      32,     8,      78,     9,      50,     60,     0   },  // RIDE_TYPE_MONORAIL
     {   10,     24,     24,     3,      8,      40,     50,     0   },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   255,    16,     0,      255,    3,      5,      40,     0   },  // RIDE_TYPE_BOAT_RIDE
+    {   255,    16,     0,      255,    3,      5,      40,     0   },  // RIDE_TYPE_BOAT_HIRE
     {   14,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_WOODEN_WILD_MOUSE
     {   14,     24,     7,      4,      7,      40,     60,     0   },  // RIDE_TYPE_STEEPLECHASE
     {   6,      24,     4,      2,      7,      30,     50,     0   },  // RIDE_TYPE_CAR_RIDE
@@ -1431,7 +1431,7 @@ const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
     MONEY(1,00),                        // SHOP_ITEM_HOT_DOG
     MONEY(1,50),                        // SHOP_ITEM_TENTACLE
     MONEY(1,50),                        // SHOP_ITEM_HAT
-    MONEY(0,70),                        // SHOP_ITEM_CANDY_APPLE
+    MONEY(0,70),                        // SHOP_ITEM_TOFFEE_APPLE
     MONEY(3,00),                        // SHOP_ITEM_TSHIRT
     MONEY(0,70),                        // SHOP_ITEM_DONUT
     MONEY(1,20),                        // SHOP_ITEM_COFFEE
@@ -1547,7 +1547,7 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
     SPR_SHOP_ITEM_HOT_DOG,
     SPR_SHOP_ITEM_TENTACLE,
     SPR_SHOP_ITEM_HAT,
-    SPR_SHOP_ITEM_CANDY_APPLE,
+    SPR_SHOP_ITEM_TOFFEE_APPLE,
     SPR_SHOP_ITEM_TSHIRT,
     SPR_SHOP_ITEM_DONUT,
     SPR_SHOP_ITEM_COFFEE,
@@ -1649,10 +1649,10 @@ const rct_ride_lift_data RideLiftData[] = {
     { SOUND_LIFT_1, 4, 6 }, // Suspended Swinging
     { SOUND_LIFT_7, 5, 7 }, // Inverted
     { SOUND_LIFT_3, 4, 6 }, // Steel Mini Coaster
-    { 255,          5, 5 }, // Mini Railroad
+    { 255,          5, 5 }, // Mini Railway
     { 255,          5, 5 }, // Monorail
     { SOUND_LIFT_3, 4, 5 }, // Mini Suspended Coaster
-    { 255,          5, 5 }, // Boat Ride
+    { 255,          5, 5 }, // Boat Hire
     { SOUND_LIFT_1, 4, 5 }, // Wooden Wild Mine/Mouse
     { SOUND_LIFT_1, 4, 5 }, // Steeplechase/Motorbike/Soap Box D
     { 255,          5, 5 }, // Car Ride
@@ -1747,7 +1747,7 @@ const sint32 RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_MINIATURE_RAILWAY
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_MONORAIL
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    SHOP_ITEM_PHOTO,    // RIDE_TYPE_BOAT_RIDE
+    SHOP_ITEM_PHOTO,    // RIDE_TYPE_BOAT_HIRE
     SHOP_ITEM_PHOTO3,   // RIDE_TYPE_WOODEN_WILD_MOUSE
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_STEEPLECHASE
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_CAR_RIDE
@@ -1842,7 +1842,7 @@ const rating_tuple RideRatings[RIDE_TYPE_COUNT] = {
     {   70,     6,  -10 },  // RIDE_TYPE_MINIATURE_RAILWAY
     {   70,     6,  -10 },  // RIDE_TYPE_MONORAIL
     {   50,     30, 10  },  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    {   70,     6,  0   },  // RIDE_TYPE_BOAT_RIDE
+    {   70,     6,  0   },  // RIDE_TYPE_BOAT_HIRE
     {   50,     30, 30  },  // RIDE_TYPE_WOODEN_WILD_MOUSE
     {   50,     30, 10  },  // RIDE_TYPE_STEEPLECHASE
     {   70,     10, 10  },  // RIDE_TYPE_CAR_RIDE
@@ -1983,7 +1983,7 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER |
          RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING |
          RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOAT_RIDE
+                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_BOAT_HIRE
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
          RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
          RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
@@ -2453,7 +2453,7 @@ const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
     {  5, 17, 17, 20 }, // SHOP_ITEM_HOT_DOG
     { 11, 22, 20, 18 }, // SHOP_ITEM_TENTACLE
     {  9, 27, 32, 24 }, // SHOP_ITEM_HAT
-    {  4, 10, 10, 10 }, // SHOP_ITEM_CANDY_APPLE
+    {  4, 10, 10, 10 }, // SHOP_ITEM_TOFFEE_APPLE
     { 20, 37, 37, 37 }, // SHOP_ITEM_TSHIRT
     {  4,  8,  7, 10 }, // SHOP_ITEM_DONUT
     {  3, 11, 15, 20 }, // SHOP_ITEM_COFFEE
@@ -2500,7 +2500,7 @@ const uint8 RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_MINIATURE_RAILWAY
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_MONORAIL
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    TRACK_ELEM_END_STATION,     // RIDE_TYPE_BOAT_RIDE
+    TRACK_ELEM_END_STATION,     // RIDE_TYPE_BOAT_HIRE
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_WOODEN_WILD_MOUSE
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_STEEPLECHASE
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_CAR_RIDE
@@ -2655,7 +2655,7 @@ const track_colour_preset_list RideColourPresets[] = {
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_BLACK },
     ),
 
-    // RIDE_TYPE_BOAT_RIDE
+    // RIDE_TYPE_BOAT_HIRE
     TRACK_COLOUR_PRESETS(
         { COLOUR_MOSS_GREEN, COLOUR_MOSS_GREEN, COLOUR_WHITE },
         { COLOUR_BLACK, COLOUR_BLACK, COLOUR_DARK_GREEN },

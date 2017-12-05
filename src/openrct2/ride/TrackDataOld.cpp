@@ -2097,7 +2097,7 @@ static const uint32 _OldMiniSuspendedCoasterTrackPaintFunctions[256] = {
 };
 
 /** rct2: 0x008B0D60 */
-static const uint32 _OldBoatRideTrackPaintFunctions[256] = {
+static const uint32 _OldBoatHireTrackPaintFunctions[256] = {
     0x008B0E40, // TRACK_ELEM_FLAT
     0x008B0E50, // TRACK_ELEM_END_STATION
     0x008B0E60, // TRACK_ELEM_BEGIN_STATION
@@ -19275,7 +19275,7 @@ const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldMiniatureRailwayTrackPaintFunctions,                // RIDE_TYPE_MINIATURE_RAILWAY
     _OldMonorailTrackPaintFunctions,                        // RIDE_TYPE_MONORAIL
     _OldMiniSuspendedCoasterTrackPaintFunctions,            // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    _OldBoatRideTrackPaintFunctions,                        // RIDE_TYPE_BOAT_RIDE
+    _OldBoatHireTrackPaintFunctions,                        // RIDE_TYPE_BOAT_HIRE
     _OldWoodenWildMouseTrackPaintFunctions,                 // RIDE_TYPE_WOODEN_WILD_MOUSE
     _OldSteeplechaseTrackPaintFunctions,                    // RIDE_TYPE_STEEPLECHASE
     _OldCarRideTrackPaintFunctions,                         // RIDE_TYPE_CAR_RIDE

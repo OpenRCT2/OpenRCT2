@@ -1064,7 +1064,7 @@ const uint64 RideTypePossibleTrackConfigurations[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_MINIATURE_RAILWAY                  */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE),
     /* RIDE_TYPE_MONORAIL                           */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE),
     /* RIDE_TYPE_MINI_SUSPENDED_COASTER             */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE),
-    /* RIDE_TYPE_BOAT_RIDE                          */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL),
+    /* RIDE_TYPE_BOAT_HIRE                          */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL),
     /* RIDE_TYPE_WOODEN_WILD_MOUSE                  */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL),
     /* RIDE_TYPE_STEEPLECHASE                       */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES),
     /* RIDE_TYPE_CAR_RIDE                           */  (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_SPINNING_TUNNEL) | (1ULL << TRACK_RAPIDS),
@@ -6255,7 +6255,7 @@ const TRACK_PAINT_FUNCTION_GETTER RideTypeTrackPaintFunctions[RIDE_TYPE_COUNT] =
     get_track_paint_function_miniature_railway,             // RIDE_TYPE_MINIATURE_RAILWAY
     get_track_paint_function_monorail,      // RIDE_TYPE_MONORAIL
     get_track_paint_function_mini_suspended_rc,                     // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    get_track_paint_function_boat_ride,     // RIDE_TYPE_BOAT_RIDE
+    get_track_paint_function_boat_hire,     // RIDE_TYPE_BOAT_HIRE
     get_track_paint_function_wooden_wild_mouse, // RIDE_TYPE_WOODEN_WILD_MOUSE
     get_track_paint_function_steeplechase,                      // RIDE_TYPE_STEEPLECHASE
     get_track_paint_function_car_ride,          // RIDE_TYPE_CAR_RIDE

@@ -749,7 +749,7 @@ void lightfx_add_lights_magic_vehicles()
             case RIDE_TYPE_CHAIRLIFT:
                 lightfx_add_3d_light(vehicleID, 0x0000 | LIGHTFX_LIGHT_QUALIFIER_SPRITE, place_x, place_y, place_z - 16, LIGHTFX_LIGHT_TYPE_LANTERN_2);
                 break;
-            case RIDE_TYPE_BOAT_RIDE:
+            case RIDE_TYPE_BOAT_HIRE:
             case RIDE_TYPE_CAR_RIDE:
             case RIDE_TYPE_GO_KARTS:
             case RIDE_TYPE_DODGEMS:

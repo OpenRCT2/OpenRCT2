@@ -1491,7 +1491,7 @@ static const uint8 RideColourKey[] = {
     COLOUR_KEY_RIDE,                // RIDE_TYPE_MINIATURE_RAILWAY
     COLOUR_KEY_RIDE,                // RIDE_TYPE_MONORAIL
     COLOUR_KEY_RIDE,                // RIDE_TYPE_MINI_SUSPENDED_COASTER
-    COLOUR_KEY_RIDE,                // RIDE_TYPE_BOAT_RIDE
+    COLOUR_KEY_RIDE,                // RIDE_TYPE_BOAT_HIRE
     COLOUR_KEY_RIDE,                // RIDE_TYPE_WOODEN_WILD_MOUSE
     COLOUR_KEY_RIDE,                // RIDE_TYPE_STEEPLECHASE
     COLOUR_KEY_RIDE,                // RIDE_TYPE_CAR_RIDE

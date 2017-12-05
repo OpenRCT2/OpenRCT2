@@ -476,7 +476,7 @@ enum {
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
     RIDE_TYPE_MINI_SUSPENDED_COASTER,
-    RIDE_TYPE_BOAT_RIDE,
+    RIDE_TYPE_BOAT_HIRE,
     RIDE_TYPE_WOODEN_WILD_MOUSE,
     RIDE_TYPE_STEEPLECHASE = 10,
     RIDE_TYPE_CAR_RIDE,
@@ -821,7 +821,7 @@ enum {
     RIDE_TYPE_FLAG_3 = 1 << 3,
     RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION = 1 << 4,
     RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS = 1 << 5,
-    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6,             // used only by boat ride and submarine ride
+    RIDE_TYPE_FLAG_TRACK_MUST_BE_ON_WATER = 1 << 6,             // used only by boat Hire and submarine ride
     RIDE_TYPE_FLAG_HAS_G_FORCES = 1 << 7,
     RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS = 1 << 8,                   // used by rides that can't have gaps, like those with a vertical tower, such as the observation tower
     RIDE_TYPE_FLAG_HAS_DATA_LOGGING = 1 << 9,
@@ -893,7 +893,7 @@ enum {
     SHOP_ITEM_HOT_DOG,
     SHOP_ITEM_TENTACLE,
     SHOP_ITEM_HAT,
-    SHOP_ITEM_CANDY_APPLE,
+    SHOP_ITEM_TOFFEE_APPLE,
     SHOP_ITEM_TSHIRT,
     SHOP_ITEM_DONUT,
     SHOP_ITEM_COFFEE,

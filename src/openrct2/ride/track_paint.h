@@ -342,7 +342,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32
 TRACK_PAINT_FUNCTION get_track_paint_function_monorail(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_mini_suspended_rc(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_miniature_railway(sint32 trackType, sint32 direction);
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(sint32 trackType, sint32 direction);
+TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_wooden_wild_mouse(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(sint32 trackType, sint32 direction);
 TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(sint32 trackType, sint32 direction);

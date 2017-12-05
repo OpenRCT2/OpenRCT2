@@ -4502,7 +4502,7 @@ static void ride_set_start_finish_points(sint32 rideIndex, rct_xy_element *start
     Ride *ride = get_ride(rideIndex);
 
     switch (ride->type) {
-    case RIDE_TYPE_BOAT_RIDE:
+    case RIDE_TYPE_BOAT_HIRE:
         ride_set_boat_hire_return_point(ride, startElement);
         break;
     case RIDE_TYPE_MAZE:
@@ -7714,7 +7714,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     case SHOP_ITEM_POPCORN:
     case SHOP_ITEM_HOT_DOG:
     case SHOP_ITEM_TENTACLE:
-    case SHOP_ITEM_CANDY_APPLE:
+    case SHOP_ITEM_TOFFEE_APPLE:
     case SHOP_ITEM_DONUT:
     case SHOP_ITEM_COFFEE:
     case SHOP_ITEM_CHICKEN:
@@ -7750,7 +7750,7 @@ bool shop_item_is_food(sint32 shopItem)
     case SHOP_ITEM_POPCORN:
     case SHOP_ITEM_HOT_DOG:
     case SHOP_ITEM_TENTACLE:
-    case SHOP_ITEM_CANDY_APPLE:
+    case SHOP_ITEM_TOFFEE_APPLE:
     case SHOP_ITEM_DONUT:
     case SHOP_ITEM_CHICKEN:
     case SHOP_ITEM_PRETZEL:
@@ -8030,7 +8030,7 @@ const char * ride_type_get_enum_name(sint32 rideType)
         nameof(RIDE_TYPE_MINIATURE_RAILWAY),
         nameof(RIDE_TYPE_MONORAIL),
         nameof(RIDE_TYPE_MINI_SUSPENDED_COASTER),
-        nameof(RIDE_TYPE_BOAT_RIDE),
+        nameof(RIDE_TYPE_BOAT_HIRE),
         nameof(RIDE_TYPE_WOODEN_WILD_MOUSE),
         nameof(RIDE_TYPE_STEEPLECHASE),
         nameof(RIDE_TYPE_CAR_RIDE),

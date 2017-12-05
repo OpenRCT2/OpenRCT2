@@ -227,7 +227,7 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
         { "NRL     ", "NRL2    ", "AML1    ", "TRAM1   " },                         // RIDE_TYPE_MINIATURE_RAILWAY
         { "MONO1   ", "MONO2   ", "MONO3   " },                                     // RIDE_TYPE_MONORAIL
         { "BATFL   ", "SKYTR   "},                                                  // RIDE_TYPE_MINI_SUSPENDED_COASTER
-        { "RBOAT   ", "BBOAT   ", "CBOAT   ", "SWANS   ", "TRIKE   ", "JSKI    " }, // RIDE_TYPE_BOAT_RIDE
+        { "RBOAT   ", "BBOAT   ", "CBOAT   ", "SWANS   ", "TRIKE   ", "JSKI    " }, // RIDE_TYPE_BOAT_HIRE
         { "WMOUSE  ", "WMMINE  "},                                                  // RIDE_TYPE_WOODEN_WILD_MOUSE
         { "STEEP1  ", "STEEP2  ", "SBOX    " },                                     // RIDE_TYPE_STEEPLECHASE
         { "SPCAR   ", "RCR     ", "TRUCK1  ", "VCR     ", "CTCAR   " },             // RIDE_TYPE_CAR_RIDE
@@ -387,10 +387,10 @@ const uint8 gRideCategories[] = {
     RIDE_CATEGORY_ROLLERCOASTER, // Suspended Swinging
     RIDE_CATEGORY_ROLLERCOASTER, // Inverted
     RIDE_CATEGORY_ROLLERCOASTER, // Steel Mini Coaster
-    RIDE_CATEGORY_TRANSPORT,     // Mini Railroad
+    RIDE_CATEGORY_TRANSPORT,     // Mini Railway
     RIDE_CATEGORY_TRANSPORT,     // Monorail
     RIDE_CATEGORY_ROLLERCOASTER, // Mini Suspended Coaster
-    RIDE_CATEGORY_WATER,         // Boat ride
+    RIDE_CATEGORY_WATER,         // Boat Hire
     RIDE_CATEGORY_ROLLERCOASTER, // Wooden Wild Mine/Mouse
     RIDE_CATEGORY_ROLLERCOASTER, // Steeplechase/Motorbike/Soap Box Derby
     RIDE_CATEGORY_GENTLE,        // Car Ride

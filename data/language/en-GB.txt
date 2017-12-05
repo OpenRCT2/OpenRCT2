@@ -11,7 +11,7 @@ STR_0006    :Junior Roller Coaster
 STR_0007    :Miniature Railway
 STR_0008    :Monorail
 STR_0009    :Mini Suspended Coaster
-STR_0010    :Boat Ride
+STR_0010    :Boat Hire
 STR_0011    :Wooden Wild Mouse
 STR_0012    :Steeplechase
 STR_0013    :Car Ride

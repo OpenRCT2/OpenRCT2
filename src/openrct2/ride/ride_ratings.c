@@ -788,7 +788,7 @@ static uint16 ride_compute_upkeep(Ride *ride)
         upkeep += 3 * ride->num_cars_per_train;
     }
 
-    // slight upkeep boosts for some rides - 5 for mini railroad, 10 for log
+    // slight upkeep boosts for some rides - 5 for mini railway, 10 for log
     // flume/rapids, 10 for roller coaster, 28 for giga coaster
     upkeep += costPerStation[ride->type] * ride->num_stations;
 
@@ -1838,7 +1838,7 @@ static void ride_ratings_calculate_mini_suspended_coaster(Ride *ride)
     ride->inversions |= get_num_of_sheltered_eighths(ride) << 5;
 }
 
-static void ride_ratings_calculate_boat_ride(Ride *ride)
+static void ride_ratings_calculate_boat_hire(Ride *ride)
 {
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
@@ -4003,7 +4003,7 @@ static void ride_ratings_calculate_submarine_ride(Ride *ride)
     ride->unreliability_factor = 7;
     set_unreliability_factor(ride);
 
-    // NOTE Fixed bug from original game, see boat ride.
+    // NOTE Fixed bug from original game, see boat Hire.
 
     rating_tuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2,20), RIDE_RATING(1,80), RIDE_RATING(1,40));
@@ -4262,7 +4262,7 @@ static const ride_ratings_calculation ride_ratings_calculate_func_table[RIDE_TYP
     ride_ratings_calculate_miniature_railway,                   // MINIATURE_RAILWAY
     ride_ratings_calculate_monorail,                            // MONORAIL
     ride_ratings_calculate_mini_suspended_coaster,              // MINI_SUSPENDED_COASTER
-    ride_ratings_calculate_boat_ride,                           // BOAT_RIDE
+    ride_ratings_calculate_boat_hire,                           // BOAT_HIRE
     ride_ratings_calculate_wooden_wild_mouse,                   // WOODEN_WILD_MOUSE
     ride_ratings_calculate_steeplechase,                        // STEEPLECHASE
     ride_ratings_calculate_car_ride,                            // CAR_RIDE

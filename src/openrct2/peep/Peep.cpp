@@ -820,7 +820,7 @@ static const uint8 byte_9822F4[] = {
     133,    // SHOP_ITEM_HOT_DOG
     110,    // SHOP_ITEM_TENTACLE
     0,      // SHOP_ITEM_HAT
-    50,     // SHOP_ITEM_CANDY_APPLE
+    50,     // SHOP_ITEM_TOFFEE_APPLE
     0,      // SHOP_ITEM_TSHIRT
     80,     // SHOP_ITEM_DONUT
     90,     // SHOP_ITEM_COFFEE
@@ -898,7 +898,7 @@ static const uint8 peep_item_containers[] = {
     0xFF,                           // PEEP_ITEM_HOT_DOG
     0xFF,                           // PEEP_ITEM_TENTACLE
     0xFF,                           // PEEP_ITEM_HAT
-    0xFF,                           // PEEP_ITEM_CANDY_APPLE
+    0xFF,                           // PEEP_ITEM_TOFFEE_APPLE
     0xFF,                           // PEEP_ITEM_TSHIRT
     0xFF,                           // PEEP_ITEM_DONUT
     SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_COFFEE
@@ -1854,7 +1854,7 @@ static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_POPCORN, PEEP_SPRITE_TYPE_PIZZA },
         { 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
         { 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
-        { 0, PEEP_ITEM_CANDY_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
+        { 0, PEEP_ITEM_TOFFEE_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
         { 0, PEEP_ITEM_DONUT, PEEP_SPRITE_TYPE_DONUT },
         { 1, PEEP_ITEM_PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
         { 1, PEEP_ITEM_COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
@@ -6313,7 +6313,7 @@ static const uint8 item_standard_litter[32] = {
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HOT_DOG
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TENTACLE
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HAT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_CANDY_APPLE
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOFFEE_APPLE
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TSHIRT
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DONUT
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_COFFEE
@@ -8451,7 +8451,7 @@ static sint32 peep_has_food_standard_flag(rct_peep * peep)
 {
     return peep->item_standard_flags &
            (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS |
-            PEEP_ITEM_PIZZA | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_CANDY_APPLE |
+            PEEP_ITEM_PIZZA | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE |
             PEEP_ITEM_DONUT | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
 }
 

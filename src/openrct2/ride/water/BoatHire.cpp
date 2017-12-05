@@ -22,40 +22,40 @@
 
 enum
 {
-    SPR_BOAT_RIDE_FLAT_BACK_SW_NE                      = 28523,
-    SPR_BOAT_RIDE_FLAT_FRONT_SW_NE                     = 28524,
-    SPR_BOAT_RIDE_FLAT_BACK_NW_SE                      = 28525,
-    SPR_BOAT_RIDE_FLAT_FRONT_NW_SE                     = 28526,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW  = 28527,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW = 28528,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE  = 28529,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE = 28530,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE  = 28531,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE = 28532,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW = 28533,
-    SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW  = 28534,
+    SPR_BOAT_HIRE_FLAT_BACK_SW_NE                      = 28523,
+    SPR_BOAT_HIRE_FLAT_FRONT_SW_NE                     = 28524,
+    SPR_BOAT_HIRE_FLAT_BACK_NW_SE                      = 28525,
+    SPR_BOAT_HIRE_FLAT_FRONT_NW_SE                     = 28526,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW  = 28527,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW = 28528,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE  = 28529,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE = 28530,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE  = 28531,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE = 28532,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW = 28533,
+    SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW  = 28534,
 };
 
 /** rct2: 0x008B0E40 */
-static void paint_boat_ride_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
+static void paint_boat_hire_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                        sint32 height, rct_tile_element * tileElement)
 {
     uint32 imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_BOAT_RIDE_FLAT_BACK_NW_SE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_BACK_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 4, 0, height, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_FRONT_NW_SE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_FRONT_NW_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 1, 32, 3, height, 28, 0, height, get_current_rotation());
     }
     else
     {
-        imageId = SPR_BOAT_RIDE_FLAT_BACK_SW_NE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_BACK_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 4, height, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_FRONT_SW_NE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_FRONT_SW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 1, 3, height, 0, 28, height, get_current_rotation());
     }
 
@@ -65,7 +65,7 @@ static void paint_boat_ride_track_flat(paint_session * session, uint8 rideIndex,
 }
 
 /** rct2: 0x008B0E50 */
-static void paint_boat_ride_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
+static void paint_boat_hire_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                     sint32 height, rct_tile_element * tileElement)
 {
     LocationXY16                             position      = session->MapPosition;
@@ -90,38 +90,38 @@ static void paint_boat_ride_station(paint_session * session, uint8 rideIndex, ui
 }
 
 /** rct2: 0x008B0E80 */
-static void paint_boat_ride_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
+static void paint_boat_hire_track_left_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                            uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
     uint32 imageId;
     switch (direction)
     {
     case 0:
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SW_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SW_NW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
         break;
     case 1:
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NW_NE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
         break;
     case 2:
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_NE_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
         break;
     case 3:
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_FRONT_SE_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 3, 3, 3, height, 28, 28, height + 2, get_current_rotation());
 
-        imageId = SPR_BOAT_RIDE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_BOAT_HIRE_FLAT_QUARTER_TURN_1_TILE_BACK_SE_SW | session->TrackColours[SCHEME_TRACK];
         sub_98197C(session, imageId, 0, 0, 32, 32, 0, height, 0, 0, height, get_current_rotation());
         break;
     }
@@ -132,31 +132,31 @@ static void paint_boat_ride_track_left_quarter_turn_1_tile(paint_session * sessi
 }
 
 /** rct2: 0x008B0E90 */
-static void paint_boat_ride_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
+static void paint_boat_hire_track_right_quarter_turn_1_tile(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    paint_boat_ride_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
+    paint_boat_hire_track_left_quarter_turn_1_tile(session, rideIndex, trackSequence, (direction + 3) % 4, height, tileElement);
 }
 
 /**
  * rct2: 0x008B0D60
  */
-TRACK_PAINT_FUNCTION get_track_paint_function_boat_ride(sint32 trackType, sint32 direction)
+TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(sint32 trackType, sint32 direction)
 {
     switch (trackType)
     {
     case TRACK_ELEM_FLAT:
-        return paint_boat_ride_track_flat;
+        return paint_boat_hire_track_flat;
 
     case TRACK_ELEM_END_STATION:
     case TRACK_ELEM_BEGIN_STATION:
     case TRACK_ELEM_MIDDLE_STATION:
-        return paint_boat_ride_station;
+        return paint_boat_hire_station;
 
     case TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE:
-        return paint_boat_ride_track_left_quarter_turn_1_tile;
+        return paint_boat_hire_track_left_quarter_turn_1_tile;
     case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE:
-        return paint_boat_ride_track_right_quarter_turn_1_tile;
+        return paint_boat_hire_track_right_quarter_turn_1_tile;
     }
 
     return NULL;
