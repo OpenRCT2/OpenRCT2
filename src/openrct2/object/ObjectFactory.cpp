@@ -219,22 +219,13 @@ namespace ObjectFactory
                 auto objectType = std::string(json_string_value(jObjectType));
                 if (objectType == "ride")
                 {
-                    std::string objectName;
-                    const char * id = json_string_value(json_object_get(jRoot, "id"));
-
-                    if (String::Equals(id, "rct1.icecr"))
-                    {
-                        objectName = "#RCT1ICE";
-                    }
-                    else
-                    {
-                        objectName = "#RCT1TOI";
-                    }
+                    auto id = json_string_value(json_object_get(jRoot, "id"));
+                    auto originalId = json_string_value(json_object_get(jRoot, "originalId"));
 
                     rct_object_entry entry = { 0 };
-                    memcpy(entry.name, objectName.c_str(), 8);
+                    memcpy(entry.name, originalId, 8);
                     result = new RideObject(entry);
-                    auto readContext = ReadObjectContext(objectName.c_str());
+                    auto readContext = ReadObjectContext(id);
                     result->ReadJson(&readContext, jRoot);
                     if (readContext.WasError())
                     {

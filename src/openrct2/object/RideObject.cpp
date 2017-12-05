@@ -537,8 +537,8 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     printf("RideObject::ReadJson(context, root)\n");
-    const char * rideType = json_string_value(json_object_get(json_object_get(root, "properties"), "type"));
-    const char * category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
+    auto rideType = json_string_value(json_object_get(json_object_get(root, "properties"), "type"));
+    auto category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
     sint32 previewImg = 0;
     sint32 imageStart = 0;
 
@@ -562,9 +562,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.ride_type[1] = RIDE_TYPE_NULL;
     _legacyType.ride_type[2] = RIDE_TYPE_NULL;
 
-
-
-    if (String::Equals(rideType, "stall"))
+    if (String::Equals(category, "stall"))
     {
         _legacyType.category[0] = RIDE_CATEGORY_SHOP;
         _legacyType.category[1] = RIDE_CATEGORY_SHOP;
@@ -586,18 +584,18 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     
     if (is_csg_loaded())
     {
-        auto g1 = *(gfx_get_g1_element(previewImg));
-        //auto g12 = *(gfx_get_g1_element(previewImg + 1));
-        g1.x_offset = 0;
-        g1.y_offset = 0;
-
         for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
         {
-            imageTable->AddImage(&g1, 0x4000); //(size_t)(g12.offset - g1.offset));
+            auto g1 = gfx_get_g1_element(previewImg);
+            imageTable->AddImage(g1, g1_calculate_data_size(g1));
         }
-
+        for (int i = 0; i < 6; i++)
+        {
+            auto g1 = gfx_get_g1_element(imageStart + i);
+            imageTable->AddImage(g1, g1_calculate_data_size(g1));
+        }
         rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
-        vehicle0->flags |= VEHICLE_SPRITE_FLAG_FLAT;
-        vehicle0->base_image_id = imageStart;
+        vehicle0->sprite_flags |= VEHICLE_SPRITE_FLAG_FLAT;
+        vehicle0->base_image_id = 0;
     }
 }
