@@ -24,7 +24,7 @@
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"

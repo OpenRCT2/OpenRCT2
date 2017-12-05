@@ -23,7 +23,7 @@
 #include "../core/DataSerialiser.h"
 #include "../core/IStream.hpp"
 
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/string_ids.h"
 #include "../world/map.h"
 

@@ -18,7 +18,7 @@
 #include "../cheats.h"
 #include "../config/Config.h"
 #include "../FileClassifier.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

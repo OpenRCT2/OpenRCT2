@@ -22,7 +22,7 @@
 #include "Painter.h"
 
 #include "../drawing/drawing.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/chat.h"
 #include "../interface/console.h"
 #include "../intro.h"

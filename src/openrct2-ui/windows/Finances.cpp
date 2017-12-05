@@ -18,7 +18,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/interface/graph.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/date.h>

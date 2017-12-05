@@ -17,7 +17,7 @@
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

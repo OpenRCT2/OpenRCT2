@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "game.h"
+#include "Game.h"
 #include "object.h"
 #include "object_list.h"
 #include "object/ObjectRepository.h"

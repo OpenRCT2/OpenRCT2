@@ -9,7 +9,7 @@
 #include "TestData.h"
 
 #include <openrct2/platform/platform.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 
 using namespace OpenRCT2;
 

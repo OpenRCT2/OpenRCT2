@@ -20,7 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../drawing/drawing.h"
 #include "../Editor.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../interface/Cursors.h"
 #include "../interface/themes.h"

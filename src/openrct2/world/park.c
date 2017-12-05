@@ -16,7 +16,7 @@
 
 #include "../cheats.h"
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/colour.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"

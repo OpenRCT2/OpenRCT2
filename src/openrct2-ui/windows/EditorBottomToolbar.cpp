@@ -21,7 +21,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/Editor.h>
 #include <openrct2/input.h>
 #include <openrct2/sprites.h>

@@ -29,7 +29,7 @@
 #include "../../world/scenery.h"
 #include "../../sprites.h"
 #include "../../localisation/localisation.h"
-#include "../../game.h"
+#include "../../Game.h"
 #include "../supports.h"
 
 #ifdef __TESTPAINT__

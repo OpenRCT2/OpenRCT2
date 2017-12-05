@@ -25,7 +25,7 @@
 #include "../rct2/S6Exporter.h"
 #include "CommandLine.hpp"
 
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../OpenRCT2.h"
 

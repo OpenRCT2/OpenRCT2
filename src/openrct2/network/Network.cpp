@@ -55,7 +55,7 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../rct2/S6Exporter.h"
 
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/chat.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

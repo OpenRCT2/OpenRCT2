@@ -18,7 +18,7 @@
 #include "../core/Util.hpp"
 #include "../Context.h"
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../input.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"

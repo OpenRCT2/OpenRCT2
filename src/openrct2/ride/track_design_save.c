@@ -17,7 +17,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
 #include "../interface/viewport.h"

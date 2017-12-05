@@ -26,7 +26,7 @@
 #include "map.h"
 #include "park.h"
 #include "scenery.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"

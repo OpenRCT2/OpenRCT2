@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../cheats.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../object_list.h"

@@ -24,7 +24,7 @@
 
 #include <ctype.h>
 #include "../audio/audio.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../Editor.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"

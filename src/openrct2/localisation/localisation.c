@@ -31,7 +31,7 @@
 #endif // _WIN32
 
 #include "../config/Config.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../util/util.h"
 #include "date.h"
 #include "localisation.h"

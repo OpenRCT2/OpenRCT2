@@ -51,7 +51,7 @@
 #include "config/Config.h"
 #include "drawing/lightfx.h"
 #include "Editor.h"
-#include "game.h"
+#include "Game.h"
 #include "input.h"
 #include "interface/chat.h"
 #include "interface/console.h"

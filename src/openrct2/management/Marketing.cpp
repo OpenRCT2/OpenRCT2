@@ -16,7 +16,7 @@
 
 #include "../config/Config.h"
 #include "../core/Util.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"

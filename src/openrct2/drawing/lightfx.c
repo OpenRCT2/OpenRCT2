@@ -17,7 +17,7 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../paint/tile_element/tile_element.h"

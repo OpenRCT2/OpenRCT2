@@ -26,7 +26,7 @@
 #include "Rain.h"
 #include "X8DrawingEngine.h"
 
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../intro.h"

@@ -23,7 +23,7 @@
 #include "../core/Math.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
-#include "../game.h"
+#include "../Game.h"
 #include "../Imaging.h"
 #include "../localisation/string_ids.h"
 #include "../object.h"

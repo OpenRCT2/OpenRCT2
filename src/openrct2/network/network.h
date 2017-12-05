@@ -38,7 +38,7 @@ enum {
 #define MAX_SERVER_DESCRIPTION_LENGTH 256
 
 #include "../common.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../localisation/string_ids.h"
 
 #include "../Version.h"

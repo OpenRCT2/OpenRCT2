@@ -32,7 +32,7 @@
 #include "TitleSequenceManager.h"
 #include "TitleSequencePlayer.h"
 
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../management/NewsItem.h"

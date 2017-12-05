@@ -25,7 +25,7 @@
 #include "DrawingEngines.h"
 
 #include <openrct2/drawing/lightfx.h>
-#include <openrct2/game.h>
+#include <openrct2/Game.h>
 #include <openrct2/paint/paint.h>
 
 using namespace OpenRCT2;

@@ -16,7 +16,7 @@
 
 #include "../audio/audio.h"
 #include "../cheats.h"
-#include "../game.h"
+#include "../Game.h"
 #include "../interface/viewport.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
