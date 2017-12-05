@@ -537,20 +537,42 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     printf("RideObject::ReadJson(context, root)\n");
-    _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
+    const char * rideType = json_string_value(json_object_get(json_object_get(root, "properties"), "type"));
+    const char * category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
+    sint32 previewImg = 0;
+    sint32 imageStart = 0;
+
+    if (String::Equals(rideType, "restroom") ||
+        String::Equals(rideType, "toilets")) // object tool should be fixed to generate toilets, not restroom.
+    {
+        _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
+        previewImg = SPR_CSG_RIDE_PREVIEW_TOILETS;
+        imageStart = SPR_CSG_TOILETS_BEGIN;
+    }
+    else if (String::Equals(rideType, "foodstall"))
+    {
+        _legacyType.ride_type[0] = RIDE_TYPE_FOOD_STALL;
+        previewImg = SPR_CSG_RIDE_PREVIEW_ICE_CREAM_STALL;
+        imageStart = 61281;
+    }
     _legacyType.ride_type[1] = RIDE_TYPE_NULL;
     _legacyType.ride_type[2] = RIDE_TYPE_NULL;
-    _legacyType.category[0] = RIDE_CATEGORY_SHOP;
-    _legacyType.category[1] = RIDE_CATEGORY_SHOP;
+
+    if (String::Equals(rideType, "stall"))
+    {
+        _legacyType.category[0] = RIDE_CATEGORY_SHOP;
+        _legacyType.category[1] = RIDE_CATEGORY_SHOP;
+    }
+
     _legacyType.flags |= RIDE_ENTRY_FLAG_SEPARATE_RIDE;
 
     auto stringTable = GetStringTable();
     auto jsonStrings = json_object_get(root, "strings");
+    auto jsonName = json_object_get(jsonStrings, "name");
     auto jsonDescription = json_object_get(jsonStrings, "description");
-    auto enDescription = json_object_get(jsonDescription, "en-GB");
 
-    stringTable->SetString(0, 0, "RCT1 toilets");
-    stringTable->SetString(1, 0, String::Duplicate(json_string_value(enDescription)));
+    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
+    stringTable->SetString(1, 0, json_string_value(json_object_get(jsonDescription, "en-GB")));
     stringTable->SetString(2, 0, "Capacity");
     stringTable->SetString(3, 0, "Vehicle");
 
@@ -558,8 +580,8 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     
     if (is_csg_loaded())
     {
-        auto g1 = *(gfx_get_g1_element(SPR_CSG_RIDE_PREVIEW_TOILETS));
-        //auto g12 = *(gfx_get_g1_element(SPR_CSG_RIDE_PREVIEW_TOILETS + 1));
+        auto g1 = *(gfx_get_g1_element(previewImg));
+        //auto g12 = *(gfx_get_g1_element(previewImg + 1));
         g1.x_offset = 0;
         g1.y_offset = 0;
 
@@ -570,6 +592,6 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
         rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
         vehicle0->flags |= VEHICLE_SPRITE_FLAG_FLAT;
-        vehicle0->base_image_id = SPR_CSG_TOILETS_BEGIN;
+        vehicle0->base_image_id = imageStart;
     }
 }
