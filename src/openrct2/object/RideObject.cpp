@@ -27,6 +27,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../sprites.h"
 
 RideObject::~RideObject()
 {
@@ -537,7 +538,11 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     printf("RideObject::ReadJson(context, root)\n");
     _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
+    _legacyType.ride_type[1] = RIDE_TYPE_NULL;
+    _legacyType.ride_type[2] = RIDE_TYPE_NULL;
     _legacyType.category[0] = RIDE_CATEGORY_SHOP;
+    _legacyType.category[1] = RIDE_CATEGORY_SHOP;
+    _legacyType.flags |= RIDE_ENTRY_FLAG_SEPARATE_RIDE;
 
     auto stringTable = GetStringTable();
     auto jsonStrings = json_object_get(root, "strings");
@@ -553,11 +558,18 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     
     if (is_csg_loaded())
     {
-        auto g1 = *(gfx_get_g1_element(0x60000 + 64231));
-        // auto g12 = gfx_get_g1_element(0x60000 + 64322);
-        // imageTable->AddImage(g1, (size_t)(g12->offset - g1->offset));
+        auto g1 = *(gfx_get_g1_element(SPR_CSG_RIDE_PREVIEW_TOILETS));
+        //auto g12 = *(gfx_get_g1_element(SPR_CSG_RIDE_PREVIEW_TOILETS + 1));
         g1.x_offset = 0;
         g1.y_offset = 0;
-        imageTable->AddImage(&g1, 0x4000);
+
+        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        {
+            imageTable->AddImage(&g1, 0x4000); //(size_t)(g12.offset - g1.offset));
+        }
+
+        rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
+        vehicle0->flags |= VEHICLE_SPRITE_FLAG_FLAT;
+        vehicle0->base_image_id = SPR_CSG_TOILETS_BEGIN;
     }
 }
