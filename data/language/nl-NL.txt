@@ -601,170 +601,170 @@ STR_0599    :Een compacte achtbaan met individuele karretjes en steile, kronkele
 STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan.
 STR_0601    :
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
-STR_0603    :Bezoeker {INT32}
-STR_0604    :Bezoeker {INT32}
-STR_0605    :Bezoeker {INT32}
-STR_0606    :Bezoeker {INT32}
-STR_0607    :Bezoeker {INT32}
-STR_0608    :Bezoeker {INT32}
-STR_0609    :Bezoeker {INT32}
-STR_0610    :Bezoeker {INT32}
-STR_0611    :Bezoeker {INT32}
-STR_0612    :Bezoeker {INT32}
-STR_0613    :Bezoeker {INT32}
-STR_0614    :Bezoeker {INT32}
-STR_0615    :Bezoeker {INT32}
-STR_0616    :Bezoeker {INT32}
-STR_0617    :Bezoeker {INT32}
-STR_0618    :Bezoeker {INT32}
-STR_0619    :Bezoeker {INT32}
-STR_0620    :Bezoeker {INT32}
-STR_0621    :Bezoeker {INT32}
-STR_0622    :Bezoeker {INT32}
-STR_0623    :Bezoeker {INT32}
-STR_0624    :Bezoeker {INT32}
-STR_0625    :Bezoeker {INT32}
-STR_0626    :Bezoeker {INT32}
-STR_0627    :Bezoeker {INT32}
-STR_0628    :Bezoeker {INT32}
-STR_0629    :Bezoeker {INT32}
-STR_0630    :Bezoeker {INT32}
-STR_0631    :Bezoeker {INT32}
-STR_0632    :Bezoeker {INT32}
-STR_0633    :Bezoeker {INT32}
-STR_0634    :Bezoeker {INT32}
-STR_0635    :Bezoeker {INT32}
-STR_0636    :Bezoeker {INT32}
-STR_0637    :Bezoeker {INT32}
-STR_0638    :Bezoeker {INT32}
-STR_0639    :Bezoeker {INT32}
-STR_0640    :Bezoeker {INT32}
-STR_0641    :Bezoeker {INT32}
-STR_0642    :Bezoeker {INT32}
-STR_0643    :Bezoeker {INT32}
-STR_0644    :Bezoeker {INT32}
-STR_0645    :Bezoeker {INT32}
-STR_0646    :Bezoeker {INT32}
-STR_0647    :Bezoeker {INT32}
-STR_0648    :Bezoeker {INT32}
-STR_0649    :Bezoeker {INT32}
-STR_0650    :Bezoeker {INT32}
-STR_0651    :Bezoeker {INT32}
-STR_0652    :Bezoeker {INT32}
-STR_0653    :Bezoeker {INT32}
-STR_0654    :Bezoeker {INT32}
-STR_0655    :Bezoeker {INT32}
-STR_0656    :Bezoeker {INT32}
-STR_0657    :Bezoeker {INT32}
-STR_0658    :Bezoeker {INT32}
-STR_0659    :Bezoeker {INT32}
-STR_0660    :Bezoeker {INT32}
-STR_0661    :Bezoeker {INT32}
-STR_0662    :Bezoeker {INT32}
-STR_0663    :Bezoeker {INT32}
-STR_0664    :Bezoeker {INT32}
-STR_0665    :Bezoeker {INT32}
-STR_0666    :Bezoeker {INT32}
-STR_0667    :Bezoeker {INT32}
-STR_0668    :Bezoeker {INT32}
-STR_0669    :Bezoeker {INT32}
-STR_0670    :Bezoeker {INT32}
-STR_0671    :Bezoeker {INT32}
-STR_0672    :Bezoeker {INT32}
-STR_0673    :Bezoeker {INT32}
-STR_0674    :Bezoeker {INT32}
-STR_0675    :Bezoeker {INT32}
-STR_0676    :Bezoeker {INT32}
-STR_0677    :Bezoeker {INT32}
-STR_0678    :Bezoeker {INT32}
-STR_0679    :Bezoeker {INT32}
-STR_0680    :Bezoeker {INT32}
-STR_0681    :Bezoeker {INT32}
-STR_0682    :Bezoeker {INT32}
-STR_0683    :Bezoeker {INT32}
-STR_0684    :Bezoeker {INT32}
-STR_0685    :Bezoeker {INT32}
-STR_0686    :Bezoeker {INT32}
-STR_0687    :Bezoeker {INT32}
-STR_0688    :Bezoeker {INT32}
-STR_0689    :Bezoeker {INT32}
-STR_0690    :Bezoeker {INT32}
-STR_0691    :Bezoeker {INT32}
-STR_0692    :Bezoeker {INT32}
-STR_0693    :Bezoeker {INT32}
-STR_0694    :Bezoeker {INT32}
-STR_0695    :Bezoeker {INT32}
-STR_0696    :Bezoeker {INT32}
-STR_0697    :Bezoeker {INT32}
-STR_0698    :Bezoeker {INT32}
-STR_0699    :Bezoeker {INT32}
-STR_0700    :Bezoeker {INT32}
-STR_0701    :Bezoeker {INT32}
-STR_0702    :Bezoeker {INT32}
-STR_0703    :Bezoeker {INT32}
-STR_0704    :Bezoeker {INT32}
-STR_0705    :Bezoeker {INT32}
-STR_0706    :Bezoeker {INT32}
-STR_0707    :Bezoeker {INT32}
-STR_0708    :Bezoeker {INT32}
-STR_0709    :Bezoeker {INT32}
-STR_0710    :Bezoeker {INT32}
-STR_0711    :Bezoeker {INT32}
-STR_0712    :Bezoeker {INT32}
-STR_0713    :Bezoeker {INT32}
-STR_0714    :Bezoeker {INT32}
-STR_0715    :Bezoeker {INT32}
-STR_0716    :Bezoeker {INT32}
-STR_0717    :Bezoeker {INT32}
-STR_0718    :Bezoeker {INT32}
-STR_0719    :Bezoeker {INT32}
-STR_0720    :Bezoeker {INT32}
-STR_0721    :Bezoeker {INT32}
-STR_0722    :Bezoeker {INT32}
-STR_0723    :Bezoeker {INT32}
-STR_0724    :Bezoeker {INT32}
-STR_0725    :Bezoeker {INT32}
-STR_0726    :Bezoeker {INT32}
-STR_0727    :Bezoeker {INT32}
-STR_0728    :Bezoeker {INT32}
-STR_0729    :Bezoeker {INT32}
-STR_0730    :Bezoeker {INT32}
-STR_0731    :Bezoeker {INT32}
-STR_0732    :Bezoeker {INT32}
-STR_0733    :Bezoeker {INT32}
-STR_0734    :Bezoeker {INT32}
-STR_0735    :Bezoeker {INT32}
-STR_0736    :Bezoeker {INT32}
-STR_0737    :Bezoeker {INT32}
-STR_0738    :Bezoeker {INT32}
-STR_0739    :Bezoeker {INT32}
-STR_0740    :Bezoeker {INT32}
-STR_0741    :Bezoeker {INT32}
-STR_0742    :Bezoeker {INT32}
-STR_0743    :Bezoeker {INT32}
-STR_0744    :Bezoeker {INT32}
-STR_0745    :Bezoeker {INT32}
-STR_0746    :Bezoeker {INT32}
-STR_0747    :Bezoeker {INT32}
-STR_0748    :Bezoeker {INT32}
-STR_0749    :Bezoeker {INT32}
-STR_0750    :Bezoeker {INT32}
-STR_0751    :Bezoeker {INT32}
-STR_0752    :Bezoeker {INT32}
-STR_0753    :Bezoeker {INT32}
-STR_0754    :Bezoeker {INT32}
-STR_0755    :Bezoeker {INT32}
-STR_0756    :Bezoeker {INT32}
-STR_0757    :Bezoeker {INT32}
-STR_0758    :Bezoeker {INT32}
-STR_0759    :Bezoeker {INT32}
-STR_0760    :Bezoeker {INT32}
-STR_0761    :Bezoeker {INT32}
-STR_0762    :Bezoeker {INT32}
-STR_0763    :Bezoeker {INT32}
-STR_0764    :Bezoeker {INT32}
-STR_0765    :Bezoeker {INT32}
-STR_0766    :Bezoeker {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -1925,7 +1925,7 @@ STR_1919    :Onvoldoende contant geld beschikbaar!
 STR_1920    :Kan lening niet terugbetalen!
 STR_1921    :{SMALLFONT}{BLACK}Een nieuw spel starten
 STR_1922    :{SMALLFONT}{BLACK}Verder gaan met een opgeslagen spel
-STR_1923    :{SMALLFONT}{BLACK}Tutorial tonen
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Afsluiten
 STR_1925    :Kan hier geen persoon plaatsen...
 STR_1926    :{SMALLFONT}
@@ -2858,8 +2858,8 @@ STR_2852    :Baanontwerp is al geïnstalleerd
 STR_2853    :Niet toegestaan door de gemeente!
 STR_2854    :{RED}Bezoekers kunnen niet bij de ingang van {STRINGID} komen!{NEWLINE}Bouw een pad naar de ingang
 STR_2855    :{RED}{STRINGID} heeft geen pad vanaf de uitgang!{NEWLINE}Bouw een pad vanaf de uitgang
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Druk op een toets of muisknop om de controle over te nemen)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Kan marketingcampagne niet starten...
 STR_2859    :OpenRCT2 draait al
 STR_2860    :<removed string - do not use> 
@@ -2868,7 +2868,7 @@ STR_2862    :Muziekdankwoord...
 STR_2863    :Muziekdankwoord
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) geen copyright
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Onbekende componist) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole (Die schöne Spanierin):   (Robert Vollstedt) geen copyright
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditioneel)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) geen copyright
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditioneel)
@@ -3057,9 +3057,9 @@ STR_3051    :Golfhole C
 STR_3052    :Golfhole D
 STR_3053    :Golfhole E
 STR_3054    :Laden...
-STR_3055    :Wit
-STR_3056    :Doorzichtig
-STR_3057    :{WINDOW_COLOUR_2}Bouwmarkering:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Stenen muren
 STR_3059    :Heggen
 STR_3060    :Blokken ijs
@@ -3387,58 +3387,58 @@ STR_3381    :Bestand is niet compatibel of bevat ongeldige gegevens
 STR_3382    :Kopiëren van bestand mislukt
 STR_3383    :Selecteer nieuwe naam voor dit baanontwerp
 STR_3384    :Er bestaat al een baanontwerp met deze naam; verzin een andere naam voor dit ontwerp:
-STR_3385    :Tutorial voor beginners
-STR_3386    :Tutorial voor eigen ontwerpen
-STR_3387    :Tutorial voor achtbanen bouwen
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Kan niet naar de geselecteerde modus overschakelen
 STR_3389    :Kan extra decorstukken niet selecteren...
 STR_3390    :Te veel items geselecteerd
-STR_3391    :{SMALLFONT}{BLACK}Dit is ons park - laten we eventjes kort rondkijken...
-STR_3392    :{SMALLFONT}{BLACK}De snelste manier om het beeld te verschuiven is de RECHTERmuisknop inhouden en met de muis bewegen...
-STR_3393    :{SMALLFONT}{BLACK}Als je meer van het park wil zien, kan je uitzoomen met het knopje bovenaan het scherm...
-STR_3394    :{SMALLFONT}{BLACK}Je kunt het beeld ook draaien in stappen van 90 graden...
-STR_3395    :{SMALLFONT}{BLACK}Dingen bouwen vanaf deze hoogte is een beetje lastig, laten we terug inzoomen...
-STR_3396    :{SMALLFONT}{BLACK}Laten we een simpele attractie bouwen om met dit park te beginnen...
-STR_3397    :{SMALLFONT}{BLACK}Het witte 'spookplaatje' laat zien waar de attractie zal worden gebouwd. Beweeg de muis er naar toe en klik om het te bouwen...
-STR_3398    :{SMALLFONT}{BLACK}Attracties hebben een ingang en een uitgang nodig. Beweeg de muis naar een vakje aan de rand van de attractie en klik om de ingang te bouwen. Klik nog een keer ergens om de uitgang te bouwen...
-STR_3399    :{SMALLFONT}{BLACK}We moeten een voetpad aanleggen zodat bezoekers onze nieuwe attractie kunnen bereiken...
-STR_3400    :{SMALLFONT}{BLACK}Voor het pad naar de ingang gebruiken we een speciaal wachtrij-voetpad...
-STR_3401    :{SMALLFONT}{BLACK}Voor de uitgang maakt het niet uit welk pad je gebruikt. Een normaal pad is goed...
-STR_3402    :{SMALLFONT}{BLACK}Oké dan, laten we de attractie openen! Om de attractie te openen klikken we op het knopje met de vlag in het attractievenster en selecteren we 'openen'...
-STR_3403    :{SMALLFONT}{BLACK}Maar waar zijn de bezoekers?!
-STR_3404    :{SMALLFONT}{BLACK}Oh, juist - het park is nog gesloten! Laten we ons park openen...
-STR_3405    :{SMALLFONT}{BLACK}Terwijl we op onze eerste bezoekers wachten kunnen we wat decorstukken neerzetten...
-STR_3406    :{SMALLFONT}{BLACK}Dit is ons lege park. We gaan een simpele, zelfontworpen attractie bouwen...
-STR_3407    :{SMALLFONT}{BLACK}Ten eerste hebben we een startpositie nodig...
-STR_3408    :{SMALLFONT}{BLACK}Het stuk baan dat we net gebouwd hebben is een 'station' en zorgt ervoor dat bezoekers in en uit kunnen stappen...
-STR_3409    :{SMALLFONT}{BLACK}We verlengen het perron een beetje door nog wat stationsgedeeltes aan te leggen...
-STR_3410    :{SMALLFONT}{BLACK}De knopjes aan de bovenkant van het bouwvenster laten je tussen verschillende soorten baanstukjes kiezen...
-STR_3411    :{SMALLFONT}{BLACK}We gaan een bocht naar links bouwen...
-STR_3412    :{SMALLFONT}{BLACK}De bocht is nog niet gebouwd, maar het witte spookplaatje laat zien waar het gebouwd gaat worden. Als je op de grote knop klikt wordt het gebouwd...
-STR_3413    :{SMALLFONT}{BLACK}Nu willen we een recht stuk bouwen, dus klikken we op het knopje voor 'recht stuk'...
-STR_3414    :{SMALLFONT}{BLACK}De baan is af, we kunnen nu de ingang en uitgang bouwen...
-STR_3415    :{SMALLFONT}{BLACK}Laten we testen of onze attractie werkt...
-STR_3416    :{SMALLFONT}{BLACK}Terwijl de attractie wordt getest kunnen we een wachtrij en uitgangspad aanleggen...
-STR_3417    :{SMALLFONT}{BLACK}Goed - laten we het park en onze attractie openen...
-STR_3418    :{SMALLFONT}{BLACK}Onze nieuwe attractie is niet heel erg spannend; misschien moeten we wat decor toevoegen?
-STR_3419    :{SMALLFONT}{BLACK}Om decor te bouwen boven ander decor (of midden in de lucht) hou je de SHIFT-toets ingedrukt en beweeg je de muis om de hoogte te bepalen...
-STR_3420    :{SMALLFONT}{BLACK}Sommige types decor kunnen opnieuw geverfd worden nadat ze zijn gebouwd...
-STR_3421    :{SMALLFONT}{BLACK}Laten we wat muziek draaien in onze attractie...
-STR_3422    :{SMALLFONT}{BLACK}Laten we een achtbaan bouwen!
-STR_3423    :{SMALLFONT}{BLACK}Er zijn veel kant-en-klare achtbanen, maar wij gaan ons eigen ontwerp bouwen...
-STR_3424    :{SMALLFONT}{BLACK}Zo, het station is af. Nu hebben we een liftheuvel nodig...
-STR_3425    :{SMALLFONT}{BLACK}Achtbaankarretjes zijn niet aangedreven, dus is een 'kettinglift' nodig om ze eerst een heuvel op te trekken...
-STR_3426    :{SMALLFONT}{BLACK}Goed, de liftheuvel is klaar - nu de eerste afdaling...
-STR_3427    :{SMALLFONT}{BLACK}Die bochten zijn een slecht idee; de passagiers zullen naar de zijkanten geslingerd worden door de zijwaartse G-krachten wanneer de trein er doorheen raast...
-STR_3428    :{SMALLFONT}{BLACK}De bochten een banking geven (schuinleggen) zal de rit prettiger maken, aangezien de passagiers in hun stoelen geduwd zullen worden in plaats van naar de zijkanten...
-STR_3429    :{SMALLFONT}{BLACK}Dit gaat niet werken! Kijk naar de hoogtemarkeringen: de tweede heuvel is hoger dan de liftheuvel...
-STR_3430    :{SMALLFONT}{BLACK}Om ervoor te zorgen dat de trein terug naar het station komt, moet elke heuvel iets lager zijn dan de heuvel daarvoor...
-STR_3431    :{SMALLFONT}{BLACK}Dat ziet er beter uit! Onze trein zou het nu moeten halen! Laten we wat meer bochtige stukjes toevoegen...
-STR_3432    :{SMALLFONT}{BLACK}We moeten de trein afremmen voordat we de laatste bocht en het station inkomen, dus laten we wat remmen toevoegen...
-STR_3433    :{SMALLFONT}{BLACK}En tenslotte voegen we 'blokremmen' toe. Die zorgen ervoor dat twee treinen tegelijk (en veilig) op de baan kunnen rijden...
-STR_3434    :{SMALLFONT}{BLACK}Laten we kijken of onze achtbaan werkt!
-STR_3435    :{SMALLFONT}{BLACK}Fantastisch, hij werkt! Laten we wat voetpaden aanleggen, zodat bezoekers bij onze nieuwe achtbaan kunnen komen...
-STR_3436    :{SMALLFONT}{BLACK}Terwijl we wachten op onze eerste bezoekers, kunnen we onze achtbaan een beetje aanpassen...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Grote gebieden met decor van het landschap verwijderen
 STR_3438    :Kan hier niet al het decor verwijderen...
 STR_3439    :Decor verwijderen
@@ -3455,7 +3455,7 @@ STR_5120    :Financiën
 STR_5121    :Onderzoek
 STR_5122    :Attracties op baantype sorteren
 STR_5123    :Attr. vernieuwen
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :Afbreekbaar maken
 STR_5126    :Willekeurige titelmuziek
 STR_5127    :{SMALLFONT}{BLACK}Landtype i.p.v. landhoogte aanpassen bij slepen
@@ -3827,7 +3827,7 @@ STR_5490    :Geluid dempen bij focusverlies
 STR_5491    :Uitvindingenlijst
 STR_5492    :Scenario-opties
 STR_5493    :Bericht verzenden
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Spelerslijst
 STR_5496    :Speler:
 STR_5497    :Ping:
@@ -3840,7 +3840,7 @@ STR_5503    :Hostnaam of IP-adres invoeren:
 STR_5504    :{SMALLFONT}{BLACK}Status multiplayer tonen
 STR_5505    :Kan niet met de server verbinden.
 STR_5506    :Bezoekers negeren intensiteit
-STR_5507    :Klusjesmannen standaard gras laten maaien
+STR_5507    :<removed string - do not use>
 STR_5508    :Bestanden met incorrecte checksum toch laden
 STR_5509    :{SMALLFONT}{BLACK}Maakt het mogelijk om scenario's en opgeslagen spellen met een incorrecte checksum te laden, zoals scenario's uit de demo of beschadigde opgeslagen parken.
 STR_5510    :Standaard geluidsapparaat
@@ -4027,13 +4027,13 @@ STR_5723    :Flinke regen
 STR_5724    :Onweer
 STR_5725    :{BLACK}Weer forceren:
 STR_5726    :{SMALLFONT}{BLACK}Stelt het huidige weer in het park in
-STR_5727    :Opschaalkwaliteit
+STR_5727    :Opschaalkwaliteit:
 STR_5728    :Dit vereist 'weergave door hardware'
 STR_5729    :{SMALLFONT}{BLACK}Dit vereist 'weergave door hardware'
-STR_5730    :Nearest neighbour
+STR_5730    :<removed string - do not use>
 STR_5731    :Lineair
-STR_5732    :Anisotropisch
-STR_5733    :Bij opschalen met gehele getallen NN gebruiken
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Netwerkstatus
@@ -4118,11 +4118,11 @@ STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :{SMALLFONT}{BLACK}Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5817    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}NN is scherp maar alleen bij vergroting met een geheel getal. Lineair en anisotropisch zijn vloeiend, maar niet zo scherp. SNN is scherp bij elke vergrotingsfactor maar kost iets meer verwerkingskracht.
-STR_5818    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Gebruik 'nearest neighbour' als de vergrotingsfactor{NEWLINE}is ingesteld op een geheel getal (1, 2, 3, etc.).
+STR_5817    :{SMALLFONT}{BLACK}(Vereist weergave via hardware){NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}Lineair is sneller, maar niet zo scherp. SNN is scherp maar kost iets meer verwerkingskracht.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Vereist 'Weergave uitgevoerd door hardware']{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :{SMALLFONT}{BLACK}Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
-STR_5821    :{SMALLFONT}{BLACK}Verandert hoe wordt aangegeven dat een attractie, winkel, decorstuk, etc. in aanbouw is.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
 STR_5823    :{SMALLFONT}{BLACK}Toont de tekst op lichtkranten altijd in hoofdletters (zoals RCT1).
 STR_5824    :{SMALLFONT}{BLACK}Schakelt bliksemeffect tijdens onweer uit.
@@ -4151,7 +4151,7 @@ STR_5846    :{SMALLFONT}{BLACK}Stelt in hoe vaak OpenRCT2 automatisch een back-u
 STR_5847    :{SMALLFONT}{BLACK}Stelt in welke titelpresentatie er wordt gebruikt. {NEWLINE}Titelpresentaties uit RCT1 en RCT2 vereisen dat je de gebruikte scenario's hebt geïmporteerd.
 STR_5848    :{SMALLFONT}{BLACK}Eigen titelpresentaties maken en beheren.
 STR_5849    :{SMALLFONT}{BLACK}Nieuwe werknemers automatisch plaatsen.
-STR_5850    :{SMALLFONT}{BLACK}Nieuwe klusjesmannen maaien standaard gras (zoals in RCT1).
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stelt het standaardinspectie-interval voor nieuwe attracties in.
 STR_5852    :{SMALLFONT}{BLACK}Stelt de naam van het Twitch.tv-kanaal in waarmee moet worden geïntegreerd.
 STR_5853    :{SMALLFONT}{BLACK}Geluidseffecten in-/uitschakelen.
@@ -4198,7 +4198,7 @@ STR_5893    :Wisselkoers
 STR_5894    :Vul de wisselkoers in
 STR_5895    :Baanontwerp opslaan
 STR_5896    :Opslaan baanontwerp mislukt!
-STR_5897    :Vensterlimiet:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Kan het baanontwerp niet laden. Het bestand{NEWLINE}is beschadigd of verwijderd!
 STR_5899    :Debugscherm tekencode aan/uitschakelen
 STR_5900    :Originele tekencode gebruiken

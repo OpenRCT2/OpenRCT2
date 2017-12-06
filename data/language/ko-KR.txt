@@ -604,170 +604,170 @@ STR_0599    :각각의 차량이 부드럽게 꼬인 채로 낙하하는 알찬 
 STR_0600    :부드럽게 꼬인 트랙 구조를 따라 이동하는 탄광 차량입니다.
 STR_0601    :
 STR_0602    :롤러코스터 차량은 탑승장에서 선형 유도 모터에 의해 가속하여 트랙을 돌만한 속도까지 올라갑니다.
-STR_0603    :손님 {INT32}
-STR_0604    :손님 {INT32}
-STR_0605    :손님 {INT32}
-STR_0606    :손님 {INT32}
-STR_0607    :손님 {INT32}
-STR_0608    :손님 {INT32}
-STR_0609    :손님 {INT32}
-STR_0610    :손님 {INT32}
-STR_0611    :손님 {INT32}
-STR_0612    :손님 {INT32}
-STR_0613    :손님 {INT32}
-STR_0614    :손님 {INT32}
-STR_0615    :손님 {INT32}
-STR_0616    :손님 {INT32}
-STR_0617    :손님 {INT32}
-STR_0618    :손님 {INT32}
-STR_0619    :손님 {INT32}
-STR_0620    :손님 {INT32}
-STR_0621    :손님 {INT32}
-STR_0622    :손님 {INT32}
-STR_0623    :손님 {INT32}
-STR_0624    :손님 {INT32}
-STR_0625    :손님 {INT32}
-STR_0626    :손님 {INT32}
-STR_0627    :손님 {INT32}
-STR_0628    :손님 {INT32}
-STR_0629    :손님 {INT32}
-STR_0630    :손님 {INT32}
-STR_0631    :손님 {INT32}
-STR_0632    :손님 {INT32}
-STR_0633    :손님 {INT32}
-STR_0634    :손님 {INT32}
-STR_0635    :손님 {INT32}
-STR_0636    :손님 {INT32}
-STR_0637    :손님 {INT32}
-STR_0638    :손님 {INT32}
-STR_0639    :손님 {INT32}
-STR_0640    :손님 {INT32}
-STR_0641    :손님 {INT32}
-STR_0642    :손님 {INT32}
-STR_0643    :손님 {INT32}
-STR_0644    :손님 {INT32}
-STR_0645    :손님 {INT32}
-STR_0646    :손님 {INT32}
-STR_0647    :손님 {INT32}
-STR_0648    :손님 {INT32}
-STR_0649    :손님 {INT32}
-STR_0650    :손님 {INT32}
-STR_0651    :손님 {INT32}
-STR_0652    :손님 {INT32}
-STR_0653    :손님 {INT32}
-STR_0654    :손님 {INT32}
-STR_0655    :손님 {INT32}
-STR_0656    :손님 {INT32}
-STR_0657    :손님 {INT32}
-STR_0658    :손님 {INT32}
-STR_0659    :손님 {INT32}
-STR_0660    :손님 {INT32}
-STR_0661    :손님 {INT32}
-STR_0662    :손님 {INT32}
-STR_0663    :손님 {INT32}
-STR_0664    :손님 {INT32}
-STR_0665    :손님 {INT32}
-STR_0666    :손님 {INT32}
-STR_0667    :손님 {INT32}
-STR_0668    :손님 {INT32}
-STR_0669    :손님 {INT32}
-STR_0670    :손님 {INT32}
-STR_0671    :손님 {INT32}
-STR_0672    :손님 {INT32}
-STR_0673    :손님 {INT32}
-STR_0674    :손님 {INT32}
-STR_0675    :손님 {INT32}
-STR_0676    :손님 {INT32}
-STR_0677    :손님 {INT32}
-STR_0678    :손님 {INT32}
-STR_0679    :손님 {INT32}
-STR_0680    :손님 {INT32}
-STR_0681    :손님 {INT32}
-STR_0682    :손님 {INT32}
-STR_0683    :손님 {INT32}
-STR_0684    :손님 {INT32}
-STR_0685    :손님 {INT32}
-STR_0686    :손님 {INT32}
-STR_0687    :손님 {INT32}
-STR_0688    :손님 {INT32}
-STR_0689    :손님 {INT32}
-STR_0690    :손님 {INT32}
-STR_0691    :손님 {INT32}
-STR_0692    :손님 {INT32}
-STR_0693    :손님 {INT32}
-STR_0694    :손님 {INT32}
-STR_0695    :손님 {INT32}
-STR_0696    :손님 {INT32}
-STR_0697    :손님 {INT32}
-STR_0698    :손님 {INT32}
-STR_0699    :손님 {INT32}
-STR_0700    :손님 {INT32}
-STR_0701    :손님 {INT32}
-STR_0702    :손님 {INT32}
-STR_0703    :손님 {INT32}
-STR_0704    :손님 {INT32}
-STR_0705    :손님 {INT32}
-STR_0706    :손님 {INT32}
-STR_0707    :손님 {INT32}
-STR_0708    :손님 {INT32}
-STR_0709    :손님 {INT32}
-STR_0710    :손님 {INT32}
-STR_0711    :손님 {INT32}
-STR_0712    :손님 {INT32}
-STR_0713    :손님 {INT32}
-STR_0714    :손님 {INT32}
-STR_0715    :손님 {INT32}
-STR_0716    :손님 {INT32}
-STR_0717    :손님 {INT32}
-STR_0718    :손님 {INT32}
-STR_0719    :손님 {INT32}
-STR_0720    :손님 {INT32}
-STR_0721    :손님 {INT32}
-STR_0722    :손님 {INT32}
-STR_0723    :손님 {INT32}
-STR_0724    :손님 {INT32}
-STR_0725    :손님 {INT32}
-STR_0726    :손님 {INT32}
-STR_0727    :손님 {INT32}
-STR_0728    :손님 {INT32}
-STR_0729    :손님 {INT32}
-STR_0730    :손님 {INT32}
-STR_0731    :손님 {INT32}
-STR_0732    :손님 {INT32}
-STR_0733    :손님 {INT32}
-STR_0734    :손님 {INT32}
-STR_0735    :손님 {INT32}
-STR_0736    :손님 {INT32}
-STR_0737    :손님 {INT32}
-STR_0738    :손님 {INT32}
-STR_0739    :손님 {INT32}
-STR_0740    :손님 {INT32}
-STR_0741    :손님 {INT32}
-STR_0742    :손님 {INT32}
-STR_0743    :손님 {INT32}
-STR_0744    :손님 {INT32}
-STR_0745    :손님 {INT32}
-STR_0746    :손님 {INT32}
-STR_0747    :손님 {INT32}
-STR_0748    :손님 {INT32}
-STR_0749    :손님 {INT32}
-STR_0750    :손님 {INT32}
-STR_0751    :손님 {INT32}
-STR_0752    :손님 {INT32}
-STR_0753    :손님 {INT32}
-STR_0754    :손님 {INT32}
-STR_0755    :손님 {INT32}
-STR_0756    :손님 {INT32}
-STR_0757    :손님 {INT32}
-STR_0758    :손님 {INT32}
-STR_0759    :손님 {INT32}
-STR_0760    :손님 {INT32}
-STR_0761    :손님 {INT32}
-STR_0762    :손님 {INT32}
-STR_0763    :손님 {INT32}
-STR_0764    :손님 {INT32}
-STR_0765    :손님 {INT32}
-STR_0766    :손님 {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :손님 {INT32}
 STR_0768    :미화원 {INT32}
 STR_0769    :정비기술자 {INT32}
@@ -1928,7 +1928,7 @@ STR_1919    :돈이 충분하지 않습니다!
 STR_1920    :대출을 갚을 수 없습니다!
 STR_1921    :{SMALLFONT}{BLACK}새로운 게임을 시작합니다
 STR_1922    :{SMALLFONT}{BLACK}저장된 게임을 계속해서 플레이합니다
-STR_1923    :{SMALLFONT}{BLACK}튜토리얼을 봅니다
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}게임을 종료합니다
 STR_1925    :사람을 여기에 놓을 수 없습니다...
 STR_1926    :{SMALLFONT}
@@ -2864,8 +2864,8 @@ STR_2852    :트랙 디자인이 이미 설치되어 있습니다
 STR_2853    :지역 당국에 의해 금지된 행위입니다!
 STR_2854    :{RED}{STRINGID}의 입구로 가는 길이 없습니다 !{NEWLINE}입구로 가는 길을 만드세요
 STR_2855    :{RED}{STRINGID}의 출구에서 나오는 길이 없습니다 !{NEWLINE}출구로 가는 길을 만드세요
-STR_2856    :{WINDOW_COLOUR_2}튜토리얼
-STR_2857    :{WINDOW_COLOUR_2}(조작하려면 마우스나 키보드 키를 누르세요)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :광고 이벤트를 시작할 수 없습니다...
 STR_2859    :OpenRCT2 프로그램이 이미 실행 중입니다
 STR_2860    :<removed string - do not use>
@@ -2874,7 +2874,7 @@ STR_2862    :음악 저작권...
 STR_2863    :음악 저작권
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (푸치크) 저작권 없음
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (작곡가 미상) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) 저작권 없음
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (민요)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (요한 스트라우스) 저작권 없음
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (민요)
@@ -3063,9 +3063,9 @@ STR_3051    :골프 홀 C
 STR_3052    :골프 홀 D
 STR_3053    :골프 홀 E
 STR_3054    :불러오는 중...
-STR_3055    :하얗게
-STR_3056    :반투명으로
-STR_3057    :{WINDOW_COLOUR_2}건설 예정지 표시:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :벽돌 벽
 STR_3059    :생울타리 벽
 STR_3060    :얼음 벽돌 벽
@@ -3393,58 +3393,58 @@ STR_3381    :파일이 적합하지 않거나 유효하지 않은 데이터를 �
 STR_3382    :파일 복사에 실패하였습니다
 STR_3383    :트랙 디자인에 지정할 새 이름을 선택하세요
 STR_3384    :같은 이름의 트랙 디자인이 이미 존재합니다 이 디자인에 지정할 다른 이름을 입력하세요:
-STR_3385    :초심자 튜토리얼
-STR_3386    :놀이기구 직접 만들기 튜토리얼
-STR_3387    :롤러코스터 만들기 튜토리얼
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :선택한 모드로 바꿀 수 없습니다
 STR_3389    :추가 조형물 항목을 선택할 수 없습니다...
 STR_3390    :항목을 너무 많이 선택하였습니다
-STR_3391    :{SMALLFONT}{BLACK}여기 우리 공원이 있습니다. 한 번 둘러보죠...
-STR_3392    :{SMALLFONT}{BLACK}마우스 오른쪽 버튼을 누른 채로 움직이면 화면을 빠르게 움직일 수 있습니다...
-STR_3393    :{SMALLFONT}{BLACK}공원을 더 많이 보고 싶다면 화면 위쪽에 있는 축소 버튼을 이용하여 화면을 축소할 수 있습니다...
-STR_3394    :{SMALLFONT}{BLACK}또 90도씩 화면을 회전시킬 수도 있습니다...
-STR_3395    :{SMALLFONT}{BLACK}하지만 이 스케일에서 뭔가를 건설하는 건 조금 힘듭니다. 다시 화면을 확대하여 원래대로 돌려놓읍시다...
-STR_3396    :{SMALLFONT}{BLACK}공원의 첫 놀이기구로 간단한 놀이기구를 만들어보죠...
-STR_3397    :{SMALLFONT}{BLACK}'유령'처럼 생긴 하얀 이미지는 놀이기구가 지어질 위치를 나타내는 것입니다. 마우스 커서를 움직여서 설치할 위치를 잡고 클릭하여 건설합니다...
-STR_3398    :{SMALLFONT}{BLACK}놀이기구는 입구와 출구가 필요합니다. 마우스 커서를 놀이기구의 가장자리에 두고 클릭해서 입구를 먼저 만들고, 그 다음으로 출구도 만듭니다...
-STR_3399    :{SMALLFONT}{BLACK}우리가 방금 만든 새 놀이기구에 손님이 접근하기 위해서는 길을 만들어야 합니다...
-STR_3400    :{SMALLFONT}{BLACK}놀이기구 입구에 연결하는 길은 '대기줄' 보도라는 특별한 길을 사용할 것입니다...
-STR_3401    :{SMALLFONT}{BLACK}출구에 연결하는 길은 그냥 '평범한' 보도면 됩니다...
-STR_3402    :{SMALLFONT}{BLACK}좋아요, 놀이기구를 개장해보죠! 놀이기구를 열기 위해서는 놀이기구 창에서 깃발 모양의 아이콘을 클릭하고 '열기'를 선택하세요...
-STR_3403    :{SMALLFONT}{BLACK}그런데 손님은 어디있을까요?
-STR_3404    :{SMALLFONT}{BLACK}이런, 공원이 아직 닫혀있네요! 공원의 문을 활짝 열어보죠...
-STR_3405    :{SMALLFONT}{BLACK}첫 손님이 올 때까지 약간의 조형물을 만들어보죠...
-STR_3406    :{SMALLFONT}{BLACK}여기 빈 공원이 있습니다. 이제 여기에 간단한 커스텀 디자인 놀이기구를 만들어보겠습니다...
-STR_3407    :{SMALLFONT}{BLACK}먼저 시작할 위치를 골라야 합니다...
-STR_3408    :{SMALLFONT}{BLACK}방금 우리가 만든 트랙 섹션은 놀이기구에 손님을 태우고 내리는 '탑승장'입니다...
-STR_3409    :{SMALLFONT}{BLACK}이제 탑증상 섹션을 조금 더 추가하여 승강장을 확장해보죠...
-STR_3410    :{SMALLFONT}{BLACK}건설 창의 가장 위에 있는 아이콘을 보시면 알겠지만 추가할 수 있는 트랙 조각이 여러 가지 있습니다...
-STR_3411    :{SMALLFONT}{BLACK}왼쪽 커브를 선택해보겠습니다...
-STR_3412    :{SMALLFONT}{BLACK}커브는 아직 건설되지 않았지만 하얀 유령 이미지가 어디에 지어질지를 보여주고 있습니다. 커다랗게 생긴 '건설하기' 버튼을 클릭해서 실제로 트랙을 건설합시다...
-STR_3413    :{SMALLFONT}{BLACK}이제 직진 트랙을 만들고 싶습니다. 직진 트랙 아이콘을 클릭합시다...
-STR_3414    :{SMALLFONT}{BLACK}이제 트랙을 완성합시다. 그리고 놀이기구의 입구와 출구를 만들어야 합니다.
-STR_3415    :{SMALLFONT}{BLACK}이제 놀이기구가 제대로 돌아가는지 테스트해보죠...
-STR_3416    :{SMALLFONT}{BLACK}테스트가 진행되는 동안, 대기줄과 출구 보도를 만들도록 하죠...
-STR_3417    :{SMALLFONT}{BLACK}됐습니다. 이제 공원과 놀이기구를 열어보죠...
-STR_3418    :{SMALLFONT}{BLACK}우리가 방금 새로 만든 놀이기구가 별로 재미가 없나봅니다. 조형물을 조금 추가해야할 것 같군요?
-STR_3419    :{SMALLFONT}{BLACK}조형물 위에 조형물을 얹거나 공중에 띄워 설치하려면, SHIFT 키를 누른 채로 마우스를 움직여 원하는 높이에서 클릭하시면 됩니다...
-STR_3420    :{SMALLFONT}{BLACK}일부 조형물은 설치하고 나면 다시 색을 칠할 수 없으니 유의하세요...
-STR_3421    :{SMALLFONT}{BLACK}놀이기구에 음악을 흐르게 만들어봅시다....
-STR_3422    :{SMALLFONT}{BLACK}롤러코스터를 만들어보죠 !
-STR_3423    :{SMALLFONT}{BLACK}미리 디자인된 롤러코스터가 있습니다만, 우리는 스스로 트랙을 디자인해서 만들 것입니다...
-STR_3424    :{SMALLFONT}{BLACK}탑승장이 만들어졌습니다. 이제 리프트 힐이 필요합니다...
-STR_3425    :{SMALLFONT}{BLACK}롤러코스터의 열차에는 동력이 없어서 열차가 첫 번째 언덕을 통과하기 위해서는 '체인 리프트'가 필요합니다...
-STR_3426    :{SMALLFONT}{BLACK}리프트 힐이 완성되었습니다. 이제 첫 번째 낙하 구간을 만들죠...
-STR_3427    :{SMALLFONT}{BLACK}이런 커브는 좋은 생각이 아닙니다. 탑승자는 열차가 달리면서 측면 중력때문에 측면으로 쏠리기 때문입니다...
-STR_3428    :{SMALLFONT}{BLACK}트랙의 커브에 기울임을 주면 탑승자들이 측면으로 쏠리는 대신에 좌석 아래쪽으로 당겨지게 되어 안정적인 탑승감을 선사할 수 있습니다...
-STR_3429    :{SMALLFONT}{BLACK}저런, 그렇게 하면 제대로 굴러가질 않습니다! 높이 고도 표시를 보시면 알겠지만 두 번째 언덕이 첫 번째 언덕보다 높습니다...
-STR_3430    :{SMALLFONT}{BLACK}열차가 제대로 굴러가게 만드려면, 각 언덕은 이전 언덕보다 조금 낮아야 함을 잊지 마세요...
-STR_3431    :{SMALLFONT}{BLACK}훨씬 낫네요. 이제 열차가 언덕을 오를 수 있게 되었습니다! 이제는 몇 개의 특수 트랙을 설치해보겠습니다...
-STR_3432    :{SMALLFONT}{BLACK}마지막 커브를 돌아서 탑승장에 돌아가기 전에 열차의 속력을 늦춰야 합니다. 그러니까 브레이크를 걸어보도록 하죠...
-STR_3433    :{SMALLFONT}{BLACK}이제 마지막으로 두 대의 여열차가 안전하게 서킷을 돌 수 있도록 만들어주는 '블록 브레이크'를 추가해보죠.
-STR_3434    :{SMALLFONT}{BLACK}놀이기구를 테스트하고 제대로 굴러가는 모습을 감상해보도록 하죠!
-STR_3435    :{SMALLFONT}{BLACK}훌륭합니다, 잘 작동하네요! 보도를 추가해서 손님들이 새로 만든 롤러코스터에 접근할 수 있게 만들어 주세요...
-STR_3436    :{SMALLFONT}{BLACK}첫 번째 탑승자를 기다리는 동안, 놀이기구를 조금만 커스터마이징해보죠...
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}조형물을 한꺼번에 제거
 STR_3438    :여기에 있는 모든 조형물을 다 제거하지 못 하였습니다...
 STR_3439    :조형물 제거
@@ -3461,7 +3461,7 @@ STR_5120    :재정
 STR_5121    :연구
 STR_5122    :놀이기구를 (RCT1처럼) 트랙 종류 별로 선택
 STR_5123    :놀이기구 새 걸로
-STR_5124    :
+STR_5124    :<removed string - do not use>
 STR_5125    :모두 파괴 가능
 STR_5126    :무작위 타이틀 음악
 STR_5127    :{SMALLFONT}{BLACK}땅을 올리거나 내리지 않고 지형을 편집합니다
@@ -3831,7 +3831,7 @@ STR_5490    :게임 밖으로 커서가 나가면 효과음 끄기
 STR_5491    :개발 목록
 STR_5492    :시나리오 설정
 STR_5493    :메시지 보내기
-STR_5494    :
+STR_5494    :<removed string - do not use>
 STR_5495    :플레이어 목록
 STR_5496    :플레이어:
 STR_5497    :핑:
@@ -3844,7 +3844,7 @@ STR_5503    :호스트네임이나 IP 주소를 입력하세요:
 STR_5504    :{SMALLFONT}{BLACK}접속자 목록 창을 엽니다
 STR_5505    :서버에 접속할 수 없습니다
 STR_5506    :손님이 격렬도를 무시하고 탐
-STR_5507    :미화원이 기본적으로 잔디를 깎음
+STR_5507    :<removed string - do not use>
 STR_5508    :올바르지 않은 검사합을 가진 파일 불러오기 허용
 STR_5509    :{SMALLFONT}{BLACK}데모에서 저장한 시나리오나 손상된 저장 파일과 같이 올바르지 않은 검사합을 가진 시나리오나 저장 파일을 불러오는 것을 허용합니다.
 STR_5510    :기본 사운드 장치
@@ -4127,7 +4127,7 @@ STR_5817    :{SMALLFONT}{BLACK}게임 UI 크기 조절 방식을 설정합니다
 STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[하드웨어 디스플레이 설정 필요]{NEWLINE}스팀 인게임 오버레이가 열려있으면 게임을 일시정지시킵니다.
 STR_5820    :{SMALLFONT}{BLACK}전체 화면 모드에서 커서가 게임 밖으로 나가면 게임을 최소화시킵니다.
-STR_5821    :{SMALLFONT}{BLACK}놀이기구, 보도, 상점, 풍경 등을 건설할 때 건설 예정지를 표시하는 방식을 변경합니다.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}낮밤을 순환하도록 설정합니다.{NEWLINE}낮밤이 바뀌는 데에는 한 달이 걸립니다.
 STR_5823    :{SMALLFONT}{BLACK}팻말의 영문을 대문자로 표시합니다. (RCT1처럼)
 STR_5824    :{SMALLFONT}{BLACK}폭풍이 칠 때 번개가 치는 효과를 끕니다.
@@ -4156,7 +4156,7 @@ STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니�
 STR_5847    :{SMALLFONT}{BLACK}타이틀 스크린에서 사용할 공원 시퀀스를 선택합니다. RCT1/2의 타이틀 시퀀스를 사용하기 위해서는 특정 시나리오가 필요합니다.
 STR_5848    :{SMALLFONT}{BLACK}사용자 타이틀 시퀀스를 생성하고 관리합니다.
 STR_5849    :{SMALLFONT}{BLACK}새로 고용한 직원을 자동으로 보도 위에 놓습니다.
-STR_5850    :{SMALLFONT}{BLACK}새로 고용된 미화원이 기본적으로 잔디를 깎습니다. (RCT1처럼)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}새로 만든 놀이기구에 기본적으로 설정할 점검 간격을 설정합니다.
 STR_5852    :{SMALLFONT}{BLACK}트위치 통합에 사용할 트위치TV 채널 명을 설정합니다.
 STR_5853    :{SMALLFONT}{BLACK}효과음 켜기/끄기
@@ -4203,7 +4203,7 @@ STR_5893    :환율
 STR_5894    :환율을 입력하세요
 STR_5895    :트랙 저장
 STR_5896    :트랙 저장에 실패하였습니다!
-STR_5897    :최대 열린 창 개수:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}트랙을 불러올 수 없습니다.{NEWLINE}파일이 망가지거나 깨졌을 수 있습니다!
 STR_5899    :그리기 디버그 창 열기/닫기
 STR_5900    :오리지널 그래픽 코드 사용
