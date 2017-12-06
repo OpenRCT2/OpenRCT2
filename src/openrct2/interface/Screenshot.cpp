@@ -522,6 +522,16 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         dpi.zoom_level = 0;
         dpi.bits = (uint8 *)malloc(dpi.width * dpi.height);
 
+        if (options->hide_guests)
+        {
+            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+        }
+
+        if (options->hide_sprites)
+        {
+            viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
+        }
+
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
         rct_palette renderedPalette;
