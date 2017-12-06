@@ -181,6 +181,8 @@ public:
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 
+    const ImageTable * GetImageTable() const { return &_imageTable; }
+
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();
     rct_object_entry CreateHeader(const char name[9], uint32 flags, uint32 checksum);

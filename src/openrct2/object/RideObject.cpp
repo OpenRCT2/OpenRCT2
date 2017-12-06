@@ -569,6 +569,34 @@ static std::vector<sint32> ParseRange(std::string s)
     return result;
 }
 
+#include "../Context.h"
+#include "../PlatformEnvironment.h"
+#include "../core/Path.hpp"
+#include "ObjectFactory.h"
+
+using namespace OpenRCT2;
+
+static std::vector<rct_g1_element> LoadObjectImages(const std::string &name)
+{
+    std::vector<rct_g1_element> result;
+    const auto env = GetContext()->GetPlatformEnvironment();
+    auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
+    auto objectPath = Path::Combine(objectsPath, name);
+    auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
+    auto imgTable = static_cast<const Object *>(obj)->GetImageTable();
+    auto numImages = imgTable->GetCount();
+    auto images = imgTable->GetImages();
+    for (uint32 i = 0; i < numImages; i++)
+    {
+        auto g1 = images[i];
+        auto length = g1_calculate_data_size(&g1);
+        g1.offset = Memory::Duplicate(g1.offset, length);
+        result.push_back(g1);
+    }
+    delete obj;
+    return result;
+}
+
 static std::vector<rct_g1_element> ParseImages(std::string s)
 {
     std::vector<rct_g1_element> result;
@@ -586,11 +614,25 @@ static std::vector<rct_g1_element> ParseImages(std::string s)
             {
                 for (auto i : range)
                 {
-                    auto g1 = gfx_get_g1_element(SPR_CSG_BEGIN + i);
-                    result.push_back(*g1);
+                    auto g1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
+                    auto length = g1_calculate_data_size(&g1);
+                    g1.offset = Memory::Duplicate(g1.offset, length);
+                    result.push_back(g1);
                 }
             }
         }
+    }
+    else if (String::StartsWith(s, "$RCT2:OBJDATA/"))
+    {
+        auto name = s.substr(14);
+        auto rangeStart = name.find('[');
+        auto range = std::vector<sint32>({ 0 });
+        if (rangeStart != std::string::npos)
+        {
+            range = ParseRange(name.substr(rangeStart));
+            name = name.substr(0, rangeStart);
+        }
+        return LoadObjectImages(name);
     }
     return result;
 }
@@ -606,6 +648,10 @@ static std::vector<std::string> GetJsonStringArray(const json_t * arr)
             auto element = json_string_value(json_array_get(arr, i));
             result.push_back(element);
         }
+    }
+    else if (json_is_string(arr))
+    {
+        result.push_back(json_string_value(arr));
     }
     return result;
 }
@@ -659,6 +705,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         for (const auto &g1 : images)
         {
             imageTable->AddImage(&g1);
+            Memory::Free(g1.offset);
         }
     }
 

@@ -90,8 +90,8 @@ public:
             env->GetFilePath(PATHID::CACHE_OBJECTS),
             std::string(PATTERN),
             std::vector<std::string>({
-                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT),
-                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT) }))
+                env->GetDirectoryPath(DIRBASE::USER, DIRID::OBJECT),
+                env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT) }))
     {
     }
 
