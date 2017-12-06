@@ -220,10 +220,19 @@ namespace ObjectFactory
                 if (objectType == "ride")
                 {
                     auto id = json_string_value(json_object_get(jRoot, "id"));
-                    auto originalId = json_string_value(json_object_get(jRoot, "originalId"));
 
                     rct_object_entry entry = { 0 };
-                    memcpy(entry.name, originalId, 8);
+                    auto originalId = String::ToStd(json_string_value(json_object_get(jRoot, "originalId")));
+                    auto originalName = originalId;
+                    if (originalId.length() == 8 + 1 + 8 + 1 + 8)
+                    {
+                        entry.flags = std::stoul(originalId.substr(0, 8), 0, 16);
+                        originalName = originalId.substr(9, 8);
+                        entry.checksum = std::stoul(originalId.substr(18, 8), 0, 16);
+                    }
+                    auto minLength = std::min<size_t>(8, originalName.length());
+                    memcpy(entry.name, originalName.c_str(), minLength);
+
                     result = new RideObject(entry);
                     auto readContext = ReadObjectContext(id);
                     result->ReadJson(&readContext, jRoot);
