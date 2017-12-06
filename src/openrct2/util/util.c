@@ -206,7 +206,7 @@ static bool bitcount_popcnt_available()
 {
 #ifdef OPENRCT2_X86
     // POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
-    uint32 regs[4] = {};
+    uint32 regs[4] = { 0 };
     if (cpuid_x86(regs, 1))
     {
         return (regs[2] & (1 << 23));
