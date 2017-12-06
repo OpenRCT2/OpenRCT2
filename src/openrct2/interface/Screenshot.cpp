@@ -532,6 +532,31 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
             viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
         }
 
+        if (options->mowed_grass)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_MOWED, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->clear_grass || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETGRASSLENGTH, GRASS_LENGTH_CLEAR_0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->water_plants || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_WATERPLANTS, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->fix_vandalism || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_FIXVANDALISM, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
+        if (options->remove_litter || options->tidy_up_park)
+        {
+            game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_REMOVELITTER, 0, GAME_COMMAND_CHEAT, 0, 0);
+        }
+
         viewport_render(&dpi, &viewport, 0, 0, viewport.width, viewport.height);
 
         rct_palette renderedPalette;
