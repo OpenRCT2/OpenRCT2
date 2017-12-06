@@ -25,7 +25,8 @@
 #include "surface.h"
 #include "tile_element.h"
 
-static const uint8 byte_97B444[] = {
+static constexpr const uint8 byte_97B444[] = 
+{
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
     5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
     0, 0, 0, 17, 0, 0, 0, 16, 0, 18,
@@ -33,30 +34,30 @@ static const uint8 byte_97B444[] = {
 };
 
 // rct2: 0x97B464, 0x97B474, 0x97B484, 0x97B494
-static const LocationXY16 viewport_surface_paint_data[][4] = {
+static constexpr const LocationXY16 viewport_surface_paint_data[][4] = {
     {
-        {32,  0},
-        {-32, 32},
-        {-64, -32},
-        {0,   -64}
+        { 32, 0 },
+        { -32, 32 },
+        { -64, -32 },
+        { 0, -64 }
     },
     {
-        {0,   32},
-        {-64, 0},
-        {-32, -64},
-        {32,  -32}
+        { 0, 32 },
+        { -64, 0 },
+        { -32, -64 },
+        { 32, -32 }
     },
     {
-        {0,   -32},
-        {0,   0},
-        {-32, 0},
-        {-32, -32}
+        { 0, -32 },
+        { 0, 0 },
+        { -32, 0 },
+        { -32, -32 }
     },
     {
-        {-32, 0},
-        {-32, -32},
-        {0,   -32},
-        {0,   0}
+        { -32, 0 },
+        { -32, -32 },
+        { 0, -32 },
+        { 0, 0 }
     }
 };
 
@@ -81,7 +82,7 @@ struct corner_height
 /**
  * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
  */
-static const corner_height corner_heights[] = {
+static constexpr const corner_height corner_heights[] = {
 //   T  R  B  L
     {0, 0, 0, 0},
     {0, 0, 1, 0},
@@ -118,30 +119,30 @@ static const corner_height corner_heights[] = {
 };
 
 // bottom left tint
-static const uint8 byte_97B524[] = {
+static constexpr const uint8 byte_97B524[] = {
     2, 5, 1, 4, 2, 5, 1, 2, 2, 4,
     1, 2, 1, 3, 0, 3, 1, 5, 0
 };
 
 // top left tint
-static const uint32 byte_97B537[] = {
+static constexpr const uint32 byte_97B537[] = {
     2, 5, 2, 4, 2, 5, 1, 1, 3, 4,
     3, 2, 1, 2, 0, 3, 1, 5, 0
 };
 
 // top right tint
-static const uint8 byte_97B54A[] = {
+static constexpr const uint8 byte_97B54A[] = {
     2, 2, 2, 4, 0, 0, 1, 1, 3, 4,
     3, 5, 1, 2, 2, 3, 1, 5, 0
 };
 
 // bottom right tint
-static const uint8 byte_97B55D[] = {
+static constexpr const uint8 byte_97B55D[] = {
     2, 2, 1, 4, 0, 0, 1, 2, 2, 4,
     1, 5, 1, 3, 2, 3, 1, 5, 0
 };
 
-static const uint8 stru_97B570[][2] = {
+static constexpr const uint8 stru_97B570[][2] = {
     {2, 2},
     {3, 3},
     {3, 5},
@@ -160,7 +161,7 @@ static const uint8 stru_97B570[][2] = {
     {3, 4}
 };
 
-static const sint16 word_97B590[] = {
+static constexpr const sint16 word_97B590[] = {
     0,
     0,
     -32,
@@ -180,7 +181,7 @@ static const sint16 word_97B590[] = {
 };
 
 // tunnel offset
-static const uint8 byte_97B5B0[] = {
+static constexpr const uint8 byte_97B5B0[] = {
     0, 0, 0, 3, 3, 3, 6, 6, 6, 6,
     10, 11, 12, 13, 14, 14
 };
@@ -210,26 +211,30 @@ static const uint8 byte_97B5B0[] = {
     (base) + 72, \
 }
 
-static const uint32 _terrainEdgeSpriteIds[][4] = {
+static constexpr const uint32 _terrainEdgeSpriteIds[][4] = 
+{
     DEFINE_EDGE_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_RED_BASE),
     DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
     DEFINE_EDGE_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-static const uint32 _terrainEdgeTunnelSpriteIds[][16] = {
+static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][16] = 
+{
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_RED_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_BLACK_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-static const uint8 byte_97B740[] = {
+static constexpr const uint8 byte_97B740[] = 
+{
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
     0, 3, 0, 1, 4, 0
 };
 
-static const uint32 dword_97B750[][2] = {
+static constexpr const uint32 dword_97B750[][2] = 
+{
     {SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID},
     {SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID},
     {SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID},
@@ -247,7 +252,8 @@ static const uint32 dword_97B750[][2] = {
     {SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
 };
 
-static const uint32 dword_97B7C8[] = {
+static constexpr const uint32 dword_97B7C8[] = 
+{
     SPR_TERRAIN_GRASS_UNDERGROUND,
     SPR_TERRAIN_SAND_YELLOW_UNDERGROUND,
     SPR_TERRAIN_DIRT_UNDERGROUND,
@@ -265,7 +271,8 @@ static const uint32 dword_97B7C8[] = {
     SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
 };
 
-static const uint32 dword_97B804[] = {
+static constexpr const uint32 dword_97B804[] = 
+{
     SPR_TERRAIN_PATTERN_GRASS,
     SPR_TERRAIN_PATTERN_SAND_YELLOW,
     SPR_TERRAIN_PATTERN_DIRT,
@@ -288,43 +295,48 @@ enum
     FLAG_DONT_SMOOTHEN_SELF = (1 << 1),
 };
 
-static const uint8 byte_97B83C[] = {
-    0, // GRASS
-    0, // SAND (YELLOW)
-    0, // DIRT
-    FLAG_DONT_SMOOTHEN_SELF, // ROCK
-    FLAG_DONT_SMOOTHEN_SELF, // MARTIAN
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
-    0, // GRASS_CLUMPS
-    0, // ICE
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
-    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN, // GRASS
-    0, // SAND_RED
-    0  // SAND
+static constexpr const uint8 byte_97B83C[] = 
+{
+    0,
+    0,
+    0,
+    FLAG_DONT_SMOOTHEN_SELF,
+    FLAG_DONT_SMOOTHEN_SELF,
+    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
+    0,
+    0,
+    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
+    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
+    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
+    FLAG_DONT_SMOOTHEN_SELF | FLAG_DONT_SMOOTHEN,
+    0,
+    0
 };
 
-static const uint8 byte_97B84A[] = {
+static constexpr const uint8 byte_97B84A[] = 
+{
     0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
     10, 11, 12, 13
 };
 
-static const uint32 dword_97B858[][2] = {
+static constexpr const uint32 dword_97B858[][2] = 
+{
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID},
 };
 
-static const uint32 dword_97B878[][2] = {
+static constexpr const uint32 dword_97B878[][2] = 
+{
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID},
     {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID},
 };
 
-static const uint32 dword_97B898[][2] = {
+static constexpr const uint32 dword_97B898[][2] = 
+{
     {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
     {SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID},
     {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
@@ -411,13 +423,11 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
 
 static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * tileElement, sint32 rotation)
 {
-    uint8 slope = tileElement->properties.surface.slope;
-
-    uint16 di = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
-    uint8 ebx = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
-
-    di = ((di >> 4) | di) & 0x0F;
-    return ebx | di;
+    const uint8 slope = tileElement->properties.surface.slope;
+    const uint8 slopeHeight = slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT;
+    uint16 slopeCorners = (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) << rotation;
+    slopeCorners = ((slopeCorners >> 4) | slopeCorners) & 0x0F;
+    return slopeHeight | slopeCorners;
 }
 
 /**
@@ -434,38 +444,41 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
     uint8 neighbourCorners[2] = { 0 };
     uint8 ownCorners[2] = { 0 };
 
-    switch (edge) {
-        case EDGE_BOTTOMLEFT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
-            neighbourCorners[0] = neighbour.corner_heights.top;
-            neighbourCorners[1] = neighbour.corner_heights.right;
-            ownCorners[0] = self.corner_heights.left;
-            ownCorners[1] = self.corner_heights.bottom;
-            break;
-        case EDGE_BOTTOMRIGHT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
-            neighbourCorners[0] = neighbour.corner_heights.top;
-            neighbourCorners[1] = neighbour.corner_heights.left;
-            ownCorners[0] = self.corner_heights.right;
-            ownCorners[1] = self.corner_heights.bottom;
-            break;
-        case EDGE_TOPLEFT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
-            neighbourCorners[0] = neighbour.corner_heights.right;
-            neighbourCorners[1] = neighbour.corner_heights.bottom;
-            ownCorners[0] = self.corner_heights.top;
-            ownCorners[1] = self.corner_heights.left;
-            break;
-        case EDGE_TOPRIGHT:
-            maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
-            neighbourCorners[0] = neighbour.corner_heights.left;
-            neighbourCorners[1] = neighbour.corner_heights.bottom;
-            ownCorners[0] = self.corner_heights.top;
-            ownCorners[1] = self.corner_heights.right;
-            break;
+    switch (edge) 
+    {
+    case EDGE_BOTTOMLEFT:
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
+        neighbourCorners[0] = neighbour.corner_heights.top;
+        neighbourCorners[1] = neighbour.corner_heights.right;
+        ownCorners[0] = self.corner_heights.left;
+        ownCorners[1] = self.corner_heights.bottom;
+        break;
+    case EDGE_BOTTOMRIGHT:
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_RIGHT;
+        neighbourCorners[0] = neighbour.corner_heights.top;
+        neighbourCorners[1] = neighbour.corner_heights.left;
+        ownCorners[0] = self.corner_heights.right;
+        ownCorners[1] = self.corner_heights.bottom;
+        break;
+    case EDGE_TOPLEFT:
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_LEFT;
+        neighbourCorners[0] = neighbour.corner_heights.right;
+        neighbourCorners[1] = neighbour.corner_heights.bottom;
+        ownCorners[0] = self.corner_heights.top;
+        ownCorners[1] = self.corner_heights.left;
+        break;
+    case EDGE_TOPRIGHT:
+        maskImageBase = SPR_TERRAIN_EDGE_MASK_TOP_RIGHT;
+        neighbourCorners[0] = neighbour.corner_heights.left;
+        neighbourCorners[1] = neighbour.corner_heights.bottom;
+        ownCorners[0] = self.corner_heights.top;
+        ownCorners[1] = self.corner_heights.right;
+        break;
     }
 
-    if (ownCorners[0] != neighbourCorners[0] || ownCorners[1] != neighbourCorners[1]) {
+    if (ownCorners[0] != neighbourCorners[0] ||
+        ownCorners[1] != neighbourCorners[1]) 
+    {
         // Only smoothen tiles that align
         return;
     }
@@ -494,28 +507,28 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
 
     }
 
-    if (self.terrain == neighbour.terrain) {
+    if (self.terrain == neighbour.terrain) 
+    {
         // same tint
-        if (cl == dh) {
+        if (cl == dh) 
             return;
-        }
 
-        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF) {
+        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF)
             return;
-        }
-    } else {
-        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN) {
+    } 
+    else 
+    {
+        if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN)
             return;
-        }
 
-        if (byte_97B83C[neighbour.terrain] & FLAG_DONT_SMOOTHEN) {
+        if (byte_97B83C[neighbour.terrain] & FLAG_DONT_SMOOTHEN)
             return;
-        }
     }
 
-    uint32 image_id = maskImageBase + byte_97B444[self.slope];
+    const uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
-    if (paint_attach_to_previous_ps(session, image_id, 0, 0)) {
+    if (paint_attach_to_previous_ps(session, image_id, 0, 0)) 
+    {
         attached_paint_struct * out = session->UnkF1AD2C;
         // set content and enable masking
         out->colour_image_id = dword_97B804[neighbour.terrain] + cl;
@@ -532,49 +545,54 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
 
     LocationXY8 offset = {0, 0};
     LocationXY8 bounds = {0, 0};
-    switch (edge) {
-        case EDGE_TOPLEFT:
-            regs.al = self.corner_heights.top;
-            regs.cl = self.corner_heights.left;
 
-            regs.ah = neighbour.corner_heights.right;
-            regs.ch = neighbour.corner_heights.bottom;
+    switch (edge) 
+    {
+    case EDGE_TOPLEFT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.left;
 
-            offset.y = -2;
-            bounds.x = 30;
-            break;
+        regs.ah = neighbour.corner_heights.right;
+        regs.ch = neighbour.corner_heights.bottom;
 
-        case EDGE_TOPRIGHT:
-            regs.al = self.corner_heights.top;
-            regs.cl = self.corner_heights.right;
+        offset.y = -2;
+        bounds.x = 30;
+        break;
 
-            regs.ah = neighbour.corner_heights.left;
-            regs.ch = neighbour.corner_heights.bottom;
+    case EDGE_TOPRIGHT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.right;
 
-            offset.x = -2;
-            bounds.y = 30;
-            break;
+        regs.ah = neighbour.corner_heights.left;
+        regs.ch = neighbour.corner_heights.bottom;
 
-        default:
-            return;
+        offset.x = -2;
+        bounds.y = 30;
+        break;
+
+    default:
+        return;
     }
 
     regs.dl = height;
 
     // save ecx
-    if (neighbour.tile_element == NULL) {
+    if (neighbour.tile_element == NULL) 
+    {
         regs.ah = 1;
         regs.ch = 1;
     }
 
     // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+    if (regs.al <= regs.ah && regs.cl <= regs.ch) 
+    {
         return;
     }
 
     assert(terrain < Util::CountOf(_terrainEdgeSpriteIds));
 
-    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) {
+    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) 
+    {
         uint8 incline = (regs.cl - regs.al) + 1;
 
         uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
@@ -587,14 +605,17 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
 
     const uint8 rotation = get_current_rotation();
     uint8 cur_height = Math::Min(regs.ch, regs.ah);
-    if (regs.ch != regs.ah) {
+    if (regs.ch != regs.ah) 
+    {
         // neighbour tile corners aren't level
         uint32 image_offset = 3;
-        if (regs.ch > regs.ah) {
+        if (regs.ch > regs.ah) 
+        {
             image_offset = 4;
         }
 
-        if (cur_height != regs.al && cur_height != regs.cl) {
+        if (cur_height != regs.al && cur_height != regs.cl) 
+        {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
             cur_height++;
@@ -603,16 +624,19 @@ static void viewport_surface_draw_land_side_top(paint_session * session, enum ed
 
     regs.ah = regs.cl;
 
-    while (cur_height < regs.al && cur_height < regs.ah) {
+    while (cur_height < regs.al && cur_height < regs.ah) 
+    {
         sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
         cur_height++;
     }
 
     uint32 image_offset = 1;
-    if (cur_height >= regs.al) {
+    if (cur_height >= regs.al) 
+    {
         image_offset = 2;
 
-        if (cur_height >= regs.ah) {
+        if (cur_height >= regs.ah) 
+        {
             return;
         }
     }
@@ -634,70 +658,78 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
     LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
 
     tunnel_entry * tunnelArray;
-    switch (edge) {
-        case EDGE_BOTTOMLEFT:
-            regs.al = self.corner_heights.left;
-            regs.cl = self.corner_heights.bottom;
+    switch (edge) 
+    {
+    case EDGE_BOTTOMLEFT:
+        regs.al = self.corner_heights.left;
+        regs.cl = self.corner_heights.bottom;
 
-            regs.ah = neighbour.corner_heights.top;
-            regs.ch = neighbour.corner_heights.right;
+        regs.ah = neighbour.corner_heights.top;
+        regs.ch = neighbour.corner_heights.right;
 
-            offset.x = 30;
-            bounds.y = 30;
-            tunnelBounds.x = 32;
-            tunnelTopBoundBoxOffset.y = 31;
+        offset.x = 30;
+        bounds.y = 30;
+        tunnelBounds.x = 32;
+        tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = session->LeftTunnels;
-            break;
+        tunnelArray = session->LeftTunnels;
+        break;
 
-        case EDGE_BOTTOMRIGHT:
-            regs.al = self.corner_heights.right;
-            regs.cl = self.corner_heights.bottom;
+    case EDGE_BOTTOMRIGHT:
+        regs.al = self.corner_heights.right;
+        regs.cl = self.corner_heights.bottom;
 
-            regs.ah = neighbour.corner_heights.top;
-            regs.ch = neighbour.corner_heights.left;
+        regs.ah = neighbour.corner_heights.top;
+        regs.ch = neighbour.corner_heights.left;
 
-            offset.y = 30;
-            bounds.x = 30;
-            tunnelBounds.y = 32;
-            tunnelTopBoundBoxOffset.x = 31;
+        offset.y = 30;
+        bounds.x = 30;
+        tunnelBounds.y = 32;
+        tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = session->RightTunnels;
-            break;
+        tunnelArray = session->RightTunnels;
+        break;
 
-        default:
-            return;
+    default:
+        return;
     }
 
-    if (neighbour.tile_element == 0) {
+    if (neighbour.tile_element == 0) 
+    {
         regs.ch = 1;
         regs.ah = 1;
     }
 
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+    if (regs.al <= regs.ah && regs.cl <= regs.ch) 
+    {
         return;
     }
 
     uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) 
+    {
         base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
     }
 
-    if (edge == EDGE_BOTTOMRIGHT) {
+    if (edge == EDGE_BOTTOMRIGHT) 
+    {
         base_image_id += 5;
     }
 
     const uint8 rotation = get_current_rotation();
     uint8 curHeight = Math::Min(regs.ah, regs.ch);
-    if (regs.ch != regs.ah) {
+    if (regs.ch != regs.ah) 
+    {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
 
-        if (regs.ch >= regs.ah) {
+        if (regs.ch >= regs.ah) 
+        {
             image_offset = 4;
         }
 
-        if (curHeight != regs.al && curHeight != regs.cl) {
+        if (curHeight != regs.al && curHeight != regs.cl) 
+        {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
             curHeight++;
@@ -706,14 +738,18 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 
     regs.ah = regs.cl;
 
-    while (true) {
-        if (curHeight >= regs.al || curHeight >= regs.cl) {
+    while (true) 
+    {
+        if (curHeight >= regs.al || curHeight >= regs.cl) 
+        {
             // If top of edge isn't straight, add a filler
             uint32 image_offset = 1;
-            if (curHeight >= regs.al) {
+            if (curHeight >= regs.al) 
+            {
                 image_offset = 2;
 
-                if (curHeight >= regs.cl) {
+                if (curHeight >= regs.cl) 
+                {
                     return;
                 }
             }
@@ -725,14 +761,17 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
             return;
         }
 
-        if (curHeight != tunnelArray[0].height) {
+        if (curHeight != tunnelArray[0].height) 
+        {
             // Normal walls
-            while (curHeight > tunnelArray[0].height) {
+            while (curHeight > tunnelArray[0].height) 
+            {
                 // TODO: Should probably be done by just keeping track of the current index
                 memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
             }
 
-            if (curHeight != tunnelArray[0].height) {
+            if (curHeight != tunnelArray[0].height) 
+            {
                 sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
                 curHeight++;
@@ -745,7 +784,8 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
         uint8 tunnelHeight = stru_97B570[tunnelType][0];
         sint16 zOffset = curHeight;
 
-        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al) {
+        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al) 
+        {
             tunnelType = byte_97B5B0[tunnelType];
         }
 
@@ -753,7 +793,8 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
 
         sint16 boundBoxOffsetZ = zOffset + word_97B590[tunnelType];
         sint8 boundBoxLength = stru_97B570[tunnelType][1] * 16;
-        if (boundBoxOffsetZ < 16) {
+        if (boundBoxOffsetZ < 16) 
+        {
             boundBoxOffsetZ += 16;
             boundBoxLength -= 16;
         }
@@ -766,7 +807,8 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
         boundBoxOffsetZ = curHeight * 16;
         boundBoxLength = stru_97B570[tunnelType][1] * 16;
         boundBoxOffsetZ += word_97B590[tunnelType];
-        if (boundBoxOffsetZ == 0) {
+        if (boundBoxOffsetZ == 0) 
+        {
             boundBoxOffsetZ += 16;
             boundBoxLength -= 16;
         }
@@ -790,43 +832,49 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 
     LocationXY8 offset = {0, 0};
     LocationXY8 bounds = {0, 0};
-    switch (edge) {
-        case EDGE_TOPLEFT:
-            regs.al = self.corner_heights.top;
-            regs.cl = self.corner_heights.left;
 
-            regs.ah = neighbour.corner_heights.right;
-            regs.ch = neighbour.corner_heights.bottom;
+    switch (edge) 
+    {
+    case EDGE_TOPLEFT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.left;
 
-            offset.y = -2;
-            bounds.x = 30;
-            break;
+        regs.ah = neighbour.corner_heights.right;
+        regs.ch = neighbour.corner_heights.bottom;
 
-        case EDGE_TOPRIGHT:
-            regs.al = self.corner_heights.top;
-            regs.cl = self.corner_heights.right;
+        offset.y = -2;
+        bounds.x = 30;
+        break;
 
-            regs.ah = neighbour.corner_heights.left;
-            regs.ch = neighbour.corner_heights.bottom;
+    case EDGE_TOPRIGHT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.right;
 
-            offset.x = -2;
-            bounds.y = 30;
-            break;
+        regs.ah = neighbour.corner_heights.left;
+        regs.ch = neighbour.corner_heights.bottom;
 
-        default:
-            return;
+        offset.x = -2;
+        bounds.y = 30;
+        break;
+
+    default:
+        return;
     }
 
 
     regs.dl = height;
 
     // save ecx
-    if (neighbour.tile_element == NULL) {
+    if (neighbour.tile_element == NULL) 
+    {
         regs.ah = 1;
         regs.ch = 1;
-    } else {
+    } 
+    else
+    {
         regs.dh = map_get_water_height(neighbour.tile_element);
-        if (regs.dl == regs.dh) {
+        if (regs.dl == regs.dh)
+        {
             return;
         }
 
@@ -835,13 +883,15 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
     }
 
     // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+    if (regs.al <= regs.ah && regs.cl <= regs.ch)
+    {
         return;
     }
 
     uint32 base_image_id = _terrainEdgeSpriteIds[terrain][2]; // var_08
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    {
         base_image_id = _terrainEdgeSpriteIds[terrain][1];  // var_04
     }
 
@@ -849,14 +899,17 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 
     const uint8 rotation = get_current_rotation();
     uint8 cur_height = Math::Min(regs.ch, regs.ah);
-    if (regs.ch != regs.ah) {
+    if (regs.ch != regs.ah)
+    {
         // neighbour tile corners aren't level
         uint32 image_offset = 3;
-        if (regs.ch > regs.ah) {
+        if (regs.ch > regs.ah)
+        {
             image_offset = 4;
         }
 
-        if (cur_height != regs.al && cur_height != regs.cl) {
+        if (cur_height != regs.al && cur_height != regs.cl)
+        {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
             cur_height++;
@@ -865,16 +918,19 @@ static void viewport_surface_draw_water_side_top(paint_session * session, enum e
 
     regs.ah = regs.cl;
 
-    while (cur_height < regs.al && cur_height < regs.ah) {
+    while (cur_height < regs.al && cur_height < regs.ah)
+    {
         sub_98196C(session, base_image_id, 0, 0, bounds.x, bounds.y, 15, cur_height * 16, rotation);
         cur_height++;
     }
 
     uint32 image_offset = 1;
-    if (cur_height >= regs.al) {
+    if (cur_height >= regs.al)
+    {
         image_offset = 2;
 
-        if (cur_height >= regs.ah) {
+        if (cur_height >= regs.ah)
+        {
             return;
         }
     }
@@ -896,49 +952,54 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
     LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
 
     tunnel_entry * tunnelArray;
-    switch (edge) {
-        case EDGE_BOTTOMLEFT:
-            regs.al = self.corner_heights.left;
-            regs.cl = self.corner_heights.bottom;
+    switch (edge) 
+    {
+    case EDGE_BOTTOMLEFT:
+        regs.al = self.corner_heights.left;
+        regs.cl = self.corner_heights.bottom;
 
-            regs.ah = neighbour.corner_heights.top;
-            regs.ch = neighbour.corner_heights.right;
+        regs.ah = neighbour.corner_heights.top;
+        regs.ch = neighbour.corner_heights.right;
 
-            offset.x = 30;
-            bounds.y = 30;
-            tunnelBounds.x = 32;
-            tunnelTopBoundBoxOffset.y = 31;
+        offset.x = 30;
+        bounds.y = 30;
+        tunnelBounds.x = 32;
+        tunnelTopBoundBoxOffset.y = 31;
 
-            tunnelArray = session->LeftTunnels;
-            break;
+        tunnelArray = session->LeftTunnels;
+        break;
 
-        case EDGE_BOTTOMRIGHT:
-            regs.al = self.corner_heights.right;
-            regs.cl = self.corner_heights.bottom;
+    case EDGE_BOTTOMRIGHT:
+        regs.al = self.corner_heights.right;
+        regs.cl = self.corner_heights.bottom;
 
-            regs.ah = neighbour.corner_heights.top;
-            regs.ch = neighbour.corner_heights.left;
+        regs.ah = neighbour.corner_heights.top;
+        regs.ch = neighbour.corner_heights.left;
 
-            offset.y = 30;
-            bounds.x = 30;
-            tunnelBounds.y = 32;
-            tunnelTopBoundBoxOffset.x = 31;
+        offset.y = 30;
+        bounds.x = 30;
+        tunnelBounds.y = 32;
+        tunnelTopBoundBoxOffset.x = 31;
 
-            tunnelArray = session->RightTunnels;
-            break;
+        tunnelArray = session->RightTunnels;
+        break;
 
-        default:
-            return;
+    default:
+        return;
     }
 
     regs.dl = height;
 
-    if (neighbour.tile_element == 0) {
+    if (neighbour.tile_element == 0) 
+    {
         regs.ch = 1;
         regs.ah = 1;
-    } else {
+    }
+    else
+    {
         regs.dh = map_get_water_height(neighbour.tile_element);
-        if (regs.dl == regs.dh) {
+        if (regs.dl == regs.dh)
+        {
             return;
         }
 
@@ -946,22 +1007,26 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         regs.cl = regs.dl;
     }
 
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) {
+    if (regs.al <= regs.ah && regs.cl <= regs.ch)
+    {
         return;
     }
 
     uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    {
         base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
     }
 
-    if (edge == EDGE_BOTTOMRIGHT) {
+    if (edge == EDGE_BOTTOMRIGHT)
+    {
         base_image_id += 5;
     }
 
     const uint8 rotation = get_current_rotation();
     uint8 curHeight = Math::Min(regs.ah, regs.ch);
-    if (regs.ch != regs.ah) {
+    if (regs.ch != regs.ah)
+    {
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
 
@@ -969,7 +1034,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
             image_offset = 4;
         }
 
-        if (curHeight != regs.al && curHeight != regs.cl) {
+        if (curHeight != regs.al && curHeight != regs.cl)
+        {
             uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
             curHeight++;
@@ -978,14 +1044,17 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
     regs.ah = regs.cl;
 
-    while (true) {
-        if (curHeight >= regs.al || curHeight >= regs.cl) {
+    while (true)
+    {
+        if (curHeight >= regs.al || curHeight >= regs.cl)
+        {
             // If top of edge isn't straight, add a filler
             uint32 image_offset = 1;
             if (curHeight >= regs.al) {
                 image_offset = 2;
 
-                if (curHeight >= regs.cl) {
+                if (curHeight >= regs.cl)
+                {
                     return;
                 }
             }
@@ -997,9 +1066,11 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
             return;
         }
 
-        if (curHeight != tunnelArray[0].height) {
+        if (curHeight != tunnelArray[0].height)
+        {
             // Normal walls
-            while (curHeight > tunnelArray[0].height) {
+            while (curHeight > tunnelArray[0].height)
+            {
                 // TODO: Should probably be done by just keeping track of the current index
                 memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
             }
@@ -1015,7 +1086,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         uint8 tunnelHeight = stru_97B570[tunnelType][0];
         sint16 zOffset = curHeight;
 
-        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al) {
+        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al)
+        {
             tunnelType = byte_97B5B0[tunnelType];
         }
 
@@ -1023,7 +1095,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 
         sint16 boundBoxOffsetZ = zOffset + word_97B590[tunnelType];
         sint8 boundBoxLength = stru_97B570[tunnelType][1] * 16;
-        if (boundBoxOffsetZ < 16) {
+        if (boundBoxOffsetZ < 16)
+        {
             boundBoxOffsetZ += 16;
             boundBoxLength -= 16;
         }
@@ -1036,7 +1109,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         boundBoxOffsetZ = curHeight * 16;
         boundBoxLength = stru_97B570[tunnelType][1] * 16;
         boundBoxOffsetZ += word_97B590[tunnelType];
-        if (boundBoxOffsetZ == 0) {
+        if (boundBoxOffsetZ == 0)
+        {
             boundBoxOffsetZ += 16;
             boundBoxLength -= 16;
         }
@@ -1071,13 +1145,12 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     uint32 terrain_type = tile_element_get_terrain(tileElement);
     uint8 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
 
-    LocationXY16 base = {
-        session->SpritePosition.x,
-        session->SpritePosition.y
-    };
+    const LocationXY16& base = session->SpritePosition;
 
     corner_height ch = corner_heights[surfaceShape];
-    tile_descriptor selfDescriptor = {
+
+    tile_descriptor selfDescriptor = 
+    {
         tileElement,
         (uint8)terrain_type,
         surfaceShape,
@@ -1092,7 +1165,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     tile_descriptor tileDescriptors[5];
     tileDescriptors[0] = selfDescriptor;
 
-    for (sint32 i = 0; i < 4; i++) {
+    for (sint32 i = 0; i < 4; i++)
+    {
         LocationXY16 offset = viewport_surface_paint_data[i][rotation];
         LocationXY16 position = 
         {
@@ -1101,12 +1175,14 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         };
 
         tileDescriptors[i + 1].tile_element = NULL;
-        if (position.x > 0x2000 || position.y > 0x2000) {
+        if (position.x > 0x2000 || position.y > 0x2000)
+        {
             continue;
         }
 
         rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
-        if (surfaceElement == NULL) {
+        if (surfaceElement == NULL)
+        {
             continue;
         }
 
@@ -1124,7 +1200,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     }
 
 
-    if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0)) {
+    if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
+    {
         sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
         sint32 dx = tile_element_height(x + 16, y + 16) & 0xFFFF;
@@ -1139,20 +1216,27 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
 
     bool has_surface = false;
-    if (session->VerticalTunnelHeight * 16 == height) {
+    if (session->VerticalTunnelHeight * 16 == height)
+    {
         // Vertical tunnels
         sub_98197C(session, 1575, 0, 0, 1, 30, 39, height, -2, 1, height - 40, rotation);
         sub_98197C(session, 1576, 0, 0, 30, 1, 0, height, 1, 31, height, rotation);
         sub_98197C(session, 1577, 0, 0, 1, 30, 0, height, 31, 1, height, rotation);
         sub_98197C(session, 1578, 0, 0, 30, 1, 39, height, 1, -2, height - 40, rotation);
-    } else {
+    }
+    else
+    {
         bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
         sint32 branch = -1;
-        if ((tileElement->properties.surface.terrain & 0xE0) == 0) {
-            if (tile_element_get_direction(tileElement) == 0) {
-                if (zoomLevel == 0) {
-                    if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0) {
+        if ((tileElement->properties.surface.terrain & 0xE0) == 0)
+        {
+            if (tile_element_get_direction(tileElement) == 0)
+            {
+                if (zoomLevel == 0)
+                {
+                    if ((gCurrentViewportFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
+                    {
                         branch = tileElement->properties.surface.grass_length & 0x7;
                     }
                 }
@@ -1163,39 +1247,41 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         uint8 image_offset = byte_97B444[surfaceShape];
         sint32 image_id;
         uint32 ebp = terrain_type;
-        switch (branch) {
-            case 0:
-                // loc_660C90
-                image_id = dword_97B898[rotation][showGridlines ? 1 : 0] + image_offset;
-                break;
 
-            case 1:
-            case 2:
-            case 3:
-            default:
-                // loc_660C9F
-                if (rotation & 1) {
-                    assert(ebp < Util::CountOf(byte_97B84A));
-                    ebp = byte_97B84A[ebp];
-                }
-                assert(ebp < Util::CountOf(dword_97B750));
-                image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
+        switch (branch) 
+        {
+        case 0:
+            // loc_660C90
+            image_id = dword_97B898[rotation][showGridlines ? 1 : 0] + image_offset;
+            break;
 
-                if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
-                    image_id = SPR_TERRAIN_TRACK_DESIGNER;
-                }
+        case 1:
+        case 2:
+        case 3:
+        default:
+            // loc_660C9F
+            if (rotation & 1) {
+                assert(ebp < Util::CountOf(byte_97B84A));
+                ebp = byte_97B84A[ebp];
+            }
+            assert(ebp < Util::CountOf(dword_97B750));
+            image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
-                if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
-                    image_id &= 0xDC07FFFF; // remove colour
-                    image_id |= 0x41880000;
-                }
-                break;
+            if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+                image_id = SPR_TERRAIN_TRACK_DESIGNER;
+            }
 
-            case 4:
-            case 5:
-                // loc_660C44
-            case 6:
-                // loc_660C6A
+            if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
+                image_id &= 0xDC07FFFF; // remove colour
+                image_id |= 0x41880000;
+            }
+            break;
+
+        case 4:
+        case 5:
+            // loc_660C44
+        case 6:
+            // loc_660C6A
             {
                 sint16 x = session->MapPosition.x & 0x20;
                 sint16 y = session->MapPosition.y & 0x20;
@@ -1217,24 +1303,28 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     // Draw Staff Patrol Areas
     // loc_660D02
-    if (gStaffDrawPatrolAreas != 0xFFFF) {
+    if (gStaffDrawPatrolAreas != 0xFFFF)
+    {
         sint32 staffIndex = gStaffDrawPatrolAreas;
         bool is_staff_list = staffIndex & 0x8000;
         uint8 staffType = staffIndex & 0x7FFF;
         sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
         uint32 image_id = IMAGE_TYPE_REMAP;
-        uint8 patrolColour = 7;
+        uint8 patrolColour = COLOUR_LIGHT_BLUE;
 
-        if (!is_staff_list) {
+        if (!is_staff_list)
+        {
             rct_peep * staff = GET_PEEP(staffIndex);
-            if (!staff_is_patrol_area_set(staff->staff_id, x, y)) {
-                patrolColour = 1;
+            if (!staff_is_patrol_area_set(staff->staff_id, x, y))
+            {
+                patrolColour = COLOUR_GREY;
             }
             staffType = staff->staff_type;
         }
 
-        if (staff_is_patrol_area_set(200 + staffType, x, y)) {
+        if (staff_is_patrol_area_set(200 + staffType, x, y))
+        {
             assert(surfaceShape < Util::CountOf(byte_97B444));
 
             image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[surfaceShape];
@@ -1245,8 +1335,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     // Draw Peep Spawns
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
-        gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP
-    ) {
+        gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+    {
         LocationXY16 pos = session->MapPosition;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
@@ -1261,12 +1351,16 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
+    {
         // loc_660E9A:
-        if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED) {
+        if (tileElement->properties.surface.ownership & OWNERSHIP_OWNED)
+        {
             assert(surfaceShape < Util::CountOf(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_SQUARE + byte_97B444[surfaceShape], 0, 0);
-        } else if (tileElement->properties.surface.ownership & OWNERSHIP_AVAILABLE) {
+        }
+        else if (tileElement->properties.surface.ownership & OWNERSHIP_AVAILABLE)
+        {
             LocationXY16 pos = session->MapPosition;
             paint_struct * backup = session->UnkF1AD28;
             sint32 height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
@@ -1275,12 +1369,16 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
     }
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS
-        && !(tileElement->properties.surface.ownership & OWNERSHIP_OWNED)) {
-        if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS &&
+        !(tileElement->properties.surface.ownership & OWNERSHIP_OWNED)) 
+    {
+        if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
+        {
             assert(surfaceShape < Util::CountOf(byte_97B444));
             paint_attach_to_previous_ps(session, SPR_TERRAIN_SELECTION_DOTTED + byte_97B444[surfaceShape], 0, 0);
-        } else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) {
+        }
+        else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
+        {
             paint_struct * backup = session->UnkF1AD28;
             LocationXY16 pos = session->MapPosition;
             sint32 height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
@@ -1293,52 +1391,65 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     // ebp[4] = ebp;
     // ebp[8] = ebx
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE) {
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
+    {
         // loc_660FB8:
         LocationXY16 pos = session->MapPosition;
         if (pos.x >= gMapSelectPositionA.x &&
             pos.x <= gMapSelectPositionB.x &&
             pos.y >= gMapSelectPositionA.y &&
-            pos.y <= gMapSelectPositionB.y
-        ) {
+            pos.y <= gMapSelectPositionB.y)
+        {
             uint16 mapSelectionType = gMapSelectType;
-            if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0) {
+            if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0)
+            {
                 // Walls
                 // loc_661089:
                 uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
-            } else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0) {
+            }
+            else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
+            {
                 // loc_661051:(no jump)
                 // Selection split into four quarter segments
                 uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
-            } else if (mapSelectionType <= MAP_SELECT_TYPE_FULL) {
+            }
+            else if (mapSelectionType <= MAP_SELECT_TYPE_FULL)
+            {
                 // Corners
                 uint32 eax = mapSelectionType;
-                if (mapSelectionType != MAP_SELECT_TYPE_FULL) {
+                if (mapSelectionType != MAP_SELECT_TYPE_FULL)
+                {
                     eax = (mapSelectionType + rotation) & 3;
                 }
 
                 eax = (eax + 0x21) << 19;
                 uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
-            } else {
+            }
+            else
+            {
                 sint32 local_surfaceShape = surfaceShape;
                 sint32 local_height = height;
                 // Water tool
                 if (map_get_water_height(tileElement) > 0)
                 {
                     sint32 waterHeight = map_get_water_height(tileElement) * 16;
-                    if (waterHeight > height) {
+                    if (waterHeight > height)
+                    {
                         local_height += 16;
 
                         if (waterHeight != local_height
-                            || !(local_surfaceShape & 0x10)) {
+                            || !(local_surfaceShape & 0x10))
+                        {
                             local_height = waterHeight;
                             local_surfaceShape = 0;
-                        } else {
+                        }
+                        else
+                        {
                             registers regs = { 0 };
 
                             regs.bl = (surfaceShape ^ 0xF) << 2;
@@ -1357,17 +1468,21 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
     }
 
-    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT) {
+    if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
+    {
         LocationXY16 pos = session->MapPosition;
 
         LocationXY16 * tile;
-        for (tile = gMapSelectionTiles; tile->x != -1; tile++) {
-            if (tile->x != pos.x || tile->y != pos.y) {
+        for (tile = gMapSelectionTiles; tile->x != -1; tile++)
+        {
+            if (tile->x != pos.x || tile->y != pos.y)
+            {
                 continue;
             }
 
             uint32 colours = COLOUR_GREY << 24 | COLOUR_BRIGHT_PURPLE << 19;
-            if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN) {
+            if (gMapSelectFlags & MAP_SELECT_FLAG_GREEN)
+            {
                 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
             }
 
@@ -1377,11 +1492,12 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
     }
 
-    if (zoomLevel == 0
-        && has_surface
-        && !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-        && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
-        && gConfigGeneral.landscape_smoothing) {
+    if (zoomLevel == 0 &&
+        has_surface &&
+        !(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) &&
+        !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE) &&
+        gConfigGeneral.landscape_smoothing)
+    {
         viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);
         viewport_surface_smoothen_edge(session, EDGE_TOPRIGHT, tileDescriptors[0], tileDescriptors[4]);
         viewport_surface_smoothen_edge(session, EDGE_BOTTOMLEFT, tileDescriptors[0], tileDescriptors[1]);
@@ -1389,9 +1505,10 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     }
 
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE
-        && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE)
-        && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))) {
+    if ((gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) &&
+        !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE) &&
+        !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
+    {
 
         uint8 image_offset = byte_97B444[surfaceShape];
         uint32 base_image = terrain_type;
@@ -1402,13 +1519,15 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         paint_attach_to_previous_ps(session, image_id, 0, 0);
     }
 
-    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL)) {
+    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
+    {
         // loc_66122C:
         uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
         uint8 di_type = tileElement->type & 0x80;
 
         uint32 eax = al_edgeStyle + di_type * 2;
-        if (eax != 32 && eax != 0 && eax != 96 && eax != 64) {
+        if (eax != 32 && eax != 0 && eax != 96 && eax != 64)
+        {
             log_verbose("eax: %d", eax);
         }
 
@@ -1435,11 +1554,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         uint16 localHeight = height + 16;
         uint16 waterHeight = map_get_water_height(tileElement) * 16;
 
-        if (!gTrackDesignSaveMode) {
+        if (!gTrackDesignSaveMode)
+        {
             session->Unk141E9DC = waterHeight;
 
             sint32 image_offset = 0;
-            if (waterHeight <= localHeight) {
+            if (waterHeight <= localHeight)
+            {
                 image_offset = byte_97B740[surfaceShape & 0xF];
             }
 
@@ -1545,219 +1666,220 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_TERRAIN;
     session->Unk141E9DB |= G141E9DB_FLAG_1;
 
-    switch (surfaceShape) {
-        default:
-            // loc_661C2C
-            //     00
-            //   00  00
-            // 00  00  00
-            //   00  00
-            //     00
-            paint_util_set_segment_support_height(session, 
-                SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
-                height,
-                0
-            );
-            paint_util_force_set_general_support_height(session, height, 0);
-            break;
+    switch (surfaceShape)
+    {
+    default:
+        // loc_661C2C
+        //     00
+        //   00  00
+        // 00  00  00
+        //   00  00
+        //     00
+        paint_util_set_segment_support_height(session, 
+            SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
+            height,
+            0
+        );
+        paint_util_force_set_general_support_height(session, height, 0);
+        break;
 
-        case 1:
-            // loc_661CB9
-            //     00
-            //   00  00
-            // 01  01  01
-            //   1B  1B
-            //     1B
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_C0, height + 6 + 6, 0x1B);
-            paint_util_force_set_general_support_height(session, height, 1);
-            break;
+    case 1:
+        // loc_661CB9
+        //     00
+        //   00  00
+        // 01  01  01
+        //   1B  1B
+        //     1B
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, height, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 1);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_C0, height + 6 + 6, 0x1B);
+        paint_util_force_set_general_support_height(session, height, 1);
+        break;
 
-        case 2:
-            // loc_661D4E
-            //     02
-            //   17  00
-            // 17  02  00
-            //   17  00
-            //     02
-            paint_util_set_segment_support_height(session, SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_B8, height + 6 + 6, 0x17);
-            paint_util_force_set_general_support_height(session, height, 2);
-            break;
+    case 2:
+        // loc_661D4E
+        //     02
+        //   17  00
+        // 17  02  00
+        //   17  00
+        //     02
+        paint_util_set_segment_support_height(session, SEGMENT_BC | SEGMENT_CC | SEGMENT_D4, height, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 2);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_B8, height + 6 + 6, 0x17);
+        paint_util_force_set_general_support_height(session, height, 2);
+        break;
 
-        case 3:
-            // loc_661DE3
-            //     03
-            //   03  03
-            // 03  03  03
-            //   03  03
-            //     03
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
-            paint_util_force_set_general_support_height(session, height, 3);
-            break;
+    case 3:
+        // loc_661DE3
+        //     03
+        //   03  03
+        // 03  03  03
+        //   03  03
+        //     03
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2, 3);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 3);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2 + 6 + 6, 3);
+        paint_util_force_set_general_support_height(session, height, 3);
+        break;
 
-        case 4:
-            // loc_661E7C
-            //     1E
-            //   1E  1E
-            // 04  04  04
-            //   00  00
-            //     00
-            paint_util_set_segment_support_height(session, SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_B4, height + 6 + 6, 0x1E);
-            paint_util_force_set_general_support_height(session, height, 4);
-            break;
+    case 4:
+        // loc_661E7C
+        //     1E
+        //   1E  1E
+        // 04  04  04
+        //   00  00
+        //     00
+        paint_util_set_segment_support_height(session, SEGMENT_C0 | SEGMENT_D0 | SEGMENT_D4, height, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 4);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_B4, height + 6 + 6, 0x1E);
+        paint_util_force_set_general_support_height(session, height, 4);
+        break;
 
-        case 5:
-            // loc_661F11
-            //     1E          ▓▓
-            //   1E  1E      ▒▒  ▒▒
-            // 05  05  05  ░░  ░░  ░░
-            //   1B  1B      ▒▒  ▒▒
-            //     1B          ▓▓
-            paint_util_set_segment_support_height(session, SEGMENT_B4, height + 6 + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_C0, height + 6 + 6, 0x1B);
-            paint_util_force_set_general_support_height(session, height, 5);
-            break;
+    case 5:
+        // loc_661F11
+        //     1E          ▓▓
+        //   1E  1E      ▒▒  ▒▒
+        // 05  05  05  ░░  ░░  ░░
+        //   1B  1B      ▒▒  ▒▒
+        //     1B          ▓▓
+        paint_util_set_segment_support_height(session, SEGMENT_B4, height + 6 + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height, 5);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_C0, height + 6 + 6, 0x1B);
+        paint_util_force_set_general_support_height(session, height, 5);
+        break;
 
-        case 6:
-            // loc_661FA6
-            //     06          ▓▓
-            //   06  06      ▓▓  ▒▒
-            // 06  06  06  ▓▓  ▒▒  ░░
-            //   06  06      ▒▒  ░░
-            //     06          ░░
-            paint_util_set_segment_support_height(session, SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
-            paint_util_force_set_general_support_height(session, height, 6);
-            break;
+    case 6:
+        // loc_661FA6
+        //     06          ▓▓
+        //   06  06      ▓▓  ▒▒
+        // 06  06  06  ▓▓  ▒▒  ░░
+        //   06  06      ▒▒  ░░
+        //     06          ░░
+        paint_util_set_segment_support_height(session, SEGMENT_BC | SEGMENT_D4 | SEGMENT_C0, height + 2, 6);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 6);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4, height + 2 + 6 + 6, 6);
+        paint_util_force_set_general_support_height(session, height, 6);
+        break;
 
-        case 7:
-            // loc_66203F
-            //     07          ▓▓
-            //   00  17      ▓▓  ▒▒
-            // 00  07  17  ▓▓  ▓▓  ░░
-            //   00  17      ▓▓  ▒▒
-            //     07          ▓▓
-            paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
-            paint_util_force_set_general_support_height(session, height, 7);
-            break;
+    case 7:
+        // loc_66203F
+        //     07          ▓▓
+        //   00  17      ▓▓  ▒▒
+        // 00  07  17  ▓▓  ▓▓  ░░
+        //   00  17      ▓▓  ▒▒
+        //     07          ▓▓
+        paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 7);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0 | SEGMENT_B8, height + 4 + 6 + 6, 0);
+        paint_util_force_set_general_support_height(session, height, 7);
+        break;
 
-        case 8:
-            // loc_6620D8
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_BC, height + 6 + 6, 0x1D);
-            paint_util_force_set_general_support_height(session, height, 8);
-            break;
+    case 8:
+        // loc_6620D8
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C8 | SEGMENT_D0, height, 0);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 8);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_BC, height + 6 + 6, 0x1D);
+        paint_util_force_set_general_support_height(session, height, 8);
+        break;
 
-        case 9:
-            // loc_66216D
-            paint_util_force_set_general_support_height(session, height, 9);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
-            paint_util_set_segment_support_height(session, SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
-            break;
+    case 9:
+        // loc_66216D
+        paint_util_force_set_general_support_height(session, height, 9);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C8 | SEGMENT_B8, height + 2, 9);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, height + 2 + 6, 9);
+        paint_util_set_segment_support_height(session, SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC, height + 2 + 6 + 6, 9);
+        break;
 
-        case 10:
-            // loc_662206
-            paint_util_force_set_general_support_height(session, height, 0xA);
-            paint_util_set_segment_support_height(session, SEGMENT_B8, height + 6 + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_BC, height + 6 + 6, 0x1D);
-            break;
+    case 10:
+        // loc_662206
+        paint_util_force_set_general_support_height(session, height, 0xA);
+        paint_util_set_segment_support_height(session, SEGMENT_B8, height + 6 + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height, 0xA);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_BC, height + 6 + 6, 0x1D);
+        break;
 
-        case 11:
-            // loc_66229B
-            paint_util_force_set_general_support_height(session, height, 0xB);
-            paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
-            break;
+    case 11:
+        // loc_66229B
+        paint_util_force_set_general_support_height(session, height, 0xB);
+        paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xB);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4 | SEGMENT_C0, height + 4 + 6 + 6, 0);
+        break;
 
-        case 12:
-            // loc_662334
-            paint_util_force_set_general_support_height(session, height, 0xC);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
-            break;
+    case 12:
+        // loc_662334
+        paint_util_force_set_general_support_height(session, height, 0xC);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_D0 | SEGMENT_C0, height + 2, 0xC);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D4, height + 2 + 6, 0xC);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_CC | SEGMENT_BC, height + 2 + 6 + 6, 0xC);
+        break;
 
-        case 13:
-            // loc_6623CD
-            paint_util_force_set_general_support_height(session, height, 0xD);
-            paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
-            break;
+    case 13:
+        // loc_6623CD
+        paint_util_force_set_general_support_height(session, height, 0xD);
+        paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0xD);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4 | SEGMENT_BC, height + 4 + 6 + 6, 0);
+        break;
 
-        case 14:
-            // loc_662466
-            paint_util_force_set_general_support_height(session, height, 0xE);
-            paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
-            break;
+    case 14:
+        // loc_662466
+        paint_util_force_set_general_support_height(session, height, 0xE);
+        paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0xE);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC | SEGMENT_B4, height + 4 + 6 + 6, 0);
+        break;
 
-        case 23:
-            // loc_6624FF
-            paint_util_force_set_general_support_height(session, height, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
-            paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
-            break;
+    case 23:
+        // loc_6624FF
+        paint_util_force_set_general_support_height(session, height, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6 + 6 + 6, 0x17);
+        paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4 + 6 + 6 + 6 + 6, 0x17);
+        break;
 
-        case 27:
-            // loc_6625A0
-            paint_util_force_set_general_support_height(session, height, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
-            paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
-            break;
+    case 27:
+        // loc_6625A0
+        paint_util_force_set_general_support_height(session, height, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1B);
+        paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4 + 6 + 6 + 6 + 6, 0x1B);
+        break;
 
-        case 29:
-            // loc_662641
-            paint_util_force_set_general_support_height(session, height, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
-            paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
-            break;
+    case 29:
+        // loc_662641
+        paint_util_force_set_general_support_height(session, height, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_B8, height + 4, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_D0, height + 4 + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_B4 | SEGMENT_C4 | SEGMENT_C0, height + 4 + 6 + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_CC | SEGMENT_D4, height + 4 + 6 + 6 + 6, 0x1D);
+        paint_util_set_segment_support_height(session, SEGMENT_BC, height + 4 + 6 + 6 + 6 + 6, 0x1D);
+        break;
 
-        case 30:
-            // loc_6626E2
-            paint_util_force_set_general_support_height(session, height, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
-            paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
-            break;
+    case 30:
+        // loc_6626E2
+        paint_util_force_set_general_support_height(session, height, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_C0, height + 4, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_D0 | SEGMENT_D4, height + 4 + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_B8 | SEGMENT_C4 | SEGMENT_BC, height + 4 + 6 + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_C8 | SEGMENT_CC, height + 4 + 6 + 6 + 6, 0x1E);
+        paint_util_set_segment_support_height(session, SEGMENT_B4, height + 4 + 6 + 6 + 6 + 6, 0x1E);
+        break;
     }
 }
