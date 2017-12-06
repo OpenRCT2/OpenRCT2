@@ -17,16 +17,11 @@
 #include "../interface/Screenshot.h"
 #include "CommandLine.hpp"
 
-extern "C"
-{
-    sint32 gScreenshotWeather = 0;
-}
+static ScreenshotOptions options;
 
-static uint32 _weather = 0;
-
-static const CommandLineOptionDefinition ScreenshotOptions[]
+static const CommandLineOptionDefinition ScreenshotOptionsDef[]
 {
-    { CMDLINE_TYPE_INTEGER, &_weather, NAC, "weather", "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
+    { CMDLINE_TYPE_INTEGER, &options.weather,     NAC, "weather",   "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
     OptionTableEnd
 };
 
@@ -35,18 +30,16 @@ static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator);
 const CommandLineCommand CommandLine::ScreenshotCommands[]
 {
     // Main commands
-    DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", ScreenshotOptions, HandleScreenshot),
-    DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      ScreenshotOptions, HandleScreenshot),
+    DefineCommand("", "<file> <output_image> <width> <height> [<x> <y> <zoom> <rotation>]", ScreenshotOptionsDef, HandleScreenshot),
+    DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      ScreenshotOptionsDef, HandleScreenshot),
     CommandTableEnd
 };
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator)
 {
-    gScreenshotWeather = _weather;
-
     const char * * argv = (const char * *)argEnumerator->GetArguments() + argEnumerator->GetIndex();
     sint32 argc = argEnumerator->GetCount() - argEnumerator->GetIndex();
-    sint32 result = cmdline_for_screenshot(argv, argc);
+    sint32 result = cmdline_for_screenshot(argv, argc, &options);
     if (result < 0) {
         return EXITCODE_FAIL;
     }

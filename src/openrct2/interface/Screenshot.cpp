@@ -355,7 +355,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
     return 1;
 }
 
-sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
+sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOptions * options)
 {
     // Don't include options in the count (they have been handled by CommandLine::ParseOptions already)
     for (sint32 i = 0; i < argc; i++)
@@ -496,9 +496,9 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
             gCurrentRotation = gSavedViewRotation;
         }
 
-        if (gScreenshotWeather != 0)
+        if (options->weather != 0)
         {
-            if (gScreenshotWeather < 1 || gScreenshotWeather > 6)
+            if (options->weather < 1 || options->weather > 6)
             {
                 std::printf("Weather can only be set to an integer value from 1 till 6.");
                 drawing_engine_dispose();
@@ -506,7 +506,7 @@ sint32 cmdline_for_screenshot(const char **argv, sint32 argc)
                 return -1;
             }
 
-            uint8 customWeather = gScreenshotWeather - 1;
+            uint8 customWeather = options->weather - 1;
             climate_force_weather(customWeather);
         }
 
