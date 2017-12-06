@@ -21,7 +21,9 @@ static ScreenshotOptions options;
 
 static const CommandLineOptionDefinition ScreenshotOptionsDef[]
 {
-    { CMDLINE_TYPE_INTEGER, &options.weather,     NAC, "weather",   "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
+    { CMDLINE_TYPE_INTEGER, &options.weather,       NAC, "weather",     "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
+    { CMDLINE_TYPE_SWITCH,  &options.hide_guests,   NAC, "no-peeps",    "hide peeps" },
+    { CMDLINE_TYPE_SWITCH,  &options.hide_sprites,  NAC, "no-sprites",  "hide all sprites (e.g. balloons, vehicles, guests)" },
     OptionTableEnd
 };
 

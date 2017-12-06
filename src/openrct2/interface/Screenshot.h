@@ -29,6 +29,8 @@ extern "C"
     struct ScreenshotOptions
     {
         sint32 weather = 0;
+        bool hide_guests = false;
+        bool hide_sprites = false;
     };
 
     void screenshot_check();
