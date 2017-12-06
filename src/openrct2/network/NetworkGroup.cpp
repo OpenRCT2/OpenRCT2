@@ -44,10 +44,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
 
     group.Id    = (uint8)json_integer_value(jsonId);
     group._name = std::string(json_string_value(jsonName));
-    for (auto &action : group.ActionsAllowed)
-    {
-        action = 0;
-    }
+    std::fill(group.ActionsAllowed.begin(), group.ActionsAllowed.end(), 0);
 
     for (size_t i = 0; i < json_array_size(jsonPermissions); i++)
     {
