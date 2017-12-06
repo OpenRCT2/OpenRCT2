@@ -179,39 +179,52 @@ sint32 bitscanforward(sint32 source)
 
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
     #include <cpuid.h>
-    #define OpenRCT2_POPCNT_GNUC
+    #define OpenRCT2_CPUID_GNUC_X86
+    #define OPENRCT2_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
     #include <nmmintrin.h>
-    #define OpenRCT2_POPCNT_MSVC
+    #define OpenRCT2_CPUID_MSVC_X86
+    #define OPENRCT2_X86
 #endif
+
+#ifdef OPENRCT2_X86
+static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax)
+{
+#if defined(OpenRCT2_CPUID_GNUC_X86)
+    int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
+    return ret == 1;
+#elif defined(OpenRCT2_CPUID_MSVC_X86)
+    __cpuid(cpuid_outdata, eax);
+    return true;
+#else
+    return false;
+#endif
+}
+#endif // OPENRCT2_X86
 
 static bool bitcount_popcnt_available()
 {
+#ifdef OPENRCT2_X86
     // POPCNT support is declared as the 23rd bit of ECX with CPUID(EAX = 1).
-    #if defined(OpenRCT2_POPCNT_GNUC)
-        // we could use __builtin_cpu_supports, but it requires runtime support from
-        // the compiler's library, which clang doesn't have yet.
-        uint32 eax, ebx, ecx = 0, edx; // avoid "maybe uninitialized"
-        __get_cpuid(1, &eax, &ebx, &ecx, &edx);
-        return (ecx & (1 << 23));
-    #elif defined(OpenRCT2_POPCNT_MSVC)
-        sint32 regs[4];
-        __cpuid(regs, 1);
+    uint32 regs[4] = {};
+    if (cpuid_x86(regs, 1))
+    {
         return (regs[2] & (1 << 23));
-    #else
-        return false;
-    #endif
+    }
+#endif
+    return false;
 }
 
 static sint32 bitcount_popcnt(uint32 source)
 {
-    #if defined(OpenRCT2_POPCNT_GNUC)
+    // Use CPUID defines to figure out calling style
+    #if defined(OpenRCT2_CPUID_GNUC_X86)
         // use asm directly in order to actually emit the instruction : using
         // __builtin_popcount results in an extra call to a library function.
         sint32 rv;
         asm volatile ("popcnt %1,%0" : "=r"(rv) : "rm"(source) : "cc");
         return rv;
-    #elif defined(OpenRCT2_POPCNT_MSVC)
+    #elif defined(OpenRCT2_CPUID_MSVC_X86)
         return _mm_popcnt_u32(source);
     #else
         openrct2_assert(false, "bitcount_popcnt() called, without support compiled in");
