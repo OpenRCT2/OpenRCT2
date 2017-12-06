@@ -28,9 +28,15 @@ extern "C"
 
     struct ScreenshotOptions
     {
-        sint32 weather = 0;
-        bool hide_guests = false;
-        bool hide_sprites = false;
+        sint32 weather     = 0;
+        bool hide_guests   = false;
+        bool hide_sprites  = false;
+        bool clear_grass   = false;
+        bool mowed_grass   = false;
+        bool water_plants  = false;
+        bool fix_vandalism = false;
+        bool remove_litter = false;
+        bool tidy_up_park  = false;
     };
 
     void screenshot_check();
