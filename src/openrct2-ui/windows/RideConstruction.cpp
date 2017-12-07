@@ -2416,22 +2416,14 @@ void window_ride_construction_update_enabled_track_pieces()
         return;
     }
 
-    if (!gConfigInterface.select_by_track_type)
+    if (RideGroupManager::RideTypeHasRideGroups(rideType))
     {
-        _enabledRidePieces = rideEntry->enabledTrackPieces & RideTypePossibleTrackConfigurations[rideType];
+        const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
+        _enabledRidePieces = rideGroup->AvailableTrackPieces;
     }
     else
     {
-        if (RideGroupManager::RideTypeHasRideGroups(rideType))
-        {
-            const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
-            _enabledRidePieces = rideGroup->AvailableTrackPieces;
-        }
-        else
-        {
-            _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
-        }
-
+        _enabledRidePieces = RideTypePossibleTrackConfigurations[rideType];
     }
 
 }

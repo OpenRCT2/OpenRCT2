@@ -212,7 +212,7 @@ void research_finish_item(uint32 entryIndex)
             rct_string_id availabilityString;
 
             // Determine if the ride group this entry belongs to was invented before.
-            if (gConfigInterface.select_by_track_type && RideGroupManager::RideTypeHasRideGroups(base_ride_type))
+            if (RideGroupManager::RideTypeHasRideGroups(base_ride_type))
             {
                 const RideGroup * rideGroup = RideGroupManager::GetRideGroup(base_ride_type, rideEntry);
 
@@ -253,47 +253,30 @@ void research_finish_item(uint32 entryIndex)
                 }
             }
 
-            if (!gConfigInterface.select_by_track_type)
+
+            // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
+            if (RideGroupManager::RideTypeIsIndependent(base_ride_type))
             {
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-
-                if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
-                {
-                    set_format_arg(0, rct_string_id, rideEntry->naming.name);
-                }
-                else
-                {
-                    // Makes sure the correct track name is displayed,
-                    // e.g. Hyper-Twister instead of Steel Twister.
-                    set_format_arg(0, rct_string_id, research_get_friendly_base_ride_type_name(base_ride_type, rideEntry));
-                }
+                set_format_arg(0, rct_string_id, rideEntry->naming.name);
             }
+            // If a vehicle is the first to be invented for its ride group, show the ride group name.
+            else if (!ride_type_was_invented_before ||
+                     (ride_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
+            {
+                rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
+                availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
+                set_format_arg(0, rct_string_id, naming.name);
+            }
+            // If the vehicle should not be listed separately and it isn't the first to be invented for its ride group,
+            // report it as a new vehicle for the existing ride group.
             else
             {
-                // If a vehicle should be listed separately (maze, mini golf, flat rides, shops)
-                if (!rideTypeShouldLoseSeparateFlag(rideEntry))
-                {
-                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                    set_format_arg(0, rct_string_id, rideEntry->naming.name);
-                }
-                    // If a vehicle is the first to be invented for its ride group, show the ride group name.
-                else if (!ride_type_was_invented_before ||
-                         (ride_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
-                {
-                    rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
-                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;
-                    set_format_arg(0, rct_string_id, naming.name);
-                }
-                    // If the vehicle should not be listed separately and it isn't the first to be invented for its ride group,
-                    // report it as a new vehicle for the existing ride group.
-                else
-                {
-                    availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
-                    rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
+                availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_VEHICLE_AVAILABLE;
+                rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
 
-                    set_format_arg(0, rct_string_id, baseRideNaming.name);
-                    set_format_arg(2, rct_string_id, rideEntry->vehicleName);
-                }
+                set_format_arg(0, rct_string_id, baseRideNaming.name);
+                set_format_arg(2, rct_string_id, rideEntry->vehicleName);
             }
 
             if (!gSilentResearch)
@@ -913,28 +896,14 @@ uint8 research_get_ride_base_type(sint32 researchItem)
  */
 rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry)
 {
-    if (!gConfigInterface.select_by_track_type)
+    if (RideGroupManager::RideTypeHasRideGroups(trackType))
     {
-        if (trackType == RIDE_TYPE_TWISTER_ROLLER_COASTER)
-        {
-            return STR_HYPER_TWISTER_GROUP;
-        }
-        else
-        {
-            return RideNaming[trackType].name;
-        }
+        const RideGroup * rideGroup = RideGroupManager::GetRideGroup(trackType, rideEntry);
+        return rideGroup->Naming.name;
     }
     else
     {
-        if (RideGroupManager::RideTypeHasRideGroups(trackType))
-        {
-            const RideGroup * rideGroup = RideGroupManager::GetRideGroup(trackType, rideEntry);
-            return rideGroup->Naming.name;
-        }
-        else
-        {
-            return RideNaming[trackType].name;
-        }
+        return RideNaming[trackType].name;
     }
 }
 

@@ -1373,27 +1373,19 @@ static money32 track_place(sint32 rideIndex,
             {
 
                 uint16 maxHeight;
-                if (gConfigInterface.select_by_track_type)
+
+                if (RideGroupManager::RideTypeIsIndependent(ride->type) && rideEntry->max_height != 0)
                 {
-                    if (ride_type_has_ride_groups(ride->type))
-                    {
-                        const RideGroup * rideGroup = get_ride_group(ride->type, rideEntry);
-                        maxHeight = rideGroup->MaximumHeight;
-                    }
-                    else
-                    {
-                        maxHeight = RideData5[ride->type].max_height;
-                    }
+                    maxHeight = rideEntry->max_height;
+                }
+                else if (RideGroupManager::RideTypeHasRideGroups(ride->type))
+                {
+                    const RideGroup * rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
+                    maxHeight = rideGroup->MaximumHeight;
                 }
                 else
                 {
-                    maxHeight = rideEntry->max_height;
-                    // If a rideEntry specifies 0 as max height, it means OpenRCT2
-                    // should fall back on the default for the track type.
-                    if (maxHeight == 0)
-                    {
-                        maxHeight = RideData5[ride->type].max_height;
-                    }
+                    maxHeight = RideData5[ride->type].max_height;
                 }
 
                 ride_height /= 2;

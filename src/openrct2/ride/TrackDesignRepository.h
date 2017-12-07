@@ -65,8 +65,6 @@ extern "C"
 {
 #endif
     void    track_repository_scan();
-    size_t  track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry);
-    size_t  track_repository_get_count_for_ride_group(uint8 rideType, const RideGroup * rideGroup);
     size_t  track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry);
     size_t  track_repository_get_items_for_ride_group(track_design_file_ref * * outRefs, uint8 rideType, const RideGroup * rideGroup);
     utf8 *  track_repository_get_name_from_path(const utf8 *path);

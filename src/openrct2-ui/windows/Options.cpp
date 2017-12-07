@@ -147,7 +147,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TOOLBAR_SHOW_CHEATS,
     WIDX_TOOLBAR_SHOW_NEWS,
     WIDX_TOOLBAR_SHOW_MUTE,
-    WIDX_SELECT_BY_TRACK_TYPE,
     WIDX_SCENARIO_GROUPING,
     WIDX_SCENARIO_GROUPING_DROPDOWN,
     WIDX_SCENARIO_UNLOCKING,
@@ -300,7 +299,6 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  155,    299,    229,        240,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
     { WWT_CHECKBOX,         2,  155,    299,    244,        255,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
     { WWT_CHECKBOX,         2,  10,     185,    259,        270,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
-    { WWT_CHECKBOX,         2,  10,     299,    279,        285,    STR_SELECT_BY_TRACK_TYPE,               STR_SELECT_BY_TRACK_TYPE_TIP },             // Select by track type
     { WWT_DROPDOWN,         1,  155,    299,    294,        305,    STR_NONE,                               STR_NONE },                                 // Scenario select mode
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    295,        304,    STR_DROPDOWN_GLYPH,                     STR_SCENARIO_GROUPING_TIP },
     { WWT_CHECKBOX,         2,  18,     299,    309,        320,    STR_OPTIONS_SCENARIO_UNLOCKING,         STR_SCENARIO_UNLOCKING_TIP },               // Unlocking of scenarios
@@ -514,7 +512,6 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_THEMES) |
     (1 << WIDX_THEMES_DROPDOWN) |
     (1 << WIDX_THEMES_BUTTON) |
-    (1 << WIDX_SELECT_BY_TRACK_TYPE) |
     (1 << WIDX_SCENARIO_GROUPING) |
     (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
     (1 << WIDX_SCENARIO_UNLOCKING) |
@@ -771,13 +768,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             context_open_window(WC_THEMES);
             window_invalidate(w);
             break;
-        case WIDX_SELECT_BY_TRACK_TYPE:
-            gConfigInterface.select_by_track_type ^= 1;
-            config_save_default();
-            window_invalidate(w);
-            window_invalidate_by_class(WC_RIDE);
-            window_invalidate_by_class(WC_CONSTRUCT_RIDE);
-            break;
+
         case WIDX_SCENARIO_UNLOCKING:
             gConfigGeneral.scenario_unlocking_enabled ^= 1;
             config_save_default();
@@ -1614,7 +1605,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-        widget_set_checkbox_value(w, WIDX_SELECT_BY_TRACK_TYPE, gConfigInterface.select_by_track_type);
         widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
@@ -1634,7 +1624,6 @@ static void window_options_invalidate(rct_window *w)
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_MUTE].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_SELECT_BY_TRACK_TYPE].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].type = WWT_DROPDOWN;
         window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
         break;

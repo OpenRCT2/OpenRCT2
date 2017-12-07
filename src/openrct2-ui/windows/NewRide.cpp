@@ -17,6 +17,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/network/network.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ride/RideGroupManager.h>
@@ -273,7 +274,6 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
 
 static ride_list_item _lastTrackDesignCountRideType;
 static sint32 _lastTrackDesignCount;
-static bool _trackSelectionByType;
 
 /**
 *
@@ -313,10 +313,8 @@ static void window_new_ride_populate_list()
         if (rideType == RIDE_TYPE_NULL)
             continue;
 
-        if(gConfigInterface.select_by_track_type) {
-            if(gRideCategories[rideType]!=currentCategory)
-                continue;
-        }
+        if(gRideCategories[rideType] != currentCategory)
+            continue;
 
         if (ride_type_is_invented(rideType) || gCheatsIgnoreResearchStatus) {
 
@@ -333,13 +331,10 @@ static void window_new_ride_populate_list()
 
     nextListItem->type = RIDE_TYPE_NULL;
     nextListItem->entry_index = RIDE_ENTRY_INDEX_NULL;
-    _trackSelectionByType = gConfigInterface.select_by_track_type;
 }
 
 static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, uint8 rideGroupIndex, ride_list_item * nextListItem)
 {
-    uint8 currentCategory = _windowNewRideCurrentTab;
-
     bool buttonForRideTypeCreated = false;
     bool allowDrawingOverLastButton = false;
     uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
@@ -348,7 +343,8 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
     safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
 
     // For each ride entry for this ride type
-    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL) {
+    while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
+    {
         uint8 rideEntryIndex = *rideEntryIndexPtr++;
         char rideEntryName[9];
         memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
@@ -361,10 +357,6 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         // Ride entries
         rct_ride_entry *rideEntry = get_ride_entry(rideEntryIndex);
 
-        // Check if ride is in this category
-        if (!gConfigInterface.select_by_track_type && !ride_entry_has_category(rideEntry, currentCategory))
-            continue;
-
         if (RideGroupManager::RideTypeHasRideGroups(rideType))
         {
             const RideGroup * rideEntryRideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
@@ -375,8 +367,7 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         }
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        if (gConfigInterface.select_by_track_type &&
-            (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry)))
+        if (!RideGroupManager::RideTypeIsIndependent(rideType))
         {
             if (strcmp(preferredVehicleName, "        \0") == 0) {
                 safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
@@ -392,22 +383,28 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         }
 
         // Determines how and where to draw a button for this ride type/vehicle.
-        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) &&
-            !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
-        { // Separate, draw apart
+        if (RideGroupManager::RideTypeIsIndependent(rideType))
+        {
+            // Separate, draw apart
             allowDrawingOverLastButton = false;
             nextListItem->type = rideType;
             nextListItem->entry_index = rideEntryIndex;
             nextListItem++;
-        } else if (!buttonForRideTypeCreated) { // Non-separate, draw-apart
-            // Draw apart
+        }
+        else if (!buttonForRideTypeCreated)
+        {
+            // Non-separate, draw-apart
             buttonForRideTypeCreated = true;
             allowDrawingOverLastButton = true;
             nextListItem->type = rideType;
             nextListItem->entry_index = rideEntryIndex;
             nextListItem++;
-        } else if (allowDrawingOverLastButton) { // Non-separate, draw over previous
-            if (rideType == rideEntry->ride_type[0]) {
+        }
+        else if (allowDrawingOverLastButton)
+        {
+            // Non-separate, draw over previous
+            if (rideType == rideEntry->ride_type[0])
+            {
                 nextListItem--;
                 nextListItem->type = rideType;
                 nextListItem->entry_index = rideEntryIndex;
@@ -529,12 +526,8 @@ void window_new_ride_focus(ride_list_item rideItem)
     rideEntry = get_ride_entry(rideItem.entry_index);
     uint8 rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
-    if(!gConfigInterface.select_by_track_type) {
-        window_new_ride_set_page(w, rideEntry->category[0]);
-    }
-    else {
         window_new_ride_set_page(w, gRideCategories[rideTypeIndex]);
-    }
+
 
     for (ride_list_item *listItem = _windowNewRideListItems; listItem->type != RIDE_TYPE_NULL; listItem++) {
         if (listItem->type == rideItem.type && listItem->entry_index == rideItem.entry_index) {
@@ -548,7 +541,7 @@ void window_new_ride_focus(ride_list_item rideItem)
 
     // If this entry was not found it was most likely hidden due to it not being the preferential type.
     // In this case, select the first entry that belongs to the same ride group.
-    if (!entryFound && gConfigInterface.select_by_track_type)
+    if (!entryFound)
     {
         const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideTypeIndex, rideEntry);
 
@@ -724,10 +717,8 @@ static void window_new_ride_update(rct_window *w)
     if (w->new_ride.selected_ride_id != -1 && w->new_ride.selected_ride_countdown-- == 0)
         window_new_ride_select(w);
 
-    if (_trackSelectionByType != gConfigInterface.select_by_track_type) {
-        window_new_ride_populate_list();
-        widget_invalidate(w, WIDX_RIDE_LIST);
-    }
+    window_new_ride_populate_list();
+    //widget_invalidate(w, WIDX_RIDE_LIST);
 }
 
 /**
@@ -920,12 +911,13 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 static sint32 get_num_track_designs(ride_list_item item)
 {
     char entry[9];
-    const char *entryPtr = nullptr;
+    const char * entryPtr = nullptr;
     rct_ride_entry * rideEntry = nullptr;
 
-    if (item.type < 0x80) {
+    if (item.type < 0x80)
+    {
         rideEntry = get_ride_entry(item.entry_index);
-        if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
+        if (RideGroupManager::RideTypeIsIndependent(item.type))
         {
             get_ride_entry_name(entry, item.entry_index);
             entryPtr = entry;
@@ -935,10 +927,12 @@ static sint32 get_num_track_designs(ride_list_item item)
     if (rideEntry != nullptr && RideGroupManager::RideTypeHasRideGroups(item.type))
     {
         const RideGroup * rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
-        return (sint32)track_repository_get_count_for_ride_group(item.type, rideGroup);
+        ITrackDesignRepository * repo = GetTrackDesignRepository();
+        return (sint32)repo->GetCountForRideGroup(item.type, rideGroup);
     }
 
-    return (sint32)track_repository_get_count_for_ride(item.type, entryPtr);
+    ITrackDesignRepository * repo = GetTrackDesignRepository();
+    return (sint32)repo->GetCountForObjectEntry(item.type, String::ToStd(entryPtr));
 }
 
 /**
@@ -1056,17 +1050,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
     const RideGroup * rideGroup, * currentRideGroup;
     sint32 rideEntryIndex;
 
-    if (ride_type_has_flag(rideType, RIDE_TYPE_FLAG_FLAT_RIDE))
-    {
-        out[0] = 0;
-        return;
-    }
-    if (rideType == RIDE_TYPE_MAZE || rideType == RIDE_TYPE_MINI_GOLF)
-    {
-        out[0] = 0;
-        return;
-    }
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE && !RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry))
+    if (RideGroupManager::RideTypeIsIndependent(rideType))
     {
         out[0] = 0;
         return;
@@ -1080,9 +1064,6 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
     {
         rideEntryIndex = *currentRideEntryIndex;
         currentRideEntry = get_ride_entry(rideEntryIndex);
-        // Skip if vehicle wants to be separate, unless subtype switching is enabled
-        if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !RideGroupManager::RideTypeShouldLoseSeparateFlag(currentRideEntry))
-            continue;
 
         // Skip if vehicle type is not invented yet
         if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)

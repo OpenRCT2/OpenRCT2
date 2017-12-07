@@ -3840,16 +3840,12 @@ void ride_music_update_final()
 
 static bool ride_is_mode_valid(Ride *ride, uint8 mode)
 {
-    rct_ride_entry *rideEntry = get_ride_entry(ride->subtype);
-    const uint8 *availableModes = ride_seek_available_modes(ride);
+    const uint8 * availableModes = ride_seek_available_modes(ride);
 
-    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
+    for (; *availableModes != 0xFF; availableModes++)
     {
-        availableModes += 2;
-    }
-
-    for (; *availableModes != 0xFF; availableModes++) {
-        if (*availableModes == mode) {
+        if (*availableModes == mode)
+        {
             return true;
         }
     }
@@ -5819,10 +5815,13 @@ bool shop_item_has_common_price(sint32 shopItem)
 
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
-        ride_set_name_to_track_default(ride, rideEntry);
-    } else {
+    if (rideTypeIsIndependent(ride->type))
+    {
         ride_set_name_to_vehicle_default(ride, rideEntry);
+    }
+    else
+    {
+        ride_set_name_to_track_default(ride, rideEntry);
     }
 }
 
@@ -5833,22 +5832,24 @@ void ride_set_name_to_track_default(Ride *ride, rct_ride_entry * rideEntry)
 
     ride->name = STR_NONE;
 
-    // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
-    if (!gConfigInterface.select_by_track_type && ride->type == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-        name_args.type_name = STR_HYPER_TWISTER_GROUP;
-    }
-    else if (ride_type_has_ride_groups(ride->type)) {
+    if (ride_type_has_ride_groups(ride->type))
+    {
         const RideGroup * rideGroup = get_ride_group(ride->type, rideEntry);
         name_args.type_name = rideGroup->Naming.name;
-    } else {
+    }
+    else
+    {
         name_args.type_name = RideNaming[ride->type].name;
     }
 
     name_args.number = 0;
-    do {
+    do
+    {
         name_args.number++;
         format_string(rideNameBuffer, 256, 1, &name_args);
-    } while (ride_name_exists(rideNameBuffer));
+    }
+    while (ride_name_exists(rideNameBuffer));
+
     ride->name = 1;
     ride->name_arguments_type_name = name_args.type_name;
     ride->name_arguments_number = name_args.number;
@@ -5884,21 +5885,19 @@ static void ride_set_name_to_vehicle_default(Ride * ride, rct_ride_entry * rideE
 /**
  * This will return the name of the ride, as seen in the New Ride window.
  */
-rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry)
+rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry)
 {
-    // This fixes the Hyper-Twister being displayed as the generic Steel Twister when not in select-by-track-type mode.
-    if (!gConfigInterface.select_by_track_type && rideType == RIDE_TYPE_TWISTER_ROLLER_COASTER && !(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)) {
-        return (rct_ride_name){ STR_HYPER_TWISTER_GROUP, STR_HYPER_TWISTER_GROUP_DESC };
-    }
-
-    if (ride_type_has_ride_groups(rideType)) {
+    if (ride_type_has_ride_groups(rideType))
+    {
         const RideGroup * rideGroup = get_ride_group(rideType, rideEntry);
         return rideGroup->Naming;
     }
-    else if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry)) {
+    else if (!rideTypeIsIndependent(rideType))
+    {
         return RideNaming[rideType];
     }
-    else {
+    else
+    {
         return rideEntry->naming;
     }
 }
@@ -8236,7 +8235,7 @@ sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType)
                 continue;
             }
 
-            if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
+            if (!rideTypeIsIndependent(rideType))
             {
                 subType = *rideEntryIndex;
                 break;

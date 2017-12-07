@@ -735,18 +735,22 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
 static void track_list_load_designs(ride_list_item item)
 {
-    if (!RideGroupManager::RideTypeHasRideGroups(item.type)) {
+    if (!RideGroupManager::RideTypeHasRideGroups(item.type))
+    {
         char entry[9];
-        const char *entryPtr = nullptr;
-        if (item.type < 0x80) {
-            rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
-            if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !rideTypeShouldLoseSeparateFlag(rideEntry)) {
+        const char * entryPtr = nullptr;
+        if (item.type < 0x80)
+        {
+            if (RideGroupManager::RideTypeIsIndependent(item.type))
+            {
                 get_ride_entry_name(entry, item.entry_index);
                 entryPtr = entry;
             }
         }
         _trackDesignsCount = track_repository_get_items_for_ride(&_trackDesigns, item.type, entryPtr);
-    } else {
+    }
+    else
+    {
         rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
         const RideGroup * rideGroup = RideGroupManager::GetRideGroup(item.type, rideEntry);
         _trackDesignsCount = track_repository_get_items_for_ride_group(&_trackDesigns, item.type, rideGroup);

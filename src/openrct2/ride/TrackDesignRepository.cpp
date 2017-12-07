@@ -178,7 +178,7 @@ public:
             {
                 const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
 
-                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
                     entryIsNotSeparate = true;
             }
 
@@ -239,7 +239,7 @@ public:
             {
                 const ObjectRepositoryItem * ori = repo->FindObject(item.ObjectEntry.c_str());
 
-                if (gConfigInterface.select_by_track_type || ori == nullptr || !(ori->RideFlags & ORI_RIDE_FLAG_SEPARATE))
+                if (ori == nullptr || !RideGroupManager::RideTypeIsIndependent(rideType))
                     entryIsNotSeparate = true;
             }
 
@@ -416,18 +416,6 @@ extern "C"
     {
         ITrackDesignRepository * repo = GetTrackDesignRepository();
         repo->Scan();
-    }
-
-    size_t track_repository_get_count_for_ride(uint8 rideType, const utf8 * entry)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetCountForObjectEntry(rideType, String::ToStd(entry));
-    }
-
-    size_t track_repository_get_count_for_ride_group(uint8 rideType, const RideGroup * rideGroup)
-    {
-        ITrackDesignRepository * repo = GetTrackDesignRepository();
-        return repo->GetCountForRideGroup(rideType, rideGroup);
     }
 
     size_t track_repository_get_items_for_ride(track_design_file_ref * * outRefs, uint8 rideType, const utf8 * entry)

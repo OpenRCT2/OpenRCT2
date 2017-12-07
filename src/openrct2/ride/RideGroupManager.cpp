@@ -103,7 +103,7 @@ static const RideGroup car_ride_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_g
 static const RideGroup twister_rc_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_twister_rc, ride_group_hyper_twister };
 static const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = { ride_group_steel_wild_mouse, ride_group_spinning_wild_mouse };
 
-    const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
+const RideGroup * RideGroupManager::GetRideGroup(const uint8 rideType, const rct_ride_entry * rideEntry)
 {
     switch (rideType)
     {
@@ -139,11 +139,6 @@ static const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = 
 
 bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
 {
-    if (!gConfigInterface.select_by_track_type)
-    {
-        return false;
-    }
-
     switch (rideType)
     {
         case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
@@ -337,30 +332,107 @@ sint32 RideGroupManager::VehiclePreferenceCompare(const uint8 rideType, const ch
     return 0;
 }
 
-bool RideGroupManager::RideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry)
+bool RideGroupManager::RideTypeIsIndependent(const uint8 rideType)
 {
-    if (!gConfigInterface.select_by_track_type)
+    switch (rideType)
     {
+    case RIDE_TYPE_SPIRAL_ROLLER_COASTER:
+    case RIDE_TYPE_STAND_UP_ROLLER_COASTER:
+    case RIDE_TYPE_SUSPENDED_SWINGING_COASTER:
+    case RIDE_TYPE_INVERTED_ROLLER_COASTER:
+    case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
+    case RIDE_TYPE_MINIATURE_RAILWAY:
+    case RIDE_TYPE_MONORAIL:
+    case RIDE_TYPE_MINI_SUSPENDED_COASTER:
+    case RIDE_TYPE_BOAT_HIRE:
+    case RIDE_TYPE_WOODEN_WILD_MOUSE:
+    case RIDE_TYPE_STEEPLECHASE:
+    case RIDE_TYPE_CAR_RIDE:
+    case RIDE_TYPE_LAUNCHED_FREEFALL:
+    case RIDE_TYPE_BOBSLEIGH_COASTER:
+    case RIDE_TYPE_OBSERVATION_TOWER:
+    case RIDE_TYPE_LOOPING_ROLLER_COASTER:
+    case RIDE_TYPE_DINGHY_SLIDE:
+    case RIDE_TYPE_MINE_TRAIN_COASTER:
+    case RIDE_TYPE_CHAIRLIFT:
+    case RIDE_TYPE_CORKSCREW_ROLLER_COASTER:
+    case RIDE_TYPE_GO_KARTS:
+    case RIDE_TYPE_LOG_FLUME:
+    case RIDE_TYPE_RIVER_RAPIDS:
+    case RIDE_TYPE_REVERSE_FREEFALL_COASTER:
+    case RIDE_TYPE_LIFT:
+    case RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER:
+    case RIDE_TYPE_GHOST_TRAIN:
+    case RIDE_TYPE_TWISTER_ROLLER_COASTER:
+    case RIDE_TYPE_WOODEN_ROLLER_COASTER:
+    case RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER:
+    case RIDE_TYPE_STEEL_WILD_MOUSE:
+    case RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER:
+    case RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT:
+    case RIDE_TYPE_FLYING_ROLLER_COASTER:
+    case RIDE_TYPE_FLYING_ROLLER_COASTER_ALT:
+    case RIDE_TYPE_VIRGINIA_REEL:
+    case RIDE_TYPE_SPLASH_BOATS:
+    case RIDE_TYPE_MINI_HELICOPTERS:
+    case RIDE_TYPE_LAY_DOWN_ROLLER_COASTER:
+    case RIDE_TYPE_SUSPENDED_MONORAIL:
+    case RIDE_TYPE_LAY_DOWN_ROLLER_COASTER_ALT:
+    case RIDE_TYPE_REVERSER_ROLLER_COASTER:
+    case RIDE_TYPE_HEARTLINE_TWISTER_COASTER:
+    case RIDE_TYPE_GIGA_COASTER:
+    case RIDE_TYPE_ROTO_DROP:
+    case RIDE_TYPE_MONORAIL_CYCLES:
+    case RIDE_TYPE_COMPACT_INVERTED_COASTER:
+    case RIDE_TYPE_WATER_COASTER:
+    case RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER:
+    case RIDE_TYPE_INVERTED_HAIRPIN_COASTER:
+    case RIDE_TYPE_SUBMARINE_RIDE:
+    case RIDE_TYPE_RIVER_RAFTS:
+    case RIDE_TYPE_INVERTED_IMPULSE_COASTER:
+    case RIDE_TYPE_MINI_ROLLER_COASTER:
+    case RIDE_TYPE_MINE_RIDE:
+    case RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER:
         return false;
+    case RIDE_TYPE_MAZE:
+    case RIDE_TYPE_SPIRAL_SLIDE:
+    case RIDE_TYPE_DODGEMS:
+    case RIDE_TYPE_SWINGING_SHIP:
+    case RIDE_TYPE_SWINGING_INVERTER_SHIP:
+    case RIDE_TYPE_FOOD_STALL:
+    case RIDE_TYPE_1D:
+    case RIDE_TYPE_DRINK_STALL:
+    case RIDE_TYPE_1F:
+    case RIDE_TYPE_SHOP:
+    case RIDE_TYPE_MERRY_GO_ROUND:
+    case RIDE_TYPE_22:
+    case RIDE_TYPE_INFORMATION_KIOSK:
+    case RIDE_TYPE_TOILETS:
+    case RIDE_TYPE_FERRIS_WHEEL:
+    case RIDE_TYPE_MOTION_SIMULATOR:
+    case RIDE_TYPE_3D_CINEMA:
+    case RIDE_TYPE_TOP_SPIN:
+    case RIDE_TYPE_SPACE_RINGS:
+    case RIDE_TYPE_CASH_MACHINE:
+    case RIDE_TYPE_TWIST:
+    case RIDE_TYPE_HAUNTED_HOUSE:
+    case RIDE_TYPE_FIRST_AID:
+    case RIDE_TYPE_CIRCUS:
+    case RIDE_TYPE_MINI_GOLF:
+    case RIDE_TYPE_FLYING_SAUCERS:
+    case RIDE_TYPE_CROOKED_HOUSE:
+    case RIDE_TYPE_MAGIC_CARPET:
+    case RIDE_TYPE_50:
+    case RIDE_TYPE_ENTERPRISE:
+    case RIDE_TYPE_52:
+    case RIDE_TYPE_53:
+    case RIDE_TYPE_54:
+    case RIDE_TYPE_55:
+    case RIDE_TYPE_59:
+        return true;
     }
 
-    bool remove_flag = true;
-    for (size_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
-    {
-        if (rideEntry->ride_type[j] == RIDE_TYPE_NULL)
-        {
-            continue;
-        }
-        if (ride_type_has_flag(rideEntry->ride_type[j], RIDE_TYPE_FLAG_FLAT_RIDE))
-        {
-            remove_flag = false;
-        }
-        if (rideEntry->ride_type[j] == RIDE_TYPE_MAZE || rideEntry->ride_type[j] == RIDE_TYPE_MINI_GOLF)
-        {
-            remove_flag = false;
-        }
-    }
-    return remove_flag;
+    assert(false);
+    return true;
 }
 
 extern "C"
@@ -375,9 +447,9 @@ extern "C"
         return RideGroupManager::RideTypeHasRideGroups(rideType);
     }
 
-    bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry)
+    bool rideTypeIsIndependent(const uint8 rideType)
     {
-        return RideGroupManager::RideTypeShouldLoseSeparateFlag(rideEntry);
+        return RideGroupManager::RideTypeIsIndependent(rideType);
     }
 }
 

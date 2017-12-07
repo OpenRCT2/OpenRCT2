@@ -52,7 +52,7 @@ class RideGroupManager
 
     static const std::vector<const char *> GetPreferredRideEntryOrder(const uint8 rideType);
     static sint32 VehiclePreferenceCompare(const uint8 rideType, const char * a, const char * b);
-    static bool RideTypeShouldLoseSeparateFlag(const rct_ride_entry * rideEntry);
+    static bool RideTypeIsIndependent(const uint8 rideType);
 };
 
 extern "C"
@@ -61,7 +61,7 @@ extern "C"
     const RideGroup * get_ride_group(const uint8 rideType, const rct_ride_entry * rideEntry);
     bool ride_type_has_ride_groups(const uint8 rideType);
 
-    bool rideTypeShouldLoseSeparateFlag(const rct_ride_entry *rideEntry);
+    bool rideTypeIsIndependent(const uint8 rideType);
 #ifdef __cplusplus
 }
 #endif

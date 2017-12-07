@@ -1130,7 +1130,7 @@ money32 ride_get_common_price(Ride *forRide);
 money32 shop_item_get_common_price(Ride *forRide, sint32 shopItem);
 bool shop_item_is_photo(sint32 shopItem);
 bool shop_item_has_common_price(sint32 shopItem);
-rct_ride_name get_ride_naming(uint8 rideType, rct_ride_entry * rideEntry);
+rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry);
 void game_command_create_ride(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *edx, sint32 *esi, sint32 *edi, sint32 *ebp);
 void game_command_callback_ride_construct_new(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);
 void game_command_callback_ride_construct_placed_front(sint32 eax, sint32 ebx, sint32 ecx, sint32 edx, sint32 esi, sint32 edi, sint32 ebp);

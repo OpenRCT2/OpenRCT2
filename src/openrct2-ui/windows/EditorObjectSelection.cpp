@@ -1394,23 +1394,19 @@ static bool filter_chunks(const ObjectRepositoryItem * item)
 {
     switch (item->ObjectEntry.flags & 0x0F) {
     case OBJECT_TYPE_RIDE:
-        if(!gConfigInterface.select_by_track_type) {
-            if (_filter_flags & (1 << (item->RideCategory[0] + 5)))
-                return true;
-            if (_filter_flags & (1 << (item->RideCategory[1] + 5)))
-                return true;
-        }
-        else {
-            uint8 rideType = 0;
-            for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++) {
-                if (item->RideType[i] != RIDE_TYPE_NULL) {
-                    rideType = item->RideType[i];
-                    break;
-                }
+
+        uint8 rideType = 0;
+        for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        {
+            if (item->RideType[i] != RIDE_TYPE_NULL)
+            {
+                rideType = item->RideType[i];
+                break;
             }
-            if (_filter_flags & (1 << (gRideCategories[rideType] + 5)))
-                return true;
         }
+        if (_filter_flags & (1 << (gRideCategories[rideType] + 5)))
+            return true;
+
         return false;
     }
     return true;

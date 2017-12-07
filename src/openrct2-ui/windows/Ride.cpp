@@ -2710,9 +2710,6 @@ static void window_ride_vehicle_mousedown(rct_window *w, rct_widgetindex widgetI
             for (uint8 *currentRideEntryIndex = rideEntryIndexPtr; *currentRideEntryIndex != RIDE_ENTRY_INDEX_NULL && numItems < DROPDOWN_ITEMS_MAX_SIZE; currentRideEntryIndex++) {
                 rideEntryIndex = *currentRideEntryIndex;
                 currentRideEntry = get_ride_entry(rideEntryIndex);
-                // Skip if vehicle wants to be separate, unless subtype switching is enabled
-                if ((currentRideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)) && !(gConfigInterface.select_by_track_type || selectionShouldBeExpanded))
-                    continue;
 
                 // Skip if vehicle type is not invented yet
                 if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
@@ -2829,16 +2826,6 @@ static void window_ride_vehicle_invalidate(rct_window *w)
 
     // Vehicle type
     window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].text = rideEntry->vehicleName;
-    // Always show a dropdown button when changing subtypes is allowed
-    if ((rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) && !(gConfigInterface.select_by_track_type || gCheatsShowVehiclesFromOtherTrackTypes)) {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_14;
-        window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_EMPTY;
-        w->enabled_widgets &= ~(1 << WIDX_VEHICLE_TYPE);
-    } else {
-        window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE].type = WWT_DROPDOWN;
-        window_ride_vehicle_widgets[WIDX_VEHICLE_TYPE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        w->enabled_widgets |= (1 << WIDX_VEHICLE_TYPE);
-    }
 
     // Trains
     if (rideEntry->cars_per_flat_ride > 1 || gCheatsDisableTrainLengthLimit) {
@@ -2927,32 +2914,30 @@ static void window_ride_vehicle_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_CAPACITY, &rideEntry->capacity, COLOUR_BLACK, x, y);
     y += 5;
 
-    if (!(rideEntry->flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE) || rideTypeShouldLoseSeparateFlag(rideEntry))
+    // Excitement Factor
+    factor = rideEntry->excitement_multiplier;
+    if (factor > 0)
     {
-        // Excitement Factor
-        factor = rideEntry->excitement_multiplier;
-        if (factor > 0)
-        {
-            y += 10;
-            gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
-        }
-
-        // Intensity Factor
-        factor = rideEntry->intensity_multiplier;
-        if (factor > 0)
-        {
-            y += 10;
-            gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
-        }
-
-        // Nausea Factor
-        factor = rideEntry->nausea_multiplier;
-        if (factor > 0)
-        {
-            y += 10;
-            gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
-        }
+        y += 10;
+        gfx_draw_string_left(dpi, STR_EXCITEMENT_FACTOR, &factor, COLOUR_BLACK, x, y);
     }
+
+    // Intensity Factor
+    factor = rideEntry->intensity_multiplier;
+    if (factor > 0)
+    {
+        y += 10;
+        gfx_draw_string_left(dpi, STR_INTENSITY_FACTOR, &factor, COLOUR_BLACK, x, y);
+    }
+
+    // Nausea Factor
+    factor = rideEntry->nausea_multiplier;
+    if (factor > 0)
+    {
+        y += 10;
+        gfx_draw_string_left(dpi, STR_NAUSEA_FACTOR, &factor, COLOUR_BLACK, x, y);
+    }
+
 }
 
 typedef struct rct_vehichle_paintinfo {
@@ -3124,7 +3109,6 @@ static void window_ride_mode_tweak_decrease(rct_window *w)
  */
 static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 {
-    rct_ride_entry *rideEntry;
     rct_widget *dropdownWidget;
     Ride *ride;
     const uint8 *availableModes, *mode;
@@ -3132,7 +3116,6 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
 
     dropdownWidget = widget - 1;
     ride = get_ride(w->number);
-    rideEntry = get_ride_entry_by_ride(ride);
 
     // Seek to available modes for this ride
     availableModes = ride_seek_available_modes(ride);
@@ -3143,19 +3126,6 @@ static void window_ride_mode_dropdown(rct_window *w, rct_widget *widget)
     do {
         numAvailableModes++;
     } while (*(mode++) != 255);
-
-    // Hide the last operating mode if the vehicle is not intended for it.
-    if (rideEntry->flags & RIDE_ENTRY_DISABLE_LAST_OPERATING_MODE && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
-    {
-        numAvailableModes--;
-    }
-
-    // If the vehicle is not intended for them, hide those two modes (these are usually (or perhaps always) both continuous circuit modes).
-    if ((rideEntry->flags & RIDE_ENTRY_DISABLE_FIRST_TWO_OPERATING_MODES) && !gConfigInterface.select_by_track_type && !gCheatsShowAllOperatingModes)
-    {
-        availableModes += 2;
-        numAvailableModes -= 2;
-    }
 
     // Create dropdown list
     for (i = 0; i < numAvailableModes; i++) {
