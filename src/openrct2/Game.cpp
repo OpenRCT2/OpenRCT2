@@ -52,7 +52,6 @@
 #include "util/SawyerCoding.h"
 #include "util/Util.h"
 #include "windows/Intent.h"
-#include "windows/tooltip.h"
 #include "world/banner.h"
 #include "world/Climate.h"
 #include "world/entrance.h"

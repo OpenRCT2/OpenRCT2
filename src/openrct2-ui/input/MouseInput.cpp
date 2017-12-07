@@ -29,7 +29,6 @@
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/scenario/scenario.h>
-#include <openrct2/windows/tooltip.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/world/banner.h>
 #include <openrct2/world/map.h>
@@ -38,6 +37,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Util.hpp>
+#include <openrct2-ui/windows/Window.h>
 
 typedef struct rct_mouse_data {
     uint32 x;

@@ -27,7 +27,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/dropdown.h>
-#include <openrct2/windows/tooltip.h>
 
 #define WWIDTH_MIN 500
 #define WHEIGHT_MIN 300
