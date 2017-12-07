@@ -27,7 +27,7 @@
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/windows/tile_inspector.h>
 #include <openrct2/world/footpath.h>
 #include <openrct2/world/LargeScenery.h>

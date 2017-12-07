@@ -20,7 +20,7 @@
 
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/LandTool.h>
 
 enum WINDOW_LAND_WIDGET_IDX {

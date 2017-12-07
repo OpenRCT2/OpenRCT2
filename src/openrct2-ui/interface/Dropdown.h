@@ -14,11 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _WINDOW_DROPDOWN_H_
-#define _WINDOW_DROPDOWN_H_
+#pragma once
 
-#include "../common.h"
-#include "../interface/window.h"
+#include <openrct2/common.h>
+#include <openrct2/interface/window.h>
 
 #define DROPDOWN_SEPARATOR            0
 #define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE
@@ -30,10 +29,6 @@ enum
     DROPDOWN_FLAG_CUSTOM_HEIGHT = (1 << 6),
     DROPDOWN_FLAG_STAY_OPEN = (1 << 7)
 };
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 extern sint32 gAppropriateImageDropdownItemsPerRow[];
 
@@ -57,9 +52,3 @@ void window_dropdown_close();
 sint32 dropdown_index_from_point(sint32 x, sint32 y, rct_window* w);
 void window_dropdown_show_colour(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour);
 void window_dropdown_show_colour_available(rct_window *w, rct_widget *widget, uint8 dropdownColour, uint8 selectedColour, uint32 availableColours);
-
-#ifdef __cplusplus
-}
-#endif
-
-#endif

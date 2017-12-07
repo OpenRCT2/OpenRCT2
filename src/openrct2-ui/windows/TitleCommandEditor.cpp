@@ -26,7 +26,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 typedef struct TITLE_COMMAND_ORDER {
     // originally a uint8, but the new millisecond wait times require a uint16.

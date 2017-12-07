@@ -14,15 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Util.hpp"
-#include "../core/Math.hpp"
-
-#include "../Input.h"
-#include "../interface/widget.h"
-#include "../localisation/localisation.h"
-#include "../sprites.h"
-#include "dropdown.h"
+#include <openrct2/Context.h>
+#include <openrct2/core/Util.hpp>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/Input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/sprites.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 // The maximum number of rows to list before items overflow into new columns
 #define DROPDOWN_TEXT_MAX_ROWS 32
