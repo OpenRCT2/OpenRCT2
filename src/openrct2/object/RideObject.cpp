@@ -16,10 +16,8 @@
 
 #include <algorithm>
 #include <unordered_map>
-#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
 #include "ObjectRepository.h"
@@ -32,9 +30,7 @@
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../OpenRCT2.h"
-#include "../PlatformEnvironment.h"
-#include "../sprites.h"
-#include "ObjectFactory.h"
+#include "ObjectJsonHelpers.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
 
@@ -545,121 +541,6 @@ uint8 RideObject::CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * ve
     return numHorizontalFrames;
 }
 
-static std::vector<sint32> ParseRange(std::string s)
-{
-    // Currently only supports [###] or [###..###]
-    std::vector<sint32> result;
-    if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
-    {
-        s = s.substr(1, s.length() - 2);
-        auto parts = String::Split(s, "..");
-        if (parts.size() == 1)
-        {
-            result.push_back(std::stoi(parts[0]));
-        }
-        else
-        {
-            auto left = std::stoi(parts[0]);
-            auto right = std::stoi(parts[1]);
-            if (left <= right)
-            {
-                for (auto i = left; i <= right; i++)
-                {
-                    result.push_back(i);
-                }
-            }
-            else
-            {
-                for (auto i = right; i >= left; i--)
-                {
-                    result.push_back(i);
-                }
-            }
-        }
-    }
-    return result;
-}
-
-static std::vector<rct_g1_element> LoadObjectImages(const std::string &name)
-{
-    std::vector<rct_g1_element> result;
-    const auto env = GetContext()->GetPlatformEnvironment();
-    auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
-    auto objectPath = Path::Combine(objectsPath, name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
-    auto imgTable = static_cast<const Object *>(obj)->GetImageTable();
-    auto numImages = imgTable->GetCount();
-    auto images = imgTable->GetImages();
-    for (uint32 i = 0; i < numImages; i++)
-    {
-        auto g1 = images[i];
-        auto length = g1_calculate_data_size(&g1);
-        g1.offset = Memory::Duplicate(g1.offset, length);
-        result.push_back(g1);
-    }
-    delete obj;
-    return result;
-}
-
-static std::vector<rct_g1_element> ParseImages(std::string s)
-{
-    std::vector<rct_g1_element> result;
-    if (s.empty())
-    {
-        rct_g1_element emptyg1 = { 0 };
-        result.push_back(emptyg1);
-    }
-    else if (String::StartsWith(s, "$CSG"))
-    {
-        if (is_csg_loaded())
-        {
-            auto range = ParseRange(s.substr(4));
-            if (range.size() > 0)
-            {
-                for (auto i : range)
-                {
-                    auto g1 = *gfx_get_g1_element(SPR_CSG_BEGIN + i);
-                    auto length = g1_calculate_data_size(&g1);
-                    g1.offset = Memory::Duplicate(g1.offset, length);
-                    result.push_back(g1);
-                }
-            }
-        }
-    }
-    else if (String::StartsWith(s, "$RCT2:OBJDATA/"))
-    {
-        auto name = s.substr(14);
-        auto rangeStart = name.find('[');
-        auto range = std::vector<sint32>({ 0 });
-        if (rangeStart != std::string::npos)
-        {
-            range = ParseRange(name.substr(rangeStart));
-            name = name.substr(0, rangeStart);
-        }
-        return LoadObjectImages(name);
-    }
-    return result;
-}
-
-static std::vector<std::string> GetJsonStringArray(const json_t * arr)
-{
-    std::vector<std::string> result;
-    if (json_is_array(arr))
-    {
-        auto count = json_array_size(arr);
-        for (size_t i = 0; i < count; i++)
-        {
-            auto element = json_string_value(json_array_get(arr, i));
-            result.push_back(element);
-        }
-    }
-    else if (json_is_string(arr))
-    {
-        result.push_back(json_string_value(arr));
-    }
-    return result;
-}
-
 static uint8 ParseRideType(const std::string &s)
 {
     static const std::unordered_map<std::string, uint8> LookupTable
@@ -820,20 +701,20 @@ static uint8 ParseShopItem(const std::string &s)
 
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
-    auto rideTypes = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "type"));
+    auto rideTypes = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "type"));
     for (size_t i = 0; i < std::min<size_t>(MAX_RIDE_TYPES_PER_RIDE_ENTRY, rideTypes.size()); i++)
     {
         _legacyType.ride_type[i] = ParseRideType(rideTypes[i]);
     }
 
-    auto rideCategories = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "category"));
+    auto rideCategories = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "category"));
     for (size_t i = 0; i < std::min<size_t>(MAX_CATEGORIES_PER_RIDE, rideCategories.size()); i++)
     {
         _legacyType.category[0] = ParseRideCategory(rideCategories[i]);
     }
 
     // Shop item
-    auto rideSells = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
+    auto rideSells = ObjectJsonHelpers::GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
     if (rideSells.size() >= 1)
@@ -858,17 +739,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     stringTable->SetString(3, 0, "Vehicle");
 
     auto imageTable = GetImageTable();
-    auto jsonImages = json_object_get(root, "images");
-    auto imageElements = GetJsonStringArray(jsonImages);
-    for (const auto &ie : imageElements)
-    {
-        auto images = ParseImages(ie);
-        for (const auto &g1 : images)
-        {
-            imageTable->AddImage(&g1);
-            Memory::Free(g1.offset);
-        }
-    }
+    ObjectJsonHelpers::LoadImages(root, *imageTable);
 
     rct_ride_entry_vehicle * vehicle0 = &_legacyType.vehicles[0];
     vehicle0->sprite_flags |= VEHICLE_SPRITE_FLAG_FLAT;

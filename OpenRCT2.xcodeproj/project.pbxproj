@@ -25,6 +25,44 @@
 		4C3B423820591513000C5BB7 /* StdInOutConsole.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C3B423720591513000C5BB7 /* StdInOutConsole.cpp */; };
 		4C93F1AD1F8CD9F000A9330D /* Input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AC1F8CD9F000A9330D /* Input.cpp */; };
 		4C93F1AF1F8CD9F600A9330D /* KeyboardShortcut.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1AE1F8CD9F600A9330D /* KeyboardShortcut.cpp */; };
+		4C93F1BA1F8E185600A9330D /* Award.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B01F8E185600A9330D /* Award.cpp */; };
+		4C93F1BB1F8E185600A9330D /* Finance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B21F8E185600A9330D /* Finance.cpp */; };
+		4C93F1BC1F8E185600A9330D /* Marketing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B41F8E185600A9330D /* Marketing.cpp */; };
+		4C93F1BD1F8E185600A9330D /* NewsItem.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B61F8E185600A9330D /* NewsItem.cpp */; };
+		4C93F1BE1F8E185600A9330D /* Research.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C93F1B81F8E185600A9330D /* Research.cpp */; };
+		4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */ = {isa = PBXBuildFile; fileRef = 4CB832A81EFFB8D100B88761 /* ttf_sdlport.c */; };
+		4CC4B8E41FE00C4200660D62 /* CmdlineSprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E21FE00C4100660D62 /* CmdlineSprite.cpp */; };
+		4CC4B8E71FE00C4E00660D62 /* Diagnostic.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8E51FE00C4E00660D62 /* Diagnostic.cpp */; };
+		4CC4B8ED1FE00C5D00660D62 /* Intro.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CC4B8EA1FE00C5D00660D62 /* Intro.cpp */; };
+		4CE462411FD0710E0001CD98 /* Game.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE4623F1FD0710E0001CD98 /* Game.cpp */; };
+		4CE462451FD161360001CD98 /* Platform.Android.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462441FD161360001CD98 /* Platform.Android.cpp */; };
+		4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */; };
+		4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */; };
+		4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
+		4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
+		4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */; };
+		4CF788C01F1B787700C611BF /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF788BE1F1B787700C611BF /* Painter.cpp */; };
+		4CFBCD5E1F27CD8000D74FB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */; };
+		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
+		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
+		4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7E1F90A3F1005243C2 /* Staff.cpp */; };
+		4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E831F90AF41005243C2 /* Vehicle.cpp */; };
+		4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E861F950164005243C2 /* TrackData.cpp */; };
+		4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
+		4CFE4E901F9625B0005243C2 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E8E1F9625B0005243C2 /* Track.cpp */; };
+		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
+		C606CCC11DB4054000FE4015 /* generate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB01DB4054000FE4015 /* generate.cpp */; };
+		C606CCC41DB4054000FE4015 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB41DB4054000FE4015 /* main.cpp */; };
+		C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */; };
+		C606CCC61DB4054000FE4015 /* Printer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB61DB4054000FE4015 /* Printer.cpp */; };
+		C606CCC71DB4054000FE4015 /* String.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB81DB4054000FE4015 /* String.cpp */; };
+		C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBA1DB4054000FE4015 /* TestTrack.cpp */; };
+		C606CCC91DB4054000FE4015 /* Utils.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCBC1DB4054000FE4015 /* Utils.cpp */; };
+		C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */; };
+		C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCCC1DB427A000FE4015 /* SegmentSupportHeightCall.cpp */; };
+		C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD01DB4D7C800FE4015 /* SideTunnelCall.cpp */; };
+		C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCD31DB4DD6C00FE4015 /* VerticalTunnelCall.cpp */; };
+		C606CD261DB5120C00FE4015 /* TestPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CD231DB5120900FE4015 /* TestPaint.cpp */; };
 		C61ADB1F1FB6A0A70024F2EF /* TopToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB1E1FB6A0A60024F2EF /* TopToolbar.cpp */; };
 		C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB201FB7DC060024F2EF /* Scenery.cpp */; };
 		C61ADB231FBBCB8B0024F2EF /* GameBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C61ADB221FBBCB8A0024F2EF /* GameBottomToolbar.cpp */; };
@@ -847,6 +885,11 @@
 		4CE462461FD1613D0001CD98 /* Platform.Linux.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Linux.cpp; sourceTree = "<group>"; };
 		4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Posix.cpp; sourceTree = "<group>"; };
 		4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Win32.cpp; sourceTree = "<group>"; };
+		4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ObjectJsonHelpers.cpp; sourceTree = "<group>"; };
+		4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ObjectJsonHelpers.h; sourceTree = "<group>"; };
+		4CF788BE1F1B787700C611BF /* Painter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Painter.cpp; sourceTree = "<group>"; };
+		4CF788BF1F1B787700C611BF /* Painter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painter.h; sourceTree = "<group>"; };
+		4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenery.cpp; sourceTree = "<group>"; };
 		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
 		4CFE4E7C1F90A3F1005243C2 /* Peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peep.h; sourceTree = "<group>"; };
 		4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PeepData.cpp; sourceTree = "<group>"; };
@@ -2083,6 +2126,8 @@
 				4C7B53A21FFC15ED00A52E21 /* ObjectLimits.h */,
 				4C7B53A31FFC180400A52E21 /* ObjectList.cpp */,
 				4C7B53A41FFC180400A52E21 /* ObjectList.h */,
+				4CE9AAAB1FDA7B14004093C6 /* ObjectJsonHelpers.cpp */,
+				4CE9AAAC1FDA7B14004093C6 /* ObjectJsonHelpers.h */,
 				F76C84221EC4E7CC00FA49E2 /* ObjectManager.cpp */,
 				F76C84231EC4E7CC00FA49E2 /* ObjectManager.h */,
 				F76C84241EC4E7CC00FA49E2 /* ObjectRepository.cpp */,
@@ -3043,6 +3088,11 @@
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
+				4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */,
+				4CE9AAAD1FDA7B14004093C6 /* ObjectJsonHelpers.cpp in Sources */,
+				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
+				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
+				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
 				C654DF321F69C0430040F43D /* InstallTrack.cpp in Sources */,
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
