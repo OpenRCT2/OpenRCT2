@@ -16,10 +16,10 @@
 
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
-#include "EntranceObject.h"
-
 #include "../drawing/Drawing.h"
 #include "../localisation/Localisation.h"
+#include "EntranceObject.h"
+#include "ObjectJsonHelpers.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -64,4 +64,20 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 h
     gfx_draw_sprite(dpi, imageId + 1, x - 32, y + 14, 0);
     gfx_draw_sprite(dpi, imageId + 0, x +  0, y + 28, 0);
     gfx_draw_sprite(dpi, imageId + 2, x + 32, y + 44, 0);
+}
+
+void EntranceObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    // Strings
+    auto stringTable = GetStringTable();
+    auto jsonStrings = json_object_get(root, "strings");
+    auto jsonName = json_object_get(jsonStrings, "name");
+    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
+
+    auto properties = json_object_get(root, "properties");
+    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+    _legacyType.text_height = json_integer_value(json_object_get(properties, "textHeight"));
+
+    auto imageTable = GetImageTable();
+    ObjectJsonHelpers::LoadImages(root, *imageTable);
 }

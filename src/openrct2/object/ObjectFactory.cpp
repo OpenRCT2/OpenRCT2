@@ -205,6 +205,19 @@ namespace ObjectFactory
         return result;
     }
 
+    static uint8 ParseObjectType(const std::string &s)
+    {
+        if (s == "ride")
+        {
+            return OBJECT_TYPE_RIDE;
+        }
+        else if (s == "park_entrance")
+        {
+            return OBJECT_TYPE_PARK_ENTRANCE;
+        }
+        return 0xFF;
+    }
+
     Object * CreateObjectFromJsonFile(const std::string &path)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
@@ -216,8 +229,8 @@ namespace ObjectFactory
             auto jObjectType = json_object_get(jRoot, "objectType");
             if (json_is_string(jObjectType))
             {
-                auto objectType = std::string(json_string_value(jObjectType));
-                if (objectType == "ride")
+                auto objectType = ParseObjectType(json_string_value(jObjectType));
+                if (objectType != 0xFF)
                 {
                     auto id = json_string_value(json_object_get(jRoot, "id"));
 
@@ -233,7 +246,7 @@ namespace ObjectFactory
                     auto minLength = std::min<size_t>(8, originalName.length());
                     memcpy(entry.name, originalName.c_str(), minLength);
 
-                    result = new RideObject(entry);
+                    result = CreateObject(entry);
                     auto readContext = ReadObjectContext(id);
                     result->ReadJson(&readContext, jRoot);
                     if (readContext.WasError())
