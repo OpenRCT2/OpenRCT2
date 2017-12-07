@@ -51,7 +51,7 @@ extern const money32 wage_table[STAFF_TYPE_COUNT];
 extern const money32 research_cost_table[RESEARCH_FUNDING_COUNT];
 
 extern money32 gInitialCash;
-extern money32 gCashEncrypted;
+extern money32 gCash;
 extern money32 gBankLoan;
 extern uint8 gBankLoanInterestRate;
 extern money32 gMaxBankLoan;

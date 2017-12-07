@@ -242,7 +242,7 @@ static void cheat_no_money(bool enabled)
 
 static void cheat_set_money(money32 amount)
 {
-    gCashEncrypted = ENCRYPT_MONEY(amount);
+    gCash = amount;
 
     window_invalidate_by_class(WC_FINANCES);
     window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
@@ -250,10 +250,7 @@ static void cheat_set_money(money32 amount)
 
 static void cheat_add_money(money32 amount)
 {
-    money32 currentMoney = DECRYPT_MONEY(gCashEncrypted);
-    currentMoney = add_clamp_money32(currentMoney, amount);
-
-    gCashEncrypted = ENCRYPT_MONEY(currentMoney);
+    gCash = add_clamp_money32(gCash, amount);
 
     window_invalidate_by_class(WC_FINANCES);
     window_invalidate_by_class(WC_BOTTOM_TOOLBAR);

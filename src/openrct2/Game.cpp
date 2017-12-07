@@ -541,7 +541,7 @@ static sint32 game_check_affordability(sint32 cost)
         return cost;
     if (gUnk141F568 & 0xF0)
         return cost;
-    if (cost <= (sint32) (DECRYPT_MONEY(gCashEncrypted)))
+    if (cost <= (sint32) gCash)
         return cost;
 
     set_format_arg(0, uint32, cost);

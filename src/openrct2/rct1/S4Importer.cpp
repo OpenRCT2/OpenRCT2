@@ -1733,7 +1733,7 @@ private:
         gLandPrice = _s4.land_price;
         gConstructionRightsPrice = _s4.construction_rights_price;
 
-        gCashEncrypted = ENCRYPT_MONEY(_s4.cash);
+        gCash = _s4.cash;
         gBankLoan = _s4.loan;
         gMaxBankLoan = _s4.max_loan;
         gInitialCash = _s4.cash;

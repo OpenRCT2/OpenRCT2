@@ -51,7 +51,7 @@ const money32 research_cost_table[RESEARCH_FUNDING_COUNT] =
 static const sint32 dword_988E60[RCT_EXPENDITURE_TYPE_COUNT] = {1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 0};
 
 money32 gInitialCash;
-money32 gCashEncrypted;
+money32 gCash;
 money32 gBankLoan;
 uint8   gBankLoanInterestRate;
 money32 gMaxBankLoan;
@@ -75,13 +75,9 @@ uint8 gCommandExpenditureType;
  */
 void finance_payment(money32 amount, rct_expenditure_type type)
 {
-    money32 cur_money = DECRYPT_MONEY(gCashEncrypted);
-    money32 new_money;
-
     //overflow check
-    new_money = add_clamp_money32(cur_money, -amount);
+    gCash = add_clamp_money32(gCash, -amount);
 
-    gCashEncrypted = ENCRYPT_MONEY(new_money);
     gExpenditureTable[0][type] -= amount;
     if (dword_988E60[type] & 1)
     {
@@ -218,7 +214,7 @@ void finance_init()
 
     gInitialCash = MONEY(10000, 00); // Cheat detection
 
-    gCashEncrypted = ENCRYPT_MONEY(MONEY(10000, 00));
+    gCash          = MONEY(10000, 00);
     gBankLoan      = MONEY(10000, 00);
     gMaxBankLoan   = MONEY(20000, 00);
 
@@ -309,7 +305,7 @@ money32 finance_get_maximum_loan()
 
 money32 finance_get_current_cash()
 {
-    return DECRYPT_MONEY(gCashEncrypted);
+    return gCash;
 }
 
 /**
@@ -318,11 +314,10 @@ money32 finance_get_current_cash()
  */
 void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
 {
-    money32 money, loanDifference, currentLoan;
+    money32 loanDifference, currentLoan;
     money32 newLoan = *edx;
 
     currentLoan    = gBankLoan;
-    money          = DECRYPT_MONEY(gCashEncrypted);
     loanDifference = currentLoan - newLoan;
 
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_INTEREST;
@@ -337,7 +332,7 @@ void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sin
     }
     else
     {
-        if (loanDifference > money)
+        if (loanDifference > gCash)
         {
             gGameCommandErrorText = STR_NOT_ENOUGH_CASH_AVAILABLE;
             *ebx = MONEY32_UNDEFINED;
@@ -347,10 +342,9 @@ void game_command_set_current_loan(sint32 * eax, sint32 * ebx, sint32 * ecx, sin
 
     if (*ebx & GAME_COMMAND_FLAG_APPLY)
     {
-        money -= loanDifference;
-        gBankLoan      = newLoan;
-        gInitialCash   = money;
-        gCashEncrypted = ENCRYPT_MONEY(money);
+        gCash       -= loanDifference;
+        gBankLoan    = newLoan;
+        gInitialCash = gCash;
 
         window_invalidate_by_class(WC_FINANCES);
         gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
@@ -401,7 +395,7 @@ void finance_shift_expenditure_table()
  */
 void finance_reset_cash_to_initial()
 {
-    gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+    gCash = gInitialCash;
 }
 
 /**

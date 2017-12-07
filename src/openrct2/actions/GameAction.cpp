@@ -103,7 +103,7 @@ namespace GameActions
     {
         if (gParkFlags & PARK_FLAGS_NO_MONEY) return true;
         if (result->Cost <= 0) return true;
-        if (result->Cost <= DECRYPT_MONEY(gCashEncrypted)) return true;
+        if (result->Cost <= gCash) return true;
         return false;
     }
 

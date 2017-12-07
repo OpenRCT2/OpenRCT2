@@ -311,7 +311,7 @@ void S6Exporter::Export()
     _s6.historical_profit = gHistoricalProfit;
     // pad_013587D4
     memcpy(_s6.scenario_completed_name, gScenarioCompletedBy, sizeof(_s6.scenario_completed_name));
-    _s6.cash = gCashEncrypted;
+    _s6.cash = ENCRYPT_MONEY(gCash);
     // pad_013587FC
     _s6.park_rating_casualty_penalty = gParkRatingCasualtyPenalty;
     _s6.map_size_units               = gMapSizeUnits;
