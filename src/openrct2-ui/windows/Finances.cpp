@@ -19,7 +19,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
-#include <openrct2/interface/graph.h>
+#include <openrct2-ui/interface/Graph.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/date.h>
 #include <openrct2/localisation/localisation.h>

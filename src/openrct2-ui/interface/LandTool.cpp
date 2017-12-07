@@ -14,11 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../windows/dropdown.h"
-#include "../world/map.h"
-#include "land_tool.h"
-#include "widget.h"
-#include "window.h"
+#include <openrct2/windows/dropdown.h>
+#include <openrct2/world/map.h>
+#include <openrct2-ui/interface/LandTool.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2/interface/window.h>
 
 static uint16 toolSizeSpriteIndices[] =
 {

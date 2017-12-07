@@ -23,7 +23,6 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
@@ -32,6 +31,7 @@
 #include <openrct2/world/footpath.h>
 #include <openrct2/world/scenery.h>
 
+#include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/windows/Window.h>
 
 #define MAP_COLOUR_2(colourA, colourB) ((colourA << 8) | colourB)

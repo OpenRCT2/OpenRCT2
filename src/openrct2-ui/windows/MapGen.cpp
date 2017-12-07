@@ -21,11 +21,11 @@
 
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/MapGen.h>
 #include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/LandTool.h>
 
 enum {
     WINDOW_MAPGEN_PAGE_BASE,

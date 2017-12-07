@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
-#include "graph.h"
+#include <openrct2/localisation/date.h>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2-ui/interface/Graph.h>
 
 static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {

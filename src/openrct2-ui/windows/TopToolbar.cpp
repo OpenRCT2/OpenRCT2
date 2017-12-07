@@ -27,7 +27,6 @@
 #include <openrct2/Editor.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/console.h>
-#include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
@@ -44,6 +43,7 @@
 #include <openrct2/world/scenery.h>
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/Wall.h>
+#include <openrct2-ui/interface/LandTool.h>
 
 enum {
     WIDX_PAUSE,
