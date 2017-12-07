@@ -106,7 +106,7 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, 
     x = baseX;
     y = baseY;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0x80000000 && yearOver32 % 4 == 0) {
+        if (history[i] != MONEY32_UNDEFINED && yearOver32 % 4 == 0) {
             // Draw month text
             sint32 monthFormat = DateGameShortMonthNames[((yearOver32 / 4) + 8) % 8];
             gfx_draw_string_centred(dpi, STR_GRAPH_LABEL, x, y - 10, COLOUR_BLACK, &monthFormat);
@@ -127,7 +127,7 @@ static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, 
     lastY = -1;
     x = baseX;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0x80000000) {
+        if (history[i] != MONEY32_UNDEFINED) {
             y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
             if (lastX != -1) {
@@ -152,7 +152,7 @@ static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, 
     lastY = -1;
     x = baseX;
     for (i = count - 1; i >= 0; i--) {
-        if (history[i] != 0x80000000) {
+        if (history[i] != MONEY32_UNDEFINED) {
             y = baseY + 170 - 6 - ((((history[i] >> modifier) + offset) * 170) / 256);
 
             if (lastX != -1)
