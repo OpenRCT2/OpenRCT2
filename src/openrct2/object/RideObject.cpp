@@ -14,20 +14,31 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <unordered_map>
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../OpenRCT2.h"
 #include "ObjectRepository.h"
 #include "RideObject.h"
-#include "../ride/RideGroupManager.h"
 
+#include "../ride/RideGroupManager.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../sprites.h"
+#include "ObjectFactory.h"
+#include "ObjectRepository.h"
+#include "RideObject.h"
+
+using namespace OpenRCT2;
 
 RideObject::~RideObject()
 {
@@ -569,13 +580,6 @@ static std::vector<sint32> ParseRange(std::string s)
     return result;
 }
 
-#include "../Context.h"
-#include "../PlatformEnvironment.h"
-#include "../core/Path.hpp"
-#include "ObjectFactory.h"
-
-using namespace OpenRCT2;
-
 static std::vector<rct_g1_element> LoadObjectImages(const std::string &name)
 {
     std::vector<rct_g1_element> result;
@@ -656,28 +660,118 @@ static std::vector<std::string> GetJsonStringArray(const json_t * arr)
     return result;
 }
 
+static uint8 ParseRideType(const std::string &s)
+{
+    static const std::unordered_map<std::string, uint8> LookupTable
+    {
+        { "spiral_rc",                  RIDE_TYPE_SPIRAL_ROLLER_COASTER },
+        { "stand_up_rc",                RIDE_TYPE_STAND_UP_ROLLER_COASTER },
+        { "suspended_swinging_rc",      RIDE_TYPE_SUSPENDED_SWINGING_COASTER },
+        { "inverted_rc",                RIDE_TYPE_INVERTED_ROLLER_COASTER },
+        { "junior_rc",                  RIDE_TYPE_JUNIOR_ROLLER_COASTER },
+        { "miniature_railway",          RIDE_TYPE_MINIATURE_RAILWAY },
+        { "monorail",                   RIDE_TYPE_MONORAIL },
+        { "mini_suspended_rc",          RIDE_TYPE_MINI_SUSPENDED_COASTER },
+        { "boat_hire",                  RIDE_TYPE_BOAT_RIDE },
+        { "wooden_wild_mouse",          RIDE_TYPE_WOODEN_WILD_MOUSE },
+        { "steeplechase",               RIDE_TYPE_STEEPLECHASE },
+        { "car_ride",                   RIDE_TYPE_CAR_RIDE },
+        { "launched_freefall",          RIDE_TYPE_LAUNCHED_FREEFALL },
+        { "bobsleigh_rc",               RIDE_TYPE_BOBSLEIGH_COASTER },
+        { "observation_tower",          RIDE_TYPE_OBSERVATION_TOWER },
+        { "looping_rc",                 RIDE_TYPE_LOOPING_ROLLER_COASTER },
+        { "dinghy_slide",               RIDE_TYPE_DINGHY_SLIDE },
+        { "mine_train_rc",              RIDE_TYPE_MINE_TRAIN_COASTER },
+        { "chairlift",                  RIDE_TYPE_CHAIRLIFT },
+        { "corkscrew_rc",               RIDE_TYPE_CORKSCREW_ROLLER_COASTER },
+        { "maze",                       RIDE_TYPE_MAZE },
+        { "spiral_slide",               RIDE_TYPE_SPIRAL_SLIDE },
+        { "go_karts",                   RIDE_TYPE_GO_KARTS },
+        { "log_flume",                  RIDE_TYPE_LOG_FLUME },
+        { "river_rapids",               RIDE_TYPE_RIVER_RAPIDS },
+        { "dodgems",                    RIDE_TYPE_DODGEMS },
+        { "swinging_ship",              RIDE_TYPE_SWINGING_SHIP },
+        { "swinging_inverter_ship",     RIDE_TYPE_SWINGING_INVERTER_SHIP },
+        { "food_stall",                 RIDE_TYPE_FOOD_STALL },
+        { "drink_stall",                RIDE_TYPE_DRINK_STALL },
+        { "shop",                       RIDE_TYPE_SHOP },
+        { "merry_go_round",             RIDE_TYPE_MERRY_GO_ROUND },
+        { "information_kiosk",          RIDE_TYPE_INFORMATION_KIOSK },
+        { "toilets",                    RIDE_TYPE_TOILETS },
+        { "ferris_wheel",               RIDE_TYPE_FERRIS_WHEEL },
+        { "motion_simulator",           RIDE_TYPE_MOTION_SIMULATOR },
+        { "3d_cinema",                  RIDE_TYPE_3D_CINEMA },
+        { "top_spin",                   RIDE_TYPE_TOP_SPIN },
+        { "space_rings",                RIDE_TYPE_SPACE_RINGS },
+        { "reverse_freefall_rc",        RIDE_TYPE_REVERSE_FREEFALL_COASTER },
+        { "lift",                       RIDE_TYPE_LIFT },
+        { "vertical_drop_rc",           RIDE_TYPE_VERTICAL_DROP_ROLLER_COASTER },
+        { "cash_machine",               RIDE_TYPE_CASH_MACHINE },
+        { "twist",                      RIDE_TYPE_TWIST },
+        { "haunted_house",              RIDE_TYPE_HAUNTED_HOUSE },
+        { "first_aid",                  RIDE_TYPE_FIRST_AID },
+        { "circus",                     RIDE_TYPE_CIRCUS },
+        { "ghost_train",                RIDE_TYPE_GHOST_TRAIN },
+        { "twister_rc",                 RIDE_TYPE_TWISTER_ROLLER_COASTER },
+        { "wooden_rc",                  RIDE_TYPE_WOODEN_ROLLER_COASTER },
+        { "side_friction",              RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER },
+        { "steel_wild_mouse",           RIDE_TYPE_STEEL_WILD_MOUSE },
+        { "multi_dimension_rc",         RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER },
+        { "flying_rc",                  RIDE_TYPE_FLYING_ROLLER_COASTER },
+        { "virginia_reel",              RIDE_TYPE_VIRGINIA_REEL },
+        { "splash_boats",               RIDE_TYPE_SPLASH_BOATS },
+        { "mini_helicopters",           RIDE_TYPE_MINI_HELICOPTERS },
+        { "lay_down_rc",                RIDE_TYPE_LAY_DOWN_ROLLER_COASTER },
+        { "suspended_monorail",         RIDE_TYPE_SUSPENDED_MONORAIL },
+        { "reverser_rc",                RIDE_TYPE_REVERSER_ROLLER_COASTER },
+        { "heartline_twister_rc",       RIDE_TYPE_HEARTLINE_TWISTER_COASTER },
+        { "mini_golf",                  RIDE_TYPE_MINI_GOLF },
+        { "giga_rc",                    RIDE_TYPE_GIGA_COASTER },
+        { "roto_drop",                  RIDE_TYPE_ROTO_DROP },
+        { "flying_saucers",             RIDE_TYPE_FLYING_SAUCERS },
+        { "crooked_house",              RIDE_TYPE_CROOKED_HOUSE },
+        { "monorail_cycles",            RIDE_TYPE_MONORAIL_CYCLES },
+        { "compact_inverted",           RIDE_TYPE_COMPACT_INVERTED_COASTER },
+        { "water_coaster",              RIDE_TYPE_WATER_COASTER },
+        { "air_powered_vertical_rc",    RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER },
+        { "inverted_hairpin_rc",        RIDE_TYPE_INVERTED_HAIRPIN_COASTER },
+        { "magic_carpet",               RIDE_TYPE_MAGIC_CARPET },
+        { "submarine_ride",             RIDE_TYPE_SUBMARINE_RIDE },
+        { "river_rafts",                RIDE_TYPE_RIVER_RAFTS },
+        { "enterprise",                 RIDE_TYPE_ENTERPRISE },
+        { "inverted_impulse_rc",        RIDE_TYPE_INVERTED_IMPULSE_COASTER },
+        { "mini_rc",                    RIDE_TYPE_MINI_ROLLER_COASTER },
+        { "mine_ride",                  RIDE_TYPE_MINE_RIDE },
+        { "lim_launched_rc",            RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER },
+
+        // TEMPORARY:
+        { "restroom",                   RIDE_TYPE_TOILETS },
+    };
+    auto result = LookupTable.find(s);
+    return (result != LookupTable.end()) ?
+        result->second :
+        RIDE_TYPE_NULL;
+}
+
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     printf("RideObject::ReadJson(context, root)\n");
-    auto rideType = json_string_value(json_object_get(json_object_get(root, "properties"), "type"));
+    auto rideTypes = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "type"));
     auto category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
 
+    for (size_t i = 0; i < std::min<size_t>(3, rideTypes.size()); i++)
+    {
+        auto rideType = rideTypes[i];
+        _legacyType.ride_type[i] = ParseRideType(rideType);
+    }
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
 
-    if (String::Equals(rideType, "restroom") ||
-        String::Equals(rideType, "toilets")) // object tool should be fixed to generate toilets, not restroom.
+    // TEMP:
+    if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL)
     {
-        _legacyType.ride_type[0] = RIDE_TYPE_TOILETS;
-    }
-    else if (String::Equals(rideType, "foodstall"))
-    {
-        _legacyType.ride_type[0] = RIDE_TYPE_FOOD_STALL;
         _legacyType.shop_item = SHOP_ITEM_ICE_CREAM;
     }
-    _legacyType.ride_type[1] = RIDE_TYPE_NULL;
-    _legacyType.ride_type[2] = RIDE_TYPE_NULL;
-
     if (String::Equals(category, "stall"))
     {
         _legacyType.category[0] = RIDE_CATEGORY_SHOP;
