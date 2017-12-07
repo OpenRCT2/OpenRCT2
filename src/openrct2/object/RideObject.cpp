@@ -753,29 +753,96 @@ static uint8 ParseRideType(const std::string &s)
         RIDE_TYPE_NULL;
 }
 
+static uint8 ParseRideCategory(const std::string &s)
+{
+    static const std::unordered_map<std::string, uint8> LookupTable
+    {
+        { "transport",      RIDE_CATEGORY_TRANSPORT },
+        { "gentle",         RIDE_CATEGORY_GENTLE },
+        { "rollercoaster",  RIDE_CATEGORY_ROLLERCOASTER },
+        { "thrill",         RIDE_CATEGORY_THRILL },
+        { "water",          RIDE_CATEGORY_WATER },
+        { "stall",          RIDE_CATEGORY_SHOP },
+    };
+    auto result = LookupTable.find(s);
+    return (result != LookupTable.end()) ?
+        result->second :
+        RIDE_CATEGORY_TRANSPORT;
+}
+
+static uint8 ParseShopItem(const std::string &s)
+{
+    static const std::unordered_map<std::string, uint8> LookupTable
+    {
+        { "burger",         SHOP_ITEM_BURGER },
+        { "fries",          SHOP_ITEM_CHIPS },
+        { "icecream",       SHOP_ITEM_ICE_CREAM },
+        { "cottoncandy",    SHOP_ITEM_CANDYFLOSS },
+        { "pizza",          SHOP_ITEM_PIZZA },
+        { "popcorn",        SHOP_ITEM_POPCORN },
+        { "hotdog",         SHOP_ITEM_HOT_DOG },
+        { "seafood",        SHOP_ITEM_TENTACLE },
+        { "candyapple",     SHOP_ITEM_CANDY_APPLE },
+        { "donut",          SHOP_ITEM_DONUT },
+        { "chicken",        SHOP_ITEM_CHICKEN },
+        { "pretzel",        SHOP_ITEM_PRETZEL },
+        { "funnelcake",     SHOP_ITEM_FUNNEL_CAKE },
+        { "beefnoodles",    SHOP_ITEM_BEEF_NOODLES },
+        { "friednoodles",   SHOP_ITEM_FRIED_RICE_NOODLES },
+        { "wontonsoup",     SHOP_ITEM_WONTON_SOUP },
+        { "meatballsoup",   SHOP_ITEM_MEATBALL_SOUP },
+        { "subsandwich",    SHOP_ITEM_SUB_SANDWICH },
+        { "cookies",        SHOP_ITEM_COOKIE },
+        { "roastsausage",   SHOP_ITEM_ROAST_SAUSAGE },
+        { "cola",           SHOP_ITEM_DRINK },
+        { "coffee",         SHOP_ITEM_COFFEE },
+        { "lemonade",       SHOP_ITEM_LEMONADE },
+        { "hotchocolate",   SHOP_ITEM_CHOCOLATE },
+        { "icedtea",        SHOP_ITEM_ICED_TEA },
+        { "fruitjuice",     SHOP_ITEM_FRUIT_JUICE },
+        { "soybeanmilk",    SHOP_ITEM_SOYBEAN_MILK },
+        { "sujongkwa",      SHOP_ITEM_SU_JONGKWA },
+        { "balloon",        SHOP_ITEM_BALLOON },
+        { "plushtoy",       SHOP_ITEM_TOY },
+        { "map",            SHOP_ITEM_MAP },
+        { "onridephoto",    SHOP_ITEM_PHOTO },
+        { "umbrella",       SHOP_ITEM_UMBRELLA },
+        { "voucher",        SHOP_ITEM_VOUCHER },
+        { "hat",            SHOP_ITEM_HAT },
+        { "tshirt",         SHOP_ITEM_TSHIRT },
+        { "sunglasses",     SHOP_ITEM_SUNGLASSES },
+    };
+    auto result = LookupTable.find(s);
+    return (result != LookupTable.end()) ?
+        result->second :
+        SHOP_ITEM_NONE;
+}
+
 void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
-    printf("RideObject::ReadJson(context, root)\n");
     auto rideTypes = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "type"));
-    auto category = json_string_value(json_object_get(json_object_get(root, "properties"), "category"));
-
-    for (size_t i = 0; i < std::min<size_t>(3, rideTypes.size()); i++)
+    for (size_t i = 0; i < std::min<size_t>(MAX_RIDE_TYPES_PER_RIDE_ENTRY, rideTypes.size()); i++)
     {
-        auto rideType = rideTypes[i];
-        _legacyType.ride_type[i] = ParseRideType(rideType);
+        _legacyType.ride_type[i] = ParseRideType(rideTypes[i]);
     }
+
+    auto rideCategories = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "category"));
+    for (size_t i = 0; i < std::min<size_t>(MAX_CATEGORIES_PER_RIDE, rideCategories.size()); i++)
+    {
+        _legacyType.category[0] = ParseRideCategory(rideCategories[i]);
+    }
+
+    // Shop item
+    auto rideSells = GetJsonStringArray(json_object_get(json_object_get(root, "properties"), "sells"));
     _legacyType.shop_item = SHOP_ITEM_NONE;
     _legacyType.shop_item_secondary = SHOP_ITEM_NONE;
-
-    // TEMP:
-    if (_legacyType.ride_type[0] == RIDE_TYPE_FOOD_STALL)
+    if (rideSells.size() >= 1)
     {
-        _legacyType.shop_item = SHOP_ITEM_ICE_CREAM;
+        _legacyType.shop_item = ParseShopItem(rideSells[0]);
     }
-    if (String::Equals(category, "stall"))
+    if (rideSells.size() >= 2)
     {
-        _legacyType.category[0] = RIDE_CATEGORY_SHOP;
-        _legacyType.category[1] = RIDE_CATEGORY_SHOP;
+        _legacyType.shop_item_secondary = ParseShopItem(rideSells[1]);
     }
 
     _legacyType.flags |= RIDE_ENTRY_FLAG_SEPARATE_RIDE;
