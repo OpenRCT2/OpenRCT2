@@ -96,6 +96,11 @@ extern sint32 gTooltipCursorY;
 extern TOOL_IDX gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
+// TODO: Move to openrct2-ui and make static again
+extern INPUT_STATE _inputState;
+extern uint8 _inputFlags;
+extern uint16 _tooltipNotShownTicks;
+
 void input_window_position_begin(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y);
 
 void title_handle_keyboard_input();

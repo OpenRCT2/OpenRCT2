@@ -18,6 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/core/Console.hpp>
 #include <openrct2/config/Config.h>
+#include <openrct2/Input.h>
 #include "input/Input.h"
 #include "input/KeyboardShortcuts.h"
 #include "WindowManager.h"
@@ -362,6 +363,11 @@ public:
     void UpdateMapTooltip() override
     {
         window_map_tooltip_update_visibility();
+    }
+
+    void HandleInput() override
+    {
+        game_handle_input();
     }
 
     void HandleKeyboard(bool isTitle) override

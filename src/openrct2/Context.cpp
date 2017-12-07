@@ -1063,6 +1063,12 @@ extern "C"
         windowManager->UpdateMapTooltip();
     }
 
+    void context_handle_input()
+    {
+        auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
+        windowManager->HandleInput();
+    }
+
     void context_input_handle_keyboard(bool isTitle)
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();

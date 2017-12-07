@@ -424,7 +424,7 @@ void game_update()
         // Input
         gUnk141F568 = gUnk13CA740;
 
-        game_handle_input();
+        context_handle_input();
     }
 
     // Always perform autosave check, even when paused
