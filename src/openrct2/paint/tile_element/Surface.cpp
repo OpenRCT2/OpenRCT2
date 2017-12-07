@@ -1,17 +1,17 @@
 #pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
 /*****************************************************************************
- * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
- *
- * OpenRCT2 is the work of many authors, a full list can be found in contributors.md
- * For more information, visit https://github.com/OpenRCT2/OpenRCT2
- *
- * OpenRCT2 is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * A full copy of the GNU General Public License can be found in licence.txt
- *****************************************************************************/
+* OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
+*
+* OpenRCT2 is the work of many authors, a full list can be found in contributors.md
+* For more information, visit https://github.com/OpenRCT2/OpenRCT2
+*
+* OpenRCT2 is free software: you can redistribute it and/or modify
+* it under the terms of the GNU General Public License as published by
+* the Free Software Foundation, either version 3 of the License, or
+* (at your option) any later version.
+*
+* A full copy of the GNU General Public License can be found in licence.txt
+*****************************************************************************/
 #pragma endregion
 
 #include "../../OpenRCT2.h"
@@ -25,7 +25,7 @@
 #include "surface.h"
 #include "tile_element.h"
 
-static constexpr const uint8 byte_97B444[] = 
+static constexpr const uint8 byte_97B444[] =
 {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
     5, 7, 12, 14, 13, 15, 0, 0, 0, 0,
@@ -80,42 +80,42 @@ struct corner_height
 };
 
 /**
- * rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
- */
+* rct2: 0x0097B4A4 (R), 0x0097B4C4 (T), 0x0097B4E4 (L), 0x0097B504 (B)
+*/
 static constexpr const corner_height corner_heights[] = {
-//   T  R  B  L
-    {0, 0, 0, 0},
-    {0, 0, 1, 0},
-    {0, 0, 0, 1},
-    {0, 0, 1, 1},
-    {1, 0, 0, 0},
-    {1, 0, 1, 0},
-    {1, 0, 0, 1},
-    {1, 0, 1, 1},
-    {0, 1, 0, 0},
-    {0, 1, 1, 0},
-    {0, 1, 0, 1},
-    {0, 1, 1, 1},
-    {1, 1, 0, 0},
-    {1, 1, 1, 0},
-    {1, 1, 0, 1},
-    {1, 1, 1, 1},
-    {0, 0, 0, 0},
-    {0, 0, 1, 0},
-    {0, 0, 0, 1},
-    {0, 0, 1, 1},
-    {1, 0, 0, 0},
-    {1, 0, 1, 0},
-    {1, 0, 0, 1},
-    {1, 0, 1, 2},
-    {0, 1, 0, 0},
-    {0, 1, 1, 0},
-    {0, 1, 0, 1},
-    {0, 1, 2, 1},
-    {1, 1, 0, 0},
-    {1, 2, 1, 0},
-    {2, 1, 0, 1},
-    {1, 1, 1, 1},
+    //   T  R  B  L
+    { 0, 0, 0, 0 },
+    { 0, 0, 1, 0 },
+    { 0, 0, 0, 1 },
+    { 0, 0, 1, 1 },
+    { 1, 0, 0, 0 },
+    { 1, 0, 1, 0 },
+    { 1, 0, 0, 1 },
+    { 1, 0, 1, 1 },
+    { 0, 1, 0, 0 },
+    { 0, 1, 1, 0 },
+    { 0, 1, 0, 1 },
+    { 0, 1, 1, 1 },
+    { 1, 1, 0, 0 },
+    { 1, 1, 1, 0 },
+    { 1, 1, 0, 1 },
+    { 1, 1, 1, 1 },
+    { 0, 0, 0, 0 },
+    { 0, 0, 1, 0 },
+    { 0, 0, 0, 1 },
+    { 0, 0, 1, 1 },
+    { 1, 0, 0, 0 },
+    { 1, 0, 1, 0 },
+    { 1, 0, 0, 1 },
+    { 1, 0, 1, 2 },
+    { 0, 1, 0, 0 },
+    { 0, 1, 1, 0 },
+    { 0, 1, 0, 1 },
+    { 0, 1, 2, 1 },
+    { 1, 1, 0, 0 },
+    { 1, 2, 1, 0 },
+    { 2, 1, 0, 1 },
+    { 1, 1, 1, 1 },
 };
 
 // bottom left tint
@@ -143,22 +143,22 @@ static constexpr const uint8 byte_97B55D[] = {
 };
 
 static constexpr const uint8 stru_97B570[][2] = {
-    {2, 2},
-    {3, 3},
-    {3, 5},
-    {3, 3},
-    {4, 4},
-    {4, 6},
-    {2, 2},
-    {3, 3},
-    {3, 5},
-    {3, 3},
-    {2, 3},
-    {2, 3},
-    {2, 3},
-    {3, 4},
-    {2, 3},
-    {3, 4}
+    { 2, 2 },
+    { 3, 3 },
+    { 3, 5 },
+    { 3, 3 },
+    { 4, 4 },
+    { 4, 6 },
+    { 2, 2 },
+    { 3, 3 },
+    { 3, 5 },
+    { 3, 3 },
+    { 2, 3 },
+    { 2, 3 },
+    { 2, 3 },
+    { 3, 4 },
+    { 2, 3 },
+    { 3, 4 }
 };
 
 static constexpr const sint16 word_97B590[] = {
@@ -211,7 +211,7 @@ static constexpr const uint8 byte_97B5B0[] = {
     (base) + 72, \
 }
 
-static constexpr const uint32 _terrainEdgeSpriteIds[][4] = 
+static constexpr const uint32 _terrainEdgeSpriteIds[][4] =
 {
     DEFINE_EDGE_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_SPRITES(SPR_EDGE_WOOD_RED_BASE),
@@ -219,7 +219,7 @@ static constexpr const uint32 _terrainEdgeSpriteIds[][4] =
     DEFINE_EDGE_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][16] = 
+static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][16] =
 {
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ROCK_BASE),
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_WOOD_RED_BASE),
@@ -227,32 +227,32 @@ static constexpr const uint32 _terrainEdgeTunnelSpriteIds[][16] =
     DEFINE_EDGE_TUNNEL_SPRITES(SPR_EDGE_ICE_BASE),
 };
 
-static constexpr const uint8 byte_97B740[] = 
+static constexpr const uint8 byte_97B740[] =
 {
     0, 0, 0, 0, 0, 0, 0, 2, 0, 0,
     0, 3, 0, 1, 4, 0
 };
 
-static constexpr const uint32 dword_97B750[][2] = 
+static constexpr const uint32 dword_97B750[][2] =
 {
-    {SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID},
-    {SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID},
-    {SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID},
-    {SPR_TERRAIN_ROCK,                                           SPR_TERRAIN_ROCK_GRID},
-    {SPR_TERRAIN_MARTIAN,                                        SPR_TERRAIN_MARTIAN_GRID},
-    {SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID},
-    {SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID},
-    {SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP},
-    {SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP},
-    {SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP},
-    {SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID},
-    {SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID},
-    {SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID},
+    { SPR_TERRAIN_GRASS,                                          SPR_TERRAIN_GRASS_GRID },
+    { SPR_TERRAIN_SAND_YELLOW,                                    SPR_TERRAIN_SAND_YELLOW_GRID },
+    { SPR_TERRAIN_DIRT,                                           SPR_TERRAIN_DIRT_GRID },
+    { SPR_TERRAIN_ROCK,                                           SPR_TERRAIN_ROCK_GRID },
+    { SPR_TERRAIN_MARTIAN,                                        SPR_TERRAIN_MARTIAN_GRID },
+    { SPR_TERRAIN_CHECKERBOARD,                                   SPR_TERRAIN_CHECKERBOARD_GRID },
+    { SPR_TERRAIN_GRASS_CLUMPS,                                   SPR_TERRAIN_GRASS_CLUMPS_GRID },
+    { SPR_TERRAIN_ICE,                                            SPR_TERRAIN_ICE_GRID },
+    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP,    SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_RED << 19 | IMAGE_TYPE_REMAP },
+    { SPR_TERRAIN_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP,        SPR_TERRAIN_GRID_GRID | COLOUR_YELLOW << 19 | IMAGE_TYPE_REMAP },
+    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP, SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_PURPLE << 19 | IMAGE_TYPE_REMAP },
+    { SPR_TERRAIN_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP,  SPR_TERRAIN_GRID_GRID | COLOUR_BRIGHT_GREEN << 19 | IMAGE_TYPE_REMAP },
+    { SPR_TERRAIN_SAND_RED,                                       SPR_TERRAIN_SAND_RED_GRID },
+    { SPR_TERRAIN_SAND,                                           SPR_TERRAIN_SAND_GRID },
+    { SPR_TERRAIN_CHECKERBOARD_INVERTED,                          SPR_TERRAIN_CHECKERBOARD_INVERTED_GRID },
 };
 
-static constexpr const uint32 dword_97B7C8[] = 
+static constexpr const uint32 dword_97B7C8[] =
 {
     SPR_TERRAIN_GRASS_UNDERGROUND,
     SPR_TERRAIN_SAND_YELLOW_UNDERGROUND,
@@ -271,7 +271,7 @@ static constexpr const uint32 dword_97B7C8[] =
     SPR_TERRAIN_CHECKERBOARD_INVERTED_UNDERGROUND,
 };
 
-static constexpr const uint32 dword_97B804[] = 
+static constexpr const uint32 dword_97B804[] =
 {
     SPR_TERRAIN_PATTERN_GRASS,
     SPR_TERRAIN_PATTERN_SAND_YELLOW,
@@ -295,7 +295,7 @@ enum
     FLAG_DONT_SMOOTHEN_SELF = (1 << 1),
 };
 
-static constexpr const uint8 byte_97B83C[] = 
+static constexpr const uint8 byte_97B83C[] =
 {
     0,
     0,
@@ -313,34 +313,34 @@ static constexpr const uint8 byte_97B83C[] =
     0
 };
 
-static constexpr const uint8 byte_97B84A[] = 
+static constexpr const uint8 byte_97B84A[] =
 {
     0, 1, 2, 3, 4, 14, 6, 7, 8, 9,
     10, 11, 12, 13
 };
 
-static constexpr const uint32 dword_97B858[][2] = 
+static constexpr const uint32 dword_97B858[][2] =
 {
-    {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID},
+    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_1_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_2_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_3_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_4_VARIANT_4_GRID },
 };
 
-static constexpr const uint32 dword_97B878[][2] = 
+static constexpr const uint32 dword_97B878[][2] =
 {
-    {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID},
-    {SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID},
+    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_1_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_2_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_3_GRID },
+    { SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4, SPR_TERRAIN_GRASS_LENGTH_6_VARIANT_4_GRID },
 };
 
-static constexpr const uint32 dword_97B898[][2] = 
+static constexpr const uint32 dword_97B898[][2] =
 {
-    {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
-    {SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID},
-    {SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID},
-    {SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID}
+    { SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID },
+    { SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID },
+    { SPR_TERRAIN_GRASS_MOWED_90, SPR_TERRAIN_GRASS_MOWED_90_GRID },
+    { SPR_TERRAIN_GRASS_MOWED,    SPR_TERRAIN_GRASS_MOWED_GRID }
 };
 
 typedef struct tile_descriptor tile_descriptor;
@@ -431,20 +431,18 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * 
 }
 
 /**
- * rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
- */
+* rct2: 0x0065E890, 0x0065E946, 0x0065E9FC, 0x0065EAB2
+*/
 static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
-
-    if (neighbour.tile_element == NULL) {
+    if (neighbour.tile_element == NULL)
         return;
-    }
 
     uint32 maskImageBase = 0;
     uint8 neighbourCorners[2] = { 0 };
     uint8 ownCorners[2] = { 0 };
 
-    switch (edge) 
+    switch (edge)
     {
     case EDGE_BOTTOMLEFT:
         maskImageBase = SPR_TERRAIN_EDGE_MASK_BOTTOM_LEFT;
@@ -477,46 +475,46 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
     }
 
     if (ownCorners[0] != neighbourCorners[0] ||
-        ownCorners[1] != neighbourCorners[1]) 
+        ownCorners[1] != neighbourCorners[1])
     {
         // Only smoothen tiles that align
         return;
     }
 
     uint8 dh = 0, cl = 0;
-    switch(edge) {
-        case EDGE_BOTTOMLEFT:
-            dh = byte_97B524[byte_97B444[self.slope]];
-            cl = byte_97B54A[byte_97B444[neighbour.slope]];
-            break;
+    switch (edge)
+    {
+    case EDGE_BOTTOMLEFT:
+        dh = byte_97B524[byte_97B444[self.slope]];
+        cl = byte_97B54A[byte_97B444[neighbour.slope]];
+        break;
 
-        case EDGE_TOPLEFT:
-            dh = byte_97B537[byte_97B444[self.slope]];
-            cl = byte_97B55D[byte_97B444[neighbour.slope]];
-            break;
+    case EDGE_TOPLEFT:
+        dh = byte_97B537[byte_97B444[self.slope]];
+        cl = byte_97B55D[byte_97B444[neighbour.slope]];
+        break;
 
-        case EDGE_BOTTOMRIGHT:
-            dh = byte_97B55D[byte_97B444[self.slope]];
-            cl = byte_97B537[byte_97B444[neighbour.slope]];
-            break;
+    case EDGE_BOTTOMRIGHT:
+        dh = byte_97B55D[byte_97B444[self.slope]];
+        cl = byte_97B537[byte_97B444[neighbour.slope]];
+        break;
 
-        case EDGE_TOPRIGHT:
-            dh = byte_97B54A[byte_97B444[self.slope]];
-            cl = byte_97B524[byte_97B444[neighbour.slope]];
-            break;
-
+    case EDGE_TOPRIGHT:
+        dh = byte_97B54A[byte_97B444[self.slope]];
+        cl = byte_97B524[byte_97B444[neighbour.slope]];
+        break;
     }
 
-    if (self.terrain == neighbour.terrain) 
+    if (self.terrain == neighbour.terrain)
     {
         // same tint
-        if (cl == dh) 
+        if (cl == dh)
             return;
 
         if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN_SELF)
             return;
-    } 
-    else 
+    }
+    else
     {
         if (byte_97B83C[self.terrain] & FLAG_DONT_SMOOTHEN)
             return;
@@ -527,7 +525,7 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
 
     const uint32 image_id = maskImageBase + byte_97B444[self.slope];
 
-    if (paint_attach_to_previous_ps(session, image_id, 0, 0)) 
+    if (paint_attach_to_previous_ps(session, image_id, 0, 0))
     {
         attached_paint_struct * out = session->UnkF1AD2C;
         // set content and enable masking
@@ -536,129 +534,17 @@ static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t 
     }
 }
 
-/**
- * rct2: 0x0065F63B, 0x0065F77D
- */
-static void viewport_surface_draw_land_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour, bool isWater)
 {
-    registers regs;
+    registers regs{};
 
-    LocationXY8 offset = {0, 0};
-    LocationXY8 bounds = {0, 0};
-
-    switch (edge) 
-    {
-    case EDGE_TOPLEFT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.left;
-
-        regs.ah = neighbour.corner_heights.right;
-        regs.ch = neighbour.corner_heights.bottom;
-
-        offset.y = -2;
-        bounds.x = 30;
-        break;
-
-    case EDGE_TOPRIGHT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.right;
-
-        regs.ah = neighbour.corner_heights.left;
-        regs.ch = neighbour.corner_heights.bottom;
-
-        offset.x = -2;
-        bounds.y = 30;
-        break;
-
-    default:
-        return;
-    }
-
-    regs.dl = height;
-
-    // save ecx
-    if (neighbour.tile_element == NULL) 
-    {
-        regs.ah = 1;
-        regs.ch = 1;
-    }
-
-    // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) 
-    {
-        return;
-    }
-
-    assert(terrain < Util::CountOf(_terrainEdgeSpriteIds));
-
-    if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)) 
-    {
-        uint8 incline = (regs.cl - regs.al) + 1;
-
-        uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
-        sint16 y = (regs.dl - regs.al) * 16;
-        paint_attach_to_previous_ps(session, image_id, 0, y);
-        return;
-    }
-
-    uint32 base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
-
-    const uint8 rotation = get_current_rotation();
-    uint8 cur_height = Math::Min(regs.ch, regs.ah);
-    if (regs.ch != regs.ah) 
-    {
-        // neighbour tile corners aren't level
-        uint32 image_offset = 3;
-        if (regs.ch > regs.ah) 
-        {
-            image_offset = 4;
-        }
-
-        if (cur_height != regs.al && cur_height != regs.cl) 
-        {
-            uint32 image_id = base_image_id + image_offset;
-            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-            cur_height++;
-        }
-    }
-
-    regs.ah = regs.cl;
-
-    while (cur_height < regs.al && cur_height < regs.ah) 
-    {
-        sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-        cur_height++;
-    }
-
-    uint32 image_offset = 1;
-    if (cur_height >= regs.al) 
-    {
-        image_offset = 2;
-
-        if (cur_height >= regs.ah) 
-        {
-            return;
-        }
-    }
-
-    uint32 image_id = base_image_id + image_offset;
-    sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-}
-
-/**
- * rct2: 0x0065EB7D, 0x0065F0D8
- */
-static void viewport_surface_draw_land_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
-{
-    registers regs;
-
-    LocationXY8 offset = {0, 0};
-    LocationXY8 bounds = {0, 0};
-    LocationXY16 tunnelBounds = {1, 1};
-    LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
+    LocationXY8 offset = { 0, 0 };
+    LocationXY8 bounds = { 0, 0 };
+    LocationXY16 tunnelBounds = { 1, 1 };
+    LocationXY16 tunnelTopBoundBoxOffset = { 0, 0 };
 
     tunnel_entry * tunnelArray;
-    switch (edge) 
+    switch (edge)
     {
     case EDGE_BOTTOMLEFT:
         regs.al = self.corner_heights.left;
@@ -694,317 +580,27 @@ static void viewport_surface_draw_land_side_bottom(paint_session * session, enum
         return;
     }
 
-    if (neighbour.tile_element == 0) 
-    {
-        regs.ch = 1;
-        regs.ah = 1;
-    }
+    if (isWater)
+        regs.dl = height;
 
-    if (regs.al <= regs.ah && regs.cl <= regs.ch) 
-    {
-        return;
-    }
-
-    uint32 base_image_id = _terrainEdgeSpriteIds[edgeStyle][0];
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE) 
-    {
-        base_image_id = _terrainEdgeSpriteIds[edgeStyle][1];
-    }
-
-    if (edge == EDGE_BOTTOMRIGHT) 
-    {
-        base_image_id += 5;
-    }
-
-    const uint8 rotation = get_current_rotation();
-    uint8 curHeight = Math::Min(regs.ah, regs.ch);
-    if (regs.ch != regs.ah) 
-    {
-        // If bottom part of edge isn't straight, add a filler
-        uint32 image_offset = 3;
-
-        if (regs.ch >= regs.ah) 
-        {
-            image_offset = 4;
-        }
-
-        if (curHeight != regs.al && curHeight != regs.cl) 
-        {
-            uint32 image_id = base_image_id + image_offset;
-            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
-            curHeight++;
-        }
-    }
-
-    regs.ah = regs.cl;
-
-    while (true) 
-    {
-        if (curHeight >= regs.al || curHeight >= regs.cl) 
-        {
-            // If top of edge isn't straight, add a filler
-            uint32 image_offset = 1;
-            if (curHeight >= regs.al) 
-            {
-                image_offset = 2;
-
-                if (curHeight >= regs.cl) 
-                {
-                    return;
-                }
-            }
-
-            uint32 image_id = base_image_id + image_offset;
-
-            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
-
-            return;
-        }
-
-        if (curHeight != tunnelArray[0].height) 
-        {
-            // Normal walls
-            while (curHeight > tunnelArray[0].height) 
-            {
-                // TODO: Should probably be done by just keeping track of the current index
-                memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
-            }
-
-            if (curHeight != tunnelArray[0].height) 
-            {
-                sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
-
-                curHeight++;
-                continue;
-            }
-        }
-
-        // Tunnels
-        uint8 tunnelType = tunnelArray[0].type;
-        uint8 tunnelHeight = stru_97B570[tunnelType][0];
-        sint16 zOffset = curHeight;
-
-        if ((zOffset + tunnelHeight) > regs.ah || (zOffset + tunnelHeight) > regs.al) 
-        {
-            tunnelType = byte_97B5B0[tunnelType];
-        }
-
-        zOffset *= 16;
-
-        sint16 boundBoxOffsetZ = zOffset + word_97B590[tunnelType];
-        sint8 boundBoxLength = stru_97B570[tunnelType][1] * 16;
-        if (boundBoxOffsetZ < 16) 
-        {
-            boundBoxOffsetZ += 16;
-            boundBoxLength -= 16;
-        }
-
-
-        uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
-        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
-
-
-        boundBoxOffsetZ = curHeight * 16;
-        boundBoxLength = stru_97B570[tunnelType][1] * 16;
-        boundBoxOffsetZ += word_97B590[tunnelType];
-        if (boundBoxOffsetZ == 0) 
-        {
-            boundBoxOffsetZ += 16;
-            boundBoxLength -= 16;
-        }
-
-        image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
-        sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
-
-        curHeight += stru_97B570[tunnelType][0];
-
-        // TODO: Should probably be done by just keeping track of the current index
-        memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
-    }
-}
-
-/**
- * rct2: 0x0066039B, 0x006604F1
- */
-static void viewport_surface_draw_water_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
-{
-    registers regs;
-
-    LocationXY8 offset = {0, 0};
-    LocationXY8 bounds = {0, 0};
-
-    switch (edge) 
-    {
-    case EDGE_TOPLEFT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.left;
-
-        regs.ah = neighbour.corner_heights.right;
-        regs.ch = neighbour.corner_heights.bottom;
-
-        offset.y = -2;
-        bounds.x = 30;
-        break;
-
-    case EDGE_TOPRIGHT:
-        regs.al = self.corner_heights.top;
-        regs.cl = self.corner_heights.right;
-
-        regs.ah = neighbour.corner_heights.left;
-        regs.ch = neighbour.corner_heights.bottom;
-
-        offset.x = -2;
-        bounds.y = 30;
-        break;
-
-    default:
-        return;
-    }
-
-
-    regs.dl = height;
-
-    // save ecx
-    if (neighbour.tile_element == NULL) 
-    {
-        regs.ah = 1;
-        regs.ch = 1;
-    } 
-    else
-    {
-        regs.dh = map_get_water_height(neighbour.tile_element);
-        if (regs.dl == regs.dh)
-        {
-            return;
-        }
-
-        regs.al = regs.dl;
-        regs.cl = regs.dl;
-    }
-
-    // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
-    if (regs.al <= regs.ah && regs.cl <= regs.ch)
-    {
-        return;
-    }
-
-    uint32 base_image_id = _terrainEdgeSpriteIds[terrain][2]; // var_08
-
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-    {
-        base_image_id = _terrainEdgeSpriteIds[terrain][1];  // var_04
-    }
-
-    base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
-
-    const uint8 rotation = get_current_rotation();
-    uint8 cur_height = Math::Min(regs.ch, regs.ah);
-    if (regs.ch != regs.ah)
-    {
-        // neighbour tile corners aren't level
-        uint32 image_offset = 3;
-        if (regs.ch > regs.ah)
-        {
-            image_offset = 4;
-        }
-
-        if (cur_height != regs.al && cur_height != regs.cl)
-        {
-            uint32 image_id = base_image_id + image_offset;
-            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-            cur_height++;
-        }
-    }
-
-    regs.ah = regs.cl;
-
-    while (cur_height < regs.al && cur_height < regs.ah)
-    {
-        sub_98196C(session, base_image_id, 0, 0, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-        cur_height++;
-    }
-
-    uint32 image_offset = 1;
-    if (cur_height >= regs.al)
-    {
-        image_offset = 2;
-
-        if (cur_height >= regs.ah)
-        {
-            return;
-        }
-    }
-
-    uint32 image_id = base_image_id + image_offset;
-    sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
-}
-
-/**
- * rct2: 0x0065F8B9, 0x0065FE26
- */
-static void viewport_surface_draw_water_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
-{
-    registers regs;
-
-    LocationXY8 offset = {0, 0};
-    LocationXY8 bounds = {0, 0};
-    LocationXY16 tunnelBounds = {1, 1};
-    LocationXY16 tunnelTopBoundBoxOffset = {0, 0};
-
-    tunnel_entry * tunnelArray;
-    switch (edge) 
-    {
-    case EDGE_BOTTOMLEFT:
-        regs.al = self.corner_heights.left;
-        regs.cl = self.corner_heights.bottom;
-
-        regs.ah = neighbour.corner_heights.top;
-        regs.ch = neighbour.corner_heights.right;
-
-        offset.x = 30;
-        bounds.y = 30;
-        tunnelBounds.x = 32;
-        tunnelTopBoundBoxOffset.y = 31;
-
-        tunnelArray = session->LeftTunnels;
-        break;
-
-    case EDGE_BOTTOMRIGHT:
-        regs.al = self.corner_heights.right;
-        regs.cl = self.corner_heights.bottom;
-
-        regs.ah = neighbour.corner_heights.top;
-        regs.ch = neighbour.corner_heights.left;
-
-        offset.y = 30;
-        bounds.x = 30;
-        tunnelBounds.y = 32;
-        tunnelTopBoundBoxOffset.x = 31;
-
-        tunnelArray = session->RightTunnels;
-        break;
-
-    default:
-        return;
-    }
-
-    regs.dl = height;
-
-    if (neighbour.tile_element == 0) 
+    if (neighbour.tile_element == 0)
     {
         regs.ch = 1;
         regs.ah = 1;
     }
     else
     {
-        regs.dh = map_get_water_height(neighbour.tile_element);
-        if (regs.dl == regs.dh)
+        if (isWater)
         {
-            return;
-        }
+            regs.dh = map_get_water_height(neighbour.tile_element);
+            if (regs.dl == regs.dh)
+            {
+                return;
+            }
 
-        regs.al = regs.dl;
-        regs.cl = regs.dl;
+            regs.al = regs.dl;
+            regs.cl = regs.dl;
+        }
     }
 
     if (regs.al <= regs.ah && regs.cl <= regs.ch)
@@ -1030,7 +626,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         // If bottom part of edge isn't straight, add a filler
         uint32 image_offset = 3;
 
-        if (regs.ch >= regs.ah) {
+        if (regs.ch >= regs.ah)
+        {
             image_offset = 4;
         }
 
@@ -1050,7 +647,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
         {
             // If top of edge isn't straight, add a filler
             uint32 image_offset = 1;
-            if (curHeight >= regs.al) {
+            if (curHeight >= regs.al)
+            {
                 image_offset = 2;
 
                 if (curHeight >= regs.cl)
@@ -1059,8 +657,7 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
                 }
             }
 
-            uint32 image_id = base_image_id + image_offset;
-
+            const uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
             return;
@@ -1075,10 +672,13 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
                 memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
             }
 
-            sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
+            if (isWater == true || curHeight != tunnelArray[0].height)
+            {
+                sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
-            curHeight++;
-            continue;
+                curHeight++;
+                continue;
+            }
         }
 
         // Tunnels
@@ -1101,10 +701,8 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
             boundBoxLength -= 16;
         }
 
-
         uint32 image_id = _terrainEdgeTunnelSpriteIds[edgeStyle][tunnelType] + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
         sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, zOffset, 0, 0, boundBoxOffsetZ, rotation);
-
 
         boundBoxOffsetZ = curHeight * 16;
         boundBoxLength = stru_97B570[tunnelType][1] * 16;
@@ -1126,12 +724,180 @@ static void viewport_surface_draw_water_side_bottom(paint_session * session, enu
 }
 
 /**
- * rct2: 0x0066062C
- *
- * @param direction (cl)
- * @param height (dx)
- * @param tile_element (esi)
- */
+* rct2: 0x0065EB7D, 0x0065F0D8
+*/
+static void viewport_surface_draw_land_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+    viewport_surface_draw_tile_side_bottom(session, edge, height, edgeStyle, self, neighbour, false);
+}
+
+/**
+* rct2: 0x0065F8B9, 0x0065FE26
+*/
+static void viewport_surface_draw_water_side_bottom(paint_session * session, enum edge_t edge, uint8 height, uint8 edgeStyle, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+    viewport_surface_draw_tile_side_bottom(session, edge, height, edgeStyle, self, neighbour, true);
+}
+
+static void viewport_surface_draw_tile_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour, bool isWater)
+{
+    registers regs{};
+
+    LocationXY8 offset = { 0, 0 };
+    LocationXY8 bounds = { 0, 0 };
+
+    switch (edge)
+    {
+    case EDGE_TOPLEFT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.left;
+
+        regs.ah = neighbour.corner_heights.right;
+        regs.ch = neighbour.corner_heights.bottom;
+
+        offset.y = -2;
+        bounds.x = 30;
+        break;
+
+    case EDGE_TOPRIGHT:
+        regs.al = self.corner_heights.top;
+        regs.cl = self.corner_heights.right;
+
+        regs.ah = neighbour.corner_heights.left;
+        regs.ch = neighbour.corner_heights.bottom;
+
+        offset.x = -2;
+        bounds.y = 30;
+        break;
+
+    default:
+        return;
+    }
+
+    if(isWater == false)
+        regs.dl = height;
+
+    // save ecx
+    if (neighbour.tile_element == NULL)
+    {
+        regs.ah = 1;
+        regs.ch = 1;
+    }
+    else
+    {
+        if (isWater)
+        {
+            regs.dh = map_get_water_height(neighbour.tile_element);
+            if (regs.dl == regs.dh)
+            {
+                return;
+            }
+
+            regs.al = regs.dl;
+            regs.cl = regs.dl;
+        }
+    }
+
+    // al + cl probably are self tile corners, while ah/ch are neighbour tile corners
+    if (regs.al <= regs.ah && regs.cl <= regs.ch)
+    {
+        return;
+    }
+
+    uint32 base_image_id;
+
+    if (isWater)
+    {
+        base_image_id = _terrainEdgeSpriteIds[terrain][2]; // var_08
+        if (gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+        {
+            base_image_id = _terrainEdgeSpriteIds[terrain][1];  // var_04
+        }
+        base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
+    }
+    else
+    {
+        if (!(gCurrentViewportFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+        {
+            const uint8 incline = (regs.cl - regs.al) + 1;
+            const uint32 image_id = _terrainEdgeSpriteIds[terrain][3] + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+            const sint16 y = (regs.dl - regs.al) * 16;
+            paint_attach_to_previous_ps(session, image_id, 0, y);
+            return;
+        }
+        base_image_id = _terrainEdgeSpriteIds[terrain][1] + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+    }
+
+    const uint8 rotation = get_current_rotation();
+    uint8 cur_height = Math::Min(regs.ch, regs.ah);
+    if (regs.ch != regs.ah)
+    {
+        // neighbour tile corners aren't level
+        uint32 image_offset = 3;
+        if (regs.ch > regs.ah)
+        {
+            image_offset = 4;
+        }
+
+        if (cur_height != regs.al && cur_height != regs.cl)
+        {
+            uint32 image_id = base_image_id + image_offset;
+            sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+            cur_height++;
+        }
+    }
+
+    regs.ah = regs.cl;
+
+    if (isWater)
+    {
+        offset.xy = 0;
+    }
+
+    while (cur_height < regs.al && cur_height < regs.ah)
+    {
+        sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+        cur_height++;
+    }
+
+    uint32 image_offset = 1;
+    if (cur_height >= regs.al)
+    {
+        image_offset = 2;
+
+        if (cur_height >= regs.ah)
+        {
+            return;
+        }
+    }
+
+    const uint32 image_id = base_image_id + image_offset;
+    sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
+}
+
+/**
+* rct2: 0x0065F63B, 0x0065F77D
+*/
+static void viewport_surface_draw_land_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+    viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, false);
+}
+
+/**
+* rct2: 0x0066039B, 0x006604F1
+*/
+static void viewport_surface_draw_water_side_top(paint_session * session, enum edge_t edge, uint8 height, uint8 terrain, struct tile_descriptor self, struct tile_descriptor neighbour)
+{
+    viewport_surface_draw_tile_side_top(session, edge, height, terrain, self, neighbour, true);
+}
+
+/**
+* rct2: 0x0066062C
+*
+* @param direction (cl)
+* @param height (dx)
+* @param tile_element (esi)
+*/
 void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_tile_element * tileElement)
 {
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
@@ -1149,7 +915,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     corner_height ch = corner_heights[surfaceShape];
 
-    tile_descriptor selfDescriptor = 
+    tile_descriptor selfDescriptor =
     {
         tileElement,
         (uint8)terrain_type,
@@ -1168,9 +934,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     for (sint32 i = 0; i < 4; i++)
     {
         LocationXY16 offset = viewport_surface_paint_data[i][rotation];
-        LocationXY16 position = 
+        LocationXY16 position =
         {
-            (sint16)(base.x + offset.x), 
+            (sint16)(base.x + offset.x),
             (sint16)(base.y + offset.y)
         };
 
@@ -1214,7 +980,6 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         sub_98196C(session, image_id, 16, 16, 1, 1, 0, height, rotation);
     }
 
-
     bool has_surface = false;
     if (session->VerticalTunnelHeight * 16 == height)
     {
@@ -1248,7 +1013,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         sint32 image_id;
         uint32 ebp = terrain_type;
 
-        switch (branch) 
+        switch (branch)
         {
         case 0:
             // loc_660C90
@@ -1260,18 +1025,21 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         case 3:
         default:
             // loc_660C9F
-            if (rotation & 1) {
+            if (rotation & 1)
+            {
                 assert(ebp < Util::CountOf(byte_97B84A));
                 ebp = byte_97B84A[ebp];
             }
             assert(ebp < Util::CountOf(dword_97B750));
             image_id = dword_97B750[ebp][showGridlines ? 1 : 0] + image_offset;
 
-            if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)) {
+            if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
+            {
                 image_id = SPR_TERRAIN_TRACK_DESIGNER;
             }
 
-            if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE)) {
+            if (gCurrentViewportFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
+            {
                 image_id &= 0xDC07FFFF; // remove colour
                 image_id |= 0x41880000;
             }
@@ -1282,18 +1050,21 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             // loc_660C44
         case 6:
             // loc_660C6A
-            {
-                sint16 x = session->MapPosition.x & 0x20;
-                sint16 y = session->MapPosition.y & 0x20;
-                sint32 index = (y | (x << 1)) >> 5;
+        {
+            sint16 x = session->MapPosition.x & 0x20;
+            sint16 y = session->MapPosition.y & 0x20;
+            sint32 index = (y | (x << 1)) >> 5;
 
-                if (branch == 6) {
-                    image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
-                } else {
-                    image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
-                }
-                break;
+            if (branch == 6)
+            {
+                image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
             }
+            else
+            {
+                image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
+            }
+            break;
+        }
 
         }
 
@@ -1303,7 +1074,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     // Draw Staff Patrol Areas
     // loc_660D02
-    if (gStaffDrawPatrolAreas != 0xFFFF)
+    if (gStaffDrawPatrolAreas != SPRITE_INDEX_NULL)
     {
         sint32 staffIndex = gStaffDrawPatrolAreas;
         bool is_staff_list = staffIndex & 0x8000;
@@ -1338,10 +1109,12 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         LocationXY16 pos = session->MapPosition;
-        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
+        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i)
+        {
             rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
-            if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y) {
+            if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y)
+            {
                 sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
                 sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
@@ -1370,7 +1143,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     }
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS &&
-        !(tileElement->properties.surface.ownership & OWNERSHIP_OWNED)) 
+        !(tileElement->properties.surface.ownership & OWNERSHIP_OWNED))
     {
         if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED)
         {
@@ -1470,7 +1243,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_CONSTRUCT)
     {
-        LocationXY16 pos = session->MapPosition;
+        const LocationXY16& pos = session->MapPosition;
 
         LocationXY16 * tile;
         for (tile = gMapSelectionTiles; tile->x != -1; tile++)
@@ -1486,7 +1259,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 colours = COLOUR_GREY << 24 | COLOUR_SATURATED_GREEN << 19;
             }
 
-            uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | IMAGE_TYPE_REMAP;
+            const uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | colours | IMAGE_TYPE_REMAP;
             paint_attach_to_previous_ps(session, image_id, 0, 0);
             break;
         }
@@ -1509,13 +1282,12 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         !(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_BASE) &&
         !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
-
-        uint8 image_offset = byte_97B444[surfaceShape];
+        const uint8 image_offset = byte_97B444[surfaceShape];
         uint32 base_image = terrain_type;
         if (rotation & 1) {
             base_image = byte_97B84A[terrain_type];
         }
-        uint32 image_id = dword_97B7C8[base_image] + image_offset;
+        const uint32 image_id = dword_97B7C8[base_image] + image_offset;
         paint_attach_to_previous_ps(session, image_id, 0, 0);
     }
 
@@ -1564,16 +1336,15 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 image_offset = byte_97B740[surfaceShape & 0xF];
             }
 
-            sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
+            const sint32 image_id = (SPR_WATER_MASK + image_offset) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT | PALETTE_WATER << 19;
             sub_98196C(session, image_id, 0, 0, 32, 32, -1, waterHeight, rotation);
 
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
-            uint8 di_type = tileElement->type & 0x80;
-
-            uint32 eax = al_edgeStyle + di_type * 2;
+            const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+            const uint8 di_type = tileElement->type & 0x80;
+            const uint32 eax = al_edgeStyle + di_type * 2;
             assert(eax % 32 == 0);
             // end new code
 
@@ -1602,9 +1373,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             al >>= 1;
 
             if (bit == 0)
-            {
                 continue;
-            }
 
             const tile_surface_boundary_data& fenceData = _tileSurfaceBoundaries[i];
 
@@ -1675,7 +1444,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         // 00  00  00
         //   00  00
         //     00
-        paint_util_set_segment_support_height(session, 
+        paint_util_set_segment_support_height(session,
             SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
             height,
             0
