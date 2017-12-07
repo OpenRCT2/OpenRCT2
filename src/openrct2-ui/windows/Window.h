@@ -161,3 +161,8 @@ void window_tile_inspector_set_page(rct_window *w, tile_inspector_page page);
 void window_tile_inspector_auto_set_buttons(rct_window *w);
 
 rct_window * window_editor_object_selection_open();
+
+void window_tooltip_reset(sint32 x, sint32 y);
+void window_tooltip_show(rct_string_id id, sint32 x, sint32 y);
+void window_tooltip_open(rct_window * widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y);
+void window_tooltip_close();

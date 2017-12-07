@@ -14,13 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../Context.h"
-#include "../core/Math.hpp"
-
-#include "../localisation/localisation.h"
-#include "../Input.h"
-#include "../interface/widget.h"
-#include "tooltip.h"
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/localisation/localisation.h>
+#include <openrct2/Input.h>
+#include <openrct2/interface/widget.h>
+#include <openrct2-ui/windows/Window.h>
 
 enum {
     WIDX_BACKGROUND
@@ -68,7 +67,7 @@ static rct_window_event_list window_tooltip_events = {
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static sint16 _tooltipNumLines;
 
-static void _window_tooltip_reset(sint32 x, sint32 y)
+void window_tooltip_reset(sint32 x, sint32 y)
 {
     gTooltipCursorX = x;
     gTooltipCursorY = y;
@@ -78,7 +77,7 @@ static void _window_tooltip_reset(sint32 x, sint32 y)
     input_set_flag(INPUT_FLAG_4, false);
 }
 
-static void _window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
+void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
 {
     rct_window *w;
     sint32 width, height;
@@ -143,7 +142,7 @@ static void _window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
  *
  *  rct2: 0x006EA10D
  */
-static void _window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y)
+void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y)
 {
     rct_widget *widget;
 
@@ -169,7 +168,7 @@ static void _window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widge
  *
  *  rct2: 0x006E98C6
  */
-static void _window_tooltip_close()
+void window_tooltip_close()
 {
     window_close_by_class(WC_TOOLTIP);
     gTooltipTimeout = 0;
@@ -216,27 +215,4 @@ static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi)
     left = w->x + ((w->width + 1) / 2) - 1;
     top = w->y + 1;
     draw_string_centred_raw(dpi, left, top, _tooltipNumLines, _tooltipText);
-}
-
-extern "C"
-{
-    void window_tooltip_reset(sint32 x, sint32 y)
-    {
-        _window_tooltip_reset(x, y);
-    }
-
-    void window_tooltip_show(rct_string_id id, sint32 x, sint32 y)
-    {
-        _window_tooltip_show(id, x, y);
-    }
-
-    void window_tooltip_open(rct_window *widgetWindow, rct_widgetindex widgetIndex, sint32 x, sint32 y)
-    {
-        _window_tooltip_open(widgetWindow, widgetIndex, x, y);
-    }
-
-    void window_tooltip_close()
-    {
-        _window_tooltip_close();
-    }
 }
