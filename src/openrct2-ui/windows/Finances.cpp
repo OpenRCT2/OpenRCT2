@@ -25,7 +25,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/sprites.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum {
     WINDOW_FINANCES_PAGE_SUMMARY,

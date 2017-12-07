@@ -25,7 +25,7 @@
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/scenery.h>
 #include <openrct2/world/Wall.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>
 
 #define WW 113

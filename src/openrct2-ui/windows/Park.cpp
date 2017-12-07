@@ -30,7 +30,7 @@
 #include <openrct2/management/Award.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/entrance.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/interface/themes.h>
 
 enum WINDOW_PARK_PAGE {

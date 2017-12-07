@@ -22,7 +22,7 @@
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/scenery.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum {
     WINDOW_RESEARCH_PAGE_DEVELOPMENT,

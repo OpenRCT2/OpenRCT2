@@ -25,7 +25,7 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum WINDOW_PLAYER_PAGE {
     WINDOW_PLAYER_PAGE_OVERVIEW,

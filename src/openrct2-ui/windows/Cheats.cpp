@@ -26,7 +26,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/park.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)
 #define CHEATS_MONEY_INCREMENT_DIV MONEY(5000,00)

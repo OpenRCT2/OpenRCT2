@@ -27,7 +27,7 @@
 #include <openrct2/ObjectList.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/footpath.h>
-#include <openrct2/windows/dropdown.h>
+#include <openrct2-ui/interface/Dropdown.h>
 
 enum
 {
