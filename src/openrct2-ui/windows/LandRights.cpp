@@ -20,10 +20,10 @@
 
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2-ui/interface/LandTool.h>
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
