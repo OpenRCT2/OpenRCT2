@@ -15,18 +15,22 @@
 #pragma endregion
 
 #include <algorithm>
+#include <memory>
 #include <stdexcept>
 #include "../core/IStream.hpp"
-#include "../core/Memory.hpp"
 #include "../OpenRCT2.h"
 #include "ImageTable.h"
 #include "Object.h"
 
 ImageTable::~ImageTable()
 {
-    Memory::Free(_data);
-    _data = nullptr;
-    _dataSize = 0;
+    if (_data == nullptr)
+    {
+        for (auto &entry : _entries)
+        {
+            delete entry.offset;
+        }
+    }
 }
 
 void ImageTable::Read(IReadObjectContext * context, IStream * stream)
@@ -49,16 +53,17 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
             imageDataSize = (uint32)remainingBytes;
         }
 
-        _dataSize = imageDataSize;
-        _data = Memory::Reallocate(_data, _dataSize);
-        if (_data == nullptr)
+        auto dataSize = (size_t)imageDataSize;
+        auto data = std::make_unique<uint8[]>(dataSize);
+        if (data == nullptr)
         {
             context->LogError(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table too large.");
             throw std::runtime_error("Image table too large.");
         }
 
         // Read g1 element headers
-        uintptr_t imageDataBase = (uintptr_t)_data;
+        uintptr_t imageDataBase = (uintptr_t)data.get();
+        std::vector<rct_g1_element> newEntries;
         for (uint32 i = 0; i < numImages; i++)
         {
             rct_g1_element g1Element;
@@ -73,23 +78,22 @@ void ImageTable::Read(IReadObjectContext * context, IStream * stream)
             g1Element.flags = stream->ReadValue<uint16>();
             g1Element.zoomed_offset = stream->ReadValue<uint16>();
 
-            _entries.push_back(g1Element);
+            newEntries.push_back(g1Element);
         }
 
         // Read g1 element data
-        size_t readBytes = (size_t)stream->TryRead(_data, _dataSize);
+        size_t readBytes = (size_t)stream->TryRead(data.get(), dataSize);
 
         // If data is shorter than expected (some custom objects are unfortunately like that)
-        size_t unreadBytes = _dataSize - readBytes;
+        size_t unreadBytes = dataSize - readBytes;
         if (unreadBytes > 0)
         {
-            uint8 * ptr = (uint8*)(((uintptr_t)_data) + readBytes);
-            std::fill_n(ptr, unreadBytes, 0);
-
+            std::fill_n(data.get() + readBytes, unreadBytes, 0);
             context->LogWarning(OBJECT_ERROR_BAD_IMAGE_TABLE, "Image table size shorter than expected.");
         }
 
-        // TODO validate the image data to prevent crashes in-game
+        _data = std::move(data);
+        _entries.insert(_entries.end(), newEntries.begin(), newEntries.end());
     }
     catch (const std::exception &)
     {
@@ -104,16 +108,12 @@ void ImageTable::AddImage(const rct_g1_element * g1)
     auto length = g1_calculate_data_size(g1);
     if (length == 0)
     {
-        newg1.offset = 0;
+        newg1.offset = nullptr;
     }
     else
     {
-        auto dstOffset = _dataSize;
-        _dataSize += length;
-        _data = Memory::Reallocate(_data, _dataSize);
-        auto dst = (uint8 *)((size_t)_data + dstOffset);
-        Memory::Copy(dst, g1->offset, length);
-        newg1.offset = dst;
+        newg1.offset = new uint8[length];
+        std::copy_n(g1->offset, length, newg1.offset);
     }
     _entries.push_back(newg1);
 }

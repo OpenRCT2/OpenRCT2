@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <memory>
 #include <vector>
 #include "../common.h"
-
 #include "../drawing/Drawing.h"
 
 interface IReadObjectContext;
@@ -27,9 +27,8 @@ interface IStream;
 class ImageTable
 {
 private:
+    std::unique_ptr<uint8[]>    _data;
     std::vector<rct_g1_element> _entries;
-    void *                      _data       = nullptr;
-    size_t                      _dataSize   = 0;
 
 public:
     ~ImageTable();
