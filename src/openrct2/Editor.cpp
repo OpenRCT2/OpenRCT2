@@ -14,26 +14,26 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "audio/audio.h"
 #include "Context.h"
-#include "core/Math.hpp"
 #include "Editor.h"
+#include "EditorObjectSelectionSession.h"
 #include "FileClassifier.h"
 #include "Game.h"
+#include "OpenRCT2.h"
+#include "ParkImporter.h"
+#include "audio/audio.h"
+#include "core/Math.hpp"
 #include "interface/viewport.h"
 #include "localisation/localisation.h"
 #include "management/NewsItem.h"
-#include "object_list.h"
 #include "object/ObjectManager.h"
-#include "OpenRCT2.h"
+#include "object/ObjectRepository.h"
+#include "object_list.h"
 #include "peep/Staff.h"
 #include "rct1.h"
-#include "ParkImporter.h"
 #include "util/util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
-#include "object/ObjectRepository.h"
-#include "EditorObjectSelectionSession.h"
 
 namespace Editor
 {
