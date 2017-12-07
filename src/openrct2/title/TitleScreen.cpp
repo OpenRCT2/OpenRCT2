@@ -177,7 +177,7 @@ void TitleScreen::Update()
 
     gSavedAge++;
 
-    game_handle_input();
+    context_handle_input();
 
     gInUpdateCode = false;
 }
