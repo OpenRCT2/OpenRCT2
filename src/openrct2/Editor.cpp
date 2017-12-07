@@ -639,7 +639,7 @@ namespace Editor
             break;
         case EDIT_SCENARIOOPTIONS_SETINITIALCASH:
             gInitialCash   = Math::Clamp(MONEY(0, 00), *edx, MONEY(1000000, 00));
-            gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+            gCash = gInitialCash;
             window_invalidate_by_class(WC_FINANCES);
             window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
             break;

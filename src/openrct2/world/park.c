@@ -337,10 +337,7 @@ money32 calculate_park_value()
  */
 money32 calculate_company_value()
 {
-    return
-        DECRYPT_MONEY(gCashEncrypted) +
-        gParkValue -
-        gBankLoan;
+    return gCash + gParkValue - gBankLoan;
 }
 
 /**
@@ -617,7 +614,7 @@ void park_update_histories()
     // Update current cash history
     for (sint32 i = 127; i > 0; i--)
         gCashHistory[i] = gCashHistory[i - 1];
-    gCashHistory[0] = DECRYPT_MONEY(gCashEncrypted) - gBankLoan;
+    gCashHistory[0] = gCash - gBankLoan;
     window_invalidate_by_class(WC_FINANCES);
 
     // Update weekly profit history

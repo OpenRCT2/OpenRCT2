@@ -748,9 +748,8 @@ static void window_finances_summary_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_FINANCES_SUMMARY_AT_X_PER_YEAR, gCommonFormatArgs, COLOUR_BLACK, w->x + 160, w->y + 259);
 
     // Current cash
-    money32 currentCash = DECRYPT_MONEY(gCashEncrypted);
-    rct_string_id stringId = currentCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
-    gfx_draw_string_left(dpi, stringId, &currentCash, COLOUR_BLACK, w->x + 8, w->y + 274);
+    rct_string_id stringId = gCash >= 0 ? STR_CASH_LABEL : STR_CASH_NEGATIVE_LABEL;
+    gfx_draw_string_left(dpi, stringId, &gCash, COLOUR_BLACK, w->x + 8, w->y + 274);
 
     // Objective related financial information
     if (gScenarioObjectiveType == OBJECTIVE_MONTHLY_FOOD_INCOME) {
@@ -824,9 +823,7 @@ static void window_finances_financial_graph_paint(rct_window *w, rct_drawpixelin
     graphBottom = w->y + pageWidget->bottom - 4;
 
     // Cash (less loan)
-    money32 cashLessLoan =
-        DECRYPT_MONEY(gCashEncrypted) -
-        gBankLoan;
+    money32 cashLessLoan = gCash - gBankLoan;
 
     gfx_draw_string_left(
         dpi,

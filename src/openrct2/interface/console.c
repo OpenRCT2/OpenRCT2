@@ -728,7 +728,7 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
             console_printf("park_rating %d", gParkRating);
         }
         else if (strcmp(argv[0], "money") == 0) {
-            console_printf("money %d.%d0", DECRYPT_MONEY(gCashEncrypted) / 10, DECRYPT_MONEY(gCashEncrypted) % 10);
+            console_printf("money %d.%d0", gCash / 10, gCash % 10);
         }
         else if (strcmp(argv[0], "scenario_initial_cash") == 0) {
             console_printf("scenario_initial_cash %d", gInitialCash / 10);
@@ -887,7 +887,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
         if (strcmp(argv[0], "money") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
             money32 money = MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100);
             bool run_get_money = true;
-            if (gCashEncrypted != ENCRYPT_MONEY(money)) {
+            if (gCash != money) {
                 if (game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_SETMONEY, money, GAME_COMMAND_CHEAT, 0, 0) != MONEY32_UNDEFINED) {
                     // When in networked client mode, console_execute_silent("get money")
                     // does not print value accurately. Instead, print the argument.

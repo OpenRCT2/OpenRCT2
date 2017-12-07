@@ -111,7 +111,7 @@ void scenario_begin()
     gParkValue = calculate_park_value();
     gCompanyValue = calculate_company_value();
     gHistoricalProfit = gInitialCash - gBankLoan;
-    gCashEncrypted = ENCRYPT_MONEY(gInitialCash);
+    gCash = gInitialCash;
 
     safe_strcpy(gScenarioDetails, gS6Info.details, 256);
     safe_strcpy(gScenarioName, gS6Info.name, 64);

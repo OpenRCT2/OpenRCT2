@@ -219,8 +219,7 @@ private:
         json_object_set_new(gameInfo, "parkValue", json_integer(gParkValue));
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
-            money32 cash = DECRYPT_MONEY(gCashEncrypted);
-            json_object_set_new(gameInfo, "cash", json_integer(cash));
+            json_object_set_new(gameInfo, "cash", json_integer(gCash));
         }
         json_object_set_new(root, "gameInfo", gameInfo);
 
