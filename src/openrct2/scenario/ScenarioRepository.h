@@ -18,10 +18,6 @@
 
 #include "../common.h"
 
-#ifndef MAX_PATH
-    #define MAX_PATH 260
-#endif
-
 struct rct_object_entry;
 
 typedef struct scenario_highscore_entry

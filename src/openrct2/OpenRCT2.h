@@ -19,11 +19,6 @@
 #include "common.h"
 #include "core/Guard.hpp"
 
-// Defining MAX_PATH temporarily until the paths below can be removed
-// Saves us from importing system headers in a header file.
-#ifndef MAX_PATH
-#define MAX_PATH 260
-#endif
 
 #ifndef DISABLE_NETWORK
     #include <openssl/evp.h>

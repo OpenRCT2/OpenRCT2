@@ -31,9 +31,6 @@
 #include "../core/Zip.h"
 #include "TitleSequence.h"
 
-#ifndef MAX_PATH
-    #define MAX_PATH 260
-#endif
 
 static std::vector<utf8 *> GetSaves(const utf8 * path);
 static std::vector<utf8 *> GetSaves(IZipArchive * zip);
