@@ -54,8 +54,8 @@ typedef wchar_t utf16;
 typedef utf16* utf16string;
 #endif
 
-// Defining MAX_PATH temporarily until the paths below can be removed
-// Saves us from importing system headers in a header file.
+// Define MAX_PATH for various headers that don't want to include system headers
+// just for MAX_PATH
 #ifndef MAX_PATH
 #define MAX_PATH 260
 #endif
