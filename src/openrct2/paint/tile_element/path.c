@@ -80,6 +80,8 @@ static const uint8 byte_98D8A4[] = {
 void path_paint_pole_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 void path_paint_box_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
+
+
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     if (footpath_element_is_sloped(tileElement))
@@ -358,7 +360,7 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
             return;
         }
 
-        uint8 direction = ((tile_element->type & 0xC0) >> 6);
+        uint8 direction = footpath_element_get_direction(tile_element);
         // Draw ride sign
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_RIDE;
         if (footpath_element_is_sloped(tile_element)) {
@@ -1045,3 +1047,5 @@ void path_paint_box_support(paint_session * session, rct_tile_element* tileEleme
         paint_util_set_segment_support_height(session, SEGMENT_C8, 0xFFFF, 0);
     }
 }
+
+
