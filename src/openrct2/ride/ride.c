@@ -2803,7 +2803,7 @@ static void ride_music_update(sint32 rideIndex)
         return;
     }
 
-    if (ride->type == RIDE_TYPE_CIRCUS_SHOW) {
+    if (ride->type == RIDE_TYPE_CIRCUS) {
         rct_vehicle *vehicle = GET_VEHICLE(ride->vehicles[0]);
         if (vehicle->status != VEHICLE_STATUS_DOING_CIRCUS_SHOW) {
             ride->music_tune_id = 255;
@@ -7715,7 +7715,7 @@ bool shop_item_is_food_or_drink(sint32 shopItem)
     case SHOP_ITEM_HOT_DOG:
     case SHOP_ITEM_TENTACLE:
     case SHOP_ITEM_TOFFEE_APPLE:
-    case SHOP_ITEM_DONUT:
+    case SHOP_ITEM_DOUGHNUT:
     case SHOP_ITEM_COFFEE:
     case SHOP_ITEM_CHICKEN:
     case SHOP_ITEM_LEMONADE:
@@ -7751,7 +7751,7 @@ bool shop_item_is_food(sint32 shopItem)
     case SHOP_ITEM_HOT_DOG:
     case SHOP_ITEM_TENTACLE:
     case SHOP_ITEM_TOFFEE_APPLE:
-    case SHOP_ITEM_DONUT:
+    case SHOP_ITEM_DOUGHNUT:
     case SHOP_ITEM_CHICKEN:
     case SHOP_ITEM_PRETZEL:
     case SHOP_ITEM_FUNNEL_CAKE:
@@ -8048,7 +8048,7 @@ const char * ride_type_get_enum_name(sint32 rideType)
         nameof(RIDE_TYPE_LOG_FLUME),
         nameof(RIDE_TYPE_RIVER_RAPIDS),
         nameof(RIDE_TYPE_DODGEMS),
-        nameof(RIDE_TYPE_PIRATE_SHIP),
+        nameof(RIDE_TYPE_SWINGING_SHIP),
         nameof(RIDE_TYPE_SWINGING_INVERTER_SHIP),
         nameof(RIDE_TYPE_FOOD_STALL),
         nameof(RIDE_TYPE_1D),
@@ -8071,12 +8071,12 @@ const char * ride_type_get_enum_name(sint32 rideType)
         nameof(RIDE_TYPE_TWIST),
         nameof(RIDE_TYPE_HAUNTED_HOUSE),
         nameof(RIDE_TYPE_FIRST_AID),
-        nameof(RIDE_TYPE_CIRCUS_SHOW),
+        nameof(RIDE_TYPE_CIRCUS),
         nameof(RIDE_TYPE_GHOST_TRAIN),
         nameof(RIDE_TYPE_TWISTER_ROLLER_COASTER),
         nameof(RIDE_TYPE_WOODEN_ROLLER_COASTER),
         nameof(RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER),
-        nameof(RIDE_TYPE_WILD_MOUSE),
+        nameof(RIDE_TYPE_STEEL_WILD_MOUSE),
         nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER),
         nameof(RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT),
         nameof(RIDE_TYPE_FLYING_ROLLER_COASTER),

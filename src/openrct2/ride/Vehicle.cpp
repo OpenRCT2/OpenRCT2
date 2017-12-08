@@ -8091,7 +8091,7 @@ loc_6DB41D:
     }
     {
         uint16 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
-        if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_WILD_MOUSE)
+        if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
         {
             vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
         }

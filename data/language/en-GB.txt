@@ -52,12 +52,12 @@ STR_0047    :Cash Machine
 STR_0048    :Twist
 STR_0049    :Haunted House
 STR_0050    :First Aid Room
-STR_0051    :Circus Show
+STR_0051    :Circus
 STR_0052    :Ghost Train
-STR_0053    :Steel Twister Roller Coaster
+STR_0053    :Twister Roller Coaster
 STR_0054    :Wooden Roller Coaster
 STR_0055    :Side-Friction Roller Coaster
-STR_0056    :Wild Mouse
+STR_0056    :Steel Wild Mouse
 STR_0057    :Multi-Dimension Roller Coaster
 STR_0058    :Unknown Ride (38)
 STR_0059    :Flying Roller Coaster
@@ -1093,7 +1093,7 @@ STR_1087    :3D film: {ENDQUOTES}Space raiders{ENDQUOTES}
 STR_1088    :Intense mode
 STR_1089    :Berserk mode
 STR_1090    :Haunted house mode
-STR_1091    :Circus show mode
+STR_1091    :Circus mode
 STR_1092    :Downward launch
 STR_1093    :Crooked house mode
 STR_1094    :Freefall drop mode

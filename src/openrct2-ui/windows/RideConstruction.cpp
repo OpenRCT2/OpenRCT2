@@ -2095,7 +2095,7 @@ static void window_ride_construction_invalidate(rct_window *w)
         stringId = RideConfigurationStringIds[_currentTrackCurve & 0xFF];
         if (stringId == STR_RAPIDS && ride->type == RIDE_TYPE_CAR_RIDE)
             stringId = STR_LOG_BUMPS;
-        if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_WILD_MOUSE) {
+        if (stringId == STR_SPINNING_CONTROL_TOGGLE_TRACK && ride->type != RIDE_TYPE_STEEL_WILD_MOUSE) {
             stringId = STR_BOOSTER;
         }
     }
@@ -2916,7 +2916,7 @@ static void window_ride_construction_update_widgets(rct_window *w)
 
     bool brakesSelected = _selectedTrackType == TRACK_ELEM_BRAKES || _currentTrackCurve == (0x100 | TRACK_ELEM_BRAKES);
     _boosterTrackSelected = track_element_is_booster(ride->type, _selectedTrackType) ||
-        (ride->type != RIDE_TYPE_WILD_MOUSE && _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
+        (ride->type != RIDE_TYPE_STEEL_WILD_MOUSE && _currentTrackCurve == (0x100 | TRACK_ELEM_BOOSTER));
 
     if (!brakesSelected && !_boosterTrackSelected) {
         if (is_track_enabled(TRACK_FLAT_ROLL_BANKING)) {
@@ -3201,7 +3201,7 @@ static void window_ride_construction_show_special_track_dropdown(rct_window *w, 
         }
         if (trackPieceStringId == STR_SPINNING_CONTROL_TOGGLE_TRACK) {
             Ride *ride = get_ride(_currentRideIndex);
-            if (ride->type != RIDE_TYPE_WILD_MOUSE)
+            if (ride->type != RIDE_TYPE_STEEL_WILD_MOUSE)
                 trackPieceStringId = STR_BOOSTER;
         }
         gDropdownItemsFormat[i] = trackPieceStringId;

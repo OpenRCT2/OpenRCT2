@@ -844,7 +844,7 @@ const rct_ride_name RideNaming[] =  {
     { STR_RIDE_NAME_LOG_FLUME,                      STR_RIDE_DESCRIPTION_LOG_FLUME                      }, // RIDE_TYPE_LOG_FLUME
     { STR_RIDE_NAME_RIVER_RAPIDS,                   STR_RIDE_DESCRIPTION_RIVER_RAPIDS                   }, // RIDE_TYPE_RIVER_RAPIDS
     { STR_RIDE_NAME_DODGEMS,                        STR_RIDE_DESCRIPTION_DODGEMS                        }, // RIDE_TYPE_DODGEMS
-    { STR_RIDE_NAME_PIRATE_SHIP,                    STR_RIDE_DESCRIPTION_PIRATE_SHIP                    }, // RIDE_TYPE_PIRATE_SHIP
+    { STR_RIDE_NAME_PIRATE_SHIP,                    STR_RIDE_DESCRIPTION_PIRATE_SHIP                    }, // RIDE_TYPE_SWINGING_SHIP
     { STR_RIDE_NAME_SWINGING_INVERTER_SHIP,         STR_RIDE_DESCRIPTION_SWINGING_INVERTER_SHIP         }, // RIDE_TYPE_SWINGING_INVERTER_SHIP
     { STR_RIDE_NAME_FOOD_STALL,                     STR_RIDE_DESCRIPTION_FOOD_STALL                     }, // RIDE_TYPE_FOOD_STALL
     { STR_RIDE_NAME_1D,                             STR_RIDE_DESCRIPTION_UNKNOWN                        }, // RIDE_TYPE_1D
@@ -867,12 +867,12 @@ const rct_ride_name RideNaming[] =  {
     { STR_RIDE_NAME_TWIST,                          STR_RIDE_DESCRIPTION_TWIST                          }, // RIDE_TYPE_TWIST
     { STR_RIDE_NAME_HAUNTED_HOUSE,                  STR_RIDE_DESCRIPTION_HAUNTED_HOUSE                  }, // RIDE_TYPE_HAUNTED_HOUSE
     { STR_RIDE_NAME_FIRST_AID,                      STR_RIDE_DESCRIPTION_FIRST_AID                      }, // RIDE_TYPE_FIRST_AID
-    { STR_RIDE_NAME_CIRCUS_SHOW,                    STR_RIDE_DESCRIPTION_CIRCUS_SHOW                    }, // RIDE_TYPE_CIRCUS_SHOW
+    { STR_RIDE_NAME_CIRCUS_SHOW,                    STR_RIDE_DESCRIPTION_CIRCUS_SHOW                    }, // RIDE_TYPE_CIRCUS
     { STR_RIDE_NAME_GHOST_TRAIN,                    STR_RIDE_DESCRIPTION_GHOST_TRAIN                    }, // RIDE_TYPE_GHOST_TRAIN
     { STR_RIDE_NAME_TWISTER_ROLLER_COASTER,         STR_RIDE_DESCRIPTION_TWISTER_ROLLER_COASTER         }, // RIDE_TYPE_TWISTER_ROLLER_COASTER
     { STR_RIDE_NAME_WOODEN_ROLLER_COASTER,          STR_RIDE_DESCRIPTION_WOODEN_ROLLER_COASTER          }, // RIDE_TYPE_WOODEN_ROLLER_COASTER
     { STR_RIDE_NAME_SIDE_FRICTION_ROLLER_COASTER,   STR_RIDE_DESCRIPTION_SIDE_FRICTION_ROLLER_COASTER   }, // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    { STR_RIDE_NAME_WILD_MOUSE,                     STR_RIDE_DESCRIPTION_WILD_MOUSE                     }, // RIDE_TYPE_WILD_MOUSE
+    { STR_RIDE_NAME_WILD_MOUSE,                     STR_RIDE_DESCRIPTION_WILD_MOUSE                     }, // RIDE_TYPE_STEEL_WILD_MOUSE
     { STR_RIDE_NAME_MULTI_DIMENSION_ROLLER_COASTER, STR_RIDE_DESCRIPTION_MULTI_DIMENSION_ROLLER_COASTER }, // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     { STR_RIDE_NAME_38,                             STR_RIDE_DESCRIPTION_UNKNOWN                        }, // RIDE_TYPE_38
     { STR_RIDE_NAME_FLYING_ROLLER_COASTER,          STR_RIDE_DESCRIPTION_FLYING_ROLLER_COASTER          }, // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -1152,7 +1152,7 @@ const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                      MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_LOG_FLUME
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                      MUSIC_STYLE_WATER,              0                                               },  // RIDE_TYPE_RIVER_RAPIDS
     {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SLIGHTLY_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                          MUSIC_STYLE_DODGEMS_BEAT,       0                                               },  // RIDE_TYPE_DODGEMS
-    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_PIRATES,            0                                               },  // RIDE_TYPE_PIRATE_SHIP
+    {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_PIRATES,            0                                               },  // RIDE_TYPE_SWINGING_SHIP
     {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_TECHNO,             0                                               },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
     {   9,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FOOD_STALL
     {   15, 0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_1D
@@ -1175,12 +1175,12 @@ const rct_ride_data_4 RideData4[RIDE_TYPE_COUNT] = {
     {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                     MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_TWIST
     {   10, 0,  RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                              MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_HAUNTED_HOUSE
     {   0,  0,  0,                                                                                                                                                                                                                                                                                                                                                                             MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_FIRST_AID
-    {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                         MUSIC_STYLE_CIRCUS_SHOW,        0                                               },  // RIDE_TYPE_CIRCUS_SHOW
+    {   15, 0,  RIDE_TYPE_FLAG4_MUSIC_ON_DEFAULT | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_SINGLE_SESSION,                                                                                                                                                                                                                                                                         MUSIC_STYLE_CIRCUS_SHOW,        0                                               },  // RIDE_TYPE_CIRCUS
     {   15, 0,  RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_ALLOW_MORE_VEHICLES_THAN_STATION_FITS | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                               MUSIC_STYLE_HORROR,             0                                               },  // RIDE_TYPE_GHOST_TRAIN
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_WILD_WEST,          0                                               },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                               MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_WILD_MOUSE
+    {   20, 20, RIDE_TYPE_FLAG4_ALLOW_DOORS_ON_TRACK | RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                  MUSIC_STYLE_ROCK,               0                                               },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                  MUSIC_STYLE_ROCK_STYLE_3,       RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT    },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT,                                                                                                                                                                                                                                                                                                          MUSIC_STYLE_GENTLE,             0                                               },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     {   20, 20, RIDE_TYPE_FLAG4_ALLOW_MUSIC | RIDE_TYPE_FLAG4_HAS_ALTERNATIVE_TRACK_TYPE | RIDE_TYPE_FLAG4_PEEP_CHECK_GFORCES | RIDE_TYPE_FLAG4_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG4_HAS_AIR_TIME | RIDE_TYPE_FLAG4_ALLOW_MULTIPLE_CIRCUITS | RIDE_TYPE_FLAG4_SHOW_IN_TRACK_DESIGNER | RIDE_TYPE_FLAG4_INTERESTING_TO_LOOK_AT | RIDE_TYPE_FLAG4_START_CONSTRUCTION_INVERTED,                    MUSIC_STYLE_ROCK,               RIDE_TYPE_FLYING_ROLLER_COASTER_ALT             },  // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -1247,7 +1247,7 @@ const ride_cost RideTrackCosts[RIDE_TYPE_COUNT] =   {
     {   45,     5   },  // RIDE_TYPE_LOG_FLUME
     {   62,     6   },  // RIDE_TYPE_RIVER_RAPIDS
     {   55,     2   },  // RIDE_TYPE_DODGEMS
-    {   155,    2   },  // RIDE_TYPE_PIRATE_SHIP
+    {   155,    2   },  // RIDE_TYPE_SWINGING_SHIP
     {   212,    2   },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
     {   600,    0   },  // RIDE_TYPE_FOOD_STALL
     {   700,    0   },  // RIDE_TYPE_1D
@@ -1270,12 +1270,12 @@ const ride_cost RideTrackCosts[RIDE_TYPE_COUNT] =   {
     {   90,     2   },  // RIDE_TYPE_TWIST
     {   85,     2   },  // RIDE_TYPE_HAUNTED_HOUSE
     {   500,    0   },  // RIDE_TYPE_FIRST_AID
-    {   125,    2   },  // RIDE_TYPE_CIRCUS_SHOW
+    {   125,    2   },  // RIDE_TYPE_CIRCUS
     {   26,     5   },  // RIDE_TYPE_GHOST_TRAIN
     {   120,    5   },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
     {   75,     7   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   55,     6   },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   55,     4   },  // RIDE_TYPE_WILD_MOUSE
+    {   55,     4   },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   180,    5   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     {   180,    5   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     {   125,    5   },  // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -1342,7 +1342,7 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   9,      24,     7,      255,    9,      40,     65,     0   },  // RIDE_TYPE_LOG_FLUME
     {   9,      32,     14,     255,    15,     40,     70,     0   },  // RIDE_TYPE_RIVER_RAPIDS
     {   9,      48,     2,      255,    2,      1,      35,     0   },  // RIDE_TYPE_DODGEMS
-    {   12,     112,    7,      255,    11,     1,      35,     0   },  // RIDE_TYPE_PIRATE_SHIP
+    {   12,     112,    7,      255,    11,     1,      35,     0   },  // RIDE_TYPE_SWINGING_SHIP
     {   15,     176,    7,      255,    11,     1,      35,     0   },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
     {   12,     64,     0,      255,    0,      1,      15,     0   },  // RIDE_TYPE_FOOD_STALL
     {   12,     64,     0,      255,    0,      1,      15,     0   },  // RIDE_TYPE_1D
@@ -1365,12 +1365,12 @@ const rct_ride_data_5 RideData5[RIDE_TYPE_COUNT] = {
     {   12,     64,     3,      255,    2,      1,      40,     0   },  // RIDE_TYPE_TWIST
     {   16,     160,    3,      255,    2,      1,      22,     0   },  // RIDE_TYPE_HAUNTED_HOUSE
     {   12,     48,     0,      255,    0,      1,      5,      0   },  // RIDE_TYPE_FIRST_AID
-    {   12,     128,    3,      255,    2,      1,      39,     0   },  // RIDE_TYPE_CIRCUS_SHOW
+    {   12,     128,    3,      255,    2,      1,      39,     0   },  // RIDE_TYPE_CIRCUS
     {   8,      24,     6,      2,      7,      30,     50,     0   },  // RIDE_TYPE_GHOST_TRAIN
     {   54,     24,     8,      31,     9,      55,     120,    0   },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
     {   41,     24,     8,      15,     11,     50,     105,    0   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   15,     24,     4,      15,     11,     37,     65,     0   },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   16,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_WILD_MOUSE
+    {   16,     24,     4,      4,      7,      40,     55,     0   },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   40,     24,     8,      78,     11,     50,     100,    0   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     {   40,     24,     8,      78,     11,     50,     100,    0   },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     {   30,     24,     8,      35,     11,     50,     100,    0   },  // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -1433,7 +1433,7 @@ const money8 DefaultShopItemPrice[SHOP_ITEM_COUNT] = {
     MONEY(1,50),                        // SHOP_ITEM_HAT
     MONEY(0,70),                        // SHOP_ITEM_TOFFEE_APPLE
     MONEY(3,00),                        // SHOP_ITEM_TSHIRT
-    MONEY(0,70),                        // SHOP_ITEM_DONUT
+    MONEY(0,70),                        // SHOP_ITEM_DOUGHNUT
     MONEY(1,20),                        // SHOP_ITEM_COFFEE
     MONEY(0,00),                        // SHOP_ITEM_EMPTY_CUP
     MONEY(1,50),                        // SHOP_ITEM_CHICKEN
@@ -1549,7 +1549,7 @@ const uint32 ShopItemImage[SHOP_ITEM_COUNT] = {
     SPR_SHOP_ITEM_HAT,
     SPR_SHOP_ITEM_TOFFEE_APPLE,
     SPR_SHOP_ITEM_TSHIRT,
-    SPR_SHOP_ITEM_DONUT,
+    SPR_SHOP_ITEM_DOUGHNUT,
     SPR_SHOP_ITEM_COFFEE,
     SPR_SHOP_ITEM_EMPTY_CUP,
     SPR_SHOP_ITEM_CHICKEN,
@@ -1765,7 +1765,7 @@ const sint32 RidePhotoItems[] = {
     SHOP_ITEM_PHOTO4,   // RIDE_TYPE_LOG_FLUME
     SHOP_ITEM_PHOTO4,   // RIDE_TYPE_RIVER_RAPIDS
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_DODGEMS
-    SHOP_ITEM_PHOTO,    // RIDE_TYPE_PIRATE_SHIP
+    SHOP_ITEM_PHOTO,    // RIDE_TYPE_SWINGING_SHIP
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_SWINGING_INVERTER_SHIP
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_FOOD_STALL
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_1D
@@ -1788,12 +1788,12 @@ const sint32 RidePhotoItems[] = {
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_TWIST
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_HAUNTED_HOUSE
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_FIRST_AID
-    SHOP_ITEM_PHOTO,    // RIDE_TYPE_CIRCUS_SHOW
+    SHOP_ITEM_PHOTO,    // RIDE_TYPE_CIRCUS
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_GHOST_TRAIN
     SHOP_ITEM_PHOTO,    // RIDE_TYPE_TWISTER_ROLLER_COASTER
     SHOP_ITEM_PHOTO3,   // RIDE_TYPE_WOODEN_ROLLER_COASTER
     SHOP_ITEM_PHOTO3,   // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    SHOP_ITEM_PHOTO,    // RIDE_TYPE_WILD_MOUSE
+    SHOP_ITEM_PHOTO,    // RIDE_TYPE_STEEL_WILD_MOUSE
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     SHOP_ITEM_PHOTO2,   // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -1860,7 +1860,7 @@ const rating_tuple RideRatings[RIDE_TYPE_COUNT] = {
     {   80,     34, 6   },  // RIDE_TYPE_LOG_FLUME
     {   72,     26, 6   },  // RIDE_TYPE_RIVER_RAPIDS
     {   40,     20, 0   },  // RIDE_TYPE_DODGEMS
-    {   50,     30, 10  },  // RIDE_TYPE_PIRATE_SHIP
+    {   50,     30, 10  },  // RIDE_TYPE_SWINGING_SHIP
     {   50,     30, 10  },  // RIDE_TYPE_SWINGING_INVERTER_SHIP
     {   0,      0,  0   },  // RIDE_TYPE_FOOD_STALL
     {   0,      0,  0   },  // RIDE_TYPE_1D
@@ -1883,12 +1883,12 @@ const rating_tuple RideRatings[RIDE_TYPE_COUNT] = {
     {   40,     20, 10  },  // RIDE_TYPE_TWIST
     {   20,     10, 0   },  // RIDE_TYPE_HAUNTED_HOUSE
     {   0,      0,  0   },  // RIDE_TYPE_FIRST_AID
-    {   20,     10, 0   },  // RIDE_TYPE_CIRCUS_SHOW
+    {   20,     10, 0   },  // RIDE_TYPE_CIRCUS
     {   70,     10, 10  },  // RIDE_TYPE_GHOST_TRAIN
     {   52,     36, 10  },  // RIDE_TYPE_TWISTER_ROLLER_COASTER
     {   52,     33, 8   },  // RIDE_TYPE_WOODEN_ROLLER_COASTER
     {   48,     28, 7   },  // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    {   50,     30, 30  },  // RIDE_TYPE_WILD_MOUSE
+    {   50,     30, 30  },  // RIDE_TYPE_STEEL_WILD_MOUSE
     {   50,     30, 10  },  // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     {   50,     30, 10  },  // RIDE_TYPE_38
     {   50,     30, 10  },  // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -2084,7 +2084,7 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_3 |
          RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK |
          RIDE_TYPE_FLAG_16 | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                7,  25,  0,  0,  0, 0 },  // RIDE_TYPE_PIRATE_SHIP
+                7,  25,  0,  0,  0, 0 },  // RIDE_TYPE_SWINGING_SHIP
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
          RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
          RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS | RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_16 | RIDE_TYPE_FLAG_TRACK_NO_WALLS |
@@ -2181,7 +2181,7 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
         {RIDE_TYPE_FLAG_3 | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
          RIDE_TYPE_FLAG_HAS_NO_TRACK | RIDE_TYPE_FLAG_16 | RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_FLAT_RIDE |
          RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CIRCUS_SHOW
+                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_CIRCUS
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
          RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
          RIDE_TYPE_FLAG_HAS_G_FORCES | RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS |
@@ -2215,7 +2215,7 @@ const rct_ride_properties RideProperties[RIDE_TYPE_COUNT] = {
          RIDE_TYPE_FLAG_HAS_DATA_LOGGING | RIDE_TYPE_FLAG_HAS_DROPS | RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS |
          RIDE_TYPE_FLAG_PEEP_WILL_RIDE_AGAIN | RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS | RIDE_TYPE_FLAG_CHECK_FOR_STALLING | RIDE_TYPE_FLAG_HAS_TRACK |
          RIDE_TYPE_FLAG_SUPPORTS_MULTIPLE_TRACK_COLOUR,
-                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_WILD_MOUSE
+                0,  0,   0,  0,  0, 0 },  // RIDE_TYPE_STEEL_WILD_MOUSE
         {RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_ADDITIONAL |
          RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
          RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS | RIDE_TYPE_FLAG_HAS_G_FORCES |
@@ -2455,7 +2455,7 @@ const rct_shop_item_stats ShopItemStats[SHOP_ITEM_COUNT] = {
     {  9, 27, 32, 24 }, // SHOP_ITEM_HAT
     {  4, 10, 10, 10 }, // SHOP_ITEM_TOFFEE_APPLE
     { 20, 37, 37, 37 }, // SHOP_ITEM_TSHIRT
-    {  4,  8,  7, 10 }, // SHOP_ITEM_DONUT
+    {  4,  8,  7, 10 }, // SHOP_ITEM_DOUGHNUT
     {  3, 11, 15, 20 }, // SHOP_ITEM_COFFEE
     {  0,  0,  0,  0 }, // SHOP_ITEM_EMPTY_CUP
     {  5, 19, 19, 22 }, // SHOP_ITEM_CHICKEN
@@ -2518,7 +2518,7 @@ const uint8 RideConstructionDefaultTrackType[] = {
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_LOG_FLUME
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_RIVER_RAPIDS
     FLAT_TRACK_ELEM_4_X_4,      // RIDE_TYPE_DODGEMS
-    FLAT_TRACK_ELEM_1_X_5,      // RIDE_TYPE_PIRATE_SHIP
+    FLAT_TRACK_ELEM_1_X_5,      // RIDE_TYPE_SWINGING_SHIP
     FLAT_TRACK_ELEM_1_X_4_B,    // RIDE_TYPE_SWINGING_INVERTER_SHIP
     FLAT_TRACK_ELEM_1_X_1_A,    // RIDE_TYPE_FOOD_STALL
     FLAT_TRACK_ELEM_1_X_1_B,    // RIDE_TYPE_1D
@@ -2541,12 +2541,12 @@ const uint8 RideConstructionDefaultTrackType[] = {
     FLAT_TRACK_ELEM_3_X_3,      // RIDE_TYPE_TWIST
     FLAT_TRACK_ELEM_3_X_3,      // RIDE_TYPE_HAUNTED_HOUSE
     FLAT_TRACK_ELEM_1_X_1_A,    // RIDE_TYPE_FIRST_AID
-    FLAT_TRACK_ELEM_3_X_3,      // RIDE_TYPE_CIRCUS_SHOW
+    FLAT_TRACK_ELEM_3_X_3,      // RIDE_TYPE_CIRCUS
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_GHOST_TRAIN
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_TWISTER_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_WOODEN_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    TRACK_ELEM_END_STATION,     // RIDE_TYPE_WILD_MOUSE
+    TRACK_ELEM_END_STATION,     // RIDE_TYPE_STEEL_WILD_MOUSE
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     TRACK_ELEM_END_STATION,     // RIDE_TYPE_FLYING_ROLLER_COASTER
@@ -2784,7 +2784,7 @@ const track_colour_preset_list RideColourPresets[] = {
         { COLOUR_DARK_GREEN, COLOUR_BLACK, COLOUR_DARK_GREEN },
     ),
 
-    // RIDE_TYPE_PIRATE_SHIP
+    // RIDE_TYPE_SWINGING_SHIP
     TRACK_COLOUR_PRESETS(
         { COLOUR_DARK_BROWN, COLOUR_DARK_BROWN, COLOUR_BLACK },
     ),
@@ -2876,7 +2876,7 @@ const track_colour_preset_list RideColourPresets[] = {
     // RIDE_TYPE_FIRST_AID
     DEFAULT_FLAT_RIDE_COLOUR_PRESET,
 
-    // RIDE_TYPE_CIRCUS_SHOW
+    // RIDE_TYPE_CIRCUS
     DEFAULT_FLAT_RIDE_COLOUR_PRESET,
 
     // RIDE_TYPE_GHOST_TRAIN
@@ -2912,7 +2912,7 @@ const track_colour_preset_list RideColourPresets[] = {
         { COLOUR_DARK_BROWN, COLOUR_LIGHT_BROWN, COLOUR_DARK_BROWN },
     ),
 
-    // RIDE_TYPE_WILD_MOUSE
+    // RIDE_TYPE_STEEL_WILD_MOUSE
     TRACK_COLOUR_PRESETS(
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_YELLOW },
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_WHITE },

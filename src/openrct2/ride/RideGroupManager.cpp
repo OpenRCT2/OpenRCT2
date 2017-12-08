@@ -84,14 +84,14 @@ static const RideGroup ride_group_classic_mini_coaster = {
 };
 
 static const RideGroup ride_group_steel_wild_mouse = {
-    /*.RideType =*/ RIDE_TYPE_WILD_MOUSE,
+    /*.RideType =*/ RIDE_TYPE_STEEL_WILD_MOUSE,
     /*.MaximumHeight =*/ 16,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES),
     /*.Naming =*/ { STR_RIDE_NAME_WILD_MOUSE, STR_RIDE_DESCRIPTION_WILD_MOUSE },
 };
 
 static const RideGroup ride_group_spinning_wild_mouse = {
-    /*.RideType =*/ RIDE_TYPE_WILD_MOUSE,
+    /*.RideType =*/ RIDE_TYPE_STEEL_WILD_MOUSE,
     /*.MaximumHeight =*/ 16,
     /*.AvailableTrackPieces =*/ (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_SLOPE_CURVE) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_BLOCK_BRAKES) | (1ULL << TRACK_ROTATION_CONTROL_TOGGLE),
     /*.Naming =*/ { STR_SPINNING_WILD_MOUSE_GROUP, STR_SPINNING_WILD_MOUSE_GROUP_DESC },
@@ -127,7 +127,7 @@ static const RideGroup steel_wild_mouse_groups[MAX_RIDE_GROUPS_PER_RIDE_TYPE] = 
             return &ride_group_steel_twister_rc;
         else
             return &ride_group_hyper_twister;
-    case RIDE_TYPE_WILD_MOUSE:
+    case RIDE_TYPE_STEEL_WILD_MOUSE:
         if (rideEntry->enabledTrackPieces & (1ULL << TRACK_SLOPE_STEEP))
             return &ride_group_steel_wild_mouse;
         else
@@ -150,7 +150,7 @@ bool RideGroupManager::RideTypeHasRideGroups(const uint8 rideType)
         case RIDE_TYPE_JUNIOR_ROLLER_COASTER:
         case RIDE_TYPE_CAR_RIDE:
         case RIDE_TYPE_TWISTER_ROLLER_COASTER:
-        case RIDE_TYPE_WILD_MOUSE:
+        case RIDE_TYPE_STEEL_WILD_MOUSE:
             return true;
         default:
             return false;
@@ -172,7 +172,7 @@ const RideGroup * RideGroupManager::RideGroupFind(const uint8 rideType, const ui
         return &car_ride_groups[index];
     case RIDE_TYPE_TWISTER_ROLLER_COASTER:
         return &twister_rc_groups[index];
-    case RIDE_TYPE_WILD_MOUSE:
+    case RIDE_TYPE_STEEL_WILD_MOUSE:
         return &steel_wild_mouse_groups[index];
     default:
         return nullptr;
@@ -245,7 +245,7 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
         { "LFB1    " },                                                             // RIDE_TYPE_LOG_FLUME
         { "RAPBOAT " },                                                             // RIDE_TYPE_RIVER_RAPIDS
         { },                                                                        // RIDE_TYPE_DODGEMS
-        { },                                                                        // RIDE_TYPE_PIRATE_SHIP
+        { },                                                                        // RIDE_TYPE_SWINGING_SHIP
         { },                                                                        // RIDE_TYPE_SWINGING_INVERTER_SHIP
         { },                                                                        // RIDE_TYPE_FOOD_STALL
         { },                                                                        // RIDE_TYPE_1D
@@ -268,12 +268,12 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
         { },                                                                        // RIDE_TYPE_TWIST
         { },                                                                        // RIDE_TYPE_HAUNTED_HOUSE
         { },                                                                        // RIDE_TYPE_FIRST_AID
-        { },                                                                        // RIDE_TYPE_CIRCUS_SHOW
+        { },                                                                        // RIDE_TYPE_CIRCUS
         { "GTC     ", "HMCAR   " },                                                 // RIDE_TYPE_GHOST_TRAIN
         { "BMSD    ", "BMSU    ", "BMFL    ", "BMRB    ", "GOLTR   " },             // RIDE_TYPE_TWISTER_ROLLER_COASTER
         { "PTCT1   ", "MFT     ", "PTCT2   " },                                     // RIDE_TYPE_WOODEN_ROLLER_COASTER
         { "SFRIC1  " },                                                             // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-        { "SMC1    ", "SMC2    ", "WMSPIN  " },                                     // RIDE_TYPE_WILD_MOUSE
+        { "SMC1    ", "SMC2    ", "WMSPIN  " },                                     // RIDE_TYPE_STEEL_WILD_MOUSE
         { "ARRX    " },                                                             // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
         { },                                                                        // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
         { "BMAIR   " },                                                             // RIDE_TYPE_FLYING_ROLLER_COASTER

@@ -822,7 +822,7 @@ static const uint8 byte_9822F4[] = {
     0,      // SHOP_ITEM_HAT
     50,     // SHOP_ITEM_TOFFEE_APPLE
     0,      // SHOP_ITEM_TSHIRT
-    80,     // SHOP_ITEM_DONUT
+    80,     // SHOP_ITEM_DOUGHNUT
     90,     // SHOP_ITEM_COFFEE
     0,      // SHOP_ITEM_EMPTY_CUP
     170,    // SHOP_ITEM_CHICKEN
@@ -900,7 +900,7 @@ static const uint8 peep_item_containers[] = {
     0xFF,                           // PEEP_ITEM_HAT
     0xFF,                           // PEEP_ITEM_TOFFEE_APPLE
     0xFF,                           // PEEP_ITEM_TSHIRT
-    0xFF,                           // PEEP_ITEM_DONUT
+    0xFF,                           // PEEP_ITEM_DOUGHNUT
     SHOP_ITEM_EMPTY_CUP,            // PEEP_ITEM_COFFEE
     0xFF,                           // PEEP_ITEM_EMPTY_CUP
     SHOP_ITEM_EMPTY_BOX,            // PEEP_ITEM_CHICKEN
@@ -1855,7 +1855,7 @@ static item_pref_t item_order_preference[] = {
         { 0, PEEP_ITEM_HOT_DOG, PEEP_SPRITE_TYPE_HOT_DOG  },
         { 0, PEEP_ITEM_TENTACLE, PEEP_SPRITE_TYPE_TENTACLE },
         { 0, PEEP_ITEM_TOFFEE_APPLE, PEEP_SPRITE_TYPE_TOFFEE_APPLE },
-        { 0, PEEP_ITEM_DONUT, PEEP_SPRITE_TYPE_DONUT },
+        { 0, PEEP_ITEM_DOUGHNUT, PEEP_SPRITE_TYPE_DOUGHNUT },
         { 1, PEEP_ITEM_PRETZEL, PEEP_SPRITE_TYPE_PRETZEL },
         { 1, PEEP_ITEM_COOKIE, PEEP_SPRITE_TYPE_PRETZEL },
         { 1, PEEP_ITEM_CHOCOLATE, PEEP_SPRITE_TYPE_COFFEE },
@@ -5389,7 +5389,7 @@ static void peep_update_queuing(rct_peep * peep)
             case PEEP_SPRITE_TYPE_HOT_DOG:
             case PEEP_SPRITE_TYPE_TENTACLE:
             case PEEP_SPRITE_TYPE_TOFFEE_APPLE:
-            case PEEP_SPRITE_TYPE_DONUT:
+            case PEEP_SPRITE_TYPE_DOUGHNUT:
             case PEEP_SPRITE_TYPE_COFFEE:
             case PEEP_SPRITE_TYPE_CHICKEN:
             case PEEP_SPRITE_TYPE_LEMONADE:
@@ -6315,7 +6315,7 @@ static const uint8 item_standard_litter[32] = {
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_HAT
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOFFEE_APPLE
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TSHIRT
-    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DONUT
+    LITTER_TYPE_RUBBISH,          // PEEP_ITEM_DOUGHNUT
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_COFFEE
     LITTER_TYPE_EMPTY_CUP,        // PEEP_ITEM_EMPTY_CUP
     LITTER_TYPE_EMPTY_BOX,        // PEEP_ITEM_CHICKEN
@@ -8452,7 +8452,7 @@ static sint32 peep_has_food_standard_flag(rct_peep * peep)
     return peep->item_standard_flags &
            (PEEP_ITEM_DRINK | PEEP_ITEM_BURGER | PEEP_ITEM_CHIPS | PEEP_ITEM_ICE_CREAM | PEEP_ITEM_CANDYFLOSS |
             PEEP_ITEM_PIZZA | PEEP_ITEM_POPCORN | PEEP_ITEM_HOT_DOG | PEEP_ITEM_TENTACLE | PEEP_ITEM_TOFFEE_APPLE |
-            PEEP_ITEM_DONUT | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
+            PEEP_ITEM_DOUGHNUT | PEEP_ITEM_COFFEE | PEEP_ITEM_CHICKEN | PEEP_ITEM_LEMONADE);
 }
 
 static sint32 peep_has_food_extra_flag(rct_peep * peep)

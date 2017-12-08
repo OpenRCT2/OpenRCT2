@@ -19293,7 +19293,7 @@ const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldLogFlumeTrackPaintFunctions,                        // RIDE_TYPE_LOG_FLUME
     _OldRiverRapidsTrackPaintFunctions,                     // RIDE_TYPE_RIVER_RAPIDS
     _OldDodgemsTrackPaintFunctions,                         // RIDE_TYPE_DODGEMS
-    _OldPirateShipTrackPaintFunctions,                      // RIDE_TYPE_PIRATE_SHIP
+    _OldPirateShipTrackPaintFunctions,                      // RIDE_TYPE_SWINGING_SHIP
     _OldSwingingInverterShipTrackPaintFunctions,            // RIDE_TYPE_SWINGING_INVERTER_SHIP
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_FOOD_STALL
     _OldShopTrackPaintFunctions,                            // RIDE_TYPE_1D
@@ -19316,12 +19316,12 @@ const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _OldTwistTrackPaintFunctions,                           // RIDE_TYPE_TWIST
     _OldHauntedHouseTrackPaintFunctions,                    // RIDE_TYPE_HAUNTED_HOUSE
     _OldFacilityTrackPaintFunctions,                        // RIDE_TYPE_FIRST_AID
-    _OldCircusShowTrackPaintFunctions,                      // RIDE_TYPE_CIRCUS_SHOW
+    _OldCircusShowTrackPaintFunctions,                      // RIDE_TYPE_CIRCUS
     _OldGhostTrainTrackPaintFunctions,                      // RIDE_TYPE_GHOST_TRAIN
     _OldTwisterRollerCoasterTrackPaintFunctions,            // RIDE_TYPE_TWISTER_ROLLER_COASTER
     _OldWoodenRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_WOODEN_ROLLER_COASTER
     _OldSideFrictionRollerCoasterTrackPaintFunctions,       // RIDE_TYPE_SIDE_FRICTION_ROLLER_COASTER
-    _OldWildMouseTrackPaintFunctions,                       // RIDE_TYPE_WILD_MOUSE
+    _OldWildMouseTrackPaintFunctions,                       // RIDE_TYPE_STEEL_WILD_MOUSE
     _OldMultiDimensionRollerCoasterTrackPaintFunctions,     // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER
     _OldMultiDimensionRollerCoasterTrackPaintFunctions,     // RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT
     _OldFlyingRollerCoasterTrackPaintFunctions,             // RIDE_TYPE_FLYING_ROLLER_COASTER
