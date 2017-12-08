@@ -937,7 +937,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             (sint16)(base.y + offset.y)
         };
 
-        tileDescriptors[i + 1].tile_element = NULL;
+        tile_descriptor& descriptor = tileDescriptors[i + 1];
+
+        descriptor.tile_element = NULL;
         if (position.x > 0x2000 || position.y > 0x2000)
         {
             continue;
@@ -953,13 +955,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         const uint8 baseHeight = surfaceElement->base_height / 2;
         const corner_height& ch = corner_heights[surfaceSlope];
 
-        tileDescriptors[i + 1].tile_element = surfaceElement;
-        tileDescriptors[i + 1].terrain = tile_element_get_terrain(surfaceElement);
-        tileDescriptors[i + 1].slope = surfaceSlope;
-        tileDescriptors[i + 1].corner_heights.top = baseHeight + ch.top;
-        tileDescriptors[i + 1].corner_heights.right = baseHeight + ch.right;
-        tileDescriptors[i + 1].corner_heights.bottom = baseHeight + ch.bottom;
-        tileDescriptors[i + 1].corner_heights.left = baseHeight + ch.left;
+        descriptor.tile_element = surfaceElement;
+        descriptor.terrain = tile_element_get_terrain(surfaceElement);
+        descriptor.slope = surfaceSlope;
+        descriptor.corner_heights.top = baseHeight + ch.top;
+        descriptor.corner_heights.right = baseHeight + ch.right;
+        descriptor.corner_heights.bottom = baseHeight + ch.bottom;
+        descriptor.corner_heights.left = baseHeight + ch.left;
     }
 
 
