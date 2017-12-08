@@ -325,7 +325,7 @@ private:
     {
         DirectoryChild result;
         result.Name = std::string(node->d_name);
-        if (node->d_type & DT_DIR)
+        if (node->d_type == DT_DIR)
         {
             result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
         }
@@ -345,6 +345,11 @@ private:
             {
                 result.Size = statInfo.st_size;
                 result.LastModified = statInfo.st_mtime;
+
+                if (S_ISDIR(statInfo.st_mode))
+                {
+                    result.Type = DIRECTORY_CHILD_TYPE::DC_DIRECTORY;
+                }
             }
 
             Memory::Free(path);

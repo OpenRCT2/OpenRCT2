@@ -78,6 +78,7 @@
 - Fix: [#6547] The server log is not logged if the server name contains CJK
 - Fix: [#6593] Cannot hire entertainers when default scenery groups are not selected (original bug).
 - Fix: [#6657] Guest list is missing tracking icon after reopening.
+- Fix: [#6803] Symbolic links to directories are not descended by FileScanner.
 - Fix: [#6830] Crash when using mountain tool due to ride with no ride entry.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
