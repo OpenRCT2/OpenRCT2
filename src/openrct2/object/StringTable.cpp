@@ -22,9 +22,9 @@
 #include "Object.h"
 #include "StringTable.h"
 
-static bool StringIsBlank(utf8 * str)
+static bool StringIsBlank(const utf8 * str)
 {
-    for (utf8 * ch = str; *ch != '\0'; ch++)
+    for (auto ch = str; *ch != '\0'; ch++)
     {
         if (!isblank(*ch))
         {
@@ -32,14 +32,6 @@ static bool StringIsBlank(utf8 * str)
         }
     }
     return true;
-}
-
-StringTable::~StringTable()
-{
-    for (auto entry : _strings)
-    {
-        Memory::Free(entry.Text);
-    }
 }
 
 void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
@@ -74,7 +66,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
     Sort();
 }
 
-const utf8 * StringTable::GetString(uint8 id) const
+std::string StringTable::GetString(uint8 id) const
 {
     for (auto &string : _strings)
     {
@@ -86,6 +78,15 @@ const utf8 * StringTable::GetString(uint8 id) const
     return nullptr;
 }
 
+void StringTable::SetString(uint8 id, uint8 language, const std::string &text)
+{
+    StringTableEntry entry;
+    entry.Id = id;
+    entry.LanguageId = language;
+    entry.Text = String::Duplicate(text);
+    _strings.push_back(entry);
+}
+
 void StringTable::Sort()
 {
     std::sort(_strings.begin(), _strings.end(), [](const StringTableEntry &a, const StringTableEntry &b) -> bool
@@ -94,7 +95,7 @@ void StringTable::Sort()
         {
             if (a.LanguageId == b.LanguageId)
             {
-                return _strcmpi(a.Text, b.Text) < 0;
+                return String::Compare(a.Text, b.Text, true) < 0;
             }
 
             uint8 currentLanguage = LanguagesDescriptors[gCurrentLanguage].rct2_original_id;

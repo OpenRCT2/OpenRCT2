@@ -41,40 +41,30 @@ constexpr sint32           ScenarioOverrideMaxStringCount = 3;
 
 struct ObjectOverride
 {
-    char         name[8];
-    const utf8 * strings[4];
+    char        name[8] = { 0 };
+    std::string strings[4];
 };
 
 struct ScenarioOverride
 {
     std::string filename;
-    union {
-        const utf8 * strings[3];
-        struct {
-            const utf8 * name;
-            const utf8 * park;
-            const utf8 * details;
-        };
-    };
+    std::string strings[3];
 };
 
 class LanguagePack final : public ILanguagePack
 {
 private:
-    uint16 _id;
-    utf8 * _stringData;
-
-    std::vector<const utf8*>      _strings;
+    uint16 const _id;
+    std::vector<std::string>      _strings;
     std::vector<ObjectOverride>   _objectOverrides;
     std::vector<ScenarioOverride> _scenarioOverrides;
 
     ///////////////////////////////////////////////////////////////////////////
     // Parsing work data
     ///////////////////////////////////////////////////////////////////////////
-    StringBuilder      _stringDataSB;
-    utf8 *             _currentGroup;
-    ObjectOverride *   _currentObjectOverride;
-    ScenarioOverride * _currentScenarioOverride;
+    std::string        _currentGroup;
+    ObjectOverride *   _currentObjectOverride = nullptr;
+    ScenarioOverride * _currentScenarioOverride = nullptr;
 
 public:
     static LanguagePack * FromFile(uint16 id, const utf8 * path)
@@ -117,14 +107,9 @@ public:
     }
 
     LanguagePack(uint16 id, const utf8 * text)
+        : _id(id)
     {
         Guard::ArgumentNotNull(text);
-
-        _id = id;
-        _stringData = nullptr;
-        _currentGroup = nullptr;
-        _currentObjectOverride = nullptr;
-        _currentScenarioOverride = nullptr;
 
         auto reader = UTF8StringReader(text);
         while (reader.CanRead())
@@ -166,18 +151,9 @@ public:
         }
 
         // Clean up the parsing work data
-        Memory::Free(_currentGroup);
-        // Reset the string builder to free memory
-        _stringDataSB.Reset();
-        _currentGroup = nullptr;
+        _currentGroup = std::string();
         _currentObjectOverride = nullptr;
         _currentScenarioOverride = nullptr;
-    }
-
-    ~LanguagePack()
-    {
-        Memory::Free(_stringData);
-        Memory::Free(_currentGroup);
     }
 
     uint16 GetId() const override
@@ -190,7 +166,15 @@ public:
         return (uint32)_strings.size();
     }
 
-    void SetString(rct_string_id stringId, const utf8 * str) override
+    void RemoveString(rct_string_id stringId) override
+    {
+        if (_strings.size() >= (size_t)stringId)
+        {
+            _strings[stringId] = std::string();
+        }
+    }
+
+    void SetString(rct_string_id stringId, const std::string &str) override
     {
         if (_strings.size() >= (size_t)stringId)
         {
@@ -208,7 +192,7 @@ public:
 
             if (_scenarioOverrides.size() > (size_t)ooIndex)
             {
-                return _scenarioOverrides[ooIndex].strings[ooStringIndex];
+                return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
             else
             {
@@ -223,7 +207,7 @@ public:
 
             if (_objectOverrides.size() > (size_t)ooIndex)
             {
-                return _objectOverrides[ooIndex].strings[ooStringIndex];
+                return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
             else
             {
@@ -234,7 +218,7 @@ public:
         {
             if (_strings.size() > (size_t)stringId)
             {
-                return _strings[stringId];
+                return _strings[stringId].c_str();
             }
             else
             {
@@ -253,7 +237,7 @@ public:
         {
             if (strncmp(objectOverride.name, objectIdentifier, 8) == 0)
             {
-                if (objectOverride.strings[index] == nullptr)
+                if (objectOverride.strings[index].empty())
                 {
                     return STR_NONE;
                 }
@@ -275,7 +259,7 @@ public:
         {
             if (String::Equals(scenarioOverride.filename.c_str(), scenarioFilename, true))
             {
-                if (scenarioOverride.strings[index] == nullptr)
+                if (scenarioOverride.strings[index].empty())
                 {
                     return STR_NONE;
                 }
@@ -287,13 +271,21 @@ public:
         return STR_NONE;
     }
 
-    ObjectOverride * GetObjectOverride(const char * objectIdentifier)
+private:
+    ObjectOverride * GetObjectOverride(const std::string &objectIdentifier)
     {
+<<<<<<< HEAD
         Guard::ArgumentNotNull(objectIdentifier);
 
         for (auto &oo : _objectOverrides)
         {
             if (strncmp(oo.name, objectIdentifier, 8) == 0)
+=======
+        for (size_t i = 0; i < _objectOverrides.size(); i++)
+        {
+            ObjectOverride *oo = &_objectOverrides[i];
+            if (strncmp(oo->name, objectIdentifier.c_str(), 8) == 0)
+>>>>>>> 4c394cca0... Fix strings by std::string-ing LanguagePack
             {
                 return &oo;
             }
@@ -301,8 +293,9 @@ public:
         return nullptr;
     }
 
-    ScenarioOverride * GetScenarioOverride(const utf8 * scenarioIdentifier)
+    ScenarioOverride * GetScenarioOverride(const std::string &scenarioIdentifier)
     {
+<<<<<<< HEAD
         Guard::ArgumentNotNull(scenarioIdentifier);
 
         for (auto &so : _scenarioOverrides)
@@ -311,6 +304,12 @@ public:
             // strings, but rather still hold offsets from base.
             const utf8 *name = _stringDataSB.GetBuffer() + (size_t)so.name;
             if (_stricmp(name, scenarioIdentifier) == 0)
+=======
+        for (size_t i = 0; i < _scenarioOverrides.size(); i++)
+        {
+            ScenarioOverride *so = &_scenarioOverrides[i];
+            if (String::Equals(so->strings[0], scenarioIdentifier.c_str(), true))
+>>>>>>> 4c394cca0... Fix strings by std::string-ing LanguagePack
             {
                 return &so;
             }
@@ -444,8 +443,6 @@ public:
 
         if (closedCorrectly)
         {
-            SafeFree(_currentGroup);
-
             while (sb.GetLength() < 8)
             {
                 sb.Append(' ');
@@ -464,8 +461,7 @@ public:
 
                     _objectOverrides.push_back(ObjectOverride());
                     _currentObjectOverride = &_objectOverrides[_objectOverrides.size() - 1];
-                    Memory::Set(_currentObjectOverride, 0, sizeof(ObjectOverride));
-                    Memory::Copy(_currentObjectOverride->name, _currentGroup, 8);
+                    Memory::Copy(_currentObjectOverride->name, _currentGroup.c_str(), 8);
                 }
             }
         }
@@ -496,8 +492,6 @@ public:
 
         if (closedCorrectly)
         {
-            SafeFree(_currentGroup);
-
             _currentGroup = sb.GetString();
             _currentObjectOverride = nullptr;
             _currentScenarioOverride = GetScenarioOverride(_currentGroup);
@@ -511,7 +505,6 @@ public:
                 _scenarioOverrides.push_back(ScenarioOverride());
                 _currentScenarioOverride = &_scenarioOverrides[_scenarioOverrides.size() - 1];
                 _currentScenarioOverride->filename = std::string(sb.GetBuffer());
-                Memory::Set(_currentScenarioOverride->strings, 0, sizeof(_currentScenarioOverride->strings));
             }
         }
     }
@@ -554,7 +547,7 @@ public:
         const utf8 * identifier = sb.GetBuffer();
 
         sint32 stringId;
-        if (_currentGroup == nullptr)
+        if (_currentGroup.empty())
         {
             if (sscanf(identifier, "STR_%4d", &stringId) != 1)
             {
@@ -610,35 +603,31 @@ public:
             }
         }
 
-        // Append a null terminator for the benefit of the last string
-        _stringDataSB.Append('\0');
-
-        // Get the relative offset to the string (add the base offset when we extract the string properly)
-        utf8 * relativeOffset = (utf8*)_stringDataSB.GetLength();
-
-        if (_currentGroup == nullptr)
+        auto s = std::string(sb.GetBuffer());
+        if (_currentGroup.empty())
         {
             // Make sure the list is big enough to contain this string id
             if ((size_t)stringId >= _strings.size())
             {
+<<<<<<< HEAD
                 _strings.resize(stringId + 1);
+=======
+                _strings.push_back("");
+>>>>>>> 4c394cca0... Fix strings by std::string-ing LanguagePack
             }
-
-            _strings[stringId] = relativeOffset;
+            _strings[stringId] = s;
         }
         else
         {
             if (_currentObjectOverride != nullptr)
             {
-                _currentObjectOverride->strings[stringId] = relativeOffset;
+                _currentObjectOverride->strings[stringId] = s;
             }
             else
             {
-                _currentScenarioOverride->strings[stringId] = relativeOffset;
+                _currentScenarioOverride->strings[stringId] = s;
             }
         }
-
-        _stringDataSB.Append(&sb);
     }
 
     bool ParseToken(IStringReader * reader, uint32 * token, bool * isByte)

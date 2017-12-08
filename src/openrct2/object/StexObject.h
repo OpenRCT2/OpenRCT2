@@ -38,11 +38,11 @@ public:
 
     void DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 height) const override;
 
-    const utf8 * GetName() const override;
+    std::string GetName() const override;
 
-    const utf8 * GetScenarioName() const;
-    const utf8 * GetScenarioDetails() const;
-    const utf8 * GetParkName() const;
+    std::string GetScenarioName() const;
+    std::string GetScenarioDetails() const;
+    std::string GetParkName() const;
 };
 
 #endif
