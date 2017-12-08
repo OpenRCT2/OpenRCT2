@@ -59,10 +59,10 @@ static void CallDrawRainFunc(IRainDrawer * rainDrawer,
         return;
     }
 
-    left = Math::Max(left, vp->x);
-    right = Math::Min(right, vp->width);
-    top = Math::Max(top, vp->y);
-    bottom = Math::Min(bottom, vp->height);
+    left = Math::Max<sint16>(left, vp->x);
+    right = Math::Min<sint16>(right, vp->x + vp->width);
+    top = Math::Max<sint16>(top, vp->y);
+    bottom = Math::Min<sint16>(bottom, vp->y + vp->height);
     if (left >= right || top >= bottom)
     {
         return;
