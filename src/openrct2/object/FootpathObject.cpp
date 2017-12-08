@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "FootpathObject.h"
-
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
+#include "FootpathObject.h"
+#include "ObjectJsonHelpers.h"
 
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -62,4 +62,41 @@ void FootpathObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 h
     sint32 y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image + 71, x - 49, y - 17, 0);
     gfx_draw_sprite(dpi, _legacyType.image + 72, x + 4, y - 17, 0);
+}
+
+static uint8 ParseSupportType(const std::string &s)
+{
+    if (s == "pole") return FOOTPATH_ENTRY_SUPPORT_TYPE_POLE;
+    else /* if (s == "box") */ return FOOTPATH_ENTRY_SUPPORT_TYPE_BOX;
+}
+
+void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    // Strings
+    auto stringTable = GetStringTable();
+    auto jsonStrings = json_object_get(root, "strings");
+    auto jsonName = json_object_get(jsonStrings, "name");
+    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
+
+    auto properties = json_object_get(root, "properties");
+    _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
+    _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+
+    // Flags
+    _legacyType.flags = 0;
+    if (json_boolean_value(json_object_get(properties, "hasSupportImages")))
+    {
+        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE;
+    }
+    if (json_boolean_value(json_object_get(properties, "hasElevatedPathImages")))
+    {
+        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE;
+    }
+    if (json_boolean_value(json_object_get(properties, "editorOnly")))
+    {
+        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
+    }
+
+    auto imageTable = GetImageTable();
+    ObjectJsonHelpers::LoadImages(root, *imageTable);
 }

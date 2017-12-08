@@ -28,6 +28,13 @@ using namespace OpenRCT2;
 
 namespace ObjectJsonHelpers
 {
+    std::string GetString(const json_t * value)
+    {
+        return json_is_string(value) ?
+            std::string(json_string_value(value)) :
+            std::string();
+    }
+
     std::vector<std::string> GetJsonStringArray(const json_t * arr)
     {
         std::vector<std::string> result;

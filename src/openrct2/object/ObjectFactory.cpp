@@ -211,6 +211,10 @@ namespace ObjectFactory
         {
             return OBJECT_TYPE_RIDE;
         }
+        else if (s == "footpath")
+        {
+            return OBJECT_TYPE_PATHS;
+        }
         else if (s == "park_entrance")
         {
             return OBJECT_TYPE_PARK_ENTRANCE;
