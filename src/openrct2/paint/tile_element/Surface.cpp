@@ -841,7 +841,7 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
 
         if (cur_height != regs.al && cur_height != regs.cl)
         {
-            uint32 image_id = base_image_id + image_offset;
+            const uint32 image_id = base_image_id + image_offset;
             sub_98196C(session, image_id, offset.x, offset.y, bounds.x, bounds.y, 15, cur_height * 16, rotation);
             cur_height++;
         }
@@ -905,15 +905,12 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     session->DidPassSurface = true;
     session->SurfaceElement = tileElement;
 
-    uint16 zoomLevel = dpi->zoom_level;
-
+    const uint16 zoomLevel = dpi->zoom_level;
     const uint8 rotation = get_current_rotation();
-    uint32 terrain_type = tile_element_get_terrain(tileElement);
-    uint8 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
-
+    const uint32 terrain_type = tile_element_get_terrain(tileElement);
+    const uint8 surfaceShape = viewport_surface_paint_setup_get_relative_slope(tileElement, rotation);
     const LocationXY16& base = session->SpritePosition;
-
-    corner_height ch = corner_heights[surfaceShape];
+    const corner_height& cornerHeights = corner_heights[surfaceShape];
 
     tile_descriptor selfDescriptor =
     {
@@ -921,10 +918,10 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         (uint8)terrain_type,
         surfaceShape,
         {
-            (uint8)(height / 16 + ch.top),
-            (uint8)(height / 16 + ch.right),
-            (uint8)(height / 16 + ch.bottom),
-            (uint8)(height / 16 + ch.left),
+            (uint8)(height / 16 + cornerHeights.top),
+            (uint8)(height / 16 + cornerHeights.right),
+            (uint8)(height / 16 + cornerHeights.bottom),
+            (uint8)(height / 16 + cornerHeights.left),
         }
     };
 
@@ -933,8 +930,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     for (sint32 i = 0; i < 4; i++)
     {
-        LocationXY16 offset = viewport_surface_paint_data[i][rotation];
-        LocationXY16 position =
+        const LocationXY16& offset = viewport_surface_paint_data[i][rotation];
+        const LocationXY16 position =
         {
             (sint16)(base.x + offset.x),
             (sint16)(base.y + offset.y)
@@ -952,13 +949,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             continue;
         }
 
+        const uint32 surfaceSlope = viewport_surface_paint_setup_get_relative_slope(surfaceElement, rotation);
+        const uint8 baseHeight = surfaceElement->base_height / 2;
+        const corner_height& ch = corner_heights[surfaceSlope];
+
         tileDescriptors[i + 1].tile_element = surfaceElement;
         tileDescriptors[i + 1].terrain = tile_element_get_terrain(surfaceElement);
-        uint32 ebx = viewport_surface_paint_setup_get_relative_slope(surfaceElement, rotation);
-        tileDescriptors[i + 1].slope = ebx;
-
-        uint8 baseHeight = surfaceElement->base_height / 2;
-        ch = corner_heights[ebx];
+        tileDescriptors[i + 1].slope = surfaceSlope;
         tileDescriptors[i + 1].corner_heights.top = baseHeight + ch.top;
         tileDescriptors[i + 1].corner_heights.right = baseHeight + ch.right;
         tileDescriptors[i + 1].corner_heights.bottom = baseHeight + ch.bottom;
@@ -968,7 +965,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
     if ((gCurrentViewportFlags & VIEWPORT_FLAG_LAND_HEIGHTS) && (zoomLevel == 0))
     {
-        sint16 x = session->MapPosition.x, y = session->MapPosition.y;
+        const sint16 x = session->MapPosition.x;
+        const sint16 y = session->MapPosition.y;
 
         sint32 dx = tile_element_height(x + 16, y + 16) & 0xFFFF;
         dx += 3;
@@ -991,7 +989,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     }
     else
     {
-        bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
+        const bool showGridlines = (gCurrentViewportFlags & VIEWPORT_FLAG_GRIDLINES);
 
         sint32 branch = -1;
         if ((tileElement->properties.surface.terrain & 0xE0) == 0)
@@ -1009,7 +1007,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
 
         assert(surfaceShape < Util::CountOf(byte_97B444));
-        uint8 image_offset = byte_97B444[surfaceShape];
+        const uint8 image_offset = byte_97B444[surfaceShape];
         sint32 image_id;
         uint32 ebp = terrain_type;
 
@@ -1050,22 +1048,21 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             // loc_660C44
         case 6:
             // loc_660C6A
-        {
-            sint16 x = session->MapPosition.x & 0x20;
-            sint16 y = session->MapPosition.y & 0x20;
-            sint32 index = (y | (x << 1)) >> 5;
+            {
+                const sint16 x = session->MapPosition.x & 0x20;
+                const sint16 y = session->MapPosition.y & 0x20;
+                const sint32 index = (y | (x << 1)) >> 5;
 
-            if (branch == 6)
-            {
-                image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
-            }
-            else
-            {
-                image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
+                if (branch == 6)
+                {
+                    image_id = dword_97B878[index][showGridlines ? 1 : 0] + image_offset;
+                }
+                else
+                {
+                    image_id = dword_97B858[index][showGridlines ? 1 : 0] + image_offset;
+                }
             }
             break;
-        }
-
         }
 
         sub_98196C(session, image_id, 0, 0, 32, 32, -1, height, rotation);
@@ -1076,11 +1073,11 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     // loc_660D02
     if (gStaffDrawPatrolAreas != SPRITE_INDEX_NULL)
     {
-        sint32 staffIndex = gStaffDrawPatrolAreas;
-        bool is_staff_list = staffIndex & 0x8000;
-        uint8 staffType = staffIndex & 0x7FFF;
-        sint16 x = session->MapPosition.x, y = session->MapPosition.y;
+        const sint32 staffIndex = gStaffDrawPatrolAreas;
+        const bool is_staff_list = staffIndex & 0x8000;
+        const sint16 x = session->MapPosition.x, y = session->MapPosition.y;
 
+        uint8 staffType = staffIndex & 0x7FFF;
         uint32 image_id = IMAGE_TYPE_REMAP;
         uint8 patrolColour = COLOUR_LIGHT_BLUE;
 
@@ -1108,17 +1105,17 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) &&
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
-        LocationXY16 pos = session->MapPosition;
+        const LocationXY16& pos = session->MapPosition;
         for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i)
         {
-            rct2_peep_spawn * spawn = &gPeepSpawns[i];
+            const rct2_peep_spawn * spawn = &gPeepSpawns[i];
 
             if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y)
             {
                 sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
 
-                sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
-                uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
+                const sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
+                const uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
                 sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
             }
         }
@@ -1134,9 +1131,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
         else if (tileElement->properties.surface.ownership & OWNERSHIP_AVAILABLE)
         {
-            LocationXY16 pos = session->MapPosition;
+            const LocationXY16& pos = session->MapPosition;
+            const sint32 height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             paint_struct * backup = session->UnkF1AD28;
-            sint32 height2 = (tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF) + 3;
             sub_98196C(session, SPR_LAND_OWNERSHIP_AVAILABLE, 16, 16, 1, 1, 0, height2, rotation);
             session->UnkF1AD28 = backup;
         }
@@ -1152,9 +1149,9 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         }
         else if (tileElement->properties.surface.ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE)
         {
+            const LocationXY16& pos = session->MapPosition;
+            const sint32 height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             paint_struct * backup = session->UnkF1AD28;
-            LocationXY16 pos = session->MapPosition;
-            sint32 height2 = tile_element_height(pos.x + 16, pos.y + 16) & 0xFFFF;
             sub_98196C(session, SPR_LAND_CONSTRUCTION_RIGHTS_AVAILABLE, 16, 16, 1, 1, 0, height2 + 3, rotation);
             session->UnkF1AD28 = backup;
         }
@@ -1167,27 +1164,27 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (gMapSelectFlags & MAP_SELECT_FLAG_ENABLE)
     {
         // loc_660FB8:
-        LocationXY16 pos = session->MapPosition;
+        const LocationXY16& pos = session->MapPosition;
         if (pos.x >= gMapSelectPositionA.x &&
             pos.x <= gMapSelectPositionB.x &&
             pos.y >= gMapSelectPositionA.y &&
             pos.y <= gMapSelectPositionB.y)
         {
-            uint16 mapSelectionType = gMapSelectType;
+            const uint16 mapSelectionType = gMapSelectType;
             if (mapSelectionType >= MAP_SELECT_TYPE_EDGE_0)
             {
                 // Walls
                 // loc_661089:
-                uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
+                const uint32 eax = ((((mapSelectionType - 9) + rotation) & 3) + 0x21) << 19;
+                const uint32 image_id = (SPR_TERRAIN_SELECTION_EDGE + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
             }
             else if (mapSelectionType >= MAP_SELECT_TYPE_QUARTER_0)
             {
                 // loc_661051:(no jump)
                 // Selection split into four quarter segments
-                uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
+                const uint32 eax = ((((mapSelectionType - MAP_SELECT_TYPE_QUARTER_0) + rotation) & 3) + 0x27) << 19;
+                const uint32 image_id = (SPR_TERRAIN_SELECTION_QUARTER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
             }
             else if (mapSelectionType <= MAP_SELECT_TYPE_FULL)
@@ -1200,7 +1197,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                 }
 
                 eax = (eax + 0x21) << 19;
-                uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
+                const uint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[surfaceShape]) | eax | IMAGE_TYPE_REMAP;
                 paint_attach_to_previous_ps(session, image_id, 0, 0);
             }
             else
@@ -1232,7 +1229,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
                     }
                 }
 
-                sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
+                const sint32 image_id = (SPR_TERRAIN_SELECTION_CORNER + byte_97B444[local_surfaceShape]) | 0x21300000;
 
                 paint_struct * backup = session->UnkF1AD28;
                 sub_98196C(session, image_id, 0, 0, 32, 32, 1, local_height, rotation);
@@ -1245,8 +1242,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     {
         const LocationXY16& pos = session->MapPosition;
 
-        LocationXY16 * tile;
-        for (tile = gMapSelectionTiles; tile->x != -1; tile++)
+        for (const LocationXY16 * tile = gMapSelectionTiles; tile->x != -1; tile++)
         {
             if (tile->x != pos.x || tile->y != pos.y)
             {
@@ -1294,10 +1290,10 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
         // loc_66122C:
-        uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
-        uint8 di_type = tileElement->type & 0x80;
+        const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+        const uint8 di_type = tileElement->type & 0x80;
 
-        uint32 eax = al_edgeStyle + di_type * 2;
+        const uint32 eax = al_edgeStyle + di_type * 2;
         if (eax != 32 && eax != 0 && eax != 96 && eax != 64)
         {
             log_verbose("eax: %d", eax);
@@ -1323,8 +1319,8 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         // loc_6615A9: (water height)
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_WATER;
 
-        uint16 localHeight = height + 16;
-        uint16 waterHeight = map_get_water_height(tileElement) * 16;
+        const uint16 localHeight = height + 16;
+        const uint16 waterHeight = map_get_water_height(tileElement) * 16;
 
         if (!gTrackDesignSaveMode)
         {
