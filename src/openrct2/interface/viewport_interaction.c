@@ -316,7 +316,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
         set_map_tooltip_format_arg(0, rct_string_id, STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
         set_map_tooltip_format_arg(2, rct_string_id, STR_FOOTPATH_MAP_TIP);
-        if (tileElement->type & 1)
+        if (footpath_element_is_queue(tileElement))
             set_map_tooltip_format_arg(2, rct_string_id, STR_QUEUE_LINE_MAP_TIP);
         return info->type;
 
@@ -467,7 +467,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElem
     sint32 type;
 
     type = tileElement->properties.path.type >> 4;
-    if (tileElement->type & 1)
+    if (footpath_element_is_queue(tileElement))
         type |= 0x80;
 
     gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

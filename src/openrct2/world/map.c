@@ -2912,7 +2912,8 @@ void map_remove_all_rides()
     do {
         switch (tile_element_get_type(it.element)) {
         case TILE_ELEMENT_TYPE_PATH:
-            if (it.element->type & 1) {
+            if (footpath_element_is_queue(it.element))
+            {
                 it.element->properties.path.type &= ~8;
                 it.element->properties.path.addition_status = 255;
             }

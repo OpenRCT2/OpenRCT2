@@ -8958,7 +8958,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
             if (tile_element_get_type(nextTileElement) != TILE_ELEMENT_TYPE_PATH)
                 continue;
 
-            if (nextTileElement->type & 1)
+            if (footpath_element_is_queue(nextTileElement))
                 continue;
 
             if (footpath_element_is_sloped(nextTileElement))
@@ -9252,7 +9252,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
         uint8 stationNum = (tile_element->properties.path.additions & 0x70) >> 4;
 
         if ((tile_element->properties.path.type & (1 << 3)) // Queue has the ride sign on it
-            && (((tile_element->type & (3 << 6)) >> 6) ==
+            && (footpath_element_get_direction(tile_element) ==
                 ((peep->direction) ^ 2)) // Ride sign is facing the direction the peep is walking
         )
         {

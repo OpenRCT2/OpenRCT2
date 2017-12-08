@@ -24,6 +24,7 @@
 #include "scenery.h"
 #include "SmallScenery.h"
 #include "sprite.h"
+#include "footpath.h"
 
 typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
 
@@ -153,7 +154,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
         if (!(tileElement->properties.path.type & PATH_FLAG_QUEUE_BANNER))
             continue;
 
-        sint32 direction = ((tileElement->type >> 6) + get_current_rotation()) & 3;
+        sint32 direction = (footpath_element_get_direction(tileElement) + get_current_rotation()) & 3;
         if (direction == TILE_ELEMENT_DIRECTION_NORTH || direction == TILE_ELEMENT_DIRECTION_EAST) {
             baseZ = tileElement->base_height * 8;
             map_invalidate_tile_zoom1(x, y, baseZ + 16, baseZ + 30);
