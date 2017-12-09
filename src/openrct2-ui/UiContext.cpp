@@ -212,6 +212,11 @@ public:
         _cursorRepository.SetCurrentCursor(cursor);
     }
 
+    void SetCursorScale(uint8 scale) override
+    {
+        _cursorRepository.SetCursorScale(scale);
+    }
+
     void SetCursorVisible(bool value) override
     {
         SDL_ShowCursor(value ? SDL_ENABLE : SDL_DISABLE);

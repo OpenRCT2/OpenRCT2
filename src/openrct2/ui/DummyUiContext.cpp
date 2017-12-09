@@ -54,6 +54,7 @@ namespace OpenRCT2 { namespace Ui
         const CursorState * GetCursorState() override { return nullptr; }
         CURSOR_ID GetCursor() override { return CURSOR_ARROW; }
         void SetCursor(CURSOR_ID cursor) override { }
+        void SetCursorScale(uint8 scale) override  { }
         void SetCursorVisible(bool value) override { }
         void GetCursorPosition(sint32 * x, sint32 * y) override { }
         void SetCursorPosition(sint32 x, sint32 y) override { }

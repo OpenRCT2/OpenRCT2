@@ -907,6 +907,11 @@ extern "C"
         GetContext()->GetUiContext()->SetCursor((CURSOR_ID)cursor);
     }
 
+    void context_update_cursor_scale()
+    {
+        GetContext()->GetUiContext()->SetCursorScale(static_cast<uint8>(round(gConfigGeneral.window_scale)));
+    }
+
     void context_hide_cursor()
     {
         GetContext()->GetUiContext()->SetCursorVisible(false);

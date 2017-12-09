@@ -195,6 +195,7 @@ extern "C"
 #endif
     void context_init();
     void context_setcurrentcursor(sint32 cursor);
+    void context_update_cursor_scale();
     void context_hide_cursor();
     void context_show_cursor();
     void context_get_cursor_position(sint32 * x, sint32 * y);

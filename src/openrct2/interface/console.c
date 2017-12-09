@@ -1038,6 +1038,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
+            context_update_cursor_scale();
             console_execute_silent("get window_scale");
         }
         else if (strcmp(argv[0], "window_limit") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {

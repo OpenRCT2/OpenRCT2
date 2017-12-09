@@ -970,6 +970,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
+            context_update_cursor_scale();
             break;
         case WIDX_SCALE_DOWN:
             gConfigGeneral.window_scale -= 0.25f;
@@ -977,6 +978,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
+            context_update_cursor_scale();
             break;
         case WIDX_SCALE_QUALITY_DROPDOWN:
             gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
