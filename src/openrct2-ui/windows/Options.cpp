@@ -55,6 +55,7 @@ enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_AUDIO,
     WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     WINDOW_OPTIONS_PAGE_MISC,
+    WINDOW_OPTIONS_PAGE_SPEEDRUNNING,
     WINDOW_OPTIONS_PAGE_TWITCH,
     WINDOW_OPTIONS_PAGE_COUNT
 };
@@ -73,6 +74,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TAB_5,
     WIDX_TAB_6,
     WIDX_TAB_7,
+    WIDX_TAB_8,
 
     WIDX_PAGE_START,
 
@@ -171,6 +173,10 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
 
+    // Speedrunning
+    WIDX_SPEEDRUNNING_CHECKBOX = WIDX_PAGE_START,
+    WIDX_ALLOW_SPEED_CHANGES_CHECKBOX,
+
     // Twitch
     WIDX_CHANNEL_BUTTON = WIDX_PAGE_START,
     WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX,
@@ -202,7 +208,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
     { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
     { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
-    { WWT_TAB,              TWITCH_TAB_COLOUR,  189,    219,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_SPEEDRUNNING_TIP }, \
+    { WWT_TAB,              TWITCH_TAB_COLOUR,  220,    250,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }  // This should always be last because it can be disabled and break things
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
@@ -287,7 +294,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    68,         79,     STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
     { WWT_CHECKBOX,         2,  10,     299,    83,         94,     STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
     { WWT_CHECKBOX,         2,  10,     299,    98,         109,    STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
-    { WWT_CHECKBOX,         2,  10,     299,    113,        124,    STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },           // Zoom to cursor
+    { WWT_CHECKBOX,         2,  10,     299,    113,        124,    STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
     { WWT_DROPDOWN_BUTTON,  1,  26,     185,    128,        139,    STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
     { WWT_GROUPBOX,         1,  5,      304,    148,        194,    STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    162,        173,    STR_NONE,                               STR_NONE },                                 // Themes
@@ -328,6 +335,13 @@ static rct_widget window_options_misc_widgets[] = {
     { WIDGETS_END },
 };
 
+static rct_widget window_options_speedrunning_widgets[] = {
+    MAIN_OPTIONS_WIDGETS,
+    { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_ENABLE_SPEEDRUNNING_MODE,           STR_ENABLE_SPEEDRUNNING_TIP },                  // Enable speedrunning mode
+    { WWT_CHECKBOX,         2,  10,     299,    69,     80,     STR_ENABLE_SPEEDRUNNING_SPEED_CHANGES,  STR_ENABLE_SPEEDRUNNING_SPEED_CHANGES_TIP },    // Enable speed changes in speedrunning mode
+    { WIDGETS_END },
+};
+
 static rct_widget window_options_twitch_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_DROPDOWN_BUTTON,  1,  10,     299,    54,     65,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
@@ -346,6 +360,7 @@ static rct_widget *window_options_page_widgets[] = {
     window_options_audio_widgets,
     window_options_controls_and_interface_widgets,
     window_options_misc_widgets,
+    window_options_speedrunning_widgets,
     window_options_twitch_widgets
 };
 
@@ -444,7 +459,8 @@ static rct_window_event_list window_options_events = {
     (1 << WIDX_TAB_4) | \
     (1 << WIDX_TAB_5) | \
     (1 << WIDX_TAB_6) | \
-    (1 << WIDX_TAB_7)
+    (1 << WIDX_TAB_7) | \
+    (1 << WIDX_TAB_8)
 
 static uint64 window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -537,6 +553,10 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1ULL << WIDX_PATH_TO_RCT1_CLEAR),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
+    (1 << WIDX_SPEEDRUNNING_CHECKBOX) |
+    (1 << WIDX_ALLOW_SPEED_CHANGES_CHECKBOX),
+
+    MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
     (1 << WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX) |
     (1 << WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX) |
@@ -597,6 +617,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_TAB_5:
     case WIDX_TAB_6:
     case WIDX_TAB_7:
+    case WIDX_TAB_8:
         window_options_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     }
@@ -743,6 +764,8 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_TOOLBAR_SHOW_CHEATS:
             gConfigInterface.toolbar_show_cheats ^= 1;
+            if (gConfigGeneral.enable_speedrunning_mode && gConfigInterface.toolbar_show_cheats)
+                gConfigGeneral.enable_speedrunning_mode = false;
             config_save_default();
             window_invalidate(w);
             window_invalidate_by_class(WC_TOP_TOOLBAR);
@@ -845,7 +868,8 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                     gConfigGeneral.rct1_path = rct1path;
                     config_save_default();
                     context_show_error(STR_RESTART_REQUIRED, STR_NONE);
-                } else {
+                }
+                else {
                     SafeFree(rct1path);
                     context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
                 }
@@ -858,6 +882,24 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                 SafeFree(gConfigGeneral.rct1_path);
                 config_save_default();
             }
+            window_invalidate(w);
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
+        switch (widgetIndex) {
+        case WIDX_SPEEDRUNNING_CHECKBOX:
+            gConfigGeneral.enable_speedrunning_mode ^= 1;
+            if (gConfigInterface.toolbar_show_cheats && gConfigGeneral.enable_speedrunning_mode)
+                gConfigInterface.toolbar_show_cheats = false;
+            //TODO Hide/disable the allow speed changes button unless speedrunning mode is on
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_ALLOW_SPEED_CHANGES_CHECKBOX:
+            gConfigGeneral.allow_speed_changes ^= 1;
+            config_save_default();
             window_invalidate(w);
             break;
         }
@@ -1190,6 +1232,7 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
     case WINDOW_OPTIONS_PAGE_TWITCH:
         break;
     }
@@ -1406,6 +1449,7 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         }
         break;
 
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
     case WINDOW_OPTIONS_PAGE_TWITCH:
         break;
     }
@@ -1665,6 +1709,14 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
+        break;
+
+    case WINDOW_OPTIONS_PAGE_SPEEDRUNNING:
+        widget_set_checkbox_value(w, WIDX_SPEEDRUNNING_CHECKBOX, gConfigGeneral.enable_speedrunning_mode);
+        widget_set_checkbox_value(w, WIDX_ALLOW_SPEED_CHANGES_CHECKBOX, gConfigGeneral.allow_speed_changes);
+
+        window_options_speedrunning_widgets[WIDX_SPEEDRUNNING_CHECKBOX].type = WWT_CHECKBOX;
+        window_options_speedrunning_widgets[WIDX_ALLOW_SPEED_CHANGES_CHECKBOX].type = WWT_CHECKBOX;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -2026,6 +2078,8 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_WRENCH_0);
+    //TODO Get a sprite
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_SPEEDRUNNING, SPR_TAB_WRENCH_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH, SPR_G2_TAB_TWITCH);
 }
 

@@ -56,6 +56,8 @@ enum {
     WIDX_TITLEBAR,
     WIDX_CLOSE,
     WIDX_TABCONTENT,
+    WIDX_IL_SPEEDRUN,
+    WIDX_FULL_SPEEDRUN,
     WIDX_TAB1,
     WIDX_TAB2,
     WIDX_TAB3,
@@ -68,19 +70,21 @@ enum {
 };
 
 static rct_widget window_scenarioselect_widgets[] = {
-    { WWT_FRAME,    0,  0,      733,    0,      333,    0xFFFFFFFF,                 STR_NONE },             // panel / background
-    { WWT_CAPTION,  0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,        STR_WINDOW_TITLE_TIP }, // title bar
-    { WWT_CLOSEBOX, 0,  721,    731,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
-    { WWT_IMGBTN,   1,  0,      733,    50,     333,    0xFFFFFFFF,                 STR_NONE },             // tab content panel
-    { WWT_TAB,      1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 1
-    { WWT_TAB,      1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 2
-    { WWT_TAB,      1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 3
-    { WWT_TAB,      1,  276,    366,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 4
-    { WWT_TAB,      1,  367,    457,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 5
-    { WWT_TAB,      1,  458,    593,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 6
-    { WWT_TAB,      1,  594,    684,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 7
-    { WWT_TAB,      1,  685,    775,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE, STR_NONE },             // tab 8
-    { WWT_SCROLL,   1,  3,      555,    54,     329,    SCROLL_VERTICAL,            STR_NONE },             // level list
+    { WWT_FRAME,            0,  0,      733,    0,      333,    0xFFFFFFFF,                             STR_NONE },                     // panel / background
+    { WWT_CAPTION,          0,  1,      732,    1,      14,     STR_SELECT_SCENARIO,                    STR_WINDOW_TITLE_TIP },         // title bar
+    { WWT_CLOSEBOX,         0,  721,    731,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },         // close x button
+    { WWT_IMGBTN,           1,  0,      733,    50,     333,    0xFFFFFFFF,                             STR_NONE },                     // tab content panel
+    { WWT_DROPDOWN_BUTTON,  1,  600,    728,    317,    328,    STR_START_IL_SPEEDRUN,                  STR_START_IL_SPEEDRUN_TIP },    // start speedrun of current group
+    { WWT_DROPDOWN_BUTTON,  1,  600,    728,    301,    312,    STR_START_FULL_SPEEDRUN,                STR_START_FULL_SPEEDRUN_TIP },  // start speedrun of current scenario
+    { WWT_TAB,              1,  3,      93,     17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 1
+    { WWT_TAB,              1,  94,     184,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 2
+    { WWT_TAB,              1,  185,    275,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 3
+    { WWT_TAB,              1,  276,    366,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 4
+    { WWT_TAB,              1,  367,    457,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 5
+    { WWT_TAB,              1,  458,    593,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 6
+    { WWT_TAB,              1,  594,    684,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 7
+    { WWT_TAB,              1,  685,    775,    17,     50,     IMAGE_TYPE_REMAP | SPR_TAB_LARGE,       STR_NONE },                     // tab 8
+    { WWT_SCROLL,           1,  3,      555,    54,     329,    SCROLL_VERTICAL,                        STR_NONE },                     // level list
     { WIDGETS_END },
 };
 
@@ -242,8 +246,26 @@ static void window_scenarioselect_close(rct_window *w)
 
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    if (widgetIndex == WIDX_CLOSE) {
+    switch (widgetIndex) {
+    case WIDX_CLOSE:
         window_close(w);
+        break;
+    case WIDX_IL_SPEEDRUN:
+        if (!gConfigGeneral.enable_speedrunning_mode)
+            break;
+        audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+        gFirstTimeSaving = true;
+        gConfigGeneral.is_il_run = true;
+        _callback(w->highlighted_scenario->path);
+        break;
+    case WIDX_FULL_SPEEDRUN:
+        if (!gConfigGeneral.enable_speedrunning_mode)
+            break;
+        audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
+        gFirstTimeSaving = true;
+        gConfigGeneral.is_il_run = false;
+        _callback(w->highlighted_scenario->path);
+        break;
     }
 }
 
@@ -356,6 +378,10 @@ static void window_scenarioselect_invalidate(rct_window *w)
     window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
     window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
+    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].right = windowWidth - 3;
+    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].left = windowWidth - 128;
+    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].right = windowWidth - 3;
+    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].left = windowWidth - 128;
 
     sint32 windowHeight = w->height;
     window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
@@ -363,6 +389,10 @@ static void window_scenarioselect_invalidate(rct_window *w)
 
     const sint32 bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
     window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].bottom = windowHeight - bottomMargin - 3;
+    window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].top = windowHeight - bottomMargin - 14;
+    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].bottom = windowHeight - bottomMargin - 17;
+    window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].top = windowHeight - bottomMargin - 28;
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
