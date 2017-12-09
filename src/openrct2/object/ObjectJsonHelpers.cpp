@@ -23,6 +23,7 @@
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectJsonHelpers.h"
+#include "../core/Math.hpp"
 
 using namespace OpenRCT2;
 
@@ -57,7 +58,7 @@ namespace ObjectJsonHelpers
     static std::vector<sint32> ParseRange(std::string s)
     {
         // Currently only supports [###] or [###..###]
-        std::vector<sint32> result;
+        std::vector<sint32> result = { };
         if (s.length() >= 3 && s[0] == '[' && s[s.length() - 1] == ']')
         {
             s = s.substr(1, s.length() - 2);
@@ -89,7 +90,7 @@ namespace ObjectJsonHelpers
         return result;
     }
 
-    static std::vector<rct_g1_element> LoadObjectImages(const std::string &name)
+    static std::vector<rct_g1_element> LoadObjectImages(const std::string &name, uint32 start, uint32 end)
     {
         std::vector<rct_g1_element> result;
         const auto env = GetContext()->GetPlatformEnvironment();
@@ -99,7 +100,7 @@ namespace ObjectJsonHelpers
         auto imgTable = static_cast<const Object *>(obj)->GetImageTable();
         auto numImages = imgTable->GetCount();
         auto images = imgTable->GetImages();
-        for (uint32 i = 0; i < numImages; i++)
+        for (uint32 i = start; i < Math::Min(numImages, end); i++)
         {
             auto g1 = images[i];
             auto length = g1_calculate_data_size(&g1);
@@ -139,13 +140,22 @@ namespace ObjectJsonHelpers
         {
             auto name = s.substr(14);
             auto rangeStart = name.find('[');
-            auto range = std::vector<sint32>({ 0 });
+            auto imgStart = 0;
+            auto imgEnd = INT16_MAX;
+            //auto range = std::vector<sint32>({ 0 });
             if (rangeStart != std::string::npos)
             {
-                range = ParseRange(name.substr(rangeStart));
+                auto rangeString = name.substr(rangeStart);
+                auto range = ParseRange(name.substr(rangeStart));
                 name = name.substr(0, rangeStart);
+
+                if (range.size() > 0)
+                {
+                    imgStart = range.front();
+                    imgEnd = range.back();
+                }
             }
-            return LoadObjectImages(name);
+            return LoadObjectImages(name, imgStart, imgEnd);
         }
         return result;
     }
