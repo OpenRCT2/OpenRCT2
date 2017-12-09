@@ -3809,6 +3809,8 @@ enum {
     STR_SPINNING_WILD_MOUSE_GROUP_DESC = 6163,
 
     STR_CLOSE_X_WHITE = 6164,
+    
+    STR_BITCOIN = 6165,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
