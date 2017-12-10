@@ -1448,12 +1448,14 @@ static void window_options_invalidate(rct_window *w)
         set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
         set_format_arg(12, rct_string_id, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
-        // disable resolution dropdown on "Fullscreen (desktop)"
-        if (gConfigGeneral.fullscreen_mode == 2){
+        // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+        if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        {
             w->disabled_widgets |= (1 << WIDX_RESOLUTION_DROPDOWN);
             w->disabled_widgets |= (1 << WIDX_RESOLUTION);
         }
-        else {
+        else
+        {
             w->disabled_widgets &= ~(1 << WIDX_RESOLUTION_DROPDOWN);
             w->disabled_widgets &= ~(1 << WIDX_RESOLUTION);
         }
@@ -1754,8 +1756,9 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 
         sint32 colour = w->colours[1];
-        // disable resolution dropdown on "Fullscreen (desktop)"
-        if (gConfigGeneral.fullscreen_mode == 2) {
+        // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+        if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
+        {
             colour |= COLOUR_FLAG_INSET;
         }
         gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
