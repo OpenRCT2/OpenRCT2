@@ -1100,6 +1100,7 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
             } break;
@@ -1116,25 +1117,26 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
 
             } break;
         case TILE_ELEMENT_TYPE_WALL:
             if (clear & (1 << 0)) {
-                sint32 eax = x * 32;
-                sint32 ebx = flags;
-                sint32 ecx = y * 32;
-                sint32 edx = (tileElement->base_height << 8) | (tile_element_get_direction(tileElement));
-                sint32 edi = 0, ebp = 0;
-                cost = game_do_command(eax, ebx, ecx, edx, GAME_COMMAND_REMOVE_WALL, edi, ebp);
-
+                cost = wall_remove(x * 32, y * 32, tileElement->base_height, tile_element_get_direction(tileElement), flags);
                 if (cost == MONEY32_UNDEFINED)
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
+                // NOTE (12/10/2017): This will get us stuck in an infinite loop because game actions are queued
+                // it seems to be trying to remove the same thing over and over.
+                // Leaving this here for reference.
+                /*
                 if (flags & 1)
                     goto restart_from_beginning;
+                */
 
             } break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
@@ -1150,6 +1152,7 @@ restart_from_beginning:
                     return MONEY32_UNDEFINED;
 
                 totalCost += cost;
+
                 if (flags & 1)
                     goto restart_from_beginning;
 
@@ -3762,15 +3765,7 @@ static void clear_element_at(sint32 x, sint32 y, rct_tile_element **elementPtr)
         break;
     case TILE_ELEMENT_TYPE_WALL:
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-                x,
-                GAME_COMMAND_FLAG_APPLY,
-                y,
-                tile_element_get_direction(element) | (element->base_height << 8),
-                GAME_COMMAND_REMOVE_WALL,
-                0,
-                0
-        );
+        wall_remove(x, y, tile_element_get_direction(element), element->base_height, GAME_COMMAND_FLAG_APPLY);
         break;
     case TILE_ELEMENT_TYPE_LARGE_SCENERY:
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;

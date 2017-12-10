@@ -30,6 +30,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
+#include "Wall.h"
 
 uint8 gWindowSceneryActiveTabIndex;
 uint16 gWindowSceneryTabSelections[20];
@@ -244,14 +245,8 @@ void scenery_remove_ghost_tool_placement(){
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_2){
         gSceneryGhostType &= ~SCENERY_ENTRY_FLAG_2;
-        game_do_command(
-            x,
-            105 | (gSceneryTileElementType << 8),
-            y,
-            gSceneryGhostWallRotation |(z << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0);
+        const sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY;
+        wall_remove(x, y, gSceneryGhostWallRotation, z, flags);
     }
 
     if (gSceneryGhostType & SCENERY_ENTRY_FLAG_3){

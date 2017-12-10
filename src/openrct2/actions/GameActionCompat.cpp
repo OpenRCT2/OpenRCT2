@@ -25,6 +25,7 @@
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
 #include "MazeSetTrackAction.hpp"
+#include "WallRemoveAction.hpp"
 
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
@@ -342,5 +343,38 @@
         [[maybe_unused]] sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
+    }
+#pragma endregion
+
+#pragma region RemoveWall
+    money32 wall_remove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
+    {
+        auto gameAction = WallRemoveAction(x, y, baseHeight, direction);
+        gameAction.SetFlags(flags);
+
+        // FIXME: The callee should probably use the game action directly
+        // once everything is compiled as cpp.
+        money32 cost = 0;
+        if (flags & GAME_COMMAND_FLAG_APPLY)
+        {
+            auto res = GameActions::Execute(&gameAction);
+            cost = res->Cost;
+        }
+        else
+        {
+            auto res = GameActions::Query(&gameAction);
+            cost = res->Cost;
+        }
+
+        return cost;
+    }
+
+    /**
+    *
+    *  rct2: 0x006E5597
+    */
+    void game_command_remove_wall(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
+    {
+        Guard::Assert(false, "GAME_COMMAND_REMOVE_WALL DEPRECATED");
     }
 #pragma endregion

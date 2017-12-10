@@ -577,67 +577,6 @@ static money32 WallPlace(uint8 wallType,
     }
 }
 
-static rct_tile_element * GetFirstWallElementAt(sint32 x, sint32 y, uint8 baseZ, uint8 direction, bool isGhost)
-{
-    rct_tile_element * tileElement = map_get_first_element_at(x / 32, y / 32);
-    do
-    {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL) continue;
-        if (tileElement->base_height != baseZ) continue;
-        if ((tile_element_get_direction(tileElement)) != direction) continue;
-        if (tile_element_is_ghost(tileElement) != isGhost) continue;
-        return tileElement;
-    }
-    while (!tile_element_is_last_for_tile(tileElement++));
-    return nullptr;
-}
-
-static money32 WallRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags)
-{
-    if (!map_is_location_valid(x, y))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
-    bool isGhost = (flags & GAME_COMMAND_FLAG_GHOST) != 0;
-    if (!isGhost &&
-        game_is_paused() &&
-        !gCheatsBuildInPauseMode)
-    {
-        gGameCommandErrorText = STR_CONSTRUCTION_NOT_POSSIBLE_WHILE_GAME_IS_PAUSED;
-        return MONEY32_UNDEFINED;
-    }
-
-    if (!isGhost &&
-        !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        !gCheatsSandboxMode &&
-        !map_is_location_owned(x, y, baseHeight * 8))
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    rct_tile_element * wallElement = GetFirstWallElementAt(x, y, baseHeight, direction, isGhost);
-    if (!(flags & GAME_COMMAND_FLAG_APPLY) || (wallElement == nullptr))
-    {
-        return 0;
-    }
-
-    if (gGameCommandNestLevel == 1 && !isGhost)
-    {
-        LocationXYZ16 coord;
-        coord.x = x + 16;
-        coord.y = y + 16;
-        coord.z = tile_element_height(coord.x, coord.y);
-        network_set_player_last_action_coord(network_get_player_index(game_command_playerid), coord);
-    }
-
-    tile_element_remove_banner_entry(wallElement);
-    map_invalidate_tile_zoom1(x, y, wallElement->base_height * 8, (wallElement->base_height * 8) + 72);
-    tile_element_remove(wallElement);
-    return 0;
-}
-
 static money32 WallSetColour(sint16 x,
                              sint16 y,
                              uint8 baseHeight,
@@ -849,27 +788,6 @@ money32 wall_place(sint32 type,
     sint32 ebp = secondaryColour | (tertiaryColour << 8);
     game_command_place_wall(&eax, &ebx, &ecx, &edx, &esi, &edi, &ebp);
     return ebx;
-}
-
-/**
- *
- *  rct2: 0x006E5597
- */
-void game_command_remove_wall(sint32 * eax,
-                              sint32 * ebx,
-                              sint32 * ecx,
-                              sint32 * edx,
-                              [[maybe_unused]] sint32 * esi,
-                              [[maybe_unused]] sint32 * edi,
-                              [[maybe_unused]] sint32 * ebp)
-{
-    *ebx = WallRemove(
-        *eax & 0xFFFF,
-        *ecx & 0xFFFF,
-        (*edx >> 8) & 0xFF,
-        *edx & 0xFF,
-        *ebx & 0xFF
-    );
 }
 
 /**

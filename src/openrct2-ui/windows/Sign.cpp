@@ -510,14 +510,7 @@ static void window_sign_small_mouseup(rct_window *w, rct_widgetindex widgetIndex
             tile_element++;
         }
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x,
-            1 | (tile_element->GetDirection() << 8),
-            y,
-            (tile_element->base_height << 8) | tile_element->GetDirection(),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0);
+        wall_remove(x, y, tile_element->base_height, tile_element_get_direction(tile_element), GAME_COMMAND_FLAG_APPLY);
         break;
     case WIDX_SIGN_TEXT:
         if (banner->flags & BANNER_FLAG_LINKED_TO_RIDE){

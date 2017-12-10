@@ -35,3 +35,4 @@ void wall_set_tertiary_colour(rct_tile_element * tileElement, colour_t colour);
 uint8 wall_get_animation_frame(const rct_tile_element * fenceElement);
 void wall_set_animation_frame(rct_tile_element * wallElement, uint8 frameNum);
 
+money32 wall_remove(sint16 x, sint16 y, uint8 baseHeight, uint8 direction, uint8 flags);

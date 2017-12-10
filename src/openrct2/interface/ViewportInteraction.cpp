@@ -30,9 +30,10 @@
 #include "../world/Map.h"
 #include "../world/Scenery.h"
 #include "../world/LargeScenery.h"
+#include "../world/Park.h"
 #include "../world/Sprite.h"
 #include "../world/Surface.h"
-#include "../world/Park.h"
+#include "../world/Wall.h"
 #include "Viewport.h"
 #include "Window_internal.h"
 #include "../Context.h"
@@ -514,15 +515,7 @@ static void viewport_interaction_remove_park_wall(rct_tile_element *tileElement,
         context_open_detail_window(WD_SIGN_SMALL, tileElement->properties.wall.banner_index);
     } else {
         gGameCommandErrorTitle = STR_CANT_REMOVE_THIS;
-        game_do_command(
-            x,
-            GAME_COMMAND_FLAG_APPLY,
-            y,
-            tile_element_get_direction(tileElement) | (tileElement->base_height << 8),
-            GAME_COMMAND_REMOVE_WALL,
-            0,
-            0
-        );
+        wall_remove(x, y, tileElement->base_height, tile_element_get_direction(tileElement), GAME_COMMAND_FLAG_APPLY);
     }
 }
 
