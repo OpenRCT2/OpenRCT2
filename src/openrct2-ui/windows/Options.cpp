@@ -327,18 +327,16 @@ static rct_widget window_options_misc_widgets[] = {
 
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
-    { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_TEST_UNFINISHED_TRACKS,                 STR_TEST_UNFINISHED_TRACKS_TIP },                   // Test unfinished tracks
-    { WWT_CHECKBOX,         2,  10,     299,    69,     80,     STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
-    { WWT_CHECKBOX,         2,  10,     299,    84,     95,     STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
-    { WWT_CHECKBOX,         2,  10,     299,    129,    140,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
-
-    { WWT_DROPDOWN,         1,  155,    299,    144,    155,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    145,    154,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-
-    { WWT_12,               1,  10,     298,    239,    250,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_DROPDOWN_BUTTON,  1,  10,     289,    254,    265,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_DROPDOWN_BUTTON,  1,  289,    299,    254,    265,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_CHECKBOX,         2,  10,     299,    54,      65,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
+    { WWT_CHECKBOX,         2,  10,     299,    69,      80,    STR_TEST_UNFINISHED_TRACKS,                 STR_TEST_UNFINISHED_TRACKS_TIP },                   // Test unfinished tracks
+    { WWT_CHECKBOX,         2,  10,     299,    84,      95,    STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
+    { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
+    { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
+    { WWT_DROPDOWN,         1,  165,    299,    130,    141,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
+    { WWT_14,               1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_DROPDOWN_BUTTON,  1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_DROPDOWN_BUTTON,  1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
@@ -1957,7 +1955,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     case WINDOW_OPTIONS_PAGE_ADVANCED:
     {
-        gfx_draw_string_left(dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->x + 10, w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1);
+        gfx_draw_string_left(dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->x + 24, w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1);
         gfx_draw_string_left(
             dpi,
             window_options_autosave_names[gConfigGeneral.autosave_frequency],
@@ -1972,13 +1970,21 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
 #else
         set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
 #endif
+
+        rct_widget pathWidget = window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON];
+
+        // Apply vertical alignment if appropriate.
+        sint32 widgetHeight = pathWidget.bottom - pathWidget.top;
+        sint32 lineHeight = font_get_line_height(gCurrentFontSpriteBase);
+        uint32 padding = widgetHeight > lineHeight ? (widgetHeight - lineHeight) / 2 : 0;
+
         gfx_draw_string_left_clipped(
             dpi,
             STR_STRING,
             gCommonFormatArgs,
             w->colours[1],
-            w->x + window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].left + 1,
-            w->y + window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].top,
+            w->x + pathWidget.left + 1,
+            w->y + pathWidget.top + padding,
             277
         );
         break;
