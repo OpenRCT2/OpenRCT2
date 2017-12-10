@@ -55,6 +55,7 @@ enum WINDOW_OPTIONS_PAGE {
     WINDOW_OPTIONS_PAGE_AUDIO,
     WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
     WINDOW_OPTIONS_PAGE_MISC,
+    WINDOW_OPTIONS_PAGE_ADVANCED,
     WINDOW_OPTIONS_PAGE_TWITCH,
     WINDOW_OPTIONS_PAGE_COUNT
 };
@@ -73,6 +74,7 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TAB_5,
     WIDX_TAB_6,
     WIDX_TAB_7,
+    WIDX_TAB_8,
 
     WIDX_PAGE_START,
 
@@ -154,13 +156,6 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
 
     // Misc
     WIDX_REAL_NAME_CHECKBOX = WIDX_PAGE_START,
-    WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
-    WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
-    WIDX_TEST_UNFINISHED_TRACKS,
-    WIDX_DEBUGGING_TOOLS,
-    WIDX_STAY_CONNECTED_AFTER_DESYNC,
-    WIDX_AUTOSAVE,
-    WIDX_AUTOSAVE_DROPDOWN,
     WIDX_TITLE_SEQUENCE,
     WIDX_TITLE_SEQUENCE_DROPDOWN,
     WIDX_TITLE_SEQUENCE_BUTTON,
@@ -168,6 +163,15 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_AUTO_OPEN_SHOPS,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
     WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN,
+
+    // Advanced
+    WIDX_DEBUGGING_TOOLS = WIDX_PAGE_START,
+    WIDX_TEST_UNFINISHED_TRACKS,
+    WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,
+    WIDX_SAVE_PLUGIN_DATA_CHECKBOX,
+    WIDX_STAY_CONNECTED_AFTER_DESYNC,
+    WIDX_AUTOSAVE,
+    WIDX_AUTOSAVE_DROPDOWN,
     WIDX_PATH_TO_RCT1_TEXT,
     WIDX_PATH_TO_RCT1_BUTTON,
     WIDX_PATH_TO_RCT1_CLEAR,
@@ -203,7 +207,8 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_AUDIO_TIP }, \
     { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_CONTROLS_AND_INTERFACE_TIP }, \
     { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_OPTIONS_MISCELLANEOUS_TIP }, \
-    { WWT_TAB,              TWITCH_TAB_COLOUR,  189,    219,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
+    { WWT_TAB,              1,  189,    219,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE }, \
+    { WWT_TAB,              TWITCH_TAB_COLOUR,  220,    250,    17,     43,     TWITCH_TAB_SPRITE,      STR_OPTIONS_TWITCH_TIP }
 
 static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
@@ -310,20 +315,27 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_REAL_NAME,                              STR_REAL_NAME_TIP },                                // Show 'real' names of guests
-    { WWT_CHECKBOX,         2,  10,     299,    69,     80,     STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
-    { WWT_CHECKBOX,         2,  10,     299,    84,     95,     STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
-    { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_TEST_UNFINISHED_TRACKS,                 STR_TEST_UNFINISHED_TRACKS_TIP },                   // Test unfinished tracks
-    { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
-    { WWT_CHECKBOX,         2,  10,     299,    129,    140,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
-    { WWT_DROPDOWN,         1,  155,    299,    144,    155,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    145,    154,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
     { WWT_DROPDOWN,         1,  155,    299,    159,    170,    STR_NONE,                                   STR_NONE },                                         // Title sequence dropdown
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    160,    169,    STR_DROPDOWN_GLYPH,                         STR_TITLE_SEQUENCE_TIP },                           // Title sequence dropdown button
     { WWT_DROPDOWN_BUTTON,  1,  155,    299,    174,    185,    STR_EDIT_TITLE_SEQUENCES_BUTTON,            STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },              // Edit title sequences button
     { WWT_CHECKBOX,         2,  10,     299,    189,    200,    STR_AUTO_STAFF_PLACEMENT,                   STR_AUTO_STAFF_PLACEMENT_TIP },                     // Auto staff placement
-    { WWT_CHECKBOX,         2,  10,     299,    209,    210,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
+    { WWT_CHECKBOX,         2,  10,     299,    201,    212,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
     { WWT_DROPDOWN,         1,  155,    299,    224,    235,    STR_NONE,                                   STR_NONE },                                         // Default inspection time dropdown
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    225,    234,    STR_DROPDOWN_GLYPH,                         STR_DEFAULT_INSPECTION_INTERVAL_TIP },              // Default inspection time dropdown button
+    { WIDGETS_END },
+};
+
+static rct_widget window_options_advanced_widgets[] = {
+    MAIN_OPTIONS_WIDGETS,
+    { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_ENABLE_DEBUGGING_TOOLS,                 STR_ENABLE_DEBUGGING_TOOLS_TIP },                   // Enable debugging tools
+    { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_TEST_UNFINISHED_TRACKS,                 STR_TEST_UNFINISHED_TRACKS_TIP },                   // Test unfinished tracks
+    { WWT_CHECKBOX,         2,  10,     299,    69,     80,     STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM,  STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP },    // Allow loading with incorrect checksum
+    { WWT_CHECKBOX,         2,  10,     299,    84,     95,     STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
+    { WWT_CHECKBOX,         2,  10,     299,    129,    140,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
+
+    { WWT_DROPDOWN,         1,  155,    299,    144,    155,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    145,    154,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
+
     { WWT_12,               1,  10,     298,    239,    250,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_DROPDOWN_BUTTON,  1,  10,     289,    254,    265,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_DROPDOWN_BUTTON,  1,  289,    299,    254,    265,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
@@ -348,6 +360,7 @@ static rct_widget *window_options_page_widgets[] = {
     window_options_audio_widgets,
     window_options_controls_and_interface_widgets,
     window_options_misc_widgets,
+    window_options_advanced_widgets,
     window_options_twitch_widgets
 };
 
@@ -380,8 +393,8 @@ static const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 
-const sint32 window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 1 };
-const sint32 window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 1 };
+const sint32 window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 2, 1 };
+const sint32 window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 16, 1 };
 
 static void window_options_set_page(rct_window *w, sint32 page);
 static void window_options_set_pressed_tab(rct_window *w);
@@ -446,7 +459,8 @@ static rct_window_event_list window_options_events = {
     (1 << WIDX_TAB_4) | \
     (1 << WIDX_TAB_5) | \
     (1 << WIDX_TAB_6) | \
-    (1 << WIDX_TAB_7)
+    (1 << WIDX_TAB_7) | \
+    (1 << WIDX_TAB_8)
 
 static uint64 window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -522,22 +536,25 @@ static uint64 window_options_page_enabled_widgets[] = {
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_REAL_NAME_CHECKBOX) |
-    (1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
-    (1 << WIDX_AUTOSAVE) |
-    (1 << WIDX_AUTOSAVE_DROPDOWN) |
-    (1 << WIDX_TEST_UNFINISHED_TRACKS) |
     (1 << WIDX_AUTO_STAFF_PLACEMENT) |
-    (1 << WIDX_DEBUGGING_TOOLS) |
     (1 << WIDX_TITLE_SEQUENCE) |
     (1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
     (1 << WIDX_TITLE_SEQUENCE_BUTTON) |
-    (1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
-    (1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
     (1 << WIDX_AUTO_OPEN_SHOPS) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
-    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN) |
+    (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
+
+    MAIN_OPTIONS_ENABLED_WIDGETS |
+    (1 << WIDX_DEBUGGING_TOOLS) |
+    (1 << WIDX_TEST_UNFINISHED_TRACKS) |
+    (1 << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
+    (1 << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
+    (1 << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
+    (1 << WIDX_AUTOSAVE) |
+    (1 << WIDX_AUTOSAVE_DROPDOWN) |
+    (1 << WIDX_PATH_TO_RCT1_TEXT) |
     (1 << WIDX_PATH_TO_RCT1_BUTTON) |
-    (1ULL << WIDX_PATH_TO_RCT1_CLEAR),
+    (1 << WIDX_PATH_TO_RCT1_CLEAR),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1 << WIDX_CHANNEL_BUTTON) |
@@ -600,6 +617,7 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
     case WIDX_TAB_5:
     case WIDX_TAB_6:
     case WIDX_TAB_7:
+    case WIDX_TAB_8:
         window_options_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     }
@@ -788,6 +806,30 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
     case WINDOW_OPTIONS_PAGE_MISC:
         switch (widgetIndex) {
+        case WIDX_REAL_NAME_CHECKBOX:
+            gConfigGeneral.show_real_names_of_guests ^= 1;
+            config_save_default();
+            window_invalidate(w);
+            peep_update_names(gConfigGeneral.show_real_names_of_guests);
+            break;
+        case WIDX_AUTO_STAFF_PLACEMENT:
+            gConfigGeneral.auto_staff_placement ^= 1;
+            config_save_default();
+            window_invalidate(w);
+            break;
+        case WIDX_TITLE_SEQUENCE_BUTTON:
+            window_title_editor_open(0);
+            break;
+        case WIDX_AUTO_OPEN_SHOPS:
+            gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
+            config_save_default();
+            window_invalidate(w);
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_ADVANCED:
+        switch (widgetIndex) {
         case WIDX_DEBUGGING_TOOLS:
             gConfigGeneral.debugging_tools ^= 1;
             config_save_default();
@@ -798,27 +840,13 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             config_save_default();
             window_invalidate(w);
             break;
-        case WIDX_REAL_NAME_CHECKBOX:
-            gConfigGeneral.show_real_names_of_guests ^= 1;
+        case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
+            gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
             config_save_default();
             window_invalidate(w);
-            peep_update_names(gConfigGeneral.show_real_names_of_guests);
             break;
         case WIDX_SAVE_PLUGIN_DATA_CHECKBOX:
             gConfigGeneral.save_plugin_data ^= 1;
-            config_save_default();
-            window_invalidate(w);
-            break;
-        case WIDX_AUTO_STAFF_PLACEMENT:
-            gConfigGeneral.auto_staff_placement ^= 1;
-            config_save_default();
-            window_invalidate(w);
-            break;
-        case WIDX_TITLE_SEQUENCE_BUTTON:
-            window_title_editor_open(0);
-            break;
-        case WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM:
-            gConfigGeneral.allow_loading_with_incorrect_checksum = !gConfigGeneral.allow_loading_with_incorrect_checksum;
             config_save_default();
             window_invalidate(w);
             break;
@@ -827,15 +855,11 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             config_save_default();
             window_invalidate(w);
             break;
-        case WIDX_AUTO_OPEN_SHOPS:
-            gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
-            config_save_default();
-            window_invalidate(w);
-            break;
         case WIDX_PATH_TO_RCT1_BUTTON:
         {
             utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-            if (rct1path) {
+            if (rct1path)
+            {
                 // Check if this directory actually contains RCT1
                 // The sprite file can be called either csg1.1 or csg1.dat, so check for both names.
                 utf8 checkpath[MAX_PATH];
@@ -843,18 +867,22 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
                 safe_strcat_path(checkpath, "Data", MAX_PATH);
                 safe_strcat_path(checkpath, "csg1.1", MAX_PATH);
 
-                if (!platform_file_exists(checkpath)) {
+                if (!platform_file_exists(checkpath))
+                {
                     safe_strcpy(checkpath, rct1path, MAX_PATH);
                     safe_strcat_path(checkpath, "Data", MAX_PATH);
                     safe_strcat_path(checkpath, "csg1.dat", MAX_PATH);
                 }
 
-                if (platform_file_exists(checkpath)) {
+                if (platform_file_exists(checkpath))
+                {
                     SafeFree(gConfigGeneral.rct1_path);
                     gConfigGeneral.rct1_path = rct1path;
                     config_save_default();
                     context_show_error(STR_RESTART_REQUIRED, STR_NONE);
-                } else {
+                }
+                else
+                {
                     SafeFree(rct1path);
                     context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE);
                 }
@@ -863,7 +891,8 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         }
         case WIDX_PATH_TO_RCT1_CLEAR:
-            if (!str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+            if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
+            {
                 SafeFree(gConfigGeneral.rct1_path);
                 config_save_default();
             }
@@ -1162,15 +1191,6 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
 
     case WINDOW_OPTIONS_PAGE_MISC:
         switch (widgetIndex) {
-        case WIDX_AUTOSAVE_DROPDOWN:
-            for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = window_options_autosave_names[i];
-            }
-
-            window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
-            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
-            break;
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
             num_items = (sint32)title_sequence_manager_get_count();
             for (size_t i = 0; i < num_items; i++) {
@@ -1197,6 +1217,20 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
 
             window_options_show_dropdown(w, widget, 7);
             dropdown_set_checked(gConfigGeneral.default_inspection_interval, true);
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_ADVANCED:
+        switch (widgetIndex) {
+        case WIDX_AUTOSAVE_DROPDOWN:
+            for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++) {
+                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItemsArgs[i] = window_options_autosave_names[i];
+            }
+
+            window_options_show_dropdown(w, widget, AUTOSAVE_NEVER + 1);
+            dropdown_set_checked(gConfigGeneral.autosave_frequency, true);
             break;
         }
         break;
@@ -1393,13 +1427,6 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
 
     case WINDOW_OPTIONS_PAGE_MISC:
         switch (widgetIndex) {
-        case WIDX_AUTOSAVE_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.autosave_frequency) {
-                gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
-                config_save_default();
-                window_invalidate(w);
-            }
-            break;
         case WIDX_TITLE_SEQUENCE_DROPDOWN:
             if (dropdownIndex != (sint32)title_get_current_sequence()) {
                 title_sequence_change_preset((size_t)dropdownIndex);
@@ -1410,6 +1437,18 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             if (dropdownIndex != gConfigGeneral.default_inspection_interval) {
                 gConfigGeneral.default_inspection_interval = (uint8)dropdownIndex;
+                config_save_default();
+                window_invalidate(w);
+            }
+            break;
+        }
+        break;
+
+    case WINDOW_OPTIONS_PAGE_ADVANCED:
+        switch (widgetIndex) {
+        case WIDX_AUTOSAVE_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.autosave_frequency) {
+                gConfigGeneral.autosave_frequency = (uint8)dropdownIndex;
                 config_save_default();
                 window_invalidate(w);
             }
@@ -1437,7 +1476,7 @@ static void window_options_invalidate(rct_window *w)
     window_options_set_pressed_tab(w);
 
 #ifdef DISABLE_TWITCH
-    w->disabled_widgets = (1 << WIDX_TAB_7);
+    w->disabled_widgets = (1 << WIDX_TAB_8);
 #else
     w->disabled_widgets = 0;
 #endif
@@ -1660,35 +1699,40 @@ static void window_options_invalidate(rct_window *w)
             window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].tooltip = STR_OPTION_DISABLED_DURING_NETWORK_PLAY;
         }
 
-        // save plugin data checkbox: visible or not
-        window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
-
         widget_set_checkbox_value(w, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-        widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-        widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
         widget_set_checkbox_value(w, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-        widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
-        widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-        widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         widget_set_checkbox_value(w, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
 
         window_options_misc_widgets[WIDX_REAL_NAME_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
-        window_options_misc_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        window_options_misc_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
         window_options_misc_widgets[WIDX_AUTO_STAFF_PLACEMENT].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
+        window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
+
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_options_misc_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
-        window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
+
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_options_misc_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
+        break;
+
+    case WINDOW_OPTIONS_PAGE_ADVANCED:
+        widget_set_checkbox_value(w, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+        widget_set_checkbox_value(w, WIDX_TEST_UNFINISHED_TRACKS, gConfigGeneral.test_unfinished_tracks);
+        widget_set_checkbox_value(w, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+        widget_set_checkbox_value(w, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+        widget_set_checkbox_value(w, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+
+        window_options_advanced_widgets[WIDX_DEBUGGING_TOOLS].type = WWT_CHECKBOX;
+        window_options_advanced_widgets[WIDX_TEST_UNFINISHED_TRACKS].type = WWT_CHECKBOX;
+        window_options_advanced_widgets[WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM].type = WWT_CHECKBOX;
+        window_options_advanced_widgets[WIDX_SAVE_PLUGIN_DATA_CHECKBOX].type = WWT_CHECKBOX;
+        window_options_advanced_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
+
+        window_options_advanced_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
+        window_options_advanced_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+
+        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1887,16 +1931,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     case WINDOW_OPTIONS_PAGE_MISC:
     {
-        gfx_draw_string_left(dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top + 1);
-        gfx_draw_string_left(
-            dpi,
-            window_options_autosave_names[gConfigGeneral.autosave_frequency],
-            nullptr,
-            w->colours[1],
-            w->x + window_options_misc_widgets[WIDX_AUTOSAVE].left + 1,
-            w->y + window_options_misc_widgets[WIDX_AUTOSAVE].top
-        );
-
         const utf8 * name = title_sequence_manager_get_name(title_get_config_sequence());
         set_format_arg(0, uintptr_t, (uintptr_t)name);
         gfx_draw_string_left(dpi, STR_TITLE_SEQUENCE, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top + 1);
@@ -1919,18 +1953,32 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->x + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].left + 1,
             w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top
         );
-        #ifdef __APPLE__
-            set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));
-        #else
-            set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
-        #endif
+        break;
+    }
+    case WINDOW_OPTIONS_PAGE_ADVANCED:
+    {
+        gfx_draw_string_left(dpi, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, w, w->colours[1], w->x + 10, w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top + 1);
+        gfx_draw_string_left(
+            dpi,
+            window_options_autosave_names[gConfigGeneral.autosave_frequency],
+            nullptr,
+            w->colours[1],
+            w->x + window_options_advanced_widgets[WIDX_AUTOSAVE].left + 1,
+            w->y + window_options_advanced_widgets[WIDX_AUTOSAVE].top
+        );
+
+#ifdef __APPLE__
+        set_format_arg(0, uintptr_t, (uintptr_t)macos_str_decomp_to_precomp(gConfigGeneral.rct1_path));
+#else
+        set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
+#endif
         gfx_draw_string_left_clipped(
             dpi,
             STR_STRING,
             gCommonFormatArgs,
             w->colours[1],
-            w->x + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].left + 1,
-            w->y + window_options_misc_widgets[WIDX_PATH_TO_RCT1_BUTTON].top,
+            w->x + window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].left + 1,
+            w->y + window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].top,
             277
         );
         break;
@@ -1980,11 +2028,15 @@ static void window_options_text_input(rct_window *w, rct_widgetindex widgetIndex
 
 static void window_options_tooltip(rct_window *w, rct_widgetindex widgetIndex, rct_string_id *stringid)
 {
-    if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON && w->page == WINDOW_OPTIONS_PAGE_MISC) {
-        if (str_is_null_or_empty(gConfigGeneral.rct1_path)) {
+    if (w->page == WINDOW_OPTIONS_PAGE_ADVANCED && widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
+    {
+        if (str_is_null_or_empty(gConfigGeneral.rct1_path))
+        {
             // No tooltip if the path is empty
             *stringid = STR_NONE;
-        } else {
+        }
+        else
+        {
             set_format_arg(0, uintptr_t, (uintptr_t)gConfigGeneral.rct1_path);
         }
     }
@@ -2051,6 +2103,7 @@ static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_WRENCH_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH, SPR_G2_TAB_TWITCH);
 }
 
