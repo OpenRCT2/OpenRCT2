@@ -403,8 +403,28 @@ static const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 
-const sint32 window_options_tab_animation_divisor[] = { 4, 4, 8, 2, 2, 2, 2, 1 };
-const sint32 window_options_tab_animation_frames[] = { 16, 8, 8, 16, 4, 16, 16, 1 };
+const sint32 window_options_tab_animation_divisor[] =
+{
+    4, // WINDOW_OPTIONS_PAGE_DISPLAY,
+    1, // WINDOW_OPTIONS_PAGE_RENDERING,
+    8, // WINDOW_OPTIONS_PAGE_CULTURE,
+    2, // WINDOW_OPTIONS_PAGE_AUDIO,
+    2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+    4, // WINDOW_OPTIONS_PAGE_MISC,
+    2, // WINDOW_OPTIONS_PAGE_ADVANCED,
+    1  // WINDOW_OPTIONS_PAGE_TWITCH,
+};
+const sint32 window_options_tab_animation_frames[] =
+{
+     8, // WINDOW_OPTIONS_PAGE_DISPLAY,
+     1, // WINDOW_OPTIONS_PAGE_RENDERING,
+     8, // WINDOW_OPTIONS_PAGE_CULTURE,
+    16, // WINDOW_OPTIONS_PAGE_AUDIO,
+     4, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+    16, // WINDOW_OPTIONS_PAGE_MISC,
+    16, // WINDOW_OPTIONS_PAGE_ADVANCED,
+     1  // WINDOW_OPTIONS_PAGE_TWITCH,
+};
 
 static void window_options_set_page(rct_window *w, sint32 page);
 static void window_options_set_pressed_tab(rct_window *w);
@@ -2116,14 +2136,14 @@ static void window_options_draw_tab_image(rct_drawpixelinfo *dpi, rct_window *w,
 
 static void window_options_draw_tab_images(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_DISPLAY, SPR_TAB_RIDE_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_RENDERING, SPR_TAB_PAINT_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CULTURE, SPR_TAB_TIMER_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_AUDIO, SPR_TAB_MUSIC_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_DISPLAY,                SPR_TAB_PAINT_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_RENDERING,              SPR_G2_TAB_TREE);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CULTURE,                SPR_TAB_TIMER_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_AUDIO,                  SPR_TAB_MUSIC_0);
     window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE, SPR_TAB_GEARS_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC, SPR_TAB_WRENCH_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED, SPR_TAB_WRENCH_0);
-    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH, SPR_G2_TAB_TWITCH);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_MISC,                   SPR_TAB_RIDE_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_ADVANCED,               SPR_TAB_WRENCH_0);
+    window_options_draw_tab_image(dpi, w, WINDOW_OPTIONS_PAGE_TWITCH,                 SPR_G2_TAB_TWITCH);
 }
 
 #pragma endregion
