@@ -14,13 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <unordered_map>
 #include "../core/IStream.hpp"
-#include "FootpathItemObject.h"
-
 #include "../drawing/Drawing.h"
+#include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
+#include "FootpathItemObject.h"
+#include "ObjectJsonHelpers.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -83,4 +85,106 @@ void FootpathItemObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint
     sint32 x = width / 2;
     sint32 y = height / 2;
     gfx_draw_sprite(dpi, _legacyType.image, x - 22, y - 24, 0);
+}
+
+static uint8 ParseDrawType(const std::string &s)
+{
+    if (s == "lamp") return PATH_BIT_DRAW_TYPE_LIGHTS;
+    if (s == "bin") return PATH_BIT_DRAW_TYPE_BINS;
+    if (s == "bench") return PATH_BIT_DRAW_TYPE_BENCHES;
+    if (s == "fountain") return PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS;
+    return PATH_BIT_DRAW_TYPE_LIGHTS;
+}
+
+static uint8 ParseCursor(const std::string &s)
+{
+    static const std::unordered_map<std::string, uint8> LookupTable
+    {
+        { "CURSOR_BLANK",           CURSOR_BLANK },
+        { "CURSOR_UP_ARROW",        CURSOR_UP_ARROW },
+        { "CURSOR_UP_DOWN_ARROW",   CURSOR_UP_DOWN_ARROW },
+        { "CURSOR_HAND_POINT",      CURSOR_HAND_POINT },
+        { "CURSOR_ZZZ",             CURSOR_ZZZ },
+        { "CURSOR_DIAGONAL_ARROWS", CURSOR_DIAGONAL_ARROWS },
+        { "CURSOR_PICKER",          CURSOR_PICKER },
+        { "CURSOR_TREE_DOWN",       CURSOR_TREE_DOWN },
+        { "CURSOR_FOUNTAIN_DOWN",   CURSOR_FOUNTAIN_DOWN },
+        { "CURSOR_STATUE_DOWN",     CURSOR_STATUE_DOWN },
+        { "CURSOR_BENCH_DOWN",      CURSOR_BENCH_DOWN },
+        { "CURSOR_CROSS_HAIR",      CURSOR_CROSS_HAIR },
+        { "CURSOR_BIN_DOWN",        CURSOR_BIN_DOWN },
+        { "CURSOR_LAMPPOST_DOWN",   CURSOR_LAMPPOST_DOWN },
+        { "CURSOR_FENCE_DOWN",      CURSOR_FENCE_DOWN },
+        { "CURSOR_FLOWER_DOWN",     CURSOR_FLOWER_DOWN },
+        { "CURSOR_PATH_DOWN",       CURSOR_PATH_DOWN },
+        { "CURSOR_DIG_DOWN",        CURSOR_DIG_DOWN },
+        { "CURSOR_WATER_DOWN",      CURSOR_WATER_DOWN },
+        { "CURSOR_HOUSE_DOWN",      CURSOR_HOUSE_DOWN },
+        { "CURSOR_VOLCANO_DOWN",    CURSOR_VOLCANO_DOWN },
+        { "CURSOR_WALK_DOWN",       CURSOR_WALK_DOWN },
+        { "CURSOR_PAINT_DOWN",      CURSOR_PAINT_DOWN },
+        { "CURSOR_ENTRANCE_DOWN",   CURSOR_ENTRANCE_DOWN },
+        { "CURSOR_HAND_OPEN",       CURSOR_HAND_OPEN },
+        { "CURSOR_HAND_CLOSED",     CURSOR_HAND_CLOSED },
+        {"CURSOR_ARROW",            CURSOR_ARROW },
+    };
+
+    auto result = LookupTable.find(s);
+    return (result != LookupTable.end()) ?
+        result->second :
+        CURSOR_ARROW;
+}
+
+void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    // Strings
+    auto stringTable = GetStringTable();
+    auto jsonStrings = json_object_get(root, "strings");
+    auto jsonName = json_object_get(jsonStrings, "name");
+    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
+
+    auto properties = json_object_get(root, "properties");
+    _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(json_object_get(properties, "renderAs")));
+    _legacyType.path_bit.tool_id = ParseCursor(ObjectJsonHelpers::GetString(json_object_get(properties, "cursor")));
+    _legacyType.path_bit.price = json_integer_value(json_object_get(properties, "price"));
+
+    auto scg = ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup"));
+    if (!scg.empty())
+    {
+        rct_object_entry sgEntry = { 0 };
+        strncpy(sgEntry.name, scg.c_str(), 8);
+        SetPrimarySceneryGroup(&sgEntry);
+    }
+
+    // Flags
+    struct Item
+    {
+        const char * Name;
+        uint16 Flag;
+    };
+    Item FlagDefs[] =
+    {
+        { "isBin", PATH_BIT_FLAG_IS_BIN },
+        { "isBench", PATH_BIT_FLAG_IS_BENCH },
+        { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
+        { "isLamp", PATH_BIT_FLAG_LAMP },
+        { "isJumpingFountainWater", PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER },
+        { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
+        { "isAllowedOnQueue", PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE },
+        { "isAllowedOnSlope", PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE },
+        { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN },
+    };
+
+    uint16 flags = 0;
+    for (const auto &def : FlagDefs)
+    {
+        if (ObjectJsonHelpers::GetBoolean(properties, def.Name))
+        {
+            flags |= def.Flag;
+        }
+    }
+    _legacyType.path_bit.flags = flags;
+
+    auto imageTable = GetImageTable();
+    ObjectJsonHelpers::LoadImages(root, *imageTable);
 }

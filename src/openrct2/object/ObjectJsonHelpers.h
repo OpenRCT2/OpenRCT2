@@ -25,6 +25,7 @@
 
 namespace ObjectJsonHelpers
 {
+    bool GetBoolean(const json_t * obj, const std::string &name, bool defaultValue = false);
     std::string GetString(const json_t * value);
     std::vector<std::string> GetJsonStringArray(const json_t * arr);
     void LoadImages(const json_t * root, ImageTable &imageTable);

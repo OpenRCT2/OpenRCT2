@@ -207,18 +207,10 @@ namespace ObjectFactory
 
     static uint8 ParseObjectType(const std::string &s)
     {
-        if (s == "ride")
-        {
-            return OBJECT_TYPE_RIDE;
-        }
-        else if (s == "footpath")
-        {
-            return OBJECT_TYPE_PATHS;
-        }
-        else if (s == "park_entrance")
-        {
-            return OBJECT_TYPE_PARK_ENTRANCE;
-        }
+        if (s == "ride") return OBJECT_TYPE_RIDE;
+        if (s == "footpath") return OBJECT_TYPE_PATHS;
+        if (s == "footpath_item") return OBJECT_TYPE_PATH_BITS;
+        if (s == "park_entrance") return OBJECT_TYPE_PARK_ENTRANCE;
         return 0xFF;
     }
 

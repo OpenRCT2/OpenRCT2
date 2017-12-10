@@ -29,6 +29,14 @@ using namespace OpenRCT2;
 
 namespace ObjectJsonHelpers
 {
+    bool GetBoolean(const json_t * obj, const std::string &name, bool defaultValue)
+    {
+        auto value = json_object_get(obj, name.c_str());
+        return json_is_boolean(value) ?
+            json_boolean_value(value) :
+            defaultValue;
+    }
+
     std::string GetString(const json_t * value)
     {
         return json_is_string(value) ?

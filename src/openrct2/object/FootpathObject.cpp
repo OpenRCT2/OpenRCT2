@@ -84,15 +84,15 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
     // Flags
     _legacyType.flags = 0;
-    if (json_boolean_value(json_object_get(properties, "hasSupportImages")))
+    if (ObjectJsonHelpers::GetBoolean(properties, "hasSupportImages"))
     {
         _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE;
     }
-    if (json_boolean_value(json_object_get(properties, "hasElevatedPathImages")))
+    if (ObjectJsonHelpers::GetBoolean(properties, "hasElevatedPathImages"))
     {
         _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE;
     }
-    if (json_boolean_value(json_object_get(properties, "editorOnly")))
+    if (ObjectJsonHelpers::GetBoolean(properties, "editorOnly"))
     {
         _legacyType.flags |= FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
     }
