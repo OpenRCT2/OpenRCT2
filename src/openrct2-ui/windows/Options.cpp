@@ -290,11 +290,11 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    83,         94,     STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
     { WWT_CHECKBOX,         2,  10,     299,    98,         109,    STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
     { WWT_CHECKBOX,         2,  10,     299,    113,        124,    STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },           // Zoom to cursor
-    { WWT_DROPDOWN_BUTTON,  1,  26,     185,    128,        139,    STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    128,        139,    STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
     { WWT_GROUPBOX,         1,  5,      304,    148,        194,    STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    162,        173,    STR_NONE,                               STR_NONE },                                 // Themes
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    163,        172,    STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
-    { WWT_DROPDOWN_BUTTON,  1,  10,     145,    178,        189,    STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
+    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    178,        189,    STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
     { WWT_GROUPBOX,         1,  5,      304,    198,        273,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
     { WWT_CHECKBOX,         2,  10,     145,    229,        240,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
     { WWT_CHECKBOX,         2,  10,     145,    244,        255,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
@@ -319,7 +319,7 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    145,    154,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
     { WWT_DROPDOWN,         1,  155,    299,    159,    170,    STR_NONE,                                   STR_NONE },                                         // Title sequence dropdown
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    160,    169,    STR_DROPDOWN_GLYPH,                         STR_TITLE_SEQUENCE_TIP },                           // Title sequence dropdown button
-    { WWT_DROPDOWN_BUTTON,  1,  26,     185,    174,    185,    STR_EDIT_TITLE_SEQUENCES_BUTTON,            STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },              // Edit title sequences button
+    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    174,    185,    STR_EDIT_TITLE_SEQUENCES_BUTTON,            STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },              // Edit title sequences button
     { WWT_CHECKBOX,         2,  10,     299,    189,    200,    STR_AUTO_STAFF_PLACEMENT,                   STR_AUTO_STAFF_PLACEMENT_TIP },                     // Auto staff placement
     { WWT_CHECKBOX,         2,  10,     299,    209,    210,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
     { WWT_DROPDOWN,         1,  155,    299,    224,    235,    STR_NONE,                                   STR_NONE },                                         // Default inspection time dropdown
