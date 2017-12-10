@@ -150,15 +150,15 @@ enum WINDOW_OPTIONS_WIDGET_IDX {
     WIDX_TOOLBAR_SHOW_CHEATS,
     WIDX_TOOLBAR_SHOW_NEWS,
     WIDX_TOOLBAR_SHOW_MUTE,
+
+    // Misc
+    WIDX_TITLE_SEQUENCE = WIDX_PAGE_START,
+    WIDX_TITLE_SEQUENCE_DROPDOWN,
+    WIDX_TITLE_SEQUENCE_BUTTON,
     WIDX_SCENARIO_GROUPING,
     WIDX_SCENARIO_GROUPING_DROPDOWN,
     WIDX_SCENARIO_UNLOCKING,
-
-    // Misc
-    WIDX_REAL_NAME_CHECKBOX = WIDX_PAGE_START,
-    WIDX_TITLE_SEQUENCE,
-    WIDX_TITLE_SEQUENCE_DROPDOWN,
-    WIDX_TITLE_SEQUENCE_BUTTON,
+    WIDX_REAL_NAME_CHECKBOX,
     WIDX_AUTO_STAFF_PLACEMENT,
     WIDX_AUTO_OPEN_SHOPS,
     WIDX_DEFAULT_INSPECTION_INTERVAL,
@@ -306,18 +306,20 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  155,    299,    229,        240,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
     { WWT_CHECKBOX,         2,  155,    299,    244,        255,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
     { WWT_CHECKBOX,         2,  10,     185,    259,        270,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
-    { WWT_DROPDOWN,         1,  155,    299,    294,        305,    STR_NONE,                               STR_NONE },                                 // Scenario select mode
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    295,        304,    STR_DROPDOWN_GLYPH,                     STR_SCENARIO_GROUPING_TIP },
-    { WWT_CHECKBOX,         2,  18,     299,    309,        320,    STR_OPTIONS_SCENARIO_UNLOCKING,         STR_SCENARIO_UNLOCKING_TIP },               // Unlocking of scenarios
     { WIDGETS_END },
 };
 
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_REAL_NAME,                              STR_REAL_NAME_TIP },                                // Show 'real' names of guests
     { WWT_DROPDOWN,         1,  155,    299,    159,    170,    STR_NONE,                                   STR_NONE },                                         // Title sequence dropdown
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    160,    169,    STR_DROPDOWN_GLYPH,                         STR_TITLE_SEQUENCE_TIP },                           // Title sequence dropdown button
     { WWT_DROPDOWN_BUTTON,  1,  155,    299,    174,    185,    STR_EDIT_TITLE_SEQUENCES_BUTTON,            STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },              // Edit title sequences button
+
+    { WWT_DROPDOWN,         1,  155,    299,    294,        305,    STR_NONE,                               STR_NONE },                                 // Scenario select mode
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    295,        304,    STR_DROPDOWN_GLYPH,                     STR_SCENARIO_GROUPING_TIP },
+    { WWT_CHECKBOX,         2,  18,     299,    309,        320,    STR_OPTIONS_SCENARIO_UNLOCKING,         STR_SCENARIO_UNLOCKING_TIP },               // Unlocking of scenarios
+
+    { WWT_CHECKBOX,         2,  10,     299,    54,     65,     STR_REAL_NAME,                              STR_REAL_NAME_TIP },                                // Show 'real' names of guests
     { WWT_CHECKBOX,         2,  10,     299,    189,    200,    STR_AUTO_STAFF_PLACEMENT,                   STR_AUTO_STAFF_PLACEMENT_TIP },                     // Auto staff placement
     { WWT_CHECKBOX,         2,  10,     299,    201,    212,    STR_AUTO_OPEN_SHOPS,                        STR_AUTO_OPEN_SHOPS_TIP },                          // Automatically open shops & stalls
     { WWT_DROPDOWN,         1,  155,    299,    224,    235,    STR_NONE,                                   STR_NONE },                                         // Default inspection time dropdown
@@ -527,9 +529,6 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_THEMES) |
     (1 << WIDX_THEMES_DROPDOWN) |
     (1 << WIDX_THEMES_BUTTON) |
-    (1 << WIDX_SCENARIO_GROUPING) |
-    (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
-    (1 << WIDX_SCENARIO_UNLOCKING) |
     (1 << WIDX_TOOLBAR_SHOW_MUTE),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -538,6 +537,9 @@ static uint64 window_options_page_enabled_widgets[] = {
     (1 << WIDX_TITLE_SEQUENCE) |
     (1 << WIDX_TITLE_SEQUENCE_DROPDOWN) |
     (1 << WIDX_TITLE_SEQUENCE_BUTTON) |
+    (1 << WIDX_SCENARIO_GROUPING) |
+    (1 << WIDX_SCENARIO_GROUPING_DROPDOWN) |
+    (1 << WIDX_SCENARIO_UNLOCKING) |
     (1 << WIDX_AUTO_OPEN_SHOPS) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL) |
     (1 << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
@@ -793,12 +795,6 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             context_open_window(WC_THEMES);
             window_invalidate(w);
             break;
-
-        case WIDX_SCENARIO_UNLOCKING:
-            gConfigGeneral.scenario_unlocking_enabled ^= 1;
-            config_save_default();
-            window_close_by_class(WC_SCENARIO_SELECT);
-            break;
         }
         break;
 
@@ -817,6 +813,11 @@ static void window_options_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             break;
         case WIDX_TITLE_SEQUENCE_BUTTON:
             window_title_editor_open(0);
+            break;
+        case WIDX_SCENARIO_UNLOCKING:
+            gConfigGeneral.scenario_unlocking_enabled ^= 1;
+            config_save_default();
+            window_close_by_class(WC_SCENARIO_SELECT);
             break;
         case WIDX_AUTO_OPEN_SHOPS:
             gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
@@ -1162,28 +1163,6 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             dropdown_set_checked((sint32)theme_manager_get_active_available_theme_index(), true);
             widget_invalidate(w, WIDX_THEMES_DROPDOWN);
             break;
-
-        case WIDX_SCENARIO_GROUPING_DROPDOWN:
-            num_items = 2;
-
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
-
-            window_dropdown_show_text_custom_width(
-                w->x + widget->left,
-                w->y + widget->top,
-                widget->bottom - widget->top + 1,
-                w->colours[1],
-                0,
-                DROPDOWN_FLAG_STAY_OPEN,
-                num_items,
-                widget->right - widget->left - 3
-            );
-
-            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
-            break;
         }
         break;
 
@@ -1206,6 +1185,27 @@ static void window_options_mousedown(rct_window *w, rct_widgetindex widgetIndex,
             );
 
             dropdown_set_checked((sint32)title_get_current_sequence(), true);
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            num_items = 2;
+
+            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
+            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
+
+            window_dropdown_show_text_custom_width(
+                w->x + widget->left,
+                w->y + widget->top,
+                widget->bottom - widget->top + 1,
+                w->colours[1],
+                0,
+                DROPDOWN_FLAG_STAY_OPEN,
+                num_items,
+                widget->right - widget->left - 3
+            );
+
+            dropdown_set_checked(gConfigGeneral.scenario_select_mode, true);
             break;
         case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
             for (size_t i = 0; i < 7; i++) {
@@ -1412,14 +1412,6 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
             }
             config_save_default();
             break;
-        case WIDX_SCENARIO_GROUPING_DROPDOWN:
-            if (dropdownIndex != gConfigGeneral.scenario_select_mode) {
-                gConfigGeneral.scenario_select_mode = dropdownIndex;
-                config_save_default();
-                window_invalidate(w);
-                window_close_by_class(WC_SCENARIO_SELECT);
-            }
-            break;
         }
         break;
 
@@ -1437,6 +1429,14 @@ static void window_options_dropdown(rct_window *w, rct_widgetindex widgetIndex, 
                 gConfigGeneral.default_inspection_interval = (uint8)dropdownIndex;
                 config_save_default();
                 window_invalidate(w);
+            }
+            break;
+        case WIDX_SCENARIO_GROUPING_DROPDOWN:
+            if (dropdownIndex != gConfigGeneral.scenario_select_mode) {
+                gConfigGeneral.scenario_select_mode = dropdownIndex;
+                config_save_default();
+                window_invalidate(w);
+                window_close_by_class(WC_SCENARIO_SELECT);
             }
             break;
         }
@@ -1666,13 +1666,6 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-        widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
-
-        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
-            w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
-        } else {
-            w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
-        }
 
         window_options_controls_and_interface_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
         window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1685,8 +1678,6 @@ static void window_options_invalidate(rct_window *w)
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_NEWS].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_MUTE].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].type = WWT_DROPDOWN;
-        window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
         break;
 
     case WINDOW_OPTIONS_PAGE_MISC:
@@ -1708,6 +1699,17 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
+
+        widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+
+        if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN) {
+            w->disabled_widgets &= ~(1ULL << WIDX_SCENARIO_UNLOCKING);
+        } else {
+            w->disabled_widgets |= (1ULL << WIDX_SCENARIO_UNLOCKING);
+        }
+
+        window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].type = WWT_DROPDOWN;
+        window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
 
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
@@ -1913,18 +1915,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->y + window_options_controls_and_interface_widgets[WIDX_THEMES].top,
             window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].left - window_options_controls_and_interface_widgets[WIDX_THEMES].left - 4
         );
-        gfx_draw_string_left(dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1], w->x + 10, w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top + 1);
-        gfx_draw_string_left_clipped(
-            dpi,
-            gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY ?
-                STR_OPTIONS_SCENARIO_DIFFICULTY :
-                STR_OPTIONS_SCENARIO_ORIGIN,
-            nullptr,
-            w->colours[1],
-            w->x + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].left + 1,
-            w->y + window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].top,
-            window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING_DROPDOWN].left - window_options_controls_and_interface_widgets[WIDX_SCENARIO_GROUPING].left - 4
-        );
         break;
     }
     case WINDOW_OPTIONS_PAGE_MISC:
@@ -1940,6 +1930,19 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
             w->x + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left + 1,
             w->y + window_options_misc_widgets[WIDX_TITLE_SEQUENCE].top,
             window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].left - window_options_misc_widgets[WIDX_TITLE_SEQUENCE].left - 4
+        );
+
+        gfx_draw_string_left(dpi, STR_OPTIONS_SCENARIO_GROUPING, nullptr, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top + 1);
+        gfx_draw_string_left_clipped(
+            dpi,
+            gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY ?
+                STR_OPTIONS_SCENARIO_DIFFICULTY :
+                STR_OPTIONS_SCENARIO_ORIGIN,
+            nullptr,
+            w->colours[1],
+            w->x + window_options_misc_widgets[WIDX_SCENARIO_GROUPING].left + 1,
+            w->y + window_options_misc_widgets[WIDX_SCENARIO_GROUPING].top,
+            window_options_misc_widgets[WIDX_SCENARIO_GROUPING_DROPDOWN].left - window_options_misc_widgets[WIDX_SCENARIO_GROUPING].left - 4
         );
 
         gfx_draw_string_left(dpi, STR_DEFAULT_INSPECTION_INTERVAL, w, w->colours[1], w->x + 10, w->y + window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].top + 1);
