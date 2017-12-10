@@ -40,8 +40,8 @@ assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
 enum {
-    FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 0,
-    FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 1,
+    FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 0,
+    FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 1,
     FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
 };
 

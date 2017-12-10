@@ -77,8 +77,8 @@ static const uint8 byte_98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 
-void path_paint_pole_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
-void path_paint_box_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
+void path_paint_box_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
+void path_paint_pole_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 
 /* rct2: 0x006A5AE5 */
 static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
@@ -793,7 +793,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
 #endif
 }
 
-void path_paint_pole_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
+void path_paint_box_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |
@@ -911,7 +911,7 @@ void path_paint_pole_support(paint_session * session, rct_tile_element * tileEle
     }
 }
 
-void path_paint_box_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
+void path_paint_pole_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags)
 {
     // Rol edges around rotation
     uint8 edges = ((tileElement->properties.path.edges << get_current_rotation()) & 0xF) |
