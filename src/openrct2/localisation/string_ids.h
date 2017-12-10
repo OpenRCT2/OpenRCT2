@@ -3813,6 +3813,11 @@ enum {
     STR_USE_VSYNC = 6165,
     STR_USE_VSYNC_TIP = 6166,
             
+    STR_OPTIONS_ADVANCED = 6167,
+    STR_OPTIONS_TITLE_SEQUENCE = 6168,
+    STR_OPTIONS_SCENARIO_SELECTION = 6169,
+    STR_OPTIONS_TWEAKS = 6170,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
