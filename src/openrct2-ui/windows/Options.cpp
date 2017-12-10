@@ -293,23 +293,29 @@ static rct_widget window_options_audio_widgets[] = {
 
 static rct_widget window_options_controls_and_interface_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_GROUPBOX,         1,  5,      304,    53,         144,    STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
-    { WWT_CHECKBOX,         2,  10,     299,    68,         79,     STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
-    { WWT_CHECKBOX,         2,  10,     299,    83,         94,     STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
-    { WWT_CHECKBOX,         2,  10,     299,    98,         109,    STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
-    { WWT_CHECKBOX,         2,  10,     299,    113,        124,    STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },           // Zoom to cursor
-    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    128,        139,    STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
-    { WWT_GROUPBOX,         1,  5,      304,    148,        194,    STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
-    { WWT_DROPDOWN,         1,  155,    299,    162,        173,    STR_NONE,                               STR_NONE },                                 // Themes
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    163,        172,    STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
-    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    178,        189,    STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
-    { WWT_GROUPBOX,         1,  5,      304,    198,        273,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
-    { WWT_CHECKBOX,         2,  10,     145,    229,        240,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
-    { WWT_CHECKBOX,         2,  10,     145,    244,        255,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
-    { WWT_CHECKBOX,         2,  155,    299,    229,        240,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
-    { WWT_CHECKBOX,         2,  155,    299,    244,        255,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
-    { WWT_CHECKBOX,         2,  10,     185,    259,        270,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
+#define CONTROLS_GROUP_START 53
+    { WWT_GROUPBOX,         1,  5,      304,    CONTROLS_GROUP_START + 0,    CONTROLS_GROUP_START + 91,   STR_CONTROLS_GROUP,                     STR_NONE },                                 // Controls group
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 13,   CONTROLS_GROUP_START + 26,   STR_SCREEN_EDGE_SCROLLING,              STR_SCREEN_EDGE_SCROLLING_TIP },            // Edge scrolling
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
+    { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
+    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+#undef CONTROLS_GROUP_START
+#define THEMES_GROUP_START 148
+    { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
+    { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_NONE,                               STR_NONE },                                 // Themes
+    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
+    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
+#undef THEMES_GROUP_START
+#define TOOLBAR_GROUP_START 200
+    { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
+    { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_FINANCES_BUTTON_ON_TOOLBAR,         STR_FINANCES_BUTTON_ON_TOOLBAR_TIP },       // Finances
+    { WWT_CHECKBOX,         2,  24,     145,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_RESEARCH_BUTTON_ON_TOOLBAR,         STR_RESEARCH_BUTTON_ON_TOOLBAR_TIP },       // Research
+    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 31,    TOOLBAR_GROUP_START + 42,    STR_CHEATS_BUTTON_ON_TOOLBAR,           STR_CHEATS_BUTTON_ON_TOOLBAR_TIP },         // Cheats
+    { WWT_CHECKBOX,         2,  155,    299,    TOOLBAR_GROUP_START + 46,    TOOLBAR_GROUP_START + 57,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR,    STR_SHOW_RECENT_MESSAGES_ON_TOOLBAR_TIP },  // Recent messages
+    { WWT_CHECKBOX,         2,  24,     185,    TOOLBAR_GROUP_START + 61,    TOOLBAR_GROUP_START + 72,    STR_MUTE_BUTTON_ON_TOOLBAR,             STR_MUTE_BUTTON_ON_TOOLBAR_TIP },           // Mute
     { WIDGETS_END },
+#undef TOOLBAR_GROUP_START
 };
 
 static rct_widget window_options_misc_widgets[] = {
