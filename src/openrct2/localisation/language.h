@@ -46,6 +46,26 @@ enum {
     LANGUAGE_COUNT
 };
 
+typedef enum RCT2LanguageId
+{
+    RCT2_LANGUAGE_ID_ENGLISH_UK,
+    RCT2_LANGUAGE_ID_ENGLISH_US,
+    RCT2_LANGUAGE_ID_FRENCH,
+    RCT2_LANGUAGE_ID_GERMAN,
+    RCT2_LANGUAGE_ID_SPANISH,
+    RCT2_LANGUAGE_ID_ITALIAN,
+    RCT2_LANGUAGE_ID_DUTCH,
+    RCT2_LANGUAGE_ID_SWEDISH,
+    RCT2_LANGUAGE_ID_JAPANESE,
+    RCT2_LANGUAGE_ID_KOREAN,
+    RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED,
+    RCT2_LANGUAGE_ID_CHINESE_TRADITIONAL,
+    RCT2_LANGUAGE_ID_12,
+    RCT2_LANGUAGE_ID_PORTUGUESE,
+    RCT2_LANGUAGE_ID_BLANK = 254,
+    RCT2_LANGUAGE_ID_END = 255
+} RCT2LanguageId;
+
 #define FONT_OPENRCT2_SPRITE NULL
 
 #ifdef __cplusplus
@@ -61,7 +81,7 @@ typedef struct language_descriptor {
 #else
     void * font_family;
 #endif
-    uint8 rct2_original_id;
+    RCT2LanguageId rct2_original_id;
 } language_descriptor;
 
 #ifdef __cplusplus
@@ -93,7 +113,7 @@ sint32 utf8_length(const utf8 *text);
 wchar_t *utf8_to_widechar(const utf8 *src);
 utf8 *widechar_to_utf8(const wchar_t *src);
 
-utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, sint32 languageId);
+utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, RCT2LanguageId languageId);
 bool language_get_localised_scenario_strings(const utf8 *scenarioFilename, rct_string_id *outStringIds);
 rct_string_id language_allocate_object_string(const utf8 * target);
 void language_free_object_string(rct_string_id stringId);

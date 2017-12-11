@@ -22,6 +22,24 @@
 #include "Object.h"
 #include "StringTable.h"
 
+static const uint8 RCT2ToOpenRCT2LanguageId[] =
+{
+    LANGUAGE_ENGLISH_UK,
+    LANGUAGE_ENGLISH_US,
+    LANGUAGE_FRENCH,
+    LANGUAGE_GERMAN,
+    LANGUAGE_SPANISH,
+    LANGUAGE_ITALIAN,
+    LANGUAGE_DUTCH,
+    LANGUAGE_SWEDISH,
+    LANGUAGE_JAPANESE,
+    LANGUAGE_KOREAN,
+    LANGUAGE_CHINESE_SIMPLIFIED,
+    LANGUAGE_CHINESE_TRADITIONAL,
+    LANGUAGE_UNDEFINED,
+    LANGUAGE_PORTUGUESE_BR,
+};
+
 static bool StringIsBlank(utf8 * str)
 {
     for (utf8 * ch = str; *ch != '\0'; ch++)
@@ -46,19 +64,23 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
 {
     try
     {
-        uint8 languageId;
-        while ((languageId = stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
+        RCT2LanguageId rct2LanguageId;
+        while ((rct2LanguageId = (RCT2LanguageId)stream->ReadValue<uint8>()) != RCT2_LANGUAGE_ID_END)
         {
+            uint8 languageId =
+                (rct2LanguageId <= RCT2_LANGUAGE_ID_PORTUGUESE) ?
+                RCT2ToOpenRCT2LanguageId[rct2LanguageId] :
+                LANGUAGE_UNDEFINED;
             StringTableEntry entry;
             entry.Id = id;
             entry.LanguageId = languageId;
 
             std::string stringAsWin1252 = stream->ReadStdString();
-            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252.c_str(), stringAsWin1252.size(), languageId);
+            utf8 * stringAsUtf8 = rct2_language_string_to_utf8(stringAsWin1252.c_str(), stringAsWin1252.size(), rct2LanguageId);
 
             if (StringIsBlank(stringAsUtf8))
             {
-                entry.LanguageId = RCT2_LANGUAGE_ID_BLANK;
+                entry.LanguageId = LANGUAGE_UNDEFINED;
             }
             String::Trim(stringAsUtf8);
 
@@ -97,21 +119,20 @@ void StringTable::Sort()
                 return _strcmpi(a.Text, b.Text) < 0;
             }
 
-            uint8 currentLanguage = LanguagesDescriptors[gCurrentLanguage].rct2_original_id;
-            if (a.LanguageId == currentLanguage)
+            if (a.LanguageId == gCurrentLanguage)
             {
                 return true;
             }
-            if (b.LanguageId == currentLanguage)
+            if (b.LanguageId == gCurrentLanguage)
             {
                 return false;
             }
 
-            if (a.LanguageId == RCT2_LANGUAGE_ID_ENGLISH_UK)
+            if (a.LanguageId == LANGUAGE_ENGLISH_UK)
             {
                 return true;
             }
-            if (b.LanguageId == RCT2_LANGUAGE_ID_ENGLISH_UK)
+            if (b.LanguageId == LANGUAGE_ENGLISH_UK)
             {
                 return false;
             }

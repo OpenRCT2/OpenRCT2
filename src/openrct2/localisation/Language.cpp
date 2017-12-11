@@ -154,7 +154,7 @@ void language_close_all()
 constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
 constexpr uint16        MAX_OBJECT_CACHED_STRINGS = 2048;
 
-static wchar_t convert_specific_language_character_to_unicode(sint32 languageId, wchar_t codepoint)
+static wchar_t convert_specific_language_character_to_unicode(RCT2LanguageId languageId, wchar_t codepoint)
 {
     switch (languageId) {
     case RCT2_LANGUAGE_ID_KOREAN:
@@ -168,7 +168,7 @@ static wchar_t convert_specific_language_character_to_unicode(sint32 languageId,
     }
 }
 
-static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, sint32 languageId)
+static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, RCT2LanguageId languageId)
 {
     constexpr char CODEPOINT_DOUBLEBYTE = (char)(uint8)0xFF;
 
@@ -200,7 +200,7 @@ static utf8 * convert_multibyte_charset(const char * src, size_t srcMaxSize, sin
     return sb.StealString();
 }
 
-static bool rct2_language_is_multibyte_charset(sint32 languageId)
+static bool rct2_language_is_multibyte_charset(RCT2LanguageId languageId)
 {
     switch (languageId) {
     case RCT2_LANGUAGE_ID_KOREAN:
@@ -213,7 +213,7 @@ static bool rct2_language_is_multibyte_charset(sint32 languageId)
     }
 }
 
-utf8 *rct2_language_string_to_utf8(const char *src, size_t srcSize, sint32 languageId)
+utf8 * rct2_language_string_to_utf8(const char *src, size_t srcSize, RCT2LanguageId languageId)
 {
     if (rct2_language_is_multibyte_charset(languageId))
     {
