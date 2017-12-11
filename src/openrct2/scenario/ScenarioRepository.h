@@ -45,8 +45,9 @@ typedef struct scenario_index_entry
     sint32  objective_arg_2;
     sint16  objective_arg_3;
     scenario_highscore_entry * highscore;
-
-    utf8 name[64];
+    
+    utf8 internal_name[64]; // Untranslated name
+    utf8 name[64];          // Translated name
     utf8 details[256];
 } scenario_index_entry;
 
@@ -69,6 +70,10 @@ interface IScenarioRepository
     virtual size_t GetCount() const abstract;
     virtual const scenario_index_entry * GetByIndex(size_t index) const  abstract;
     virtual const scenario_index_entry * GetByFilename(const utf8 * filename) const abstract;
+	/**
+	    * Does not return custom scenarios due to the fact that they may have the same name.
+	    */
+    virtual const scenario_index_entry * GetByInternalName(const utf8 * name) const abstract;
     virtual const scenario_index_entry * GetByPath(const utf8 * path) const abstract;
 
     virtual bool TryRecordHighscore(const utf8 * scenarioFileName, money32 companyValue, const utf8 * name) abstract;

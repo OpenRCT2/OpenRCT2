@@ -4483,9 +4483,11 @@ STR_6173    :Please provide the name to search:
 STR_6174    :Load Save
 STR_6175    :Load Scenario
 STR_6176    :Scenario to load:
-STR_6177    :No scenario selected
-STR_6178    :Load{MOVE_X}{87}No scenario selected
+STR_6177    :Load{MOVE_X}{87}No scenario selected
+STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
 STR_6179    :Select
+STR_6180    :No scenario selected
+STR_6181    :{RED}Missing scenario
 
 #############
 # Scenarios #

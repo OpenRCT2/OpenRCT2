@@ -155,7 +155,8 @@ static void scenario_select_callback(const utf8 * path)
     if (command.Type == TITLE_SCRIPT_LOADSC)
     {
         const utf8 * fileName = path_get_filename(path);
-        safe_strcpy(command.Scenario, fileName, sizeof(command.Scenario));
+        auto scenario = GetScenarioRepository()->GetByFilename(fileName);
+        safe_strcpy(command.Scenario, scenario->internal_name, sizeof(command.Scenario));
     }
 }
 
@@ -683,16 +684,21 @@ static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo 
         else
         {
             const char * name = "";
-            source_desc desc;
-            auto scenario = GetScenarioRepository()->GetByFilename(command.Scenario);
-            if (scenario != nullptr && scenario_get_source_desc(scenario->name, &desc))
+            rct_string_id nameString = STR_STRING;
+            auto scenario = 
+                GetScenarioRepository()->GetByInternalName(command.Scenario);
+            if (scenario != nullptr)
             {
-                name = desc.title;
+                name = scenario->name;
+            }
+            else
+            {
+                nameString = STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO;
             }
             set_format_arg(0, uintptr_t, name);
             gfx_draw_string_left_clipped(
                 dpi,
-                STR_STRING,
+                nameString,
                 gCommonFormatArgs,
                 w->colours[1],
                 w->x + w->widgets[WIDX_INPUT].left + 1,

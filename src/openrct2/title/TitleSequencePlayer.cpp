@@ -342,7 +342,7 @@ private:
         case TITLE_SCRIPT_LOADSC:
         {
             bool loadSuccess = false;
-            auto scenario = GetScenarioRepository()->GetByFilename(command->Scenario);
+            auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
             if (scenario != nullptr)
             {
                 loadSuccess = LoadParkFromFile(scenario->path);

@@ -30,6 +30,7 @@
 #include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
 #include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
 #include "../util/util.h"
 #include "TitleSequence.h"
 
@@ -481,11 +482,11 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
             {
                 command.Type = TITLE_SCRIPT_LOADSC;
                 // Confirm the scenario exists
-                auto scenario = GetScenarioRepository()->GetByFilename(part1);
-                if (scenario != nullptr)
-                {
+                //source_desc desc;
+                //if (ScenarioSources::TryGetByName(part1, &desc))
+                //{
                     safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
-                }
+                //}
             }
         }
         if (command.Type != TITLE_SCRIPT_UNDEFINED)
@@ -611,7 +612,7 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
         case TITLE_SCRIPT_LOADSC:
             if (command->Scenario[0] == '\0')
             {
-                sb.Append("LOADSC <No scenario file>");
+                sb.Append("LOADSC <No scenario name>");
             }
             else
             {

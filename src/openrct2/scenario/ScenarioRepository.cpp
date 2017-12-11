@@ -123,7 +123,7 @@ class ScenarioFileIndex final : public FileIndex<scenario_index_entry>
 {
 private:
     static constexpr uint32 MAGIC_NUMBER = 0x58444953; // SIDX
-    static constexpr uint16 VERSION = 2;
+    static constexpr uint16 VERSION = 3;
     static constexpr auto PATTERN = "*.sc4;*.sc6";
     
 public:
@@ -170,6 +170,7 @@ protected:
         stream->WriteValue(item.objective_arg_2);
         stream->WriteValue(item.objective_arg_3);
 
+        stream->Write(item.internal_name, sizeof(item.internal_name));
         stream->Write(item.name, sizeof(item.name));
         stream->Write(item.details, sizeof(item.details));
     }
@@ -192,6 +193,7 @@ protected:
         item.objective_arg_3 = stream->ReadValue<sint16>();
         item.highscore = nullptr;
 
+        stream->Read(item.internal_name, sizeof(item.internal_name));
         stream->Read(item.name, sizeof(item.name));
         stream->Read(item.details, sizeof(item.details));
 
@@ -278,6 +280,9 @@ private:
             // Normalise the name to make the scenario as recognisable as possible.
             ScenarioSources::NormaliseName(entry.name, sizeof(entry.name), entry.name);
         }
+
+		// entry.name will be translated later so keep the untranslated name here
+		String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
 
         String::Set(entry.details, sizeof(entry.details), s6Info->details);
 
@@ -379,6 +384,21 @@ public:
         }
         return nullptr;
     }
+
+	const scenario_index_entry * GetByInternalName(const utf8 * name) const override {
+		for (size_t i = 0; i < _scenarios.size(); i++) {
+			const scenario_index_entry * scenario = &_scenarios[i];
+
+			if (scenario->source_game == SCENARIO_SOURCE_OTHER)
+				continue;
+
+			// Note: this is always case insensitive search for cross platform consistency
+			if (String::Equals(name, scenario->internal_name, true)) {
+				return &_scenarios[i];
+			}
+		}
+		return nullptr;
+	}
 
     const scenario_index_entry * GetByPath(const utf8 * path) const override
     {
