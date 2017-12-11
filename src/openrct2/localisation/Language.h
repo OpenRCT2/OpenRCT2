@@ -94,6 +94,7 @@ extern const utf8 BlackLeftArrowString[];
 extern const utf8 BlackRightArrowString[];
 extern const utf8 CheckBoxMarkString[];
 
+uint8 language_get_id_from_locale(const char * locale);
 const char *language_get_string(rct_string_id id);
 bool language_open(sint32 id);
 void language_close_all();

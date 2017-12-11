@@ -137,12 +137,6 @@ static uint8 ParseCursor(const std::string &s)
 
 void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
-    // Strings
-    auto stringTable = GetStringTable();
-    auto jsonStrings = json_object_get(root, "strings");
-    auto jsonName = json_object_get(jsonStrings, "name");
-    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
-
     auto properties = json_object_get(root, "properties");
     _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(json_object_get(properties, "renderAs")));
     _legacyType.path_bit.tool_id = ParseCursor(ObjectJsonHelpers::GetString(json_object_get(properties, "cursor")));
@@ -185,6 +179,6 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
     }
     _legacyType.path_bit.flags = flags;
 
-    auto imageTable = GetImageTable();
-    ObjectJsonHelpers::LoadImages(root, *imageTable);
+    ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, *GetImageTable());
 }

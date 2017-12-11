@@ -68,16 +68,10 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 h
 
 void EntranceObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
-    // Strings
-    auto stringTable = GetStringTable();
-    auto jsonStrings = json_object_get(root, "strings");
-    auto jsonName = json_object_get(jsonStrings, "name");
-    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
-
     auto properties = json_object_get(root, "properties");
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
     _legacyType.text_height = json_integer_value(json_object_get(properties, "textHeight"));
 
-    auto imageTable = GetImageTable();
-    ObjectJsonHelpers::LoadImages(root, *imageTable);
+    ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, *GetImageTable());
 }

@@ -72,12 +72,6 @@ static uint8 ParseSupportType(const std::string &s)
 
 void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
-    // Strings
-    auto stringTable = GetStringTable();
-    auto jsonStrings = json_object_get(root, "strings");
-    auto jsonName = json_object_get(jsonStrings, "name");
-    stringTable->SetString(0, 0, json_string_value(json_object_get(jsonName, "en-GB")));
-
     auto properties = json_object_get(root, "properties");
     _legacyType.support_type = ParseSupportType(ObjectJsonHelpers::GetString(json_object_get(properties, "supportType")));
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
@@ -97,6 +91,6 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
         _legacyType.flags |= FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
     }
 
-    auto imageTable = GetImageTable();
-    ObjectJsonHelpers::LoadImages(root, *imageTable);
+    ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, *GetImageTable());
 }

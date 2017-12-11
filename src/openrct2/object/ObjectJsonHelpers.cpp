@@ -14,16 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "../Context.h"
+#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../localisation/language.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
 #include "Object.h"
 #include "ObjectFactory.h"
 #include "ObjectJsonHelpers.h"
-#include "../core/Math.hpp"
 
 using namespace OpenRCT2;
 
@@ -166,6 +169,40 @@ namespace ObjectJsonHelpers
             return LoadObjectImages(name, imgStart, imgEnd);
         }
         return result;
+    }
+
+    static uint8 ParseStringId(const std::string &s)
+    {
+        if (s == "name") return OBJ_STRING_ID_NAME;
+        if (s == "description") return OBJ_STRING_ID_DESCRIPTION;
+        if (s == "capacity") return OBJ_STRING_ID_CAPACITY;
+        if (s == "vehicleName") return OBJ_STRING_ID_VEHICLE_NAME;
+        return OBJ_STRING_ID_UNKNOWN;
+    }
+
+    void LoadStrings(const json_t * root, StringTable &stringTable)
+    {
+        auto jsonStrings = json_object_get(root, "strings");
+        const char * key;
+        json_t     * jlanguages;
+        json_object_foreach(jsonStrings, key, jlanguages)
+        {
+            auto stringId = ParseStringId(key);
+            if (stringId != OBJ_STRING_ID_UNKNOWN)
+            {
+                const char * locale;
+                json_t     * jstring;
+                json_object_foreach(jlanguages, locale, jstring)
+                {
+                    auto langId = language_get_id_from_locale(locale);
+                    if (langId != LANGUAGE_UNDEFINED)
+                    {
+                        auto string = json_string_value(jstring);
+                        stringTable.SetString(stringId, langId, string);
+                    }
+                }
+            }
+        }
     }
 
     void LoadImages(const json_t * root, ImageTable &imageTable)
