@@ -242,6 +242,10 @@ static void mapgen_place_tree(sint32 type, sint32 x, sint32 y)
     sint32 surfaceZ;
     rct_tile_element  * tileElement;
     rct_scenery_entry * sceneryEntry = get_small_scenery_entry(type);
+    if (sceneryEntry == nullptr)
+    {
+        return;
+    }
 
     surfaceZ    = tile_element_height(x * 32 + 16, y * 32 + 16) / 8;
     tileElement = tile_element_insert(x, y, surfaceZ, (1 | 2 | 4 | 8));
