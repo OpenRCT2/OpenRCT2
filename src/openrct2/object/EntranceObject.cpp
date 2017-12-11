@@ -27,8 +27,8 @@ void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     _legacyType.text_height = stream->ReadValue<uint8>();
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
-    GetImageTable()->Read(context, stream);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetImageTable().Read(context, stream);
 
     // Fix issue #1705: The Medieval entrance from Time Twister has a straight banner,
     // but scrolls its text as if it a curved one.
@@ -41,15 +41,15 @@ void EntranceObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void EntranceObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image_id = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 void EntranceObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image_id, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image_id, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;
@@ -72,6 +72,6 @@ void EntranceObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
     _legacyType.text_height = json_integer_value(json_object_get(properties, "textHeight"));
 
-    ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, *GetImageTable());
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, GetImageTable());
 }

@@ -40,16 +40,16 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
 void SceneryGroupObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.entry_count = 0;
 }
 
 void SceneryGroupObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;

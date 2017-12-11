@@ -111,17 +111,6 @@ struct rct_object_filters {
 assert_struct_size(rct_object_filters, 3);
 #pragma pack(pop)
 
-enum OBJ_STRING_ID : uint8
-{
-    OBJ_STRING_ID_UNKNOWN = 255,
-    OBJ_STRING_ID_NAME = 0,
-    OBJ_STRING_ID_DESCRIPTION,
-    OBJ_STRING_ID_SCENARIO_NAME = 0,
-    OBJ_STRING_ID_PARK_NAME = 1,
-    OBJ_STRING_ID_SCENARIO_DETAILS = 2,
-    OBJ_STRING_ID_CAPACITY = 2,
-};
-
 interface IStream;
 struct    ObjectRepositoryItem;
 struct    rct_drawpixelinfo;
@@ -148,9 +137,9 @@ private:
     ImageTable          _imageTable;
 
 protected:
-    StringTable *       GetStringTable() { return &_stringTable; }
-    const StringTable * GetStringTable() const { return &_stringTable; }
-    ImageTable  *       GetImageTable() { return &_imageTable; }
+    StringTable &       GetStringTable() { return _stringTable; }
+    const StringTable & GetStringTable() const { return _stringTable; }
+    ImageTable &        GetImageTable() { return _imageTable; }
 
     std::string         GetOverrideString(uint8 index) const;
     std::string         GetString(uint8 index) const;
@@ -182,7 +171,7 @@ public:
 
     virtual void SetRepositoryItem(ObjectRepositoryItem * item) const { }
 
-    const ImageTable * GetImageTable() const { return &_imageTable; }
+    const ImageTable & GetImageTable() const { return _imageTable; }
 
     rct_object_entry GetScgWallsHeader();
     rct_object_entry GetScgPathXHeader();

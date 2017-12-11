@@ -108,9 +108,9 @@ namespace ObjectJsonHelpers
         auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         auto objectPath = Path::Combine(objectsPath, name);
         auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
-        auto imgTable = static_cast<const Object *>(obj)->GetImageTable();
-        auto numImages = imgTable->GetCount();
-        auto images = imgTable->GetImages();
+        auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();
+        auto numImages = imgTable.GetCount();
+        auto images = imgTable.GetImages();
         for (uint32 i = start; i < Math::Min(numImages, end); i++)
         {
             auto g1 = images[i];

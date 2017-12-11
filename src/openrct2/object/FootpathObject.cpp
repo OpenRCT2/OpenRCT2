@@ -29,8 +29,8 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
     _legacyType.scrolling_mode = stream->ReadValue<uint8>();
     stream->Seek(1, STREAM_SEEK_CURRENT);
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
-    GetImageTable()->Read(context, stream);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
+    GetImageTable().Read(context, stream);
 
     // Validate properties
     if (_legacyType.support_type >= FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT)
@@ -41,16 +41,16 @@ void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void FootpathObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.bridge_image = _legacyType.image + 109;
 }
 
 void FootpathObject::Unload()
 {
     language_free_object_string(_legacyType.string_idx);
-    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;
@@ -82,6 +82,6 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
         { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
 
-    ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
-    ObjectJsonHelpers::LoadImages(root, *GetImageTable());
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, GetImageTable());
 }

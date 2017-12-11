@@ -31,6 +31,9 @@ private:
     std::vector<rct_g1_element> _entries;
 
 public:
+    ImageTable() = default;
+    ImageTable(const ImageTable &) = delete;
+    ImageTable & operator=(const ImageTable &) = delete;
     ~ImageTable();
 
     void                    Read(IReadObjectContext * context, IStream * stream);

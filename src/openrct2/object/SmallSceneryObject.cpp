@@ -39,7 +39,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.small_scenery.num_frames = stream->ReadValue<uint16>();
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
-    GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
+    GetStringTable().Read(context, stream, OBJ_STRING_ID_NAME);
 
     rct_object_entry sgEntry = stream->ReadValue<rct_object_entry>();
     SetPrimarySceneryGroup(&sgEntry);
@@ -49,7 +49,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
         _frameOffsets = ReadFrameOffsets(stream);
     }
 
-    GetImageTable()->Read(context, stream);
+    GetImageTable().Read(context, stream);
 
     // Validate properties
     if (_legacyType.small_scenery.price <= 0)
@@ -69,9 +69,9 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stre
 
 void SmallSceneryObject::Load()
 {
-    GetStringTable()->Sort();
+    GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _legacyType.image = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
+    _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 
     _legacyType.small_scenery.scenery_tab_id = 0xFF;
 
@@ -86,7 +86,7 @@ void SmallSceneryObject::Load()
 void SmallSceneryObject::Unload()
 {
     language_free_object_string(_legacyType.name);
-    gfx_object_free_images(_legacyType.image, GetImageTable()->GetCount());
+    gfx_object_free_images(_legacyType.image, GetImageTable().GetCount());
 
     _legacyType.name = 0;
     _legacyType.image = 0;
