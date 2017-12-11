@@ -77,19 +77,10 @@ void FootpathObject::ReadJson(IReadObjectContext * context, const json_t * root)
     _legacyType.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
 
     // Flags
-    _legacyType.flags = 0;
-    if (ObjectJsonHelpers::GetBoolean(properties, "hasSupportImages"))
-    {
-        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE;
-    }
-    if (ObjectJsonHelpers::GetBoolean(properties, "hasElevatedPathImages"))
-    {
-        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE;
-    }
-    if (ObjectJsonHelpers::GetBoolean(properties, "editorOnly"))
-    {
-        _legacyType.flags |= FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR;
-    }
+    _legacyType.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+        { "hasSupportImages", FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
+        { "hasElevatedPathImages", FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE },
+        { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR } });
 
     ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
     ObjectJsonHelpers::LoadImages(root, *GetImageTable());

@@ -16,7 +16,9 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <string>
+#include <utility>
 #include <vector>
 #include "../common.h"
 #include "../core/Json.hpp"
@@ -31,4 +33,18 @@ namespace ObjectJsonHelpers
     std::vector<std::string> GetJsonStringArray(const json_t * arr);
     void LoadStrings(const json_t * root, StringTable &stringTable);
     void LoadImages(const json_t * root, ImageTable &imageTable);
+
+    template<typename T>
+    T GetFlags(const json_t * obj, std::initializer_list<std::pair<std::string, T>> list)
+    {
+        T flags = 0;
+        for (const auto &item : list)
+        {
+            if (GetBoolean(obj, item.first))
+            {
+                flags |= item.second;
+            }
+        }
+        return flags;
+    }
 };

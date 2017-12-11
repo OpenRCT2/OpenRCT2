@@ -151,13 +151,7 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
     }
 
     // Flags
-    struct Item
-    {
-        const char * Name;
-        uint16 Flag;
-    };
-    Item FlagDefs[] =
-    {
+    _legacyType.path_bit.flags = ObjectJsonHelpers::GetFlags<uint16>(properties, {
         { "isBin", PATH_BIT_FLAG_IS_BIN },
         { "isBench", PATH_BIT_FLAG_IS_BENCH },
         { "isBreakable", PATH_BIT_FLAG_BREAKABLE },
@@ -166,18 +160,7 @@ void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * r
         { "isJumpingFountainSnow", PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW },
         { "isAllowedOnQueue", PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE },
         { "isAllowedOnSlope", PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE },
-        { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN },
-    };
-
-    uint16 flags = 0;
-    for (const auto &def : FlagDefs)
-    {
-        if (ObjectJsonHelpers::GetBoolean(properties, def.Name))
-        {
-            flags |= def.Flag;
-        }
-    }
-    _legacyType.path_bit.flags = flags;
+        { "isTelevision", PATH_BIT_FLAG_IS_QUEUE_SCREEN }});
 
     ObjectJsonHelpers::LoadStrings(root, *GetStringTable());
     ObjectJsonHelpers::LoadImages(root, *GetImageTable());
