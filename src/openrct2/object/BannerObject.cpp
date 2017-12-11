@@ -15,11 +15,11 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "BannerObject.h"
-
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
 #include "../object/Object.h"
+#include "BannerObject.h"
+#include "ObjectJsonHelpers.h"
 #include "ObjectList.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
@@ -83,4 +83,19 @@ void BannerObject::DrawPreview(rct_drawpixelinfo * dpi, sint32 width, sint32 hei
     uint32 imageId = 0x20D00000 | _legacyType.image;
     gfx_draw_sprite(dpi, imageId + 0, x - 12, y + 8, 0);
     gfx_draw_sprite(dpi, imageId + 1, x - 12, y + 8, 0);
+}
+
+void BannerObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    auto properties = json_object_get(root, "properties");
+
+    _legacyType.banner.scrolling_mode = json_integer_value(json_object_get(properties, "scrollingMode"));
+    _legacyType.banner.price = json_integer_value(json_object_get(properties, "price"));
+    _legacyType.banner.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+        { "hasPrimaryColour", BANNER_ENTRY_FLAG_HAS_PRIMARY_COLOUR }});
+
+    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, GetImageTable());
 }
