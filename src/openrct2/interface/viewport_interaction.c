@@ -466,7 +466,7 @@ static void viewport_interaction_remove_footpath_item(rct_tile_element *tileElem
 {
     sint32 type;
 
-    type = tileElement->properties.path.type >> 4;
+    type = footpath_element_get_type(tileElement);
     if (footpath_element_is_queue(tileElement))
         type |= 0x80;
 

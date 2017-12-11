@@ -83,6 +83,11 @@ enum
     FOOTPATH_CLEAR_DIRECTIONAL = (1 << 8),  // Flag set when direction is used.
 };
 
+enum
+{
+    SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `defaultPathSlope[]` and checked in `footpath_place_real`
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -127,6 +132,7 @@ bool footpath_element_is_sloped(const rct_tile_element * tileElement);
 void footpath_element_set_sloped(rct_tile_element * tileElement, bool isSloped);
 uint8 footpath_element_get_slope_direction(const rct_tile_element * tileElement);
 bool footpath_element_is_queue(const rct_tile_element * tileElement);
+bool footpath_element_has_queue_banner(const rct_tile_element * tileElement);
 bool footpath_element_is_wide(const rct_tile_element * tileElement);
 uint8 footpath_element_get_type(const rct_tile_element * tileElement);
 void footpath_element_set_type(rct_tile_element * tileElement, uint8 type);

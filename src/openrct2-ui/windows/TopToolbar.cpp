@@ -1303,7 +1303,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             }
 
             gSceneryPlaceZ = 0;
-            uint16 water_height = tile_element->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
+            uint16 water_height = tile_element->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
             if (water_height != 0) {
                 gSceneryPlaceZ = water_height * 16;
             }
@@ -1376,9 +1376,11 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             return;
         }
 
-        *parameter_1 = 0 | ((tile_element->properties.path.type & 0x7) << 8);
-        *parameter_2 = tile_element->base_height | ((tile_element->properties.path.type >> 4) << 8);
-        if (tile_element->type & 1) {
+        *parameter_1 = 0;
+        *parameter_1 |= (tile_element->properties.path.type & (TILE_ELEMENT_PATH_IS_SLOPED_FLAG | TILE_ELEMENT_DIRECTION_MASK)) << 8;
+        *parameter_2 = tile_element->base_height;
+        *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
+        if (tile_element->type & TILE_ELEMENT_PATH_QUEUE_BANNER_FLAG) {
             *parameter_2 |= LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;

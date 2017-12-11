@@ -404,7 +404,7 @@ static bool mini_golf_paint_util_should_draw_fence(paint_session * session, rct_
         return true;
     }
 
-    if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK)
+    if (surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK)
     {
         return true;
     }

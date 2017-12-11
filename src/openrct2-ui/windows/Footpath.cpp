@@ -159,51 +159,28 @@ static sint8   _window_footpath_provisional_path_arrow_timer;
 static uint8   _lastUpdatedCameraRotation           = UINT8_MAX;
 static bool    _footpathErrorOccured;
 
-
-enum
-{
-    FOOTHPATH_IS_SLOPED = (1 << 2),
-    IRREGULAR_SLOPE     = (1 << 3),
-};
-
 /** rct2: 0x0098D8B4 */
-const uint8 default_path_slope[] = {
+static const uint8 DefaultPathSlope[] = {
     0,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    FOOTHPATH_IS_SLOPED | 2,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    FOOTHPATH_IS_SLOPED | 3,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    FOOTHPATH_IS_SLOPED | 1,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    FOOTHPATH_IS_SLOPED | 0,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
-    IRREGULAR_SLOPE,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 2,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 3,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 1,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 0,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
+    SLOPE_IS_IRREGULAR_FLAG,
 };
 
 /** rct2: 0x0098D7E0 */
-static uint8 footpath_construction_preview_images[][4] = {
+static const uint8 ConstructionPreviewImages[][4] = {
     {5,  10, 5,  10}, // Flat
     {16, 17, 18, 19}, // Upwards
     {18, 19, 16, 17}, // Downwards
@@ -678,7 +655,7 @@ static void window_footpath_paint(rct_window * w, rct_drawpixelinfo * dpi)
         {
             slope = TILE_ELEMENT_SLOPE_E_CORNER_UP;
         }
-        sint32 image = footpath_construction_preview_images[slope][direction];
+        sint32 image = ConstructionPreviewImages[slope][direction];
 
         sint32 selectedPath = gFootpathSelectedId;
         rct_footpath_entry * pathType = get_footpath_entry(selectedPath);
@@ -831,10 +808,15 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
         footpath_provisional_update();
 
         // Set provisional path
-        sint32 slope = default_path_slope[tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK];
-        if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+        sint32 slope = 0;
+        switch (interactionType)
         {
-            slope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_W_CORNER_DN;
+        case VIEWPORT_INTERACTION_ITEM_TERRAIN:
+            slope = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+            break;
+        case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+            slope = tileElement->properties.path.type & (TILE_ELEMENT_PATH_IS_SLOPED_FLAG | TILE_ELEMENT_DIRECTION_MASK);
+            break;
         }
         sint32 pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
 
@@ -920,10 +902,15 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
     }
 
     // Set path
-    presentType  = default_path_slope[tileElement->properties.path.type & TILE_ELEMENT_PATH_TYPE_MASK];
-    if (interactionType == VIEWPORT_INTERACTION_ITEM_FOOTPATH)
+    presentType = 0;
+    switch (interactionType)
     {
-        presentType = tileElement->properties.path.type & 7;
+    case VIEWPORT_INTERACTION_ITEM_TERRAIN:
+        presentType = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
+        break;
+    case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
+        presentType = tileElement->properties.path.type & (TILE_ELEMENT_PATH_IS_SLOPED_FLAG | TILE_ELEMENT_DIRECTION_MASK);
+        break;
     }
     z            = tileElement->base_height;
     selectedType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);

@@ -355,7 +355,7 @@ static money32 WallPlace(uint8 wallType,
         }
         position.z = surfaceElement->base_height * 8;
 
-        uint8 slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+        uint8 slope = surfaceElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         edgeSlope = EdgeSlopes[slope][edge & 3];
         if (edgeSlope & EDGE_SLOPE_ELEVATED)
         {

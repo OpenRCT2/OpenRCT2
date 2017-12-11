@@ -462,7 +462,7 @@ private:
             case TILE_ELEMENT_TYPE_PATH:
             {
                 uint8 pathColour = tile_element_get_direction(tileElement);
-                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = footpath_element_get_type(tileElement);
 
                 pathType = (pathType << 2) | pathColour;
                 uint8 pathAdditionsType = tileElement->properties.path.additions & 0x0F;
@@ -2350,7 +2350,7 @@ private:
             {
                 // Type
                 uint8 pathColour = tileElement->type & 3;
-                uint8 pathType = (tileElement->properties.path.type & 0xF0) >> 4;
+                uint8 pathType   = footpath_element_get_type(tileElement);
 
                 pathType = (pathType << 2) | pathColour;
                 uint8 entryIndex = _pathTypeToEntryMap[pathType];
