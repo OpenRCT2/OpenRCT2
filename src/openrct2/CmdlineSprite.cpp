@@ -82,21 +82,6 @@ static FILE * fopen_utf8(const char * path, const char * mode)
 
 #endif
 
-static void sprite_file_load_palette(sint32 spriteIndex)
-{
-    rct_g1_element *g1 = &spriteFileEntries[spriteIndex];
-    sint32 numPaletteEntries = g1->width;
-    uint8* src = g1->offset;
-    rct_sprite_file_palette_entry *destPaletteEntry = &spriteFilePalette[g1->x_offset];
-    for (; numPaletteEntries > 0; numPaletteEntries--) {
-        destPaletteEntry->b = src[0];
-        destPaletteEntry->g = src[1];
-        destPaletteEntry->r = src[2];
-        src += 3;
-        destPaletteEntry++;
-    }
-}
-
 static void sprite_entries_make_absolute()
 {
     for (uint32 i = 0; i < spriteFileHeader.num_entries; i++)
