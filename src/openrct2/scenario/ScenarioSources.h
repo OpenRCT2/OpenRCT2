@@ -25,6 +25,7 @@ typedef struct source_desc
     uint8        source;
     sint32       index;
     uint8        category;
+    bool         first_in_category;
 } source_desc;
 
 #ifdef __cplusplus

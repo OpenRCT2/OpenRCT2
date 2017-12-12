@@ -1529,7 +1529,6 @@ static void window_park_objective_invalidate(rct_window *w)
     window_park_set_pressed_tab(w);
     window_park_prepare_window_title_text();
 
-    //
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
     else

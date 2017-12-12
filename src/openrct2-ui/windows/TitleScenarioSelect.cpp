@@ -104,6 +104,7 @@ static void window_scenarioselect_init_tabs(rct_window *w);
 static void window_scenarioselect_close(rct_window *w);
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void window_scenarioselect_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex);
 static void window_scenarioselect_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_scenarioselect_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_scenarioselect_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
@@ -116,7 +117,7 @@ static rct_window_event_list window_scenarioselect_events = {
     window_scenarioselect_mouseup,
     nullptr,
     window_scenarioselect_mousedown,
-    nullptr,
+    window_scenarioselect_dropdown,
     nullptr,
     nullptr,
     nullptr,
@@ -246,10 +247,27 @@ static void window_scenarioselect_close(rct_window *w)
 
 static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 {
-    switch (widgetIndex) {
-    case WIDX_CLOSE:
+    if (widgetIndex == WIDX_CLOSE) {
         window_close(w);
-        break;
+    }
+}
+
+static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
+{
+    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
+        w->selected_tab = widgetIndex - 6;
+        w->highlighted_scenario = nullptr;
+        initialise_list_items(w);
+        window_invalidate(w);
+        window_event_resize_call(w);
+        window_event_invalidate_call(w);
+        window_init_scroll_widgets(w);
+        window_invalidate(w);
+    }
+}
+
+static void window_scenarioselect_dropdown(rct_window *w, rct_widgetindex widgetIndex, sint32 dropdownIndex) {
+    switch (widgetIndex) {
     case WIDX_IL_SPEEDRUN:
         if (!gConfigGeneral.enable_speedrunning_mode)
             break;
@@ -266,20 +284,6 @@ static void window_scenarioselect_mouseup(rct_window *w, rct_widgetindex widgetI
         gConfigGeneral.is_il_run = false;
         _callback(w->highlighted_scenario->path);
         break;
-    }
-}
-
-static void window_scenarioselect_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    if (widgetIndex >= WIDX_TAB1 && widgetIndex <= WIDX_TAB8) {
-        w->selected_tab = widgetIndex - 4;
-        w->highlighted_scenario = nullptr;
-        initialise_list_items(w);
-        window_invalidate(w);
-        window_event_resize_call(w);
-        window_event_invalidate_call(w);
-        window_init_scroll_widgets(w);
-        window_invalidate(w);
     }
 }
 
@@ -393,6 +397,29 @@ static void window_scenarioselect_invalidate(rct_window *w)
     window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].top = windowHeight - bottomMargin - 14;
     window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].bottom = windowHeight - bottomMargin - 17;
     window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].top = windowHeight - bottomMargin - 28;
+
+    if (gConfigGeneral.enable_speedrunning_mode) {
+        if (w->highlighted_scenario != nullptr) {
+            window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_DROPDOWN_BUTTON;
+            // Start full runs only on the first scenario in each group
+            source_desc desc;
+            ScenarioSources::TryGetByName(w->highlighted_scenario->name, &desc);
+            if (desc.first_in_category) {
+                window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_DROPDOWN_BUTTON;
+            }
+            else {
+                window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
+            }
+        }
+        else {
+            window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
+            window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_EMPTY;
+        }
+    }
+    else {
+        window_scenarioselect_widgets[WIDX_FULL_SPEEDRUN].type = WWT_EMPTY;
+        window_scenarioselect_widgets[WIDX_IL_SPEEDRUN].type = WWT_EMPTY;
+    }
 }
 
 static void window_scenarioselect_paint(rct_window *w, rct_drawpixelinfo *dpi)
