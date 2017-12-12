@@ -262,7 +262,7 @@ static bool is_changable_pixel(sint32 palette_index) {
 }
 
 static sint32 get_closest_palette_index(sint16 *colour){
-    uint32 smallest_error = -1;
+    uint32 smallest_error = (uint32)-1;
     sint32 best_match = -1;
 
     for (sint32 x = 0; x < 256; x++){
@@ -272,7 +272,7 @@ static sint32 get_closest_palette_index(sint16 *colour){
                 ((sint16)(spriteFilePalette[x].g) - colour[1]) * ((sint16)(spriteFilePalette[x].g) - colour[1]) +
                 ((sint16)(spriteFilePalette[x].b) - colour[2]) * ((sint16)(spriteFilePalette[x].b) - colour[2]);
 
-            if (smallest_error == -1 || smallest_error > error){
+            if (smallest_error == (uint32)-1 || smallest_error > error){
                 best_match = x;
                 smallest_error = error;
             }

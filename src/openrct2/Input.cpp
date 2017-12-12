@@ -133,7 +133,7 @@ void game_handle_input()
 
     if (_inputFlags & INPUT_FLAG_5) {
         game_handle_input_mouse(x, y, state);
-    } else if (x != 0x80000000) {
+    } else if (x != (sint32)0x80000000) {
         sint32 screenWidth = context_get_width();
         sint32 screenHeight = context_get_height();
         x = Math::Clamp(0, x, screenWidth - 1);
