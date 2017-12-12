@@ -29,7 +29,7 @@
 #include "../audio/audio.h"
 #include "../drawing/drawing.h"
 #include "../Game.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"

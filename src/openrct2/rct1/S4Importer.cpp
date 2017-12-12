@@ -33,7 +33,7 @@
 #include "../ride/Station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 
 #include "../audio/audio.h"
 #include "../cheats.h"

@@ -17,7 +17,7 @@
 #include <assert.h>
 #include <stdarg.h>
 #include <stdio.h>
-#include "diagnostic.h"
+#include "Diagnostic.h"
 
 #ifdef __ANDROID__
 #include <android/log.h>

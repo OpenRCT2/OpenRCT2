@@ -17,7 +17,7 @@
 #include "../cheats.h"
 #include "../Editor.h"
 #include "../Game.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../ride/ride.h"

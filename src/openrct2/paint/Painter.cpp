@@ -25,7 +25,7 @@
 #include "../Game.h"
 #include "../interface/chat.h"
 #include "../interface/console.h"
-#include "../intro.h"
+#include "../Intro.h"
 #include "../localisation/language.h"
 #include "../localisation/format_codes.h"
 

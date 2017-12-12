@@ -18,7 +18,7 @@
 #include "../core/Math.hpp"
 
 #include "../localisation/localisation.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/widget.h"
 #include "tooltip.h"
 

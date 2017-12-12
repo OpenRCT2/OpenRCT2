@@ -20,11 +20,11 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/cheats.h>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/object_list.h>
+#include <openrct2/ObjectList.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/footpath.h>
 #include <openrct2/windows/dropdown.h>

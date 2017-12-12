@@ -18,7 +18,7 @@
 #include <openrct2/Context.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/intro.h>
+#include <openrct2/Intro.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/interface/widget.h>
 

@@ -43,7 +43,7 @@
 #include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../object.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 #include "../platform/platform.h"
 #include "../util/sawyercoding.h"
 #include "../util/util.h"

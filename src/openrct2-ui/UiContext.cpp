@@ -40,7 +40,7 @@
 #include "UiContext.h"
 #include "WindowManager.h"
 
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/console.h>
 #include <openrct2/interface/window.h>
 

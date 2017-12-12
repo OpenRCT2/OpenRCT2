@@ -20,7 +20,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/date.h>

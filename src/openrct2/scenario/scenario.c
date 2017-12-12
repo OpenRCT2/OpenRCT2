@@ -29,7 +29,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../object.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
 #include "../peep/Staff.h"

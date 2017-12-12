@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../cmdline_sprite.h"
+#include "../CmdlineSprite.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "CommandLine.hpp"

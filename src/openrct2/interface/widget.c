@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../drawing/drawing.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../sprites.h"
 #include "widget.h"
 #include "window.h"

@@ -25,7 +25,7 @@
 #include "../core/Math.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../management/Finance.h"

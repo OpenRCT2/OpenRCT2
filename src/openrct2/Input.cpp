@@ -17,8 +17,10 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "Context.h"
+#include "core/Math.hpp"
+#include "core/Util.hpp"
 #include "Game.h"
-#include "input.h"
+#include "Input.h"
 #include "interface/chat.h"
 #include "interface/console.h"
 #include "interface/Cursors.h"
@@ -36,6 +38,7 @@
 #include "world/sprite.h"
 #include "world/scenery.h"
 #include "OpenRCT2.h"
+
 
 typedef struct rct_mouse_data {
     uint32 x;
@@ -56,7 +59,7 @@ static sint32 _originalWindowHeight;
 static uint8 _currentScrollIndex;
 static uint8 _currentScrollArea;
 
-static uint8 _inputState;
+static INPUT_STATE _inputState;
 static uint8 _inputFlags;
 uint8 gInputPlaceObjectModifier;
 
@@ -133,8 +136,8 @@ void game_handle_input()
     } else if (x != 0x80000000) {
         sint32 screenWidth = context_get_width();
         sint32 screenHeight = context_get_height();
-        x = clamp(0, x, screenWidth - 1);
-        y = clamp(0, y, screenHeight - 1);
+        x = Math::Clamp(0, x, screenWidth - 1);
+        y = Math::Clamp(0, y, screenHeight - 1);
 
         game_handle_input_mouse(x, y, state);
         process_mouse_over(x, y);
@@ -176,7 +179,7 @@ static rct_mouse_data *get_mouse_input()
         return NULL;
     } else {
         rct_mouse_data *result = &_mouseInputQueue[_mouseInputQueueReadIndex];
-        _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % countof(_mouseInputQueue);
+        _mouseInputQueueReadIndex = (_mouseInputQueueReadIndex + 1) % Util::CountOf(_mouseInputQueue);
         return result;
     }
 }
@@ -216,19 +219,19 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window* w)
     dy = y - gInputDragLastY;
 
     if (scroll->flags & HSCROLLBAR_VISIBLE) {
-        sint16 size = widget->right - widget->left - 1;
+        sint32 size = widget->right - widget->left - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = max(0, scroll->h_right - size);
-        scroll->h_left = min(max(0, scroll->h_left + dx), size);
+        size = Math::Max(0, scroll->h_right - size);
+        scroll->h_left = Math::Min(Math::Max(0, scroll->h_left + dx), size);
     }
 
     if (scroll->flags & VSCROLLBAR_VISIBLE) {
-        sint16  size = widget->bottom - widget->top - 1;
+        sint32 size = widget->bottom - widget->top - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = max(0, scroll->v_bottom - size);
-        scroll->v_top = min(max(0, scroll->v_top + dy), size);
+        size = Math::Max(0, scroll->v_bottom - size);
+        scroll->v_top = Math::Min(Math::Max(0, scroll->v_top + dy), size);
     }
 
     widget_scroll_update_thumbs(w, widgetIndex);
@@ -592,37 +595,37 @@ static void input_scroll_begin(rct_window *w, rct_widgetindex widgetIndex, sint3
     sint32 widget_width = widg->right - widg->left - 1;
     if (scroll->flags & VSCROLLBAR_VISIBLE)
         widget_width -= 11;
-    sint32 widget_content_width = max(scroll->h_right - widget_width, 0);
+    sint32 widget_content_width = Math::Max(scroll->h_right - widget_width, 0);
 
     sint32 widget_height = widg->bottom - widg->top - 1;
     if (scroll->flags & HSCROLLBAR_VISIBLE)
         widget_height -= 11;
-    sint32 widget_content_height = max(scroll->v_bottom - widget_height, 0);
+    sint32 widget_content_height = Math::Max(scroll->v_bottom - widget_height, 0);
 
     switch (scroll_area) {
     case SCROLL_PART_HSCROLLBAR_LEFT:
-        scroll->h_left = max(scroll->h_left - 3, 0);
+        scroll->h_left = Math::Max(scroll->h_left - 3, 0);
         break;
     case SCROLL_PART_HSCROLLBAR_RIGHT:
-        scroll->h_left = min(scroll->h_left + 3, widget_content_width);
+        scroll->h_left = Math::Min(scroll->h_left + 3, widget_content_width);
         break;
     case SCROLL_PART_HSCROLLBAR_LEFT_TROUGH:
-        scroll->h_left = max(scroll->h_left - widget_width, 0);
+        scroll->h_left = Math::Max(scroll->h_left - widget_width, 0);
         break;
     case SCROLL_PART_HSCROLLBAR_RIGHT_TROUGH:
-        scroll->h_left = min(scroll->h_left + widget_width, widget_content_width);
+        scroll->h_left = Math::Min(scroll->h_left + widget_width, widget_content_width);
         break;
     case SCROLL_PART_VSCROLLBAR_TOP:
-        scroll->v_top = max(scroll->v_top - 3, 0);
+        scroll->v_top = Math::Max(scroll->v_top - 3, 0);
         break;
     case SCROLL_PART_VSCROLLBAR_BOTTOM:
-        scroll->v_top = min(scroll->v_top + 3, widget_content_height);
+        scroll->v_top = Math::Min(scroll->v_top + 3, widget_content_height);
         break;
     case SCROLL_PART_VSCROLLBAR_TOP_TROUGH:
-        scroll->v_top = max(scroll->v_top - widget_height, 0);
+        scroll->v_top = Math::Max(scroll->v_top - widget_height, 0);
         break;
     case SCROLL_PART_VSCROLLBAR_BOTTOM_TROUGH:
-        scroll->v_top = min(scroll->v_top + widget_height, widget_content_height);
+        scroll->v_top = Math::Min(scroll->v_top + widget_height, widget_content_height);
         break;
     default:
         break;
@@ -1466,7 +1469,7 @@ void invalidate_scroll()
 void store_mouse_input(sint32 state, sint32 x, sint32 y)
 {
     uint32 writeIndex = _mouseInputQueueWriteIndex;
-    uint32 nextWriteIndex = (writeIndex + 1) % countof(_mouseInputQueue);
+    uint32 nextWriteIndex = (writeIndex + 1) % Util::CountOf(_mouseInputQueue);
 
     // Check if the queue is full
     if (nextWriteIndex != _mouseInputQueueReadIndex) {

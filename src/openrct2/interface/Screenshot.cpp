@@ -25,7 +25,7 @@
 
 #include "../drawing/drawing.h"
 #include "../Game.h"
-#include "../intro.h"
+#include "../Intro.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../util/util.h"

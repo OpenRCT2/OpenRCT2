@@ -14,9 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "core/Math.hpp"
+#include "core/Util.hpp"
 #include "Game.h"
 #include "object.h"
-#include "object_list.h"
+#include "ObjectList.h"
 #include "object/ObjectRepository.h"
 #include "util/sawyercoding.h"
 #include "util/util.h"
@@ -123,7 +125,7 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * ecx = entry_type
  */
 sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
-    if ((entry->flags & 0xF) >= countof(object_entry_groups)) {
+    if ((entry->flags & 0xF) >= Util::CountOf(object_entry_groups)) {
         return 0;
     }
     *entry_type = entry->flags & 0xF;
@@ -180,7 +182,7 @@ void * get_loaded_object_chunk(size_t index)
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
 {
-    bufferSize = min(9, bufferSize);
+    bufferSize = Math::Min((size_t)9, bufferSize);
     memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }

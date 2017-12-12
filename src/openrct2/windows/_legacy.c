@@ -20,7 +20,7 @@
 #include "Intent.h"
 #include "../Context.h"
 #include "../audio/audio.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../Game.h"
 #include "../interface/viewport.h"
 #include "../ride/Track.h"

@@ -19,12 +19,12 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/network/network.h>
-#include <openrct2/object_list.h>
+#include <openrct2/ObjectList.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/world/scenery.h>

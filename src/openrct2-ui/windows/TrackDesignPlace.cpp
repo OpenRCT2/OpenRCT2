@@ -22,7 +22,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Game.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
