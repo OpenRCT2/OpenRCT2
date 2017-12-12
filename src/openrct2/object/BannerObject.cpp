@@ -20,7 +20,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/language.h"
 #include "../object.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 
 void BannerObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

@@ -22,7 +22,7 @@
 #include "../Editor.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
 #include "../localisation/user.h"

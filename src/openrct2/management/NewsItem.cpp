@@ -17,7 +17,7 @@
 #include "../audio/audio.h"
 #include "../Context.h"
 #include "../core/Util.hpp"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"

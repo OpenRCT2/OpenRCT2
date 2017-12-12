@@ -17,7 +17,7 @@
 #pragma warning(disable : 4706) // assignment within conditional expression
 
 #include <jansson.h>
-#include "cmdline_sprite.h"
+#include "CmdlineSprite.h"
 #include "drawing/drawing.h"
 #include "Imaging.h"
 #include "localisation/localisation.h"
@@ -54,8 +54,13 @@ assert_struct_size(rle_code, 2);
 
 assert_struct_size(rct_sprite_file_palette_entry, 4);
 
+class CmdlineSprite
+{
+public:
+    static const rct_sprite_file_palette_entry _standardPalette[256];
+};
+
 static rct_sprite_file_palette_entry spriteFilePalette[256];
-static rct_sprite_file_palette_entry _standardPalette[256];
 
 static rct_sprite_file_header spriteFileHeader;
 static rct_g1_element *spriteFileEntries;
@@ -129,7 +134,7 @@ static bool sprite_file_open(const utf8 *path)
             return false;
         }
 
-        spriteFileData = malloc(spriteFileHeader.total_size);
+        spriteFileData = (uint8 *)malloc(spriteFileHeader.total_size);
         if (fread(spriteFileData, spriteFileHeader.total_size, 1, file) != 1) {
             free(spriteFileData);
             free(openElements);
@@ -138,7 +143,7 @@ static bool sprite_file_open(const utf8 *path)
         }
 
         sint32 entryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element);
-        spriteFileEntries = malloc(entryTableSize);
+        spriteFileEntries = (rct_g1_element *)malloc(entryTableSize);
         for (uint32 i = 0; i < spriteFileHeader.num_entries; i++) {
             rct_g1_element_32bit * inElement = &openElements[i];
             rct_g1_element * outElement = &spriteFileEntries[i];
@@ -223,7 +228,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
 
     spriteHeader = &spriteFileEntries[spriteIndex];
     pixelBufferSize = spriteHeader->width * spriteHeader->height;
-    pixels = malloc(pixelBufferSize);
+    pixels = (uint8 *)malloc(pixelBufferSize);
     memset(pixels, 0, pixelBufferSize);
 
     dpi.bits = pixels;
@@ -234,7 +239,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
     dpi.pitch = 0;
     dpi.zoom_level = 0;
 
-    memcpy(spriteFilePalette, _standardPalette, 256 * 4);
+    memcpy(spriteFilePalette, CmdlineSprite::_standardPalette, 256 * 4);
 
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
         gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
@@ -332,15 +337,15 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
         return false;
     }
 
-    memcpy(spriteFilePalette, _standardPalette, 256 * 4);
+    memcpy(spriteFilePalette, CmdlineSprite::_standardPalette, 256 * 4);
 
-    uint8 *buffer = malloc((height * 2) + (width * height * 16));
+    uint8 *buffer = (uint8 *)malloc((height * 2) + (width * height * 16));
     memset(buffer, 0, (height * 2) + (width * height * 16));
     uint16 *yOffsets = (uint16*)buffer;
 
     // A larger range is needed for proper dithering
     uint8 *palettedSrc = pixels;
-    sint16 *rgbaSrc = keep_palette? 0 : malloc(height * width * 4 * 2);
+    sint16 *rgbaSrc = keep_palette? 0 : (sint16 *)malloc(height * width * 4 * 2);
     sint16 *rgbaSrc_orig = rgbaSrc;
     if (!keep_palette)
     {
@@ -510,7 +515,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
     free(rgbaSrc_orig);
 
     sint32 bufferLength = (sint32)(dst - buffer);
-    buffer = realloc(buffer, bufferLength);
+    buffer = (uint8 *)realloc(buffer, bufferLength);
 
     outElement->offset = buffer;
     outElement->width = width;
@@ -725,10 +730,10 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
         spriteFileHeader.num_entries++;
         spriteFileHeader.total_size += bufferLength;
-        spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+        spriteFileEntries = (rct_g1_element *)realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
 
         sprite_entries_make_relative();
-        spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+        spriteFileData = (uint8 *)realloc(spriteFileData, spriteFileHeader.total_size);
         sprite_entries_make_absolute();
 
         spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
@@ -837,10 +842,10 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
 
             spriteFileHeader.num_entries++;
             spriteFileHeader.total_size += bufferLength;
-            spriteFileEntries = realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
+            spriteFileEntries = (rct_g1_element *)realloc(spriteFileEntries, spriteFileHeader.num_entries * sizeof(rct_g1_element));
 
             sprite_entries_make_relative();
-            spriteFileData = realloc(spriteFileData, spriteFileHeader.total_size);
+            spriteFileData = (uint8 *)realloc(spriteFileData, spriteFileHeader.total_size);
             sprite_entries_make_absolute();
 
             spriteFileEntries[spriteFileHeader.num_entries - 1] = spriteElement;
@@ -876,7 +881,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
     }
 }
 
-static rct_sprite_file_palette_entry _standardPalette[256] = {
+const rct_sprite_file_palette_entry CmdlineSprite::_standardPalette[256] = {
     // 0 (unused)
     { 0, 0, 0, 255 },
 

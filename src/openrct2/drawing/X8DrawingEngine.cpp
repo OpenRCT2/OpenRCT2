@@ -29,7 +29,7 @@
 #include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../intro.h"
+#include "../Intro.h"
 #include "drawing.h"
 #include "lightfx.h"
 

@@ -20,7 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/chat.h>
 #include <openrct2/interface/console.h>
 #include <openrct2-ui/windows/Window.h>

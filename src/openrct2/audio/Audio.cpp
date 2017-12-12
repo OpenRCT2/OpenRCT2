@@ -29,7 +29,7 @@
 #include "AudioMixer.h"
 
 #include "../interface/viewport.h"
-#include "../intro.h"
+#include "../Intro.h"
 #include "../localisation/language.h"
 #include "../ride/ride.h"
 #include "../util/util.h"

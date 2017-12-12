@@ -28,7 +28,7 @@
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "object_list.h"
+#include "ObjectList.h"
 #include "peep/Staff.h"
 #include "rct1.h"
 #include "util/util.h"

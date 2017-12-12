@@ -28,7 +28,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
-#include <openrct2/object_list.h>
+#include <openrct2/ObjectList.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideGroupManager.h>

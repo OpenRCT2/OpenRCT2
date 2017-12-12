@@ -24,7 +24,7 @@
 #include "../common.h"
 
 #include "../scenario/scenario.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 
 interface   IStream;
 struct      ObjectRepositoryItem;

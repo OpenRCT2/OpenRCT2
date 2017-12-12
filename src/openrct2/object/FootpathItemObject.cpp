@@ -20,7 +20,7 @@
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../object.h"
-#include "../object_list.h"
+#include "../ObjectList.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

@@ -76,7 +76,7 @@ set(COMMON_TEST_SOURCES
     "${ROOT_DIR}/src/openrct2/core/Diagnostics.cpp"
     "${ROOT_DIR}/src/openrct2/core/Guard.cpp"
     "${ROOT_DIR}/src/openrct2/core/String.cpp"
-    "${ROOT_DIR}/src/openrct2/diagnostic.c"
+    "${ROOT_DIR}/src/openrct2/Diagnostic.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/format_codes.c"
     "${ROOT_DIR}/src/openrct2/localisation/utf8.c"
     "${ROOT_DIR}/src/openrct2/util/util.c"

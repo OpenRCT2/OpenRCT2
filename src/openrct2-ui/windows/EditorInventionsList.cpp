@@ -22,7 +22,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Editor.h>
-#include <openrct2/input.h>
+#include <openrct2/Input.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/management/Research.h>

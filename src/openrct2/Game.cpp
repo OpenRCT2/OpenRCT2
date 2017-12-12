@@ -23,7 +23,7 @@
 #include "Editor.h"
 #include "FileClassifier.h"
 #include "Game.h"
-#include "input.h"
+#include "Input.h"
 #include "interface/Screenshot.h"
 #include "interface/viewport.h"
 #include "interface/widget.h"

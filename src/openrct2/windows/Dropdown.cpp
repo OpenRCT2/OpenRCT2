@@ -18,7 +18,7 @@
 #include "../core/Util.hpp"
 #include "../core/Math.hpp"
 
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/widget.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"

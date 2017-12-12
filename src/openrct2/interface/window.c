@@ -21,7 +21,7 @@
 #include "../drawing/drawing.h"
 #include "../Editor.h"
 #include "../Game.h"
-#include "../input.h"
+#include "../Input.h"
 #include "../interface/Cursors.h"
 #include "../interface/themes.h"
 #include "../localisation/localisation.h"
