@@ -141,7 +141,7 @@ static rct_tile_element *map_get_footpath_element_slope(sint32 x, sint32 y, sint
         if (
             tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH &&
             tileElement->base_height == z &&
-            (tileElement->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | TILE_ELEMENT_DIRECTION_MASK)) == slope
+            (tileElement->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)) == slope
         ) {
             return tileElement;
         }
@@ -1187,7 +1187,7 @@ static bool sub_footpath_disconnect_queue_from_path(sint32 x, sint32 y, rct_tile
     sint32 z = tileElement->base_height;
     rct_tile_element *otherTileElement = footpath_get_element(x1, y1, z - 2, z, direction);
     if (otherTileElement != NULL && !footpath_element_is_queue(otherTileElement)) {
-        tileElement->properties.path.type &= ~TILE_ELEMENT_DIRECTION_MASK;
+        tileElement->properties.path.type &= ~FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
         if (action > 0) {
             tileElement->properties.path.edges &= ~(1 << direction);
             otherTileElement->properties.path.edges &= ~(1 << ((direction + 2) & 3));

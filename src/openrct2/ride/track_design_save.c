@@ -357,7 +357,7 @@ static void track_design_save_add_footpath(sint32 x, sint32 y, rct_tile_element 
     uint8 flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
-    flags |= (tileElement->properties.path.type & TILE_ELEMENT_DIRECTION_MASK) << 5;
+    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
     flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
 
     track_design_save_push_tile_element(x, y, tileElement);
@@ -538,7 +538,7 @@ static void track_design_save_remove_footpath(sint32 x, sint32 y, rct_tile_eleme
     uint8 flags = 0;
     flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
     flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
-    flags |= (tileElement->properties.path.type & TILE_ELEMENT_DIRECTION_MASK) << 5;
+    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) << 5;
     flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
 
     track_design_save_pop_tile_element(x, y, tileElement);

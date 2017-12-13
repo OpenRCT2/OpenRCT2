@@ -151,7 +151,7 @@ static bool map_animation_invalidate_queue_banner(sint32 x, sint32 y, sint32 bas
             continue;
         if (!(tileElement->flags & 1))
             continue;
-        if (!(tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER))
+        if (!footpath_element_has_queue_banner(tileElement))
             continue;
 
         sint32 direction = (footpath_element_get_direction(tileElement) + get_current_rotation()) & 3;
