@@ -20,8 +20,8 @@
 #include "object.h"
 #include "ObjectList.h"
 #include "object/ObjectRepository.h"
-#include "util/sawyercoding.h"
-#include "util/util.h"
+#include "util/SawyerCoding.h"
+#include "util/Util.h"
 
 // 98DA00
 sint32 object_entry_group_counts[] = {

@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../Game.h"
@@ -30,7 +30,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../scenario/scenario.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "banner.h"
 #include "Climate.h"

@@ -28,7 +28,7 @@
 #include "../Intro.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "viewport.h"
 

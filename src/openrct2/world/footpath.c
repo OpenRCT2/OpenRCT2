@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
@@ -23,7 +23,7 @@
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "map.h"
 
 void footpath_interrupt_peeps(sint32 x, sint32 y, sint32 z);

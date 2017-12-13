@@ -21,7 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../ride/ride.h"
 #include "../ride/ride_data.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "Finance.h"
 #include "Marketing.h"
 #include "NewsItem.h"

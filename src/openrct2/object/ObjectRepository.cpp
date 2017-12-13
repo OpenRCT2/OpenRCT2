@@ -45,8 +45,8 @@
 #include "../object.h"
 #include "../ObjectList.h"
 #include "../platform/platform.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 
 using namespace OpenRCT2;
 

@@ -18,7 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>

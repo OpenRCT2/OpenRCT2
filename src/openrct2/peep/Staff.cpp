@@ -29,7 +29,7 @@
 #include "../ObjectList.h"
 #include "../paint/tile_element/tile_element.h"
 #include "../scenario/scenario.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/entrance.h"
 #include "../world/footpath.h"
 #include "../world/scenery.h"

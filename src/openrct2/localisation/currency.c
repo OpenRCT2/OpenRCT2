@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../config/Config.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "currency.h"
 #include "string_ids.h"
 

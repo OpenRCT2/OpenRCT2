@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "audio/audio.h"
-#include "cheats.h"
+#include "Cheats.h"
 #include "config/Config.h"
 #include "Context.h"
 #include "core/Math.hpp"
@@ -49,8 +49,8 @@
 #include "scenario/scenario.h"
 #include "title/TitleScreen.h"
 #include "title/TitleSequencePlayer.h"
-#include "util/sawyercoding.h"
-#include "util/util.h"
+#include "util/SawyerCoding.h"
+#include "util/Util.h"
 #include "windows/Intent.h"
 #include "windows/tooltip.h"
 #include "world/banner.h"

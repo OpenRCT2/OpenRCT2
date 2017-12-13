@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../OpenRCT2.h"
-#include "../../cheats.h"
+#include "../../Cheats.h"
 #include "../../config/Config.h"
 #include "../../core/Math.hpp"
 #include "../../core/Util.hpp"

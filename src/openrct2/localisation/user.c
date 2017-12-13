@@ -16,7 +16,7 @@
 
 #include "../Game.h"
 #include "../ride/ride.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "localisation.h"
 #include "user.h"
 

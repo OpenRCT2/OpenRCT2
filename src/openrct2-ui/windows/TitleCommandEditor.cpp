@@ -25,7 +25,7 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/dropdown.h>
 
 typedef struct TITLE_COMMAND_ORDER {

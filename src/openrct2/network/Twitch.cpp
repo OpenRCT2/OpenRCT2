@@ -39,7 +39,7 @@
 #include "../management/NewsItem.h"
 #include "../peep/Peep.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/sprite.h"
 #include "http.h"
 #include "twitch.h"

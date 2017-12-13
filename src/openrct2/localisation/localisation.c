@@ -32,7 +32,7 @@
 
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "date.h"
 #include "localisation.h"
 #include "../management/Marketing.h"

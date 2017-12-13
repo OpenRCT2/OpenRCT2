@@ -20,7 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "ttf.h"
 
 enum {

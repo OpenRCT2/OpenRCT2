@@ -22,7 +22,7 @@
 #include "GameAction.h"
 
 #include "../localisation/date.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../interface/window.h"
 #include "../world/park.h"
 #include "../rct1.h"

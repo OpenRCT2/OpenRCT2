@@ -18,7 +18,7 @@
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -38,7 +38,7 @@
 #include "../peep/Staff.h"
 #include "../rct1.h"
 #include "../scenario/scenario.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/banner.h"
 #include "../world/Climate.h"

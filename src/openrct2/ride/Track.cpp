@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../audio/audio.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/viewport.h"
@@ -24,8 +24,8 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
-#include "../util/sawyercoding.h"
-#include "../util/util.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 #include "../world/footpath.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"

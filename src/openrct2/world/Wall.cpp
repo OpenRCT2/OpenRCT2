@@ -18,7 +18,7 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/string_ids.h"
 #include "../ride/Track.h"

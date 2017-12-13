@@ -19,7 +19,7 @@
 #include <string>
 
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
@@ -36,7 +36,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/peep/Staff.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/footpath.h>

@@ -14,10 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Math.hpp"
 #include "../platform/platform.h"
-#include "sawyercoding.h"
 #include "../scenario/scenario.h"
-#include "util.h"
+#include "SawyerCoding.h"
+#include "Util.h"
 
 static size_t decode_chunk_rle(const uint8* src_buffer, uint8* dst_buffer, size_t length);
 static size_t decode_chunk_rle_with_size(const uint8* src_buffer, uint8* dst_buffer, size_t length, size_t dstSize);
@@ -60,7 +61,7 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8* buffer, saw
         //fwrite(buffer, 1, chunkHeader.length, file);
         break;
     case CHUNK_ENCODING_RLE:
-        encode_buffer = malloc(0x600000);
+        encode_buffer = (uint8 *)malloc(0x600000);
         chunkHeader.length = (uint32)encode_chunk_rle(buffer, encode_buffer, chunkHeader.length);
         memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
         dst_file += sizeof(sawyercoding_chunk_header);
@@ -69,8 +70,8 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8* buffer, saw
         free(encode_buffer);
         break;
     case CHUNK_ENCODING_RLECOMPRESSED:
-        encode_buffer = malloc(chunkHeader.length * 2);
-        encode_buffer2 = malloc(0x600000);
+        encode_buffer = (uint8 *)malloc(chunkHeader.length * 2);
+        encode_buffer2 = (uint8 *)malloc(0x600000);
         chunkHeader.length = (uint32)encode_chunk_repeat(buffer, encode_buffer, chunkHeader.length);
         chunkHeader.length = (uint32)encode_chunk_rle(encode_buffer, encode_buffer2, chunkHeader.length);
         memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
@@ -81,7 +82,7 @@ size_t sawyercoding_write_chunk_buffer(uint8 *dst_file, const uint8* buffer, saw
         free(encode_buffer);
         break;
     case CHUNK_ENCODING_ROTATE:
-        encode_buffer = malloc(chunkHeader.length);
+        encode_buffer = (uint8 *)malloc(chunkHeader.length);
         memcpy(encode_buffer, buffer, chunkHeader.length);
         encode_chunk_rotate(encode_buffer, chunkHeader.length);
         memcpy(dst_file, &chunkHeader, sizeof(sawyercoding_chunk_header));
@@ -108,10 +109,10 @@ size_t sawyercoding_decode_sc4(const uint8 *src, uint8 *dst, size_t length, size
     size_t decodedLength = decode_chunk_rle_with_size(src, dst, length - 4, bufferLength);
 
     // Decode
-    for (size_t i = 0x60018; i <= min(decodedLength - 1, 0x1F8353); i++)
+    for (size_t i = 0x60018; i <= Math::Min(decodedLength - 1, 0x1F8353ul); i++)
         dst[i] = dst[i] ^ 0x9C;
 
-    for (size_t i = 0x60018; i <= min(decodedLength - 1, 0x1F8350); i += 4) {
+    for (size_t i = 0x60018; i <= Math::Min(decodedLength - 1, 0x1F8350ul); i += 4) {
         dst[i + 1] = ror8(dst[i + 1], 3);
 
         uint32 *code = (uint32*)&dst[i];
@@ -314,7 +315,7 @@ static size_t encode_chunk_repeat(const uint8 *src_buffer, uint8 *dst_buffer, si
         size_t bestRepeatCount = 0;
         for (size_t repeatIndex = searchIndex; repeatIndex <= searchEnd; repeatIndex++) {
             size_t repeatCount = 0;
-            size_t maxRepeatCount = min(min(7, searchEnd - repeatIndex), length - i - 1);
+            size_t maxRepeatCount = Math::Min(Math::Min(7ul, searchEnd - repeatIndex), length - i - 1);
             // maxRepeatCount should not exceed length
             assert(repeatIndex + maxRepeatCount < length);
             assert(i + maxRepeatCount < length);

@@ -21,7 +21,7 @@
 #include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
-#include "../../util/util.h"
+#include "../../util/Util.h"
 #include "../../world/map.h"
 #include "../../world/LargeScenery.h"
 #include "../../world/scenery.h"

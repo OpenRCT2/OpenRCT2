@@ -19,7 +19,7 @@
 #include "../core/Math.hpp"
 #include "SawyerChunkWriter.h"
 
-#include "../util/sawyercoding.h"
+#include "../util/SawyerCoding.h"
 
 // Maximum buffer size to store compressed data, maximum of 16 MiB
 constexpr size_t MAX_COMPRESSED_CHUNK_SIZE = 16 * 1024 * 1024;

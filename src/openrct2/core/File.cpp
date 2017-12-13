@@ -26,7 +26,7 @@
 #include "String.hpp"
 
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 
 namespace File
 {

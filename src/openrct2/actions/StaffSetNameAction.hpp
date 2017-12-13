@@ -20,7 +20,7 @@
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../peep/Staff.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"

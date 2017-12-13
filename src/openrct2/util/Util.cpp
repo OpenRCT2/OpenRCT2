@@ -18,11 +18,12 @@
 #include <time.h>
 #include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/Math.hpp"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
 #include "../title/TitleScreen.h"
-#include "util.h"
+#include "Util.h"
 #include "zlib.h"
 
 sint32 squaredmetres_to_squaredfeet(sint32 squaredMetres)
@@ -452,16 +453,16 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
         // Try to guesstimate the size needed for output data by applying the
         // same ratio it would take to compress data_in_size.
         out_size = (uLong)data_in_size * (uLong)data_in_size / compressBound((uLong)data_in_size);
-        out_size = min(MAX_ZLIB_REALLOC, out_size);
+        out_size = Math::Min((uLongf)MAX_ZLIB_REALLOC, out_size);
     }
     uLongf buffer_size = out_size;
-    uint8 *buffer = malloc(buffer_size);
+    uint8 *buffer = (uint8 *)malloc(buffer_size);
     do {
         if (ret == Z_BUF_ERROR)
         {
             buffer_size *= 2;
             out_size = buffer_size;
-            buffer = realloc(buffer, buffer_size);
+            buffer = (uint8 *)realloc(buffer, buffer_size);
         } else if (ret == Z_STREAM_ERROR) {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
             free(buffer);
@@ -473,7 +474,7 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
         }
         ret = uncompress(buffer, &out_size, data, (uLong)data_in_size);
     } while (ret != Z_OK);
-    buffer = realloc(buffer, out_size);
+    buffer = (uint8 *)realloc(buffer, out_size);
     *data_out_size = out_size;
     return buffer;
 }
@@ -491,13 +492,13 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
     sint32 ret = Z_OK;
     uLongf out_size = (uLongf)*data_out_size;
     uLong buffer_size = compressBound((uLong)data_in_size);
-    uint8 *buffer = malloc(buffer_size);
+    uint8 *buffer = (uint8 *)malloc(buffer_size);
     do {
         if (ret == Z_BUF_ERROR)
         {
             buffer_size *= 2;
             out_size = buffer_size;
-            buffer = realloc(buffer, buffer_size);
+            buffer = (uint8 *)realloc(buffer, buffer_size);
         } else if (ret == Z_STREAM_ERROR) {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
             free(buffer);
@@ -506,7 +507,7 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
         ret = compress(buffer, &out_size, data, (uLong)data_in_size);
     } while (ret != Z_OK);
     *data_out_size = out_size;
-    buffer = realloc(buffer, *data_out_size);
+    buffer = (uint8 *)realloc(buffer, *data_out_size);
     return buffer;
 }
 
