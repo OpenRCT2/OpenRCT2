@@ -16,26 +16,28 @@
 
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/config/Config.h>
-#include <openrct2/core/String.hpp>
-#include <openrct2/network/network.h>
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/ride/RideGroupManager.h>
-#include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/core/Util.hpp>
-#include <openrct2/core/Math.hpp>
-#include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/Context.h>
+#include <openrct2/core/Math.hpp>
+#include <openrct2/core/Memory.hpp>
+#include <openrct2/core/String.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/network/network.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/TrackData.h>
+#include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/util.h>
 #include <openrct2/windows/Intent.h>
+#include "../../openrct2/object/ObjectRepository.h"
 
 #define AVAILABILITY_STRING_SIZE 256
 #define WH 382
@@ -216,7 +218,7 @@ static void window_new_ride_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
 static void window_new_ride_invalidate(rct_window *w);
 static void window_new_ride_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_new_ride_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
-static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ride_entry * rideEntry, char * out);
+static void window_new_ride_list_vehicles(const uint8 rideType, const rct_ride_entry * rideEntry, rct_drawpixelinfo * dpi, sint32 x, sint32 y);
 
 // 0x0098E354
 static rct_window_event_list window_new_ride_events = {
@@ -941,7 +943,7 @@ static sint32 get_num_track_designs(ride_list_item item)
  */
 static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixelinfo *dpi, ride_list_item item, sint32 x, sint32 y, sint32 width)
 {
-    rct_ride_entry *rideEntry = get_ride_entry(item.entry_index);
+    rct_ride_entry * rideEntry = get_ride_entry(item.entry_index);
     rct_ride_name rideNaming;
 
     // Ride name and description
@@ -953,14 +955,7 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
     // Number of designs available
     if (ride_type_has_flag(item.type, RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        char availabilityString[AVAILABILITY_STRING_SIZE];
-        window_new_ride_list_vehicles_for(item.type, rideEntry, availabilityString);
-
-        if (availabilityString[0] != 0)
-        {
-            const char * drawString = _strdup(availabilityString);
-            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39, WW - 2);
-        }
+        window_new_ride_list_vehicles(item.type, rideEntry, dpi, x, y);
 
         // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
         if (network_get_mode() != NETWORK_MODE_NONE) {
@@ -1044,7 +1039,7 @@ static void window_new_ride_select(rct_window *w)
     ride_construct_new(item);
 }
 
-static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ride_entry * rideEntry, char * out)
+static void window_new_ride_list_vehicles(const uint8 rideType, const rct_ride_entry * rideEntry, rct_drawpixelinfo * dpi, sint32 x, sint32 y)
 {
     rct_ride_entry * currentRideEntry;
     const RideGroup * rideGroup, * currentRideGroup;
@@ -1052,11 +1047,10 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
 
     if (RideGroupManager::RideTypeIsIndependent(rideType))
     {
-        out[0] = 0;
         return;
     }
 
-    memset(out, 0, AVAILABILITY_STRING_SIZE);
+    char * availabilityString = (char *)calloc(AVAILABILITY_STRING_SIZE, sizeof(char));
 
     uint8 * rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
@@ -1072,8 +1066,8 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
         // Skip if vehicle does not belong to the same ride group
         if (RideGroupManager::RideTypeHasRideGroups(rideType))
         {
-            rideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)rideEntry);
-            currentRideGroup = RideGroupManager::GetRideGroup(rideType, (rct_ride_entry *)currentRideEntry);
+            rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
+            currentRideGroup = RideGroupManager::GetRideGroup(rideType, currentRideEntry);
 
             if (!RideGroupManager::RideGroupsAreEqual(rideGroup, currentRideGroup))
                 continue;
@@ -1083,11 +1077,14 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
 
         if (numItems > 0)
         {
-            safe_strcat(out, ", ", AVAILABILITY_STRING_SIZE);
+            safe_strcat(availabilityString, ", ", AVAILABILITY_STRING_SIZE);
         }
 
-        safe_strcat(out, vehicleName, AVAILABILITY_STRING_SIZE);
+        safe_strcat(availabilityString, vehicleName, AVAILABILITY_STRING_SIZE);
 
         numItems++;
     }
+
+    gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &availabilityString, COLOUR_BLACK, x, y + 39, WW - 2);
+    free((void *)availabilityString);
 }
