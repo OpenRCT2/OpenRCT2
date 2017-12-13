@@ -284,19 +284,6 @@ enum {
 #define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
 #define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
 
-// Path
-#define TILE_ELEMENT_PATH_QUEUE_FLAG                    0x01 // in rct_tile_element.type
-#define TILE_ELEMENT_PATH_IS_WIDE_FLAG                  0x02 // in rct_tile_element.type
-#define TILE_ELEMENT_PATH_TYPE_MASK                     0xF0 // in rct_tile_element.properties.path.type
-#define TILE_ELEMENT_PATH_QUEUE_BANNER_FLAG             0x08 // in rct_tile_element.properties.path.type
-#define TILE_ELEMENT_PATH_IS_SLOPED_FLAG                0x04 // in rct_tile_element.properties.path.type
-#define TILE_ELEMENT_PATH_EDGES_MASK                    0x0F // in rct_tile_element.properties.path.edges
-#define TILE_ELEMENT_PATH_CORNERS_MASK                  0xF0 // in rct_tile_element.properties.path.edges
-#define TILE_ELEMENT_PATH_ADDITION_TYPE_MASK            0x0F // in rct_tile_element.properties.path.additions
-// The most significant bit will always be zero, since only up to 4 stations are allowed per ride
-#define TILE_ELEMENT_PATH_ADDITION_STATION_INDEX_MASK   0x70 // in rct_tile_element.properties.path.additions
-#define TILE_ELEMENT_PATH_ADDITION_GHOST_FLAG           0x80 // in rct_tile_element.properties.path.additions
-
 #define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0x70
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F
 #define MAP_ELEM_TRACK_SEQUENCE_TAKING_PHOTO_MASK 0xF0

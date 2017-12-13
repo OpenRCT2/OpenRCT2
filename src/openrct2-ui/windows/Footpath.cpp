@@ -164,16 +164,16 @@ static const uint8 DefaultPathSlope[] = {
     0,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
-    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 2,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 2,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
-    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 3,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 3,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
-    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 1,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 1,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
-    TILE_ELEMENT_PATH_IS_SLOPED_FLAG | 0,
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | 0,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
@@ -815,7 +815,7 @@ static void window_footpath_set_provisional_path_at_point(sint32 x, sint32 y)
             slope = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
             break;
         case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-            slope = tileElement->properties.path.type & (TILE_ELEMENT_PATH_IS_SLOPED_FLAG | TILE_ELEMENT_DIRECTION_MASK);
+            slope = tileElement->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
             break;
         }
         sint32 pathType = (gFootpathSelectedType << 7) + (gFootpathSelectedId & 0xFF);
@@ -909,7 +909,7 @@ static void window_footpath_place_path_at_point(sint32 x, sint32 y)
         presentType = DefaultPathSlope[tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK];
         break;
     case VIEWPORT_INTERACTION_ITEM_FOOTPATH:
-        presentType = tileElement->properties.path.type & (TILE_ELEMENT_PATH_IS_SLOPED_FLAG | TILE_ELEMENT_DIRECTION_MASK);
+        presentType = tileElement->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK);
         break;
     }
     z            = tileElement->base_height;

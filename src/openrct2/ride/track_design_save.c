@@ -24,6 +24,7 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/footpath.h"
 #include "../world/LargeScenery.h"
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"
@@ -354,10 +355,10 @@ static void track_design_save_add_footpath(sint32 x, sint32 y, rct_tile_element 
     rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
 
     uint8 flags = 0;
-    flags |= tileElement->properties.path.edges & TILE_ELEMENT_PATH_EDGES_MASK;
-    flags |= (tileElement->properties.path.type & TILE_ELEMENT_PATH_IS_SLOPED_FLAG) << 2;
+    flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & TILE_ELEMENT_DIRECTION_MASK) << 5;
-    flags |= (tileElement->type & TILE_ELEMENT_PATH_QUEUE_FLAG) << 7;
+    flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
 
     track_design_save_push_tile_element(x, y, tileElement);
     track_design_save_push_tile_element_desc(entry, x, y, tileElement->base_height, flags, 0, 0);
@@ -535,10 +536,10 @@ static void track_design_save_remove_footpath(sint32 x, sint32 y, rct_tile_eleme
     rct_object_entry *entry = (rct_object_entry*)&object_entry_groups[OBJECT_TYPE_PATHS].entries[entryType];
 
     uint8 flags = 0;
-    flags |= tileElement->properties.path.edges & TILE_ELEMENT_PATH_EDGES_MASK;
-    flags |= (tileElement->properties.path.type & TILE_ELEMENT_PATH_IS_SLOPED_FLAG) << 2;
+    flags |= tileElement->properties.path.edges & FOOTPATH_PROPERTIES_EDGES_EDGES_MASK;
+    flags |= (tileElement->properties.path.type & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED) << 2;
     flags |= (tileElement->properties.path.type & TILE_ELEMENT_DIRECTION_MASK) << 5;
-    flags |= (tileElement->type & TILE_ELEMENT_PATH_QUEUE_FLAG) << 7;
+    flags |= (tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) << 7;
 
     track_design_save_pop_tile_element(x, y, tileElement);
     track_design_save_pop_tile_element_desc(entry, x, y, tileElement->base_height, flags, 0, 0);
@@ -570,7 +571,7 @@ static bool track_design_save_should_select_scenery_around(sint32 rideIndex, rct
 {
     switch (tile_element_get_type(tileElement)) {
     case TILE_ELEMENT_TYPE_PATH:
-        if ((tileElement->type & TILE_ELEMENT_PATH_QUEUE_FLAG) && tileElement->properties.path.addition_status == rideIndex)
+        if ((tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE) && tileElement->properties.path.addition_status == rideIndex)
             return true;
         break;
     case TILE_ELEMENT_TYPE_TRACK:
@@ -600,7 +601,7 @@ static void track_design_save_select_nearby_scenery_for_tile(sint32 rideIndex, s
                 sint32 interactionType = VIEWPORT_INTERACTION_ITEM_NONE;
                 switch (tile_element_get_type(tileElement)) {
                 case TILE_ELEMENT_TYPE_PATH:
-                    if (!(tileElement->type & TILE_ELEMENT_PATH_QUEUE_FLAG))
+                    if (!(tileElement->type & FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE))
                         interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
                     else if (tileElement->properties.path.addition_status == rideIndex)
                         interactionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH;
