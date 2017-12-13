@@ -66,8 +66,8 @@ bool filename_valid_characters(const utf8 *filename)
 utf8 *path_get_directory(const utf8 *path)
 {
     // Find the last slash or backslash in the path
-    char *filename = strrchr(path, *PATH_SEPARATOR);
-    char *filename_posix = strrchr(path, '/');
+    char * filename = (char *)strrchr(path, *PATH_SEPARATOR);
+    char * filename_posix = (char *)strrchr(path, '/');
     filename = filename < filename_posix ? filename_posix : filename;
 
     // If the path is invalid (e.g. just a file name), return NULL
@@ -84,8 +84,8 @@ utf8 *path_get_directory(const utf8 *path)
 const char *path_get_filename(const utf8 *path)
 {
     // Find last slash or backslash in the path
-    char *filename = strrchr(path, *PATH_SEPARATOR);
-    char *filename_posix = strchr(path, '/');
+    char * filename = (char *)strrchr(path, *PATH_SEPARATOR);
+    char * filename_posix = (char *)strchr(path, '/');
     filename = filename < filename_posix ? filename_posix : filename;
 
     // Checks if the path is valid (e.g. not just a file name)
@@ -109,11 +109,11 @@ const char *path_get_extension(const utf8 *path)
     const char *filename = path_get_filename(path);
 
     // Try to find the most-right dot in the filename
-    char *extension = strrchr(filename, '.');
+    char * extension = (char *)strrchr(filename, '.');
 
     // When no dot was found, return a pointer to the null-terminator
     if (extension == NULL)
-        extension = strrchr(filename, '\0');
+        extension = (char *)strrchr(filename, '\0');
 
     return extension;
 }
@@ -140,7 +140,7 @@ void path_append_extension(utf8 *path, const utf8 *newExtension, size_t size)
 void path_remove_extension(utf8 *path)
 {
     // Find last dot in filename, and replace it with a null-terminator
-    char *lastDot = strrchr(path_get_filename(path), '.');
+    char * lastDot = (char *)strrchr(path_get_filename(path), '.');
     if (lastDot != NULL)
         *lastDot = '\0';
     else
