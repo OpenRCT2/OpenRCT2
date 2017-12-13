@@ -958,9 +958,8 @@ static void window_new_ride_paint_ride_information(rct_window *w, rct_drawpixeli
 
         if (availabilityString[0] != 0)
         {
-            const char * drawString = _strdup(availabilityString);
-            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, (void*)&drawString, COLOUR_BLACK, x, y + 39, WW - 2);
-            free((void *)drawString);
+            const char * drawString = availabilityString;
+            gfx_draw_string_left_clipped(dpi, STR_AVAILABLE_VEHICLES, &drawString, COLOUR_BLACK, x, y + 39, WW - 2);
         }
 
         // Track designs are disabled in multiplayer, so don't say there are any designs available when in multiplayer
