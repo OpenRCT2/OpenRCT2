@@ -124,6 +124,7 @@ void footpath_update_path_wide_flags(sint32 x, sint32 y);
 
 sint32 footpath_is_connected_to_map_edge(sint32 x, sint32 y, sint32 z, sint32 direction, sint32 flags);
 bool footpath_element_is_sloped(const rct_tile_element * tileElement);
+void footpath_element_set_sloped(rct_tile_element * tileElement, bool isSloped);
 uint8 footpath_element_get_slope_direction(const rct_tile_element * tileElement);
 bool footpath_element_is_queue(const rct_tile_element * tileElement);
 bool footpath_element_is_wide(const rct_tile_element * tileElement);
@@ -131,6 +132,7 @@ uint8 footpath_element_get_type(const rct_tile_element * tileElement);
 void footpath_element_set_type(rct_tile_element * tileElement, uint8 type);
 uint8 footpath_element_get_direction(const rct_tile_element * tileElement);
 void footpath_element_set_direction(rct_tile_element * tileElement, uint8 direction);
+void footpath_element_set_wide(rct_tile_element * tileElement, bool isWide);
 bool footpath_element_has_path_scenery(const rct_tile_element * tileElement);
 uint8 footpath_element_get_path_scenery(const rct_tile_element * tileElement);
 void footpath_element_set_path_scenery(rct_tile_element * tileElement, uint8 pathSceneryType);
