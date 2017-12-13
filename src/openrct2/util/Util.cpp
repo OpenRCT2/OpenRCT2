@@ -183,6 +183,7 @@ sint32 bitscanforward(sint32 source)
     #define OpenRCT2_CPUID_GNUC_X86
     #define OPENRCT2_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
+    #include <intrin.h>
     #include <nmmintrin.h>
     #define OpenRCT2_CPUID_MSVC_X86
     #define OPENRCT2_X86
@@ -195,7 +196,7 @@ static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax)
     int ret = __get_cpuid(eax, &cpuid_outdata[0], &cpuid_outdata[1], &cpuid_outdata[2], &cpuid_outdata[3]);
     return ret == 1;
 #elif defined(OpenRCT2_CPUID_MSVC_X86)
-    __cpuid(cpuid_outdata, eax);
+    __cpuid((int *)cpuid_outdata, (int)eax);
     return true;
 #else
     return false;
