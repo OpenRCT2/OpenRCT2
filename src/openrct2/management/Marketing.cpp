@@ -36,35 +36,42 @@ const money16 AdvertisingCampaignPricePerWeek[] =
     MONEY(200, 00)   // RIDE
 };
 
-static const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
-
 uint8 gMarketingCampaignDaysLeft[20];
 uint8 gMarketingCampaignRideIndex[22];
 
 sint32 marketing_get_campaign_guest_generation_probability(sint32 campaign)
 {
-    sint32 probability = AdvertisingCampaignGuestGenerationProbabilities[campaign];
-    Ride   * ride;
-
-    // Lower probability of guest generation if price was already low
+    sint32 probability;
+    
     switch (campaign)
     {
-    case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
-        if (park_get_entrance_fee() < 4)
-            probability /= 8;
-        break;
-    case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
-        if (park_get_entrance_fee() < 6)
-            probability /= 8;
-        break;
-    case ADVERTISING_CAMPAIGN_RIDE_FREE:
-        ride = get_ride(gMarketingCampaignRideIndex[campaign]);
-        if (ride->price < 3)
-            probability /= 8;
-        break;
+        case ADVERTISING_CAMPAIGN_PARK_ENTRY_FREE:
+            probability = 400;
+            if (park_get_entrance_fee() < 4)
+                probability /= 8; // Lower probability of guest generation if price was already low
+            return probability;
+        case ADVERTISING_CAMPAIGN_RIDE_FREE:
+        {
+            probability = 300;
+            Ride * ride = get_ride(gMarketingCampaignRideIndex[campaign]);
+            if (ride->price < 3)
+                probability /= 8;
+            return probability;
+        }
+        case ADVERTISING_CAMPAIGN_PARK_ENTRY_HALF_PRICE:
+            probability = 200;
+            if (park_get_entrance_fee() < 6)
+                probability /= 8;
+            return probability;
+        case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
+            return 200;
+        case ADVERTISING_CAMPAIGN_PARK:
+            return 250;
+        case ADVERTISING_CAMPAIGN_RIDE:
+            return 200;
+        default:
+            return 0;
     }
-
-    return probability;
 }
 
 /**
