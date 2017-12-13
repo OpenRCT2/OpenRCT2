@@ -641,7 +641,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
 
     regs.ah = regs.cl;
 
-    while (true)
+    for(uint32 tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT; tunnelIndex++)
     {
         if (curHeight >= regs.al || curHeight >= regs.cl)
         {
@@ -666,13 +666,12 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         if (curHeight != tunnelArray[0].height)
         {
             // Normal walls
-            while (curHeight > tunnelArray[0].height)
+            while (curHeight > tunnelArray[tunnelIndex].height)
             {
-                // TODO: Should probably be done by just keeping track of the current index
-                memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
+                tunnelIndex++;
             }
 
-            if (isWater == true || curHeight != tunnelArray[0].height)
+            if (isWater == true || curHeight != tunnelArray[tunnelIndex].height)
             {
                 sub_98196C(session, base_image_id, offset.x, offset.y, bounds.x, bounds.y, 15, curHeight * 16, rotation);
 
@@ -682,7 +681,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         }
 
         // Tunnels
-        uint8 tunnelType = tunnelArray[0].type;
+        uint8 tunnelType = tunnelArray[tunnelIndex].type;
         uint8 tunnelHeight = stru_97B570[tunnelType][0];
         sint16 zOffset = curHeight;
 
@@ -717,9 +716,6 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
         curHeight += stru_97B570[tunnelType][0];
-
-        // TODO: Should probably be done by just keeping track of the current index
-        memmove(&tunnelArray[0], &tunnelArray[1], sizeof(tunnel_entry) * (TUNNEL_MAX_COUNT - 1));
     }
 }
 
