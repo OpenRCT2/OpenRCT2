@@ -22,7 +22,7 @@
 #include "../ui/WindowManager.h"
 
 #include "../platform/platform.h"
-#include "../util/sawyercoding.h"
+#include "../util/SawyerCoding.h"
 
 #include "network.h"
 
@@ -61,8 +61,8 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../scenario/scenario.h"
-#include "../util/util.h"
-#include "../cheats.h"
+#include "../util/Util.h"
+#include "../Cheats.h"
 
 #include "NetworkAction.h"
 

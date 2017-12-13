@@ -31,7 +31,7 @@
 #include "ObjectList.h"
 #include "peep/Staff.h"
 #include "rct1.h"
-#include "util/util.h"
+#include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
 

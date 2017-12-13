@@ -21,7 +21,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "chat.h"
 
 bool gChatOpen = false;

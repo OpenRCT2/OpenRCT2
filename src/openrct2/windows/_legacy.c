@@ -25,7 +25,7 @@
 #include "../interface/viewport.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../network/network.h"
 #include "../world/scenery.h"
 

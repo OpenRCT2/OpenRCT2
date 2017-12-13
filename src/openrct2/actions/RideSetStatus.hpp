@@ -20,7 +20,7 @@
 #include "../localisation/string_ids.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../interface/window.h"
 #include "../world/park.h"
 #include "../ride/ride.h"

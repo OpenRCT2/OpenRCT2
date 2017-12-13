@@ -28,7 +28,7 @@
 #include "../management/Finance.h"
 #include "../peep/Peep.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/map.h"
 #include "../world/park.h"
 #include "http.h"

@@ -21,7 +21,7 @@
 #include "../OpenRCT2.h"
 #include "GameAction.h"
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../world/entrance.h"
 #include "../world/park.h"
 #include "../world/footpath.h"

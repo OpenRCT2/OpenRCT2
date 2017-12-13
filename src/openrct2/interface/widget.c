@@ -21,7 +21,7 @@
 #include "window.h"
 #include "../platform/platform.h"
 #include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../Context.h"
 
 #include <math.h>

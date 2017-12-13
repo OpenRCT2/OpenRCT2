@@ -21,7 +21,7 @@
 #include "footpath.h"
 #include "map.h"
 #include "park.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"

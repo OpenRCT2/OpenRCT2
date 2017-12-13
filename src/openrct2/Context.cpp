@@ -66,7 +66,7 @@
 #include "ObjectList.h"
 #include "platform/platform.h"
 #include "rct1.h"
-#include "util/util.h"
+#include "util/Util.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Audio;

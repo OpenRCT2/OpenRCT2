@@ -14,7 +14,7 @@
 *****************************************************************************/
 #pragma endregion
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"

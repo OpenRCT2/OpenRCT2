@@ -28,7 +28,7 @@
 #include "../localisation/string_ids.h"
 #include "../object.h"
 #include "../platform/platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "map.h"
 #include "map_helpers.h"
 #include "MapGen.h"

@@ -19,7 +19,7 @@
 #include "platform.h"
 #include "../config/Config.h"
 #include "../localisation/language.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include <wchar.h>
 #include <jni.h>
 #include <SDL.h>

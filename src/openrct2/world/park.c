@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/colour.h"

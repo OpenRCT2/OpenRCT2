@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "cheats.h"
+#include "Cheats.h"
 #include "config/Config.h"
 #include "Editor.h"
 #include "Game.h"
@@ -23,7 +23,7 @@
 #include "management/Finance.h"
 #include "network/network.h"
 #include "ride/Station.h"
-#include "util/util.h"
+#include "util/Util.h"
 #include "world/Climate.h"
 #include "world/footpath.h"
 #include "world/map.h"

@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "String.hpp"
 
 interface IStringReader

@@ -33,7 +33,7 @@
 #include "../Game.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
 #include "platform.h"
 

@@ -79,7 +79,7 @@ set(COMMON_TEST_SOURCES
     "${ROOT_DIR}/src/openrct2/Diagnostic.cpp"
     "${ROOT_DIR}/src/openrct2/localisation/format_codes.c"
     "${ROOT_DIR}/src/openrct2/localisation/utf8.c"
-    "${ROOT_DIR}/src/openrct2/util/util.c"
+    "${ROOT_DIR}/src/openrct2/util/Util.cpp"
     "${ROOT_DIR}/src/openrct2/Version.cpp"
     )
 
@@ -106,7 +106,7 @@ set(SAWYERCODING_TEST_SOURCES
         "${ROOT_DIR}/src/openrct2/core/MemoryStream.cpp"
         "${ROOT_DIR}/src/openrct2/rct12/SawyerChunk.cpp"
         "${ROOT_DIR}/src/openrct2/rct12/SawyerChunkReader.cpp"
-        "${ROOT_DIR}/src/openrct2/util/sawyercoding.c"
+        "${ROOT_DIR}/src/openrct2/util/SawyerCoding.cpp"
         )
 add_executable(test_sawyercoding ${SAWYERCODING_TEST_SOURCES})
 target_link_libraries(test_sawyercoding ${GTEST_LIBRARIES} test-common ${LDL} z)

@@ -34,7 +34,7 @@
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 
 #define AVAILABILITY_STRING_SIZE 256

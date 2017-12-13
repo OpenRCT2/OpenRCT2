@@ -23,7 +23,7 @@
 #include "localisation/localisation.h"
 #include "OpenRCT2.h"
 #include "platform/platform.h"
-#include "util/util.h"
+#include "util/Util.h"
 #include "png.h"
 
 #define MODE_DEFAULT 0

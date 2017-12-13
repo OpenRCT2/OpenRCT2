@@ -44,7 +44,7 @@
 #include "../ride/ride.h"
 #include "../ride/ride_ratings.h"
 #include "../scenario/scenario.h"
-#include "../util/sawyercoding.h"
+#include "../util/SawyerCoding.h"
 #include "../world/Climate.h"
 #include "../world/entrance.h"
 #include "../world/map_animation.h"

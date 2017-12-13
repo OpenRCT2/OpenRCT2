@@ -25,7 +25,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 
 enum {
     WINDOW_THEMES_TAB_SETTINGS,

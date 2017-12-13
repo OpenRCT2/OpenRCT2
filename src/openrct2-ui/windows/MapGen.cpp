@@ -23,7 +23,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/land_tool.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/world/MapGen.h>
 #include <openrct2/windows/dropdown.h>
 

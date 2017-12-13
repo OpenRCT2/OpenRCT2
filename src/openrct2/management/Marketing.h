@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../peep/Peep.h"
 
 enum {

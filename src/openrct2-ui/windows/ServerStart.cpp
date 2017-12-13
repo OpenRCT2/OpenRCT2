@@ -25,7 +25,7 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 
 static char _port[7];
 static char _name[65];

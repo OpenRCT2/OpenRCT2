@@ -21,7 +21,7 @@
 #include <mach-o/dyld.h>
 #include <pwd.h>
 #include "platform.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "../localisation/language.h"
 #include "../config/Config.h"
 

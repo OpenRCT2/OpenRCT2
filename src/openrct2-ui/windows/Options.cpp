@@ -45,7 +45,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/windows/dropdown.h>
 
 enum WINDOW_OPTIONS_PAGE {

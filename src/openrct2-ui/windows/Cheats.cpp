@@ -24,7 +24,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 #include <openrct2/world/park.h>
 #include <openrct2/windows/dropdown.h>
 

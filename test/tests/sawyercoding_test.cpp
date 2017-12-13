@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 #include <openrct2/core/MemoryStream.h>
 #include <openrct2/rct12/SawyerChunkReader.h>
-#include <openrct2/util/sawyercoding.h>
+#include <openrct2/util/SawyerCoding.h>
 
 constexpr size_t BUFFER_SIZE = 0x600000;
 

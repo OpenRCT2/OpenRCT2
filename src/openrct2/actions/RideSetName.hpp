@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "../cheats.h"
+#include "../Cheats.h"
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../interface/window.h"

@@ -20,7 +20,7 @@
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
-#include <openrct2/cheats.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/land_tool.h>

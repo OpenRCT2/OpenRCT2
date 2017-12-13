@@ -26,7 +26,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/util/util.h>
+#include <openrct2/util/Util.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
