@@ -41,7 +41,7 @@
 
 uint8 gTrackGroundFlags;
 
-/**　rct2: 0x00997C9D */
+/**  rct2: 0x00997C9D */
 const rct_trackdefinition TrackDefinitions[256] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
