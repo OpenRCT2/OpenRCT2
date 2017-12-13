@@ -37,7 +37,6 @@ typedef enum {
     CURRENCY_HKD,               // Hong Kong Dollar
     CURRENCY_TWD,               // New Taiwan Dollar
     CURRENCY_YUAN,              // Chinese Yuan
-    CURRENCY_BITCOIN,           // Bitcoin
 
     CURRENCY_CUSTOM,            // Custom currency
 

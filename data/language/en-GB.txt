@@ -4471,7 +4471,6 @@ STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Mouse shaped cars speed through tight corners and short drops, gently spinning around to disorientate the riders
 STR_6164    :{WHITE}{CROSS}
-STR_6165    :Bitcoin
 
 #############
 # Scenarios #
