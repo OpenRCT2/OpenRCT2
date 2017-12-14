@@ -19,8 +19,8 @@
 
 #include "ride_data.h"
 #include "../common.h"
-#include "../paint/tile_element/tile_element.h"
-#include "../paint/paint.h"
+#include "../paint/tile_element/TileElement.h"
+#include "../paint/Paint.h"
 #include "../world/map.h"
 
 #ifdef __cplusplus

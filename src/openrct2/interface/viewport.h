@@ -19,7 +19,7 @@
 
 #include "../world/map.h"
 #include "../world/sprite.h"
-#include "../paint/paint.h"
+#include "../paint/Paint.h"
 #include "window.h"
 
 enum {

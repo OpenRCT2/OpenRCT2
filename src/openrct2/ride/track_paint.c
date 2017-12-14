@@ -16,9 +16,9 @@
 
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
-#include "../paint/supports.h"
+#include "../paint/Supports.h"
 #include "../interface/viewport.h"
-#include "../paint/paint.h"
+#include "../paint/Paint.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
@@ -27,7 +27,7 @@
 #include "ride_data.h"
 #include "TrackData.h"
 #include "track_paint.h"
-#include "../paint/tile_element/tile_element.h"
+#include "../paint/tile_element/TileElement.h"
 
 /* rct2: 0x007667AC */
 static LocationXY16 loc_7667AC[] = {

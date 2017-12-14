@@ -24,10 +24,10 @@
 #include "../../ride/track_paint.h"
 #include "../../world/footpath.h"
 #include "../../world/scenery.h"
-#include "../paint.h"
-#include "../supports.h"
-#include "tile_element.h"
-#include "surface.h"
+#include "../Paint.h"
+#include "../Supports.h"
+#include "TileElement.h"
+#include "Surface.h"
 #include "../../world/map.h"
 #include "../../drawing/lightfx.h"
 
@@ -371,9 +371,9 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
         direction &= 3;
 
         LocationXYZ16 boundBoxOffsets = {
-            .x = BannerBoundBoxes[direction][0].x,
-            .y = BannerBoundBoxes[direction][0].y,
-            .z = height + 2
+            BannerBoundBoxes[direction][0].x,
+            BannerBoundBoxes[direction][0].y,
+            static_cast<sint16>(height + 2)
         };
 
         uint32 imageId = (direction << 1) + base_image_id + 101;
@@ -805,8 +805,8 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
         (((tileElement->properties.path.edges >> 4) << get_current_rotation()) >> 4);
 
 
-    LocationXY16 boundBoxOffset = {.x =stru_98D804[edges][0], .y = stru_98D804[edges][1]};
-    LocationXY16 boundBoxSize = {.x =stru_98D804[edges][2], .y = stru_98D804[edges][3]};
+    LocationXY16 boundBoxOffset = {stru_98D804[edges][0], stru_98D804[edges][1]};
+    LocationXY16 boundBoxSize = {stru_98D804[edges][2], stru_98D804[edges][3]};
 
     uint16 edi = edges | (corners << 4);
 
@@ -920,13 +920,13 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
         (((tileElement->properties.path.edges & 0xF) << get_current_rotation()) >> 4);
 
     LocationXY16 boundBoxOffset = {
-        .x = stru_98D804[edges][0],
-        .y = stru_98D804[edges][1]
+        stru_98D804[edges][0],
+        stru_98D804[edges][1]
     };
 
     LocationXY16 boundBoxSize = {
-        .x = stru_98D804[edges][2],
-        .y = stru_98D804[edges][3]
+        stru_98D804[edges][2],
+        stru_98D804[edges][3]
     };
 
     uint8 corners = (((tileElement->properties.path.edges >> 4) << get_current_rotation()) & 0xF) |

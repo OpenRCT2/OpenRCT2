@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "paint.h"
+#include "Paint.h"
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
 #include "../config/Config.h"
 #include "../interface/viewport.h"
 #include "../core/Math.hpp"
-#include "tile_element/tile_element.h"
-#include "sprite/sprite.h"
+#include "tile_element/TileElement.h"
+#include "sprite/Sprite.h"
 
 #include <algorithm>
 

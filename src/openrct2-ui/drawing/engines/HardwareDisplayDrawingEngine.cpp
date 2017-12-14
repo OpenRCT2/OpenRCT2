@@ -26,7 +26,7 @@
 
 #include <openrct2/drawing/lightfx.h>
 #include <openrct2/Game.h>
-#include <openrct2/paint/paint.h>
+#include <openrct2/paint/Paint.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

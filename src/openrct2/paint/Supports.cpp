@@ -15,9 +15,9 @@
 #pragma endregion
 
 #include "../interface/viewport.h"
-#include "../paint/paint.h"
-#include "supports.h"
-#include "tile_element/tile_element.h"
+#include "Paint.h"
+#include "Supports.h"
+#include "tile_element/TileElement.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
 static const LocationXY8 loc_97AF20[] = {

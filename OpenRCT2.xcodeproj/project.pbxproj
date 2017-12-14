@@ -27,6 +27,22 @@
 		4C6A668E1FE14C3A00694CB6 /* SawyerCoding.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668A1FE14C3A00694CB6 /* SawyerCoding.cpp */; };
 		4C6A668F1FE14C3A00694CB6 /* Util.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A668C1FE14C3A00694CB6 /* Util.cpp */; };
 		4C6A66921FE14C9500694CB6 /* Cheats.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66901FE14C9500694CB6 /* Cheats.cpp */; };
+		4C6A66981FE2786F00694CB6 /* Litter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66931FE2786F00694CB6 /* Litter.cpp */; };
+		4C6A66991FE2786F00694CB6 /* Misc.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66941FE2786F00694CB6 /* Misc.cpp */; };
+		4C6A669A1FE2786F00694CB6 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66951FE2786F00694CB6 /* Peep.cpp */; };
+		4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66961FE2786F00694CB6 /* Sprite.cpp */; };
+		4C6A66A61FE2787700694CB6 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669C1FE2787700694CB6 /* Banner.cpp */; };
+		4C6A66A71FE2787700694CB6 /* Entrance.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669D1FE2787700694CB6 /* Entrance.cpp */; };
+		4C6A66A81FE2787700694CB6 /* Fence.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669E1FE2787700694CB6 /* Fence.cpp */; };
+		4C6A66A91FE2787700694CB6 /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A669F1FE2787700694CB6 /* LargeScenery.cpp */; };
+		4C6A66AA1FE2787700694CB6 /* Path.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A01FE2787700694CB6 /* Path.cpp */; };
+		4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A11FE2787700694CB6 /* SmallScenery.cpp */; };
+		4C6A66AC1FE2787700694CB6 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A21FE2787700694CB6 /* Surface.cpp */; };
+		4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66A41FE2787700694CB6 /* TileElement.cpp */; };
+		4C6A66B51FE278C900694CB6 /* Paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66AE1FE278C900694CB6 /* Paint.cpp */; };
+		4C6A66B61FE278C900694CB6 /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B01FE278C900694CB6 /* Painter.cpp */; };
+		4C6A66B71FE278C900694CB6 /* PaintHelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */; };
+		4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B31FE278C900694CB6 /* Supports.cpp */; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
 		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
 		4C729BC01FC2E1BE001DFF2F /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */; };
@@ -130,7 +146,6 @@
 		4CE4624B1FD1613D0001CD98 /* Platform.macOS.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */; };
 		4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */; };
 		4CE4624D1FD1613D0001CD98 /* Platform.Win32.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */; };
-		4CF788C01F1B787700C611BF /* Painter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CF788BE1F1B787700C611BF /* Painter.cpp */; };
 		4CFBCD5E1F27CD8000D74FB6 /* SmallScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */; };
 		4CFE4E801F90A3F1005243C2 /* Peep.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */; };
 		4CFE4E811F90A3F1005243C2 /* PeepData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E7D1F90A3F1005243C2 /* PeepData.cpp */; };
@@ -365,21 +380,6 @@
 		F76C867F1EC4E88400FA49E2 /* WallObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84311EC4E7CC00FA49E2 /* WallObject.cpp */; };
 		F76C86811EC4E88400FA49E2 /* WaterObject.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84331EC4E7CC00FA49E2 /* WaterObject.cpp */; };
 		F76C86861EC4E88400FA49E2 /* OpenRCT2.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */; };
-		F76C86881EC4E88400FA49E2 /* banner.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843C1EC4E7CC00FA49E2 /* banner.c */; };
-		F76C86891EC4E88400FA49E2 /* entrance.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843D1EC4E7CC00FA49E2 /* entrance.c */; };
-		F76C868A1EC4E88400FA49E2 /* fence.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843E1EC4E7CC00FA49E2 /* fence.c */; };
-		F76C868B1EC4E88400FA49E2 /* tile_element.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C843F1EC4E7CC00FA49E2 /* tile_element.c */; };
-		F76C868D1EC4E88400FA49E2 /* path.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84411EC4E7CC00FA49E2 /* path.c */; };
-		F76C868E1EC4E88400FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84421EC4E7CC00FA49E2 /* scenery.c */; };
-		F76C868F1EC4E88400FA49E2 /* large_scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84431EC4E7CC00FA49E2 /* large_scenery.c */; };
-		F76C86901EC4E88400FA49E2 /* Surface.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84441EC4E7CC00FA49E2 /* Surface.cpp */; };
-		F76C86921EC4E88400FA49E2 /* Paint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84461EC4E7CC00FA49E2 /* Paint.cpp */; };
-		F76C86941EC4E88400FA49E2 /* paint_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */; };
-		F76C86951EC4E88400FA49E2 /* litter.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844A1EC4E7CC00FA49E2 /* litter.c */; };
-		F76C86961EC4E88400FA49E2 /* misc.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844B1EC4E7CC00FA49E2 /* misc.c */; };
-		F76C86971EC4E88400FA49E2 /* peep.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844C1EC4E7CC00FA49E2 /* peep.c */; };
-		F76C86981EC4E88400FA49E2 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844D1EC4E7CC00FA49E2 /* sprite.c */; };
-		F76C869A1EC4E88400FA49E2 /* supports.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C844F1EC4E7CC00FA49E2 /* supports.c */; };
 		F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */; };
 		F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */; };
 		F76C86A51EC4E88400FA49E2 /* linux.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C845C1EC4E7CC00FA49E2 /* linux.c */; };
@@ -610,6 +610,28 @@
 		4C6A668D1FE14C3A00694CB6 /* Util.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Util.h; sourceTree = "<group>"; };
 		4C6A66901FE14C9500694CB6 /* Cheats.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Cheats.cpp; sourceTree = "<group>"; };
 		4C6A66911FE14C9500694CB6 /* Cheats.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Cheats.h; sourceTree = "<group>"; };
+		4C6A66931FE2786F00694CB6 /* Litter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Litter.cpp; sourceTree = "<group>"; };
+		4C6A66941FE2786F00694CB6 /* Misc.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Misc.cpp; sourceTree = "<group>"; };
+		4C6A66951FE2786F00694CB6 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
+		4C6A66961FE2786F00694CB6 /* Sprite.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Sprite.cpp; sourceTree = "<group>"; };
+		4C6A66971FE2786F00694CB6 /* Sprite.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Sprite.h; sourceTree = "<group>"; };
+		4C6A669C1FE2787700694CB6 /* Banner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Banner.cpp; sourceTree = "<group>"; };
+		4C6A669D1FE2787700694CB6 /* Entrance.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Entrance.cpp; sourceTree = "<group>"; };
+		4C6A669E1FE2787700694CB6 /* Fence.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Fence.cpp; sourceTree = "<group>"; };
+		4C6A669F1FE2787700694CB6 /* LargeScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = LargeScenery.cpp; sourceTree = "<group>"; };
+		4C6A66A01FE2787700694CB6 /* Path.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Path.cpp; sourceTree = "<group>"; };
+		4C6A66A11FE2787700694CB6 /* SmallScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenery.cpp; sourceTree = "<group>"; };
+		4C6A66A21FE2787700694CB6 /* Surface.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
+		4C6A66A31FE2787700694CB6 /* Surface.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Surface.h; sourceTree = "<group>"; };
+		4C6A66A41FE2787700694CB6 /* TileElement.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TileElement.cpp; sourceTree = "<group>"; };
+		4C6A66A51FE2787700694CB6 /* TileElement.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TileElement.h; sourceTree = "<group>"; };
+		4C6A66AE1FE278C900694CB6 /* Paint.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.cpp; sourceTree = "<group>"; };
+		4C6A66AF1FE278C900694CB6 /* Paint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Paint.h; sourceTree = "<group>"; };
+		4C6A66B01FE278C900694CB6 /* Painter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Painter.cpp; sourceTree = "<group>"; };
+		4C6A66B11FE278C900694CB6 /* Painter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painter.h; sourceTree = "<group>"; };
+		4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = PaintHelpers.cpp; sourceTree = "<group>"; };
+		4C6A66B31FE278C900694CB6 /* Supports.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Supports.cpp; sourceTree = "<group>"; };
+		4C6A66B41FE278C900694CB6 /* Supports.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Supports.h; sourceTree = "<group>"; };
 		4C6AC20D1F9E1693004324AA /* Station.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Station.cpp; sourceTree = "<group>"; };
 		4C6AC20E1F9E1693004324AA /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
 		4C6AC2101F9E1CB3004324AA /* CableLift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CableLift.cpp; sourceTree = "<group>"; };
@@ -736,8 +758,6 @@
 		4CE462471FD1613D0001CD98 /* Platform.macOS.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.macOS.cpp; sourceTree = "<group>"; };
 		4CE462481FD1613D0001CD98 /* Platform.Posix.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Posix.cpp; sourceTree = "<group>"; };
 		4CE462491FD1613D0001CD98 /* Platform.Win32.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Platform.Win32.cpp; sourceTree = "<group>"; };
-		4CF788BE1F1B787700C611BF /* Painter.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Painter.cpp; sourceTree = "<group>"; };
-		4CF788BF1F1B787700C611BF /* Painter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Painter.h; sourceTree = "<group>"; };
 		4CFBCD5D1F27CD8000D74FB6 /* SmallScenery.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SmallScenery.cpp; sourceTree = "<group>"; };
 		4CFE4E7B1F90A3F1005243C2 /* Peep.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Peep.cpp; sourceTree = "<group>"; };
 		4CFE4E7C1F90A3F1005243C2 /* Peep.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Peep.h; sourceTree = "<group>"; };
@@ -1241,26 +1261,6 @@
 		F76C84351EC4E7CC00FA49E2 /* object.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = object.h; sourceTree = "<group>"; };
 		F76C84381EC4E7CC00FA49E2 /* OpenRCT2.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = OpenRCT2.cpp; sourceTree = "<group>"; };
 		F76C84391EC4E7CC00FA49E2 /* OpenRCT2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = OpenRCT2.h; sourceTree = "<group>"; };
-		F76C843C1EC4E7CC00FA49E2 /* banner.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = banner.c; sourceTree = "<group>"; };
-		F76C843D1EC4E7CC00FA49E2 /* entrance.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = entrance.c; sourceTree = "<group>"; };
-		F76C843E1EC4E7CC00FA49E2 /* fence.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = fence.c; sourceTree = "<group>"; };
-		F76C843F1EC4E7CC00FA49E2 /* tile_element.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = tile_element.c; sourceTree = "<group>"; };
-		F76C84401EC4E7CC00FA49E2 /* tile_element.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_element.h; sourceTree = "<group>"; };
-		F76C84411EC4E7CC00FA49E2 /* path.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = path.c; sourceTree = "<group>"; };
-		F76C84421EC4E7CC00FA49E2 /* scenery.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery.c; sourceTree = "<group>"; };
-		F76C84431EC4E7CC00FA49E2 /* large_scenery.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = large_scenery.c; sourceTree = "<group>"; };
-		F76C84441EC4E7CC00FA49E2 /* Surface.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Surface.cpp; sourceTree = "<group>"; };
-		F76C84451EC4E7CC00FA49E2 /* surface.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = surface.h; sourceTree = "<group>"; };
-		F76C84461EC4E7CC00FA49E2 /* Paint.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Paint.cpp; sourceTree = "<group>"; };
-		F76C84471EC4E7CC00FA49E2 /* paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = paint.h; sourceTree = "<group>"; };
-		F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = paint_helpers.c; sourceTree = "<group>"; };
-		F76C844A1EC4E7CC00FA49E2 /* litter.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = litter.c; sourceTree = "<group>"; };
-		F76C844B1EC4E7CC00FA49E2 /* misc.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = misc.c; sourceTree = "<group>"; };
-		F76C844C1EC4E7CC00FA49E2 /* peep.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = peep.c; sourceTree = "<group>"; };
-		F76C844D1EC4E7CC00FA49E2 /* sprite.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
-		F76C844E1EC4E7CC00FA49E2 /* sprite.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = sprite.h; sourceTree = "<group>"; };
-		F76C844F1EC4E7CC00FA49E2 /* supports.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = supports.c; sourceTree = "<group>"; };
-		F76C84501EC4E7CC00FA49E2 /* supports.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = supports.h; sourceTree = "<group>"; };
 		F76C84511EC4E7CC00FA49E2 /* ParkImporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ParkImporter.cpp; sourceTree = "<group>"; };
 		F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ParkImporter.h; sourceTree = "<group>"; };
 		F76C845A1EC4E7CC00FA49E2 /* Crash.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Crash.cpp; sourceTree = "<group>"; };
@@ -1327,7 +1327,7 @@
 		F76C854A1EC4E7CD00FA49E2 /* tile_inspector.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = tile_inspector.h; sourceTree = "<group>"; };
 		F76C855C1EC4E7CD00FA49E2 /* Balloon.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Balloon.cpp; sourceTree = "<group>"; };
 		F76C855D1EC4E7CD00FA49E2 /* Banner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Banner.cpp; sourceTree = "<group>"; };
-		F76C855E1EC4E7CD00FA49E2 /* banner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = banner.h; sourceTree = "<group>"; };
+		F76C855E1EC4E7CD00FA49E2 /* Banner.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
 		F76C855F1EC4E7CD00FA49E2 /* Climate.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Climate.cpp; sourceTree = "<group>"; };
 		F76C85601EC4E7CD00FA49E2 /* Climate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Climate.h; sourceTree = "<group>"; };
 		F76C85611EC4E7CD00FA49E2 /* Duck.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Duck.cpp; sourceTree = "<group>"; };
@@ -2154,15 +2154,15 @@
 		F76C843A1EC4E7CC00FA49E2 /* paint */ = {
 			isa = PBXGroup;
 			children = (
-				F76C843B1EC4E7CC00FA49E2 /* tile_element */,
 				F76C84491EC4E7CC00FA49E2 /* sprite */,
-				F76C84461EC4E7CC00FA49E2 /* Paint.cpp */,
-				F76C84471EC4E7CC00FA49E2 /* paint.h */,
-				4CF788BE1F1B787700C611BF /* Painter.cpp */,
-				4CF788BF1F1B787700C611BF /* Painter.h */,
-				F76C84481EC4E7CC00FA49E2 /* paint_helpers.c */,
-				F76C844F1EC4E7CC00FA49E2 /* supports.c */,
-				F76C84501EC4E7CC00FA49E2 /* supports.h */,
+				F76C843B1EC4E7CC00FA49E2 /* tile_element */,
+				4C6A66AE1FE278C900694CB6 /* Paint.cpp */,
+				4C6A66AF1FE278C900694CB6 /* Paint.h */,
+				4C6A66B01FE278C900694CB6 /* Painter.cpp */,
+				4C6A66B11FE278C900694CB6 /* Painter.h */,
+				4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */,
+				4C6A66B31FE278C900694CB6 /* Supports.cpp */,
+				4C6A66B41FE278C900694CB6 /* Supports.h */,
 			);
 			path = paint;
 			sourceTree = "<group>";
@@ -2170,16 +2170,16 @@
 		F76C843B1EC4E7CC00FA49E2 /* tile_element */ = {
 			isa = PBXGroup;
 			children = (
-				F76C843C1EC4E7CC00FA49E2 /* banner.c */,
-				F76C843D1EC4E7CC00FA49E2 /* entrance.c */,
-				F76C843E1EC4E7CC00FA49E2 /* fence.c */,
-				F76C843F1EC4E7CC00FA49E2 /* tile_element.c */,
-				F76C84401EC4E7CC00FA49E2 /* tile_element.h */,
-				F76C84411EC4E7CC00FA49E2 /* path.c */,
-				F76C84421EC4E7CC00FA49E2 /* scenery.c */,
-				F76C84431EC4E7CC00FA49E2 /* large_scenery.c */,
-				F76C84441EC4E7CC00FA49E2 /* Surface.cpp */,
-				F76C84451EC4E7CC00FA49E2 /* surface.h */,
+				4C6A669C1FE2787700694CB6 /* Banner.cpp */,
+				4C6A669D1FE2787700694CB6 /* Entrance.cpp */,
+				4C6A669E1FE2787700694CB6 /* Fence.cpp */,
+				4C6A669F1FE2787700694CB6 /* LargeScenery.cpp */,
+				4C6A66A01FE2787700694CB6 /* Path.cpp */,
+				4C6A66A11FE2787700694CB6 /* SmallScenery.cpp */,
+				4C6A66A21FE2787700694CB6 /* Surface.cpp */,
+				4C6A66A31FE2787700694CB6 /* Surface.h */,
+				4C6A66A41FE2787700694CB6 /* TileElement.cpp */,
+				4C6A66A51FE2787700694CB6 /* TileElement.h */,
 			);
 			path = tile_element;
 			sourceTree = "<group>";
@@ -2187,11 +2187,11 @@
 		F76C84491EC4E7CC00FA49E2 /* sprite */ = {
 			isa = PBXGroup;
 			children = (
-				F76C844A1EC4E7CC00FA49E2 /* litter.c */,
-				F76C844B1EC4E7CC00FA49E2 /* misc.c */,
-				F76C844C1EC4E7CC00FA49E2 /* peep.c */,
-				F76C844D1EC4E7CC00FA49E2 /* sprite.c */,
-				F76C844E1EC4E7CC00FA49E2 /* sprite.h */,
+				4C6A66931FE2786F00694CB6 /* Litter.cpp */,
+				4C6A66941FE2786F00694CB6 /* Misc.cpp */,
+				4C6A66951FE2786F00694CB6 /* Peep.cpp */,
+				4C6A66961FE2786F00694CB6 /* Sprite.cpp */,
+				4C6A66971FE2786F00694CB6 /* Sprite.h */,
 			);
 			path = sprite;
 			sourceTree = "<group>";
@@ -2492,7 +2492,7 @@
 			children = (
 				F76C855C1EC4E7CD00FA49E2 /* Balloon.cpp */,
 				F76C855D1EC4E7CD00FA49E2 /* Banner.cpp */,
-				F76C855E1EC4E7CD00FA49E2 /* banner.h */,
+				F76C855E1EC4E7CD00FA49E2 /* Banner.h */,
 				F76C855F1EC4E7CD00FA49E2 /* Climate.cpp */,
 				F76C85601EC4E7CD00FA49E2 /* Climate.h */,
 				F76C85611EC4E7CD00FA49E2 /* Duck.cpp */,
@@ -3079,6 +3079,7 @@
 				4C93F1531F8B744400A9330D /* SuspendedSwingingCoaster.cpp in Sources */,
 				C68313CB1FDB4EEC006DB3D8 /* Tooltip.cpp in Sources */,
 				4C93F18B1F8B747A00A9330D /* GoKarts.cpp in Sources */,
+				4C6A66B71FE278C900694CB6 /* PaintHelpers.cpp in Sources */,
 				C654DF2F1F69C0430040F43D /* Error.cpp in Sources */,
 				4C93F1791F8B745700A9330D /* SpiralSlide.cpp in Sources */,
 				C64644F81F3FA4120026AC2D /* ClearScenery.cpp in Sources */,
@@ -3090,6 +3091,7 @@
 				4C93F1491F8B744400A9330D /* MineRide.cpp in Sources */,
 				F76C88781EC5324E00FA49E2 /* AudioChannel.cpp in Sources */,
 				C666EE6D1F37ACB10061AA04 /* Cheats.cpp in Sources */,
+				4C6A66A81FE2787700694CB6 /* Fence.cpp in Sources */,
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
 				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
@@ -3100,7 +3102,9 @@
 				4C93F1571F8B744400A9330D /* WildMouse.cpp in Sources */,
 				D4974F1C1FA04A1900F7FD7F /* TransparencyDepth.cpp in Sources */,
 				C666EE7A1F37ACB10061AA04 /* Themes.cpp in Sources */,
+				4C6A66A61FE2787700694CB6 /* Banner.cpp in Sources */,
 				4C93F1781F8B745700A9330D /* SpaceRings.cpp in Sources */,
+				4C6A66A91FE2787700694CB6 /* LargeScenery.cpp in Sources */,
 				4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */,
 				C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */,
 				C632C81F1F8A445700781F6D /* RideList.cpp in Sources */,
@@ -3148,6 +3152,7 @@
 				4C93F19C1F8B748200A9330D /* Monorail.cpp in Sources */,
 				4C93F14C1F8B744400A9330D /* MiniSuspendedCoaster.cpp in Sources */,
 				C666EE721F37ACB10061AA04 /* Multiplayer.cpp in Sources */,
+				4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */,
 				4CB832AB1EFFB8D100B88761 /* ttf_sdlport.c in Sources */,
 				C654DF371F69C0430040F43D /* Sign.cpp in Sources */,
 				4C93F1751F8B745700A9330D /* MiniHelicopters.cpp in Sources */,
@@ -3160,14 +3165,16 @@
 				C6E415511FAFD6DC00D4A52A /* RideConstruction.cpp in Sources */,
 				C685E51B1F8907850090598F /* Guest.cpp in Sources */,
 				C64644F91F3FA4120026AC2D /* EditorInventionsList.cpp in Sources */,
+				4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */,
 				4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */,
+				4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */,
 				C6D2BEE61F9BAACE008B557C /* TrackList.cpp in Sources */,
 				4C93F1AB1F8B748900A9330D /* WaterCoaster.cpp in Sources */,
 				4C93F16D1F8B745700A9330D /* Dodgems.cpp in Sources */,
 				4C93F1A81F8B748900A9330D /* RiverRapids.cpp in Sources */,
 				C666EE701F37ACB10061AA04 /* LandRights.cpp in Sources */,
 				4C93F16F1F8B745700A9330D /* FlyingSaucers.cpp in Sources */,
-				4CF788C01F1B787700C611BF /* Painter.cpp in Sources */,
+				4C6A66AA1FE2787700694CB6 /* Path.cpp in Sources */,
 				C666EE781F37ACB10061AA04 /* ServerList.cpp in Sources */,
 				C654DF341F69C0430040F43D /* NewCampaign.cpp in Sources */,
 				F76C887D1EC5324E00FA49E2 /* CursorData.cpp in Sources */,
@@ -3181,13 +3188,16 @@
 				C666EE7B1F37ACB10061AA04 /* TitleExit.cpp in Sources */,
 				F7D7747F1EC61E5100BE6EBC /* UiContext.macOS.mm in Sources */,
 				F76C887E1EC5324E00FA49E2 /* CursorRepository.cpp in Sources */,
+				4C6A66991FE2786F00694CB6 /* Misc.cpp in Sources */,
 				4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */,
 				4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
 				C68313C61FDB4EBA006DB3D8 /* input.cpp in Sources */,
+				4C6A66A71FE2787700694CB6 /* Entrance.cpp in Sources */,
 				C61ADB211FB7DC060024F2EF /* Scenery.cpp in Sources */,
 				F775F5341EE35A6B001F00E7 /* DummyUiContext.cpp in Sources */,
 				C654DF401F69C18C0040F43D /* Intent.cpp in Sources */,
+				4C6A66981FE2786F00694CB6 /* Litter.cpp in Sources */,
 				C666ED761F33DBB20061AA04 /* ShortcutKeyChange.cpp in Sources */,
 				F76C887F1EC5324E00FA49E2 /* ApplyPaletteShader.cpp in Sources */,
 				4CE462411FD0710E0001CD98 /* Game.cpp in Sources */,
@@ -3195,12 +3205,14 @@
 				F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */,
 				4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */,
 				4C93F18F1F8B747A00A9330D /* PirateShip.cpp in Sources */,
+				4C6A66B61FE278C900694CB6 /* Painter.cpp in Sources */,
 				C654DF381F69C0430040F43D /* StaffFirePrompt.cpp in Sources */,
 				C68313D51FDB4F4C006DB3D8 /* Graph.cpp in Sources */,
 				C651A8D91F30204300443BCA /* Text.cpp in Sources */,
 				F76C88801EC5324E00FA49E2 /* DrawRectShader.cpp in Sources */,
 				C685E51D1F8907850090598F /* Research.cpp in Sources */,
 				C64644FB1F3FA4120026AC2D /* EditorScenarioOptions.cpp in Sources */,
+				4C6A66AB1FE2787700694CB6 /* SmallScenery.cpp in Sources */,
 				F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */,
 				4C5DFF421FAC69D200CB093A /* Date.cpp in Sources */,
 				4C93F13C1F8B744400A9330D /* BolligerMabillardTrack.cpp in Sources */,
@@ -3209,6 +3221,7 @@
 				C64644FF1F3FA4120026AC2D /* StaffList.cpp in Sources */,
 				C6D2BEE81F9BAACE008B557C /* MazeConstruction.cpp in Sources */,
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
+				4C6A669A1FE2786F00694CB6 /* Peep.cpp in Sources */,
 				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
 				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
 				4CE4624A1FD1613D0001CD98 /* Platform.Linux.cpp in Sources */,
@@ -3229,6 +3242,7 @@
 				C666EE731F37ACB10061AA04 /* MusicCredits.cpp in Sources */,
 				4C93F1511F8B744400A9330D /* StandUpRollerCoaster.cpp in Sources */,
 				4C93F18C1F8B747A00A9330D /* LaunchedFreefall.cpp in Sources */,
+				4C6A66AC1FE2787700694CB6 /* Surface.cpp in Sources */,
 				4C93F1BB1F8E185600A9330D /* Finance.cpp in Sources */,
 				4C93F19A1F8B748200A9330D /* Lift.cpp in Sources */,
 				C654DF351F69C0430040F43D /* Park.cpp in Sources */,
@@ -3285,6 +3299,7 @@
 				F76C888A1EC5324E00FA49E2 /* TextComposition.cpp in Sources */,
 				C68313CC1FDB4EEC006DB3D8 /* Dropdown.cpp in Sources */,
 				C68313D61FDB4F4C006DB3D8 /* LandTool.cpp in Sources */,
+				4C6A66B51FE278C900694CB6 /* Paint.cpp in Sources */,
 				4C93F1741F8B745700A9330D /* MiniGolf.cpp in Sources */,
 				4C93F1911F8B747A00A9330D /* SwingingInverterShip.cpp in Sources */,
 				4C93F1461F8B744400A9330D /* LayDownRollerCoaster.cpp in Sources */,
@@ -3425,6 +3440,7 @@
 				F76C86971EC4E88400FA49E2 /* peep.c in Sources */,
 				F76C86981EC4E88400FA49E2 /* sprite.c in Sources */,
 				F76C869A1EC4E88400FA49E2 /* supports.c in Sources */,
+				C666EE141F33E3800061AA04 /* Dropdown.cpp in Sources */,
 				F76C869C1EC4E88400FA49E2 /* ParkImporter.cpp in Sources */,
 				F76C86A31EC4E88400FA49E2 /* Crash.cpp in Sources */,
 				F76C86A51EC4E88400FA49E2 /* linux.c in Sources */,

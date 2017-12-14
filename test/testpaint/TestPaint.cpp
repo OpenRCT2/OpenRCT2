@@ -24,8 +24,8 @@
 #include "TestPaint.hpp"
 #include "Utils.hpp"
 
-#include <openrct2/paint/paint.h>
-#include <openrct2/paint/supports.h>
+#include <openrct2/paint/Paint.h>
+#include <openrct2/paint/Supports.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/interface/viewport.h>
 

@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../paint.h"
+#include "../Paint.h"
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../world/banner.h"
+#include "TileElement.h"
+#include "../../world/Banner.h"
 #include "../../world/scenery.h"
 
 /** rct2: 0x0098D884 */

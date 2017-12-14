@@ -57,7 +57,7 @@
 #include "../world/footpath.h"
 #include "../world/map_animation.h"
 #include "../world/park.h"
-#include "../world/entrance.h"
+#include "../world/Entrance.h"
 #include "../world/LargeScenery.h"
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"

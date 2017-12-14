@@ -61,8 +61,8 @@ file(GLOB_RECURSE ORCT2_RIDE_DEP_SOURCES "${OPENRCT2_SRCPATH}/ride/ride_data.c"
                                          "${OPENRCT2_SRCPATH}/rct2/addresses.c"
                                          "${OPENRCT2_SRCPATH}/Diagnostic.cpp"
                                          "${OPENRCT2_SRCPATH}/rct2/hook.c"
-                                         "${OPENRCT2_SRCPATH}/paint/tile_element/tile_element.c"
-                                         "${OPENRCT2_SRCPATH}/paint/paint_helpers.c")
+                                         "${OPENRCT2_SRCPATH}/paint/tile_element/TileElement.cpp"
+                                         "${OPENRCT2_SRCPATH}/paint/PaintHelpers.cpp")
 file(GLOB_RECURSE ORCT2_TESTPAINT_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.c"
                                           "${CMAKE_CURRENT_LIST_DIR}/*.cpp"
                                           "${CMAKE_CURRENT_LIST_DIR}/*.h")

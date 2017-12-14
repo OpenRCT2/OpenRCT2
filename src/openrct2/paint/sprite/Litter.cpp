@@ -14,10 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "sprite.h"
+#include "Sprite.h"
 #include "../../world/sprite.h"
 #include "../../interface/viewport.h"
-#include "../paint.h"
+#include "../Paint.h"
 
 enum {
     SPR_LITTER_SICK = 23101,

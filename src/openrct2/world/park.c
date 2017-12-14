@@ -33,7 +33,7 @@
 #include "../ride/ride_data.h"
 #include "../scenario/scenario.h"
 #include "../world/map.h"
-#include "entrance.h"
+#include "Entrance.h"
 #include "park.h"
 #include "sprite.h"
 

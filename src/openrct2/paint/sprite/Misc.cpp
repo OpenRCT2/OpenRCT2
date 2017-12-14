@@ -17,8 +17,8 @@
 #include "../../world/sprite.h"
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
-#include "../../paint/sprite/sprite.h"
-#include "../paint.h"
+#include "Sprite.h"
+#include "../Paint.h"
 #include "../../localisation/string_ids.h"
 
 /** rct2: 0x0097EDA4 */

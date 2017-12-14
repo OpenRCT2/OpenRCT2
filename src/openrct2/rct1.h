@@ -22,7 +22,7 @@
 #include "management/Research.h"
 #include "rct12.h"
 #include "ride/ride.h"
-#include "world/banner.h"
+#include "world/Banner.h"
 #include "world/map.h"
 #include "world/sprite.h"
 #include "world/map_animation.h"

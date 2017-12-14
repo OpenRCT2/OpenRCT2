@@ -25,8 +25,8 @@
 #include "../../world/map.h"
 #include "../../world/scenery.h"
 #include "../../world/Wall.h"
-#include "../paint.h"
-#include "tile_element.h"
+#include "../Paint.h"
+#include "TileElement.h"
 
 static const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
@@ -192,15 +192,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             case 0:
                 imageId = sceneryEntry->image + byte_9A406C[animationFrame];
 
-                boundsR1 = (LocationXYZ16) {1, 3, ah - 5};
-                boundsR1_ = (LocationXYZ16) {1, 1, height + 1};
-                boundsR2 = (LocationXYZ16) {1, 28, 3};
-                boundsR2_ = (LocationXYZ16) {1, 1, height + ah - 9};
+                boundsR1 = {1, 3, static_cast<sint16>(ah - 5)};
+                boundsR1_ = {1, 1, static_cast<sint16>(height + 1)};
+                boundsR2 = {1, 28, 3};
+                boundsR2_ = {1, 1, static_cast<sint16>(height + ah - 9)};
 
-                boundsL1 = (LocationXYZ16) {1, 28, ah};
-                boundsL1_ = (LocationXYZ16) {1, 1, height + 1};
+                boundsL1 = {1, 28, ah};
+                boundsL1_ = {1, 1, static_cast<sint16>(height + 1)};
 
-                offset = (LocationXYZ16) {0, 0, height};
+                offset = {0, 0, static_cast<sint16>(height)};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -208,15 +208,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             case 1:
                 imageId = sceneryEntry->image + byte_9A408C[animationFrame];
 
-                boundsR1 = (LocationXYZ16) {3, 3, ah - 5};
-                boundsR1_ = (LocationXYZ16) {1, 30, height + 1};
-                boundsR2 = (LocationXYZ16) {29, 3, 2};
-                boundsR2_ = (LocationXYZ16) {1, 30, height + ah - 8};
+                boundsR1 = {3, 3, static_cast<sint16>(ah - 5)};
+                boundsR1_ = {1, 30, static_cast<sint16>(height + 1)};
+                boundsR2 = {29, 3, 2};
+                boundsR2_ = {1, 30, static_cast<sint16>(height + ah - 8)};
 
-                boundsL1 = (LocationXYZ16) {29, 1, ah};
-                boundsL1_ = (LocationXYZ16) {2, 30, height + 1};
+                boundsL1 = {29, 1, ah};
+                boundsL1_ = {2, 30, static_cast<sint16>(height + 1)};
 
-                offset = (LocationXYZ16) {1, 31, height};
+                offset = {1, 31, static_cast<sint16>(height)};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -224,15 +224,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             case 2:
                 imageId = sceneryEntry->image + byte_9A40AC[animationFrame];
 
-                boundsR1 = (LocationXYZ16) {3, 3, ah - 5};
-                boundsR1_ = (LocationXYZ16) {30, 1, height + 1};
-                boundsR2 = (LocationXYZ16) {3, 29, 2};
-                boundsR2_ = (LocationXYZ16) {30, 1, height + ah - 8};
+                boundsR1 = {3, 3, static_cast<sint16>(ah - 5)};
+                boundsR1_ = {30, 1, static_cast<sint16>(height + 1)};
+                boundsR2 = {3, 29, 2};
+                boundsR2_ = {30, 1, static_cast<sint16>(height + ah - 8)};
 
-                boundsL1 = (LocationXYZ16) {1, 29, ah};
-                boundsL1_ = (LocationXYZ16) {30, 2, height + 1};
+                boundsL1 = {1, 29, ah};
+                boundsL1_ = {30, 2, static_cast<sint16>(height + 1)};
 
-                offset = (LocationXYZ16) {31, 0, height};
+                offset = {31, 0, static_cast<sint16>(height)};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -240,15 +240,15 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
             case 3:
                 imageId = sceneryEntry->image + byte_9A40CC[animationFrame];
 
-                boundsR1 = (LocationXYZ16) {3, 1, ah - 5};
-                boundsR1_ = (LocationXYZ16) {1, 1, height + 1};
-                boundsR2 = (LocationXYZ16) {28, 1, 3};
-                boundsR2_ = (LocationXYZ16) {1, 1, height + ah - 9};
+                boundsR1 = {3, 1, static_cast<sint16>(ah - 5)};
+                boundsR1_ = {1, 1, static_cast<sint16>(height + 1)};
+                boundsR2 = {28, 1, 3};
+                boundsR2_ = {1, 1, static_cast<sint16>(height + ah - 9)};
 
-                boundsL1 = (LocationXYZ16) {28, 1, ah};
-                boundsL1_ = (LocationXYZ16) {1, 1, height + 1};
+                boundsL1 = {28, 1, ah};
+                boundsL1_ = {1, 1, static_cast<sint16>(height + 1)};
 
-                offset = (LocationXYZ16) {2, 1, height};
+                offset = {2, 1, static_cast<sint16>(height)};
 
                 fence_paint_door(session, imageId, sceneryEntry, imageColourFlags, tertiaryColour, dword_141F710, offset, boundsR1, boundsR1_, boundsR2, boundsR2_, boundsL1, boundsL1_);
                 break;
@@ -271,9 +271,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
                 imageOffset = 1;
             }
 
-            offset = (LocationXYZ16){0, 0, height};
-            bounds = (LocationXYZ16){1, 28, ah};
-            boundsOffset = (LocationXYZ16){1, 1, height + 1};
+            offset = {0, 0, static_cast<sint16>(height)};
+            bounds = {1, 28, ah};
+            boundsOffset = {1, 1, static_cast<sint16>(height + 1)};
             break;
 
         case 1:
@@ -295,9 +295,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
                 }
             }
 
-            offset = (LocationXYZ16){1, 31, height};
-            bounds = (LocationXYZ16){29, 1, ah};
-            boundsOffset = (LocationXYZ16){2, 30, height + 1};
+            offset = {1, 31, static_cast<sint16>(height)};
+            bounds = {29, 1, ah};
+            boundsOffset = {2, 30, static_cast<sint16>(height + 1)};
             break;
 
         case 2:
@@ -313,9 +313,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
                 imageOffset += 6;
             }
 
-            offset = (LocationXYZ16){31, 0, height};
-            bounds = (LocationXYZ16){1, 29, ah};
-            boundsOffset = (LocationXYZ16){30, 2, height + 1};
+            offset = {31, 0, static_cast<sint16>(height)};
+            bounds = {1, 29, ah};
+            boundsOffset = {30, 2, static_cast<sint16>(height + 1)};
             break;
 
         case 3:
@@ -327,9 +327,9 @@ void fence_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
                 imageOffset = 0;
             }
 
-            offset = (LocationXYZ16){2, 1, height};
-            bounds = (LocationXYZ16){28, 1, ah};
-            boundsOffset = (LocationXYZ16){1, 1, height + 1};
+            offset = {2, 1, static_cast<sint16>(height)};
+            bounds = {28, 1, ah};
+            boundsOffset = {1, 1, static_cast<sint16>(height + 1)};
             break;
     }
 

@@ -17,10 +17,10 @@
 #include "../../config/Config.h"
 #include "../../drawing/lightfx.h"
 #include "../../interface/viewport.h"
-#include "../../paint/sprite/sprite.h"
+#include "Sprite.h"
 #include "../../peep/Peep.h"
 #include "../../world/sprite.h"
-#include "../paint.h"
+#include "../Paint.h"
 
 /**
  *
