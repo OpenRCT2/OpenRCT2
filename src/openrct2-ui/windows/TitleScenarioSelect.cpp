@@ -27,6 +27,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/util/util.h>
+#include <openrct2/Speedrunning.h>
 
 #define INITIAL_NUM_UNLOCKED_SCENARIOS 5
 
@@ -218,7 +219,7 @@ static void window_scenarioselect_init_tabs(rct_window *w)
             }
             showPages |= 1 << category;
         }
-        }
+    }
 
     sint32 firstPage = bitscanforward(showPages);
     if (firstPage != -1) {
@@ -273,7 +274,9 @@ static void window_scenarioselect_dropdown(rct_window *w, rct_widgetindex widget
             break;
         audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
         gFirstTimeSaving = true;
-        gConfigGeneral.is_il_run = true;
+        gSpeedrunningState.is_il_run = true;
+        gSpeedrunningState.current_scenario_index = w->highlighted_scenario->source_index;
+        gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
         _callback(w->highlighted_scenario->path);
         break;
     case WIDX_FULL_SPEEDRUN:
@@ -281,7 +284,9 @@ static void window_scenarioselect_dropdown(rct_window *w, rct_widgetindex widget
             break;
         audio_play_sound(SOUND_CLICK_1, 0, w->x + (w->width / 2));
         gFirstTimeSaving = true;
-        gConfigGeneral.is_il_run = false;
+        gSpeedrunningState.is_il_run = false;
+        gSpeedrunningState.current_scenario_index = 0;
+        gSpeedrunningState.current_scenario_group = w->highlighted_scenario->category;
         _callback(w->highlighted_scenario->path);
         break;
     }

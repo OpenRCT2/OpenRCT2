@@ -45,7 +45,6 @@ namespace ScenarioSources
     bool TryGetByName(const utf8 * name, source_desc * outDesc);
     bool TryGetById(uint8 id, source_desc * outDesc);
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name);
-    utf8 * GetNextScenarioPathFromGroup(uint8 source, sint32 index);
 }
 
 #endif

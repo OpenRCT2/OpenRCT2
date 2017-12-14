@@ -34,6 +34,8 @@
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/Speedrunning.h>
 
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -548,6 +550,8 @@ static const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_CONFUSING_LAYOUT,      SPR_AWARD_MOST_CONFUSING_LAYOUT },
     { STR_AWARD_BEST_GENTLE_RIDES,          SPR_AWARD_BEST_GENTLE_RIDES },
 };
+
+IScenarioRepository * _scenarioRepository = nullptr;
 
 static void window_park_init_viewport(rct_window *w);
 static void window_park_set_page(rct_window *w, sint32 page);
@@ -1463,6 +1467,19 @@ rct_window * window_park_objective_open()
     window->y = context_get_height() / 2 - 87;
     window_invalidate(window);
 
+    // Prompt to quit to menu if we're at the end of a group or IL run
+    if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.is_il_run) {
+        _scenarioRepository = GetScenarioRepository();
+        _scenarioRepository->Scan();
+        const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+        if (scenario == nullptr) {
+            window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_QUIT_TO_MENU;
+        }
+    }
+    else {
+        window_park_objective_widgets[WIDX_NEXT_LEVEL].text = STR_QUIT_TO_MENU;
+    }
+
     return window;
 }
 
@@ -1497,17 +1514,22 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
         );
         break;
     case WIDX_NEXT_LEVEL:
-        if (gConfigGeneral.enable_speedrunning_mode && !gConfigGeneral.is_il_run) {
-            // Determine park index position
-            source_desc * parkDesc;
-            ScenarioSources::TryGetByName(gParkName, parkDesc);
-
-            // Advance to next level
-            utf8* path = ScenarioSources::GetNextScenarioPathFromGroup(parkDesc->source, parkDesc->index);
-
-            if (path != nullptr) {
-                _callback(path);
+        if (gConfigGeneral.enable_speedrunning_mode && !gSpeedrunningState.is_il_run) {
+            _scenarioRepository = GetScenarioRepository();
+            _scenarioRepository->Scan();
+            const scenario_index_entry * scenario = _scenarioRepository->GetByIndex(gSpeedrunningState.current_scenario_index + 1);
+            if (scenario != nullptr) {
+                gSpeedrunningState.current_scenario_index += 1;
+                _callback(scenario->path);
             }
+            else {
+                //TODO Hopefully this will quit to menu
+                context_quit();
+            }
+        }
+        else {
+            //TODO Hopefully this will quit to menu
+            context_quit();
         }
     }
 }

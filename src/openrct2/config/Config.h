@@ -99,7 +99,6 @@ typedef struct GeneralConfiguration
     // Speedrunning
     bool        enable_speedrunning_mode;
     bool        allow_speed_changes;
-    bool        is_il_run;
 } GeneralConfiguration;
 
 typedef struct InterfaceConfiguration

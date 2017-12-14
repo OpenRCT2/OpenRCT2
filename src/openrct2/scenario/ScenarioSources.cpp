@@ -323,38 +323,6 @@ namespace ScenarioSources
         return false;
     }
 
-    utf8 * GetNextScenarioPathFromGroup(uint8 source, sint32 index) {
-        if (source < 0 || source >= SCENARIO_SOURCE_COUNT)
-            return nullptr;
-
-        switch (source) {
-        case SCENARIO_SOURCE_RCT1:
-            return ScenarioTitlesRCT[index]->path;
-            break;
-        case SCENARIO_SOURCE_RCT1_AA:
-            return ScenarioTitlesRCT1AA[index]->path;
-            break;
-        case SCENARIO_SOURCE_RCT1_LL:
-            return ScenarioTitlesRCT1LL[index]->path;
-            break;
-        case SCENARIO_SOURCE_RCT2:
-            return ScenarioTitlesRCT2[index]->path;
-            break;
-        case SCENARIO_SOURCE_RCT2_WW:
-            return ScenarioTitlesRCT2WW[index]->path;
-            break;
-        case SCENARIO_SOURCE_RCT2_TT:
-            return ScenarioTitlesRCT2TT[index]->path;
-            break;
-        case SCENARIO_SOURCE_REAL:
-            return ScenarioTitlesRealParks[index]->path;
-            break;
-        case SCENARIO_SOURCE_OTHER:
-            return ScenarioTitlesOtherParks[index]->path;
-            break;
-        }
-    }
-
     void NormaliseName(utf8 * buffer, size_t bufferSize, const utf8 * name)
     {
         size_t nameLength = String::LengthOf(name);
