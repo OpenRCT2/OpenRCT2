@@ -26,6 +26,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
+#include <openrct2/localisation/localisation.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
 
