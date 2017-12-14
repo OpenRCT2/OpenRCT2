@@ -3235,6 +3235,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
 sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
 {
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
+    bool canBuildCrossing = false;
     if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
         gGameCommandErrorText = STR_OFF_EDGE_OF_MAP;
         return false;
@@ -3266,6 +3267,15 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 }
             }
         }
+
+        // Only allow building crossings directly on a flat surface tile.
+        if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SURFACE &&
+            (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) == TILE_ELEMENT_SLOPE_FLAT &&
+            tile_element->base_height == zLow)
+        {
+            canBuildCrossing = true;
+        }
+
         if ((bl & 0xF0) != 0xF0) {
             if (tile_element->base_height >= zHigh) {
                 // loc_68BA81
@@ -3310,16 +3320,20 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                         continue;
                     }
                 }
+
                 // Crossing mode 1: building track over path
                 if (crossingMode == 1 &&
+                    canBuildCrossing &&
                     tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH &&
                     tile_element->base_height == zLow &&
-                    !footpath_element_is_queue(tile_element))
+                    !footpath_element_is_queue(tile_element) &&
+                    !footpath_element_is_sloped(tile_element))
                 {
                     continue;
                 }
                 // Crossing mode 2: building path over track
                 else if (crossingMode == 2 &&
+                     canBuildCrossing &&
                      tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_TRACK &&
                      tile_element->base_height == zLow &&
                      track_element_get_type(tile_element) == TRACK_ELEM_FLAT)
