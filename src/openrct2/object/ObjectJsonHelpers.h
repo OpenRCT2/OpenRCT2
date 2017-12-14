@@ -23,6 +23,7 @@
 #include "../common.h"
 #include "../core/Json.hpp"
 #include "../drawing/drawing.h"
+#include "../object.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 
@@ -31,6 +32,7 @@ namespace ObjectJsonHelpers
     bool GetBoolean(const json_t * obj, const std::string &name, bool defaultValue = false);
     std::string GetString(const json_t * value);
     std::vector<std::string> GetJsonStringArray(const json_t * arr);
+    rct_object_entry ParseObjectEntry(const std::string & s);
     void LoadStrings(const json_t * root, StringTable &stringTable);
     void LoadImages(const json_t * root, ImageTable &imageTable);
 

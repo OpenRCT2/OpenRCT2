@@ -66,6 +66,15 @@ namespace ObjectJsonHelpers
         return result;
     }
 
+    rct_object_entry ParseObjectEntry(const std::string & s)
+    {
+        rct_object_entry entry = { 0 };
+        std::fill_n(entry.name, sizeof(entry.name), ' ');
+        auto copyLen = std::min<size_t>(8, s.size());
+        std::copy_n(s.c_str(), copyLen, entry.name);
+        return entry;
+    }
+
     static std::vector<sint32> ParseRange(std::string s)
     {
         // Currently only supports [###] or [###..###]
