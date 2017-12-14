@@ -56,6 +56,7 @@ enum {
     G1_FLAG_BMP             = (1 << 0), // Image data is encoded as raw pixels (no transparency)
     G1_FLAG_1               = (1 << 1),
     G1_FLAG_RLE_COMPRESSION = (1 << 2), // Image data is encoded using RCT2's form of run length encoding
+    G1_FLAG_PALETTE         = (1 << 3), // Image data is a sequence of palette entries R8G8B8
     G1_FLAG_HAS_ZOOM_SPRITE = (1 << 4), // Use a different sprite for higher zoom levels
     G1_FLAG_NO_ZOOM_DRAW    = (1 << 5), // Does not get drawn at higher zoom levels (only zoom 0)
 };

@@ -99,7 +99,7 @@ void WaterObject::ReadJsonPalette(const json_t * jPalette)
     auto jColours = json_object_get(jPalette, "colours");
     auto numColours = json_array_size(jColours);
 
-    auto data = std::make_unique<uint8[]>(numColours);
+    auto data = std::make_unique<uint8[]>(numColours * 3);
     size_t dataIndex = 0;
 
     size_t index;
@@ -110,16 +110,18 @@ void WaterObject::ReadJsonPalette(const json_t * jPalette)
         if (szColour != nullptr)
         {
             auto colour = ParseColour(szColour);
-            data[dataIndex + 0] = colour;
+            data[dataIndex + 0] = (colour >> 16) & 0xFF;
             data[dataIndex + 1] = (colour >> 8) & 0xFF;
-            data[dataIndex + 2] = (colour >> 16) & 0xFF;
+            data[dataIndex + 2] = colour & 0xFF;
         }
         dataIndex += 3;
     }
 
     rct_g1_element g1 = { 0 };
     g1.offset = data.get();
+    g1.width = (sint16)numColours;
     g1.x_offset = (sint16)paletteStartIndex;
+    g1.flags = G1_FLAG_PALETTE;
 
     auto &imageTable = GetImageTable();
     imageTable.AddImage(&g1);
