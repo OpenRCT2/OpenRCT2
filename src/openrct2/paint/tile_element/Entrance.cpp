@@ -19,11 +19,11 @@
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../ride/ride_data.h"
-#include "../../world/entrance.h"
+#include "../../world/Entrance.h"
 #include "../../world/footpath.h"
-#include "../paint.h"
-#include "../supports.h"
-#include "tile_element.h"
+#include "../Paint.h"
+#include "../Supports.h"
+#include "TileElement.h"
 #include "../../drawing/lightfx.h"
 
 static uint32 _unk9E32BC;

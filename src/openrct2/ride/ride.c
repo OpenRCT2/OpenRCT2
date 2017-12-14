@@ -40,7 +40,7 @@
 #include "../scenario/scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/banner.h"
+#include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/footpath.h"
 #include "../world/map.h"

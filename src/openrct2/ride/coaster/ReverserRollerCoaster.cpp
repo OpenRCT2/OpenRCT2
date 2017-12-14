@@ -16,9 +16,9 @@
 
 #include "../../drawing/drawing.h"
 #include "../../interface/viewport.h"
-#include "../../paint/tile_element/tile_element.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../paint/tile_element/TileElement.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../sprites.h"
 #include "../../world/map.h"
 #include "../../world/sprite.h"

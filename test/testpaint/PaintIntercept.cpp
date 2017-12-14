@@ -22,7 +22,7 @@
 
 #include <openrct2/common.h>
 #include <openrct2/interface/viewport.h>
-#include <openrct2/paint/supports.h>
+#include <openrct2/paint/Supports.h>
 #include <openrct2/sprites.h>
 
 paint_session gPaintSession;

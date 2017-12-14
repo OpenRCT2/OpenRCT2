@@ -32,7 +32,7 @@
 #include "../scenario/scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "banner.h"
+#include "Banner.h"
 #include "Climate.h"
 #include "footpath.h"
 #include "LargeScenery.h"

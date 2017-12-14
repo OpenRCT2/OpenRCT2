@@ -21,7 +21,7 @@
 #include <openrct2/ride/ride.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/sprite.h>
-#include <openrct2/paint/tile_element/tile_element.h>
+#include <openrct2/paint/tile_element/TileElement.h>
 #include <openrct2/ride/ride.h>
 #include "addresses.h"
 

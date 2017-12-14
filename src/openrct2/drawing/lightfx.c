@@ -20,7 +20,7 @@
 #include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../paint/tile_element/tile_element.h"
+#include "../paint/tile_element/TileElement.h"
 #include "../world/Climate.h"
 #include "../config/Config.h"
 #include "drawing.h"

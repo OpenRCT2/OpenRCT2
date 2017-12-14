@@ -17,7 +17,7 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 
-#include "entrance.h"
+#include "Entrance.h"
 #include "footpath.h"
 #include "map.h"
 #include "park.h"

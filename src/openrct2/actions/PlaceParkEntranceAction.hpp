@@ -22,7 +22,7 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
-#include "../world/entrance.h"
+#include "../world/Entrance.h"
 #include "../world/park.h"
 #include "../world/footpath.h"
 

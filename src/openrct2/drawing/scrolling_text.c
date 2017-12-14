@@ -17,7 +17,7 @@
 #include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../localisation/localisation.h"
-#include "../paint/paint.h"
+#include "../paint/Paint.h"
 #include "../sprites.h"
 #include "drawing.h"
 #include "ttf.h"

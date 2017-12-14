@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../world/entrance.h"
+#include "../world/Entrance.h"
 
 class EntranceObject final : public Object
 {

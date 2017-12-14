@@ -1,8 +1,8 @@
 #pragma once
 
 #include "ride/ride.h"
-#include "world/banner.h"
-#include "world/entrance.h"
+#include "world/Banner.h"
+#include "world/Entrance.h"
 #include "world/footpath.h"
 #include "world/scenery.h"
 #include "world/water.h"

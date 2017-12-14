@@ -14,10 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "tile_element.h"
-#include "../paint.h"
-#include "../supports.h"
 #include "../../config/Config.h"
+#include "../../core/Util.hpp"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
@@ -25,6 +23,9 @@
 #include "../../world/map.h"
 #include "../../world/LargeScenery.h"
 #include "../../world/scenery.h"
+#include "../Paint.h"
+#include "../Supports.h"
+#include "TileElement.h"
 
 // 6B8172:
 static void large_scenery_paint_supports(paint_session * session, uint8 direction, uint16 height, rct_tile_element *tileElement, uint32 dword_F4387C, rct_large_scenery_tile *tile)
@@ -62,8 +63,8 @@ static void large_scenery_paint_supports(paint_session * session, uint8 directio
 
 static rct_large_scenery_text_glyph *large_scenery_sign_get_glyph(rct_large_scenery_text *text, uint32 codepoint)
 {
-    if (codepoint >= countof(text->glyphs)) {
-        return &text->glyphs['?'];
+    if (codepoint >= Util::CountOf(text->glyphs)) {
+        return &text->glyphs[(size_t)'?'];
     }
     return &text->glyphs[codepoint];
 }

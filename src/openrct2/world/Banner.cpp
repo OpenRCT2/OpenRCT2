@@ -22,7 +22,7 @@
 #include "../core/String.hpp"
 #include "../network/network.h"
 
-#include "banner.h"
+#include "Banner.h"
 #include "map.h"
 #include "park.h"
 #include "scenery.h"

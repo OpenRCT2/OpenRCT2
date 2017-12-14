@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../drawing/drawing.h"
-#include "../../paint/supports.h"
+#include "../../paint/Supports.h"
 #include "../TrackData.h"
 #include "BolligerMabillardTrack.h"
 

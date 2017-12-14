@@ -22,8 +22,8 @@
 #include "../../interface/viewport.h"
 #include "../../peep/Staff.h"
 #include "../../sprites.h"
-#include "surface.h"
-#include "tile_element.h"
+#include "Surface.h"
+#include "TileElement.h"
 
 static constexpr const uint8 byte_97B444[] =
 {

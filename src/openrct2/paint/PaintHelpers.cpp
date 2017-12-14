@@ -16,7 +16,7 @@
 
 #include "../interface/viewport.h"
 #include "../ride/track_paint.h"
-#include "paint.h"
+#include "Paint.h"
 
 paint_struct * sub_98196C_rotated(
     paint_session * session,

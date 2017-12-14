@@ -25,7 +25,7 @@
 #include "../rct2.h"
 #include "../ride/ride.h"
 #include "../ride/ride_ratings.h"
-#include "../world/banner.h"
+#include "../world/Banner.h"
 #include "../world/map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"

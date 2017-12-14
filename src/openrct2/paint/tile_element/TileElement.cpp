@@ -14,23 +14,25 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../paint.h"
-#include "../../interface/viewport.h"
-#include "tile_element.h"
+#include "../../config/Config.h"
+#include "../../core/Math.hpp"
 #include "../../drawing/drawing.h"
+#include "../../Game.h"
+#include "../../interface/viewport.h"
+#include "../../localisation/localisation.h"
 #include "../../ride/ride_data.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/track_paint.h"
-#include "../../config/Config.h"
 #include "../../world/sprite.h"
-#include "../../world/banner.h"
-#include "../../world/entrance.h"
+#include "../../world/Banner.h"
+#include "../../world/Entrance.h"
 #include "../../world/footpath.h"
 #include "../../world/scenery.h"
 #include "../../sprites.h"
-#include "../../localisation/localisation.h"
-#include "../../Game.h"
-#include "../supports.h"
+#include "../Paint.h"
+#include "../Supports.h"
+#include "TileElement.h"
+
 
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;
@@ -140,8 +142,8 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     session->LeftTunnelCount = 0;
     session->RightTunnelCount = 0;
-    session->LeftTunnels[0] = (tunnel_entry){0xFF, 0xFF};
-    session->RightTunnels[0] = (tunnel_entry){0xFF, 0xFF};
+    session->LeftTunnels[0] = {0xFF, 0xFF};
+    session->RightTunnels[0] = {0xFF, 0xFF};
     session->VerticalTunnelHeight = 0xFF;
     session->MapPosition.x = x;
     session->MapPosition.y = y;
@@ -195,7 +197,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         session->SpritePosition.y = y;
         session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
 
-        sub_98197C(session, imageId, 0, 0, 32, 32, 0xFF, arrowZ, 0, 0, arrowZ + 18, rotation);
+        sub_98197C(session, imageId, 0, 0, 32, 32, -1, arrowZ, 0, 0, arrowZ + 18, rotation);
     }
     sint32 bx = dx + 52;
 
@@ -204,9 +206,9 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     const rct_tile_element* element = tile_element;//push tile_element
 
-    sint16 max_height = 0;
+    uint16 max_height = 0;
     do{
-        max_height = max(max_height, element->clearance_height);
+        max_height = Math::Max(max_height, (uint16)element->clearance_height);
     } while (!tile_element_is_last_for_tile(element++));
 
     element--;
@@ -355,18 +357,18 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
 void paint_util_push_tunnel_left(paint_session * session, uint16 height, uint8 type)
 {
-    session->LeftTunnels[session->LeftTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    session->LeftTunnels[session->LeftTunnelCount] = {static_cast<uint8>((height / 16)), type};
     if (session->LeftTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        session->LeftTunnels[session->LeftTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->LeftTunnels[session->LeftTunnelCount + 1] = {0xFF, 0xFF};
         session->LeftTunnelCount++;
     }
 }
 
 void paint_util_push_tunnel_right(paint_session * session, uint16 height, uint8 type)
 {
-    session->RightTunnels[session->RightTunnelCount] = (tunnel_entry){.height = (height / 16), .type = type};
+    session->RightTunnels[session->RightTunnelCount] = {static_cast<uint8>((height / 16)), type};
     if (session->RightTunnelCount < TUNNEL_MAX_COUNT - 1) {
-        session->RightTunnels[session->RightTunnelCount + 1] = (tunnel_entry) {0xFF, 0xFF};
+        session->RightTunnels[session->RightTunnelCount + 1] = {0xFF, 0xFF};
         session->RightTunnelCount++;
     }
 }

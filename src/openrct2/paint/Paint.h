@@ -14,8 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef _PAINT_H
-#define _PAINT_H
+#pragma once
 
 #include "../common.h"
 #include "../world/map.h"
@@ -230,6 +229,4 @@ void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps)
 
 #ifdef __cplusplus
 }
-#endif
-
 #endif

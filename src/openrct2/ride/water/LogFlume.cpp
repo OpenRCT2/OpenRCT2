@@ -15,8 +15,8 @@
 #pragma endregion
 
 #include "../../interface/viewport.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../../paint/Paint.h"
+#include "../../paint/Supports.h"
 #include "../../world/sprite.h"
 #include "../Track.h"
 #include "../track_paint.h"

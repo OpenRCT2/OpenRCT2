@@ -14,13 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "tile_element.h"
+#include "TileElement.h"
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/date.h"
-#include "../../paint/paint.h"
-#include "../../paint/supports.h"
+#include "../Paint.h"
+#include "../Supports.h"
 #include "../../world/map.h"
 #include "../../world/scenery.h"
 #include "../../world/SmallScenery.h"

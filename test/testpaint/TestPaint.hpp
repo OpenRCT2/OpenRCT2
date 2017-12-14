@@ -24,8 +24,8 @@ extern "C"
 {
     #include <openrct2/drawing/drawing.h>
     #include <openrct2/interface/colour.h>
-    #include <openrct2/paint/paint.h>
-    #include <openrct2/paint/tile_element/tile_element.h>
+    #include <openrct2/paint/Paint.h>
+    #include <openrct2/paint/tile_element/TileElement.h>
 }
 
 #include "addresses.h"
