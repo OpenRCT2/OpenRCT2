@@ -377,7 +377,8 @@ static money32 SmallSceneryPlace(sint16 x,
             &map_place_scenery_clear_func,
             blSupports | collisionQuadrants,
             flags,
-            &clearCost))
+            &clearCost,
+            CREATE_CROSSING_MODE_NONE))
     {
         return MONEY32_UNDEFINED;
     }

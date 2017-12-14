@@ -1641,7 +1641,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
     }
 
     if (!gCheatsDisableClearanceChecks) {
-        if (!map_can_construct_with_clear_at(x, y, height, zCorner, &map_set_land_height_clear_func, 0xF, 0, NULL)) {
+        if (!map_can_construct_with_clear_at(x, y, height, zCorner, &map_set_land_height_clear_func, 0xF, 0, NULL, CREATE_CROSSING_MODE_NONE)) {
             return MONEY32_UNDEFINED;
         }
     }
@@ -2798,7 +2798,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         bl |= bh;
         uint8 F43887 = bl;
 
-        if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost)) {
+        if (!gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(curTile.x, curTile.y, zLow, zHigh, &map_place_scenery_clear_func, bl, flags, &supportsCost, CREATE_CROSSING_MODE_NONE)) {
             *ebx = MONEY32_UNDEFINED;
             return;
         }
@@ -3232,7 +3232,7 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
  *  ebp = clearFunc
  *  bl = bl
  */
-sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price)
+sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
 {
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
@@ -3310,10 +3310,34 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                         continue;
                     }
                 }
-                if (tile_element != NULL) {
+                // Crossing mode 1: building track over path
+                if (crossingMode == 1 &&
+                    tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_PATH &&
+                    tile_element->base_height == zLow &&
+                    !footpath_element_is_queue(tile_element))
+                {
+                    continue;
+                }
+                // Crossing mode 2: building path over track
+                else if (crossingMode == 2 &&
+                     tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_TRACK &&
+                     tile_element->base_height == zLow &&
+                     track_element_get_type(tile_element) == TRACK_ELEM_FLAT)
+                {
+                    Ride * ride = get_ride(track_element_get_ride_index(tile_element));
+                    if (ride->type == RIDE_TYPE_MINIATURE_RAILWAY)
+                    {
+                        continue;
+                    }
+                }
+
+
+                if (tile_element != NULL)
+                {
                     map_obstruction_set_error_text(tile_element);
                 }
                 return false;
+
                 loc_68BAE6:
                 if (clearFunc != NULL) {
                     if (!clearFunc(&tile_element, x, y, flags, price)) {
@@ -3336,7 +3360,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
  */
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl)
 {
-    return map_can_construct_with_clear_at(x, y, zLow, zHigh, NULL, bl, 0, NULL);
+    return map_can_construct_with_clear_at(x, y, zLow, zHigh, NULL, bl, 0, NULL, CREATE_CROSSING_MODE_NONE);
 }
 
 /**

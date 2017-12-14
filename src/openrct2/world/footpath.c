@@ -207,7 +207,9 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
             gFootpathPrice -= MONEY(6, 00);
     }
 
-    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
+    // Do not attempt to build a crossing with a queue.
+    uint8 crossingMode = (type & 0x80) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;
@@ -609,7 +611,9 @@ static money32 footpath_place_from_track(sint32 type, sint32 x, sint32 y, sint32
             gFootpathPrice -= MONEY(6, 00);
     }
 
-    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice))
+    // Do not attempt to build a crossing with a queue.
+    uint8 crossingMode = (type & 0x80) ? CREATE_CROSSING_MODE_NONE : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
+    if (!entrancePath && !gCheatsDisableClearanceChecks && !map_can_construct_with_clear_at(x, y, z, zHigh, &map_place_non_scenery_clear_func, bl, flags, &gFootpathPrice, crossingMode))
         return MONEY32_UNDEFINED;
 
     gFootpathGroundFlags = gMapGroundFlags;

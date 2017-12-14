@@ -1205,7 +1205,10 @@ static money32 track_place(sint32 rideIndex,
 
         if (!gCheatsDisableClearanceChecks || flags & GAME_COMMAND_FLAG_GHOST)
         {
-            if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost))
+            uint8 crossingMode = (ride->type == RIDE_TYPE_MINIATURE_RAILWAY && type == TRACK_ELEM_FLAT) ?
+                CREATE_CROSSING_MODE_TRACK_OVER_PATH :
+                CREATE_CROSSING_MODE_NONE;
+            if (!map_can_construct_with_clear_at(x, y, baseZ, clearanceZ, &map_place_non_scenery_clear_func, bl, flags, &cost, crossingMode))
                 return MONEY32_UNDEFINED;
         }
 

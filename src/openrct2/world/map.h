@@ -362,6 +362,16 @@ enum {
     MAP_SELECT_TYPE_EDGE_3,
 };
 
+// Used when calling map_can_construct_with_clear_at();
+// This assumes that the caller has already done the check on the element it wants to place,
+// as this function can only check the element the player wants to build through.
+enum
+{
+    CREATE_CROSSING_MODE_NONE,
+    CREATE_CROSSING_MODE_TRACK_OVER_PATH,
+    CREATE_CROSSING_MODE_PATH_OVER_TRACK,
+};
+
 #ifdef __cplusplus
 extern "C" {
 #endif
@@ -463,7 +473,7 @@ bool tile_element_check_address(const rct_tile_element * const element);
 typedef sint32 (CLEAR_FUNC)(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_non_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
 sint32 map_place_scenery_clear_func(rct_tile_element** tile_element, sint32 x, sint32 y, uint8 flags, money32* price);
-sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price);
+sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode);
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl);
 void rotate_map_coordinates(sint16 *x, sint16 *y, sint32 rotation);
 LocationXY16 coordinate_3d_to_2d(const LocationXYZ16* coordinate_3d, sint32 rotation);

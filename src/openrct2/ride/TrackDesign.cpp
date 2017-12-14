@@ -2065,7 +2065,7 @@ static money32 place_maze_design(uint8 flags, uint8 rideIndex, uint16 mazeEntry,
         sint32 fz0 = z >> 3;
         sint32 fz1 = fz0 + 4;
 
-        if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost))
+        if (!map_can_construct_with_clear_at(fx, fy, fz0, fz1, &map_place_non_scenery_clear_func, 15, flags, &cost, CREATE_CROSSING_MODE_NONE))
         {
             return MONEY32_UNDEFINED;
         }
