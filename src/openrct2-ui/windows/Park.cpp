@@ -17,6 +17,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/Game.h>
@@ -32,6 +33,7 @@
 #include <openrct2/world/entrance.h>
 #include <openrct2/windows/dropdown.h>
 #include <openrct2/interface/themes.h>
+#include <openrct2/scenario/ScenarioSources.h>
 
 enum WINDOW_PARK_PAGE {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -70,7 +72,8 @@ enum WINDOW_PARK_WIDGET_IDX {
     WIDX_INCREASE_PRICE,
     WIDX_DECREASE_PRICE,
 
-    WIDX_ENTER_NAME = 11
+    WIDX_NEXT_LEVEL = 11,
+    WIDX_ENTER_NAME
 };
 
 #pragma region Widgets
@@ -127,6 +130,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
+    { WWT_DROPDOWN_BUTTON,  1,  7,      222,    193,    204,    STR_SPEEDRUNNING_NEXT_LEVEL,                STR_NONE },             // Speedrunning: Move to next level in order
     { WWT_DROPDOWN_BUTTON,  1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
@@ -145,6 +149,8 @@ static rct_widget *window_park_page_widgets[] = {
     window_park_objective_widgets,
     window_park_awards_widgets
 };
+
+static scenarioselect_callback _callback;
 
 #pragma endregion
 
@@ -781,6 +787,10 @@ static void window_park_entrance_invalidate(rct_window *w)
         window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_EMPTY;
     else
         window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WWT_FLATBTN;
+
+    // Disable renaming of park while in speedrunning mode because we'll use that to advance through levels
+    if (gConfigGeneral.enable_speedrunning_mode)
+        window_park_entrance_widgets[WIDX_RENAME].type = WWT_FLATBTN;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     window_park_anchor_border_widgets(w);
@@ -1486,6 +1496,19 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
             32
         );
         break;
+    case WIDX_NEXT_LEVEL:
+        if (gConfigGeneral.enable_speedrunning_mode && !gConfigGeneral.is_il_run) {
+            // Determine park index position
+            source_desc * parkDesc;
+            ScenarioSources::TryGetByName(gParkName, parkDesc);
+
+            // Advance to next level
+            utf8* path = ScenarioSources::GetNextScenarioPathFromGroup(parkDesc->source, parkDesc->index);
+
+            if (path != nullptr) {
+                _callback(path);
+            }
+        }
     }
 }
 

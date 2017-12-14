@@ -314,8 +314,13 @@ static void scenario_day_update()
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
         scenario_objective_check();
         break;
+    default:
+        //In speedrunning mode, always check the objective every day
+        if (gConfigGeneral.enable_speedrunning_mode) {
+            scenario_objective_check();
+        }
+        break;
     }
-
     // Lower the casualty penalty
     uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
     gParkRatingCasualtyPenalty = max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);

@@ -4481,6 +4481,7 @@ STR_6171    :{SMALLFONT}{BLACK}Run all levels in this group
 STR_6172    :{SMALLFONT}{BLACK}Run of this level only
 STR_6173    :Start Speedrun
 STR_6174    :Start IL Speedrun
+STR_6175    :Next Level
 
 #############
 # Scenarios #
