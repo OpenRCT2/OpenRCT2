@@ -549,7 +549,7 @@ private:
             }
         }
 
-        auto s = std::string(sb.GetBuffer());
+        auto s = std::string(sb.GetBuffer(), sb.GetLength());
         if (_currentGroup.empty())
         {
             // Make sure the list is big enough to contain this string id
