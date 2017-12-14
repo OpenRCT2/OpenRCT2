@@ -641,7 +641,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
 
     regs.ah = regs.cl;
 
-    for(uint32 tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT; tunnelIndex++)
+    for(uint32 tunnelIndex = 0; tunnelIndex < TUNNEL_MAX_COUNT;)
     {
         if (curHeight >= regs.al || curHeight >= regs.cl)
         {
@@ -663,7 +663,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
             return;
         }
 
-        if (curHeight != tunnelArray[0].height)
+        if (curHeight != tunnelArray[tunnelIndex].height)
         {
             // Normal walls
             while (curHeight > tunnelArray[tunnelIndex].height)
@@ -716,6 +716,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
         sub_98197C(session, image_id, offset.x, offset.y, tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1, curHeight * 16, tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ, rotation);
 
         curHeight += stru_97B570[tunnelType][0];
+        tunnelIndex++;
     }
 }
 
