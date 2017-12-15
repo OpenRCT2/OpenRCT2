@@ -1273,20 +1273,20 @@ STR_1267    :カー
 STR_1268    :{COMMA16} カー
 STR_1269    :{COMMA16} カー
 STR_1270    :カー {COMMA16}
-STR_1271    :building
-STR_1272    :buildings
-STR_1273    :Building
-STR_1274    :Buildings
-STR_1275    :{COMMA16} building
-STR_1276    :{COMMA16} buildings
-STR_1277    :Building {COMMA16}
-STR_1278    :structure
-STR_1279    :structures
-STR_1280    :Structure
-STR_1281    :Structures
-STR_1282    :{COMMA16} structure
-STR_1283    :{COMMA16} structures
-STR_1284    :Structure {COMMA16}
+STR_1271    :建物
+STR_1272    :建物
+STR_1273    :建物
+STR_1274    :建物
+STR_1275    :{COMMA16} 建物
+STR_1276    :{COMMA16} 建物
+STR_1277    :建物 {COMMA16}
+STR_1278    :構造
+STR_1279    :構造
+STR_1280    :構造
+STR_1281    :構造
+STR_1282    :{COMMA16} 構造
+STR_1283    :{COMMA16} 構造
+STR_1284    :構造 {COMMA16}
 STR_1285    :シップ
 STR_1286    :シップ
 STR_1287    :シップ
@@ -1315,13 +1315,13 @@ STR_1309    :リング
 STR_1310    :{COMMA16} リング
 STR_1311    :{COMMA16} リング
 STR_1312    :リング {COMMA16}
-STR_1313    :player
-STR_1314    :players
-STR_1315    :Player
-STR_1316    :Players
-STR_1317    :{COMMA16} player
-STR_1318    :{COMMA16} players
-STR_1319    :Player {COMMA16}
+STR_1313    :プレーヤー
+STR_1314    :プレーヤー
+STR_1315    :プレーヤー
+STR_1316    :プレーヤー
+STR_1317    :{COMMA16} プレーヤー
+STR_1318    :{COMMA16} プレーヤー
+STR_1319    :プレーヤー {COMMA16}
 STR_1320    :course
 STR_1321    :courses
 STR_1322    :Course
@@ -1675,26 +1675,26 @@ STR_1669    :{WINDOW_COLOUR_2}満足度: {BLACK}{COMMA16}%
 STR_1670    :{WINDOW_COLOUR_2}顧客総数: {BLACK}{COMMA32}
 STR_1671    :{WINDOW_COLOUR_2}総収益: {BLACK}{CURRENCY2DP}
 STR_1672    :ブレーキ
-STR_1673    :Spinning Control Toggle Track
+STR_1673    :スピン・コントロール・スイッチ・トラック
 STR_1674    :ブレーキのスピード
 STR_1675    :{POP16}{VELOCITY}
-STR_1676    :{SMALLFONT}{BLACK}Set speed limit for brakes
+STR_1676    :{SMALLFONT}{BLACK}ブレーキ速度の設定
 STR_1677    :{WINDOW_COLOUR_2}人気度: {BLACK}未知
 STR_1678    :{WINDOW_COLOUR_2}人気度: {BLACK}{COMMA16}%
 STR_1679    :上の螺旋 (左)
 STR_1680    :上の螺旋 (右)
 STR_1681    :下の螺旋 (左)
 STR_1682    :下の螺旋 (右)
-STR_1683    :Base size 2 x 2
-STR_1684    :Base size 4 x 4
-STR_1685    :Base size 2 x 4
-STR_1686    :Base size 5 x 1
+STR_1683    :2x2ベース
+STR_1684    :4x4ベース
+STR_1685    :2x4ベース
+STR_1686    :5x1ベース
 STR_1687    :ウォーター・スプラッシュ
-STR_1688    :Base size 4 x 1
+STR_1688    :4x1ベース
 STR_1689    :ブロックブレーキ
 STR_1690    :{WINDOW_COLOUR_2}{STRINGID}{NEWLINE}{BLACK}{STRINGID}
 STR_1691    :{WINDOW_COLOUR_2}  コスト: {BLACK}{CURRENCY}
-STR_1692    :{WINDOW_COLOUR_2}  コスト: {BLACK}from {CURRENCY}
+STR_1692    :{WINDOW_COLOUR_2}  コスト: {BLACK}{CURRENCY}以上
 STR_1693    :{SMALLFONT}{BLACK}来客
 STR_1694    :{SMALLFONT}{BLACK}スタッフ
 STR_1695    :{SMALLFONT}{BLACK}収入とコスト
@@ -1770,9 +1770,9 @@ STR_1764    :丸太の衝突
 STR_1765    :フォト・セクション
 STR_1766    :リバーサ・ターンテーブル
 STR_1767    :スピン・トンネル
-STR_1768    :Can't change number of swings...
-STR_1769    :{WINDOW_COLOUR_2}Number of swings:
-STR_1770    :{SMALLFONT}{BLACK}Number of complete swings
+STR_1768    :スイング回数を変更するはできません。
+STR_1769    :{WINDOW_COLOUR_2}スイング回数:
+STR_1770    :{SMALLFONT}{BLACK}スイング回数の設定
 STR_1771    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_1772    :{COMMA16}
 STR_1773    :Only one on-ride photo section allowed per ride
@@ -2978,10 +2978,10 @@ STR_2967    :
 STR_2968    :
 STR_2969    :<removed string - do not use>
 STR_2970    :<removed string - do not use>
-STR_2971    :Main colour scheme
-STR_2972    :Alternative colour scheme 1
-STR_2973    :Alternative colour scheme 2
-STR_2974    :Alternative colour scheme 3
+STR_2971    :主な配色
+STR_2972    :１番目の別の配色
+STR_2973    :２番目の別の配色
+STR_2974    :３番目の別の配色
 STR_2975    :{SMALLFONT}{BLACK}Select which colour scheme to change, or paint ride with
 STR_2976    :{SMALLFONT}{BLACK}Paint an individual area of this ride using the selected colour scheme
 STR_2977    :スタッフの名前
@@ -3019,64 +3019,64 @@ STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
 STR_3010    :Unable to load file...
 STR_3011    :File contains invalid data
-STR_3012    :Dodgems beat style
-STR_3013    :Fairground organ style
-STR_3014    :Roman fanfare style
-STR_3015    :Oriental style
-STR_3016    :Martian style
-STR_3017    :Jungle drums style
-STR_3018    :Egyptian style
-STR_3019    :Toyland style
+STR_3012    :ダージャムズ・ビート・スタイル
+STR_3013    :フェアグラウンドオルガン・スタイル
+STR_3014    :ローマンファンファーレ・スタイル
+STR_3015    :オリエンタル・スタイル
+STR_3016    :火星スタイル
+STR_3017    :ジャングルドラム・スタイル
+STR_3018    :エジプト・スタイル
+STR_3019    :トイランド・スタイル
 STR_3020    :
-STR_3021    :Space style
-STR_3022    :Horror style
-STR_3023    :Techno style
-STR_3024    :Gentle style
-STR_3025    :Summer style
-STR_3026    :Water style
-STR_3027    :Wild west style
-STR_3028    :Jurassic style
-STR_3029    :Rock style
-STR_3030    :Ragtime style
-STR_3031    :Fantasy style
-STR_3032    :Rock style 2
-STR_3033    :Ice style
-STR_3034    :Snow style
-STR_3035    :Custom music 1
-STR_3036    :Custom music 2
-STR_3037    :Medieval style
-STR_3038    :Urban style
-STR_3039    :Organ style
-STR_3040    :Mechanical style
-STR_3041    :Modern style
-STR_3042    :Pirates style
-STR_3043    :Rock style 3
-STR_3044    :Candy style
-STR_3045    :{SMALLFONT}{BLACK}Select style of music to play
+STR_3021    :スペース・スタイル
+STR_3022    :ホラー・スタイル
+STR_3023    :テクノ・スタイル
+STR_3024    :ジェントル・スタイル
+STR_3025    :サマー・スタイル
+STR_3026    :ウォーター・スタイル
+STR_3027    :ワイルドウエスト・スタイル
+STR_3028    :ジュラ紀・スタイル
+STR_3029    :ロック・スタイル
+STR_3030    :ラグタイム・スタイル
+STR_3031    :ファンタジー・スタイル
+STR_3032    :ロック・スタイル ２番
+STR_3033    :アイス・スタイル
+STR_3034    :スノー・スタイル
+STR_3035    :カスタム・スタイル １番
+STR_3036    :カスタム・スタイル ２番
+STR_3037    :中世・スタイル
+STR_3038    :都市・スタイル
+STR_3039    :オルガン・スタイル
+STR_3040    :メカニカル・スタイル
+STR_3041    :モダン・スタイル
+STR_3042    :パイレーツ・スタイル
+STR_3043    :ロック・スタイル ３番
+STR_3044    :キャンディ・スタイル
+STR_3045    :{SMALLFONT}{BLACK}音楽のスタイルの選定
 STR_3046    :This ride cannot be modified
 STR_3047    :Local authority forbids demolition or modifications to this ride
 STR_3048    :Marketing campaigns forbidden by local authority
-STR_3049    :Golf hole A
-STR_3050    :Golf hole B
-STR_3051    :Golf hole C
-STR_3052    :Golf hole D
-STR_3053    :Golf hole E
+STR_3049    :ゴルフホール A
+STR_3050    :ゴルフホール B
+STR_3051    :ゴルフホール C
+STR_3052    :ゴルフホール D
+STR_3053    :ゴルフホール E
 STR_3054    :ローディング中…
 STR_3055    :<removed string - do not use>
 STR_3056    :<removed string - do not use>
 STR_3057    :<removed string - do not use>
 STR_3058    :煉瓦塀
 STR_3059    :生け垣
-STR_3060    :Ice blocks
+STR_3060    :アイスブロック
 STR_3061    :木の柵
 STR_3062    :{SMALLFONT}{BLACK}Standard roller coaster track
-STR_3063    :{SMALLFONT}{BLACK}Water channel (track submerged)
+STR_3063    :{SMALLFONT}{BLACK}ウォーターチャンネル (水中のトラック)
 STR_3064    :初心者のパーク
 STR_3065    :挑戦のパーク
 STR_3066    :名手のパーク
 STR_3067    :現実のパーク
 STR_3068    :外のパーク
-STR_3069    :Top Section
+STR_3069    :トップの部分
 STR_3070    :Slope to Level
 STR_3071    :{WINDOW_COLOUR_2}パーク中で同一価格
 STR_3072    :{SMALLFONT}{BLACK}Select whether this price is used throughout the entire park
@@ -3345,9 +3345,9 @@ STR_3334    :{SMALLFONT}{BLACK}Select whether to save any additional plug-in obj
 STR_3335    :トラックデザイナー・乗り型と乗り物選択
 STR_3336    :トラックデザインマネージャー・乗り型を選ぶ
 STR_3337    :<removed string - do not use>
-STR_3338    :{BLACK}Custom-designed layout
-STR_3339    :{BLACK}{COMMA16} design available, or custom-designed layout
-STR_3340    :{BLACK}{COMMA16} designs available, or custom-designed layout
+STR_3338    :{BLACK}カスタムデザイン
+STR_3339    :{BLACK}{COMMA16}デザインまたはカスタムデザイン
+STR_3340    :{BLACK}{COMMA16}デザインまたはカスタムデザイン
 STR_3341    :{SMALLFONT}{BLACK}ゲームツール
 STR_3342    :シナリオエディター
 STR_3343    :ゲームセーブをシナリオに変換する
@@ -3776,7 +3776,7 @@ STR_5436    :タイトルシーケンスを変更する...
 STR_5437    :No save selected
 STR_5438    :Can't make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
-STR_5440    :Minimise fullscreen on focus loss
+STR_5440    :フォーカス損失時に全画面を最小化
 STR_5441    :{SMALLFONT}{BLACK}Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
 STR_5443    :スピード{MOVE_X}{87}{STRINGID}
@@ -3790,7 +3790,7 @@ STR_5450    :ゲームのスピードを上げる
 STR_5451    :カニングウィンドウの表示
 STR_5452    :ツールバーの表示を切り替える
 STR_5453    :他のライドを選択する
-STR_5454    :Uncap FPS
+STR_5454    :FPS限界無し
 STR_5455    :サンドボックスモードを有効にする
 STR_5456    :クリアランスチェックを無効にする
 STR_5457    :サポート制限を無効にする
@@ -3826,7 +3826,7 @@ STR_5486    :{BLACK}{COMMA16}
 STR_5487    :{SMALLFONT}{BLACK}最近のメッセージの表示
 STR_5488    :入口なし (OpenRCT2だけ!)
 STR_5489    :{SMALLFONT}{BLACK}Show only tracked guests
-STR_5490    :Disable audio on focus loss
+STR_5490    :フォーカス損失時に音を切る
 STR_5491    :発明品リスト
 STR_5492    :シナリオ設定
 STR_5493    :メッセージを送る
@@ -4471,6 +4471,8 @@ STR_6161    :地形グリッドの切り替え
 STR_6162    :スピニング・ワイルド・マウス
 STR_6163    :タイトなコーナーや小さなドロップにより、ネズミの形の車両が穏やかに回転して乗客の方向感覚を失わせる。
 STR_6164    :{WHITE}{CROSS}
+STR_6165    :垂直同期信号を使う
+STR_6166    :{SMALLFONT}{BLACK}表示された各フレームをモニターのリフレッシュレートに同期させ、スクリーンテアリングを防ぎます。
 
 #####################
 # Rides/attractions #
@@ -5241,31 +5243,31 @@ STR_NAME    :緑色の舗装歩道
 
 ### Banners
 [BN1]
-STR_NAME    :看板
+STR_NAME    :バナー
 
 [BN2]
-STR_NAME    :ジャングル風の看板
+STR_NAME    :ジャングル風のバナー
 
 [BN3]
-STR_NAME    :クラシカル風の看板
+STR_NAME    :クラシカル風のバナー
 
 [BN4]
-STR_NAME    :エジプト風の看板
+STR_NAME    :エジプト風のバナー
 
 [BN5]
-STR_NAME    :木製の看板
+STR_NAME    :木製のバナー
 
 [BN6]
-STR_NAME    :ジュラシック風の看板
+STR_NAME    :ジュラシック風のバナー
 
 [BN7]
-STR_NAME    :パゴダ風の看板
+STR_NAME    :パゴダ風のバナー
 
 [BN8]
-STR_NAME    :雪をかぶった看板
+STR_NAME    :雪をかぶったバナー
 
 [BN9]
-STR_NAME    :スペース風の看板
+STR_NAME    :スペース風のバナー
 
 ### Path additions
 [BENCH1]
