@@ -49,7 +49,7 @@ static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END, STR_NONE },
 };
 
-#define NUM_COMMANDS 8
+#define NUM_COMMANDS 9
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
