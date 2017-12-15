@@ -1336,7 +1336,9 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                         return MONEY32_UNDEFINED;
                     }
                     surfaceCost += TerrainPricing[style];
-                    if (flags & 1){
+
+                    if (flags & GAME_COMMAND_FLAG_APPLY)
+                    {
                         tileElement->properties.surface.terrain &= TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
                         tileElement->type &= TILE_ELEMENT_QUADRANT_MASK | TILE_ELEMENT_TYPE_MASK;
 

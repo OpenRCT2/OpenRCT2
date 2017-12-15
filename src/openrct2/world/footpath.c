@@ -1829,7 +1829,7 @@ void footpath_element_set_wide(rct_tile_element * tileElement, bool isWide)
 
 bool footpath_element_has_path_scenery(const rct_tile_element * tileElement)
 {
-    return footpath_element_get_path_scenery(tileElement) > 0;
+    return footpath_element_get_path_scenery(tileElement) != 0;
 }
 
 uint8 footpath_element_get_path_scenery(const rct_tile_element * tileElement)

@@ -40,7 +40,7 @@ typedef struct rct_footpath_entry {
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
-// Masks for value stored in rct_tile_element.type
+// Masks for values stored in rct_tile_element.type
 enum
 {
     FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE  = (1 << 0),

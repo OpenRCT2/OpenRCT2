@@ -286,7 +286,8 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
     if (footpath_element_is_queue(tile_element)) {
         uint8 local_ebp = ebp & 0x0F;
         if (footpath_element_is_sloped(tile_element)) {
-            switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & TILE_ELEMENT_DIRECTION_MASK) {
+            switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+            {
                 case 0:
                     sub_98197C(session, 95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
                     sub_98197C(session, 95 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
@@ -389,7 +390,7 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->properties.path.ride_index != RIDE_ENTRY_INDEX_NULL && imageFlags == 0) {
+        if (direction < 2 && tile_element->properties.path.ride_index != RIDE_ID_NULL && imageFlags == 0) {
             uint16 scrollingMode = footpathEntry->scrolling_mode;
             scrollingMode += direction;
 
@@ -432,7 +433,8 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
     }
 
     if (footpath_element_is_sloped(tile_element)) {
-        switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & TILE_ELEMENT_DIRECTION_MASK) {
+        switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+        {
             case 0:
                 sub_98197C(session, 81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
                 sub_98197C(session, 81 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
@@ -635,7 +637,7 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
     }
 
     // This is about tunnel drawing
-    uint8 direction = (footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & 0x03;
+    uint8 direction = (footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
     bool  sloped    = footpath_element_is_sloped(tile_element);
 
     if (connectedEdges & EDGE_SE) {
@@ -818,7 +820,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
 
     uint32 imageId;
     if (footpath_element_is_sloped(tileElement)) {
-        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 3) + 16;
+        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + 16;
     } else {
         imageId = byte_98D6E0[edi];
     }
@@ -853,7 +855,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
     } else {
         uint32 image_id;
         if (footpath_element_is_sloped(tileElement)) {
-            image_id = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 3) + footpathEntry->bridge_image + 51;
+            image_id = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 51;
         } else {
             image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
         }
@@ -981,7 +983,7 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
     else {
         uint32 bridgeImage;
         if (footpath_element_is_sloped(tileElement)) {
-            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 3) + footpathEntry->bridge_image + 16;
+            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 16;
         }
         else {
             bridgeImage = edges + footpathEntry->bridge_image;
@@ -1037,21 +1039,19 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
 
     paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
 
-    if (edges & 1) {
+    if (edges & EDGE_NE) {
         paint_util_set_segment_support_height(session, SEGMENT_CC, 0xFFFF, 0);
     }
 
-    if (edges & 2) {
+    if (edges & EDGE_SE) {
         paint_util_set_segment_support_height(session, SEGMENT_D4, 0xFFFF, 0);
     }
 
-    if (edges & 4) {
+    if (edges & EDGE_SW) {
         paint_util_set_segment_support_height(session, SEGMENT_D0, 0xFFFF, 0);
     }
 
-    if (edges & 8) {
+    if (edges & EDGE_NW) {
         paint_util_set_segment_support_height(session, SEGMENT_C8, 0xFFFF, 0);
     }
 }
-
-
