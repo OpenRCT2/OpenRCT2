@@ -183,7 +183,7 @@ public:
         }
         else
         {
-            if (_strings.size() > (size_t)stringId)
+            if ((_strings.size() > (size_t)stringId) && !String::Equals(_strings[stringId].c_str(), ""))
             {
                 return _strings[stringId].c_str();
             }
