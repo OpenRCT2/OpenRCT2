@@ -157,7 +157,7 @@ public:
             sint32 ooIndex = offset / ScenarioOverrideMaxStringCount;
             sint32 ooStringIndex = offset % ScenarioOverrideMaxStringCount;
 
-            if (_scenarioOverrides.size() > (size_t)ooIndex)
+            if ((_scenarioOverrides.size() > (size_t)ooIndex) && !String::Equals(_scenarioOverrides[ooIndex].strings[ooStringIndex].c_str(), ""))
             {
                 return _scenarioOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
@@ -172,7 +172,7 @@ public:
             sint32 ooIndex = offset / ObjectOverrideMaxStringCount;
             sint32 ooStringIndex = offset % ObjectOverrideMaxStringCount;
 
-            if (_objectOverrides.size() > (size_t)ooIndex)
+            if ((_objectOverrides.size() > (size_t)ooIndex) && !String::Equals(_objectOverrides[ooIndex].strings[ooStringIndex].c_str(), ""))
             {
                 return _objectOverrides[ooIndex].strings[ooStringIndex].c_str();
             }
