@@ -84,7 +84,11 @@ void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 const char * language_get_string(rct_string_id id)
 {
     const char * result = nullptr;
-    if (id != STR_NONE)
+    if (id == STR_EMPTY)
+    {
+        result = "";
+    }
+    else if (id != STR_NONE)
     {
         if (_languageCurrent != nullptr)
         {
