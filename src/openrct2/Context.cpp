@@ -121,6 +121,7 @@ namespace OpenRCT2
 
         ~Context() override
         {
+            window_close_all();
             network_close();
             http_dispose();
             language_close_all();
