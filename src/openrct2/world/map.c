@@ -1573,24 +1573,37 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         } while (!tile_element_is_last_for_tile(tileElement++));
     }
 
-    //Check for ride support limits
-    if(gCheatsDisableSupportLimits==false)
+    // Check for ride support limits
+    if (!gCheatsDisableSupportLimits)
     {
         tileElement = map_get_first_element_at(x / 32, y / 32);
-        do{
-            if(tile_element_get_type(tileElement) != TILE_ELEMENT_TYPE_TRACK)
-                continue;
-            sint32 rideIndex = track_element_get_ride_index(tileElement);
-            sint32 maxHeight = get_ride_entry_by_ride(get_ride(rideIndex))->max_height;
-            if(maxHeight == 0)
-                maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
-            sint32 zDelta = tileElement->clearance_height - height;
-            if(zDelta >= 0 && zDelta/2 > maxHeight)
+        do
+        {
+            if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_TRACK)
             {
-                gGameCommandErrorText = STR_SUPPORTS_CANT_BE_EXTENDED;
-                return MONEY32_UNDEFINED;
+                sint32 rideIndex = track_element_get_ride_index(tileElement);
+                Ride * ride = get_ride(rideIndex);
+                if (ride != NULL)
+                {
+                    rct_ride_entry * rideEntry = get_ride_entry_by_ride(ride);
+                    if (rideEntry != NULL)
+                    {
+                        sint32 maxHeight = rideEntry->max_height;
+                        if (maxHeight == 0)
+                        {
+                            maxHeight = RideData5[get_ride(rideIndex)->type].max_height;
+                        }
+                        sint32 zDelta = tileElement->clearance_height - height;
+                        if (zDelta >= 0 && zDelta / 2 > maxHeight)
+                        {
+                            gGameCommandErrorText = STR_SUPPORTS_CANT_BE_EXTENDED;
+                            return MONEY32_UNDEFINED;
+                        }
+                    }
+                }
             }
-        }while(!tile_element_is_last_for_tile(tileElement++));
+        }
+        while(!tile_element_is_last_for_tile(tileElement++));
     }
 
     uint8 zCorner = height; //z position of highest corner of tile
