@@ -35,7 +35,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 num_vertical_frames;      // 0x02 , 0x1C, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint8 num_horizontal_frames;    // 0x03 , 0x1D, Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint32 spacing;                 // 0x04 , 0x1E
-    uint16 car_friction;            // 0x08 , 0x22
+    uint16 car_mass;                // 0x08 , 0x22
     sint8 tab_height;               // 0x0A , 0x24
     uint8 num_seats;                // 0x0B , 0x25
     uint16 sprite_flags;            // 0x0C , 0x26
@@ -120,7 +120,7 @@ typedef struct rct_vehicle {
     union {
         sint16 track_direction;     // 0x36 (0000 0000 0000 0011)
         sint16 track_type;          // 0x36 (0000 0011 1111 1100)
-        LocationXY8 boat_location;      // 0x36
+        LocationXY8 boat_location;  // 0x36
     };
     uint16 track_x;                 // 0x38
     uint16 track_y;                 // 0x3A
@@ -134,7 +134,7 @@ typedef struct rct_vehicle {
     uint16 next_vehicle_on_ride;    // 0x42
 
     uint16 var_44;
-    uint16 friction;                // 0x46
+    uint16 mass;                    // 0x46
     uint16 update_flags;            // 0x48
     uint8 var_4A;
     uint8 current_station;          // 0x4B

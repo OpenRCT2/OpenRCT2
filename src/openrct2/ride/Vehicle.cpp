@@ -960,7 +960,7 @@ sint32 sub_6BC2F3(rct_vehicle * vehicle)
     rct_vehicle * vehicle_temp = vehicle;
     do
     {
-        result += vehicle_temp->friction;
+        result += vehicle_temp->mass;
     } while (vehicle_temp->next_vehicle_on_train != SPRITE_INDEX_NULL &&
              (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)) != NULL);
     sint32 v4 = vehicle->velocity;
@@ -4554,14 +4554,14 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
         edx >>= 5;
 
         // Hack to fix people messing with boat hire
-        sint32 friction = vehicle->friction == 0 ? 1 : vehicle->friction;
+        sint32 mass = vehicle->mass == 0 ? 1 : vehicle->mass;
 
-        sint32 eax = ((vehicle->velocity >> 1) + edx) / friction;
+        sint32 eax = ((vehicle->velocity >> 1) + edx) / mass;
         sint32 ecx = -eax;
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
         {
             eax        = vehicle->speed << 14;
-            sint32 ebx = (vehicle->speed * friction) >> 2;
+            sint32 ebx = (vehicle->speed * mass) >> 2;
             if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
             {
                 eax = -eax;
@@ -6406,7 +6406,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
         edx = -edx;
     edx >>= 5;
     eax += edx;
-    eax /= vehicle->friction;
+    eax /= vehicle->mass;
     rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
 
@@ -6416,7 +6416,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
         return _vehicleMotionTrackFlags;
     }
 
-    sint32 ebx  = (vehicle->speed * vehicle->friction) >> 2;
+    sint32 ebx  = (vehicle->speed * vehicle->mass) >> 2;
     sint32 _eax = vehicle->speed << 14;
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
     {
@@ -9315,7 +9315,7 @@ loc_6DCEFF:
     {
         regs.ebx++;
         regs.dx |= vehicle->update_flags;
-        regs.bp += vehicle->friction;
+        regs.bp += vehicle->mass;
         regs.eax += vehicle->acceleration;
         regs.si = vehicle->next_vehicle_on_train;
         if ((uint16)regs.si == SPRITE_INDEX_NULL)
@@ -9573,7 +9573,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         numVehicles++;
         // Not used?
         regs.dx |= vehicle->update_flags;
-        totalFriction += vehicle->friction;
+        totalFriction += vehicle->mass;
         totalAcceleration += vehicle->acceleration;
 
         uint16 spriteIndex = vehicle->next_vehicle_on_train;
@@ -9615,7 +9615,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     }
     regs.edx >>= 4;
     regs.eax = regs.edx;
-    // OpenRCT2: vehicles from different track types can have  0 friction.
+    // OpenRCT2: vehicles from different track types can have  0 mass.
     if (totalFriction != 0)
     {
         regs.eax = regs.eax / totalFriction;

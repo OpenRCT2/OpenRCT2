@@ -498,7 +498,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 } else {
                     console_printf("rides set type <ride id> <ride type>");
                     console_printf("rides set mode [<ride id> <operating mode>]");
-                    console_printf("rides set friction <ride id> <friction value>");
+                    console_printf("rides set mass <ride id> <mass value>");
                     console_printf("rides set excitement <ride id> <excitement value>");
                     console_printf("rides set intensity <ride id> <intensity value>");
                     console_printf("rides set nausea <ride id> <nausea value>");
@@ -543,10 +543,10 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     }
                 }
             }
-            else if (strcmp(argv[1], "friction") == 0) {
+            else if (strcmp(argv[1], "mass") == 0) {
                 bool int_valid[2] = { 0 };
                 sint32 ride_index = console_parse_int(argv[2], &int_valid[0]);
-                sint32 friction = console_parse_int(argv[3], &int_valid[1]);
+                sint32 mass = console_parse_int(argv[3], &int_valid[1]);
 
                 if (ride_index < 0) {
                     console_printf("Ride index must not be negative");
@@ -556,7 +556,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                 }
                 else {
                     Ride *ride = get_ride(ride_index);
-                    if (friction <= 0) {
+                    if (mass <= 0) {
                         console_printf("Friction value must be strictly positive");
                     }
                     else if (ride->type == RIDE_TYPE_NULL) {
@@ -567,7 +567,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                             uint16 vehicle_index = ride->vehicles[i];
                             while (vehicle_index != SPRITE_INDEX_NULL) {
                                 rct_vehicle *vehicle = GET_VEHICLE(vehicle_index);
-                                vehicle->friction = friction;
+                                vehicle->mass = mass;
                                 vehicle_index = vehicle->next_vehicle_on_train;
                             }
                         }

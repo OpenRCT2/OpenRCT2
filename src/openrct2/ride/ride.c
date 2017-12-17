@@ -4581,7 +4581,7 @@ static rct_vehicle *vehicle_create_car(
     vehicle->sprite_width = vehicleEntry->sprite_width;
     vehicle->sprite_height_negative = vehicleEntry->sprite_height_negative;
     vehicle->sprite_height_positive = vehicleEntry->sprite_height_positive;
-    vehicle->friction = vehicleEntry->car_friction;
+    vehicle->mass = vehicleEntry->car_mass;
     vehicle->num_seats = vehicleEntry->num_seats;
     vehicle->speed = vehicleEntry->powered_max_speed;
     vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
@@ -7162,18 +7162,18 @@ void ride_update_max_vehicles(sint32 rideIndex)
             return;
 
         stationLength = (stationLength * 0x44180) - 0x16B2A;
-        sint32 maxFriction = RideData5[ride->type].max_friction << 8;
+        sint32 maxMass = RideData5[ride->type].max_mass << 8;
         sint32 maxCarsPerTrain = 1;
         for (sint32 numCars = rideEntry->max_cars_in_train; numCars > 0; numCars--) {
             trainLength = 0;
-            sint32 totalFriction = 0;
+            sint32 totalMass = 0;
             for (sint32 i = 0; i < numCars; i++) {
                 vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, numCars, i)];
                 trainLength += vehicleEntry->spacing;
-                totalFriction += vehicleEntry->car_friction;
+                totalMass += vehicleEntry->car_mass;
             }
 
-            if (trainLength <= stationLength && totalFriction <= maxFriction) {
+            if (trainLength <= stationLength && totalMass <= maxMass) {
                 maxCarsPerTrain = numCars;
                 break;
             }

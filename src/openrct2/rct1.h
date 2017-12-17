@@ -303,7 +303,7 @@ typedef struct rct1_vehicle {
     uint16 next_vehicle_on_ride;    // 0x42
 
     uint16 var_44;
-    uint16 friction;                // 0x46
+    uint16 mass;                    // 0x46
     uint16 update_flags;            // 0x48
     uint8 var_4A;
     uint8 current_station;          // 0x4B
