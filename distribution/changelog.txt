@@ -26,9 +26,10 @@
 - Feature: [#6709] The New Ride window now shows available vehicles for a ride type.
 - Feature: [#6731] Object indexing progress is now reported via command line output.
 - Feature: [#6779] On-ride photo segment for Splash Boats.
+- Feature: Add search box to track design window.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
-- Feature: Add search box to track design window.
+- Feature: Vehicles with matching capabilities are now always switchable.
 - Fix: [#816] In the map window, there are more peeps flickering than there are selected (original bug).
 - Fix: [#996, #2589, #2875] Viewport scrolling no longer shakes or gets stuck.
 - Fix: [#1185] Close button colour of prompt windows does not match.
