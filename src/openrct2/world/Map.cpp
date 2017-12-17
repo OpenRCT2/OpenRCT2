@@ -2822,7 +2822,7 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         sint32 zLow = (tile->z_offset + maxHeight) / 8;
         sint32 zHigh = (tile->z_clearance / 8) + zLow;
 
-        sint32 bx = tile->var_7 >> 12;
+        sint32 bx = tile->flags >> 12;
         bx <<= rotation;
         uint8 bl = bx;
         uint8 bh = bl >> 4;

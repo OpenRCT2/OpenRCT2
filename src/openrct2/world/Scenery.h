@@ -56,15 +56,22 @@ struct rct_large_scenery_tile {
     sint16 y_offset;
     sint16 z_offset;
     uint8 z_clearance;
-    uint16 var_7;
+    // CCCC WWWW 0SS0 0000
+    uint16 flags;
 };
 assert_struct_size(rct_large_scenery_tile, 9);
+
+enum
+{
+    LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS             = 0x20,
+    LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE    = 0x40,
+};
 
 struct rct_large_scenery_text_glyph {
     uint8 image_offset;
     uint8 width;
     uint8 height;
-    uint8 var_3;
+    uint8 pad_3;
 };
 assert_struct_size(rct_large_scenery_text_glyph, 4);
 

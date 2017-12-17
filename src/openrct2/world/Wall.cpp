@@ -222,7 +222,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
             tile = &entry->large_scenery.tiles[sequence];
             {
                 sint32 direction = ((edge - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) + 8;
-                if (!(tile->var_7 & (1 << direction)))
+                if (!(tile->flags & (1 << direction)))
                 {
                     map_obstruction_set_error_text(tileElement);
                     return false;
