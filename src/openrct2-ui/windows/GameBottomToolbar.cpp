@@ -31,7 +31,8 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 
-enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
+enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
+{
     WIDX_LEFT_OUTSET,
     WIDX_LEFT_INSET,
     WIDX_MONEY,
@@ -48,7 +49,8 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
     WIDX_DATE
 };
 
-static rct_widget window_game_bottom_toolbar_widgets[] = {
+static rct_widget window_game_bottom_toolbar_widgets[] =
+{
     { WWT_IMGBTN,   0,    0,   141,    0,   33,   0xFFFFFFFF,   STR_NONE },                               // Left outset panel
     { WWT_IMGBTN,   0,    2,   139,    2,   31,   0xFFFFFFFF,   STR_NONE },                               // Left inset panel
     { WWT_FLATBTN,  0,    2,   139,    1,   12,   0xFFFFFFFF,   STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP }, // Money window
@@ -84,7 +86,8 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
  *
  *  rct2: 0x0097BFDC
  */
-static rct_window_event_list window_game_bottom_toolbar_events = {
+static rct_window_event_list window_game_bottom_toolbar_events =
+{
     nullptr,
     window_game_bottom_toolbar_mouseup,
     nullptr,
@@ -163,7 +166,8 @@ static void window_game_bottom_toolbar_mouseup(rct_window *w, rct_widgetindex wi
 {
     NewsItem *newsItem;
 
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_LEFT_OUTSET:
     case WIDX_MONEY:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -219,7 +223,8 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
 {
     sint32 month, day;
 
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_MONEY:
         set_format_arg(0, sint32, gCurrentProfit);
         set_format_arg(4, sint32, gParkValue);
@@ -271,13 +276,17 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     window_game_bottom_toolbar_widgets[WIDX_LEFT_INSET].type = WWT_EMPTY;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].type = WWT_EMPTY;
 
-    if (news_item_is_queue_empty()) {
-        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)) {
+    if (news_item_is_queue_empty())
+    {
+        if (!(theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR))
+        {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
-        } else {
+        }
+        else
+        {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
@@ -285,7 +294,9 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].colour = 0;
         }
-    } else {
+    }
+    else
+    {
         newsItem = news_item_get(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
@@ -304,24 +315,29 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
         if (x == LOCATION_NULL)
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
 
-        if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT)) {
+        if (!(news_type_properties[newsItem->Type] & NEWS_TYPE_HAS_SUBJECT))
+        {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
         }
 
-        if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON) {
+        if (newsItem->Flags & NEWS_FLAG_HAS_BUTTON)
+        {
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
         }
     }
 
     // Hide money if there is no money
-    if (gParkFlags & PARK_FLAGS_NO_MONEY) {
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
         window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_EMPTY;
         window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 1;
         window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 17;
         window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top = 17;
-    } else {
+    }
+    else
+    {
         window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_FLATBTN;
         window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 11;
         window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 22;
@@ -335,7 +351,8 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
  */
 void window_game_bottom_toolbar_invalidate_news_item()
 {
-    if (gScreenFlags == SCREEN_FLAGS_PLAYING) {
+    if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+    {
         widget_invalidate_by_class(WC_BOTTOM_TOOLBAR, WIDX_MIDDLE_OUTSET);
     }
 }
@@ -363,6 +380,7 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
         w->y + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].bottom,
         PALETTE_51
     );
+
     if (theme_get_flags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
@@ -410,7 +428,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
 
     // Draw money
-    if (!(gParkFlags & PARK_FLAGS_NO_MONEY)) {
+    if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
+    {
         set_format_arg(0, money32, gCash);
         gfx_draw_string_centred(
             dpi,
@@ -422,7 +441,8 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
         y += 7;
     }
 
-    static const rct_string_id guestCountFormats[] = {
+    static const rct_string_id guestCountFormats[] =
+    {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
@@ -458,7 +478,8 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
     bar_width = (factor * 114) / 255;
     gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 114, y + 9, w->colours[1], INSET_RECT_F_30);
-    if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentTicks & 8)) {
+    if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentTicks & 8))
+    {
         if (bar_width > 2)
             gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
     }
@@ -511,7 +532,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
 
     temperature = gClimateCurrentTemperature;
     format = STR_CELSIUS_VALUE;
-    if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F) {
+    if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F)
+    {
         temperature = climate_celsius_to_fahrenheit(temperature);
         format = STR_FAHRENHEIT_VALUE;
     }
@@ -523,8 +545,10 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrentWeather].SpriteId, x, y, 0);
 
     // Next weather
-    if (ClimateWeatherData[gClimateCurrentWeather].SpriteId != ClimateWeatherData[gClimateNextWeather].SpriteId) {
-        if (gClimateUpdateTimer < 960) {
+    if (ClimateWeatherData[gClimateCurrentWeather].SpriteId != ClimateWeatherData[gClimateNextWeather].SpriteId)
+    {
+        if (gClimateUpdateTimer < 960)
+        {
             gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
             gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNextWeather].SpriteId, x + 40, y, 0);
         }
@@ -564,7 +588,8 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 
     x = w->x + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].left;
     y = w->y + window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].top;
-    switch (newsItem->Type) {
+    switch (newsItem->Type)
+    {
     case NEWS_ITEM_RIDE:
         gfx_draw_sprite(dpi, SPR_RIDE, x, y, 0);
         break;
@@ -582,10 +607,9 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
         rct_peep* peep = GET_PEEP(newsItem->Assoc);
         sint32 clip_x = 10, clip_y = 19;
 
-        if (peep->type == PEEP_TYPE_STAFF){
-            if (peep->staff_type == STAFF_TYPE_ENTERTAINER){
-                clip_y += 3;
-            }
+        if (peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER)
+        {
+            clip_y += 3;
         }
 
         uint32 image_id_base = g_peep_animation_entries[peep->sprite_type].sprite_animation->base_image;
@@ -597,19 +621,22 @@ static void window_game_bottom_toolbar_draw_news_item(rct_drawpixelinfo *dpi, rc
 
         gfx_draw_sprite(&cliped_dpi, image_id, clip_x, clip_y, 0);
 
-        if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D){
+        if (image_id_base >= 0x2A1D && image_id_base < 0x2A3D)
+        {
             image_id_base += 32;
             image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->balloon_colour);
 
             gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
         }
-        else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD){
+        else if (image_id_base >= 0x2BBD && image_id_base < 0x2BDD)
+        {
             image_id_base += 32;
             image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->umbrella_colour);
 
             gfx_draw_sprite(&cliped_dpi, image_id_base, clip_x, clip_y, 0);
         }
-        else if (image_id_base >= 0x29DD && image_id_base < 0x29FD){
+        else if (image_id_base >= 0x29DD && image_id_base < 0x29FD)
+        {
             image_id_base += 32;
             image_id_base |= SPRITE_ID_PALETTE_COLOUR_1(peep->hat_colour);
 
@@ -686,7 +713,8 @@ static void window_game_bottom_toolbar_update(rct_window* w){
  */
 static void window_game_bottom_toolbar_cursor(rct_window *w, rct_widgetindex widgetIndex, sint32 x, sint32 y, sint32 *cursorId)
 {
-    switch (widgetIndex) {
+    switch (widgetIndex)
+    {
     case WIDX_MONEY:
     case WIDX_GUESTS:
     case WIDX_PARK_RATING:
@@ -711,27 +739,32 @@ static void window_game_bottom_toolbar_unknown05(rct_window *w)
  */
 static void window_game_bottom_toolbar_invalidate_dirty_widgets(rct_window *w)
 {
-    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY){
+    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
+    {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
         widget_invalidate(w, WIDX_LEFT_INSET);
     }
 
-    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE){
+    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
+    {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
         widget_invalidate(w, WIDX_RIGHT_INSET);
     }
 
-    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT){
+    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
+    {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
         widget_invalidate(w, WIDX_LEFT_INSET);
     }
 
-    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE){
+    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
+    {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
         widget_invalidate(w, WIDX_RIGHT_INSET);
     }
 
-    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING){
+    if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
+    {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
         widget_invalidate(w, WIDX_LEFT_INSET);
     }
