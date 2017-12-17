@@ -110,7 +110,7 @@ void WallObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "hasPrimaryColour", WALL_SCENERY_HAS_PRIMARY_COLOUR },
         { "hasSecondaryColour", WALL_SCENERY_HAS_SECONDARY_COLOUR },
         { "hasTernaryColour", WALL_SCENERY_HAS_TERNARY_COLOUR },
-        { "hasGrass", WALL_SCENERY_HAS_GLASS },
+        { "hasGlass", WALL_SCENERY_HAS_GLASS },
         { "isBanner", WALL_SCENERY_IS_BANNER },
         { "isDoor", WALL_SCENERY_IS_DOOR },
         { "isLongDoorAnimation", WALL_SCENERY_LONG_DOOR_ANIMATION }});
