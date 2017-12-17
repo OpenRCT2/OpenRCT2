@@ -351,6 +351,11 @@ bool Network::BeginServer(uint16 port, const char* address)
         _advertiser = CreateServerAdvertiser(listening_port);
     }
 
+    if (gConfigNetwork.pause_server_if_no_clients)
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+    }
+
     return true;
 }
 
@@ -1502,6 +1507,10 @@ void Network::EnqueueGameAction(const GameAction *action)
 
 void Network::AddClient(ITcpSocket * socket)
 {
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_paused())
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+    }
     auto connection = std::make_unique<NetworkConnection>();
     connection->Socket = socket;
     char addr[128];
@@ -1540,6 +1549,10 @@ void Network::RemoveClient(std::unique_ptr<NetworkConnection>& connection)
                           return player.get() == connection_player;
                       }), player_list.end());
     client_connection_list.remove(connection);
+    if (gConfigNetwork.pause_server_if_no_clients && game_is_not_paused() && client_connection_list.size() == 0)
+    {
+        game_do_command(0, 1, 0, 0, GAME_COMMAND_TOGGLE_PAUSE, 0, 0);
+    }
     Server_Send_PLAYERLIST();
 }
 

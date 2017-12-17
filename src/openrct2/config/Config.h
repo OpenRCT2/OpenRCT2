@@ -152,6 +152,7 @@ typedef struct NetworkConfiguration
     bool        known_keys_only;
     bool        log_chat;
     bool        log_server_actions;
+    bool        pause_server_if_no_clients;
 } NetworkConfiguration;
 
 typedef struct NotificationConfiguration
