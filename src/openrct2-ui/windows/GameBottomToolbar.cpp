@@ -48,26 +48,21 @@ enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX {
     WIDX_DATE
 };
 
-
-// Right panel needs to be a bit bigger than original so dates like "22nd September, Year 126" can fit.
-// Left panel size was also increased for symmetry.
-#define WIDTH_MOD 22
-
 static rct_widget window_game_bottom_toolbar_widgets[] = {
-    { WWT_IMGBTN,   0,  0x0000, 0x0077+WIDTH_MOD,   0,      33,     0xFFFFFFFF, STR_NONE }, // Left outset panel
-    { WWT_IMGBTN,   0,  0x0002, 0x0075+WIDTH_MOD,   2,      31,     0xFFFFFFFF, STR_NONE }, // Left inset panel
-    { WWT_FLATBTN,  0,  0x0002, 0x0075+WIDTH_MOD,   1,      12,     0xFFFFFFFF, STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP },   // Money window
-    { WWT_FLATBTN,  0,  0x0002, 0x0075+WIDTH_MOD,   11,     22,     0xFFFFFFFF, STR_NONE }, // Guests window
-    { WWT_FLATBTN,  0,  0x0002, 0x0075+WIDTH_MOD,   21,     31,     0xFFFFFFFF, STR_PARK_RATING_TIP },  // Park rating window
+    { WWT_IMGBTN,   0,    0,   141,    0,   33,   0xFFFFFFFF,   STR_NONE },                               // Left outset panel
+    { WWT_IMGBTN,   0,    2,   139,    2,   31,   0xFFFFFFFF,   STR_NONE },                               // Left inset panel
+    { WWT_FLATBTN,  0,    2,   139,    1,   12,   0xFFFFFFFF,   STR_PROFIT_PER_WEEK_AND_PARK_VALUE_TIP }, // Money window
+    { WWT_FLATBTN,  0,    2,   139,   11,   22,   0xFFFFFFFF,   STR_NONE },                               // Guests window
+    { WWT_FLATBTN,  0,    2,   139,   21,   31,   0xFFFFFFFF,   STR_PARK_RATING_TIP },                    // Park rating window
 
-    { WWT_IMGBTN,   2,  0x0078+WIDTH_MOD,   0x0207-WIDTH_MOD,   0,      33,     0xFFFFFFFF, STR_NONE }, // Middle outset panel
-    { WWT_25,       2,  0x007A+WIDTH_MOD,   0x0205-WIDTH_MOD,   2,      31,     0xFFFFFFFF, STR_NONE }, // Middle inset panel
-    { WWT_FLATBTN,  2,  0x007D+WIDTH_MOD,   0x0094+WIDTH_MOD,   5,      28,     0xFFFFFFFF, STR_SHOW_SUBJECT_TIP }, // Associated news item window
-    { WWT_FLATBTN,  2,  0x01EB-WIDTH_MOD,   0x0202-WIDTH_MOD,   5,      28,     SPR_LOCATE, STR_LOCATE_SUBJECT_TIP },   // Scroll to news item target
+    { WWT_IMGBTN,   2,  142,   497,    0,   33,   0xFFFFFFFF,   STR_NONE },               // Middle outset panel
+    { WWT_25,       2,  144,   495,    2,   31,   0xFFFFFFFF,   STR_NONE },               // Middle inset panel
+    { WWT_FLATBTN,  2,  147,   170,    5,   28,   0xFFFFFFFF,   STR_SHOW_SUBJECT_TIP },   // Associated news item window
+    { WWT_FLATBTN,  2,  469,   492,    5,   28,   SPR_LOCATE,   STR_LOCATE_SUBJECT_TIP }, // Scroll to news item target
 
-    { WWT_IMGBTN,   0,  0x0208-WIDTH_MOD,   0x027F, 0,      33,     0xFFFFFFFF, STR_NONE }, // Right outset panel
-    { WWT_IMGBTN,   0,  0x020A-WIDTH_MOD,   0x027D, 2,      31,     0xFFFFFFFF, STR_NONE }, // Right inset panel
-    { WWT_FLATBTN,  0,  0x020A-WIDTH_MOD,   0x027D, 2,      13,     0xFFFFFFFF, STR_NONE }, // Date
+    { WWT_IMGBTN,   0,  498,   639,    0,   33,   0xFFFFFFFF,   STR_NONE }, // Right outset panel
+    { WWT_IMGBTN,   0,  500,   637,    2,   31,   0xFFFFFFFF,   STR_NONE }, // Right inset panel
+    { WWT_FLATBTN,  0,  500,   637,    2,   13,   0xFFFFFFFF,   STR_NONE }, // Date
     { WIDGETS_END },
 };
 
@@ -258,7 +253,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
     x -= 2;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].right = x;
-    x -= (115 + WIDTH_MOD);
+    x -= 137;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_INSET].left = x;
     x -= 2;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left = x;
@@ -461,8 +456,8 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 {
     sint16 bar_width;
 
-    bar_width = (factor * (92 + WIDTH_MOD)) / 255;
-    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + (92 + WIDTH_MOD), y + 9, w->colours[1], INSET_RECT_F_30);
+    bar_width = (factor * 114) / 255;
+    gfx_fill_rect_inset(dpi, x + 1, y + 1, x + 114, y + 9, w->colours[1], INSET_RECT_F_30);
     if (!(colour & IMAGE_TYPE_REMAP_2_PLUS) || game_is_paused() || (gCurrentTicks & 8)) {
         if (bar_width > 2)
             gfx_fill_rect_inset(dpi, x + 2, y + 2, x + bar_width - 1, y + 8, colour & 0x7FFFFFFF, 0);
@@ -470,7 +465,7 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
     // Draw thumbs on the sides
     gfx_draw_sprite(dpi, SPR_RATING_LOW, x - 14, y, 0);
-    gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + (92 + WIDTH_MOD), y, 0);
+    gfx_draw_sprite(dpi, SPR_RATING_HIGH, x + 114, y, 0);
 }
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
