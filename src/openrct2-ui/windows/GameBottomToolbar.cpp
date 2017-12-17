@@ -128,9 +128,15 @@ rct_window * window_game_bottom_toolbar_open()
 {
     sint32 screenWidth = context_get_width();
     sint32 screenHeight = context_get_height();
+
+    // Figure out how much line height we have to work with.
+    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+
     rct_window * window = window_create(
-        0, screenHeight - 32,
-        screenWidth, 32,
+        0,
+        screenHeight - line_height * 3 + 2,
+        screenWidth,
+        line_height * 3 + 2,
         &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
@@ -248,11 +254,42 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
  */
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
-    sint32 x;
-    NewsItem *newsItem;
+    // Figure out how much line height we have to work with.
+    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+
+    // Reset dimensions as appropriate -- in case we're switching languages.
+    w->height = line_height * 3 + 2;
+    w->y = context_get_height() - w->height;
+
+    // Change height of widgets in accordance with line height.
+    w->widgets[WIDX_LEFT_OUTSET].bottom = w->widgets[WIDX_MIDDLE_OUTSET].bottom = w->widgets[WIDX_RIGHT_OUTSET].bottom = line_height * 3 + 3;
+    w->widgets[WIDX_LEFT_INSET].bottom  = w->widgets[WIDX_MIDDLE_INSET].bottom  = w->widgets[WIDX_RIGHT_INSET].bottom  = line_height * 3 + 1;
+
+    // Reposition left widgets in accordance with line height... depending on whether there is money in play.
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
+    {
+        w->widgets[WIDX_MONEY].type         = WWT_EMPTY;
+        w->widgets[WIDX_MONEY].bottom       = w->widgets[WIDX_MONEY].top + line_height;
+        w->widgets[WIDX_GUESTS].top         = 1;
+        w->widgets[WIDX_GUESTS].bottom      = 17;
+        w->widgets[WIDX_PARK_RATING].top    = 18;
+        w->widgets[WIDX_PARK_RATING].bottom = w->height - 1;
+    }
+    else
+    {
+        w->widgets[WIDX_MONEY].type         = WWT_FLATBTN;
+        w->widgets[WIDX_MONEY].bottom       = w->widgets[WIDX_MONEY].top + line_height;
+        w->widgets[WIDX_GUESTS].top         = w->widgets[WIDX_MONEY].bottom + 1;
+        w->widgets[WIDX_GUESTS].bottom      = w->widgets[WIDX_GUESTS].top + line_height;
+        w->widgets[WIDX_PARK_RATING].top    = w->widgets[WIDX_GUESTS].bottom - 1;
+        w->widgets[WIDX_PARK_RATING].bottom = w->widgets[WIDX_PARK_RATING].top + 10;
+    }
+
+    // Reposition right widgets in accordance with line height, too.
+    w->widgets[WIDX_DATE].bottom = line_height + 1;
 
     // Anchor the middle and right panel to the right
-    x = context_get_width();
+    sint32 x = context_get_width();
     w->width = x;
     x--;
     window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right = x;
@@ -297,7 +334,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     }
     else
     {
-        newsItem = news_item_get(0);
+        NewsItem * newsItem = news_item_get(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
@@ -326,22 +363,6 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
             w->disabled_widgets |= (1 << WIDX_NEWS_SUBJECT);
             w->disabled_widgets |= (1 << WIDX_NEWS_LOCATE);
         }
-    }
-
-    // Hide money if there is no money
-    if (gParkFlags & PARK_FLAGS_NO_MONEY)
-    {
-        window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_EMPTY;
-        window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 1;
-        window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 17;
-        window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top = 17;
-    }
-    else
-    {
-        window_game_bottom_toolbar_widgets[WIDX_MONEY].type = WWT_FLATBTN;
-        window_game_bottom_toolbar_widgets[WIDX_GUESTS].top = 11;
-        window_game_bottom_toolbar_widgets[WIDX_GUESTS].bottom = 22;
-        window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top = 21;
     }
 }
 
@@ -411,8 +432,6 @@ static void window_game_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *d
 
 static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    sint32 x, y;
-
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
         dpi,
@@ -424,8 +443,11 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
         INSET_RECT_F_30
     );
 
-    x = (window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right) / 2 + w->x;
-    y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
+    sint32 x = (window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right) / 2 + w->x;
+    sint32 y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
+
+    // Figure out how much line height we have to work with.
+    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -438,7 +460,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
             (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : w->colours[0] & 0x7F),
             gCommonFormatArgs
             );
-        y += 7;
+        y += line_height - 3;
     }
 
     static const rct_string_id guestCountFormats[] =
@@ -491,9 +513,6 @@ static void window_game_bottom_toolbar_draw_park_rating(rct_drawpixelinfo *dpi, 
 
 static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, rct_window *w)
 {
-    sint32 x, y, temperature;
-    rct_string_id format;
-
     // Draw green inset rectangle on panel
     gfx_fill_rect_inset(
         dpi,
@@ -505,8 +524,8 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
         INSET_RECT_F_30
     );
 
-    x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right) / 2 + w->x;
-    y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
+    sint32 x = (window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].right) / 2 + w->x;
+    sint32 y = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].top + w->y + 2;
 
     // Date
     sint32 year = date_get_year(gDateMonthsElapsed) + 1;
@@ -526,12 +545,15 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
         gCommonFormatArgs
     );
 
+    // Figure out how much line height we have to work with.
+    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+
     // Temperature
     x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
-    y += 11;
+    y += line_height + 1;
 
-    temperature = gClimateCurrentTemperature;
-    format = STR_CELSIUS_VALUE;
+    sint32 temperature = gClimateCurrentTemperature;
+    rct_string_id format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F)
     {
         temperature = climate_celsius_to_fahrenheit(temperature);
@@ -676,8 +698,11 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
         INSET_RECT_F_30
     );
 
+    // Figure out how much line height we have to work with.
+    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+
     sint32 x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
-    sint32 y = w->y + middleOutsetWidget->top + 11;
+    sint32 y = w->y + middleOutsetWidget->top + line_height + 1;
     sint32 width = middleOutsetWidget->right - middleOutsetWidget->left - 62;
 
     // Check if there is a map tooltip to draw
