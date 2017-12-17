@@ -433,8 +433,9 @@ private:
         }
         else
         {
-            Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
-            Console::Error::WriteLine("               : '%s'", item.Path);
+            // Commented out temporarily to stop flooding terminal for json-objects branch
+            // Console::Error::WriteLine("Object conflict: '%s'", conflict->Path);
+            // Console::Error::WriteLine("               : '%s'", item.Path);
             return false;
         }
     }
