@@ -35,6 +35,7 @@ public:
     void * GetLegacyData()  override { return &_legacyType; }
 
     void ReadLegacy(IReadObjectContext * context, IStream * stream) override;
+    void ReadJson(IReadObjectContext * context, const json_t * root) override;
     void Load() override;
     void Unload() override;
 
@@ -42,4 +43,6 @@ public:
 
 private:
     static std::vector<rct_large_scenery_tile> ReadTiles(IStream * stream);
+    static std::vector<rct_large_scenery_tile> ReadJsonTiles(const json_t * jTiles);
+    static std::unique_ptr<rct_large_scenery_text> ReadJson3dFont(const json_t * j3dFont);
 };

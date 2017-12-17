@@ -14,12 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
-#include "LargeSceneryObject.h"
-
 #include "../drawing/Drawing.h"
+#include "../interface/Cursors.h"
 #include "../localisation/Language.h"
+#include "LargeSceneryObject.h"
+#include "ObjectJsonHelpers.h"
 
 void LargeSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -117,4 +120,78 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(IStream * stre
     }
     tiles.push_back({ -1, -1, -1, 255, 0xFFFF });
     return tiles;
+}
+
+void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    auto properties = json_object_get(root, "properties");
+
+    _legacyType.large_scenery.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.large_scenery.price = json_integer_value(json_object_get(properties, "price"));
+    _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "height"));
+
+    auto jScrollingMode = json_object_get(properties, "scrollingMode");
+    _legacyType.large_scenery.scrolling_mode = jScrollingMode != nullptr ?
+        json_integer_value(jScrollingMode) :
+        -1;
+
+    // Flags
+    _legacyType.large_scenery.flags = ObjectJsonHelpers::GetFlags<uint8>(properties, {
+        { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+        { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+        { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
+        { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC } });
+
+    // Tiles
+    auto jTiles = json_object_get(properties, "tiles");
+    if (jTiles != nullptr)
+    {
+        _tiles = ReadJsonTiles(jTiles);
+    }
+
+    // Read text
+    auto j3dFont = json_object_get(properties, "3dFont");
+    if (j3dFont != nullptr)
+    {
+        _3dFont = ReadJson3dFont(j3dFont);
+        _legacyType.large_scenery.flags |= LARGE_SCENERY_FLAG_3D_TEXT;
+    }
+
+    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+}
+
+std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json_t * jTiles)
+{
+    std::vector<rct_large_scenery_tile> tiles;
+    size_t index;
+    const json_t * jTile;
+    json_array_foreach(jTiles, index, jTile)
+    {
+        rct_large_scenery_tile tile = { 0 };
+        tile.x_offset = json_integer_value(json_object_get(jTile, "x"));
+        tile.y_offset = json_integer_value(json_object_get(jTile, "y"));
+        tile.z_offset = json_integer_value(json_object_get(jTile, "z"));
+        tile.z_clearance = json_integer_value(json_object_get(jTile, "clearance"));
+        if (!ObjectJsonHelpers::GetBoolean(jTile, "hasSupports"))
+        {
+            tile.flags |= LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS;
+        }
+        if (ObjectJsonHelpers::GetBoolean(jTile, "allowSupportsAbove"))
+        {
+            tile.flags |= LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
+        }
+        tile.flags |= (json_integer_value(json_object_get(jTile, "corners")) & 0xFF) << 8;
+        tile.flags |= (json_integer_value(json_object_get(jTile, "walls")) & 0xFF) << 12;
+        tiles.push_back(tile);
+    }
+    return tiles;
+}
+
+std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t * j3dText)
+{
+    // TODO
+    return std::make_unique<rct_large_scenery_text>();
 }
