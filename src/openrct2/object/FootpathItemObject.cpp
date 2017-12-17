@@ -96,50 +96,11 @@ static uint8 ParseDrawType(const std::string &s)
     return PATH_BIT_DRAW_TYPE_LIGHTS;
 }
 
-static uint8 ParseCursor(const std::string &s)
-{
-    static const std::unordered_map<std::string, uint8> LookupTable
-    {
-        { "CURSOR_BLANK",           CURSOR_BLANK },
-        { "CURSOR_UP_ARROW",        CURSOR_UP_ARROW },
-        { "CURSOR_UP_DOWN_ARROW",   CURSOR_UP_DOWN_ARROW },
-        { "CURSOR_HAND_POINT",      CURSOR_HAND_POINT },
-        { "CURSOR_ZZZ",             CURSOR_ZZZ },
-        { "CURSOR_DIAGONAL_ARROWS", CURSOR_DIAGONAL_ARROWS },
-        { "CURSOR_PICKER",          CURSOR_PICKER },
-        { "CURSOR_TREE_DOWN",       CURSOR_TREE_DOWN },
-        { "CURSOR_FOUNTAIN_DOWN",   CURSOR_FOUNTAIN_DOWN },
-        { "CURSOR_STATUE_DOWN",     CURSOR_STATUE_DOWN },
-        { "CURSOR_BENCH_DOWN",      CURSOR_BENCH_DOWN },
-        { "CURSOR_CROSS_HAIR",      CURSOR_CROSS_HAIR },
-        { "CURSOR_BIN_DOWN",        CURSOR_BIN_DOWN },
-        { "CURSOR_LAMPPOST_DOWN",   CURSOR_LAMPPOST_DOWN },
-        { "CURSOR_FENCE_DOWN",      CURSOR_FENCE_DOWN },
-        { "CURSOR_FLOWER_DOWN",     CURSOR_FLOWER_DOWN },
-        { "CURSOR_PATH_DOWN",       CURSOR_PATH_DOWN },
-        { "CURSOR_DIG_DOWN",        CURSOR_DIG_DOWN },
-        { "CURSOR_WATER_DOWN",      CURSOR_WATER_DOWN },
-        { "CURSOR_HOUSE_DOWN",      CURSOR_HOUSE_DOWN },
-        { "CURSOR_VOLCANO_DOWN",    CURSOR_VOLCANO_DOWN },
-        { "CURSOR_WALK_DOWN",       CURSOR_WALK_DOWN },
-        { "CURSOR_PAINT_DOWN",      CURSOR_PAINT_DOWN },
-        { "CURSOR_ENTRANCE_DOWN",   CURSOR_ENTRANCE_DOWN },
-        { "CURSOR_HAND_OPEN",       CURSOR_HAND_OPEN },
-        { "CURSOR_HAND_CLOSED",     CURSOR_HAND_CLOSED },
-        {"CURSOR_ARROW",            CURSOR_ARROW },
-    };
-
-    auto result = LookupTable.find(s);
-    return (result != LookupTable.end()) ?
-        result->second :
-        CURSOR_ARROW;
-}
-
 void FootpathItemObject::ReadJson(IReadObjectContext * context, const json_t * root)
 {
     auto properties = json_object_get(root, "properties");
-    _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(json_object_get(properties, "renderAs")));
-    _legacyType.path_bit.tool_id = ParseCursor(ObjectJsonHelpers::GetString(json_object_get(properties, "cursor")));
+    _legacyType.path_bit.draw_type = ParseDrawType(ObjectJsonHelpers::GetString(properties, "renderAs"));
+    _legacyType.path_bit.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_LAMPPOST_DOWN);
     _legacyType.path_bit.price = json_integer_value(json_object_get(properties, "price"));
 
     SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));

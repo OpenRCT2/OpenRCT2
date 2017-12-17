@@ -16,11 +16,13 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <unordered_map>
 #include "../Context.h"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../interface/Cursors.h"
 #include "../localisation/language.h"
 #include "../PlatformEnvironment.h"
 #include "../sprites.h"
@@ -47,6 +49,14 @@ namespace ObjectJsonHelpers
             std::string();
     }
 
+    std::string GetString(const json_t * obj, const std::string &name, const std::string &defaultValue)
+    {
+        auto value = json_object_get(obj, name.c_str());
+        return json_is_string(value) ?
+            json_string_value(value) :
+            defaultValue;
+    }
+
     std::vector<std::string> GetJsonStringArray(const json_t * arr)
     {
         std::vector<std::string> result;
@@ -64,6 +74,45 @@ namespace ObjectJsonHelpers
             result.push_back(json_string_value(arr));
         }
         return result;
+    }
+
+    uint8 ParseCursor(const std::string &s, uint8 defaultValue)
+    {
+        static const std::unordered_map<std::string, uint8> LookupTable
+        {
+            { "CURSOR_BLANK",           CURSOR_BLANK },
+            { "CURSOR_UP_ARROW",        CURSOR_UP_ARROW },
+            { "CURSOR_UP_DOWN_ARROW",   CURSOR_UP_DOWN_ARROW },
+            { "CURSOR_HAND_POINT",      CURSOR_HAND_POINT },
+            { "CURSOR_ZZZ",             CURSOR_ZZZ },
+            { "CURSOR_DIAGONAL_ARROWS", CURSOR_DIAGONAL_ARROWS },
+            { "CURSOR_PICKER",          CURSOR_PICKER },
+            { "CURSOR_TREE_DOWN",       CURSOR_TREE_DOWN },
+            { "CURSOR_FOUNTAIN_DOWN",   CURSOR_FOUNTAIN_DOWN },
+            { "CURSOR_STATUE_DOWN",     CURSOR_STATUE_DOWN },
+            { "CURSOR_BENCH_DOWN",      CURSOR_BENCH_DOWN },
+            { "CURSOR_CROSS_HAIR",      CURSOR_CROSS_HAIR },
+            { "CURSOR_BIN_DOWN",        CURSOR_BIN_DOWN },
+            { "CURSOR_LAMPPOST_DOWN",   CURSOR_LAMPPOST_DOWN },
+            { "CURSOR_FENCE_DOWN",      CURSOR_FENCE_DOWN },
+            { "CURSOR_FLOWER_DOWN",     CURSOR_FLOWER_DOWN },
+            { "CURSOR_PATH_DOWN",       CURSOR_PATH_DOWN },
+            { "CURSOR_DIG_DOWN",        CURSOR_DIG_DOWN },
+            { "CURSOR_WATER_DOWN",      CURSOR_WATER_DOWN },
+            { "CURSOR_HOUSE_DOWN",      CURSOR_HOUSE_DOWN },
+            { "CURSOR_VOLCANO_DOWN",    CURSOR_VOLCANO_DOWN },
+            { "CURSOR_WALK_DOWN",       CURSOR_WALK_DOWN },
+            { "CURSOR_PAINT_DOWN",      CURSOR_PAINT_DOWN },
+            { "CURSOR_ENTRANCE_DOWN",   CURSOR_ENTRANCE_DOWN },
+            { "CURSOR_HAND_OPEN",       CURSOR_HAND_OPEN },
+            { "CURSOR_HAND_CLOSED",     CURSOR_HAND_CLOSED },
+            { "CURSOR_ARROW",           CURSOR_ARROW },
+        };
+
+        auto result = LookupTable.find(s);
+        return (result != LookupTable.end()) ?
+            result->second :
+            defaultValue;
     }
 
     rct_object_entry ParseObjectEntry(const std::string & s)
@@ -117,17 +166,36 @@ namespace ObjectJsonHelpers
         auto objectsPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::OBJECT);
         auto objectPath = Path::Combine(objectsPath, name);
         auto obj = ObjectFactory::CreateObjectFromLegacyFile(objectPath.c_str());
-        auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();
-        auto numImages = imgTable.GetCount();
-        auto images = imgTable.GetImages();
-        for (uint32 i = start; i < Math::Min(numImages, end); i++)
+        if (obj != nullptr)
         {
-            auto g1 = images[i];
-            auto length = g1_calculate_data_size(&g1);
-            g1.offset = Memory::Duplicate(g1.offset, length);
-            result.push_back(g1);
+            auto &imgTable = static_cast<const Object *>(obj)->GetImageTable();
+            auto numImages = imgTable.GetCount();
+            auto images = imgTable.GetImages();
+            for (uint32 i = start; i < Math::Min(numImages, end); i++)
+            {
+                auto g1 = images[i];
+                auto length = g1_calculate_data_size(&g1);
+                g1.offset = Memory::Duplicate(g1.offset, length);
+                result.push_back(g1);
+            }
+            delete obj;
         }
-        delete obj;
+        else
+        {
+            log_warning("Unable to open '%s'", objectPath.c_str());
+        }
+
+        // Add place holders
+        auto placeHolders = (size_t)(end - start) - result.size();
+        if (placeHolders > 0)
+        {
+            log_warning("Adding %d placeholders", placeHolders);
+            for (size_t i = 0; i < placeHolders; i++)
+            {
+                auto g1 = rct_g1_element{};
+                result.push_back(g1);
+            }
+        }
         return result;
     }
 
