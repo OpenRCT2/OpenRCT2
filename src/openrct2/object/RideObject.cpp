@@ -396,7 +396,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->num_vertical_frames = stream->ReadValue<uint8>();
     vehicle->num_horizontal_frames = stream->ReadValue<uint8>();
     vehicle->spacing = stream->ReadValue<uint32>();
-    vehicle->car_friction = stream->ReadValue<uint16>();
+    vehicle->car_mass = stream->ReadValue<uint16>();
     vehicle->tab_height = stream->ReadValue<sint8>();
     vehicle->num_seats = stream->ReadValue<uint8>();
     vehicle->sprite_flags = stream->ReadValue<uint16>();

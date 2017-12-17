@@ -55,7 +55,7 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->sprite_width           = 10;
     current->sprite_height_negative = 10;
     current->sprite_height_positive = 10;
-    current->friction               = 100;
+    current->mass                   = 100;
     current->num_seats              = 0;
     current->speed                  = 20;
     current->powered_acceleration   = 80;
@@ -503,7 +503,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
     }
 
     uint32 vehicleCount      = 0;
-    uint16 frictionTotal     = 0;
+    uint16 massTotal         = 0;
     sint32 accelerationTotal = 0;
 
     for (uint16 spriteId = cableLift->sprite_index; spriteId != SPRITE_INDEX_NULL;)
@@ -511,7 +511,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
         rct_vehicle * vehicle = GET_VEHICLE(spriteId);
         vehicleCount++;
 
-        frictionTotal     += vehicle->friction;
+        massTotal         += vehicle->mass;
         accelerationTotal  = add_clamp_sint32(accelerationTotal, vehicle->acceleration);
 
         spriteId = vehicle->next_vehicle_on_train;
@@ -527,7 +527,7 @@ sint32 cable_lift_update_track_motion(rct_vehicle * cableLift)
         edx = -edx;
     }
     edx >>= 4;
-    newAcceleration -= edx / frictionTotal;
+    newAcceleration -= edx / massTotal;
 
     cableLift->acceleration = newAcceleration;
     return _vehicleMotionTrackFlags;

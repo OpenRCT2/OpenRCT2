@@ -89,7 +89,7 @@ typedef struct rct_ride_data_5 {
     uint8 max_height;
     uint8 clearance_height;
     sint8 z_offset;
-    uint8 max_friction;
+    uint8 max_mass;
     uint8 z;
     uint8 price;
     uint8 bonus_value;      // Deprecated. Use rideBonusValue instead

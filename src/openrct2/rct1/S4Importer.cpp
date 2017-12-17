@@ -1122,7 +1122,7 @@ private:
         dst->sprite_right = src->sprite_right;
         dst->sprite_bottom = src->sprite_bottom;
 
-        dst->friction = src->friction;
+        dst->mass = src->mass;
         dst->num_seats = src->num_seats;
         dst->speed = src->speed;
         dst->powered_acceleration = src->powered_acceleration;
