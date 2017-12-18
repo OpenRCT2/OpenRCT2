@@ -1323,7 +1323,7 @@ static void window_park_stats_mouseup(rct_window *w, rct_widgetindex widgetIndex
  */
 static void window_park_stats_resize(rct_window *w)
 {
-    window_set_resize(w, 230, 109, 230, 109);
+    window_set_resize(w, 230, 119, 230, 119);
 }
 
 /**
@@ -1396,25 +1396,25 @@ static void window_park_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     set_format_arg(0, uint32, parkSize);
     gfx_draw_string_left(dpi, stringIndex, gCommonFormatArgs, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of rides / attractions
     if (w->list_information_type != (uint16)-1) {
         set_format_arg(0, uint32, w->list_information_type);
         gfx_draw_string_left(dpi, STR_NUMBER_OF_RIDES_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of staff
     if (w->numberOfStaff != -1) {
         set_format_arg(0, uint32, w->numberOfStaff);
         gfx_draw_string_left(dpi, STR_STAFF_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
     }
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Draw number of guests in park
     gfx_draw_string_left(dpi, STR_GUESTS_IN_PARK_LABEL, &gNumGuestsInPark, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_TOTAL_ADMISSIONS, &gTotalAdmissions, COLOUR_BLACK, x, y);
 }
 
@@ -1495,7 +1495,7 @@ static void window_park_objective_mouseup(rct_window *w, rct_widgetindex widgetI
  */
 static void window_park_objective_resize(rct_window *w)
 {
-    window_set_resize(w, 230, 224, 230, 224);
+    window_set_resize(w, 230, 226, 230, 226);
 }
 
 /**
@@ -1560,7 +1560,7 @@ static void window_park_objective_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
     // Your objective:
     gfx_draw_string_left(dpi, STR_OBJECTIVE_LABEL, nullptr, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
     // Objective
     set_format_arg(0, uint16, gScenarioObjectiveNumGuests);
