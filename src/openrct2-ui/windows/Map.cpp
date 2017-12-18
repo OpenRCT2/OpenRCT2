@@ -736,7 +736,7 @@ static void window_map_invalidate(rct_window *w)
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
         w->widgets[WIDX_MAP].bottom = w->height - 1 - 72;
     else if (w->selected_tab == PAGE_RIDES)
-        w->widgets[WIDX_MAP].bottom = w->height - 1 - 44;
+        w->widgets[WIDX_MAP].bottom = w->height - 1 - (4 * LIST_ROW_HEIGHT + 4);
     else
         w->widgets[WIDX_MAP].bottom = w->height - 1 - 14;
 
@@ -843,13 +843,16 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
         gfx_draw_sprite(dpi, IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (COLOUR_LIGHT_BROWN << 24) | (COLOUR_BRIGHT_RED << 19) | SPR_6410, x, y, 0);
     }
 
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode) {
+    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
+    {
         // Render the map legend
-        if (w->selected_tab == PAGE_RIDES) {
+        if (w->selected_tab == PAGE_RIDES)
+        {
             x = w->x + 4;
             y = w->y + w->widgets[WIDX_MAP].bottom + 2;
 
-            static rct_string_id mapLabels[] = {
+            static rct_string_id mapLabels[] =
+            {
                 STR_MAP_RIDE,
                 STR_MAP_FOOD_STALL,
                 STR_MAP_DRINK_STALL,
@@ -860,13 +863,15 @@ static void window_map_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 STR_MAP_TOILET,
             };
 
-            for (sint32 i = 0; i < 8; i++) {
+            for (uint32 i = 0; i < Util::CountOf(RideKeyColours); i++)
+            {
                 gfx_fill_rect(dpi, x, y + 2, x + 6, y + 8, RideKeyColours[i]);
-                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + 10, y);
-                y += 10;
-                if (i == 3) {
+                gfx_draw_string_left(dpi, mapLabels[i], w, COLOUR_BLACK, x + LIST_ROW_HEIGHT, y);
+                y += LIST_ROW_HEIGHT;
+                if (i == 3)
+                {
                     x += 118;
-                    y -= 40;
+                    y -= LIST_ROW_HEIGHT * 4;
                 }
             }
         }
