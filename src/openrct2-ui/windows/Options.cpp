@@ -237,7 +237,7 @@ static rct_widget window_options_display_widgets[] = {
 
     { WWT_CHECKBOX,         1,  11,     153,    161,    172,    STR_UNCAP_FPS,          STR_UNCAP_FPS_TIP },        // Uncap fps
     { WWT_CHECKBOX,         1,  155,    290,    161,    172,    STR_SHOW_FPS,           STR_SHOW_FPS_TIP },         // Show fps
-    { WWT_CHECKBOX,         1,  11 ,    290,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
+    { WWT_CHECKBOX,         1,  11,     290,    176,    187,    STR_USE_VSYNC,          STR_USE_VSYNC_TIP },        // Use vsync
     { WWT_CHECKBOX,         1,  11,     290,    191,    202,    STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS,  STR_MINIMISE_FULLSCREEN_ON_FOCUS_LOSS_TIP },    // Minimise fullscreen focus loss
 
 
@@ -251,10 +251,10 @@ static rct_widget window_options_rendering_widgets[] = {
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 15,     FRAME_RENDERING_START + 26,     STR_TILE_SMOOTHING,             STR_TILE_SMOOTHING_TIP },               // Landscape smoothing
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 30,     FRAME_RENDERING_START + 41,     STR_GRIDLINES,                  STR_GRIDLINES_TIP },                    // Gridlines
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 45,     FRAME_RENDERING_START + 56,     STR_CYCLE_DAY_NIGHT,            STR_CYCLE_DAY_NIGHT_TIP },              // Cycle day-night
-    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
+    { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 60,     FRAME_RENDERING_START + 71,     STR_ENABLE_LIGHTING_EFFECTS,    STR_ENABLE_LIGHTING_EFFECTS_TIP },      // Enable light fx
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 75,     FRAME_RENDERING_START + 86,     STR_UPPERCASE_BANNERS,          STR_UPPERCASE_BANNERS_TIP },            // Uppercase banners
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 90,     FRAME_RENDERING_START + 101,    STR_RENDER_WEATHER_EFFECTS,     STR_RENDER_WEATHER_EFFECTS_TIP },       // Render weather effects
-    { WWT_CHECKBOX,         1,  31,     290,    FRAME_RENDERING_START + 101,    FRAME_RENDERING_START + 116,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
+    { WWT_CHECKBOX,         1,  25,     290,    FRAME_RENDERING_START + 105,    FRAME_RENDERING_START + 116,    STR_DISABLE_LIGHTNING_EFFECT,   STR_DISABLE_LIGHTNING_EFFECT_TIP },     // Disable lightning effect
     { WWT_CHECKBOX,         1,  10,     290,    FRAME_RENDERING_START + 120,    FRAME_RENDERING_START + 131,    STR_SHOW_GUEST_PURCHASES,       STR_SHOW_GUEST_PURCHASES_TIP },
 #undef FRAME_RENDERING_START
     { WIDGETS_END },
