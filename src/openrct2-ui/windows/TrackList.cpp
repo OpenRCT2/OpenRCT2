@@ -48,16 +48,16 @@ enum {
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
 static rct_widget window_track_list_widgets[] = {
-    { WWT_FRAME,            0,  0,      599,    0,      399,    0xFFFFFFFF,                 STR_NONE                            },
+    { WWT_FRAME,            0,  0,      599,    0,      430,    0xFFFFFFFF,                 STR_NONE                            },
     { WWT_CAPTION,          0,  1,      598,    1,      14,     STR_SELECT_DESIGN,          STR_WINDOW_TITLE_TIP                },
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                },
-    { WWT_13,               0,  4,      221,    18,     29,     STR_SELECT_OTHER_RIDE,      STR_NONE                            },
-    { WWT_TEXT_BOX,         1,  4,      127,    31,     42,     STR_NONE,                   STR_NONE                            },
-    { WWT_DROPDOWN_BUTTON,  0,  130,    221,    31,     42,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },
-    { WWT_SCROLL,           0,  4,      221,    44,     395,    SCROLL_VERTICAL,            STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP },
+    { WWT_13,               0,  4,      221,    18,     30,     STR_SELECT_OTHER_RIDE,      STR_NONE                            },
+    { WWT_TEXT_BOX,         1,  4,      127,    32,     44,     STR_NONE,                   STR_NONE                            },
+    { WWT_DROPDOWN_BUTTON,  0,  130,    221,    32,     44,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },
+    { WWT_SCROLL,           0,  4,      221,    46,     426,    SCROLL_VERTICAL,            STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP },
     { WWT_FLATBTN,          0,  224,    595,    18,     236,    0xFFFFFFFF,                 STR_NONE                            },
-    { WWT_FLATBTN,          0,  574,    597,    374,    397,    SPR_ROTATE_ARROW,           STR_ROTATE_90_TIP                   },
-    { WWT_FLATBTN,          0,  574,    597,    350,    373,    SPR_SCENERY,                STR_TOGGLE_SCENERY_TIP              },
+    { WWT_FLATBTN,          0,  574,    597,    405,    428,    SPR_ROTATE_ARROW,           STR_ROTATE_90_TIP                   },
+    { WWT_FLATBTN,          0,  574,    597,    381,    404,    SPR_SCENERY,                STR_TOGGLE_SCENERY_TIP              },
     { WIDGETS_END },
 };
 
@@ -149,7 +149,7 @@ rct_window * window_track_list_open(ride_list_item item)
         x,
         y,
         600,
-        400,
+        432,
         &window_track_list_events,
         WC_TRACK_DESIGN_LIST,
         0
@@ -304,7 +304,7 @@ static sint32 window_track_list_get_list_item_index_from_position(sint32 x, sint
         maxItems++;
     }
 
-    sint32 index = y / 10;
+    sint32 index = y / SCROLLABLE_ROW_HEIGHT;
     if (index < 0 || (uint32)index >= maxItems) {
         index = -1;
     }
@@ -371,7 +371,7 @@ static void window_track_list_scrollgetsize(rct_window *w, sint32 scrollIndex, s
         numItems++;
     }
 
-    *height = (sint32)(numItems * 10);
+    *height = (sint32)(numItems * SCROLLABLE_ROW_HEIGHT);
 }
 
 /**
@@ -552,14 +552,14 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     if ((td6->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)) {
         // Vehicle design not available
         gfx_draw_string_centred_clipped(dpi, STR_VEHICLE_DESIGN_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
-        y -= 10;
+        y -= SCROLLABLE_ROW_HEIGHT;
     }
 
     if (td6->track_flags & TRACK_DESIGN_FLAG_SCENERY_UNAVAILABLE) {
         if (!gTrackDesignSceneryToggle) {
             // Scenery not available
             gfx_draw_string_centred_clipped(dpi, STR_DESIGN_INCLUDES_SCENERY_WHICH_IS_UNAVAILABLE, nullptr, COLOUR_BLACK, x, y, 368);
-            y -= 10;
+            y -= SCROLLABLE_ROW_HEIGHT;
         }
     }
 
@@ -574,56 +574,56 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     // Stats
     fixed32_2dp rating = td6->excitement * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
-    rating = td6->intensity * 10;
+    rating = td6->intensity * LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, x, y);
-    y += 10;
+    y += LIST_ROW_HEIGHT;
 
-    rating = td6->nausea * 10;
+    rating = td6->nausea * LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, x, y);
-    y += 14;
+    y += LIST_ROW_HEIGHT + 4;
 
     if (td6->type != RIDE_TYPE_MAZE) {
         if (td6->type == RIDE_TYPE_MINI_GOLF) {
             // Holes
             uint16 holes = td6->holes & 0x1F;
             gfx_draw_string_left(dpi, STR_HOLES, &holes, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
         } else {
             // Maximum speed
             uint16 speed = ((td6->max_speed << 16) * 9) >> 18;
             gfx_draw_string_left(dpi, STR_MAX_SPEED, &speed, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
 
             // Average speed
             speed = ((td6->average_speed << 16) * 9) >> 18;
             gfx_draw_string_left(dpi, STR_AVERAGE_SPEED, &speed, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
         }
 
         // Ride length
         set_format_arg(0, rct_string_id, STR_RIDE_LENGTH_ENTRY);
         set_format_arg(2, uint16, td6->ride_length);
         gfx_draw_string_left_clipped(dpi, STR_TRACK_LIST_RIDE_LENGTH, gCommonFormatArgs, COLOUR_BLACK, x, y, 214);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_G_FORCES)) {
         // Maximum positive vertical Gs
         sint32 gForces = td6->max_positive_vertical_g * 32;
         gfx_draw_string_left(dpi, STR_MAX_POSITIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
 
         // Maximum negative vertical Gs
         gForces = td6->max_negative_vertical_g * 32;
         gfx_draw_string_left(dpi, STR_MAX_NEGATIVE_VERTICAL_G, &gForces, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
 
         // Maximum lateral Gs
         gForces = td6->max_lateral_g * 32;
         gfx_draw_string_left(dpi, STR_MAX_LATERAL_G, &gForces, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
 
         // If .TD6
         if (td6->version_and_colour_scheme / 4 >= 2) {
@@ -631,7 +631,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
                 // Total air time
                 sint32 airTime = td6->total_air_time * 25;
                 gfx_draw_string_left(dpi, STR_TOTAL_AIR_TIME, &airTime, COLOUR_BLACK, x, y);
-                y += 10;
+                y += LIST_ROW_HEIGHT;
             }
         }
     }
@@ -640,12 +640,12 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         // Drops
         uint16 drops = td6->drops & 0x3F;
         gfx_draw_string_left(dpi, STR_DROPS, &drops, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
 
         // Drop height is multiplied by 0.75
         uint16 highestDropHeight = (td6->highest_drop_height * 3) / 4;
         gfx_draw_string_left(dpi, STR_HIGHEST_DROP_HEIGHT, &highestDropHeight, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     if (td6->type != RIDE_TYPE_MINI_GOLF) {
@@ -653,7 +653,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (inversions != 0) {
             // Inversions
             gfx_draw_string_left(dpi, STR_INVERSIONS, &inversions, COLOUR_BLACK, x, y);
-            y += 10;
+            y += LIST_ROW_HEIGHT;
         }
     }
     y += 4;
@@ -663,7 +663,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         set_format_arg(0, uint16, td6->space_required_x);
         set_format_arg(2, uint16, td6->space_required_y);
         gfx_draw_string_left(dpi, STR_TRACK_LIST_SPACE_REQUIRED, gCommonFormatArgs, COLOUR_BLACK, x, y);
-        y += 10;
+        y += LIST_ROW_HEIGHT;
     }
 
     if (td6->cost != 0) {
@@ -694,7 +694,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
         rct_string_id stringId;
         if (listIndex == (size_t)w->selected_list_item) {
             // Highlight
-            gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
+            gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         } else {
             stringId = STR_BLACK_STRING;
@@ -702,19 +702,19 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
 
         rct_string_id stringId2 = STR_BUILD_CUSTOM_DESIGN;
         gfx_draw_string_left(dpi, stringId, &stringId2, COLOUR_BLACK, x, y - 1);
-        y += 10;
+        y += SCROLLABLE_ROW_HEIGHT;
         listIndex++;
     }
 
     for (auto i : _filteredTrackIds)
     {
-        if (y + 10 >= dpi->y && y < dpi->y + dpi->height)
+        if (y + SCROLLABLE_ROW_HEIGHT >= dpi->y && y < dpi->y + dpi->height)
         {
             rct_string_id stringId;
             if (listIndex == (size_t)w->selected_list_item)
             {
                 // Highlight
-                gfx_filter_rect(dpi, x, y, w->width, y + 9, PALETTE_DARKEN_1);
+                gfx_filter_rect(dpi, x, y, w->width, y + SCROLLABLE_ROW_HEIGHT - 1, PALETTE_DARKEN_1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
             else
@@ -728,7 +728,7 @@ static void window_track_list_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi,
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, x, y - 1);
         }
 
-        y += 10;
+        y += SCROLLABLE_ROW_HEIGHT;
         listIndex++;
     }
 }
