@@ -604,170 +604,6 @@ STR_0599    :Un ottovolante compatto con carrozze individuali e rapide curve in 
 STR_0600    :I treni della miniera motorizzati scorrono lungo un percorso fluido e pieno di curve
 STR_0601    :<removed string - do not use>
 STR_0602    :I treni dell'ottovolante sono spinti fuori dalla stazione tramite motori a induzione lineare per correre lungo avvitamenti e inversioni
-STR_0603    :Visitatore {INT32}
-STR_0604    :Visitatore {INT32}
-STR_0605    :Visitatore {INT32}
-STR_0606    :Visitatore {INT32}
-STR_0607    :Visitatore {INT32}
-STR_0608    :Visitatore {INT32}
-STR_0609    :Visitatore {INT32}
-STR_0610    :Visitatore {INT32}
-STR_0611    :Visitatore {INT32}
-STR_0612    :Visitatore {INT32}
-STR_0613    :Visitatore {INT32}
-STR_0614    :Visitatore {INT32}
-STR_0615    :Visitatore {INT32}
-STR_0616    :Visitatore {INT32}
-STR_0617    :Visitatore {INT32}
-STR_0618    :Visitatore {INT32}
-STR_0619    :Visitatore {INT32}
-STR_0620    :Visitatore {INT32}
-STR_0621    :Visitatore {INT32}
-STR_0622    :Visitatore {INT32}
-STR_0623    :Visitatore {INT32}
-STR_0624    :Visitatore {INT32}
-STR_0625    :Visitatore {INT32}
-STR_0626    :Visitatore {INT32}
-STR_0627    :Visitatore {INT32}
-STR_0628    :Visitatore {INT32}
-STR_0629    :Visitatore {INT32}
-STR_0630    :Visitatore {INT32}
-STR_0631    :Visitatore {INT32}
-STR_0632    :Visitatore {INT32}
-STR_0633    :Visitatore {INT32}
-STR_0634    :Visitatore {INT32}
-STR_0635    :Visitatore {INT32}
-STR_0636    :Visitatore {INT32}
-STR_0637    :Visitatore {INT32}
-STR_0638    :Visitatore {INT32}
-STR_0639    :Visitatore {INT32}
-STR_0640    :Visitatore {INT32}
-STR_0641    :Visitatore {INT32}
-STR_0642    :Visitatore {INT32}
-STR_0643    :Visitatore {INT32}
-STR_0644    :Visitatore {INT32}
-STR_0645    :Visitatore {INT32}
-STR_0646    :Visitatore {INT32}
-STR_0647    :Visitatore {INT32}
-STR_0648    :Visitatore {INT32}
-STR_0649    :Visitatore {INT32}
-STR_0650    :Visitatore {INT32}
-STR_0651    :Visitatore {INT32}
-STR_0652    :Visitatore {INT32}
-STR_0653    :Visitatore {INT32}
-STR_0654    :Visitatore {INT32}
-STR_0655    :Visitatore {INT32}
-STR_0656    :Visitatore {INT32}
-STR_0657    :Visitatore {INT32}
-STR_0658    :Visitatore {INT32}
-STR_0659    :Visitatore {INT32}
-STR_0660    :Visitatore {INT32}
-STR_0661    :Visitatore {INT32}
-STR_0662    :Visitatore {INT32}
-STR_0663    :Visitatore {INT32}
-STR_0664    :Visitatore {INT32}
-STR_0665    :Visitatore {INT32}
-STR_0666    :Visitatore {INT32}
-STR_0667    :Visitatore {INT32}
-STR_0668    :Visitatore {INT32}
-STR_0669    :Visitatore {INT32}
-STR_0670    :Visitatore {INT32}
-STR_0671    :Visitatore {INT32}
-STR_0672    :Visitatore {INT32}
-STR_0673    :Visitatore {INT32}
-STR_0674    :Visitatore {INT32}
-STR_0675    :Visitatore {INT32}
-STR_0676    :Visitatore {INT32}
-STR_0677    :Visitatore {INT32}
-STR_0678    :Visitatore {INT32}
-STR_0679    :Visitatore {INT32}
-STR_0680    :Visitatore {INT32}
-STR_0681    :Visitatore {INT32}
-STR_0682    :Visitatore {INT32}
-STR_0683    :Visitatore {INT32}
-STR_0684    :Visitatore {INT32}
-STR_0685    :Visitatore {INT32}
-STR_0686    :Visitatore {INT32}
-STR_0687    :Visitatore {INT32}
-STR_0688    :Visitatore {INT32}
-STR_0689    :Visitatore {INT32}
-STR_0690    :Visitatore {INT32}
-STR_0691    :Visitatore {INT32}
-STR_0692    :Visitatore {INT32}
-STR_0693    :Visitatore {INT32}
-STR_0694    :Visitatore {INT32}
-STR_0695    :Visitatore {INT32}
-STR_0696    :Visitatore {INT32}
-STR_0697    :Visitatore {INT32}
-STR_0698    :Visitatore {INT32}
-STR_0699    :Visitatore {INT32}
-STR_0700    :Visitatore {INT32}
-STR_0701    :Visitatore {INT32}
-STR_0702    :Visitatore {INT32}
-STR_0703    :Visitatore {INT32}
-STR_0704    :Visitatore {INT32}
-STR_0705    :Visitatore {INT32}
-STR_0706    :Visitatore {INT32}
-STR_0707    :Visitatore {INT32}
-STR_0708    :Visitatore {INT32}
-STR_0709    :Visitatore {INT32}
-STR_0710    :Visitatore {INT32}
-STR_0711    :Visitatore {INT32}
-STR_0712    :Visitatore {INT32}
-STR_0713    :Visitatore {INT32}
-STR_0714    :Visitatore {INT32}
-STR_0715    :Visitatore {INT32}
-STR_0716    :Visitatore {INT32}
-STR_0717    :Visitatore {INT32}
-STR_0718    :Visitatore {INT32}
-STR_0719    :Visitatore {INT32}
-STR_0720    :Visitatore {INT32}
-STR_0721    :Visitatore {INT32}
-STR_0722    :Visitatore {INT32}
-STR_0723    :Visitatore {INT32}
-STR_0724    :Visitatore {INT32}
-STR_0725    :Visitatore {INT32}
-STR_0726    :Visitatore {INT32}
-STR_0727    :Visitatore {INT32}
-STR_0728    :Visitatore {INT32}
-STR_0729    :Visitatore {INT32}
-STR_0730    :Visitatore {INT32}
-STR_0731    :Visitatore {INT32}
-STR_0732    :Visitatore {INT32}
-STR_0733    :Visitatore {INT32}
-STR_0734    :Visitatore {INT32}
-STR_0735    :Visitatore {INT32}
-STR_0736    :Visitatore {INT32}
-STR_0737    :Visitatore {INT32}
-STR_0738    :Visitatore {INT32}
-STR_0739    :Visitatore {INT32}
-STR_0740    :Visitatore {INT32}
-STR_0741    :Visitatore {INT32}
-STR_0742    :Visitatore {INT32}
-STR_0743    :Visitatore {INT32}
-STR_0744    :Visitatore {INT32}
-STR_0745    :Visitatore {INT32}
-STR_0746    :Visitatore {INT32}
-STR_0747    :Visitatore {INT32}
-STR_0748    :Visitatore {INT32}
-STR_0749    :Visitatore {INT32}
-STR_0750    :Visitatore {INT32}
-STR_0751    :Visitatore {INT32}
-STR_0752    :Visitatore {INT32}
-STR_0753    :Visitatore {INT32}
-STR_0754    :Visitatore {INT32}
-STR_0755    :Visitatore {INT32}
-STR_0756    :Visitatore {INT32}
-STR_0757    :Visitatore {INT32}
-STR_0758    :Visitatore {INT32}
-STR_0759    :Visitatore {INT32}
-STR_0760    :Visitatore {INT32}
-STR_0761    :Visitatore {INT32}
-STR_0762    :Visitatore {INT32}
-STR_0763    :Visitatore {INT32}
-STR_0764    :Visitatore {INT32}
-STR_0765    :Visitatore {INT32}
-STR_0766    :Visitatore {INT32}
 STR_0767    :Visitatore {INT32}
 STR_0768    :Tuttofare {INT32}
 STR_0769    :Meccanico {INT32}
@@ -1928,7 +1764,6 @@ STR_1919    :Fondi insufficienti!
 STR_1920    :Il prestito non può essere restituito!
 STR_1921    :{SMALLFONT}{BLACK}Inizia una nuova partita
 STR_1922    :{SMALLFONT}{BLACK}Continua a giocare alla partita salvata
-STR_1923    :{SMALLFONT}{BLACK}Mostra l'esercitazione
 STR_1924    :{SMALLFONT}{BLACK}Esci
 STR_1925    :Impossibile collocare una persona qui...
 STR_1926    :{SMALLFONT}
@@ -2862,8 +2697,6 @@ STR_2852    :Progetto di tracciato già installato
 STR_2853    :Vietato dalle autorità locali!
 STR_2854    :{RED}I visitatori non riescono a raggiungere l'entrata a {STRINGID} !{NEWLINE}Costruisci un percorso fino all'entrata
 STR_2855    :{RED}{STRINGID} non è dotato di un percorso alla sua uscita!{NEWLINE}Costruisci un percorso che parta dall'uscita dell'attrazione
-STR_2856    :{WINDOW_COLOUR_2}Esercitazione
-STR_2857    :{WINDOW_COLOUR_2}(Premi un tasto o un pulsante del mouse per assumere il controllo)
 STR_2858    :Impossibile avviare la campagna di marketing...
 STR_2859    :Al momento è in corso un'altra sezione di OpenRCT2
 STR_2860    :<removed string - do not use>
@@ -2872,7 +2705,7 @@ STR_2862    :Riconoscimenti dei brani musicali...
 STR_2863    :Riconoscimento dei brani musicali
 STR_2864    :{WINDOW_COLOUR_2}Marcia - I Bambini del Reggimento:   (Fucik) senza copyright
 STR_2865    :{WINDOW_COLOUR_2}Serenata di Heyken:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Compositore ignoto) Copyright Control
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) senza copyright
 STR_2867    :{WINDOW_COLOUR_2}Viaggio della sposa:   (Tradizionale)
 STR_2868    :{WINDOW_COLOUR_2}Racconti dei boschi di Vienna:   (Johann Strauss) senza copyright
 STR_2869    :{WINDOW_COLOUR_2}Danza slava:   (Tradizionale)
@@ -3061,9 +2894,6 @@ STR_3051    :Buca da golf C
 STR_3052    :Buca da golf D
 STR_3053    :Buca da golf E
 STR_3054    :Caricamento in corso...
-STR_3055    :Bianco
-STR_3056    :Traslucido
-STR_3057    :{WINDOW_COLOUR_2}Indicatore costruzione:
 STR_3058    :Muri di mattoni
 STR_3059    :Siepi
 STR_3060    :Blocchi di ghiaccio
@@ -3391,60 +3221,9 @@ STR_3381    :Il file non è compatibile o contiene dati non validi
 STR_3382    :Tentativo di copia del file fallito
 STR_3383    :Scegliere un nuovo nome per il progetto di percorso
 STR_3384    :Questo nome è già usato da un progetto di percorso esistente - scegliere un altro nome per questo progetto:
-STR_3385    :Esercitazione per principianti
-STR_3386    :Esercitazione per le attrazioni personalizzate
-STR_3387    :Esercitazione per la costruzione di ottovolanti
 STR_3388    :Impossibile passare alla modalità selezionata: DirectX ha causato un errore
 STR_3389    :Impossibile selezionare l'oggetto aggiuntivo dello scenario...
 STR_3390    :Troppi oggetti selezionati
-# Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Ecco il nostro parco - andiamo a dare un'occhiata in giro...
-STR_3392    :{SMALLFONT}{BLACK}Tenere premuto il pulsante DESTRO del mouse e muovere il mouse stesso è il modo più veloce per spostare la visuale...
-STR_3393    :{SMALLFONT}{BLACK}Per allargare la prospettiva, puoi zoomare in avanti tramite l'icona in cima allo schermo...
-STR_3394    :{SMALLFONT}{BLACK}Puoi anche ruotare la visuale di 90{DEGREE} alla volta...
-STR_3395    :{SMALLFONT}{BLACK}È difficile costruire qualcosa con questa scala, per cui torniamo a zoomare in dentro...
-STR_3396    :{SMALLFONT}{BLACK}Costruiamo un'attrazione semplice per avviare il parco...
-STR_3397    :{SMALLFONT}{BLACK}L'immagine fantasma bianca mostra la posizione in cui verrà costruita la nuova attrazione. Muoveremo il puntatore per scegliere la posizione e poi cliccheremo per costruire...
-STR_3398    :{SMALLFONT}{BLACK}Le attrazioni devono avere un'entrata e un'uscita. Muoveremo il puntatore su un riquadro adiacente  all'attrazione e poi cliccheremo per costruire prima l'entrata e poi l'uscita...
-STR_3399    :{SMALLFONT}{BLACK}Dobbiamo costruire dei sentieri per permettere ai visitatori di raggiungere la nostra nuova attrazione...
-STR_3400    :{SMALLFONT}{BLACK}Per il percorso che porta all'entrata dell'attrazione useremo un percorso speciale: la 'corsia d'attesa'...
-STR_3401    :{SMALLFONT}{BLACK}Per il percorso d'uscita basterà un percorso 'normale'...
-STR_3402    :{SMALLFONT}{BLACK}Bene, ora apriamo l'attrazione!  Per aprire l'attrazione clicchiamo sull'icona a bandiera nella finestra dell'attrazione e selezioniamo 'apri'...
-STR_3403    :{SMALLFONT}{BLACK}Ma dove sono i visitatori?
-STR_3404    :{SMALLFONT}{BLACK}Oh - il parco è ancora chiuso!  Beh, apriamolo...
-STR_3405    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi visitatori, costruiamo degli scenari...
-STR_3406    :{SMALLFONT}{BLACK}Ecco il nostro parco vuoto. Ora andremo a costruire un'attrazione personalizzata molto semplice...
-STR_3407    :{SMALLFONT}{BLACK}Prima dobbiamo selezionare la posizione di partenza...
-STR_3408    :{SMALLFONT}{BLACK}La sezione di percorso che abbiamo appena costruito è la 'piattaforma di una stazione', che permette ai visitatori di salire e scendere dall'attrazione...
-STR_3409    :{SMALLFONT}{BLACK}Ora estenderemo un po' la piattaforma aggiungendo un altro paio di sezioni...
-STR_3410    :{SMALLFONT}{BLACK}Le icone in cima alla finestra di costruzione ti permettono di scegliere le varie parti del percorso da aggiungere...
-STR_3411    :{SMALLFONT}{BLACK}Ora selezioneremo una curva a sinistra...
-STR_3412    :{SMALLFONT}{BLACK}La curva non è stata ancora costruita, ma una sua immagine fantasma bianca ci mostra dove verrà collocata. Per costruirla, clicchiamo sulla grande icona 'costruiscilo'...
-STR_3413    :{SMALLFONT}{BLACK}Ora vogliamo costruire una parte di percorso diritta, per cui clicchiamo sull'icona del percorso diritto...
-STR_3414    :{SMALLFONT}{BLACK}Ora che il circuito è completo, dobbiamo costruire l'entrata e l'uscita dell'attrazione...
-STR_3415    :{SMALLFONT}{BLACK}Ora proviamo a vedere se l'attrazione funziona...
-STR_3416    :{SMALLFONT}{BLACK}Mentre viene effettuata la prova, costruiremo la corsia d'attesa e il percorso d'uscita...
-STR_3417    :{SMALLFONT}{BLACK}OK - apriamo il parco e l'attrazione...
-STR_3418    :{SMALLFONT}{BLACK}La nostra nuova attrazione non è molto eccitante - forse dovremmo aggiungere qualche scenario in più?
-STR_3419    :{SMALLFONT}{BLACK}Per costruire uno scenario sopra un altro scenario o a mezz'aria, tieni premuto SHIFT e sposta il mouse per selezionare l'altezza...
-STR_3420    :{SMALLFONT}{BLACK}Alcuni tipi di scenario possono essere ridipinti dopo che li si è costruiti...
-STR_3421    :{SMALLFONT}{BLACK}Aggiungiamo della musica all'attrazione...
-STR_3422    :{SMALLFONT}{BLACK}Costruiamo un ottovolante!
-STR_3423    :{SMALLFONT}{BLACK}Ci sono parecchi ottovolanti già progettati, ma ora noi ne cotruiremo uno personalizzato...
-STR_3424    :{SMALLFONT}{BLACK}Ecco costruita la piattaforma della stazione. Ora dobbiamo costruire una salita di traino...
-STR_3425    :{SMALLFONT}{BLACK}I treni degli ottovolanti non hanno un motore, per cui è necessaria una 'catena da traino' per far salire il treno sulla prima salita...
-STR_3426    :{SMALLFONT}{BLACK}Ecco completata la salita di traino - e ora pensiamo alla prima discesa...
-STR_3427    :{SMALLFONT}{BLACK}Quelle curve sono una cattiva idea - i passeggeri verranno sbalzati via dalla forza G laterale durante la corsa sfrenata del treno...
-STR_3428    :{SMALLFONT}{BLACK}Per migliorare l'attrazione occorre inclinare le curve - così i passeggeri verranno schiacciati verso i propri sedili invece di essere sbalzati fuori...
-STR_3429    :{SMALLFONT}{BLACK}No - non funzionerà! Guarda gli indici dell'altezza - la seconda salita è più alta di quella di traino...
-STR_3430    :{SMALLFONT}{BLACK}Per far sì che il treno possa arrivare fino alla fine, ogni salita dev'essere leggermente più bassa di quella precedente...
-STR_3431    :{SMALLFONT}{BLACK}Così va meglio - ora il nostro treno dovrebbe farcela! Ora proviamo con un percorso più contorto...
-STR_3432    :{SMALLFONT}{BLACK}Dovremo rallentare la corsa del treno prima dell'ultima curva e della stazione, per cui aggiungiamo dei freni...
-STR_3433    :{SMALLFONT}{BLACK}E infine aggiungeremo i 'freni di blocco', che permettono a due treni di operare nel circuito con maggior sicurezza...
-STR_3434    :{SMALLFONT}{BLACK}Ora proviamo l'attrazione e vediamo se funziona!
-STR_3435    :{SMALLFONT}{BLACK}Fantastico - ha funzionato! Ora aggiungiamo i sentieri e facciamo accomodare i visitatori sul nostro nuovo ottovolante...
-STR_3436    :{SMALLFONT}{BLACK}Mentre aspettiamo i nostri primi passeggeri, potremmo personalizzare un po' l'attrazione...
-# End of tutorial strings
 STR_3437    :{SMALLFONT}{BLACK}Elimina gli alberi, i muri e i piccoli oggetti di scenario dal terreno
 STR_3438    :Impossibile rimuovere tutto lo scenario da qui...
 STR_3439    :Elimina scen.
@@ -3461,7 +3240,6 @@ STR_5120    :Finanza
 STR_5121    :Ricerca
 STR_5122    :Attrazioni in base al tipo di percorso (come in RCT1)
 STR_5123    :Rinnova attrazioni
-STR_5124    :<not used anymore>
 STR_5125    :Tutte distruttibili
 STR_5126    :Musica iniziale casuale
 STR_5127    :{SMALLFONT}{BLACK}Trascinando, modifica il paesaggio anziché cambiare altezza
@@ -3835,7 +3613,6 @@ STR_5490    :Disabilità audio quando si perde il focus
 STR_5491    :Lista Invenzioni
 STR_5492    :Opzioni Scenario
 STR_5493    :Mostra Messaggio
-STR_5494    :<not used anymore>
 STR_5495    :Lista Giocatore
 STR_5496    :Giocatore:
 STR_5497    :Ping:
@@ -3848,7 +3625,6 @@ STR_5503    :Inserisci hostname o indirizzo IP:
 STR_5504    :{SMALLFONT}{BLACK}Show multiplayer status
 STR_5505    :Impossibile connettersi al server.
 STR_5506    :I visitatori ignorano l'intensità
-STR_5507    :I tuttofare tagliano l'erba di default
 STR_5508    :Permetti caricamento file con checksum errato
 STR_5509    :{SMALLFONT}{BLACK}Permetti il caricamento di scenari e salvataggi{NEWLINE}che hanno un codice di controllo errato,{NEWLINE}come ad esempio gli scenari della demo{NEWLINE}o i salvataggi danneggiati.
 STR_5510    :Scheda audio predefinita
@@ -4035,13 +3811,10 @@ STR_5723    :Fortemente piovoso
 STR_5724    :Temporale
 STR_5725    :{BLACK}Forza clima:
 STR_5726    :{SMALLFONT}{BLACK}Imposta il clima attuale nel parco
-STR_5727    :Qualità scala
+STR_5727    :Qualità scala:
 STR_5728    :Richiede il rendering hardware
 STR_5729    :{SMALLFONT}{BLACK}Richiede il rendering hardware
-STR_5730    :Nearest Neighbour
 STR_5731    :Lineare
-STR_5732    :Anisotropico
-STR_5733    :Scala con "Nearest Neighbour" a valori interi
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Rendering
 STR_5735    :Stato della rete
@@ -4128,10 +3901,8 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 STR_5815    :{SMALLFONT}{BLACK}Mostra il contatore FPS mentre si gioca
 STR_5816    :{SMALLFONT}{BLACK}Imposta il rapporto a cui il gioco viene scalato.{NEWLINE}Utile quando si gioca ad alte risoluzioni
 STR_5817    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Imposta il tipo di scalatura della grafica.{NEWLINE}{NEWLINE}Nearest Neighbour è nitida ma causa distorsioni su scale non intere.{NEWLINE}Lineare e anisotropica sono uniformi ma sfocate.{NEWLINE}N.N. smussato è nitido anche a scale non intere ma è più esoso di risorse grafiche.
-STR_5818    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Usa la scalatura Nearest Neighbour{NEWLINE}quando il rapporto di scalatura{NEWLINE}è impostato a valori interi (1, 2, 3...)
 STR_5819    :{SMALLFONT}{BLACK}[Richiede rendering hardware]{NEWLINE}Mette in pausa il gioco{NEWLINE}se l'overlay di Steam è aperto
 STR_5820    :{SMALLFONT}{BLACK}Riduce a icona il gioco{NEWLINE}se il focus viene perso in modalità schermo intero
-STR_5821    :{SMALLFONT}{BLACK}Cambia il colore dell'indicatore di costruzione{NEWLINE}di attrazioni, sentieri, chioschi, scenario...
 STR_5822    :{SMALLFONT}{BLACK}Alterna tra giorno e notte.{NEWLINE}Un ciclo dura un mese di gioco.
 STR_5823    :{SMALLFONT}{BLACK}Mostra il testo dei cartelli in maiuscolo (come in RCT1)
 STR_5824    :{SMALLFONT}{BLACK}Disattiva l'effetto fulmine{NEWLINE}durante i temporali
@@ -4160,7 +3931,6 @@ STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spess
 STR_5847    :{SMALLFONT}{BLACK}Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l'importazione degli scenari per funzionare
 STR_5848    :{SMALLFONT}{BLACK}Crea e gestici sequenze di titoli personalizzate
 STR_5849    :{SMALLFONT}{BLACK}Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
-STR_5850    :{SMALLFONT}{BLACK}I nuovi tuttofare tagliano{NEWLINE}l'erba di default (RCT1)
 STR_5851    :{SMALLFONT}{BLACK}Imposta l'intervallo predefinito di inspezione{NEWLINE}nelle nuove attrazioni
 STR_5852    :{SMALLFONT}{BLACK}Imposta il nome del canale TwitchTV che sarà utilizzato per l'integrazione di Twitch
 STR_5853    :{SMALLFONT}{BLACK}Abilita/Disabilita gli effetti sonori
@@ -4207,7 +3977,6 @@ STR_5893    :Tasso di cambio
 STR_5894    :Inserire il tasso di cambio
 STR_5895    :Salva percorso
 STR_5896    :Salvataggio percorso fallito!
-STR_5897    :Limite finestra:
 STR_5898    :{BLACK}Impossibile caricare il percorso, il file{NEWLINE}potrebbe essere corrotto o inesistente!
 STR_5899    :Attiva/disattiva finestra di debug del rendering
 STR_5900    :Utilizza il codice originale di rendering
@@ -4475,6 +4244,9 @@ STR_6160    :{WINDOW_COLOUR_2}Veicoli disponibili: {BLACK}{STRING}
 STR_6161    :Mostra/nascondi griglia
 STR_6162    :Topo tutto matto rotante
 STR_6163    :Carrelli a forma di topo corrono lungo curve strette e brevi cadute, ruotando per disorientare i passeggeri
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Usa sincronizz. verticale
+STR_6166    :{SMALLFONT}{BLACK}Sincronizza i frame alla frequenza di aggiornamento dello schermo, per prevenire gli artefatti grafici (tearing).
 
 
 #############
