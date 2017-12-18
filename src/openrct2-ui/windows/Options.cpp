@@ -283,7 +283,7 @@ static rct_widget window_options_audio_widgets[] = {
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_AUDIO_DEVICE_TIP },
     { WWT_CHECKBOX,         1,  10,     229,    69,     80,     STR_SOUND_EFFECTS,      STR_SOUND_EFFECTS_TIP },        // Enable / disable sound effects
     { WWT_CHECKBOX,         1,  10,     229,    84,     95,     STR_RIDE_MUSIC,         STR_RIDE_MUSIC_TIP },           // Enable / disable ride music
-    { WWT_CHECKBOX,         1,  10,     229,    98,     110,    STR_AUDIO_FOCUS,        STR_AUDIO_FOCUS_TIP },          // Enable / disable audio disabled on focus lost
+    { WWT_CHECKBOX,         1,  10,     299,    98,     110,    STR_AUDIO_FOCUS,        STR_AUDIO_FOCUS_TIP },          // Enable / disable audio disabled on focus lost
     { WWT_DROPDOWN,         1,  155,    299,    112,    124,    STR_NONE,               STR_NONE },                     // Title music
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    113,    123,    STR_DROPDOWN_GLYPH,     STR_TITLE_MUSIC_TIP },
     { WWT_SCROLL,           1,  155,    299,    68,     80,     SCROLL_HORIZONTAL,      STR_NONE },                     // Sound effect volume
