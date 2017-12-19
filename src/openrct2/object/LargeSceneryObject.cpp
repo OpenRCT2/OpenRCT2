@@ -131,7 +131,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
 
     _legacyType.large_scenery.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
     _legacyType.large_scenery.price = json_integer_value(json_object_get(properties, "price"));
-    _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "height"));
+    _legacyType.large_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
 
     auto jScrollingMode = json_object_get(properties, "scrollingMode");
     _legacyType.large_scenery.scrolling_mode = jScrollingMode != nullptr ?
