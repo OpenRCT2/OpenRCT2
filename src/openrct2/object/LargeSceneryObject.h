@@ -45,4 +45,6 @@ private:
     static std::vector<rct_large_scenery_tile> ReadTiles(IStream * stream);
     static std::vector<rct_large_scenery_tile> ReadJsonTiles(const json_t * jTiles);
     static std::unique_ptr<rct_large_scenery_text> ReadJson3dFont(const json_t * j3dFont);
+    static std::vector<LocationXY16> ReadJsonOffsets(const json_t * jOffsets);
+    static std::vector<rct_large_scenery_text_glyph> ReadJsonGlyphs(const json_t * jGlpyhs);
 };

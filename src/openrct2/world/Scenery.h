@@ -80,7 +80,7 @@ struct rct_large_scenery_text {
     uint16 max_width;       // 0x8
     uint16 pad_A;           // 0xA
     uint8 flags;            // 0xC
-    uint8 var_D;            // 0xD
+    uint8 num_images;       // 0xD
     rct_large_scenery_text_glyph glyphs[256]; // 0xE
 };
 assert_struct_size(rct_large_scenery_text, 14 + 4 * 256);

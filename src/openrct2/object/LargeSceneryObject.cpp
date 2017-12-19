@@ -16,8 +16,10 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <algorithm>
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
+#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
@@ -82,12 +84,13 @@ void LargeSceneryObject::Load()
         _legacyType.large_scenery.text_image = _legacyType.image;
         if (_3dFont->flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
         {
-            _legacyType.image += _3dFont->var_D * 2;
+            _legacyType.image += _3dFont->num_images * 2;
         }
         else
         {
-            _legacyType.image += _3dFont->var_D * 4;
+            _legacyType.image += _3dFont->num_images * 4;
         }
+        _legacyType.large_scenery.text = _3dFont.get();
     }
 }
 
@@ -206,8 +209,62 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json
     return tiles;
 }
 
-std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t * j3dText)
+std::unique_ptr<rct_large_scenery_text> LargeSceneryObject::ReadJson3dFont(const json_t * j3dFont)
 {
-    // TODO
-    return std::make_unique<rct_large_scenery_text>();
+    auto font = std::make_unique<rct_large_scenery_text>();
+
+    auto jOffsets = json_object_get(j3dFont, "offsets");
+    if (jOffsets != nullptr)
+    {
+        auto offsets = ReadJsonOffsets(jOffsets);
+        auto numOffsets = std::min(Util::CountOf(font->offset), offsets.size());
+        std::copy_n(offsets.data(), numOffsets, font->offset);
+    }
+
+    font->max_width = json_integer_value(json_object_get(j3dFont, "maxWidth"));
+    font->num_images = json_integer_value(json_object_get(j3dFont, "numImages"));
+    font->flags = ObjectJsonHelpers::GetFlags<uint8>(j3dFont, {
+        { "isVertical", LARGE_SCENERY_TEXT_FLAG_VERTICAL },
+        { "isTwoLine", LARGE_SCENERY_TEXT_FLAG_TWO_LINE } });
+
+    auto jGlyphs = json_object_get(j3dFont, "glyphs");
+    if (jGlyphs != nullptr)
+    {
+        auto glyphs = ReadJsonGlyphs(jGlyphs);
+        auto numGlyphs = std::min(Util::CountOf(font->glyphs), glyphs.size());
+        std::copy_n(glyphs.data(), numGlyphs, font->glyphs);
+    }
+
+    return font;
+}
+
+std::vector<LocationXY16> LargeSceneryObject::ReadJsonOffsets(const json_t * jOffsets)
+{
+    std::vector<LocationXY16> offsets;
+    size_t index;
+    const json_t * jOffset;
+    json_array_foreach(jOffsets, index, jOffset)
+    {
+        LocationXY16 offset = { 0 };
+        offset.x = json_integer_value(json_object_get(jOffset, "x"));
+        offset.y = json_integer_value(json_object_get(jOffset, "y"));
+        offsets.push_back(offset);
+    }
+    return offsets;
+}
+
+std::vector<rct_large_scenery_text_glyph> LargeSceneryObject::ReadJsonGlyphs(const json_t * jGlpyhs)
+{
+    std::vector<rct_large_scenery_text_glyph> glyphs;
+    size_t index;
+    const json_t * jGlyph;
+    json_array_foreach(jGlpyhs, index, jGlyph)
+    {
+        rct_large_scenery_text_glyph glyph;
+        glyph.image_offset = json_integer_value(json_object_get(jGlyph, "image"));
+        glyph.width = json_integer_value(json_object_get(jGlyph, "width"));
+        glyph.height = json_integer_value(json_object_get(jGlyph, "height"));
+        glyphs.push_back(glyph);
+    }
+    return glyphs;
 }
