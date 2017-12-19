@@ -95,6 +95,7 @@ The following people are not part of the project team, but have been contributin
 * Robbin Voortman (rvoortman)
 * (telk5093)
 * Ethan Smith (ethanhs) - Refactoring.
+* Robert Lewicki (rlewicki)
 
 ## Toolchain
 * (Balletie) - macOS
