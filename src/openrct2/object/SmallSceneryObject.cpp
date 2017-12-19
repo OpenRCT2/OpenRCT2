@@ -249,7 +249,6 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
 
     // Flags
     _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32>(properties, {
-        { "isFullTile", SMALL_SCENERY_FLAG_FULL_TILE },
         { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
         { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
         { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
@@ -257,7 +256,6 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
         { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
         { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
         { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
-        { "SMALL_SCENERY_FLAG_DIAGONAL", SMALL_SCENERY_FLAG_DIAGONAL },
         { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
         { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
         { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
@@ -272,10 +270,34 @@ void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * r
         { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
         { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
         { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
-        { "SMALL_SCENERY_FLAG_HALF_SPACE", SMALL_SCENERY_FLAG_HALF_SPACE },
-        { "SMALL_SCENERY_FLAG_THREE_QUARTERS", SMALL_SCENERY_FLAG_THREE_QUARTERS },
         { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
         { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 } });
+
+    // Determine shape flags from a shape string
+    auto shape = ObjectJsonHelpers::GetString(properties, "shape");
+    if (!shape.empty())
+    {
+        auto quarters = shape.substr(0, 3);
+        if (quarters == "2/4")
+        {
+            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_HALF_SPACE;
+        }
+        else if (quarters == "3/4")
+        {
+            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE | SMALL_SCENERY_FLAG_THREE_QUARTERS;
+        }
+        else if (quarters == "4/4")
+        {
+            _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_FULL_TILE;
+        }
+        if (shape.size() >= 5)
+        {
+            if ((shape.substr(3) == "+D"))
+            {
+                _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_DIAGONAL;
+            }
+        }
+    }
 
     auto jFrameOffsets = json_object_get(properties, "frameOffsets");
     if (jFrameOffsets != nullptr)
