@@ -211,6 +211,7 @@ namespace ObjectFactory
         if (s == "footpath") return OBJECT_TYPE_PATHS;
         if (s == "footpath_banner") return OBJECT_TYPE_BANNERS;
         if (s == "footpath_item") return OBJECT_TYPE_PATH_BITS;
+        if (s == "scenery_small") return OBJECT_TYPE_SMALL_SCENERY;
         if (s == "scenery_large") return OBJECT_TYPE_LARGE_SCENERY;
         if (s == "scenery_wall") return OBJECT_TYPE_WALLS;
         if (s == "scenery_group") return OBJECT_TYPE_SCENERY_GROUP;

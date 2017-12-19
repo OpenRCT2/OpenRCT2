@@ -14,16 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma warning(disable : 4706) // assignment within conditional expression
+
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "SmallSceneryObject.h"
-
 #include "../drawing/Drawing.h"
+#include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
+#include "SmallSceneryObject.h"
+#include "ObjectJsonHelpers.h"
 
 void SmallSceneryObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -230,4 +233,71 @@ rct_object_entry SmallSceneryObject::GetScgMineHeader()
 rct_object_entry SmallSceneryObject::GetScgAbstrHeader()
 {
     return Object::CreateHeader("SCGABSTR", 207140231, 932253451);
+}
+
+void SmallSceneryObject::ReadJson(IReadObjectContext * context, const json_t * root)
+{
+    auto properties = json_object_get(root, "properties");
+
+    _legacyType.small_scenery.height = json_integer_value(json_object_get(properties, "height"));
+    _legacyType.small_scenery.tool_id = ObjectJsonHelpers::ParseCursor(ObjectJsonHelpers::GetString(properties, "cursor"), CURSOR_STATUE_DOWN);
+    _legacyType.small_scenery.price = json_integer_value(json_object_get(properties, "price"));
+    _legacyType.small_scenery.removal_price = json_integer_value(json_object_get(properties, "removalPrice"));
+    _legacyType.small_scenery.animation_delay = json_integer_value(json_object_get(properties, "animationDelay"));
+    _legacyType.small_scenery.animation_mask = json_integer_value(json_object_get(properties, "animationMask"));
+    _legacyType.small_scenery.num_frames = json_integer_value(json_object_get(properties, "numFrames"));
+
+    // Flags
+    _legacyType.small_scenery.flags = ObjectJsonHelpers::GetFlags<uint32>(properties, {
+        { "isFullTile", SMALL_SCENERY_FLAG_FULL_TILE },
+        { "SMALL_SCENERY_FLAG_VOFFSET_CENTRE", SMALL_SCENERY_FLAG_VOFFSET_CENTRE },
+        { "requiresFlatSurface", SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE },
+        { "isRotatable", SMALL_SCENERY_FLAG_ROTATABLE },
+        { "isAnimated", SMALL_SCENERY_FLAG_ANIMATED },
+        { "canWither", SMALL_SCENERY_FLAG_CAN_WITHER },
+        { "canBeWatered", SMALL_SCENERY_FLAG_CAN_BE_WATERED },
+        { "hasOverlayImage", SMALL_SCENERY_FLAG_ANIMATED_FG },
+        { "SMALL_SCENERY_FLAG_DIAGONAL", SMALL_SCENERY_FLAG_DIAGONAL },
+        { "hasGlass", SMALL_SCENERY_FLAG_HAS_GLASS },
+        { "hasPrimaryColour", SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
+        { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1 },
+        { "SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4", SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_4 },
+        { "isClock", SMALL_SCENERY_FLAG_IS_CLOCK },
+        { "SMALL_SCENERY_FLAG_SWAMP_GOO", SMALL_SCENERY_FLAG_SWAMP_GOO },
+        { "SMALL_SCENERY_FLAG17", SMALL_SCENERY_FLAG17 },
+        { "isStackable", SMALL_SCENERY_FLAG_STACKABLE },
+        { "prohibitWalls", SMALL_SCENERY_FLAG_NO_WALLS },
+        { "hasSecondaryColour", SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+        { "hasNoSupports", SMALL_SCENERY_FLAG_NO_SUPPORTS },
+        { "SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED", SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED },
+        { "SMALL_SCENERY_FLAG_COG", SMALL_SCENERY_FLAG_COG },
+        { "allowSupportsAbove", SMALL_SCENERY_FLAG_BUILD_DIRECTLY_ONTOP },
+        { "SMALL_SCENERY_FLAG_HALF_SPACE", SMALL_SCENERY_FLAG_HALF_SPACE },
+        { "SMALL_SCENERY_FLAG_THREE_QUARTERS", SMALL_SCENERY_FLAG_THREE_QUARTERS },
+        { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
+        { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 } });
+
+    auto jFrameOffsets = json_object_get(properties, "frameOffsets");
+    if (jFrameOffsets != nullptr)
+    {
+        _frameOffsets = ReadJsonFrameOffsets(jFrameOffsets);
+        _legacyType.small_scenery.flags |= SMALL_SCENERY_FLAG_HAS_FRAME_OFFSETS;
+    }
+
+    SetPrimarySceneryGroup(ObjectJsonHelpers::GetString(json_object_get(properties, "sceneryGroup")));
+
+    ObjectJsonHelpers::LoadStrings(root, GetStringTable());
+    ObjectJsonHelpers::LoadImages(root, GetImageTable());
+}
+
+std::vector<uint8> SmallSceneryObject::ReadJsonFrameOffsets(const json_t * jFrameOffsets)
+{
+    std::vector<uint8> offsets;
+    size_t index;
+    const json_t * jOffset;
+    json_array_foreach(jFrameOffsets, index, jOffset)
+    {
+        offsets.push_back(json_integer_value(jOffset));
+    }
+    return offsets;
 }
