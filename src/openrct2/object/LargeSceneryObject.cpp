@@ -183,10 +183,26 @@ std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadJsonTiles(const json
         {
             tile.flags |= LARGE_SCENERY_TILE_FLAG_ALLOW_SUPPORTS_ABOVE;
         }
-        tile.flags |= (json_integer_value(json_object_get(jTile, "corners")) & 0xFF) << 8;
-        tile.flags |= (json_integer_value(json_object_get(jTile, "walls")) & 0xFF) << 12;
+
+        // All corners are by default occupied
+        auto jCorners = json_object_get(jTile, "corners");
+        auto corners = 0xF;
+        if (jCorners != nullptr)
+        {
+            corners = json_integer_value(jCorners);
+        }
+        tile.flags |= (corners & 0xFF) << 12;
+
+        auto walls = json_integer_value(json_object_get(jTile, "walls"));
+        tile.flags |= (walls & 0xFF) << 8;
+
         tiles.push_back(tile);
     }
+
+    // HACK Add end of tiles marker
+    //      We should remove this later by improving the code base to use tiles array length
+    tiles.push_back({ -1, -1, -1, 0xFF, 0xFFFF });
+
     return tiles;
 }
 
