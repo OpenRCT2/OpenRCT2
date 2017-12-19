@@ -204,6 +204,19 @@ static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax)
 }
 #endif // OPENRCT2_X86
 
+bool sse41_available()
+{
+#ifdef OPENRCT2_X86
+    // SSE4.1 support is declared as the 19th bit of ECX with CPUID(EAX = 1).
+    uint32 regs[4] = { 0 };
+    if (cpuid_x86(regs, 1))
+    {
+        return (regs[2] & (1 << 19));
+    }
+#endif
+    return false;
+}
+
 static bool bitcount_popcnt_available()
 {
 #ifdef OPENRCT2_X86

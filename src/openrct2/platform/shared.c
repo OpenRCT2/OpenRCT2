@@ -222,6 +222,7 @@ void core_init()
 
         platform_ticks_init();
         bitcount_init();
+        mask_init();
 
 #if defined(__APPLE__) && (__ENVIRONMENT_MAC_OS_X_VERSION_MIN_REQUIRED__ < 101200)
         kern_return_t ret = mach_timebase_info(&_mach_base_info);
