@@ -1672,7 +1672,12 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     // Don't keep private key in memory. There's no need and it may get leaked
     // when process dump gets collected at some point in future.
     _key.Unload();
-    Client_Send_AUTH(gConfigNetwork.player_name, "", pubkey.c_str(), signature, sigsize);
+
+	const char* password = String::IsNullOrEmpty(gCustomPassword) ?
+		"" :
+		gCustomPassword;
+	Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
+
     delete [] signature;
 }
 
@@ -1709,7 +1714,7 @@ void Network::Client_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
         connection.Socket->Disconnect();
         break;
     case NETWORK_AUTH_REQUIREPASSWORD:
-        context_open_window_view(WV_NETWORK_PASSWORD);
+		context_open_window_view(WV_NETWORK_PASSWORD);
         break;
     case NETWORK_AUTH_UNKNOWN_KEY_DISALLOWED:
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_UNKNOWN_KEY_DISALLOWED);
