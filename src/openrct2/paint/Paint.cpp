@@ -490,7 +490,7 @@ void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewF
             paint_ps_image(dpi, ps, imageId, x, y);
         }
 
-        if (ps->var_20 != 0)
+        if (ps->var_20 != nullptr)
         {
             // NOTE: RCT uses var_20 instead of next_quadrant_ps, do we still need it?
             ps = ps->var_20;
@@ -1133,7 +1133,7 @@ extern "C"
 
         paint_string_struct * ps = &session->NextFreePaintStruct->string;
         ps->string_id = string_id;
-        ps->next = 0;
+        ps->next = nullptr;
         ps->args[0] = amount;
         ps->args[1] = y;
         ps->args[2] = 0;

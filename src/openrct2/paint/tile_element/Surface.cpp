@@ -583,7 +583,7 @@ static void viewport_surface_draw_tile_side_bottom(paint_session * session, enum
     if (isWater)
         regs.dl = height;
 
-    if (neighbour.tile_element == 0)
+    if (neighbour.tile_element == nullptr)
     {
         regs.ch = 1;
         regs.ah = 1;
