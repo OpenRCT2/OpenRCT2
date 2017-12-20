@@ -79,10 +79,8 @@ void viewport_init_all()
     {
         colours_init_maps();
     }
-    if (gWindowNextSlot != NULL) {
-        window_close_all();
-    }
-    gWindowNextSlot = g_window_list;
+
+    window_init_all();
 
     // Setting up viewports
     for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {

@@ -775,6 +775,8 @@ bool window_is_visible(rct_window* w);
 bool scenery_tool_is_active();
 
 rct_viewport * window_get_previous_viewport(rct_viewport * current);
+void window_reset_visibilities();
+void window_init_all();
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();
