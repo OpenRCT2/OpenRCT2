@@ -220,7 +220,7 @@ void X8DrawingEngine::EndDraw()
 
 void X8DrawingEngine::PaintWindows()
 {
-    ResetWindowVisbilities();
+    window_reset_visibilities();
 
     // Redraw dirty regions before updating the viewports, otherwise
     // when viewports get panned, they copy dirty pixels
@@ -381,16 +381,6 @@ void X8DrawingEngine::ConfigureDirtyGrid()
 
     delete [] _dirtyGrid.Blocks;
     _dirtyGrid.Blocks = new uint8[_dirtyGrid.BlockColumns * _dirtyGrid.BlockRows];
-}
-
-void X8DrawingEngine::ResetWindowVisbilities()
-{
-    // reset window visibility status to unknown
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
-    {
-        w->visibility = VC_UNKNOWN;
-        if (w->viewport != nullptr) w->viewport->visibility = VC_UNKNOWN;
-    }
 }
 
 void X8DrawingEngine::DrawAllDirtyBlocks()

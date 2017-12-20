@@ -2657,3 +2657,26 @@ rct_viewport * window_get_previous_viewport(rct_viewport * current)
 
     return NULL;
 }
+
+void window_reset_visibilities()
+{
+    // reset window visibility status to unknown
+    for (rct_window * w = g_window_list; w < gWindowNextSlot; w++)
+    {
+        w->visibility = VC_UNKNOWN;
+        if (w->viewport != NULL)
+        {
+            w->viewport->visibility = VC_UNKNOWN;
+        }
+    }
+}
+
+void window_init_all()
+{
+    if (gWindowNextSlot != NULL)
+    {
+        window_close_all();
+    }
+
+    gWindowNextSlot = g_window_list;
+}
