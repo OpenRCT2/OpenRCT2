@@ -853,7 +853,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
                 sint16 y = g_music_tracking_viewport->view_y;
                 sint16 w = g_music_tracking_viewport->view_width / 4;
                 sint16 h = g_music_tracking_viewport->view_height / 4;
-                if (!gWindowAudioExclusive->classification)
+                if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
                 {
                     x -= w;
                     y -= h;
@@ -862,7 +862,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
                 {
                     sint16 w2 = g_music_tracking_viewport->view_width + x;
                     sint16 h2 = g_music_tracking_viewport->view_height + y;
-                    if (!gWindowAudioExclusive->classification)
+                    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
                     {
                         w2 += w + w;
                         h2 += h + h;
