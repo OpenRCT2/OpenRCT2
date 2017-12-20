@@ -443,7 +443,6 @@ extern "C"
             dest_pointer = next_dest_pointer;
             source_pointer = next_source_pointer;
         }
-        return;
     }
 
     uint8* FASTCALL gfx_draw_sprite_get_palette(sint32 image_id, uint32 tertiary_colour) {

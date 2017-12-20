@@ -1779,7 +1779,6 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 56, 0x20);
-    return;
 }
 
 /** rct2: 0x008AD210 */

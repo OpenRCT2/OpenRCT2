@@ -1009,7 +1009,6 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
         calculate_cost == false){
         *ebx = 0;
     }
-    return;
 }
 
 /**
