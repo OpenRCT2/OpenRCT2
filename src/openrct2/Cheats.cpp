@@ -586,6 +586,7 @@ const char* cheats_get_cheat_string(int cheat, int edx, int edi) {
         case CHEAT_IGNORERIDEINTENSITY: return language_get_string(STR_CHEAT_IGNORE_INTENSITY);
         case CHEAT_DISABLEVANDALISM: return language_get_string(STR_CHEAT_DISABLE_VANDALISM);
         case CHEAT_DISABLELITTERING: return language_get_string(STR_CHEAT_DISABLE_LITTERING);
+        case CHEAT_NOMONEY: return language_get_string(STR_MAKE_PARK_NO_MONEY);
         case CHEAT_ADDMONEY: return language_get_string(STR_LOG_CHEAT_ADD_MONEY);
         case CHEAT_CLEARLOAN: return language_get_string(STR_CHEAT_CLEAR_LOAN);
         case CHEAT_SETGUESTPARAMETER:
