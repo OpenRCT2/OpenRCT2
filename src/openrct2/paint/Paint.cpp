@@ -64,9 +64,9 @@ static void paint_session_init(paint_session * session, rct_drawpixelinfo * dpi)
     session->NextFreePaintStruct = session->PaintStructs;
     session->UnkF1AD28 = nullptr;
     session->UnkF1AD2C = nullptr;
-    for (sint32 i = 0; i < MAX_PAINT_QUADRANTS; i++)
+    for (auto &quadrant : session->Quadrants)
     {
-        session->Quadrants[i] = nullptr;
+        quadrant = nullptr;
     }
     session->QuadrantBackIndex = -1;
     session->QuadrantFrontIndex = 0;

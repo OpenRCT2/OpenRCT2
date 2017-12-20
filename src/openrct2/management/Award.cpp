@@ -573,9 +573,9 @@ static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint3
         countedRides++;
 
         mainTrackColour = ride->track_colour_main[0];
-        for (uint32 j = 0; j < Util::CountOf(dazzling_ride_colours); j++)
+        for (auto dazzling_ride_colour : dazzling_ride_colours)
         {
-            if (mainTrackColour == dazzling_ride_colours[j])
+            if (mainTrackColour == dazzling_ride_colour)
             {
                 colourfulRides++;
                 break;
@@ -672,10 +672,10 @@ static bool award_is_deserved(sint32 awardType, sint32 activeAwardTypes)
 
 void award_reset()
 {
-    for (sint32 i = 0; i < MAX_AWARDS; i++)
+    for (auto &award : gCurrentAwards)
     {
-        gCurrentAwards[i].Time = 0;
-        gCurrentAwards[i].Type = 0;
+        award.Time = 0;
+        award.Type = 0;
     }
 }
 
@@ -726,10 +726,10 @@ void award_update_all()
     }
 
     // Decrease award times
-    for (sint32 i = 0; i < MAX_AWARDS; i++)
+    for (auto &award : gCurrentAwards)
     {
-        if (gCurrentAwards[i].Time != 0)
-            if (--gCurrentAwards[i].Time == 0)
+        if (award.Time != 0)
+            if (--award.Time == 0)
                 window_invalidate_by_class(WC_PARK_INFORMATION);
     }
 }

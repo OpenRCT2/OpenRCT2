@@ -1105,17 +1105,15 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         gCurrentViewportFlags & VIEWPORT_FLAG_LAND_OWNERSHIP)
     {
         const LocationXY16& pos = session->MapPosition;
-        for (sint32 i = 0; i < MAX_PEEP_SPAWNS; ++i)
+        for (auto &spawn : gPeepSpawns)
         {
-            const rct2_peep_spawn * spawn = &gPeepSpawns[i];
-
-            if ((spawn->x & 0xFFE0) == pos.x && (spawn->y & 0xFFE0) == pos.y)
+            if ((spawn.x & 0xFFE0) == pos.x && (spawn.y & 0xFFE0) == pos.y)
             {
-                sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn->z * 16, rotation);
+                sub_98196C(session, SPR_TERRAIN_SELECTION_SQUARE_SIMPLE, 0, 0, 32, 32, 16, spawn.z * 16, rotation);
 
-                const sint32 offset = ((spawn->direction ^ 2) + rotation) & 3;
+                const sint32 offset = ((spawn.direction ^ 2) + rotation) & 3;
                 const uint32 image_id = (PEEP_SPAWN_ARROW_0 + offset) | 0x20380000;
-                sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn->z * 16, rotation);
+                sub_98196C(session, image_id, 0, 0, 32, 32, 19, spawn.z * 16, rotation);
             }
         }
     }
@@ -1362,15 +1360,13 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         uint8 al = regs.al | regs.ah;
 
-        for (sint32 i = 0; i < 4; i++)
+        for (const auto& fenceData : _tileSurfaceBoundaries)
         {
             const sint32 bit = al & 1;
             al >>= 1;
 
             if (bit == 0)
                 continue;
-
-            const tile_surface_boundary_data& fenceData = _tileSurfaceBoundaries[i];
 
             sint32 local_height = height;
             sint32 image_id = 0;

@@ -55,9 +55,9 @@ struct ObjectEntryHash
     size_t operator()(const rct_object_entry &entry) const
     {
         uint32 hash = 5381;
-        for (sint32 i = 0; i < 8; i++)
+        for (auto i : entry.name)
         {
-            hash = ((hash << 5) + hash) + entry.name[i];
+            hash = ((hash << 5) + hash) + i;
         }
         return hash;
     }

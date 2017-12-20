@@ -87,15 +87,14 @@ public:
         sub_6CB945(_rideIndex);
         news_item_disable_news(NEWS_ITEM_RIDE, _rideIndex);
 
-        for (sint32 i = 0; i < MAX_BANNERS; i++) 
+        for (auto &banner : gBanners)
         {
-            rct_banner *banner = &gBanners[i];
-            if (banner->type != BANNER_NULL &&
-                banner->flags & BANNER_FLAG_LINKED_TO_RIDE &&
-                banner->colour == _rideIndex)
+            if (banner.type != BANNER_NULL &&
+                banner.flags & BANNER_FLAG_LINKED_TO_RIDE &&
+                banner.colour == _rideIndex)
             {
-                banner->flags &= 0xFB;
-                banner->string_idx = STR_DEFAULT_SIGN;
+                banner.flags &= 0xFB;
+                banner.string_idx = STR_DEFAULT_SIGN;
             }
         }
 

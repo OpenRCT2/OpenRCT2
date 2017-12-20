@@ -1028,28 +1028,27 @@ void vehicle_sounds_update()
             {
                 vehicle_update_sound_params(&get_sprite(i)->vehicle);
             }
-            for (uint32 i = 0; i < Util::CountOf(gVehicleSoundList); i++)
+            for (auto &vehicle_sound : gVehicleSoundList)
             {
-                rct_vehicle_sound * vehicle_sound = &gVehicleSoundList[i];
-                if (vehicle_sound->id != SOUND_ID_NULL)
+                if (vehicle_sound.id != SOUND_ID_NULL)
                 {
                     for (rct_vehicle_sound_params * vehicle_sound_params = &gVehicleSoundParamsList[0];
                          vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
                     {
-                        if (vehicle_sound->id == vehicle_sound_params->id)
+                        if (vehicle_sound.id == vehicle_sound_params->id)
                         {
                             goto label26;
                         }
                     }
-                    if (vehicle_sound->sound1_id != SOUND_ID_NULL)
+                    if (vehicle_sound.sound1_id != SOUND_ID_NULL)
                     {
-                        Mixer_Stop_Channel(vehicle_sound->sound1_channel);
+                        Mixer_Stop_Channel(vehicle_sound.sound1_channel);
                     }
-                    if (vehicle_sound->sound2_id != SOUND_ID_NULL)
+                    if (vehicle_sound.sound2_id != SOUND_ID_NULL)
                     {
-                        Mixer_Stop_Channel(vehicle_sound->sound2_channel);
+                        Mixer_Stop_Channel(vehicle_sound.sound2_channel);
                     }
-                    vehicle_sound->id = SOUND_ID_NULL;
+                    vehicle_sound.id = SOUND_ID_NULL;
                 }
             label26:;
             }
@@ -2310,10 +2309,8 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
 
         if (ride->depart_flags & RIDE_DEPART_LEAVE_WHEN_ANOTHER_ARRIVES)
         {
-
-            for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; ++i)
+            for (auto train_id : ride->vehicles)
             {
-                uint16 train_id = ride->vehicles[i];
                 if (train_id == SPRITE_INDEX_NULL)
                     continue;
 
@@ -4625,15 +4622,15 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
     }
 
     static const sint8 rotations[] = { 0, 1, -1, 2 };
-    for (sint32 i = 0; i < 4; i++)
+    for (auto rotation : rotations)
     {
-        if (randDirection + rotations[i] == curDirection)
+        if (randDirection + rotation == curDirection)
         {
             continue;
         }
 
-        sint16 x = vehicle->track_x + TileDirectionDelta[(randDirection + rotations[i]) & 3].x;
-        sint16 y = vehicle->track_y + TileDirectionDelta[(randDirection + rotations[i]) & 3].y;
+        sint16 x = vehicle->track_x + TileDirectionDelta[(randDirection + rotation) & 3].x;
+        sint16 y = vehicle->track_y + TileDirectionDelta[(randDirection + rotation) & 3].y;
 
         if (vehicle_is_boat_on_water(vehicle, x, y))
         {
@@ -6454,10 +6451,10 @@ bool vehicle_update_dodgems_collision(rct_vehicle * vehicle, sint16 x, sint16 y,
     LocationXY8 location = { static_cast<uint8>(x / 32), static_cast<uint8>(y / 32) };
 
     uint8 rideIndex = vehicle->ride;
-    for (uint32 i = 0; i < Util::CountOf(Unk9A37C4); i++)
+    for (auto xy_offset : Unk9A37C4)
     {
-        location.x += Unk9A37C4[i].x;
-        location.y += Unk9A37C4[i].y;
+        location.x += xy_offset.x;
+        location.y += xy_offset.y;
 
         uint16 spriteIdx = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
         while (spriteIdx != SPRITE_INDEX_NULL)
@@ -7657,10 +7654,10 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
     bool          mayCollide     = false;
     uint16        collideId      = SPRITE_INDEX_NULL;
     rct_vehicle * collideVehicle = NULL;
-    for (uint32 i = 0; i < Util::CountOf(Unk9A37C4); i++)
+    for (auto xy_offset : Unk9A37C4)
     {
-        location.x += Unk9A37C4[i].x;
-        location.y += Unk9A37C4[i].y;
+        location.x += xy_offset.x;
+        location.y += xy_offset.y;
 
         collideId = sprite_get_first_in_quadrant(location.x * 32, location.y * 32);
         for (; collideId != SPRITE_INDEX_NULL; collideId = collideVehicle->next_in_quadrant)

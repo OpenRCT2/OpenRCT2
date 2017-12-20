@@ -1134,14 +1134,12 @@ void game_convert_strings_to_utf8()
     rct2_to_utf8_self(gScenarioDetails, 256);
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (auto * string : gUserStrings)
     {
-        utf8 * userString = gUserStrings[i];
-
-        if (!str_is_null_or_empty(userString))
+        if (!str_is_null_or_empty(string))
         {
-            rct2_to_utf8_self(userString, RCT12_USER_STRING_MAX_LENGTH);
-            utf8_remove_formatting(userString, true);
+            rct2_to_utf8_self(string, RCT12_USER_STRING_MAX_LENGTH);
+            utf8_remove_formatting(string, true);
         }
     }
 
@@ -1174,10 +1172,8 @@ void game_convert_strings_to_rct2(rct_s6_data * s6)
     utf8_to_rct2_self(s6->scenario_description, sizeof(s6->scenario_description));
 
     // User strings
-    for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
+    for (auto * userString : s6->custom_strings)
     {
-        char * userString = s6->custom_strings[i];
-
         if (!str_is_null_or_empty(userString))
         {
             utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
@@ -1185,13 +1181,11 @@ void game_convert_strings_to_rct2(rct_s6_data * s6)
     }
 
     // News items
-    for (sint32 i = 0; i < MAX_NEWS_ITEMS; i++)
+    for (auto &newsItem : s6->news_items)
     {
-        rct12_news_item * newsItem = &s6->news_items[i];
-
-        if (!str_is_null_or_empty(newsItem->Text))
+        if (!str_is_null_or_empty(newsItem.Text))
         {
-            utf8_to_rct2_self(newsItem->Text, sizeof(newsItem->Text));
+            utf8_to_rct2_self(newsItem.Text, sizeof(newsItem.Text));
         }
     }
 }

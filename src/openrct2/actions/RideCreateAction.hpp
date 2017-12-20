@@ -153,9 +153,9 @@ public:
             ride->queue_time[i] = 0;
         }
 
-        for (size_t i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
+        for (auto &vehicle : ride->vehicles)
         {
-            ride->vehicles[i] = SPRITE_INDEX_NULL;
+            vehicle = SPRITE_INDEX_NULL;
         }
 
         ride->status = RIDE_STATUS_CLOSED;

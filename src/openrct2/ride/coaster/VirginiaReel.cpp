@@ -214,12 +214,12 @@ void vehicle_visual_virginia_reel(paint_session * session, sint32 x, sint32 imag
             riding_peep_sprites[((ecx / 8) + i) & 3] = vehicle->peep_tshirt_colours[i];
         }
         sint32 draw_order[4] = { 0, 1, 3, 2 };
-        for (uint32 i = 0; i < Util::CountOf(draw_order); i++)
+        for (auto i : draw_order)
         {
-            if (riding_peep_sprites[draw_order[i]] != 0xFF)
+            if (riding_peep_sprites[i] != 0xFF)
             {
-                image_id = (baseImage_id + ((draw_order[i] + 1) * 72)) |
-                           SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[draw_order[i]]);
+                image_id = (baseImage_id + ((i + 1) * 72)) |
+                           SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
                 sub_98199C(session, image_id, 0, 0, bb->length_x, bb->length_y, bb->length_z, z, bb->offset_x, bb->offset_y,
                            bb->offset_z + z, rotation);
             }

@@ -377,9 +377,9 @@ static void cheat_remove_all_guests()
             ride->last_peep_in_queue[stationIndex] = SPRITE_INDEX_NULL;
         }
 
-        for (size_t trainIndex = 0; trainIndex < 32; trainIndex++)
+        for (auto trainIndex : ride->vehicles)
         {
-            spriteIndex = ride->vehicles[trainIndex];
+            spriteIndex = trainIndex;
             while (spriteIndex != SPRITE_INDEX_NULL)
             {
                 vehicle = GET_VEHICLE(spriteIndex);
@@ -387,9 +387,9 @@ static void cheat_remove_all_guests()
                 vehicle->num_peeps = 0;
                 vehicle->next_free_seat = 0;
 
-                for (size_t peepInTrainIndex = 0; peepInTrainIndex < 32; peepInTrainIndex++)
+                for (auto &peepInTrainIndex : vehicle->peep)
                 {
-                    vehicle->peep[peepInTrainIndex] = SPRITE_INDEX_NULL;
+                    peepInTrainIndex = SPRITE_INDEX_NULL;
                 }
 
                 spriteIndex = vehicle->next_vehicle_on_train;
@@ -460,9 +460,9 @@ static void cheat_own_all_land()
     }
 
     // Completely unown peep spawn points
-    for (sint32 i = 0; i < MAX_PEEP_SPAWNS; i++) {
-        sint32 x = gPeepSpawns[i].x;
-        sint32 y = gPeepSpawns[i].y;
+    for (const auto &spawn : gPeepSpawns) {
+        sint32 x = spawn.x;
+        sint32 y = spawn.y;
         if (x != PEEP_SPAWN_UNDEFINED) {
             rct_tile_element * surfaceElement = map_get_surface_element_at(x >> 5, y >> 5);
             surfaceElement->properties.surface.ownership = OWNERSHIP_UNOWNED;
