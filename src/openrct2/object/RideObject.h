@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include "Object.h"
-
+#include <vector>
 #include "../ride/Ride.h"
+#include "Object.h"
 
 class RideObject final : public Object
 {
@@ -50,6 +50,15 @@ private:
     void ReadLegacyVehicle(IReadObjectContext * context, IStream * stream, rct_ride_entry_vehicle * vehicle);
     void PerformFixes();
 
+    void ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties);
+    std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t * jCars);
+    rct_ride_entry_vehicle ReadJsonCar(const json_t * jCar);
+
     static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
     static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
+
+    static bool IsRideTypeShopOrFacility(uint8 rideType);
+    static uint8 ParseRideType(const std::string &s);
+    static uint8 ParseRideCategory(const std::string &s);
+    static uint8 ParseShopItem(const std::string &s);
 };

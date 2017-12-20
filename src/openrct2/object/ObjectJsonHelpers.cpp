@@ -57,12 +57,36 @@ namespace ObjectJsonHelpers
             defaultValue;
     }
 
+    sint32 GetInteger(const json_t * obj, const std::string &name, const sint32 &defaultValue)
+    {
+        auto value = json_object_get(obj, name.c_str());
+        if (json_is_integer(value))
+        {
+            sint64 val = json_integer_value(value);
+            if (val >= std::numeric_limits<sint32>::min() &&
+                val <= std::numeric_limits<sint32>::max())
+            {
+                return static_cast<sint32>(val);
+            }
+        }
+        return defaultValue;
+    }
+
+    float GetFloat(const json_t * obj, const std::string &name, const float &defaultValue)
+    {
+        auto value = json_object_get(obj, name.c_str());
+        return json_is_number(value) ?
+            json_number_value(value) :
+            defaultValue;
+    }
+
     std::vector<std::string> GetJsonStringArray(const json_t * arr)
     {
         std::vector<std::string> result;
         if (json_is_array(arr))
         {
             auto count = json_array_size(arr);
+            result.reserve(count);
             for (size_t i = 0; i < count; i++)
             {
                 auto element = json_string_value(json_array_get(arr, i));
@@ -72,6 +96,26 @@ namespace ObjectJsonHelpers
         else if (json_is_string(arr))
         {
             result.push_back(json_string_value(arr));
+        }
+        return result;
+    }
+
+    std::vector<sint32> GetJsonIntegerArray(const json_t * arr)
+    {
+        std::vector<sint32> result;
+        if (json_is_array(arr))
+        {
+            auto count = json_array_size(arr);
+            result.reserve(count);
+            for (size_t i = 0; i < count; i++)
+            {
+                auto element = json_integer_value(json_array_get(arr, i));
+                result.push_back(element);
+            }
+        }
+        else if (json_is_integer(arr))
+        {
+            result.push_back(json_integer_value(arr));
         }
         return result;
     }

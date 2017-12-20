@@ -32,7 +32,10 @@ namespace ObjectJsonHelpers
     bool GetBoolean(const json_t * obj, const std::string &name, bool defaultValue = false);
     std::string GetString(const json_t * value);
     std::string GetString(const json_t * obj, const std::string &name, const std::string &defaultValue = "");
+    sint32 GetInteger(const json_t * obj, const std::string &name, const sint32 &defaultValue = 0);
+    float GetFloat(const json_t * obj, const std::string &name, const float &defaultValue = 0);
     std::vector<std::string> GetJsonStringArray(const json_t * arr);
+    std::vector<sint32> GetJsonIntegerArray(const json_t * arr);
     uint8 ParseCursor(const std::string &s, uint8 defaultValue);
     rct_object_entry ParseObjectEntry(const std::string & s);
     void LoadStrings(const json_t * root, StringTable &stringTable);
