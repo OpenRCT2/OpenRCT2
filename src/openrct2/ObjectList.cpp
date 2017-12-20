@@ -148,7 +148,7 @@ sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_ty
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
 {
     uint8 objectType = OBJECT_TYPE_RIDE;
-    for (auto groupCount : object_entry_group_counts)
+    for (size_t groupCount : object_entry_group_counts)
     {
         if (index >= groupCount) {
             index -= groupCount;
