@@ -3655,7 +3655,7 @@ static void junior_rc_left_eighth_to_diag_paint_setup(paint_session * session, u
 {
     track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence,
                                                 session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_left_eight_to_diag,
-                                                0, defaultLeftEighthToDiagBoundLengths, defaultLeftEighthToDiagBoundOffsets,
+                                                nullptr, defaultLeftEighthToDiagBoundLengths, defaultLeftEighthToDiagBoundOffsets,
                                                 get_current_rotation());
 
     switch (trackSequence)
@@ -3717,7 +3717,7 @@ static void junior_rc_right_eighth_to_diag_paint_setup(paint_session * session, 
 {
     track_paint_util_eighth_to_diag_tiles_paint(session, defaultEighthToDiagThickness, height, direction, trackSequence,
                                                 session->TrackColours[SCHEME_TRACK], junior_rc_track_pieces_right_eight_to_diag,
-                                                0, defaultRightEighthToDiagBoundLengths, defaultRightEighthToDiagBoundOffsets,
+                                                nullptr, defaultRightEighthToDiagBoundLengths, defaultRightEighthToDiagBoundOffsets,
                                                 get_current_rotation());
 
     switch (trackSequence)
@@ -3878,7 +3878,7 @@ static void junior_rc_left_eighth_to_diag_bank_paint_setup(paint_session * sessi
 {
     track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_left_eighth_to_diag_bank_thickness, height, direction,
                                                 trackSequence, session->TrackColours[SCHEME_TRACK],
-                                                junior_rc_track_pieces_left_eight_to_diag_bank, 0,
+                                                junior_rc_track_pieces_left_eight_to_diag_bank, nullptr,
                                                 junior_rc_left_eighth_to_diag_bank_bound_lengths,
                                                 junior_rc_left_eighth_to_diag_bank_bound_offsets, get_current_rotation());
 
@@ -4022,7 +4022,7 @@ static void junior_rc_right_eighth_to_diag_bank_paint_setup(paint_session * sess
 {
     track_paint_util_eighth_to_diag_tiles_paint(session, junior_rc_right_eighth_to_diag_bank_thickness, height, direction,
                                                 trackSequence, session->TrackColours[SCHEME_TRACK],
-                                                junior_rc_track_pieces_right_eight_to_diag_bank, 0,
+                                                junior_rc_track_pieces_right_eight_to_diag_bank, nullptr,
                                                 junior_rc_right_eighth_to_diag_bank_bound_lengths,
                                                 junior_rc_right_eighth_to_diag_bank_bound_offsets, get_current_rotation());
 
@@ -4109,7 +4109,7 @@ void junior_rc_paint_track_diag_flat(paint_session * session, uint8 rideIndex, u
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4128,7 +4128,7 @@ void junior_rc_paint_track_diag_25_deg_up(paint_session * session, uint8 rideInd
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_up[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4147,7 +4147,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_up(paint_session * session, uint8
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_25_deg_up[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4169,7 +4169,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_up(paint_session * session, uint8
 
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_60_deg_up[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4188,7 +4188,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_flat(paint_session * session, uint8
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_up_to_flat[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4210,7 +4210,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_flat(paint_session * session, uint8
 
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_60_deg_up_to_flat[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4229,7 +4229,7 @@ void junior_rc_paint_track_diag_25_deg_down(paint_session * session, uint8 rideI
 
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_down[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4248,7 +4248,7 @@ void junior_rc_paint_track_diag_flat_to_25_deg_down(paint_session * session, uin
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_25_deg_down[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4270,7 +4270,7 @@ void junior_rc_paint_track_diag_flat_to_60_deg_down(paint_session * session, uin
 
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_60_deg_down[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4289,7 +4289,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_flat(paint_session * session, uin
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_down_to_flat[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4311,7 +4311,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_flat(paint_session * session, uin
 
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_60_deg_down_to_flat[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -4425,7 +4425,7 @@ static void junior_rc_diag_flat_to_left_bank_paint_setup(paint_session * session
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_left_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4451,7 +4451,7 @@ static void junior_rc_diag_flat_to_right_bank_paint_setup(paint_session * sessio
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_flat_to_right_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4477,7 +4477,7 @@ static void junior_rc_diag_left_bank_to_flat_paint_setup(paint_session * session
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_left_bank_to_flat, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4503,7 +4503,7 @@ static void junior_rc_diag_right_bank_to_flat_paint_setup(paint_session * sessio
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_right_bank_to_flat, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4529,7 +4529,7 @@ static void junior_rc_diag_left_bank_to_25_deg_up_paint_setup(paint_session * se
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_left_bank_to_25_deg_up, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4554,7 +4554,7 @@ static void junior_rc_diag_right_bank_to_25_deg_up_paint_setup(paint_session * s
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_right_bank_to_25_deg_up, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4579,7 +4579,7 @@ static void junior_rc_diag_25_deg_up_to_left_bank_paint_setup(paint_session * se
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_up_to_left_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4604,7 +4604,7 @@ static void junior_rc_diag_25_deg_up_to_right_bank_paint_setup(paint_session * s
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_up_to_right_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4629,7 +4629,7 @@ static void junior_rc_diag_left_bank_to_25_deg_down_paint_setup(paint_session * 
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_left_bank_to_25_deg_down, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4654,7 +4654,7 @@ static void junior_rc_diag_right_bank_to_25_deg_down_paint_setup(paint_session *
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_right_bank_to_25_deg_down, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -4679,7 +4679,7 @@ static void junior_rc_diag_25_deg_down_to_left_bank_paint_setup(paint_session * 
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_down_to_left_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 0 && trackSequence == 1)
     {
@@ -4704,7 +4704,7 @@ static void junior_rc_diag_25_deg_down_to_right_bank_paint_setup(paint_session *
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_down_to_right_bank, defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (direction == 2 && trackSequence == 2)
     {
@@ -5029,7 +5029,7 @@ void junior_rc_paint_track_diag_60_deg_up(paint_session * session, uint8 rideInd
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_60_deg_up[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -5047,7 +5047,7 @@ void junior_rc_paint_track_diag_60_deg_down(paint_session * session, uint8 rideI
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_60_deg_down[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -5066,7 +5066,7 @@ void junior_rc_paint_track_diag_25_deg_up_to_60_deg_up(paint_session * session, 
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_25_deg_up_to_60_deg_up[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {
@@ -5094,7 +5094,7 @@ void junior_rc_paint_track_diag_60_deg_up_to_25_deg_up(paint_session * session, 
     {
         track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                           junior_rc_track_pieces_diag_60_deg_up_to_25_deg_up[chainType], defaultDiagTileOffsets,
-                                          defaultDiagBoundLengths, 0, get_current_rotation());
+                                          defaultDiagBoundLengths, nullptr, get_current_rotation());
     }
 
     if (trackSequence == 3)
@@ -5123,7 +5123,7 @@ void junior_rc_paint_track_diag_25_deg_down_to_60_deg_down(paint_session * sessi
     {
         track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                           junior_rc_track_pieces_diag_25_deg_down_to_60_deg_down[chainType],
-                                          defaultDiagTileOffsets, defaultDiagBoundLengths, 0, get_current_rotation());
+                                          defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr, get_current_rotation());
     }
 
     if (trackSequence == 3)
@@ -5143,7 +5143,7 @@ void junior_rc_paint_track_diag_60_deg_down_to_25_deg_down(paint_session * sessi
 {
     track_paint_util_diag_tiles_paint(session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
                                       junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[chainType], defaultDiagTileOffsets,
-                                      defaultDiagBoundLengths, 0, get_current_rotation());
+                                      defaultDiagBoundLengths, nullptr, get_current_rotation());
 
     if (trackSequence == 3)
     {

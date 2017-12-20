@@ -2116,7 +2116,7 @@ bool peep_pickup_place(rct_peep * peep, sint32 x, sint32 y, sint32 z, bool apply
             peep_update_current_action_sprite_type(peep);
         }
 
-        network_set_pickup_peep(game_command_playerid, 0);
+        network_set_pickup_peep(game_command_playerid, nullptr);
     }
 
     return true;
@@ -2170,7 +2170,7 @@ bool peep_pickup_command(uint32 peepnum, sint32 x, sint32 y, sint32 z, sint32 ac
         if (apply)
         {
             peep_pickup_abort(network_get_pickup_peep(game_command_playerid), x);
-            network_set_pickup_peep(game_command_playerid, 0);
+            network_set_pickup_peep(game_command_playerid, nullptr);
         }
         break;
     case 2: // place

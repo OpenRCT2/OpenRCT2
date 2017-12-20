@@ -82,10 +82,10 @@ uint8 gUnk141F568;
 
 uint32 gCurrentTicks;
 
-GAME_COMMAND_CALLBACK_POINTER * game_command_callback = 0;
+GAME_COMMAND_CALLBACK_POINTER * game_command_callback = nullptr;
 static GAME_COMMAND_CALLBACK_POINTER * const game_command_callback_table[] = {
-    0,
-    0,
+    nullptr,
+    nullptr,
     game_command_callback_ride_construct_placed_front,
     game_command_callback_ride_construct_placed_back,
     game_command_callback_ride_remove_track_piece,
@@ -121,7 +121,7 @@ GAME_COMMAND_CALLBACK_POINTER * game_command_callback_get_callback(uint32 index)
     {
         return game_command_callback_table[index];
     }
-    return 0;
+    return nullptr;
 }
 
 void game_increase_game_speed()
@@ -661,7 +661,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
                     if (network_get_mode() == NETWORK_MODE_CLIENT)
                     {
                         // Client sent the command to the server, do not run it locally, just return.  It will run when server sends it.
-                        game_command_callback = 0;
+                        game_command_callback = nullptr;
                         // Decrement nest count
                         gGameCommandNestLevel--;
                         return cost;
@@ -678,7 +678,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
                 if (game_command_callback && !(flags & GAME_COMMAND_FLAG_GHOST))
                 {
                     game_command_callback(*eax, *ebx, *ecx, *edx, *esi, *edi, *ebp);
-                    game_command_callback = 0;
+                    game_command_callback = nullptr;
                 }
             }
 
@@ -727,7 +727,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
     gGameCommandNestLevel--;
 
     // Clear the game command callback to prevent the next command triggering it
-    game_command_callback = 0;
+    game_command_callback = nullptr;
 
     // Show error window
     if (gGameCommandNestLevel == 0 && (flags & GAME_COMMAND_FLAG_APPLY) && gUnk141F568 == gUnk13CA740 && !(flags & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(flags & GAME_COMMAND_FLAG_NETWORKED))
