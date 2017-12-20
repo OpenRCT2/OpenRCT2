@@ -90,9 +90,9 @@ void news_item_init_queue()
     news_item_get(11)->Type = NEWS_ITEM_NULL;
 
     // Throttles for warning types (PEEP_*_WARNING)
-    for (uint32 i = 0; i < Util::CountOf(gPeepWarningThrottle); i++)
+    for (auto &warningThrottle : gPeepWarningThrottle)
     {
-        gPeepWarningThrottle[i] = 0;
+        warningThrottle = 0;
     }
 
     auto intent = Intent(INTENT_ACTION_INVALIDATE_TICKER_NEWS);

@@ -77,9 +77,9 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->scream_sound_id        = 0xFF;
     current->vehicle_sprite_type    = 0;
     current->bank_rotation          = 0;
-    for (sint32 j = 0; j < 32; j++)
+    for (auto &peep : current->peep)
     {
-        current->peep[j] = SPRITE_INDEX_NULL;
+        peep = SPRITE_INDEX_NULL;
     }
     current->var_CD           = 0;
     current->sprite_direction = direction << 3;

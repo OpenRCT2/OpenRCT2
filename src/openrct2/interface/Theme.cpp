@@ -234,12 +234,11 @@ static const PredefinedTheme PredefinedThemes[] = {
 
 static const WindowThemeDesc * GetWindowThemeDescriptor(rct_windowclass windowClass)
 {
-    for (size_t i = 0; i < Util::CountOf(WindowThemeDescriptors); i++)
+    for (const auto &desc : WindowThemeDescriptors)
     {
-        const WindowThemeDesc * desc = &WindowThemeDescriptors[i];
-        if (desc->WindowClass == windowClass)
+        if (desc.WindowClass == windowClass)
         {
-            return desc;
+            return &desc;
         }
     }
     return nullptr;
@@ -247,12 +246,11 @@ static const WindowThemeDesc * GetWindowThemeDescriptor(rct_windowclass windowCl
 
 static const WindowThemeDesc * GetWindowThemeDescriptor(const utf8 * windowClassSZ)
 {
-    for (size_t i = 0; i < Util::CountOf(WindowThemeDescriptors); i++)
+    for (const auto &desc : WindowThemeDescriptors)
     {
-        const WindowThemeDesc * desc = &WindowThemeDescriptors[i];
-        if (String::Equals(desc->WindowClassSZ, windowClassSZ))
+        if (String::Equals(desc.WindowClassSZ, windowClassSZ))
         {
-            return desc;
+            return &desc;
         }
     }
     return nullptr;

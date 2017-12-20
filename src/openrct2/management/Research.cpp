@@ -242,9 +242,9 @@ void research_finish_item(uint32 entryIndex)
                         continue;
                     }
 
-                    for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                    for (auto rideType : rideEntry2->ride_type)
                     {
-                        if (rideEntry2->ride_type[j] == base_ride_type)
+                        if (rideType == base_ride_type)
                         {
                             ride_entry_set_invented(i);
                             break;
@@ -413,19 +413,19 @@ void research_reset_current_item()
         ebp->category = cat;
     }
 
-    for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_TYPES; ++i)
+    for (auto &researchedRideType : gResearchedRideTypes)
     {
-        gResearchedRideTypes[i] = 0;
+        researchedRideType = 0;
     }
 
-    for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_ENTRIES; ++i)
+    for (auto &researchedRideEntry : gResearchedRideEntries)
     {
-        gResearchedRideEntries[i] = 0;
+        researchedRideEntry = 0;
     }
 
-    for (sint32 i = 0; i < MAX_RESEARCHED_SCENERY_ITEMS; i++)
+    for (auto &researchedSceneryItem : gResearchedSceneryItems)
     {
-        gResearchedSceneryItems[i] = 0xFFFFFFFF;
+        researchedSceneryItem = 0xFFFFFFFF;
     }
 
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
@@ -634,9 +634,8 @@ void research_populate_list_random()
         }
 
         sint32 researched = (scenario_rand() & 0xFF) > 128;
-        for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+        for (auto rideType : rideEntry->ride_type)
         {
-            sint32 rideType = rideEntry->ride_type[j];
             if (rideType != RIDE_TYPE_NULL)
             {
                 research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
@@ -669,9 +668,8 @@ void research_populate_list_researched()
             continue;
         }
 
-        for (sint32 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+        for (auto rideType : rideEntry->ride_type)
         {
-            sint32 rideType = rideEntry->ride_type[j];
             if (rideType != RIDE_TYPE_NULL)
             {
                 research_insert(true, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | i, rideEntry->category[0]);
@@ -742,9 +740,8 @@ void research_insert_ride_entry(uint8 entryIndex, bool researched)
 {
     rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
     uint8 category = rideEntry->category[0];
-    for (sint32 i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto rideType : rideEntry->ride_type)
     {
-        uint8 rideType = rideEntry->ride_type[i];
         if (rideType != RIDE_TYPE_NULL)
         {
             research_insert(researched, RESEARCH_ENTRY_RIDE_MASK | (rideType << 8) | entryIndex, category);
@@ -828,23 +825,23 @@ bool scenery_group_is_invented(sint32 sgIndex)
 
 void reset_researched_scenery_items()
 {
-    for (sint32 i = 0; i < MAX_RESEARCHED_SCENERY_ITEMS; i++)
+    for (auto &researchedSceneryItem : gResearchedSceneryItems)
     {
-        gResearchedSceneryItems[i] = 0xFFFFFFFF;
+        researchedSceneryItem = 0xFFFFFFFF;
     }
 }
 
 void reset_researched_ride_types_and_entries()
 {
     // Iteration endpoint used to be 4 for unknown reasons, likely a mistake
-    for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_TYPES; i++)
+    for (auto &researchedRideType : gResearchedRideTypes)
     {
-        gResearchedRideTypes[i] = 0xFFFFFFFF;
+        researchedRideType = 0xFFFFFFFF;
     }
 
-    for (sint32 i = 0; i < MAX_RESEARCHED_RIDE_ENTRIES; i++)
+    for (auto &researchedRideEntry : gResearchedRideEntries)
     {
-        gResearchedRideEntries[i] = 0xFFFFFFFF;
+        researchedRideEntry = 0xFFFFFFFF;
     }
 }
 

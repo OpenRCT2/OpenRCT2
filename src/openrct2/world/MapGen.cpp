@@ -498,9 +498,9 @@ static uint8 perm[512];
 
 static void noise_rand()
 {
-    for (uint32 i = 0; i < Util::CountOf(perm); i++)
+    for (auto &i : perm)
     {
-        perm[i] = util_rand() & 0xFF;
+        i = util_rand() & 0xFF;
     }
 }
 

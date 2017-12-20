@@ -306,15 +306,14 @@ void audio_start_title_music()
 
 void audio_stop_ride_music()
 {
-    for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++)
+    for (auto &rideMusic : gRideMusicList)
     {
-        rct_ride_music * rideMusic = &gRideMusicList[i];
-        if (rideMusic->ride_id != RIDE_ID_NULL)
+        if (rideMusic.ride_id != RIDE_ID_NULL)
         {
-            rideMusic->ride_id = RIDE_ID_NULL;
-            if (rideMusic->sound_channel != nullptr)
+            rideMusic.ride_id = RIDE_ID_NULL;
+            if (rideMusic.sound_channel != nullptr)
             {
-                Mixer_Stop_Channel(rideMusic->sound_channel);
+                Mixer_Stop_Channel(rideMusic.sound_channel);
             }
         }
     }
@@ -352,9 +351,8 @@ void audio_init_ride_sounds_and_info()
     sint32 deviceNum = 0;
     audio_init_ride_sounds(deviceNum);
 
-    for (size_t m = 0; m < Util::CountOf(gRideMusicInfoList); m++)
+    for (auto * rideMusicInfo : gRideMusicInfoList)
     {
-        rct_ride_music_info * rideMusicInfo = gRideMusicInfoList[m];
         const utf8 * path = context_get_path_legacy(rideMusicInfo->path_id);
         if (File::Exists(path))
         {
@@ -382,18 +380,16 @@ void audio_init_ride_sounds_and_info()
 void audio_init_ride_sounds(sint32 device)
 {
     audio_close();
-    for (sint32 i = 0; i < AUDIO_MAX_VEHICLE_SOUNDS; i++)
+    for (auto &vehicleSound : gVehicleSoundList)
     {
-        rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        vehicleSound->id = SOUND_ID_NULL;
+        vehicleSound.id = SOUND_ID_NULL;
     }
 
     gAudioCurrentDevice = device;
     config_save_default();
-    for (sint32 i = 0; i < AUDIO_MAX_RIDE_MUSIC; i++)
+    for (auto &rideMusic : gRideMusicList)
     {
-        rct_ride_music * rideMusic = &gRideMusicList[i];
-        rideMusic->ride_id = RIDE_ID_NULL;
+        rideMusic.ride_id = RIDE_ID_NULL;
     }
 }
 
@@ -441,19 +437,18 @@ void audio_stop_vehicle_sounds()
         return;
     }
 
-    for (size_t i = 0; i < Util::CountOf(gVehicleSoundList); i++)
+    for (auto &vehicleSound : gVehicleSoundList)
     {
-        rct_vehicle_sound * vehicleSound = &gVehicleSoundList[i];
-        if (vehicleSound->id != SOUND_ID_NULL)
+        if (vehicleSound.id != SOUND_ID_NULL)
         {
-            vehicleSound->id = SOUND_ID_NULL;
-            if (vehicleSound->sound1_id != SOUND_ID_NULL)
+            vehicleSound.id = SOUND_ID_NULL;
+            if (vehicleSound.sound1_id != SOUND_ID_NULL)
             {
-                Mixer_Stop_Channel(vehicleSound->sound1_channel);
+                Mixer_Stop_Channel(vehicleSound.sound1_channel);
             }
-            if (vehicleSound->sound2_id != SOUND_ID_NULL)
+            if (vehicleSound.sound2_id != SOUND_ID_NULL)
             {
-                Mixer_Stop_Channel(vehicleSound->sound2_channel);
+                Mixer_Stop_Channel(vehicleSound.sound2_channel);
             }
         }
     }

@@ -1260,9 +1260,9 @@ private:
 
     void FixVehiclePeepLinks(rct_vehicle * vehicle, const uint16 * spriteIndexMap)
     {
-        for (int i = 0; i < 32; i++)
+        for (auto &peep : vehicle->peep)
         {
-            vehicle->peep[i] = MapSpriteIndex(vehicle->peep[i], spriteIndexMap);
+            peep = MapSpriteIndex(peep, spriteIndexMap);
         }
     }
 
@@ -1506,9 +1506,9 @@ private:
 
     void FixRidePeepLinks(Ride * ride, const uint16 * spriteIndexMap)
     {
-        for (sint32 i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+        for (auto &peep : ride->last_peep_in_queue)
         {
-            ride->last_peep_in_queue[i] = MapSpriteIndex(ride->last_peep_in_queue[i], spriteIndexMap);
+            peep = MapSpriteIndex(peep, spriteIndexMap);
         }
         ride->mechanic = MapSpriteIndex(ride->mechanic, spriteIndexMap);
         if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
@@ -1565,12 +1565,11 @@ private:
 
     void ImportLitter()
     {
-
-        for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
+        for (auto &sprite : _s4.sprites)
         {
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_LITTER)
             {
-                rct_litter * srcLitter = &_s4.sprites[i].litter;
+                rct_litter * srcLitter = &sprite.litter;
 
                 rct_litter * litter = (rct_litter *) create_sprite(SPRITE_IDENTIFIER_LITTER);
                 move_sprite_to_list((rct_sprite *) litter, SPRITE_LIST_LITTER * 2);
@@ -1594,11 +1593,11 @@ private:
 
     void ImportMiscSprites()
     {
-        for (size_t i = 0; i < RCT1_MAX_SPRITES; i++)
+        for (auto &sprite : _s4.sprites)
         {
-            if (_s4.sprites[i].unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
+            if (sprite.unknown.sprite_identifier == SPRITE_IDENTIFIER_MISC)
             {
-                rct1_unk_sprite * src = &_s4.sprites[i].unknown;
+                rct1_unk_sprite * src = &sprite.unknown;
                 rct_unk_sprite * dst = (rct_unk_sprite *) create_sprite(SPRITE_IDENTIFIER_MISC);
                 move_sprite_to_list((rct_sprite *) dst, SPRITE_LIST_MISC * 2);
 

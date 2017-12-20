@@ -297,11 +297,11 @@ namespace Editor
         map_remove_all_rides();
 
         //
-        for (sint32 i = 0; i < MAX_BANNERS; i++)
+        for (auto &banner : gBanners)
         {
-            if (gBanners[i].type == 255)
+            if (banner.type == 255)
             {
-                gBanners[i].flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
+                banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
             }
         }
 
@@ -551,17 +551,17 @@ namespace Editor
             }
         }
 
-        for (sint32 i = 0; i < MAX_PARK_ENTRANCES; i++)
+        for (const auto &parkEntrance : gParkEntrances)
         {
-            if (gParkEntrances[i].x == LOCATION_NULL)
+            if (parkEntrance.x == LOCATION_NULL)
             {
                 continue;
             }
 
-            sint32 x         = gParkEntrances[i].x;
-            sint32 y         = gParkEntrances[i].y;
-            sint32 z         = gParkEntrances[i].z / 8;
-            sint32 direction = gParkEntrances[i].direction ^2;
+            sint32 x         = parkEntrance.x;
+            sint32 y         = parkEntrance.y;
+            sint32 z         = parkEntrance.z / 8;
+            sint32 direction = parkEntrance.direction ^ 2;
 
             switch (footpath_is_connected_to_map_edge(x, y, z, direction, 0))
             {

@@ -10361,12 +10361,12 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                 bool pathLoop = false;
                 /* Check the peep->pathfind_history to see if this junction has
                  * already been visited by the peep while heading for this goal. */
-                for (sint32 i = 0; i < 4; ++i)
+                for (auto &pathfindHistory : peep->pathfind_history)
                 {
-                    if (peep->pathfind_history[i].x == x >> 5 && peep->pathfind_history[i].y == y >> 5 &&
-                        peep->pathfind_history[i].z == z)
+                    if (pathfindHistory.x == x >> 5 && pathfindHistory.y == y >> 5 &&
+                        pathfindHistory.z == z)
                     {
-                        if (peep->pathfind_history[i].direction == 0)
+                        if (pathfindHistory.direction == 0)
                         {
                             /* If all directions have already been tried while
                              * heading to this goal, this is a loop. */
@@ -10377,7 +10377,7 @@ static void peep_pathfind_heuristic_search(sint16 x, sint16 y, uint8 z, rct_peep
                             /* The peep remembers walking through this junction
                              * before, but has not yet tried all directions.
                              * Limit the edges to search to those not yet tried. */
-                            edges &= peep->pathfind_history[i].direction;
+                            edges &= pathfindHistory.direction;
                         }
                         break;
                     }
@@ -10633,10 +10633,10 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
         /* If the peep remembers walking through this junction
          * previously while heading for its goal, retrieve the
          * directions it has not yet tried. */
-        for (sint32 i = 0; i < 4; ++i)
+        for (auto &pathfindHistory : peep->pathfind_history)
         {
-            if (peep->pathfind_history[i].x == x / 32 && peep->pathfind_history[i].y == y / 32 &&
-                peep->pathfind_history[i].z == z)
+            if (pathfindHistory.x == x / 32 && pathfindHistory.y == y / 32 &&
+                pathfindHistory.z == z)
             {
 
                 /* Fix broken pathfind_history[i].direction
@@ -10645,9 +10645,9 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
                  * changes or in earlier code .directions was
                  * initialised to 0xF rather than the permitted
                  * edges. */
-                peep->pathfind_history[i].direction &= permitted_edges;
+                pathfindHistory.direction &= permitted_edges;
 
-                edges = peep->pathfind_history[i].direction;
+                edges = pathfindHistory.direction;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                 if (gPathFindDebug)
@@ -10668,8 +10668,8 @@ sint32 peep_pathfind_choose_direction(sint16 x, sint16 y, uint8 z, rct_peep * pe
                      * the paths or the pathfinding itself
                      * has changed (been fixed) since
                      * the game was saved. */
-                    peep->pathfind_history[i].direction = permitted_edges;
-                    edges                               = peep->pathfind_history[i].direction;
+                    pathfindHistory.direction = permitted_edges;
+                    edges                     = pathfindHistory.direction;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
                     if (gPathFindDebug)
@@ -13491,9 +13491,9 @@ static void peep_pick_ride_to_go_on(rct_peep * peep)
     if (peep->x == LOCATION_NULL)
         return;
 
-    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++)
+    for (auto &rideConsideration : _peepRideConsideration)
     {
-        _peepRideConsideration[i] = 0;
+        rideConsideration = 0;
     }
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
@@ -13632,9 +13632,9 @@ static void peep_head_for_nearest_ride_type(rct_peep * peep, sint32 rideType)
         }
     }
 
-    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++)
+    for (auto &rideConsideration : _peepRideConsideration)
     {
-        _peepRideConsideration[i] = 0;
+        rideConsideration = 0;
     }
 
     // FIX Originally checked for a toy,.likely a mistake and should be a map
@@ -13764,9 +13764,9 @@ static void peep_head_for_nearest_ride_with_flags(rct_peep * peep, sint32 rideTy
         return;
     }
 
-    for (uint32 i = 0; i < Util::CountOf(_peepRideConsideration); i++)
+    for (auto &rideConsideration : _peepRideConsideration)
     {
-        _peepRideConsideration[i] = 0;
+        rideConsideration = 0;
     }
 
     // FIX Originally checked for a toy,.likely a mistake and should be a map
