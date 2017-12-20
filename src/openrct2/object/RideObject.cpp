@@ -21,10 +21,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../OpenRCT2.h"
-#include "ObjectRepository.h"
-#include "RideObject.h"
-
+#include "../core/Util.hpp"
 #include "../ride/RideGroupManager.h"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
@@ -602,6 +599,7 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         }
 
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
+        _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
     }
 
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32>(properties, {
@@ -671,7 +669,12 @@ void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t 
         // More than 1 tail car not supported yet!
     }
 
-    ReadJsonCars(json_object_get(properties, "cars"));
+    auto cars = ReadJsonCars(json_object_get(properties, "cars"));
+    auto numCars = std::min(Util::CountOf(_legacyType.vehicles), cars.size());
+    for (size_t i = 0; i < numCars; i++)
+    {
+        _legacyType.vehicles[i] = cars[i];
+    }
 }
 
 std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(const json_t * jCars)
@@ -693,13 +696,87 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.rotation_frame_mask = ObjectJsonHelpers::GetInteger(jCar, "rotationFrameMask");
     car.spacing = ObjectJsonHelpers::GetInteger(jCar, "spacing");
     car.car_friction = ObjectJsonHelpers::GetInteger(jCar, "friction");
+    car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
     car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
     car.no_seating_rows = ObjectJsonHelpers::GetInteger(jCar, "numSeatRows");
+    car.spinning_inertia = ObjectJsonHelpers::GetInteger(jCar, "spinningInertia");
+    car.spinning_friction = ObjectJsonHelpers::GetInteger(jCar, "spinningFriction");
     car.powered_acceleration = ObjectJsonHelpers::GetInteger(jCar, "poweredAcceleration");
     car.powered_max_speed = ObjectJsonHelpers::GetInteger(jCar, "poweredMaxSpeed");
+    car.car_visual = ObjectJsonHelpers::GetInteger(jCar, "carVisual");
     car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual");
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     return car;
+}
+
+vehicle_colour_preset_list RideObject::ReadJsonCarColours(const json_t * jCarColours)
+{
+    // The JSON supports multiple configurations of per car colours, but
+    // the ride entry structure currently doesn't allow for it. Assume that
+    // a single configuration with multiple colour entries is per car scheme.
+    if (json_array_size(jCarColours) == 1)
+    {
+        auto firstElement = json_array_get(jCarColours, 0);
+        auto numColours = json_array_size(firstElement);
+        if (numColours >= 2)
+        {
+            // Read all colours from first config
+            auto config = ReadJsonColourConfiguration(firstElement);
+            vehicle_colour_preset_list list = { 0 };
+            list.count = 255;
+            std::copy_n(config.data(), std::min<size_t>(numColours, 32), list.list);
+            return list;
+        }
+    }
+
+    // Read first colour for each config
+    vehicle_colour_preset_list list = { 0 };
+    size_t index;
+    const json_t * jConfiguration;
+    json_array_foreach(jCarColours, index, jConfiguration)
+    {
+        auto config = ReadJsonColourConfiguration(jConfiguration);
+        if (config.size() >= 1)
+        {
+            list.list[index] = config[0];
+            list.count++;
+
+            if (list.count == 254)
+            {
+                // Reached maximum number of configurations
+                break;
+            }
+        }
+    }
+    return list;
+}
+
+std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(const json_t * jColourConfig)
+{
+    std::vector<vehicle_colour> config;
+    size_t index;
+    const json_t * jColours;
+    json_array_foreach(jColourConfig, index, jColours)
+    {
+        vehicle_colour carColour = { 0 };
+        auto colours = ObjectJsonHelpers::GetJsonStringArray(jColours);
+        if (colours.size() >= 1)
+        {
+            carColour.main = ParseColour(colours[0]);
+            carColour.additional_1 = carColour.main;
+            carColour.additional_2 = carColour.main;
+            if (colours.size() >= 2)
+            {
+                carColour.additional_1 = ParseColour(colours[1]);
+            }
+            if (colours.size() >= 3)
+            {
+                carColour.additional_2 = ParseColour(colours[2]);
+            }
+        }
+        config.push_back(carColour);
+    }
+    return config;
 }
 
 bool RideObject::IsRideTypeShopOrFacility(uint8 rideType)
@@ -875,4 +952,47 @@ uint8 RideObject::ParseShopItem(const std::string &s)
     return (result != LookupTable.end()) ?
         result->second :
         SHOP_ITEM_NONE;
+}
+
+colour_t RideObject::ParseColour(const std::string &s)
+{
+    static const std::unordered_map<std::string, colour_t> LookupTable
+    {
+        { "black", COLOUR_BLACK },
+        { "grey", COLOUR_GREY },
+        { "white", COLOUR_WHITE },
+        { "dark_purple", COLOUR_DARK_PURPLE },
+        { "light_purple", COLOUR_LIGHT_PURPLE },
+        { "bright_purple", COLOUR_BRIGHT_PURPLE },
+        { "dark_blue", COLOUR_DARK_BLUE },
+        { "light_blue", COLOUR_LIGHT_BLUE },
+        { "icy_blue", COLOUR_ICY_BLUE },
+        { "teal", COLOUR_TEAL },
+        { "aquamarine", COLOUR_AQUAMARINE },
+        { "saturated_green", COLOUR_SATURATED_GREEN },
+        { "dark_green", COLOUR_DARK_GREEN },
+        { "moss_green", COLOUR_MOSS_GREEN },
+        { "bright_green", COLOUR_BRIGHT_GREEN },
+        { "olive_green", COLOUR_OLIVE_GREEN },
+        { "dark_olive_green", COLOUR_DARK_OLIVE_GREEN },
+        { "bright_yellow", COLOUR_BRIGHT_YELLOW },
+        { "yellow", COLOUR_YELLOW },
+        { "dark_yellow", COLOUR_DARK_YELLOW },
+        { "light_orange", COLOUR_LIGHT_ORANGE },
+        { "dark_orange", COLOUR_DARK_ORANGE },
+        { "light_brown", COLOUR_LIGHT_BROWN },
+        { "saturated_brown", COLOUR_SATURATED_BROWN },
+        { "dark_brown", COLOUR_DARK_BROWN },
+        { "salmon_pink", COLOUR_SALMON_PINK },
+        { "bordeaux_red", COLOUR_BORDEAUX_RED },
+        { "saturated_red", COLOUR_SATURATED_RED },
+        { "bright_red", COLOUR_BRIGHT_RED },
+        { "dark_pink", COLOUR_DARK_PINK },
+        { "bright_pink", COLOUR_BRIGHT_PINK },
+        { "light_pink", COLOUR_LIGHT_PINK },
+    };
+    auto result = LookupTable.find(s);
+    return (result != LookupTable.end()) ?
+        result->second :
+        COLOUR_BLACK;
 }

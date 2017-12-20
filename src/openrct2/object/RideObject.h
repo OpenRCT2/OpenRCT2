@@ -53,6 +53,8 @@ private:
     void ReadJsonVehicleInfo(IReadObjectContext * context, const json_t * properties);
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(const json_t * jCars);
     rct_ride_entry_vehicle ReadJsonCar(const json_t * jCar);
+    vehicle_colour_preset_list ReadJsonCarColours(const json_t * jCarColours);
+    std::vector<vehicle_colour> ReadJsonColourConfiguration(const json_t * jColourConfig);
 
     static uint8 CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehicleEntry);
     static uint8 CalculateNumHorizontalFrames(const rct_ride_entry_vehicle * vehicleEntry);
@@ -61,4 +63,5 @@ private:
     static uint8 ParseRideType(const std::string &s);
     static uint8 ParseRideCategory(const std::string &s);
     static uint8 ParseShopItem(const std::string &s);
+    static colour_t ParseColour(const std::string &s);
 };
