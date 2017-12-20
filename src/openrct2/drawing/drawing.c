@@ -555,34 +555,6 @@ void gfx_invalidate_screen()
     gfx_set_dirty_blocks(0, 0, context_get_width(), context_get_height());
 }
 
-/**
- *
- *  rct2: 0x006E7499
- * left (ax)
- * top (bx)
- * right (dx)
- * bottom (bp)
- */
-void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
-{
-    rct_drawpixelinfo windowDPI;
-    windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
-    windowDPI.x = left;
-    windowDPI.y = top;
-    windowDPI.width = right - left;
-    windowDPI.height = bottom - top;
-    windowDPI.pitch = dpi->width + dpi->pitch + left - right;
-    windowDPI.zoom_level = 0;
-
-    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
-        if (w->flags & WF_TRANSPARENT) continue;
-        if (right <= w->x || bottom <= w->y) continue;
-        if (left >= w->x + w->width || top >= w->y + w->height) continue;
-
-        window_draw(&windowDPI, w, left, top, right, bottom);
-    }
-}
-
 /*
 *
 * rct2: 0x006EE53B
