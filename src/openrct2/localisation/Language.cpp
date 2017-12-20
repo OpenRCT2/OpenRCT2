@@ -145,7 +145,7 @@ bool language_open(sint32 id)
         return true;
     }
 
-    return 0;
+    return false;
 }
 
 void language_close_all()

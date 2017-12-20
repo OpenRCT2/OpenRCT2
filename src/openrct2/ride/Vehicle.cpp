@@ -994,7 +994,7 @@ void vehicle_sounds_update()
         g_music_tracking_viewport = NULL;
         rct_viewport * viewport   = NULL;
         rct_window *   window     = gWindowNextSlot;
-        while (1)
+        while (true)
         {
             window--;
             if (window < g_window_list)
@@ -6340,7 +6340,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
 
         vehicle_invalidate(vehicle);
 
-        while (1)
+        while (true)
         {
             vehicle->var_35++;
             uint8 direction = vehicle->sprite_direction;
