@@ -1603,7 +1603,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                     if (cost == MONEY32_UNDEFINED)
                     {
                         _trackDesignPlaceCost = cost;
-                        return 0;
+                        return false;
                     }
                     _trackDesignPlaceStateEntranceExitPlaced = true;
                     break;
@@ -1623,7 +1623,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
                 if (cost == MONEY32_UNDEFINED)
                 {
                     _trackDesignPlaceCost = cost;
-                    return 0;
+                    return false;
                 }
                 else
                 {

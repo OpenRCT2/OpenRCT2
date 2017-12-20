@@ -86,11 +86,11 @@ static bool award_is_deserved_most_untidy(sint32 awardType, sint32 activeAwardTy
     sint32 negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_BEAUTIFUL))
-        return 0;
+        return false;
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_STAFF))
-        return 0;
+        return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_TIDY))
-        return 0;
+        return false;
 
     negativeCount = 0;
     FOR_ALL_GUESTS(spriteIndex, peep)
@@ -121,9 +121,9 @@ static bool award_is_deserved_most_tidy(sint32 awardType, sint32 activeAwardType
     sint32 negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
-        return 0;
+        return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-        return 0;
+        return false;
 
     positiveCount = 0;
     negativeCount = 0;
@@ -186,21 +186,21 @@ static bool award_is_deserved_best_rollercoasters(sint32 awardType, sint32 activ
 static bool award_is_deserved_best_value(sint32 awardType, sint32 activeAwardTypes)
 {
     if (activeAwardTypes & (1 << PARK_AWARD_WORST_VALUE))
-        return 0;
+        return false;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-        return 0;
+        return false;
 
     if (gParkFlags & (PARK_FLAGS_NO_MONEY | PARK_FLAGS_PARK_FREE_ENTRY))
-        return 0;
+        return false;
 
     if (gTotalRideValueForMoney < MONEY(10, 00))
-        return 0;
+        return false;
 
     if (park_get_entrance_fee() + MONEY(0, 10) >= gTotalRideValueForMoney / 2)
-        return 0;
+        return false;
 
-    return 1;
+    return true;
 }
 
 /** More than 1/128 of the total guests must be thinking scenic thoughts and fewer than 16 untidy thoughts. */
@@ -212,9 +212,9 @@ static bool award_is_deserved_most_beautiful(sint32 awardType, sint32 activeAwar
     sint32 negativeCount;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
-        return 0;
+        return false;
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-        return 0;
+        return false;
 
     positiveCount = 0;
     negativeCount = 0;
@@ -244,16 +244,16 @@ static bool award_is_deserved_most_beautiful(sint32 awardType, sint32 activeAwar
 static bool award_is_deserved_worst_value(sint32 awardType, sint32 activeAwardTypes)
 {
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
-        return 0;
+        return false;
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        return 0;
+        return false;
 
     money32 parkEntranceFee = park_get_entrance_fee();
     if (parkEntranceFee == MONEY(0, 00))
-        return 0;
+        return false;
     if (parkEntranceFee <= gTotalRideValueForMoney)
-        return 0;
-    return 1;
+        return false;
+    return true;
 }
 
 /** No more than 2 people who think the vandalism is bad and no crashes. */
@@ -274,16 +274,16 @@ static bool award_is_deserved_safest(sint32 awardType, sint32 activeAwardTypes)
     }
 
     if (peepsWhoDislikeVandalism > 2)
-        return 0;
+        return false;
 
     // Check for rides that have crashed maybe?
     FOR_ALL_RIDES(i, ride)
     {
         if (ride->last_crash_type != RIDE_CRASH_TYPE_NONE)
-            return 0;
+            return false;
     }
 
-    return 1;
+    return true;
 }
 
 /** All staff types, at least 20 staff, one staff per 32 peeps. */
@@ -295,7 +295,7 @@ static bool award_is_deserved_best_staff(sint32 awardType, sint32 activeAwardTyp
     sint32 staffTypeFlags;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_UNTIDY))
-        return 0;
+        return false;
 
     peepCount      = 0;
     staffCount     = 0;
@@ -328,7 +328,7 @@ static bool award_is_deserved_best_food(sint32 awardType, sint32 activeAwardType
     rct_peep * peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_WORST_FOOD))
-        return 0;
+        return false;
 
     shops       = 0;
     uniqueShops = 0;
@@ -354,7 +354,7 @@ static bool award_is_deserved_best_food(sint32 awardType, sint32 activeAwardType
     }
 
     if (shops < 7 || uniqueShops < 4 || shops < gNumGuestsInPark / 128)
-        return 0;
+        return false;
 
     // Count hungry peeps
     hungryPeeps = 0;
@@ -381,7 +381,7 @@ static bool award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardTyp
     rct_peep * peep;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_FOOD))
-        return 0;
+        return false;
 
     shops       = 0;
     uniqueShops = 0;
@@ -407,7 +407,7 @@ static bool award_is_deserved_worst_food(sint32 awardType, sint32 activeAwardTyp
     }
 
     if (uniqueShops > 2 || shops > gNumGuestsInPark / 256)
-        return 0;
+        return false;
 
     // Count hungry peeps
     hungryPeeps = 0;
@@ -441,11 +441,11 @@ static bool award_is_deserved_best_restrooms(sint32 awardType, sint32 activeAwar
 
     // At least 4 open restrooms
     if (numRestrooms < 4)
-        return 0;
+        return false;
 
     // At least one open restroom for every 128 guests
     if (numRestrooms < gNumGuestsInPark / 128U)
-        return 0;
+        return false;
 
     // Count number of guests who are thinking they need the restroom
     guestsWhoNeedRestroom = 0;
@@ -468,9 +468,9 @@ static bool award_is_deserved_most_disappointing(sint32 awardType, sint32 active
     Ride * ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_BEST_VALUE))
-        return 0;
+        return false;
     if (gParkRating > 650)
-        return 0;
+        return false;
 
     // Count the number of disappointing rides
     countedRides       = 0;
@@ -531,7 +531,7 @@ static bool award_is_deserved_best_custom_designed_rides(sint32 awardType, sint3
     Ride * ride;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-        return 0;
+        return false;
 
     customDesignedRides = 0;
     FOR_ALL_RIDES(i, ride)
@@ -561,7 +561,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint3
     uint8 mainTrackColour;
 
     if (activeAwardTypes & (1 << PARK_AWARD_MOST_DISAPPOINTING))
-        return 0;
+        return false;
 
     countedRides   = 0;
     colourfulRides = 0;

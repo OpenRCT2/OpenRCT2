@@ -770,31 +770,31 @@ extern "C"
         {
             if ((a->flags & 0x0F) != (b->flags & 0x0F))
             {
-                return 0;
+                return false;
             }
             sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
-                return 0;
+                return false;
             }
         }
         else
         {
             if (a->flags != b->flags)
             {
-                return 0;
+                return false;
             }
             sint32 match = memcmp(a->name, b->name, 8);
             if (match)
             {
-                return 0;
+                return false;
             }
             if (a->checksum != b->checksum)
             {
-                return 0;
+                return false;
             }
         }
-        return 1;
+        return true;
     }
 
     sint32 object_calculate_checksum(const rct_object_entry * entry, const void * data, size_t dataLength)

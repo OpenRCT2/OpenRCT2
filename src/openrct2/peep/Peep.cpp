@@ -1907,7 +1907,7 @@ void peep_update_sprite_type(rct_peep * peep)
         if (x < 0x1FFF && y < 0x1FFF)
         {
             rct_tile_element * tile_element = map_get_first_element_at(x / 32, y / 32);
-            while (1)
+            while (true)
             {
                 if ((peep->z / 8) < tile_element->base_height)
                     break;
@@ -5441,7 +5441,7 @@ static void peep_update_mowing(rct_peep * peep)
         return;
 
     invalidate_sprite_2((rct_sprite *)peep);
-    while (1)
+    while (true)
     {
         sint16 x = 0, y = 0, z, xy_distance;
         if (peep_update_action(&x, &y, &xy_distance, peep))
@@ -9209,7 +9209,7 @@ static sint32 peep_interact_with_path(rct_peep * peep, sint16 x, sint16 y, rct_t
     if (footpath_element_has_path_scenery(tile_element) && (tile_element->flags & TILE_ELEMENT_FLAG_BROKEN) &&
         (tile_element->properties.path.edges & 0xF) != 0xF)
     {
-        vandalism_present = 1;
+        vandalism_present = true;
     }
 
     sint16 z = tile_element->base_height * 8;
@@ -9799,7 +9799,7 @@ static sint32 guest_path_find_aimless(rct_peep * peep, uint8 edges)
         }
     }
 
-    while (1)
+    while (true)
     {
         uint8 direction = peep_rand() & 3;
         // Otherwise go in a random direction allowed from the tile.
@@ -11134,7 +11134,7 @@ static void get_ride_queue_end(sint16 * x, sint16 * y, sint16 * z)
     sint16 baseZ = tileElement->base_height;
     sint16 nextX = *x;
     sint16 nextY = *y;
-    while (1)
+    while (true)
     {
         if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_PATH)
         {
@@ -12128,7 +12128,7 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
     if (peep_has_item(peep, shopItem))
     {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_ALREADY_GOT, shopItem);
-        return 0;
+        return false;
     }
 
     if (shop_item_is_food_or_drink(shopItem))
@@ -12137,40 +12137,40 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
         if ((food = peep_has_food_standard_flag(peep)) != 0)
         {
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food));
-            return 0;
+            return false;
         }
         else if ((food = peep_has_food_extra_flag(peep)) != 0)
         {
             peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HAVENT_FINISHED, bitscanforward(food) + 32);
-            return 0;
+            return false;
         }
         else if (peep->nausea >= 145)
-            return 0;
+            return false;
     }
 
     if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM) || (shopItem == SHOP_ITEM_CANDYFLOSS) ||
         (shopItem == SHOP_ITEM_SUNGLASSES))
     {
         if (gClimateCurrentRainLevel != 0)
-            return 0;
+            return false;
     }
 
     if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM))
     {
         if (gClimateCurrentTemperature < 12)
-            return 0;
+            return false;
     }
 
     if (shop_item_is_food(shopItem) && (peep->hunger > 75))
     {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_HUNGRY, 0xFF);
-        return 0;
+        return false;
     }
 
     if (shop_item_is_drink(shopItem) && (peep->thirst > 75))
     {
         peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_THIRSTY, 0xFF);
-        return 0;
+        return false;
     }
 
     if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrentRainLevel != 0))
@@ -12179,9 +12179,9 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
     if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher)
     {
         if (((peep_rand() & 0x7F) + 0x73) > peep->happiness)
-            return 0;
+            return false;
         else if (peep->no_of_rides < 3)
-            return 0;
+            return false;
     }
 
 loc_69B119:
@@ -12192,12 +12192,12 @@ loc_69B119:
             if (peep->cash_in_pocket == 0)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
-                return 0;
+                return false;
             }
             if (price > peep->cash_in_pocket)
             {
                 peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_AFFORD, shopItem);
-                return 0;
+                return false;
             }
         }
 
@@ -12230,7 +12230,7 @@ loc_69B119:
                 uint8 thought_type = (shopItem >= 32 ? (PEEP_THOUGHT_TYPE_PHOTO2_MUCH + (shopItem - 32))
                                                      : (PEEP_THOUGHT_TYPE_BALLOON_MUCH + shopItem));
                 peep_insert_new_thought(peep, thought_type, rideIndex);
-                return 0;
+                return false;
             }
         }
         else
@@ -12375,7 +12375,7 @@ loc_69B221:
     ride->total_customers++;
     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 
-    return 1;
+    return true;
 }
 
 /**

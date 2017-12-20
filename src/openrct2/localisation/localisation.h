@@ -151,13 +151,13 @@ static inline void set_format_arg_body(uint8 *args, size_t offset, uintptr_t val
 
 #define set_format_arg(offset, type, value) \
     do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
-    set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
+    set_format_arg_body(gCommonFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (false)
 
 #define set_format_arg_on(args, offset, type, value) \
     set_format_arg_body(args, offset, (uintptr_t)value, sizeof(type))
 
 #define set_map_tooltip_format_arg(offset, type, value) \
     do { static_assert(sizeof(type) <= sizeof(uintptr_t), "Type too large"); \
-    set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (0)
+    set_format_arg_body(gMapTooltipFormatArgs, offset, (uintptr_t)value, sizeof(type)); } while (false)
 
 #endif
