@@ -223,17 +223,11 @@ AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *
 
     uint8 rotation = get_current_rotation();
     LocationXY16 pos2 = coordinate_3d_to_2d(location, rotation);
-    rct_window * window = gWindowNextSlot;
-    while (true)
-    {
-        window--;
-        if (window < g_window_list)
-        {
-            break;
-        }
 
-        rct_viewport * viewport = window->viewport;
-        if (viewport != nullptr && (viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+    rct_viewport * viewport = nullptr;
+    while ((viewport = window_get_previous_viewport(viewport)) != nullptr)
+    {
+        if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
         {
             sint16 vy = pos2.y - viewport->view_y;
             sint16 vx = pos2.x - viewport->view_x;

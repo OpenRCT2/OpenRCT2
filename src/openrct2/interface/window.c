@@ -830,14 +830,13 @@ void window_close_top()
  */
 void window_close_all()
 {
-    rct_window* w;
-
     window_close_by_class(WC_DROPDOWN);
 
-    for (w = g_window_list; w <= RCT2_LAST_WINDOW; w++) {
-        if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
+    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    {
+        if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+        {
             window_close(w);
-            w = g_window_list;
         }
     }
 }
@@ -852,6 +851,17 @@ void window_close_all_except_class(rct_windowclass cls)
         if (w->classification != cls && !(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT))) {
             window_close(w);
             w = g_window_list;
+        }
+    }
+}
+
+void window_close_all_except_flags(uint16 flags)
+{
+    for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
+    {
+        if (!(w->flags & flags))
+        {
+            window_close(w);
         }
     }
 }
@@ -2581,4 +2591,69 @@ bool window_is_visible(rct_window* w)
     w->visibility = VC_VISIBLE;
     w->viewport->visibility = VC_VISIBLE;
     return true;
+}
+
+/**
+ *
+ *  rct2: 0x006E7499
+ * left (ax)
+ * top (bx)
+ * right (dx)
+ * bottom (bp)
+ */
+void window_draw_all(rct_drawpixelinfo *dpi, sint16 left, sint16 top, sint16 right, sint16 bottom)
+{
+    rct_drawpixelinfo windowDPI;
+    windowDPI.bits = dpi->bits + left + ((dpi->width + dpi->pitch) * top);
+    windowDPI.x = left;
+    windowDPI.y = top;
+    windowDPI.width = right - left;
+    windowDPI.height = bottom - top;
+    windowDPI.pitch = dpi->width + dpi->pitch + left - right;
+    windowDPI.zoom_level = 0;
+
+    for (rct_window *w = g_window_list; w < gWindowNextSlot; w++) {
+        if (w->flags & WF_TRANSPARENT) continue;
+        if (right <= w->x || bottom <= w->y) continue;
+        if (left >= w->x + w->width || top >= w->y + w->height) continue;
+
+        window_draw(&windowDPI, w, left, top, right, bottom);
+    }
+}
+
+rct_viewport * window_get_previous_viewport(rct_viewport * current)
+{
+    bool foundPrevious = (current == NULL);
+    rct_window * window = gWindowNextSlot;
+
+    if (window == NULL)
+    {
+        return NULL;
+    }
+
+    while (true)
+    {
+        window--;
+        if (window < g_window_list)
+        {
+            break;
+        }
+
+        if (window->viewport == NULL)
+        {
+            continue;
+        }
+
+        if (foundPrevious)
+        {
+            return window->viewport;
+        }
+
+        if (window->viewport == current)
+        {
+            foundPrevious = true;
+        }
+    }
+
+    return NULL;
 }

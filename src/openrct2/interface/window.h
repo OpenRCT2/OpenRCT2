@@ -656,6 +656,7 @@ void window_close_by_number(rct_windowclass cls, rct_windownumber number);
 void window_close_top();
 void window_close_all();
 void window_close_all_except_class(rct_windowclass cls);
+void window_close_all_except_flags(uint16 flags);
 rct_window *window_find_by_class(rct_windowclass cls);
 rct_window *window_find_by_number(rct_windowclass cls, rct_windownumber number);
 rct_window *window_find_from_point(sint32 x, sint32 y);
@@ -772,6 +773,8 @@ void window_update_textbox();
 bool window_is_visible(rct_window* w);
 
 bool scenery_tool_is_active();
+
+rct_viewport * window_get_previous_viewport(rct_viewport * current);
 
 //Cheat: in-game land ownership editor
 void toggle_ingame_land_ownership_editor();
