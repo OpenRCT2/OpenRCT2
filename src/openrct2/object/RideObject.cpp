@@ -19,6 +19,7 @@
 #include <algorithm>
 #include <unordered_map>
 #include "../core/IStream.hpp"
+#include "../core/Math.hpp"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/Util.hpp"
@@ -34,14 +35,6 @@
 #include "RideObject.h"
 
 using namespace OpenRCT2;
-
-RideObject::~RideObject()
-{
-    for (auto &peepLoadingPosition : _peepLoadingPositions)
-    {
-        Memory::Free(peepLoadingPosition);
-    }
-}
 
 void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {
@@ -105,8 +98,10 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
         {
             numPeepLoadingPositions = stream->ReadValue<uint16>();
         }
-        _peepLoadingPositions[i] = stream->ReadArray<sint8>(numPeepLoadingPositions);
-        _peepLoadingPositionsCount[i] = numPeepLoadingPositions;
+
+        auto data = stream->ReadArray<sint8>(numPeepLoadingPositions);
+        _peepLoadingPositions[i] = std::vector<sint8>(data, data + numPeepLoadingPositions);
+        Memory::Free(data);
     }
 
     GetImageTable().Read(context, stream);
@@ -288,8 +283,8 @@ void RideObject::Load()
                     set_vehicle_type_image_max_sizes(vehicleEntry, num_images);
                 }
             }
-            vehicleEntry->peep_loading_positions = _peepLoadingPositions[i];
-            vehicleEntry->peep_loading_positions_count = _peepLoadingPositionsCount[i];
+            vehicleEntry->peep_loading_positions = _peepLoadingPositions[i].data();
+            vehicleEntry->peep_loading_positions_count = (uint16)_peepLoadingPositions[i].size();
         }
     }
 }
@@ -600,6 +595,38 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
 
         auto availableTrackPieces = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "availableTrackPieces"));
         _presetColours = ReadJsonCarColours(json_object_get(properties, "carColours"));
+
+
+        // Get loading positions
+        auto loadingPositions = json_object_get(properties, "loadingPositions");
+        auto numLoadingPositions = std::min<size_t>(json_array_size(loadingPositions), 4);
+        for (size_t i = 0; i < numLoadingPositions; i++)
+        {
+            auto positions = json_array_get(loadingPositions, i);
+            auto numPositions = json_array_size(positions);
+            if (numPositions > 0 && numPositions <= std::numeric_limits<uint16>::max())
+            {
+                std::vector<sint8> positionData;
+                if (numPositions < 255)
+                {
+                    positionData.push_back(static_cast<sint8>(numPositions));
+                }
+                else
+                {
+                    positionData.push_back(-1);
+                    positionData.push_back(static_cast<sint8>(numPositions & 0xFF));
+                    positionData.push_back(static_cast<sint8>(numPositions >> 8));
+                }
+
+                for (size_t j = 0; j < numPositions; j++)
+                {
+                    auto pos = json_integer_value(json_array_get(positions, j));
+                    pos = Math::Clamp<sint64>(std::numeric_limits<sint8>::min(), pos, std::numeric_limits<sint8>::max());
+                    positionData.push_back(pos);
+                }
+                _peepLoadingPositions[i] = std::move(positionData);
+            }
+        }
     }
 
     _legacyType.flags |= ObjectJsonHelpers::GetFlags<uint32>(properties, {
