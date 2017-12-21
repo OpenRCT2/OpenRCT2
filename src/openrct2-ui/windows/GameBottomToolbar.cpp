@@ -130,7 +130,7 @@ rct_window * window_game_bottom_toolbar_open()
     sint32 screenHeight = context_get_height();
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     rct_window * window = window_create(
         0,
@@ -255,7 +255,7 @@ static void window_game_bottom_toolbar_tooltip(rct_window* w, rct_widgetindex wi
 static void window_game_bottom_toolbar_invalidate(rct_window *w)
 {
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
     w->height = line_height * 3 + 2;
@@ -447,7 +447,7 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     sint32 y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
@@ -546,7 +546,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     );
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Temperature
     x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
@@ -699,7 +699,7 @@ static void window_game_bottom_toolbar_draw_middle_panel(rct_drawpixelinfo *dpi,
     );
 
     // Figure out how much line height we have to work with.
-    uint32 line_height = font_get_line_height(gCurrentFontSpriteBase);
+    uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     sint32 x = w->x + (middleOutsetWidget->left + middleOutsetWidget->right) / 2;
     sint32 y = w->y + middleOutsetWidget->top + line_height + 1;
