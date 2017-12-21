@@ -270,10 +270,9 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         w->widgets[WIDX_MONEY].type         = WWT_EMPTY;
-        w->widgets[WIDX_MONEY].bottom       = w->widgets[WIDX_MONEY].top + line_height;
         w->widgets[WIDX_GUESTS].top         = 1;
-        w->widgets[WIDX_GUESTS].bottom      = 17;
-        w->widgets[WIDX_PARK_RATING].top    = 18;
+        w->widgets[WIDX_GUESTS].bottom      = line_height + 7;
+        w->widgets[WIDX_PARK_RATING].top    = line_height + 8;
         w->widgets[WIDX_PARK_RATING].bottom = w->height - 1;
     }
     else
