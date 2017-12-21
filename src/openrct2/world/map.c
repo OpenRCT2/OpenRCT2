@@ -3250,7 +3250,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             continue;
         }
         sint32 water_height = map_get_water_height(tile_element) * 2;
-        if (water_height && water_height > zLow && tile_element->base_height < zHigh) {
+        if (water_height && water_height > zLow && tile_element->base_height < zHigh && !gCheatsDisableClearanceChecks) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
                 goto loc_68BAE6;
