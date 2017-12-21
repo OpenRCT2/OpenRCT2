@@ -131,12 +131,13 @@ rct_window * window_game_bottom_toolbar_open()
 
     // Figure out how much line height we have to work with.
     uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
+    uint32 toolbar_height = line_height * 2 + 12;
 
     rct_window * window = window_create(
         0,
-        screenHeight - line_height * 3 + 2,
+        screenHeight - toolbar_height,
         screenWidth,
-        line_height * 3 + 2,
+        toolbar_height,
         &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR,
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND
@@ -258,7 +259,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Reset dimensions as appropriate -- in case we're switching languages.
-    w->height = line_height * 3 + 2;
+    w->height = line_height * 2 + 12;
     w->y = context_get_height() - w->height;
 
     // Change height of widgets in accordance with line height.
