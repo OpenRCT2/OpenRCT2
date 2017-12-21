@@ -1290,7 +1290,7 @@ static money32 track_place(sint32 rideIndex,
             }
         }
 
-        if (gMapGroundFlags & ELEMENT_IS_UNDERWATER)
+        if (gMapGroundFlags & ELEMENT_IS_UNDERWATER && !gCheatsDisableClearanceChecks)
         {
             gGameCommandErrorText = STR_RIDE_CANT_BUILD_THIS_UNDERWATER;
             return MONEY32_UNDEFINED;
