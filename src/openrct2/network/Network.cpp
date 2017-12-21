@@ -1672,7 +1672,12 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
     // Don't keep private key in memory. There's no need and it may get leaked
     // when process dump gets collected at some point in future.
     _key.Unload();
-    Client_Send_AUTH(gConfigNetwork.player_name, "", pubkey.c_str(), signature, sigsize);
+
+    const char* password = String::IsNullOrEmpty(gCustomPassword) ?
+        "" :
+        gCustomPassword;
+    Client_Send_AUTH(gConfigNetwork.player_name, password, pubkey.c_str(), signature, sigsize);
+
     delete [] signature;
 }
 
