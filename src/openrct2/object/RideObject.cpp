@@ -585,6 +585,27 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     {
         ReadJsonVehicleInfo(context, properties);
 
+        auto swingMode = ObjectJsonHelpers::GetInteger(properties, "swingMode");
+        if (swingMode == 1)
+        {
+            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+        }
+        else if (swingMode == 2)
+        {
+            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1;
+            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2;
+        }
+
+        auto rotationMode = ObjectJsonHelpers::GetInteger(properties, "rotationMode");
+        if (rotationMode == 1)
+        {
+            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1;
+        }
+        else if (rotationMode == 2)
+        {
+            _legacyType.flags |= RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2;
+        }
+
         auto ratingMultiplier = json_object_get(properties, "ratingMultipler");
         if (ratingMultiplier != nullptr)
         {
@@ -633,20 +654,16 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
         { "noInversions", RIDE_ENTRY_FLAG_NO_INVERSIONS },
         { "noBanking", RIDE_ENTRY_FLAG_NO_BANKED_TRACK },
         { "playDepartSound", RIDE_ENTRY_FLAG_PLAY_DEPART_SOUND },
-        { "", RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_1 },
-        { "", RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1 },
-        { "", RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2 },
-        { "", RIDE_ENTRY_FLAG_7 },
+        { "RIDE_ENTRY_FLAG_7", RIDE_ENTRY_FLAG_7 },
         { "playSplashSound", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND },
         { "playSplashSoundSlide", RIDE_ENTRY_FLAG_PLAY_SPLASH_SOUND_SLIDE },
         { "hasShelter", RIDE_ENTRY_FLAG_COVERED_RIDE },
         { "limitAirTimeBonus", RIDE_ENTRY_FLAG_LIMIT_AIRTIME_BONUS },
         { "separateRide", RIDE_ENTRY_FLAG_SEPARATE_RIDE },
         { "disableBreakdown", RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN },
-        { "", RIDE_ENTRY_FLAG_16 },
-        { "", RIDE_ENTRY_FLAG_18 },
-        { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB },
-        { "", RIDE_ENTRY_FLAG_ALTERNATIVE_SWING_MODE_2 } });
+        { "RIDE_ENTRY_FLAG_16", RIDE_ENTRY_FLAG_16 },
+        { "RIDE_ENTRY_FLAG_18", RIDE_ENTRY_FLAG_18 },
+        { "disablePainting", RIDE_ENTRY_FLAG_DISABLE_COLOUR_TAB } });
 
     ObjectJsonHelpers::LoadStrings(root, GetStringTable());
     ObjectJsonHelpers::LoadImages(root, GetImageTable());
