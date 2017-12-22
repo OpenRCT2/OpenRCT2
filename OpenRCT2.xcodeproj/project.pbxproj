@@ -45,6 +45,7 @@
 		4C6A66B81FE278C900694CB6 /* Supports.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66B31FE278C900694CB6 /* Supports.cpp */; };
 		4C6A66C11FF9322A00694CB6 /* music_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BD1FF9322A00694CB6 /* music_list.c */; };
 		4C6A66C21FF9322A00694CB6 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BF1FF9322A00694CB6 /* Ride.cpp */; };
+		4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
 		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
 		4C729BC01FC2E1BE001DFF2F /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */; };
@@ -638,6 +639,7 @@
 		4C6A66BE1FF9322A00694CB6 /* music_list.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = music_list.h; sourceTree = "<group>"; };
 		4C6A66BF1FF9322A00694CB6 /* Ride.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Ride.cpp; sourceTree = "<group>"; };
 		4C6A66C01FF9322A00694CB6 /* Ride.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Ride.h; sourceTree = "<group>"; };
+		4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = SSE41Drawing.cpp; sourceTree = "<group>"; };
 		4C6AC20D1F9E1693004324AA /* Station.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Station.cpp; sourceTree = "<group>"; };
 		4C6AC20E1F9E1693004324AA /* Station.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Station.h; sourceTree = "<group>"; };
 		4C6AC2101F9E1CB3004324AA /* CableLift.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = CableLift.cpp; sourceTree = "<group>"; };
@@ -1995,6 +1997,7 @@
 				F76C83AD1EC4E7CC00FA49E2 /* rect.c */,
 				F76C83AE1EC4E7CC00FA49E2 /* scrolling_text.c */,
 				F76C83AF1EC4E7CC00FA49E2 /* Sprite.cpp */,
+				4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */,
 				F76C83B01EC4E7CC00FA49E2 /* string.c */,
 				C651A8D71F30204300443BCA /* Text.cpp */,
 				C651A8D81F30204300443BCA /* Text.h */,
@@ -3099,6 +3102,7 @@
 				C685E5191F8907850090598F /* NewRide.cpp in Sources */,
 				4C93F1561F8B744400A9330D /* VirginiaReel.cpp in Sources */,
 				C654DF361F69C0430040F43D /* Player.cpp in Sources */,
+				4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */,
 				4C93F1A51F8B748900A9330D /* BoatHire.cpp in Sources */,
 				4CC4B8E11FE00B4100660D62 /* ObjectList.cpp in Sources */,
 				4CFE4E821F90A3F1005243C2 /* Staff.cpp in Sources */,
