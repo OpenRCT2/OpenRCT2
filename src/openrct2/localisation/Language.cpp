@@ -167,6 +167,8 @@ static wchar_t convert_specific_language_character_to_unicode(RCT2LanguageId lan
         return encoding_convert_big5_to_unicode(codepoint);
     case RCT2_LANGUAGE_ID_CHINESE_SIMPLIFIED:
         return encoding_convert_gb2312_to_unicode(codepoint);
+    case RCT2_LANGUAGE_ID_JAPANESE:
+        return encoding_convert_cp932_to_unicode(codepoint);
     default:
         return codepoint;
     }

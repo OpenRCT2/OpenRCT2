@@ -105,6 +105,7 @@ wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str);
 wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode);
 wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312);
 wchar_t encoding_convert_big5_to_unicode(wchar_t big5);
+wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932);
 
 #define MAX_USER_STRINGS 1024
 #define USER_STRING_MAX_LENGTH 32
