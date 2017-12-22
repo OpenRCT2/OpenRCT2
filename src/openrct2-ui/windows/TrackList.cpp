@@ -576,11 +576,11 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, STR_TRACK_LIST_EXCITEMENT_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    rating = td6->intensity * LIST_ROW_HEIGHT;
+    rating = td6->intensity * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_INTENSITY_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT;
 
-    rating = td6->nausea * LIST_ROW_HEIGHT;
+    rating = td6->nausea * 10;
     gfx_draw_string_left(dpi, STR_TRACK_LIST_NAUSEA_RATING, &rating, COLOUR_BLACK, x, y);
     y += LIST_ROW_HEIGHT + 4;
 
