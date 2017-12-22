@@ -1079,7 +1079,7 @@ static void window_new_ride_list_vehicles_for(const uint8 rideType, const rct_ri
                 continue;
         }
 
-        const char * vehicleName = language_get_string(currentRideEntry->vehicleName);
+        const char * vehicleName = language_get_string(currentRideEntry->naming.name);
 
         if (numItems > 0)
         {

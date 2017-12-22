@@ -276,7 +276,7 @@ void research_finish_item(uint32 entryIndex)
                 rct_ride_name baseRideNaming = get_ride_naming(base_ride_type, rideEntry);
 
                 set_format_arg(0, rct_string_id, baseRideNaming.name);
-                set_format_arg(2, rct_string_id, rideEntry->vehicleName);
+                set_format_arg(2, rct_string_id, rideEntry->naming.name);
             }
 
             if (!gSilentResearch)

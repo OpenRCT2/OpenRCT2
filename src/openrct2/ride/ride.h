@@ -126,7 +126,6 @@ typedef struct rct_ride_entry {
     uint8 shop_item;                                    // 0x1C0
     uint8 shop_item_secondary;                          // 0x1C1
     rct_string_id capacity;
-    rct_string_id vehicleName;
 } rct_ride_entry;
 
 /**
