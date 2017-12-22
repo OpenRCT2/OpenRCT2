@@ -4465,6 +4465,9 @@ STR_6160    :{WINDOW_COLOUR_2}Beschikbare voertuigen: {BLACK}{STRING}
 STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
 STR_6163    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Verticale synchronisatie
+STR_6166    :{SMALLFONT}{BLACK}Synchroniseert het aantal frames per seconde met de frequentie van de monitor. Dit voorkomt tearing en zorgt zo voor een beter beeld.
 
 #############
 # Scenarios #

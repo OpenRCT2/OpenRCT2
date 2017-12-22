@@ -2090,6 +2090,7 @@ STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the c
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
 STR_6159    :Smooth Nearest Neighbor
+STR_6166    :{SMALLFONT}{BLACK}Synchronizes each frame displayed to the monitor's refresh rate, preventing screen tearing.
 
 #############
 # Scenarios #
