@@ -30,6 +30,7 @@ void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stre
     _legacyType.path_bit.tool_id = stream->ReadValue<uint8>();
     _legacyType.path_bit.price = stream->ReadValue<sint16>();
     _legacyType.path_bit.scenery_tab_id = stream->ReadValue<uint8>();
+    stream->Seek(1, STREAM_SEEK_CURRENT);
 
     GetStringTable()->Read(context, stream, OBJ_STRING_ID_NAME);
 
