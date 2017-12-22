@@ -4299,6 +4299,10 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
     _vehicleVelocityF64E0C = (vehicle->velocity >> 10) * 42;
 
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
     if (vehicleEntry->flags & (VEHICLE_ENTRY_FLAG_23 | VEHICLE_ENTRY_FLAG_24))
     {
         sub_6D63D4(vehicle);
@@ -6503,6 +6507,11 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle * vehicle)
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
     sint32                   verticalG, lateralG;
 
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
+
     // No up stops (coaster types)
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS)
     {
@@ -6630,6 +6639,11 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
 {
     Ride *                   ride         = get_ride(vehicle->ride);
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
 
     // Is chair lift type
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_28)
@@ -6921,6 +6935,10 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
     }
 
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
     sint16                   dx           = 3185;
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_21)
     {
@@ -7107,11 +7125,15 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
         return;
     }
 
-    rct_ride_entry_vehicle * vehicleEntry    = vehicle_get_vehicle_entry(vehicle);
-    sint32                   spinningInertia = vehicleEntry->spinning_inertia;
-    sint32                   trackType       = vehicle->track_type >> 2;
-    sint32                   dword_F64E08    = _vehicleVelocityF64E08;
-    sint32                   unk;
+    rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
+    sint32 spinningInertia = vehicleEntry->spinning_inertia;
+    sint32 trackType       = vehicle->track_type >> 2;
+    sint32 dword_F64E08    = _vehicleVelocityF64E08;
+    sint32 unk;
     switch (off_9A2E84[trackType])
     {
     case loc_6D665A:
@@ -7224,6 +7246,10 @@ static void sub_6D63D4(rct_vehicle * vehicle)
 
     uint32 *                 var_C8       = (uint32 *)&vehicle->var_C8;
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+    {
+        return;
+    }
     switch (vehicleEntry->var_11)
     {
     case 1: // loc_6D652B
@@ -7610,6 +7636,10 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
         return false;
 
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
+    if (vehicleEntry == nullptr)
+    {
+        return false;
+    }
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_22))
     {
@@ -7678,6 +7708,8 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
                 continue;
 
             rct_ride_entry_vehicle * collideType = vehicle_get_vehicle_entry(collideVehicle);
+            if (collideType == nullptr)
+                continue;
 
             if (!(collideType->flags & VEHICLE_ENTRY_FLAG_22))
                 continue;
@@ -8034,7 +8066,10 @@ loc_6DB41D:
 
     // TODO check if getting the vehicle entry again is necessary
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
-
+    if (vehicleEntry == nullptr)
+    {
+        return false;
+    }
     if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) && vehicle->var_CD < 7)
     {
         trackType = track_element_get_type(tileElement);
@@ -9457,6 +9492,10 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     {
         rct_vehicle * car = GET_VEHICLE(spriteId);
         vehicleEntry      = vehicle_get_vehicle_entry(car);
+        if (vehicleEntry == nullptr)
+        {
+            goto loc_6DBF3E;
+        }
 
         // Swinging cars
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SWINGING)
@@ -9794,9 +9833,9 @@ loc_6DC316:
 rct_ride_entry_vehicle * vehicle_get_vehicle_entry(rct_vehicle * vehicle)
 {
     rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
-    if (rideEntry == NULL)
+    if (rideEntry == nullptr)
     {
-        return NULL;
+        return nullptr;
     }
     return &rideEntry->vehicles[vehicle->vehicle_type];
 }
