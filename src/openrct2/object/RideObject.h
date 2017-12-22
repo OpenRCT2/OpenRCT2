@@ -44,7 +44,6 @@ public:
 
     std::string GetDescription() const;
     std::string GetCapacity() const;
-    std::string GetVehicleName() const;
 
     void SetRepositoryItem(ObjectRepositoryItem * item) const override;
 

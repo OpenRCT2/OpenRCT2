@@ -127,7 +127,6 @@ void RideObject::Load()
     _legacyType.naming.name = language_allocate_object_string(GetName());
     _legacyType.naming.description = language_allocate_object_string(GetDescription());
     _legacyType.capacity = language_allocate_object_string(GetCapacity());
-    _legacyType.vehicleName = language_allocate_object_string(GetVehicleName());
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable()->GetImages(), GetImageTable()->GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
@@ -302,13 +301,11 @@ void RideObject::Unload()
     language_free_object_string(_legacyType.naming.name);
     language_free_object_string(_legacyType.naming.description);
     language_free_object_string(_legacyType.capacity);
-    language_free_object_string(_legacyType.vehicleName);
     gfx_object_free_images(_legacyType.images_offset, GetImageTable()->GetCount());
 
     _legacyType.naming.name = 0;
     _legacyType.naming.description = 0;
     _legacyType.capacity = 0;
-    _legacyType.vehicleName = 0;
     _legacyType.images_offset = 0;
 }
 
@@ -335,11 +332,6 @@ std::string RideObject::GetDescription() const
 std::string RideObject::GetCapacity() const
 {
     return GetString(OBJ_STRING_ID_CAPACITY);
-}
-
-std::string RideObject::GetVehicleName() const
-{
-    return GetString(OBJ_STRING_ID_VEHICLE_NAME);
 }
 
 void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const

@@ -34,7 +34,7 @@ constexpr uint64 MAX_OBJECT_OVERRIDES = 4096;
 constexpr uint64 MAX_SCENARIO_OVERRIDES = 4096;
 
 constexpr rct_string_id ObjectOverrideBase             = 0x6000;
-constexpr sint32           ObjectOverrideMaxStringCount   = 4;
+constexpr sint32           ObjectOverrideMaxStringCount   = 3;
 
 constexpr rct_string_id ScenarioOverrideBase           = 0x7000;
 constexpr sint32           ScenarioOverrideMaxStringCount = 3;
@@ -506,7 +506,6 @@ private:
             if (String::Equals(identifier, "STR_NAME")) { stringId = 0; }
             else if (String::Equals(identifier, "STR_DESC")) { stringId = 1; }
             else if (String::Equals(identifier, "STR_CPTY")) { stringId = 2; }
-            else if (String::Equals(identifier, "STR_VEHN")) { stringId = 3; }
 
             else if (String::Equals(identifier, "STR_SCNR")) { stringId = 0; }
             else if (String::Equals(identifier, "STR_PARK")) { stringId = 1; }

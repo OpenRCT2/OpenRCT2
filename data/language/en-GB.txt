@@ -4931,39 +4931,38 @@ STR_DESC    :Passengers ride in a gondola suspended by large rotating arms, rota
 STR_CPTY    :8 passengers
 
 [BMSD]
-STR_VEHN    :Regular train
+STR_NAME    :Twister train
 
 [BMSU]
-STR_VEHN    :Stand-up train
+STR_NAME    :Stand-up twister train
 
 [BMFL]
-STR_VEHN    :Floorless train
+STR_NAME    :Floorless twister train
 
 [WMMINE]
-STR_VEHN    :Mine cars
+STR_NAME    :Mine cars
 
 [WMOUSE]
-STR_VEHN    :Mouse cars
+STR_NAME    :Mouse cars
 
 [STEEP1]
-STR_VEHN    :Horses
+STR_NAME    :Horses
 
 [STEEP2]
-STR_VEHN    :Motorbikes
+STR_NAME    :Motorbikes
 
 [SBOX]
-STR_VEHN    :Soap boxes
+STR_NAME    :Soap boxes
 
 #WW
 [CONDORRD]
-STR_NAME    :Condor Ride
+STR_NAME    :Condor train
 STR_DESC    :Riding in special harnesses below the track, riders experience the feeling of flight as they swoop through the air in Condor-shaped trains
 STR_CPTY    :4 passengers per car
-STR_VEHN    :Condor train
 
 #WW
 [CONGAEEL]
-STR_NAME    :Conger Eel Coaster
+STR_NAME    :Conger Eel train
 STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car
 

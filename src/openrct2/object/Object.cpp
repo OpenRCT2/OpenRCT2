@@ -51,13 +51,7 @@ std::string Object::GetOverrideString(uint8 index) const
 std::string Object::GetString(uint8 index) const
 {
     auto sz = GetOverrideString(index);
-    if (sz.empty() && index == OBJ_STRING_ID_VEHICLE_NAME)
-    {
-        // If no vehicle name is specified, fall back to the ride name. This is also required if we fall back
-        // to the .DAT name (which does not contain separate ride and vehicle names).
-        return GetName();
-    }
-    else if (sz.empty())
+    if (sz.empty())
     {
         sz = GetStringTable()->GetString(index);
     }
