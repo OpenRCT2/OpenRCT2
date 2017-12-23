@@ -125,6 +125,8 @@ void RideObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 
 void RideObject::Load()
 {
+    _legacyType.obj = this;
+
     GetStringTable().Sort();
     _legacyType.naming.name = language_allocate_object_string(GetName());
     _legacyType.naming.description = language_allocate_object_string(GetDescription());
@@ -709,11 +711,20 @@ void RideObject::ReadJsonVehicleInfo(IReadObjectContext * context, const json_t 
 std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(const json_t * jCars)
 {
     std::vector<rct_ride_entry_vehicle> cars;
-    json_t * jCar;
-    size_t index;
-    json_array_foreach(jCars, index, jCar)
+
+    if (json_is_array(jCars))
     {
-        auto car = ReadJsonCar(jCar);
+        json_t * jCar;
+        size_t index;
+        json_array_foreach(jCars, index, jCar)
+        {
+            auto car = ReadJsonCar(jCar);
+            cars.push_back(car);
+        }
+    }
+    else if (json_is_object(jCars))
+    {
+        auto car = ReadJsonCar(jCars);
         cars.push_back(car);
     }
     return cars;
