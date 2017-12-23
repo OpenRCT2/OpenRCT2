@@ -508,12 +508,19 @@ namespace String
             }
             ch = nextCh;
         }
-        return str;
+        // String is all whitespace
+        return ch;
     }
 
     utf8 * TrimStart(utf8 * buffer, size_t bufferSize, const utf8 * src)
     {
         return String::Set(buffer, bufferSize, TrimStart(src));
+    }
+
+    std::string TrimStart(const std::string &s)
+    {
+        const utf8 * trimmed = TrimStart(s.c_str());
+        return std::string(trimmed);
     }
 
     std::string Trim(const std::string &s)
