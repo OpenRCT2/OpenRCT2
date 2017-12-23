@@ -447,6 +447,12 @@ namespace String
         return utf8_write_codepoint(dst, codepoint);
     }
 
+    bool IsWhiteSpace(codepoint_t codepoint)
+    {
+        // 0x3000 is the 'ideographic space', a 'fullwidth' character used in CJK languages.
+        return iswspace((wchar_t)codepoint) || codepoint == 0x3000;
+    }
+
     utf8 * Trim(utf8 * str)
     {
         utf8 * firstNonWhitespace = nullptr;
@@ -456,7 +462,7 @@ namespace String
         utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 if (firstNonWhitespace == nullptr)
                 {
@@ -496,7 +502,7 @@ namespace String
         const utf8 * nextCh;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            if (codepoint <= WCHAR_MAX && !iswspace((wchar_t)codepoint))
+            if (codepoint <= WCHAR_MAX && !IsWhiteSpace(codepoint))
             {
                 return ch;
             }
@@ -519,7 +525,7 @@ namespace String
         const utf8 * endSubstr = nullptr;
         while ((codepoint = GetNextCodepoint(ch, &nextCh)) != '\0')
         {
-            bool isWhiteSpace = codepoint <= WCHAR_MAX && iswspace((wchar_t)codepoint);
+            bool isWhiteSpace = codepoint <= WCHAR_MAX && IsWhiteSpace(codepoint);
             if (!isWhiteSpace)
             {
                 if (startSubstr == nullptr)
