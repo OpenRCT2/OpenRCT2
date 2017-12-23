@@ -527,15 +527,22 @@ void RideObject::ReadJson(IReadObjectContext * context, const json_t * root)
     auto properties = json_object_get(root, "properties");
 
     auto rideTypes = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "type"));
-    for (size_t i = 0; i < std::min<size_t>(MAX_RIDE_TYPES_PER_RIDE_ENTRY, rideTypes.size()); i++)
+    for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
     {
-        _legacyType.ride_type[i] = ParseRideType(rideTypes[i]);
+        _legacyType.ride_type[i] = (rideTypes.size() > i) ?
+            ParseRideType(rideTypes[i]) :
+            RIDE_TYPE_NULL;
     }
 
     auto rideCategories = ObjectJsonHelpers::GetJsonStringArray(json_object_get(properties, "category"));
-    for (size_t i = 0; i < std::min<size_t>(MAX_CATEGORIES_PER_RIDE, rideCategories.size()); i++)
+    if (rideCategories.size() >= 1)
     {
-        _legacyType.category[0] = ParseRideCategory(rideCategories[i]);
+        _legacyType.category[0] = ParseRideCategory(rideCategories[0]);
+        _legacyType.category[1] = _legacyType.category[0];
+    }
+    if (rideCategories.size() >= 2)
+    {
+        _legacyType.category[1] = ParseRideCategory(rideCategories[1]);
     }
 
     _legacyType.max_height = ObjectJsonHelpers::GetInteger(properties, "maxHeight");
