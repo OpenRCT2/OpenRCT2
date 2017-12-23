@@ -738,7 +738,6 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.car_friction = ObjectJsonHelpers::GetInteger(jCar, "friction");
     car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
     car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
-    car.sprite_flags = ObjectJsonHelpers::GetInteger(jCar, "spriteFlags");
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
     car.sprite_height_negative = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightNegative");
     car.sprite_height_positive = ObjectJsonHelpers::GetInteger(jCar, "spriteHeightPositive");
@@ -759,6 +758,25 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     car.effect_visual = ObjectJsonHelpers::GetInteger(jCar, "effectVisual", 1);
     car.draw_order = ObjectJsonHelpers::GetInteger(jCar, "drawOrder");
     car.num_vertical_frames_override = ObjectJsonHelpers::GetInteger(jCar, "numVerticalFramesOverride");
+
+    auto jFrames = json_object_get(jCar, "frames");
+    car.sprite_flags = ObjectJsonHelpers::GetFlags<uint16>(jFrames, {
+        { "flat", VEHICLE_SPRITE_FLAG_FLAT },
+        { "gentleSlopes", VEHICLE_SPRITE_FLAG_GENTLE_SLOPES },
+        { "steepSlopes", VEHICLE_SPRITE_FLAG_STEEP_SLOPES },
+        { "verticalSlopes", VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES },
+        { "diagonalSlopes", VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES },
+        { "flatBanked", VEHICLE_SPRITE_FLAG_FLAT_BANKED },
+        { "inlineTwists", VEHICLE_SPRITE_FLAG_INLINE_TWISTS },
+        { "flatToGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS },
+        { "diagonalGentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS },
+        { "gentleSlopeBankedTransitions", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS },
+        { "gentleSlopeBankedTurns", VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS },
+        { "flatToGentleSlopeWhileBankedTransitions", VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS },
+        { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
+        { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
+        { "VEHICLE_SPRITE_FLAG_14", VEHICLE_SPRITE_FLAG_14 },
+        { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_15 } });
     return car;
 }
 
