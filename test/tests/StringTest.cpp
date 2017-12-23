@@ -18,6 +18,8 @@ INSTANTIATE_TEST_CASE_P(TrimData, StringTest, testing::Values(
     TCase("      ", ""),
     TCase(" ストリング", "ストリング"),
     TCase("ストリング ", "ストリング"),
+    TCase("　ストリング　", "ストリング"),
+    TCase("　　　　", ""),
     TCase("", ""),
     TCase("\n", ""),
     TCase("\n\n\n\r\n", ""),
