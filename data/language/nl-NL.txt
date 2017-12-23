@@ -5331,10 +5331,9 @@ STR_CPTY    :8 passagiers
 
 # Bobsleigh Coaster / Bobslee-achtbaan
 [BOB1]
-STR_NAME    :Bobslee-achtbaan
+STR_NAME    :Bobslee-trein
 STR_DESC    :Passagiers rijden over een kronkelende baan, waarbij ze enkel worden geleid door de ronding en banking van de halfronde baan.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Bobslee-trein
 
 [INTBOB]
 STR_NAME    :Zespersoonsbob
@@ -5356,17 +5355,15 @@ STR_CPTY    :2 passagiers per karretje
 
 # Log Flume / Boomstamattractie
 [LFB1]
-STR_NAME    :Boomstamattractie
+STR_NAME    :Boomstammen
 STR_DESC    :Boten in de vorm van een boomstam varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
 STR_CPTY    :4 passagiers per boot
-STR_VEHN    :Boomstammen
 
 #WW
 [CROCFLUM]
-STR_NAME    :Krokodillenrivier
+STR_NAME    :Krokodillenbootjes
 STR_DESC    :Boten in de vorm van een krokodil varen door een waterbak, waarbij ze van steile hellingen afdalen om de passagiers te doorweken.
 STR_CPTY    :4 passagiers per boot
-STR_VEHN    :Krokodillenbootjes
 # End of Log Flume / Boomstamattractie
 
 # Boat Ride / Bootverhuur
@@ -5481,10 +5478,9 @@ STR_CPTY    :4 passagiers per karretje
 
 #WW
 [POLARBER]
-STR_NAME    :IJsbeerachtbaan
+STR_NAME    :IJsbeerkarretjes
 STR_DESC    :Passagiers zitten in paren, met het gezicht naar voren of achteren, en gaan door scherpe omkeringen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :IJsbeerkarretjes
 # End of Compact Inverted Coaster / Compacte omgekeerde achtbaan
 
 # Crooked House
@@ -5560,17 +5556,15 @@ STR_CPTY    :8 passagiers
 
 # Giga Coaster / Giga-achtbaan
 [INTST]
-STR_NAME    :Giga-achtbaan
+STR_NAME    :Giga-achtbaantrein
 STR_DESC    :Een gigantische stalen achtbaan die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 #WW
 [TAXICSTR]
-STR_NAME    :Taxi-achtbaan
+STR_NAME    :Taxitrein
 STR_DESC    :Een gigantische stalen achtbaan met treinen in de vorm van een taxi die in staat is tot soepele afdalingen en heuvels die hoger zijn dan 90 meter.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Taxitrein
 # End of Giga Coaster / Giga-achtbaan
 
 # Go-karts
@@ -5652,24 +5646,21 @@ STR_CPTY    :6 passagiers per karretje
 
 #TT
 [POLICECR]
-STR_NAME    :Politieautobaan
+STR_NAME    :Politieautokarretjes
 STR_DESC    :Karretjes die er uitzien als een Amerikaanse politieauto uit de jaren '60 rijden op een houten baan en kunnen omkeren op speciale stukken baan.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Politieautokarretjes
 # End of Reverser Roller Coaster / Houten achteruitachtbaan
 
 # Wooden Wild Mouse / Houten wildemuisachtbaan
 [WMMINE]
-STR_NAME    :Houten wildemijnachtbaan
+STR_NAME    :Mijnkarretjes
 STR_DESC    :Kleine mijnkarretjes rijden op een zigzaggende baan en hellen gevaarlijk over in de haarspeldbochten en scherpe afdalingen.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Mijnkarretjes
 
 [WMOUSE]
-STR_NAME    :Houten wildemuisachtbaan
+STR_NAME    :Muiskarretjes
 STR_DESC    :Kleine muisvormige karretjes rijden op een zigzaggende baan en hellen gevaarlijk over in de haarspeldbochten en scherpe afdalingen.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Muiskarretjes
 # End of Wooden Wild Mouse / Houten wildemuisachtbaan
 
 # Junior Roller Coaster / Juniorachtbaan
@@ -5710,24 +5701,21 @@ STR_CPTY    :2 passagiers per karretje
 
 # LIM Launched RC / LIM-lanceringsachtbaan
 [PREMT1]
-STR_NAME    :LIM-lanceringsachtbaan
+STR_NAME    :Trein voor LIM-lanceringsachtbaan
 STR_DESC    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 #WW
 [TGVTRAIN]
-STR_NAME    :TGV-achtbaan
+STR_NAME    :TGV-trein
 STR_DESC    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :TGV-trein
 
 #TT
 [GANSTRCR]
-STR_NAME    :Gangsterauto-achtbaan
+STR_NAME    :Gangsterautotrein
 STR_DESC    :Achtbaantreinen in de stijl van een gangsterauto uit de jaren '20 worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Gangsterautotrein
 # End of LIM Launched RC / LIM-lanceringsachtbaan
 
 # Lift
@@ -5751,47 +5739,41 @@ STR_CPTY    :16 passagiers
 
 # Lay-down RC / Liggende achtbaan
 [VEKST]
-STR_NAME    :Liggende achtbaan
+STR_NAME    :Liggende achtbaantrein
 STR_DESC    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 #TT
 [HARPIESX]
-STR_NAME    :Harpijenbaan
+STR_NAME    :Harpijenkarretjes
 STR_DESC    :Passagiers worden door middel van een speciale beugel in een liggende positie vastgehouden, waarna ze op hun rug of met hun gezicht naar de grond door kronkelende stukken baan en omkeringen heen gaan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Harpijenkarretjes
 # End of Lay-down RC / Liggende achtbaan
 
 # Air powered vertical RC / Luchtaangedreven verticale achtbaan
 [THCAR]
-STR_NAME    :Luchtaangedreven verticale achtbaan
+STR_NAME    :Trein voor luchtaangedreven verticale achtbaan
 STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 #WW
 [BOMERANG]
-STR_NAME    :Boemerangachtbaan
+STR_NAME    :Boemerangtrein
 STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Boemerangtrein
 
 #TT
 [HOTRODXX]
-STR_NAME    :Hotrod-achtbaan
+STR_NAME    :Hotrodtrein
 STR_DESC    :Na een enerverende pneumatische lancering rijdt de trein met hogere snelheid over een verticale baan, over de top, en vervolgens over de andere kant weer naar beneden om terug te keren naar het station.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Hotrodtrein
 # End of Air powered vertical RC / Luchtaangedreven verticale achtbaan
 
 # Mine train RC / Mijntreinachtbaan
 [AMT1]
-STR_NAME    :Mijntreinachtbaan
+STR_NAME    :Mijntrein
 STR_DESC    :Achtbaantreinen in de vorm van een mijntrein razen over stalen achtbaanrails die er uitziet als een oude spoorbaan.
 STR_CPTY    :4 passagiers per karretje (voorste karretje 2)
-STR_VEHN    :Mijntrein
 # End of Mine train RC / Mijntreinachtbaan
 
 # Mini RC / Mini-achtbaan
@@ -5938,55 +5920,48 @@ STR_CPTY    :20 passagiers
 
 # Inverted Impulse RC / Omgekeerde Impulse-achtbaan
 [INTINV]
-STR_NAME    :Omgekeerde Impulse-achtbaan
+STR_NAME    :Impulse-trein
 STR_DESC    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Impulse-trein
 
 #TT
 [BARNSTRM]
-STR_NAME    :Stuntvliegersachtbaan
+STR_NAME    :Stuntvliegerstrein
 STR_DESC    :Een omgekeerde achtbaantrein wordt het station uit gelanceerd en gaat een verticale kronkelende baan op, waarna deze terugzakt, door het station heengaat en achteruit een ander stuk verticale baan opgaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Stuntvliegerstrein
 # End of Inverted Impulse RC / Omgekeerde Impulse-achtbaan
 
 # Inverted RC / Omgekeerde achtbaan
 [NEMT]
-STR_NAME    :Omgekeerde achtbaan
+STR_NAME    :Vierpersoonstrein
 STR_DESC    :Passagiers zitten in stoelen die onder de baan hangen terwijl ze door grote loopings, twists en grote adembenemende afdelingen gaan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Vierpersoonstrein
 # End of Inverted RC / Omgekeerde achtbaan
 
 # Inverted Hairpin RC / Omgekeerde haarspeldachtbaan
 [IVMC1]
-STR_NAME    :Omgekeerde haarspeldachtbaan
+STR_NAME    :Vierpersoonskarretje
 STR_DESC    :Losse karretjes hangen onder een zigzaggende baan met haarspeldbochten en scherpe afdalingen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Vierpersoonskarretje
 # End of Inverted Hairpin RC / Omgekeerde haarspeldachtbaan
 
 # Flying RC / Vliegachtbaan
 [BMAIR]
-STR_NAME    :Vliegachtbaan
+STR_NAME    :Trein voor vliegachtbaan
 STR_DESC    :Bezoekers hangen in treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 #WW
 [CONDORRD]
-STR_NAME    :Condorbaan
+STR_NAME    :Condortrein
 STR_DESC    :Bezoekers hangen in Condorvormige treinen onder de baan met enkel schouderbeugels en krijgen zo de ervaring dat ze vliegen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Condortrein
 
 #TT
 [PTERODAC]
-STR_NAME    :Pterodactylbaan
+STR_NAME    :Pterodactyltrein
 STR_DESC    :Bezoekers hangen in comfortabele treinen onder de baan met enkel schouderbeugels en krijgen zo de ultieme prehistorische vliegervaring.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Pterodactyltrein
 # End of Flying RC / Vliegachtbaan
 
 # Inverted Mini RC / Omgekeerde mini-achtbaan
@@ -5996,31 +5971,27 @@ STR_DESC    :Kleine karretjes die aan de rail erboven schommelen.
 STR_CPTY    :2 passagiers per karretje
 
 [SKYTR]
-STR_NAME    :Omgekeerde mini-achtbaan
+STR_NAME    :Liggende karretjes
 STR_DESC    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
 STR_CPTY    :1 passagier per karretje
-STR_VEHN    :Liggende karretjes
 
 #WW
 [SPUTNIKR]
-STR_NAME    :Spoetnikbaan
+STR_NAME    :Spoetnikkarretjes
 STR_DESC    :Passagiers zitten in karretjes in de vorm van de Spoetnik, die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Spoetnikkarretjes
 
 #TT
 [DRAGNFLY]
-STR_NAME    :Libellenbaan
+STR_NAME    :Libellenkarretjes
 STR_DESC    :Passagiers zitten in kleine karretjes die onder een enkele rail hangen en naar buiten zwaaien in de bochten.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Libellenkarretjes
 
 #TT
 [HOVRBORD]
-STR_NAME    :Hoverboardbaan
+STR_NAME    :Hoverboardkarretjes
 STR_DESC    :Passagiers zitten op een futuristisch hoverboard dat onder een enkele rail hangt en naar buiten zwaait in de bochten.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Hoverboardkarretjes
 # End of Inverted Mini RC / Omgekeerde mini-achtbaan
 
 # Suspended monorail / Omgekeerde monorail
@@ -6078,18 +6049,16 @@ STR_CPTY    :4 passagiers per karretje
 
 #TT
 [SEAPLANE]
-STR_NAME    :Watervliegtuigbaan
+STR_NAME    :Watervliegtuigkarretjes
 STR_DESC    :Omgekeerde achtbaantrein bestaande uit karretjes die vrijuit kunnen schommelen als de trein door een bocht gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Watervliegtuigkarretjes
 # End of Suspended Swinging Coaster / Omgekeerde schommelachtbaan
 
 # Submarine ride / Onderzeeër-attractie
 [SUBMAR]
-STR_NAME    :Onderzeeër-attractie
+STR_NAME    :Onderzeeërs
 STR_DESC    :Passagiers rijden over een onderwaterparcours in onderzeeërs.
 STR_CPTY    :4 passagiers per onderzeeër
-STR_VEHN    :Onderzeeërs
 
 #WW
 [HIPPORID]
@@ -6126,10 +6095,9 @@ STR_CPTY    :4 passagiers per vlot
 
 #TT
 [RIVRSTYX]
-STR_NAME    :De Styx
+STR_NAME    :Styxbootjes
 STR_DESC    :Bezoekers varen in het bootje van Charon door een waterbak.
 STR_CPTY    :4 passagiers per bootje
-STR_VEHN    :Styxbootjes
 # End of River Rafts / Riviertocht
 
 # Roto-drop
@@ -6186,24 +6154,21 @@ STR_CPTY    :12 passagiers
 
 # Spiral RC / Spiraalachtbaan
 [SPDRCR]
-STR_NAME    :Spiraalachtbaan
+STR_NAME    :Spiraalachtbaantrein
 STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Achtbaankarretjes
 
 #WW
 [RHINORID]
-STR_NAME    :Neushoornbaan
+STR_NAME    :Neushoornkarretjes
 STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Neushoornkarretjes
 
 #TT
 [BATTRRAM]
-STR_NAME    :Stormrambaan
+STR_NAME    :Stormramkarretjes
 STR_DESC    :Een compacte achtbaan met een spiraalvormige kettingheuvel en karretjes waarin de passagiers achter elkaar zitten.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Stormramkarretjes
 # End of Spiral RC / Spiraalachtbaan
 
 # Spiral Slide / Spiraalglijbaan
@@ -6221,31 +6186,27 @@ STR_CPTY    :15 bezoekers
 
 # Ghost train / Spooktrein
 [GTC]
-STR_NAME    :Spooktrein
+STR_NAME    :Spooktreinkarretjes
 STR_DESC    :Aangedreven monstervormige karretjes rijden over een baan, die over meerdere hoogteniveau loopt, langs spookachtig decor en special effects.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Spooktreinkarretjes
 
 [HMCAR]
-STR_NAME    :Spookachtig landhuis
+STR_NAME    :Doom buggy's
 STR_DESC    :Aangedreven karretjes rijden over een baan, die over meerdere hoogteniveau loopt, langs decor en special effects.
 STR_CPTY    :2 passagiers per karretje
-STR_VEHN    :Doom buggy's
 # End of Ghost train / Spooktrein
 
 # Stand-Up RC / Staande achtbaan
 [TOGST]
-STR_NAME    :Staande achtbaan
+STR_NAME    :Staande achtbaantrein
 STR_DESC    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Staande achtbaantrein
 
 #WW
 [OSTRICH]
-STR_NAME    :Struisvogelbaan
+STR_NAME    :Struisvogeltrein
 STR_DESC    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Struisvogeltrein
 # End of Stand-Up RC / Staande achtbaan
 
 # Looping RC / Stalen achtbaan
@@ -6256,10 +6217,9 @@ STR_CPTY    :4 passagiers per karretje
 
 #TT
 [POLCHASE]
-STR_NAME    :Politieachtervolging
+STR_NAME    :Politietrein
 STR_DESC    :Achtbaantrein met schootbeugels, die door loopings kan rijden.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Politietrein
 
 #CC
 [AE-MTRHN]
@@ -6270,78 +6230,67 @@ STR_CPTY    :4 passagiers per karretje
 
 # Corkscrew RC / Stalen schroefachtbaan
 [ARRT1]
-STR_NAME    :Stalen schroefachtbaan
+STR_NAME    :Trein voor stalen schroefachtbaan
 STR_DESC    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Achtbaantrein
 
 [ARRT2]
-STR_NAME    :Hypercoaster
+STR_NAME    :Hypercoaster-trein
 STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Hypercoaster-trein
 
 #WW
 [ANACONDA]
-STR_NAME    :Anacondabaan
+STR_NAME    :Anacondatrein
 STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Anacondatrein
 
 #WW
 [GRATWHTE]
-STR_NAME    :Grote-witte-haaibaan
-STR_DESC    :Een achtbaan zonder omkeringen met grote heuvels, een hoge snelheid, en comfortabele treinen met enkel schootbeugels.
+STR_NAME    :Haaientrein
+STR_DESC    :Trein in de vorm van een grote witte haai.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Haaientrein
 
 #WW
 [CONGAEEL]
-STR_NAME    :Palingbaan
+STR_NAME    :Palingtrein
 STR_DESC    :Een compacte stalen achtbaan waar de palingvormige trein door schroeven en loopings gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Palingtrein
 
 #WW
 [BULLET]
-STR_NAME    :Shinkansenbaan
+STR_NAME    :Shinkansentrein
 STR_DESC    :Achtbaan met treinen in de vorm van de Japanse Shinkansen (kogeltrein).
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Shinkansentrein
 
 #WW
 [CADDILAC]
-STR_NAME    :Limousinebaan
+STR_NAME    :Limousinetrein
 STR_DESC    :Achtbaan met treinen in de vorm van een limousine
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Limousinetrein
 
 #WW
 [SEALS]
-STR_NAME    :Zeehondenbaan
+STR_NAME    :Zeehondentrein
 STR_DESC    :Een compacte stalen achtbaan waar de trein door schroeven en loopings gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Zeehondentrein
 # End of Corkscrew RC / Stalen schroefachtbaan
 
 # Steel Twister RC / Stalen twisterachtbaan
 [BMSD]
-STR_NAME    :Twisterachtbaan
+STR_NAME    :Twistertrein
 STR_DESC    :Brede achtbaantrein die langs de soepele stalen baan glijdt en door diverse soorten omkeringen gaat.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Twistertrein
 
 [BMSU]
-STR_NAME    :Staande twisterachtbaan
+STR_NAME    :Staande twistertrein
 STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen beugels terwijl ze door soepele afdalingen en meerdere omkeringen razen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Staande twistertrein
 
 [BMFL]
-STR_NAME    :Achtbaan zonder vloer
+STR_NAME    :Twistertrein zonder vloer
 STR_DESC    :Brede achtbaantreinen zonder vloer, die de passagiers het gevoel geeft in de open lucht te zijn terwijl ze langs de kronkelende baan en door meerdere omkeringen glijden.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Twistertrein zonder vloer
 
 [GOLTR]
 STR_NAME    :Hyper-twistertreinen
@@ -6355,37 +6304,32 @@ STR_CPTY    :4 passagiers per karretje
 
 #WW
 [SURFBRDC]
-STR_NAME    :Surfbaan
+STR_NAME    :Surftrein
 STR_DESC    :Passagiers staan in de brede achtbaantrein met speciaal ontworpen beugels terwijl ze door soepele afdalingen en meerdere omkeringen razen.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Surftrein
 
 #TT
 [CERBERUS]
-STR_NAME    :Cerberusbaan
+STR_NAME    :Cerberustrein
 STR_DESC    :Bezoekers zitten in comfortabele treinen met enkel eenvoudige schootbeugels terwijl ze door soepele afdalingen gaan.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Cerberustrein
 # End of Steel Twister RC / Stalen twisterachtbaan
 
 # Steeplechase (Singel Rail RC)
 [STEEP1]
-STR_NAME    :Steeplechase
+STR_NAME    :Paarden
 STR_DESC    :Passagiers zitten op paardvormige voertuigen die over een enkele rail lopen.
 STR_CPTY    :2 passagiers per paard
-STR_VEHN    :Paarden
 
 [STEEP2]
-STR_NAME    :Motorfietsrace
+STR_NAME    :Motorfietsen
 STR_DESC    :Passagiers zitten op voertuigen in de vorm van een motorgiets die over een enkele rail lopen.
 STR_CPTY    :2 passagiers per motorfiets
-STR_VEHN    :Motorfietsen
 
 [SBOX]
-STR_NAME    :Zeepkistenrace
+STR_NAME    :Zeepkisten
 STR_DESC    :Passagiers zitten in voertuigen in de vorm van een zeepkist die over een enkele rail lopen.
 STR_CPTY    :4 passagiers per zeepkist
-STR_VEHN    :Zeepkisten
 
 #TT
 [JOUSTING]
@@ -6395,10 +6339,9 @@ STR_CPTY    :2 passagiers per paard
 
 #TT
 [RAPTORXX]
-STR_NAME    :Velociraptorrace
+STR_NAME    :Velociraptors
 STR_DESC    :Passagiers zitten op velociraptorvormige voertuigen die over een enkele rail lopen.
 STR_CPTY    :2 passagiers per velociraptor
-STR_VEHN    :Velociraptors
 
 #TT
 [HOVERBKE]
@@ -6506,17 +6449,15 @@ STR_CPTY    :18 passagiers
 
 # Vertical drop RC / Verticale achtbaan
 [BMVD]
-STR_NAME    :Verticale achtbaan
+STR_NAME    :Trein voor verticale achtbaan
 STR_DESC    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Trein voor verticale achtbaan
 
 #TT
 [VALKYRIE]
-STR_NAME    :Walkürenbaan
+STR_NAME    :Walkürentrein
 STR_DESC    :Extra brede karretjes rijden over een compleet verticale baan voor de ultieme vrijevalbeleving.
 STR_CPTY    :6 passagiers per karretje
-STR_VEHN    :Walkürentrein
 # End of Vertical drop RC / Verticale achtbaan
 
 # Virginia Reel
@@ -6591,10 +6532,9 @@ STR_CPTY    :6 passagiers per boot
 
 # Dinghy Slide / Waterglijbaan
 [DING1]
-STR_NAME    :Waterglijbaan
+STR_NAME    :Opblaasbootjes
 STR_DESC    :Passagiers glijden in opblaasboten door een kronkelende halfopen of compleet gesloten glijbaan.
 STR_CPTY    :2 passagiers per bootje
-STR_VEHN    :Opblaasbootjes
 # End of Dinghy Slide / Waterglijbaan
 
 # (Steel) Wild Mouse / (Stalen) Wilde muis
@@ -6609,25 +6549,22 @@ STR_DESC    :Losse karretjes in de vorm van een houten mijnkarretje.
 STR_CPTY    :4 passagiers per karretje
 
 [WMSPIN]
-STR_NAME    :Draaiende wilde muis
+STR_NAME    :Draaiende karretjes
 STR_DESC    :Muisvormige karretjes rijden snel door scherpe bochten en korte afdalingen, en draaien daarbij zachtjes rond om de passagiers te desoriënteren.
 STR_CPTY    :4 passagiers per karretje
-STR_VEHN    :Draaiende karretjes
 # End of (Steel) Wild Mouse / (Stalen) Wilde muis
 
 # River Rapids / Wildwaterbaan
 [RAPBOAT]
-STR_NAME    :Wildwaterbaan
+STR_NAME    :Wildwaterbootjes
 STR_DESC    :Ronde boten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
 STR_CPTY    :8 passagiers per boot
-STR_VEHN    :Wildwaterbootjes
 
 #TT
 [OAKBAREL]
-STR_NAME    :Eikenvatwildwaterbaan
+STR_NAME    :Eikenvaten
 STR_DESC    :Eikenhouten vaten varen door een brede waterbak, waarbij ze de passagiers opwinden door watervallen en schuimende stroomversnellingen.
 STR_CPTY    :8 passagiers per boot
-STR_VEHN    :Eikenvaten
 # End of River Rapids / Wildwaterbaan
 
 # Side-Friction RC / Zijfrictieachtbaan
