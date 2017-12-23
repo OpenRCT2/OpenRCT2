@@ -469,7 +469,10 @@ namespace String
         if (firstNonWhitespace != nullptr &&
             firstNonWhitespace != str)
         {
-            size_t newStringSize = ch - firstNonWhitespace;
+            // Take multibyte characters into account: use the last byte of the
+            // current character.
+            size_t newStringSize = (nextCh - 1) - firstNonWhitespace;
+
 #ifdef DEBUG
             size_t currentStringSize = String::SizeOf(str);
             Guard::Assert(newStringSize < currentStringSize, GUARD_LINE);
@@ -523,7 +526,10 @@ namespace String
                 {
                     startSubstr = ch;
                 }
-                endSubstr = ch;
+
+                // Take multibyte characters into account: move pointer towards
+                // the last byte of the current character.
+                endSubstr = nextCh - 1;
             }
             ch = nextCh;
         }
