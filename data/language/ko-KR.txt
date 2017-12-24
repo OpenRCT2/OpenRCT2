@@ -2233,7 +2233,7 @@ STR_2224    :{WINDOW_COLOUR_2}재정: {BLACK}{CURRENCY2DP}
 STR_2225    :{WINDOW_COLOUR_2}재정: {RED}{CURRENCY2DP}
 STR_2226    :{WINDOW_COLOUR_2}공원 가치: {BLACK}{CURRENCY}
 STR_2227    :{WINDOW_COLOUR_2}회사 가치: {BLACK}{CURRENCY}
-STR_2228    :{WINDOW_COLOUR_2}음식/음료수 또는 물건으로 벌어들인 지난달 수익: {BLACK}{CURRENCY}
+STR_2228    :{WINDOW_COLOUR_2}음식/음료/물건으로 번 지난달 수익: {BLACK}{CURRENCY}
 STR_2229    :수직으로 상승
 STR_2230    :수직 트랙
 STR_2231    :낙하 브레이크
@@ -4149,7 +4149,7 @@ STR_5839    :{SMALLFONT}{BLACK}메인 매뉴에 연구 및 개발 창을 위한 
 STR_5840    :{SMALLFONT}{BLACK}메인 메뉴에 치트 창을 위한 별도의 버튼을 표시합니다.
 STR_5841    :{SMALLFONT}{BLACK}메인 메뉴에 최근 메시지 창을 위한 별도의 버튼을 표시합니다.
 STR_5842    :{SMALLFONT}{BLACK}시나리오를 (RCT2처럼) 난이도 별로 정렬하거나 (RCT1처럼) 출신 게임별로 정렬합니다.
-STR_5843    :{SMALLFONT}{BLACK}시나리오 해제 기능을 켭니다. (RCT1처럼)
+STR_5843    :{SMALLFONT}{BLACK}(RCT1 처럼) 시나리오를 클리어하면 다음 시나리오를 해제합니다.
 STR_5844    :{SMALLFONT}{BLACK}멀티 플레이 서버에서 비동기화나 오류가 발생하여도 접속을 유지합니다.
 STR_5845    :{SMALLFONT}{BLACK}메인 메뉴에 디버깅 툴을 위한 버튼을 추가합니다.{NEWLINE}개발자 콘솔을 여는 키보드 단축키가 활성화됩니다.
 STR_5846    :{SMALLFONT}{BLACK}OpenRCT2의 자동 저장 빈도를 설정합니다.
@@ -4473,6 +4473,10 @@ STR_6163    :급격한 코너와 짧은 낙하를 지나면서 속도를 내고,
 STR_6164    :{WHITE}{CROSS}
 STR_6165    :수직 동기화 사용
 STR_6166    :{SMALLFONT}{BLACK}게임에 표시되는 각 프레임을 모니터의 갱신 주기에 동기화하여 갈라짐 현상을 방지합니다.
+STR_6167    :{SMALLFONT}{BLACK}고급
+STR_6168    :타이틀 시퀀스
+STR_6169    :시나리오 선택
+STR_6170    :기타
 
 #############
 # Scenarios #

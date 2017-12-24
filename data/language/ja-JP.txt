@@ -3613,7 +3613,7 @@ STR_5273    :{SMALLFONT}{BLACK}大きな景観物
 STR_5274    :{SMALLFONT}{BLACK}歩道
 STR_5275    :オブジェクトを調べる
 STR_5276    :オブジェクトの名を入力して下さい。
-STR_5277    :Clear
+STR_5277    :クリア
 STR_5278    :サンドボックスモード
 STR_5279    :サンドボックスモードを切る
 STR_5280    :{SMALLFONT}{BLACK}Allow editing land ownership settings through the Map window and other options that are normally restricted to the Scenario Editor
@@ -3638,7 +3638,7 @@ STR_5298    :{RED}{STRINGID}
 STR_5299    :{LIGHTPINK}{STRINGID}
 STR_5300    :{SMALLFONT}{BLACK}Quick fire staff
 STR_5301    :{MEDIUMFONT}{BLACK}Clear your loan
-STR_5302    :Clear loan
+STR_5302    :借入額をクリアする
 STR_5303    :Allow building in pause mode
 STR_5304    :タイトルシーケンス:
 STR_5305    :RollerCoaster Tycoon 1
@@ -3849,9 +3849,9 @@ STR_5509    :{SMALLFONT}{BLACK}Allows loading scenarios and saves{NEWLINE}that h
 STR_5510    :デフォルトのサウンドデバイス
 STR_5511    :(未知)
 STR_5512    :名前を保存
-STR_5513    :(Quick) save game
-STR_5514    :Disable vandalism
-STR_5515    :{SMALLFONT}{BLACK}Stops guests from vandalising your park when they're angry
+STR_5513    :早いゲームセーブ
+STR_5514    :破壊行為を無効にする
+STR_5515    :{SMALLFONT}{BLACK}破壊行為を無効にすると、怒っているのゲストが破壊行為しません。
 STR_5516    :{SMALLFONT}{BLACK}黒色
 STR_5517    :{SMALLFONT}{BLACK}灰色
 STR_5518    :{SMALLFONT}{BLACK}白色
@@ -4093,7 +4093,7 @@ STR_5785    :グループの名を変えません。
 STR_5786    :Invalid group name
 STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
-STR_5789    :Disable lightning effect
+STR_5789    :電光効果を無効にする
 STR_5790    :{SMALLFONT}{BLACK}Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
 STR_5791    :{SMALLFONT}{BLACK}Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
 STR_5792    :{SMALLFONT}{BLACK}Fixes all broken down rides
@@ -4117,8 +4117,8 @@ STR_5809    :{WINDOW_COLOUR_2}インフォメーションキオスクと設備�
 STR_5810    :Disable vehicle limits
 STR_5811    :{SMALLFONT}{BLACK}If checked, you can have up to{NEWLINE}255 cars per train and 31{NEWLINE}trains per ride
 STR_5812    :Show multiplayer window
-STR_5813    :{OPENQUOTES}{STRING}{ENDQUOTES}
-STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
+STR_5813    :「{STRING}」
+STR_5814    :{WINDOW_COLOUR_1}「{STRING}」
 
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Display FPS counter in-game
@@ -4130,7 +4130,7 @@ STR_5820    :{SMALLFONT}{BLACK}Minimise the game if focus is{NEWLINE}lost while 
 STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
 STR_5823    :{SMALLFONT}{BLACK}Display banners in uppercase (RCT1 behaviour)
-STR_5824    :{SMALLFONT}{BLACK}Disables lightning effect{NEWLINE}during a thunderstorm
+STR_5824    :{SMALLFONT}{BLACK}雷雨時に電光効果を無効にする
 STR_5825    :{SMALLFONT}{BLACK}Keep the mouse cursor in the window
 STR_5826    :{SMALLFONT}{BLACK}Invert right mouse dragging of the viewport
 STR_5827    :{SMALLFONT}{BLACK}Sets the colour scheme used for the GUI
@@ -4144,10 +4144,10 @@ STR_5834    :{SMALLFONT}{BLACK}Select which audio device OpenRCT2 will use
 STR_5835    :{SMALLFONT}{BLACK}Mute the game if the window loses focus
 STR_5836    :{SMALLFONT}{BLACK}Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
 STR_5837    :{SMALLFONT}{BLACK}Create and manage custom UI themes
-STR_5838    :{SMALLFONT}{BLACK}Show a separate button for the finance window in the toolbar
-STR_5839    :{SMALLFONT}{BLACK}Show a separate button for the research and development window in the toolbar
-STR_5840    :{SMALLFONT}{BLACK}Show a separate button for the cheats window in the toolbar
-STR_5841    :{SMALLFONT}{BLACK}Show a separate button for the recent news window in the toolbar
+STR_5838    :{SMALLFONT}{BLACK}ツールバーで財務表のボタンを表示する
+STR_5839    :{SMALLFONT}{BLACK}ツールバーで研究設定のボタンを表示する
+STR_5840    :{SMALLFONT}{BLACK}ツールバーでカンニングのボタンを表示する
+STR_5841    :{SMALLFONT}{BLACK}ツールバーで最近のメッセージのボタンを表示する
 STR_5842    :{SMALLFONT}{BLACK}Sort scenarios into tabs by their difficulty (RCT2 behaviour) or their source game (RCT1 behaviour)
 STR_5843    :{SMALLFONT}{BLACK}Enable scenario unlocking (RCT1 behaviour)
 STR_5844    :{SMALLFONT}{BLACK}Stay connected to a multiplayer server{NEWLINE}even if a desync or error occurs
@@ -4163,7 +4163,7 @@ STR_5853    :{SMALLFONT}{BLACK}Toggle sound effects on/off
 STR_5854    :{SMALLFONT}{BLACK}Toggle ride music on/off
 STR_5855    :{SMALLFONT}{BLACK}Set regular fullscreen, borderless fullscreen{NEWLINE}or windowed display
 STR_5856    :{SMALLFONT}{BLACK}Set game resolution when in fullscreen mode
-STR_5857    :{SMALLFONT}{BLACK}Game options
+STR_5857    :{SMALLFONT}{BLACK}ゲーム設定
 STR_5858    :{SMALLFONT}{BLACK}Use GPU for displaying instead of CPU. Improves compatibility with screen capture software. May slightly decrease performance.
 STR_5859    :{SMALLFONT}{BLACK}Enables frame tweening for visually{NEWLINE}smoother gameplay. When disabled,{NEWLINE}the game will run at 40 FPS.
 STR_5860    :Toggle original/decompiled track drawing
@@ -4213,7 +4213,7 @@ STR_5903    :Show paint debug window
 STR_5904    :Reset date
 STR_5905    :{SMALLFONT}{BLACK}A map generation tool that automatically creates a custom landscape
 STR_5906    :マウスカーソルにズームする
-STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will centre around the cursor, as opposed to the screen centre.
+STR_5907    :{SMALLFONT}{BLACK}このオプションを有効にすると、ズームがマウスカーソルに中央します。
 STR_5908    :Allow arbitrary ride type changes
 STR_5909    :{SMALLFONT}{BLACK}Allows changing ride type freely. May cause crashes.
 STR_5910    :Apply
@@ -4226,8 +4226,8 @@ STR_5916    :{COMMA16}プレイヤー
 STR_5917    :{COMMA16}プレイヤー
 STR_5918    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{COMMA16}
 STR_5919    :{COMMA16}
-STR_5920    :Render weather effects
-STR_5921    :{SMALLFONT}{BLACK}If enabled, rain and gloomy colours will be rendered during storms.
+STR_5920    :天気効果をレンダリングする
+STR_5921    :{SMALLFONT}{BLACK}このオプションを有効にすると、暴風雨ある時に雨と湿っぽい色でレンダリングします。
 STR_5922    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {STRINGID}
 STR_5923    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{SMALLFONT}{BLACK}Max {COMMA16} {STRINGID} per train
 STR_5924    :Surface details
@@ -4307,7 +4307,7 @@ STR_5997    :Add/set money
 STR_5998    :Add money
 STR_5999    :Set money
 STR_6000    :Enter new value
-STR_6001    :Enable lighting effects（試験的）
+STR_6001    :電灯効果を表示にする（試験的）
 STR_6002    :{SMALLFONT}{BLACK}Lamps and rides will be lit up at night.{NEWLINE}Requires rendering engine to be set to hardware display.
 STR_6003    :切り欠きビュー
 STR_6004    :切り欠きビュー
@@ -4362,8 +4362,8 @@ STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported
 STR_6055    :OpenRCT2 Heightmap File
-STR_6056    :{SMALLFONT}{BLACK}Mute
-STR_6057    :{SMALLFONT}{BLACK}Show a separate button for the Mute Option in the toolbar
+STR_6056    :{SMALLFONT}{BLACK}ミュート
+STR_6057    :{SMALLFONT}{BLACK}ツールバーでミュートのボタンを表示する
 STR_6058    :ミュート
 STR_6059    :{RIGHTGUILLEMET}
 STR_6060    :Show guest purchases as animation
@@ -4473,6 +4473,11 @@ STR_6163    :タイトなコーナーや小さなドロップにより、ネズ�
 STR_6164    :{WHITE}{CROSS}
 STR_6165    :垂直同期信号を使う
 STR_6166    :{SMALLFONT}{BLACK}表示された各フレームをモニターのリフレッシュレートに同期させ、スクリーンテアリングを防ぎます。
+STR_6167    :{SMALLFONT}{BLACK}先行制御
+STR_6168    :タイトルシーケンス
+STR_6169    :シナリオ選択
+STR_6170    :微調整
+
 
 #####################
 # Rides/attractions #
