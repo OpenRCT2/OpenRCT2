@@ -855,6 +855,9 @@ void window_close_all_except_class(rct_windowclass cls)
     }
 }
 
+/**
+ * Closes all windows, save for those having any of the passed flags.
+ */
 void window_close_all_except_flags(uint16 flags)
 {
     for (rct_window * w = RCT2_LAST_WINDOW; w >= g_window_list; w--)
