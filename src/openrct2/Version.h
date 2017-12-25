@@ -74,7 +74,9 @@
     #error Unknown platform!
 #endif
 
-#define OPENRCT2_TIMESTAMP          __DATE__ " " __TIME__
+#ifndef OPENRCT2_CUSTOM_INFO
+#define OPENRCT2_CUSTOM_INFO ""
+#endif
 
 #ifdef __cplusplus
 extern "C"
