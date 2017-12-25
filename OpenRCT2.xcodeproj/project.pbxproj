@@ -46,6 +46,7 @@
 		4C6A66C11FF9322A00694CB6 /* music_list.c in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BD1FF9322A00694CB6 /* music_list.c */; };
 		4C6A66C21FF9322A00694CB6 /* Ride.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BF1FF9322A00694CB6 /* Ride.cpp */; };
 		4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */; };
+		4C6A66BC1FED04EE00694CB6 /* SSE41Drawing.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6A66BB1FED04EE00694CB6 /* SSE41Drawing.cpp */; settings = {COMPILER_FLAGS = "-msse4.1"; }; };
 		4C6AC20F1F9E1693004324AA /* Station.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC20D1F9E1693004324AA /* Station.cpp */; };
 		4C6AC2121F9E1CB3004324AA /* CableLift.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C6AC2101F9E1CB3004324AA /* CableLift.cpp */; };
 		4C729BC01FC2E1BE001DFF2F /* LargeScenery.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C729BBE1FC2E1BE001DFF2F /* LargeScenery.cpp */; };
