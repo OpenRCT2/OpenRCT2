@@ -4457,6 +4457,7 @@ STR_6154    :Es wird nicht empfohlen, OpenRCT2 mit erweiterten Benutzerrechten z
 STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie eins oder konfigurieren Sie es über die Kommandozeile.
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
+STR_6158    :Laden der Datei fehlgeschlagen...{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
 
 #############
 # Scenarios #
