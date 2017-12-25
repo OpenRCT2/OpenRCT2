@@ -822,7 +822,7 @@ enum {
     SPR_G2_MINIATURE_RAILWAY_INSET_END_NW_SE    = SPR_G2_MINIATURE_RAILWAY_BEGIN + 11,
     SPR_G2_MINIATURE_RAILWAY_LAST               = SPR_G2_BEGIN + 105,
 
-    SPR_G2_FILTER_BY_NAME = SPR_G2_BEGIN + 106,
+    SPR_G2_SEARCH = SPR_G2_BEGIN + 106,
 
     // 0x60000, chosen because it's a round hex number
     // of the last possible range of image ID values that is large enough to fit all csg1 sprites.

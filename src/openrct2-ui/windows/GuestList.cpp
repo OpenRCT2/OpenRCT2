@@ -86,7 +86,7 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_TAB,              1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
     { WWT_TAB,              1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
     { WWT_SCROLL,           1,  3,      346,    72, 326,    SCROLL_BOTH,            STR_NONE },                     // guest list
-    { WWT_FLATBTN,          1,  293,    316,    46, 69,     SPR_G2_FILTER_BY_NAME,  STR_GUESTS_FILTER_BY_NAME_TIP },    // filter by name
+    { WWT_FLATBTN,          1,  293,    316,    46, 69,     SPR_G2_SEARCH,          STR_GUESTS_FILTER_BY_NAME_TIP },      // filter by name
     { WIDGETS_END },
 };
 
