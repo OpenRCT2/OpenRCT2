@@ -151,6 +151,9 @@ void setup_in_use_selection_flags()
         case TILE_ELEMENT_TYPE_ENTRANCE:
             if (iter.element->properties.entrance.type != ENTRANCE_TYPE_PARK_ENTRANCE)
                 break;
+            // Skip if not the middle part
+            if (iter.element->properties.entrance.index != 0)
+                break;
 
             Editor::SelectedObjects[OBJECT_TYPE_PARK_ENTRANCE][0] |= OBJECT_SELECTION_FLAG_SELECTED;
 
