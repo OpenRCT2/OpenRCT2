@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_tile_element * tileElement, sint32 supportType);
 void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_tile_element * tileElement, sint32 supportType);
 void bolliger_mabillard_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height, rct_tile_element * tileElement, sint32 supportType);
