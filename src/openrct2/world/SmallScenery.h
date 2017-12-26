@@ -14,6 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
+#pragma once
+
 #include "../common.h"
 #include "map.h"
 #include "scenery.h"
