@@ -75,34 +75,6 @@ typedef void (*update_palette_func)(const uint8 *, sint32, sint32);
 
 rct_palette_entry gPalette[256];
 
-static uint8 soft_light(uint8 a, uint8 b)
-{
-    float fa = a / 255.0f;
-    float fb = b / 255.0f;
-    float fr;
-    if (fb < 0.5f)
-    {
-        fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
-    }
-    else
-    {
-        fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
-    }
-    return (uint8)(clamp(0.0f, fr, 1.0f) * 255.0f);
-}
-
-static uint8 lerp(uint8 a, uint8 b, float t)
-{
-    if (t <= 0)
-        return a;
-    if (t >= 1)
-        return b;
-
-    sint32 range  = b - a;
-    sint32 amount = (sint32)(range * t);
-    return (uint8)(a + amount);
-}
-
 void platform_update_palette(const uint8 * colours, sint32 start_index, sint32 num_colours)
 {
     colours += start_index * 4;
