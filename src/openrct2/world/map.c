@@ -3373,7 +3373,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
  */
 sint32 map_can_construct_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, uint8 bl)
 {
-    return map_can_construct_with_clear_at(x, y, zLow, zHigh, NULL, bl, 0, NULL, CREATE_CROSSING_MODE_NONE);
+    return gCheatsDisableClearanceChecks || map_can_construct_with_clear_at(x, y, zLow, zHigh, NULL, bl, 0, NULL, CREATE_CROSSING_MODE_NONE);
 }
 
 /**
