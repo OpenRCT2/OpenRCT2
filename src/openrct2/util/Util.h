@@ -70,6 +70,10 @@ sint16 add_clamp_sint16(sint16 value, sint16 value_to_add);
 sint32 add_clamp_sint32(sint32 value, sint32 value_to_add);
 money32 add_clamp_money32(money32 value, money32 value_to_add);
 
+uint8 lerp(uint8 a, uint8 b, float t);
+float flerp(float a, float b, float t);
+uint8 soft_light(uint8 a, uint8 b);
+
 size_t strcatftime(char * buffer, size_t bufferSize, const char * format, const struct tm * tp);
 
 #ifdef __cplusplus

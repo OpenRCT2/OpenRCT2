@@ -17,12 +17,13 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
+#include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../paint/tile_element/TileElement.h"
+#include "../util/Util.h"
 #include "../world/Climate.h"
-#include "../config/Config.h"
 #include "drawing.h"
 #include "lightfx.h"
 
@@ -73,10 +74,6 @@ static uint8            _current_view_zoom_back         = 0;
 static uint8            _current_view_zoom_back_delay   = 0;
 
 static rct_palette gPalette_light;
-
-static uint8 soft_light(uint8 a, uint8 b);
-static uint8 lerp(uint8 a, uint8 b, float t);
-static float flerp(float a, float b, float t);
 
 static uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
     double distance = (double)(x * x + y * y);
@@ -963,39 +960,6 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
         dstEntry->green = (uint8)(min(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
         dstEntry->blue = (uint8)(min(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
-}
-
-static uint8 soft_light(uint8 a, uint8 b)
-{
-    float fa = a / 255.0f;
-    float fb = b / 255.0f;
-    float fr;
-    if (fb < 0.5f) {
-        fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
-    } else {
-        fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
-    }
-    return (uint8)(clamp(0.0f, fr, 1.0f) * 255.0f);
-}
-
-static uint8 lerp(uint8 a, uint8 b, float t)
-{
-    if (t <= 0) return a;
-    if (t >= 1) return b;
-
-    sint32 range = b - a;
-    sint32 amount = (sint32)(range * t);
-    return (uint8)(a + amount);
-}
-
-static float flerp(float a, float b, float t)
-{
-    if (t <= 0) return a;
-    if (t >= 1) return b;
-
-    float range = b - a;
-    float amount = range * t;
-    return a + amount;
 }
 
 static uint8 mix_light(uint32 a, uint32 b, uint32 intensity)

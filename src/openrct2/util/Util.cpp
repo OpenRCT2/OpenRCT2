@@ -590,6 +590,44 @@ money32 add_clamp_money32(money32 value, money32 value_to_add)
 
 #undef add_clamp_body
 
+uint8 lerp(uint8 a, uint8 b, float t)
+{
+    if (t <= 0)
+        return a;
+    if (t >= 1)
+        return b;
+
+    sint32 range  = b - a;
+    sint32 amount = (sint32)(range * t);
+    return (uint8)(a + amount);
+}
+
+float flerp(float a, float b, float t)
+{
+    if (t <= 0) return a;
+    if (t >= 1) return b;
+
+    float range = b - a;
+    float amount = range * t;
+    return a + amount;
+}
+
+uint8 soft_light(uint8 a, uint8 b)
+{
+    float fa = a / 255.0f;
+    float fb = b / 255.0f;
+    float fr;
+    if (fb < 0.5f)
+    {
+        fr = (2 * fa * fb) + ((fa * fa) * (1 - (2 * fb)));
+    }
+    else
+    {
+        fr = (2 * fa * (1 - fb)) + (sqrtf(fa) * ((2 * fb) - 1));
+    }
+    return (uint8)(Math::Clamp(0.0f, fr, 1.0f) * 255.0f);
+}
+
 /**
  * strftime wrapper which appends to an existing string.
  */
