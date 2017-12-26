@@ -26,6 +26,8 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Math.hpp>
+#include <openrct2/core/String.hpp>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/util/Util.h>
@@ -91,7 +93,7 @@ static rct_window_event_list window_text_input_events = {
 };
 
 static rct_string_id input_text_description;
-static char text_input[TEXT_INPUT_SIZE] = { 0 };
+static utf8 text_input[TEXT_INPUT_SIZE] = { 0 };
 static rct_windowclass calling_class = 0;
 static rct_windownumber calling_number = 0;
 static sint32 calling_widget = 0;
@@ -99,19 +101,26 @@ static sint32 _maxInputLength;
 
 void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, rct_string_id existing_text, uintptr_t existing_args, sint32 maxLength)
 {
+    // Get the raw string
+    utf8 buffer[Util::CountOf(text_input)];
+    if (existing_text != STR_NONE)
+        format_string(buffer, maxLength, existing_text, &existing_args);
+
+    utf8_remove_format_codes(buffer, false);
+    window_text_input_raw_open(call_w, call_widget, title, description, buffer, maxLength);
+}
+
+void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, const_utf8string existing_text, sint32 maxLength)
+{
     _maxInputLength = maxLength;
 
     window_close_by_class(WC_TEXTINPUT);
 
-    // Clear the text input buffer
-    memset(text_input, 0, maxLength);
-
-    // Enter in the text input buffer any existing
-    // text.
-    if (existing_text != STR_NONE)
-        format_string(text_input, maxLength, existing_text, &existing_args);
-
-    utf8_remove_format_codes(text_input, false);
+    // Set the input text
+    if (existing_text != nullptr)
+        String::Set(text_input, sizeof(text_input), existing_text);
+    else
+        String::Set(text_input, sizeof(text_input), "");
 
     // This is the text displayed above the input box
     input_text_description = description;
@@ -122,8 +131,7 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
 
     sint32 no_lines = 0, font_height = 0;
 
-    // String length needs to add 12 either side of box
-    // +13 for cursor when max length.
+    // String length needs to add 12 either side of box +13 for cursor when max length.
     gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
 
     sint32 height = no_lines * 10 + WH;
@@ -138,73 +146,11 @@ void window_text_input_open(rct_window* call_w, rct_widgetindex call_widget, rct
     );
 
     w->widgets = window_text_input_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1<<WIDX_CANCEL) | (1<<WIDX_OKAY);
+    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
 
     window_text_input_widgets[WIDX_TITLE].text = title;
 
-    // Save calling window details so that the information
-    // can be passed back to the correct window & widget
-    calling_class = call_w->classification;
-    calling_number = call_w->number;
-    calling_widget = call_widget;
-
-    gTextInput = context_start_text_input(text_input, maxLength);
-
-    window_init_scroll_widgets(w);
-    w->colours[0] = call_w->colours[0];
-    w->colours[1] = call_w->colours[1];
-    w->colours[2] = call_w->colours[2];
-}
-
-void window_text_input_raw_open(rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description, utf8string existing_text, sint32 maxLength)
-{
-    _maxInputLength = maxLength;
-
-    window_close_by_class(WC_TEXTINPUT);
-
-    // Clear the text input buffer
-    memset(text_input, 0, maxLength);
-
-    // Enter in the text input buffer any existing
-    // text.
-    if (existing_text != nullptr)
-        safe_strcpy(text_input, existing_text, maxLength);
-
-    // In order to prevent strings that exceed the maxLength
-    // from crashing the game.
-    text_input[maxLength - 1] = '\0';
-
-    // This is the text displayed above the input box
-    input_text_description = description;
-
-    // Work out the existing size of the window
-    char wrapped_string[TEXT_INPUT_SIZE];
-    safe_strcpy(wrapped_string, text_input, TEXT_INPUT_SIZE);
-
-    sint32 no_lines = 0, font_height = 0;
-
-    // String length needs to add 12 either side of box
-    // +13 for cursor when max length.
-    gfx_wrap_string(wrapped_string, WW - (24 + 13), &no_lines, &font_height);
-
-    sint32 height = no_lines * 10 + WH;
-
-    // Window will be in the centre of the screen
-    rct_window* w = window_create_centred(
-        WW,
-        height,
-        &window_text_input_events,
-        WC_TEXTINPUT,
-        WF_STICK_TO_FRONT
-        );
-
-    w->widgets = window_text_input_widgets;
-    w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_CANCEL) | (1 << WIDX_OKAY);
-
-    window_text_input_widgets[WIDX_TITLE].text = title;
-
-    // Save calling window details so that the information
-    // can be passed back to the correct window & widget
+    // Save calling window details so that the information can be passed back to the correct window & widget
     calling_class = call_w->classification;
     calling_number = call_w->number;
     calling_widget = call_widget;
