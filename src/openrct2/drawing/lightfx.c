@@ -164,7 +164,6 @@ void lightfx_update_buffers(rct_drawpixelinfo *info)
     memcpy(&_pixelInfo, info, sizeof(rct_drawpixelinfo));
 }
 
-extern void sub_68862C();
 extern void viewport_paint_setup();
 
 void lightfx_prepare_light_list()

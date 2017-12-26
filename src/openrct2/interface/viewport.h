@@ -152,6 +152,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 void viewport_interaction_remove_park_entrance(rct_tile_element *tileElement, sint32 x, sint32 y);
 
 void sub_68B2B7(paint_session * session, sint32 x, sint32 y);
+void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps);
 
 void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32 right, sint32 bottom);
 

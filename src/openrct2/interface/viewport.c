@@ -1322,7 +1322,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
  *
  *  rct2: 0x0068862C
  */
-static void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
+void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
 {
     while ((ps = ps->next_quadrant_ps) != NULL) {
         paint_struct * old_ps = ps;
