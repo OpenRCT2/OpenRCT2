@@ -4477,6 +4477,9 @@ STR_6167    :{SMALLFONT}{BLACK}고급
 STR_6168    :타이틀 시퀀스
 STR_6169    :시나리오 선택
 STR_6170    :기타
+STR_6171    :검색
+STR_6172    :{SMALLFONT}{BLACK}검색
+STR_6173    :검색할 이름을 입력하세요:
 
 #############
 # Scenarios #

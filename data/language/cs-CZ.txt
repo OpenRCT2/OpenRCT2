@@ -4477,6 +4477,9 @@ STR_6167    :{SMALLFONT}{BLACK}Pokročilé
 STR_6168    :Úvodní herní sekvence
 STR_6169    :Výběr scénáře
 STR_6170    :Vychytávky
+STR_6171    :Vyhledávání
+STR_6172    :{SMALLFONT}{BLACK}Vyhledávání
+STR_6173    :Zadejte jméno k vyhledání:
 
 ###############################################################################
 ## RCT2 Objects

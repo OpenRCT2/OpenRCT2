@@ -3966,7 +3966,7 @@ STR_5626    :Andra parker
 STR_5627    :Sortera scenarion via:
 STR_5628    :Spelpaket
 STR_5629    :Svårighetsgrad
-STR_5630    :Tillåt upplåsning av scenarion
+STR_5630    :Tillåt progressiv-upplåsning
 STR_5631    :Original DLC parker
 STR_5632    :Bygg din egna...
 STR_5633    :CMD + 
@@ -4148,7 +4148,7 @@ STR_5839    :{SMALLFONT}{BLACK}Visa en knapp för 'forskning & utveckling'-föns
 STR_5840    :{SMALLFONT}{BLACK}Visa en knapp för 'fusk' i verktygsfältet
 STR_5841    :{SMALLFONT}{BLACK}Visa en knapp för 'senaste nyheterna'-fönstret i verktygsfältet
 STR_5842    :{SMALLFONT}{BLACK}Sortera scenarion via svårighetsgrad (Som i RCT2) eller som det kommer från början (Som i RCT1)
-STR_5843    :{SMALLFONT}{BLACK}Tillåt upplåsning av scenarion (Som i RCT1 & RCT3)
+STR_5843    :{SMALLFONT}{BLACK}Tillåter upplåsning av scenarion när du slutför dem (som i RCT1 & RCT3)
 STR_5844    :{SMALLFONT}{BLACK}Behåll anslutningen på servrar i flerspelarläget{NEWLINE}även om du hamnar i osynk eller fel uppstår
 STR_5845    :{SMALLFONT}{BLACK}Lägger till en knapp för{NEWLINE}'verktyg för felsökning' i verktygsraden.{NEWLINE}Aktiverar snabbknapp för utvecklarkonsolen
 STR_5846    :{SMALLFONT}{BLACK}Välj hur ofta OpenRCT2 ska spara automatiskt
@@ -4469,11 +4469,16 @@ STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING}
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vilda musen
 STR_6163    :Musformade vagnar susar förbi snäva kurvor och korta stup medan vagnen försiktigt snurrar för att desorientera passagerarna
-STR_6162    :Snurrande vilda musen
-STR_6163    :Musformade vagnar susar förbi snäva kurvor och korta stup medan vagnen försiktigt snurrar för att desorientera passagerarna
 STR_6164    :{WHITE}{CROSS}
 STR_6165    :Använd Vertical Sync (V-sync)
 STR_6166    :{SMALLFONT}{BLACK}Synkroniserar varje bild som ritas med skärmens "refresh rate", vilket förhindrar "Screen tearing".
+STR_6167    :{SMALLFONT}{BLACK}Avancerat
+STR_6168    :Titelsekvens
+STR_6169    :Scenarioväljaren
+STR_6170    :Anpassa
+STR_6171    :Sök
+STR_6172    :{SMALLFONT}{BLACK}Sök
+STR_6173    :Vänligen skriv in ett namn att söka:
 
 #############
 # Scenarion #
