@@ -7618,8 +7618,6 @@ static void vehicle_update_reverser_car_bogies(rct_vehicle * vehicle)
     sprite_move(x, y, z, (rct_sprite *)vehicle);
 }
 
-extern const LocationXY16 DuckMoveOffset[4];
-
 /**
  * Collision Detection
  *  rct2: 0x006DD078

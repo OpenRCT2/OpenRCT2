@@ -32,8 +32,6 @@ const uint32 vehicle_particle_base_sprites[] = {
     22577, 22589, 22601, 22613, 22625
 };
 
-extern const uint8 * DuckAnimations[];
-
 /**
  * rct2: 0x00672AC9
  */
