@@ -14,18 +14,19 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <openrct2/OpenRCT2.h>
-#include <openrct2/world/Climate.h>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/windows/Window.h>
-#include <openrct2/Context.h>
 
+#include <openrct2/Context.h>
+#include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/date.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2-ui/interface/Dropdown.h>
+#include <openrct2/world/Climate.h>
 
 #pragma region Widgets
 
@@ -793,25 +794,15 @@ static void window_editor_objective_options_main_textinput(rct_window *w, rct_wi
     case WIDX_PARK_NAME:
         park_set_name(text);
 
-        if (gS6Info.name[0] == 0)
+        if (gS6Info.name[0] == '\0')
             format_string(gS6Info.name, 64, gParkName, &gParkNameArgs);
         break;
     case WIDX_SCENARIO_NAME:
-        safe_strcpy(gS6Info.name, text, 64);
-        if (strnlen(gS6Info.name, 64) == 64)
-        {
-            gS6Info.name[64 - 1] = '\0';
-            log_warning("Truncated S6 name: %s", gS6Info.name);
-        }
+        safe_strcpy(gS6Info.name, text, Util::CountOf(gS6Info.name));
         window_invalidate(w);
         break;
     case WIDX_DETAILS:
-        safe_strcpy(gS6Info.details, text, 256);
-        if (strnlen(gS6Info.details, 256) == 256)
-        {
-            gS6Info.details[256 - 1] = '\0';
-            log_warning("Truncated S6 name: %s", gS6Info.details);
-        }
+        safe_strcpy(gS6Info.details, text, Util::CountOf(gS6Info.details));
         window_invalidate(w);
         break;
     }
