@@ -104,6 +104,7 @@ sint16 gMapBaseZ;
 rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 LocationXY16 gMapSelectionTiles[300];
+static LocationXYZ16 gVirtualFloorLastLocation;
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 rct_tile_element *gNextFreeTileElement;
@@ -4745,7 +4746,7 @@ void map_set_virtual_floor_height(sint16 height)
     if (gMapVirtualFloorHeight != height)
     {
         map_invalidate_virtual_floor_tiles();
-        gMapVirtualFloorHeight      = height;
+        gMapVirtualFloorHeight = height;
     }
 }
 
@@ -4753,8 +4754,9 @@ void map_remove_virtual_floor()
 {
     if (gMapVirtualFloorHeight != 0)
     {
+        gVirtualFloorLastLocation.z = -1;
         map_invalidate_virtual_floor_tiles();
-        gMapVirtualFloorHeight      = 0;
+        gMapVirtualFloorHeight = 0;
     }
 }
 
@@ -4767,7 +4769,7 @@ void map_invalidate_virtual_floor_tiles()
 
     LocationXY16 min_position = { 0x7FFF, 0x7FFF };
     LocationXY16 max_position = { 0, 0 };
-    
+
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
     {
         min_position   = gMapSelectPositionA;
@@ -4789,6 +4791,11 @@ void map_invalidate_virtual_floor_tiles()
     max_position.x  += gMapVirtualFloorBaseSize + 1;
     max_position.y  += gMapVirtualFloorBaseSize + 1;
 
+    if (gVirtualFloorLastLocation.x == min_position.x &&
+        gVirtualFloorLastLocation.y == min_position.y &&
+        gVirtualFloorLastLocation.z == gMapVirtualFloorHeight)
+        return;
+
     for (sint16 x = min_position.x; x < max_position.x; x++)
     {
         for (sint16 y = min_position.y; y < max_position.y; y++)
@@ -4796,6 +4803,10 @@ void map_invalidate_virtual_floor_tiles()
             map_invalidate_tile_full(x, y);
         }
     }
+
+    gVirtualFloorLastLocation.x = min_position.x;
+    gVirtualFloorLastLocation.y = min_position.y;
+    gVirtualFloorLastLocation.z = gMapVirtualFloorHeight;
 }
 
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)

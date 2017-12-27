@@ -1284,7 +1284,7 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             *parameter_1 = (selected_scenery & 0xFF) << 8;
             *parameter_2 = (cl ^ (1 << 1)) | (gWindowSceneryPrimaryColour << 8);
             *parameter_3 = rotation | (gWindowScenerySecondaryColour << 16);
-            
+
             map_set_virtual_floor_height(gSceneryPlaceZ);
 
             return;
@@ -2368,6 +2368,7 @@ static money32 try_place_ghost_scenery(LocationXY16 map_tile, uint32 parameter_1
 static void top_toolbar_tool_update_scenery(sint16 x, sint16 y){
     map_invalidate_selection_rect();
     map_invalidate_map_selection_tiles();
+    map_invalidate_virtual_floor_tiles();
 
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
     gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
