@@ -31,7 +31,7 @@
 #include "../core/Zip.h"
 #include "../scenario/ScenarioRepository.h"
 #include "../scenario/ScenarioSources.h"
-#include "../util/util.h"
+#include "../util/Util.h"
 #include "TitleSequence.h"
 
 
