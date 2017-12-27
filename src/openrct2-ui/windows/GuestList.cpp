@@ -40,11 +40,11 @@ enum WINDOW_GUEST_LIST_WIDGET_IDX {
     WIDX_INFO_TYPE_DROPDOWN,
     WIDX_INFO_TYPE_DROPDOWN_BUTTON,
     WIDX_MAP,
+    WIDX_FILTER_BY_NAME,
     WIDX_TRACKING,
     WIDX_TAB_1,
     WIDX_TAB_2,
-    WIDX_GUEST_LIST,
-    WIDX_FILTER_BY_NAME
+    WIDX_GUEST_LIST
 };
 
 enum {
@@ -79,14 +79,14 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
     { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_PAGE_1,             STR_NONE },                     // page dropdown
     { WWT_DROPDOWN_BUTTON,  1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button
-    { WWT_DROPDOWN,         1,  120,    285,    59, 70,     0xFFFFFFFF,             STR_INFORMATION_TYPE_TIP },     // information type dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  274,    284,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
-    { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
+    { WWT_DROPDOWN,         1,  120,    261,    59, 70,     0xFFFFFFFF,             STR_INFORMATION_TYPE_TIP },     // information type dropdown
+    { WWT_DROPDOWN_BUTTON,  1,  250,    260,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
+    { WWT_FLATBTN,          1,  273,    296,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
+    { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_G2_SEARCH,          STR_GUESTS_FILTER_BY_NAME_TIP },// filter by name
     { WWT_FLATBTN,          1,  321,    344,    46, 69,     SPR_TRACK_PEEP,         STR_TRACKED_GUESTS_ONLY_TIP },  // tracking
     { WWT_TAB,              1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_INDIVIDUAL_GUESTS_TIP },    // tab 1
     { WWT_TAB,              1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_SUMMARISED_GUESTS_TIP },    // tab 2
     { WWT_SCROLL,           1,  3,      346,    72, 326,    SCROLL_BOTH,            STR_NONE },                     // guest list
-    { WWT_FLATBTN,          1,  293,    316,    46, 69,     SPR_G2_SEARCH,          STR_GUESTS_FILTER_BY_NAME_TIP },      // filter by name
     { WIDGETS_END },
 };
 
@@ -646,10 +646,12 @@ static void window_guest_list_invalidate(rct_window *w)
     window_guest_list_widgets[WIDX_GUEST_LIST].right = w->width - 4;
     window_guest_list_widgets[WIDX_GUEST_LIST].bottom = w->height - 15;
     window_guest_list_widgets[WIDX_PAGE_DROPDOWN].text = pageNames[_window_guest_list_selected_page];
+    window_guest_list_widgets[WIDX_MAP].left = 273 - 350 + w->width;
+    window_guest_list_widgets[WIDX_MAP].right = 296 - 350 + w->width;
+    window_guest_list_widgets[WIDX_FILTER_BY_NAME].left = 297 - 350 + w->width;
+    window_guest_list_widgets[WIDX_FILTER_BY_NAME].right = 320 - 350 + w->width;
     window_guest_list_widgets[WIDX_TRACKING].left = 321 - 350 + w->width;
     window_guest_list_widgets[WIDX_TRACKING].right = 344 - 350 + w->width;
-    window_guest_list_widgets[WIDX_FILTER_BY_NAME].left = 293 - 350 + w->width;
-    window_guest_list_widgets[WIDX_FILTER_BY_NAME].right = 316 - 350 + w->width;
 
     if (_window_guest_list_num_pages > 1) {
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
