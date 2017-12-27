@@ -1486,7 +1486,8 @@ static void window_ride_update_overall_view(uint8 ride_index) {
 
     // Each farther zoom level shows twice as many tiles (log)
     // Appropriate zoom is lowered by one to fill the entire view with the ride
-    double zoom = ceil(log(size / 80)) - 1;
+    // Value clamped to a minimum of 0 to prevent underflow
+    sint32 zoom = Math::Max((sint32)ceil(log(size / 80)) - 1, 0);
     view->zoom = Math::Clamp<uint8>(0, zoom, 3);
 }
 
