@@ -434,20 +434,31 @@ void map_count_remaining_land_rights()
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
 
-    for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++) {
-        for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++) {
+    for (sint32 x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+    {
+        for (sint32 y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        {
             rct_tile_element *element = map_get_surface_element_at(x, y);
             // Surface elements are sometimes hacked out to save some space for other map elements
-            if (element == NULL) {
+            if (element == NULL)
+            {
                 continue;
             }
 
             uint8 flags = element->properties.surface.ownership;
 
-            if ((flags & OWNERSHIP_AVAILABLE) && (flags & OWNERSHIP_OWNED) == 0) {
-                gLandRemainingOwnershipSales++;
-            } else if ((flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0) {
-                gLandRemainingConstructionSales++;
+            // Do not combine this condition with (flags & OWNERSHIP_AVAILABLE)
+            // As some RCT1 parks have owned tiles with the 'construction rights available' flag also set
+            if (!(flags & OWNERSHIP_OWNED))
+            {
+                if (flags & OWNERSHIP_AVAILABLE)
+                {
+                    gLandRemainingOwnershipSales++;
+                }
+                else if ((flags & OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) && (flags & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED) == 0)
+                {
+                    gLandRemainingConstructionSales++;
+                }
             }
         }
     }
