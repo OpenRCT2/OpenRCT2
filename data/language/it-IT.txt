@@ -3747,7 +3747,7 @@ STR_5626    :Altri parchi
 STR_5627    :Raggruppa lista scenari per:
 STR_5628    :Gioco di origine
 STR_5629    :Livello di difficoltà
-STR_5630    :Attiva sblocco degli scenari
+STR_5630    :Attiva sblocco progressivo
 STR_5631    :Parchi scaricabili originali
 STR_5632    :Costruisci il tuo...
 STR_5633    :CMD + 
@@ -3924,7 +3924,7 @@ STR_5839    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le ricerche e s
 STR_5840    :{SMALLFONT}{BLACK}Mostra un pulsante differente per i trucchi nella barra degli strumenti
 STR_5841    :{SMALLFONT}{BLACK}Mostra un pulsante differente per le novità nella barra degli strumenti
 STR_5842    :{SMALLFONT}{BLACK}Mostra scenari divisi per difficoltà (come in RCT2) o per gioco di origine (come in RCT1)
-STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco degli scenari come in RCT1
+STR_5843    :{SMALLFONT}{BLACK}Abilita lo sblocco progressivo degli scenari (come in RCT1)
 STR_5844    :{SMALLFONT}{BLACK}Connettiti al server multigiocatore{NEWLINE}anche in caso di asincronia o errori
 STR_5845    :{SMALLFONT}{BLACK}Aggiungi un pulsante{NEWLINE}per debuggare nella barra.{NEWLINE}Abilita le shortcut nellatastiera per la console sviluppatori
 STR_5846    :{SMALLFONT}{BLACK}Imposta i salvataggi automatici di OpenRCT2 spesso
@@ -4247,6 +4247,13 @@ STR_6163    :Carrelli a forma di topo corrono lungo curve strette e brevi cadute
 STR_6164    :{WHITE}{CROSS}
 STR_6165    :Usa sincronizz. verticale
 STR_6166    :{SMALLFONT}{BLACK}Sincronizza i frame alla frequenza di aggiornamento dello schermo, per prevenire gli artefatti grafici (tearing).
+STR_6167    :{SMALLFONT}{BLACK}Avanzate
+STR_6168    :Sequenza del titolo
+STR_6169    :Selezione scenario
+STR_6170    :Modifiche
+STR_6171    :Cerca
+STR_6172    :{SMALLFONT}{BLACK}Cerca
+STR_6173    :Digitare il nome da cercare:
 
 
 #############
