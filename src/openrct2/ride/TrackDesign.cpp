@@ -1384,6 +1384,16 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
 static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
+    const rct_preview_track ** trackBlockArray;
+    if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        trackBlockArray = TrackBlocks;
+    }
+    else
+    {
+        trackBlockArray = FlatRideTrackBlocks;
+    }
+
     gTrackPreviewOrigin.x = x;
     gTrackPreviewOrigin.y = y;
     gTrackPreviewOrigin.z = z;
@@ -1415,7 +1425,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         switch (_trackDesignPlaceOperation)
         {
         case PTD_OPERATION_DRAW_OUTLINES:
-            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            for (const rct_preview_track * trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 LocationXY16 tile = {x, y};
                 map_offset_with_rotation(&tile.x, &tile.y, trackBlock->x, trackBlock->y, rotation);
@@ -1426,7 +1436,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         case PTD_OPERATION_CLEAR_OUTLINES:
         {
             const rct_track_coordinates * trackCoordinates = &TrackCoordinates[trackType];
-            const rct_preview_track     * trackBlock       = TrackBlocks[trackType];
+            const rct_preview_track     * trackBlock       = trackBlockArray[trackType];
             sint32                      tempZ              = z - trackCoordinates->z_begin + trackBlock->z;
             uint8                       flags              =
                                             GAME_COMMAND_FLAG_APPLY |
@@ -1495,7 +1505,7 @@ static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sin
         case PTD_OPERATION_GET_PLACE_Z:
         {
             sint32                       tempZ        = z - TrackCoordinates[trackType].z_begin;
-            for (const rct_preview_track * trackBlock = TrackBlocks[trackType]; trackBlock->index != 0xFF; trackBlock++)
+            for (const rct_preview_track * trackBlock = trackBlockArray[trackType]; trackBlock->index != 0xFF; trackBlock++)
             {
                 sint16 tmpX = x;
                 sint16 tmpY = y;
@@ -2241,6 +2251,14 @@ void track_design_draw_preview(rct_track_td6 * td6, uint8 * pixels)
     sint32 size_x = gTrackPreviewMax.x - gTrackPreviewMin.x;
     sint32 size_y = gTrackPreviewMax.y - gTrackPreviewMin.y;
     sint32 size_z = gTrackPreviewMax.z - gTrackPreviewMin.z;
+
+    // Special case for flat rides - Z-axis info is irrelevant
+    // and must be zeroed out lest the preview be off-centre
+    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        centre.z = 0;
+        size_z = 0;
+    }
 
     sint32 zoom_level = 1;
 

@@ -158,11 +158,6 @@ bool track_design_save(uint8 rideIndex)
         return false;
     }
 
-    if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_TRACK)) {
-        context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
-        return false;
-    }
-
     _trackDesign = track_design_save_to_td6(rideIndex);
     if (_trackDesign == nullptr) {
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, gGameCommandErrorText);
