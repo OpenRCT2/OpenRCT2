@@ -764,10 +764,16 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 
 void park_set_name(const char *name)
 {
+    // Required else the pointer arithmetic in the game commands below could cause an access violation
+    char* newName = malloc(USER_STRING_MAX_LENGTH + 1);
+    strncpy(newName, name, USER_STRING_MAX_LENGTH);
+
     gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
-    game_do_command(1, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(name + 0)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(name + 8)), *((sint32*)(name + 4)));
-    game_do_command(2, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(name + 12)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(name + 20)), *((sint32*)(name + 16)));
-    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(name + 24)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(name + 32)), *((sint32*)(name + 28)));
+    game_do_command(1, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 0)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 8)), *((sint32*)(newName + 4)));
+    game_do_command(2, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 12)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 20)), *((sint32*)(newName + 16)));
+    game_do_command(0, GAME_COMMAND_FLAG_APPLY, 0, *((sint32*)(newName + 24)), GAME_COMMAND_SET_PARK_NAME, *((sint32*)(newName + 32)), *((sint32*)(newName + 28)));
+
+    free(newName);
 }
 
 /**
