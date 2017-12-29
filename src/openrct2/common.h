@@ -203,6 +203,12 @@ typedef uint16 rct_string_id;
 #endif
 #define abstract = 0
 
+#if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
+    #define OPENRCT2_X86
+#elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
+    #define OPENRCT2_X86
+#endif
+
 #if defined(__i386__) || defined(_M_IX86)
 #define PLATFORM_X86
 #endif
