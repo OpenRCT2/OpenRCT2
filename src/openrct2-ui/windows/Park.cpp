@@ -656,7 +656,7 @@ static void window_park_entrance_mouseup(rct_window *w, rct_widgetindex widgetIn
         break;
     case WIDX_RENAME:
         set_format_arg(16, uint32, gParkNameArgs);
-        window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, 32);
+        window_text_input_open(w, WIDX_RENAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, gParkName, 0, USER_STRING_MAX_LENGTH);
         break;
     case WIDX_CLOSE_LIGHT:
         park_set_open(0);
