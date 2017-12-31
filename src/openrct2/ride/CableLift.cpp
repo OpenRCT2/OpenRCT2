@@ -19,7 +19,7 @@
 #include "../util/Util.h"
 #include "../world/sprite.h"
 #include "CableLift.h"
-#include "ride.h"
+#include "Ride.h"
 #include "Track.h"
 #include "ride_data.h"
 #include "vehicle_data.h"

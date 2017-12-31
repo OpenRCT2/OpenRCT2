@@ -35,7 +35,7 @@
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../rct1.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"

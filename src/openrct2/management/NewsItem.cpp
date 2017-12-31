@@ -22,7 +22,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/sprite.h"

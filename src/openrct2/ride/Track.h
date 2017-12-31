@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "../object.h"
-#include "ride.h"
+#include "Ride.h"
 
 #pragma pack(push, 1)
 typedef struct rct_trackdefinition

@@ -18,7 +18,7 @@
 #define _TEST_PAINT_DATA_H_
 
 #include <openrct2/common.h>
-#include <openrct2/ride/ride.h>
+#include <openrct2/ride/Ride.h>
 
 
 extern const utf8string RideNames[RIDE_TYPE_COUNT];

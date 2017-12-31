@@ -21,7 +21,7 @@
 #include "../drawing/drawing.h"
 #include "../management/Research.h"
 #include "../peep/Peep.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/scenario.h"

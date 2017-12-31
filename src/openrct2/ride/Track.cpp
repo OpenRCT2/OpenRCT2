@@ -31,7 +31,7 @@
 #include "../world/map_animation.h"
 #include "../world/park.h"
 #include "../world/scenery.h"
-#include "ride.h"
+#include "Ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"
 #include "RideGroupManager.h"

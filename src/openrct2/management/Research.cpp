@@ -26,7 +26,7 @@
 #include "../OpenRCT2.h"
 #include "../scenario/scenario.h"
 #include "../rct1.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/RideGroupManager.h"
 #include "../ride/TrackData.h"

@@ -21,7 +21,7 @@
 #include "management/NewsItem.h"
 #include "management/Research.h"
 #include "rct12.h"
-#include "ride/ride.h"
+#include "ride/Ride.h"
 #include "world/Banner.h"
 #include "world/map.h"
 #include "world/sprite.h"

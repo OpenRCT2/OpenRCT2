@@ -18,7 +18,7 @@
 #define _RIDE_DATA_H_
 
 #include "../common.h"
-#include "ride.h"
+#include "Ride.h"
 
 typedef struct ride_component_name {
     rct_string_id singular;

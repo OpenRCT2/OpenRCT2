@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ride/ride.h"
+#include "ride/Ride.h"
 #include "world/Banner.h"
 #include "world/Entrance.h"
 #include "world/footpath.h"
