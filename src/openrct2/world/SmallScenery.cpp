@@ -20,7 +20,7 @@
 #include "../ride/TrackDesign.h"
 #include "footpath.h"
 #include "map.h"
-#include "park.h"
+#include "Park.h"
 #include "scenery.h"
 #include "SmallScenery.h"
 

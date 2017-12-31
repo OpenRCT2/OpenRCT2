@@ -40,7 +40,7 @@
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/map.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "../world/water.h"

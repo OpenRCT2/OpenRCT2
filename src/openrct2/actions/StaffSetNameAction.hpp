@@ -24,7 +24,7 @@
 #include "../peep/Staff.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
 {

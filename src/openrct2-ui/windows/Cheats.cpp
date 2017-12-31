@@ -25,7 +25,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/park.h>
+#include <openrct2/world/Park.h>
 #include <openrct2-ui/interface/Dropdown.h>
 
 #define CHEATS_MONEY_DEFAULT MONEY(10000,00)

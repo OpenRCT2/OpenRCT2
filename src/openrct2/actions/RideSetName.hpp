@@ -24,7 +24,7 @@
 #include "../localisation/string_ids.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 using namespace OpenRCT2;

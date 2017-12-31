@@ -48,7 +48,7 @@
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/map_animation.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 
 class ObjectLoadException : public Exception
 {

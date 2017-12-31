@@ -43,7 +43,7 @@
 #include "../Version.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "../world/scenery.h"
 #include "console.h"
 #include "viewport.h"

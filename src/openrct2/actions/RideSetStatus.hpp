@@ -22,7 +22,7 @@
 
 #include "../Cheats.h"
 #include "../interface/window.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "../ride/Ride.h"
 
 static rct_string_id _StatusErrorTitles[] =

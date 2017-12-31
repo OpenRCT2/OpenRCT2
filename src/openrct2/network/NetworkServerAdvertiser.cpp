@@ -30,7 +30,7 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/map.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "http.h"
 
 #ifndef DISABLE_HTTP

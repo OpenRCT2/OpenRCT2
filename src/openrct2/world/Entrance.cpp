@@ -20,7 +20,7 @@
 #include "Entrance.h"
 #include "footpath.h"
 #include "map.h"
-#include "park.h"
+#include "Park.h"
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/string_ids.h"
