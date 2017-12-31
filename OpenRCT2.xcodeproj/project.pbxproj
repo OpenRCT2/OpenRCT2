@@ -445,7 +445,6 @@
 		F76C87A01EC4E88400FA49E2 /* map.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85681EC4E7CD00FA49E2 /* map.c */; };
 		F76C87A21EC4E88400FA49E2 /* map_animation.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C856A1EC4E7CD00FA49E2 /* map_animation.c */; };
 		F76C87A41EC4E88500FA49E2 /* map_helpers.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C856C1EC4E7CD00FA49E2 /* map_helpers.c */; };
-		F76C87A91EC4E88500FA49E2 /* park.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85711EC4E7CD00FA49E2 /* park.c */; };
 		F76C87AC1EC4E88500FA49E2 /* scenery.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85741EC4E7CD00FA49E2 /* scenery.c */; };
 		F76C87AE1EC4E88500FA49E2 /* sprite.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C85761EC4E7CD00FA49E2 /* sprite.c */; };
 		F76C87B21EC4E88500FA49E2 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C857A1EC4E7CD00FA49E2 /* Wall.cpp */; };
@@ -477,6 +476,8 @@
 		F775F5371EE3724F001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */; };
 		F79F428F1F3260F1009E42F8 /* changelog.txt in Resources */ = {isa = PBXBuildFile; fileRef = F79F428E1F3260F1009E42F8 /* changelog.txt */; };
+		F79F42881F2E07E1009E42F8 /* Park.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79F42871F2E07E1009E42F8 /* Park.cpp */; };
+		F79F42891F2E0837009E42F8 /* Park.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F79F42871F2E07E1009E42F8 /* Park.cpp */; };
 		F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */; };
 		F7CB864A1EEDA1330030C877 /* KeyboardShortcuts.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */; };
 		F7CB864D1EEDA1A80030C877 /* DummyWindowManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F7CB864B1EEDA1A80030C877 /* DummyWindowManager.cpp */; };
@@ -1346,8 +1347,6 @@
 		F76C856B1EC4E7CD00FA49E2 /* map_animation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = map_animation.h; sourceTree = "<group>"; };
 		F76C856C1EC4E7CD00FA49E2 /* map_helpers.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = map_helpers.c; sourceTree = "<group>"; };
 		F76C856D1EC4E7CD00FA49E2 /* map_helpers.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = map_helpers.h; sourceTree = "<group>"; };
-		F76C85711EC4E7CD00FA49E2 /* park.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = park.c; sourceTree = "<group>"; };
-		F76C85721EC4E7CD00FA49E2 /* park.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = park.h; sourceTree = "<group>"; };
 		F76C85741EC4E7CD00FA49E2 /* scenery.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenery.c; sourceTree = "<group>"; };
 		F76C85751EC4E7CD00FA49E2 /* scenery.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scenery.h; sourceTree = "<group>"; };
 		F76C85761EC4E7CD00FA49E2 /* sprite.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = sprite.c; sourceTree = "<group>"; };
@@ -1398,6 +1397,7 @@
 		F775F5331EE35A6B001F00E7 /* DummyUiContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyUiContext.cpp; sourceTree = "<group>"; };
 		F775F5361EE3724F001F00E7 /* DummyAudioContext.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = DummyAudioContext.cpp; sourceTree = "<group>"; };
 		F79F428E1F3260F1009E42F8 /* changelog.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = changelog.txt; path = distribution/changelog.txt; sourceTree = SOURCE_ROOT; };
+		F79F42871F2E07E1009E42F8 /* Park.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Park.cpp; sourceTree = "<group>"; };
 		F7CB863D1EEDA0B50030C877 /* WindowManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = WindowManager.cpp; sourceTree = "<group>"; };
 		F7CB863E1EEDA0B50030C877 /* WindowManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WindowManager.h; sourceTree = "<group>"; };
 		F7CB86471EEDA1330030C877 /* KeyboardShortcuts.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = KeyboardShortcuts.cpp; sourceTree = "<group>"; };
@@ -2519,8 +2519,7 @@
 				4C31B2E21FB6115600F6A38A /* MapGen.cpp */,
 				4C31B2E31FB6115600F6A38A /* MapGen.h */,
 				4C729BC81FC2E6E9001DFF2F /* MoneyEffect.cpp */,
-				F76C85711EC4E7CD00FA49E2 /* park.c */,
-				F76C85721EC4E7CD00FA49E2 /* park.h */,
+				F79F42871F2E07E1009E42F8 /* Park.cpp */,
 				4C729BC61FC2E6AB001DFF2F /* Particle.cpp */,
 				F76C85741EC4E7CD00FA49E2 /* scenery.c */,
 				F76C85751EC4E7CD00FA49E2 /* scenery.h */,
@@ -3324,6 +3323,7 @@
 				F76C888E1EC5324E00FA49E2 /* UiContext.Win32.cpp in Sources */,
 				4C93F16E1F8B745700A9330D /* FerrisWheel.cpp in Sources */,
 				4C729BC51FC2E5F3001DFF2F /* TileInspector.cpp in Sources */,
+				F79F42881F2E07E1009E42F8 /* Park.cpp in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -3331,6 +3331,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F79F42891F2E0837009E42F8 /* Park.cpp in Sources */,
 				F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
 				F775F5351EE35A89001F00E7 /* DummyUiContext.cpp in Sources */,
@@ -3497,7 +3498,6 @@
 				F76C87A01EC4E88400FA49E2 /* map.c in Sources */,
 				F76C87A21EC4E88400FA49E2 /* map_animation.c in Sources */,
 				F76C87A41EC4E88500FA49E2 /* map_helpers.c in Sources */,
-				F76C87A91EC4E88500FA49E2 /* park.c in Sources */,
 				F76C87AC1EC4E88500FA49E2 /* scenery.c in Sources */,
 				F76C87AE1EC4E88500FA49E2 /* sprite.c in Sources */,
 				F76C87B21EC4E88500FA49E2 /* Wall.cpp in Sources */,

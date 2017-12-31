@@ -22,7 +22,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "../world/sprite.h"
 #include "Finance.h"
 

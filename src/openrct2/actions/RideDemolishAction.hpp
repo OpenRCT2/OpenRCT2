@@ -24,7 +24,7 @@
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "GameAction.h"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>

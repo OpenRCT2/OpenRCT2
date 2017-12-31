@@ -23,7 +23,7 @@
 #include "../Cheats.h"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 
 struct GuestSetNameAction : public GameActionBase<GAME_COMMAND_SET_GUEST_NAME, GameActionResult>
 {

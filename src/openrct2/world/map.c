@@ -38,7 +38,7 @@
 #include "LargeScenery.h"
 #include "map.h"
 #include "map_animation.h"
-#include "park.h"
+#include "Park.h"
 #include "scenery.h"
 #include "SmallScenery.h"
 #include "TileInspector.h"

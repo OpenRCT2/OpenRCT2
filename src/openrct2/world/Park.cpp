@@ -16,6 +16,8 @@
 
 #include "../Cheats.h"
 #include "../config/Config.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/colour.h"
 #include "../interface/window.h"
@@ -34,8 +36,9 @@
 #include "../scenario/scenario.h"
 #include "../world/map.h"
 #include "Entrance.h"
-#include "park.h"
+#include "Park.h"
 #include "sprite.h"
+
 
 rct_string_id gParkName;
 uint32 gParkNameArgs;
@@ -203,7 +206,7 @@ sint32 calculate_park_rating()
         sint32 num_lost_guests;
 
         // -150 to +3 based on a range of guests from 0 to 2000
-        result -= 150 - (min(2000, gNumGuestsInPark) / 13);
+        result -= 150 - (Math::Min((uint16)2000, gNumGuestsInPark) / 13);
 
         // Find the number of happy peeps and the number of peeps who can't find the park exit
         num_happy_peeps = 0;
@@ -221,7 +224,7 @@ sint32 calculate_park_rating()
         result -= 500;
 
         if (gNumGuestsInPark > 0)
-            result += 2 * min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
+            result += 2 * Math::Min(250, (num_happy_peeps * 300) / gNumGuestsInPark);
 
         // Up to 25 guests can be lost without affecting the park rating.
         if (num_lost_guests > 25)
@@ -266,13 +269,13 @@ sint32 calculate_park_rating()
                 average_intensity = -average_intensity;
             }
 
-            average_excitement = min(average_excitement / 2, 50);
-            average_intensity = min(average_intensity / 2, 50);
+            average_excitement = Math::Min((sint16)(average_excitement / 2), (sint16)50);
+            average_intensity = Math::Min((sint16)(average_intensity / 2), (sint16)50);
             result += 100 - average_excitement - average_intensity;
         }
 
-        total_ride_excitement = min(1000, total_ride_excitement);
-        total_ride_intensity = min(1000, total_ride_intensity);
+        total_ride_excitement = Math::Min((sint16)1000, total_ride_excitement);
+        total_ride_intensity = Math::Min((sint16)1000, total_ride_intensity);
         result -= 200 - ((total_ride_excitement + total_ride_intensity) / 10);
     }
 
@@ -290,11 +293,11 @@ sint32 calculate_park_rating()
             if (litter->creationTick - gScenarioTicks >= 7680)
                 num_litter++;
         }
-        result -= 600 - (4 * (150 - min(150, num_litter)));
+        result -= 600 - (4 * (150 - Math::Min((sint16)150, num_litter)));
     }
 
     result -= gParkRatingCasualtyPenalty;
-    result = clamp(0, result, 999);
+    result = Math::Clamp(0, result, 999);
     return result;
 }
 
@@ -392,7 +395,7 @@ static sint32 park_calculate_guest_generation_probability()
 
     // If difficult guest generation, extra guests are available for good rides
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION) {
-        suggestedMaxGuests = min(suggestedMaxGuests, 1000);
+        suggestedMaxGuests = Math::Min(suggestedMaxGuests, 1000);
         FOR_ALL_RIDES(i, ride) {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
                 continue;
@@ -415,12 +418,12 @@ static sint32 park_calculate_guest_generation_probability()
         }
     }
 
-    suggestedMaxGuests = min(suggestedMaxGuests, 65535);
+    suggestedMaxGuests = Math::Min(suggestedMaxGuests, 65535);
     gTotalRideValueForMoney = totalRideValueForMoney;
     _suggestedGuestMaximum = suggestedMaxGuests;
 
     // Begin with 50 + park rating
-    probability = 50 + clamp(0, gParkRating - 200, 650);
+    probability = 50 + Math::Clamp(0u, gParkRating - 200u, 650u);
 
     // The more guests, the lower the chance of a new one
     sint32 numGuests = gNumGuestsInPark + gNumGuestsHeadingForPark;
@@ -608,7 +611,7 @@ void park_update_histories()
     // Update guests in park history
     for (sint32 i = 31; i > 0; i--)
         gGuestsInParkHistory[i] = gGuestsInParkHistory[i - 1];
-    gGuestsInParkHistory[0] = min(guestsInPark, 5000) / 20;
+    gGuestsInParkHistory[0] = Math::Min(guestsInPark, 5000) / 20;
     window_invalidate_by_class(WC_PARK_INFORMATION);
 
     // Update current cash history
@@ -765,7 +768,7 @@ void update_park_fences_around_tile(sint32 x, sint32 y)
 void park_set_name(const char *name)
 {
     // Required else the pointer arithmetic in the game commands below could cause an access violation
-    char* newName = malloc(USER_STRING_MAX_LENGTH + 1);
+    char* newName = (char *)malloc(USER_STRING_MAX_LENGTH + 1);
     strncpy(newName, name, USER_STRING_MAX_LENGTH);
 
     gGameCommandErrorTitle = STR_CANT_RENAME_PARK;
@@ -794,7 +797,7 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
         if (nameChunkOffset < 0)
             nameChunkOffset = 2;
         nameChunkOffset *= 12;
-        nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
+        nameChunkOffset = Math::Min(nameChunkOffset, (sint32)Util::CountOf(newName) - 12);
         memcpy(newName + nameChunkOffset + 0, edx, 4);
         memcpy(newName + nameChunkOffset + 4, ebp, 4);
         memcpy(newName + nameChunkOffset + 8, edi, 4);
@@ -917,61 +920,63 @@ static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, 
         }
         return 0;
     case BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS:
-        if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
-            return MONEY32_UNDEFINED;
-        }
-
-        if (x <= 0 || y <= 0) {
-            gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-            return MONEY32_UNDEFINED;
-        }
-
-        if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
-            gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
-            return MONEY32_UNDEFINED;
-        }
-
-        uint8 newOwnership = (flags & 0xFF00) >> 4;
-        if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
-            return 0;
-        }
-
-        rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
-        do {
-            if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
-                // Do not allow ownership of park entrance.
-                if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
-                    return 0;
-                // Allow construction rights available / for sale on park entrances on surface.
-                // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
-                if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
-                     newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
-                    (tileElement->base_height - 3 > surfaceElement->base_height ||
-                     tileElement->base_height < surfaceElement->base_height))
-                    return 0;
+        {
+            if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode) {
+                return MONEY32_UNDEFINED;
             }
-        } while (!tile_element_is_last_for_tile(tileElement++));
 
-        if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
-            return gLandPrice;
-        }
+            if (x <= 0 || y <= 0) {
+                gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
+                return MONEY32_UNDEFINED;
+            }
 
-        if ((newOwnership & 0xF0) != 0) {
-            rct2_peep_spawn *peepSpawns = gPeepSpawns;
+            if (x >= gMapSizeUnits || y >= gMapSizeUnits) {
+                gGameCommandErrorText = STR_TOO_CLOSE_TO_EDGE_OF_MAP;
+                return MONEY32_UNDEFINED;
+            }
 
-            for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
-                if (x == (peepSpawns[i].x & 0xFFE0)) {
-                    if (y == (peepSpawns[i].y & 0xFFE0)) {
-                        peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+            uint8 newOwnership = (flags & 0xFF00) >> 4;
+            if (newOwnership == (surfaceElement->properties.surface.ownership & 0xF0)) {
+                return 0;
+            }
+
+            rct_tile_element* tileElement = map_get_first_element_at(x / 32, y / 32);
+            do {
+                if (tile_element_get_type(tileElement) == TILE_ELEMENT_TYPE_ENTRANCE) {
+                    // Do not allow ownership of park entrance.
+                    if (newOwnership == OWNERSHIP_OWNED || newOwnership == OWNERSHIP_AVAILABLE)
+                        return 0;
+                    // Allow construction rights available / for sale on park entrances on surface.
+                    // There is no need to check the height if newOwnership is 0 (unowned and no rights available).
+                    if ((newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED ||
+                         newOwnership == OWNERSHIP_CONSTRUCTION_RIGHTS_AVAILABLE) &&
+                        (tileElement->base_height - 3 > surfaceElement->base_height ||
+                         tileElement->base_height < surfaceElement->base_height))
+                        return 0;
+                }
+            } while (!tile_element_is_last_for_tile(tileElement++));
+
+            if (!(flags & GAME_COMMAND_FLAG_APPLY)) {
+                return gLandPrice;
+            }
+
+            if ((newOwnership & 0xF0) != 0) {
+                rct2_peep_spawn *peepSpawns = gPeepSpawns;
+
+                for (uint8 i = 0; i < MAX_PEEP_SPAWNS; ++i) {
+                    if (x == (peepSpawns[i].x & 0xFFE0)) {
+                        if (y == (peepSpawns[i].y & 0xFFE0)) {
+                            peepSpawns[i].x = PEEP_SPAWN_UNDEFINED;
+                        }
                     }
                 }
             }
+            surfaceElement->properties.surface.ownership &= 0x0F;
+            surfaceElement->properties.surface.ownership |= newOwnership;
+            update_park_fences_around_tile(x, y);
+            gMapLandRightsUpdateSuccess = true;
+            return 0;
         }
-        surfaceElement->properties.surface.ownership &= 0x0F;
-        surfaceElement->properties.surface.ownership |= newOwnership;
-        update_park_fences_around_tile(x, y);
-        gMapLandRightsUpdateSuccess = true;
-        return 0;
     default:
         log_warning("Tried calling map_buy_land_rights_for_tile() with an incorrect setting!");
         assert(false);

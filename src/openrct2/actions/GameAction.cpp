@@ -24,7 +24,7 @@
 
 #include "../platform/platform.h"
 #include "../localisation/localisation.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 
 GameActionResult::GameActionResult()
 {

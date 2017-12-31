@@ -22,7 +22,7 @@
 #include "../core/String.hpp"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../world/park.h"
+#include "../world/Park.h"
 #include "DiscordService.h"
 #include "network.h"
 
