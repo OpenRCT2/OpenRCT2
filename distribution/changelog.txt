@@ -26,6 +26,7 @@
 - Feature: [#6709] The New Ride window now shows available vehicles for a ride type.
 - Feature: [#6731] Object indexing progress is now reported via command line output.
 - Feature: [#6779] On-ride photo segment for Splash Boats.
+- Feature: [#6838] Ability to auto-pause server when no clients are connected.
 - Feature: Add search box to track design window.
 - Feature: Allow using object files from RCT Classic.
 - Feature: Title sequences now testable in-game.
@@ -84,6 +85,7 @@
 - Fix: [#6657] Guest list is missing tracking icon after reopening.
 - Fix: [#6803] Symbolic links to directories are not descended by FileScanner.
 - Fix: [#6830] Crash when using mountain tool due to ride with no ride entry.
+- Fix: [#6833] Shops and mazes in corrupted files not imported correctly.
 - Fix: [#6846] Zoom level in some ride overview windows was erroneously set too high.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
