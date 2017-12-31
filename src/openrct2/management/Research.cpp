@@ -262,7 +262,7 @@ void research_finish_item(uint32 entryIndex)
             }
             // If a vehicle is the first to be invented for its ride group, show the ride group name.
             else if (!ride_type_was_invented_before ||
-                     (ride_type_has_ride_groups(base_ride_type) && !ride_group_was_invented_before))
+                     (RideGroupManager::RideTypeHasRideGroups(base_ride_type) && !ride_group_was_invented_before))
             {
                 rct_ride_name naming = get_ride_naming(base_ride_type, rideEntry);
                 availabilityString = STR_NEWS_ITEM_RESEARCH_NEW_RIDE_AVAILABLE;

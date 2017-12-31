@@ -435,24 +435,6 @@ bool RideGroupManager::RideTypeIsIndependent(const uint8 rideType)
     return true;
 }
 
-extern "C"
-{
-    const RideGroup * get_ride_group(uint8 rideType, const rct_ride_entry * rideEntry)
-    {
-        return RideGroupManager::GetRideGroup(rideType, rideEntry);
-    }
-
-    bool ride_type_has_ride_groups(const uint8 rideType)
-    {
-        return RideGroupManager::RideTypeHasRideGroups(rideType);
-    }
-
-    bool rideTypeIsIndependent(const uint8 rideType)
-    {
-        return RideGroupManager::RideTypeIsIndependent(rideType);
-    }
-}
-
 const uint8 gRideCategories[] = {
     RIDE_CATEGORY_ROLLERCOASTER, // Spiral Roller coaster
     RIDE_CATEGORY_ROLLERCOASTER, // Stand Up Coaster

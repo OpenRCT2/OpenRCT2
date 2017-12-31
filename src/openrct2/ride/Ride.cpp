@@ -5711,7 +5711,7 @@ bool shop_item_has_common_price(sint32 shopItem)
 
 void ride_set_name_to_default(Ride * ride, rct_ride_entry * rideEntry)
 {
-    if (rideTypeIsIndependent(ride->type))
+    if (RideGroupManager::RideTypeIsIndependent(ride->type))
     {
         ride_set_name_to_vehicle_default(ride, rideEntry);
     }
@@ -5728,9 +5728,9 @@ void ride_set_name_to_track_default(Ride *ride, rct_ride_entry * rideEntry)
 
     ride->name = STR_NONE;
 
-    if (ride_type_has_ride_groups(ride->type))
+    if (RideGroupManager::RideTypeHasRideGroups(ride->type))
     {
-        const RideGroup * rideGroup = get_ride_group(ride->type, rideEntry);
+        const RideGroup * rideGroup = RideGroupManager::GetRideGroup(ride->type, rideEntry);
         name_args.type_name = rideGroup->Naming.name;
     }
     else
@@ -5783,12 +5783,12 @@ static void ride_set_name_to_vehicle_default(Ride * ride, rct_ride_entry * rideE
  */
 rct_ride_name get_ride_naming(const uint8 rideType, rct_ride_entry * rideEntry)
 {
-    if (ride_type_has_ride_groups(rideType))
+    if (RideGroupManager::RideTypeHasRideGroups(rideType))
     {
-        const RideGroup * rideGroup = get_ride_group(rideType, rideEntry);
+        const RideGroup * rideGroup = RideGroupManager::GetRideGroup(rideType, rideEntry);
         return rideGroup->Naming;
     }
-    else if (!rideTypeIsIndependent(rideType))
+    else if (!RideGroupManager::RideTypeIsIndependent(rideType))
     {
         return RideNaming[rideType];
     }
@@ -8134,7 +8134,7 @@ sint32 ride_get_entry_index(sint32 rideType, sint32 rideSubType)
                 continue;
             }
 
-            if (!rideTypeIsIndependent(rideType))
+            if (!RideGroupManager::RideTypeIsIndependent(rideType))
             {
                 subType = *rideEntryIndex;
                 break;
