@@ -314,7 +314,7 @@ namespace ScenarioSources
             }
         }
 
-        outDesc->title = nullptr;
+        outDesc->title = "";
         outDesc->id = SC_UNIDENTIFIED;
         outDesc->source = SCENARIO_SOURCE_OTHER;
         outDesc->index = -1;
