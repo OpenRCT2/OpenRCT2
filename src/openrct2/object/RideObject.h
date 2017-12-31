@@ -25,7 +25,7 @@ class RideObject final : public Object
 private:
     rct_ride_entry              _legacyType = { };
     vehicle_colour_preset_list  _presetColours = { 0 };
-    std::vector<sint8>          _peepLoadingPositions[4];
+    std::vector<sint8>          _peepLoadingPositions[MAX_VEHICLES_PER_RIDE_ENTRY];
 
 public:
     explicit RideObject(const rct_object_entry &entry) : Object(entry) { }

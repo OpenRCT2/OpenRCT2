@@ -742,7 +742,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(const json_t * jCar)
     rct_ride_entry_vehicle car = { 0 };
     car.rotation_frame_mask = ObjectJsonHelpers::GetInteger(jCar, "rotationFrameMask");
     car.spacing = ObjectJsonHelpers::GetInteger(jCar, "spacing");
-    car.car_friction = ObjectJsonHelpers::GetInteger(jCar, "friction");
+    car.car_mass = ObjectJsonHelpers::GetInteger(jCar, "mass");
     car.tab_height = ObjectJsonHelpers::GetInteger(jCar, "tabOffset");
     car.num_seats = ObjectJsonHelpers::GetInteger(jCar, "numSeats");
     car.sprite_width = ObjectJsonHelpers::GetInteger(jCar, "spriteWidth");
