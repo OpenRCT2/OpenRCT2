@@ -247,7 +247,7 @@ public:
             return window_track_list_open(rideItem);
         }
         case WC_SCENARIO_SELECT:
-            return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK));
+            return window_scenarioselect_open((scenarioselect_callback) intent->GetPointerExtra(INTENT_EXTRA_CALLBACK), false);
         case WD_VEHICLE:
             return window_ride_open_vehicle((rct_vehicle *) intent->GetPointerExtra(INTENT_EXTRA_VEHICLE));
         case WD_TRACK:

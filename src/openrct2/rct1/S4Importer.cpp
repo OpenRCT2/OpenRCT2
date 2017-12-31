@@ -269,6 +269,8 @@ public:
             desc.title = name.c_str();
         }
 
+        String::Set(dst->internal_name, sizeof(dst->internal_name), desc.title);
+
         rct_string_id localisedStringIds[3];
         if (language_get_localised_scenario_strings(desc.title, localisedStringIds))
         {

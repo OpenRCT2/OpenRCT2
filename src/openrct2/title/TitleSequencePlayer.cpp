@@ -339,6 +339,21 @@ private:
             }
             break;
         }
+        case TITLE_SCRIPT_LOADSC:
+        {
+            bool loadSuccess = false;
+            auto scenario = GetScenarioRepository()->GetByInternalName(command->Scenario);
+            if (scenario != nullptr)
+            {
+                loadSuccess = LoadParkFromFile(scenario->path);
+            }
+            if (!loadSuccess)
+            {
+                Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command->Scenario);
+                return false;
+            }
+            break;
+        }
         }
         return true;
     }

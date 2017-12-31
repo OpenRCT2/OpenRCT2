@@ -87,7 +87,7 @@ rct_window * window_guest_list_open_with_filter(sint32 type, sint32 index);
 rct_window * window_staff_fire_prompt_open(rct_peep* peep);
 void window_title_editor_open(sint32 tab);
 void window_title_command_editor_open(struct TitleSequence * sequence, sint32 command, bool insert);
-rct_window * window_scenarioselect_open(scenarioselect_callback callback);
+rct_window * window_scenarioselect_open(scenarioselect_callback callback, bool titleEditor);
 
 rct_window * window_error_open(rct_string_id title, rct_string_id message);
 

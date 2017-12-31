@@ -29,6 +29,9 @@
 #include "../core/String.hpp"
 #include "../core/StringBuilder.hpp"
 #include "../core/Zip.h"
+#include "../scenario/ScenarioRepository.h"
+#include "../scenario/ScenarioSources.h"
+#include "../util/Util.h"
 #include "TitleSequence.h"
 
 
@@ -475,6 +478,16 @@ static std::vector<TitleCommand> LegacyScriptRead(utf8 * script, size_t scriptLe
                 command.Type = TITLE_SCRIPT_LOADRCT1;
                 command.SaveIndex = atoi(part1) & 0xFF;
             }
+            else if (_stricmp(token, "LOADSC") == 0)
+            {
+                command.Type = TITLE_SCRIPT_LOADSC;
+                // Confirm the scenario exists
+                //source_desc desc;
+                //if (ScenarioSources::TryGetByName(part1, &desc))
+                //{
+                    safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                //}
+            }
         }
         if (command.Type != TITLE_SCRIPT_UNDEFINED)
         {
@@ -517,7 +530,8 @@ static void LegacyScriptGetLine(IStream * stream, char * parts)
         {
             if (!whitespace)
             {
-                if (part == 0 && cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
+                if (part == 0 && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0) ||
+                                  (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
                 {
                     load = true;
                 }
@@ -595,6 +609,17 @@ static utf8 * LegacyScriptWrite(TitleSequence * seq)
                 sb.Append(seq->Saves[command->SaveIndex]);
             }
             break;
+        case TITLE_SCRIPT_LOADSC:
+            if (command->Scenario[0] == '\0')
+            {
+                sb.Append("LOADSC <No scenario name>");
+            }
+            else
+            {
+                sb.Append("LOADSC ");
+                sb.Append(command->Scenario);
+            }
+            break;
         case TITLE_SCRIPT_LOCATION:
             String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command->X, command->Y);
             sb.Append(buffer);
@@ -634,6 +659,7 @@ bool TitleSequenceIsLoadCommand(const TitleCommand * command)
     case TITLE_SCRIPT_LOADMM:
     case TITLE_SCRIPT_LOAD:
     case TITLE_SCRIPT_LOADRCT1:
+    case TITLE_SCRIPT_LOADSC:
         return true;
     default:
         return false;

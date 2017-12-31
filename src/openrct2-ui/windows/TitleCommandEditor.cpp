@@ -24,6 +24,8 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
+#include <openrct2/scenario/ScenarioRepository.h>
+#include <openrct2/scenario/ScenarioSources.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/util/Util.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -36,7 +38,8 @@ typedef struct TITLE_COMMAND_ORDER {
 } TITLE_COMMAND_ORDER;
 
 static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
-    { TITLE_SCRIPT_LOAD,        STR_TITLE_EDITOR_ACTION_LOAD, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
+    { TITLE_SCRIPT_LOAD,        STR_TITLE_EDITOR_ACTION_LOAD_SAVE, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
+    { TITLE_SCRIPT_LOADSC,      STR_TITLE_EDITOR_ACTION_LOAD_SCENARIO, STR_TITLE_EDITOR_ARGUMENT_SCENARIO },
     { TITLE_SCRIPT_LOCATION,    STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
     { TITLE_SCRIPT_ROTATE,      STR_TITLE_EDITOR_COMMAND_TYPE_ROTATE, STR_TITLE_EDITOR_ARGUMENT_ROTATIONS },
     { TITLE_SCRIPT_ZOOM,        STR_TITLE_EDITOR_COMMAND_TYPE_ZOOM, STR_TITLE_EDITOR_ARGUMENT_ZOOM_LEVEL },
@@ -46,7 +49,7 @@ static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
     { TITLE_SCRIPT_END,         STR_TITLE_EDITOR_END, STR_NONE },
 };
 
-#define NUM_COMMANDS 8
+#define NUM_COMMANDS 9
 
 enum WINDOW_WATER_WIDGET_IDX {
     WIDX_BACKGROUND,
@@ -60,6 +63,7 @@ enum WINDOW_WATER_WIDGET_IDX {
     WIDX_INPUT,
     WIDX_INPUT_DROPDOWN,
     WIDX_GET,
+    WIDX_SELECT,
     WIDX_OKAY,
     WIDX_CANCEL
 };
@@ -94,6 +98,7 @@ static rct_widget window_title_command_editor_widgets[] = {
     { WWT_DROPDOWN_BUTTON,      1,  WW-28,      WW-18,      BY2+1,  BY2+10, STR_DROPDOWN_GLYPH,         STR_NONE },
 
     { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+3,   WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION,                       STR_NONE }, // Get location/zoom/etc
+    { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+12,  WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO,                    STR_NONE }, // Select scenario
 
     { WWT_DROPDOWN_BUTTON,      1,  10,         80,         WH-21,  WH-10,  STR_OK,                     STR_NONE }, // OKAY
     { WWT_DROPDOWN_BUTTON,      1,  WW-80,      WW-10,      WH-21,  WH-10,  STR_CANCEL,                 STR_NONE }, // Cancel
@@ -109,6 +114,7 @@ static void window_title_command_editor_invalidate(rct_window * w);
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi);
 static void window_title_command_editor_textinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void window_title_command_editor_inputsize(rct_window * w);
+static void scenario_select_callback(const utf8 * path);
 static sint32 get_command_info_index(sint32 index);
 static TITLE_COMMAND_ORDER get_command_info(sint32 index);
 static LocationXY16 get_location();
@@ -144,6 +150,16 @@ static rct_window_event_list window_title_command_editor_events = {
     window_title_command_editor_paint,
     nullptr
 };
+
+static void scenario_select_callback(const utf8 * path)
+{
+    if (command.Type == TITLE_SCRIPT_LOADSC)
+    {
+        const utf8 * fileName = path_get_filename(path);
+        auto scenario = GetScenarioRepository()->GetByFilename(fileName);
+        safe_strcpy(command.Scenario, scenario->internal_name, sizeof(command.Scenario));
+    }
+}
 
 static sint32 get_command_info_index(sint32 index)
 {
@@ -225,6 +241,7 @@ void window_title_command_editor_open(TitleSequence * sequence, sint32 index, bo
         (1 << WIDX_INPUT) |
         (1 << WIDX_INPUT_DROPDOWN) |
         (1 << WIDX_GET) |
+        (1 << WIDX_SELECT) |
         (1 << WIDX_OKAY) |
         (1 << WIDX_CANCEL);
     window_init_scroll_widgets(window);
@@ -297,6 +314,9 @@ static void window_title_command_editor_mouseup(rct_window * w, rct_widgetindex 
             snprintf(textbox1Buffer, BUF_SIZE, "%d", command.Zoom);
         }
         window_invalidate(w);
+        break;
+    case WIDX_SELECT:
+        window_scenarioselect_open(scenario_select_callback, true);
         break;
     case WIDX_OKAY:
         if (_window_title_command_editor_insert)
@@ -446,6 +466,8 @@ static void window_title_command_editor_dropdown(rct_window * w, rct_widgetindex
                 command.SaveIndex = 0xFF;
             }
             break;
+        case TITLE_SCRIPT_LOADSC:
+            command.Scenario[0] = '\0';
         }
         window_invalidate(w);
         break;
@@ -561,12 +583,17 @@ static void window_title_command_editor_invalidate(rct_window * w)
     window_title_command_editor_widgets[WIDX_INPUT].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_EMPTY;
     window_title_command_editor_widgets[WIDX_GET].type = WWT_EMPTY;
+    window_title_command_editor_widgets[WIDX_SELECT].type = WWT_EMPTY;
     switch (command.Type)
     {
     case TITLE_SCRIPT_LOAD:
     case TITLE_SCRIPT_SPEED:
         window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
         window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        break;
+    case TITLE_SCRIPT_LOADSC:
+        window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
+        window_title_command_editor_widgets[WIDX_SELECT].type = WWT_DROPDOWN_BUTTON;
         break;
     case TITLE_SCRIPT_LOCATION:
         window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_TEXT_BOX;
@@ -635,6 +662,44 @@ static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo 
             gfx_draw_string_left_clipped(
                 dpi,
                 STR_STRING,
+                gCommonFormatArgs,
+                w->colours[1],
+                w->x + w->widgets[WIDX_INPUT].left + 1,
+                w->y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+        }
+    }
+    else if (command.Type == TITLE_SCRIPT_LOADSC)
+    {
+        if (command.Scenario[0] == '\0')
+        {
+            gfx_draw_string_left_clipped(
+                dpi,
+                STR_TITLE_COMMAND_EDITOR_NO_SCENARIO_SELECTED,
+                nullptr,
+                w->colours[1],
+                w->x + w->widgets[WIDX_INPUT].left + 1,
+                w->y + w->widgets[WIDX_INPUT].top,
+                w->widgets[WIDX_INPUT_DROPDOWN].left - w->widgets[WIDX_INPUT].left - 4);
+        }
+        else
+        {
+            const char * name = "";
+            rct_string_id nameString = STR_STRING;
+            auto scenario = 
+                GetScenarioRepository()->GetByInternalName(command.Scenario);
+            if (scenario != nullptr)
+            {
+                name = scenario->name;
+            }
+            else
+            {
+                nameString = STR_TITLE_COMMAND_EDITOR_MISSING_SCENARIO;
+            }
+            set_format_arg(0, uintptr_t, name);
+            gfx_draw_string_left_clipped(
+                dpi,
+                nameString,
                 gCommonFormatArgs,
                 w->colours[1],
                 w->x + w->widgets[WIDX_INPUT].left + 1,

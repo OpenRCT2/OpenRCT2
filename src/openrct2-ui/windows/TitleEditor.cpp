@@ -1002,6 +1002,27 @@ static void window_title_editor_scrollpaint_commands(rct_window * w, rct_drawpix
             set_format_arg(0, uintptr_t, name);
             break;
         }
+        case TITLE_SCRIPT_LOADSC:
+        {
+            commandName = STR_TITLE_EDITOR_COMMAND_LOAD_FILE;
+            const char * name = "";
+            auto scenario =
+                GetScenarioRepository()->GetByInternalName(command->Scenario);
+            if (command->Scenario[0] == '\0')
+            {
+                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_NO_SCENARIO;
+            }
+            else if (scenario != nullptr)
+            {
+                name = scenario->name;
+            }
+            else
+            {
+                commandName = STR_TITLE_EDITOR_COMMAND_LOAD_MISSING_SCENARIO;
+            }
+            set_format_arg(0, uintptr_t, name);
+            break;
+        }
         default:
             log_warning("Unknown command %d", command->Type);
         }
