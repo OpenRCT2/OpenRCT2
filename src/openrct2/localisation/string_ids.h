@@ -3839,6 +3839,7 @@ enum {
     STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME = 6187,
     STR_LITTER_VOMIT = 6188,
     STR_DUCK = 6189,
+    STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP = 6190,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
