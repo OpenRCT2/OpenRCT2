@@ -51,6 +51,7 @@
 - Fix: [#5788] Empty scenario names cause invisible entries in scenario list.
 - Fix: [#5838] Crash when saving very large track designs.
 - Fix: [#6101] Rides remain in ride list window briefly after demolition.
+- Fix: [#6114] Crash when using a non-LL CSG1.DAT.
 - Fix: [#6115] Random title screen music not random on launch.
 - Fix: [#6118, #6245, #6366] Tracked animated vehicles not animating.
 - Fix: [#6129] Guest List summary not updating after a ride rename.

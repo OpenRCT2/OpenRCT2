@@ -331,6 +331,12 @@ extern "C"
             _csg.header.num_entries = (uint32)(fileHeaderSize / sizeof(rct_g1_element_32bit));
             _csg.header.total_size = (uint32)fileDataSize;
 
+            if (_csg.header.num_entries < 69917)
+            {
+                log_warning("Cannot load CSG1.DAT, it has too few entries. Only CSG1.DAT from Loopy Landscapes will work.");
+                return false;
+            }
+
             // Read element headers
             _csg.elements = Memory::AllocateArray<rct_g1_element>(_csg.header.num_entries);
             read_and_convert_gxdat(&fileHeader, _csg.header.num_entries, false, _csg.elements);
