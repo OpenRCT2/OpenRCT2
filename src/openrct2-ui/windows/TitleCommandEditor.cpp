@@ -744,9 +744,15 @@ static void window_title_command_editor_invalidate(rct_window * w)
     }
 
     if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
+    {
         w->disabled_widgets |= (1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE);
+        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP;
+    }
     else
+    {
         w->disabled_widgets &= ~((1 << WIDX_GET) | (1 << WIDX_SELECT_SPRITE));
+        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_NONE;
+    }
 }
 
 static void window_title_command_editor_paint(rct_window * w, rct_drawpixelinfo * dpi)
