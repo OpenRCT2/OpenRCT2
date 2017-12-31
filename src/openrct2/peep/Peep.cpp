@@ -34,7 +34,7 @@
 #include "../network/network.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../scenario/scenario.h"
 #include "../sprites.h"

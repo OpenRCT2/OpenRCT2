@@ -18,11 +18,11 @@
 #include <openrct2/object.h>
 #include <openrct2/interface/colour.h>
 #include <openrct2/interface/viewport.h>
-#include <openrct2/ride/ride.h>
+#include <openrct2/ride/Ride.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/world/sprite.h>
 #include <openrct2/paint/tile_element/TileElement.h>
-#include <openrct2/ride/ride.h>
+#include <openrct2/ride/Ride.h>
 #include "addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)

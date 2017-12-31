@@ -20,7 +20,7 @@
 #include "../Input.h"
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
 #include "../scenario/scenario.h"

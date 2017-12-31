@@ -29,7 +29,7 @@
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../scenario/scenario.h"
 #include "../world/map.h"

@@ -23,7 +23,7 @@
 #include "../object.h"
 #include "../rct12.h"
 #include "../rct2.h"
-#include "../ride/ride.h"
+#include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
 #include "../world/Banner.h"
 #include "../world/map.h"
