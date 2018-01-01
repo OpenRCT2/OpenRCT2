@@ -42,13 +42,13 @@ constexpr sint32           ScenarioOverrideMaxStringCount = 3;
 struct ObjectOverride
 {
     char        name[8] = { 0 };
-    std::string strings[4];
+    std::string strings[ObjectOverrideMaxStringCount];
 };
 
 struct ScenarioOverride
 {
     std::string filename;
-    std::string strings[3];
+    std::string strings[ScenarioOverrideMaxStringCount];
 };
 
 class LanguagePack final : public ILanguagePack
