@@ -1863,12 +1863,11 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         {
             uint8             rideGroupIndex = ori->RideGroupIndex;
             const RideGroup * td6RideGroup = RideGroupManager::RideGroupFind(td6->type, rideGroupIndex);
-            rct_ride_entry  * ire;
 
-            uint8      * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
-            for (uint8 * rei                  = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
+            uint8 * availableRideEntries = get_ride_entry_indices_for_ride_type(td6->type);
+            for (uint8 * rei = availableRideEntries; *rei != RIDE_ENTRY_INDEX_NULL; rei++)
             {
-                ire = get_ride_entry(*rei);
+                rct_ride_entry * ire = get_ride_entry(*rei);
 
                 if (!ride_entry_is_invented(*rei) && !gCheatsIgnoreResearchStatus)
                 {
