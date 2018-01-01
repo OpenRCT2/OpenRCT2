@@ -8060,7 +8060,9 @@ sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed)
     }
     else
     {
-        return (rawSpeed >> std::abs(shiftFactor));
+        // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
+        sint8 shiftFactorAbs = std::abs(shiftFactor);
+        return (rawSpeed >> shiftFactorAbs);
     }
 }
 
