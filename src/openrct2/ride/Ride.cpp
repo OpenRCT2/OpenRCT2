@@ -14,7 +14,8 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <limits.h>
+#include <climits>
+#include <cstdlib>
 
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
@@ -2702,7 +2703,7 @@ rct_peep *find_closest_mechanic(sint32 x, sint32 y, sint32 forInspection)
             continue;
 
         // Manhattan distance
-        distance = abs(peep->x - x) + abs(peep->y - y);
+        distance = std::abs(peep->x - x) + std::abs(peep->y - y);
         if (distance < closestDistance) {
             closestDistance = distance;
             closestMechanic = peep;
@@ -2889,7 +2890,7 @@ static void ride_measurement_update(rct_ride_measurement *measurement)
         measurement->lateral[measurement->current_item] = lateralG & 0xFF;
     }
 
-    velocity = Math::Min(abs((vehicle->velocity * 5) >> 16), 255);
+    velocity = Math::Min(std::abs((vehicle->velocity * 5) >> 16), 255);
     altitude = Math::Min(vehicle->z / 8, 255);
 
     if (gScenarioTicks & 1) {
@@ -6587,7 +6588,7 @@ void ride_get_entrance_or_exit_position_from_screen_position(sint32 screenX, sin
     {
         mapX = (word_F4418C & 0x1F) - 16;
         mapY = (word_F4418E & 0x1F) - 16;
-        if (abs(mapX) < abs(mapY))
+        if (std::abs(mapX) < std::abs(mapY))
         {
             direction = mapY < 0 ? 3 : 1;
         }
@@ -8059,7 +8060,7 @@ sint32 get_booster_speed(uint8 rideType, sint32 rawSpeed)
     }
     else
     {
-        return (rawSpeed >> abs(shiftFactor));
+        return (rawSpeed >> std::abs(shiftFactor));
     }
 }
 
