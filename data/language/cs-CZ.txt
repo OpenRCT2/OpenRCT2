@@ -4480,6 +4480,14 @@ STR_6170    :Vychytávky
 STR_6171    :Vyhledávání
 STR_6172    :{SMALLFONT}{BLACK}Vyhledávání
 STR_6173    :Zadejte jméno k vyhledání:
+STR_6174    :Načíst uloženou hru
+STR_6175    :Načíst scénář
+STR_6176    :Scénář k načtení:
+STR_6177    :Načíst{MOVE_X}{87}Zvolte scénář
+STR_6178    :Načíst{MOVE_X}{87}{RED}Chybějící scénář
+STR_6179    :Vybrat
+STR_6180    :Zvolte scénář
+STR_6181    :{RED}Chybějící scénář
 
 ###############################################################################
 ## RCT2 Objects

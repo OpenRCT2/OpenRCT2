@@ -2086,6 +2086,7 @@ STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
 STR_5817    :{SMALLFONT}{BLACK}Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
 STR_5827    :{SMALLFONT}{BLACK}Sets the color scheme used for the GUI
+STR_5843    :{SMALLFONT}{BLACK}Enables progressive unlocking of scenarios (RCT1 behavior)
 STR_5907    :{SMALLFONT}{BLACK}When enabled, zooming in will center around the cursor, as opposed to the screen center.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized

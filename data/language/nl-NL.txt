@@ -4472,6 +4472,17 @@ STR_6167    :{SMALLFONT}{BLACK}Geavanceerd
 STR_6168    :Titelpresentatie
 STR_6169    :Scenarioselectie
 STR_6170    :Overig
+STR_6171    :Zoeken
+STR_6172    :{SMALLFONT}{BLACK}Zoeken
+STR_6173    :Geef een naam op om te zoeken:
+STR_6174    :Opgeslagen park laden
+STR_6175    :Scenario laden
+STR_6176    :Te laden scenario:
+STR_6177    :Load{MOVE_X}{87}Geen scenario geselecteerd
+STR_6178    :Load{MOVE_X}{87}{RED}Ontbrekend scenario
+STR_6179    :Selecteren
+STR_6180    :Geen scenario geselecteerd
+STR_6181    :{RED}Ontbrekend scenario
 
 #############
 # Scenarios #
