@@ -26,8 +26,8 @@ using namespace OpenRCT2;
 */
 int main(int argc, const char * * argv)
 {
-    core_init();
     int runGame = cmdline_run(argv, argc);
+    core_init();
     if (runGame == 1)
     {
         gOpenRCT2Headless = true;
