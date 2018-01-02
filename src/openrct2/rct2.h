@@ -22,19 +22,21 @@
 #include "common.h"
 #include "rct12.h"
 
-#define RCT2_MAX_RIDES_IN_PARK              255
-#define RCT2_MAX_STAFF                      200
-#define RCT2_MAX_BANNERS_IN_PARK            250
-#define RCT2_MAX_VEHICLES_PER_RIDE          32
-#define RCT2_MAX_CARS_PER_TRAIN             32
-#define RCT2_MAX_CATEGORIES_PER_RIDE        2
-#define RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY  3
-#define RCT2_MAX_VEHICLES_PER_RIDE_ENTRY    4
-#define RCT2_DOWNTIME_HISTORY_SIZE          8
-#define RCT2_CUSTOMER_HISTORY_SIZE          10
-#define RCT2_MAX_SPRITES                    10000
+#define RCT2_MAX_RIDES_IN_PARK               255
+#define RCT2_MAX_STAFF                       200
+#define RCT2_MAX_BANNERS_IN_PARK             250
+#define RCT2_MAX_VEHICLES_PER_RIDE           32
+#define RCT2_MAX_CARS_PER_TRAIN              32
+#define RCT2_MAX_CATEGORIES_PER_RIDE         2
+#define RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY   3
+#define RCT2_MAX_VEHICLES_PER_RIDE_ENTRY     4
+#define RCT2_DOWNTIME_HISTORY_SIZE           8
+#define RCT2_CUSTOMER_HISTORY_SIZE           10
+#define RCT2_MAX_SPRITES                     10000
 #define RCT2_MAX_TILE_ELEMENTS               0x30000
-#define RCT2_MAX_ANIMATED_OBJECTS           2000
+#define RCT2_MAX_ANIMATED_OBJECTS            2000
+#define RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS  8 // With 32 bits per uint32, this means there is room for 256 types.
+#define RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS 8 // With 32 bits per uint32, this means there is room for 256 entries.
 
 
 typedef struct rct2_install_info {

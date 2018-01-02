@@ -144,7 +144,7 @@ rct_window * window_editor_bottom_toolbar_open()
         (1 << WIDX_NEXT_IMAGE);
 
     window_init_scroll_widgets(window);
-    reset_researched_scenery_items();
+    set_all_scenery_items_invented();
 
     return window;
 }
@@ -165,7 +165,7 @@ void window_editor_bottom_toolbar_jump_back_to_object_selection() {
 */
 void window_editor_bottom_toolbar_jump_back_to_landscape_editor() {
     window_close_all();
-    reset_researched_scenery_items();
+    set_all_scenery_items_invented();
     scenery_set_default_placement_configuration();
     gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
     context_open_window(WC_MAP);
@@ -227,12 +227,12 @@ void window_editor_bottom_toolbar_jump_forward_from_object_selection()
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
-        reset_researched_ride_types_and_entries();
+        set_every_ride_entry_invented();
         context_open_window(WC_CONSTRUCT_RIDE);
         gS6Info.editor_step = EDITOR_STEP_ROLLERCOASTER_DESIGNER;
         gfx_invalidate_screen();
     } else {
-        reset_researched_scenery_items();
+        set_all_scenery_items_invented();
         scenery_set_default_placement_configuration();
         gS6Info.editor_step = EDITOR_STEP_LANDSCAPE_EDITOR;
         context_open_window(WC_MAP);

@@ -38,6 +38,7 @@
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
+#include "../object/ObjectLimits.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
@@ -216,10 +217,11 @@ void S6Exporter::Export()
     _s6.guest_count_change_modifier = gGuestChangeModifier;
     _s6.current_research_level      = gResearchFundingLevel;
     // pad_01357400
-    memcpy(_s6.researched_ride_types, gResearchedRideTypes, sizeof(_s6.researched_ride_types));
-    memcpy(_s6.researched_ride_entries, gResearchedRideEntries, sizeof(_s6.researched_ride_entries));
+    ExportResearchedRideTypes();
+    ExportResearchedRideEntries();
     // Not used by OpenRCT2 any more, but left in to keep RCT2 export working.
-    for (uint8 i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++) {
+    for (uint8 i = 0; i < Util::CountOf(RideTypePossibleTrackConfigurations); i++)
+    {
         researchedTrackPiecesA[i] = (RideTypePossibleTrackConfigurations[i]         ) & 0xFFFFFFFFULL;
         researchedTrackPiecesB[i] = (RideTypePossibleTrackConfigurations[i] >> 32ULL) & 0xFFFFFFFFULL;
     }
@@ -650,6 +652,36 @@ void S6Exporter::ExportRide(rct2_ride * dst, const Ride * src)
     dst->cable_lift = src->cable_lift;
 
     // pad_208[0x58];
+}
+
+void S6Exporter::ExportResearchedRideTypes()
+{
+    Memory::Set(_s6.researched_ride_types, false, sizeof(_s6.researched_ride_types));
+
+    for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+    {
+        if (ride_type_is_invented(rideType))
+        {
+            sint32 quadIndex = rideType >> 5;
+            sint32 bitIndex  = rideType & 0x1F;
+            _s6.researched_ride_types[quadIndex] |= (uint32) 1 << bitIndex;
+        }
+    }
+}
+
+void S6Exporter::ExportResearchedRideEntries()
+{
+    Memory::Set(_s6.researched_ride_entries, false, sizeof(_s6.researched_ride_entries));
+
+    for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
+    {
+        if (ride_entry_is_invented(rideEntryIndex))
+        {
+            sint32 quadIndex = rideEntryIndex >> 5;
+            sint32 bitIndex  = rideEntryIndex & 0x1F;
+            _s6.researched_ride_entries[quadIndex] |= (uint32) 1 << bitIndex;
+        }
+    }
 }
 
 extern "C"

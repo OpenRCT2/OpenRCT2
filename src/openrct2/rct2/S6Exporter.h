@@ -51,6 +51,8 @@ private:
 
     void Save(IStream * stream, bool isScenario);
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
+    void ExportResearchedRideTypes();
+    void ExportResearchedRideEntries();
 };
 
 #endif

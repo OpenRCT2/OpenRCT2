@@ -17,6 +17,8 @@
 #pragma once
 
 #include "../common.h"
+#include "../object/ObjectLimits.h"
+#include "../ride/Ride.h"
 
 typedef struct rct_ride_entry rct_ride_entry;
 
@@ -43,8 +45,6 @@ enum{
 
 #define MAX_RESEARCH_ITEMS           500
 #define MAX_RESEARCHED_SCENERY_ITEMS  56
-#define MAX_RESEARCHED_RIDE_TYPES      8 // Really 256, since there are 32 bits per uint32.
-#define MAX_RESEARCHED_RIDE_ENTRIES    8 // Really 256, since there are 32 bits per uint32.
 #define MAX_RESEARCHED_TRACK_TYPES   128
 
 #define RESEARCH_ENTRY_RIDE_MASK 0x10000
@@ -92,8 +92,8 @@ extern uint32 gResearchNextItem;
 
 extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
-extern uint32 gResearchedRideTypes[MAX_RESEARCHED_RIDE_TYPES];
-extern uint32 gResearchedRideEntries[MAX_RESEARCHED_RIDE_ENTRIES];
+extern bool gResearchedRideTypes[RIDE_TYPE_COUNT];
+extern bool gResearchedRideEntries[MAX_RIDE_OBJECTS];
 extern uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 extern bool gSilentResearch;
 
@@ -120,8 +120,9 @@ bool ride_entry_is_invented(sint32 rideEntryIndex);
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_group_is_invented(sint32 sgIndex);
 bool scenery_is_invented(uint16 sceneryItem);
-void reset_researched_scenery_items();
-void reset_researched_ride_types_and_entries();
+void set_all_scenery_items_invented();
+void set_every_ride_entry_invented();
+void set_every_ride_entry_not_invented();
 rct_string_id research_item_get_name(uint32 researchItem);
 uint8 research_get_ride_base_type(sint32 researchItem);
 rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_ride_entry * rideEntry);
