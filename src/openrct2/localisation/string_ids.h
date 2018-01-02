@@ -3841,6 +3841,9 @@ enum {
     STR_DUCK = 6189,
     STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP = 6190,
 
+    STR_TILE_INSPECTOR_SURFACE = 6191,
+    STR_TILE_INSPECTOR_WALL = 6192,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
