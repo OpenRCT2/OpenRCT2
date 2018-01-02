@@ -362,7 +362,7 @@ void research_update()
         case RESEARCH_STAGE_COMPLETING_DESIGN:
             research_finish_item(gResearchNextItem);
             gResearchProgress      = 0;
-            gResearchProgressStage = 0;
+            gResearchProgressStage = RESEARCH_STAGE_INITIAL_RESEARCH;
             research_calculate_expected_date();
             research_update_uncompleted_types();
             research_invalidate_related_windows();
@@ -917,6 +917,82 @@ void research_remove_flags()
         if (research->entryIndex > RESEARCHED_ITEMS_SEPARATOR)
         {
             research->entryIndex &= 0x00FFFFFF;
+        }
+    }
+}
+
+void research_fix()
+{
+    // Fix invalid research items
+    for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++)
+    {
+        rct_research_item * researchItem = &gResearchItems[i];
+        if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR)
+            continue;
+        if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
+        {
+            if (i == MAX_RESEARCH_ITEMS - 1)
+            {
+                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
+            }
+            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
+            break;
+        }
+        if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2)
+            break;
+        if (researchItem->entryIndex & RESEARCH_ENTRY_RIDE_MASK)
+        {
+            uint8          entryIndex  = researchItem->entryIndex & 0xFF;
+            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
+            if (rideEntry == nullptr)
+            {
+                research_remove(researchItem->entryIndex);
+                i--;
+            }
+        }
+        else
+        {
+            uint8                   entryIndex          = researchItem->entryIndex;
+            rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(entryIndex);
+            if (sceneryGroupEntry == nullptr)
+            {
+                research_remove(researchItem->entryIndex);
+                i--;
+            }
+        }
+    }
+
+    research_update_uncompleted_types();
+    if (gResearchUncompletedCategories == 0)
+        gResearchProgressStage = RESEARCH_STAGE_FINISHED_ALL;
+
+    // Sometimes ride entries are not in the research table.
+    // If all research is done, simply insert all of them as researched.
+    // For good measure, also include scenery groups.
+    if (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)
+    {
+        for (uint8 i = 0; i < MAX_RIDE_OBJECTS; i++)
+        {
+            const rct_ride_entry * rideEntry = get_ride_entry(i);
+
+            if (rideEntry != nullptr)
+            {
+                research_insert_ride_entry(i, true);
+                ride_entry_set_invented(i);
+
+                for (uint8 j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                {
+                    ride_type_set_invented(rideEntry->ride_type[j]);
+                }
+            }
+        }
+
+        for (uint8 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
+        {
+            const rct_scenery_group_entry * groupEntry = get_scenery_group_entry(i);
+
+            if (groupEntry != nullptr)
+                research_insert_scenery_group_entry(i, true);
         }
     }
 }
