@@ -548,6 +548,7 @@ void Network::UpdateClient()
                 intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_disconnected });
                 context_open_intent(&intent);
             }
+            window_close_by_class(WC_MULTIPLAYER);
             Close();
         }
         break;
