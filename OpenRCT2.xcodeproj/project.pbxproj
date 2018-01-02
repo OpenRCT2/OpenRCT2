@@ -294,6 +294,8 @@
 		D4EC48E61C2637710024B507 /* g2.dat in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E31C2637710024B507 /* g2.dat */; };
 		D4EC48E71C2637710024B507 /* language in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E41C2637710024B507 /* language */; };
 		D4EC48E81C2637710024B507 /* title in Resources */ = {isa = PBXBuildFile; fileRef = D4EC48E51C2637710024B507 /* title */; };
+		F70839921FFC0AFF002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
+		F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F70839911FFC0AFF002DCEFA /* Scenario.cpp */; };
 		F76C85B01EC4E88300FA49E2 /* Audio.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C83571EC4E7CC00FA49E2 /* Audio.cpp */; };
 		F76C85B41EC4E88300FA49E2 /* AudioMixer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835B1EC4E7CC00FA49E2 /* AudioMixer.cpp */; };
 		F76C85B71EC4E88300FA49E2 /* NullAudioSource.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C835E1EC4E7CC00FA49E2 /* NullAudioSource.cpp */; };
@@ -407,7 +409,6 @@
 		F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84DC1EC4E7CD00FA49E2 /* TrackDesignRepository.cpp */; };
 		F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E61EC4E7CD00FA49E2 /* vehicle_data.c */; };
 		F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */; };
-		F76C87311EC4E88400FA49E2 /* scenario.c in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F41EC4E7CD00FA49E2 /* scenario.c */; };
 		F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */; };
 		F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84F81EC4E7CD00FA49E2 /* ScenarioSources.cpp */; };
 		F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */ = {isa = PBXBuildFile; fileRef = F76C84FC1EC4E7CD00FA49E2 /* TitleScreen.cpp */; };
@@ -1082,6 +1083,7 @@
 		D4EC48E31C2637710024B507 /* g2.dat */ = {isa = PBXFileReference; lastKnownFileType = file; name = g2.dat; path = data/g2.dat; sourceTree = SOURCE_ROOT; };
 		D4EC48E41C2637710024B507 /* language */ = {isa = PBXFileReference; lastKnownFileType = folder; name = language; path = data/language; sourceTree = SOURCE_ROOT; };
 		D4EC48E51C2637710024B507 /* title */ = {isa = PBXFileReference; lastKnownFileType = folder; name = title; path = data/title; sourceTree = SOURCE_ROOT; };
+		F70839911FFC0AFF002DCEFA /* Scenario.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Scenario.cpp; sourceTree = "<group>"; };
 		F74789541EEDEA0D009E50E7 /* Input.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Input.h; sourceTree = "<group>"; };
 		F76C809A1EC4D9FA00FA49E2 /* libopenrct2.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libopenrct2.a; sourceTree = BUILT_PRODUCTS_DIR; };
 		F76C83571EC4E7CC00FA49E2 /* Audio.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Audio.cpp; sourceTree = "<group>"; };
@@ -1313,7 +1315,6 @@
 		F76C84E71EC4E7CD00FA49E2 /* vehicle_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle_data.h; sourceTree = "<group>"; };
 		F76C84E81EC4E7CD00FA49E2 /* vehicle_paint.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = vehicle_paint.c; sourceTree = "<group>"; };
 		F76C84E91EC4E7CD00FA49E2 /* vehicle_paint.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = vehicle_paint.h; sourceTree = "<group>"; };
-		F76C84F41EC4E7CD00FA49E2 /* scenario.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = scenario.c; sourceTree = "<group>"; };
 		F76C84F51EC4E7CD00FA49E2 /* scenario.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = scenario.h; sourceTree = "<group>"; };
 		F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = ScenarioRepository.cpp; sourceTree = "<group>"; };
 		F76C84F71EC4E7CD00FA49E2 /* ScenarioRepository.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ScenarioRepository.h; sourceTree = "<group>"; };
@@ -2437,7 +2438,7 @@
 		F76C84F31EC4E7CD00FA49E2 /* scenario */ = {
 			isa = PBXGroup;
 			children = (
-				F76C84F41EC4E7CD00FA49E2 /* scenario.c */,
+				F70839911FFC0AFF002DCEFA /* Scenario.cpp */,
 				F76C84F51EC4E7CD00FA49E2 /* scenario.h */,
 				F76C84F61EC4E7CD00FA49E2 /* ScenarioRepository.cpp */,
 				F76C84F71EC4E7CD00FA49E2 /* ScenarioRepository.h */,
@@ -3269,6 +3270,7 @@
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
 				4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */,
 				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
+				F70839921FFC0AFF002DCEFA /* Scenario.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,
 				4C6A668E1FE14C3A00694CB6 /* SawyerCoding.cpp in Sources */,
@@ -3336,6 +3338,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				F70839931FFC0B61002DCEFA /* Scenario.cpp in Sources */,
 				F79F42891F2E0837009E42F8 /* Park.cpp in Sources */,
 				F7CB864E1EEDA2050030C877 /* DummyWindowManager.cpp in Sources */,
 				F775F5381EE3725C001F00E7 /* DummyAudioContext.cpp in Sources */,
@@ -3462,7 +3465,6 @@
 				F76C871C1EC4E88400FA49E2 /* TrackDesignRepository.cpp in Sources */,
 				F76C87251EC4E88400FA49E2 /* vehicle_data.c in Sources */,
 				F76C87271EC4E88400FA49E2 /* vehicle_paint.c in Sources */,
-				F76C87311EC4E88400FA49E2 /* scenario.c in Sources */,
 				F76C87331EC4E88400FA49E2 /* ScenarioRepository.cpp in Sources */,
 				F76C87351EC4E88400FA49E2 /* ScenarioSources.cpp in Sources */,
 				F76C87381EC4E88400FA49E2 /* TitleScreen.cpp in Sources */,
