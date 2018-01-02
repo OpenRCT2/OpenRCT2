@@ -215,6 +215,19 @@ bool sse41_available()
     return false;
 }
 
+bool avx2_available()
+{
+#ifdef OPENRCT2_X86
+    // AVX2 support is declared as the 5th bit of EBX with CPUID(EAX = 7).
+    uint32 regs[4] = { 0 };
+    if (cpuid_x86(regs, 7))
+    {
+        return (regs[1] & (1 << 5));
+    }
+#endif
+    return false;
+}
+
 static bool bitcount_popcnt_available()
 {
 #ifdef OPENRCT2_X86

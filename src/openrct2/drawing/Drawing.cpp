@@ -478,7 +478,12 @@ void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, con
 
 void mask_init()
 {
-    if (sse41_available())
+    if (avx2_available())
+    {
+        log_verbose("registering AVX2 mask function");
+        mask_fn = mask_avx2;
+    }
+    else if (sse41_available())
     {
         log_verbose("registering SSE4.1 mask function");
         mask_fn = mask_sse4_1;

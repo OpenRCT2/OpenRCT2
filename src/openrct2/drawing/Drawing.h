@@ -343,10 +343,12 @@ sint32 scrolling_text_setup(paint_session * session, rct_string_id stringId, uin
 
 rct_size16 FASTCALL gfx_get_sprite_size(uint32 image_id);
 
-void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
 void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                  uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
+void mask_sse4_1(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
+void mask_avx2(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+               uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap);
 void mask_init();
 
 extern void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
