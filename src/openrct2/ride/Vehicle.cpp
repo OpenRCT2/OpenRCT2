@@ -1112,8 +1112,8 @@ static rct_vehicle_sound * vehicle_sounds_update_get_vehicle_sound(rct_vehicle_s
                 return vehicleSound;
             }
         }
-        return nullptr;
     }
+    return nullptr;
 }
 
 // Track Noises
@@ -1350,7 +1350,7 @@ void vehicle_update_all()
     sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
-        vehicle      = &(get_sprite(sprite_index)->vehicle);
+        vehicle      = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
 
         vehicle_update(vehicle);
@@ -1360,12 +1360,12 @@ void vehicle_update_all()
 /**
  *
  *  rct2: 0x006D6956
- * @returns 0 when all closed
+ * @returns true when all closed
  */
-static sint32 vehicle_close_restraints(rct_vehicle * vehicle)
+static bool vehicle_close_restraints(rct_vehicle * vehicle)
 {
     Ride * ride       = get_ride(vehicle->ride);
-    sint32 ebp        = 0;
+    bool restraintsClosed = true;
     uint16 vehicle_id = vehicle->sprite_index;
 
     do
@@ -1396,28 +1396,27 @@ static sint32 vehicle_close_restraints(rct_vehicle * vehicle)
         }
         else
         {
-            if (vehicle->restraints_position - 20 < 0)
+            vehicle->restraints_position = Math::Max(vehicle->restraints_position - 20, 0);
+            if (vehicle->restraints_position == 0)
             {
-                vehicle->restraints_position = 0;
                 continue;
             }
-            vehicle->restraints_position -= 20;
         }
         vehicle_invalidate(vehicle);
-        ebp++;
+        restraintsClosed = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
-    return ebp;
+    return restraintsClosed;
 }
 
 /**
  *
  *  rct2: 0x006D6A2C
- * @returns 0 when all open
+ * @returns true when all open
  */
-static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
+static bool vehicle_open_restraints(rct_vehicle * vehicle)
 {
-    sint32 ebp        = 0;
+    sint32 restraintsOpen = true;
     uint16 vehicle_id = vehicle->sprite_index;
 
     do
@@ -1426,7 +1425,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
 
         vehicle->swinging_car_var_0 = 0;
         vehicle->var_4E             = 0;
-        vehicle->var_4A             = 0;
+        vehicle->swing_sprite       = 0;
 
         Ride *           ride      = get_ride(vehicle->ride);
         rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -1446,7 +1445,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             }
             else
             {
-                ebp++;
+                restraintsOpen = false;
 
                 if (abs(vehicle->var_B6) < 600)
                 {
@@ -1474,7 +1473,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             {
                 vehicle->var_C8 += 0x3333;
             }
-            ebp++;
+            restraintsOpen = false;
             continue;
         }
 
@@ -1511,10 +1510,10 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             vehicle->restraints_position += 20;
         }
         vehicle_invalidate(vehicle);
-        ebp++;
+        restraintsOpen = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
-    return ebp;
+    return restraintsOpen;
 }
 
 /**
@@ -2233,7 +2232,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
 
     if (vehicle->sub_state == 0)
     {
-        if (vehicle_open_restraints(vehicle))
+        if (!vehicle_open_restraints(vehicle))
             return;
 
         if (ride->entrances[vehicle->current_station].xy == RCT_XY8_UNDEFINED)
@@ -2415,7 +2414,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
         return;
     }
 
-    if (vehicle_close_restraints(vehicle))
+    if (!vehicle_close_restraints(vehicle))
         return;
 
     vehicle->velocity  = 0;
@@ -3643,12 +3642,12 @@ static void vehicle_update_crash_setup(rct_vehicle * vehicle)
         y >>= 8;
         ecx >>= 8;
 
-        trainVehicle->var_B6 = x;
-        trainVehicle->var_C0 = y;
-        trainVehicle->var_4E = ecx;
-        trainVehicle->var_B6 += (scenario_rand() & 0xF) - 8;
-        trainVehicle->var_C0 += (scenario_rand() & 0xF) - 8;
-        trainVehicle->var_4E += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_x = x;
+        trainVehicle->crash_y = y;
+        trainVehicle->crash_z = ecx;
+        trainVehicle->crash_x += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_y += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_z += (scenario_rand() & 0xF) - 8;
 
         trainVehicle->track_x = 0;
         trainVehicle->track_y = 0;
@@ -4073,7 +4072,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
 {
     if (vehicle->sub_state == 0)
     {
-        if (!vehicle_open_restraints(vehicle))
+        if (vehicle_open_restraints(vehicle))
         {
             vehicle->sub_state = 1;
         }
@@ -5324,7 +5323,7 @@ static void vehicle_crash_on_land(rct_vehicle * vehicle)
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite *)vehicle);
     vehicle_invalidate(vehicle);
 
-    vehicle->var_4E = 0;
+    vehicle->crash_z = 0;
 }
 
 static void vehicle_crash_on_water(rct_vehicle * vehicle)
@@ -5383,7 +5382,7 @@ static void vehicle_crash_on_water(rct_vehicle * vehicle)
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite *)vehicle);
     vehicle_invalidate(vehicle);
 
-    vehicle->var_4E = 0xFFFFu;
+    vehicle->crash_z = -1;
 }
 
 /**
@@ -5399,9 +5398,9 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
         curVehicle = GET_VEHICLE(spriteId);
         if (curVehicle->sub_state > 1)
         {
-            if (curVehicle->var_4E <= 96)
+            if (curVehicle->crash_z <= 96)
             {
-                curVehicle->var_4E++;
+                curVehicle->crash_z++;
                 if ((scenario_rand() & 0xFFFF) <= 0x1555)
                 {
                     sprite_misc_explosion_cloud_create(curVehicle->x + ((scenario_rand() & 2) - 1),
@@ -5456,12 +5455,12 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
         LocationXYZ16 curPosition = { static_cast<sint16>(curVehicle->x), static_cast<sint16>(curVehicle->y),
                                       static_cast<sint16>(curVehicle->z) };
 
-        curPosition.x += (sint8)(curVehicle->var_B6 >> 8);
-        curPosition.y += (sint8)(curVehicle->var_C0 >> 8);
-        curPosition.z += (sint8)(curVehicle->var_4E >> 8);
-        curVehicle->track_x = (sint16)(curVehicle->var_B6 << 8);
-        curVehicle->track_y = (sint16)(curVehicle->var_C0 << 8);
-        curVehicle->track_z = (sint16)(curVehicle->var_4E << 8);
+        curPosition.x += (sint8)(curVehicle->crash_x >> 8);
+        curPosition.y += (sint8)(curVehicle->crash_y >> 8);
+        curPosition.z += (sint8)(curVehicle->crash_z >> 8);
+        curVehicle->track_x = (sint16)(curVehicle->crash_x << 8);
+        curVehicle->track_y = (sint16)(curVehicle->crash_y << 8);
+        curVehicle->track_z = (sint16)(curVehicle->crash_z << 8);
 
         if (curPosition.x > 0x1FFF || curPosition.y > 0x1FFF)
         {
@@ -5474,7 +5473,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
 
         if (curVehicle->sub_state == 1)
         {
-            curVehicle->var_4E += 0xFFEC;
+            curVehicle->crash_z -= 20;
         }
     } while ((spriteId = curVehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 }
@@ -7018,43 +7017,43 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
     }
 
     vehicle->swinging_car_var_0 = ax;
-    uint8 bl                    = 11;
+    uint8 swingSprite                    = 11;
     if (ax >= -10012)
     {
-        bl = 12;
+        swingSprite = 12;
         if (ax <= 10012)
         {
-            bl = 9;
+            swingSprite = 9;
             if (ax >= -8191)
             {
-                bl = 10;
+                swingSprite = 10;
                 if (ax <= 8191)
                 {
-                    bl = 7;
+                    swingSprite = 7;
                     if (ax >= -6371)
                     {
-                        bl = 8;
+                        swingSprite = 8;
                         if (ax <= 6371)
                         {
-                            bl = 5;
+                            swingSprite = 5;
                             if (ax >= -4550)
                             {
-                                bl = 6;
+                                swingSprite = 6;
                                 if (ax <= 4550)
                                 {
-                                    bl = 3;
+                                    swingSprite = 3;
                                     if (ax >= -2730)
                                     {
-                                        bl = 4;
+                                        swingSprite = 4;
                                         if (ax <= 2730)
                                         {
-                                            bl = 1;
+                                            swingSprite = 1;
                                             if (ax >= -910)
                                             {
-                                                bl = 2;
+                                                swingSprite = 2;
                                                 if (ax <= 910)
                                                 {
-                                                    bl = 0;
+                                                    swingSprite = 0;
                                                 }
                                             }
                                         }
@@ -7067,9 +7066,9 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
             }
         }
     }
-    if (bl != vehicle->var_4A)
+    if (swingSprite != vehicle->swing_sprite)
     {
-        vehicle->var_4A = bl;
+        vehicle->swing_sprite = swingSprite;
         vehicle_invalidate(vehicle);
     }
 }
@@ -8313,7 +8312,7 @@ loc_6DAEB9:
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -8635,7 +8634,7 @@ loc_6DBA33:;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -9046,7 +9045,7 @@ loc_6DC743:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -9205,7 +9204,7 @@ loc_6DCC2C:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }

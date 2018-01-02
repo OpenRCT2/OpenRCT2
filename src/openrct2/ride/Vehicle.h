@@ -136,7 +136,7 @@ typedef struct rct_vehicle {
     uint16 var_44;
     uint16 mass;                    // 0x46
     uint16 update_flags;            // 0x48
-    uint8 var_4A;
+    uint8 swing_sprite;
     uint8 current_station;          // 0x4B
     union {
         sint16 swinging_car_var_0;  // 0x4C
@@ -146,7 +146,10 @@ typedef struct rct_vehicle {
             sint8 ferris_wheel_var_1;   // 0x4D
         };
     };
-    sint16 var_4E;
+    union {
+        sint16 var_4E;
+        sint16 crash_z;             // 0x4E
+    };
     uint8 status;                   // 0x50
     uint8 sub_state;                // 0x51
     uint16 peep[32];                // 0x52
@@ -155,7 +158,10 @@ typedef struct rct_vehicle {
     uint8 num_peeps;                // 0xB3
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
-    sint16 var_B6;
+    union {
+        sint16 var_B6;
+        sint16 crash_x;             // 0xB6
+    };
     uint16 var_B8;
     uint8 var_BA;
     uint8 sound1_id;                // 0xBB
@@ -165,6 +171,7 @@ typedef struct rct_vehicle {
     sint8 sound_vector_factor;
     union {
         uint16 var_C0;
+        sint16 crash_y;             // 0xC0
         uint16 time_waiting;        // 0xC0
         uint16 cable_lift_target;   // 0xC0
     };

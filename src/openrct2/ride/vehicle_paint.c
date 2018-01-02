@@ -938,7 +938,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
 // 6D520E
 static void vehicle_sprite_paint_6D520E(paint_session * session, rct_vehicle *vehicle, sint32 ebx, sint32 ecx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
 {
-    vehicle_sprite_paint(session, vehicle, ebx + vehicle->var_4A, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(session, vehicle, ebx + vehicle->swing_sprite, ecx, z, vehicleEntry);
 }
 
 // 6D51EB
@@ -951,7 +951,7 @@ static void vehicle_sprite_paint_6D51EB(paint_session * session, rct_vehicle *ve
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_15) {
         ebx = ebx / 8;
     }
-    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->var_4A + vehicleEntry->base_image_id;
+    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->swing_sprite + vehicleEntry->base_image_id;
     vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
 }
 

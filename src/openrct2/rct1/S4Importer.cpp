@@ -1146,7 +1146,7 @@ private:
 
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
-        dst->var_4A = src->var_4A;
+        dst->swing_sprite = src->swing_sprite;
         dst->swinging_car_var_0 = src->swinging_car_var_0;
         dst->var_4E = src->var_4E;
         dst->restraints_position = src->restraints_position;

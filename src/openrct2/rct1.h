@@ -305,7 +305,7 @@ typedef struct rct1_vehicle {
     uint16 var_44;
     uint16 mass;                    // 0x46
     uint16 update_flags;            // 0x48
-    uint8 var_4A;
+    uint8 swing_sprite;
     uint8 current_station;          // 0x4B
     union {
         sint16 swinging_car_var_0;  // 0x4C

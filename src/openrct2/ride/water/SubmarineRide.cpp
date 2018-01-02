@@ -54,7 +54,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         }
         baseImage_id *= vehicleEntry->base_num_frames;
         baseImage_id += vehicleEntry->base_image_id;
-        baseImage_id += vehicle->var_4A;
+        baseImage_id += vehicle->swing_sprite;
     }
 
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
