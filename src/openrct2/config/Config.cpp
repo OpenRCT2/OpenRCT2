@@ -37,7 +37,7 @@
 #include "../localisation/date.h"
 #include "../localisation/language.h"
 #include "../platform/platform.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;

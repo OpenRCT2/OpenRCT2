@@ -19,7 +19,7 @@
 #include "../core/Util.hpp"
 #include "ScenarioSources.h"
 
-#include "scenario.h"
+#include "Scenario.h"
 
 namespace ScenarioSources
 {

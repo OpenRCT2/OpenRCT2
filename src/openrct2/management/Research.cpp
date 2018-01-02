@@ -24,7 +24,7 @@
 #include "../localisation/string_ids.h"
 #include "../object/ObjectList.h"
 #include "../OpenRCT2.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../rct1.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"

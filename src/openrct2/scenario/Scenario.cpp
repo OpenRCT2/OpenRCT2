@@ -46,7 +46,7 @@
 #include "../world/water.h"
 #include "ScenarioRepository.h"
 #include "ScenarioSources.h"
-#include "scenario.h"
+#include "Scenario.h"
 #include "../Context.h"
 #include "../ride/Track.h"
 

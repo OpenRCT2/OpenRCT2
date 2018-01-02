@@ -16,7 +16,7 @@
 
 #include "../core/Math.hpp"
 #include "../platform/platform.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "SawyerCoding.h"
 #include "Util.h"
 

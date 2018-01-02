@@ -36,7 +36,7 @@
 #include "../ride/Track.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"

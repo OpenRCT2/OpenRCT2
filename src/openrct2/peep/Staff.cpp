@@ -28,7 +28,7 @@
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../paint/tile_element/TileElement.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/footpath.h"

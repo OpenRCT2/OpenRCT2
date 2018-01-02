@@ -23,7 +23,7 @@
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/footpath.h"
