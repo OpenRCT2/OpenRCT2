@@ -4488,6 +4488,15 @@ STR_6178    :불러오기{MOVE_X}{87}{RED}시나리오 없음
 STR_6179    :선택
 STR_6180    :선택된 시나리오 없음
 STR_6181    :{RED}시나리오 없음
+STR_6182    :따라가기{MOVE_X}{87}{STRING}
+STR_6183    :따라가기{MOVE_X}{87}선택된 스프라이트 없음
+STR_6184    :스프라이트 따라가기
+STR_6185    :스프라이트 선택
+STR_6186    :선택된 스프라이트 없음
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :구토
+STR_6189    :오리
+STR_6190    :{SMALLFONT}{BLACK}메인 타이틀 시퀀스가 활성화되어 있을 때에는 스프라이트를 선택할 수 없습니다.
 
 #############
 # Scenarios #

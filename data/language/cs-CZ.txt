@@ -4488,6 +4488,15 @@ STR_6178    :Načíst{MOVE_X}{87}{RED}Chybějící scénář
 STR_6179    :Vybrat
 STR_6180    :Zvolte scénář
 STR_6181    :{RED}Chybějící scénář
+STR_6182    :Následovat{MOVE_X}{87}{STRING}
+STR_6183    :Následovat{MOVE_X}{87}Zvolte sprite
+STR_6184    :Následovat sprite
+STR_6185    :Zvolit sprite
+STR_6186    :Nezvolen žádný sprite
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Zvratky
+STR_6189    :Kachna
+STR_6190    :{SMALLFONT}{BLACK}Nelze zvolit sprite, když je aktivní hlavní obrazovka.
 
 ###############################################################################
 ## RCT2 Objects
