@@ -42,6 +42,7 @@
 - Fix: [#2607] Rain rendered incorrectly in additional viewport.
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
+- Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.
 - Fix: [#5224] Multiplayer window is not closed when server shuts down.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
