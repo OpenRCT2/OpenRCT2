@@ -515,6 +515,9 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
 {
     uint8 rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
     rct_td6_track_element *trackElement = td6->track_elements;
+
+    const rct_preview_track * * trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
+
     while (trackElement->type != 255) {
         sint32 trackType = trackElement->type;
         if (trackType == TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) {
@@ -522,7 +525,7 @@ static void window_track_place_draw_mini_preview_track(rct_track_td6 *td6, sint3
         }
 
         // Follow a single track piece shape
-        const rct_preview_track *trackBlock = TrackBlocks[trackType];
+        const rct_preview_track *trackBlock = trackBlockArray[trackType];
         while (trackBlock->index != 255) {
             sint16 x = origin.x;
             sint16 y = origin.y;

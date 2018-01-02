@@ -1384,15 +1384,7 @@ static sint32 track_design_place_maze(rct_track_td6 * td6, sint16 x, sint16 y, s
 
 static bool track_design_place_ride(rct_track_td6 * td6, sint16 x, sint16 y, sint16 z, uint8 rideIndex)
 {
-    const rct_preview_track ** trackBlockArray;
-    if (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
-    {
-        trackBlockArray = TrackBlocks;
-    }
-    else
-    {
-        trackBlockArray = FlatRideTrackBlocks;
-    }
+    const rct_preview_track * * trackBlockArray = (ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK)) ? TrackBlocks : FlatRideTrackBlocks;
 
     gTrackPreviewOrigin.x = x;
     gTrackPreviewOrigin.y = y;
@@ -1803,6 +1795,17 @@ static bool track_design_place_preview(rct_track_td6 * td6, money32 * cost, uint
         ride->track_colour_supports[i]   = td6->track_support_colour[i];
     }
 
+    // Flat rides need their vehicle colours loaded for display
+    // in the preview window
+    if (!ride_type_has_flag(td6->type, RIDE_TYPE_FLAG_HAS_TRACK))
+    {
+        for (sint32 i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
+        {
+            ride->vehicle_colours[i] = td6->vehicle_colours[i];
+            ride->vehicle_colours_extended[i] = td6->vehicle_additional_colour[i];
+        }
+    }
+
     byte_9D8150 = true;
     uint8  backup_rotation   = _currentTrackPieceDirection;
     uint32 backup_park_flags = gParkFlags;
@@ -2018,7 +2021,7 @@ static money32 place_track_design(sint16 x, sint16 y, sint16 z, uint8 flags, uin
         ride->track_colour_supports[i]   = td6->track_support_colour[i];
     }
 
-    for (sint32 i = 0; i < 32; i++)
+    for (sint32 i = 0; i < MAX_VEHICLES_PER_RIDE; i++)
     {
         ride->vehicle_colours[i].body_colour = td6->vehicle_colours[i].body_colour;
         ride->vehicle_colours[i].trim_colour = td6->vehicle_colours[i].trim_colour;
