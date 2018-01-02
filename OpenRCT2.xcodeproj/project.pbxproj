@@ -298,6 +298,9 @@
 		C666EE7D1F37ACB10061AA04 /* TitleMenu.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE671F37ACB10061AA04 /* TitleMenu.cpp */; };
 		C666EE7E1F37ACB10061AA04 /* TitleOptions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE681F37ACB10061AA04 /* TitleOptions.cpp */; };
 		C666EE7F1F37ACB10061AA04 /* Viewport.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C666EE691F37ACB10061AA04 /* Viewport.cpp */; };
+		C67B28152002D67A00109C93 /* Widget.h in Headers */ = {isa = PBXBuildFile; fileRef = C67B28122002D67900109C93 /* Widget.h */; };
+		C67B28162002D67A00109C93 /* Window.h in Headers */ = {isa = PBXBuildFile; fileRef = C67B28132002D67900109C93 /* Window.h */; };
+		C67B28172002D67A00109C93 /* Viewport.h in Headers */ = {isa = PBXBuildFile; fileRef = C67B28142002D67900109C93 /* Viewport.h */; };
 		C67CCD661FBBCFDB004FAE4C /* EditorBottomToolbar.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */; };
 		C67CCD681FBBD138004FAE4C /* EditorMain.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C67CCD671FBBD137004FAE4C /* EditorMain.cpp */; };
 		C68313C61FDB4EBA006DB3D8 /* input.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C68313C51FDB4EBA006DB3D8 /* input.cpp */; };
@@ -983,6 +986,9 @@
 		C666EE681F37ACB10061AA04 /* TitleOptions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TitleOptions.cpp; sourceTree = "<group>"; };
 		C666EE691F37ACB10061AA04 /* Viewport.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Viewport.cpp; sourceTree = "<group>"; };
 		C666EE6A1F37ACB10061AA04 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		C67B28122002D67900109C93 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
+		C67B28132002D67900109C93 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		C67B28142002D67900109C93 /* Viewport.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Viewport.h; sourceTree = "<group>"; };
 		C67CCD651FBBCFDB004FAE4C /* EditorBottomToolbar.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorBottomToolbar.cpp; sourceTree = "<group>"; };
 		C67CCD671FBBD137004FAE4C /* EditorMain.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = EditorMain.cpp; sourceTree = "<group>"; };
 		C68313C51FDB4EBA006DB3D8 /* input.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = input.cpp; sourceTree = "<group>"; };
@@ -1534,6 +1540,9 @@
 				C68313D21FDB4F4C006DB3D8 /* Graph.h */,
 				C68313D31FDB4F4C006DB3D8 /* LandTool.cpp */,
 				C68313D41FDB4F4C006DB3D8 /* LandTool.h */,
+				C67B28142002D67900109C93 /* Viewport.h */,
+				C67B28122002D67900109C93 /* Widget.h */,
+				C67B28132002D67900109C93 /* Window.h */,
 			);
 			path = interface;
 			sourceTree = "<group>";
@@ -2756,6 +2765,8 @@
 			isa = PBXHeadersBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C67B28172002D67A00109C93 /* Viewport.h in Headers */,
+				C67B28152002D67A00109C93 /* Widget.h in Headers */,
 				C6352B951F477032006CCEE3 /* RideCreateAction.hpp in Headers */,
 				C6352B851F477022006CCEE3 /* DataSerialiserTraits.h in Headers */,
 				C6352B971F477032006CCEE3 /* SetParkEntranceFeeAction.hpp in Headers */,
@@ -2764,6 +2775,7 @@
 				C6352B911F477032006CCEE3 /* GameAction.h in Headers */,
 				C62D838B1FD36D6F008C04F1 /* EditorObjectSelectionSession.h in Headers */,
 				C6352B841F477022006CCEE3 /* DataSerialiser.h in Headers */,
+				C67B28162002D67A00109C93 /* Window.h in Headers */,
 				C6352B961F477032006CCEE3 /* RideSetStatus.hpp in Headers */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

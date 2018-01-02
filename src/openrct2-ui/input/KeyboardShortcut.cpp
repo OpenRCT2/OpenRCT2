@@ -24,9 +24,9 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/interface/Chat.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>

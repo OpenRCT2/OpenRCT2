@@ -26,7 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/platform/Platform2.h>

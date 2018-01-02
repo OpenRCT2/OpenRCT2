@@ -18,7 +18,7 @@
 
 #include <openrct2/common.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Window.h>
 
 #define MINIMUM_TOOL_SIZE         1
 #define MAXIMUM_TOOL_SIZE         64

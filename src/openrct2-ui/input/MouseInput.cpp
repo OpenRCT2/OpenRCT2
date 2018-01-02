@@ -27,9 +27,9 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Console.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
-#include <openrct2/interface/Window.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideData.h>

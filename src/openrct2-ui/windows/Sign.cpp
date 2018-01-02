@@ -20,8 +20,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>

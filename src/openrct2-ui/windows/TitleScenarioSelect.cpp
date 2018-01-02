@@ -24,7 +24,7 @@
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/util/Util.h>
 
