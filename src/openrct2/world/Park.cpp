@@ -17,6 +17,7 @@
 #include "../Cheats.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/colour.h"
@@ -108,10 +109,9 @@ void park_init()
     research_reset_items();
     finance_init();
 
-    for (i = 0; i < 2; i++)
-        gResearchedRideTypes[i] = 0;
+    Memory::Set(gResearchedRideTypes, false, sizeof(gResearchedRideTypes));
 
-    reset_researched_scenery_items();
+    set_all_scenery_items_invented();
 
     gParkEntranceFee = MONEY(10, 00);
     gPeepSpawns[0].x = PEEP_SPAWN_UNDEFINED;

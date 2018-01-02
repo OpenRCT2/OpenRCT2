@@ -131,8 +131,8 @@ typedef struct rct_s6_data {
     uint8 guest_count_change_modifier;
     uint8 current_research_level;
     uint8 pad_01357400[4];
-    uint32 researched_ride_types[8];
-    uint32 researched_ride_entries[8];
+    uint32 researched_ride_types[RCT2_MAX_RESEARCHED_RIDE_TYPE_QUADS];
+    uint32 researched_ride_entries[RCT2_MAX_RESEARCHED_RIDE_ENTRY_QUADS];
     uint32 researched_track_types_a[128];
     uint32 researched_track_types_b[128];
 

@@ -22,9 +22,9 @@
 #include "../core/String.hpp"
 #include "../management/Award.h"
 #include "../network/network.h"
+#include "../object/ObjectLimits.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../object/ObjectManager.h"
 #include "../ParkImporter.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -235,8 +235,8 @@ public:
         gGuestChangeModifier  = _s6.guest_count_change_modifier;
         gResearchFundingLevel = _s6.current_research_level;
         // pad_01357400
-        memcpy(gResearchedRideTypes, _s6.researched_ride_types, sizeof(_s6.researched_ride_types));
-        memcpy(gResearchedRideEntries, _s6.researched_ride_entries, sizeof(_s6.researched_ride_entries));
+        ImportResearchedRideTypes();
+        ImportResearchedRideEntries();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -697,6 +697,35 @@ public:
         dst->cable_lift = src->cable_lift;
 
         // pad_208[0x58];
+    }
+
+    void ImportResearchedRideTypes()
+    {
+        Memory::Set(gResearchedRideTypes, false, sizeof(gResearchedRideTypes));
+
+        for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
+        {
+            sint32 quadIndex = rideType >> 5;
+            sint32 bitIndex  = rideType & 0x1F;
+            bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32) 1 << bitIndex));
+
+            gResearchedRideTypes[rideType] = invented;
+        }
+    }
+
+    void ImportResearchedRideEntries()
+    {
+        Memory::Set(gResearchedRideEntries, false, sizeof(gResearchedRideEntries));
+
+        for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
+        {
+            sint32 quadIndex = rideEntryIndex >> 5;
+            sint32 bitIndex  = rideEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32) 1 << bitIndex));
+
+            gResearchedRideEntries[rideEntryIndex] = invented;
+        }
+
     }
 
     void Initialise()
