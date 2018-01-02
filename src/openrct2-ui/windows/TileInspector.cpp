@@ -24,6 +24,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/string_ids.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>
@@ -1985,40 +1986,43 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
 
         switch (type) {
         case TILE_ELEMENT_TYPE_SURFACE:
-            typeName = "Surface";
+            typeName = language_get_string(STR_TILE_INSPECTOR_SURFACE);
             break;
         case TILE_ELEMENT_TYPE_PATH:
-            typeName = footpath_element_is_queue(tileElement) ? "Queue" : "Footpath";
+            typeName = footpath_element_is_queue(tileElement) ? language_get_string(STR_QUEUE_LINE_MAP_TIP) : language_get_string(STR_FOOTPATH_MAP_TIP);
             break;
         case TILE_ELEMENT_TYPE_TRACK:
-            typeName = "Track";
+            typeName = language_get_string(STR_RIDE_COMPONENT_TRACK_CAPITALISED);
             break;
         case TILE_ELEMENT_TYPE_SMALL_SCENERY:
             snprintf(
                 buffer, sizeof(buffer),
-                "Scenery (%s)",
+                "%s (%s)",
+                language_get_string(STR_OBJECT_SELECTION_SMALL_SCENERY),
                 language_get_string(get_small_scenery_entry(tileElement->properties.scenery.type)->name)
             );
             typeName = buffer;
             break;
         case TILE_ELEMENT_TYPE_ENTRANCE:
-            typeName = "Entrance";
+            typeName = language_get_string(STR_RIDE_CONSTRUCTION_ENTRANCE);
             break;
         case TILE_ELEMENT_TYPE_WALL:
             snprintf(
                 buffer, sizeof(buffer),
-                "Wall (%s)",
+                "%s (%s)",
+                language_get_string(STR_TILE_INSPECTOR_WALL),
                 language_get_string(get_wall_entry(tileElement->properties.scenery.type)->name)
             );
             typeName = buffer;
             break;
         case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            typeName = "Scenery multiple";
+            typeName = language_get_string(STR_OBJECT_SELECTION_LARGE_SCENERY);
             break;
         case TILE_ELEMENT_TYPE_BANNER:
             snprintf(
                 buffer, sizeof(buffer),
-                "Banner (%d)",
+                "%s (%d)",
+                language_get_string(STR_BANNER_WINDOW_TITLE),
                 tileElement->properties.banner.index
             );
             typeName = buffer;
@@ -2026,7 +2030,7 @@ static void window_tile_inspector_scrollpaint(rct_window *w, rct_drawpixelinfo *
         case TILE_ELEMENT_TYPE_CORRUPT:
             // fall-through
         default:
-            snprintf(buffer, sizeof(buffer), "Unknown (type %d)", type);
+            snprintf(buffer, sizeof(buffer), "%s (%d)", language_get_string(STR_UNKNOWN_OBJECT_TYPE), type);
             typeName = buffer;
         }
 

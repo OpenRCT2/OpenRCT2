@@ -4497,6 +4497,8 @@ STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomit
 STR_6189    :Duck
 STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
+STR_6191    :Surface
+STR_6192    :Wall
 
 #############
 # Scenarios #
