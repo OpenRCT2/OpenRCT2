@@ -16,6 +16,7 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <stdexcept>
 #include <vector>
 #include <jansson.h>
 
@@ -258,7 +259,7 @@ static const WindowThemeDesc * GetWindowThemeDescriptor(const utf8 * windowClass
 
 static void ThrowThemeLoadException()
 {
-    throw Exception("Invalid JSON UI theme entry.");
+    throw std::runtime_error("Invalid JSON UI theme entry.");
 }
 
 #pragma region UIThemeEntry
@@ -412,9 +413,9 @@ bool UITheme::WriteToFile(const utf8 * path) const
         Json::WriteToFile(path, jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         result = true;
     }
-    catch (const Exception & ex)
+    catch (const std::exception & ex)
     {
-        log_error("Unable to save %s: %s", path, ex.GetMessage());
+        log_error("Unable to save %s: %s", path, ex.what());
         result = false;
     }
 
@@ -467,7 +468,7 @@ UITheme * UITheme::FromJson(const json_t * json)
 
         return result;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
         delete result;
         throw;
@@ -483,7 +484,7 @@ UITheme * UITheme::FromFile(const utf8 * path)
         json = Json::ReadFromFile(path);
         result = UITheme::FromJson(json);
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
         log_error("Unable to read theme: %s", path);
         result = nullptr;

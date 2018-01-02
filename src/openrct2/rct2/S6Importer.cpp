@@ -15,7 +15,6 @@
 #pragma endregion
 
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Path.hpp"
@@ -50,11 +49,11 @@
 #include "../world/map_animation.h"
 #include "../world/Park.h"
 
-class ObjectLoadException : public Exception
+class ObjectLoadException : public std::runtime_error
 {
 public:
-    ObjectLoadException() : Exception("Unable to load objects.") { }
-    explicit ObjectLoadException(const char * message) : Exception(message) { }
+    ObjectLoadException() : std::runtime_error("Unable to load objects.") { }
+    explicit ObjectLoadException(const std::string &message) : std::runtime_error(message) { }
 };
 
 /**
@@ -91,7 +90,7 @@ public:
         }
         else
         {
-            throw Exception("Invalid RCT2 park extension.");
+            throw std::runtime_error("Invalid RCT2 park extension.");
         }
     }
 
@@ -129,7 +128,7 @@ public:
         {
             if (_s6.header.type != S6_TYPE_SCENARIO)
             {
-                throw Exception("Park is not a scenario.");
+                throw std::runtime_error("Park is not a scenario.");
             }
             chunkReader.ReadChunk(&_s6.info, sizeof(_s6.info));
         }
@@ -137,7 +136,7 @@ public:
         {
             if (_s6.header.type != S6_TYPE_SAVEDGAME)
             {
-                throw Exception("Park is not a saved game.");
+                throw std::runtime_error("Park is not a saved game.");
             }
         }
 
@@ -818,7 +817,7 @@ extern "C"
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;
@@ -867,7 +866,7 @@ extern "C"
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_GAME_SAVE_FAILED;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             gErrorType     = ERROR_TYPE_FILE_LOAD;
             gErrorStringId = STR_FILE_CONTAINS_INVALID_DATA;

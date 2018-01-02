@@ -19,6 +19,7 @@
 #include <cmath>
 #include <chrono>
 #include <future>
+#include <string>
 #include <thread>
 
 #ifdef _WIN32
@@ -26,7 +27,6 @@
     #include <winsock2.h>
     #include <ws2tcpip.h>
 
-    #undef GetMessage
     #define LAST_SOCKET_ERROR() WSAGetLastError()
     #undef EWOULDBLOCK
     #define EWOULDBLOCK WSAEWOULDBLOCK
@@ -59,7 +59,6 @@
     #endif // defined(__linux__)
 #endif // _WIN32
 
-#include "../core/Exception.hpp"
 #include "TcpSocket.h"
 
 constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
@@ -70,11 +69,10 @@ constexpr auto CONNECT_TIMEOUT = std::chrono::milliseconds(3000);
 
 class TcpSocket;
 
-class SocketException : public Exception
+class SocketException : public std::runtime_error
 {
 public:
-    explicit SocketException(const char * message) : Exception(message) { }
-    explicit SocketException(const std::string &message) : Exception(message) { }
+    explicit SocketException(const std::string &message) : std::runtime_error(message) { }
 };
 
 class TcpSocket final : public ITcpSocket
@@ -121,7 +119,7 @@ public:
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
-            throw Exception("Socket not closed.");
+            throw std::runtime_error("Socket not closed.");
         }
 
         sockaddr_storage ss;
@@ -168,7 +166,7 @@ public:
                 throw SocketException("Failed to set non-blocking mode.");
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             CloseSocket();
             throw;
@@ -182,7 +180,7 @@ public:
     {
         if (_status != SOCKET_STATUS_LISTENING)
         {
-            throw Exception("Socket not listening.");
+            throw std::runtime_error("Socket not listening.");
         }
         struct sockaddr_storage client_addr;
         socklen_t client_len = sizeof(struct sockaddr_storage);
@@ -229,7 +227,7 @@ public:
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
-            throw Exception("Socket not closed.");
+            throw std::runtime_error("Socket not closed.");
         }
 
         try
@@ -311,7 +309,7 @@ public:
             // Connection request timed out
             throw SocketException("Connection timed out.");
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             CloseSocket();
             throw;
@@ -322,7 +320,7 @@ public:
     {
         if (_status != SOCKET_STATUS_CLOSED)
         {
-            throw Exception("Socket not closed.");
+            throw std::runtime_error("Socket not closed.");
         }
 
         auto saddress = std::string(address);
@@ -334,9 +332,9 @@ public:
             {
                 Connect(saddress.c_str(), port);
             }
-            catch (const Exception &ex)
+            catch (const std::exception &ex)
             {
-                _error = std::string(ex.GetMessage());
+                _error = std::string(ex.what());
             }
             barrier2.set_value();
         }, std::move(barrier));
@@ -355,7 +353,7 @@ public:
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
-            throw Exception("Socket not connected.");
+            throw std::runtime_error("Socket not connected.");
         }
 
         size_t totalSent = 0;
@@ -377,7 +375,7 @@ public:
     {
         if (_status != SOCKET_STATUS_CONNECTED)
         {
-            throw Exception("Socket not connected.");
+            throw std::runtime_error("Socket not connected.");
         }
 
         sint32 readBytes = recv(_socket, (char *)buffer, (sint32)size, 0);

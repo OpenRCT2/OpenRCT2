@@ -18,7 +18,6 @@
 #include "../common.h"
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../core/Path.hpp"
@@ -180,7 +179,7 @@ public:
     {
         if (targetPosition < 0 || targetPosition >= (sint32)_sequence->NumCommands)
         {
-            throw Exception("Invalid position.");
+            throw std::runtime_error("Invalid position.");
         }
         if (_position >= targetPosition)
         {
@@ -421,7 +420,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to load park: %s", path);
         }
@@ -456,7 +455,7 @@ private:
             PrepareParkForPlayback();
             success = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to load park: %s", hintPath.c_str());
         }

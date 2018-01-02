@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
@@ -737,7 +736,7 @@ extern "C"
             }
             result = true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
         }
         delete s6exporter;

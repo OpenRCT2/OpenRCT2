@@ -17,7 +17,6 @@
 #include <memory>
 #include "../Context.h"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.hpp"
 #include "../core/Memory.hpp"
@@ -538,7 +537,7 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -559,7 +558,7 @@ namespace Config
             ReadFont(reader.get());
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -580,10 +579,10 @@ namespace Config
             WriteFont(writer.get());
             return true;
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
             Console::WriteLine("Error saving to '%s'", path.c_str());
-            Console::WriteLine(ex.GetMessage());
+            Console::WriteLine(ex.what());
             return false;
         }
     }

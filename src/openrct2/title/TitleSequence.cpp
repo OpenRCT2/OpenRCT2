@@ -161,7 +161,7 @@ extern "C"
                 }
                 catch (const IOException& exception)
                 {
-                    Console::Error::WriteLine(exception.GetMessage());
+                    Console::Error::WriteLine(exception.what());
                 }
 
                 if (fileStream != nullptr)
@@ -208,7 +208,7 @@ extern "C"
                 fs.Write(script, String::SizeOf(script));
                 success = true;
             }
-            catch (Exception)
+            catch (const std::exception &)
             {
             }
         }
@@ -255,9 +255,9 @@ extern "C"
                 delete zip;
                 Memory::Free(fdata);
             }
-            catch (const Exception &ex)
+            catch (const std::exception &ex)
             {
-                Console::Error::WriteLine(ex.GetMessage());
+                Console::Error::WriteLine(ex.what());
             }
         }
         else
@@ -580,7 +580,7 @@ static void * ReadScriptFile(const utf8 * path, size_t * outSize)
         buffer = Memory::Allocate<void>(size);
         fs.Read(buffer, size);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         Memory::Free(buffer);
         buffer = nullptr;

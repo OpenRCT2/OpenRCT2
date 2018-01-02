@@ -364,7 +364,7 @@ void audio_init_ride_sounds_and_info()
                     rideMusicInfo->length = fs.GetLength();
                 }
             }
-            catch (const Exception &)
+            catch (const std::exception &)
             {
             }
         }

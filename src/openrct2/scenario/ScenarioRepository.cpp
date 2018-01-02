@@ -225,7 +225,7 @@ private:
                         result = true;
                     }
                 }
-                catch (Exception)
+                catch (const std::exception &)
                 {
                 }
                 return result;
@@ -249,7 +249,7 @@ private:
                 }
             }
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to read scenario: '%s'", path.c_str());
         }
@@ -588,7 +588,7 @@ private:
                 highscore->timestamp = fs.ReadValue<datetime64>();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Error reading highscores.");
         }
@@ -662,7 +662,7 @@ private:
                 }
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Error reading legacy scenario scores file: '%s'", path.c_str());
         }
@@ -719,7 +719,7 @@ private:
                 fs.WriteValue(highscore->timestamp);
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to save highscores to '%s'", path.c_str());
         }

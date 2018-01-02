@@ -53,7 +53,7 @@ extern "C"
                 serverInfo->maxplayers = 0;
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Memory::FreeArray(entries, numEntries);
             numEntries = 0;
@@ -88,7 +88,7 @@ extern "C"
             }
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }

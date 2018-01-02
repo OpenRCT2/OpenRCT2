@@ -18,7 +18,6 @@
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -141,7 +140,7 @@ public:
         }
         else
         {
-            throw Exception("Invalid RCT1 park extension.");
+            throw std::runtime_error("Invalid RCT1 park extension.");
         }
     }
 
@@ -202,7 +201,7 @@ public:
         }
         else
         {
-            throw Exception("Unable to decode park.");
+            throw std::runtime_error("Unable to decode park.");
         }
         return ParkLoadResult::CreateOK();
     }
@@ -1829,7 +1828,7 @@ private:
             if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
             {
                 log_error("Failed to load %s.", objectName);
-                throw Exception("Failed to load object.");
+                throw std::runtime_error("Failed to load object.");
             }
 
             entryIndex++;
@@ -2746,7 +2745,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
@@ -2766,7 +2765,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());

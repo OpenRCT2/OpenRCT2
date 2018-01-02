@@ -17,7 +17,6 @@
 #include <memory>
 #include "../common.h"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../FileClassifier.h"
@@ -112,9 +111,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
         importer->Load(sourcePath);
         importer->Import();
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::Error::WriteLine(ex.GetMessage());
+        Console::Error::WriteLine(ex.what());
         return EXITCODE_FAIL;
     }
 
@@ -143,9 +142,9 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator * enumerat
             exporter->SaveGame(destinationPath);
         }
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::Error::WriteLine(ex.GetMessage());
+        Console::Error::WriteLine(ex.what());
         return EXITCODE_FAIL;
     }
 

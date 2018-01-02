@@ -303,7 +303,7 @@ public:
                 SaveObject(path, objectEntry, data, dataSize);
                 ScanObject(path);
             }
-            catch (const Exception &)
+            catch (const std::exception &)
             {
                 Console::Error::WriteLine("Failed saving object: [%s] to '%s'.", objectName, path);
             }
@@ -487,7 +487,7 @@ private:
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
                 }
-                catch (const Exception &)
+                catch (const std::exception &)
                 {
                     Memory::Free(newData);
                     Memory::Free(extraBytes);
@@ -514,7 +514,7 @@ private:
 
             Memory::Free(encodedDataBuffer);
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             Memory::Free(encodedDataBuffer);
             throw;
@@ -591,7 +591,7 @@ private:
         const ObjectRepositoryItem * item = FindObject(entry);
         if (item == nullptr)
         {
-            throw Exception(String::StdFormat("Unable to find object '%.8s'", entry->name));
+            throw std::runtime_error(String::StdFormat("Unable to find object '%.8s'", entry->name));
         }
 
         // Read object data from file
@@ -599,7 +599,7 @@ private:
         auto fileEntry = fs.ReadValue<rct_object_entry>();
         if (!object_entry_compare(entry, &fileEntry))
         {
-            throw Exception("Header found in object file does not match object to pack.");
+            throw std::runtime_error("Header found in object file does not match object to pack.");
         }
         auto chunkReader = SawyerChunkReader(&fs);
         auto chunk = chunkReader.ReadChunk();

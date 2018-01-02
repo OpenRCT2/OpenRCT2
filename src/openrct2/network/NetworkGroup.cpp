@@ -19,7 +19,6 @@
 #include "NetworkTypes.h"
 #include "NetworkAction.h"
 #include "NetworkGroup.h"
-#include "../core/Exception.hpp"
 
 NetworkGroup::NetworkGroup()
 {
@@ -39,7 +38,7 @@ NetworkGroup NetworkGroup::FromJson(const json_t * json)
 
     if (jsonId == nullptr || jsonName == nullptr || jsonPermissions == nullptr)
     {
-        throw Exception("Missing group data");
+        throw std::runtime_error("Missing group data");
     }
 
     group.Id    = (uint8)json_integer_value(jsonId);

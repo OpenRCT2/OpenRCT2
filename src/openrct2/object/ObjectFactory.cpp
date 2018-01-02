@@ -93,7 +93,7 @@ namespace ObjectFactory
             // TODO check that ex is really EOF and not some other error
             context->LogError(OBJECT_ERROR_UNEXPECTED_EOF, "Unexpectedly reached end of file.");
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             context->LogError(OBJECT_ERROR_UNKNOWN, nullptr);
         }
@@ -124,10 +124,10 @@ namespace ObjectFactory
             ReadObjectLegacy(result, &readContext, &chunkStream);
             if (readContext.WasError())
             {
-                throw Exception("Object has errors");
+                throw std::runtime_error("Object has errors");
             }
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             Console::Error::WriteLine("Unable to open or read '%s'", path);
 
@@ -200,7 +200,7 @@ namespace ObjectFactory
             result = new StexObject(entry);
             break;
         default:
-            throw Exception("Invalid object type");
+            throw std::runtime_error("Invalid object type");
         }
         return result;
     }
