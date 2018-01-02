@@ -89,7 +89,8 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
     }
     catch (const Exception& e)
     {
-        Console::Error::WriteLine(e.GetMessage());
+        // Exceptions are likely to occur if file is not S6 format
+        log_verbose(e.GetMessage());
     }
     stream->SetPosition(originalPosition);
     return success;
