@@ -177,8 +177,18 @@ void scenery_increase_age(sint32 x, sint32 y, rct_tile_element *tileElement)
         return;
 
     if (tileElement->properties.scenery.age < 255) {
-        tileElement->properties.scenery.age++;
-        map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+        uint8 newAge = tileElement->properties.scenery.age++;
+
+        // Only invalidate tiles when scenery crosses the withering threshholds, and can be withered.
+        if (newAge == SCENERY_WITHER_AGE_THRESHOLD_1 || newAge == SCENERY_WITHER_AGE_THRESHOLD_2)
+        {
+            rct_scenery_entry *entry = get_small_scenery_entry(tileElement->properties.scenery.type);
+
+            if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
+            {
+                map_invalidate_tile_zoom1(x, y, tileElement->base_height * 8, tileElement->clearance_height * 8);
+            }
+        }
     }
 }
 

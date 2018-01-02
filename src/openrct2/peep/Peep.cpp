@@ -6805,14 +6805,14 @@ static sint32 peep_update_patrolling_find_watering(rct_peep * peep)
                 continue;
             }
 
-            if (tile_element->properties.scenery.age < 55)
+            if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_2)
             {
                 if (chosen_position >= 4)
                 {
                     continue;
                 }
 
-                if (tile_element->properties.scenery.age < 40)
+                if (tile_element->properties.scenery.age < SCENERY_WITHER_AGE_THRESHOLD_1)
                 {
                     continue;
                 }
