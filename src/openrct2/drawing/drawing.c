@@ -22,6 +22,7 @@
 #include "../object.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
+#include "../util/Util.h"
 #include "../world/water.h"
 #include "drawing.h"
 
@@ -469,6 +470,23 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_BRIGHT_PINK
     {PALETTE_TRANSLUCENT_LIGHT_PINK,        PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT,       PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW},
 };
+
+void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap) = NULL;
+
+void mask_init()
+{
+    if (sse41_available())
+    {
+        log_verbose("registering SSE4.1 mask function");
+        mask_fn = mask_sse4_1;
+    }
+    else
+    {
+        log_verbose("registering scalar mask function");
+        mask_fn = mask_scalar;
+    }
+}
 
 void gfx_draw_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 colour)
 {

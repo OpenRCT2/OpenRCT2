@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include <memory>
+
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -151,6 +152,29 @@ static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc,
         }
     }
     Memory::Free(g1Elements32);
+}
+
+void mask_scalar(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
+                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap)
+{
+    for (sint32 yy = 0; yy < height; yy++)
+    {
+        for (sint32 xx = 0; xx < width; xx++)
+        {
+            uint8 colour = (*colourSrc) & (*maskSrc);
+            if (colour != 0)
+            {
+                *dst = colour;
+            }
+
+            maskSrc++;
+            colourSrc++;
+            dst++;
+        }
+        maskSrc += maskWrap;
+        colourSrc += colourWrap;
+        dst += dstWrap;
+    }
 }
 
 extern "C"
@@ -718,28 +742,15 @@ extern "C"
         sint32 skipX = left - x;
         sint32 skipY = top - y;
 
-        uint8 *maskSrc = imgMask->offset + (skipY * imgMask->width) + skipX;
-        uint8 *colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
-        uint8 *dst = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
+        uint8 const * maskSrc   = imgMask->offset + (skipY * imgMask->width) + skipX;
+        uint8 const * colourSrc = imgColour->offset + (skipY * imgColour->width) + skipX;
+        uint8       * dst       = dpi->bits + (left - dpi->x) + ((top - dpi->y) * (dpi->width + dpi->pitch));
 
-        sint32 maskWrap = imgMask->width - width;
+        sint32 maskWrap   = imgMask->width - width;
         sint32 colourWrap = imgColour->width - width;
-        sint32 dstWrap = ((dpi->width + dpi->pitch) - width);
-        for (sint32 yy = top; yy < bottom; yy++) {
-            for (sint32 xx = left; xx < right; xx++) {
-                uint8 colour = (*colourSrc) & (*maskSrc);
-                if (colour != 0) {
-                    *dst = colour;
-                }
+        sint32 dstWrap    = ((dpi->width + dpi->pitch) - width);
 
-                maskSrc++;
-                colourSrc++;
-                dst++;
-            }
-            maskSrc += maskWrap;
-            colourSrc += colourWrap;
-            dst += dstWrap;
-        }
+        mask_fn(width, height, maskSrc, colourSrc, dst, maskWrap, colourWrap, dstWrap);
     }
 
     const rct_g1_element * gfx_get_g1_element(sint32 image_id)

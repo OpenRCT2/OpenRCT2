@@ -271,6 +271,7 @@ sint32 cmdline_for_gfxbench(const char **argv, sint32 argc)
         return -1;
     }
 
+    core_init();
     sint32 iteration_count = 40;
     if (argc == 2)
     {
@@ -375,6 +376,7 @@ sint32 cmdline_for_screenshot(const char * * argv, sint32 argc, ScreenshotOption
         return -1;
     }
 
+    core_init();
     bool customLocation = false;
     bool centreMapX = false;
     bool centreMapY = false;

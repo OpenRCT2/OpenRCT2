@@ -41,6 +41,8 @@ void path_end_with_separator(utf8 *path, size_t size);
 bool readentirefile(const utf8 *path, void **outBuffer, size_t *outLength);
 bool writeentirefile(const utf8 * path, const void * buffer, size_t length);
 
+bool sse41_available();
+
 sint32 bitscanforward(sint32 source);
 void bitcount_init();
 sint32 bitcount(uint32 source);

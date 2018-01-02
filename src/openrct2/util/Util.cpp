@@ -181,12 +181,10 @@ sint32 bitscanforward(sint32 source)
 #if defined(__GNUC__) && (defined(__x86_64__) || defined(__i386__))
     #include <cpuid.h>
     #define OpenRCT2_CPUID_GNUC_X86
-    #define OPENRCT2_X86
 #elif defined(_MSC_VER) && (_MSC_VER >= 1500) && (defined(_M_X64) || defined(_M_IX86)) // VS2008
     #include <intrin.h>
     #include <nmmintrin.h>
     #define OpenRCT2_CPUID_MSVC_X86
-    #define OPENRCT2_X86
 #endif
 
 #ifdef OPENRCT2_X86
@@ -203,6 +201,19 @@ static bool cpuid_x86(uint32 * cpuid_outdata, sint32 eax)
 #endif
 }
 #endif // OPENRCT2_X86
+
+bool sse41_available()
+{
+#ifdef OPENRCT2_X86
+    // SSE4.1 support is declared as the 19th bit of ECX with CPUID(EAX = 1).
+    uint32 regs[4] = { 0 };
+    if (cpuid_x86(regs, 1))
+    {
+        return (regs[2] & (1 << 19));
+    }
+#endif
+    return false;
+}
 
 static bool bitcount_popcnt_available()
 {
