@@ -20,7 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "footpath.h"
 #include "Fountain.h"

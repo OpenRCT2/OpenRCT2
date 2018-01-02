@@ -21,7 +21,7 @@
 #include "../audio/audio.h"
 #include "../Game.h"
 #include "../localisation/date.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "sprite.h"
 
 enum DUCK_STATE

@@ -20,11 +20,9 @@
 
 #include <string>
 #include <vector>
-
 #include "../common.h"
-
-#include "../scenario/scenario.h"
 #include "../object/ObjectList.h"
+#include "../scenario/Scenario.h"
 
 interface   IStream;
 struct      ObjectRepositoryItem;

@@ -34,7 +34,7 @@
 #include "../config/Config.h"
 #include "../localisation/localisation.h"
 #include "../platform/platform.h"
-#include "scenario.h"
+#include "Scenario.h"
 
 using namespace OpenRCT2;
 

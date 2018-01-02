@@ -20,7 +20,7 @@
 #include "FileClassifier.h"
 #include "rct12/SawyerChunkReader.h"
 
-#include "scenario/scenario.h"
+#include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 
 static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result);

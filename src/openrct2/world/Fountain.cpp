@@ -17,7 +17,7 @@
 #include "Fountain.h"
 
 #include "../Game.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "footpath.h"
 #include "map.h"
 #include "scenery.h"

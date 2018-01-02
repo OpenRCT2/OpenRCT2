@@ -43,7 +43,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../util/SawyerCoding.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"

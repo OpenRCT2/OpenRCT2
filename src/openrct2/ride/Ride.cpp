@@ -38,7 +38,7 @@
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../rct1.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Banner.h"

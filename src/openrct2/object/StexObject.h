@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 
 class StexObject final : public Object
 {

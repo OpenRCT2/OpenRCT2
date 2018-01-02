@@ -17,7 +17,7 @@
 #include "../network/network.h"
 
 #include "../audio/audio.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "sprite.h"
 

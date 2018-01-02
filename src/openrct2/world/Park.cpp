@@ -33,7 +33,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"
-#include "../scenario/scenario.h"
+#include "../scenario/Scenario.h"
 #include "../world/map.h"
 #include "Entrance.h"
 #include "Park.h"

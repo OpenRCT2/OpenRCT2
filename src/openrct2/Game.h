@@ -17,7 +17,7 @@
 #pragma once
 
 #include "common.h"
-#include "scenario/scenario.h"
+#include "scenario/Scenario.h"
 
 enum GAME_COMMAND
 {
