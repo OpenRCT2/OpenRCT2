@@ -50,6 +50,9 @@
 #include "../Context.h"
 #include "../ride/Track.h"
 
+extern "C"
+{
+
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS,
     STR_CHALLENGING_PARKS,
@@ -313,7 +316,7 @@ static void scenario_day_update()
 
     // Lower the casualty penalty
     uint16 casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
-    gParkRatingCasualtyPenalty = max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
+    gParkRatingCasualtyPenalty = std::max(0, gParkRatingCasualtyPenalty - casualtyPenaltyModifier);
 
     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
 }
@@ -674,53 +677,6 @@ bool scenario_prepare_for_save()
 }
 
 /**
- *
- *  rct2: 0x006AA039
- */
-static sint32 scenario_write_available_objects(FILE *file)
-{
-    const sint32 totalEntries = OBJECT_ENTRY_COUNT;
-    const sint32 bufferLength = totalEntries * sizeof(rct_object_entry);
-
-    // Initialise buffers
-    uint8 *buffer = malloc(bufferLength);
-    if (buffer == NULL) {
-        log_error("out of memory");
-        return 0;
-    }
-    uint8 *dstBuffer = malloc(bufferLength + sizeof(sawyercoding_chunk_header));
-    if (dstBuffer == NULL) {
-        free(buffer);
-        log_error("out of memory");
-        return 0;
-    }
-
-    // Write entries
-    rct_object_entry *dstEntry = (rct_object_entry*)buffer;
-    for (sint32 i = 0; i < OBJECT_ENTRY_COUNT; i++) {
-        void *entryData = get_loaded_object_chunk(i);
-        if (entryData == NULL) {
-            memset(dstEntry, 0, sizeof(rct_object_entry));
-        } else {
-            *dstEntry = *get_loaded_object_entry(i);
-        }
-        dstEntry++;
-    }
-
-    // Write chunk
-    sawyercoding_chunk_header chunkHeader;
-    chunkHeader.encoding = CHUNK_ENCODING_ROTATE;
-    chunkHeader.length = bufferLength;
-    size_t encodedLength = sawyercoding_write_chunk_buffer(dstBuffer, buffer, chunkHeader);
-    fwrite(dstBuffer, encodedLength, 1, file);
-
-    // Free buffers
-    free(dstBuffer);
-    free(buffer);
-    return 1;
-}
-
-/**
  * Modifies the given S6 data so that ghost elements, rides with no track elements or unused banners / user strings are saved.
  */
 void scenario_fix_ghosts(rct_s6_data *s6)
@@ -867,7 +823,7 @@ static void scenario_objective_check_guests_and_rating()
             scenario_failure();
             gGuestInitialHappiness = 50;
         }
-    } else if (gScenarioCompletedCompanyValue != 0x80000001) {
+    } else if (gScenarioCompletedCompanyValue != (money32)0x80000001) {
         gScenarioParkRatingWarningDays = 0;
     }
 
@@ -1010,4 +966,6 @@ static void scenario_objective_check()
         scenario_objective_check_monthly_food_income();
         break;
     }
+}
+
 }
