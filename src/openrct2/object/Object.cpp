@@ -19,14 +19,15 @@
 #include "../localisation/language.h"
 #include "../localisation/string_ids.h"
 #include "Object.h"
+#include "ObjectLimits.h"
 
 
 Object::Object(const rct_object_entry &entry)
 {
     _objectEntry = entry;
 
-    char name[9] = { 0 };
-    Memory::Copy(name, entry.name, 8);
+    char name[DAT_NAME_LENGTH + 1] = { 0 };
+    Memory::Copy(name, entry.name, DAT_NAME_LENGTH);
     _identifier = String::Duplicate(name);
 }
 
@@ -68,11 +69,11 @@ rct_object_entry Object::GetScgPathXHeader()
     return Object::CreateHeader("SCGPATHX", 207140231, 890227440);
 }
 
-rct_object_entry Object::CreateHeader(const char name[9], uint32 flags, uint32 checksum)
+rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32 flags, uint32 checksum)
 {
     rct_object_entry header = { 0 };
     header.flags = flags;
-    Memory::Copy(header.name, name, 8);
+    Memory::Copy(header.name, name, DAT_NAME_LENGTH);
     header.checksum = checksum;
     return header;
 }

@@ -22,7 +22,7 @@
 #include "../localisation/date.h"
 #include "../localisation/localisation.h"
 #include "../localisation/string_ids.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 #include "../OpenRCT2.h"
 #include "../scenario/scenario.h"
 #include "../rct1.h"

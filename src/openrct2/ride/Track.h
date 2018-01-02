@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "Ride.h"
 
 #pragma pack(push, 1)

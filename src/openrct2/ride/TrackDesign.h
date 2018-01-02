@@ -18,7 +18,7 @@
 #define _TRACK_DESIGN_H_
 
 #include "../common.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../world/map.h"

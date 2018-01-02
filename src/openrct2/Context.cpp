@@ -63,7 +63,7 @@
 #include "network/http.h"
 #include "network/network.h"
 #include "network/twitch.h"
-#include "ObjectList.h"
+#include "object/ObjectList.h"
 #include "platform/platform.h"
 #include "rct1.h"
 #include "util/Util.h"

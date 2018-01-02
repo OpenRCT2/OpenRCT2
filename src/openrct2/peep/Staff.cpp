@@ -26,7 +26,7 @@
 #include "../localisation/string_ids.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../scenario/scenario.h"
 #include "../util/Util.h"

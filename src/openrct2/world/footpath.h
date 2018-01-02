@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../interface/viewport.h"
-#include "../object.h"
+#include "../object/Object.h"
 
 enum {
     PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),

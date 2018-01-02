@@ -33,7 +33,7 @@
 #include "../ride/Station.h"
 #include "../scenario/ScenarioSources.h"
 #include "Tables.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 
 #include "../audio/audio.h"
 #include "../Cheats.h"
@@ -44,7 +44,7 @@
 #include "../localisation/localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"

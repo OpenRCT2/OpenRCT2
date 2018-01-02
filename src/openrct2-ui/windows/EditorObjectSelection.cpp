@@ -32,7 +32,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/StexObject.h>
-#include <openrct2/ObjectList.h>
+#include <openrct2/object/ObjectList.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/RideGroupManager.h>

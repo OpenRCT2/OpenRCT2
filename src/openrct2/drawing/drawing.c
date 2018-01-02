@@ -19,7 +19,7 @@
 #include "../core/Guard.hpp"
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"

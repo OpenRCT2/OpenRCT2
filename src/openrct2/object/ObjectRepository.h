@@ -22,7 +22,7 @@
 
 #include "../common.h"
 
-#include "../object.h"
+#include "../object/Object.h"
 #include "../ride/Ride.h"
 
 #ifdef __cplusplus

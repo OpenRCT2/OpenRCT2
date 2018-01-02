@@ -42,8 +42,8 @@
 
 #include "../config/Config.h"
 #include "../localisation/localisation.h"
-#include "../object.h"
-#include "../ObjectList.h"
+#include "../object/Object.h"
+#include "ObjectList.h"
 #include "../platform/platform.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"

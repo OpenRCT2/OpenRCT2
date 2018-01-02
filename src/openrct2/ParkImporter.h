@@ -18,7 +18,7 @@
 
 #include "common.h"
 
-#include "object.h"
+#include "object/Object.h"
 
 typedef enum PARK_LOAD_ERROR
 {

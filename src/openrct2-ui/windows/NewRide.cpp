@@ -30,6 +30,7 @@
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/object/ObjectLimits.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/TrackData.h>
@@ -339,16 +340,16 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
     bool allowDrawingOverLastButton = false;
     uint8 *rideEntryIndexPtr = get_ride_entry_indices_for_ride_type(rideType);
 
-    char preferredVehicleName[9];
+    char preferredVehicleName[DAT_NAME_LENGTH + 1];
     safe_strcpy(preferredVehicleName, "        ", sizeof(preferredVehicleName));
 
     // For each ride entry for this ride type
     while (*rideEntryIndexPtr != RIDE_ENTRY_INDEX_NULL)
     {
         uint8 rideEntryIndex = *rideEntryIndexPtr++;
-        char rideEntryName[9];
+        char rideEntryName[DAT_NAME_LENGTH + 1];
         memcpy(rideEntryName,object_entry_groups[OBJECT_TYPE_RIDE].entries[rideEntryIndex].name,8);
-        rideEntryName[8]=0;
+        rideEntryName[DAT_NAME_LENGTH] = 0;
 
         // Skip if vehicle type is not invented yet
         if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
@@ -371,11 +372,11 @@ static ride_list_item * window_new_ride_iterate_over_ride_group(uint8 rideType, 
         {
             if (strcmp(preferredVehicleName, "        \0") == 0) {
                 safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                preferredVehicleName[8] = 0;
+                preferredVehicleName[DAT_NAME_LENGTH] = 0;
             } else {
                 if (RideGroupManager::VehiclePreferenceCompare(rideType, preferredVehicleName, rideEntryName) == 1) {
                     safe_strcpy(preferredVehicleName, rideEntryName, sizeof(preferredVehicleName));
-                    preferredVehicleName[8] = 0;
+                    preferredVehicleName[DAT_NAME_LENGTH] = 0;
                 } else {
                     continue;
                 }
@@ -910,7 +911,7 @@ static ride_list_item window_new_ride_scroll_get_ride_list_item_at(rct_window *w
 
 static sint32 get_num_track_designs(ride_list_item item)
 {
-    char entry[9];
+    char entry[DAT_NAME_LENGTH + 1];
     const char * entryPtr = nullptr;
     rct_ride_entry * rideEntry = nullptr;
 
