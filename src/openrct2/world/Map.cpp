@@ -3503,12 +3503,26 @@ static void map_update_grass_length(sint32 x, sint32 y, rct_tile_element *tileEl
 
 static void map_set_grass_length(sint32 x, sint32 y, rct_tile_element *tileElement, sint32 length)
 {
-    sint32 z0, z1;
+    sint32 oldLength = tileElement->properties.surface.grass_length & 0x7;
+    sint32 newLength = length & 0x7;
 
     tileElement->properties.surface.grass_length = length;
-    z0 = tileElement->base_height * 8;
-    z1 = z0 + 16;
-    map_invalidate_tile(x, y, z0, z1);
+
+    if (newLength == oldLength)
+    {
+        return;
+    }
+
+    // If the new grass length won't result in an actual visual change
+    // then skip invalidating the tile, no point
+    if (((oldLength > 0 && oldLength < 4) && (newLength > 0 && newLength < 4)) ||
+        ((oldLength > 3 && oldLength < 7) && (newLength > 3 && newLength < 7)))
+    {
+        return;
+    }
+
+    sint32 z = tileElement->base_height * 8;
+    map_invalidate_tile(x, y, z, z + 16);
 }
 
 void map_remove_provisional_elements()

@@ -119,10 +119,10 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
     }
     if (scenery_small_entry_has_flag(entry, SMALL_SCENERY_FLAG_CAN_WITHER))
     {
-        if (tileElement->properties.scenery.age >= 40) {
+        if (tileElement->properties.scenery.age >= SCENERY_WITHER_AGE_THRESHOLD_1) {
             baseImageid += 4;
         }
-        if (tileElement->properties.scenery.age >= 55) {
+        if (tileElement->properties.scenery.age >= SCENERY_WITHER_AGE_THRESHOLD_2) {
             baseImageid += 4;
         }
     }
