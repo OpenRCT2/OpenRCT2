@@ -47,10 +47,9 @@ rct_string_id user_string_allocate(sint32 base, const utf8 *text)
         return 0;
     }
 
-    char * userString;
     for (sint32 i = 0; i < MAX_USER_STRINGS; i++)
     {
-        userString = gUserStrings[i];
+        char * userString = gUserStrings[i];
 
         if (userString[0] != 0)
             continue;
