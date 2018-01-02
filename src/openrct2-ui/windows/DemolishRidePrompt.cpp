@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <openrct2/Game.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/windows/Intent.h>

@@ -23,7 +23,7 @@
 
 #include <openrct2/Editor.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/sprites.h>

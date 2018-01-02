@@ -18,7 +18,7 @@
 #include <openrct2-ui/input/KeyboardShortcuts.h>
 #include "Window.h"
 
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 
 #define WW 420

@@ -28,8 +28,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Console.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Viewport.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/twitch.h>
 #include <openrct2/OpenRCT2.h>

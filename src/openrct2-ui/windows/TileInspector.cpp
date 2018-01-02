@@ -22,7 +22,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/Widget.h>
+#include <openrct2-ui/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/RideData.h>
