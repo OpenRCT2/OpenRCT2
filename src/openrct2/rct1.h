@@ -331,7 +331,7 @@ typedef struct rct1_vehicle {
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
     uint8 sound2_volume;            // 0xBE
-    sint8 var_BF;
+    sint8 sound_vector_factor;
     union {
         uint16 var_C0;
         uint16 time_waiting;        // 0xC0

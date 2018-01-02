@@ -418,7 +418,7 @@ void RideObject::ReadLegacyVehicle(IReadObjectContext * context, IStream * strea
     vehicle->friction_sound_id = stream->ReadValue<uint8>();
     vehicle->var_58 = stream->ReadValue<uint8>();
     vehicle->sound_range = stream->ReadValue<uint8>();
-    vehicle->var_5A = stream->ReadValue<uint8>();
+    vehicle->double_sound_frequency = stream->ReadValue<uint8>();
     vehicle->powered_acceleration = stream->ReadValue<uint8>();
     vehicle->powered_max_speed = stream->ReadValue<uint8>();
     vehicle->car_visual = stream->ReadValue<uint8>();

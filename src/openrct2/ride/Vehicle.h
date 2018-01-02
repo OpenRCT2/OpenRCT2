@@ -66,7 +66,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 friction_sound_id;        // 0x57 , 0x71
     uint8 var_58;                   // 0x58 , 0x72
     uint8 sound_range;              // 0x59 , 0x73
-    uint8 var_5A;                   // 0x5A , 0x74
+    uint8 double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8 powered_acceleration;     // 0x5B , 0x75
     uint8 powered_max_speed;        // 0x5C , 0x76
     uint8 car_visual;               // 0x5D , 0x77
@@ -162,7 +162,7 @@ typedef struct rct_vehicle {
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
     uint8 sound2_volume;            // 0xBE
-    sint8 var_BF;
+    sint8 sound_vector_factor;
     union {
         uint16 var_C0;
         uint16 time_waiting;        // 0xC0
@@ -363,7 +363,6 @@ extern "C" {
 
 rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
-sint32 sub_6BC2F3(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);
