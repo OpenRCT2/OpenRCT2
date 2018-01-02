@@ -42,6 +42,7 @@
 - Fix: [#2607] Rain rendered incorrectly in additional viewport.
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
+- Fix: [#5224] Multiplayer window is not closed when server shuts down.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
 - Fix: [#5585] Inconsistent zooming with mouse wheel.
@@ -89,6 +90,7 @@
 - Fix: [#6830] Crash when using mountain tool due to ride with no ride entry.
 - Fix: [#6833] Shops in corrupted files not imported correctly.
 - Fix: [#6846] Zoom level in some ride overview windows was erroneously set too high.
+- Fix: [#6904] Manually added multiplayer servers not saved.
 - Fix: Infinite loop when removing scenery elements with >127 base height.
 - Fix: Ghosting of transparent map elements when the viewport is moved in OpenGL mode.
 - Fix: Clear IME buffer after committing composed text.
