@@ -62,6 +62,7 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
+#include "ObjectList.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
@@ -1238,44 +1239,7 @@ void game_fix_save_vars()
         }
     }
 
-    // Fix invalid research items
-    for (sint32 i = 0; i < MAX_RESEARCH_ITEMS; i++)
-    {
-        rct_research_item * researchItem = &gResearchItems[i];
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR)
-            continue;
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END)
-        {
-            if (i == MAX_RESEARCH_ITEMS - 1)
-            {
-                (--researchItem)->entryIndex = RESEARCHED_ITEMS_END;
-            }
-            (++researchItem)->entryIndex = RESEARCHED_ITEMS_END_2;
-            break;
-        }
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_END_2)
-            break;
-        if (researchItem->entryIndex & RESEARCH_ENTRY_RIDE_MASK)
-        {
-            uint8          entryIndex  = researchItem->entryIndex & 0xFF;
-            rct_ride_entry * rideEntry = get_ride_entry(entryIndex);
-            if (rideEntry == nullptr)
-            {
-                research_remove(researchItem->entryIndex);
-                i--;
-            }
-        }
-        else
-        {
-            uint8                   entryIndex          = researchItem->entryIndex;
-            rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(entryIndex);
-            if (sceneryGroupEntry == nullptr)
-            {
-                research_remove(researchItem->entryIndex);
-                i--;
-            }
-        }
-    }
+    research_fix();
 
     // Fix banner list pointing to NULL map elements
     banner_reset_broken_index();

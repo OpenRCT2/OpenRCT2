@@ -371,7 +371,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
 
         // Expected
         set_format_arg(0, rct_string_id, STR_RESEARCH_STAGE_UNKNOWN);
-        if (gResearchProgressStage != 0) {
+        if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH) {
             uint16 expectedDay = gResearchExpectedDay;
             if (expectedDay != 255) {
                 // TODO: Should probably use game date format setting
@@ -505,7 +505,6 @@ static void window_research_funding_invalidate(rct_window *w)
 
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) ||
         (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL)) {
-        //window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WWT_EMPTY;
         window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WWT_EMPTY;
         window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WWT_EMPTY;
     } else {
