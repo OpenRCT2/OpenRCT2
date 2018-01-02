@@ -40,6 +40,7 @@
 - Fix: [#1833, #4937, #6138] 'Too low!' warning when building rides and shops on the lowest land level (original bug).
 - Fix: [#2254] Edge scrolling horizontally now has the same speed as vertical edge scrolling.
 - Fix: [#2607] Rain rendered incorrectly in additional viewport.
+- Fix: [#3171] Guests entering from the corner of the tile in Amity Airfield (original bug).
 - Fix: [#4760] Asia - Great Wall of China and South America - Rio Carnival have incorrect guest entry points (original bug).
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.

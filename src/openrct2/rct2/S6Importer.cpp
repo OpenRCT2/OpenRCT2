@@ -735,6 +735,11 @@ public:
         }
         else
         {
+            // Amity Airfield has peeps entering from the corner of the tile, instead of the middle.
+            if (String::Equals(_s6.scenario_filename, "Amity Airfield.SC6"))
+                _s6.peep_spawns[0].y += 16;
+
+            
             for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
             {
                 gPeepSpawns[i] = _s6.peep_spawns[i];
