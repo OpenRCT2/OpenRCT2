@@ -20,7 +20,7 @@
 #include "../common.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../rct12.h"
 #include "../rct2.h"
 #include "../ride/Ride.h"

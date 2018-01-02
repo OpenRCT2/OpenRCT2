@@ -33,7 +33,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"

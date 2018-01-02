@@ -30,7 +30,7 @@
 #include "../management/Research.h"
 #include "../network/network.h"
 #include "../network/twitch.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../OpenRCT2.h"

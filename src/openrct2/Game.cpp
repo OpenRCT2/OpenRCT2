@@ -34,7 +34,7 @@
 #include "management/NewsItem.h"
 #include "management/Research.h"
 #include "network/network.h"
-#include "object.h"
+#include "object/Object.h"
 #include "OpenRCT2.h"
 #include "ParkImporter.h"
 #include "peep/Peep.h"
@@ -62,7 +62,7 @@
 #include "world/scenery.h"
 #include "world/sprite.h"
 #include "world/water.h"
-#include "ObjectList.h"
+#include "object/ObjectList.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 

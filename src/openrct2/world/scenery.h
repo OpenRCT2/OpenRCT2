@@ -18,7 +18,7 @@
 #define _SCENERY_H_
 
 #include "../common.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../world/map.h"
 
 #define SCENERY_SMALL_SCENERY_ID_MIN 0x0

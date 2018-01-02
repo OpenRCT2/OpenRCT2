@@ -37,7 +37,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../management/Research.h"
-#include "../object.h"
+#include "../object/Object.h"
 #include "../OpenRCT2.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"

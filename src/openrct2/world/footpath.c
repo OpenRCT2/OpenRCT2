@@ -18,7 +18,7 @@
 #include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 #include "../OpenRCT2.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"

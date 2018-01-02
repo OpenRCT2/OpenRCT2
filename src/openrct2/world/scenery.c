@@ -19,7 +19,7 @@
 #include "../Game.h"
 #include "../localisation/localisation.h"
 #include "../network/network.h"
-#include "../ObjectList.h"
+#include "../object/ObjectList.h"
 #include "../scenario/scenario.h"
 #include "Climate.h"
 #include "footpath.h"

@@ -19,8 +19,8 @@
 
 #include "../drawing/drawing.h"
 #include "../localisation/localisation.h"
-#include "../object.h"
-#include "../ObjectList.h"
+#include "../object/Object.h"
+#include "ObjectList.h"
 
 void FootpathItemObject::ReadLegacy(IReadObjectContext * context, IStream * stream)
 {

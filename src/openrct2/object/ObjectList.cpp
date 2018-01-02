@@ -14,14 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "core/Math.hpp"
-#include "core/Util.hpp"
-#include "Game.h"
-#include "object.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
+#include "../Game.h"
+#include "../object/Object.h"
 #include "ObjectList.h"
-#include "object/ObjectRepository.h"
-#include "util/SawyerCoding.h"
-#include "util/Util.h"
+#include "ObjectRepository.h"
+#include "../util/SawyerCoding.h"
+#include "../util/Util.h"
 
 // 98DA00
 sint32 object_entry_group_counts[] = {
@@ -182,7 +182,7 @@ void * get_loaded_object_chunk(size_t index)
 
 void object_entry_get_name_fixed(utf8 * buffer, size_t bufferSize, const rct_object_entry * entry)
 {
-    bufferSize = Math::Min((size_t)9, bufferSize);
+    bufferSize = Math::Min((size_t)DAT_NAME_LENGTH + 1, bufferSize);
     memcpy(buffer, entry->name, bufferSize - 1);
     buffer[bufferSize - 1] = 0;
 }
