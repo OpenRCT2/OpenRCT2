@@ -350,7 +350,8 @@ static void window_server_list_textinput(rct_window *w, rct_widgetindex widgetIn
     case WIDX_ADD_SERVER:
         {
             std::lock_guard<std::mutex> guard(_mutex);
-            add_server_entry(text);
+            server_entry * entry = add_server_entry(text);
+            entry->favourite = true;
             sort_servers();
             server_list_save_server_entries();
         }
