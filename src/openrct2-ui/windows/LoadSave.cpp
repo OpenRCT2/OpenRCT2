@@ -889,8 +889,8 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     { WWT_FRAME,            0, 0,                   OVERWRITE_WW - 1,   0,                  OVERWRITE_WH - 1,   STR_NONE,                           STR_NONE },
     { WWT_CAPTION,          0, 1,                   OVERWRITE_WW - 2,   1,                  14,                 STR_FILEBROWSER_OVERWRITE_TITLE,    STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,         0, OVERWRITE_WW - 13,   OVERWRITE_WW - 3,   2,                  13,                 STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
-    { WWT_DROPDOWN_BUTTON,  0, 10,                  94,                 OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_FILEBROWSER_OVERWRITE_TITLE,    STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  0, OVERWRITE_WW - 95,   OVERWRITE_WW - 11,  OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_SAVE_PROMPT_CANCEL,             STR_NONE },
+    { WWT_BUTTON,           0, 10,                  94,                 OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_FILEBROWSER_OVERWRITE_TITLE,    STR_NONE },
+    { WWT_BUTTON,           0, OVERWRITE_WW - 95,   OVERWRITE_WW - 11,  OVERWRITE_WH - 20,  OVERWRITE_WH - 9,   STR_SAVE_PROMPT_CANCEL,             STR_NONE },
     { WIDGETS_END }
 };
 

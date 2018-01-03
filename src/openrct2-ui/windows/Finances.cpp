@@ -93,8 +93,8 @@ static rct_widget _windowFinancesSummaryWidgets[] =
     { WWT_RESIZE,           1,  0,      529,    43, 288,    0xFFFFFFFF,                 STR_NONE                                }, \
     TAB_WIDGETS,
     { WWT_SPINNER,          1,  64,     153,    259,    270,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
+    { WWT_BUTTON,           1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
+    { WWT_BUTTON,           1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
     { WIDGETS_END },
 };
 
@@ -155,7 +155,7 @@ static rct_widget _windowFinancesResearchWidgets[] =
     TAB_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
     { WWT_DROPDOWN,         2,  8,      167,    59,     70,     0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
-    { WWT_DROPDOWN_BUTTON,  2,  156,    166,    60,     69,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
+    { WWT_BUTTON,           2,  156,    166,    60,     69,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
     { WWT_GROUPBOX,         2,  3,      316,    96,     202,    STR_RESEARCH_PRIORITIES,                STR_NONE },
     { WWT_CHECKBOX,         2,  8,      311,    108,    119,    STR_RESEARCH_NEW_TRANSPORT_RIDES,       STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP },
     { WWT_CHECKBOX,         2,  8,      311,    121,    132,    STR_RESEARCH_NEW_GENTLE_RIDES,          STR_RESEARCH_NEW_GENTLE_RIDES_TIP },
@@ -1117,7 +1117,7 @@ static void window_finances_marketing_invalidate(rct_window *w)
         if (!marketing_is_campaign_type_applicable(i))
             continue;
 
-        campaignButton->type = WWT_DROPDOWN_BUTTON;
+        campaignButton->type = WWT_BUTTON;
         campaignButton->top = y;
         campaignButton->bottom = y + BUTTON_FACE_HEIGHT + 1;
         y += BUTTON_FACE_HEIGHT + 2;

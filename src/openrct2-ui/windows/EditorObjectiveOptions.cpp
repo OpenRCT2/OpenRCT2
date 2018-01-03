@@ -96,20 +96,20 @@ enum {
 static rct_widget window_editor_objective_options_main_widgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     { WWT_DROPDOWN,         1,  98,     441,    48,     59,     STR_NONE,                   STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
-    { WWT_DROPDOWN_BUTTON,  1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
+    { WWT_BUTTON,           1,  430,    440,    49,     58,     STR_DROPDOWN_GLYPH,         STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP          },
     { WWT_SPINNER,          1,  158,    237,    65,     76,     STR_NONE,                   STR_NONE                                            },
-    { WWT_DROPDOWN_BUTTON,  1,  226,    236,    66,     70,     STR_NUMERIC_UP,             STR_NONE                                            },
-    { WWT_DROPDOWN_BUTTON,  1,  226,    236,    71,     75,     STR_NUMERIC_DOWN,           STR_NONE                                            },
+    { WWT_BUTTON,           1,  226,    236,    66,     70,     STR_NUMERIC_UP,             STR_NONE                                            },
+    { WWT_BUTTON,           1,  226,    236,    71,     75,     STR_NUMERIC_DOWN,           STR_NONE                                            },
     { WWT_SPINNER,          1,  158,    277,    82,     93,     STR_NONE,                   STR_NONE                                            },
-    { WWT_DROPDOWN_BUTTON,  1,  266,    276,    83,     87,     STR_NUMERIC_UP,             STR_NONE                                            },
-    { WWT_DROPDOWN_BUTTON,  1,  266,    276,    88,     92,     STR_NUMERIC_DOWN,           STR_NONE                                            },
+    { WWT_BUTTON,           1,  266,    276,    83,     87,     STR_NUMERIC_UP,             STR_NONE                                            },
+    { WWT_BUTTON,           1,  266,    276,    88,     92,     STR_NUMERIC_DOWN,           STR_NONE                                            },
     { WWT_DROPDOWN,         1,  98,     277,    99,     110,    STR_NONE,                   STR_SELECT_CLIMATE_TIP                              },
-    { WWT_DROPDOWN_BUTTON,  1,  266,    276,    100,    109,    STR_DROPDOWN_GLYPH,         STR_SELECT_CLIMATE_TIP                              },
-    { WWT_DROPDOWN_BUTTON,  1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
-    { WWT_DROPDOWN_BUTTON,  1,  370,    444,    133,    144,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
+    { WWT_BUTTON,           1,  266,    276,    100,    109,    STR_DROPDOWN_GLYPH,         STR_SELECT_CLIMATE_TIP                              },
+    { WWT_BUTTON,           1,  370,    444,    116,    127,    STR_CHANGE,                 STR_CHANGE_NAME_OF_PARK_TIP                         },
+    { WWT_BUTTON,           1,  370,    444,    133,    144,    STR_CHANGE,                 STR_CHANGE_NAME_OF_SCENARIO_TIP                     },
     { WWT_DROPDOWN,         1,  98,     277,    150,    161,    STR_NONE,                   STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_DROPDOWN_BUTTON,  1,  266,    276,    151,    160,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
-    { WWT_DROPDOWN_BUTTON,  1,  370,    444,    167,    178,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
+    { WWT_BUTTON,           1,  266,    276,    151,    160,    STR_DROPDOWN_GLYPH,         STR_SELECT_WHICH_GROUP_THIS_SCENARIO_APPEARS_IN     },
+    { WWT_BUTTON,           1,  370,    444,    167,    178,    STR_CHANGE,                 STR_CHANGE_DETAIL_NOTES_ABOUT_PARK_SCENARIO_TIP     },
     { WIDGETS_END }
 };
 
@@ -836,11 +836,11 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
     case OBJECTIVE_GUESTS_BY:
     case OBJECTIVE_PARK_VALUE_BY:
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_DROPDOWN_BUTTON;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_DROPDOWN_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WWT_SPINNER;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WWT_DROPDOWN_BUTTON;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WWT_DROPDOWN_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WWT_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WWT_BUTTON;
         break;
     case OBJECTIVE_GUESTS_AND_RATING:
     case OBJECTIVE_MONTHLY_RIDE_INCOME:
@@ -849,8 +849,8 @@ static void window_editor_objective_options_main_invalidate(rct_window *w)
     case OBJECTIVE_REPLAY_LOAN_AND_PARK_VALUE:
     case OBJECTIVE_MONTHLY_FOOD_INCOME:
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WWT_SPINNER;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_DROPDOWN_BUTTON;
-        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_DROPDOWN_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WWT_BUTTON;
+        window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WWT_BUTTON;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WWT_EMPTY;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WWT_EMPTY;
         window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WWT_EMPTY;

@@ -218,20 +218,20 @@ static rct_widget window_options_display_widgets[] = {
     { WWT_GROUPBOX,         1,  5,      304,    53,     207,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
 
     { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE },                 // Fullscreen
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
+    { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
 
         { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
-        { WWT_DROPDOWN_BUTTON,  1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
+        { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISPLAY_RESOLUTION_TIP },
 
     { WWT_SPINNER,          1,  155,    299,    98,     109,    STR_NONE,               STR_WINDOW_SCALE_TIP },     // Scale spinner
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    99,     103,    STR_NUMERIC_UP,         STR_NONE },                 // Scale spinner up
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    104,    108,    STR_NUMERIC_DOWN,       STR_NONE },                 // Scale spinner down
+    { WWT_BUTTON,           1,  288,    298,    99,     103,    STR_NUMERIC_UP,         STR_NONE },                 // Scale spinner up
+    { WWT_BUTTON,           1,  288,    298,    104,    108,    STR_NUMERIC_DOWN,       STR_NONE },                 // Scale spinner down
 
     { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_NONE,               STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_DRAWING_ENGINE_TIP },
+    { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_DRAWING_ENGINE_TIP },
 
         { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,                       STR_NONE },                         // Scaling quality hint
-        { WWT_DROPDOWN_BUTTON,  1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
+        { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,             STR_SCALE_QUALITY_TIP },
 
         { WWT_CHECKBOX,         1,  25,     290,    144,    155,    STR_STEAM_OVERLAY_PAUSE,        STR_STEAM_OVERLAY_PAUSE_TIP },      // Pause on steam overlay
 
@@ -263,29 +263,29 @@ static rct_widget window_options_rendering_widgets[] = {
 static rct_widget window_options_culture_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_DROPDOWN,         1,  155,    299,    53,     64,     STR_NONE,               STR_NONE }, // language
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP },
+    { WWT_BUTTON,           1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_LANGUAGE_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE }, // Currency
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP },
+    { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_CURRENCY_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_14_STRINGID,    STR_NONE }, // Distance and speed
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP },
+    { WWT_BUTTON,           1,  288,    298,    84,     93,     STR_DROPDOWN_GLYPH,     STR_DISTANCE_AND_SPEED_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    98,     110,    STR_ARG_20_STRINGID,    STR_NONE }, // Temperature
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    99,     108,    STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP },
+    { WWT_BUTTON,           1,  288,    298,    99,     108,    STR_DROPDOWN_GLYPH,     STR_TEMPERATURE_FORMAT_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    113,    124,    STR_ARG_6_STRINGID,     STR_NONE }, // Height labels
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP },
+    { WWT_BUTTON,           1,  288,    298,    114,    123,    STR_DROPDOWN_GLYPH,     STR_HEIGHT_LABELS_UNITS_TIP },
     { WWT_DROPDOWN,         1,  155,    299,    128,    139,    STR_NONE,               STR_NONE }, // Date format
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP },
+    { WWT_BUTTON,           1,  288,    298,    129,    138,    STR_DROPDOWN_GLYPH,     STR_DATE_FORMAT_TIP },
     { WIDGETS_END },
 };
 
 static rct_widget window_options_audio_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_DROPDOWN,         1,  10,     299,    53,     64,     STR_NONE,               STR_NONE },                     // Audio device
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_AUDIO_DEVICE_TIP },
+    { WWT_BUTTON,           1,  288,    298,    54,     63,     STR_DROPDOWN_GLYPH,     STR_AUDIO_DEVICE_TIP },
     { WWT_CHECKBOX,         1,  10,     229,    69,     80,     STR_SOUND_EFFECTS,      STR_SOUND_EFFECTS_TIP },        // Enable / disable sound effects
     { WWT_CHECKBOX,         1,  10,     229,    84,     95,     STR_RIDE_MUSIC,         STR_RIDE_MUSIC_TIP },           // Enable / disable ride music
     { WWT_CHECKBOX,         1,  10,     299,    98,     110,    STR_AUDIO_FOCUS,        STR_AUDIO_FOCUS_TIP },          // Enable / disable audio disabled on focus lost
     { WWT_DROPDOWN,         1,  155,    299,    112,    124,    STR_NONE,               STR_NONE },                     // Title music
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    113,    123,    STR_DROPDOWN_GLYPH,     STR_TITLE_MUSIC_TIP },
+    { WWT_BUTTON,           1,  288,    298,    113,    123,    STR_DROPDOWN_GLYPH,     STR_TITLE_MUSIC_TIP },
     { WWT_SCROLL,           1,  155,    299,    68,     80,     SCROLL_HORIZONTAL,      STR_NONE },                     // Sound effect volume
     { WWT_SCROLL,           1,  155,    299,    83,     95,     SCROLL_HORIZONTAL,      STR_NONE },                     // Music volume
     { WIDGETS_END },
@@ -299,13 +299,13 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 30,   CONTROLS_GROUP_START + 41,   STR_TRAP_MOUSE,                         STR_TRAP_MOUSE_TIP },                       // Trap mouse
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 45,   CONTROLS_GROUP_START + 56,   STR_INVERT_RIGHT_MOUSE_DRAG,            STR_INVERT_RIGHT_MOUSE_DRAG_TIP },          // Invert right mouse dragging
     { WWT_CHECKBOX,         2,  10,     299,    CONTROLS_GROUP_START + 60,   CONTROLS_GROUP_START + 71,   STR_ZOOM_TO_CURSOR,                     STR_ZOOM_TO_CURSOR_TIP },                   // Zoom to cursor
-    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
+    { WWT_BUTTON,           1,  155,    299,    CONTROLS_GROUP_START + 75,   CONTROLS_GROUP_START + 87,   STR_HOTKEY,                             STR_HOTKEY_TIP },                           // Set hotkeys buttons
 #undef CONTROLS_GROUP_START
 #define THEMES_GROUP_START 148
     { WWT_GROUPBOX,         1,  5,      304,    THEMES_GROUP_START + 0,      THEMES_GROUP_START + 47,     STR_THEMES_GROUP,                       STR_NONE },                                 // Toolbar buttons group
     { WWT_DROPDOWN,         1,  155,    299,    THEMES_GROUP_START + 14,     THEMES_GROUP_START + 25,     STR_NONE,                               STR_NONE },                                 // Themes
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
-    { WWT_DROPDOWN_BUTTON,  1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
+    { WWT_BUTTON,           1,  288,    298,    THEMES_GROUP_START + 15,     THEMES_GROUP_START + 24,     STR_DROPDOWN_GLYPH,                     STR_CURRENT_THEME_TIP },
+    { WWT_BUTTON,           1,  155,    299,    THEMES_GROUP_START + 30,     THEMES_GROUP_START + 42,     STR_EDIT_THEMES_BUTTON,                 STR_EDIT_THEMES_BUTTON_TIP },               // Themes button
 #undef THEMES_GROUP_START
 #define TOOLBAR_GROUP_START 200
     { WWT_GROUPBOX,         1,  5,      304,    TOOLBAR_GROUP_START + 0,     TOOLBAR_GROUP_START + 75,    STR_TOOLBAR_BUTTONS_GROUP,              STR_NONE },                                 // Toolbar buttons group
@@ -323,13 +323,13 @@ static rct_widget window_options_misc_widgets[] = {
 #define TITLE_SEQUENCE_START 53
     { WWT_GROUPBOX,         1,  5,      304,    TITLE_SEQUENCE_START + 0,  TITLE_SEQUENCE_START + 49,  STR_OPTIONS_TITLE_SEQUENCE,       STR_NONE },
     { WWT_DROPDOWN,         1,  135,    299,    TITLE_SEQUENCE_START + 15, TITLE_SEQUENCE_START + 26,  STR_NONE,                         STR_NONE },                             // Title sequence dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    TITLE_SEQUENCE_START + 16, TITLE_SEQUENCE_START + 25,  STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
-    { WWT_DROPDOWN_BUTTON,  1,  135,    299,    TITLE_SEQUENCE_START + 30, TITLE_SEQUENCE_START + 42,  STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
+    { WWT_BUTTON,           1,  288,    298,    TITLE_SEQUENCE_START + 16, TITLE_SEQUENCE_START + 25,  STR_DROPDOWN_GLYPH,               STR_TITLE_SEQUENCE_TIP },               // Title sequence dropdown button
+    { WWT_BUTTON,           1,  135,    299,    TITLE_SEQUENCE_START + 30, TITLE_SEQUENCE_START + 42,  STR_EDIT_TITLE_SEQUENCES_BUTTON,  STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP },  // Edit title sequences button
 #undef TITLE_SEQUENCE_START
 #define SCENARIO_START 107
     { WWT_GROUPBOX,         1,  5,      304,    SCENARIO_START + 0,        SCENARIO_START + 50,        STR_OPTIONS_SCENARIO_SELECTION,   STR_NONE },
     { WWT_DROPDOWN,         1,  175,    299,    SCENARIO_START + 15,       SCENARIO_START + 26,        STR_NONE,                         STR_NONE },                             // Scenario select mode
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    SCENARIO_START + 16,       SCENARIO_START + 25,        STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
+    { WWT_BUTTON,           1,  288,    298,    SCENARIO_START + 16,       SCENARIO_START + 25,        STR_DROPDOWN_GLYPH,               STR_SCENARIO_GROUPING_TIP },
     { WWT_CHECKBOX,         2,  25,     299,    SCENARIO_START + 30,       SCENARIO_START + 45,        STR_OPTIONS_SCENARIO_UNLOCKING,   STR_SCENARIO_UNLOCKING_TIP },           // Unlocking of scenarios
 #undef SCENARIO_START
 #define TWEAKS_START 162
@@ -338,7 +338,7 @@ static rct_widget window_options_misc_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 30,         TWEAKS_START + 44,          STR_AUTO_STAFF_PLACEMENT,         STR_AUTO_STAFF_PLACEMENT_TIP },         // Auto staff placement
     { WWT_CHECKBOX,         2,  10,     299,    TWEAKS_START + 45,         TWEAKS_START + 59,          STR_AUTO_OPEN_SHOPS,              STR_AUTO_OPEN_SHOPS_TIP },              // Automatically open shops & stalls
     { WWT_DROPDOWN,         1,  175,    299,    TWEAKS_START + 61,         TWEAKS_START + 72,          STR_NONE,                         STR_NONE },                             // Default inspection time dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    TWEAKS_START + 62,         TWEAKS_START + 71,          STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
+    { WWT_BUTTON,           1,  288,    298,    TWEAKS_START + 62,         TWEAKS_START + 71,          STR_DROPDOWN_GLYPH,               STR_DEFAULT_INSPECTION_INTERVAL_TIP },  // Default inspection time dropdown button
 #undef TWEAKS_START
     { WIDGETS_END },
 };
@@ -351,16 +351,16 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    99,     110,    STR_SAVE_PLUGIN_DATA,                       STR_SAVE_PLUGIN_DATA_TIP },                         // Export plug-in objects with saved games
     { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
     { WWT_DROPDOWN,         1,  165,    299,    130,    141,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    { WWT_LABEL,            1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
-    { WWT_DROPDOWN_BUTTON,  1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
-    { WWT_DROPDOWN_BUTTON,  1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
+    { WWT_BUTTON,           1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
+    { WWT_LABEL,           1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_BUTTON,           1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
+    { WWT_BUTTON,           1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },
 };
 
 static rct_widget window_options_twitch_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-    { WWT_DROPDOWN_BUTTON,  1,  10,     299,    54,     66,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
+    { WWT_BUTTON,           1,  10,     299,    54,     66,     STR_TWITCH_NAME,            STR_TWITCH_NAME_TIP },              // Twitch channel name
     { WWT_CHECKBOX,         2,  10,     299,    71,     86,     STR_TWITCH_PEEP_FOLLOWERS,  STR_TWITCH_PEEP_FOLLOWERS_TIP },    // Twitch name peeps by follows
     { WWT_CHECKBOX,         2,  10,     299,    87,     102,    STR_TWITCH_FOLLOWERS_TRACK, STR_TWITCH_FOLLOWERS_TRACK_TIP },   // Twitch information on for follows
     { WWT_CHECKBOX,         2,  10,     299,    103,    118,    STR_TWITCH_PEEP_CHAT,       STR_TWITCH_PEEP_CHAT_TIP },         // Twitch name peeps by chat
@@ -1576,11 +1576,11 @@ static void window_options_invalidate(rct_window *w)
         window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality - 1];
 
         window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_BUTTON;
         window_options_display_widgets[WIDX_FULLSCREEN].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_FULLSCREEN_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_display_widgets[WIDX_FULLSCREEN_DROPDOWN].type = WWT_BUTTON;
         window_options_display_widgets[WIDX_DRAWING_ENGINE].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_DRAWING_ENGINE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_display_widgets[WIDX_DRAWING_ENGINE_DROPDOWN].type = WWT_BUTTON;
         window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
         window_options_display_widgets[WIDX_SHOW_FPS_CHECKBOX].type = WWT_CHECKBOX;
         window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
@@ -1650,17 +1650,17 @@ static void window_options_invalidate(rct_window *w)
         set_format_arg(6, rct_string_id, gConfigGeneral.show_height_as_units ? STR_UNITS : STR_REAL_VALUES);
 
         window_options_culture_widgets[WIDX_LANGUAGE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_LANGUAGE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_LANGUAGE_DROPDOWN].type = WWT_BUTTON;
         window_options_culture_widgets[WIDX_CURRENCY].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_CURRENCY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_CURRENCY_DROPDOWN].type = WWT_BUTTON;
         window_options_culture_widgets[WIDX_DISTANCE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_DISTANCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_DISTANCE_DROPDOWN].type = WWT_BUTTON;
         window_options_culture_widgets[WIDX_TEMPERATURE].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_TEMPERATURE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_TEMPERATURE_DROPDOWN].type = WWT_BUTTON;
         window_options_culture_widgets[WIDX_HEIGHT_LABELS].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_HEIGHT_LABELS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_HEIGHT_LABELS_DROPDOWN].type = WWT_BUTTON;
         window_options_culture_widgets[WIDX_DATE_FORMAT].type = WWT_DROPDOWN;
-        window_options_culture_widgets[WIDX_DATE_FORMAT_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_culture_widgets[WIDX_DATE_FORMAT_DROPDOWN].type = WWT_BUTTON;
         break;
 
     case WINDOW_OPTIONS_PAGE_AUDIO:
@@ -1682,12 +1682,12 @@ static void window_options_invalidate(rct_window *w)
         widget_scroll_update_thumbs(w, WIDX_MUSIC_VOLUME);
 
         window_options_audio_widgets[WIDX_SOUND].type = WWT_DROPDOWN;
-        window_options_audio_widgets[WIDX_SOUND_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_audio_widgets[WIDX_SOUND_DROPDOWN].type = WWT_BUTTON;
         window_options_audio_widgets[WIDX_SOUND_CHECKBOX].type = WWT_CHECKBOX;
         window_options_audio_widgets[WIDX_MUSIC_CHECKBOX].type = WWT_CHECKBOX;
         window_options_audio_widgets[WIDX_AUDIO_FOCUS_CHECKBOX].type = WWT_CHECKBOX;
         window_options_audio_widgets[WIDX_TITLE_MUSIC].type = WWT_DROPDOWN;
-        window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_audio_widgets[WIDX_TITLE_MUSIC_DROPDOWN].type = WWT_BUTTON;
         window_options_audio_widgets[WIDX_SOUND_VOLUME].type = WWT_SCROLL;
         window_options_audio_widgets[WIDX_MUSIC_VOLUME].type = WWT_SCROLL;
         break;
@@ -1704,11 +1704,11 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
 
         window_options_controls_and_interface_widgets[WIDX_THEMES].type = WWT_DROPDOWN;
-        window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        window_options_controls_and_interface_widgets[WIDX_THEMES_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_options_controls_and_interface_widgets[WIDX_THEMES_DROPDOWN].type = WWT_BUTTON;
+        window_options_controls_and_interface_widgets[WIDX_THEMES_BUTTON].type = WWT_BUTTON;
         window_options_controls_and_interface_widgets[WIDX_SCREEN_EDGE_SCROLLING].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TRAP_CURSOR].type = WWT_CHECKBOX;
-        window_options_controls_and_interface_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_controls_and_interface_widgets[WIDX_HOTKEY_DROPDOWN].type = WWT_BUTTON;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_FINANCES].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_RESEARCH].type = WWT_CHECKBOX;
         window_options_controls_and_interface_widgets[WIDX_TOOLBAR_SHOW_CHEATS].type = WWT_CHECKBOX;
@@ -1733,8 +1733,8 @@ static void window_options_invalidate(rct_window *w)
         window_options_misc_widgets[WIDX_AUTO_OPEN_SHOPS].type = WWT_CHECKBOX;
 
         window_options_misc_widgets[WIDX_TITLE_SEQUENCE].type = WWT_DROPDOWN;
-        window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_options_misc_widgets[WIDX_TITLE_SEQUENCE_DROPDOWN].type = WWT_BUTTON;
+        window_options_misc_widgets[WIDX_TITLE_SEQUENCE_BUTTON].type = WWT_BUTTON;
 
         widget_set_checkbox_value(w, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
@@ -1748,7 +1748,7 @@ static void window_options_invalidate(rct_window *w)
         window_options_controls_and_interface_widgets[WIDX_SCENARIO_UNLOCKING].type = WWT_CHECKBOX;
 
         window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].type = WWT_DROPDOWN;
-        window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_misc_widgets[WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN].type = WWT_BUTTON;
         break;
 
     case WINDOW_OPTIONS_PAGE_ADVANCED:
@@ -1765,10 +1765,10 @@ static void window_options_invalidate(rct_window *w)
         window_options_advanced_widgets[WIDX_STAY_CONNECTED_AFTER_DESYNC].type = WWT_CHECKBOX;
 
         window_options_advanced_widgets[WIDX_AUTOSAVE].type = WWT_DROPDOWN;
-        window_options_advanced_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_options_advanced_widgets[WIDX_AUTOSAVE_DROPDOWN].type = WWT_BUTTON;
 
-        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_DROPDOWN_BUTTON;
+        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_BUTTON].type = WWT_BUTTON;
+        window_options_advanced_widgets[WIDX_PATH_TO_RCT1_CLEAR].type = WWT_BUTTON;
         break;
 
     case WINDOW_OPTIONS_PAGE_TWITCH:
@@ -1778,7 +1778,7 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_CHAT_PEEP_TRACKING_CHECKBOX, gConfigTwitch.enable_chat_peep_tracking);
         widget_set_checkbox_value(w, WIDX_NEWS_CHECKBOX, gConfigTwitch.enable_news);
 
-        window_options_twitch_widgets[WIDX_CHANNEL_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_options_twitch_widgets[WIDX_CHANNEL_BUTTON].type = WWT_BUTTON;
         window_options_twitch_widgets[WIDX_FOLLOWER_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;
         window_options_twitch_widgets[WIDX_FOLLOWER_PEEP_TRACKING_CHECKBOX].type = WWT_CHECKBOX;
         window_options_twitch_widgets[WIDX_CHAT_PEEP_NAMES_CHECKBOX].type = WWT_CHECKBOX;

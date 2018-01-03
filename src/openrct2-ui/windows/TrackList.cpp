@@ -53,7 +53,7 @@ static rct_widget window_track_list_widgets[] = {
     { WWT_CLOSEBOX,         0,  587,    597,    2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                },
     { WWT_TABLE_HEADER,     0,  4,      221,    18,     30,     STR_SELECT_OTHER_RIDE,      STR_NONE                            },
     { WWT_TEXT_BOX,         1,  4,      127,    32,     44,     STR_NONE,                   STR_NONE                            },
-    { WWT_DROPDOWN_BUTTON,  0,  130,    221,    32,     44,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },
+    { WWT_BUTTON,           0,  130,    221,    32,     44,     STR_OBJECT_SEARCH_CLEAR,    STR_NONE                            },
     { WWT_SCROLL,           0,  4,      221,    46,     426,    SCROLL_VERTICAL,            STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP },
     { WWT_FLATBTN,          0,  224,    595,    18,     236,    0xFFFFFFFF,                 STR_NONE                            },
     { WWT_FLATBTN,          0,  574,    597,    405,    428,    SPR_ROTATE_ARROW,           STR_ROTATE_90_TIP                   },

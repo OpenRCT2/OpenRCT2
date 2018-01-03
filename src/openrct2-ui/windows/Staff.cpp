@@ -102,7 +102,7 @@ static rct_widget window_staff_options_widgets[] = {
     { WWT_CHECKBOX,         1, 5,       WW - 6, 84,     95,     0xFFFFFFFF,             STR_NONE},              // Checkbox 3
     { WWT_CHECKBOX,         1, 5,       WW - 6, 101,    112,    0xFFFFFFFF,             STR_NONE},              // Checkbox 4
     { WWT_DROPDOWN,         1, 5,       WW - 6, 50,     61,     0xFFFFFFFF,             STR_NONE},              // Costume Dropdown
-    { WWT_DROPDOWN_BUTTON,  1, WW - 17, WW - 7, 51,     60,     STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
+    { WWT_BUTTON,           1, WW - 17, WW - 7, 51,     60,     STR_DROPDOWN_GLYPH, STR_SELECT_COSTUME_TIP},// Costume Dropdown Button
     { WIDGETS_END },
 };
 
@@ -775,7 +775,7 @@ void window_staff_options_invalidate(rct_window *w)
         window_staff_options_widgets[WIDX_CHECKBOX_3].type = WWT_EMPTY;
         window_staff_options_widgets[WIDX_CHECKBOX_4].type = WWT_EMPTY;
         window_staff_options_widgets[WIDX_COSTUME_BOX].type = WWT_DROPDOWN;
-        window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_DROPDOWN_BUTTON;
+        window_staff_options_widgets[WIDX_COSTUME_BTN].type = WWT_BUTTON;
         window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[peep->sprite_type - 4];
         break;
     case STAFF_TYPE_HANDYMAN:

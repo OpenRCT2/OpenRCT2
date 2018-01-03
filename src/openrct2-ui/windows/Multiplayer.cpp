@@ -81,12 +81,12 @@ static rct_widget window_multiplayer_players_widgets[] = {
 static rct_widget window_multiplayer_groups_widgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     { WWT_DROPDOWN,         1,  141,    315,    46,     57,     0xFFFFFFFF,                 STR_NONE },                 // default group
-    { WWT_DROPDOWN_BUTTON,  1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
-    { WWT_DROPDOWN_BUTTON,  1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
-    { WWT_DROPDOWN_BUTTON,  1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
-    { WWT_DROPDOWN_BUTTON,  1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
+    { WWT_BUTTON,           1,  305,    315,    47,     56,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
+    { WWT_BUTTON,           1,  11,     102,    65,     76,     STR_ADD_GROUP,              STR_NONE },                 // add group button
+    { WWT_BUTTON,           1,  113,    204,    65,     76,     STR_REMOVE_GROUP,           STR_NONE },                 // remove group button
+    { WWT_BUTTON,           1,  215,    306,    65,     76,     STR_RENAME_GROUP,           STR_NONE },                 // rename group button
     { WWT_DROPDOWN,         1,  72,     246,    80,     91,     0xFFFFFFFF,                 STR_NONE },                 // selected group
-    { WWT_DROPDOWN_BUTTON,  1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
+    { WWT_BUTTON,           1,  236,    246,    81,     90,     STR_DROPDOWN_GLYPH,         STR_NONE },                 //
     { WWT_SCROLL,           1,  3,      316,    94,     300,    SCROLL_VERTICAL,                            STR_NONE },                 // permissions list
     { WIDGETS_END }
 };

@@ -134,7 +134,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
     case WWT_FLATBTN:
         widget_flat_button_draw(dpi, w, widgetIndex);
         break;
-    case WWT_DROPDOWN_BUTTON:
+    case WWT_BUTTON:
     case WWT_TABLE_HEADER:
         widget_text_button(dpi, w, widgetIndex);
         break;

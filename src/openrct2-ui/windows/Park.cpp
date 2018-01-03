@@ -115,8 +115,8 @@ static rct_widget window_park_price_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_24,               1,  7,      146,    50,     61,     STR_ADMISSION_PRICE,            STR_NONE },                         //
     { WWT_SPINNER,          1,  147,    222,    50,     61,     STR_ARG_6_CURRENCY2DP,          STR_NONE },                         // price
-    { WWT_DROPDOWN_BUTTON,  1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
-    { WWT_DROPDOWN_BUTTON,  1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
+    { WWT_BUTTON,           1,  211,    221,    51,     55,     STR_NUMERIC_UP,                 STR_NONE },                         // increase price
+    { WWT_BUTTON,           1,  211,    221,    56,     60,     STR_NUMERIC_DOWN,               STR_NONE },                         // decrease price
     { WIDGETS_END },
 };
 
@@ -127,7 +127,7 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS,
-    { WWT_DROPDOWN_BUTTON,  1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
+    { WWT_BUTTON,           1,  7,      222,    209,    220,    STR_ENTER_NAME_INTO_SCENARIO_CHART,         STR_NONE },             // enter name
     { WIDGETS_END },
 };
 
@@ -1272,8 +1272,8 @@ static void window_park_price_invalidate(rct_window *w)
     else
     {
         window_park_price_widgets[WIDX_PRICE].type = WWT_SPINNER;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_DROPDOWN_BUTTON;
+        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_BUTTON;
+        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_BUTTON;
     }
 
     money16 parkEntranceFee = park_get_entrance_fee();
@@ -1531,7 +1531,7 @@ static void window_park_objective_invalidate(rct_window *w)
 
     //
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_DROPDOWN_BUTTON;
+        window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_BUTTON;
     else
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WWT_EMPTY;
 

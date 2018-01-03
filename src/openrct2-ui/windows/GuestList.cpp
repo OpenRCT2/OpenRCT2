@@ -78,9 +78,9 @@ static rct_widget window_guest_list_widgets[] = {
     { WWT_CLOSEBOX,         0,  337,    347,    2,  13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },         // close x button
     { WWT_RESIZE,           1,  0,      349,    43, 329,    0xFFFFFFFF,             STR_NONE },                     // tab content panel
     { WWT_DROPDOWN,         1,  5,      84,     59, 70,     STR_PAGE_1,             STR_NONE },                     // page dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button
+    { WWT_BUTTON,           1,  73,     83,     60, 69,     STR_DROPDOWN_GLYPH,     STR_NONE },                     // page dropdown button
     { WWT_DROPDOWN,         1,  120,    261,    59, 70,     0xFFFFFFFF,             STR_INFORMATION_TYPE_TIP },     // information type dropdown
-    { WWT_DROPDOWN_BUTTON,  1,  250,    260,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
+    { WWT_BUTTON,           1,  250,    260,    60, 69,     STR_DROPDOWN_GLYPH,     STR_INFORMATION_TYPE_TIP },     // information type dropdown button
     { WWT_FLATBTN,          1,  273,    296,    46, 69,     SPR_MAP,                STR_SHOW_GUESTS_ON_MAP_TIP },   // map
     { WWT_FLATBTN,          1,  297,    320,    46, 69,     SPR_G2_SEARCH,          STR_GUESTS_FILTER_BY_NAME_TIP },// filter by name
     { WWT_FLATBTN,          1,  321,    344,    46, 69,     SPR_TRACK_PEEP,         STR_TRACKED_GUESTS_ONLY_TIP },  // tracking
@@ -655,7 +655,7 @@ static void window_guest_list_invalidate(rct_window *w)
 
     if (_window_guest_list_num_pages > 1) {
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_DROPDOWN;
-        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_BUTTON;
     }else{
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN].type = WWT_EMPTY;
         window_guest_list_widgets[WIDX_PAGE_DROPDOWN_BUTTON].type = WWT_EMPTY;

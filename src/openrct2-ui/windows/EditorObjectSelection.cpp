@@ -158,13 +158,13 @@ static rct_widget window_editor_object_selection_widgets[] = {
     { WWT_TAB,              1,  251,    281,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_TAB,              1,  282,    312,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
     { WWT_TAB,              1,  313,    343,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_STRING_DEFINED_TOOLTIP },
-    { WWT_DROPDOWN_BUTTON,  0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
+    { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_OBJECT_SELECTION_ADVANCED,  STR_OBJECT_SELECTION_ADVANCED_TIP },
     { WWT_SCROLL,           1,  4,      291,    60,     386,    SCROLL_VERTICAL,                STR_NONE },
     { WWT_FLATBTN,          1,  391,    504,    46,     159,    0xFFFFFFFF,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  0,  470,    591,    23,     34,     STR_INSTALL_NEW_TRACK_DESIGN,   STR_INSTALL_NEW_TRACK_DESIGN_TIP },
-    { WWT_DROPDOWN_BUTTON,  0,  350,    463,    23,     34,     STR_OBJECT_FILTER,              STR_OBJECT_FILTER_TIP },
+    { WWT_BUTTON,           0,  470,    591,    23,     34,     STR_INSTALL_NEW_TRACK_DESIGN,   STR_INSTALL_NEW_TRACK_DESIGN_TIP },
+    { WWT_BUTTON,           0,  350,    463,    23,     34,     STR_OBJECT_FILTER,              STR_OBJECT_FILTER_TIP },
     { WWT_TEXT_BOX,         1,  4,      214,    46,     57,     STR_NONE,                       STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  218,    287,    46,     57,     STR_OBJECT_SEARCH_CLEAR,        STR_NONE },
+    { WWT_BUTTON,           1,  218,    287,    46,     57,     STR_OBJECT_SEARCH_CLEAR,        STR_NONE },
     { WWT_IMGBTN,           1,  3,      287,    73,     76,     0xFFFFFFFF,                     STR_NONE },
     { WWT_TAB,              1,  3,      33,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_OBJECT_FILTER_ALL_RIDES_TIP },
     { WWT_TAB,              1,  34,     64,     47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_TRANSPORT_RIDES_TIP },
@@ -844,7 +844,7 @@ static void window_editor_object_selection_invalidate(rct_window *w)
     set_format_arg(0, rct_string_id, ObjectSelectionPageNames[w->selected_tab]);
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) {
         w->widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS_MANAGER_SELECT_RIDE_TYPE;
-        w->widgets[WIDX_INSTALL_TRACK].type = WWT_DROPDOWN_BUTTON;
+        w->widgets[WIDX_INSTALL_TRACK].type = WWT_BUTTON;
     } else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) {
         w->widgets[WIDX_TITLE].text = STR_ROLLER_COASTER_DESIGNER_SELECT_RIDE_TYPES_VEHICLES;
         w->widgets[WIDX_INSTALL_TRACK].type = WWT_EMPTY;
@@ -874,11 +874,11 @@ static void window_editor_object_selection_invalidate(rct_window *w)
             w->widgets[WIDX_TAB_1 + i].type = WWT_EMPTY;
         x = 150;
     } else {
-        w->widgets[WIDX_ADVANCED].type = WWT_DROPDOWN_BUTTON;
+        w->widgets[WIDX_ADVANCED].type = WWT_BUTTON;
         x = 300;
     }
 
-    w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+    w->widgets[WIDX_FILTER_DROPDOWN].type = WWT_BUTTON;
     w->widgets[WIDX_LIST].right = w->width - (600 - 587) - x;
     w->widgets[WIDX_PREVIEW].left = w->width - (600 - 537) - (x / 2);
     w->widgets[WIDX_PREVIEW].right = w->widgets[WIDX_PREVIEW].left + 113;

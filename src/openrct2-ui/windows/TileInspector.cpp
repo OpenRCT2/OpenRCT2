@@ -245,11 +245,11 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
     { WWT_CLOSEBOX,     0,  WW - 13,        WW - 3,             2,              13,         STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP },     /* close x button */        \
     { WWT_SCROLL,       1,  3,              WW - 4,             57,             WH - PADDING_BOTTOM,    2,              STR_NONE },                 /* Element list */          \
     { WWT_SPINNER,          1,  20,         61,                 23,             34,         STR_NONE,                   STR_NONE },                 /* Spinner for X */         \
-    { WWT_DROPDOWN_BUTTON,  1,  51,         60,                 24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase X */            \
-    { WWT_DROPDOWN_BUTTON,  1,  51,         60,                 29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease X */            \
+    { WWT_BUTTON,           1,  51,         60,                 24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase X */            \
+    { WWT_BUTTON,           1,  51,         60,                 29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease X */            \
     { WWT_SPINNER,          1,  77,         118,                23,             34,         STR_NONE,                   STR_NONE },                 /* Spinner for Y */         \
-    { WWT_DROPDOWN_BUTTON,  1,  108,        117,                24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase Y */            \
-    { WWT_DROPDOWN_BUTTON,  1,  108,        117,                29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease Y */            \
+    { WWT_BUTTON,           1,  108,        117,                24,             28,         STR_NUMERIC_UP,             STR_NONE },                 /* increase Y */            \
+    { WWT_BUTTON,           1,  108,        117,                29,             33,         STR_NUMERIC_DOWN,           STR_NONE },                 /* decrease Y */            \
     /* Buttons */                                                                                                                                                               \
     { WWT_FLATBTN,      1,  BX,             BW,                 BY,             BH,         SPR_MAP,          STR_INSERT_CORRUPT_TIP },             /* Insert corrupt button */ \
     { WWT_FLATBTN,      1,  BX - BS * 1,    BW - BS * 1,        BY,             BH,         SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP },    /* Remove button */         \
@@ -282,8 +282,8 @@ static rct_widget DefaultWidgets[] = {
 static rct_widget SurfaceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - SUR_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_DECREASE
     { WWT_CLOSEBOX,     1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,   STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
     { WWT_CLOSEBOX,     1,  GBB(WH - SUR_GBPT, 1, 1),   STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,  STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_N
@@ -301,8 +301,8 @@ static rct_widget SurfaceWidgets[] = {
 static rct_widget PathWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - PAT_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - PAT_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_PATH_SPINNER_HEIGHT_DECREASE
     { WWT_CHECKBOX,         1,  GBBF(WH - PAT_GBPT, 0, 1),              STR_TILE_INSPECTOR_PATH_SLOPED, STR_NONE }, // WIDX_PATH_CHECK_SLOPED
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3, GBBT(WH - PAT_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_NE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 4, GBBT(WH - PAT_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_PATH_CHECK_EDGE_E
@@ -323,8 +323,8 @@ static rct_widget TrackWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 0),  STR_TILE_INSPECTOR_TRACK_ENTIRE_TRACK_PIECE,    STR_NONE }, // WIDX_TRACK_CHECK_APPLY_TO_ALL
     { WWT_SPINNER,          1,  GBS(WH - TRA_GBPT, 1, 1),   STR_NONE,                                       STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - TRA_GBPT, 1, 1),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_TRACK_SPINNER_HEIGHT_DECREASE
     { WWT_CHECKBOX,         1,  GBBF(WH - TRA_GBPT, 0, 2),  STR_TILE_INSPECTOR_TRACK_CHAIN_LIFT,            STR_NONE }, // WIDX_TRACK_CHECK_CHAIN_LIFT
     { WIDGETS_END },
 };
@@ -336,8 +336,8 @@ static rct_widget TrackWidgets[] = {
 static rct_widget SceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - SCE_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - SCE_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SCENERY_SPINNER_HEIGHT_DECREASE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SCE_GBPT, 1) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_N
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 2, GBBT(WH - SCE_GBPT, 1) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_E
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SCE_GBPT, 1) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_SCENERY_CHECK_QUARTER_S
@@ -356,8 +356,8 @@ static rct_widget SceneryWidgets[] = {
 static rct_widget EntranceWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - ENT_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - ENT_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE
     { WIDGETS_END },
 };
 
@@ -368,10 +368,10 @@ static rct_widget EntranceWidgets[] = {
 static rct_widget WallWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - WALL_GBPT, 1, 0),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - WALL_GBPT, 1, 0), STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - WALL_GBPT, 1, 0), STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - WALL_GBPT, 1, 0), STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - WALL_GBPT, 1, 0), STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_WALL_SPINNER_HEIGHT_DECREASE
     { WWT_DROPDOWN,         1,  GBS(WH - WALL_GBPT, 1, 1),  STR_NONE,                                       STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE
-    { WWT_DROPDOWN_BUTTON,  1,  GBDB(WH - WALL_GBPT, 1, 1), STR_DROPDOWN_GLYPH,                             STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
+    { WWT_BUTTON,           1,  GBDB(WH - WALL_GBPT, 1, 1), STR_DROPDOWN_GLYPH,                             STR_NONE }, // WIDX_WALL_DROPDOWN_SLOPE_BUTTON
     { WIDGETS_END },
 };
 
@@ -382,8 +382,8 @@ static rct_widget WallWidgets[] = {
 static rct_widget LargeSceneryWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - LAR_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - LAR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE
     { WIDGETS_END },
 };
 
@@ -394,8 +394,8 @@ static rct_widget LargeSceneryWidgets[] = {
 static rct_widget BannerWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - BAN_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - BAN_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_BANNER_SPINNER_HEIGHT_DECREASE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 1),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_NE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 3,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SE
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1,   GBBT(WH - BAN_GBPT, 1) + 7 * 3),    STR_NONE,       STR_NONE }, // WIDX_BANNER_CHECK_BLOCK_SW
@@ -411,8 +411,8 @@ static rct_widget BannerWidgets[] = {
 static rct_widget CorruptWidgets[] = {
     MAIN_TILE_INSPECTOR_WIDGETS,
     { WWT_SPINNER,          1,  GBS(WH - COR_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT
-    { WWT_DROPDOWN_BUTTON,  1,  GBSI(WH - COR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
-    { WWT_DROPDOWN_BUTTON,  1,  GBSD(WH - COR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE
+    { WWT_BUTTON,           1,  GBSI(WH - COR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
+    { WWT_BUTTON,           1,  GBSD(WH - COR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE
     { WWT_CLOSEBOX,         1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
     { WIDGETS_END },
 };
