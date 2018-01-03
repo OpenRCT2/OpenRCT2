@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <SDL.h>
-#include <ctype.h>
+#include <cctype>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/common.h>

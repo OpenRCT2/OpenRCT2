@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
-#include <math.h>
+#include <cmath>
 #include <vector>
 
 #include "../Context.h"

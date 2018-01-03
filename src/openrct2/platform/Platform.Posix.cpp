@@ -18,7 +18,7 @@
 
 #include <cstring>
 #include <pwd.h>
-#include <stdlib.h>
+#include <cstdlib>
 #include "../core/String.hpp"
 #include "Platform2.h"
 #include "platform.h"

@@ -16,7 +16,7 @@
 
 #include <openrct2-ui/windows/Window.h>
 
-#include <ctype.h>
+#include <cctype>
 #include <string>
 
 #include <openrct2/audio/audio.h>

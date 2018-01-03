@@ -21,7 +21,7 @@
 #include <thread>
 
 // MSVC: include <math.h> here otherwise PI gets defined twice
-#include <math.h>
+#include <cmath>
 
 #ifdef _WIN32
     // winsock2 must be included before windows.h
@@ -40,7 +40,7 @@
     #endif
     #define FLAG_NO_PIPE 0
 #else
-    #include <errno.h>
+    #include <cerrno>
     #include <arpa/inet.h>
     #include <netdb.h>
     #include <netinet/tcp.h>
