@@ -18,7 +18,7 @@
 #define _VEHICLE_H_
 
 #include "../common.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 
 typedef struct rct_vehicle_colour {
     uint8 body_colour;

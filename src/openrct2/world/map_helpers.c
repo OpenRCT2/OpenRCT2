@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "map.h"
+#include "Map.h"
 #include "map_helpers.h"
 
 /**

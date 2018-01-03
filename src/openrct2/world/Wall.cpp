@@ -24,7 +24,7 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "LargeScenery.h"
-#include "map.h"
+#include "Map.h"
 #include "Park.h"
 #include "scenery.h"
 #include "SmallScenery.h"

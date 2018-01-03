@@ -29,7 +29,7 @@
 #include "../peep/Peep.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "http.h"
 

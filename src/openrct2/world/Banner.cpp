@@ -23,7 +23,7 @@
 #include "../network/network.h"
 
 #include "Banner.h"
-#include "map.h"
+#include "Map.h"
 #include "Park.h"
 #include "scenery.h"
 #include "../Game.h"

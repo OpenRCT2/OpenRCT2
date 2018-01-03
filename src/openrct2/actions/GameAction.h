@@ -25,7 +25,7 @@
 
 #include "../Game.h"
 #include "../localisation/string_ids.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 
 /**
  * Common error codes for game actions.

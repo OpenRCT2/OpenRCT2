@@ -110,7 +110,7 @@ private:
             "../../paint/tile_element/tile_element.h",
             "../../paint/paint.h",
             "../../sprites.h",
-            "../../world/map.h",
+            "../../world/Map.h",
             "../../world/sprite.h",
             "../ride_data.h",
             "../TrackData.h",

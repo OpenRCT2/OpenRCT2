@@ -21,7 +21,7 @@
 #include "../../localisation/date.h"
 #include "../Paint.h"
 #include "../Supports.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../../world/scenery.h"
 #include "../../world/SmallScenery.h"
 

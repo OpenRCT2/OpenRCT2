@@ -19,7 +19,7 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "../world/map.h"
+#include "Map.h"
 
 #define SCENERY_SMALL_SCENERY_ID_MIN 0x0
 #define SCENERY_SMALL_SCENERY_ID_MAX 0xFC

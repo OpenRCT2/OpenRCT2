@@ -23,7 +23,7 @@
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
 #include "footpath.h"
-#include "map.h"
+#include "Map.h"
 #include "TileInspector.h"
 
 uint32 windowTileInspectorTileX;

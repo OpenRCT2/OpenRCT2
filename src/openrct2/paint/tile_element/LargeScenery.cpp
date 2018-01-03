@@ -20,7 +20,7 @@
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"
 #include "../../util/Util.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../../world/LargeScenery.h"
 #include "../../world/scenery.h"
 #include "../Paint.h"

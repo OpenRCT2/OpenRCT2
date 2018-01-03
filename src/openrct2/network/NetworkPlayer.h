@@ -22,7 +22,7 @@
 #include "../common.h"
 
 #include "../peep/Peep.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/sprite.h"
 
 class NetworkPacket;

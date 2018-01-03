@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "map.h"
+#include "Map.h"
 #include "scenery.h"
 
 #ifdef __cplusplus

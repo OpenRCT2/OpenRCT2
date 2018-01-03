@@ -28,7 +28,7 @@
 #include "../localisation/string_ids.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/sprite.h"
 #include "viewport.h"
 #include "widget.h"

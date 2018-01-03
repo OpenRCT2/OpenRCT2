@@ -26,7 +26,7 @@
 #include "../ride/Ride.h"
 #include "../ride/ride_ratings.h"
 #include "../world/Banner.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/map_animation.h"
 #include "../world/sprite.h"
 

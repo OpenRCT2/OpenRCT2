@@ -35,7 +35,7 @@
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/map.h>
+#include <openrct2/world/Map.h>
 #include <openrct2/world/scenery.h>
 #include <openrct2/world/sprite.h>
 

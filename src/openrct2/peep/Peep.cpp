@@ -42,7 +42,7 @@
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/footpath.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/LargeScenery.h"
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"

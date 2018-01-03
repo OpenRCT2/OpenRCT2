@@ -22,7 +22,7 @@
 #include "../interface/window.h"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/sprite.h"
 #include "ride_data.h"
 #include "TrackData.h"

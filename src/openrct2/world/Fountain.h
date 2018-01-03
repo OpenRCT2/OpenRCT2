@@ -18,7 +18,7 @@
 
 #include "../common.h"
 
-#include "map.h"
+#include "Map.h"
 #include "sprite.h"
 
 enum

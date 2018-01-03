@@ -18,7 +18,7 @@
 #define _PEEP_H_
 
 #include "../common.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 
 #define PEEP_MAX_THOUGHTS 5
 

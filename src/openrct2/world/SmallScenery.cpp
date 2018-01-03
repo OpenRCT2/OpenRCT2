@@ -19,7 +19,7 @@
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"
 #include "footpath.h"
-#include "map.h"
+#include "Map.h"
 #include "Park.h"
 #include "scenery.h"
 #include "SmallScenery.h"
