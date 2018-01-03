@@ -157,7 +157,7 @@ static rct_widget SimplexWidgets[] = {
 
     { WWT_DROPDOWN_BUTTON,  1, WW - 95, WW - 6, WH - 17, WH - 6, STR_MAPGEN_ACTION_GENERATE,      STR_NONE }, // WIDX_SIMPLEX_GENERATE
 
-    { WWT_12,               1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,         STR_NONE }, // WIDX_SIMPLEX_LABEL
+    { WWT_LABEL_CENTRED,    1,  4,      198,    52,     63,     STR_MAPGEN_SIMPLEX_NOISE,         STR_NONE }, // WIDX_SIMPLEX_LABEL
 
     { WWT_SPINNER,          1,  104,    198,    70,     81,     STR_NONE,                         STR_NONE }, // WIDX_SIMPLEX_LOW
     { WWT_DROPDOWN_BUTTON,  1,  187,    197,    71,     75,     STR_NUMERIC_UP,                   STR_NONE }, // WIDX_SIMPLEX_LOW_UP

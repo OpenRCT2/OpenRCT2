@@ -78,7 +78,7 @@ static rct_widget window_staff_overview_widgets[] = {
     { WWT_TAB,      1, 65,      95,         17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_STATS_TIP},   // Tab 3
     { WWT_TAB,      1, 96,      126,        17,         43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_NONE},              // Tab 4
     { WWT_VIEWPORT, 1, 3,       WW - 26,    47,         WH - 14,0xFFFFFFFF,             STR_NONE},              // Viewport
-    { WWT_12,       1, 3,       WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
+    { WWT_LABEL_CENTRED, 1, 3,  WW - 26,    WH - 13,    WH - 3, 0xFFFFFFFF,             STR_NONE },             // Label at bottom of viewport
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     45,         68,     SPR_PICKUP_BTN,         STR_PICKUP_TIP},        // Pickup Button
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     69,         92,     SPR_PATROL_BTN,         STR_SET_PATROL_TIP},    // Patrol Button
     { WWT_FLATBTN,  1, WW - 25, WW - 2,     93,         116,    SPR_RENAME,             STR_NAME_STAFF_TIP},    // Rename Button

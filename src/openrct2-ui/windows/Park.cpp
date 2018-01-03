@@ -91,7 +91,7 @@ enum WINDOW_PARK_WIDGET_IDX {
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS,
     { WWT_VIEWPORT,         1,  3,      204,    46,     160,    0xFFFFFFFF,                     STR_NONE },                         // viewport
-    { WWT_12,               1,  3,      204,    161,    171,    0xFFFFFFFF,                     STR_NONE },                         // status
+    { WWT_LABEL_CENTRED,    1,  3,      204,    161,    171,    0xFFFFFFFF,                     STR_NONE },                         // status
     { WWT_FLATBTN,          1,  205,    228,    49,     72,     0xFFFFFFFF,                     STR_OPEN_OR_CLOSE_PARK_TIP },       // open / close
     { WWT_FLATBTN,          1,  205,    228,    73,     96,     SPR_BUY_LAND_RIGHTS,            STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP },         // buy land rights
     { WWT_FLATBTN,          1,  205,    228,    97,     120,    SPR_LOCATE,                     STR_LOCATE_SUBJECT_TIP },           // locate
@@ -1265,7 +1265,7 @@ static void window_park_price_invalidate(rct_window *w)
     // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
     {
-        window_park_price_widgets[WIDX_PRICE].type = WWT_12;
+        window_park_price_widgets[WIDX_PRICE].type = WWT_LABEL_CENTRED;
         window_park_price_widgets[WIDX_INCREASE_PRICE].type = WWT_EMPTY;
         window_park_price_widgets[WIDX_DECREASE_PRICE].type = WWT_EMPTY;
     }

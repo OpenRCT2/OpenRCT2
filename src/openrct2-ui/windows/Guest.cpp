@@ -79,9 +79,9 @@ static rct_widget window_guest_overview_widgets[] = {
     {WWT_TAB,      1, 96,  126, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_FINANCE_TIP},        // Tab 4
     {WWT_TAB,      1, 127, 157, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_THOUGHTS_TIP},       // Tab 5
     {WWT_TAB,      1, 158, 188, 17,  43,  IMAGE_TYPE_REMAP | SPR_TAB, STR_SHOW_GUEST_ITEMS_TIP},          // Tab 6
-    {WWT_12,       1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                // Label Thought marquee
-    {WWT_VIEWPORT, 1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                // Viewport
-    {WWT_12,       1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                // Label Action
+    {WWT_LABEL_CENTRED,    1, 3,   166, 45,  56,  0xFFFFFFFF, STR_NONE},                            // Label Thought marquee
+    {WWT_VIEWPORT,         1, 3,   166, 57,  143, 0xFFFFFFFF, STR_NONE},                            // Viewport
+    {WWT_LABEL_CENTRED,    1, 3,   166, 144, 154, 0xFFFFFFFF, STR_NONE},                            // Label Action
     {WWT_FLATBTN,  1, 167, 190, 45,  68,  SPR_PICKUP_BTN,       STR_PICKUP_TIP},                    // Pickup Button
     {WWT_FLATBTN,  1, 167, 190, 69,  92,  SPR_RENAME,           STR_NAME_GUEST_TIP},                // Rename Button
     {WWT_FLATBTN,  1, 167, 190, 93,  116, SPR_LOCATE,           STR_LOCATE_SUBJECT_TIP},            // Locate Button

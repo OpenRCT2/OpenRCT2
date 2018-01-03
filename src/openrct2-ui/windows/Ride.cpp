@@ -215,7 +215,7 @@ static rct_widget window_ride_main_widgets[] = {
     { WWT_VIEWPORT,         1,  3,      290,    60,     166,    STR_VIEWPORT,                   STR_NONE                                    },
     { WWT_DROPDOWN,         1,  35,     256,    46,     57,     0xFFFFFFFF,                     STR_VIEW_SELECTION                          },
     { WWT_DROPDOWN_BUTTON,  1,  245,    255,    47,     56,     STR_DROPDOWN_GLYPH,             STR_VIEW_SELECTION                          },
-    { WWT_12,               1,  3,      290,    167,    177,    0xFFFFFFFF,                     STR_NONE                                    },
+    { WWT_LABEL_CENTRED,    1,  3,      290,    167,    177,    0xFFFFFFFF,                     STR_NONE                                    },
     { WWT_FLATBTN,          1,  291,    314,    46,     69,     0xFFFFFFFF,                     STR_OPEN_CLOSE_OR_TEST_RIDE                 },
     { WWT_FLATBTN,          1,  291,    314,    70,     93,     SPR_CONSTRUCTION,               STR_CONSTRUCTION                            },
     { WWT_FLATBTN,          1,  291,    314,    94,     117,    SPR_RENAME,                     STR_NAME_RIDE_TIP                           },

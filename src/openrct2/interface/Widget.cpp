@@ -141,7 +141,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
     case WWT_TABLE_HEADER:
         widget_text_button(dpi, w, widgetIndex);
         break;
-    case WWT_12:
+    case WWT_LABEL_CENTRED:
         widget_text_unknown(dpi, w, widgetIndex);
         break;
     case WWT_14:
