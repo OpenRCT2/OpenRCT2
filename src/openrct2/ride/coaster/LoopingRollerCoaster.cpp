@@ -8725,5 +8725,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(sint32 trackType, sint3
     case TRACK_ELEM_BOOSTER:
         return looping_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

@@ -46,7 +46,7 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
     if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
     {
         rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-        rct_vehicle *    vehicle   = NULL;
+        rct_vehicle *    vehicle   = nullptr;
 
         sint32 frameNum = direction;
 
@@ -75,7 +75,7 @@ static void paint_space_rings_structure(paint_session * session, Ride * ride, ui
         uint32 imageId = (baseImageId + frameNum) | imageColourFlags;
         sub_98197C(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height, get_current_rotation());
 
-        if (vehicle != NULL && vehicle->num_peeps > 0)
+        if (vehicle != nullptr && vehicle->num_peeps > 0)
         {
             rct_peep * rider = GET_PEEP(vehicle->peep[0]);
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->tshirt_colour, rider->trousers_colour);
@@ -100,7 +100,7 @@ static void paint_space_rings(paint_session * session, uint8 rideIndex, uint8 tr
 
     uint32 imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -184,7 +184,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_space_rings(sint32 trackType, sint
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_space_rings;

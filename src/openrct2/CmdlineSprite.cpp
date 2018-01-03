@@ -97,7 +97,7 @@ static void sprite_entries_make_relative()
 static bool sprite_file_open(const utf8 *path)
 {
     FILE * file = fopen(path, "rb");
-    if (file == NULL)
+    if (file == nullptr)
         return false;
 
     if (fread(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1) {
@@ -108,7 +108,7 @@ static bool sprite_file_open(const utf8 *path)
     if (spriteFileHeader.num_entries > 0) {
         sint32 openEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
         rct_g1_element_32bit * openElements = (rct_g1_element_32bit *)malloc(openEntryTableSize);
-        if (openElements == NULL) {
+        if (openElements == nullptr) {
             fclose(file);
             return false;
         }
@@ -152,7 +152,7 @@ static bool sprite_file_open(const utf8 *path)
 static bool sprite_file_save(const char *path)
 {
     FILE * file = fopen(path, "wb");
-    if (file == NULL)
+    if (file == nullptr)
         return false;
 
     if (fwrite(&spriteFileHeader, sizeof(rct_sprite_file_header), 1, file) != 1) {
@@ -163,7 +163,7 @@ static bool sprite_file_save(const char *path)
     if (spriteFileHeader.num_entries > 0) {
         sint32 saveEntryTableSize = spriteFileHeader.num_entries * sizeof(rct_g1_element_32bit);
         rct_g1_element_32bit * saveElements = (rct_g1_element_32bit *)malloc(saveEntryTableSize);
-        if (saveElements == NULL) {
+        if (saveElements == nullptr) {
             fclose(file);
             return false;
         }
@@ -229,7 +229,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
     if (spriteHeader->flags & G1_FLAG_RLE_COMPRESSION) {
         gfx_rle_sprite_to_buffer(spriteHeader->offset, pixels, (uint8*)spriteFilePalette, &dpi, IMAGE_TYPE_DEFAULT, 0, spriteHeader->height, 0, spriteHeader->width);
     } else {
-        gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, NULL, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
+        gfx_bmp_sprite_to_buffer((uint8*)spriteFilePalette, nullptr, spriteHeader->offset, pixels, spriteHeader, &dpi, spriteHeader->height, spriteHeader->width, IMAGE_TYPE_DEFAULT);
     }
 
     if (image_io_png_write(&dpi, (rct_palette*)spriteFilePalette, outPath)) {
@@ -330,7 +330,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 
     // A larger range is needed for proper dithering
     uint8 *palettedSrc = pixels;
-    sint16 *rgbaSrc = keep_palette? 0 : (sint16 *)malloc(height * width * 4 * 2);
+    sint16 *rgbaSrc = keep_palette? nullptr : (sint16 *)malloc(height * width * 4 * 2);
     sint16 *rgbaSrc_orig = rgbaSrc;
     if (!keep_palette)
     {
@@ -347,7 +347,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
 
         yOffsets[y] = (uint16)(dst - buffer);
 
-        previousCode = NULL;
+        previousCode = nullptr;
         currentCode = (rle_code*)dst;
         dst += 2;
         sint32 startX = 0;
@@ -478,7 +478,7 @@ static bool sprite_file_import(const char *path, sint16 x_offset, sint16 y_offse
                 }
                 else
                 {
-                    if (previousCode == NULL)
+                    if (previousCode == nullptr)
                     {
                         currentCode->num_pixels = 0x80;
                         currentCode->offset_x = 0;
@@ -743,7 +743,7 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
         json_error_t error;
         json_t* sprite_list=json_load_file(spriteDescriptionPath, JSON_REJECT_DUPLICATES, &error);
 
-        if (sprite_list == NULL)
+        if (sprite_list == nullptr)
         {
             fprintf(stderr, "Error parsing sprite description file: %s at line %d column %d\n", error.text, error.line, error.column);
             return -1;
@@ -807,8 +807,8 @@ sint32 cmdline_for_sprite(const char **argv, sint32 argc)
             int bufferLength;
 
             if (!sprite_file_import(imagePath,
-                                    x_offset == NULL ? 0 : json_integer_value(x_offset),
-                                    y_offset == NULL ? 0 : json_integer_value(y_offset),
+                                    x_offset == nullptr ? 0 : json_integer_value(x_offset),
+                                    y_offset == nullptr ? 0 : json_integer_value(y_offset),
                                     keep_palette, &spriteElement, &buffer, &bufferLength, gSpriteMode))
             {
                 fprintf(stderr, "Could not import image file: %s\nCanceling\n", imagePath);

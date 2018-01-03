@@ -59,7 +59,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle   = NULL;
+    rct_vehicle *    vehicle   = nullptr;
 
     uint8 seatRotation = 0;
     sint8 armRotation  = 0;
@@ -122,7 +122,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
 
     uint32 seatImageId;
 
-    if (vehicle != NULL && vehicle->restraints_position >= 64)
+    if (vehicle != nullptr && vehicle->restraints_position >= 64)
     {
         // Open Restraints
         image_id = (vehicle->restraints_position - 64) >> 6;
@@ -175,7 +175,7 @@ static void top_spin_paint_vehicle(paint_session * session, sint8 al, sint8 cl, 
                boundBoxOffsetY, boundBoxOffsetZ, rotation);
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
-    if (dpi->zoom_level < 2 && vehicle != NULL && vehicle->num_peeps != 0)
+    if (dpi->zoom_level < 2 && vehicle != nullptr && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76)) |
                    SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
@@ -256,7 +256,7 @@ static void paint_top_spin(paint_session * session, uint8 rideIndex, uint8 track
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -317,7 +317,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_topspin(sint32 trackType, sint32 d
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_top_spin;

@@ -12102,5 +12102,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_multi_dimension_rc(sint32 trackTyp
     case TRACK_ELEM_255:
         return multi_dimension_rc_track_elem_255;
     }
-    return NULL;
+    return nullptr;
 }

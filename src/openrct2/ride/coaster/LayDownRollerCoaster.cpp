@@ -14602,5 +14602,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lay_down_rc(sint32 trackType, sint
     case TRACK_ELEM_RIGHT_QUARTER_BANKED_HELIX_LARGE_DOWN:
         return lay_down_rc_track_right_quarter_banked_helix_large_down;
     }
-    return NULL;
+    return nullptr;
 }

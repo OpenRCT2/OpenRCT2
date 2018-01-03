@@ -100,7 +100,7 @@ static void paint_launched_freefall_base(paint_session * session, uint8 rideInde
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     uint32 imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     sub_98197C(session, imageId, 0, 0, 32, 32, 1, height, 0, 0, height, get_current_rotation());
@@ -201,5 +201,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_launched_freefall(sint32 trackType
         return paint_launched_freefall_tower_section;
     }
 
-    return NULL;
+    return nullptr;
 }

@@ -8167,5 +8167,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_compact_inverted_rc(sint32 trackTy
     case TRACK_ELEM_BLOCK_BRAKES:
         return compact_inverted_rc_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

@@ -695,7 +695,7 @@ extern "C"
             if (map_get_park_entrance_element_at(
                 entrance.x,
                 entrance.y,
-                entrance.z >> 3, false) == NULL)
+                entrance.z >> 3, false) == nullptr)
             {
                 entrance.x = LOCATION_NULL;
             }

@@ -33,7 +33,7 @@ uint8 gIntroState;
 // Used mainly for timing but also for Y coordinate and fading.
 static sint32 _introStateCounter;
 
-static void *_soundChannel = NULL;
+static void *_soundChannel = nullptr;
 static bool _chainLiftFinished;
 
 static void screen_intro_process_mouse_input();
@@ -88,9 +88,9 @@ void intro_update()
             _chainLiftFinished = true;
 
             // Stop the chain lift sound
-            if (_soundChannel != NULL) {
+            if (_soundChannel != nullptr) {
                 Mixer_Stop_Channel(_soundChannel);
-                _soundChannel = NULL;
+                _soundChannel = nullptr;
             }
 
             // Play the track friction sound
@@ -100,9 +100,9 @@ void intro_update()
         // Check if logo is off the screen...ish
         if (_introStateCounter >= context_get_height() + 40) {
             // Stop the track friction sound
-            if (_soundChannel != NULL) {
+            if (_soundChannel != nullptr) {
                 Mixer_Stop_Channel(_soundChannel);
-                _soundChannel = NULL;
+                _soundChannel = nullptr;
             }
 
             // Play long peep scream sound
@@ -139,9 +139,9 @@ void intro_update()
         break;
     case INTRO_STATE_CLEAR:
         // Stop any playing sound
-        if (_soundChannel != NULL) {
+        if (_soundChannel != nullptr) {
             Mixer_Stop_Channel(_soundChannel);
-            _soundChannel = NULL;
+            _soundChannel = nullptr;
         }
 
         // Move to next part

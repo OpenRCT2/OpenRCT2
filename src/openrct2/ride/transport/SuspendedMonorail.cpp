@@ -1758,5 +1758,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_suspended_monorail(sint32 trackTyp
     case TRACK_ELEM_DIAG_25_DEG_DOWN_TO_FLAT:
         return suspended_monorail_track_diag_25_deg_down_to_flat;
     }
-    return NULL;
+    return nullptr;
 }

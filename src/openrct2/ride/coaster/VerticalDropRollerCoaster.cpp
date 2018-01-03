@@ -1841,5 +1841,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_vertical_drop_rc(sint32 trackType,
     case TRACK_ELEM_BOOSTER:
         return vertical_drop_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

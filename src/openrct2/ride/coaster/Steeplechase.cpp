@@ -2159,5 +2159,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_steeplechase(sint32 trackType, sin
     case TRACK_ELEM_BLOCK_BRAKES:
         return steeplechase_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

@@ -2052,7 +2052,7 @@ static void junior_rc_banked_right_quarter_turn_5_tiles_paint_setup(paint_sessio
     }
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_banked_quarter_turn_5_tiles, NULL, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths,
+        junior_rc_track_pieces_banked_quarter_turn_5_tiles, nullptr, junior_rc_banked_right_quarter_turn_5_tiles_bound_lengths,
         junior_rc_banked_right_quarter_turn_5_tiles_bound_offsets, get_current_rotation());
 
     if (direction == 1 && trackSequence == 6)
@@ -2484,7 +2484,7 @@ void junior_rc_paint_track_left_quarter_turn_5_tiles_25_deg_up(paint_session * s
                                                       session->TrackColours[SCHEME_TRACK],
                                                       junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[chainType],
                                                       junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets,
-                                                      defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+                                                      defaultRightQuarterTurn5TilesBoundLengths, nullptr, get_current_rotation());
 
     uint8 supportSpecial[4] = { 8, 8, 8, 3 };
     switch (trackSequence)
@@ -2561,7 +2561,7 @@ void junior_rc_paint_track_right_quarter_turn_5_tiles_25_deg_up(paint_session * 
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_right_quarter_turn_5_tiles_25_deg_up[chainType], defaultRightQuarterTurn5TilesOffsets,
-        defaultRightQuarterTurn5TilesBoundLengths, NULL, get_current_rotation());
+        defaultRightQuarterTurn5TilesBoundLengths, nullptr, get_current_rotation());
 
     uint8 supportSpecial[4] = { 11, 8, 8, 7 };
     switch (trackSequence)
@@ -2879,7 +2879,7 @@ static void junior_rc_right_quarter_turn_3_tiles_paint_setup(paint_session * ses
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
         junior_rc_track_pieces_flat_quarter_turn_3_tiles, defaultRightQuarterTurn3TilesOffsets,
-        defaultRightQuarterTurn3TilesBoundLengths, NULL, get_current_rotation());
+        defaultRightQuarterTurn3TilesBoundLengths, nullptr, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
     uint8 supportType[2][4] = { { 1, 0, 0, 2 }, { 2, 0, 0, 1 } };
@@ -2969,7 +2969,7 @@ static void junior_rc_right_quarter_turn_3_tiles_bank_paint_setup(paint_session 
 
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, thickness[direction][trackSequence], height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_banked_quarter_turn_3_tiles, NULL, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
+        junior_rc_track_pieces_banked_quarter_turn_3_tiles, nullptr, junior_rc_right_quarter_turn_3_tiles_bank_bound_lengths,
         junior_rc_right_quarter_turn_3_tiles_bank_offsets, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
@@ -3236,7 +3236,7 @@ static void junior_rc_right_half_banked_helix_up_small_paint_setup(paint_session
     }
     track_paint_util_right_helix_up_small_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, NULL,
+        junior_rc_track_pieces_right_half_banked_helix_up_small_quarter_tiles, nullptr,
         defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0)
@@ -3302,7 +3302,7 @@ static void junior_rc_right_half_banked_helix_down_small_paint_setup(paint_sessi
     }
     track_paint_util_right_helix_up_small_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, NULL,
+        junior_rc_track_pieces_right_half_banked_helix_down_small_quarter_tiles, nullptr,
         defaultRightHelixUpSmallQuarterBoundLengths, defaultRightHelixUpSmallQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0)
@@ -3399,7 +3399,7 @@ static void junior_rc_right_half_banked_helix_up_large_paint_setup(paint_session
     }
     track_paint_util_right_helix_up_large_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, NULL,
+        junior_rc_track_pieces_right_half_banked_helix_up_large_quarter_tiles, nullptr,
         defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0)
@@ -3481,7 +3481,7 @@ static void junior_rc_right_half_banked_helix_down_large_paint_setup(paint_sessi
     }
     track_paint_util_right_helix_up_large_quarter_tiles_paint(
         session, thickness, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, NULL,
+        junior_rc_track_pieces_right_half_banked_helix_down_large_quarter_tiles, nullptr,
         defaultRightHelixUpLargeQuarterBoundLengths, defaultRightHelixUpLargeQuarterBoundOffsets, get_current_rotation());
 
     if (trackSequence == 0)
@@ -5685,5 +5685,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(sint32 trackType, sint32
     case TRACK_ELEM_DIAG_FLAT_TO_60_DEG_DOWN:
         return junior_rc_diag_flat_to_60_deg_down_paint_setup;
     }
-    return NULL;
+    return nullptr;
 }

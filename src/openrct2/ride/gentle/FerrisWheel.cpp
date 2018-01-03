@@ -62,7 +62,7 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle   = NULL;
+    rct_vehicle *    vehicle   = nullptr;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
@@ -80,7 +80,7 @@ static void paint_ferris_wheel_structure(paint_session * session, uint8 rideInde
     }
 
     uint32 imageOffset = 0;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         imageOffset = vehicle->vehicle_sprite_type % 8;
     }
@@ -155,7 +155,7 @@ static void paint_ferris_wheel(paint_session * session, uint8 rideIndex, uint8 t
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -212,7 +212,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(sint32 trackType, sin
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_C)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_ferris_wheel;

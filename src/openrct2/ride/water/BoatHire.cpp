@@ -159,5 +159,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_boat_hire(sint32 trackType, sint32
         return paint_boat_hire_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

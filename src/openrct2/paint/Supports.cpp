@@ -343,7 +343,7 @@ extern bool gUseOriginalRidePaint;
  */
 bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags, bool* underground)
 {
-    if (underground != NULL){
+    if (underground != nullptr){
         *underground = false;
     }
 
@@ -358,7 +358,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
     sint32 z = floor2(session->Support.height + 15, 16);
     height -= z;
     if (height < 0) {
-        if (underground != NULL) {
+        if (underground != nullptr) {
             *underground = true;
         }
         return false;
@@ -378,7 +378,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
         // Steep diagonal (place the correct shaped support for the slope)
         height -= 2;
         if (height < 0) {
-            if (underground != NULL) {
+            if (underground != nullptr) {
                 *underground = true;
             }
             return false;
@@ -401,7 +401,7 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
         // 1 to 3 quarters up
         height--;
         if (height < 0) {
-            if (underground != NULL) {
+            if (underground != nullptr) {
                 *underground = true;
             }
             return false;
@@ -459,13 +459,13 @@ bool wooden_a_supports_paint_setup(paint_session * session, sint32 supportType, 
 
             unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
 
-            if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
+            if (byte_97B23C[special].var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
                 sub_98197C(session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
                 hasSupports = true;
             } else {
                 hasSupports = true;
                 paint_struct* ps = sub_98198C(session, imageId, 0, 0, bBox.length.x, bBox.length.y, bBox.length.z, z, bBox.offset.x, bBox.offset.y, bBox.offset.z + z, rotation);
-                if (ps != NULL) {
+                if (ps != nullptr) {
                     paint_struct* edi = session->WoodenSupportsPrependTo;
                     edi->var_20 = ps;
                 }
@@ -493,12 +493,12 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
     bool _9E32B1 = false;
 
     if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS) {
-        if (underground != NULL) *underground = false; // AND
+        if (underground != nullptr) *underground = false; // AND
         return false;
     }
 
     if (!(session->Unk141E9DB & G141E9DB_FLAG_1)) {
-        if (underground != NULL) *underground = false; // AND
+        if (underground != nullptr) *underground = false; // AND
         return false;
     }
 
@@ -506,7 +506,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
     sint16 supportLength = height - baseHeight;
 
     if (supportLength < 0) {
-        if (underground != NULL) *underground = true; // STC
+        if (underground != nullptr) *underground = true; // STC
         return false;
     }
 
@@ -519,7 +519,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
     } else if (session->Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
-            if (underground != NULL) *underground = true; // STC
+            if (underground != nullptr) *underground = true; // STC
             return false;
         }
 
@@ -555,7 +555,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
     } else if ((session->Support.slope & 0x0F) != 0) {
         heightSteps -= 1;
         if (heightSteps < 0) {
-            if (underground != NULL) *underground = true; // STC
+            if (underground != nullptr) *underground = true; // STC
             return false;
         }
 
@@ -635,7 +635,7 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
 
             unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-            if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
+            if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
                 sub_98197C(session, 
                     imageId | imageColourFlags,
                     0, 0,
@@ -655,14 +655,14 @@ bool wooden_b_supports_paint_setup(paint_session * session, sint32 supportType, 
                     get_current_rotation()
                 );
                 _9E32B1 = true;
-                if (paintStruct != NULL) {
+                if (paintStruct != nullptr) {
                     session->WoodenSupportsPrependTo->var_20 = paintStruct;
                 }
             }
         }
     }
 
-    if (underground != NULL) *underground = false; // AND
+    if (underground != nullptr) *underground = false; // AND
     return _9E32B1;
 }
 
@@ -1049,7 +1049,7 @@ bool metal_b_supports_paint_setup(paint_session * session, uint8 supportType, ui
 bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, sint32 special, sint32 height, uint32 imageColourFlags,
                                  rct_footpath_entry * pathEntry, bool * underground)
 {
-    if (underground != NULL) {
+    if (underground != nullptr) {
         *underground = false; // AND
     }
 
@@ -1064,7 +1064,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
     uint16 baseHeight = ceil2(session->Support.height, 16);
     sint32 supportLength = height - baseHeight;
     if (supportLength < 0) {
-        if (underground != NULL) *underground = true; // STC
+        if (underground != nullptr) *underground = true; // STC
         return false;
     }
 
@@ -1085,7 +1085,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
     } else if (session->Support.slope & 0x10) {
         heightSteps -= 2;
         if (heightSteps < 0) {
-            if (underground != NULL) *underground = true; // STC
+            if (underground != nullptr) *underground = true; // STC
             return false;
         }
 
@@ -1116,7 +1116,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
     } else if (session->Support.slope & 0x0F) {
         heightSteps -= 1;
         if (heightSteps < 0) {
-            if (underground != NULL) *underground = true; // STC
+            if (underground != nullptr) *underground = true; // STC
             return false;
         }
 
@@ -1174,7 +1174,7 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
         unk_supports_desc supportsDesc = byte_98D8D4[specialIndex];
         unk_supports_desc_bound_box boundBox = supportsDesc.bounding_box;
 
-        if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == NULL) {
+        if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr) {
             sub_98197C(session, 
                 imageId | imageColourFlags,
                 0, 0,
@@ -1194,13 +1194,13 @@ bool path_a_supports_paint_setup(paint_session * session, sint32 supportType, si
                 get_current_rotation()
             );
             hasSupports = true;
-            if (paintStruct != NULL) {
+            if (paintStruct != nullptr) {
                 session->WoodenSupportsPrependTo->var_20 = paintStruct;
             }
         }
     }
 
-    if (underground != NULL) *underground = false; // AND
+    if (underground != nullptr) *underground = false; // AND
 
     return hasSupports;
 }

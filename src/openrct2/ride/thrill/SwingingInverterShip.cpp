@@ -58,7 +58,7 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle  = NULL;
+    rct_vehicle *    vehicle  = nullptr;
 
     sint8 xOffset = !(direction & 1) ? axisOffset : 0;
     sint8 yOffset = (direction & 1) ? axisOffset : 0;
@@ -72,7 +72,7 @@ static void paint_swinging_inverter_ship_structure(paint_session * session, Ride
     }
 
     uint32 vehicleImageId = rideEntry->vehicles[0].base_image_id + swinging_inverter_ship_base_sprite_offset[direction];
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         sint32 rotation = (sint8)vehicle->vehicle_sprite_type;
         if (rotation != 0)
@@ -196,7 +196,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_swinging_inverter_ship(sint32 trac
 {
     if (trackType != FLAT_TRACK_ELEM_1_X_4_B)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_swinging_inverter_ship;

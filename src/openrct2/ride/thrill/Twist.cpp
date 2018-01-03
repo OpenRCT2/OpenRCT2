@@ -28,7 +28,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle   = NULL;
+    rct_vehicle *    vehicle   = nullptr;
 
     if (rideEntry == nullptr)
     {
@@ -47,7 +47,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
     }
 
     uint32 frameNum = (direction * 88) % 216;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         frameNum += (vehicle->sprite_direction >> 3) << 4;
         frameNum += vehicle->vehicle_sprite_type;
@@ -68,7 +68,7 @@ static void paint_twist_structure(paint_session * session, Ride * ride, uint8 di
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != NULL)
+    if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
 
         for (sint32 i = 0; i < vehicle->num_peeps; i += 2)
@@ -98,7 +98,7 @@ static void paint_twist(paint_session * session, uint8 rideIndex, uint8 trackSeq
 
     uint32 imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork,
                                  get_current_rotation());
@@ -174,7 +174,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_twist(sint32 trackType, sint32 dir
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_twist;

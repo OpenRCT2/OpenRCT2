@@ -8514,5 +8514,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(sint32 trackType, sint32 d
     case TRACK_ELEM_BOOSTER:
         return giga_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

@@ -741,5 +741,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_impulse_rc(sint32 trackTy
     case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
         return inverted_impulse_rc_track_right_quarter_turn_1_90_deg_down;
     }
-    return NULL;
+    return nullptr;
 }

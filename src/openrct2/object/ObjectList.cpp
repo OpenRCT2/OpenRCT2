@@ -136,7 +136,7 @@ sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_ty
         entry_group.chunks++,
         entry_group.entries++){
 
-        if (*entry_group.chunks == NULL) continue;
+        if (*entry_group.chunks == nullptr) continue;
 
         if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
     }
@@ -158,8 +158,8 @@ void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryI
         }
     }
 
-    if (outObjectType != NULL) *outObjectType = objectType;
-    if (outEntryIndex != NULL) *outEntryIndex = (uint8)index;
+    if (outObjectType != nullptr) *outObjectType = objectType;
+    if (outEntryIndex != nullptr) *outEntryIndex = (uint8)index;
 }
 
 const rct_object_entry * get_loaded_object_entry(size_t index)

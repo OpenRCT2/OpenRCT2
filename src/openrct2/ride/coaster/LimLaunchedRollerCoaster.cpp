@@ -1760,5 +1760,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lim_launched_rc(sint32 trackType, 
     case TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE_90_DEG_DOWN:
         return lim_launched_rc_track_right_quarter_turn_1_90_deg_down;
     }
-    return NULL;
+    return nullptr;
 }

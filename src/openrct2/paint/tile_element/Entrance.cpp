@@ -173,7 +173,7 @@ static void ride_entrance_exit_paint(paint_session * session, uint8 direction, s
     if (image_id == 0) {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
@@ -214,13 +214,13 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
 
     switch (part_index){
     case 0:
-        if (path_entry != NULL) {
+        if (path_entry != nullptr) {
             image_id = (path_entry->image + 5 * (1 + (direction & 1))) | ghost_id;
                 sub_98197C(session, image_id, 0, 0, 32, 0x1C, 0, height, 0, 2, height, get_current_rotation());
         }
 
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
-        if (entrance == NULL)
+        if (entrance == nullptr)
         {
             return;
         }
@@ -267,7 +267,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     case 1:
     case 2:
         entrance = (rct_entrance_type*)object_entry_groups[OBJECT_TYPE_PARK_ENTRANCE].chunks[0];
-        if (entrance == NULL)
+        if (entrance == nullptr)
         {
             return;
         }
@@ -280,7 +280,7 @@ static void park_entrance_paint(paint_session * session, uint8 direction, sint32
     if (image_id == 0) {
         image_id = SPRITE_ID_PALETTE_COLOUR_1(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, NULL);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, image_id, nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 80, 0x20);

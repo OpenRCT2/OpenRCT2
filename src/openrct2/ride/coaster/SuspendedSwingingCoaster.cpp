@@ -4073,5 +4073,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_suspended_swinging_rc(sint32 track
     case TRACK_ELEM_BLOCK_BRAKES:
         return suspended_swinging_rc_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

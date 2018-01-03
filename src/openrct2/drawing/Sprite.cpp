@@ -186,7 +186,7 @@ extern "C"
 
     static size_t   _g1ElementsCount = 0;
     static rct_g1_element * _g1Elements = nullptr;
-    static rct_g1_element _g1Temp = { 0 };
+    static rct_g1_element _g1Temp = { nullptr };
     bool gTinyFontAntiAliased = false;
 
     /**

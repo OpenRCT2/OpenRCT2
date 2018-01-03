@@ -429,7 +429,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(paint_session * s
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
         session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        ghost_train_track_pieces_quarter_turn_3_tiles, NULL, defaultRightQuarterTurn3TilesBoundLengths,
+        ghost_train_track_pieces_quarter_turn_3_tiles, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
         defaultRightQuarterTurn3TilesBoundOffsets, get_current_rotation());
     track_paint_util_right_quarter_turn_3_tiles_tunnel(session, height, direction, trackSequence, TUNNEL_0);
 
@@ -515,7 +515,7 @@ static void paint_ghost_train_track_spinning_tunnel(paint_session * session, uin
         paint_util_push_tunnel_right(session, height, TUNNEL_0);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -603,5 +603,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_ghost_train(sint32 trackType, sint
         return paint_ghost_train_track_spinning_tunnel;
     }
 
-    return NULL;
+    return nullptr;
 }

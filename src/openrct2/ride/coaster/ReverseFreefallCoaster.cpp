@@ -216,7 +216,7 @@ static void paint_reverse_freefall_rc_flat(paint_session * session, uint8 rideIn
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
@@ -238,7 +238,7 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
         sub_98199C(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, get_current_rotation());
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS],
-                                      NULL);
+                                      nullptr);
         paint_util_push_tunnel_left(session, height, TUNNEL_6);
     }
     else if (direction == 1 || direction == 3)
@@ -252,7 +252,7 @@ static void paint_reverse_freefall_rc_station(paint_session * session, uint8 rid
         sub_98199C(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height, get_current_rotation());
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session->TrackColours[SCHEME_SUPPORTS],
-                                      NULL);
+                                      nullptr);
         paint_util_push_tunnel_right(session, height, TUNNEL_6);
     }
 
@@ -308,12 +308,12 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
             sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 32, 20, bbHeight, height, 0, 6, height);
         }
 
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
     case 5:
-        if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL))
+        if (wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr))
         {
             uint32 floorImageId;
             if (direction & 1)
@@ -347,7 +347,7 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
             sub_98197C_rotated(session, direction, trackImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
             sub_98199C_rotated(session, direction, supportsImageId, 0, 0, 1, 20, 126, height, 27, 6, height);
         }
-        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], NULL);
+        wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS], nullptr);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + supportHeights[trackSequence], 0x20);
         break;
@@ -399,5 +399,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_reverse_freefall_rc(sint32 trackTy
     case TRACK_ELEM_REVERSE_FREEFALL_VERTICAL:
         return paint_reverse_freefall_rc_vertical;
     }
-    return NULL;
+    return nullptr;
 }
