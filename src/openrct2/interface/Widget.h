@@ -34,7 +34,7 @@ typedef enum {
     WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
     WWT_LABEL_CENTRED = 12,    // Centred text
     WWT_TABLE_HEADER = 13,     // Left-aligned textual button
-    WWT_14,
+    WWT_LABEL = 14,            // Left-aligned text
     WWT_SPINNER = 15,
     WWT_DROPDOWN = 16,
     WWT_VIEWPORT = 17,

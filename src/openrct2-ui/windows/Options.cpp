@@ -352,7 +352,7 @@ static rct_widget window_options_advanced_widgets[] = {
     { WWT_CHECKBOX,         2,  10,     299,    114,    125,    STR_STAY_CONNECTED_AFTER_DESYNC,            STR_STAY_CONNECTED_AFTER_DESYNC_TIP },              // Do not disconnect after the client desynchronises with the server
     { WWT_DROPDOWN,         1,  165,    299,    130,    141,    STR_NONE,                                   STR_NONE },                                         // Autosave dropdown
     { WWT_DROPDOWN_BUTTON,  1,  288,    298,    131,    140,    STR_DROPDOWN_GLYPH,                         STR_AUTOSAVE_FREQUENCY_TIP },                       // Autosave dropdown button
-    { WWT_14,               1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
+    { WWT_LABEL,            1,  23,     298,    148,    159,    STR_PATH_TO_RCT1,                           STR_PATH_TO_RCT1_TIP },                             // RCT 1 path text
     { WWT_DROPDOWN_BUTTON,  1,  24,     289,    163,    176,    STR_NONE,                                   STR_STRING_TOOLTIP },                               // RCT 1 path button
     { WWT_DROPDOWN_BUTTON,  1,  289,    299,    163,    176,    STR_CLOSE_X,                                STR_PATH_TO_RCT1_CLEAR_TIP },                       // RCT 1 path clear button
     { WIDGETS_END },

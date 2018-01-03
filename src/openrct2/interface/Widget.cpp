@@ -144,7 +144,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
     case WWT_LABEL_CENTRED:
         widget_text_unknown(dpi, w, widgetIndex);
         break;
-    case WWT_14:
+    case WWT_LABEL:
         widget_text(dpi, w, widgetIndex);
         break;
     case WWT_SPINNER:
