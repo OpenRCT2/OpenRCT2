@@ -24,7 +24,7 @@
 #include <openrct2/Context.h>
 #include "Widget.h"
 #include "Window.h"
-#include "Window_internal.h"
+#include <openrct2/interface/Window_internal.h>
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);

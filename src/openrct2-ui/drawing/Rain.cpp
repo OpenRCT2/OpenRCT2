@@ -14,18 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/Window.h"
-#include "../interface/Window_internal.h"
-#include "../world/Climate.h"
-#include "Drawing.h"
-#include "../config/Config.h"
-#include "../interface/Viewport.h"
-#include "../ride/TrackDesign.h"
-#include "../scenario/Scenario.h"
+#include <openrct2/drawing/Rain.h>
 
-#include "IDrawingEngine.h"
-#include "Rain.h"
-#include "../core/Math.hpp"
+#include <openrct2-ui/interface/Window.h>
+
+#include <openrct2/world/Climate.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/config/Config.h>
+#include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/core/Math.hpp>
 
 using namespace OpenRCT2::Drawing;
 
