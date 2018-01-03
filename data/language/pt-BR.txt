@@ -533,241 +533,241 @@ STR_0528    :Passageiros viajam em barcos infláveis em tubo encurvado semi-circ
 STR_0529    :Montanha russa tematizada como trem de mina percorre o trilho de aço feito para parecer uma ferrovia velha
 STR_0530    :Carros pendurados por um cabo de aço andam continuamente de uma ponta da atração à outra e volta
 STR_0531    :Uma montanha-russa de aço compacta onde trens viajam por parafusos e loops
-STR_0532    :
-STR_0533    :
+STR_0532    :Labirinto é construido com cercas vivas ou muros de 1,82 metros de altura, e visitantes vagam pelo labirinto podendo sair apenas quando encontram a saída
+STR_0533    :Prédio de madeira com uma escada interna e um escorregador espiral externo para ser usado com tapetes deslizantes
 STR_0534    :Passageiros pilotam karts com motor a gasolina
 STR_0535    :Barcos em formato de troncos viajam por um canal d'água, esparrinhando água e molhando passageiros em declives íngremes
 STR_0536    :Barcos circulares serpenteiam por um largo canal d'água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
-STR_0537    :
-STR_0538    :
-STR_0539    :
-STR_0540    :
-STR_0541    :
-STR_0542    :
-STR_0543    :
-STR_0544    :
-STR_0545    :
-STR_0546    :
-STR_0547    :
-STR_0548    :
-STR_0549    :
-STR_0550    :
-STR_0551    :
-STR_0552    :
-STR_0553    :
+STR_0537    :Carros elétricos de batida auto-guiados.
+STR_0538    :Grande navio pirata de balanço.
+STR_0539    :Navio é anexado a um braço com um contra-peso no lado oposto, e balança até completar 360 graus
+STR_0540    :Uma barraca onde visitantes podem comprar comida
+STR_0541    :<removed string - do not use>
+STR_0542    :Uma barraca onde visitantes podem comprar bebidas
+STR_0543    :<removed string - do not use>
+STR_0544    :Uma barraca que vende lembranças
+STR_0545    :Tradicional carrossel rotatório esculpido com cavalos de madeira
+STR_0546    :<removed string - do not use>
+STR_0547    :Uma barraca onde visitantes podem obter o mapa do parque e comprar guarda-chuvas
+STR_0548    :Um prédio de banheiro
+STR_0549    :Grande roda rotatória com cadeiras abertas
+STR_0550    :Visitantes assistem um filme dentro do simulador de movimentos enquanto giram e se movem por um braço hidráulico
+STR_0551    :Cinema mostrando filmes 3D dentro de uma gigantesca construção em forma de esfera
+STR_0552    :Passageiros andam em uma gôndola suspensa por grandes braços rotatórios, rodando para frente e para trás até ficar de ponta cabeça
+STR_0553    :Anéis giratórios concêntricos que permitem aos passageiros rodar livremente em todas as direções
 STR_0554    :O carro é acelerado para fora da estação em uma longa pista reta usando Motores de Indução Linear, então vai direto para o pico da pista vertical, caindo em queda livre para voltar à estação
 STR_0555    :Visitantes passeiam dentro de um elevador para cima ou para baixo em uma torre vertical para ir de um andar ao outro
 STR_0556    :Carros muito largos descem por uma pista completamente vertical para uma melhor experiência de uma montanha-russa em queda livre
-STR_0557    :
-STR_0558    :
-STR_0559    :
-STR_0560    :
-STR_0561    :
+STR_0557    :Um A.T.M. (caixa eletrônico) para os visitantes usarem caso eles fiquem sem dinheiro
+STR_0558    :Passageiros andam num par de assentos rodando nos extremos de três longos braços rotatórios
+STR_0559    :Grande prédio tematizado contendo corredores e salas assustadoras
+STR_0560    :Um lugar para visitantes doentes se recuperarem rapidamente
+STR_0561    :Show de circo com animais dentro de uma tenda grande
 STR_0562    :Carros motorizados percorrem uma pista de vários níveis passando por cenários assustadores e efeitos especiais
 STR_0563    :Sentados em trens confortáveis apenas com uma trava simples, passageiros divertem-se em grandes quedas suaves e trilhos retorcidos como também muitos 'tempo no ar' pelas colinas
 STR_0564    :Correndo em trilho de madeira, esta montanha-russa é rápida, selvagem, barulhenta, e dá a sensação de 'fora de controle' com muitos 'tempo no ar'
 STR_0565    :Uma montanha-russa de madeira simples capaz de fazer só ladeiras e curvas suaves, onde os carros são mantidos no trilho pela fricção lateral e gravidade
 STR_0566    :Carros individuais de montanha-russa percorrem em alta velocidade pistas em zig-zag com curvas fechadas e pequenas quedas
 STR_0567    :Sentados em cadeiras suspensas de cada lado do trilho, passageiros são lançados para cima enquanto são puxados para baixo em quedas íngremes e viajam por várias inversões
-STR_0568    :
+STR_0568    :<removed string - do not use>
 STR_0569    :Passeando embaixo do trilho em travas especiais, passageiros tem a sensação de voo enquanto arrebatam pelo ar
-STR_0570    :
+STR_0570    :<removed string - do not use>
 STR_0571    :Carros circulares giram enquanto viajam por uma pista de madeira em zig-zag
 STR_0572    :Barcos de alta capacidade viajam por um largo canal d'água, subindo por uma correia transportadora, acelerando ladeira abaixo para molhar os passageiros com uma onda gigante
 STR_0573    :Carros motorizados em formato de helicopteros correm por um trilho de aço, controlados pelo pedalar dos passageiros
 STR_0574    :Passageiros são segurados por uma trava especial na posição deitada, viajando por trilhos retorcidos e inversões tanto de costas quanto olhando para o chão
 STR_0575    :Trens motorizados pendurados em um trilho único transportam pessoas pelo parque
-STR_0576    :
+STR_0576    :<removed string - do not use>
 STR_0577    :Carros correm em trilhos de madeira, virando em seções reversoras especiais
 STR_0578    :Carros correm em trilhos envolvidos por anéis, passando por quedas íngremes e giros na 'linha do coração'
-STR_0579    :
+STR_0579    :Um jogo suave de golfe em miniatura
 STR_0580    :Uma montanha-russa de aço gigante capaz de quedas suaves e colinas maiores que 90m
 STR_0581    :Um anel de assentos é puxado para o topo de uma alta torre enquando gira lentamente, então desce em queda livre, parando suavemente na parte inferior usando freios magnéticos
-STR_0582    :
-STR_0583    :
+STR_0582    :Veículos aerobarcos auto-guiados
+STR_0583    :Prédio contendo salas tortas e corredores inclinados para desorientar as pessoas que andam por eles
 STR_0584    :Bicicletas especiais correm em uma pista de aço de monotrilho, controladas pelo pedalar dos passageiros
 STR_0585    :Passageiros sentam em um par de cadeiras suspensas abaixo do trilho enquanto fazem loops e giros por inversões estreitas
 STR_0586    :Carros em formato de barcos correm em um trilho de montanha-russa que permite curvas retorcidas e quedas íngremes, esparrinhando água em seções aquáticas que viram um rio suave.
 STR_0587    :Depois de um lançamento de propulsão hidráulica emocionante, o trem acelerado sobe verticalmente, passa pelo topo, e desce verticalmente ao outro lado para voltar à estação
 STR_0588    :Carros individuais correm por baixo de um trilho em zig-zag com curvas fechadas e quedas acentuadas
-STR_0589    :
+STR_0589    :Um grande carro tematizado de tapete voador que move para cima e para baixo ciclicamente no extremo de 4 braços
 STR_0590    :Passageiros passeiam em um submarino submergido por um percurso subaquático
 STR_0591    :Barcos em forma de balsas serpenteiam delicadamente em uma pista de rio
-STR_0592    :
-STR_0593    :
-STR_0594    :
-STR_0595    :
-STR_0596    :
-STR_0597    :
+STR_0592    :<removed string - do not use>
+STR_0593    :Roda rotatória com cabines de passageiros suspensas, que primeiro começa a girar e então suspensa por um braço de apoio
+STR_0594    :<removed string - do not use>
+STR_0595    :<removed string - do not use>
+STR_0596    :<removed string - do not use>
+STR_0597    :<removed string - do not use>
 STR_0598    :Trens de montanha-russa invertida são acelerados para fora da estação para subir em uma pista vertical, então volta pela estação e sobe de costas em outra pista vertical
 STR_0599    :Uma montanha-russa compacta com carros individuais e suaves quedas retorcidas
 STR_0600    :Trens de mina motorizados viajam por uma pista suave e retorcida
-STR_0601    :
+STR_0601    :<removed string - do not use>
 STR_0602    :Trens da montanha-russa são acelerados para fora da estação por motores de indução linear passando em alta velocidade por inversões retorcidas
-STR_0603    :Visitante {INT32}
-STR_0604    :Visitante {INT32}
-STR_0605    :Visitante {INT32}
-STR_0606    :Visitante {INT32}
-STR_0607    :Visitante {INT32}
-STR_0608    :Visitante {INT32}
-STR_0609    :Visitante {INT32}
-STR_0610    :Visitante {INT32}
-STR_0611    :Visitante {INT32}
-STR_0612    :Visitante {INT32}
-STR_0613    :Visitante {INT32}
-STR_0614    :Visitante {INT32}
-STR_0615    :Visitante {INT32}
-STR_0616    :Visitante {INT32}
-STR_0617    :Visitante {INT32}
-STR_0618    :Visitante {INT32}
-STR_0619    :Visitante {INT32}
-STR_0620    :Visitante {INT32}
-STR_0621    :Visitante {INT32}
-STR_0622    :Visitante {INT32}
-STR_0623    :Visitante {INT32}
-STR_0624    :Visitante {INT32}
-STR_0625    :Visitante {INT32}
-STR_0626    :Visitante {INT32}
-STR_0627    :Visitante {INT32}
-STR_0628    :Visitante {INT32}
-STR_0629    :Visitante {INT32}
-STR_0630    :Visitante {INT32}
-STR_0631    :Visitante {INT32}
-STR_0632    :Visitante {INT32}
-STR_0633    :Visitante {INT32}
-STR_0634    :Visitante {INT32}
-STR_0635    :Visitante {INT32}
-STR_0636    :Visitante {INT32}
-STR_0637    :Visitante {INT32}
-STR_0638    :Visitante {INT32}
-STR_0639    :Visitante {INT32}
-STR_0640    :Visitante {INT32}
-STR_0641    :Visitante {INT32}
-STR_0642    :Visitante {INT32}
-STR_0643    :Visitante {INT32}
-STR_0644    :Visitante {INT32}
-STR_0645    :Visitante {INT32}
-STR_0646    :Visitante {INT32}
-STR_0647    :Visitante {INT32}
-STR_0648    :Visitante {INT32}
-STR_0649    :Visitante {INT32}
-STR_0650    :Visitante {INT32}
-STR_0651    :Visitante {INT32}
-STR_0652    :Visitante {INT32}
-STR_0653    :Visitante {INT32}
-STR_0654    :Visitante {INT32}
-STR_0655    :Visitante {INT32}
-STR_0656    :Visitante {INT32}
-STR_0657    :Visitante {INT32}
-STR_0658    :Visitante {INT32}
-STR_0659    :Visitante {INT32}
-STR_0660    :Visitante {INT32}
-STR_0661    :Visitante {INT32}
-STR_0662    :Visitante {INT32}
-STR_0663    :Visitante {INT32}
-STR_0664    :Visitante {INT32}
-STR_0665    :Visitante {INT32}
-STR_0666    :Visitante {INT32}
-STR_0667    :Visitante {INT32}
-STR_0668    :Visitante {INT32}
-STR_0669    :Visitante {INT32}
-STR_0670    :Visitante {INT32}
-STR_0671    :Visitante {INT32}
-STR_0672    :Visitante {INT32}
-STR_0673    :Visitante {INT32}
-STR_0674    :Visitante {INT32}
-STR_0675    :Visitante {INT32}
-STR_0676    :Visitante {INT32}
-STR_0677    :Visitante {INT32}
-STR_0678    :Visitante {INT32}
-STR_0679    :Visitante {INT32}
-STR_0680    :Visitante {INT32}
-STR_0681    :Visitante {INT32}
-STR_0682    :Visitante {INT32}
-STR_0683    :Visitante {INT32}
-STR_0684    :Visitante {INT32}
-STR_0685    :Visitante {INT32}
-STR_0686    :Visitante {INT32}
-STR_0687    :Visitante {INT32}
-STR_0688    :Visitante {INT32}
-STR_0689    :Visitante {INT32}
-STR_0690    :Visitante {INT32}
-STR_0691    :Visitante {INT32}
-STR_0692    :Visitante {INT32}
-STR_0693    :Visitante {INT32}
-STR_0694    :Visitante {INT32}
-STR_0695    :Visitante {INT32}
-STR_0696    :Visitante {INT32}
-STR_0697    :Visitante {INT32}
-STR_0698    :Visitante {INT32}
-STR_0699    :Visitante {INT32}
-STR_0700    :Visitante {INT32}
-STR_0701    :Visitante {INT32}
-STR_0702    :Visitante {INT32}
-STR_0703    :Visitante {INT32}
-STR_0704    :Visitante {INT32}
-STR_0705    :Visitante {INT32}
-STR_0706    :Visitante {INT32}
-STR_0707    :Visitante {INT32}
-STR_0708    :Visitante {INT32}
-STR_0709    :Visitante {INT32}
-STR_0710    :Visitante {INT32}
-STR_0711    :Visitante {INT32}
-STR_0712    :Visitante {INT32}
-STR_0713    :Visitante {INT32}
-STR_0714    :Visitante {INT32}
-STR_0715    :Visitante {INT32}
-STR_0716    :Visitante {INT32}
-STR_0717    :Visitante {INT32}
-STR_0718    :Visitante {INT32}
-STR_0719    :Visitante {INT32}
-STR_0720    :Visitante {INT32}
-STR_0721    :Visitante {INT32}
-STR_0722    :Visitante {INT32}
-STR_0723    :Visitante {INT32}
-STR_0724    :Visitante {INT32}
-STR_0725    :Visitante {INT32}
-STR_0726    :Visitante {INT32}
-STR_0727    :Visitante {INT32}
-STR_0728    :Visitante {INT32}
-STR_0729    :Visitante {INT32}
-STR_0730    :Visitante {INT32}
-STR_0731    :Visitante {INT32}
-STR_0732    :Visitante {INT32}
-STR_0733    :Visitante {INT32}
-STR_0734    :Visitante {INT32}
-STR_0735    :Visitante {INT32}
-STR_0736    :Visitante {INT32}
-STR_0737    :Visitante {INT32}
-STR_0738    :Visitante {INT32}
-STR_0739    :Visitante {INT32}
-STR_0740    :Visitante {INT32}
-STR_0741    :Visitante {INT32}
-STR_0742    :Visitante {INT32}
-STR_0743    :Visitante {INT32}
-STR_0744    :Visitante {INT32}
-STR_0745    :Visitante {INT32}
-STR_0746    :Visitante {INT32}
-STR_0747    :Visitante {INT32}
-STR_0748    :Visitante {INT32}
-STR_0749    :Visitante {INT32}
-STR_0750    :Visitante {INT32}
-STR_0751    :Visitante {INT32}
-STR_0752    :Visitante {INT32}
-STR_0753    :Visitante {INT32}
-STR_0754    :Visitante {INT32}
-STR_0755    :Visitante {INT32}
-STR_0756    :Visitante {INT32}
-STR_0757    :Visitante {INT32}
-STR_0758    :Visitante {INT32}
-STR_0759    :Visitante {INT32}
-STR_0760    :Visitante {INT32}
-STR_0761    :Visitante {INT32}
-STR_0762    :Visitante {INT32}
-STR_0763    :Visitante {INT32}
-STR_0764    :Visitante {INT32}
-STR_0765    :Visitante {INT32}
-STR_0766    :Visitante {INT32}
+STR_0603    :<removed string - do not use>
+STR_0604    :<removed string - do not use>
+STR_0605    :<removed string - do not use>
+STR_0606    :<removed string - do not use>
+STR_0607    :<removed string - do not use>
+STR_0608    :<removed string - do not use>
+STR_0609    :<removed string - do not use>
+STR_0610    :<removed string - do not use>
+STR_0611    :<removed string - do not use>
+STR_0612    :<removed string - do not use>
+STR_0613    :<removed string - do not use>
+STR_0614    :<removed string - do not use>
+STR_0615    :<removed string - do not use>
+STR_0616    :<removed string - do not use>
+STR_0617    :<removed string - do not use>
+STR_0618    :<removed string - do not use>
+STR_0619    :<removed string - do not use>
+STR_0620    :<removed string - do not use>
+STR_0621    :<removed string - do not use>
+STR_0622    :<removed string - do not use>
+STR_0623    :<removed string - do not use>
+STR_0624    :<removed string - do not use>
+STR_0625    :<removed string - do not use>
+STR_0626    :<removed string - do not use>
+STR_0627    :<removed string - do not use>
+STR_0628    :<removed string - do not use>
+STR_0629    :<removed string - do not use>
+STR_0630    :<removed string - do not use>
+STR_0631    :<removed string - do not use>
+STR_0632    :<removed string - do not use>
+STR_0633    :<removed string - do not use>
+STR_0634    :<removed string - do not use>
+STR_0635    :<removed string - do not use>
+STR_0636    :<removed string - do not use>
+STR_0637    :<removed string - do not use>
+STR_0638    :<removed string - do not use>
+STR_0639    :<removed string - do not use>
+STR_0640    :<removed string - do not use>
+STR_0641    :<removed string - do not use>
+STR_0642    :<removed string - do not use>
+STR_0643    :<removed string - do not use>
+STR_0644    :<removed string - do not use>
+STR_0645    :<removed string - do not use>
+STR_0646    :<removed string - do not use>
+STR_0647    :<removed string - do not use>
+STR_0648    :<removed string - do not use>
+STR_0649    :<removed string - do not use>
+STR_0650    :<removed string - do not use>
+STR_0651    :<removed string - do not use>
+STR_0652    :<removed string - do not use>
+STR_0653    :<removed string - do not use>
+STR_0654    :<removed string - do not use>
+STR_0655    :<removed string - do not use>
+STR_0656    :<removed string - do not use>
+STR_0657    :<removed string - do not use>
+STR_0658    :<removed string - do not use>
+STR_0659    :<removed string - do not use>
+STR_0660    :<removed string - do not use>
+STR_0661    :<removed string - do not use>
+STR_0662    :<removed string - do not use>
+STR_0663    :<removed string - do not use>
+STR_0664    :<removed string - do not use>
+STR_0665    :<removed string - do not use>
+STR_0666    :<removed string - do not use>
+STR_0667    :<removed string - do not use>
+STR_0668    :<removed string - do not use>
+STR_0669    :<removed string - do not use>
+STR_0670    :<removed string - do not use>
+STR_0671    :<removed string - do not use>
+STR_0672    :<removed string - do not use>
+STR_0673    :<removed string - do not use>
+STR_0674    :<removed string - do not use>
+STR_0675    :<removed string - do not use>
+STR_0676    :<removed string - do not use>
+STR_0677    :<removed string - do not use>
+STR_0678    :<removed string - do not use>
+STR_0679    :<removed string - do not use>
+STR_0680    :<removed string - do not use>
+STR_0681    :<removed string - do not use>
+STR_0682    :<removed string - do not use>
+STR_0683    :<removed string - do not use>
+STR_0684    :<removed string - do not use>
+STR_0685    :<removed string - do not use>
+STR_0686    :<removed string - do not use>
+STR_0687    :<removed string - do not use>
+STR_0688    :<removed string - do not use>
+STR_0689    :<removed string - do not use>
+STR_0690    :<removed string - do not use>
+STR_0691    :<removed string - do not use>
+STR_0692    :<removed string - do not use>
+STR_0693    :<removed string - do not use>
+STR_0694    :<removed string - do not use>
+STR_0695    :<removed string - do not use>
+STR_0696    :<removed string - do not use>
+STR_0697    :<removed string - do not use>
+STR_0698    :<removed string - do not use>
+STR_0699    :<removed string - do not use>
+STR_0700    :<removed string - do not use>
+STR_0701    :<removed string - do not use>
+STR_0702    :<removed string - do not use>
+STR_0703    :<removed string - do not use>
+STR_0704    :<removed string - do not use>
+STR_0705    :<removed string - do not use>
+STR_0706    :<removed string - do not use>
+STR_0707    :<removed string - do not use>
+STR_0708    :<removed string - do not use>
+STR_0709    :<removed string - do not use>
+STR_0710    :<removed string - do not use>
+STR_0711    :<removed string - do not use>
+STR_0712    :<removed string - do not use>
+STR_0713    :<removed string - do not use>
+STR_0714    :<removed string - do not use>
+STR_0715    :<removed string - do not use>
+STR_0716    :<removed string - do not use>
+STR_0717    :<removed string - do not use>
+STR_0718    :<removed string - do not use>
+STR_0719    :<removed string - do not use>
+STR_0720    :<removed string - do not use>
+STR_0721    :<removed string - do not use>
+STR_0722    :<removed string - do not use>
+STR_0723    :<removed string - do not use>
+STR_0724    :<removed string - do not use>
+STR_0725    :<removed string - do not use>
+STR_0726    :<removed string - do not use>
+STR_0727    :<removed string - do not use>
+STR_0728    :<removed string - do not use>
+STR_0729    :<removed string - do not use>
+STR_0730    :<removed string - do not use>
+STR_0731    :<removed string - do not use>
+STR_0732    :<removed string - do not use>
+STR_0733    :<removed string - do not use>
+STR_0734    :<removed string - do not use>
+STR_0735    :<removed string - do not use>
+STR_0736    :<removed string - do not use>
+STR_0737    :<removed string - do not use>
+STR_0738    :<removed string - do not use>
+STR_0739    :<removed string - do not use>
+STR_0740    :<removed string - do not use>
+STR_0741    :<removed string - do not use>
+STR_0742    :<removed string - do not use>
+STR_0743    :<removed string - do not use>
+STR_0744    :<removed string - do not use>
+STR_0745    :<removed string - do not use>
+STR_0746    :<removed string - do not use>
+STR_0747    :<removed string - do not use>
+STR_0748    :<removed string - do not use>
+STR_0749    :<removed string - do not use>
+STR_0750    :<removed string - do not use>
+STR_0751    :<removed string - do not use>
+STR_0752    :<removed string - do not use>
+STR_0753    :<removed string - do not use>
+STR_0754    :<removed string - do not use>
+STR_0755    :<removed string - do not use>
+STR_0756    :<removed string - do not use>
+STR_0757    :<removed string - do not use>
+STR_0758    :<removed string - do not use>
+STR_0759    :<removed string - do not use>
+STR_0760    :<removed string - do not use>
+STR_0761    :<removed string - do not use>
+STR_0762    :<removed string - do not use>
+STR_0763    :<removed string - do not use>
+STR_0764    :<removed string - do not use>
+STR_0765    :<removed string - do not use>
+STR_0766    :<removed string - do not use>
 STR_0767    :Visitante {INT32}
 STR_0768    :Faxineiro {INT32}
 STR_0769    :Mecânico {INT32}
@@ -1927,7 +1927,7 @@ STR_1919    :Não possui dinheiro suficiente!
 STR_1920    :Impossível pagar o empréstimo!
 STR_1921    :{SMALLFONT}{BLACK}Começar um novo jogo
 STR_1922    :{SMALLFONT}{BLACK}Continuar um jogo salvo
-STR_1923    :{SMALLFONT}{BLACK}Mostrar Tutoriais
+STR_1923    :<removed string - do not use>
 STR_1924    :{SMALLFONT}{BLACK}Sair
 STR_1925    :Impossível colocar uma pessoa aqui...
 STR_1926    :{SMALLFONT}
@@ -2863,8 +2863,8 @@ STR_2852    :Projeto de pista já instalado
 STR_2853    :Proibido por autoridades locais!
 STR_2854    :{RED}Os visitantes não conseguem entrar em {STRINGID} !{NEWLINE}Construa um caminho para a entrada
 STR_2855    :{RED}{STRINGID} não tem um caminho de saída !{NEWLINE}Construa um caminho a partir da saída da atração
-STR_2856    :{WINDOW_COLOUR_2}Tutorial
-STR_2857    :{WINDOW_COLOUR_2}(Pressione uma tecla ou botão do mouse para controlar)
+STR_2856    :<removed string - do not use>
+STR_2857    :<removed string - do not use>
 STR_2858    :Impossível começar uma campanha de marketing...
 STR_2859    :Um outro exemplar de OpenRCT2 já está executando
 STR_2860    :<removed string - do not use>
@@ -2873,7 +2873,7 @@ STR_2862    :Reconhecimentos de música...
 STR_2863    :Reconhecimentos de música
 STR_2864    :{WINDOW_COLOUR_2}March - Children of the Regiment:   (Fucik) sem direitos autorais
 STR_2865    :{WINDOW_COLOUR_2}Heyken's Serenade:   (J.Heyken) British Standard Music Coy; GEMA, BRITICO
-STR_2866    :{WINDOW_COLOUR_2}In Continental Mood:   (Composer unknown) Controle de Direitos Autorais
+STR_2866    :{WINDOW_COLOUR_2}La Belle Espagnole:   (Robert Vollstedt) sem direitos autorais
 STR_2867    :{WINDOW_COLOUR_2}Wedding Journey:   (Traditional)
 STR_2868    :{WINDOW_COLOUR_2}Tales from the Vienna Woods:   (Johann Strauss) sem direitos autorais
 STR_2869    :{WINDOW_COLOUR_2}Slavonic Dance:   (Traditional)
@@ -3062,9 +3062,9 @@ STR_3051    :Buraco de golfe C
 STR_3052    :Buraco de golfe D
 STR_3053    :Buraco de golfe E
 STR_3054    :Carregando...
-STR_3055    :Branco
-STR_3056    :Translúcido
-STR_3057    :{WINDOW_COLOUR_2}Marcador de Construção:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Parede de Tijolos
 STR_3059    :Sebes
 STR_3060    :Blocos de Gelo
@@ -3392,60 +3392,58 @@ STR_3381    :O arquivo não é compatível ou contém dados inválidos
 STR_3382    :Cópia de arquivo falhou
 STR_3383    :Selecione um novo nome para o projeto da pista
 STR_3384    :Um projeto de pista com este nome já existe - Por favor selecione um novo nome para este projeto:
-STR_3385    :Tutorial Iniciante
-STR_3386    :Tutorial de Atrações Customizadas
-STR_3387    :Tutorial de Construção de Montanha-Russas
+STR_3385    :<removed string - do not use>
+STR_3386    :<removed string - do not use>
+STR_3387    :<removed string - do not use>
 STR_3388    :Impossível alterar para o modo selecionado
 STR_3389    :Impossível selecionar o item adicional de cenário...
 STR_3390    :Muitos itens selecionados
-# Start of tutorial strings. Not used at the moment, so not necessary to translate.
-STR_3391    :{SMALLFONT}{BLACK}Aqui está nosso parque - Vamos dar uma olhada rápida...
-STR_3392    :{SMALLFONT}{BLACK}Segurar o botão DIREITO do mouse e mover o mouse é a maneira mais rápida de mover a vista...
-STR_3393    :{SMALLFONT}{BLACK}Para vizualizar mais do parque, você pode afastar o zoom usando o ícone no topo da tela...
-STR_3394    :{SMALLFONT}{BLACK}Você também pode rotacionar a visão em incrementos de 90 graus...
-STR_3395    :{SMALLFONT}{BLACK}Construir qualquer coisa nesta escala é um pouco difícil, então vamos ampliar a visão novamente...
-STR_3396    :{SMALLFONT}{BLACK}Vamos construir uma atração simples para iniciar o parque...
-STR_3397    :{SMALLFONT}{BLACK}A imagem 'transparente' mostra onde a atração será construído. Vamos mover o ponteiro para selecionar a posição e então clicar para construir...
-STR_3398    :{SMALLFONT}{BLACK}Atrações precisam de uma entrada e uma saída. Vamos mover o ponteiro para um quadrado na borda da atração e clicar para construir primeiro a entrada e depois a saída...
-STR_3399    :{SMALLFONT}{BLACK}Precisamos construir caminhos para permitir que os visitantes cheguem à nossa nova atração...
-STR_3400    :{SMALLFONT}{BLACK}Para o caminho até a entrada da atração, vamos usar um caminho especial de 'fila de espera'...
-STR_3401    :{SMALLFONT}{BLACK}Para o caminho de saída, um caminho 'comum' servirá...
-STR_3402    :{SMALLFONT}{BLACK}Certo, vamos abrir a atração! Para abrir a atração clicamos no ícone de bandeira na janela da atração e selecionamos 'abrir'...
-STR_3403    :{SMALLFONT}{BLACK}Mas onde estão os visitantes?
-STR_3404    :{SMALLFONT}{BLACK}Oh - O parque ainda está fechado! Certo - Vamos abri-lo...
-STR_3405    :{SMALLFONT}{BLACK}Enquanto esperamos por nossos primeiros visitantes, vamos construir alguns cenários...
-STR_3406    :{SMALLFONT}{BLACK}Aqui está nosso parque vazio. Vamos construir uma atração personalizada simples...
-STR_3407    :{SMALLFONT}{BLACK}Primeiro vamos selecionar uma posição inicial...
-STR_3408    :{SMALLFONT}{BLACK}A seção de pista que nós acabamos de construir é a 'plataforma de estação', que permite os visitantes entrarem e sairem da atração...
-STR_3409    :{SMALLFONT}{BLACK}Vamos extender a plataforma um pouco acrescentando mais algumas seções de plataforma de estação...
-STR_3410    :{SMALLFONT}{BLACK}Os icones no topo da janela de construção permitem escolher pedaços de pista diferentes para adicionar...
-STR_3411    :{SMALLFONT}{BLACK}Vamos selecionar uma curva para a esquerda...
-STR_3412    :{SMALLFONT}{BLACK}A curva não foi construída ainda, mas imagem 'transparente' mostra onde será construída. Clicar no ícone grande'construir isso' faz a seção de pista ser construída...
-STR_3413    :{SMALLFONT}{BLACK}Agora vamos construir uma pista reta, então clicamos no ícone de pista reta...
-STR_3414    :{SMALLFONT}{BLACK}Agora que o circuíto está completa, nós precisamos construir a entrada e a saída da atração...
-STR_3415    :{SMALLFONT}{BLACK}Vamos testar nossa atração pra ver se funciona...
-STR_3416    :{SMALLFONT}{BLACK}Enquanto está sendo testada, vamos construir a fila de espera e o caminho de saída...
-STR_3417    :{SMALLFONT}{BLACK}OK - Vamos abrir o parque e a atração...
-STR_3418    :{SMALLFONT}{BLACK}Nossa nova atração não é muito emocionante - Talvez devêssemos adicionar alguns cenários?
-STR_3419    :{SMALLFONT}{BLACK}Para construir um cenário em cima de outro cenário ou no ar, segure a tecla SHIFT e mova o mouse para escolher a altura...
-STR_3420    :{SMALLFONT}{BLACK}Alguns tipos de cenário podem ser repintados depois de construído...
-STR_3421    :{SMALLFONT}{BLACK}Vamos adicionar um pouco de música na atração...
-STR_3422    :{SMALLFONT}{BLACK}Vamos construir uma montanha-russa !
-STR_3423    :{SMALLFONT}{BLACK}Existem muitas montanhas pré-fabricadas, mas nós vamos construir nosso próprio projeto personalizado...
-STR_3424    :{SMALLFONT}{BLACK}Esta é a plataforma de estação construída. Agora vamos fazer a subida...
-STR_3425    :{SMALLFONT}{BLACK}Os trens de montanha-russa não são motorizados, então uma 'corrente de elevação' é necessária para puxar o trem para cima da nossa primeira subida...
-STR_3426    :{SMALLFONT}{BLACK}Está é a subida de elevação completa - Agora a primeira queda...
-STR_3427    :{SMALLFONT}{BLACK}Essas curvas não são uma boa ideia - Os passageiros serão arremessados para o lado pela forca G lateral assim que o trem der a volta...
-STR_3428    :{SMALLFONT}{BLACK}Inclinar as curvas irá melhorar a atração - Passageiros serão empurrados para baixo no assento ao invés de serem arremessados para os lados...
-STR_3429    :{SMALLFONT}{BLACK}Não - Isto não vai funcionar! Olhe as marcar de altura - A segunda subida é mais alta que a subida de elevação...
-STR_3430    :{SMALLFONT}{BLACK}Para ter certeza que o trem percorrerá o percurso, cada subida deve ser um pouco menor que a anterior...
-STR_3431    :{SMALLFONT}{BLACK}Assim está melhor - Agora nosso trem conseguirá subir esta colina! Vamos tentar alguns trilhos mais retorcidos...
-STR_3432    :{SMALLFONT}{BLACK}Nós precisamos diminuir a velocidade do trem antes da curva final e da estação, então vamos adicionar alguns freios...
-STR_3433    :{SMALLFONT}{BLACK}E finalmente adicionaremos os 'freios bloqueadores', que permite dois trens no circuito operarem com mais segurança...
-STR_3434    :{SMALLFONT}{BLACK}Vamos testar e ver se funciona!
-STR_3435    :{SMALLFONT}{BLACK}Ótimo - funcionou! Vamos adicionar os caminhos e deixar as pessoas entrarem na nossa nova montanha-russa...
-STR_3436    :{SMALLFONT}{BLACK}Enquanto esperamos os nossos primeiros passageiros, podíamos personalizar a atração um pouco...
-# End of tutorial strings
+STR_3391    :<removed string - do not use>
+STR_3392    :<removed string - do not use>
+STR_3393    :<removed string - do not use>
+STR_3394    :<removed string - do not use>
+STR_3395    :<removed string - do not use>
+STR_3396    :<removed string - do not use>
+STR_3397    :<removed string - do not use>
+STR_3398    :<removed string - do not use>
+STR_3399    :<removed string - do not use>
+STR_3400    :<removed string - do not use>
+STR_3401    :<removed string - do not use>
+STR_3402    :<removed string - do not use>
+STR_3403    :<removed string - do not use>
+STR_3404    :<removed string - do not use>
+STR_3405    :<removed string - do not use>
+STR_3406    :<removed string - do not use>
+STR_3407    :<removed string - do not use>
+STR_3408    :<removed string - do not use>
+STR_3409    :<removed string - do not use>
+STR_3410    :<removed string - do not use>
+STR_3411    :<removed string - do not use>
+STR_3412    :<removed string - do not use>
+STR_3413    :<removed string - do not use>
+STR_3414    :<removed string - do not use>
+STR_3415    :<removed string - do not use>
+STR_3416    :<removed string - do not use>
+STR_3417    :<removed string - do not use>
+STR_3418    :<removed string - do not use>
+STR_3419    :<removed string - do not use>
+STR_3420    :<removed string - do not use>
+STR_3421    :<removed string - do not use>
+STR_3422    :<removed string - do not use>
+STR_3423    :<removed string - do not use>
+STR_3424    :<removed string - do not use>
+STR_3425    :<removed string - do not use>
+STR_3426    :<removed string - do not use>
+STR_3427    :<removed string - do not use>
+STR_3428    :<removed string - do not use>
+STR_3429    :<removed string - do not use>
+STR_3430    :<removed string - do not use>
+STR_3431    :<removed string - do not use>
+STR_3432    :<removed string - do not use>
+STR_3433    :<removed string - do not use>
+STR_3434    :<removed string - do not use>
+STR_3435    :<removed string - do not use>
+STR_3436    :<removed string - do not use>
 STR_3437    :{SMALLFONT}{BLACK}Limpar grandes áreas de cenário na paisagem
 STR_3438    :Impossível remover todos os cenários a partir daqui...
 STR_3439    :Limpar Cenário
@@ -3462,7 +3460,7 @@ STR_5120    :Finanças
 STR_5121    :Pesquisas
 STR_5122    :Selecionar atrações por tipo de pista (como no RCT1)
 STR_5123    :Renovar atrações
-STR_5124    :<not used anymore>
+STR_5124    :<removed string - do not use>
 STR_5125    :Tudo destruível
 STR_5126    :Música de título aleatória
 STR_5127    :{SMALLFONT}{BLACK}Enquanto arrasta, pinta a paisagem ao invés de mudar a elevação
@@ -3832,7 +3830,7 @@ STR_5490    :Desativar som quando perder o foco
 STR_5491    :Lista de Invenções
 STR_5492    :Opções de cenário
 STR_5493    :Enviar Mensagem
-STR_5494    :<not used anymore>
+STR_5494    :<removed string - do not use>
 STR_5495    :Lista de Jogadores
 STR_5496    :Jogador:
 STR_5497    :Ping:
@@ -3845,7 +3843,7 @@ STR_5503    :Digite o nome do servidor ou o endereço de IP:
 STR_5504    :{SMALLFONT}{BLACK}Exibir o estado do multiplayer
 STR_5505    :Impossível se conectar ao servidor.
 STR_5506    :Os Visistantes ignoram as intensidades
-STR_5507    :Faxineiro corta a grama por padrão
+STR_5507    :<removed string - do not use>
 STR_5508    :Carregamento de arquivos com checksums incorreto
 STR_5509    :{SMALLFONT}{BLACK}Permite carregar cenários e jogos salvos{NEWLINE}que possuam checksum incorreto, como os cenários do demo{NEWLINE}ou jogos salvos danificados.
 STR_5510    :Dispositivo de som padrão
@@ -3968,7 +3966,7 @@ STR_5626    :Outros parques
 STR_5627    :Agrupar lista de cenário por:
 STR_5628    :Origem do jogo
 STR_5629    :Nível de dificuldade
-STR_5630    :Habilitar destravamento de cenários
+STR_5630    :Habilitar destravamento progressivo
 STR_5631    :Parques Originais Baixados (DLC)
 STR_5632    :Construa seu próprio...
 STR_5633    :CMD + 
@@ -4032,13 +4030,13 @@ STR_5723    :Chuva Forte
 STR_5724    :Tempestade
 STR_5725    :{BLACK}Forçar clima:
 STR_5726    :{SMALLFONT}{BLACK}Define o clima atual no parque
-STR_5727    :Qualidade da escala
+STR_5727    :Qualidade da escala:
 STR_5728    :Requer opção de exibição por hardware
 STR_5729    :{SMALLFONT}{BLACK}Requer opção de exibição por hardware
-STR_5730    :Vizinho mais próximo
+STR_5730    :<removed string - do not use>
 STR_5731    :Linear
-STR_5732    :Anisotrópica
-STR_5733    :Usar escala NN em escalas inteiras
+STR_5732    :<removed string - do not use>
+STR_5733    :<removed string - do not use>
 # tooltip for tab in options window
 STR_5734    :{SMALLFONT}{BLACK}Renderizando
 STR_5735    :Estado da Rede
@@ -4125,11 +4123,11 @@ STR_5814    :{WINDOW_COLOUR_1}{OPENQUOTES}{STRING}{ENDQUOTES}
 #tooltips
 STR_5815    :{SMALLFONT}{BLACK}Mostra o contador de FPS dentro do jogo
 STR_5816    :{SMALLFONT}{BLACK}Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
-STR_5817    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Define o tipo de escala da interface de usuário{NEWLINE}{NEWLINE}Vizinho Mais Próximo é nítido mas causa distorção em números não inteiros.{NEWLINE}Linear e Anisotrópico são suaves mas embaçados.{NEWLINE}Suavizar Vizinho Mais Próximo é nítido mesmo em escalas não inteiras mas podem causar uma pequena queda no desempenho.
-STR_5818    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Usa a escala do vizinho mais próximo{NEWLINE}quando o fator de escala da janela está definido{NEWLINE}com valores integrais (1, 2, 3, etc)
+STR_5817    :{SMALLFONT}{BLACK}Define o tipo de escala da interface de usuário. Requer exibição por hardware para ser usado.{NEWLINE}Escala linear é suave, mas embaçada. Suavizar Vizinho Mais Próximo é nítido, mas podem causar uma pequena queda no desempenho.
+STR_5818    :<removed string - do not use>
 STR_5819    :{SMALLFONT}{BLACK}[Requer exibição por hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
 STR_5820    :{SMALLFONT}{BLACK}Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
-STR_5821    :{SMALLFONT}{BLACK}Muda a cor do marcador de construção enquanto estiver construindo atrações,{NEWLINE}caminhos, lojas, cenário, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Alterna entre dia e noite.{NEWLINE}Ciclo completo leva um mês do jogo
 STR_5823    :{SMALLFONT}{BLACK}Mostra banners em caixa alta (como no RCT1)
 STR_5824    :{SMALLFONT}{BLACK}Desabilita efeitos de raio{NEWLINE}durante uma tempestade
@@ -4151,14 +4149,14 @@ STR_5839    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de pesquisa
 STR_5840    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de trapaças na barra de ferramentas
 STR_5841    :{SMALLFONT}{BLACK}Mostra um botão separado para janela de notícias recentes na barra de ferramentas
 STR_5842    :{SMALLFONT}{BLACK}Ordena os cenários nas abas por suas dificuldades (como no RCT2) ou por suas origens (como no RCT1)
-STR_5843    :{SMALLFONT}{BLACK}Habilita destravamento de cenários (como no RCT1)
+STR_5843    :{SMALLFONT}{BLACK}Habilita destravamento progressivo dos cenários (como no RCT1)
 STR_5844    :{SMALLFONT}{BLACK}Fica conectado em um server multiplayer{NEWLINE}mesmo se uma dessincronização ou erro ocorrer
 STR_5845    :{SMALLFONT}{BLACK}Adiciona um botão para {NEWLINE}ferramentas de debugging na barra de ferramentas.{NEWLINE}Habilita atalho no teclado para console de desenvolvedor
 STR_5846    :{SMALLFONT}{BLACK}Define a frequência que o OpenRCT2 salva automaticamente
 STR_5847    :{SMALLFONT}{BLACK}Seleciona a sequência de parque usada na tela inicial.{NEWLINE}Sequências da tela inicial do RCT1/2 requer a importação dos cenários para funcionar
 STR_5848    :{SMALLFONT}{BLACK}Cria ou gerencia sequências de títulos personalizadas
 STR_5849    :{SMALLFONT}{BLACK}Posiciona automaticamente{NEWLINE}novos funcionários contratados
-STR_5850    :{SMALLFONT}{BLACK}Novos faxineiros contratados aparam{NEWLINE}a grama por padrão (como no RCT1)
+STR_5850    :<not used anymore>
 STR_5851    :{SMALLFONT}{BLACK}Define o intervalo de inspeção padrão{NEWLINE}nas novas atrações construídas
 STR_5852    :{SMALLFONT}{BLACK}Define o nome do canal do TwitchTV que será usado para a integração do Twitch
 STR_5853    :{SMALLFONT}{BLACK}Liga/Desliga os efeitos sonoros
@@ -4205,7 +4203,7 @@ STR_5893    :Taxa de Câmbio
 STR_5894    :Insira a taxa de câmbio
 STR_5895    :Salvar pista
 STR_5896    :Falha ao salvar pista!
-STR_5897    :Limite da janela:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Não é possível carregar pista, o arquivo pode estar {newline}corrompido, quebrado ou faltando!
 STR_5899    :Alternar janela de depuração de pintura
 STR_5900    :Usar código original de desenho
@@ -4469,6 +4467,36 @@ STR_6157    :Console
 STR_6158    :Falha ao carregar este arquivo...{NEWLINE}Versão do RCTC incompatível: {COMMA16}
 STR_6159    :Suavizar Vizinho Mais Próximo
 STR_6160    :{WINDOW_COLOUR_2}Veículos disponíveis: {BLACK}{STRING}
+STR_6161    :Alternar exibição de grade
+STR_6162    :Rato Maluco Giratório
+STR_6163    :Carros no formato de rato correm por curvas fechadas e pequenas quedas, girando suavemente para desorientar os passageiros
+STR_6164    :{WHITE}{CROSS}
+STR_6165    :Usar sincronização vertical
+STR_6166    :{SMALLFONT}{BLACK}Sincroniza cada quadro mostrado com a taxa de atualização do monitor, previnindo cortes na tela.
+STR_6167    :{SMALLFONT}{BLACK}Avançado
+STR_6168    :Sequência de Título
+STR_6169    :Seleção de Cenários
+STR_6170    :Melhoras
+STR_6171    :Procurar
+STR_6172    :{SMALLFONT}{BLACK}Procura
+STR_6173    :Por favor forneça um nome para pesquisar:
+STR_6174    :Carregar Save
+STR_6175    :Carregar Cenário
+STR_6176    :Cenário para carregar:
+STR_6177    :Carregar{MOVE_X}{87}Nenhum cenário selecionado
+STR_6178    :Carregar{MOVE_X}{87}{RED}Cenário faltando
+STR_6179    :Selecionar
+STR_6180    :Nenhum cenário selecionado
+STR_6181    :{RED}Cenário faltando
+STR_6182    :Seguir{MOVE_X}{87}{STRING}
+STR_6183    :Seguir{MOVE_X}{87}Nenhum sprite selecionado
+STR_6184    :Seguir Sprite
+STR_6185    :Selecionar Sprite
+STR_6186    :Nenhum sprite selecionado
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vômito
+STR_6189    :Duck
+STR_6190    :{SMALLFONT}{BLACK}Você não pode selecionar um sprite enquanto a tela principal está ativa.
 
 #############
 # Scenarios #

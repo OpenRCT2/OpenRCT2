@@ -4483,6 +4483,15 @@ STR_6178    :Load{MOVE_X}{87}{RED}Ontbrekend scenario
 STR_6179    :Selecteren
 STR_6180    :Geen scenario geselecteerd
 STR_6181    :{RED}Ontbrekend scenario
+STR_6182    :Volg{MOVE_X}{87}{STRING}
+STR_6183    :Volg{MOVE_X}{87}Geen sprite geselecteerd
+STR_6184    :Sprite volgen
+STR_6185    :Sprite selecteren
+STR_6186    :Geen sprite geselecteerd
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Braaksel
+STR_6189    :Eend
+STR_6190    :{SMALLFONT}{BLACK}Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
 
 #############
 # Scenarios #
