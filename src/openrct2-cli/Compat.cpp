@@ -1,0 +1,10 @@
+void widget_scroll_update_thumbs(){ }
+void widget_draw(){ }
+void widget_is_enabled(){ }
+void widget_is_disabled(){ }
+void widget_is_pressed(){ }
+void widget_is_highlighted(){ }
+void widget_is_active_tool(){ }
+void widget_scroll_get_part(){ }
+void widget_set_enabled(){ }
+void widget_set_checkbox_value(){ }
