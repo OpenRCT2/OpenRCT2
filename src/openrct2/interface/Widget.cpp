@@ -32,7 +32,7 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
 static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
-static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
+static void widget_text_centred(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
@@ -141,7 +141,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
         widget_text_button(dpi, w, widgetIndex);
         break;
     case WWT_LABEL_CENTRED:
-        widget_text_unknown(dpi, w, widgetIndex);
+        widget_text_centred(dpi, w, widgetIndex);
         break;
     case WWT_LABEL:
         widget_text(dpi, w, widgetIndex);
@@ -376,58 +376,50 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
     uint8 press = widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
     gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
 
-    // Text
-    widget_text_unknown(dpi, w, widgetIndex);
+    // Button caption
+    if (widget->type != WWT_TABLE_HEADER)
+    {
+        widget_text_centred(dpi, w, widgetIndex);
+    }
+    else
+    {
+        widget_text(dpi, w, widgetIndex);
+    }
 }
 
 /**
  *
  *  rct2: 0x006EBC41
  */
-static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex)
+static void widget_text_centred(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex)
 {
     // Get the widget
     rct_widget *widget = &w->widgets[widgetIndex];
 
     // Get the colour
     uint8 colour = w->colours[widget->colour];
-    // do not use widget colour as this is already used as background for the text_button
-    // colour = 2;
+
+    if (widget->text == STR_NONE)
+        return;
+
+    colour &= ~(COLOUR_FLAG_TRANSLUCENT);
+    if (widget_is_disabled(w, widgetIndex))
+        colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
     sint32 l = w->x + widget->left;
+    sint32 r = w->x + widget->right;
     sint32 t = w->y + widget->top;
 
-    rct_string_id stringId = widget->text;
-    if (stringId == STR_NONE)
-        return;
-
-    if (widget->type == WWT_TABLE_HEADER) {
-        if (widget_is_disabled(w, widgetIndex))
-            colour |= COLOUR_FLAG_INSET;
-        gfx_draw_string_left_clipped(
-            dpi,
-            stringId,
-            gCommonFormatArgs,
-            colour,
-            l + 1,
-            t,
-            widget->right - widget->left - 2
-        );
-    } else {
-        colour &= ~(COLOUR_FLAG_TRANSLUCENT);
-        if (widget_is_disabled(w, widgetIndex))
-            colour |= COLOUR_FLAG_INSET;
-        gfx_draw_string_centred_clipped(
-            dpi,
-            stringId,
-            gCommonFormatArgs,
-            colour,
-            (w->x + w->x + widget->left + widget->right + 1) / 2 - 1,
-            t,
-            widget->right - widget->left - 2
-        );
-    }
+    gfx_draw_string_centred_clipped(
+        dpi,
+        widget->text,
+        gCommonFormatArgs,
+        colour,
+        (l + r + 1) / 2 - 1,
+        t,
+        widget->right - widget->left - 2
+    );
 }
 
 /**
