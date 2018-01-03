@@ -19,7 +19,7 @@
 #include "../localisation/date.h"
 #include "../OpenRCT2.h"
 #include "../world/footpath.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "Ride.h"
 #include "ride_data.h"
 #include "ride_ratings.h"

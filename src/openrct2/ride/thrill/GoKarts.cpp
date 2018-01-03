@@ -18,7 +18,7 @@
 #include "../../interface/viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../Track.h"
 #include "../track_paint.h"
 #include "../vehicle_paint.h"

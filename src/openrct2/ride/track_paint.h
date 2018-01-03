@@ -21,7 +21,7 @@
 #include "../common.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../paint/Paint.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 
 #ifdef __cplusplus
 extern "C" {

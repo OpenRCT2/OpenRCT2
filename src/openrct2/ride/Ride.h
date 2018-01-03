@@ -21,7 +21,7 @@
 #include "../peep/Peep.h"
 #include "../rct12.h"
 #include "../rct2.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "ride_ratings.h"
 #include "Vehicle.h"
 

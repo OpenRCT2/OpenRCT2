@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "Ride.h"
 
 #ifdef __cplusplus

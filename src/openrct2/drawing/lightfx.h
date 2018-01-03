@@ -20,7 +20,7 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include "../common.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "drawing.h"
 
 enum LIGHTFX_LIGHT_TYPE {

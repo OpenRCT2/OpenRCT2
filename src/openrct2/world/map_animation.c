@@ -20,7 +20,7 @@
 #include "../ride/Track.h"
 #include "../interface/viewport.h"
 #include "map_animation.h"
-#include "map.h"
+#include "Map.h"
 #include "scenery.h"
 #include "SmallScenery.h"
 #include "sprite.h"

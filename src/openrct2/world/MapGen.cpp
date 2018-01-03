@@ -29,7 +29,7 @@
 #include "../object/Object.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "map.h"
+#include "Map.h"
 #include "map_helpers.h"
 #include "MapGen.h"
 #include "scenery.h"

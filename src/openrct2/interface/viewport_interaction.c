@@ -27,7 +27,7 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/footpath.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/scenery.h"
 #include "../world/LargeScenery.h"
 #include "../world/sprite.h"

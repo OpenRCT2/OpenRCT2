@@ -39,7 +39,7 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"

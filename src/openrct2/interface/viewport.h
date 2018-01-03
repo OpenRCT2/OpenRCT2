@@ -17,7 +17,7 @@
 #ifndef _VIEWPORT_H_
 #define _VIEWPORT_H_
 
-#include "../world/map.h"
+#include "../world/Map.h"
 #include "../world/sprite.h"
 #include "../paint/Paint.h"
 #include "window.h"

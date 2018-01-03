@@ -19,7 +19,7 @@
 #include "../Game.h"
 #include "../scenario/Scenario.h"
 #include "footpath.h"
-#include "map.h"
+#include "Map.h"
 #include "scenery.h"
 #include "sprite.h"
 

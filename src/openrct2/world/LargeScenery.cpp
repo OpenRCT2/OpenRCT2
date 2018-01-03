@@ -16,7 +16,7 @@
 
 #include "../common.h"
 #include "LargeScenery.h"
-#include "map.h"
+#include "Map.h"
 
 extern "C"
 {

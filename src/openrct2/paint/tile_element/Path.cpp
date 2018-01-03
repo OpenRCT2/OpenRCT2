@@ -28,7 +28,7 @@
 #include "../Supports.h"
 #include "TileElement.h"
 #include "Surface.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../../drawing/lightfx.h"
 
 const uint8 byte_98D800[] = {

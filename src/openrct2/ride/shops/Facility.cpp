@@ -18,7 +18,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 #include "../Track.h"
 #include "../track_paint.h"
 

@@ -18,7 +18,7 @@
 #define _PAINT_TILE_ELEMENT_H
 
 #include "../../common.h"
-#include "../../world/map.h"
+#include "../../world/Map.h"
 
 typedef struct paint_session paint_session;
 

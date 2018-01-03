@@ -18,6 +18,8 @@
 #include "../Cheats.h"
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/Cursors.h"
 #include "../interface/window.h"
@@ -36,7 +38,7 @@
 #include "Climate.h"
 #include "footpath.h"
 #include "LargeScenery.h"
-#include "map.h"
+#include "Map.h"
 #include "map_animation.h"
 #include "Park.h"
 #include "scenery.h"
@@ -934,9 +936,9 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
 
     rct_scenery_entry* scenery_entry = get_large_scenery_entry(scenery_large_get_type(tile_element));
     LocationXYZ16 firstTile = {
-        .x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-        .y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-        .z = (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset
+        scenery_entry->large_scenery.tiles[tileIndex].x_offset,
+        scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+        static_cast<sint16>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
     };
 
     rotate_map_coordinates(&firstTile.x, &firstTile.y, tile_element_direction);
@@ -948,9 +950,9 @@ void game_command_remove_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, si
     for (sint32 i = 0; scenery_entry->large_scenery.tiles[i].x_offset != -1; i++){
 
         LocationXYZ16 currentTile = {
-            .x = scenery_entry->large_scenery.tiles[i].x_offset,
-            .y = scenery_entry->large_scenery.tiles[i].y_offset,
-            .z = scenery_entry->large_scenery.tiles[i].z_offset
+            scenery_entry->large_scenery.tiles[i].x_offset,
+            scenery_entry->large_scenery.tiles[i].y_offset,
+            scenery_entry->large_scenery.tiles[i].z_offset
         };
 
         rotate_map_coordinates(&currentTile.x, &currentTile.y, tile_element_direction);
@@ -1058,9 +1060,9 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
 
     // Work out the base tile coordinates (Tile with index 0)
     LocationXYZ16 baseTile = {
-        .x = scenery_entry->large_scenery.tiles[tileIndex].x_offset,
-        .y = scenery_entry->large_scenery.tiles[tileIndex].y_offset,
-        .z = (base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset
+        scenery_entry->large_scenery.tiles[tileIndex].x_offset,
+        scenery_entry->large_scenery.tiles[tileIndex].y_offset,
+        static_cast<sint16>((base_height * 8) - scenery_entry->large_scenery.tiles[tileIndex].z_offset)
     };
     rotate_map_coordinates(&baseTile.x, &baseTile.y, tile_element_direction);
     baseTile.x = x - baseTile.x;
@@ -1071,9 +1073,9 @@ void game_command_set_large_scenery_colour(sint32* eax, sint32* ebx, sint32* ecx
 
         // Work out the current tile coordinates
         LocationXYZ16 currentTile = {
-            .x = scenery_entry->large_scenery.tiles[i].x_offset,
-            .y = scenery_entry->large_scenery.tiles[i].y_offset,
-            .z = scenery_entry->large_scenery.tiles[i].z_offset
+            scenery_entry->large_scenery.tiles[i].x_offset,
+            scenery_entry->large_scenery.tiles[i].y_offset,
+            scenery_entry->large_scenery.tiles[i].z_offset
         };
         rotate_map_coordinates(&currentTile.x, &currentTile.y, tile_element_direction);
         currentTile.x += baseTile.x;
@@ -1232,10 +1234,10 @@ money32 map_clear_scenery(sint32 x0, sint32 y0, sint32 x1, sint32 y1, sint32 cle
     gCommandPosition.y = y;
     gCommandPosition.z = z;
 
-    x0 = max(x0, 32);
-    y0 = max(y0, 32);
-    x1 = min(x1, gMapSizeMaxXY);
-    y1 = min(y1, gMapSizeMaxXY);
+    x0 = std::max(x0, 32);
+    y0 = std::max(y0, 32);
+    x1 = std::min(x1, (sint32)gMapSizeMaxXY);
+    y1 = std::min(y1, (sint32)gMapSizeMaxXY);
 
     noValidTiles = true;
     totalCost = 0;
@@ -1292,10 +1294,10 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
 {
     gCommandExpenditureType = RCT_EXPENDITURE_TYPE_LANDSCAPING;
 
-    x0 = max(x0, 32);
-    y0 = max(y0, 32);
-    x1 = min(x1, gMapSizeMaxXY);
-    y1 = min(y1, gMapSizeMaxXY);
+    x0 = std::max(x0, 32);
+    y0 = std::max(y0, 32);
+    x1 = std::min(x1, (sint32)gMapSizeMaxXY);
+    y1 = std::min(y1, (sint32)gMapSizeMaxXY);
 
     sint32 xMid, yMid;
 
@@ -1343,7 +1345,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                     // Prevent network-originated value of surfaceStyle from causing
                     // invalid access.
                     uint8 style = surfaceStyle & 0x1F;
-                    if (style >= countof(TerrainPricing)) {
+                    if (style >= Util::CountOf(TerrainPricing)) {
                         return MONEY32_UNDEFINED;
                     }
                     surfaceCost += TerrainPricing[style];
@@ -1738,18 +1740,18 @@ static money32 map_set_land_ownership(uint8 flags, sint16 x1, sint16 y1, sint16 
         return 0;
 
     // Clamp to maximum addressable element to prevent long loop spamming the log
-    x1 = clamp(32, x1, gMapSizeUnits - 32);
-    y1 = clamp(32, y1, gMapSizeUnits - 32);
-    x2 = clamp(32, x2, gMapSizeUnits - 32);
-    y2 = clamp(32, y2, gMapSizeUnits - 32);
+    x1 = Math::Clamp(32, (sint32)x1, gMapSizeUnits - 32);
+    y1 = Math::Clamp(32, (sint32)y1, gMapSizeUnits - 32);
+    x2 = Math::Clamp(32, (sint32)x2, gMapSizeUnits - 32);
+    y2 = Math::Clamp(32, (sint32)y2, gMapSizeUnits - 32);
     gMapLandRightsUpdateSuccess = false;
     map_buy_land_rights(x1, y1, x2, y2, BUY_LAND_RIGHTS_FLAG_SET_OWNERSHIP_WITH_CHECKS, flags | (newOwnership << 8));
 
     if (!gMapLandRightsUpdateSuccess)
         return 0;
 
-    sint16 x = clamp(32, x1, gMapSizeUnits - 32);
-    sint16 y = clamp(32, y1, gMapSizeUnits - 32);
+    sint16 x = Math::Clamp(32, (sint32)x1, gMapSizeUnits - 32);
+    sint16 y = Math::Clamp(32, (sint32)y1, gMapSizeUnits - 32);
 
     x += 16;
     y += 16;
@@ -1783,10 +1785,10 @@ void game_command_set_land_ownership(sint32 *eax, sint32 *ebx, sint32 *ecx, sint
 
 static uint8 map_get_lowest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, sint32 yMax)
 {
-    xMin = max(xMin, 32);
-    yMin = max(yMin, 32);
-    xMax = min(xMax, gMapSizeMaxXY);
-    yMax = min(yMax, gMapSizeMaxXY);
+    xMin = std::max(xMin, 32);
+    yMin = std::max(yMin, 32);
+    xMax = std::min(xMax, (sint32)gMapSizeMaxXY);
+    yMax = std::min(yMax, (sint32)gMapSizeMaxXY);
 
     uint8 min_height = 0xFF;
     for (sint32 yi = yMin; yi <= yMax; yi += 32) {
@@ -1802,10 +1804,10 @@ static uint8 map_get_lowest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, s
 
 static uint8 map_get_highest_land_height(sint32 xMin, sint32 xMax, sint32 yMin, sint32 yMax)
 {
-    xMin = max(xMin, 32);
-    yMin = max(yMin, 32);
-    xMax = min(xMax, gMapSizeMaxXY);
-    yMax = min(yMax, gMapSizeMaxXY);
+    xMin = std::max(xMin, 32);
+    yMin = std::max(yMin, 32);
+    xMax = std::min(xMax, (sint32)gMapSizeMaxXY);
+    yMax = std::min(yMax, (sint32)gMapSizeMaxXY);
 
     uint8 max_height = 0;
     for (sint32 yi = yMin; yi <= yMax; yi += 32) {
@@ -1829,7 +1831,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
 {
     money32 cost = 0;
 
-    if (selectionType < 0 || selectionType >= countof(tile_element_raise_styles))
+    if (selectionType < 0 || selectionType >= (sint32)Util::CountOf(tile_element_raise_styles))
     {
         log_warning("Invalid selection type %d for raising land", selectionType);
         return MONEY32_UNDEFINED;
@@ -1936,10 +1938,10 @@ money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     uint8 max_height = 0xFF;
 
-    x0 = max(x0, 32);
-    y0 = max(y0, 32);
-    x1 = min(x1, gMapSizeMaxXY);
-    y1 = min(y1, gMapSizeMaxXY);
+    x0 = std::max(x0, (sint16)32);
+    y0 = std::max(y0, (sint16)32);
+    x1 = std::min(x1, gMapSizeMaxXY);
+    y1 = std::min(y1, gMapSizeMaxXY);
 
     for (sint32 yi = y0; yi <= y1; yi += 32) {
         for (sint32 xi = x0; xi <= x1; xi += 32) {
@@ -2017,10 +2019,10 @@ money32 lower_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
 
     uint8 min_height = 0;
 
-    x0 = max(x0, 32);
-    y0 = max(y0, 32);
-    x1 = min(x1, gMapSizeMaxXY);
-    y1 = min(y1, gMapSizeMaxXY);
+    x0 = std::max(x0, (sint16)32);
+    y0 = std::max(y0, (sint16)32);
+    x1 = std::min(x1, gMapSizeMaxXY);
+    y1 = std::min(y1, gMapSizeMaxXY);
 
     for (sint32 yi = y0; yi <= y1; yi += 32){
         for (sint32 xi = x0; xi <= x1; xi += 32){
@@ -2329,10 +2331,10 @@ static money32 smooth_land_row_by_corner(sint32 flags, sint32 x, sint32 y, sint3
 static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 mapLeft, sint32 mapTop, sint32 mapRight, sint32 mapBottom, sint32 command)
 {
     // Cap bounds to map
-    mapLeft = max(mapLeft, 32);
-    mapTop = max(mapTop, 32);
-    mapRight = clamp(0, mapRight, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
-    mapBottom = clamp(0, mapBottom, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    mapLeft = std::max(mapLeft, 32);
+    mapTop = std::max(mapTop, 32);
+    mapRight = Math::Clamp(0, mapRight, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
+    mapBottom = Math::Clamp(0, mapBottom, (MAXIMUM_MAP_SIZE_TECHNICAL - 1) * 32);
 
     bool raiseLand = command < 0x7FFF;
     sint32 commandType = raiseLand ? GAME_COMMAND_RAISE_LAND : GAME_COMMAND_LOWER_LAND;
@@ -2408,16 +2410,16 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     // Then do the smoothing
     if (fullTile) {
         // Smooth the corners
-        sint32 z = clamp(minHeight, tile_element_get_corner_height(tileElement, 2), maxHeight);
+        sint32 z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 2), maxHeight);
         totalCost += smooth_land_row_by_corner(flags, mapLeft, mapTop, z, -32, -32, 0, 2, raiseLand);
         tileElement = map_get_surface_element_at(mapLeft >> 5, mapBottom >> 5);
-        z = clamp(minHeight, tile_element_get_corner_height(tileElement, 3), maxHeight);
+        z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 3), maxHeight);
         totalCost += smooth_land_row_by_corner(flags, mapLeft, mapBottom, z, -32, 32, 1, 3, raiseLand);
         tileElement = map_get_surface_element_at(mapRight >> 5, mapBottom >> 5);
-        z = clamp(minHeight, tile_element_get_corner_height(tileElement, 0), maxHeight);
+        z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 0), maxHeight);
         totalCost += smooth_land_row_by_corner(flags, mapRight, mapBottom, z, 32, 32, 2, 0, raiseLand);
         tileElement = map_get_surface_element_at(mapRight >> 5, mapTop >> 5);
-        z = clamp(minHeight, tile_element_get_corner_height(tileElement, 1), maxHeight);
+        z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 1), maxHeight);
         totalCost += smooth_land_row_by_corner(flags, mapRight, mapTop, z, 32, -32, 3, 1, raiseLand);
 
         // Smooth the edges
@@ -2426,32 +2428,32 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
         for (y = mapTop; y <= mapBottom; y += 32)
         {
             tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, tile_element_get_corner_height(tileElement, 3), maxHeight);
-            z2 = clamp(minHeight, tile_element_get_corner_height(tileElement, 2), maxHeight);
+            z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 3), maxHeight);
+            z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, -32, 0, 0, 1, 3, 2, raiseLand);
         }
         x = mapRight;
         for (y = mapTop; y <= mapBottom; y += 32)
         {
             tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, tile_element_get_corner_height(tileElement, 1), maxHeight);
-            z2 = clamp(minHeight, tile_element_get_corner_height(tileElement, 0), maxHeight);
+            z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 1), maxHeight);
+            z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 0), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 32, 0, 2, 3, 1, 0, raiseLand);
         }
         y = mapTop;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
             tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, tile_element_get_corner_height(tileElement, 1), maxHeight);
-            z2 = clamp(minHeight, tile_element_get_corner_height(tileElement, 2), maxHeight);
+            z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 1), maxHeight);
+            z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 2), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, -32, 0, 3, 1, 2, raiseLand);
         }
         y = mapBottom;
         for (x = mapLeft; x <= mapRight; x += 32)
         {
             tileElement = map_get_surface_element_at(x >> 5, y >> 5);
-            z = clamp(minHeight, tile_element_get_corner_height(tileElement, 0), maxHeight);
-            z2 = clamp(minHeight, tile_element_get_corner_height(tileElement, 3), maxHeight);
+            z = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 0), maxHeight);
+            z2 = Math::Clamp(minHeight, (uint8)tile_element_get_corner_height(tileElement, 3), maxHeight);
             totalCost += smooth_land_row_by_edge(flags, x, y, z, z2, 0, 32, 1, 2, 0, 3, raiseLand);
         }
     }
@@ -2733,15 +2735,15 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
     }
 
     uint32 num_elements = 0;
-    sint16 maxHeight = 0xFFFF;
+    sint16 maxHeight = -1;
     for (rct_large_scenery_tile* tile = scenery_entry->large_scenery.tiles;
         tile->x_offset != -1;
         tile++) {
         num_elements++;
 
         LocationXY16 curTile = {
-            .x = tile->x_offset,
-            .y = tile->y_offset
+            tile->x_offset,
+            tile->y_offset
         };
 
         rotate_map_coordinates(&curTile.x, &curTile.y, rotation);
@@ -2790,8 +2792,8 @@ void game_command_place_large_scenery(sint32* eax, sint32* ebx, sint32* ecx, sin
         tile++, tile_num++) {
 
         LocationXY16 curTile = {
-            .x = tile->x_offset,
-            .y = tile->y_offset
+            tile->x_offset,
+            tile->y_offset
         };
 
         rotate_map_coordinates(&curTile.x, &curTile.y, rotation);
@@ -3044,7 +3046,7 @@ void map_reorganise_elements()
 {
     context_setcurrentcursor(CURSOR_ZZZ);
 
-    rct_tile_element* new_tile_elements = malloc(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(rct_tile_element));
+    rct_tile_element* new_tile_elements = (rct_tile_element *)malloc(3 * (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) * sizeof(rct_tile_element));
     rct_tile_element* new_elements_pointer = new_tile_elements;
 
     if (new_tile_elements == NULL) {
@@ -3246,6 +3248,10 @@ void map_obstruction_set_error_text(rct_tile_element *tileElement)
  */
 sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 zHigh, CLEAR_FUNC *clearFunc, uint8 bl, uint8 flags, money32 *price, uint8 crossingMode)
 {
+    sint32 al, ah, bh, cl, ch, water_height;
+    al = ah = bh = cl = ch = water_height = 0;
+    uint8 slope = 0;
+    
     gMapGroundFlags = ELEMENT_IS_ABOVE_GROUND;
     bool canBuildCrossing = false;
     if (x >= gMapSizeUnits || y >= gMapSizeUnits || x < 32 || y < 32) {
@@ -3262,7 +3268,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
             }
             continue;
         }
-        sint32 water_height = map_get_water_height(tile_element) * 2;
+        water_height = map_get_water_height(tile_element) * 2;
         if (water_height && water_height > zLow && tile_element->base_height < zHigh && !gCheatsDisableClearanceChecks) {
             gMapGroundFlags |= ELEMENT_IS_UNDERWATER;
             if (water_height < zHigh) {
@@ -3271,7 +3277,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
         }
         loc_68B9B7:
         if (gParkFlags & PARK_FLAGS_FORBID_HIGH_CONSTRUCTION) {
-            sint32 al = zHigh - tile_element->base_height;
+            al = zHigh - tile_element->base_height;
             if (al >= 0) {
                 if (al > 18) {
                     gGameCommandErrorText = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
@@ -3294,11 +3300,11 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 gMapGroundFlags |= ELEMENT_IS_UNDERGROUND;
                 gMapGroundFlags &= ~ELEMENT_IS_ABOVE_GROUND;
             } else {
-                sint32 al = tile_element->base_height;
-                sint32 ah = al;
-                sint32 cl = al;
-                sint32 ch = al;
-                uint8 slope = tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
+                al = tile_element->base_height;
+                ah = al;
+                cl = al;
+                ch = al;
+                slope = tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
                 if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) {
                     al += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
@@ -3319,7 +3325,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                     if (slope == (TILE_ELEMENT_SLOPE_E_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
                         ch += 2;
                 }
-                sint32 bh = zLow + 4;
+                bh = zLow + 4;
                 if ((!(bl & 1) || ((bl & 0x10 || zLow >= al) && bh >= al)) &&
                     (!(bl & 2) || ((bl & 0x20 || zLow >= ah) && bh >= ah)) &&
                     (!(bl & 4) || ((bl & 0x40 || zLow >= cl) && bh >= cl)) &&
@@ -3780,7 +3786,7 @@ sint32 map_get_highest_z(sint32 tileX, sint32 tileY)
     if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) != 0)
         z += 16;
 
-    z = max(z, map_get_water_height(tileElement) * 16);
+    z = std::max(z, map_get_water_height(tileElement) * 16);
     return z;
 }
 
@@ -4203,7 +4209,7 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
     if (nameChunkOffset < 0)
         nameChunkOffset = 2;
     nameChunkOffset *= 12;
-    nameChunkOffset = min(nameChunkOffset, countof(newName) - 12);
+    nameChunkOffset = std::min(nameChunkOffset, (sint32)Util::CountOf(newName) - 12);
     memcpy(newName + nameChunkOffset + 0, edx, 4);
     memcpy(newName + nameChunkOffset + 4, ebp, 4);
     memcpy(newName + nameChunkOffset + 8, edi, 4);
@@ -4254,7 +4260,7 @@ void game_command_set_sign_name(sint32* eax, sint32* ebx, sint32* ecx, sint32* e
 
 void game_command_set_sign_style(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp) {
     uint8 bannerId = *ecx & 0xFF;
-    if (bannerId > countof(gBanners)) {
+    if (bannerId > Util::CountOf(gBanners)) {
         log_warning("Invalid game command for setting sign style, banner id = %d", bannerId);
         *ebx = MONEY32_UNDEFINED;
         return;
@@ -4336,7 +4342,7 @@ void game_command_modify_tile(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx
     const sint32 flags = *ebx;
     const sint32 x = *ecx & 0xFF;
     const sint32 y = (*ecx >> 8) & 0xFF;
-    const tile_inspector_instruction instruction = *eax;
+    const tile_inspector_instruction instruction = (const tile_inspector_instruction)*eax;
 
     switch (instruction)
     {
