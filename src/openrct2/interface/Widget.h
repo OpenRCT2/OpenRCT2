@@ -40,8 +40,7 @@ typedef enum {
     WWT_CLOSEBOX = 21,
     WWT_SCROLL = 22,
     WWT_CHECKBOX = 23,
-    WWT_24,
-    WWT_25,
+    WWT_25 = 25,
     WWT_TEXT_BOX = 27,
     WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;

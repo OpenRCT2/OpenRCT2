@@ -117,6 +117,8 @@ void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index)
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex)
 {
     switch (w->widgets[widgetIndex].type) {
+    case WWT_EMPTY:
+        break;
     case WWT_FRAME:
         widget_frame_draw(dpi, w, widgetIndex);
         break;
@@ -162,7 +164,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
         widget_scroll_draw(dpi, w, widgetIndex);
         break;
     case WWT_CHECKBOX:
-    case WWT_24:
         widget_checkbox_draw(dpi, w, widgetIndex);
         break;
     case WWT_25:
@@ -641,15 +642,13 @@ static void widget_checkbox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
     // Get the colour
     uint8 colour = w->colours[widget->colour];
 
-    if (widget->type != WWT_24) {
-        // checkbox
-        gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
+    // checkbox
+    gfx_fill_rect_inset(dpi, l, yMid - 5, l + 9, yMid + 4, colour, INSET_RECT_F_60);
 
-        // fill it when checkbox is pressed
-        if (widget_is_pressed(w, widgetIndex)) {
-            gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-            gfx_draw_string(dpi, (char*)CheckBoxMarkString, NOT_TRANSLUCENT(colour), l, yMid - 5);
-        }
+    // fill it when checkbox is pressed
+    if (widget_is_pressed(w, widgetIndex)) {
+        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
+        gfx_draw_string(dpi, (char*)CheckBoxMarkString, NOT_TRANSLUCENT(colour), l, yMid - 5);
     }
 
     // draw the text

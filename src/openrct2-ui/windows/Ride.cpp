@@ -268,13 +268,13 @@ static rct_widget window_ride_operating_widgets[] = {
     { WWT_BUTTON,           1,  297,    307,    155,    159,    STR_NUMERIC_UP,                             STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    160,    164,    STR_NUMERIC_DOWN,                           STR_NONE                                        },
     { WWT_CHECKBOX,         1,  7,      308,    169,    180,    STR_SYNCHRONISE_WITH_ADJACENT_STATIONS,     STR_SYNCHRONISE_WITH_ADJACENT_STATIONS_TIP      },
-    { WWT_24,               1,  7,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
-    { WWT_24,               1,  7,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
+    { WWT_LABEL,            1, 21,      149,    61,     72,     0xFFFFFFFF,                                 STR_NONE                                        },
+    { WWT_LABEL,            1, 21,      149,    75,     86,     STR_LIFT_HILL_CHAIN_SPEED,                  STR_NONE                                        },
     { WWT_DROPDOWN,         1,  7,      308,    47,     58,     0xFFFFFFFF,                                 STR_SELECT_OPERATING_MODE                       },
     { WWT_BUTTON,           1,  297,    307,    48,     57,     STR_DROPDOWN_GLYPH,                         STR_SELECT_OPERATING_MODE                       },
     { WWT_DROPDOWN,         1,  87,     308,    109,    120,    0xFFFFFFFF,                                 STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    110,    119,    STR_DROPDOWN_GLYPH,                         STR_NONE                                        },
-    { WWT_24,               1,  7,      149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
+    { WWT_LABEL,            1,  21,     149,    89,     100,    STR_NUMBER_OF_CIRCUITS,                     STR_NUMBER_OF_CIRCUITS_TIP                      },
     { WWT_SPINNER,          1,  157,    308,    89,     100,    STR_NUMBER_OF_CIRCUITS_VALUE,               STR_NONE                                        },
     { WWT_BUTTON,           1,  297,    307,    90,     94,     STR_NUMERIC_UP,                             STR_SELECT_NUMBER_OF_CIRCUITS_TIP               },
     { WWT_BUTTON,           1,  297,    307,    95,     99,     STR_NUMERIC_DOWN,                           STR_SELECT_NUMBER_OF_CIRCUITS_TIP               },
@@ -351,12 +351,12 @@ static rct_widget window_ride_graphs_widgets[] = {
 // 0x009AE844
 static rct_widget window_ride_income_widgets[] = {
     MAIN_RIDE_WIDGETS,
-    { WWT_24,               1,  5,      144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
+    { WWT_LABEL,            1,  19,     144,    50,     61,     0xFFFFFFFF,                                 STR_NONE                                                    },
     { WWT_SPINNER,          1,  147,    308,    50,     61,     STR_ARG_6_CURRENCY2DP,                      STR_NONE                                                    },
     { WWT_BUTTON,           1,  297,    307,    51,     55,     STR_NUMERIC_UP,                             STR_NONE                                                    },
     { WWT_BUTTON,           1,  297,    307,    56,     60,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },
     { WWT_CHECKBOX,         1,  5,      310,    61,     72,     STR_SAME_PRICE_THROUGHOUT_PARK,             STR_SAME_PRICE_THROUGHOUT_PARK_TIP                          },
-    { WWT_24,               1,  5,      144,    89,     100,    0xFFFFFFFF,                                 STR_NONE                                                    },
+    { WWT_LABEL,            1,  19,      144,    89,     100,    0xFFFFFFFF,                                 STR_NONE                                                    },
     { WWT_SPINNER,          1,  147,    308,    89,     100,    STR_RIDE_SECONDARY_PRICE_VALUE,             STR_NONE                                                    },
     { WWT_BUTTON,           1,  297,    307,    90,     94,     STR_NUMERIC_UP,                             STR_NONE                                                    },
     { WWT_BUTTON,           1,  297,    307,    95,     99,     STR_NUMERIC_DOWN,                           STR_NONE                                                    },
@@ -3389,7 +3389,7 @@ static void window_ride_operating_invalidate(rct_window *w)
     // Lift hill speed
     if ((rideEntry->enabledTrackPieces & (1ULL << TRACK_LIFT_HILL)) &&
             track_piece_is_available_for_ride_type(ride->type, TRACK_LIFT_HILL)) {
-        window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_24;
+        window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_LIFT_HILL_SPEED_DECREASE].type = WWT_BUTTON;
@@ -3403,7 +3403,7 @@ static void window_ride_operating_invalidate(rct_window *w)
 
     // Number of circuits
     if (ride_can_have_multiple_circuits(ride)) {
-        window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_24;
+        window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS].type = WWT_SPINNER;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE].type = WWT_BUTTON;
         window_ride_operating_widgets[WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE].type = WWT_BUTTON;
@@ -3549,7 +3549,7 @@ static void window_ride_operating_invalidate(rct_window *w)
             set_format_arg(18, uint16, arg * 3);
         }
 
-        window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_24;
+        window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WWT_LABEL;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].text = caption;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].tooltip = tooltip;
         window_ride_operating_widgets[WIDX_MODE_TWEAK].type = WWT_SPINNER;
@@ -6093,7 +6093,7 @@ static void window_ride_income_invalidate(rct_window *w)
             w->pressed_widgets |= (1 << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK);
 
         // Show widgets
-        window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_24;
+        window_ride_income_widgets[WIDX_SECONDARY_PRICE_LABEL].type = WWT_LABEL;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE].type = WWT_SPINNER;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_INCREASE].type = WWT_BUTTON;
         window_ride_income_widgets[WIDX_SECONDARY_PRICE_DECREASE].type = WWT_BUTTON;
