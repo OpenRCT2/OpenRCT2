@@ -727,6 +727,12 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
         if (strcmp(argv[0], "park_rating") == 0) {
             console_printf("park_rating %d", gParkRating);
         }
+        if (strcmp(argv[0], "park_value") == 0) {
+            console_printf("park_value %d", gParkValue);
+        }
+        if (strcmp(argv[0], "company_value") == 0) {
+            console_printf("company_value %d", gCompanyValue);
+        }
         else if (strcmp(argv[0], "money") == 0) {
             console_printf("money %d.%d0", gCash / 10, gCash % 10);
         }
@@ -1326,6 +1332,8 @@ typedef struct console_command {
 
 static const utf8* console_variable_table[] = {
     "park_rating",
+    "park_value",
+    "company_value",
     "money",
     "scenario_initial_cash",
     "current_loan",
