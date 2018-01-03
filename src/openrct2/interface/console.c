@@ -728,10 +728,10 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
             console_printf("park_rating %d", gParkRating);
         }
         else if (strcmp(argv[0], "park_value") == 0) {
-            console_printf("park_value %d", gParkValue);
+            console_printf("park_value %d", gParkValue / 10);
         }
         else if (strcmp(argv[0], "company_value") == 0) {
-            console_printf("company_value %d", gCompanyValue);
+            console_printf("company_value %d", gCompanyValue / 10);
         }
         else if (strcmp(argv[0], "money") == 0) {
             console_printf("money %d.%d0", gCash / 10, gCash % 10);
