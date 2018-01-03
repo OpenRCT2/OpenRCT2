@@ -21,10 +21,11 @@
 #include "../interface/viewport.h"
 #include "../object/Object.h"
 
-enum {
+enum
+{
     PROVISIONAL_PATH_FLAG_SHOW_ARROW = (1 << 0),
-    PROVISIONAL_PATH_FLAG_1 = (1 << 1),
-    PROVISIONAL_PATH_FLAG_2 = (1 << 2),
+    PROVISIONAL_PATH_FLAG_1          = (1 << 1),
+    PROVISIONAL_PATH_FLAG_2          = (1 << 2),
 };
 
 #pragma pack(push, 1)
@@ -39,6 +40,7 @@ typedef struct rct_footpath_entry {
 assert_struct_size(rct_footpath_entry, 13);
 #pragma pack(pop)
 
+// Masks for values stored in rct_tile_element.type
 enum
 {
     FOOTPATH_ELEMENT_TYPE_FLAG_IS_QUEUE  = (1 << 0),
@@ -46,27 +48,47 @@ enum
     FOOTPATH_ELEMENT_TYPE_DIRECTION_MASK = (1 << 6) | (1 << 7),
 };
 
+// Masks and flags for values stored in rct_tile_element.properties.path.type
 enum
 {
-    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK = (1 << 0) | (1 << 1),
-    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED = (1 << 2),
-
-    FOOTPATH_PROPERTIES_TYPE_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+    FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK  = (1 << 0) | (1 << 1),
+    FOOTPATH_PROPERTIES_FLAG_IS_SLOPED        = (1 << 2),
+    FOOTPATH_PROPERTIES_FLAG_HAS_QUEUE_BANNER = (1 << 3),
+    FOOTPATH_PROPERTIES_TYPE_MASK             = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
 };
 
-enum {
+// Masks and flags for values stored in in rct_tile_element.properties.path.edges
+enum
+{
+    FOOTPATH_PROPERTIES_EDGES_EDGES_MASK   = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    FOOTPATH_PROPERTIES_EDGES_CORNERS_MASK = (1 << 4) | (1 << 5) | (1 << 6) | (1 << 7),
+};
+
+// Masks and flags for values stored in in rct_tile_element.properties.path.additions
+enum
+{
+    FOOTPATH_PROPERTIES_ADDITIONS_TYPE_MASK          = (1 << 0) | (1 << 1) | (1 << 2) | (1 << 3),
+    // The most significant bit in this mask will always be zero, since rides can only have 4 stations
+    FOOTPATH_PROPERTIES_ADDITIONS_STATION_INDEX_MASK = (1 << 4) | (1 << 5) | (1 << 6),
+    FOOTPATH_PROPERTIES_ADDITIONS_FLAG_GHOST         = (1 << 7),
+};
+
+enum
+{
     FOOTPATH_ENTRY_SUPPORT_TYPE_BOX = 0,
     FOOTPATH_ENTRY_SUPPORT_TYPE_POLE = 1,
     FOOTPATH_ENTRY_SUPPORT_TYPE_COUNT
 };
 
-enum {
-    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
-    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE = (1 << 1), // When elevated
+enum
+{
+    FOOTPATH_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE      = (1 << 0),
+    FOOTPATH_ENTRY_FLAG_HAS_PATH_BASE_SPRITE         = (1 << 1), // When elevated
     FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR = (1 << 2),
 };
 
-enum {
+enum
+{
     FOOTPATH_SEARCH_SUCCESS,
     FOOTPATH_SEARCH_NOT_FOUND,
     FOOTPATH_SEARCH_INCOMPLETE,
@@ -81,6 +103,11 @@ enum
 enum
 {
     FOOTPATH_CLEAR_DIRECTIONAL = (1 << 8),  // Flag set when direction is used.
+};
+
+enum
+{
+    SLOPE_IS_IRREGULAR_FLAG = (1 << 3), // Flag set in `defaultPathSlope[]` and checked in `footpath_place_real`
 };
 
 #ifdef __cplusplus
@@ -127,6 +154,7 @@ bool footpath_element_is_sloped(const rct_tile_element * tileElement);
 void footpath_element_set_sloped(rct_tile_element * tileElement, bool isSloped);
 uint8 footpath_element_get_slope_direction(const rct_tile_element * tileElement);
 bool footpath_element_is_queue(const rct_tile_element * tileElement);
+bool footpath_element_has_queue_banner(const rct_tile_element * tileElement);
 bool footpath_element_is_wide(const rct_tile_element * tileElement);
 uint8 footpath_element_get_type(const rct_tile_element * tileElement);
 void footpath_element_set_type(rct_tile_element * tileElement, uint8 type);

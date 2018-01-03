@@ -89,7 +89,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
 
     uint32 imageId;
 
-    if (!(edges & PATH_EDGE_FLAG_0)) {
+    if (!(edges & EDGE_NE)) {
         imageId = pathBitEntry->image + 1;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -99,7 +99,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
 
         sub_98197C(session, imageId, 2, 16, 1, 1, 23, height, 3, 16, height + 2, get_current_rotation());
     }
-    if (!(edges & PATH_EDGE_FLAG_1)) {
+    if (!(edges & EDGE_SE)) {
         imageId = pathBitEntry->image + 2;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -110,7 +110,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
         sub_98197C(session, imageId, 16, 30, 1, 0, 23, height, 16, 29, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_2)) {
+    if (!(edges & EDGE_SW)) {
         imageId = pathBitEntry->image + 3;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -121,7 +121,7 @@ static void path_bit_lights_paint(paint_session * session, rct_scenery_entry* pa
         sub_98197C(session, imageId, 30, 16, 0, 1, 23, height, 29, 16, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_3)) {
+    if (!(edges & EDGE_NW)) {
         imageId = pathBitEntry->image + 4;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -140,7 +140,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
     uint32 imageId;
 
-    if (!(edges & PATH_EDGE_FLAG_0)) {
+    if (!(edges & EDGE_NE)) {
         imageId = pathBitEntry->image + 5;
 
         imageId |= pathBitImageFlags;
@@ -157,7 +157,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 
         sub_98197C(session, imageId, 7, 16, 1, 1, 7, height, 7, 16, height + 2, get_current_rotation());
     }
-    if (!(edges & PATH_EDGE_FLAG_1)) {
+    if (!(edges & EDGE_SE)) {
         imageId = pathBitEntry->image + 6;
 
         imageId |= pathBitImageFlags;
@@ -175,7 +175,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
         sub_98197C(session, imageId, 16, 25, 1, 1, 7, height, 16, 25, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_2)) {
+    if (!(edges & EDGE_SW)) {
         imageId = pathBitEntry->image + 7;
 
         imageId |= pathBitImageFlags;
@@ -193,7 +193,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
         sub_98197C(session, imageId, 25, 16, 1, 1, 7, height, 25, 16, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_3)) {
+    if (!(edges & EDGE_NW)) {
         imageId = pathBitEntry->image + 8;
 
         imageId |= pathBitImageFlags;
@@ -216,7 +216,7 @@ static void path_bit_bins_paint(paint_session * session, rct_scenery_entry* path
 static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* pathBitEntry, rct_tile_element* tileElement, sint32 height, uint8 edges, uint32 pathBitImageFlags) {
     uint32 imageId;
 
-    if (!(edges & PATH_EDGE_FLAG_0)) {
+    if (!(edges & EDGE_NE)) {
         imageId = pathBitEntry->image + 1;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -226,7 +226,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
 
         sub_98197C(session, imageId, 7, 16, 0, 16, 7, height, 6, 8, height + 2, get_current_rotation());
     }
-    if (!(edges & PATH_EDGE_FLAG_1)) {
+    if (!(edges & EDGE_SE)) {
         imageId = pathBitEntry->image + 2;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -237,7 +237,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
         sub_98197C(session, imageId, 16, 25, 16, 0, 7, height, 8, 23, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_2)) {
+    if (!(edges & EDGE_SW)) {
         imageId = pathBitEntry->image + 3;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -248,7 +248,7 @@ static void path_bit_benches_paint(paint_session * session, rct_scenery_entry* p
         sub_98197C(session, imageId, 25, 16, 0, 16, 7, height, 23, 8, height + 2, get_current_rotation());
     }
 
-    if (!(edges & PATH_EDGE_FLAG_3)) {
+    if (!(edges & EDGE_NW)) {
         imageId = pathBitEntry->image + 4;
 
         if (tileElement->flags & TILE_ELEMENT_FLAG_BROKEN)
@@ -286,7 +286,8 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
     if (footpath_element_is_queue(tile_element)) {
         uint8 local_ebp = ebp & 0x0F;
         if (footpath_element_is_sloped(tile_element)) {
-            switch ((tile_element->properties.path.type + get_current_rotation()) & 0x03) {
+            switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+            {
                 case 0:
                     sub_98197C(session, 95 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
                     sub_98197C(session, 95 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
@@ -356,7 +357,7 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
             }
         }
 
-        if (!(tile_element->properties.path.type & 0x08)) {
+        if (!footpath_element_has_queue_banner(tile_element)) {
             return;
         }
 
@@ -378,8 +379,10 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
 
         uint32 imageId = (direction << 1) + base_image_id + 101;
 
+        // Draw pole in the back
         sub_98197C(session, imageId, 0, 0, 1, 1, 21, height, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z, get_current_rotation());
 
+        // Draw pole in the front and banner
         boundBoxOffsets.x = BannerBoundBoxes[direction][1].x;
         boundBoxOffsets.y = BannerBoundBoxes[direction][1].y;
         imageId++;
@@ -387,7 +390,7 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
 
         direction--;
         // If text shown
-        if (direction < 2 && tile_element->properties.path.ride_index != 255 && imageFlags == 0) {
+        if (direction < 2 && tile_element->properties.path.ride_index != RIDE_ID_NULL && imageFlags == 0) {
             uint16 scrollingMode = footpathEntry->scrolling_mode;
             scrollingMode += direction;
 
@@ -430,7 +433,8 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
     }
 
     if (footpath_element_is_sloped(tile_element)) {
-        switch ((tile_element->properties.path.type + get_current_rotation()) & 0x03) {
+        switch ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)
+        {
             case 0:
                 sub_98197C(session, 81 + base_image_id, 0, 4, 32, 1, 23, height, 0, 4, height + 2, get_current_rotation());
                 sub_98197C(session, 81 + base_image_id, 0, 28, 32, 1, 23, height, 0, 28, height + 2, get_current_rotation());
@@ -573,13 +577,13 @@ static void sub_6A4101(paint_session * session, rct_tile_element * tile_element,
 /**
  * rct2: 0x006A3F61
  * @param tile_element (esp[0])
- * @param bp (bp)
+ * @param connectedEdges (bp) (relative to the camera's rotation)
  * @param height (dx)
  * @param footpathEntry (0x00F3EF6C)
  * @param imageFlags (0x00F3EF70)
  * @param sceneryImageFlags (0x00F3EF74)
  */
-static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element, uint16 bp, uint16 height, rct_footpath_entry * footpathEntry, uint32 imageFlags, uint32 sceneryImageFlags, bool word_F3F038)
+static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element, uint16 connectedEdges, uint16 height, rct_footpath_entry * footpathEntry, uint32 imageFlags, uint32 sceneryImageFlags, bool word_F3F038)
 {
     // eax --
     // ebx --
@@ -596,8 +600,7 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
 
     if (dpi->zoom_level <= 1) {
         if (!gTrackDesignSaveMode) {
-            uint8 additions = tile_element->properties.path.additions & 0xF;
-            if (additions != 0) {
+            if (footpath_element_has_path_scenery(tile_element)) {
                 session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0) {
                     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -607,16 +610,16 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
                 rct_scenery_entry* sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
                 switch (sceneryEntry->path_bit.draw_type) {
                 case PATH_BIT_DRAW_TYPE_LIGHTS:
-                    path_bit_lights_paint(session, sceneryEntry, tile_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_lights_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_BINS:
-                    path_bit_bins_paint(session, sceneryEntry, tile_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_bins_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_BENCHES:
-                    path_bit_benches_paint(session, sceneryEntry, tile_element, height, (uint8)bp, sceneryImageFlags);
+                    path_bit_benches_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags);
                     break;
                 case PATH_BIT_DRAW_TYPE_JUMPING_FOUNTAINS:
-                    path_bit_jumping_fountains_paint(session, sceneryEntry, tile_element, height, (uint8)bp, sceneryImageFlags, dpi);
+                    path_bit_jumping_fountains_paint(session, sceneryEntry, tile_element, height, (uint8)connectedEdges, sceneryImageFlags, dpi);
                     break;
                 }
 
@@ -630,35 +633,40 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
 
         // Redundant zoom-level check removed
 
-        sub_6A4101(session, tile_element, height, bp, word_F3F038, footpathEntry, footpathEntry->image | imageFlags, imageFlags);
+        sub_6A4101(session, tile_element, height, connectedEdges, word_F3F038, footpathEntry, footpathEntry->image | imageFlags, imageFlags);
     }
 
     // This is about tunnel drawing
-    uint8 direction = (tile_element->properties.path.type + get_current_rotation()) & 0x03;
-    uint8 diagonal = tile_element->properties.path.type & 0x04;
-    uint8 bl = direction | diagonal;
+    uint8 direction = (footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK;
+    bool  sloped    = footpath_element_is_sloped(tile_element);
 
-    if (bp & 2) {
+    if (connectedEdges & EDGE_SE) {
         // Bottom right of tile is a tunnel
-        if (bl == 5) {
+        if (sloped && direction == EDGE_NE) {
+            // Path going down into the tunnel
             paint_util_push_tunnel_right(session, height + 16, TUNNEL_10);
-        } else if (bp & 1) {
+        } else if (connectedEdges & EDGE_NE) {
+            // Flat path with edge to the right (north-east)
             paint_util_push_tunnel_right(session, height, TUNNEL_11);
         } else {
+            // Path going up, or flat and not connected to the right
             paint_util_push_tunnel_right(session, height, TUNNEL_10);
         }
     }
 
-    if (!(bp & 4)) {
+    if (!(connectedEdges & EDGE_SW)) {
         return;
     }
 
     // Bottom left of the tile is a tunnel
-    if (bl == 6) {
+    if (sloped && direction == EDGE_SE) {
+        // Path going down into the tunnel
         paint_util_push_tunnel_left(session, height + 16, TUNNEL_10);
-    } else if (bp & 8) {
+    } else if (connectedEdges & EDGE_NW) {
+        // Flat path with edge to the left (north-west)
         paint_util_push_tunnel_left(session, height , TUNNEL_11);
     } else {
+        // Path going up, or flat and not connected to the left
         paint_util_push_tunnel_left(session, height , TUNNEL_10);
     }
 }
@@ -709,11 +717,11 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         if (footpath_element_is_sloped(tile_element)) {
             // Diagonal path
 
-            if ((surface->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != byte_98D800[tile_element->properties.path.type & 0x03]) {
+            if ((surface->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[footpath_element_get_slope_direction(tile_element)]) {
                 word_F3F038 = true;
             }
         } else {
-            if (surface->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) {
+            if (surface->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) {
                 word_F3F038 = true;
             }
         }
@@ -740,7 +748,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
             uint32 imageId = 2618;
             sint32 height2 = tile_element->base_height * 8;
             if (footpath_element_is_sloped(tile_element)) {
-                imageId = 2619 + ((tile_element->properties.path.type + get_current_rotation()) & 3);
+                imageId = 2619 + ((footpath_element_get_slope_direction(tile_element) + get_current_rotation()) & 3);
                 height2 += 16;
             }
 
@@ -760,7 +768,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         sub_98196C(session, imageId, 16, 16, 1, 1, 0, height2, get_current_rotation());
     }
 
-    uint8 pathType = (tile_element->properties.path.type & 0xF0) >> 4;
+    uint8 pathType = footpath_element_get_type(tile_element);
     rct_footpath_entry * footpathEntry = get_footpath_entry(pathType);
 
     if (footpathEntry != NULL) {
@@ -777,16 +785,16 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         if (footpath_element_has_path_scenery(tile_element) && !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN)) {
             rct_scenery_entry *sceneryEntry = get_footpath_item_entry(footpath_element_get_path_scenery_index(tile_element));
             if (sceneryEntry->path_bit.flags & PATH_BIT_FLAG_LAMP) {
-                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_0)) {
+                if (!(tile_element->properties.path.edges & EDGE_NE)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_1)) {
+                if (!(tile_element->properties.path.edges & EDGE_SE)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_2)) {
+                if (!(tile_element->properties.path.edges & EDGE_SW)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
-                if (!(tile_element->properties.path.edges & PATH_EDGE_FLAG_3)) {
+                if (!(tile_element->properties.path.edges & EDGE_NW)) {
                     lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 23, LIGHTFX_LIGHT_TYPE_LANTERN_3);
                 }
             }
@@ -812,7 +820,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
 
     uint32 imageId;
     if (footpath_element_is_sloped(tileElement)) {
-        imageId = ((tileElement->properties.path.type + get_current_rotation()) & 3) + 16;
+        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + 16;
     } else {
         imageId = byte_98D6E0[edi];
     }
@@ -847,7 +855,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
     } else {
         uint32 image_id;
         if (footpath_element_is_sloped(tileElement)) {
-            image_id = ((tileElement->properties.path.type + get_current_rotation()) & 3) + footpathEntry->bridge_image + 51;
+            image_id = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 51;
         } else {
             image_id = byte_98D8A4[edges] + footpathEntry->bridge_image + 49;
         }
@@ -866,7 +874,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
 
     uint16 ax = 0;
     if (footpath_element_is_sloped(tileElement)) {
-        ax = ((tileElement->properties.path.type + get_current_rotation()) & 0x3) + 1;
+        ax = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 0x3) + 1;
     }
 
     if (byte_98D8A4[edges] == 0) {
@@ -936,7 +944,7 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
 
     uint32 imageId;
     if (footpath_element_is_sloped(tileElement)) {
-        imageId = ((tileElement->properties.path.type + get_current_rotation()) & 3) + 16;
+        imageId = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & 3) + 16;
     }
     else {
         imageId = byte_98D6E0[edi];
@@ -975,7 +983,7 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
     else {
         uint32 bridgeImage;
         if (footpath_element_is_sloped(tileElement)) {
-            bridgeImage = ((tileElement->properties.path.type + get_current_rotation()) & 3) + footpathEntry->bridge_image + 16;
+            bridgeImage = ((footpath_element_get_slope_direction(tileElement) + get_current_rotation()) & FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK) + footpathEntry->bridge_image + 16;
         }
         else {
             bridgeImage = edges + footpathEntry->bridge_image;
@@ -1031,21 +1039,19 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
 
     paint_util_set_segment_support_height(session, SEGMENT_C4, 0xFFFF, 0);
 
-    if (edges & 1) {
+    if (edges & EDGE_NE) {
         paint_util_set_segment_support_height(session, SEGMENT_CC, 0xFFFF, 0);
     }
 
-    if (edges & 2) {
+    if (edges & EDGE_SE) {
         paint_util_set_segment_support_height(session, SEGMENT_D4, 0xFFFF, 0);
     }
 
-    if (edges & 4) {
+    if (edges & EDGE_SW) {
         paint_util_set_segment_support_height(session, SEGMENT_D0, 0xFFFF, 0);
     }
 
-    if (edges & 8) {
+    if (edges & EDGE_NW) {
         paint_util_set_segment_support_height(session, SEGMENT_C8, 0xFFFF, 0);
     }
 }
-
-

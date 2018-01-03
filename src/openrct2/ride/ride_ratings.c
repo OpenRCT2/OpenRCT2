@@ -18,6 +18,7 @@
 #include "../interface/window.h"
 #include "../localisation/date.h"
 #include "../OpenRCT2.h"
+#include "../world/footpath.h"
 #include "../world/map.h"
 #include "Ride.h"
 #include "ride_data.h"
@@ -517,7 +518,7 @@ static void ride_ratings_score_close_proximity(rct_tile_element *inputTileElemen
             break;
         case TILE_ELEMENT_TYPE_PATH:
             // Bonus for normal path
-            if (tileElement->properties.path.type & 0xF0) {
+            if (footpath_element_get_type(tileElement) != 0) {
                 if (tileElement->clearance_height == inputTileElement->base_height) {
                     proximity_score_increment(PROXIMITY_PATH_TOUCH_ABOVE);
                 }

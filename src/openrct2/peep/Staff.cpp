@@ -1003,10 +1003,10 @@ static uint8 staff_handyman_direction_to_uncut_grass(rct_peep * peep, uint8 vali
 
         if (peep->next_var_29 & 0x4)
         {
-            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
+            if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != byte_98D800[peep->next_var_29 & 0x3])
                 return 0xFF;
         }
-        else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) != 0)
+        else if ((tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) != 0)
             return 0xFF;
     }
 

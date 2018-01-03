@@ -218,19 +218,6 @@ enum {
 };
 
 enum {
-    PATH_QUEUE,
-    PATH_TARMAC,
-    PATH_DIRT,
-    PATH_CRAZY,
-    PATH_ROAD,
-    PATH_TILE
-};
-
-enum {
-    PATH_FLAG_QUEUE_BANNER = 1 << 3
-};
-
-enum {
     WALL_ANIMATION_FLAG_ACROSS_TRACK = (1 << 2),
     // 3 - 6 animation frame number
     WALL_ANIMATION_FLAG_DIRECTION_BACKWARD = (1 << 7),
@@ -287,15 +274,15 @@ enum {
 #define TILE_ELEMENT_TYPE_MASK 0x3C
 #define TILE_ELEMENT_DIRECTION_MASK 0x03
 
-#define TILE_ELEMENT_SLOPE_MASK 0x1F
-#define TILE_ELEMENT_PATH_TYPE_MASK 0x1F
-#define TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK 0xE0
-
 #define TILE_ELEMENT_COLOUR_MASK 0x1F
 
-// Terrain
-#define TILE_ELEMENT_WATER_HEIGHT_MASK 0x1F
-#define TILE_ELEMENT_SURFACE_TERRAIN_MASK 0xE0
+// Surface
+#define TILE_ELEMENT_SURFACE_DIAGONAL_FLAG       0x10 // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK 0x0F // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_SLOPE_MASK          (TILE_ELEMENT_SURFACE_DIAGONAL_FLAG | TILE_ELEMENT_SURFACE_RAISED_CORNERS_MASK) // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK     0xE0 // in rct_tile_element.properties.surface.slope
+#define TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK   0x1F // in rct_tile_element.properties.surface.terrain
+#define TILE_ELEMENT_SURFACE_TERRAIN_MASK        0xE0 // in rct_tile_element.properties.surface.terrain
 
 #define MAP_ELEM_TRACK_SEQUENCE_STATION_INDEX_MASK 0x70
 #define MAP_ELEM_TRACK_SEQUENCE_SEQUENCE_MASK 0x0F

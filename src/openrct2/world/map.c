@@ -319,7 +319,7 @@ void tile_element_set_terrain_edge(rct_tile_element *element, sint32 terrain)
         element->type &= ~128;
 
     // Bits 0, 1, 2 for terrain are stored in element.slope bit 5, 6, 7
-    element->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+    element->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
     element->properties.surface.slope |= (terrain & 7) << 5;
 }
 
@@ -536,7 +536,7 @@ sint32 tile_element_height(sint32 x, sint32 y)
         (map_get_water_height(tileElement) << 20) |
         (tileElement->base_height << 3);
 
-    uint32 slope = (tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK);
+    uint32 slope = (tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK);
     uint8 extra_height = (slope & TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT) >> 4; // 0x10 is the 5th bit - sets slope to double height
     // Remove the extra height bit
     slope &= TILE_ELEMENT_SLOPE_ALL_CORNERS_UP;
@@ -1347,8 +1347,10 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                         return MONEY32_UNDEFINED;
                     }
                     surfaceCost += TerrainPricing[style];
-                    if (flags & 1){
-                        tileElement->properties.surface.terrain &= TILE_ELEMENT_WATER_HEIGHT_MASK;
+
+                    if (flags & GAME_COMMAND_FLAG_APPLY)
+                    {
+                        tileElement->properties.surface.terrain &= TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
                         tileElement->type &= TILE_ELEMENT_QUADRANT_MASK | TILE_ELEMENT_TYPE_MASK;
 
                         //Save the new terrain
@@ -1372,7 +1374,7 @@ static money32 map_change_surface_style(sint32 x0, sint32 y0, sint32 x1, sint32 
                     edgeCost += 100;
 
                     if (flags & 1){
-                        tileElement->properties.surface.slope &= TILE_ELEMENT_SLOPE_MASK;
+                        tileElement->properties.surface.slope &= TILE_ELEMENT_SURFACE_SLOPE_MASK;
                         tileElement->type &= 0x7F;
 
                         //Save edge style
@@ -1503,7 +1505,7 @@ static sint32 map_get_corner_height(sint32 z, sint32 slope, sint32 direction)
 static sint32 tile_element_get_corner_height(rct_tile_element *tileElement, sint32 direction)
 {
     sint32 z = tileElement->base_height;
-    sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+    sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
     return map_get_corner_height(z, slope, direction);
 }
 
@@ -1688,7 +1690,7 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
 
     for (sint32 i = 0; i < 4; i += 1) {
         sint32 cornerHeight = tile_element_get_corner_height(surfaceElement, i);
-        cornerHeight -= map_get_corner_height(height, style & TILE_ELEMENT_SLOPE_MASK, i);
+        cornerHeight -= map_get_corner_height(height, style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
         cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
     }
 
@@ -1705,9 +1707,9 @@ static money32 map_set_land_height(sint32 flags, sint32 x, sint32 y, sint32 heig
         surfaceElement = map_get_surface_element_at(x / 32, y / 32);
         surfaceElement->base_height = height;
         surfaceElement->clearance_height = height;
-        surfaceElement->properties.surface.slope &= TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+        surfaceElement->properties.surface.slope &= TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         surfaceElement->properties.surface.slope |= style;
-        sint32 slope = surfaceElement->properties.surface.terrain & TILE_ELEMENT_SLOPE_MASK;
+        sint32 slope = surfaceElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         if(slope != TILE_ELEMENT_SLOPE_FLAT && slope <= height / 2)
             surfaceElement->properties.surface.terrain &= TILE_ELEMENT_SURFACE_TERRAIN_MASK;
         map_invalidate_tile_full(x, y);
@@ -1845,7 +1847,7 @@ static money32 raise_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
             if (tile_element != NULL) {
                 uint8 height = tile_element->base_height;
                 if (height <= min_height){
-                    uint8 newStyle = tile_element_raise_styles[selectionType][tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK];
+                    uint8 newStyle = tile_element_raise_styles[selectionType][tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
                     if (newStyle & 0x20) { // needs to be raised
                         height += 2;
                         newStyle &= ~0x20;
@@ -1897,7 +1899,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
                     height += 2;
                 if (height >= max_height) {
                     height =  tile_element->base_height;
-                    uint8 newStyle = tile_element_lower_styles[selectionType][tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK];
+                    uint8 newStyle = tile_element_lower_styles[selectionType][tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK];
                     if (newStyle & 0x20) { // needs to be lowered
                         height -= 2;
                         newStyle &= ~0x20;
@@ -1924,7 +1926,7 @@ static money32 lower_land(sint32 flags, sint32 x, sint32 y, sint32 z, sint32 ax,
 
 sint32 map_get_water_height(const rct_tile_element * tileElement)
 {
-    return tileElement->properties.surface.terrain & TILE_ELEMENT_WATER_HEIGHT_MASK;
+    return tileElement->properties.surface.terrain & TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK;
 }
 
 money32 raise_water(sint16 x0, sint16 y0, sint16 x1, sint16 y1, uint8 flags)
@@ -2125,7 +2127,7 @@ void game_command_lower_land(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx,
 static money32 smooth_land_tile(sint32 direction, uint8 flags, sint32 x, sint32 y, rct_tile_element * tileElement, bool raiseLand)
 {
     sint32 targetBaseZ = tileElement->base_height;
-    sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+    sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
     if (raiseLand) {
         slope = tile_element_raise_styles[direction][slope];
         if (slope & 0x20) {
@@ -2206,7 +2208,7 @@ static money32 smooth_land_row_by_edge(sint32 flags, sint32 x, sint32 y, sint32 
 
         // change land of current tile
         sint32 targetBaseZ = tileElement->base_height;
-        sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+        sint32 slope = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         sint32 oldSlope = slope;
         if (raiseLand) {
             if (shouldContinue & 0x4) {
@@ -2386,7 +2388,7 @@ static money32 smooth_land(sint32 flags, sint32 centreX, sint32 centreY, sint32 
     {
         // One corner tile selected
         newBaseZ = tileElement->base_height;
-        newSlope = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+        newSlope = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
         if (commandType == GAME_COMMAND_RAISE_LAND) {
             newSlope = tile_element_raise_styles[command & 0xFF][newSlope];
             if (newSlope & 0x20) {
@@ -3280,7 +3282,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
 
         // Only allow building crossings directly on a flat surface tile.
         if (tile_element_get_type(tile_element) == TILE_ELEMENT_TYPE_SURFACE &&
-            (tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK) == TILE_ELEMENT_SLOPE_FLAT &&
+            (tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK) == TILE_ELEMENT_SLOPE_FLAT &&
             tile_element->base_height == zLow)
         {
             canBuildCrossing = true;
@@ -3296,7 +3298,7 @@ sint32 map_can_construct_with_clear_at(sint32 x, sint32 y, sint32 zLow, sint32 z
                 sint32 ah = al;
                 sint32 cl = al;
                 sint32 ch = al;
-                uint8 slope = tile_element->properties.surface.slope & TILE_ELEMENT_SLOPE_MASK;
+                uint8 slope = tile_element->properties.surface.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK;
                 if (slope & TILE_ELEMENT_SLOPE_N_CORNER_UP) {
                     al += 2;
                     if (slope == (TILE_ELEMENT_SLOPE_S_CORNER_DN | TILE_ELEMENT_SLOPE_DOUBLE_HEIGHT))
@@ -3606,7 +3608,7 @@ void map_extend_boundary_surface()
         newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
-        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;
@@ -3642,7 +3644,7 @@ void map_extend_boundary_surface()
         newTileElement = map_get_surface_element_at(x, y);
 
         newTileElement->type = (newTileElement->type & 0x7C) | (existingTileElement->type & 0x83);
-        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+        newTileElement->properties.surface.slope = existingTileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         newTileElement->properties.surface.terrain = existingTileElement->properties.surface.terrain;
         newTileElement->properties.surface.grass_length = existingTileElement->properties.surface.grass_length;
         newTileElement->properties.surface.ownership = 0;

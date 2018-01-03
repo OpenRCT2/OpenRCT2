@@ -1287,7 +1287,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
     if (!(gCurrentViewportFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
     {
         // loc_66122C:
-        const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+        const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
         const uint8 di_type = tileElement->type & 0x80;
 
         const uint32 eax = al_edgeStyle + di_type * 2;
@@ -1335,7 +1335,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
             paint_attach_to_previous_ps(session, SPR_WATER_OVERLAY + image_offset, 0, 0);
 
             // This wasn't in the original, but the code depended on globals that were only set in a different conditional
-            const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SLOPE_EDGE_STYLE_MASK;
+            const uint8 al_edgeStyle = tileElement->properties.surface.slope & TILE_ELEMENT_SURFACE_EDGE_STYLE_MASK;
             const uint8 di_type = tileElement->type & 0x80;
             const uint32 eax = al_edgeStyle + di_type * 2;
             assert(eax % 32 == 0);

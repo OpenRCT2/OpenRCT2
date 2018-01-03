@@ -8951,6 +8951,7 @@ static sint32 peep_interact_with_entrance(rct_peep * peep, sint16 x, sint16 y, r
         sint16 next_x = (x & 0xFFE0) + TileDirectionDelta[entranceDirection].x;
         sint16 next_y = (y & 0xFFE0) + TileDirectionDelta[entranceDirection].y;
 
+        // Make sure there is a path right behind the entrance, otherwise turn around
         uint8             found          = 0;
         rct_tile_element * nextTileElement = map_get_first_element_at(next_x / 32, next_y / 32);
         do

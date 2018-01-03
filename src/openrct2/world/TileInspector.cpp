@@ -459,7 +459,7 @@ sint32 tile_inspector_surface_toggle_corner(sint32 x, sint32 y, sint32 cornerInd
         // All corners are raised
         if ((surfaceElement->properties.surface.slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) == TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
         {
-            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SLOPE_MASK;
+            surfaceElement->properties.surface.slope &= ~TILE_ELEMENT_SURFACE_SLOPE_MASK;
 
             if (diagonal)
             {
