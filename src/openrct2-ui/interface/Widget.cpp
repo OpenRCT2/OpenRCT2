@@ -16,12 +16,12 @@
 
 #include <algorithm>
 #include <cmath>
-#include "../drawing/Drawing.h"
-#include "../Input.h"
-#include "../sprites.h"
-#include "../localisation/Localisation.h"
-#include "../util/Util.h"
-#include "../Context.h"
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/Input.h>
+#include <openrct2/sprites.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/util/Util.h>
+#include <openrct2/Context.h>
 #include "Widget.h"
 #include "Window.h"
 #include "Window_internal.h"

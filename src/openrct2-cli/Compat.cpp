@@ -1,4 +1,4 @@
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 
 void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index) { }
 void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex){ }
