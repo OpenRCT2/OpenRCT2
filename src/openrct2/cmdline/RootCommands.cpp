@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <time.h>
+#include <ctime>
 
 #include "../core/Guard.hpp"
 

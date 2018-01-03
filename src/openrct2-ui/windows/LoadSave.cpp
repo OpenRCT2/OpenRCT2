@@ -23,7 +23,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2-ui/windows/Window.h>
 
-#include <time.h>
+#include <ctime>
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>

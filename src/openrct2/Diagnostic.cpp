@@ -14,9 +14,9 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <assert.h>
-#include <stdarg.h>
-#include <stdio.h>
+#include <cassert>
+#include <cstdarg>
+#include <cstdio>
 #include "Diagnostic.h"
 
 #ifdef __ANDROID__
