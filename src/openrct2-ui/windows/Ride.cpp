@@ -1473,9 +1473,9 @@ static void window_ride_update_overall_view(uint8 ride_index) {
     }
 
     ride_overall_view *view = &ride_overall_views[ride_index];
-    view->x = (minx + maxx) / 2;
-    view->y = (miny + maxy) / 2;
-    view->z = (minz + maxz) / 2 + 8;
+    view->x = (minx + maxx) / 2 + 16;
+    view->y = (miny + maxy) / 2 + 16;
+    view->z = (minz + maxz) / 2 - 8;
 
     // Calculate size to determine from how far away to view the ride
     sint32 dx = maxx - minx;
