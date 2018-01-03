@@ -888,7 +888,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 quarter_w = g_music_tracking_viewport->view_width / 4;
     sint16 quarter_h = g_music_tracking_viewport->view_height / 4;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    // if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         left -= quarter_w;
         bottom -= quarter_h;
@@ -900,7 +900,7 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
     sint16 right = g_music_tracking_viewport->view_width + left;
     sint16 top = g_music_tracking_viewport->view_height + bottom;
 
-    if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
+    // if (window_get_classification(gWindowAudioExclusive) == WC_MAIN_WINDOW)
     {
         right += quarter_w + quarter_w;
         top += quarter_h + quarter_h;
@@ -1832,7 +1832,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
 
     rct_tile_element * tile_element = map_get_surface_element_at({x, y});
     // If vehicle above ground.
-    if (tile_element->base_height * 8 <= z) 
+    if (tile_element->base_height * 8 <= z)
     {
         // Set tile_element to first element. Since elements aren't always ordered by base height,
         // we must start at the first element and iterate through each tile element.
@@ -1866,7 +1866,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
                 cover_found = true;
                 break;
             }
-            // Iterate through each tile_element. 
+            // Iterate through each tile_element.
         } while (!tile_element_is_last_for_tile(tile_element++));
 
         if (cover_found == false)
@@ -9521,7 +9521,7 @@ static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * 
     uint16 trackType = vehicle->track_direction >> 2;
 
     if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
-    {    
+    {
         speedModifier = (vehicle->var_CD == 5) ? HALF_SPEED : THREE_QUARTER_SPEED;
     }
     else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)

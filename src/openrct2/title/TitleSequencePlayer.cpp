@@ -41,6 +41,8 @@
 #include "../world/Scenery.h"
 #include "../world/Sprite.h"
 
+#include "../interface/window_private.h"
+
 using namespace OpenRCT2;
 
 class TitleSequencePlayer final : public ITitleSequencePlayer

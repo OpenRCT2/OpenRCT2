@@ -1385,9 +1385,9 @@ void game_load_init()
     if (mainWindow != nullptr)
     {
         rct_viewport * viewport = window_get_viewport(mainWindow);
-        mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
-        mainWindow->saved_view_x           = gSavedViewX;
-        mainWindow->saved_view_y           = gSavedViewY;
+//        mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+//        mainWindow->saved_view_x           = gSavedViewX;
+//        mainWindow->saved_view_y           = gSavedViewY;
         uint8 zoomDifference = gSavedViewZoom - viewport->zoom;
         viewport->zoom = gSavedViewZoom;
         gCurrentRotation = gSavedViewRotation;
@@ -1396,8 +1396,8 @@ void game_load_init()
             viewport->view_width <<= zoomDifference;
             viewport->view_height <<= zoomDifference;
         }
-        mainWindow->saved_view_x -= viewport->view_width >> 1;
-        mainWindow->saved_view_y -= viewport->view_height >> 1;
+//        mainWindow->saved_view_x -= mainWindow->viewport->view_width >> 1;
+//        mainWindow->saved_view_y -= mainWindow->viewport->view_height >> 1;
 
         // Make sure the viewport has correct coordinates set.
         viewport_update_position(mainWindow);

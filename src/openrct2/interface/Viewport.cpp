@@ -36,6 +36,8 @@
 #include "Window.h"
 #include "Window_internal.h"
 
+#include "window_private.h"
+
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
 uint8 gShowLandRightsRefCount;
