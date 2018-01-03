@@ -127,7 +127,7 @@ private:
     static constexpr auto PATTERN = "*.sc4;*.sc6";
     
 public:
-    ScenarioFileIndex(IPlatformEnvironment * env) :
+    explicit ScenarioFileIndex(IPlatformEnvironment * env) :
         FileIndex("scenario index",
                   MAGIC_NUMBER,
                   VERSION,
@@ -325,7 +325,7 @@ private:
     std::vector<scenario_highscore_entry*> _highscores;
 
 public:
-    ScenarioRepository(IPlatformEnvironment * env)
+    explicit ScenarioRepository(IPlatformEnvironment * env)
         : _env(env),
           _fileIndex(env)
     {

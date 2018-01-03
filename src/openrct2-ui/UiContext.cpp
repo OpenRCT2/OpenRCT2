@@ -87,7 +87,7 @@ private:
     float               _gestureRadius          = 0;
 
 public:
-    UiContext(IPlatformEnvironment * env)
+    explicit UiContext(IPlatformEnvironment * env)
         : _platformUiContext(CreatePlatformUiContext()),
           _windowManager(CreateWindowManager()),
           _keyboardShortcuts(env)
