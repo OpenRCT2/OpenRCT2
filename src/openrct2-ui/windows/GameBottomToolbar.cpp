@@ -58,7 +58,7 @@ static rct_widget window_game_bottom_toolbar_widgets[] =
     { WWT_FLATBTN,  0,    2,   139,   21,   31,   0xFFFFFFFF,   STR_PARK_RATING_TIP },                    // Park rating window
 
     { WWT_IMGBTN,   2,  142,   497,    0,   33,   0xFFFFFFFF,   STR_NONE },               // Middle outset panel
-    { WWT_25,       2,  144,   495,    2,   31,   0xFFFFFFFF,   STR_NONE },               // Middle inset panel
+    { WWT_PLACEHOLDER,    2,  144,   495,    2,   31,   0xFFFFFFFF,   STR_NONE },         // Middle inset panel
     { WWT_FLATBTN,  2,  147,   170,    5,   28,   0xFFFFFFFF,   STR_SHOW_SUBJECT_TIP },   // Associated news item window
     { WWT_FLATBTN,  2,  469,   492,    5,   28,   SPR_LOCATE,   STR_LOCATE_SUBJECT_TIP }, // Scroll to news item target
 
@@ -325,7 +325,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
         else
         {
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
+            window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_EMPTY;
             window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 0;
@@ -336,7 +336,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
     {
         NewsItem * newsItem = news_item_get(0);
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].type = WWT_IMGBTN;
-        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_25;
+        window_game_bottom_toolbar_widgets[WIDX_MIDDLE_INSET].type = WWT_PLACEHOLDER;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_SUBJECT].type = WWT_FLATBTN;
         window_game_bottom_toolbar_widgets[WIDX_NEWS_LOCATE].type = WWT_FLATBTN;
         window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET].colour = 2;
