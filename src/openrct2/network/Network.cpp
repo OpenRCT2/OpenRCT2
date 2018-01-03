@@ -121,6 +121,9 @@ Network::Network()
     server_command_handlers[NETWORK_COMMAND_TOKEN] = &Network::Server_Handle_TOKEN;
     server_command_handlers[NETWORK_COMMAND_OBJECTS] = &Network::Server_Handle_OBJECTS;
     OpenSSL_add_all_algorithms();
+
+    _chat_log_fs << std::unitbuf;
+    _server_log_fs << std::unitbuf;
 }
 
 Network::~Network()
@@ -900,33 +903,35 @@ std::string Network::BeginLog(const std::string &directory, const std::string &m
         throw std::runtime_error("strftime failed");
     }
 
+    platform_ensure_directory_exists(Path::Combine(directory, midName).c_str());
     return Path::Combine(directory, midName, filename);
 }
 
-void Network::AppendLog(const std::string &logPath, const std::string &s)
+void Network::AppendLog(std::ostream &fs, const std::string &s)
 {
-    std::string directory = Path::GetDirectory(logPath);
-    if (platform_ensure_directory_exists(directory.c_str())) {
-        try
+    if (fs.fail())
+    {
+        log_error("bad ostream failed to append log");
+        return;
+    }
+    try
+    {
+        utf8 buffer[256];
+        time_t timer;
+        time(&timer);
+        auto tmInfo = localtime(&timer);
+        if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0)
         {
-            auto fs = FileStream(logPath, FILE_MODE_APPEND);
+            String::Append(buffer, sizeof(buffer), s.c_str());
+            utf8_remove_formatting(buffer, false);
+            String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
 
-            utf8 buffer[256];
-            time_t timer;
-            time(&timer);
-            auto tmInfo = localtime(&timer);
-            if (strftime(buffer, sizeof(buffer), "[%Y/%m/%d %H:%M:%S] ", tmInfo) != 0) {
-                String::Append(buffer, sizeof(buffer), s.c_str());
-                utf8_remove_formatting(buffer, false);
-                String::Append(buffer, sizeof(buffer), PLATFORM_NEWLINE);
-
-                fs.Write(buffer, strlen(buffer));
-            }
+            fs.write(buffer, strlen(buffer));
         }
-        catch (const Exception &ex)
-        {
-            log_error("%s", ex.GetMessage());
-        }
+    }
+    catch (const Exception &ex)
+    {
+        log_error("%s", ex.GetMessage());
     }
 }
 
@@ -934,23 +939,39 @@ void Network::BeginChatLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
+
+#if defined(_WIN32) && !defined(__MINGW32__)
+    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_chatLogPath.c_str()));
+    _chat_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+#else
+    _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
+#endif
 }
 
 void Network::AppendChatLog(const std::string &s)
 {
-    if (gConfigNetwork.log_chat) {
-        AppendLog(_chatLogPath, s);
+    if (gConfigNetwork.log_chat && _chat_log_fs.is_open())
+    {
+        AppendLog(_chat_log_fs, s);
     }
 }
 
 void Network::CloseChatLog()
 {
+    _chat_log_fs.close();
 }
 
 void Network::BeginServerLog()
 {
     auto directory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
+
+#if defined(_WIN32) && !defined(__MINGW32__)
+    auto pathW = std::unique_ptr<wchar_t>(utf8_to_widechar(_serverLogPath.c_str()));
+    _server_log_fs.open(pathW.get(), std::ios::out | std::ios::app);
+#else
+    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app);
+#endif
 
     // Log server start event
     utf8 logMessage[256];
@@ -964,8 +985,9 @@ void Network::BeginServerLog()
 
 void Network::AppendServerLog(const std::string &s)
 {
-    if (gConfigNetwork.log_server_actions) {
-        AppendLog(_serverLogPath, s);
+    if (gConfigNetwork.log_server_actions && _server_log_fs.is_open())
+    {
+        AppendLog(_server_log_fs, s);
     }
 }
 
@@ -979,6 +1001,7 @@ void Network::CloseServerLog()
         format_string(logMessage, sizeof(logMessage), STR_LOG_SERVER_STOPPED, nullptr);
     }
     AppendServerLog(logMessage);
+    _server_log_fs.close();
 }
 
 void Network::Client_Send_TOKEN()
