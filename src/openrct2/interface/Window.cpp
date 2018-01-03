@@ -2254,7 +2254,7 @@ static void window_invalidate_pressed_image_buttons(rct_window *w)
 
     widgetIndex = 0;
     for (widget = w->widgets; widget->type != WWT_LAST; widget++, widgetIndex++) {
-        if (widget->type != WWT_5 && widget->type != WWT_IMGBTN)
+        if (widget->type != WWT_IMGBTN)
             continue;
 
         if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))

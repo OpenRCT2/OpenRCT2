@@ -124,10 +124,8 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
         widget_resize_draw(dpi, w, widgetIndex);
         break;
     case WWT_IMGBTN:
-    case WWT_4:
         widget_button_draw(dpi, w, widgetIndex);
         break;
-    case WWT_5:
     case WWT_COLOURBTN:
     case WWT_TRNBTN:
     case WWT_TAB:
@@ -137,7 +135,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
         widget_flat_button_draw(dpi, w, widgetIndex);
         break;
     case WWT_DROPDOWN_BUTTON:
-    case WWT_11:
     case WWT_TABLE_HEADER:
         widget_text_button(dpi, w, widgetIndex);
         break;
@@ -151,8 +148,6 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
     case WWT_DROPDOWN:
     case WWT_VIEWPORT:
         widget_text_inset(dpi, w, widgetIndex);
-        break;
-    case WWT_18:
         break;
     case WWT_GROUPBOX:
         widget_groupbox_draw(dpi, w, widgetIndex);
@@ -405,10 +400,6 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
     rct_string_id stringId = widget->text;
     if (stringId == STR_NONE)
         return;
-
-    if (widget->type == WWT_11 && (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)))
-        // TODO: remove string addition
-        stringId++;
 
     if (widget->type == WWT_TABLE_HEADER) {
         if (widget_is_disabled(w, widgetIndex))
@@ -816,7 +807,7 @@ static void widget_draw_image(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
     // Get the colour
     uint8 colour = NOT_TRANSLUCENT(w->colours[widget->colour]);
 
-    if (widget->type == WWT_4 || widget->type == WWT_COLOURBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
+    if (widget->type == WWT_COLOURBTN || widget->type == WWT_TRNBTN || widget->type == WWT_TAB)
         if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
             image++;
 
