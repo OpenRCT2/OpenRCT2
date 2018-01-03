@@ -10,3 +10,6 @@ bool widget_is_active_tool(rct_window *w, rct_widgetindex widgetIndex) { return 
 void widget_scroll_get_part(rct_window *w, rct_widget* widget, sint32 x, sint32 y, sint32 *output_x, sint32 *output_y, sint32 *output_scroll_area, sint32 *scroll_id) { }
 void widget_set_enabled(rct_window *w, rct_widgetindex widgetIndex, bool enabled) { }
 void widget_set_checkbox_value(rct_window *w, rct_widgetindex widgetIndex, sint32 value) { }
+
+#include <openrct2/drawing/Rain.h>
+void DrawRain(rct_drawpixelinfo * dpi, OpenRCT2::Drawing::IRainDrawer * rainDrawer) { }
