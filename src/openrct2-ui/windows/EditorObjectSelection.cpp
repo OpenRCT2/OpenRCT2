@@ -173,8 +173,8 @@ static rct_widget window_editor_object_selection_widgets[] = {
     { WWT_TAB,              1,  127,    157,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_THRILL_RIDES_TIP },
     { WWT_TAB,              1,  158,    188,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_WATER_RIDES_TIP },
     { WWT_TAB,              1,  189,    219,    47,     73,     IMAGE_TYPE_REMAP | SPR_TAB,           STR_SHOPS_STALLS_TIP },
-    { WWT_13,               1,  4,      204,    80,     93,     STR_NONE,                       STR_NONE },
-    { WWT_13,               1,  205,    291,    80,     93,     STR_NONE,                       STR_NONE },
+    { WWT_TABLE_HEADER,     1,  4,      204,    80,     93,     STR_NONE,                       STR_NONE },
+    { WWT_TABLE_HEADER,     1,  205,    291,    80,     93,     STR_NONE,                       STR_NONE },
     { WIDGETS_END }
 };
 
@@ -912,10 +912,10 @@ static void window_editor_object_selection_invalidate(rct_window *w)
         for (sint32 i = WIDX_FILTER_RIDE_TAB_ALL; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
             w->widgets[i].type = WWT_TAB;
 
-        w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_13;
+        w->widgets[WIDX_LIST_SORT_TYPE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_TYPE].top = w->widgets[WIDX_FILTER_STRING_BUTTON].bottom + 3;
         w->widgets[WIDX_LIST_SORT_TYPE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].top + 13;
-        w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_13;
+        w->widgets[WIDX_LIST_SORT_RIDE].type = WWT_TABLE_HEADER;
         w->widgets[WIDX_LIST_SORT_RIDE].top = w->widgets[WIDX_LIST_SORT_TYPE].top;
         w->widgets[WIDX_LIST_SORT_RIDE].bottom = w->widgets[WIDX_LIST_SORT_TYPE].bottom;
         w->widgets[WIDX_LIST_SORT_RIDE].right = w->widgets[WIDX_LIST].right;

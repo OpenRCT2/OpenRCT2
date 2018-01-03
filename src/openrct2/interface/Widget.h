@@ -33,7 +33,7 @@ typedef enum {
     WWT_DROPDOWN_BUTTON = 10,
     WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
     WWT_12, // looks like a normal label to me
-    WWT_13,
+    WWT_TABLE_HEADER = 13, // Left-aligned textual button
     WWT_14,
     WWT_SPINNER = 15,
     WWT_DROPDOWN = 16,

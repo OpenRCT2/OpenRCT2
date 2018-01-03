@@ -138,7 +138,7 @@ void widget_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIn
         break;
     case WWT_DROPDOWN_BUTTON:
     case WWT_11:
-    case WWT_13:
+    case WWT_TABLE_HEADER:
         widget_text_button(dpi, w, widgetIndex);
         break;
     case WWT_12:
@@ -410,7 +410,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
         // TODO: remove string addition
         stringId++;
 
-    if (widget->type == WWT_13) {
+    if (widget->type == WWT_TABLE_HEADER) {
         if (widget_is_disabled(w, widgetIndex))
             colour |= COLOUR_FLAG_INSET;
         gfx_draw_string_left_clipped(
@@ -423,7 +423,7 @@ static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
             widget->right - widget->left - 2
         );
     } else {
-        colour &= ~(1 << 7);
+        colour &= ~(COLOUR_FLAG_TRANSLUCENT);
         if (widget_is_disabled(w, widgetIndex))
             colour |= COLOUR_FLAG_INSET;
         gfx_draw_string_centred_clipped(
@@ -505,7 +505,7 @@ static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
     if (widget->text != STR_NONE) {
         uint8 colour = w->colours[widget->colour] & 0x7F;
         if (widget_is_disabled(w, widgetIndex))
-            colour |= 0x40;
+            colour |= COLOUR_FLAG_INSET;
 
         utf8 buffer[512] = { 0 };
         uint8 args[sizeof(uintptr_t)] = { 0 };
