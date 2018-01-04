@@ -253,8 +253,8 @@ enum WINDOW_TILE_INSPECTOR_WIDGET_IDX {
     /* Buttons */                                                                                                                                                               \
     { WWT_FLATBTN,      1,  BX,             BW,                 BY,             BH,         SPR_MAP,          STR_INSERT_CORRUPT_TIP },             /* Insert corrupt button */ \
     { WWT_FLATBTN,      1,  BX - BS * 1,    BW - BS * 1,        BY,             BH,         SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP },    /* Remove button */         \
-    { WWT_CLOSEBOX,     1,  BX - BS * 2,    BW - BS * 2,        BY,             BY + 11,    STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP },   /* Move down */             \
-    { WWT_CLOSEBOX,     1,  BX - BS * 2,    BW - BS * 2,        BH - 11,        BH,         STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP }, /* Move up */               \
+    { WWT_BUTTON,       1,  BX - BS * 2,    BW - BS * 2,        BY,             BY + 11,    STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP },   /* Move down */             \
+    { WWT_BUTTON,       1,  BX - BS * 2,    BW - BS * 2,        BH - 11,        BH,         STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP }, /* Move up */               \
     { WWT_FLATBTN,      1,  BX - BS * 3,    BW - BS * 3,        BY,             BH,         SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP },    /* Rotate button */         \
     { WWT_FLATBTN,      1,  BX - BS * 4,    BW - BS * 4,        BY,             BH,         SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP },        /* Sort button */           \
     { WWT_FLATBTN,      1,  BX - BS * 5,    BW - BS * 5,        BY,             BH,         SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP },        /* Copy button */           \
@@ -284,8 +284,8 @@ static rct_widget SurfaceWidgets[] = {
     { WWT_SPINNER,          1,  GBS(WH - SUR_GBPT, 1, 0),               STR_NONE,                   STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT
     { WWT_BUTTON,           1,  GBSI(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_UP,             STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_INCREASE
     { WWT_BUTTON,           1,  GBSD(WH - SUR_GBPT, 1, 0),              STR_NUMERIC_DOWN,           STR_NONE }, // WIDX_SURFACE_SPINNER_HEIGHT_DECREASE
-    { WWT_CLOSEBOX,     1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,   STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
-    { WWT_CLOSEBOX,     1,  GBB(WH - SUR_GBPT, 1, 1),   STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,  STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
+    { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_SURFACE_REMOVE_FENCES,   STR_NONE }, // WIDX_SURFACE_BUTTON_REMOVE_FENCES
+    { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 1, 1),   STR_TILE_INSPECTOR_SURFACE_RESTORE_FENCES,  STR_NONE }, // WIDX_SURFACE_BUTTON_RESTORE_FENCES
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 0),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_N
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 2, GBBT(WH - SUR_GBPT, 2) + 7 * 1),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_E
     { WWT_CHECKBOX,         1,  CHK(GBBL(1) + 14 * 1, GBBT(WH - SUR_GBPT, 2) + 7 * 2),  STR_NONE,   STR_NONE }, // WIDX_SURFACE_CHECK_CORNER_S
@@ -413,7 +413,7 @@ static rct_widget CorruptWidgets[] = {
     { WWT_SPINNER,          1,  GBS(WH - COR_GBPT, 1, 0),   STR_NONE,                                       STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT
     { WWT_BUTTON,           1,  GBSI(WH - COR_GBPT, 1, 0),  STR_NUMERIC_UP,                                 STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_INCREASE
     { WWT_BUTTON,           1,  GBSD(WH - COR_GBPT, 1, 0),  STR_NUMERIC_DOWN,                               STR_NONE }, // WIDX_CORRUPT_SPINNER_HEIGHT_DECREASE
-    { WWT_CLOSEBOX,         1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
+    { WWT_BUTTON,           1,  GBB(WH - SUR_GBPT, 0, 1),   STR_TILE_INSPECTOR_CLAMP_TO_NEXT, STR_TILE_INSPECTOR_CLAMP_TO_NEXT_TIP }, // WIDX_CORRUPT_BUTTON_CLAMP
     { WIDGETS_END },
 };
 

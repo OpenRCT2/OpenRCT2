@@ -50,8 +50,8 @@ static rct_widget window_object_load_error_widgets[] = {
     { WWT_TABLE_HEADER,      0, SOURCE_COL_LEFT, TYPE_COL_LEFT - 1,     57,         68,         STR_OBJECT_SOURCE,              STR_NONE },                // 'Object source' header
     { WWT_TABLE_HEADER,      0, TYPE_COL_LEFT,   WW_LESS_PADDING - 1,   57,         68,         STR_OBJECT_TYPE,                STR_NONE },                // 'Object type' header
     { WWT_SCROLL,            0, 4,               WW_LESS_PADDING,       68,         WH - 40,    SCROLL_VERTICAL,                STR_NONE },                // Scrollable list area
-    { WWT_CLOSEBOX,          0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
-    { WWT_CLOSEBOX,          0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
+    { WWT_BUTTON,            0, 45,              225,                   WH - 32,    WH - 12,    STR_COPY_SELECTED,              STR_NONE },                // Copy selected btn
+    { WWT_BUTTON,            0, 225,             395,                   WH - 32,    WH - 12,    STR_COPY_ALL,                   STR_NONE },                // Copy all btn
     { WIDGETS_END },
 };
 

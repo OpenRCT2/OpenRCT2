@@ -229,7 +229,7 @@ static rct_widget window_ride_main_widgets[] = {
     { WWT_SPINNER,          1,  3,      253,    180,    191,    STR_ARG_6_STRINGID,             STR_NONE                                    },
     { WWT_BUTTON,           1,  242,    252,    181,    185,    STR_NUMERIC_UP,                 STR_NONE                                    },
     { WWT_BUTTON,           1,  242,    252,    186,    190,    STR_NUMERIC_DOWN,               STR_NONE                                    },
-    { WWT_CLOSEBOX,         1,  260,    307,    180,    191,    STR_APPLY,                      STR_NONE                                    },
+    { WWT_BUTTON,           1,  260,    307,    180,    191,    STR_APPLY,                      STR_NONE                                    },
     { WIDGETS_END },
 };
 
@@ -2399,7 +2399,7 @@ static void window_ride_main_invalidate(rct_window *w)
         window_ride_main_widgets[WIDX_RIDE_TYPE].type = WWT_SPINNER;
         window_ride_main_widgets[WIDX_RIDE_TYPE_INCREASE].type = WWT_BUTTON;
         window_ride_main_widgets[WIDX_RIDE_TYPE_DECREASE].type = WWT_BUTTON;
-        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_CLOSEBOX;
+        window_ride_main_widgets[WIDX_RIDE_TYPE_APPLY].type = WWT_BUTTON;
     }
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_10);
