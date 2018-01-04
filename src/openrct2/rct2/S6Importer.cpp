@@ -263,11 +263,11 @@ public:
         memcpy(gParkRatingHistory, _s6.park_rating_history, sizeof(_s6.park_rating_history));
         memcpy(gGuestsInParkHistory, _s6.guests_in_park_history, sizeof(_s6.guests_in_park_history));
 
-        gResearchPriorities      = _s6.active_research_types;
-        gResearchProgressStage   = _s6.research_progress_stage;
-        gResearchLastItemSubject = _s6.last_researched_item_subject;
+        gResearchPriorities                = _s6.active_research_types;
+        gResearchProgressStage             = _s6.research_progress_stage;
+        gResearchLastItemSubject.rawValue = _s6.last_researched_item_subject;
         // pad_01357CF8
-        gResearchNextItem           = _s6.next_research_item;
+        gResearchNextItem.rawValue = _s6.next_research_item;
         gResearchProgress           = _s6.research_progress;
         gResearchNextCategory       = _s6.next_research_category;
         gResearchExpectedDay        = _s6.next_research_expected_day;

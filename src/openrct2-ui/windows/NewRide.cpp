@@ -30,6 +30,7 @@
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/management/Research.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/ride_data.h>
@@ -685,7 +686,7 @@ static void window_new_ride_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         window_close(w);
         break;
     case WIDX_LAST_DEVELOPMENT_BUTTON:
-        news_item_open_subject(NEWS_ITEM_RESEARCH, (sint32)gResearchLastItemSubject);
+        news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItemSubject.rawValue);
         break;
     case WIDX_RESEARCH_FUNDING_BUTTON:
         context_open_window_view(WV_FINANCES_RESEARCH);
@@ -803,10 +804,12 @@ static void window_new_ride_invalidate(rct_window *w)
 
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH) {
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-        uint32 typeId = gResearchLastItemSubject;
-        if (typeId != 0xFFFFFFFF) {
+        if (gResearchLastItemSubject.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+        {
+            uint8 type = gResearchLastItemSubject.type;
             window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image =
+                (type == RESEARCH_ENTRY_TYPE_RIDE) ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
         }
     }
 }

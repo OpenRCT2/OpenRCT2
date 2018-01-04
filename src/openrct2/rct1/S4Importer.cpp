@@ -2049,7 +2049,7 @@ private:
         // Research history
         gResearchProgress = _s4.research_progress;
         // gResearchProgressStage =
-        gResearchNextItem = _s4.next_research_item;
+        gResearchNextItem.rawValue = _s4.next_research_item;
         gResearchNextCategory = _s4.next_research_category;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
