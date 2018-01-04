@@ -396,12 +396,11 @@ static void widget_text_centred(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
     // Get the widget
     rct_widget *widget = &w->widgets[widgetIndex];
 
-    // Get the colour
-    uint8 colour = w->colours[widget->colour];
-
     if (widget->text == STR_NONE)
         return;
 
+    // Get the colour
+    uint8 colour = w->colours[widget->colour];
     colour &= ~(COLOUR_FLAG_TRANSLUCENT);
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -409,7 +408,12 @@ static void widget_text_centred(rct_drawpixelinfo *dpi, rct_window *w, rct_widge
     // Resolve the absolute ltrb
     sint32 l = w->x + widget->left;
     sint32 r = w->x + widget->right;
-    sint32 t = w->y + widget->top;
+    sint32 t;
+
+    if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
+        t = w->y + std::max<sint32>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    else
+        t = w->y + widget->top;
 
     gfx_draw_string_centred_clipped(
         dpi,
@@ -431,19 +435,24 @@ static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex w
     // Get the widget
     rct_widget *widget = &w->widgets[widgetIndex];
 
-    // Get the colour
-    uint8 colour = w->colours[widget->colour];
-
-    // Resolve the absolute ltrb
-    sint32 l = w->x + widget->left;
-    sint32 t = w->y + widget->top;
-    sint32 r = w->x + widget->right;
-
     if (widget->text == STR_NONE || widget->text == STR_VIEWPORT)
         return;
 
+    // Get the colour
+    uint8 colour = w->colours[widget->colour];
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
+
+    // Resolve the absolute ltrb
+    sint32 l = w->x + widget->left;
+    sint32 r = w->x + widget->right;
+    sint32 t;
+
+    if (widget->type == WWT_BUTTON || widget->type == WWT_TABLE_HEADER)
+        t = w->y + std::max<sint32>(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    else
+        t = w->y + widget->top;
+
     gfx_draw_string_left_clipped(dpi, widget->text, gCommonFormatArgs, colour, l + 1, t, r - l);
 }
 
