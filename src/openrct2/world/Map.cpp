@@ -253,9 +253,9 @@ void map_set_tile_elements(sint32 x, sint32 y, rct_tile_element *elements)
     gTileElementTilePointers[x + y * MAXIMUM_MAP_SIZE_TECHNICAL] = elements;
 }
 
-sint32 tile_element_is_last_for_tile(const rct_tile_element *element)
+bool tile_element_is_last_for_tile(const rct_tile_element *element)
 {
-    return element->flags & TILE_ELEMENT_FLAG_LAST_TILE;
+    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 bool tile_element_is_ghost(const rct_tile_element *element)
@@ -715,7 +715,7 @@ void sub_68B089()
  * Checks if the tile at coordinate at height counts as connected.
  * @return 1 if connected, 0 otherwise
  */
-sint32 map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection)
+bool map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection)
 {
     rct_tile_element *tileElement = map_get_first_element_at(x, y);
 
@@ -730,17 +730,17 @@ sint32 map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection)
         if (pathType & 1) {
             if (pathDirection == faceDirection) {
                 if (z == tileElement->base_height + 2)
-                    return 1;
+                    return true;
             } else if ((pathDirection ^ 2) == faceDirection && z == tileElement->base_height) {
-                return 1;
+                return true;
             }
         } else {
             if (z == tileElement->base_height)
-                return 1;
+                return true;
         }
     } while (!tile_element_is_last_for_tile(tileElement++));
 
-    return 0;
+    return false;
 }
 
 /**

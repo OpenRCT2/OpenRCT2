@@ -417,7 +417,7 @@ void map_update_tile_pointers();
 rct_tile_element *map_get_first_element_at(sint32 x, sint32 y);
 rct_tile_element *map_get_nth_element_at(sint32 x, sint32 y, sint32 n);
 void map_set_tile_elements(sint32 x, sint32 y, rct_tile_element *elements);
-sint32 tile_element_is_last_for_tile(const rct_tile_element *element);
+bool tile_element_is_last_for_tile(const rct_tile_element *element);
 bool tile_element_is_ghost(const rct_tile_element *element);
 uint8 tile_element_get_scenery_quadrant(const rct_tile_element *element);
 sint32 tile_element_get_type(const rct_tile_element *element);
@@ -438,7 +438,7 @@ rct_tile_element * map_get_ride_entrance_element_at(sint32 x, sint32 y, sint32 z
 rct_tile_element * map_get_ride_exit_element_at(sint32 x, sint32 y, sint32 z, bool ghost);
 sint32 tile_element_height(sint32 x, sint32 y);
 void sub_68B089();
-sint32 map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection);
+bool map_coord_is_connected(sint32 x, sint32 y, sint32 z, uint8 faceDirection);
 void map_remove_provisional_elements();
 void map_restore_provisional_elements();
 void map_update_path_wide_flags();
