@@ -221,7 +221,7 @@ static rct_widget window_options_display_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
     { WWT_GROUPBOX,         1,  5,      304,    53,     207,    STR_HARDWARE_GROUP,     STR_NONE },                 // Hardware group
 
-    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_ARG_12_STRINGID,    STR_NONE },                 // Fullscreen
+    { WWT_DROPDOWN,         1,  155,    299,    68,     79,     STR_NONE,               STR_NONE },                 // Fullscreen
     { WWT_BUTTON,           1,  288,    298,    69,     78,     STR_DROPDOWN_GLYPH,     STR_FULLSCREEN_MODE_TIP },
 
         { WWT_DROPDOWN,         1,  155,    299,    83,     94,     STR_ARG_16_RESOLUTION_X_BY_Y,   STR_NONE },             // Resolution
@@ -1536,9 +1536,10 @@ static void window_options_invalidate(rct_window *w)
 
     switch (w->page) {
     case WINDOW_OPTIONS_PAGE_DISPLAY:
+    {
+        // Resolution dropdown caption.
         set_format_arg(16, uint16, (uint16)gConfigGeneral.fullscreen_width);
         set_format_arg(18, uint16, (uint16)gConfigGeneral.fullscreen_height);
-        set_format_arg(12, rct_string_id, window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode]);
 
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
         if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
@@ -1592,19 +1593,13 @@ static void window_options_invalidate(rct_window *w)
         widget_set_checkbox_value(w, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
         widget_set_checkbox_value(w, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
 
+        // Dropdown captions for straightforward strings.
+        window_options_display_widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+        window_options_display_widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[gConfigGeneral.drawing_engine];
         window_options_display_widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names[gConfigGeneral.scale_quality - 1];
 
-        window_options_display_widgets[WIDX_RESOLUTION].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_RESOLUTION_DROPDOWN].type = WWT_BUTTON;
-        window_options_display_widgets[WIDX_FULLSCREEN].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_FULLSCREEN_DROPDOWN].type = WWT_BUTTON;
-        window_options_display_widgets[WIDX_DRAWING_ENGINE].type = WWT_DROPDOWN;
-        window_options_display_widgets[WIDX_DRAWING_ENGINE_DROPDOWN].type = WWT_BUTTON;
-        window_options_display_widgets[WIDX_UNCAP_FPS_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_display_widgets[WIDX_SHOW_FPS_CHECKBOX].type = WWT_CHECKBOX;
-        window_options_display_widgets[WIDX_MINIMIZE_FOCUS_LOSS].type = WWT_CHECKBOX;
-        window_options_display_widgets[WIDX_STEAM_OVERLAY_PAUSE].type = WWT_CHECKBOX;
         break;
+    }
 
     case WINDOW_OPTIONS_PAGE_RENDERING:
     {
@@ -1858,26 +1853,16 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     {
         gfx_draw_string_left(dpi, STR_FULLSCREEN_MODE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_FULLSCREEN].top + 1);
 
-        sint32 colour = w->colours[1];
         // Disable resolution dropdown on "Windowed" and "Fullscreen (desktop)"
+        sint32 colour = w->colours[1];
         if (gConfigGeneral.fullscreen_mode != static_cast<sint32>(OpenRCT2::Ui::FULLSCREEN_MODE::FULLSCREEN))
         {
             colour |= COLOUR_FLAG_INSET;
         }
         gfx_draw_string_left(dpi, STR_DISPLAY_RESOLUTION, w, colour, w->x + 10 + 15, w->y + window_options_display_widgets[WIDX_RESOLUTION].top + 1);
-        gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
 
+        gfx_draw_string_left(dpi, STR_UI_SCALING_DESC, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_SCALE].top + 1);
         gfx_draw_string_left(dpi, STR_DRAWING_ENGINE, w, w->colours[1], w->x + 10, w->y + window_options_display_widgets[WIDX_DRAWING_ENGINE].top + 1);
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-        gfx_draw_string_left_clipped(
-            dpi,
-            DrawingEngineStringIds[gConfigGeneral.drawing_engine],
-            nullptr,
-            w->colours[1],
-            w->x + window_options_culture_widgets[WIDX_DRAWING_ENGINE].left + 1,
-            w->y + window_options_culture_widgets[WIDX_DRAWING_ENGINE].top,
-            window_options_culture_widgets[WIDX_DRAWING_ENGINE].right - window_options_culture_widgets[WIDX_DRAWING_ENGINE].left - 11
-        );
 
         sint32 scale = (sint32)(gConfigGeneral.window_scale * 100);
         gfx_draw_string_left(dpi, STR_WINDOW_OBJECTIVE_VALUE_RATING, &scale, w->colours[1], w->x + w->widgets[WIDX_SCALE].left + 1, w->y + w->widgets[WIDX_SCALE].top + 1);
@@ -1894,7 +1879,6 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
     case WINDOW_OPTIONS_PAGE_CULTURE:
         gfx_draw_string_left(dpi, STR_OPTIONS_LANGUAGE, w, w->colours[1], w->x + 10, w->y + window_options_culture_widgets[WIDX_LANGUAGE].top + 1);
 
-        gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
         gfx_draw_string(
             dpi,
             (char*)LanguagesDescriptors[gCurrentLanguage].native_name,
