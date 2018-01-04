@@ -75,17 +75,20 @@ enum {
 
 #pragma region Widgets
 
+#define MAIN_WIDGETS \
+    { WWT_FRAME,    0,  0,      529,    0,  288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_CAPTION,  0,  1,      528,    1,  14,     STR_FINANCIAL_SUMMARY,      STR_WINDOW_TITLE_TIP                    }, \
+    { WWT_CLOSEBOX, 0,  517,    527,    2,  13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP                    }, \
+    { WWT_RESIZE,   1,  0,      529,    43, 288,    0xFFFFFFFF,                 STR_NONE                                }, \
+    { WWT_TAB,      1,  3,      33,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_SUMMARY_TAB_TIP       }, \
+    { WWT_TAB,      1,  34,     64,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_CASH_TAB_TIP          }, \
+    { WWT_TAB,      1,  65,     95,     17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP    }, \
+    { WWT_TAB,      1,  96,     126,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP }, \
+    { WWT_TAB,      1,  127,    157,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_SHOW_MARKETING_TAB_TIP     }, \
+    { WWT_TAB,      1,  158,    188,    17, 43,     IMAGE_TYPE_REMAP | SPR_TAB, STR_FINANCES_RESEARCH_TIP               }
+
 static rct_widget window_finances_summary_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      288,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_SUMMARY,              STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     288,    0xFFFFFFFF,                         STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,         STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WWT_SPINNER,          1,  64,     153,    259,    270,    STR_FINANCES_SUMMARY_LOAN_VALUE,    STR_NONE },
     { WWT_DROPDOWN_BUTTON,  1,  142,    152,    260,    264,    STR_NUMERIC_UP,                     STR_NONE },
     { WWT_DROPDOWN_BUTTON,  1,  142,    152,    265,    269,    STR_NUMERIC_DOWN,                   STR_NONE },
@@ -93,58 +96,22 @@ static rct_widget window_finances_summary_widgets[] = {
 };
 
 static rct_widget window_finances_cash_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_FINANCIAL_GRAPH,    STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget window_finances_park_value_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PARK_VALUE_GRAPH,   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget window_finances_profit_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_PROFIT_GRAPH,       STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WIDGETS_END },
 };
 
 static rct_widget window_finances_marketing_widgets[] = {
-    { WWT_FRAME,            0,  0,      529,    0,      256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      528,    1,      14,     STR_MARKETING,                          STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  517,    527,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      529,    43,     256,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      526,    47,     91,     STR_MARKETING_CAMPAIGNS_IN_OPERATION,   STR_NONE },
     { WWT_GROUPBOX,         2,  3,      526,    47,     252,    STR_MARKETING_CAMPAIGNS_AVAILABLE,      STR_NONE },
     { WWT_IMGBTN,           1,  8,      521,    0,      13,     0xFFFFFFFF,                             STR_START_THIS_MARKETING_CAMPAIGN },
@@ -157,16 +124,7 @@ static rct_widget window_finances_marketing_widgets[] = {
 };
 
 static rct_widget window_finances_research_widgets[] = {
-    { WWT_FRAME,            0,  0,      319,    0,      206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_CAPTION,          0,  1,      318,    1,      14,     STR_RESEARCH_FUNDING,                   STR_WINDOW_TITLE_TIP },
-    { WWT_CLOSEBOX,         0,  307,    317,    2,      13,     STR_CLOSE_X,                            STR_CLOSE_WINDOW_TIP },
-    { WWT_RESIZE,           1,  0,      319,    43,     206,    0xFFFFFFFF,                             STR_NONE },
-    { WWT_TAB,              1,  3,      33,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_SUMMARY_TAB_TIP },
-    { WWT_TAB,              1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_CASH_TAB_TIP },
-    { WWT_TAB,              1,  65,     95,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_PARK_VALUE_TAB_TIP },
-    { WWT_TAB,              1,  96,     126,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_WEEKLY_PROFIT_TAB_TIP },
-    { WWT_TAB,              1,  127,    157,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_SHOW_MARKETING_TAB_TIP },
-    { WWT_TAB,              1,  158,    188,    17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_FINANCES_RESEARCH_TIP },
+    MAIN_WIDGETS,
     { WWT_GROUPBOX,         2,  3,      316,    47,     91,     STR_RESEARCH_FUNDING_,                  STR_NONE },
     { WWT_DROPDOWN,         2,  8,      167,    59,     70,     0xFFFFFFFF,                             STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
     { WWT_DROPDOWN_BUTTON,  2,  156,    166,    60,     69,     STR_DROPDOWN_GLYPH,                     STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT },
@@ -434,77 +392,49 @@ static void window_finances_set_colours();
 
 #pragma region Enabled widgets
 
+#define ALWAYS_ENABLED_WIDGETS \
+    ((1ULL << WIDX_CLOSE) | \
+    (1ULL << WIDX_TAB_1) | \
+    (1ULL << WIDX_TAB_2) | \
+    (1ULL << WIDX_TAB_3) | \
+    (1ULL << WIDX_TAB_4) | \
+    (1ULL << WIDX_TAB_5) | \
+    (1ULL << WIDX_TAB_6))
+
 static uint32 window_finances_page_enabled_widgets[] = {
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_LOAN_INCREASE) |
-    (1 << WIDX_LOAN_DECREASE),
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_LOAN_INCREASE) |
+    (1ULL << WIDX_LOAN_DECREASE),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6),
+    ALWAYS_ENABLED_WIDGETS,
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-    (1 << WIDX_CAMPAIGN_1) |
-    (1 << WIDX_CAMPAIGN_2) |
-    (1 << WIDX_CAMPAIGN_3) |
-    (1 << WIDX_CAMPAIGN_4) |
-    (1 << WIDX_CAMPAIGN_5) |
-    (1 << WIDX_CAMPAIGN_6),
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_CAMPAIGN_1) |
+    (1ULL << WIDX_CAMPAIGN_2) |
+    (1ULL << WIDX_CAMPAIGN_3) |
+    (1ULL << WIDX_CAMPAIGN_4) |
+    (1ULL << WIDX_CAMPAIGN_5) |
+    (1ULL << WIDX_CAMPAIGN_6),
 
-    (1 << WIDX_CLOSE) |
-    (1 << WIDX_TAB_1) |
-    (1 << WIDX_TAB_2) |
-    (1 << WIDX_TAB_3) |
-    (1 << WIDX_TAB_4) |
-    (1 << WIDX_TAB_5) |
-    (1 << WIDX_TAB_6) |
-
-    (1 << WIDX_RESEARCH_FUNDING) |
-    (1 << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
-    (1 << WIDX_TRANSPORT_RIDES) |
-    (1 << WIDX_GENTLE_RIDES) |
-    (1 << WIDX_ROLLER_COASTERS) |
-    (1 << WIDX_THRILL_RIDES) |
-    (1 << WIDX_WATER_RIDES) |
-    (1 << WIDX_SHOPS_AND_STALLS) |
-    (1 << WIDX_SCENERY_AND_THEMING)
+    ALWAYS_ENABLED_WIDGETS |
+    (1ULL << WIDX_RESEARCH_FUNDING) |
+    (1ULL << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
+    (1ULL << WIDX_TRANSPORT_RIDES) |
+    (1ULL << WIDX_GENTLE_RIDES) |
+    (1ULL << WIDX_ROLLER_COASTERS) |
+    (1ULL << WIDX_THRILL_RIDES) |
+    (1ULL << WIDX_WATER_RIDES) |
+    (1ULL << WIDX_SHOPS_AND_STALLS) |
+    (1ULL << WIDX_SCENERY_AND_THEMING)
 };
 
 static uint32 window_finances_page_hold_down_widgets[] = {
-    (1 << WIDX_LOAN_INCREASE) |
-    (1 << WIDX_LOAN_DECREASE),
+    (1ULL << WIDX_LOAN_INCREASE) |
+    (1ULL << WIDX_LOAN_DECREASE),
 
     0,
     0,
@@ -1257,7 +1187,7 @@ static void window_finances_research_mouseup(rct_window *w, rct_widgetindex widg
     case WIDX_SHOPS_AND_STALLS:
     case WIDX_SCENERY_AND_THEMING:
         activeResearchTypes = gResearchPriorities;
-        activeResearchTypes ^= 1 << (widgetIndex - WIDX_TRANSPORT_RIDES);
+        activeResearchTypes ^= 1ULL << (widgetIndex - WIDX_TRANSPORT_RIDES);
         research_set_priority(activeResearchTypes);
         break;
     }
@@ -1346,7 +1276,7 @@ static void window_finances_research_invalidate(rct_window *w)
     sint32 uncompletedResearchTypes = gResearchUncompletedCategories;
     for (sint32 i = 0; i < 7; i++) {
         sint32 mask = 1 << i;
-        sint32 widgetMask = 1 << (i + WIDX_TRANSPORT_RIDES);
+        sint32 widgetMask = 1ULL << (i + WIDX_TRANSPORT_RIDES);
 
         // Set checkbox disabled if research type is complete
         if (uncompletedResearchTypes & mask) {
@@ -1422,7 +1352,7 @@ static void window_finances_set_pressed_tab(rct_window *w)
 {
     sint32 i;
     for (i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
+        w->pressed_widgets &= ~(1ULL << (WIDX_TAB_1 + i));
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
