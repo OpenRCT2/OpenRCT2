@@ -20,6 +20,7 @@
 #include <openrct2/localisation/localisation.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/management/NewsItem.h>
+#include <openrct2/management/Research.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -280,7 +281,7 @@ static void window_research_development_mouseup(rct_window *w, rct_widgetindex w
         window_research_set_page(w, widgetIndex - WIDX_TAB_1);
         break;
     case WIDX_LAST_DEVELOPMENT_BUTTON:
-        news_item_open_subject(NEWS_ITEM_RESEARCH, (sint32)gResearchLastItemSubject);
+        news_item_open_subject(NEWS_ITEM_RESEARCH, gResearchLastItemSubject.rawValue);
         break;
     }
 }
@@ -311,10 +312,11 @@ static void window_research_development_invalidate(rct_window *w)
     window_research_set_pressed_tab(w);
 
     window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_EMPTY;
-    uint32 typeId = gResearchLastItemSubject;
-    if (typeId != 0xFFFFFFFF) {
+    if (gResearchLastItemSubject.rawValue != RESEARCHED_ITEMS_SEPARATOR)
+    {
+        uint8 type = gResearchLastItemSubject.type;
         window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WWT_FLATBTN;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = typeId >= 0x10000 ? SPR_NEW_RIDE : SPR_NEW_SCENERY;
+        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == RESEARCH_ENTRY_TYPE_RIDE? SPR_NEW_RIDE : SPR_NEW_SCENERY;
     }
 }
 
@@ -358,7 +360,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
             stringId = ResearchCategoryNames[gResearchNextCategory];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
-                stringId = research_item_get_name(gResearchNextItem);
+                stringId = research_item_get_name(&gResearchNextItem);
             }
         }
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 296, STR_RESEARCH_TYPE_LABEL, COLOUR_BLACK);
@@ -387,12 +389,11 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     x = w->x + 10;
     y = w->y + w->widgets[WIDX_LAST_DEVELOPMENT_GROUP + baseWidgetIndex].top + 12;
 
-    uint32 typeId = gResearchLastItemSubject;
     rct_string_id lastDevelopmentFormat;
-    if (typeId != 0xFFFFFFFF)
+    if (gResearchLastItemSubject.rawValue != RESEARCHED_ITEMS_SEPARATOR)
     {
-        stringId = research_item_get_name(typeId);
-        lastDevelopmentFormat = (typeId >= 0x10000) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
+        uint8 type = gResearchLastItemSubject.type;
+        lastDevelopmentFormat = type == RESEARCH_ENTRY_TYPE_RIDE ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
 
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }

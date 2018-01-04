@@ -170,7 +170,7 @@ static void move_research_item(rct_research_item *beforeItem);
 
 static sint32 research_item_is_always_researched(rct_research_item *researchItem)
 {
-    return (researchItem->entryIndex & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
+    return (researchItem->flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
 
 /**
@@ -194,18 +194,18 @@ static void research_rides_setup(){
         Editor::SelectedObjects[OBJECT_TYPE_RIDE][ride->subtype] |= OBJECT_SELECTION_FLAG_SELECTED;
     }
 
-    for (rct_research_item* research = gResearchItems; research->entryIndex != RESEARCHED_ITEMS_END; research++)
+    for (rct_research_item* research = gResearchItems; research->rawValue != RESEARCHED_ITEMS_END; research++)
     {
-        if (research->entryIndex & RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED)
+        if (research->flags & RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED)
             continue;
 
         // If not a ride
-        if ((research->entryIndex & 0xFFFFFF) < 0x10000)
+        if (research->type != RESEARCH_ENTRY_TYPE_RIDE)
             continue;
 
-        uint8 ride_base_type = research_get_ride_base_type(research->entryIndex);
+        uint8 ride_base_type = research->baseRideType;
 
-        uint8 object_index = research->entryIndex & 0xFF;
+        uint8 object_index = research->entryIndex;
         rct_ride_entry* ride_entry = get_ride_entry(object_index);
 
         bool master_found = false;
@@ -258,7 +258,7 @@ static void research_rides_setup(){
             }
         }
 
-        research->entryIndex |= RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED;
+        research->flags |= RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED;
         _editorInventionsListDraggedItem = research;
         move_research_item(gResearchItems);
         _editorInventionsListDraggedItem = nullptr;
@@ -271,25 +271,25 @@ static void research_rides_setup(){
  *  rct2: 0x0068590C
  * Sets the critical scenery sets to always researched
  */
-static void research_scenery_sets_setup(){
-
+static void research_scenery_groups_setup()
+{
     for (size_t i = 0; i < Util::CountOf(RequiredSelectedObjects); i++) {
         const rct_object_entry * object = &RequiredSelectedObjects[i];
 
-        uint8 entry_type, entry_index;
-        if (!find_object_in_entry_group(object, &entry_type, &entry_index))
+        uint8 entry_type, entryIndex;
+        if (!find_object_in_entry_group(object, &entry_type, &entryIndex))
             continue;
 
         if (entry_type != OBJECT_TYPE_SCENERY_GROUP)
             continue;
 
         rct_research_item* research = gResearchItems;
-        for (; research->entryIndex != RESEARCHED_ITEMS_END; research++){
-
-            if ((research->entryIndex & 0xFFFFFF) != entry_index)
+        for (; research->rawValue != RESEARCHED_ITEMS_END; research++)
+        {
+            if ((research->rawValue & 0xFFFFFF) != entryIndex)
                 continue;
 
-            research->entryIndex |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
+            research->flags |= RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED;
             _editorInventionsListDraggedItem = research;
             move_research_item(gResearchItems);
             _editorInventionsListDraggedItem = nullptr;
@@ -304,7 +304,7 @@ static void research_scenery_sets_setup(){
 static void research_always_researched_setup()
 {
     research_rides_setup();
-    research_scenery_sets_setup();
+    research_scenery_groups_setup();
 }
 
 /**
@@ -317,13 +317,13 @@ static void research_items_shuffle()
     sint32 i, numNonResearchedItems;
 
     // Skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {}
+    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {}
     researchItem++;
     researchOrderBase = researchItem;
 
     // Count non pre-researched items
     numNonResearchedItems = 0;
-    for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++)
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
         numNonResearchedItems++;
 
     // Shuffle list
@@ -345,19 +345,19 @@ static void research_items_make_all_unresearched()
     sint32 sorted;
     do {
         sorted = 1;
-        for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {
+        for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {
             if (research_item_is_always_researched(researchItem))
                 continue;
 
             nextResearchItem = researchItem + 1;
-            if (nextResearchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR || research_item_is_always_researched(nextResearchItem)) {
+            if (nextResearchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || research_item_is_always_researched(nextResearchItem)) {
                 // Bubble up always researched item or separator
                 researchItemTemp = *researchItem;
                 *researchItem = *nextResearchItem;
                 *nextResearchItem = researchItemTemp;
                 sorted = 0;
 
-                if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR)
+                if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
                     break;
             }
         }
@@ -369,10 +369,10 @@ static void research_items_make_all_researched()
     rct_research_item *researchItem, researchItemTemp;
 
     // Find separator
-    for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
 
     // Move separator below all items
-    for (; (researchItem + 1)->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; (researchItem + 1)->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
         // Swap separator with research item
         researchItemTemp = *researchItem;
         *researchItem = *(researchItem + 1);
@@ -400,7 +400,7 @@ static void move_research_item(rct_research_item *beforeItem)
     do {
         *researchItem = *(researchItem + 1);
         researchItem++;
-    } while (researchItem->entryIndex != RESEARCHED_ITEMS_END_2);
+    } while (researchItem->rawValue != RESEARCHED_ITEMS_END_2);
     // At end of this researchItem points to the end of the list
 
     if (beforeItem > _editorInventionsListDraggedItem)
@@ -433,11 +433,11 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y(s
 
     if (scrollIndex != 0) {
         // Skip pre-researched items
-        for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
         researchItem++;
     }
 
-    for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
             return researchItem;
@@ -458,11 +458,11 @@ static rct_research_item *window_editor_inventions_list_get_item_from_scroll_y_i
 
     if (scrollIndex != 0) {
         // Skip pre-researched items
-        for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
         researchItem++;
     }
 
-    for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR && researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++) {
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR && researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++) {
         y -= SCROLLABLE_ROW_HEIGHT;
         if (y < 0)
             return researchItem;
@@ -604,7 +604,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
     *height = 0;
 
     // Count / skip pre-researched items
-    for (researchItem = gResearchItems; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
         *height += SCROLLABLE_ROW_HEIGHT;
 
     if (scrollIndex == 1) {
@@ -612,7 +612,7 @@ static void window_editor_inventions_list_scrollgetheight(rct_window *w, sint32 
 
         // Count non pre-researched items
         *height = 0;
-        for (; researchItem->entryIndex != RESEARCHED_ITEMS_END; researchItem++)
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
             *height += SCROLLABLE_ROW_HEIGHT;
     }
 }
@@ -629,7 +629,7 @@ static void window_editor_inventions_list_scrollmousedown(rct_window *w, sint32 
     if (researchItem == nullptr)
         return;
 
-    if (researchItem->entryIndex < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
+    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem))
         return;
 
     window_invalidate(w);
@@ -684,7 +684,7 @@ static void window_editor_inventions_list_cursor(rct_window *w, rct_widgetindex 
     if (researchItem == nullptr)
         return;
 
-    if (researchItem->entryIndex < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
+    if (researchItem->rawValue < RESEARCHED_ITEMS_END_2 && research_item_is_always_researched(researchItem)) {
         return;
     }
 
@@ -747,21 +747,20 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     if (researchItem == nullptr)
         researchItem = w->research_item;
     // If the research item is null or a list separator.
-    if (researchItem == nullptr || researchItem->entryIndex < 0)
+    if (researchItem == nullptr || researchItem->rawValue < 0)
         return;
 
     // Preview image
-    sint32 objectEntryType = 7;
-    sint32 eax = researchItem->entryIndex & 0xFFFFFF;
-    if (eax >= 0x10000)
-        objectEntryType = 0;
+    sint32 objectEntryType = OBJECT_TYPE_SCENERY_GROUP;
+    if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
+        objectEntryType = OBJECT_TYPE_RIDE;
 
-    void *chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex & 0xFF];
+    void * chunk = object_entry_groups[objectEntryType].chunks[researchItem->entryIndex];
 
     if (chunk == nullptr)
         return;
 
-    rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex & 0xFF].entry;
+    rct_object_entry * entry = &object_entry_groups[objectEntryType].entries[researchItem->entryIndex].entry;
 
     // Draw preview
     widget = &w->widgets[WIDX_PREVIEW];
@@ -782,7 +781,7 @@ static void window_editor_inventions_list_paint(rct_window *w, rct_drawpixelinfo
     x = w->x + ((widget->left + widget->right) / 2) + 1;
     y = w->y + widget->bottom + 3;
     width = w->width - w->widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
-    stringId = research_item_get_name(eax);
+    stringId = research_item_get_name(researchItem);
     gfx_draw_string_centred_clipped(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK, x, y, width);
     y += 15;
 
@@ -812,7 +811,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
 
     if (scrollIndex == 1) {
         // Skip pre-researched items
-        for (; researchItem->entryIndex != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+        for (; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
         researchItem++;
         researchItemEndMarker = RESEARCHED_ITEMS_END;
     } else {
@@ -844,14 +843,14 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
                 colour = COLOUR_BRIGHT_GREEN;
         }
 
-        if (researchItem->entryIndex == RESEARCHED_ITEMS_SEPARATOR || researchItem->entryIndex == RESEARCHED_ITEMS_END)
+        if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || researchItem->rawValue == RESEARCHED_ITEMS_END)
             continue;
 
         if (researchItem == _editorInventionsListDraggedItem)
             continue;
 
         disableItemMovement = research_item_is_always_researched(researchItem);
-        stringId = research_item_get_name(researchItem->entryIndex & 0xFFFFFF);
+        stringId = research_item_get_name(researchItem);
 
         ptr = buffer;
         if (!disableItemMovement) {
@@ -874,7 +873,7 @@ static void window_editor_inventions_list_scrollpaint(rct_window *w, rct_drawpix
         left = 1;
         top = itemY;
         gfx_draw_string(dpi, buffer, colour, left, top);
-    }while(researchItem++->entryIndex != researchItemEndMarker);
+    }while(researchItem++->rawValue != researchItemEndMarker);
 }
 
 #pragma region Drag item
@@ -893,7 +892,7 @@ static void window_editor_inventions_list_drag_open(rct_research_item *researchI
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
     _editorInventionsListDraggedItem = researchItem;
 
-    stringId = research_item_get_name(researchItem->entryIndex & 0xFFFFFF);
+    stringId = research_item_get_name(researchItem);
     format_string(buffer, 256, stringId, nullptr);
     stringWidth = gfx_get_string_width(buffer);
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
@@ -958,7 +957,7 @@ static void window_editor_inventions_list_drag_paint(rct_window *w, rct_drawpixe
 
     x = w->x;
     y = w->y + 2;
-    stringId = research_item_get_name(_editorInventionsListDraggedItem->entryIndex & 0xFFFFFF);
+    stringId = research_item_get_name(_editorInventionsListDraggedItem);
     gfx_draw_string_left(dpi, STR_WINDOW_COLOUR_2_STRINGID, &stringId, COLOUR_BLACK | COLOUR_FLAG_OUTLINE, x, y);
 }
 

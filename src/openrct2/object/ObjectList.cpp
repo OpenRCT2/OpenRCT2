@@ -124,25 +124,28 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
  * bl = entry_index
  * ecx = entry_type
  */
-sint32 find_object_in_entry_group(const rct_object_entry* entry, uint8* entry_type, uint8* entry_index){
+bool find_object_in_entry_group(const rct_object_entry * entry, uint8 * entry_type, uint8 * entry_index)
+{
     if ((entry->flags & 0xF) >= Util::CountOf(object_entry_groups)) {
-        return 0;
+        return false;
     }
     *entry_type = entry->flags & 0xF;
     rct_object_entry_group entry_group = object_entry_groups[*entry_type];
     for (*entry_index = 0;
-        *entry_index < object_entry_group_counts[*entry_type];
-        ++(*entry_index),
-        entry_group.chunks++,
-        entry_group.entries++){
+         *entry_index < object_entry_group_counts[*entry_type];
+         ++(*entry_index), entry_group.chunks++, entry_group.entries++)
+    {
+        if (*entry_group.chunks == nullptr)
+            continue;
 
-        if (*entry_group.chunks == nullptr) continue;
-
-        if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))break;
+        if (object_entry_compare((rct_object_entry*)entry_group.entries, entry))
+            break;
     }
 
-    if (*entry_index == object_entry_group_counts[*entry_type])return 0;
-    return 1;
+    if (*entry_index == object_entry_group_counts[*entry_type])
+        return false;
+
+    return true;
 }
 
 void get_type_entry_index(size_t index, uint8 * outObjectType, uint8 * outEntryIndex)
