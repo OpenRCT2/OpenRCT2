@@ -4497,6 +4497,8 @@ STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :구토
 STR_6189    :오리
 STR_6190    :{SMALLFONT}{BLACK}메인 타이틀 시퀀스가 활성화되어 있을 때에는 스프라이트를 선택할 수 없습니다.
+STR_6191    :지면
+STR_6192    :벽
 
 #############
 # Scenarios #

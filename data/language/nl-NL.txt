@@ -4492,6 +4492,8 @@ STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Braaksel
 STR_6189    :Eend
 STR_6190    :{SMALLFONT}{BLACK}Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
+STR_6191    :Land
+STR_6192    :Muur
 
 #############
 # Scenarios #

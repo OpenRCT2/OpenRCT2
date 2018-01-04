@@ -4497,6 +4497,8 @@ STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Zvratky
 STR_6189    :Kachna
 STR_6190    :{SMALLFONT}{BLACK}Nelze zvolit sprite, když je aktivní hlavní obrazovka.
+STR_6191    :Povrch
+STR_6192    :Stěna
 
 ###############################################################################
 ## RCT2 Objects
