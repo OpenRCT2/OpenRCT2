@@ -66,7 +66,7 @@ typedef struct rct_ride_entry_vehicle {
     uint8 friction_sound_id;        // 0x57 , 0x71
     uint8 var_58;                   // 0x58 , 0x72
     uint8 sound_range;              // 0x59 , 0x73
-    uint8 var_5A;                   // 0x5A , 0x74
+    uint8 double_sound_frequency;   // 0x5A , 0x74 (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8 powered_acceleration;     // 0x5B , 0x75
     uint8 powered_max_speed;        // 0x5C , 0x76
     uint8 car_visual;               // 0x5D , 0x77
@@ -136,7 +136,7 @@ typedef struct rct_vehicle {
     uint16 var_44;
     uint16 mass;                    // 0x46
     uint16 update_flags;            // 0x48
-    uint8 var_4A;
+    uint8 swing_sprite;
     uint8 current_station;          // 0x4B
     union {
         sint16 swinging_car_var_0;  // 0x4C
@@ -146,7 +146,10 @@ typedef struct rct_vehicle {
             sint8 ferris_wheel_var_1;   // 0x4D
         };
     };
-    sint16 var_4E;
+    union {
+        sint16 var_4E;
+        sint16 crash_z;             // 0x4E
+    };
     uint8 status;                   // 0x50
     uint8 sub_state;                // 0x51
     uint16 peep[32];                // 0x52
@@ -155,16 +158,20 @@ typedef struct rct_vehicle {
     uint8 num_peeps;                // 0xB3
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
-    sint16 var_B6;
+    union {
+        sint16 var_B6;
+        sint16 crash_x;             // 0xB6
+    };
     uint16 var_B8;
     uint8 var_BA;
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
     uint8 sound2_volume;            // 0xBE
-    sint8 var_BF;
+    sint8 sound_vector_factor;
     union {
         uint16 var_C0;
+        sint16 crash_y;             // 0xC0
         uint16 time_waiting;        // 0xC0
         uint16 cable_lift_target;   // 0xC0
     };
@@ -363,7 +370,6 @@ extern "C" {
 
 rct_vehicle * try_get_vehicle(uint16 spriteIndex);
 void vehicle_update_all();
-sint32 sub_6BC2F3(rct_vehicle* vehicle);
 void vehicle_sounds_update();
 void vehicle_get_g_forces(rct_vehicle *vehicle, sint32 *verticalG, sint32 *lateralG);
 void vehicle_set_map_toolbar(rct_vehicle *vehicle);

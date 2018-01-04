@@ -4486,7 +4486,7 @@ static rct_vehicle *vehicle_create_car(
     vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
-    vehicle->var_4A = 0;
+    vehicle->swing_sprite = 0;
     vehicle->swinging_car_var_0 = 0;
     vehicle->var_4E = 0;
     vehicle->restraints_position = 0;
@@ -4865,7 +4865,7 @@ void loc_6DDF9C(Ride *ride, rct_tile_element *tileElement)
             while (true) {
                 car->velocity = 0;
                 car->acceleration = 0;
-                car->var_4A = 0;
+                car->swing_sprite = 0;
                 car->remaining_distance += 13962;
 
                 uint16 spriteIndex = car->next_vehicle_on_train;

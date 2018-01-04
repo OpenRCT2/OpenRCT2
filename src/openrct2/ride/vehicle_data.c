@@ -884,7 +884,7 @@ const sint32 dword_9A2970[] = {
 };
 
 /** rct2: 0x009A3684 */
-const sint32 word_9A3684[] = {
+const sint32 SpriteDirectionToSoundDirection[] = {
     -0x4000,    // 0
     -0x3000,    // 1
     -0x2000,    // 2

@@ -21,6 +21,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Math.hpp"
+#include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/viewport.h"
@@ -77,6 +78,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle);
 static void   sub_6D63D4(rct_vehicle * vehicle);
 static bool   vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sint16 x, sint16 y, sint16 z,
                                                         uint16 * otherVehicleIndex);
+static sint32 vehicle_get_sound_priority_factor(rct_vehicle* vehicle);
 static void   vehicle_update_sound(rct_vehicle * vehicle);
 static sint32 vehicle_update_scream_sound(rct_vehicle * vehicle);
 
@@ -836,116 +838,146 @@ static void vehicle_invalidate(rct_vehicle * vehicle)
     invalidate_sprite_2((rct_sprite *)vehicle);
 }
 
+static sint32 get_train_mass(rct_vehicle * first_vehicle)
+{
+    sint32 totalMass = 0;
+
+    for (rct_vehicle * vehicle = first_vehicle;
+        vehicle != nullptr;)
+    {
+        totalMass += vehicle->mass;
+
+        if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+            break;
+
+        vehicle = GET_VEHICLE(vehicle->next_vehicle_on_train);
+    }
+
+    return totalMass;
+}
+
 /**
  *
  *  rct2: 0x006BB9FF
  */
 static void vehicle_update_sound_params(rct_vehicle * vehicle)
 {
-    if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) &&
-        (!(gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) || gS6Info.editor_step == EDITOR_STEP_ROLLERCOASTER_DESIGNER))
+    if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+        return;
+
+    if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER) && gS6Info.editor_step != EDITOR_STEP_ROLLERCOASTER_DESIGNER)
+        return;
+
+    if (vehicle->sound1_id == RCT12_SOUND_ID_NULL && vehicle->sound2_id == RCT12_SOUND_ID_NULL)
+        return;
+
+    if (vehicle->sprite_left == LOCATION_NULL)
+        return;
+
+    sint16 left = g_music_tracking_viewport->view_x;
+    sint16 bottom = g_music_tracking_viewport->view_y;
+    sint16 quarter_w = g_music_tracking_viewport->view_width / 4;
+    sint16 quarter_h = g_music_tracking_viewport->view_height / 4;
+
+    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
     {
-        if (vehicle->sound1_id != RCT12_SOUND_ID_NULL || vehicle->sound2_id != RCT12_SOUND_ID_NULL)
+        left -= quarter_w;
+        bottom -= quarter_h;
+    }
+
+    if (left >= vehicle->sprite_right || bottom >= vehicle->sprite_bottom)
+        return;
+
+    sint16 right = g_music_tracking_viewport->view_width + left;
+    sint16 top = g_music_tracking_viewport->view_height + bottom;
+
+    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
+    {
+        right += quarter_w + quarter_w;
+        top += quarter_h + quarter_h;
+    }
+
+    if (right < vehicle->sprite_left || top < vehicle->sprite_top)
+        return;
+
+    uint16 sound_priority = vehicle_get_sound_priority_factor(vehicle);
+    rct_vehicle_sound_params * soundParam;
+    // Find a sound param of lower priority to use
+    for (soundParam = &gVehicleSoundParamsList[0];
+        soundParam < gVehicleSoundParamsListEnd && sound_priority <= soundParam->priority;
+        soundParam++)
+        ;
+
+    if (soundParam >= &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
+        return;
+
+    if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
+    {
+        gVehicleSoundParamsListEnd++;
+    }
+
+    // Shift all sound params down one if using a free space
+    if (soundParam != gVehicleSoundParamsListEnd)
+    {
+        Memory::Move<rct_vehicle_sound_params>(
+            soundParam + 1,
+            soundParam,
+            ((gVehicleSoundParamsListEnd - soundParam) - 1) * sizeof(rct_vehicle_sound_params));
+    }
+
+    soundParam->priority = sound_priority;
+    sint32 pan_x =
+        (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - g_music_tracking_viewport->view_x;
+    pan_x >>= g_music_tracking_viewport->zoom;
+    pan_x += g_music_tracking_viewport->x;
+
+    uint16 screenwidth = context_get_width();
+    if (screenwidth < 64)
+    {
+        screenwidth = 64;
+    }
+    soundParam->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
+
+    sint32 pan_y =
+        (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - g_music_tracking_viewport->view_y;
+    pan_y >>= g_music_tracking_viewport->zoom;
+    pan_y += g_music_tracking_viewport->y;
+
+    uint16 screenheight = context_get_height();
+    if (screenheight < 64)
+    {
+        screenheight = 64;
+    }
+    soundParam->pan_y = ((((pan_y * 65536) / screenheight) - 0x8000) >> 4);
+
+    sint32 frequency = std::abs(vehicle->velocity);
+
+    rct_ride_entry * ride_type = get_ride_entry(vehicle->ride_subtype);
+    if (ride_type != nullptr)
+    {
+        if (ride_type->vehicles[vehicle->vehicle_type].double_sound_frequency & 1)
         {
-            if (vehicle->sprite_left != LOCATION_NULL)
-            {
-                sint16 x = g_music_tracking_viewport->view_x;
-                sint16 y = g_music_tracking_viewport->view_y;
-                sint16 w = g_music_tracking_viewport->view_width / 4;
-                sint16 h = g_music_tracking_viewport->view_height / 4;
-                if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
-                {
-                    x -= w;
-                    y -= h;
-                }
-                if (x < vehicle->sprite_right && y < vehicle->sprite_bottom)
-                {
-                    sint16 w2 = g_music_tracking_viewport->view_width + x;
-                    sint16 h2 = g_music_tracking_viewport->view_height + y;
-                    if (gWindowAudioExclusive->classification == WC_MAIN_WINDOW)
-                    {
-                        w2 += w + w;
-                        h2 += h + h;
-                    }
-                    if (w2 >= vehicle->sprite_left && h2 >= vehicle->sprite_top)
-                    {
-                        uint16                     v9 = sub_6BC2F3(vehicle);
-                        rct_vehicle_sound_params * i;
-                        for (i = &gVehicleSoundParamsList[0]; i < gVehicleSoundParamsListEnd && v9 <= i->var_A; i++)
-                            ;
-                        if (i < &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
-                        {
-                            if (gVehicleSoundParamsListEnd < &gVehicleSoundParamsList[Util::CountOf(gVehicleSoundParamsList)])
-                            {
-                                gVehicleSoundParamsListEnd++;
-                            }
-                            rct_vehicle_sound_params * j = gVehicleSoundParamsListEnd - 1;
-                            while (j > i)
-                            {
-                                j--;
-                                *(j + 1) = *j;
-                            }
-                            i->var_A = v9;
-                            sint32 pan_x =
-                                (vehicle->sprite_left / 2) + (vehicle->sprite_right / 2) - g_music_tracking_viewport->view_x;
-                            pan_x >>= g_music_tracking_viewport->zoom;
-                            pan_x += g_music_tracking_viewport->x;
+            frequency *= 2;
+        }
+    }
 
-                            uint16 screenwidth = context_get_width();
-                            if (screenwidth < 64)
-                            {
-                                screenwidth = 64;
-                            }
-                            i->pan_x = ((((pan_x * 65536) / screenwidth) - 0x8000) >> 4);
+    frequency >>= 5;
+    frequency *= 5512;
+    frequency >>= 14;
+    frequency += 11025;
+    frequency += 16 * vehicle->sound_vector_factor;
+    soundParam->frequency = (uint16)frequency;
+    soundParam->id        = vehicle->sprite_index;
+    soundParam->volume    = 0;
 
-                            sint32 pan_y =
-                                (vehicle->sprite_top / 2) + (vehicle->sprite_bottom / 2) - g_music_tracking_viewport->view_y;
-                            pan_y >>= g_music_tracking_viewport->zoom;
-                            pan_y += g_music_tracking_viewport->y;
+    if (vehicle->x != LOCATION_NULL)
+    {
+        rct_tile_element * tile_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
 
-                            uint16 screenheight = context_get_height();
-                            if (screenheight < 64)
-                            {
-                                screenheight = 64;
-                            }
-                            i->pan_y = ((((pan_y * 65536) / screenheight) - 0x8000) >> 4);
-
-                            sint32 v = vehicle->velocity;
-
-                            rct_ride_entry * ride_type = get_ride_entry(vehicle->ride_subtype);
-                            if (ride_type != nullptr)
-                            {
-                                uint8 test = ride_type->vehicles[vehicle->vehicle_type].var_5A;
-
-                                if (test & 1)
-                                {
-                                    v *= 2;
-                                }
-                            }
-                            if (v < 0)
-                            {
-                                v = -v;
-                            }
-                            v >>= 5;
-                            v *= 5512;
-                            v >>= 14;
-                            v += 11025;
-                            v += 16 * vehicle->var_BF;
-                            i->frequency = (uint16)v;
-                            i->id        = vehicle->sprite_index;
-                            i->volume    = 0;
-                            if (vehicle->x != LOCATION_NULL)
-                            {
-                                rct_tile_element * tile_element = map_get_surface_element_at(vehicle->x >> 5, vehicle->y >> 5);
-                                if (tile_element != nullptr && tile_element->base_height * 8 > vehicle->z)
-                                { // vehicle underground
-                                    i->volume = 0x30;
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+        // vehicle underground
+        if (tile_element != nullptr && tile_element->base_height * 8 > vehicle->z)
+        {
+            soundParam->volume = 0x30;
         }
     }
 }
@@ -954,21 +986,10 @@ static void vehicle_update_sound_params(rct_vehicle * vehicle)
  *
  *  rct2: 0x006BC2F3
  */
-sint32 sub_6BC2F3(rct_vehicle * vehicle)
+static sint32 vehicle_get_sound_priority_factor(rct_vehicle * vehicle)
 {
-    sint32        result       = 0;
-    rct_vehicle * vehicle_temp = vehicle;
-    do
-    {
-        result += vehicle_temp->mass;
-    } while (vehicle_temp->next_vehicle_on_train != SPRITE_INDEX_NULL &&
-             (vehicle_temp = GET_VEHICLE(vehicle_temp->next_vehicle_on_train)) != nullptr);
-    sint32 v4 = vehicle->velocity;
-    if (v4 < 0)
-    {
-        v4 = -v4;
-    }
-    result += ((uint16)v4) >> 13;
+    sint32 mass = get_train_mass(vehicle);
+    sint32 result = mass + (std::abs(vehicle->velocity) >> 13);
     rct_vehicle_sound * vehicle_sound = &gVehicleSoundList[0];
 
     while (vehicle_sound->id != vehicle->sprite_index)
@@ -980,7 +1001,254 @@ sint32 sub_6BC2F3(rct_vehicle * vehicle)
             return result;
         }
     }
+
+    // Vehicle sounds will get higher priority if they are already playing
     return result + 300;
+}
+
+static void vehicle_sounds_update_window_setup()
+{
+    g_music_tracking_viewport = nullptr;
+    rct_viewport * viewport = nullptr;
+    rct_window *   window = gWindowNextSlot;
+    while (true)
+    {
+        window--;
+        if (window < g_window_list)
+        {
+            break;
+        }
+        viewport = window->viewport;
+        if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+        {
+            break;
+        }
+    }
+    g_music_tracking_viewport = viewport;
+    if (viewport == nullptr)
+        return;
+
+    if (window)
+    {
+        gWindowAudioExclusive = window;
+        const uint8 ZoomToVolume[MAX_ZOOM_LEVEL + 1] = { 0, 35, 70, 70 };
+        gVolumeAdjustZoom = ZoomToVolume[viewport->zoom];
+    }
+}
+
+static uint8 vehicle_sounds_update_get_pan_volume(rct_vehicle_sound_params * sound_params)
+{
+    uint8  vol1 = 0xFF;
+    uint8  vol2 = 0xFF;
+
+    sint16 pan_y = std::abs(sound_params->pan_y);
+    pan_y = Math::Min((sint16)0xFFF, pan_y);
+    pan_y -= 0x800;
+    if (pan_y > 0)
+    {
+        pan_y = (0x400 - pan_y) / 4;
+        vol1 = LOBYTE(pan_y);
+        if ((sint8)HIBYTE(pan_y) != 0)
+        {
+            vol1 = 0xFF;
+            if ((sint8)HIBYTE(pan_y) < 0)
+            {
+                vol1 = 0;
+            }
+        }
+    }
+
+    sint16 pan_x = std::abs(sound_params->pan_x);
+    pan_x = Math::Min((sint16)0xFFF, pan_x);
+    pan_x -= 0x800;
+
+    if (pan_x > 0)
+    {
+        pan_x = (0x400 - pan_x) / 4;
+        vol2 = LOBYTE(pan_x);
+        if ((sint8)HIBYTE(pan_x) != 0)
+        {
+            vol2 = 0xFF;
+            if ((sint8)HIBYTE(pan_x) < 0)
+            {
+                vol2 = 0;
+            }
+        }
+    }
+
+    vol1 = Math::Min(vol1, vol2);
+    return Math::Max(0, vol1 - gVolumeAdjustZoom);
+}
+
+/*  Returns the vehicle sound for a sound_param.
+ *
+ *  If already playing returns sound.
+ *  If not playing allocates a sound slot to sound_param->id.
+ *  If no free slots returns nullptr.
+ */
+static rct_vehicle_sound * vehicle_sounds_update_get_vehicle_sound(rct_vehicle_sound_params * sound_params)
+{
+    // Search for already playing vehicle sound
+    rct_vehicle_sound * vehicleSound = &gVehicleSoundList[0];
+    for (; vehicleSound < &gVehicleSoundList[Util::CountOf(gVehicleSoundList)]; vehicleSound++)
+    {
+        if (vehicleSound->id == sound_params->id)
+            return vehicleSound;
+    }
+
+    // No sound already playing
+    if (vehicleSound >= &gVehicleSoundList[Util::CountOf(gVehicleSoundList)])
+    {
+        for (vehicleSound = &gVehicleSoundList[0];
+            vehicleSound < &gVehicleSoundList[Util::CountOf(gVehicleSoundList)];
+            vehicleSound++)
+        {
+            // Use free slot
+            if (vehicleSound->id == SOUND_ID_NULL) {
+                vehicleSound->id = sound_params->id;
+                vehicleSound->sound1_id = SOUND_ID_NULL;
+                vehicleSound->sound2_id = SOUND_ID_NULL;
+                vehicleSound->volume = 0x30;
+                return vehicleSound;
+            }
+        }
+    }
+    return nullptr;
+}
+
+// Track Noises
+static void vehicle_sounds_update_sound_1(rct_vehicle * vehicle, rct_vehicle_sound_params * sound_params, rct_vehicle_sound * sound, uint8 panVol)
+{
+    sint32       volume = vehicle->sound1_volume;
+    volume *= panVol;
+    volume = volume / 8;
+    volume = Math::Max(volume - 0x1FFF, -10000);
+
+    if (vehicle->sound1_id == RCT12_SOUND_ID_NULL)
+    {
+        if (sound->sound1_id != SOUND_ID_NULL)
+        {
+            sound->sound1_id = SOUND_ID_NULL;
+            Mixer_Stop_Channel(sound->sound1_channel);
+        }
+        return;
+    }
+
+    if (sound->sound1_id != SOUND_ID_NULL &&
+        vehicle->sound1_id != sound->sound1_id)
+    {
+        Mixer_Stop_Channel(sound->sound1_channel);
+    }
+
+    if ((sound->sound1_id == SOUND_ID_NULL) ||
+        (vehicle->sound1_id != sound->sound1_id))
+    {
+        sound->sound1_id = vehicle->sound1_id;
+        sound->sound1_pan = sound_params->pan_x;
+        sound->sound1_volume = volume;
+        sound->sound1_freq = sound_params->frequency;
+        uint16 frequency = sound_params->frequency;
+        if (_soundParams[vehicle->sound1_id][1] & 2)
+        {
+            frequency = (frequency / 2) + 4000;
+        }
+        uint8  looping = _soundParams[vehicle->sound1_id][0];
+        sint32 pan = sound_params->pan_x;
+        sound->sound1_channel =
+            Mixer_Play_Effect(vehicle->sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
+                DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
+        return;
+    }
+    if (volume != sound->sound1_volume)
+    {
+        sound->sound1_volume = volume;
+        Mixer_Channel_Volume(sound->sound1_channel, DStoMixerVolume(volume));
+    }
+    if (sound_params->pan_x != sound->sound1_pan)
+    {
+        sound->sound1_pan = sound_params->pan_x;
+        Mixer_Channel_Pan(sound->sound1_channel, DStoMixerPan(sound_params->pan_x));
+    }
+    if (!(gCurrentTicks & 3) && sound_params->frequency != sound->sound1_freq)
+    {
+        sound->sound1_freq = sound_params->frequency;
+        uint16 frequency = sound_params->frequency;
+        if (_soundParams[vehicle->sound1_id][1] & 2)
+        {
+            frequency = (frequency / 2) + 4000;
+        }
+        Mixer_Channel_Rate(sound->sound1_channel, DStoMixerRate(frequency));
+    }
+}
+
+// Other noises (e.g. Screams)
+static void vehicle_sounds_update_sound_2(rct_vehicle * vehicle, rct_vehicle_sound_params * sound_params, rct_vehicle_sound * sound, uint8 panVol)
+{
+    sint32 volume = vehicle->sound2_volume;
+    volume *= panVol;
+    volume = volume / 8;
+    volume = Math::Max(volume - 0x1FFF, -10000);
+
+    if (vehicle->sound2_id == RCT12_SOUND_ID_NULL)
+    {
+        if (sound->sound2_id != SOUND_ID_NULL)
+        {
+            sound->sound2_id = SOUND_ID_NULL;
+            Mixer_Stop_Channel(sound->sound2_channel);
+        }
+        return;
+    }
+
+    if (sound->sound2_id != SOUND_ID_NULL &&
+        vehicle->sound2_id != sound->sound2_id)
+    {
+        Mixer_Stop_Channel(sound->sound2_channel);
+    }
+
+    if ((sound->sound2_id == SOUND_ID_NULL) ||
+        (vehicle->sound2_id != sound->sound2_id))
+    {
+        sound->sound2_id = vehicle->sound2_id;
+        sound->sound2_pan = sound_params->pan_x;
+        sound->sound2_volume = volume;
+        sound->sound2_freq = sound_params->frequency;
+        uint16 frequency = sound_params->frequency;
+        if (_soundParams[vehicle->sound2_id][1] & 1)
+        {
+            frequency = 12649;
+        }
+        frequency = Math::Min((frequency * 2) - 3248, 25700);
+
+        uint8  looping = _soundParams[vehicle->sound2_id][0];
+        sint32 pan = sound_params->pan_x;
+        sound->sound2_channel =
+            Mixer_Play_Effect(vehicle->sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
+                DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
+        return;
+    }
+    if (volume != sound->sound2_volume)
+    {
+        Mixer_Channel_Volume(sound->sound2_channel, DStoMixerVolume(volume));
+        sound->sound2_volume = volume;
+    }
+    if (sound_params->pan_x != sound->sound2_pan)
+    {
+        sound->sound2_pan = sound_params->pan_x;
+        Mixer_Channel_Pan(sound->sound2_channel, DStoMixerPan(sound_params->pan_x));
+    }
+    if (!(gCurrentTicks & 3) && sound_params->frequency != sound->sound2_freq)
+    {
+        sound->sound2_freq = sound_params->frequency;
+        if (!(_soundParams[vehicle->sound2_id][1] & 1))
+        {
+            uint16 frequency = (sound_params->frequency * 2) - 3248;
+            if (frequency > 25700)
+            {
+                frequency = 25700;
+            }
+            Mixer_Channel_Rate(sound->sound2_channel, DStoMixerRate(frequency));
+        }
+    }
 }
 
 /**
@@ -989,333 +1257,78 @@ sint32 sub_6BC2F3(rct_vehicle * vehicle)
  */
 void vehicle_sounds_update()
 {
-    if (gAudioCurrentDevice != -1 && !gGameSoundsOff && gConfigSound.sound_enabled && !gOpenRCT2Headless)
+    if (gAudioCurrentDevice == -1 || gGameSoundsOff || !gConfigSound.sound_enabled || gOpenRCT2Headless)
+        return;
+
+    vehicle_sounds_update_window_setup();
+
+    gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
+    for (uint16 i = gSpriteListHead[SPRITE_LIST_TRAIN]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
     {
-        g_music_tracking_viewport = nullptr;
-        rct_viewport * viewport   = nullptr;
-        rct_window *   window     = gWindowNextSlot;
-        while (true)
+        vehicle_update_sound_params(&get_sprite(i)->vehicle);
+    }
+
+    // Stop all playing sounds that no longer have priority to play after vehicle_update_sound_params
+    for (auto &vehicle_sound : gVehicleSoundList)
+    {
+        if (vehicle_sound.id != SOUND_ID_NULL)
         {
-            window--;
-            if (window < g_window_list)
+            bool keepPlaying = false;
+            for (rct_vehicle_sound_params * vehicle_sound_params = &gVehicleSoundParamsList[0];
+                    vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
             {
-                break;
+                if (vehicle_sound.id == vehicle_sound_params->id)
+                {
+                    keepPlaying = true;
+                    break;
+                }
             }
-            viewport = window->viewport;
-            if (viewport && viewport->flags & VIEWPORT_FLAG_SOUND_ON)
+
+            if (keepPlaying)
+                continue;
+
+            if (vehicle_sound.sound1_id != SOUND_ID_NULL)
             {
-                break;
+                Mixer_Stop_Channel(vehicle_sound.sound1_channel);
+            }
+            if (vehicle_sound.sound2_id != SOUND_ID_NULL)
+            {
+                Mixer_Stop_Channel(vehicle_sound.sound2_channel);
+            }
+            vehicle_sound.id = SOUND_ID_NULL;
+        }
+    }
+
+    for (rct_vehicle_sound_params * vehicleSoundParams = &gVehicleSoundParamsList[0];
+        vehicleSoundParams < gVehicleSoundParamsListEnd;
+        vehicleSoundParams++)
+    {
+        uint8  panVol = vehicle_sounds_update_get_pan_volume(vehicleSoundParams);
+
+        rct_vehicle_sound * vehicleSound = vehicle_sounds_update_get_vehicle_sound(vehicleSoundParams);
+        // No free vehicle sound slots (RCT2 corrupts the pointer here)
+        if (vehicleSound == nullptr)
+            continue;
+
+        // Move the Sound Volume towards the SoundsParam Volume
+        sint32 tempvolume = vehicleSound->volume;
+        if (tempvolume != vehicleSoundParams->volume)
+        {
+            if (tempvolume < vehicleSoundParams->volume)
+            {
+                tempvolume += 4;
+            }
+            else
+            {
+                tempvolume -= 4;
             }
         }
-        g_music_tracking_viewport = viewport;
-        if (viewport != nullptr)
-        {
-            if (window)
-            {
-                gWindowAudioExclusive = window;
-                gVolumeAdjustZoom     = 0;
-                if (viewport->zoom)
-                {
-                    gVolumeAdjustZoom = 35;
-                    if (viewport->zoom != 1)
-                    {
-                        gVolumeAdjustZoom = 70;
-                    }
-                }
-            }
-            gVehicleSoundParamsListEnd = &gVehicleSoundParamsList[0];
-            for (uint16 i = gSpriteListHead[SPRITE_LIST_TRAIN]; i != SPRITE_INDEX_NULL; i = get_sprite(i)->vehicle.next)
-            {
-                vehicle_update_sound_params(&get_sprite(i)->vehicle);
-            }
-            for (auto &vehicle_sound : gVehicleSoundList)
-            {
-                if (vehicle_sound.id != SOUND_ID_NULL)
-                {
-                    for (rct_vehicle_sound_params * vehicle_sound_params = &gVehicleSoundParamsList[0];
-                         vehicle_sound_params != gVehicleSoundParamsListEnd; vehicle_sound_params++)
-                    {
-                        if (vehicle_sound.id == vehicle_sound_params->id)
-                        {
-                            goto label26;
-                        }
-                    }
-                    if (vehicle_sound.sound1_id != SOUND_ID_NULL)
-                    {
-                        Mixer_Stop_Channel(vehicle_sound.sound1_channel);
-                    }
-                    if (vehicle_sound.sound2_id != SOUND_ID_NULL)
-                    {
-                        Mixer_Stop_Channel(vehicle_sound.sound2_channel);
-                    }
-                    vehicle_sound.id = SOUND_ID_NULL;
-                }
-            label26:;
-            }
+        vehicleSound->volume = tempvolume;
+        panVol = Math::Max(0, panVol - tempvolume);
 
-            for (rct_vehicle_sound_params * vehicle_sound_params = &gVehicleSoundParamsList[0];; vehicle_sound_params++)
-            {
-            label28:
-                if (vehicle_sound_params >= gVehicleSoundParamsListEnd)
-                {
-                    return;
-                }
-                uint8  vol1  = 0xFF;
-                uint8  vol2  = 0xFF;
-                sint16 pan_y = vehicle_sound_params->pan_y;
-                if (pan_y < 0)
-                {
-                    pan_y = -pan_y;
-                }
-                if (pan_y > 0xFFF)
-                {
-                    pan_y = 0xFFF;
-                }
-                pan_y -= 0x800;
-                if (pan_y > 0)
-                {
-                    pan_y -= 0x400;
-                    pan_y = -pan_y;
-                    pan_y = pan_y / 4;
-                    vol1  = LOBYTE(pan_y);
-                    if ((sint8)HIBYTE(pan_y) != 0)
-                    {
-                        vol1 = 0xFF;
-                        if ((sint8)HIBYTE(pan_y) < 0)
-                        {
-                            vol1 = 0;
-                        }
-                    }
-                }
-
-                sint16 pan_x = vehicle_sound_params->pan_x;
-                if (pan_x < 0)
-                {
-                    pan_x = -pan_x;
-                }
-                if (pan_x > 0xFFF)
-                {
-                    pan_x = 0xFFF;
-                }
-                pan_x -= 0x800;
-                if (pan_x > 0)
-                {
-                    pan_x -= 0x400;
-                    pan_x = -pan_x;
-                    pan_x = pan_x / 4;
-                    vol2  = LOBYTE(pan_x);
-                    if ((sint8)HIBYTE(pan_x) != 0)
-                    {
-                        vol2 = 0xFF;
-                        if ((sint8)HIBYTE(pan_x) < 0)
-                        {
-                            vol2 = 0;
-                        }
-                    }
-                }
-
-                if (vol1 >= vol2)
-                {
-                    vol1 = vol2;
-                }
-                if (vol1 < gVolumeAdjustZoom)
-                {
-                    vol1 = 0;
-                }
-                else
-                {
-                    vol1 = vol1 - gVolumeAdjustZoom;
-                }
-
-                rct_vehicle_sound * vehicle_sound = &gVehicleSoundList[0];
-                while (vehicle_sound_params->id != vehicle_sound->id)
-                {
-                    vehicle_sound++;
-                    if (vehicle_sound >= &gVehicleSoundList[Util::CountOf(gVehicleSoundList)])
-                    {
-                        vehicle_sound = &gVehicleSoundList[0];
-                        uint32 i      = 0;
-                        while (vehicle_sound->id != SOUND_ID_NULL)
-                        {
-                            vehicle_sound++;
-                            i++;
-                            if (i >= Util::CountOf(gVehicleSoundList))
-                            {
-                                vehicle_sound_params = (rct_vehicle_sound_params *)((uintptr_t)vehicle_sound_params + 10);
-                                goto label28;
-                            }
-                        }
-                        vehicle_sound->id        = vehicle_sound_params->id;
-                        vehicle_sound->sound1_id = SOUND_ID_NULL;
-                        vehicle_sound->sound2_id = SOUND_ID_NULL;
-                        vehicle_sound->volume    = 0x30;
-                        break;
-                    }
-                }
-
-                sint32 tempvolume = vehicle_sound->volume;
-                if (tempvolume != vehicle_sound_params->volume)
-                {
-                    if (tempvolume < vehicle_sound_params->volume)
-                    {
-                        tempvolume += 4;
-                    }
-                    else
-                    {
-                        tempvolume -= 4;
-                    }
-                }
-                vehicle_sound->volume = tempvolume;
-                if (vol1 < tempvolume)
-                {
-                    vol1 = 0;
-                }
-                else
-                {
-                    vol1 = vol1 - tempvolume;
-                }
-
-                // do sound1 stuff, track noise
-                rct_sprite * sprite = get_sprite(vehicle_sound_params->id);
-                sint32       volume = sprite->vehicle.sound1_volume;
-                volume *= vol1;
-                volume = volume / 8;
-                volume -= 0x1FFF;
-                if (volume < -10000)
-                {
-                    volume = -10000;
-                }
-                if (sprite->vehicle.sound1_id == RCT12_SOUND_ID_NULL)
-                {
-                    if (vehicle_sound->sound1_id != SOUND_ID_NULL)
-                    {
-                        vehicle_sound->sound1_id = SOUND_ID_NULL;
-                        Mixer_Stop_Channel(vehicle_sound->sound1_channel);
-                    }
-                }
-                else
-                {
-                    if (vehicle_sound->sound1_id == SOUND_ID_NULL)
-                    {
-                        goto label69;
-                    }
-                    if (sprite->vehicle.sound1_id != vehicle_sound->sound1_id)
-                    {
-                        Mixer_Stop_Channel(vehicle_sound->sound1_channel);
-                    label69:
-                        vehicle_sound->sound1_id     = sprite->vehicle.sound1_id;
-                        vehicle_sound->sound1_pan    = vehicle_sound_params->pan_x;
-                        vehicle_sound->sound1_volume = volume;
-                        vehicle_sound->sound1_freq   = vehicle_sound_params->frequency;
-                        uint16 frequency             = vehicle_sound_params->frequency;
-                        if (_soundParams[sprite->vehicle.sound1_id][1] & 2)
-                        {
-                            frequency = (frequency / 2) + 4000;
-                        }
-                        uint8  looping = _soundParams[sprite->vehicle.sound1_id][0];
-                        sint32 pan     = vehicle_sound_params->pan_x;
-                        vehicle_sound->sound1_channel =
-                            Mixer_Play_Effect(sprite->vehicle.sound1_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
-                                              DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
-                        goto label87;
-                    }
-                    if (volume != vehicle_sound->sound1_volume)
-                    {
-                        vehicle_sound->sound1_volume = volume;
-                        Mixer_Channel_Volume(vehicle_sound->sound1_channel, DStoMixerVolume(volume));
-                    }
-                    if (vehicle_sound_params->pan_x != vehicle_sound->sound1_pan)
-                    {
-                        vehicle_sound->sound1_pan = vehicle_sound_params->pan_x;
-                        Mixer_Channel_Pan(vehicle_sound->sound1_channel, DStoMixerPan(vehicle_sound_params->pan_x));
-                    }
-                    if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound1_freq)
-                    {
-                        vehicle_sound->sound1_freq = vehicle_sound_params->frequency;
-                        uint16 frequency           = vehicle_sound_params->frequency;
-                        if (_soundParams[sprite->vehicle.sound1_id][1] & 2)
-                        {
-                            frequency = (frequency / 2) + 4000;
-                        }
-                        Mixer_Channel_Rate(vehicle_sound->sound1_channel, DStoMixerRate(frequency));
-                    }
-                }
-            label87: // do sound2 stuff, screams
-                sprite = get_sprite(vehicle_sound_params->id);
-                volume = sprite->vehicle.sound2_volume;
-                volume *= vol1;
-                volume = (uint16)volume / 8;
-                volume -= 0x1FFF;
-                if (volume < -10000)
-                {
-                    volume = -10000;
-                }
-                if (sprite->vehicle.sound2_id == RCT12_SOUND_ID_NULL)
-                {
-                    if (vehicle_sound->sound2_id != SOUND_ID_NULL)
-                    {
-                        vehicle_sound->sound2_id = SOUND_ID_NULL;
-                        Mixer_Stop_Channel(vehicle_sound->sound2_channel);
-                    }
-                }
-                else
-                {
-                    if (vehicle_sound->sound2_id == SOUND_ID_NULL)
-                    {
-                        goto label93;
-                    }
-                    if (sprite->vehicle.sound2_id != vehicle_sound->sound2_id)
-                    {
-                        Mixer_Stop_Channel(vehicle_sound->sound2_channel);
-                    label93:
-                        vehicle_sound->sound2_id     = sprite->vehicle.sound2_id;
-                        vehicle_sound->sound2_pan    = vehicle_sound_params->pan_x;
-                        vehicle_sound->sound2_volume = volume;
-                        vehicle_sound->sound2_freq   = vehicle_sound_params->frequency;
-                        uint16 frequency             = vehicle_sound_params->frequency;
-                        if (_soundParams[sprite->vehicle.sound2_id][1] & 1)
-                        {
-                            frequency = 12649;
-                        }
-                        frequency = (frequency * 2) - 3248;
-                        if (frequency > 25700)
-                        {
-                            frequency = 25700;
-                        }
-                        uint8  looping = _soundParams[sprite->vehicle.sound2_id][0];
-                        sint32 pan     = vehicle_sound_params->pan_x;
-                        vehicle_sound->sound2_channel =
-                            Mixer_Play_Effect(sprite->vehicle.sound2_id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE,
-                                              DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), 0);
-                        goto label114;
-                    }
-                    if (volume != vehicle_sound->sound2_volume)
-                    {
-                        Mixer_Channel_Volume(vehicle_sound->sound2_channel, DStoMixerVolume(volume));
-                        vehicle_sound->sound2_volume = volume;
-                    }
-                    if (vehicle_sound_params->pan_x != vehicle_sound->sound2_pan)
-                    {
-                        vehicle_sound->sound2_pan = vehicle_sound_params->pan_x;
-                        Mixer_Channel_Pan(vehicle_sound->sound2_channel, DStoMixerPan(vehicle_sound_params->pan_x));
-                    }
-                    if (!(gCurrentTicks & 3) && vehicle_sound_params->frequency != vehicle_sound->sound2_freq)
-                    {
-                        vehicle_sound->sound2_freq = vehicle_sound_params->frequency;
-                        if (!(_soundParams[sprite->vehicle.sound2_id][1] & 1))
-                        {
-                            uint16 frequency = (vehicle_sound_params->frequency * 2) - 3248;
-                            if (frequency > 25700)
-                            {
-                                frequency = 25700;
-                            }
-                            Mixer_Channel_Rate(vehicle_sound->sound2_channel, DStoMixerRate(frequency));
-                        }
-                    }
-                }
-            label114:;
-            }
-        }
+        rct_vehicle * vehicle = GET_VEHICLE(vehicleSoundParams->id);
+        vehicle_sounds_update_sound_1(vehicle, vehicleSoundParams, vehicleSound, panVol);
+        vehicle_sounds_update_sound_2(vehicle, vehicleSoundParams, vehicleSound, panVol);
     }
 }
 
@@ -1337,7 +1350,7 @@ void vehicle_update_all()
     sprite_index = gSpriteListHead[SPRITE_LIST_TRAIN];
     while (sprite_index != SPRITE_INDEX_NULL)
     {
-        vehicle      = &(get_sprite(sprite_index)->vehicle);
+        vehicle      = GET_VEHICLE(sprite_index);
         sprite_index = vehicle->next;
 
         vehicle_update(vehicle);
@@ -1347,12 +1360,12 @@ void vehicle_update_all()
 /**
  *
  *  rct2: 0x006D6956
- * @returns 0 when all closed
+ * @returns true when all closed
  */
-static sint32 vehicle_close_restraints(rct_vehicle * vehicle)
+static bool vehicle_close_restraints(rct_vehicle * vehicle)
 {
     Ride * ride       = get_ride(vehicle->ride);
-    sint32 ebp        = 0;
+    bool restraintsClosed = true;
     uint16 vehicle_id = vehicle->sprite_index;
 
     do
@@ -1383,28 +1396,27 @@ static sint32 vehicle_close_restraints(rct_vehicle * vehicle)
         }
         else
         {
-            if (vehicle->restraints_position - 20 < 0)
+            vehicle->restraints_position = Math::Max(vehicle->restraints_position - 20, 0);
+            if (vehicle->restraints_position == 0)
             {
-                vehicle->restraints_position = 0;
                 continue;
             }
-            vehicle->restraints_position -= 20;
         }
         vehicle_invalidate(vehicle);
-        ebp++;
+        restraintsClosed = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
-    return ebp;
+    return restraintsClosed;
 }
 
 /**
  *
  *  rct2: 0x006D6A2C
- * @returns 0 when all open
+ * @returns true when all open
  */
-static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
+static bool vehicle_open_restraints(rct_vehicle * vehicle)
 {
-    sint32 ebp        = 0;
+    sint32 restraintsOpen = true;
     uint16 vehicle_id = vehicle->sprite_index;
 
     do
@@ -1413,7 +1425,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
 
         vehicle->swinging_car_var_0 = 0;
         vehicle->var_4E             = 0;
-        vehicle->var_4A             = 0;
+        vehicle->swing_sprite       = 0;
 
         Ride *           ride      = get_ride(vehicle->ride);
         rct_ride_entry * rideEntry = get_ride_entry(vehicle->ride_subtype);
@@ -1433,7 +1445,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             }
             else
             {
-                ebp++;
+                restraintsOpen = false;
 
                 if (abs(vehicle->var_B6) < 600)
                 {
@@ -1461,7 +1473,7 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             {
                 vehicle->var_C8 += 0x3333;
             }
-            ebp++;
+            restraintsOpen = false;
             continue;
         }
 
@@ -1498,10 +1510,10 @@ static sint32 vehicle_open_restraints(rct_vehicle * vehicle)
             vehicle->restraints_position += 20;
         }
         vehicle_invalidate(vehicle);
-        ebp++;
+        restraintsOpen = false;
     } while ((vehicle_id = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 
-    return ebp;
+    return restraintsOpen;
 }
 
 /**
@@ -2220,7 +2232,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
 
     if (vehicle->sub_state == 0)
     {
-        if (vehicle_open_restraints(vehicle))
+        if (!vehicle_open_restraints(vehicle))
             return;
 
         if (ride->entrances[vehicle->current_station].xy == RCT_XY8_UNDEFINED)
@@ -2402,7 +2414,7 @@ static void vehicle_update_waiting_for_passengers(rct_vehicle * vehicle)
         return;
     }
 
-    if (vehicle_close_restraints(vehicle))
+    if (!vehicle_close_restraints(vehicle))
         return;
 
     vehicle->velocity  = 0;
@@ -3630,12 +3642,12 @@ static void vehicle_update_crash_setup(rct_vehicle * vehicle)
         y >>= 8;
         ecx >>= 8;
 
-        trainVehicle->var_B6 = x;
-        trainVehicle->var_C0 = y;
-        trainVehicle->var_4E = ecx;
-        trainVehicle->var_B6 += (scenario_rand() & 0xF) - 8;
-        trainVehicle->var_C0 += (scenario_rand() & 0xF) - 8;
-        trainVehicle->var_4E += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_x = x;
+        trainVehicle->crash_y = y;
+        trainVehicle->crash_z = ecx;
+        trainVehicle->crash_x += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_y += (scenario_rand() & 0xF) - 8;
+        trainVehicle->crash_z += (scenario_rand() & 0xF) - 8;
 
         trainVehicle->track_x = 0;
         trainVehicle->track_y = 0;
@@ -4060,7 +4072,7 @@ static void vehicle_update_unloading_passengers(rct_vehicle * vehicle)
 {
     if (vehicle->sub_state == 0)
     {
-        if (!vehicle_open_restraints(vehicle))
+        if (vehicle_open_restraints(vehicle))
         {
             vehicle->sub_state = 1;
         }
@@ -5311,7 +5323,7 @@ static void vehicle_crash_on_land(rct_vehicle * vehicle)
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite *)vehicle);
     vehicle_invalidate(vehicle);
 
-    vehicle->var_4E = 0;
+    vehicle->crash_z = 0;
 }
 
 static void vehicle_crash_on_water(rct_vehicle * vehicle)
@@ -5370,7 +5382,7 @@ static void vehicle_crash_on_water(rct_vehicle * vehicle)
     sprite_move(vehicle->x, vehicle->y, vehicle->z, (rct_sprite *)vehicle);
     vehicle_invalidate(vehicle);
 
-    vehicle->var_4E = 0xFFFFu;
+    vehicle->crash_z = -1;
 }
 
 /**
@@ -5386,9 +5398,9 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
         curVehicle = GET_VEHICLE(spriteId);
         if (curVehicle->sub_state > 1)
         {
-            if (curVehicle->var_4E <= 96)
+            if (curVehicle->crash_z <= 96)
             {
-                curVehicle->var_4E++;
+                curVehicle->crash_z++;
                 if ((scenario_rand() & 0xFFFF) <= 0x1555)
                 {
                     sprite_misc_explosion_cloud_create(curVehicle->x + ((scenario_rand() & 2) - 1),
@@ -5443,12 +5455,12 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
         LocationXYZ16 curPosition = { static_cast<sint16>(curVehicle->x), static_cast<sint16>(curVehicle->y),
                                       static_cast<sint16>(curVehicle->z) };
 
-        curPosition.x += (sint8)(curVehicle->var_B6 >> 8);
-        curPosition.y += (sint8)(curVehicle->var_C0 >> 8);
-        curPosition.z += (sint8)(curVehicle->var_4E >> 8);
-        curVehicle->track_x = (sint16)(curVehicle->var_B6 << 8);
-        curVehicle->track_y = (sint16)(curVehicle->var_C0 << 8);
-        curVehicle->track_z = (sint16)(curVehicle->var_4E << 8);
+        curPosition.x += (sint8)(curVehicle->crash_x >> 8);
+        curPosition.y += (sint8)(curVehicle->crash_y >> 8);
+        curPosition.z += (sint8)(curVehicle->crash_z >> 8);
+        curVehicle->track_x = (sint16)(curVehicle->crash_x << 8);
+        curVehicle->track_y = (sint16)(curVehicle->crash_y << 8);
+        curVehicle->track_z = (sint16)(curVehicle->crash_z << 8);
 
         if (curPosition.x > 0x1FFF || curPosition.y > 0x1FFF)
         {
@@ -5461,7 +5473,7 @@ static void vehicle_update_crash(rct_vehicle * vehicle)
 
         if (curVehicle->sub_state == 1)
         {
-            curVehicle->var_4E += 0xFFEC;
+            curVehicle->crash_z -= 20;
         }
     } while ((spriteId = curVehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL);
 }
@@ -5570,13 +5582,12 @@ static void vehicle_update_sound(rct_vehicle * vehicle)
     vehicle->sound2_id     = soundIdVolume & 0xFF;
     vehicle->sound2_volume = (soundIdVolume >> 8) & 0xFF;
 
-    {
-        sint32 ebx = word_9A3684[vehicle->sprite_direction];
-        sint32 eax = ((vehicle->velocity >> 14) * ebx) >> 14;
-        eax        = Math::Clamp(-127, eax, 127);
+    //Calculate Sound Vector (used for sound frequency calcs)
+    sint32 soundDirection = SpriteDirectionToSoundDirection[vehicle->sprite_direction];
+    sint32 soundVector    = ((vehicle->velocity >> 14) * soundDirection) >> 14;
+    soundVector             = Math::Clamp(-127, soundVector, 127);
 
-        vehicle->var_BF = eax & 0xFF;
-    }
+    vehicle->sound_vector_factor = soundVector & 0xFF;
 }
 
 /**
@@ -7006,43 +7017,43 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
     }
 
     vehicle->swinging_car_var_0 = ax;
-    uint8 bl                    = 11;
+    uint8 swingSprite                    = 11;
     if (ax >= -10012)
     {
-        bl = 12;
+        swingSprite = 12;
         if (ax <= 10012)
         {
-            bl = 9;
+            swingSprite = 9;
             if (ax >= -8191)
             {
-                bl = 10;
+                swingSprite = 10;
                 if (ax <= 8191)
                 {
-                    bl = 7;
+                    swingSprite = 7;
                     if (ax >= -6371)
                     {
-                        bl = 8;
+                        swingSprite = 8;
                         if (ax <= 6371)
                         {
-                            bl = 5;
+                            swingSprite = 5;
                             if (ax >= -4550)
                             {
-                                bl = 6;
+                                swingSprite = 6;
                                 if (ax <= 4550)
                                 {
-                                    bl = 3;
+                                    swingSprite = 3;
                                     if (ax >= -2730)
                                     {
-                                        bl = 4;
+                                        swingSprite = 4;
                                         if (ax <= 2730)
                                         {
-                                            bl = 1;
+                                            swingSprite = 1;
                                             if (ax >= -910)
                                             {
-                                                bl = 2;
+                                                swingSprite = 2;
                                                 if (ax <= 910)
                                                 {
-                                                    bl = 0;
+                                                    swingSprite = 0;
                                                 }
                                             }
                                         }
@@ -7055,9 +7066,9 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
             }
         }
     }
-    if (bl != vehicle->var_4A)
+    if (swingSprite != vehicle->swing_sprite)
     {
-        vehicle->var_4A = bl;
+        vehicle->swing_sprite = swingSprite;
         vehicle_invalidate(vehicle);
     }
 }
@@ -8301,7 +8312,7 @@ loc_6DAEB9:
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && moveInfo->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -8623,7 +8634,7 @@ loc_6DBA33:;
 
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_25) && regs.bl != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -9034,7 +9045,7 @@ loc_6DC743:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
@@ -9193,7 +9204,7 @@ loc_6DCC2C:
     {
         if (vehicle->vehicle_sprite_type != 0)
         {
-            vehicle->var_4A             = 0;
+            vehicle->swing_sprite             = 0;
             vehicle->swinging_car_var_0 = 0;
             vehicle->var_4E             = 0;
         }
