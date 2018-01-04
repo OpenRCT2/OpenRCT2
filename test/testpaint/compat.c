@@ -119,8 +119,8 @@ rct_sprite *get_sprite(size_t sprite_idx) {
     return &sprite_list[sprite_idx];
 }
 
-int tile_element_is_last_for_tile(const rct_tile_element *element) {
-    return element->flags & TILE_ELEMENT_FLAG_LAST_TILE;
+bool tile_element_is_last_for_tile(const rct_tile_element *element) {
+    return (element->flags & TILE_ELEMENT_FLAG_LAST_TILE) != 0;
 }
 
 int tile_element_get_type(const rct_tile_element *element) {
