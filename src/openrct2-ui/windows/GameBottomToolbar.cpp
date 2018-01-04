@@ -282,7 +282,7 @@ static void window_game_bottom_toolbar_invalidate(rct_window *w)
         w->widgets[WIDX_GUESTS].top         = w->widgets[WIDX_MONEY].bottom + 1;
         w->widgets[WIDX_GUESTS].bottom      = w->widgets[WIDX_GUESTS].top + line_height;
         w->widgets[WIDX_PARK_RATING].top    = w->widgets[WIDX_GUESTS].bottom - 1;
-        w->widgets[WIDX_PARK_RATING].bottom = w->widgets[WIDX_PARK_RATING].top + 10;
+        w->widgets[WIDX_PARK_RATING].bottom = w->height - 1;
     }
 
     // Reposition right widgets in accordance with line height, too.
@@ -443,24 +443,25 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
         INSET_RECT_F_30
     );
 
-    sint32 x = (window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].left + window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].right) / 2 + w->x;
-    sint32 y = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET].top + w->y + 4;
-
     // Figure out how much line height we have to work with.
     uint32 line_height = font_get_line_height(FONT_SPRITE_BASE_MEDIUM);
 
     // Draw money
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
+        rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_MONEY];
+        sint32 x = w->x + (widget.left + widget.right) / 2;
+        sint32 y = w->y + (widget.top + widget.bottom) / 2 - (line_height == 10 ? 5 : 6);
+
         set_format_arg(0, money32, gCash);
         gfx_draw_string_centred(
             dpi,
             (gCash < 0 ? STR_BOTTOM_TOOLBAR_CASH_NEGATIVE : STR_BOTTOM_TOOLBAR_CASH),
-            x, y - 3,
-            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : w->colours[0] & 0x7F),
+            x,
+            y,
+            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_MONEY ? COLOUR_WHITE : NOT_TRANSLUCENT(w->colours[0])),
             gCommonFormatArgs
             );
-        y += line_height - 3;
     }
 
     static const rct_string_id guestCountFormats[] =
@@ -471,23 +472,36 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
     };
 
     // Draw guests
-    gfx_draw_string_centred(
-        dpi,
-        guestCountFormats[gGuestChangeModifier],
-        x, y,
-        (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : NOT_TRANSLUCENT(w->colours[0])),
-        &gNumGuestsInPark
-    );
+    {
+        rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
+        sint32 x = w->x + (widget.left + widget.right) / 2;
+        sint32 y = w->y + (widget.top + widget.bottom) / 2 - 6;
+
+        gfx_draw_string_centred(
+            dpi,
+            guestCountFormats[gGuestChangeModifier],
+            x,
+            y,
+            (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS ? COLOUR_WHITE : NOT_TRANSLUCENT(w->colours[0])),
+            &gNumGuestsInPark
+        );
+    }
 
     // Draw park rating
-    window_game_bottom_toolbar_draw_park_rating(
-        dpi,
-        w,
-        w->colours[3],
-        w->x + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].left + 11,
-        w->y + window_game_bottom_toolbar_widgets[WIDX_PARK_RATING].top,
-        Math::Max(10, ((gParkRating / 4) * 263) / 256)
-    );
+    {
+        rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_PARK_RATING];
+        sint32 x = w->x + widget.left + 11;
+        sint32 y = w->y + (widget.top + widget.bottom) / 2 - 5;
+
+        window_game_bottom_toolbar_draw_park_rating(
+            dpi,
+            w,
+            w->colours[3],
+            x,
+            y,
+            Math::Max(10, ((gParkRating / 4) * 263) / 256)
+        );
+    }
 }
 
 /**
