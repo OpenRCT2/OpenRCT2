@@ -16,12 +16,10 @@
 
 #ifndef DISABLE_NETWORK
 
+#include <cmath>
 #include <chrono>
 #include <future>
 #include <thread>
-
-// MSVC: include <math.h> here otherwise PI gets defined twice
-#include <cmath>
 
 #ifdef _WIN32
     // winsock2 must be included before windows.h
