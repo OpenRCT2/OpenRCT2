@@ -1,4 +1,4 @@
-0.1.2 (in development)
+﻿0.1.2 (in development)
 ------------------------------------------------------------------------
 - Feature: [#3510] Auto-append extension if none is specified.
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
@@ -100,6 +100,7 @@
 - Fix: RCT1 mazes with wooden fences not imported correctly.
 - Fix: Title sequence editor now gracefully fails to preview a title sequence and lets the user know with an error message.
 - Fix: When preset title sequence fails to load, the preset will forcibly be changed to the first sequence to successfully load.
+- Fix: Remove consecutive thoughts about a ride being demolished
 - Improved: [#6186] Transparent menu items now draw properly in OpenGL mode.
 - Improved: [#6218] Speed up game start up time by saving scenario index to file.
 - Improved: [#6423] Polish is now rendered using the sprite font, rather than TTF.
