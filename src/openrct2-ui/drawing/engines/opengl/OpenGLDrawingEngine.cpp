@@ -149,7 +149,7 @@ public:
     SDL_Color Palette[256];
     vec4      GLPalette[256];
 
-    OpenGLDrawingEngine(IUiContext * uiContext)
+    explicit OpenGLDrawingEngine(IUiContext * uiContext)
         : _uiContext(uiContext)
     {
         _window = (SDL_Window *)_uiContext->GetWindow();

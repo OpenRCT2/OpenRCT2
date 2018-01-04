@@ -34,7 +34,7 @@ private:
     std::string _basePath[DIRBASE_COUNT];
 
 public:
-    PlatformEnvironment(DIRBASE_VALUES basePaths)
+    explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
     {
         for (sint32 i = 0; i < DIRBASE_COUNT; i++)
         {

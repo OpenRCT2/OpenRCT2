@@ -83,7 +83,7 @@ private:
     static constexpr auto PATTERN = "*.dat;*.pob";
 
 public:
-    ObjectFileIndex(IPlatformEnvironment * env) :
+    explicit ObjectFileIndex(IPlatformEnvironment * env) :
         FileIndex("object index",
             MAGIC_NUMBER,
             VERSION,
@@ -195,7 +195,7 @@ class ObjectRepository final : public IObjectRepository
     ObjectEntryMap                      _itemMap;
 
 public:
-    ObjectRepository(IPlatformEnvironment * env)
+    explicit ObjectRepository(IPlatformEnvironment * env)
         : _env(env),
           _fileIndex(env)
     {

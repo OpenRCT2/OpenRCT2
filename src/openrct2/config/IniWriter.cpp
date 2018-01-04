@@ -27,7 +27,7 @@ private:
     bool        _firstSection = true;
 
 public:
-    IniWriter(IStream * stream)
+    explicit IniWriter(IStream * stream)
         : _stream(stream)
     {
     }

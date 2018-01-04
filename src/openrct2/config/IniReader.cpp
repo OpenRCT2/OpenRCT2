@@ -100,7 +100,7 @@ private:
     std::unordered_map<std::string, std::string, StringIHash, StringICmp>   _values;
 
 public:
-    IniReader(IStream * stream)
+    explicit IniReader(IStream * stream)
     {
         uint64 length = stream->GetLength() - stream->GetPosition();
         _buffer.resize(length);
