@@ -1376,11 +1376,10 @@ static void sub_6E1F34(sint16 x, sint16 y, uint16 selected_scenery, sint16* grid
             return;
         }
 
-        *parameter_1 = 0;
-        *parameter_1 |= (tile_element->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)) << 8;
+        *parameter_1 = (tile_element->properties.path.type & (FOOTPATH_PROPERTIES_FLAG_IS_SLOPED | FOOTPATH_PROPERTIES_SLOPE_DIRECTION_MASK)) << 8;
         *parameter_2 = tile_element->base_height;
         *parameter_2 |= ((footpath_element_get_type(tile_element)) << 8);
-        if (footpath_element_has_queue_banner(tile_element)) {
+        if (footpath_element_is_queue(tile_element)) {
             *parameter_2 |= LOCATION_NULL;
         }
         *parameter_3 = (selected_scenery & 0xFF) + 1;
