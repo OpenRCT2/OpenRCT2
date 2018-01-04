@@ -244,8 +244,8 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         if (height != previousHeight)
         {
             previousHeight = height;
-            session->PathElementOnSameHeight = 0;
-            session->TrackElementOnSameHeight = 0;
+            session->PathElementOnSameHeight = nullptr;
+            session->TrackElementOnSameHeight = nullptr;
             rct_tile_element * tile_element_sub_iterator = tile_element;
             while (!tile_element_is_last_for_tile(tile_element_sub_iterator++))
             {
@@ -346,7 +346,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
             sint32 xOffset = sy * 10;
             sint32 yOffset = -22 + sx * 10;
             paint_struct * ps = sub_98197C(session, 5504 | imageColourFlats, xOffset, yOffset, 10, 10, 1, segmentHeight, xOffset + 1, yOffset + 16, segmentHeight, get_current_rotation());
-            if (ps != NULL) {
+            if (ps != nullptr) {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
                 ps->colour_image_id = COLOUR_BORDEAUX_RED;
             }

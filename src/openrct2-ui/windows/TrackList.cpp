@@ -537,7 +537,7 @@ static void window_track_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
         return;
     }
 
-    rct_g1_element g1temp = { 0 };
+    rct_g1_element g1temp = { nullptr };
     g1temp.offset = _trackDesignPreviewPixels + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;

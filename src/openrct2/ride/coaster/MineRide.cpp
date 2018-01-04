@@ -5007,5 +5007,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mine_ride(sint32 trackType, sint32
     case TRACK_ELEM_DIAG_RIGHT_BANK:
         return mine_ride_track_diag_right_bank;
     }
-    return NULL;
+    return nullptr;
 }

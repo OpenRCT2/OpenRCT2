@@ -4203,7 +4203,7 @@ static bool ride_check_track_contains_banked(rct_xy_element *input, rct_xy_eleme
 static sint32 ride_check_station_length(rct_xy_element *input, rct_xy_element *output)
 {
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w != 0 &&
+    if (w != nullptr &&
         _rideConstructionState != RIDE_CONSTRUCTION_STATE_0 &&
         _currentRideIndex == track_element_get_ride_index(input->element))
     {
@@ -4648,7 +4648,7 @@ static train_ref vehicle_create_train(sint32 rideIndex, sint32 x, sint32 y, sint
 static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z, rct_tile_element *tileElement)
 {
     Ride *ride = get_ride(rideIndex);
-    train_ref firstTrain = { 0 }, lastTrain = { 0 };
+    train_ref firstTrain = { nullptr }, lastTrain = { nullptr };
     sint32 remainingDistance = 0;
 
     for (sint32 vehicleIndex = 0; vehicleIndex < ride->num_vehicles; vehicleIndex++) {

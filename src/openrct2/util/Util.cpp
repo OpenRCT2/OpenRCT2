@@ -71,8 +71,8 @@ utf8 *path_get_directory(const utf8 *path)
     filename = filename < filename_posix ? filename_posix : filename;
 
     // If the path is invalid (e.g. just a file name), return NULL
-    if (filename == NULL) {
-        return NULL;
+    if (filename == nullptr) {
+        return nullptr;
     }
 
     char *directory = _strdup(path);
@@ -89,7 +89,7 @@ const char *path_get_filename(const utf8 *path)
     filename = filename < filename_posix ? filename_posix : filename;
 
     // Checks if the path is valid (e.g. not just a file name)
-    if (filename == NULL)
+    if (filename == nullptr)
     {
         // Return the input string to keep things working
         return path;
@@ -112,7 +112,7 @@ const char *path_get_extension(const utf8 *path)
     char * extension = (char *)strrchr(filename, '.');
 
     // When no dot was found, return a pointer to the null-terminator
-    if (extension == NULL)
+    if (extension == nullptr)
         extension = (char *)strrchr(filename, '\0');
 
     return extension;
@@ -141,7 +141,7 @@ void path_remove_extension(utf8 *path)
 {
     // Find last dot in filename, and replace it with a null-terminator
     char * lastDot = (char *)strrchr(path_get_filename(path), '.');
-    if (lastDot != NULL)
+    if (lastDot != nullptr)
         *lastDot = '\0';
     else
         log_warning("No extension found. (path = %s)", path);
@@ -471,7 +471,7 @@ bool utf8_is_bom(const char *str)
 
 bool str_is_null_or_empty(const char *str)
 {
-    return str == NULL || str[0] == 0;
+    return str == nullptr || str[0] == 0;
 }
 
 void util_srand(sint32 source) {
@@ -516,11 +516,11 @@ uint8 *util_zlib_inflate(uint8 *data, size_t data_in_size, size_t *data_out_size
         } else if (ret == Z_STREAM_ERROR) {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
             free(buffer);
-            return NULL;
+            return nullptr;
         } else if (ret < 0) {
             log_error("Error uncompressing data.");
             free(buffer);
-            return NULL;
+            return nullptr;
         }
         ret = uncompress(buffer, &out_size, data, (uLong)data_in_size);
     } while (ret != Z_OK);
@@ -552,7 +552,7 @@ uint8 *util_zlib_deflate(const uint8 *data, size_t data_in_size, size_t *data_ou
         } else if (ret == Z_STREAM_ERROR) {
             log_error("Your build is shipped with broken zlib. Please use the official build.");
             free(buffer);
-            return NULL;
+            return nullptr;
         }
         ret = compress(buffer, &out_size, data, (uLong)data_in_size);
     } while (ret != Z_OK);

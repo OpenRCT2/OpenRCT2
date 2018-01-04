@@ -435,7 +435,7 @@ void window_editor_bottom_toolbar_paint(rct_window *w, rct_drawpixelinfo *dpi)
             window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left) / 2 + w->x;
         sint16 stateY = w->height - 0x0C + w->y;
         gfx_draw_string_centred(dpi, EditorStepNames[gS6Info.editor_step],
-            stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, 0);
+            stateX, stateY, NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE, nullptr);
 
         if (drawPreviousButton) {
             gfx_draw_sprite(dpi, SPR_PREVIOUS,

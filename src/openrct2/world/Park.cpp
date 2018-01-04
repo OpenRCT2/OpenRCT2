@@ -141,7 +141,7 @@ void park_init()
     award_reset();
 
     gS6Info.name[0] = '\0';
-    format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, NULL);
+    format_string(gS6Info.details, 256, STR_NO_DETAILS_YET, nullptr);
 }
 
 /**
@@ -482,13 +482,13 @@ static uint32 get_random_peep_spawn_index()
 
 rct_peep *park_generate_new_guest()
 {
-    rct_peep *peep = NULL;
+    rct_peep *peep = nullptr;
     rct2_peep_spawn spawn = gPeepSpawns[get_random_peep_spawn_index()];
 
     if (spawn.x != 0xFFFF) {
         spawn.direction ^= 2;
         peep = peep_generate(spawn.x, spawn.y, spawn.z * 16);
-        if (peep != NULL) {
+        if (peep != nullptr) {
             peep->sprite_direction = spawn.direction << 3;
 
             // Get the centre point of the tile the peep is on
@@ -509,7 +509,7 @@ rct_peep *park_generate_new_guest()
 static rct_peep *park_generate_new_guest_due_to_campaign(sint32 campaign)
 {
     rct_peep *peep = park_generate_new_guest();
-    if (peep != NULL)
+    if (peep != nullptr)
         marketing_set_guest_campaign(peep, campaign);
     return peep;
 }
@@ -703,7 +703,7 @@ void update_park_fences(sint32 x, sint32 y)
         return;
 
     rct_tile_element* sufaceElement = map_get_surface_element_at(x / 32, y / 32);
-    if (sufaceElement == NULL)return;
+    if (sufaceElement == nullptr)return;
 
     uint8 newOwnership = sufaceElement->properties.surface.ownership & 0xF0;
     if ((sufaceElement->properties.surface.ownership & OWNERSHIP_OWNED) == 0) {
@@ -858,7 +858,7 @@ void game_command_set_park_name(sint32 *eax, sint32 *ebx, sint32 *ecx, sint32 *e
 
 static money32 map_buy_land_rights_for_tile(sint32 x, sint32 y, sint32 setting, sint32 flags) {
     rct_tile_element* surfaceElement = map_get_surface_element_at(x / 32, y / 32);
-    if (surfaceElement == NULL)
+    if (surfaceElement == nullptr)
         return MONEY32_UNDEFINED;
 
     switch (setting) {

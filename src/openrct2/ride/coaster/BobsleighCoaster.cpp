@@ -3309,5 +3309,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_bobsleigh_rc(sint32 trackType, sin
     case TRACK_ELEM_ON_RIDE_PHOTO:
         return bobsleigh_rc_track_on_ride_photo;
     }
-    return NULL;
+    return nullptr;
 }

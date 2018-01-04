@@ -146,7 +146,7 @@ public:
         }        
 
         uint32 format;
-        SDL_QueryTexture(_screenTexture, &format, 0, 0, 0);
+        SDL_QueryTexture(_screenTexture, &format, nullptr, nullptr, nullptr);
         _screenTextureFormat = SDL_AllocFormat(format);
 
         ConfigureBits(width, height, width);

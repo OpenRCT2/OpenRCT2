@@ -44,7 +44,7 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
 
     rct_tile_element * savedTileElement = static_cast<rct_tile_element *>(session->CurrentlyDrawnItem);
 
-    rct_vehicle * vehicle = NULL;
+    rct_vehicle * vehicle = nullptr;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
         uint16 spriteIndex = ride->vehicles[0];
@@ -57,7 +57,7 @@ static void paint_motionsimulator_vehicle(paint_session * session, sint8 offsetX
     }
 
     uint32 simulatorImageId = rideEntry->vehicles[0].base_image_id + direction;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         if (vehicle->restraints_position >= 64)
         {
@@ -142,7 +142,7 @@ static void paint_motionsimulator(paint_session * session, uint8 rideIndex, uint
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = { session->MapPosition.x, session->MapPosition.y };
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
     track_paint_util_paint_fences(session, edges, position, tileElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
@@ -176,5 +176,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_motionsimulator(sint32 trackType, 
     case FLAT_TRACK_ELEM_2_X_2:
         return paint_motionsimulator;
     }
-    return NULL;
+    return nullptr;
 }

@@ -37,7 +37,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
 
     Ride *           ride      = get_ride(rideIndex);
     rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-    rct_vehicle *    vehicle   = NULL;
+    rct_vehicle *    vehicle   = nullptr;
 
     if (rideEntry == nullptr)
     {
@@ -60,7 +60,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
     }
 
     uint32 rotationOffset = 0;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         uint32 rotation = ((vehicle->sprite_direction >> 3) + get_current_rotation()) << 5;
         rotationOffset  = (vehicle->vehicle_sprite_type + rotation) % 128;
@@ -80,7 +80,7 @@ static void paint_merry_go_round_structure(paint_session * session, uint8 rideIn
                get_current_rotation());
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
-    if (dpi->zoom_level == 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != NULL)
+    if (dpi->zoom_level == 0 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
 
         for (sint32 peep = 0; peep <= 14; peep += 2)
@@ -122,7 +122,7 @@ static void paint_merry_go_round(paint_session * session, uint8 rideIndex, uint8
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -185,7 +185,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(sint32 trackType, s
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_merry_go_round;

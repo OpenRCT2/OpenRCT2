@@ -433,5 +433,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_water_rc(sint32 trackType, sint32 
     case TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES_COVERED:
         return get_track_paint_function_splash_boats(TRACK_ELEM_RIGHT_QUARTER_TURN_5_TILES, direction);
     }
-    return NULL;
+    return nullptr;
 }

@@ -66,7 +66,7 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
 
     rct_scenery_entry *entry = get_small_scenery_entry(tileElement->properties.scenery.type);
 
-    if (entry == NULL)
+    if (entry == nullptr)
     {
         return;
     }
@@ -291,9 +291,9 @@ void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_
                 supportImageColourFlags = dword_F64EB0;
             }
             if (direction & 1) {
-                wooden_b_supports_paint_setup(session, 1, ax, supportHeight, supportImageColourFlags, NULL);
+                wooden_b_supports_paint_setup(session, 1, ax, supportHeight, supportImageColourFlags, nullptr);
             } else {
-                wooden_b_supports_paint_setup(session, 0, ax, supportHeight, supportImageColourFlags, NULL);
+                wooden_b_supports_paint_setup(session, 0, ax, supportHeight, supportImageColourFlags, nullptr);
             }
         }
     }

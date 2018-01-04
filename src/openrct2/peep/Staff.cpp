@@ -122,7 +122,7 @@ static inline void staff_autoposition_new_staff_member(rct_peep * newPeep)
     sint16     x, y, z;
     uint32     count = 0;
     uint16     sprite_index;
-    rct_peep * guest = NULL;
+    rct_peep * guest = nullptr;
 
     // Count number of walking guests
     FOR_ALL_GUESTS(sprite_index, guest)
@@ -249,7 +249,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
         const rct_sprite_bounds * spriteBounds;
         rct_peep *                newPeep = &(create_sprite(flags)->peep);
 
-        if (newPeep == NULL)
+        if (newPeep == nullptr)
         {
             gGameCommandErrorText = STR_TOO_MANY_PEOPLE_IN_GAME;
             return MONEY32_UNDEFINED;
@@ -904,8 +904,8 @@ void staff_toggle_patrol_area(sint32 staffIndex, sint32 x, sint32 y)
 static uint8 staff_handyman_direction_to_nearest_litter(rct_peep * peep)
 {
     uint16       nearestLitterDist = (uint16)-1;
-    rct_litter * nearestLitter     = NULL;
-    rct_litter * litter            = NULL;
+    rct_litter * nearestLitter     = nullptr;
+    rct_litter * litter            = nullptr;
 
     for (uint16 litterIndex = gSpriteListHead[SPRITE_LIST_LITTER]; litterIndex != 0xFFFF; litterIndex = litter->next)
     {
@@ -1102,7 +1102,7 @@ static sint32 staff_path_finding_handyman(rct_peep * peep)
         {
             rct_tile_element * tileElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
 
-            if (tileElement == NULL)
+            if (tileElement == nullptr)
                 return 1;
 
             uint8 pathDirections = (tileElement->properties.path.edges & validDirections) & 0xF;
@@ -1395,7 +1395,7 @@ static sint32 staff_path_finding_mechanic(rct_peep * peep)
     else
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
-        if (pathElement == NULL)
+        if (pathElement == nullptr)
             return 1;
 
         direction = staff_mechanic_direction_path(peep, validDirections, pathElement);
@@ -1483,7 +1483,7 @@ static sint32 staff_path_finding_misc(rct_peep * peep)
     else
     {
         rct_tile_element * pathElement = map_get_path_element_at(peep->next_x / 32, peep->next_y / 32, peep->next_z);
-        if (pathElement == NULL)
+        if (pathElement == nullptr)
             return 1;
 
         direction = staff_direction_path(peep, validDirections, pathElement);

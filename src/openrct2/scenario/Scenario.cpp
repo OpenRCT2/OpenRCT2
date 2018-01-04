@@ -137,19 +137,19 @@ void scenario_begin()
         }
         else {
             rct_stex_entry* stex = g_stexEntries[0];
-            if (stex != NULL) {
+            if (stex != nullptr) {
                 char *buffer = gCommonStringFormatBuffer;
 
                 // Set localised park name
-                format_string(buffer, 256, stex->park_name, 0);
+                format_string(buffer, 256, stex->park_name, nullptr);
                 park_set_name(buffer);
 
                 // Set localised scenario name
-                format_string(buffer, 256, stex->scenario_name, 0);
+                format_string(buffer, 256, stex->scenario_name, nullptr);
                 safe_strcpy(gScenarioName, buffer, 64);
 
                 // Set localised scenario details
-                format_string(buffer, 256, stex->details, 0);
+                format_string(buffer, 256, stex->details, nullptr);
                 safe_strcpy(gScenarioDetails, buffer, 256);
             }
         }
@@ -223,7 +223,7 @@ void scenario_success()
     gScenarioCompletedCompanyValue = companyValue;
     peep_applause();
 
-    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, NULL))
+    if (scenario_repository_try_record_highscore(gScenarioFileName, companyValue, nullptr))
     {
         // Allow name entry
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
@@ -335,7 +335,7 @@ static void scenario_week_update()
 
     rct_water_type* water_type = (rct_water_type*)object_entry_groups[OBJECT_TYPE_WATER].chunks[0];
 
-    if (month <= MONTH_APRIL && water_type != NULL && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
+    if (month <= MONTH_APRIL && water_type != nullptr && water_type->flags & WATER_FLAGS_ALLOW_DUCKS) {
         // 100 attempts at finding some water to create a few ducks at
         for (sint32 i = 0; i < 100; i++) {
             if (scenario_create_ducks())
@@ -582,7 +582,7 @@ static bool scenario_prepare_rides_for_save()
         
         // If there are more than 5 roller coasters, only mark the first five.
         if (isFiveCoasterObjective &&
-            rideEntry != NULL &&
+            rideEntry != nullptr &&
             (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
              rcs < 5))
         {
@@ -615,7 +615,7 @@ static bool scenario_prepare_rides_for_save()
                 ride = get_ride(track_element_get_ride_index(it.element));
 
                 // In the previous step, this flag was set on the first five roller coasters.
-                if (ride != NULL && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+                if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
                 {
                     markTrackAsIndestructible = true;
                 }
@@ -645,9 +645,9 @@ bool scenario_prepare_for_save()
     gS6Info.entry.flags = 255;
 
     rct_stex_entry* stex = g_stexEntries[0];
-    if (stex != NULL) {
+    if (stex != nullptr) {
         char buffer[256];
-        format_string(buffer, 256, stex->scenario_name, NULL);
+        format_string(buffer, 256, stex->scenario_name, nullptr);
         safe_strcpy(gS6Info.name, buffer, sizeof(gS6Info.name));
 
         memcpy(&gS6Info.entry, &object_entry_groups[OBJECT_TYPE_SCENARIO_TEXT].entries[0], sizeof(rct_object_entry));
@@ -776,11 +776,11 @@ static void scenario_objective_check_10_rollercoasters()
     FOR_ALL_RIDES(i, ride) {
         uint8 subtype_id = ride->subtype;
         rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == NULL) {
+        if (rideEntry == nullptr) {
             continue;
         }
 
-        if (rideEntry != NULL &&
+        if (rideEntry != nullptr &&
             ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
             ride->status == RIDE_STATUS_OPEN &&
             ride->excitement >= RIDE_RATING(6,00) && type_already_counted[subtype_id] == 0){
@@ -857,7 +857,7 @@ static void scenario_objective_check_10_rollercoasters_length()
     FOR_ALL_RIDES(i, ride) {
         uint8 subtype_id = ride->subtype;
         rct_ride_entry *rideEntry = get_ride_entry(subtype_id);
-        if (rideEntry == NULL) {
+        if (rideEntry == nullptr) {
             continue;
         }
         if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) &&
@@ -887,7 +887,7 @@ static void scenario_objective_check_finish_5_rollercoasters()
     FOR_ALL_RIDES(i, ride)
     {
         const rct_ride_entry * rideEntry = get_ride_entry(ride->subtype);
-        if (rideEntry == NULL)
+        if (rideEntry == nullptr)
         {
             continue;
         }

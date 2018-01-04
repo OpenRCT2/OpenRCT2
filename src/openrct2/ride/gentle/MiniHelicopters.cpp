@@ -341,5 +341,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_helicopters(sint32 trackType,
         return paint_mini_helicopters_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

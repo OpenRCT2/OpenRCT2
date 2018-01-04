@@ -152,5 +152,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_lift(sint32 trackType, sint32 dire
         return paint_lift_tower_section;
     }
 
-    return NULL;
+    return nullptr;
 }

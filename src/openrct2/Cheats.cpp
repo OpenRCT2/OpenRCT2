@@ -156,7 +156,7 @@ static void cheat_fix_rides()
         {
             mechanic = ride_get_assigned_mechanic(ride);
 
-            if (mechanic != NULL){
+            if (mechanic != nullptr){
                 remove_peep_from_ride(mechanic);
             }
 

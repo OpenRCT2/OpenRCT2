@@ -287,7 +287,7 @@ static void paint_monorail_cycles_track_right_quarter_turn_5_tiles(paint_session
 {
     track_paint_util_right_quarter_turn_5_tiles_paint(
         session, 1, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
-        monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, NULL, defaultRightQuarterTurn5TilesBoundLengths,
+        monorail_cycles_track_pieces_flat_quarter_turn_5_tiles, nullptr, defaultRightQuarterTurn5TilesBoundLengths,
         defaultRightQuarterTurn5TilesBoundOffsets, get_current_rotation());
 
     sint32 supportHeight =
@@ -631,5 +631,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_monorail_cycles(sint32 trackType, 
         return paint_monorail_cycles_track_right_quarter_turn_3_tiles;
     }
 
-    return NULL;
+    return nullptr;
 }

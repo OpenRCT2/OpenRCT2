@@ -153,7 +153,7 @@ void game_handle_input()
 static sint32 game_get_next_input(sint32 * x, sint32 * y)
 {
     rct_mouse_data * input = get_mouse_input();
-    if (input == NULL)
+    if (input == nullptr)
     {
         const CursorState * cursorState = context_get_cursor_state();
         *x = cursorState->x;
@@ -177,7 +177,7 @@ static rct_mouse_data * get_mouse_input()
     // Check if that location has been written to yet
     if (_mouseInputQueueReadIndex == _mouseInputQueueWriteIndex)
     {
-        return NULL;
+        return nullptr;
     }
     else
     {
@@ -255,7 +255,7 @@ static void input_scroll_drag_continue(sint32 x, sint32 y, rct_window * w)
 static void input_scroll_right(sint32 x, sint32 y, sint32 state)
 {
     rct_window * w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
-    if (w == NULL)
+    if (w == nullptr)
     {
         context_show_cursor();
         _inputState = INPUT_STATE_RESET;
@@ -291,8 +291,8 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
 
     // Get window and widget under cursor position
     w = window_find_from_point(x, y);
-    widgetIndex = w == NULL ? -1 : window_find_widget_from_point(w, x, y);
-    widget = widgetIndex == -1 ? 0 : &w->widgets[widgetIndex];
+    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, x, y);
+    widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
     {
@@ -311,7 +311,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         case MOUSE_STATE_RIGHT_PRESS:
             window_close_by_class(WC_TOOLTIP);
 
-            if (w != NULL)
+            if (w != nullptr)
             {
                 w = window_bring_to_front(w);
             }
@@ -339,7 +339,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         break;
     case INPUT_STATE_POSITIONING_WINDOW:
         w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
-        if (w == NULL)
+        if (w == nullptr)
         {
             _inputState = INPUT_STATE_RESET;
         }
@@ -372,7 +372,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         break;
     case INPUT_STATE_VIEWPORT_LEFT:
         w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
-        if (w == NULL)
+        if (w == nullptr)
         {
             _inputState = INPUT_STATE_RESET;
             break;
@@ -381,7 +381,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         switch (state)
         {
         case MOUSE_STATE_RELEASED:
-            if (w->viewport == NULL)
+            if (w->viewport == nullptr)
             {
                 _inputState = INPUT_STATE_RESET;
                 break;
@@ -394,7 +394,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
             }
 
             w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
-            if (w == NULL)
+            if (w == nullptr)
             {
                 break;
             }
@@ -408,7 +408,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
                 if ((_inputFlags & INPUT_FLAG_TOOL_ACTIVE))
                 {
                     w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
-                    if (w != NULL)
+                    if (w != nullptr)
                     {
                         window_event_tool_up_call(w, gCurrentToolWidget.widget_index, x, y);
                     }
@@ -434,7 +434,7 @@ static void game_handle_input_mouse(sint32 x, sint32 y, sint32 state)
         break;
     case INPUT_STATE_RESIZING:
         w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
-        if (w == NULL)
+        if (w == nullptr)
         {
             _inputState = INPUT_STATE_RESET;
         }
@@ -549,7 +549,7 @@ static void input_viewport_drag_continue()
 
     // #3294: Window can be closed during a drag session, so just finish
     //        the session if the window no longer exists
-    if (w == NULL)
+    if (w == nullptr)
     {
         input_viewport_drag_end();
         return;
@@ -557,7 +557,7 @@ static void input_viewport_drag_continue()
 
     viewport = w->viewport;
     _ticksSinceDragStart += gTicksSinceLastUpdate;
-    if (viewport == NULL)
+    if (viewport == nullptr)
     {
         context_show_cursor();
         _inputState = INPUT_STATE_RESET;
@@ -916,9 +916,9 @@ static void input_widget_over(sint32 x, sint32 y, rct_window * w, rct_widgetinde
 {
     rct_windowclass windowClass = WC_NULL;
     rct_windownumber windowNumber = 0;
-    rct_widget * widget = NULL;
+    rct_widget * widget = nullptr;
 
-    if (w != NULL)
+    if (w != nullptr)
     {
         windowClass = w->classification;
         windowNumber = w->number;
@@ -927,7 +927,7 @@ static void input_widget_over(sint32 x, sint32 y, rct_window * w, rct_widgetinde
 
     input_widget_over_change_check(windowClass, windowNumber, widgetIndex);
 
-    if (w != NULL && widgetIndex != -1 && widget->type == WWT_SCROLL)
+    if (w != nullptr && widgetIndex != -1 && widget->type == WWT_SCROLL)
     {
         sint32 eax, ebx, scroll_part, edx;
         widget_scroll_get_part(w, widget, x, y, &eax, &ebx, &scroll_part, &edx);
@@ -986,7 +986,7 @@ static void input_widget_over_change_check(rct_windowclass windowClass, rct_wind
 static void input_widget_over_flatbutton_invalidate()
 {
     rct_window * w = window_find_by_number(gHoverWidget.window_classification, gHoverWidget.window_number);
-    if (w != NULL)
+    if (w != nullptr)
     {
         window_event_invalidate_call(w);
         if (w->widgets[gHoverWidget.widget_index].type == WWT_FLATBTN)
@@ -1007,7 +1007,7 @@ static void input_widget_left(sint32 x, sint32 y, rct_window * w, rct_widgetinde
     rct_windownumber windowNumber = 0;
     rct_widget * widget;
 
-    if (w != NULL)
+    if (w != nullptr)
     {
         windowClass = w->classification;
         windowNumber = w->number;
@@ -1018,7 +1018,7 @@ static void input_widget_left(sint32 x, sint32 y, rct_window * w, rct_widgetinde
 
     // Window might have changed position in the list, therefore find it again
     w = window_find_by_number(windowClass, windowNumber);
-    if (w == NULL)
+    if (w == nullptr)
         return;
 
     w = window_bring_to_front(w);
@@ -1049,7 +1049,7 @@ static void input_widget_left(sint32 x, sint32 y, rct_window * w, rct_widgetinde
         if (_inputFlags & INPUT_FLAG_TOOL_ACTIVE)
         {
             w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
-            if (w != NULL)
+            if (w != nullptr)
             {
                 window_event_tool_down_call(w, gCurrentToolWidget.widget_index, x, y);
                 _inputFlags |= INPUT_FLAG_4;
@@ -1098,7 +1098,7 @@ void process_mouse_over(sint32 x, sint32 y)
     set_map_tooltip_format_arg(0, rct_string_id, STR_NONE);
     window = window_find_from_point(x, y);
 
-    if (window != NULL)
+    if (window != nullptr)
     {
         sint32 ebx, edi;
         rct_window * subWindow;
@@ -1120,7 +1120,7 @@ void process_mouse_over(sint32 x, sint32 y)
                 }
                 cursorId = gCurrentToolId;
                 subWindow = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
-                if (subWindow == NULL)
+                if (subWindow == nullptr)
                     break;
 
                 ebx = 0;
@@ -1214,7 +1214,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
     rct_widgetindex cursor_widgetIndex = gPressedWidget.widget_index;
 
     rct_window * cursor_w = window_find_by_number(cursor_w_class, cursor_w_number);
-    if (cursor_w == NULL)
+    if (cursor_w == nullptr)
     {
         _inputState = INPUT_STATE_RESET;
         return;
@@ -1371,7 +1371,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
 
     gDropdownHighlightedIndex = -1;
     window_invalidate_by_class(WC_DROPDOWN);
-    if (w == NULL)
+    if (w == nullptr)
     {
         return;
     }
@@ -1465,7 +1465,7 @@ static void input_update_tooltip(rct_window * w, rct_widgetindex widgetIndex, si
     {
         reset_tooltip_not_shown();
 
-        if (w == NULL || gTooltipWidget.window_classification != w->classification ||
+        if (w == nullptr || gTooltipWidget.window_classification != w->classification ||
             gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex)
         {
             window_tooltip_close();
@@ -1524,7 +1524,7 @@ void set_cursor(uint8 cursor_id)
 void invalidate_scroll()
 {
     rct_window * w = window_find_by_number(gPressedWidget.window_classification, gPressedWidget.window_number);
-    if (w != NULL)
+    if (w != nullptr)
     {
         // Reset to basic scroll
         w->scrolls[_currentScrollIndex].flags &= 0xFF11;
@@ -1558,11 +1558,11 @@ void game_handle_edge_scroll()
     sint32 scrollX, scrollY;
 
     mainWindow = window_get_main();
-    if (mainWindow == NULL)
+    if (mainWindow == nullptr)
         return;
     if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
         return;
-    if (mainWindow->viewport == NULL)
+    if (mainWindow->viewport == nullptr)
         return;
     if (!context_has_focus())
         return;

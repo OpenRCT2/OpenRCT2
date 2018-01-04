@@ -971,5 +971,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(sint32 trackType, sint3
     case TRACK_ELEM_BLOCK_BRAKES:
         return wild_mouse_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

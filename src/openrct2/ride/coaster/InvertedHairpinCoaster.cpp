@@ -1268,5 +1268,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_hairpin_rc(sint32 trackTy
     case TRACK_ELEM_BLOCK_BRAKES:
         return inverted_hairpin_rc_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

@@ -709,7 +709,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
     rct_tile_element * surface = map_get_surface_element_at(x / 32, y / 32);
 
     uint16 bl = height / 8;
-    if (surface == NULL) {
+    if (surface == nullptr) {
         word_F3F038 = true;
     } else if (surface->base_height != bl) {
         word_F3F038 = true;
@@ -771,7 +771,7 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
     uint8 pathType = footpath_element_get_type(tile_element);
     rct_footpath_entry * footpathEntry = get_footpath_entry(pathType);
 
-    if (footpathEntry != NULL) {
+    if (footpathEntry != nullptr) {
         if (footpathEntry->support_type == FOOTPATH_ENTRY_SUPPORT_TYPE_POLE) {
             path_paint_pole_support(session, tile_element, height, footpathEntry, word_F3F038, imageFlags, sceneryImageFlags);
         }
@@ -878,9 +878,9 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
     }
 
     if (byte_98D8A4[edges] == 0) {
-        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, footpathEntry, NULL);
+        path_a_supports_paint_setup(session, 0, ax, height, imageFlags, footpathEntry, nullptr);
     } else {
-        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, footpathEntry, NULL);
+        path_a_supports_paint_setup(session, 1, ax, height, imageFlags, footpathEntry, nullptr);
     }
 
     height += 32;

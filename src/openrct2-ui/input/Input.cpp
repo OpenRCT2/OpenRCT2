@@ -81,11 +81,11 @@ static void game_handle_key_scroll()
     sint32       scrollX, scrollY;
 
     mainWindow = window_get_main();
-    if (mainWindow == NULL)
+    if (mainWindow == nullptr)
         return;
     if ((mainWindow->flags & WF_NO_SCROLLING) || (gScreenFlags & (SCREEN_FLAGS_TRACK_MANAGER | SCREEN_FLAGS_TITLE_DEMO)))
         return;
-    if (mainWindow->viewport == NULL)
+    if (mainWindow->viewport == nullptr)
         return;
 
     rct_window * textWindow;
@@ -200,7 +200,7 @@ void input_handle_keyboard(bool isTitle)
         key |= gInputPlaceObjectModifier << 8;
 
         rct_window * w = window_find_by_class(WC_TEXTINPUT);
-        if (w != NULL)
+        if (w != nullptr)
         {
             char keychar = input_scancode_to_rct_keycode(key & 0xFF);
             window_text_input_key(w, keychar);
@@ -208,7 +208,7 @@ void input_handle_keyboard(bool isTitle)
         else if (!gUsingWidgetTextBox)
         {
             w = window_find_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            if (w != NULL)
+            if (w != nullptr)
             {
                 keyboard_shortcuts_set(key);
                 window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);

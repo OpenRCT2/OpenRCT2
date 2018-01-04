@@ -63,7 +63,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
         baseImage_id | (vehicle->colours.body_colour << 19) | (vehicle->colours.trim_colour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
     paint_struct * ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, bb.length_z, z, bb.offset_x, bb.offset_y,
                                    bb.offset_z + z, get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -72,7 +72,7 @@ void vehicle_visual_submarine(paint_session * session, sint32 x, sint32 imageDir
                IMAGE_TYPE_REMAP_2_PLUS;
     ps = sub_98197C(session, image_id, 0, 0, bb.length_x, bb.length_y, 2, z, bb.offset_x, bb.offset_y, bb.offset_z + z - 10,
                     get_current_rotation());
-    if (ps != NULL)
+    if (ps != nullptr)
     {
         ps->tertiary_colour = vehicle->colours_extended;
     }
@@ -228,5 +228,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_submarine_ride(sint32 trackType, s
         return submarine_ride_paint_track_right_quarter_turn_1_tile;
     }
 
-    return NULL;
+    return nullptr;
 }

@@ -62,7 +62,7 @@ static void maze_paint_setup(paint_session * session, uint8 rideIndex, uint8 tra
     sint32 image_id = SPR_TERRAIN_DIRT | session->TrackColours[SCHEME_MISC];
     sub_98196C(session, image_id, 0, 0, 32, 32, 0, height, rotation);
 
-    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], NULL);
+    wooden_a_supports_paint_setup(session, (rotation & 1) ? 0 : 1, 0, height, session->TrackColours[SCHEME_3], nullptr);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL & ~SEGMENT_C4, 0xFFFF, 0);
 
@@ -186,7 +186,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_maze(sint32 trackType, sint32 dire
 {
     if (trackType != TRACK_ELEM_MAZE)
     {
-        return NULL;
+        return nullptr;
     }
 
     return maze_paint_setup;

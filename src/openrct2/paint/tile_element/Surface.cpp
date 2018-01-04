@@ -435,7 +435,7 @@ static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * 
 */
 static void viewport_surface_smoothen_edge(paint_session * session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
-    if (neighbour.tile_element == NULL)
+    if (neighbour.tile_element == nullptr)
         return;
 
     uint32 maskImageBase = 0;
@@ -775,7 +775,7 @@ static void viewport_surface_draw_tile_side_top(paint_session * session, enum ed
         regs.dl = height;
 
     // save ecx
-    if (neighbour.tile_element == NULL)
+    if (neighbour.tile_element == nullptr)
     {
         regs.ah = 1;
         regs.ch = 1;
@@ -936,14 +936,14 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
 
         tile_descriptor& descriptor = tileDescriptors[i + 1];
 
-        descriptor.tile_element = NULL;
+        descriptor.tile_element = nullptr;
         if (position.x > 0x2000 || position.y > 0x2000)
         {
             continue;
         }
 
         rct_tile_element * surfaceElement = map_get_surface_element_at(position.x / 32, position.y / 32);
-        if (surfaceElement == NULL)
+        if (surfaceElement == nullptr)
         {
             continue;
         }

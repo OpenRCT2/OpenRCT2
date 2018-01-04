@@ -77,7 +77,7 @@ static void paint_crooked_house(paint_session * session, uint8 rideIndex, uint8 
     Ride *   ride     = get_ride(rideIndex);
     LocationXY16 position = session->MapPosition;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], NULL);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC], nullptr);
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork,
                                  get_current_rotation());
@@ -130,7 +130,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(sint32 trackType, si
 {
     if (trackType != FLAT_TRACK_ELEM_3_X_3)
     {
-        return NULL;
+        return nullptr;
     }
 
     return paint_crooked_house;

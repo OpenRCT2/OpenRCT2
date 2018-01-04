@@ -8065,5 +8065,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(sint32 trackType, sin
     case TRACK_ELEM_BOOSTER:
         return corkscrew_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

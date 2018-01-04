@@ -670,7 +670,7 @@ void Network::CheckDesynchronizaton()
         _desynchronised = true;
 
         char str_desync[256];
-        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, NULL);
+        format_string(str_desync, 256, STR_MULTIPLAYER_DESYNC, nullptr);
 
         auto intent = Intent(WC_NETWORK_STATUS);
         intent.putExtra(INTENT_EXTRA_MESSAGE, std::string { str_desync });

@@ -7723,5 +7723,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_stand_up_rc(sint32 trackType, sint
     case TRACK_ELEM_BLOCK_BRAKES:
         return stand_up_rc_track_block_brakes;
     }
-    return NULL;
+    return nullptr;
 }

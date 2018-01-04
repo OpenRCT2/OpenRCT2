@@ -67,7 +67,7 @@ static rct_vehicle * get_first_vehicle(Ride * ride)
             return GET_VEHICLE(vehicleSpriteIndex);
         }
     }
-    return NULL;
+    return nullptr;
 }
 
 static void paint_magic_carpet_frame(paint_session * session, uint8 plane, uint8 direction, LocationXYZ16 offset,
@@ -156,7 +156,7 @@ static void paint_magic_carpet_vehicle(paint_session * session, Ride * ride, uin
     if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         rct_vehicle * vehicle = get_first_vehicle(ride);
-        if (vehicle != NULL)
+        if (vehicle != nullptr)
         {
             uint32 baseImageId = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (vehicleImageId + 4);
             for (uint8 peepIndex = 0; peepIndex < vehicle->num_peeps; peepIndex += 2)
@@ -178,7 +178,7 @@ static void paint_magic_carpet_structure(paint_session * session, Ride * ride, u
     rct_vehicle *     vehicle         = get_first_vehicle(ride);
 
     uint32 swingImageId = 0;
-    if (vehicle != NULL)
+    if (vehicle != nullptr)
     {
         swingImageId                = vehicle->vehicle_sprite_type;
         session->InteractionType    = VIEWPORT_INTERACTION_ITEM_SPRITE;
@@ -266,5 +266,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(sint32 trackType, sin
     case FLAT_TRACK_ELEM_1_X_4_A:
         return paint_magic_carpet;
     }
-    return NULL;
+    return nullptr;
 }

@@ -50,7 +50,7 @@ void banner_paint(paint_session * session, uint8 direction, sint32 height, rct_t
 
     rct_scenery_entry* banner_scenery = get_banner_entry(gBanners[tile_element->properties.banner.index].type);
 
-    if (banner_scenery == NULL) {
+    if (banner_scenery == nullptr) {
         return;
     }
 

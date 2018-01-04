@@ -8678,5 +8678,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_rc(sint32 trackType, sint32 d
     case TRACK_ELEM_BOOSTER:
         return mini_rc_track_booster;
     }
-    return NULL;
+    return nullptr;
 }

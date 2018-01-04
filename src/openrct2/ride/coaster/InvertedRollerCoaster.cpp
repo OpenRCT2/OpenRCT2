@@ -9631,5 +9631,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_inverted_rc(sint32 trackType, sint
     case TRACK_ELEM_RIGHT_BANKED_25_DEG_DOWN_TO_FLAT:
         return inverted_rc_track_right_banked_25_deg_down_to_flat;
     }
-    return NULL;
+    return nullptr;
 }

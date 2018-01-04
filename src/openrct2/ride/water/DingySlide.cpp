@@ -1854,5 +1854,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_dinghy_slide(sint32 trackType, sin
         return dinghy_slide_track_right_quarter_turn_3_covered;
     }
 
-    return NULL;
+    return nullptr;
 }

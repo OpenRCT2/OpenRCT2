@@ -48,7 +48,7 @@ static void large_scenery_paint_supports(paint_session * session, uint8 directio
         supportImageColourFlags = dword_F4387C;
     }
 
-    wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, NULL);
+    wooden_b_supports_paint_setup(session, (direction & 1), ax, supportHeight, supportImageColourFlags, nullptr);
 
     sint32 clearanceHeight = ceil2(tileElement->clearance_height * 8 + 15, 16);
 
@@ -190,7 +190,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_LARGE_SCENERY;
     uint32 sequenceNum = scenery_large_get_sequence(tileElement);
     rct_scenery_entry *entry = get_large_scenery_entry(scenery_large_get_type(tileElement));
-    if (entry == NULL)
+    if (entry == nullptr)
         return;
 
     uint32 image_id = (sequenceNum << 2) + entry->image + 4 + direction;
@@ -297,8 +297,8 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
                         utf8 str1[64] = {0};
                         utf8 *dst = str1;
                         utf8 *srcold = src;
-                        utf8 *spacesrc = 0;
-                        utf8 *spacedst = 0;
+                        utf8 *spacesrc = nullptr;
+                        utf8 *spacedst = nullptr;
                         sint32 w = 0;
                         uint32 codepoint = utf8_get_next(src, (const utf8**)&src);
                         do {
@@ -307,7 +307,7 @@ void large_scenery_paint(paint_session * session, uint8 direction, uint16 height
                                 spacesrc = src;
                                 spacedst = dst;
                             }
-                        } while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != NULL && (srcold = src) != NULL && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
+                        } while(w <= text->max_width && (dst = utf8_write_codepoint(dst, codepoint)) != nullptr && (srcold = src) != nullptr && (codepoint = utf8_get_next(src, (const utf8**)&src)) != '\0');
                         src = srcold;
                         if (spacesrc && codepoint) {
                             *spacedst = 0;

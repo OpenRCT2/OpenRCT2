@@ -833,5 +833,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_log_flume(sint32 trackType, sint32
         return paint_log_flume_track_reverser;
     }
 
-    return NULL;
+    return nullptr;
 }
