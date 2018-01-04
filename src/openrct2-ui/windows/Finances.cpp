@@ -386,8 +386,6 @@ static rct_window_event_list *window_finances_page_events[] = {
     &window_finances_research_events
 };
 
-static void window_finances_set_colours();
-
 #pragma endregion
 
 #pragma region Enabled widgets
