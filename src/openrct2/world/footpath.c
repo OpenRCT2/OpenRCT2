@@ -270,8 +270,11 @@ static money32 footpath_element_insert(sint32 type, sint32 x, sint32 y, sint32 z
 
 static money32 footpath_element_update(sint32 x, sint32 y, rct_tile_element *tileElement, sint32 type, sint32 flags, uint8 pathItemType)
 {
-    if (footpath_element_get_type(tileElement) != (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4)) ||
-        footpath_element_is_queue(tileElement) != (type >> 7 == 1)) {
+    const sint32 newFootpathType = (type & (FOOTPATH_PROPERTIES_TYPE_MASK >> 4));
+    const bool   newPathIsQueue  = ((type >> 7) == 1);
+
+    if (footpath_element_get_type(tileElement) != newFootpathType ||
+        footpath_element_is_queue(tileElement) != newPathIsQueue) {
         gFootpathPrice += MONEY(6, 00);
     } else if (pathItemType != 0) {
         if (
