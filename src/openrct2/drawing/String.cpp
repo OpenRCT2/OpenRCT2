@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
@@ -22,6 +23,9 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "ttf.h"
+
+extern "C"
+{
 
 enum {
     TEXT_DRAW_FLAG_INSET = 1 << 0,
@@ -52,13 +56,13 @@ sint32 gfx_get_string_width_new_lined(utf8 *text)
         if (codepoint == FORMAT_NEWLINE || codepoint == FORMAT_NEWLINE_SMALLER) {
             backup = *nextCh;
             *nextCh = 0;
-            maxWidth = max(maxWidth, gfx_get_string_width(firstCh));
+            maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
             *nextCh = backup;
             firstCh = nextCh;
         }
         ch = nextCh;
     }
-    maxWidth = max(maxWidth, gfx_get_string_width(firstCh));
+    maxWidth = std::max(maxWidth, gfx_get_string_width(firstCh));
 
     return maxWidth;
 }
@@ -164,7 +168,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             numCharactersOnLine++;
         } else if (codepoint == FORMAT_NEWLINE) {
             *ch++ = 0;
-            maxWidth = max(maxWidth, lineWidth);
+            maxWidth = std::max(maxWidth, lineWidth);
             (*outNumLines)++;
             lineWidth = 0;
             currentWord = NULL;
@@ -188,7 +192,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
         } else if (currentWord == NULL) {
             // Single word is longer than line, insert null terminator
             ch += utf8_insert_codepoint(ch, 0);
-            maxWidth = max(maxWidth, lineWidth);
+            maxWidth = std::max(maxWidth, lineWidth);
             (*outNumLines)++;
             lineWidth = 0;
             currentWord = NULL;
@@ -198,7 +202,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             ch = currentWord;
             *ch++ = 0;
 
-            maxWidth = max(maxWidth, currentWidth);
+            maxWidth = std::max(maxWidth, currentWidth);
             (*outNumLines)++;
             lineWidth = 0;
             currentWord = NULL;
@@ -206,7 +210,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             numCharactersOnLine = 0;
         }
     }
-    maxWidth = max(maxWidth, lineWidth);
+    maxWidth = std::max(maxWidth, lineWidth);
     *outFontHeight = gCurrentFontSpriteBase;
     return maxWidth == 0 ? lineWidth : maxWidth;
 }
@@ -279,7 +283,7 @@ static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* p
 void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 numLines, char *text)
 {
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, "", COLOUR_BLACK, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char *)"", COLOUR_BLACK, dpi->x, dpi->y);
     gCurrentFontFlags = 0;
 
     for (sint32 i = 0; i <= numLines; i++) {
@@ -380,7 +384,7 @@ void gfx_draw_string_centred_wrapped_partial(rct_drawpixelinfo *dpi, sint32 x, s
     utf8 *buffer = gCommonStringFormatBuffer;
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
-    gfx_draw_string(dpi, "", colour, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char *)"", colour, dpi->x, dpi->y);
     format_string(buffer, 256, format, args);
 
 
@@ -497,7 +501,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
         sint32 skipY = drawY - dpi->y;
         info->x += width;
 
-        const uint8 *src = surface->pixels;
+        auto src = (const uint8 *)surface->pixels;
         uint8 *dst = dpi->bits;
 
         if (skipX < 0) {
@@ -750,8 +754,8 @@ static void ttf_process_string(rct_drawpixelinfo *dpi, const utf8 *text, text_dr
         } else {
             ch = ttf_process_glyph_run(dpi, ch, info);
         }
-        info->maxX = max(info->maxX, info->x);
-        info->maxY = max(info->maxY, info->y);
+        info->maxX = std::max(info->maxX, info->x);
+        info->maxY = std::max(info->maxY, info->y);
     }
 }
 
@@ -924,4 +928,6 @@ void shorten_path(utf8 *buffer, size_t bufferSize, const utf8 *path, sint32 avai
     }
 
     safe_strcpy(buffer, path, bufferSize);
+}
+
 }
