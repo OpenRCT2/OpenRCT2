@@ -20,7 +20,7 @@
 
 #include <openrct2/Intro.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 
 enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
     WIDX_OPTIONS,

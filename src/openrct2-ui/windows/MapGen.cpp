@@ -21,7 +21,7 @@
 
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/MapGen.h>
 #include <openrct2-ui/interface/Dropdown.h>

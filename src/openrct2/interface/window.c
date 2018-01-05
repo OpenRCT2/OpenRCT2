@@ -31,7 +31,7 @@
 #include "../world/Map.h"
 #include "../world/sprite.h"
 #include "Viewport.h"
-#include "widget.h"
+#include "Widget.h"
 #include "window.h"
 
 #define RCT2_FIRST_WINDOW       (g_window_list)

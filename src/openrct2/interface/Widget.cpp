@@ -14,17 +14,17 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
+#include <cmath>
 #include "../drawing/Drawing.h"
 #include "../Input.h"
 #include "../sprites.h"
-#include "widget.h"
-#include "window.h"
 #include "../platform/platform.h"
 #include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "../Context.h"
-
-#include <math.h>
+#include "Widget.h"
+#include "window.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
@@ -35,7 +35,6 @@ static void widget_text_button(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
 static void widget_text_unknown(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
-static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_caption_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
@@ -72,13 +71,13 @@ void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index)
             x = (x * view_size) / scroll->h_right;
         x += 11;
         view_size += 10;
-        scroll->h_thumb_right = min(x, view_size);
+        scroll->h_thumb_right = std::min(x, view_size);
 
         if(scroll->h_thumb_right - scroll->h_thumb_left < 20) {
             double barPosition = (scroll->h_thumb_right * 1.0) / view_size;
 
-            scroll->h_thumb_left = (uint16) lround(scroll->h_thumb_left - (20 * barPosition));
-            scroll->h_thumb_right = (uint16) lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
+            scroll->h_thumb_left = (uint16)std::lround(scroll->h_thumb_left - (20 * barPosition));
+            scroll->h_thumb_right = (uint16)std::lround(scroll->h_thumb_right + (20 * (1 - barPosition)));
         }
     }
 
@@ -99,13 +98,13 @@ void widget_scroll_update_thumbs(rct_window *w, rct_widgetindex widget_index)
             y = (y * view_size) / scroll->v_bottom;
         y += 11;
         view_size += 10;
-        scroll->v_thumb_bottom = min(y, view_size);
+        scroll->v_thumb_bottom = std::min(y, view_size);
 
         if(scroll->v_thumb_bottom - scroll->v_thumb_top < 20) {
             double barPosition = (scroll->v_thumb_bottom * 1.0) / view_size;
 
-            scroll->v_thumb_top = (uint16) lround(scroll->v_thumb_top - (20 * barPosition));
-            scroll->v_thumb_bottom = (uint16) lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
+            scroll->v_thumb_top = (uint16)std::lround(scroll->v_thumb_top - (20 * barPosition));
+            scroll->v_thumb_bottom = (uint16)std::lround(scroll->v_thumb_bottom + (20 * (1 - barPosition)));
         }
     }
 
@@ -269,7 +268,7 @@ static void widget_button_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
     // Get the colour
     uint8 colour = w->colours[widget->colour];
 
-    if (widget->image == -2) {
+    if ((sint32)widget->image == -2) {
         // Draw border with no fill
         gfx_fill_rect_inset(dpi, l, t, r, b, colour, press | INSET_RECT_FLAG_FILL_NONE);
         return;
@@ -290,7 +289,7 @@ static void widget_tab_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetind
     // Get the widget
     rct_widget *widget = &w->widgets[widgetIndex];
 
-    if (widget->image == -1)
+    if ((sint32)widget->image == -1)
         return;
 
     // Draw widgets that aren't explicitly disabled.
@@ -345,7 +344,7 @@ static void widget_flat_button_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_w
 
     // Check if the button is pressed down
     if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex)) {
-        if (widget->image == -2) {
+        if ((sint32)widget->image == -2) {
             // Draw border with no fill
             gfx_fill_rect_inset(dpi, l, t, r, b, colour, INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_NONE);
             return;
@@ -488,35 +487,6 @@ static void widget_text_inset(rct_drawpixelinfo *dpi, rct_window *w, rct_widgeti
 
 /**
  *
- *  rct2: 0x006EC1A6
- */
-static void widget_text_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex)
-{
-    // Get the widget
-    rct_widget *widget = &w->widgets[widgetIndex];
-
-    // Resolve the absolute ltrb
-    sint32 l = w->x + widget->left + 5;
-    sint32 t = w->y + widget->top;
-    sint32 r = w->x + widget->right;
-    sint32 b = w->y + widget->bottom;
-
-    // Get the colour
-    uint8 colour = w->colours[widget->colour];
-
-    sint32 press = 0;
-    if (widget_is_pressed(w, widgetIndex) || widget_is_active_tool(w, widgetIndex))
-        press |= INSET_RECT_FLAG_BORDER_INSET;
-
-    gfx_fill_rect_inset(dpi, l, t, r, b, colour, press);
-
-    // TODO
-
-    gfx_fill_rect(dpi, l, t, r, b, colour);
-}
-
-/**
- *
  *  rct2: 0x006EB535
  */
 static void widget_groupbox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex)
@@ -654,7 +624,7 @@ static void widget_closebox_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
         return;
 
     l = w->x + (widget->left + widget->right) / 2 - 1;
-    t = w->y + max(widget->top, (widget->top + widget->bottom) / 2 - 5);
+    t = w->y + std::max<sint32>(widget->top, (widget->top + widget->bottom) / 2 - 5);
 
     if (widget_is_disabled(w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
@@ -754,10 +724,10 @@ static void widget_scroll_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widget
     rct_drawpixelinfo scroll_dpi = *dpi;
 
     // Clip the scroll dpi against the outer dpi
-    sint32 cl = max(dpi->x, l);
-    sint32 ct = max(dpi->y, t);
-    sint32 cr = min(dpi->x + dpi->width, r);
-    sint32 cb = min(dpi->y + dpi->height, b);
+    sint32 cl = std::max<sint32>(dpi->x, l);
+    sint32 ct = std::max<sint32>(dpi->y, t);
+    sint32 cr = std::min<sint32>(dpi->x + dpi->width, r);
+    sint32 cb = std::min<sint32>(dpi->y + dpi->height, b);
 
     // Set the respective dpi attributes
     scroll_dpi.x = cl - l + scroll->h_left;
@@ -790,8 +760,8 @@ static void widget_hscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, s
 
     // Thumb
     gfx_fill_rect_inset(dpi,
-        max(l + 10, l + scroll->h_thumb_left - 1), t,
-        min(r - 10, l + scroll->h_thumb_right - 1), b,
+        std::max(l + 10, l + scroll->h_thumb_left - 1), t,
+        std::min(r - 10, l + scroll->h_thumb_right - 1), b,
         colour, ((scroll->flags & HSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Right button
@@ -816,8 +786,8 @@ static void widget_vscrollbar_draw(rct_drawpixelinfo *dpi, rct_scroll *scroll, s
 
     // Thumb
     gfx_fill_rect_inset(dpi,
-        l, max(t + 10, t + scroll->v_thumb_top - 1),
-        r, min(b - 10, t + scroll->v_thumb_bottom - 1),
+        l, std::max(t + 10, t + scroll->v_thumb_top - 1),
+        r, std::min(b - 10, t + scroll->v_thumb_bottom - 1),
         colour, ((scroll->flags & VSCROLLBAR_THUMB_PRESSED) ? INSET_RECT_FLAG_BORDER_INSET : 0));
 
     // Down button
@@ -1109,7 +1079,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
 
     // Make a copy of the string for measuring the width.
     char temp_string[TEXT_INPUT_SIZE] = { 0 };
-    memcpy(temp_string, wrapped_string, min(string_length, gTextInput->SelectionStart));
+    memcpy(temp_string, wrapped_string, std::min(string_length, gTextInput->SelectionStart));
     sint32 cur_x = l + gfx_get_string_width(temp_string) + 3;
 
     sint32 width = 6;
@@ -1118,7 +1088,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
         // of the character that the cursor is under.
         temp_string[1] = '\0';
         temp_string[0] = gTextBoxInput[gTextInput->SelectionStart];
-        width = max(gfx_get_string_width(temp_string) - 2, 4);
+        width = std::max(gfx_get_string_width(temp_string) - 2, 4);
     }
 
     if (gTextBoxFrameNo <= 15){
