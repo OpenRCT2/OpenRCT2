@@ -20,7 +20,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "../interface/window.h"
 #include "../localisation/Localisation.h"
 #include "../management/Award.h"

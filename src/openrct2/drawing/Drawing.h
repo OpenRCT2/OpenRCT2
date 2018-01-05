@@ -18,7 +18,7 @@
 #define _DRAWING_H_
 
 #include "../common.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "Font.h"
 
 typedef struct rct_g1_element {

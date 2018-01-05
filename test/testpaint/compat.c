@@ -16,7 +16,7 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2/object/Object.h>
-#include <openrct2/interface/colour.h>
+#include <openrct2/interface/Colour.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/Track.h>

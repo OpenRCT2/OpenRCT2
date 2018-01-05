@@ -16,7 +16,7 @@
 
 #include <algorithm>
 #include "../config/Config.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "../localisation/Localisation.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"

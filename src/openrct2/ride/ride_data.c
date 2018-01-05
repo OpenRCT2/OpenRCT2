@@ -30,7 +30,7 @@
 #include "Track.h"
 #include "../audio/audio.h"
 #include "../sprites.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
     true,   // 0 Spiral Roller coaster

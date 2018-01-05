@@ -19,7 +19,7 @@
 #include "../core/Util.hpp"
 #include "Tables.h"
 
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "../rct1.h"
 #include "../ride/Ride.h"
 

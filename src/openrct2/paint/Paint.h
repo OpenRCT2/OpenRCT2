@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "../world/Map.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "../drawing/Drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
