@@ -17,6 +17,7 @@
 #pragma once
 
 #include <stdexcept>
+#include <string>
 #include <jansson.h>
 
 #include "../common.h"
@@ -38,7 +39,7 @@ private:
 public:
     explicit JsonException(const std::string &message) : std::runtime_error(message) { }
 
-    explicit JsonException(const json_error_t * jsonError) : JsonException(jsonError->text)
+    explicit JsonException(const json_error_t * jsonError) : JsonException(std::string(jsonError->text))
     {
         _jsonError = *jsonError;
     }

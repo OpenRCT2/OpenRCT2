@@ -1118,7 +1118,6 @@
 		F76C837B1EC4E7CC00FA49E2 /* Console.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Console.hpp; sourceTree = "<group>"; };
 		F76C837C1EC4E7CC00FA49E2 /* Diagnostics.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Diagnostics.cpp; sourceTree = "<group>"; };
 		F76C837D1EC4E7CC00FA49E2 /* Diagnostics.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Diagnostics.hpp; sourceTree = "<group>"; };
-		F76C837E1EC4E7CC00FA49E2 /* Exception.hpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.h; path = Exception.hpp; sourceTree = "<group>"; };
 		F76C837F1EC4E7CC00FA49E2 /* File.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = File.cpp; sourceTree = "<group>"; };
 		F76C83801EC4E7CC00FA49E2 /* File.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = File.h; sourceTree = "<group>"; };
 		F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = FileScanner.cpp; sourceTree = "<group>"; };
@@ -1942,7 +1941,6 @@
 				F76C837C1EC4E7CC00FA49E2 /* Diagnostics.cpp */,
 				F76C837D1EC4E7CC00FA49E2 /* Diagnostics.hpp */,
 				C6352B831F477022006CCEE3 /* Endianness.h */,
-				F76C837E1EC4E7CC00FA49E2 /* Exception.hpp */,
 				F76C837F1EC4E7CC00FA49E2 /* File.cpp */,
 				F76C83801EC4E7CC00FA49E2 /* File.h */,
 				F76C83811EC4E7CC00FA49E2 /* FileScanner.cpp */,
