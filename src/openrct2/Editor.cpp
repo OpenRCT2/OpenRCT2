@@ -23,7 +23,7 @@
 #include "ParkImporter.h"
 #include "audio/audio.h"
 #include "core/Math.hpp"
-#include "interface/viewport.h"
+#include "interface/Viewport.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"

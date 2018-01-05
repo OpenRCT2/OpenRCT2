@@ -20,7 +20,7 @@
 #include "../Game.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"

@@ -37,7 +37,7 @@
 
 #include <openrct2/audio/audio.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/Currency.h>
 #include <openrct2/localisation/Date.h>

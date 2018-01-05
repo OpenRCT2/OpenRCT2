@@ -28,7 +28,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/Console.h>
 #include <openrct2/interface/Screenshot.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/network/network.h>
 #include <openrct2/network/twitch.h>

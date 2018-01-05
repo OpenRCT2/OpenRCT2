@@ -28,7 +28,7 @@
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../Intro.h"
 #include "../localisation/Language.h"
 #include "../ride/Ride.h"

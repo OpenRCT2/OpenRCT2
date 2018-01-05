@@ -27,7 +27,7 @@
 #include "Utils.hpp"
 
 #include "data.h"
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/rct2.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/ride_data.h>
@@ -106,7 +106,7 @@ private:
         {
             "../../drawing/Drawing.h",
             "../../paint/supports.h",
-            "../../interface/viewport.h",
+            "../../interface/Viewport.h",
             "../../paint/tile_element/tile_element.h",
             "../../paint/paint.h",
             "../../sprites.h",

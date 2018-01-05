@@ -17,7 +17,7 @@
 #include "TileElement.h"
 #include "../../config/Config.h"
 #include "../../Game.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
 #include "../Paint.h"
 #include "../Supports.h"

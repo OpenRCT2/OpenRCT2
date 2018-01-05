@@ -30,7 +30,7 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "viewport.h"
+#include "Viewport.h"
 
 using namespace OpenRCT2;
 

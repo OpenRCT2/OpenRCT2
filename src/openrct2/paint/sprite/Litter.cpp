@@ -16,7 +16,7 @@
 
 #include "Sprite.h"
 #include "../../world/sprite.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../Paint.h"
 
 enum {

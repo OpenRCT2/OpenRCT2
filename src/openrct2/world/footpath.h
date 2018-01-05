@@ -18,7 +18,7 @@
 #define _WORLD_FOOTPATH_H_
 
 #include "../common.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../object/Object.h"
 
 enum

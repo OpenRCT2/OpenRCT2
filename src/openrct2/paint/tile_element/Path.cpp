@@ -16,7 +16,7 @@
 
 #include "../../config/Config.h"
 #include "../../Game.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/ObjectList.h"
 #include "../../peep/Staff.h"

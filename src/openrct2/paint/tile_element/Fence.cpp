@@ -20,7 +20,7 @@
 #include "../../Game.h"
 #include "../../localisation/Localisation.h"
 #include "../../interface/Colour.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../ride/Track.h"
 #include "../../world/Map.h"
 #include "../../world/scenery.h"

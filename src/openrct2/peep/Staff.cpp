@@ -20,7 +20,7 @@
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"

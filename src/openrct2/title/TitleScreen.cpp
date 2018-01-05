@@ -30,7 +30,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../interface/window.h"
 #include "../localisation/Localisation.h"
 

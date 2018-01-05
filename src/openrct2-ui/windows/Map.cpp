@@ -23,7 +23,7 @@
 #include <openrct2/Cheats.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Track.h>

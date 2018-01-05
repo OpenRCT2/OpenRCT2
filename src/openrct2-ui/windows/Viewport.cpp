@@ -20,7 +20,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/widget.h>
 
 #define INITIAL_WIDTH 500

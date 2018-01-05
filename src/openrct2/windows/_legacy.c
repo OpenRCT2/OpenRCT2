@@ -22,7 +22,7 @@
 #include "../audio/audio.h"
 #include "../Input.h"
 #include "../Game.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../Cheats.h"

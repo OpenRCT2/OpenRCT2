@@ -30,7 +30,7 @@
 #include "../platform/platform.h"
 #include "../world/Map.h"
 #include "../world/sprite.h"
-#include "viewport.h"
+#include "Viewport.h"
 #include "widget.h"
 #include "window.h"
 

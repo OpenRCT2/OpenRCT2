@@ -17,7 +17,7 @@
 #include "../Paint.h"
 #include "../../config/Config.h"
 #include "../../Game.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "TileElement.h"
 #include "../../world/Banner.h"

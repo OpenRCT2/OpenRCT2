@@ -18,7 +18,7 @@
 #include "../config/Config.h"
 #include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "Paint.h"
 #include "sprite/Sprite.h"

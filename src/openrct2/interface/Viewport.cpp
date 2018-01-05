@@ -14,8 +14,10 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Math.hpp"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
@@ -34,8 +36,11 @@
 #include "../world/scenery.h"
 #include "../world/sprite.h"
 #include "Colour.h"
-#include "viewport.h"
+#include "Viewport.h"
 #include "window.h"
+
+extern "C"
+{
 
 //#define DEBUG_SHOW_DIRTY_BOX
 uint8 gShowGridLinesRefCount;
@@ -112,9 +117,9 @@ void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 
     sint32 start_x = x;
 
     LocationXYZ16 coord_3d = {
-        .x = x,
-        .y = y,
-        .z = z
+        /* .x = */ (sint16)x,
+        /* .y = */ (sint16)y,
+        /* .z = */ (sint16)z
     };
 
     LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, get_current_rotation());
@@ -423,10 +428,10 @@ static void viewport_move(sint16 x, sint16 y, rct_window* w, rct_viewport* viewp
     if ((!x_diff) && (!y_diff))return;
 
     if (w->flags & WF_7){
-        sint32 left = max(viewport->x, 0);
-        sint32 top = max(viewport->y, 0);
-        sint32 right = min(viewport->x + viewport->width, context_get_width());
-        sint32 bottom = min(viewport->y + viewport->height, context_get_height());
+        sint32 left = std::max<sint32>(viewport->x, 0);
+        sint32 top = std::max<sint32>(viewport->y, 0);
+        sint32 right = std::min<sint32>(viewport->x + viewport->width, context_get_width());
+        sint32 bottom = std::min<sint32>(viewport->y + viewport->height, context_get_height());
 
         if (left >= right) return;
         if (top >= bottom) return;
@@ -784,10 +789,10 @@ void viewport_render(rct_drawpixelinfo *dpi, rct_viewport *viewport, sint32 left
     sint32 l = left, t = top, r = right, b = bottom;
 #endif
 
-    left = max(left - viewport->x, 0);
-    right = min(right - viewport->x, viewport->width);
-    top = max(top - viewport->y, 0);
-    bottom = min(bottom - viewport->y, viewport->height);
+    left = std::max<sint32>(left - viewport->x, 0);
+    right = std::min<sint32>(right - viewport->x, viewport->width);
+    top = std::max<sint32>(top - viewport->y, 0);
+    bottom = std::min<sint32>(bottom - viewport->y, viewport->height);
 
     left <<= viewport->zoom;
     right <<= viewport->zoom;
@@ -1289,13 +1294,13 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
         if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE) {
             // TODO: SAR in dpi done with `>> 1`, in coordinates with `/ 2`
             rct_drawpixelinfo zoomed_dpi = {
-                    .bits = dpi->bits,
-                    .x = dpi->x >> 1,
-                    .y = dpi->y >> 1,
-                    .height = dpi->height,
-                    .width = dpi->width,
-                    .pitch = dpi->pitch,
-                    .zoom_level = dpi->zoom_level - 1
+                /* .bits = */ dpi->bits,
+                /* .x = */ (sint16)(dpi->x >> 1),
+                /* .y = */ (sint16)(dpi->y >> 1),
+                /* .height = */ dpi->height,
+                /* .width = */ dpi->width,
+                /* .pitch = */ dpi->pitch,
+                /* .zoom_level = */ (uint16)(dpi->zoom_level - 1)
             };
 
             return sub_679074(&zoomed_dpi, imageId - g1->zoomed_offset, x / 2, y / 2, palette);
@@ -1393,7 +1398,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
     // The code below is untested.
     sint32 total_no_pixels = g1->width * g1->height;
     uint8 *source_pointer = g1->offset;
-    uint8 *new_source_pointer_start = malloc(total_no_pixels);
+    uint8 *new_source_pointer_start = (uint8 *)malloc(total_no_pixels);
     uint8 *new_source_pointer = (*&new_source_pointer_start);// 0x9E3D28;
     intptr_t ebx1;
     sint32 ecx;
@@ -1576,10 +1581,10 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
     sint32 viewportRight = viewport->view_x + viewport->view_width;
     sint32 viewportBottom = viewport->view_y + viewport->view_height;
     if (right > viewportLeft && bottom > viewportTop) {
-        left = max(left, viewportLeft);
-        top = max(top, viewportTop);
-        right = min(right, viewportRight);
-        bottom = min(bottom, viewportBottom);
+        left = std::max(left, viewportLeft);
+        top = std::max(top, viewportTop);
+        right = std::min(right, viewportRight);
+        bottom = std::min(bottom, viewportBottom);
 
         uint8 zoom = 1 << viewport->zoom;
         left -= viewportLeft;
@@ -1639,13 +1644,13 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(myViewport, screenX, screenY);
-    LocationXY16 map_pos = { my_x + 16, my_y + 16 };
+    LocationXY16 map_pos = { (sint16)(my_x + 16), (sint16)(my_y + 16) };
 
     for (sint32 i = 0; i < 5; i++) {
         sint32 z = tile_element_height(map_pos.x, map_pos.y);
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
-        map_pos.y = clamp(my_y, map_pos.y, my_y + 31);
+        map_pos.x = Math::Clamp<sint16>(map_pos.x, my_x, my_x + 31);
+        map_pos.y = Math::Clamp<sint16>(map_pos.y, my_y, my_y + 31);
     }
 
     *x = map_pos.x;
@@ -1786,4 +1791,6 @@ void viewport_set_saved_view()
         gSavedViewZoom = viewport->zoom;
         gSavedViewRotation = get_current_rotation();
     }
+}
+
 }
