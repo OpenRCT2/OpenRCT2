@@ -17,6 +17,7 @@
 #ifdef __ENABLE_LIGHTFX__
 
 #include <algorithm>
+#include <cmath>
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Game.h"
