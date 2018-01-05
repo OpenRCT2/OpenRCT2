@@ -84,7 +84,7 @@ void money_effect_create(money32 value)
         if (mainWindow == nullptr)
             return;
 
-        rct_viewport * mainViewport = mainWindow->viewport;
+        rct_viewport * mainViewport = window_get_viewport(mainWindow);
         screen_get_map_xy(
             mainViewport->x + (mainViewport->width / 2),
             mainViewport->y + (mainViewport->height / 2),

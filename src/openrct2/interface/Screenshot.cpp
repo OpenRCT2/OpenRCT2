@@ -178,8 +178,9 @@ void screenshot_giant()
     sint32 originalZoom = 0;
 
     rct_window *mainWindow = window_get_main();
-    if (mainWindow != nullptr && mainWindow->viewport != nullptr)
-        originalZoom = mainWindow->viewport->zoom;
+    rct_viewport * vp = window_get_viewport(mainWindow);
+    if (mainWindow != nullptr && vp != nullptr)
+        originalZoom = vp->zoom;
 
     sint32 rotation = originalRotation;
     sint32 zoom = originalZoom;
