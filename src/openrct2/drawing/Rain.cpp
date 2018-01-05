@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../world/Climate.h"
 #include "Drawing.h"
 #include "../config/Config.h"
