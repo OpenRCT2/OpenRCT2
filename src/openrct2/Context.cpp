@@ -53,7 +53,7 @@
 #include "Editor.h"
 #include "Game.h"
 #include "Input.h"
-#include "interface/chat.h"
+#include "interface/Chat.h"
 #include "interface/console.h"
 #include "interface/themes.h"
 #include "Intro.h"

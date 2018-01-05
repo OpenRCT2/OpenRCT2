@@ -23,7 +23,7 @@
 
 #include "../drawing/Drawing.h"
 #include "../Game.h"
-#include "../interface/chat.h"
+#include "../interface/Chat.h"
 #include "../interface/console.h"
 #include "../Intro.h"
 #include "../localisation/Language.h"

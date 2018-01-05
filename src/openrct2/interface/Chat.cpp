@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../Context.h"
@@ -22,7 +23,10 @@
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "chat.h"
+#include "Chat.h"
+
+extern "C"
+{
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -83,7 +87,7 @@ void chat_draw(rct_drawpixelinfo * dpi)
     }
 
     _chatLeft = 10;
-    _chatRight = min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
+    _chatRight = std::min((context_get_width() - 10), CHAT_MAX_WINDOW_WIDTH);
     _chatWidth = _chatRight - _chatLeft;
     _chatBottom = context_get_height() - 45;
     _chatTop = _chatBottom - 10;
@@ -189,7 +193,7 @@ void chat_history_add(const char * src)
     const char * srcText = ch;
 
     // Copy format codes to buffer
-    memcpy(buffer, src, min(bufferSize, (size_t)(srcText - src)));
+    memcpy(buffer, src, std::min(bufferSize, (size_t)(srcText - src)));
 
     // Prepend a timestamp
     time_t timer;
@@ -202,7 +206,7 @@ void chat_history_add(const char * src)
     // Add to history list
     sint32 index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
     memset(_chatHistory[index], 0, CHAT_INPUT_SIZE);
-    memcpy(_chatHistory[index], buffer, min(strlen(buffer), CHAT_INPUT_SIZE - 1));
+    memcpy(_chatHistory[index], buffer, std::min<size_t>(strlen(buffer), CHAT_INPUT_SIZE - 1));
     _chatHistoryTime[index] = platform_get_ticks();
     _chatHistoryIndex++;
 
@@ -255,7 +259,7 @@ sint32 chat_history_draw_string(rct_drawpixelinfo *dpi, void *args, sint32 x, si
 
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
 
-    gfx_draw_string(dpi, "", TEXT_COLOUR_255, dpi->x, dpi->y);
+    gfx_draw_string(dpi, (char *)"", TEXT_COLOUR_255, dpi->x, dpi->y);
     char *buffer = gCommonStringFormatBuffer;
     format_string(buffer, 256, STR_STRING, args);
 
@@ -303,4 +307,6 @@ sint32 chat_string_wrapped_get_height(void *args, sint32 width)
     }
 
     return lineY;
+}
+
 }
