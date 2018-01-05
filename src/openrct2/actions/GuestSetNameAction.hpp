@@ -21,8 +21,10 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../windows/Intent.h"
 #include "../world/Park.h"
 
 struct GuestSetNameAction : public GameActionBase<GAME_COMMAND_SET_GUEST_NAME, GameActionResult>
@@ -117,12 +119,8 @@ public:
 
         gfx_invalidate_screen();
 
-        // Force guest list window refresh
-        rct_window * w = window_find_by_class(WC_GUEST_LIST);
-        if (w != NULL)
-        {
-            w->no_list_items = 0;
-        }
+        auto intent = Intent(INTENT_ACTION_REFRESH_GUEST_LIST);
+        context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
         res->Position.x = peep->x;
