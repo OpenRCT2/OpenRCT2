@@ -50,7 +50,7 @@
 #include "../world/Park.h"
 #include "../world/scenery.h"
 #include "Console.h"
-#include "viewport.h"
+#include "Viewport.h"
 
 #ifndef NO_TTF
 #include "../drawing/TTF.h"

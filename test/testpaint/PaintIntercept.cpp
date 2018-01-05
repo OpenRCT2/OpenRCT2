@@ -21,7 +21,7 @@
 #include "TestPaint.hpp"
 
 #include <openrct2/common.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/sprites.h>
 

@@ -16,7 +16,7 @@
 
 #include "../../world/sprite.h"
 #include "../../drawing/Drawing.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "Sprite.h"
 #include "../Paint.h"
 #include "../../localisation/StringIds.h"

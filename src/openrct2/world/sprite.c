@@ -17,7 +17,7 @@
 #include "../audio/audio.h"
 #include "../Cheats.h"
 #include "../Game.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"

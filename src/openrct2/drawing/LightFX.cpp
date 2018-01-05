@@ -21,7 +21,7 @@
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Game.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../interface/window.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../util/Util.h"

@@ -18,7 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/interface/widget.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/localisation/Localisation.h>
 
 enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {

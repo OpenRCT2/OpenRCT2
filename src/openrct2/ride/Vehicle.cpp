@@ -24,7 +24,7 @@
 #include "../core/Memory.hpp"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"

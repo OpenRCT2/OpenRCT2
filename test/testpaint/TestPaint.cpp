@@ -27,7 +27,7 @@
 #include <openrct2/paint/Paint.h>
 #include <openrct2/paint/Supports.h>
 #include <openrct2/ride/TrackData.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 
 namespace TestPaint
 {

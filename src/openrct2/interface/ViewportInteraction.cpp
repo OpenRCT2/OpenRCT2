@@ -32,7 +32,7 @@
 #include "../world/scenery.h"
 #include "../world/LargeScenery.h"
 #include "../world/sprite.h"
-#include "viewport.h"
+#include "Viewport.h"
 #include "../Context.h"
 
 extern "C"

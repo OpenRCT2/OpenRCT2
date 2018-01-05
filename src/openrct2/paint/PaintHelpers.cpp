@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../ride/track_paint.h"
 #include "Paint.h"
 

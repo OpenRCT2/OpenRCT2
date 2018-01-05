@@ -18,7 +18,7 @@
 #include "../../core/Math.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../Game.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/ride_data.h"
 #include "../../ride/TrackData.h"

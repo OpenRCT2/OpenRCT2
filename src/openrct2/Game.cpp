@@ -25,7 +25,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "interface/Screenshot.h"
-#include "interface/viewport.h"
+#include "interface/Viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"
 #include "localisation/Localisation.h"

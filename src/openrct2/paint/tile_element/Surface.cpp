@@ -19,7 +19,7 @@
 #include "../../config/Config.h"
 #include "../../core/Math.hpp"
 #include "../../core/Util.hpp"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../peep/Staff.h"
 #include "../../sprites.h"
 #include "Surface.h"

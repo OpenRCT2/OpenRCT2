@@ -19,7 +19,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../world/sprite.h"
 #include "../../ride/ride_data.h"
-#include "../../interface/viewport.h"
+#include "../../interface/Viewport.h"
 #include "../../ride/vehicle_paint.h"
 
 /**

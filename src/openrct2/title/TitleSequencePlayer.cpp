@@ -32,7 +32,7 @@
 #include "TitleSequencePlayer.h"
 
 #include "../Game.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "../interface/window.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"

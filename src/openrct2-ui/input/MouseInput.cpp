@@ -27,7 +27,7 @@
 #include <openrct2/interface/Cursors.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Console.h>
-#include <openrct2/interface/viewport.h>
+#include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/interface/window.h>
 #include <openrct2/localisation/Localisation.h>

@@ -18,7 +18,7 @@
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
-#include "../interface/viewport.h"
+#include "../interface/Viewport.h"
 #include "map_animation.h"
 #include "Map.h"
 #include "scenery.h"
