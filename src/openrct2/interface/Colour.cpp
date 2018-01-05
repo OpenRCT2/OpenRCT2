@@ -14,9 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../drawing/Drawing.h"
-#include "colour.h"
 #include "../sprites.h"
+#include "Colour.h"
+
+extern "C"
+{
 
 rct_colour_map ColourMapA[COLOUR_COUNT] = { 0 };
 
@@ -85,8 +89,8 @@ static uint8 findClosestPaletteIndex(uint8 red, uint8 green, uint8 blue)
 
 uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2)
 {
-    const uint8 cMin = min(paletteIndex1, paletteIndex2);
-    const uint8 cMax = max(paletteIndex1, paletteIndex2);
+    const uint8 cMin = std::min(paletteIndex1, paletteIndex2);
+    const uint8 cMax = std::max(paletteIndex1, paletteIndex2);
 
     if (BlendColourMap[cMin][cMax] != 0)
     {
@@ -101,3 +105,5 @@ uint8 blendColours(const uint8 paletteIndex1, const uint8 paletteIndex2)
     return BlendColourMap[cMin][cMax];
 }
 #endif
+
+}

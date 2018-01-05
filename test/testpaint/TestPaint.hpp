@@ -23,7 +23,7 @@
 extern "C"
 {
     #include <openrct2/drawing/Drawing.h>
-    #include <openrct2/interface/colour.h>
+    #include <openrct2/interface/Colour.h>
     #include <openrct2/paint/Paint.h>
     #include <openrct2/paint/tile_element/TileElement.h>
 }

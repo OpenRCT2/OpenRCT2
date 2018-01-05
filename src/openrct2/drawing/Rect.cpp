@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../common.h"
-#include "../interface/colour.h"
+#include "../interface/Colour.h"
 #include "../platform/platform.h"
 #include "Drawing.h"
 

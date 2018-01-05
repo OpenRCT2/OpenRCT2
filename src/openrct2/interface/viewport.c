@@ -33,7 +33,7 @@
 #include "../world/Map.h"
 #include "../world/scenery.h"
 #include "../world/sprite.h"
-#include "colour.h"
+#include "Colour.h"
 #include "viewport.h"
 #include "window.h"
 
