@@ -736,7 +736,7 @@ static void peep_leave_park(rct_peep * peep)
         peep->peep_flags &= ~PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
     }
 
-    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, 0xFF);
+    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_GO_HOME, PEEP_THOUGHT_ITEM_NONE);
 
     rct_window * w = window_find_by_number(WC_PEEP, peep->sprite_index);
     if (w != nullptr)
@@ -982,7 +982,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             uint8 thought_type = crowded_thoughts[peep_rand() & 0xF];
             if (thought_type != PEEP_THOUGHT_TYPE_NONE)
             {
-                peep_insert_new_thought(peep, thought_type, 0xFF);
+                peep_insert_new_thought(peep, thought_type, PEEP_THOUGHT_ITEM_NONE);
             }
         }
 
@@ -1037,7 +1037,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
                     if (thought_type != PEEP_THOUGHT_TYPE_NONE)
                     {
-                        peep_insert_new_thought(peep, thought_type, 0xFF);
+                        peep_insert_new_thought(peep, thought_type, PEEP_THOUGHT_ITEM_NONE);
                         peep->happiness_target = Math::Min(PEEP_MAX_HAPPINESS, peep->happiness_target + 45);
                     }
                 }
@@ -1052,7 +1052,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
             if (peep->peep_flags & PEEP_FLAGS_WOW)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WOW2, 0xFF);
+                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WOW2, PEEP_THOUGHT_ITEM_NONE);
             }
 
             if (peep->time_on_ride > 15)
@@ -1155,7 +1155,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                 {
                     uint8 chosen_thought = possible_thoughts[peep_rand() % num_thoughts];
 
-                    peep_insert_new_thought(peep, chosen_thought, 0xFF);
+                    peep_insert_new_thought(peep, chosen_thought, PEEP_THOUGHT_ITEM_NONE);
 
                     switch (chosen_thought)
                     {
@@ -1189,7 +1189,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                     thought_type = PEEP_THOUGHT_TYPE_VERY_SICK;
                     peep_head_for_nearest_ride_type(peep, RIDE_TYPE_FIRST_AID);
                 }
-                peep_insert_new_thought(peep, thought_type, 0xFF);
+                peep_insert_new_thought(peep, thought_type, PEEP_THOUGHT_ITEM_NONE);
             }
         }
 
@@ -1605,7 +1605,7 @@ static void peep_check_if_lost(rct_peep * peep)
             return;
         peep->var_F4 = 230;
     }
-    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, 0xFF);
+    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_LOST, PEEP_THOUGHT_ITEM_NONE);
 
     peep->happiness_target = Math::Max(peep->happiness_target - 30, 0);
 }
@@ -1655,7 +1655,7 @@ static void peep_check_cant_find_exit(rct_peep * peep)
     // Peeps who can't find the park exit will continue to get less happy until they find it.
     if (peep->peep_is_lost_countdown == 1)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CANT_FIND_EXIT, PEEP_THOUGHT_ITEM_NONE);
         peep->happiness_target = Math::Max(peep->happiness_target - 30, 0);
     }
 
@@ -2321,7 +2321,7 @@ static void peep_update_falling(rct_peep * peep)
                         // Drop balloon if held
                         peep_release_balloon(peep, height);
 
-                        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, -1);
+                        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_DROWNING, PEEP_THOUGHT_ITEM_NONE);
 
                         peep->action                     = PEEP_ACTION_DROWNING;
                         peep->action_frame               = 0;
@@ -2800,7 +2800,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
         {
             if (peep->cash_in_pocket <= 0)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
+                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 if (peep->destination_tolerance == 0)
                 {
                     remove_peep_from_queue(peep);
@@ -5708,7 +5708,7 @@ static void peep_update_picked(rct_peep * peep)
     peep->sub_state++;
     if (peep->sub_state == 13)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_HELP, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -7334,11 +7334,11 @@ static void peep_update_walking(rct_peep * peep)
 
     if (peep->current_seat & 1)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NEW_RIDE, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NEW_RIDE, PEEP_THOUGHT_ITEM_NONE);
     }
     if (peep->current_ride == 0xFF)
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SCENERY, PEEP_THOUGHT_ITEM_NONE);
     }
 }
 
@@ -9085,7 +9085,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
 
             if ((peep_rand() & 0xFFFF) <= 10922)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, 0xFF);
+                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_VANDALISM, PEEP_THOUGHT_ITEM_NONE);
                 peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             }
             peep->var_EF |= 0xC0;
@@ -9133,7 +9133,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
     if (crowded >= 10 && peep->state == PEEP_STATE_WALKING && (peep_rand() & 0xFFFF) <= 21845)
     {
 
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_CROWDED, PEEP_THOUGHT_ITEM_NONE);
         peep->happiness_target = Math::Max(0, peep->happiness_target - 14);
     }
 
@@ -9159,7 +9159,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
 
         if (total_sick >= 3 && (peep_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, 0xFF);
+            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_PATH_DISGUSTING, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             // Reset disgusting time
             peep->disgusting_count |= 0xC0;
@@ -9185,7 +9185,7 @@ static sint32 peep_footpath_move_forward(rct_peep * peep, sint16 x, sint16 y, rc
 
         if (total_litter >= 3 && (peep_rand() & 0xFFFF) <= 10922)
         {
-            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, 0xFF);
+            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_BAD_LITTER, PEEP_THOUGHT_ITEM_NONE);
             peep->happiness_target = Math::Max(0, peep->happiness_target - 17);
             // Reset litter time
             peep->litter_count |= 0xC0;
@@ -12164,13 +12164,13 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
 
     if (shop_item_is_food(shopItem) && (peep->hunger > 75))
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_HUNGRY, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_HUNGRY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
     if (shop_item_is_drink(shopItem) && (peep->thirst > 75))
     {
-        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_THIRSTY, 0xFF);
+        peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_NOT_THIRSTY, PEEP_THOUGHT_ITEM_NONE);
         return false;
     }
 
@@ -12192,7 +12192,7 @@ loc_69B119:
         {
             if (peep->cash_in_pocket == 0)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 0xFF);
+                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                 return false;
             }
             if (price > peep->cash_in_pocket)
@@ -13156,7 +13156,7 @@ static bool peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 ent
                     {
                         if (peep->cash_in_pocket <= 0)
                         {
-                            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 255);
+                            peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
                         }
                         else
                         {
@@ -13451,7 +13451,7 @@ static bool peep_should_go_to_shop(rct_peep * peep, sint32 rideIndex, bool peepA
         {
             if (peep->cash_in_pocket <= 0)
             {
-                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, 255);
+                peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_SPENT_MONEY, PEEP_THOUGHT_ITEM_NONE);
             }
             else
             {

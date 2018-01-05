@@ -1117,7 +1117,7 @@ void window_guest_overview_update(rct_window* w){
                 sint32 random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA) {
                     rct_peep* peep = GET_PEEP(w->number);
-                    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, 0xFF);
+                    peep_insert_new_thought(peep, PEEP_THOUGHT_TYPE_WATCHED, PEEP_THOUGHT_ITEM_NONE);
                 }
             }
         }
