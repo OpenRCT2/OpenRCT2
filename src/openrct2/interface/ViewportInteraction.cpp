@@ -15,6 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../core/Math.hpp"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../Input.h"
@@ -33,6 +34,9 @@
 #include "../world/sprite.h"
 #include "viewport.h"
 #include "../Context.h"
+
+extern "C"
+{
 
 static void viewport_interaction_remove_scenery(rct_tile_element *tileElement, sint32 x, sint32 y);
 static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, sint32 x, sint32 y);
@@ -615,7 +619,7 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
     }
 
     LocationXY16 start_vp_pos = screen_coord_to_viewport_coord(viewport, screenX, screenY);
-    LocationXY16 map_pos = { my_x + 16, my_y + 16 };
+    LocationXY16 map_pos = { (sint16)(my_x + 16), (sint16)(my_y + 16) };
 
     for (sint32 i = 0; i < 5; i++) {
         sint16 z = originalZ;
@@ -623,8 +627,8 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
             z = tile_element_height(map_pos.x, map_pos.y);
         }
         map_pos = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        map_pos.x = clamp(my_x, map_pos.x, my_x + 31);
-        map_pos.y = clamp(my_y, map_pos.y, my_y + 31);
+        map_pos.x = Math::Clamp<sint16>(map_pos.x, my_x, my_x + 31);
+        map_pos.y = Math::Clamp<sint16>(map_pos.y, my_y, my_y + 31);
     }
 
     // Determine to which edge the cursor is closest
@@ -649,4 +653,6 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
     *y = map_pos.y & ~0x1F;
     if (direction != NULL) *direction = myDirection;
     if (tileElement != NULL) *tileElement = myTileElement;
+}
+
 }
