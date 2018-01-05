@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "drawing.h"
+#include "Drawing.h"
 
 extern "C"
 {

@@ -17,7 +17,7 @@
 #include "../common.h"
 #include "../interface/colour.h"
 #include "../platform/platform.h"
-#include "drawing.h"
+#include "Drawing.h"
 
 extern "C"
 {

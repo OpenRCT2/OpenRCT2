@@ -25,7 +25,7 @@
 #include "../paint/tile_element/TileElement.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "drawing.h"
+#include "Drawing.h"
 #include "LightFX.h"
 
 extern "C"

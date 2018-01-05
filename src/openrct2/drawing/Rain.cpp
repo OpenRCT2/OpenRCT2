@@ -16,7 +16,7 @@
 
 #include "../interface/window.h"
 #include "../world/Climate.h"
-#include "drawing.h"
+#include "Drawing.h"
 #include "../config/Config.h"
 
 #include "IDrawingEngine.h"

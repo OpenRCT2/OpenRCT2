@@ -21,7 +21,7 @@
 #include "Fonts.h"
 #include "FontFamilies.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/TTF.h"
 #include "../localisation/language.h"
 

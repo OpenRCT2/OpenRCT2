@@ -24,7 +24,7 @@
 #include "NewDrawing.h"
 
 #include "../config/Config.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/string_ids.h"
 #include "../platform/platform.h"
 

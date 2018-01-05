@@ -28,7 +28,7 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../Game.h"
 #include "../localisation/currency.h"

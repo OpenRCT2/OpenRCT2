@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../paint/Paint.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../world/sprite.h"
 #include "../ride/ride_data.h"
 #include "Track.h"

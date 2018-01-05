@@ -18,7 +18,7 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Editor.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"

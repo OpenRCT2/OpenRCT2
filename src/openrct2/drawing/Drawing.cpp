@@ -24,7 +24,10 @@
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/water.h"
-#include "drawing.h"
+#include "Drawing.h"
+
+extern "C"
+{
 
 // HACK These were originally passed back through registers
 sint32 gLastDrawStringX;
@@ -653,4 +656,6 @@ void gfx_draw_pickedup_peep(rct_drawpixelinfo *dpi)
     if (gPickupPeepImage != UINT32_MAX) {
         gfx_draw_sprite(dpi, gPickupPeepImage, gPickupPeepX, gPickupPeepY, 0);
     }
+}
+
 }

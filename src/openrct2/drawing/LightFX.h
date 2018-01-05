@@ -21,7 +21,7 @@
 
 #include "../common.h"
 #include "../world/Map.h"
-#include "drawing.h"
+#include "Drawing.h"
 
 enum LIGHTFX_LIGHT_TYPE {
     LIGHTFX_LIGHT_TYPE_NONE             = 0,

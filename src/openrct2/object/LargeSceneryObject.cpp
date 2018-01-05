@@ -18,7 +18,7 @@
 #include "../core/Memory.hpp"
 #include "LargeSceneryObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/language.h"
 
 LargeSceneryObject::~LargeSceneryObject()

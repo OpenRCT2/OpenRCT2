@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Input.h"
 #include "../sprites.h"
 #include "widget.h"

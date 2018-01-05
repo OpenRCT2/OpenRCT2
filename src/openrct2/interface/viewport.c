@@ -16,7 +16,7 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
 #include "../localisation/localisation.h"

@@ -18,7 +18,7 @@
 #include "../core/Util.hpp"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "drawing.h"
+#include "Drawing.h"
 #include "Font.h"
 #include "TTF.h"
 

@@ -17,7 +17,7 @@
 #include "../core/IStream.hpp"
 #include "FootpathItemObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/localisation.h"
 #include "../object/Object.h"
 #include "ObjectList.h"

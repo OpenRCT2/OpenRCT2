@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "Paint.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/localisation.h"
 #include "../config/Config.h"
 #include "../interface/viewport.h"

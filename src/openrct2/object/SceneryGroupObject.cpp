@@ -20,7 +20,7 @@
 #include "ObjectRepository.h"
 #include "SceneryGroupObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/language.h"
 
 SceneryGroupObject::~SceneryGroupObject()

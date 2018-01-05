@@ -16,7 +16,7 @@
 
 #include "../../config/Config.h"
 #include "../../core/Math.hpp"
-#include "../../drawing/drawing.h"
+#include "../../drawing/Drawing.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
 #include "../../localisation/localisation.h"

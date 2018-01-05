@@ -20,7 +20,7 @@
 #include "../localisation/localisation.h"
 #include "../paint/Paint.h"
 #include "../sprites.h"
-#include "drawing.h"
+#include "Drawing.h"
 #include "TTF.h"
 
 #pragma pack(push, 1)

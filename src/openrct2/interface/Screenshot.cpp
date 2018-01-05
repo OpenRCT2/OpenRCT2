@@ -23,7 +23,7 @@
 #include "../OpenRCT2.h"
 #include "Screenshot.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Intro.h"
 #include "../localisation/localisation.h"
