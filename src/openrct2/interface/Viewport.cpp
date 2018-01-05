@@ -38,6 +38,7 @@
 #include "Colour.h"
 #include "Viewport.h"
 #include "Window.h"
+#include "Window_internal.h"
 
 extern "C"
 {

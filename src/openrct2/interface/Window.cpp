@@ -36,6 +36,7 @@
 #include "Viewport.h"
 #include "Widget.h"
 #include "Window.h"
+#include "Window_internal.h"
 
 extern "C"
 {

@@ -34,6 +34,7 @@
 #include "../Game.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
 #include "../world/Scenery.h"
