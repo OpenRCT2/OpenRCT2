@@ -7607,8 +7607,9 @@ void ride_crash(uint8 rideIndex, uint8 vehicleIndex)
         rct_window * w = context_open_intent(intent);
         intent_release(intent);
 
-        if (w != nullptr && w->viewport != nullptr) {
-            w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
+        rct_viewport * viewport = window_get_viewport(w);
+        if (w != nullptr && viewport != nullptr) {
+            viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
         }
     }
 

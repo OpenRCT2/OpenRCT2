@@ -441,7 +441,7 @@ namespace Editor
     static void FinaliseMainView()
     {
         rct_window   * w        = window_get_main();
-        rct_viewport * viewport = w->viewport;
+        rct_viewport * viewport = window_get_viewport(w);
 
         w->viewport_target_sprite = SPRITE_INDEX_NULL;
         w->saved_view_x           = gSavedViewX;

@@ -147,7 +147,7 @@ void console_update()
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
         rct_window *mainWindow = window_get_main();
         if (mainWindow != nullptr) {
-            rct_viewport *mainViewport = mainWindow->viewport;
+            rct_viewport *mainViewport = window_get_viewport(mainWindow);
             if (mainViewport != nullptr) {
                 if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y) {
                     _lastMainViewportX = mainViewport->view_x;
@@ -834,7 +834,8 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
                 sint32 interactionType;
                 rct_tile_element *tileElement;
                 LocationXY16 mapCoord = { 0 };
-                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
+                rct_viewport * viewport = window_get_viewport(w);
+                get_map_coordinates_from_pos(viewport->view_width / 2, viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;

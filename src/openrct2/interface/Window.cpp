@@ -2693,4 +2693,14 @@ void window_unfollow_sprite(rct_window * w)
     w->viewport_target_sprite = SPRITE_INDEX_NULL;
 }
 
+rct_viewport * window_get_viewport(rct_window * w)
+{
+    if (w == nullptr)
+    {
+        return nullptr;
+    }
+
+    return w->viewport;
+}
+
 }
