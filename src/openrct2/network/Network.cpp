@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <stdexcept>
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../OpenRCT2.h"
@@ -247,7 +248,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_WRITE);
             _key.SavePrivate(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to save private key at %s.", keyPath);
             return false;
@@ -263,7 +264,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_WRITE);
             _key.SavePublic(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to save public key at %s.", keyPath);
             return false;
@@ -277,7 +278,7 @@ bool Network::BeginClient(const char* host, uint16 port)
             auto fs = FileStream(keyPath, FILE_MODE_OPEN);
             ok = _key.LoadPrivate(&fs);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             log_error("Unable to read private key from %s.", keyPath);
             return false;
@@ -312,9 +313,9 @@ bool Network::BeginServer(uint16 port, const char* address)
     {
         listening_socket->Listen(address, port);
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::Error::WriteLine(ex.GetMessage());
+        Console::Error::WriteLine(ex.what());
         Close();
         return false;
     }
@@ -816,9 +817,9 @@ void Network::SaveGroups()
         {
             Json::WriteToFile(path, jsonGroupsCfg, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
-            log_error("Unable to save %s: %s", path, ex.GetMessage());
+            log_error("Unable to save %s: %s", path, ex.what());
         }
 
         json_decref(jsonGroupsCfg);
@@ -865,8 +866,8 @@ void Network::LoadGroups()
     if (platform_file_exists(path)) {
         try {
             json = Json::ReadFromFile(path);
-        } catch (const Exception &e) {
-            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.GetMessage());
+        } catch (const std::exception &e) {
+            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.what());
         }
     }
 
@@ -929,9 +930,9 @@ void Network::AppendLog(std::ostream &fs, const std::string &s)
             fs.write(buffer, strlen(buffer));
         }
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        log_error("%s", ex.GetMessage());
+        log_error("%s", ex.what());
     }
 }
 
@@ -1680,10 +1681,10 @@ void Network::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& 
         auto fs = FileStream(keyPath, FILE_MODE_OPEN);
         if (!_key.LoadPrivate(&fs))
         {
-            throw Exception();
+            throw std::runtime_error("Failed to load private key.");
         }
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         log_error("Failed to load key %s", keyPath);
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
@@ -1887,13 +1888,13 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                 const char *signature = (const char *)packet.Read(sigsize);
                 if (signature == nullptr)
                 {
-                    throw Exception();
+                    throw std::runtime_error("Failed to read packet.");
                 }
 
                 auto ms = MemoryStream(pubkey, strlen(pubkey));
                 if (!connection.Key.LoadPublic(&ms))
                 {
-                    throw Exception();
+                    throw std::runtime_error("Failed to load public key.");
                 }
 
                 bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature, sigsize);
@@ -1917,7 +1918,7 @@ void Network::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacket& p
                     log_verbose("Signature verification failed!");
                 }
             }
-            catch (Exception)
+            catch (const std::exception &)
             {
                 connection.AuthStatus = NETWORK_AUTH_VERIFICATIONFAILURE;
                 log_verbose("Signature verification failed, invalid data!");
@@ -2079,7 +2080,7 @@ bool Network::LoadMap(IStream * stream)
         gLastAutoSaveUpdate = AUTOSAVE_PAUSE;
         result = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     return result;
@@ -2125,7 +2126,7 @@ bool Network::SaveMap(IStream * stream, const std::vector<const ObjectRepository
 
         result = true;
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
     }
     return result;
@@ -3178,7 +3179,7 @@ void network_send_password(const char* password)
         auto fs = FileStream(keyPath, FILE_MODE_OPEN);
         gNetwork._key.LoadPrivate(&fs);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         log_error("Error reading private key from %s.", keyPath);
         return;

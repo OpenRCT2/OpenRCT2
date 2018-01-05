@@ -56,7 +56,7 @@ namespace SawyerEncoding
             stream->SetPosition(initialPosition);
             return checksum == fileChecksum;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             // Rewind back to original position
             stream->SetPosition(initialPosition);

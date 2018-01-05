@@ -17,7 +17,6 @@
 #include <stdexcept>
 #include "../Context.h"
 #include "../ui/UiContext.h"
-#include "../core/Exception.hpp"
 #include "../interface/Screenshot.h"
 #include "../paint/Painter.h"
 #include "IDrawingContext.h"
@@ -108,7 +107,7 @@ extern "C"
                 drawingEngine->SetVSync(gConfigGeneral.use_vsync);
                 _drawingEngine = drawingEngine;
             }
-            catch (const Exception &ex)
+            catch (const std::exception &ex)
             {
                 delete _painter;
                 _painter = nullptr;
@@ -117,13 +116,13 @@ extern "C"
                 if (_drawingEngineType == DRAWING_ENGINE_SOFTWARE)
                 {
                     _drawingEngineType = DRAWING_ENGINE_NONE;
-                    log_error(ex.GetMessage());
+                    log_error(ex.what());
                     log_fatal("Unable to initialise a drawing engine.");
                     exit(-1);
                 }
                 else
                 {
-                    log_error(ex.GetMessage());
+                    log_error(ex.what());
                     log_error("Unable to initialise drawing engine. Falling back to software.");
 
                     // Fallback to software

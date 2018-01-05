@@ -70,9 +70,9 @@ bool KeyboardShortcuts::Load()
             }
         }
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error reading shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error reading shortcut keys: %s", ex.what());
     }
     return result;
 }
@@ -91,9 +91,9 @@ bool KeyboardShortcuts::Save()
         }
         result = true;
     }
-    catch (const Exception &ex)
+    catch (const std::exception &ex)
     {
-        Console::WriteLine("Error writing shortcut keys: %s", ex.GetMessage());
+        Console::WriteLine("Error writing shortcut keys: %s", ex.what());
     }
     return result;
 }

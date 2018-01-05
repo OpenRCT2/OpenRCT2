@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "SawyerChunkWriter.h"

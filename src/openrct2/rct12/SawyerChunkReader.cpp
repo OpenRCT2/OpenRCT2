@@ -14,7 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../core/Exception.hpp"
 #include "../core/IStream.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -48,7 +47,7 @@ void SawyerChunkReader::SkipChunk()
         auto header = _stream->ReadValue<sawyercoding_chunk_header>();
         _stream->Seek(header.length, STREAM_SEEK_CURRENT);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         // Rewind stream back to original position
         _stream->SetPosition(originalPosition);
@@ -79,7 +78,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             uint8 * buffer = Memory::Allocate<uint8>(bufferSize);
             if (buffer == nullptr)
             {
-                throw Exception("Unable to allocate buffer.");
+                throw std::runtime_error("Unable to allocate buffer.");
             }
 
             size_t uncompressedLength = DecodeChunk(buffer, bufferSize, compressedData.get(), header);
@@ -87,7 +86,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             buffer = Memory::Reallocate(buffer, uncompressedLength);
             if (buffer == nullptr)
             {
-                throw Exception("Unable to reallocate buffer.");
+                throw std::runtime_error("Unable to reallocate buffer.");
             }
 
             return std::make_shared<SawyerChunk>((SAWYER_ENCODING)header.encoding, buffer, uncompressedLength);
@@ -96,7 +95,7 @@ std::shared_ptr<SawyerChunk> SawyerChunkReader::ReadChunk()
             throw SawyerChunkException(EXCEPTION_MSG_INVALID_CHUNK_ENCODING);
         }
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         // Rewind stream back to original position
         _stream->SetPosition(originalPosition);

@@ -17,7 +17,6 @@
 #pragma warning(disable : 4611) // interaction between '_setjmp' and C++ object destruction is non-portable
 
 #include <png.h>
-#include "core/Exception.hpp"
 #include "core/FileStream.hpp"
 #include "core/Guard.hpp"
 #include "core/Memory.hpp"
@@ -133,7 +132,7 @@ namespace Imaging
 
             return true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
             *pixels = nullptr;
             if (width != nullptr) *width = 0;
@@ -183,7 +182,7 @@ namespace Imaging
             // Set error handler
             if (setjmp(png_jmpbuf(png_ptr)))
             {
-                throw Exception("PNG ERROR");
+                throw std::runtime_error("PNG ERROR");
             }
 
             // Write header
@@ -207,7 +206,7 @@ namespace Imaging
             png_write_end(png_ptr, nullptr);
             result = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
         }
 
@@ -243,7 +242,7 @@ namespace Imaging
             // Set error handler
             if (setjmp(png_jmpbuf(png_ptr)))
             {
-                throw Exception("PNG ERROR");
+                throw std::runtime_error("PNG ERROR");
             }
 
             // Write header
@@ -265,7 +264,7 @@ namespace Imaging
             png_write_end(png_ptr, nullptr);
             result = true;
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
         }
 

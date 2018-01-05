@@ -143,7 +143,7 @@ extern "C"
             *outBuffer = File::ReadAllBytes(String::ToStd(path), outLength);
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }
@@ -156,7 +156,7 @@ extern "C"
             File::WriteAllBytes(String::ToStd(path), buffer, length);
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             return false;
         }

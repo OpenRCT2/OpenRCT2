@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <stdexcept>
 #include <string>
 #include "../common.h"
-#include "Exception.hpp"
 #include "Memory.hpp"
 
 enum {
@@ -112,9 +112,8 @@ interface IStream
     void WriteString(const std::string &string);
 };
 
-class IOException : public Exception
+class IOException : public std::runtime_error
 {
 public:
-    explicit IOException(const char * message) : Exception(message) { }
-    explicit IOException(const std::string &message) : Exception(message) { }
+    explicit IOException(const std::string &message) : std::runtime_error(message) { }
 };

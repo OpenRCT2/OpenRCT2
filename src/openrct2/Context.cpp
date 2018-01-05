@@ -448,9 +448,9 @@ namespace OpenRCT2
                             handle_park_load_failure_with_title_opt(&result, path.c_str(), loadTitleScreenFirstOnFail);
                         }
                     }
-                    catch (const Exception& e)
+                    catch (const std::exception &e)
                     {
-                        Console::Error::WriteLine(e.GetMessage());
+                        Console::Error::WriteLine(e.what());
                     }
                 }
                 else

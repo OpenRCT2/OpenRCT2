@@ -153,7 +153,7 @@ namespace Zip
         {
             result = new ZipArchive(path, access);
         }
-        catch (Exception)
+        catch (const std::exception &)
         {
         }
         return result;
