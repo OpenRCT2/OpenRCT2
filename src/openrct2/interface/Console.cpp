@@ -14,10 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include <stdarg.h>
+#include <algorithm>
+#include <cstdarg>
 
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
 #include "../Editor.h"
@@ -46,7 +49,7 @@
 #include "../world/Climate.h"
 #include "../world/Park.h"
 #include "../world/scenery.h"
-#include "console.h"
+#include "Console.h"
 #include "viewport.h"
 
 #ifndef NO_TTF
@@ -57,6 +60,9 @@
 #define CONSOLE_BUFFER_2_SIZE 256
 #define CONSOLE_HISTORY_SIZE 64
 #define CONSOLE_INPUT_SIZE 256
+
+extern "C"
+{
 
 bool gConsoleOpen = false;
 
@@ -219,7 +225,7 @@ void console_draw(rct_drawpixelinfo *dpi)
             break;
         drawLines++;
 
-        size_t lineLength = min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
+        size_t lineLength = std::min(sizeof(lineBuffer) - (size_t)utf8_get_codepoint_length(FORMAT_WHITE), (size_t)(nextLine - ch));
         lineCh = lineBuffer;
         lineCh = utf8_write_codepoint(lineCh, FORMAT_WHITE);
         memcpy(lineCh, ch, lineLength);
@@ -405,10 +411,10 @@ void console_scroll(sint32 linesToScroll)
             lines++;
     }
     if (linesToScroll > 0 && _consoleScrollPos + 1 < (lines - maxLines + 4)) {
-        _consoleScrollPos = min(_consoleScrollPos + speed, (lines - maxLines + 4));
+        _consoleScrollPos = std::min(_consoleScrollPos + speed, (lines - maxLines + 4));
     }
     else if (linesToScroll < 0 && _consoleScrollPos > 0) {
-        _consoleScrollPos = max(_consoleScrollPos - speed, 0);
+        _consoleScrollPos = std::max(_consoleScrollPos - speed, 0);
     }
 }
 
@@ -912,19 +918,19 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             }
         }
         else if (strcmp(argv[0], "scenario_initial_cash") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gInitialCash = clamp(MONEY(int_val[0], 0), MONEY(0, 0), MONEY(1000000, 00));
+            gInitialCash = Math::Clamp(MONEY(0, 0), MONEY(int_val[0], 0), MONEY(1000000, 00));
             console_execute_silent("get scenario_initial_cash");
         }
         else if (strcmp(argv[0], "current_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan);
+            gBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), gMaxBankLoan);
             console_execute_silent("get current_loan");
         }
         else if (strcmp(argv[0], "max_loan") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gMaxBankLoan = clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0));
+            gMaxBankLoan = Math::Clamp(MONEY(0, 0), MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(5000000, 0));
             console_execute_silent("get max_loan");
         }
         else if (strcmp(argv[0], "guest_initial_cash") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gGuestInitialCash = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(1000, 0));
+            gGuestInitialCash = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(1000, 0));
             console_execute_silent("get guest_initial_cash");
         }
         else if (strcmp(argv[0], "guest_initial_happiness") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -932,11 +938,11 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             console_execute_silent("get guest_initial_happiness");
         }
         else if (strcmp(argv[0], "guest_initial_hunger") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gGuestInitialHunger = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+            gGuestInitialHunger = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
             console_execute_silent("get guest_initial_hunger");
         }
         else if (strcmp(argv[0], "guest_initial_thirst") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gGuestInitialThirst = (clamp(int_val[0], 1, 84) * 255 / 100 - 255) * -1;
+            gGuestInitialThirst = (Math::Clamp(1, int_val[0], 84) * 255 / 100 - 255) * -1;
             console_execute_silent("get guest_initial_thirst");
         }
         else if (strcmp(argv[0], "guest_prefer_less_intense_rides") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -984,19 +990,19 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             console_execute_silent("get park_open");
         }
         else if (strcmp(argv[0], "land_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gLandPrice = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+            gLandPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
             console_execute_silent("get land_rights_cost");
         }
         else if (strcmp(argv[0], "construction_rights_cost") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
-            gConstructionRightsPrice = clamp(MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(0, 0), MONEY(200, 0));
+            gConstructionRightsPrice = Math::Clamp(MONEY(0, 0), MONEY((sint32)double_val[0], ((sint32)(double_val[0] * 100)) % 100), MONEY(200, 0));
             console_execute_silent("get construction_rights_cost");
         }
         else if (strcmp(argv[0], "climate") == 0) {
             if (int_valid[0]) {
-                gClimate = clamp(int_val[0], 0, 3);
+                gClimate = Math::Clamp(0, int_val[0], 3);
             }
             else {
-                utf8* climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
+                const utf8 * climate_names[] = { "cool_and_wet", "warm", "hot_and_dry", "cold" };
                 for (i = 0; i < 4; i++) {
                     if (strcmp(argv[1], climate_names[i]) == 0) {
                         gClimate = i;
@@ -1010,7 +1016,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
             console_execute_silent("get climate");
         }
         else if (strcmp(argv[0], "game_speed") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
-            gGameSpeed = clamp(int_val[0], 1, 8);
+            gGameSpeed = Math::Clamp(1, int_val[0], 8);
             console_execute_silent("get game_speed");
         }
         else if (strcmp(argv[0], "console_small_font") == 0 && invalidArguments(&invalidArgs, int_valid[0])) {
@@ -1041,7 +1047,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
         }
         else if (strcmp(argv[0], "window_scale") == 0 && invalidArguments(&invalidArgs, double_valid[0])) {
             float newScale = (float)(0.001*trunc(1000*double_val[0]));
-            gConfigGeneral.window_scale = clamp(newScale, 0.5f, 5.0f);
+            gConfigGeneral.window_scale = Math::Clamp(0.5f, newScale, 5.0f);
             config_save_default();
             gfx_invalidate_screen();
             context_trigger_resize();
@@ -1325,10 +1331,10 @@ static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
 
 typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
 typedef struct console_command {
-    utf8 *command;
+    const utf8 * command;
     console_command_func func;
-    utf8 *help;
-    utf8 *usage;
+    const utf8 * help;
+    const utf8 * usage;
 } console_command;
 
 static const utf8* console_variable_table[] = {
@@ -1404,28 +1410,36 @@ static const console_command console_command_table[] = {
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {
-    for (sint32 i = 0; i < countof(console_window_table); i++)
-        console_writeline(console_window_table[i]);
+    for (auto s : console_window_table)
+    {
+        console_writeline(s);
+    }
     return 0;
 }
 static sint32 cc_variables(const utf8 **argv, sint32 argc)
 {
-    for (sint32 i = 0; i < countof(console_variable_table); i++)
-        console_writeline(console_variable_table[i]);
+    for (auto s : console_variable_table)
+    {
+        console_writeline(s);
+    }
     return 0;
 }
 
 static sint32 cc_help(const utf8 **argv, sint32 argc)
 {
-    if (argc > 0) {
-        for (sint32 i = 0; i < countof(console_command_table); i++) {
-            if (strcmp(console_command_table[i].command, argv[0]) == 0) {
-                console_writeline(console_command_table[i].help);
-                console_printf("\nUsage:   %s", console_command_table[i].usage);
+    if (argc > 0)
+    {
+        for (const auto &c : console_command_table)
+        {
+            if (strcmp(c.command, argv[0]) == 0)
+            {
+                console_writeline(c.help);
+                console_printf("\nUsage:   %s", c.usage);
             }
         }
     }
-    else {
+    else
+    {
         console_write_all_commands();
     }
     return 0;
@@ -1433,8 +1447,10 @@ static sint32 cc_help(const utf8 **argv, sint32 argc)
 
 static void console_write_all_commands()
 {
-    for (sint32 i = 0; i < countof(console_command_table); i++)
-        console_writeline(console_command_table[i].command);
+    for (const auto &c : console_command_table)
+    {
+        console_writeline(c.command);
+    }
 }
 
 void console_execute(const utf8 *src)
@@ -1448,7 +1464,7 @@ void console_execute_silent(const utf8 *src)
 {
     sint32 argc = 0;
     sint32 argvCapacity = 8;
-    utf8 **argv = malloc(argvCapacity * sizeof(utf8*));
+    utf8 **argv = (utf8 * *)malloc(argvCapacity * sizeof(utf8*));
     const utf8 *start = src;
     const utf8 *end;
     bool inQuotes = false;
@@ -1475,13 +1491,13 @@ void console_execute_silent(const utf8 *src)
         size_t length = end - start;
 
         if (length > 0) {
-            utf8 *arg = malloc(length + 1);
+            utf8 *arg = (utf8 *)malloc(length + 1);
             memcpy(arg, start, length);
             arg[length] = 0;
 
             if (argc >= argvCapacity) {
                 argvCapacity *= 2;
-                argv = realloc(argv, argvCapacity * sizeof(utf8*));
+                argv = (utf8 * *)realloc(argv, argvCapacity * sizeof(utf8*));
             }
             argv[argc] = arg;
             argc++;
@@ -1500,9 +1516,11 @@ void console_execute_silent(const utf8 *src)
     }
 
     bool validCommand = false;
-    for (sint32 i = 0; i < countof(console_command_table); i++) {
-        if (strcmp(argv[0], console_command_table[i].command) == 0) {
-            console_command_table[i].func((const utf8 **)(argv + 1), argc - 1);
+    for (const auto &c : console_command_table)
+    {
+        if (strcmp(argv[0], c.command) == 0)
+        {
+            c.func((const utf8 **)(argv + 1), argc - 1);
             validCommand = true;
             break;
         }
@@ -1528,4 +1546,6 @@ static bool invalidArguments(bool *invalid, bool arguments)
         return false;
     }
     return true;
+}
+
 }
