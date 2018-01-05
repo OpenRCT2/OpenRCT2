@@ -4499,6 +4499,9 @@ STR_6189    :Duck
 STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
 STR_6191    :Surface
 STR_6192    :Wall
+STR_6193    :{COMMA16} guest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
 
 #############
 # Scenarios #
