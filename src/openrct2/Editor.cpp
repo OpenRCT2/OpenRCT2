@@ -24,7 +24,7 @@
 #include "audio/audio.h"
 #include "core/Math.hpp"
 #include "interface/viewport.h"
-#include "localisation/localisation.h"
+#include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"

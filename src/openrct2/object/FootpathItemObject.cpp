@@ -18,7 +18,7 @@
 #include "FootpathItemObject.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
 

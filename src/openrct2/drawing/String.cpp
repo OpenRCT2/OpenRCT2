@@ -18,7 +18,7 @@
 #include "../config/Config.h"
 #include "../interface/colour.h"
 #include "../interface/viewport.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"

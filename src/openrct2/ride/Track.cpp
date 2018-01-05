@@ -19,7 +19,7 @@
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/viewport.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../platform/platform.h"

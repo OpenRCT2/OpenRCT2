@@ -16,8 +16,8 @@
 
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
-#include "../localisation/language.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/Language.h"
+#include "../localisation/StringIds.h"
 #include "Object.h"
 #include "ObjectLimits.h"
 

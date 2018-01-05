@@ -25,7 +25,7 @@
 
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../platform/platform.h"
 
 using namespace OpenRCT2;

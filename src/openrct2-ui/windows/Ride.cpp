@@ -29,9 +29,9 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>

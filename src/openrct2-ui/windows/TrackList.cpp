@@ -24,7 +24,7 @@
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/Editor.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/rct1.h>
 #include <openrct2/ride/TrackDesignRepository.h>

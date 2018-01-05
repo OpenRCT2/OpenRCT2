@@ -16,8 +16,8 @@
 
 #include "../config/Config.h"
 #include "../util/Util.h"
-#include "currency.h"
-#include "string_ids.h"
+#include "Currency.h"
+#include "StringIds.h"
 
 currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "GBP",  10,     CURRENCY_PREFIX,    "\xC2\xA3",     CURRENCY_SUFFIX,    "GBP",  STR_POUNDS          },  // British Pound

@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
 #include "../OpenRCT2.h"

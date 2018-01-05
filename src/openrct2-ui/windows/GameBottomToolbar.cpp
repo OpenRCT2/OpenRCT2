@@ -23,8 +23,8 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/peep/Staff.h>

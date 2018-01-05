@@ -17,8 +17,8 @@
 #include "../Game.h"
 #include "../ride/Ride.h"
 #include "../util/Util.h"
-#include "localisation.h"
-#include "user.h"
+#include "Localisation.h"
+#include "User.h"
 
 utf8 gUserStrings[MAX_USER_STRINGS][USER_STRING_MAX_LENGTH];
 

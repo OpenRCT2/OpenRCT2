@@ -18,7 +18,7 @@
 #include "FootpathObject.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../world/footpath.h"
 
 void FootpathObject::ReadLegacy(IReadObjectContext * context, IStream * stream)

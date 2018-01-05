@@ -23,8 +23,8 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/sprites.h>

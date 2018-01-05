@@ -15,8 +15,9 @@
 #pragma endregion
 
 #include "../common.h"
-#include "format_codes.h"
-#include "localisation.h"
+#include "../core/Util.hpp"
+#include "FormatCodes.h"
+#include "Localisation.h"
 
 #pragma region Format codes
 
@@ -101,19 +102,21 @@ static const format_code_token format_code_tokens[] = {
 
 uint32 format_get_code(const char *token)
 {
-    sint32 i;
-    for (i = 0; i < countof(format_code_tokens); i++)
+    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    {
         if (_strcmpi(token, format_code_tokens[i].token) == 0)
             return format_code_tokens[i].code;
+    }
     return 0;
 }
 
 const char *format_get_token(uint32 code)
 {
-    sint32 i;
-    for (i = 0; i < countof(format_code_tokens); i++)
+    for (uint32 i = 0; i < Util::CountOf(format_code_tokens); i++)
+    {
         if (code == format_code_tokens[i].code)
             return format_code_tokens[i].token;
+    }
     return 0;
 }
 

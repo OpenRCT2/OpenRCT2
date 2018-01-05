@@ -19,7 +19,7 @@
 #include "LargeSceneryObject.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 
 LargeSceneryObject::~LargeSceneryObject()
 {

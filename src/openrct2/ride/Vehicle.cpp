@@ -25,7 +25,7 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/viewport.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"
 #include "../rct12.h"

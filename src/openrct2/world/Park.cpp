@@ -22,7 +22,7 @@
 #include "../Game.h"
 #include "../interface/colour.h"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"

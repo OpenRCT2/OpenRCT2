@@ -16,7 +16,7 @@
 
 #include "../../core/Util.hpp"
 #include "../../interface/viewport.h"
-#include "../../localisation/localisation.h"
+#include "../../localisation/Localisation.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"

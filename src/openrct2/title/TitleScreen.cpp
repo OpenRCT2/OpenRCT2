@@ -32,7 +32,7 @@
 #include "../Input.h"
 #include "../interface/viewport.h"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 
 // TODO Remove when no longer required.
 static TitleScreen * _singleton = nullptr;

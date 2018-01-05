@@ -41,7 +41,7 @@
 #include "StexObject.h"
 
 #include "../config/Config.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
 #include "../platform/platform.h"

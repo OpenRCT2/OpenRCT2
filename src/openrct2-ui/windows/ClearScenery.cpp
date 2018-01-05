@@ -19,7 +19,7 @@
 #include <openrct2/core/Math.hpp>
 
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/scenery.h>
 #include <openrct2-ui/interface/LandTool.h>
 

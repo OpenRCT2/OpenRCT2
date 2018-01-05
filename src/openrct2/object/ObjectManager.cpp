@@ -19,7 +19,7 @@
 #include <unordered_set>
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
 #include "Object.h"

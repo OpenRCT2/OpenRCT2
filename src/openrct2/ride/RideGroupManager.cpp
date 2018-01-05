@@ -20,7 +20,7 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../management/Research.h"
 #include "Ride.h"
 #include "ride_data.h"

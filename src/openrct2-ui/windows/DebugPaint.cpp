@@ -18,7 +18,7 @@
 #include <openrct2-ui/windows/Window.h>
 
 #include <openrct2/interface/widget.h>
-    #include <openrct2/localisation/localisation.h>
+    #include <openrct2/localisation/Localisation.h>
     #include <openrct2/paint/tile_element/TileElement.h>
     #include <openrct2/paint/Paint.h>
     #include <openrct2/ride/track_paint.h>

@@ -28,7 +28,7 @@
     #include <unistd.h>
 #elif defined(_WIN32)
     // Windows needs this for widechar <-> utf8 conversion utils
-    #include "../localisation/language.h"
+    #include "../localisation/Language.h"
 #endif
 
 #include <stack>

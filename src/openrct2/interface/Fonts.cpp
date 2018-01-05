@@ -23,7 +23,7 @@
 
 #include "../drawing/Drawing.h"
 #include "../drawing/TTF.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 
 #ifndef NO_TTF
 uint8 const HINTING_THRESHOLD_LOW    = 40;

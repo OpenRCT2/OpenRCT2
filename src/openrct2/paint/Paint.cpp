@@ -14,16 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "Paint.h"
-#include "../drawing/Drawing.h"
-#include "../localisation/localisation.h"
-#include "../config/Config.h"
-#include "../interface/viewport.h"
-#include "../core/Math.hpp"
-#include "tile_element/TileElement.h"
-#include "sprite/Sprite.h"
-
 #include <algorithm>
+#include "../config/Config.h"
+#include "../core/Math.hpp"
+#include "../drawing/Drawing.h"
+#include "../interface/viewport.h"
+#include "../localisation/Localisation.h"
+#include "Paint.h"
+#include "sprite/Sprite.h"
+#include "tile_element/TileElement.h"
 
 // Global for paint clipping height
 uint8 gClipHeight = 128; // Default to middle value

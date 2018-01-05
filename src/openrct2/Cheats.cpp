@@ -19,7 +19,7 @@
 #include "Editor.h"
 #include "Game.h"
 #include "interface/window.h"
-#include "localisation/localisation.h"
+#include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "network/network.h"
 #include "ride/Station.h"

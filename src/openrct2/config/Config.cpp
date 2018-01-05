@@ -32,9 +32,9 @@
 #include "IniReader.hpp"
 #include "IniWriter.hpp"
 
-#include "../localisation/currency.h"
-#include "../localisation/date.h"
-#include "../localisation/language.h"
+#include "../localisation/Currency.h"
+#include "../localisation/Date.h"
+#include "../localisation/Language.h"
 #include "../platform/platform.h"
 #include "../scenario/Scenario.h"
 

@@ -17,7 +17,7 @@
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
-#include "../../localisation/localisation.h"
+#include "../../localisation/Localisation.h"
 #include "../../object/ObjectList.h"
 #include "../../peep/Staff.h"
 #include "../../ride/Track.h"

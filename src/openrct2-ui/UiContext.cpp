@@ -27,7 +27,7 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/platform/Platform2.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/ui/WindowManager.h>

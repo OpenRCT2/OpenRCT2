@@ -22,7 +22,7 @@
 #include <openrct2/Context.h>
 
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>

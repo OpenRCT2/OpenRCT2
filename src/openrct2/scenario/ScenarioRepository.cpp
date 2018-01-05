@@ -32,7 +32,7 @@
 #include "ScenarioSources.h"
 
 #include "../config/Config.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "Scenario.h"
 

@@ -16,7 +16,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../OpenRCT2.h"

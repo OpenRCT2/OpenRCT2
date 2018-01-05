@@ -28,7 +28,7 @@
 #include "interface/viewport.h"
 #include "interface/widget.h"
 #include "interface/window.h"
-#include "localisation/localisation.h"
+#include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "management/Marketing.h"
 #include "management/NewsItem.h"

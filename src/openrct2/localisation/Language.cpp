@@ -24,7 +24,7 @@
 #include "LanguagePack.h"
 
 #include "../platform/platform.h"
-#include "localisation.h"
+#include "Localisation.h"
 
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {

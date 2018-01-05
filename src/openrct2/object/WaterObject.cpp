@@ -15,8 +15,8 @@
 #pragma endregion
 
 #include "../core/IStream.hpp"
-#include "../localisation/language.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/Language.h"
+#include "../localisation/StringIds.h"
 #include "../OpenRCT2.h"
 #include "WaterObject.h"
 

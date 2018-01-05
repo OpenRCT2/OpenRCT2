@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,114 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "localisation.h"
+#include "ConversionTables.h"
+#include "FormatCodes.h"
 
-typedef struct encoding_convert_entry {
-    uint16 code;
-    uint16 unicode;
-} encoding_convert_entry;
-
-static const encoding_convert_entry GB2312ToUnicodeTable[7445];
-static const encoding_convert_entry Big5ToUnicodeTable[13710];
-static const encoding_convert_entry RCT2ToUnicodeTable[256];
-static const encoding_convert_entry CP932ToUnicodeTable[7916];
-static const encoding_convert_entry CP949ToUnicodeTable[17176];
-
-sint32 rct2_to_utf8(utf8 *dst, const char *src)
+const encoding_convert_entry RCT2ToUnicodeTable[256] =
 {
-    sint32 codepoint;
-
-    utf8 *start = dst;
-    const char *ch = src;
-    while (*ch != 0) {
-        if (*ch == (char)(uint8)0xFF) {
-            ch++;
-
-            // Read wide char
-            uint8 a = *ch++;
-            uint8 b = *ch++;
-            codepoint = (a << 8) | b;
-        } else {
-            codepoint = (uint8)(*ch++);
-            codepoint = encoding_convert_rct2_to_unicode(codepoint);
-        }
-
-        dst = utf8_write_codepoint(dst, codepoint);
-    }
-    dst = utf8_write_codepoint(dst, 0);
-    return (sint32)(dst - start);
-}
-
-sint32 utf8_to_rct2(char *dst, const utf8 *src)
-{
-    char *start = dst;
-    const utf8 *ch = src;
-    sint32 codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0) {
-        codepoint = encoding_convert_unicode_to_rct2(codepoint);
-        if (codepoint < 256) {
-            *dst++ = (char)codepoint;
-        } else if (codepoint <= 0xFFFF) {
-            *dst++ = (char)(uint8)0xFF;
-            *dst++ = (codepoint >> 8) & 0xFF;
-            *dst++ = codepoint & 0xFF;
-        }
-    }
-    *dst++ = 0;
-    return (sint32)(dst - start);
-}
-
-static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
-{
-    uint16 key = *((uint16*)pKey);
-    encoding_convert_entry *entry = (encoding_convert_entry*)pEntry;
-    if (key < entry->code) return -1;
-    if (key > entry->code) return 1;
-    return 0;
-}
-
-static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, sint32 count)
-{
-    encoding_convert_entry *entry = bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
-    if (entry == NULL) return code;
-    else return entry->unicode;
-}
-
-wchar_t encoding_convert_unicode_to_rct2(wchar_t unicode)
-{
-    // Can't do a binary search as it's sorted by RCT2 code, not unicode
-    for (sint32 i = 0; i < countof(RCT2ToUnicodeTable); i++) {
-        if (RCT2ToUnicodeTable[i].unicode == unicode) return RCT2ToUnicodeTable[i].code;
-    }
-    return unicode;
-}
-
-wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
-{
-    return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, countof(RCT2ToUnicodeTable));
-}
-
-wchar_t encoding_convert_gb2312_to_unicode(wchar_t gb2312)
-{
-    return encoding_convert_x_to_unicode(gb2312 - 0x8080, GB2312ToUnicodeTable, countof(GB2312ToUnicodeTable));
-}
-
-wchar_t encoding_convert_big5_to_unicode(wchar_t big5)
-{
-    return encoding_convert_x_to_unicode(big5, Big5ToUnicodeTable, countof(Big5ToUnicodeTable));
-}
-
-wchar_t encoding_convert_cp932_to_unicode(wchar_t cp932)
-{
-    return encoding_convert_x_to_unicode(cp932, CP932ToUnicodeTable, countof(CP932ToUnicodeTable));
-}
-
-wchar_t encoding_convert_cp949_to_unicode(wchar_t cp949)
-{
-    return encoding_convert_x_to_unicode(cp949, CP949ToUnicodeTable, countof(CP949ToUnicodeTable));
-}
-
-static const encoding_convert_entry RCT2ToUnicodeTable[256] = {
     { 0, 0 },
     { 1, FORMAT_MOVE_X },
     { 2, FORMAT_ADJUST_PALETTE },
@@ -379,8 +276,9 @@ static const encoding_convert_entry RCT2ToUnicodeTable[256] = {
     { RCT2_Z_ACUTE, UNICODE_Z_ACUTE },
     { 255, 255 }
 };
-
-static const encoding_convert_entry GB2312ToUnicodeTable[7445] = {
+    
+const encoding_convert_entry GB2312ToUnicodeTable[7445] =
+{
     { 8481, 12288 },
     { 8482, 12289 },
     { 8483, 12290 },
@@ -7827,8 +7725,9 @@ static const encoding_convert_entry GB2312ToUnicodeTable[7445] = {
     { 30589, 40766 },
     { 30590, 40772 },
 };
-
-static const encoding_convert_entry Big5ToUnicodeTable[13710] = {
+    
+const encoding_convert_entry Big5ToUnicodeTable[13710] =
+{
     { 0xA140, 0x3000 },
     { 0xA141, 0xFF0C },
     { 0xA142, 0x3001 },
@@ -15832,8 +15731,8 @@ static const encoding_convert_entry Big5ToUnicodeTable[13710] = {
     { 0xD57B, 0x637C },
     { 0xD57C, 0x63A4 },
     { 0xD57D, 0x633B },
-
-
+    
+    
     { 0xD57E, 0x639F },
     { 0xD5A1, 0x6378 },
     { 0xD5A2, 0x6385 },
@@ -19836,8 +19735,8 @@ static const encoding_convert_entry Big5ToUnicodeTable[13710] = {
     { 0xEEEA, 0x9367 },
     { 0xEEEB, 0x9380 },
     { 0xEEEC, 0x934E },
-
-
+    
+    
     { 0xEEED, 0x9359 },
     { 0xEEEE, 0x95C7 },
     { 0xEEEF, 0x95C0 },
@@ -21542,13 +21441,14 @@ static const encoding_convert_entry Big5ToUnicodeTable[13710] = {
     { 0xF9D3, 0x9F7E },
     { 0xF9D4, 0x9F49 },
     { 0xF9D5, 0x9F98 },
-};
-
-/*  Adapted from ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT
-    Column #1 is the cp932 code (in hex)
-    Column #2 is the Unicode (in hex as 0xXXXX)
-    Column #3 is the Unicode name (follows a comment sign, '//') */
-static const encoding_convert_entry CP932ToUnicodeTable[7916] = {
+    };
+    
+    /*  Adapted from ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP932.TXT
+        Column #1 is the cp932 code (in hex)
+        Column #2 is the Unicode (in hex as 0xXXXX)
+        Column #3 is the Unicode name (follows a comment sign, '//') */
+const encoding_convert_entry CP932ToUnicodeTable[7916] =
+{
     { 0xA1, 0xFF61 }, // HALFWIDTH IDEOGRAPHIC FULL STOP
     { 0xA2, 0xFF62 }, // HALFWIDTH LEFT CORNER BRACKET
     { 0xA3, 0xFF63 }, // HALFWIDTH RIGHT CORNER BRACKET
@@ -29337,12 +29237,13 @@ static const encoding_convert_entry CP932ToUnicodeTable[7916] = {
     { 0xFC4A, 0x9E19 }, // CJK UNIFIED IDEOGRAPH
     { 0xFC4B, 0x9ED1 }, // CJK UNIFIED IDEOGRAPH
 };
-
-/*  Adapted from ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT
-    Column #1 is the cp949 code (in hex)
-    Column #2 is the Unicode (in hex as 0xXXXX)
-    Column #3 is the Unicode name (follows a comment sign, '//') */
-static const encoding_convert_entry CP949ToUnicodeTable[17176] = {
+    
+    /*  Adapted from ftp://ftp.unicode.org/Public/MAPPINGS/VENDORS/MICSFT/WINDOWS/CP949.TXT
+        Column #1 is the cp949 code (in hex)
+        Column #2 is the Unicode (in hex as 0xXXXX)
+        Column #3 is the Unicode name (follows a comment sign, '//') */
+const encoding_convert_entry CP949ToUnicodeTable[17176] =
+{
     { 0x8141, 0xAC02 }, // HANGUL SYLLABLE KIYEOK A SSANGKIYEOK
     { 0x8142, 0xAC03 }, // HANGUL SYLLABLE KIYEOK A KIYEOKSIOS
     { 0x8143, 0xAC05 }, // HANGUL SYLLABLE KIYEOK A NIEUNCIEUC

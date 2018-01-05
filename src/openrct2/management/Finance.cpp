@@ -16,8 +16,8 @@
 
 #include "../Game.h"
 #include "../interface/window.h"
-#include "../localisation/date.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
 #include "../ride/Ride.h"

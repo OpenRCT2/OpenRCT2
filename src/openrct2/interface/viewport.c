@@ -19,7 +19,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"

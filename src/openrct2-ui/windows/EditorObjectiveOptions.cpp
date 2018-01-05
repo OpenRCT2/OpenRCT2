@@ -21,8 +21,8 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

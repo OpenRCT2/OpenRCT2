@@ -25,7 +25,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/window.h"
-#include "../localisation/date.h"
+#include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"

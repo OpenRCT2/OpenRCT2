@@ -23,7 +23,7 @@
 #include "../ride/RideGroupManager.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../rct2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"

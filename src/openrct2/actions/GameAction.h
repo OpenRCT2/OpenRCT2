@@ -24,7 +24,7 @@
 #include "../core/IStream.hpp"
 
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../world/Map.h"
 
 /**

@@ -19,7 +19,7 @@
 #include "Editor.h"
 #include "EditorObjectSelectionSession.h"
 #include "Game.h"
-#include "localisation/localisation.h"
+#include "localisation/Localisation.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"

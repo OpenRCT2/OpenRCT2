@@ -31,11 +31,13 @@
 #endif // _WIN32
 
 #include "../config/Config.h"
+#include "../core/Util.hpp"
+#include "../management/Marketing.h"
 #include "../Game.h"
 #include "../util/Util.h"
-#include "date.h"
-#include "localisation.h"
-#include "../management/Marketing.h"
+#include "Date.h"
+#include "Localisation.h"
+#include "../core/Math.hpp"
 
 char gCommonStringFormatBuffer[256];
 uint8 gCommonFormatArgs[80];
@@ -357,7 +359,7 @@ static void format_append_string(char **dest, size_t *size, const utf8 *string) 
 
 static void format_append_string_n(char **dest, size_t *size, const utf8 *string, size_t maxlen) {
     if ((*size) == 0) return;
-    size_t length = min(maxlen, strlen(string));
+    size_t length = Math::Min(maxlen, strlen(string));
     if (length < (*size)) {
         memcpy((*dest), string, length);
         (*dest) += length;
@@ -782,7 +784,7 @@ static void format_currency_2dp(char **dest, size_t *size, sint64 value)
 
 static void format_date(char **dest, size_t *size, uint16 value)
 {
-    uint16 args[] = { date_get_month(value), date_get_year(value) + 1 };
+    uint16 args[] = { static_cast<uint16>(date_get_month(value)), static_cast<uint16>(date_get_year(value) + 1) };
     uint16 *argsRef = args;
     format_string_part(dest, size, STR_DATE_FORMAT_MY, (char**)&argsRef);
 }
@@ -1108,10 +1110,10 @@ static void format_string_part(utf8 **dest, size_t *size, rct_string_id format, 
         // Real name
         format -= -REAL_NAME_START;
 
-        format_append_string(dest, size, real_names[format % countof(real_names)]);
+        format_append_string(dest, size, real_names[format % Util::CountOf(real_names)]);
         if ((*size) == 0) return;
         format_push_char(' ');
-        format_push_char(real_name_initials[(format >> 10) % countof(real_name_initials)]);
+        format_push_char(real_name_initials[(format >> 10) % Util::CountOf(real_name_initials)]);
         format_push_char('.');
         *(*dest) = '\0';
 
@@ -1326,7 +1328,7 @@ utf8 *win1252_to_utf8_alloc(const char *src, size_t srcMaxSize)
 {
     size_t stringLength = strnlen(src, srcMaxSize);
     size_t reservedSpace = (stringLength * 4) + 1;
-    utf8 *result = malloc(reservedSpace);
+    utf8 * result = (utf8 *)malloc(reservedSpace);
     sint32 actualSpace = win1252_to_utf8(result, src, stringLength, reservedSpace);
     return (utf8*)realloc(result, actualSpace);
 }
@@ -1337,11 +1339,11 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
     utf16 stackBuffer[256];
     utf16 *heapBuffer = NULL;
     utf16 *intermediateBuffer = stackBuffer;
-    size_t bufferCount = countof(stackBuffer);
+    size_t bufferCount = Util::CountOf(stackBuffer);
     if (maxBufferLength > bufferCount) {
         if (srcLength > bufferCount) {
             bufferCount = srcLength + 4;
-            heapBuffer = malloc(bufferCount * sizeof(utf16));
+            heapBuffer = (utf16 *)malloc(bufferCount * sizeof(utf16));
             assert(heapBuffer != NULL);
             intermediateBuffer = heapBuffer;
         }

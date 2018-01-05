@@ -30,7 +30,7 @@
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
 #include <openrct2/interface/window.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/scenario/Scenario.h>

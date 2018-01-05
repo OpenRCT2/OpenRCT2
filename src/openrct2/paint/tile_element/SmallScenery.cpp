@@ -18,7 +18,7 @@
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
-#include "../../localisation/date.h"
+#include "../../localisation/Date.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "../../world/Map.h"

@@ -18,7 +18,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/viewport.h"
 #include "../../interface/window.h"
-#include "../../localisation/localisation.h"
+#include "../../localisation/Localisation.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../sprites.h"

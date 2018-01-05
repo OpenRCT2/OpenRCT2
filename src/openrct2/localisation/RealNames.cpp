@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "localisation.h"
+#include "Localisation.h"
 
 const char real_name_initials[] = {
     'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'

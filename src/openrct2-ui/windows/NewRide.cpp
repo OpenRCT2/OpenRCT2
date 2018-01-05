@@ -28,7 +28,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/Game.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/rct1.h>
