@@ -29,7 +29,7 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../drawing/drawing.h"
-#include "../drawing/lightfx.h"
+#include "../drawing/LightFX.h"
 #include "../Game.h"
 #include "../localisation/currency.h"
 #include "../localisation/localisation.h"

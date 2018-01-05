@@ -33,7 +33,7 @@
 #include <openrct2/interface/window.h>
 #include <openrct2/Intro.h>
 #include <openrct2/drawing/drawing.h>
-#include <openrct2/drawing/lightfx.h>
+#include <openrct2/drawing/LightFX.h>
 
 #include "../DrawingEngines.h"
 #include "GLSLTypes.h"

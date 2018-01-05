@@ -24,7 +24,7 @@
 #include <openrct2/ui/UiContext.h>
 #include "DrawingEngines.h"
 
-#include <openrct2/drawing/lightfx.h>
+#include <openrct2/drawing/LightFX.h>
 #include <openrct2/Game.h>
 #include <openrct2/paint/Paint.h>
 

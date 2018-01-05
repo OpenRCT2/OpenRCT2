@@ -31,7 +31,7 @@
 #include "../interface/window.h"
 #include "../Intro.h"
 #include "drawing.h"
-#include "lightfx.h"
+#include "LightFX.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

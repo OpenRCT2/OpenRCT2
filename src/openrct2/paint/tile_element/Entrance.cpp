@@ -24,7 +24,7 @@
 #include "../Paint.h"
 #include "../Supports.h"
 #include "TileElement.h"
-#include "../../drawing/lightfx.h"
+#include "../../drawing/LightFX.h"
 
 static uint32 _unk9E32BC;
 

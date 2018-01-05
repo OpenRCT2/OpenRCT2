@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../../config/Config.h"
-#include "../../drawing/lightfx.h"
+#include "../../drawing/LightFX.h"
 #include "../../interface/viewport.h"
 #include "Sprite.h"
 #include "../../peep/Peep.h"
