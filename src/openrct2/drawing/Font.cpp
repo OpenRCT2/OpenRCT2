@@ -20,7 +20,7 @@
 #include "../sprites.h"
 #include "drawing.h"
 #include "Font.h"
-#include "ttf.h"
+#include "TTF.h"
 
 static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 

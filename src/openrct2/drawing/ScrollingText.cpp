@@ -21,7 +21,7 @@
 #include "../paint/Paint.h"
 #include "../sprites.h"
 #include "drawing.h"
-#include "ttf.h"
+#include "TTF.h"
 
 #pragma pack(push, 1)
 /* size: 0xA12 */

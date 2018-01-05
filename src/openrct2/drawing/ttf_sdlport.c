@@ -39,7 +39,7 @@ misrepresented as being the original software.
 #include FT_GLYPH_H
 #include FT_TRUETYPE_IDS_H
 
-#include "ttf.h"
+#include "TTF.h"
 
 #pragma warning(disable : 4018) // '<': signed / unsigned mismatch
 

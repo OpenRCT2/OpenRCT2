@@ -22,7 +22,7 @@
 #include "../platform/platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
-#include "ttf.h"
+#include "TTF.h"
 
 extern "C"
 {
