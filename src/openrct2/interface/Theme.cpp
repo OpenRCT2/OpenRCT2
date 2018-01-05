@@ -37,6 +37,7 @@
 #include "../PlatformEnvironment.h"
 #include "themes.h"
 #include "Window.h"
+#include "Window_internal.h"
 
 using namespace OpenRCT2;
 
