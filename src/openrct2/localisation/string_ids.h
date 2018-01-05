@@ -3844,6 +3844,9 @@ enum {
     STR_TILE_INSPECTOR_SURFACE = 6191,
     STR_TILE_INSPECTOR_WALL = 6192,
 
+    STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR = 6193,
+    STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR = 6194,
+    STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR = 6195,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
