@@ -21,9 +21,11 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
+#include "../Context.h"
 #include "../peep/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../windows/Intent.h"
 #include "../world/Park.h"
 
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>
@@ -117,12 +119,8 @@ public:
 
         gfx_invalidate_screen();
 
-        // Force staff list window refresh
-        rct_window * w = window_find_by_class(WC_STAFF_LIST);
-        if (w != NULL)
-        {
-            w->no_list_items = 0;
-        }
+        auto intent = Intent(INTENT_ACTION_REFRESH_STAFF_LIST);
+        context_broadcast_intent(&intent);
 
         auto res = std::make_unique<GameActionResult>();
         res->Position.x = peep->x;

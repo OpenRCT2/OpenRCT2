@@ -327,6 +327,16 @@ public:
             window_guest_list_refresh_list();
             break;
 
+        case INTENT_ACTION_REFRESH_STAFF_LIST:
+        {
+            auto w = window_find_by_class(WC_STAFF_LIST);
+            if (w != NULL)
+            {
+                w->no_list_items = 0;
+            }
+            break;
+        }
+
         case INTENT_ACTION_CLEAR_TILE_INSPECTOR_CLIPBOARD:
             window_tile_inspector_clear_clipboard();
             break;
