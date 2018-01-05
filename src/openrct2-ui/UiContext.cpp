@@ -41,7 +41,7 @@
 #include "WindowManager.h"
 
 #include <openrct2/Input.h>
-#include <openrct2/interface/console.h>
+#include <openrct2/interface/Console.h>
 #include <openrct2/interface/window.h>
 
 using namespace OpenRCT2;

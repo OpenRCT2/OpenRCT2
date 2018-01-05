@@ -54,7 +54,7 @@
 #include "Game.h"
 #include "Input.h"
 #include "interface/Chat.h"
-#include "interface/console.h"
+#include "interface/Console.h"
 #include "interface/themes.h"
 #include "Intro.h"
 #include "localisation/Date.h"
