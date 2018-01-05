@@ -23,7 +23,10 @@
 #include "../localisation/localisation.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
-#include "ttf.h"
+#include "TTF.h"
+
+extern "C"
+{
 
 static bool _ttfInitialised = false;
 
@@ -315,9 +318,14 @@ void ttf_free_surface(TTFSurface * surface)
     free(surface);
 }
 
+}
+
 #else
 
-#include "ttf.h"
+#include "TTF.h"
+
+extern "C"
+{
 
 bool ttf_initialise()
 {
@@ -326,6 +334,8 @@ bool ttf_initialise()
 
 void ttf_dispose()
 {
+}
+
 }
 
 #endif // NO_TTF

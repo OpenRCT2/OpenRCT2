@@ -15,13 +15,13 @@
 #pragma endregion
 
 #include "../paint/Paint.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../world/sprite.h"
 #include "../ride/ride_data.h"
 #include "Track.h"
 #include "../interface/viewport.h"
 #include "../Game.h"
-#include "../drawing/lightfx.h"
+#include "../drawing/LightFX.h"
 #include "vehicle_paint.h"
 
 // 0x0098E52C:

@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "drawing.h"
+#include "Drawing.h"
 
 enum class TextAlignment
 {

@@ -19,7 +19,7 @@
 #include "../common.h"
 #include "../world/Map.h"
 #include "../interface/colour.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 
 typedef struct attached_paint_struct attached_paint_struct;
 typedef struct paint_struct paint_struct;

@@ -104,7 +104,7 @@ private:
     {
         const char * includes[] =
         {
-            "../../drawing/drawing.h",
+            "../../drawing/Drawing.h",
             "../../paint/supports.h",
             "../../interface/viewport.h",
             "../../paint/tile_element/tile_element.h",

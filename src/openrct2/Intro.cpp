@@ -17,7 +17,7 @@
 #include "audio/audio.h"
 #include "audio/AudioMixer.h"
 #include "Context.h"
-#include "drawing/drawing.h"
+#include "drawing/Drawing.h"
 #include "Intro.h"
 #include "sprites.h"
 

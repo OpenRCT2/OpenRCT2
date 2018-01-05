@@ -17,7 +17,7 @@
 #ifndef _INTRO_H_
 #define _INTRO_H_
 
-#include "drawing/drawing.h"
+#include "drawing/Drawing.h"
 
 enum INTRO_STATE {
     INTRO_STATE_NONE,

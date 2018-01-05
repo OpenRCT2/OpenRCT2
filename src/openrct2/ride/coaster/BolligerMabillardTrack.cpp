@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../drawing/drawing.h"
+#include "../../drawing/Drawing.h"
 #include "../../interface/viewport.h"
 #include "../../paint/tile_element/TileElement.h"
 #include "../../paint/Paint.h"

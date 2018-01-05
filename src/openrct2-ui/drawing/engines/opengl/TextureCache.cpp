@@ -21,7 +21,7 @@
 #include <openrct2/core/Memory.hpp>
 #include "TextureCache.h"
 
-#include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/Drawing.h>
 
 TextureCache::~TextureCache()
 {

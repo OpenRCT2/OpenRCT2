@@ -18,7 +18,7 @@
 #define _GRAPH_H_
 
 #include <openrct2/common.h>
-#include <openrct2/drawing/drawing.h>
+#include <openrct2/drawing/Drawing.h>
 
 void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY);
 void graph_draw_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset);

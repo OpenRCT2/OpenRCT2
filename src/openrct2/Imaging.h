@@ -18,7 +18,7 @@
 
 #include "common.h"
 
-#include "drawing/drawing.h"
+#include "drawing/Drawing.h"
 
 #ifdef __cplusplus
 

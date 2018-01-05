@@ -18,7 +18,7 @@
 #define _WINDOW_H_
 
 #include "../common.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../management/Research.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"

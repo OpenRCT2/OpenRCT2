@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "font.h"
+#include "Font.h"
 
 #ifdef __cplusplus
 extern "C" {

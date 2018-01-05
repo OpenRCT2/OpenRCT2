@@ -20,7 +20,7 @@
 #include "../core/String.hpp"
 #include "SmallSceneryObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/language.h"
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"

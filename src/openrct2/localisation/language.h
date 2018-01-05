@@ -22,7 +22,7 @@
 #endif
 
 #include "../common.h"
-#include "../drawing/font.h"
+#include "../drawing/Font.h"
 
 enum {
     LANGUAGE_UNDEFINED,

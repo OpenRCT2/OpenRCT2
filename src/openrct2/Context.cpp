@@ -49,7 +49,7 @@
 
 #include "audio/audio.h"
 #include "config/Config.h"
-#include "drawing/lightfx.h"
+#include "drawing/LightFX.h"
 #include "Editor.h"
 #include "Game.h"
 #include "Input.h"

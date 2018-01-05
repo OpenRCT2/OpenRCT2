@@ -17,7 +17,7 @@
 #ifndef OPENRCT2_FONTS_H
 #define OPENRCT2_FONTS_H
 
-#include "../drawing/font.h"
+#include "../drawing/Font.h"
 
 #ifndef NO_TTF
 extern TTFFontSetDescriptor TTFFontMSGothic;

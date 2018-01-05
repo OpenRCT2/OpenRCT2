@@ -18,7 +18,7 @@
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Editor.h"
 #include "../Game.h"
 #include "../Input.h"

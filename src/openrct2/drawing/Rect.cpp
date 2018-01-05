@@ -17,7 +17,10 @@
 #include "../common.h"
 #include "../interface/colour.h"
 #include "../platform/platform.h"
-#include "drawing.h"
+#include "Drawing.h"
+
+extern "C"
+{
 
 /**
  * Draw a rectangle, with optional border or fill
@@ -113,4 +116,6 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, sint16 left, sint16 top, sint16
             }
         }
     }
+}
+
 }

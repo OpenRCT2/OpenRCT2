@@ -21,7 +21,7 @@
 #include <vector>
 #include "../common.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 
 interface IReadObjectContext;
 interface IStream;

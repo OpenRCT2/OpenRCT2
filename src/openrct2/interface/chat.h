@@ -18,7 +18,7 @@
 #define _CHAT_H_
 
 #include "../common.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 
 #define CHAT_HISTORY_SIZE 10
 #define CHAT_INPUT_SIZE 1024

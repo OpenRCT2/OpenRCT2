@@ -17,7 +17,7 @@
 #include "../core/IStream.hpp"
 #include "WallObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/language.h"
 
 void WallObject::ReadLegacy(IReadObjectContext * context, IStream * stream)

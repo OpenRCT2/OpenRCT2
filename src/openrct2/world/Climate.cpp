@@ -22,7 +22,7 @@
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../Cheats.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/window.h"
 #include "../localisation/date.h"

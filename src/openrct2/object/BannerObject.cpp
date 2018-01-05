@@ -17,7 +17,7 @@
 #include "../core/IStream.hpp"
 #include "BannerObject.h"
 
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../localisation/language.h"
 #include "../object/Object.h"
 #include "ObjectList.h"

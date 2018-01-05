@@ -20,7 +20,7 @@
 
 #include "../common.h"
 
-#include "drawing.h"
+#include "Drawing.h"
 
 namespace OpenRCT2 { namespace Drawing
 {

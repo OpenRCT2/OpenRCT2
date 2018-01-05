@@ -29,7 +29,7 @@
 
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "drawing.h"
+#include "Drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
