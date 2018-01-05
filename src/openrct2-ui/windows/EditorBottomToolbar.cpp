@@ -27,7 +27,7 @@
 #include <openrct2/sprites.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/interface/themes.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/scenery.h>
 

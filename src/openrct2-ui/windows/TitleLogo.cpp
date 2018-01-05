@@ -18,7 +18,7 @@
 
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 
 static rct_widget window_title_logo_widgets[] = {
     { WIDGETS_END },

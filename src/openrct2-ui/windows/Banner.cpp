@@ -20,7 +20,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/interface/Viewport.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 #include <openrct2/world/scenery.h>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2/sprites.h>

@@ -24,7 +24,7 @@
 #include <openrct2/world/sprite.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/interface/widget.h>
+#include <openrct2/interface/Widget.h>
 
 enum WINDOW_NEWS_WIDGET_IDX {
     WIDX_BACKGROUND,
