@@ -34,6 +34,7 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
+#include "interface/Window_internal.h"
 
 namespace Editor
 {

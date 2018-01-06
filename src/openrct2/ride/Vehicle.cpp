@@ -25,6 +25,7 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/Viewport.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"

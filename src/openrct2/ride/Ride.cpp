@@ -27,6 +27,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../interface/Window.h"
+#include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
