@@ -509,16 +509,7 @@ static void window_maze_construction_construct(sint32 direction)
         break;
     }
 
-    gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-    money32 cost = game_do_command(
-        x,
-        flags | (direction << 8),
-        y,
-        _currentRideIndex | (mode << 8),
-        GAME_COMMAND_SET_MAZE_TRACK,
-        z,
-        0
-    );
+    money32 cost = maze_set_track(x, y, z, flags, direction, _currentRideIndex, mode);
     if (cost == MONEY32_UNDEFINED) {
         return;
     }

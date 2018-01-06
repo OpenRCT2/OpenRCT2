@@ -136,8 +136,10 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
 
     ride_construction_remove_ghosts();
     ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_MAZE) {
-        result = game_do_command(x, 105 | (4 << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
+    if (ride->type == RIDE_TYPE_MAZE)
+    {
+        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST; // 105
+        result = maze_set_track(x, y, z, flags, 4, rideIndex, GC_SET_MAZE_TRACK_BUILD);
         if (result == MONEY32_UNDEFINED)
             return result;
 
@@ -160,7 +162,9 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         }
 
         return result;
-    } else {
+    }
+    else 
+    {
         result = game_do_command(x, 105 | (trackDirection << 8), y, rideIndex | (trackType << 8) | (liftHillAndAlternativeState << 16), GAME_COMMAND_PLACE_TRACK, z, 0);
         if (result == MONEY32_UNDEFINED)
             return result;

@@ -24,6 +24,7 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
+#include "MazeSetTrackAction.hpp"
 
 #pragma region PlaceParkEntranceAction
     money32 place_park_entrance(sint16 x, sint16 y, sint16 z, uint8 direction)
@@ -214,7 +215,7 @@
     *
     *  rct2: 0x00698D6C
     */
-    void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp) 
+    void game_command_set_guest_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_GUEST_NAME DEPRECATED");
     }
@@ -229,7 +230,7 @@
         GameActions::Execute(&gameAction);
     }
 
-    void game_command_set_staff_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp) 
+    void game_command_set_staff_name(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp)
     {
         Guard::Assert(false, "GAME_COMMAND_SET_STAFF_NAME DEPRECATED");
     }
@@ -248,5 +249,47 @@
         {
             return false;
         }
+    }
+#pragma endregion
+
+#pragma region MazeSetTrack
+    money32 maze_set_track(uint16 x, uint16 y, uint16 z, uint8 flags, uint8 direction, uint8 rideIndex, uint8 mode)
+    {
+        auto gameAction = MazeSetTrackAction(x, y, z, direction, rideIndex, mode);
+        gameAction.SetFlags(flags);
+
+        GameActionResult::Ptr res;
+
+        if (!(flags & GAME_COMMAND_FLAG_APPLY))
+            res = GameActions::Query(&gameAction);
+        else
+            res = GameActions::Execute(&gameAction);
+
+        // NOTE: ride_construction_tooldown_construct requires them to be set.
+        // Refactor result type once theres no C code referencing this function.
+        gGameCommandErrorText = res->ErrorMessage;
+        gGameCommandErrorTitle = res->ErrorTitle;
+
+        if (res->Error != GA_ERROR::OK)
+        {
+            return MONEY32_UNDEFINED;
+        }
+
+        return res->Cost;
+    }
+
+    /**
+    *
+    *  rct2: 0x006CD8CE
+    */
+    void game_command_set_maze_track(sint32 * eax,
+        sint32 * ebx,
+        sint32 * ecx,
+        sint32 * edx,
+        sint32 * esi,
+        sint32 * edi,
+        sint32 * ebp)
+    {
+        Guard::Assert(false, "GAME_COMMAND_SET_MAZE_TRACK DEPRECATED");
     }
 #pragma endregion

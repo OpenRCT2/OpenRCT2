@@ -124,6 +124,11 @@ namespace GameActions
         }
 
         auto result = action->Query();
+
+        gCommandPosition.x = result->Position.x;
+        gCommandPosition.y = result->Position.y;
+        gCommandPosition.z = result->Position.z;
+
         if (result->Error == GA_ERROR::OK)
         {
             if (!CheckActionAffordability(result.get()))
@@ -177,8 +182,15 @@ namespace GameActions
             // Execute the action, changing the game state
             result = action->Execute();
 
+            gCommandPosition.x = result->Position.x;
+            gCommandPosition.y = result->Position.y;
+            gCommandPosition.z = result->Position.z;
+
             // Update money balance
-            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && result->Cost != 0)
+            if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && 
+                !(flags & GAME_COMMAND_FLAG_GHOST) && 
+                !(flags & GAME_COMMAND_FLAG_5) &&
+                result->Cost != 0)
             {
                 finance_payment(result->Cost, result->ExpenditureType);
                 money_effect_create(result->Cost);
@@ -212,7 +224,9 @@ namespace GameActions
             cb(action, result.get());
         }
 
-        if (result->Error != GA_ERROR::OK && !(flags & GAME_COMMAND_FLAG_GHOST))
+        if (result->Error != GA_ERROR::OK && 
+            !(flags & GAME_COMMAND_FLAG_GHOST) &&
+            !(flags & GAME_COMMAND_FLAG_5))
         {
             // Show the error box
             std::copy(result->ErrorMessageArgs.begin(), result->ErrorMessageArgs.end(), gCommonFormatArgs);

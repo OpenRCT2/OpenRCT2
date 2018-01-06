@@ -3556,15 +3556,13 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
 
             gDisableErrorWindowSound = true;
 
-            gGameCommandErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-            _trackPlaceCost = game_do_command(
-                _currentTrackBeginX,
-                GAME_COMMAND_FLAG_APPLY | (4 << 8),
+            _trackPlaceCost = maze_set_track(_currentTrackBeginX,
                 _currentTrackBeginY,
-                _currentRideIndex,
-                GAME_COMMAND_SET_MAZE_TRACK,
                 _currentTrackBeginZ,
-                0);
+                GAME_COMMAND_FLAG_APPLY,
+                4,
+                _currentRideIndex,
+                GC_SET_MAZE_TRACK_BUILD);
 
             gDisableErrorWindowSound = false;
 
