@@ -209,12 +209,17 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
         if (result == MONEY32_UNDEFINED)
             return result;
 
-        sint16 z_begin = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-                             FlatTrackCoordinates[trackType].z_begin :
-                            TrackCoordinates[trackType].z_begin;
-        sint16 z_end = ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_FLAT_RIDE) ?
-                            FlatTrackCoordinates[trackType].z_end :
-                            TrackCoordinates[trackType].z_end;
+        sint16 z_begin, z_end;
+        const rct_track_coordinates * coords = get_track_coord_from_ride(ride, trackType);
+        if (!ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_NO_TRACK))
+        {
+            z_begin = coords->z_begin;
+            z_end = coords->z_end;
+        }
+        else
+        {
+            z_end = z_begin = coords->z_begin;
+        }
 
         _unkF440C5.x = x;
         _unkF440C5.y = y;
