@@ -1299,7 +1299,7 @@ static void loc_6A6D7E(
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & TRACK_SEQUENCE_FLAG_CONNECTS_TO_PATH)) {
                         return;
                     }
-                    uint16 dx = (direction - tile_element_get_direction(tileElement)) ^ 2;
+                    uint16 dx = ((direction - tile_element_get_direction(tileElement)) & TILE_ELEMENT_DIRECTION_MASK) ^ 2;
                     if (!(FlatRideTrackSequenceProperties[trackType][trackSequence] & (1 << dx))) {
                         return;
                     }
