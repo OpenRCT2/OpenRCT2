@@ -88,6 +88,7 @@
 		4C7B54082005736700A52E21 /* VehiclePaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54072005736700A52E21 /* VehiclePaint.cpp */; };
 		4C7B540D20060D8100A52E21 /* TrackPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540B20060D8100A52E21 /* TrackPaint.cpp */; };
 		4C7B541C20060D8E00A52E21 /* RideData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541420060D8E00A52E21 /* RideData.cpp */; };
+		4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540020015AC600A52E21 /* VirtualFloor.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -722,6 +723,7 @@
 		4C7B540C20060D8100A52E21 /* TrackPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPaint.h; sourceTree = "<group>"; };
 		4C7B541420060D8E00A52E21 /* RideData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideData.cpp; sourceTree = "<group>"; };
 		4C7B541520060D8E00A52E21 /* RideData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideData.h; sourceTree = "<group>"; };
+		4C7B540020015AC600A52E21 /* VirtualFloor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VirtualFloor.cpp; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -2171,6 +2173,7 @@
 				4C6A66B21FE278C900694CB6 /* PaintHelpers.cpp */,
 				4C6A66B31FE278C900694CB6 /* Supports.cpp */,
 				4C6A66B41FE278C900694CB6 /* Supports.h */,
+				4C7B540020015AC600A52E21 /* VirtualFloor.cpp */,
 			);
 			path = paint;
 			sourceTree = "<group>";
@@ -3292,6 +3295,7 @@
 				F7CB863F1EEDA0B50030C877 /* WindowManager.cpp in Sources */,
 				4C93F13F1F8B744400A9330D /* FlyingRollerCoaster.cpp in Sources */,
 				4C93F14F1F8B744400A9330D /* ReverserRollerCoaster.cpp in Sources */,
+				4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */,
 				F70839921FFC0AFF002DCEFA /* Scenario.cpp in Sources */,
 				4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */,
 				C654DF301F69C0430040F43D /* Finances.cpp in Sources */,

@@ -32,9 +32,9 @@
 #include "../../sprites.h"
 #include "../Paint.h"
 #include "../Supports.h"
+#include "../VirtualFloor.h"
 #include "Surface.h"
 #include "TileElement.h"
-#include "VirtualFloor.h"
 
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;
