@@ -104,12 +104,6 @@ bool platform_ensure_directory_exists(const utf8 *path);
 bool platform_directory_delete(const utf8 *path);
 utf8 * platform_get_absolute_path(const utf8 * relative_path, const utf8 * base_path);
 bool platform_lock_single_instance();
-sint32 platform_enumerate_files_begin(const utf8 *pattern);
-bool platform_enumerate_files_next(sint32 handle, file_info *outFileInfo);
-void platform_enumerate_files_end(sint32 handle);
-sint32 platform_enumerate_directories_begin(const utf8 *directory);
-bool platform_enumerate_directories_next(sint32 handle, utf8 *path);
-void platform_enumerate_directories_end(sint32 handle);
 bool platform_place_string_on_clipboard(utf8* target);
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
