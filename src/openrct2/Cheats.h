@@ -95,6 +95,7 @@ enum {
     CHEAT_DISABLERIDEVALUEAGING,
     CHEAT_IGNORERESEARCHSTATUS,
     CHEAT_ENABLEALLDRAWABLETRACKPIECES,
+    CHEAT_DATE_SET,
 };
 
 enum {
@@ -121,6 +122,9 @@ enum {
 #define CHEATS_STAFF_NORMAL_SPEED 0x60
 
 extern sint32 park_rating_spinner_value;
+extern sint32 year_spinner_value;
+extern sint32 month_spinner_value;
+extern sint32 day_spinner_value;
 
 void game_command_cheat(sint32* eax, sint32* ebx, sint32* ecx, sint32* edx, sint32* esi, sint32* edi, sint32* ebp);
 

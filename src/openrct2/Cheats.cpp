@@ -54,6 +54,9 @@ bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 
 sint32 park_rating_spinner_value;
+sint32 year_spinner_value = 1;
+sint32 month_spinner_value = 1;
+sint32 day_spinner_value = 1;
 
 #pragma region Cheat functions
 
