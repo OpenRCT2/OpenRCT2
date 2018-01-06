@@ -81,7 +81,7 @@ static void track_design_preview_clear_map();
 
 static void td6_reset_trailing_elements(rct_track_td6 * td6);
 
-static void td6_set_element_helper_pointers(rct_track_td6 * td6);
+static void td6_set_element_helper_pointers(rct_track_td6 * td6, bool clearScenery);
 
 rct_track_td6 * track_design_open(const utf8 * path)
 {
@@ -321,7 +321,7 @@ static rct_track_td6 * track_design_open_from_td4(uint8 * src, size_t srcLength)
     td6->elementsSize = td4->elementsSize;
 
     td6_reset_trailing_elements(td6);
-    td6_set_element_helper_pointers(td6);
+    td6_set_element_helper_pointers(td6, true);
 
     SafeFree(td4);
     return td6;
@@ -360,7 +360,7 @@ static rct_track_td6 * track_design_open_from_buffer(uint8 * src, size_t srcLeng
     // Cap operation setting
     td6->operation_setting = Math::Min(td6->operation_setting, RideProperties[td6->type].max_value);
 
-    td6_set_element_helper_pointers(td6);
+    td6_set_element_helper_pointers(td6, false);
     return td6;
 }
 
@@ -375,6 +375,9 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
             mazeElement++;
         }
         lastElement = (void *) ((uintptr_t) mazeElement + 1);
+
+        size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
+        memset(lastElement, 0, trailingSize);
     }
     else
     {
@@ -384,14 +387,21 @@ static void td6_reset_trailing_elements(rct_track_td6 * td6)
             trackElement++;
         }
         lastElement = (void *) ((uintptr_t) trackElement + 1);
+
+        size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
+        memset(lastElement, 0xFF, trailingSize);
     }
-    size_t trailingSize = td6->elementsSize - (size_t)((uintptr_t) lastElement - (uintptr_t) td6->elements);
-    memset(lastElement, 0xFF, trailingSize);
 }
 
-static void td6_set_element_helper_pointers(rct_track_td6 * td6)
+/**
+ *
+ * @param td6
+ * @param clearScenery Set when importing TD4 designs, to avoid corrupted data being interpreted as scenery.
+ */
+static void td6_set_element_helper_pointers(rct_track_td6 * td6, bool clearScenery)
 {
     uintptr_t sceneryElementsStart;
+
     if (td6->type == RIDE_TYPE_MAZE)
     {
         td6->track_elements = nullptr;
@@ -422,8 +432,15 @@ static void td6_set_element_helper_pointers(rct_track_td6 * td6)
         sceneryElementsStart = (uintptr_t) entranceElement + 1;
     }
 
-    rct_td6_scenery_element * sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
-    td6->scenery_elements = sceneryElement;
+    if (clearScenery)
+    {
+        td6->scenery_elements = nullptr;
+    }
+    else
+    {
+        rct_td6_scenery_element * sceneryElement = (rct_td6_scenery_element *) sceneryElementsStart;
+        td6->scenery_elements = sceneryElement;
+    }
 }
 
 void track_design_dispose(rct_track_td6 * td6)
