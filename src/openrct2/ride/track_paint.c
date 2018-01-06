@@ -19,7 +19,7 @@
 #include "../paint/Supports.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../sprites.h"
 #include "../world/Map.h"

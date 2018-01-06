@@ -58,7 +58,7 @@ static sint32 _pickup_peep_old_x = LOCATION_NULL;
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/Chat.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../scenario/Scenario.h"

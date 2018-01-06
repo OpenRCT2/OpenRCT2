@@ -22,7 +22,7 @@
 
 #include "../Cheats.h"
 #include "../peep/Staff.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../world/Park.h"
 

@@ -16,7 +16,7 @@
 
 #include "../config/Config.h"
 #include "../core/Util.hpp"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Peep.h"
 #include "../ride/Ride.h"

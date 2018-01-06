@@ -17,7 +17,7 @@
 #ifndef _WIDGET_H_
 #define _WIDGET_H_
 
-#include "window.h"
+#include "Window.h"
 
 typedef enum {
     WWT_EMPTY = 0,

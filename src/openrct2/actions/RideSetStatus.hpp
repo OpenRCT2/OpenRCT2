@@ -21,7 +21,7 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../world/Park.h"
 #include "../ride/Ride.h"
 

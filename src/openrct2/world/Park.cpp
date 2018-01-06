@@ -21,7 +21,7 @@
 #include "../core/Util.hpp"
 #include "../Game.h"
 #include "../interface/Colour.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/Award.h"
 #include "../management/Finance.h"

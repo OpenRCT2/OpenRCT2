@@ -24,7 +24,7 @@
 #include "../Cheats.h"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"

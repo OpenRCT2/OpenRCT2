@@ -14,10 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../Editor.h"
 #include "../Game.h"
@@ -32,7 +35,10 @@
 #include "../world/sprite.h"
 #include "Viewport.h"
 #include "Widget.h"
-#include "window.h"
+#include "Window.h"
+
+extern "C"
+{
 
 #define RCT2_FIRST_WINDOW       (g_window_list)
 #define RCT2_LAST_WINDOW        (gWindowNextSlot - 1)
@@ -115,22 +121,6 @@ static sint32 window_get_scroll_index(rct_window *w, sint32 targetWidgetIndex)
     return scrollIndex;
 }
 
-static sint32 window_get_scroll_index_from_widget(rct_window *w, rct_widget *widget)
-{
-    if (widget->type != WWT_SCROLL)
-        return -1;
-
-    sint32 scrollIndex = 0;
-    for (rct_widget *widget2 = w->widgets; widget2->type != WWT_LAST; widget2++) {
-        if (widget2 == widget)
-            break;
-        if (widget2->type == WWT_SCROLL)
-            scrollIndex++;
-    }
-
-    return scrollIndex;
-}
-
 static rct_widget *window_get_scroll_widget(rct_window *w, sint32 scrollIndex)
 {
     for (rct_widget *widget = w->widgets; widget->type != WWT_LAST; widget++) {
@@ -207,14 +197,14 @@ static void window_scroll_wheel_input(rct_window *w, sint32 scrollIndex, sint32 
         sint32 size = widget->bottom - widget->top - 1;
         if (scroll->flags & HSCROLLBAR_VISIBLE)
             size -= 11;
-        size = max(0, scroll->v_bottom - size);
-        scroll->v_top = min(max(0, scroll->v_top + wheel), size);
+        size = std::max(0, scroll->v_bottom - size);
+        scroll->v_top = std::min(std::max(0, scroll->v_top + wheel), size);
     } else {
         sint32 size = widget->right - widget->left - 1;
         if (scroll->flags & VSCROLLBAR_VISIBLE)
             size -= 11;
-        size = max(0, scroll->h_right - size);
-        scroll->h_left = min(max(0, scroll->h_left + wheel), size);
+        size = std::max(0, scroll->h_right - size);
+        scroll->h_left = std::min(std::max(0, scroll->h_left + wheel), size);
     }
 
     widget_scroll_update_thumbs(w, widgetIndex);
@@ -381,7 +371,7 @@ static void window_close_surplus(sint32 cap, sint8 avoid_classification)
 void window_set_window_limit(sint32 value)
 {
     sint32 prev = gConfigGeneral.window_limit;
-    sint32 val = clamp(WINDOW_LIMIT_MIN, value, WINDOW_LIMIT_MAX);
+    sint32 val = Math::Clamp(WINDOW_LIMIT_MIN, value, WINDOW_LIMIT_MAX);
     gConfigGeneral.window_limit = val;
     config_save_default();
     // Checks if value decreases and then closes surplus
@@ -687,7 +677,7 @@ rct_window * window_create_centred(sint32 width, sint32 height, rct_window_event
     sint32 screenHeight = context_get_height();
 
     sint32 x = (screenWidth - width) / 2;
-    sint32 y = max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
+    sint32 y = std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2);
     return window_create(x, y, width, height, event_handlers, cls, flags);
 }
 
@@ -1354,9 +1344,9 @@ void window_set_location(rct_window *w, sint32 x, sint32 y, sint32 z)
 void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
 {
     LocationXYZ16 location_3d = {
-        .x = x,
-        .y = y,
-        .z = z
+        /* .x = */ (sint16)x,
+        /* .y = */ (sint16)y,
+        /* .z = */ (sint16)z
     };
 
     assert(w != NULL);
@@ -1403,7 +1393,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
                         }
                     }
                 }
-                if (i >= countof(window_scroll_locations)) {
+                if (i >= (sint32)Util::CountOf(window_scroll_locations)) {
                     i = 0;
                     found = 1;
                 }
@@ -1528,7 +1518,7 @@ void window_zoom_set(rct_window *w, sint32 zoomLevel, bool atCursor)
 {
     rct_viewport* v = w->viewport;
 
-    zoomLevel = clamp(0, zoomLevel, MAX_ZOOM_LEVEL);
+    zoomLevel = Math::Clamp(0, zoomLevel, MAX_ZOOM_LEVEL);
     if (v->zoom == zoomLevel)
         return;
 
@@ -1617,10 +1607,10 @@ void window_draw(rct_drawpixelinfo *dpi, rct_window *w, sint32 left, sint32 top,
         return;
 
     // Clamp region
-    left = max(left, w->x);
-    top = max(top, w->y);
-    right = min(right, w->x + w->width);
-    bottom = min(bottom, w->y + w->height);
+    left = std::max<sint32>(left, w->x);
+    top = std::max<sint32>(top, w->y);
+    right = std::min<sint32>(right, w->x + w->width);
+    bottom = std::min<sint32>(bottom, w->y + w->height);
     if (left >= right) return;
     if (top >= bottom) return;
 
@@ -1816,8 +1806,8 @@ void window_resize(rct_window *w, sint32 dw, sint32 dh)
     window_invalidate(w);
 
     // Clamp new size to minimum and maximum
-    w->width = clamp(w->min_width, w->width + dw, w->max_width);
-    w->height = clamp(w->min_height, w->height + dh, w->max_height);
+    w->width = Math::Clamp<sint16>(w->min_width, w->width + dw, w->max_width);
+    w->height = Math::Clamp<sint16>(w->min_height, w->height + dh, w->max_height);
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -1841,8 +1831,8 @@ void window_set_resize(rct_window *w, sint32 minWidth, sint32 minHeight, sint32 
     w->max_height = maxHeight;
 
     // Clamp width and height to minimum and maximum
-    sint32 width = clamp(minWidth, w->width, maxWidth);
-    sint32 height = clamp(minHeight, w->height, maxHeight);
+    sint32 width = Math::Clamp<sint32>(minWidth, w->width, maxWidth);
+    sint32 height = Math::Clamp<sint32>(minHeight, w->height, maxHeight);
 
     // Resize window if size has changed
     if (w->width != width || w->height != height) {
@@ -2164,13 +2154,13 @@ void window_resize_gui(sint32 width, sint32 height)
 
     rct_window *topWind = window_find_by_class(WC_TOP_TOOLBAR);
     if (topWind != NULL) {
-        topWind->width = max(640, width);
+        topWind->width = std::max(640, width);
     }
 
     rct_window *bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
     if (bottomWind != NULL) {
         bottomWind->y = height - 32;
-        bottomWind->width = max(640, width);
+        bottomWind->width = std::max(640, width);
     }
 
     rct_window *titleWind = window_find_by_class(WC_TITLE_MENU);
@@ -2215,13 +2205,13 @@ void window_resize_gui_scenario_editor(sint32 width, sint32 height)
 
     rct_window *topWind = window_find_by_class(WC_TOP_TOOLBAR);
     if (topWind != NULL) {
-        topWind->width = max(640, width);
+        topWind->width = std::max(640, width);
     }
 
     rct_window *bottomWind = window_find_by_class(WC_BOTTOM_TOOLBAR);
     if (bottomWind != NULL) {
         bottomWind->y = height - 32;
-        bottomWind->width = max(640, width);
+        bottomWind->width = std::max(640, width);
     }
 
 }
@@ -2343,11 +2333,11 @@ static void window_snap_left(rct_window *w, sint32 proximity)
         if (right < wLeftProximity || right > wRightProximity)
             continue;
 
-        rightMost = max(rightMost, right);
+        rightMost = std::max(rightMost, right);
     }
 
     if (0 >= wLeftProximity && 0 <= wRightProximity)
-        rightMost = max(rightMost, 0);
+        rightMost = std::max(rightMost, 0);
 
     if (rightMost != INT32_MIN)
         w->x = rightMost;
@@ -2376,11 +2366,11 @@ static void window_snap_top(rct_window *w, sint32 proximity)
         if (bottom < wTopProximity || bottom > wBottomProximity)
             continue;
 
-        bottomMost = max(bottomMost, bottom);
+        bottomMost = std::max(bottomMost, bottom);
     }
 
     if (0 >= wTopProximity && 0 <= wBottomProximity)
-        bottomMost = max(bottomMost, 0);
+        bottomMost = std::max(bottomMost, 0);
 
     if (bottomMost != INT32_MIN)
         w->y = bottomMost;
@@ -2408,12 +2398,12 @@ static void window_snap_right(rct_window *w, sint32 proximity)
         if (w2->x < wLeftProximity || w2->x > wRightProximity)
             continue;
 
-        leftMost = min(leftMost, w2->x);
+        leftMost = std::min<sint32>(leftMost, w2->x);
     }
 
     screenWidth = context_get_width();
     if (screenWidth >= wLeftProximity && screenWidth <= wRightProximity)
-        leftMost = min(leftMost, screenWidth);
+        leftMost = std::min(leftMost, screenWidth);
 
     if (leftMost != INT32_MAX)
         w->x = leftMost - w->width;
@@ -2441,12 +2431,12 @@ static void window_snap_bottom(rct_window *w, sint32 proximity)
         if (w2->y < wTopProximity || w2->y > wBottomProximity)
             continue;
 
-        topMost = min(topMost, w2->y);
+        topMost = std::min<sint32>(topMost, w2->y);
     }
 
     screenHeight = context_get_height();
     if (screenHeight >= wTopProximity && screenHeight <= wBottomProximity)
-        topMost = min(topMost, screenHeight);
+        topMost = std::min(topMost, screenHeight);
 
     if (topMost != INT32_MAX)
         w->y = topMost - w->height;
@@ -2458,7 +2448,7 @@ void window_move_and_snap(rct_window *w, sint32 newWindowX, sint32 newWindowY, s
     sint32 originalY = w->y;
     sint32 minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
-    newWindowY = clamp(minY, newWindowY, context_get_height() - 34);
+    newWindowY = Math::Clamp(minY, newWindowY, context_get_height() - 34);
 
     if (snapProximity > 0) {
         w->x = newWindowX;
@@ -2700,4 +2690,6 @@ void window_unfollow_sprite(rct_window * w)
 {
     w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
     w->viewport_target_sprite = SPRITE_INDEX_NULL;
+}
+
 }

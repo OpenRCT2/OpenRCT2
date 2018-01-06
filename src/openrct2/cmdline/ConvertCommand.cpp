@@ -25,7 +25,7 @@
 #include "CommandLine.hpp"
 
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../OpenRCT2.h"
 
 static void WriteConvertFromAndToMessage(uint32 sourceFileType, uint32 destinationFileType);

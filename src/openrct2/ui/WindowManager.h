@@ -22,7 +22,7 @@
 #include "../windows/Intent.h"
 #include "../common.h"
 
-#include "../interface/window.h"
+#include "../interface/Window.h"
 
 namespace OpenRCT2
 {

@@ -21,7 +21,7 @@
 #include "GameAction.h"
 
 #include "../Cheats.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../world/Park.h"
 
 struct SetParkEntranceFeeAction : public GameActionBase<GAME_COMMAND_SET_PARK_ENTRANCE_FEE, GameActionResult>

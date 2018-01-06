@@ -18,7 +18,7 @@
 #include "../Context.h"
 #include "../core/Guard.hpp"
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"

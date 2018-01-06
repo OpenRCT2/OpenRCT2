@@ -26,7 +26,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>

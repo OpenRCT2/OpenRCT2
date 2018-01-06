@@ -23,7 +23,7 @@
 
 #include "../localisation/Date.h"
 #include "../Cheats.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../world/Park.h"
 #include "../rct1.h"
 #include "../ride/ride_data.h"

@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../peep/Peep.h"

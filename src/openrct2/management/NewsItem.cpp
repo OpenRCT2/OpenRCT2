@@ -18,7 +18,7 @@
 #include "../Context.h"
 #include "../core/Util.hpp"
 #include "../Input.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"

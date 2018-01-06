@@ -30,7 +30,7 @@
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/ui/UiContext.h>
 
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/Intro.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/LightFX.h>

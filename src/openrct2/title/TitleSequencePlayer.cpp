@@ -33,7 +33,7 @@
 
 #include "../Game.h"
 #include "../interface/Viewport.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../management/NewsItem.h"
 #include "../windows/Intent.h"
 #include "../world/scenery.h"

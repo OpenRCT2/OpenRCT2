@@ -17,7 +17,7 @@
 #include "../common.h"
 #include "../Context.h"
 #include "../core/Guard.hpp"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"
 #include "../OpenRCT2.h"
