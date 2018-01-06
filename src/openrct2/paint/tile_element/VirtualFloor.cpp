@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,12 +14,13 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "TileElement.h"
-#include "../Paint.h"
 #include "../../Input.h"
 #include "../../interface/Viewport.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
+#include "../Paint.h"
+#include "TileElement.h"
+#include "VirtualFloor.h"
 
 static const rct_xy_element offsets[4] =
 {
