@@ -63,6 +63,7 @@
 #include "world/Sprite.h"
 #include "world/Water.h"
 #include "object/ObjectList.h"
+#include "interface/Window_internal.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9
 
