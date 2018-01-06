@@ -4502,6 +4502,12 @@ STR_6192    :Wall
 STR_6193    :{COMMA16} guest
 STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
 STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
+STR_6196    :{BLACK}Year:
+STR_6197    :{BLACK}Month:
+STR_6198    :{BLACK}Day:
+STR_6199    :Set date
+STR_6200    :Reset date
+STR_6201    :{MONTH}
 
 #############
 # Scenarios #

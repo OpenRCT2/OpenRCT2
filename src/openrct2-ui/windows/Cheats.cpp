@@ -20,8 +20,8 @@
 #include <openrct2/core/Math.hpp>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
-
 #include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -68,6 +68,18 @@ enum WINDOW_CHEATS_WIDGET_IDX {
     WIDX_ADD_MONEY,
     WIDX_SET_MONEY,
     WIDX_CLEAR_LOAN,
+    WIDX_DATE_GROUP,
+    WIDX_YEAR_BOX,
+    WIDX_YEAR_UP,
+    WIDX_YEAR_DOWN,
+    WIDX_MONTH_BOX,
+    WIDX_MONTH_UP,
+    WIDX_MONTH_DOWN,
+    WIDX_DAY_BOX,
+    WIDX_DAY_UP,
+    WIDX_DAY_DOWN,
+    WIDX_DATE_SET,
+    WIDX_DATE_RESET,
 
     WIDX_GUEST_PARAMETERS_GROUP = WIDX_TAB_CONTENT,
     WIDX_GUEST_HAPPINESS_MAX,
@@ -194,6 +206,18 @@ static rct_widget window_cheats_money_widgets[] = {
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(3),         HPL(3),         STR_ADD_MONEY,                      STR_NONE },                             // add money
     { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(3),         HPL(3),         STR_SET_MONEY,                      STR_NONE },                             // set money
     { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(5),         HPL(5),         STR_CHEAT_CLEAR_LOAN,               STR_NONE },                             // Clear loan
+    { WWT_GROUPBOX,         1,      XPL(0) - GROUP_SPACE,   WPL(1) + GROUP_SPACE,   YPL(6.5),      HPL(10.5),      STR_DATE_SET,                       STR_NONE },                             // Date group
+    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(7) + 2,    HPL(7) - 3,    STR_NONE,                           STR_NONE },                             // Year box
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 3,    YPL(7) + 7,    STR_NUMERIC_UP,                     STR_NONE },                             // increase year
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(7) + 8,    YPL(7) + 12,   STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease year
+    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(8) + 2,    HPL(8) - 3,    STR_NONE,                           STR_NONE },                             // Month box
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 3,    YPL(8) + 7,    STR_NUMERIC_UP,                     STR_NONE },                             // increase month
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(8) + 8,    YPL(8) + 12,   STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease month
+    { WWT_SPINNER,          1,      WPL(0),                 WPL(1) - 10,            YPL(9) + 2,    HPL(9) - 3,    STR_NONE,                           STR_NONE },                             // Day box
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 3,    YPL(9) + 7,    STR_NUMERIC_UP,                     STR_NONE },                             // increase day
+    { WWT_DROPDOWN_BUTTON,  1,      WPL(1) - 10,            WPL(1),                 YPL(9) + 8,    YPL(9) + 12,   STR_NUMERIC_DOWN,                   STR_NONE },                             // decrease day
+    { WWT_CLOSEBOX,         1,      XPL(0),                 WPL(0),                 YPL(10),        HPL(10),        STR_DATE_SET,                       STR_NONE },                             // Set Date
+    { WWT_CLOSEBOX,         1,      XPL(1),                 WPL(1),                 YPL(10),        HPL(10),        STR_DATE_RESET,                     STR_NONE },                             // Reset Date
     { WIDGETS_END },
 };
 
@@ -439,7 +463,9 @@ static rct_window_event_list *window_cheats_page_events[] = {
 
 static uint64 window_cheats_page_enabled_widgets[] = {
     MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_NO_MONEY) | (1ULL << WIDX_ADD_SET_MONEY_GROUP) | (1ULL << WIDX_MONEY_SPINNER) | (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY) | (1ULL << WIDX_SET_MONEY) | (1ULL << WIDX_CLEAR_LOAN),
+    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY) | (1ULL << WIDX_SET_MONEY) | (1ULL << WIDX_CLEAR_LOAN) | (1ULL << WIDX_DATE_SET) |
+    (1ULL << WIDX_MONTH_BOX) | (1ULL << WIDX_MONTH_UP) | (1ULL << WIDX_MONTH_DOWN) | (1ULL << WIDX_YEAR_BOX) | (1ULL << WIDX_YEAR_UP) | (1ULL << WIDX_YEAR_DOWN) | (1ULL << WIDX_DAY_BOX) |
+    (1ULL << WIDX_DAY_UP) | (1ULL << WIDX_DAY_DOWN) | (1ULL << WIDX_MONTH_BOX) | (1ULL << WIDX_DATE_GROUP) | (1ULL << WIDX_DATE_RESET),
     MAIN_CHEAT_ENABLED_WIDGETS | (1ULL << WIDX_GUEST_PARAMETERS_GROUP) |
         (1ULL << WIDX_GUEST_HAPPINESS_MAX) | (1ULL << WIDX_GUEST_HAPPINESS_MIN) | (1ULL << WIDX_GUEST_ENERGY_MAX) | (1ULL << WIDX_GUEST_ENERGY_MIN) |
         (1ULL << WIDX_GUEST_HUNGER_MAX) | (1ULL << WIDX_GUEST_HUNGER_MIN) | (1ULL << WIDX_GUEST_THIRST_MAX) | (1ULL << WIDX_GUEST_THIRST_MIN) |
@@ -461,7 +487,8 @@ static uint64 window_cheats_page_enabled_widgets[] = {
 };
 
 static uint64 window_cheats_page_hold_down_widgets[] = {
-    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) | (1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY),
+    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) | (1ULL << WIDX_MONEY_SPINNER_DECREMENT) | (1ULL << WIDX_ADD_MONEY) | (1ULL << WIDX_YEAR_UP) |
+    (1ULL << WIDX_YEAR_DOWN) | (1ULL << WIDX_MONTH_UP) | (1ULL << WIDX_MONTH_DOWN) | (1ULL << WIDX_DAY_UP) | (1ULL << WIDX_DAY_DOWN),
     0,
     (1ULL << WIDX_INCREASE_PARK_RATING) | (1ULL << WIDX_DECREASE_PARK_RATING),
     0
@@ -509,6 +536,38 @@ static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetI
         break;
     case WIDX_ADD_MONEY:
         game_do_command(0, GAME_COMMAND_FLAG_APPLY, CHEAT_ADDMONEY, _moneySpinnerValue, GAME_COMMAND_CHEAT, 0, 0);
+        break;
+    case WIDX_YEAR_UP:
+        year_spinner_value++;
+        year_spinner_value = Math::Clamp(1, year_spinner_value, 8192);
+        break;
+    case WIDX_YEAR_DOWN:
+        year_spinner_value--;
+        year_spinner_value = Math::Clamp(1, year_spinner_value, 8192);
+        break;
+    case WIDX_MONTH_UP:
+        month_spinner_value++;
+        month_spinner_value = Math::Clamp(1, month_spinner_value, (int)MONTH_COUNT);
+        day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+        break;
+    case WIDX_MONTH_DOWN:
+        month_spinner_value--;
+        month_spinner_value = Math::Clamp(1, month_spinner_value, (int)MONTH_COUNT);
+        day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+        break;
+    case WIDX_DAY_UP:
+        day_spinner_value++;
+        day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+        break;
+    case WIDX_DAY_DOWN:
+        day_spinner_value--;
+        day_spinner_value = Math::Clamp(1, day_spinner_value, (int)days_in_month[month_spinner_value - 1]);
+        break;
+    case WIDX_DATE_SET:
+        date_set(year_spinner_value, month_spinner_value, day_spinner_value);
+        break;
+    case WIDX_DATE_RESET:
+        date_set(1, 1, 1);
         break;
     }
 }
@@ -937,12 +996,19 @@ static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (widget_is_disabled(w, WIDX_MONEY_SPINNER)) {
             colour |= COLOUR_FLAG_INSET;
         }
-        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH, gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+        sint32 actual_month = month_spinner_value - 1;
+        gfx_draw_string_left(dpi, STR_BOTTOM_TOOLBAR_CASH,          gCommonFormatArgs, colour, w->x + XPL(0) + TXTO, w->y + YPL(2) + TXTO);
+        gfx_draw_string_left(dpi, STR_YEAR,                         nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(7) + TXTO);
+        gfx_draw_string_left(dpi, STR_MONTH,                        nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(8) + TXTO);
+        gfx_draw_string_left(dpi, STR_DAY,                          nullptr, COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(9) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &year_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(7) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_MONTH,                &actual_month, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(8) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &day_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(9) + TXTO);
     }
     else if(w->page == WINDOW_CHEATS_PAGE_MISC){
         gfx_draw_string_left(dpi, STR_CHEAT_STAFF_SPEED,            nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(17) + TXTO);
         gfx_draw_string_left(dpi, STR_FORCE_WEATHER,                nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(10) + TXTO);
-        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,      &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(5) + TXTO);
+        gfx_draw_string_right(dpi, STR_FORMAT_INTEGER,              &park_rating_spinner_value, w->colours[1], w->x + WPL(1) - 10 - TXTO, w->y + YPL(5) + TXTO);
     }
     else if (w->page == WINDOW_CHEATS_PAGE_GUESTS){
         gfx_draw_string_left(dpi, STR_CHEAT_GUEST_HAPPINESS,        nullptr,   COLOUR_BLACK, w->x + XPL(0) + TXTO, w->y + YPL(1) + TXTO);

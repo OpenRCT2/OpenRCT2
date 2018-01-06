@@ -3847,6 +3847,14 @@ enum {
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR = 6193,
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR = 6194,
     STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR = 6195,
+
+    STR_YEAR = 6196,
+    STR_MONTH = 6197,
+    STR_DAY = 6198,
+    STR_DATE_SET = 6199,
+    STR_DATE_RESET = 6200,
+    STR_FORMAT_MONTH = 6201,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

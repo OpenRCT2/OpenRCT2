@@ -122,6 +122,5 @@ sint32 Date::GetDaysInMonth(sint32 month)
 {
     Guard::ArgumentInRange(month, 0, MONTH_COUNT - 1);
 
-    static const sint16 DaysInMonth[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
-    return DaysInMonth[month];
+    return days_in_month[month];
 }
