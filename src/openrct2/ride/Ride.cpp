@@ -4509,8 +4509,8 @@ static rct_vehicle *vehicle_create_car(
     vehicle->swinging_car_var_0 = 0;
     vehicle->var_4E = 0;
     vehicle->restraints_position = 0;
-    vehicle->var_BA = 0;
-    vehicle->var_B6 = 0;
+    vehicle->spin_sprite = 0;
+    vehicle->spin_speed = 0;
     vehicle->var_B8 = 0;
     vehicle->sound1_id = RCT12_SOUND_ID_NULL;
     vehicle->sound2_id = RCT12_SOUND_ID_NULL;
