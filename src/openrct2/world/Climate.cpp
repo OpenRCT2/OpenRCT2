@@ -221,6 +221,11 @@ extern "C"
     }
 }
 
+bool climate_is_raining()
+{
+    return gClimateCurrent.RainLevel != RAIN_LEVEL_NONE;
+}
+
 uint32 climate_get_weather_sprite_id(const ClimateState &state)
 {
     uint32 spriteId = SPR_WEATHER_SUN;

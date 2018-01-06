@@ -91,6 +91,7 @@ extern "C"
 #ifdef __cplusplus
 }
 
+bool climate_is_raining();
 uint32 climate_get_weather_sprite_id(const ClimateState &state);
 
 #endif
