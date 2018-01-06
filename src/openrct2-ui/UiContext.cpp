@@ -42,7 +42,7 @@
 
 #include <openrct2/Input.h>
 #include <openrct2/interface/Console.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

@@ -20,7 +20,7 @@
 #include "../world/Map.h"
 #include "../world/sprite.h"
 #include "../paint/Paint.h"
-#include "window.h"
+#include "Window.h"
 
 enum {
     VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),

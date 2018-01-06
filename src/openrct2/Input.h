@@ -17,7 +17,7 @@
 #ifndef _INPUT_H_
 #define _INPUT_H_
 
-#include "interface/window.h"
+#include "interface/Window.h"
 
 typedef enum INPUT_FLAGS {
     INPUT_FLAG_WIDGET_PRESSED = (1 << 0),

@@ -17,7 +17,7 @@
 #pragma once
 
 #include <openrct2/common.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 
 #define DROPDOWN_SEPARATOR            0
 #define DROPDOWN_FORMAT_COLOUR_PICKER 0xFFFE

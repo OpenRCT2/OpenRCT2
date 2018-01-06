@@ -24,7 +24,7 @@
 #include "../util/Util.h"
 #include "../Context.h"
 #include "Widget.h"
-#include "window.h"
+#include "Window.h"
 
 static void widget_frame_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);
 static void widget_resize_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widgetindex widgetIndex);

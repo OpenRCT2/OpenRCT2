@@ -28,7 +28,7 @@
 
 #include "../Game.h"
 #include "../interface/Viewport.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../Intro.h"
 #include "Drawing.h"
 #include "LightFX.h"

@@ -29,7 +29,7 @@
 #include "../config/Config.h"
 #include "../Game.h"
 #include "../interface/Viewport.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"

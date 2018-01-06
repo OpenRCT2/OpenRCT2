@@ -37,7 +37,7 @@
 #include "../world/sprite.h"
 #include "Colour.h"
 #include "Viewport.h"
-#include "window.h"
+#include "Window.h"
 
 extern "C"
 {

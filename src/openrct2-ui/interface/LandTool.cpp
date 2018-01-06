@@ -18,7 +18,7 @@
 #include <openrct2/world/Map.h>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2/interface/Widget.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 
 static uint16 toolSizeSpriteIndices[] =
 {

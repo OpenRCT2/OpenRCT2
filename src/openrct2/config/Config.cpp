@@ -23,7 +23,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"

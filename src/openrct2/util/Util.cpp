@@ -19,7 +19,7 @@
 #include "../common.h"
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../title/TitleScreen.h"

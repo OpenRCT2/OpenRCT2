@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 
 typedef enum tile_inspector_page
 {

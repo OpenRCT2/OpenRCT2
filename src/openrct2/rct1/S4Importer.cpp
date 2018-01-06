@@ -38,7 +38,7 @@
 #include "../Cheats.h"
 #include "../Editor.h"
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"

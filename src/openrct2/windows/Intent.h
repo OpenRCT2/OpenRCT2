@@ -2,7 +2,7 @@
 #define OPENRCT2_INTENT_H
 
 #include "../common.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #ifdef __cplusplus
 #include <map>
 #include <string>

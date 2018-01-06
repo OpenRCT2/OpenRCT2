@@ -17,7 +17,7 @@
 #include "../config/Config.h"
 #include "../core/Util.hpp"
 #include "../Game.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"

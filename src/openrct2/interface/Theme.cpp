@@ -24,7 +24,7 @@
 #include "../config/Config.h"
 #include "../platform/platform.h"
 #include "themes.h"
-#include "window.h"
+#include "Window.h"
 
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"

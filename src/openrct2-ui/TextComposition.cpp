@@ -22,7 +22,7 @@
 #include "TextComposition.h"
 
 #include <openrct2/interface/Console.h>
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 
 #ifdef __MACOSX__

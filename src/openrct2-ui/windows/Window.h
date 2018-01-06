@@ -18,7 +18,7 @@
 
 #include <openrct2/common.h>
 
-#include <openrct2/interface/window.h>
+#include <openrct2/interface/Window.h>
 #include <openrct2/windows/tile_inspector.h>
 
 typedef void (*loadsave_callback)(sint32 result, const utf8 * path);

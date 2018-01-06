@@ -31,7 +31,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../interface/Viewport.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 
 // TODO Remove when no longer required.

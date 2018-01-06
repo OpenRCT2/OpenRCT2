@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../Cheats.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../OpenRCT2.h"
 #include "../world/footpath.h"

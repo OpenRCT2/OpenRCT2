@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "_legacy.h"
-#include "../interface/window.h"
+#include "../interface/Window.h"
 #include "../peep/Staff.h"
 #include "Intent.h"
 #include "../Context.h"

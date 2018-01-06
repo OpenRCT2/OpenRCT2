@@ -17,7 +17,7 @@
 #include "../../core/Math.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
-#include "../../interface/window.h"
+#include "../../interface/Window.h"
 #include "../../localisation/Localisation.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"

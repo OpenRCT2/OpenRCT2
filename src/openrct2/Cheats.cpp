@@ -18,7 +18,7 @@
 #include "config/Config.h"
 #include "Editor.h"
 #include "Game.h"
-#include "interface/window.h"
+#include "interface/Window.h"
 #include "localisation/Localisation.h"
 #include "management/Finance.h"
 #include "network/network.h"
