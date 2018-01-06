@@ -123,6 +123,7 @@ typedef struct loadsave_list_item {
     char name[256];
     char path[MAX_PATH];
     time_t date_modified;
+    char date_formatted[30];
     uint8 type;
     bool loaded;
 } loadsave_list_item;
@@ -550,9 +551,18 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
             gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 0, y);
         }
 
+        // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name);
-        gfx_draw_string_left(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, SCROLLABLE_ROW_HEIGHT, y);
+        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, (WW - 5) / 2 - 5);
+
+        // Print formatted modified date, if this is a file
+        if (_listItems[i].type == TYPE_FILE)
+        {
+            set_format_arg(0, rct_string_id, STR_STRING);
+            set_format_arg(2, char*, _listItems[i].date_formatted);
+            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, (WW - 5) / 2 + 5, y, (WW - 5) / 2);
+        }
     }
 }
 
@@ -711,6 +721,10 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
                 listItem->type = TYPE_FILE;
                 listItem->date_modified = platform_file_get_modified_time(listItem->path);
+
+                // Cache a human-readable version of the modified date.
+                std::strftime(listItem->date_formatted, sizeof(listItem->date_formatted), "%x %X", std::localtime(&listItem->date_modified));
+
                 // Mark if file is the currently loaded game
                 listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
 
