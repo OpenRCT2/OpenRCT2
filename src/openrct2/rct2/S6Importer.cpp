@@ -405,16 +405,16 @@ public:
         // byte_13CA742
         // pad_013CA747
         gClimateUpdateTimer          = _s6.climate_update_timer;
-        gClimateCurrentWeather       = _s6.current_weather;
-        gClimateNextWeather          = _s6.next_weather;
-        gClimateCurrentTemperature   = _s6.temperature;
-        gClimateNextTemperature      = _s6.next_temperature;
-        gClimateCurrentWeatherEffect = _s6.current_weather_effect;
-        gClimateNextWeatherEffect    = _s6.next_weather_effect;
-        gClimateCurrentWeatherGloom  = _s6.current_weather_gloom;
-        gClimateNextWeatherGloom     = _s6.next_weather_gloom;
-        gClimateCurrentRainLevel     = _s6.current_rain_level;
-        gClimateNextRainLevel        = _s6.next_rain_level;
+        gClimateCurrent.Weather       = _s6.current_weather;
+        gClimateNext.Weather          = _s6.next_weather;
+        gClimateCurrent.Temperature   = _s6.temperature;
+        gClimateNext.Temperature      = _s6.next_temperature;
+        gClimateCurrent.WeatherEffect = _s6.current_weather_effect;
+        gClimateNext.WeatherEffect    = _s6.next_weather_effect;
+        gClimateCurrent.WeatherGloom  = _s6.current_weather_gloom;
+        gClimateNext.WeatherGloom     = _s6.next_weather_gloom;
+        gClimateCurrent.RainLevel     = _s6.current_rain_level;
+        gClimateNext.RainLevel        = _s6.next_rain_level;
 
         // News items
         for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)

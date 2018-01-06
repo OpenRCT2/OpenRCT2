@@ -371,16 +371,16 @@ void S6Exporter::Export()
     // byte_13CA742
     // pad_013CA747
     _s6.climate_update_timer   = gClimateUpdateTimer;
-    _s6.current_weather        = gClimateCurrentWeather;
-    _s6.next_weather           = gClimateNextWeather;
-    _s6.temperature            = gClimateCurrentTemperature;
-    _s6.next_temperature       = gClimateNextTemperature;
-    _s6.current_weather_effect = gClimateCurrentWeatherEffect;
-    _s6.next_weather_effect    = gClimateNextWeatherEffect;
-    _s6.current_weather_gloom  = gClimateCurrentWeatherGloom;
-    _s6.next_weather_gloom     = gClimateNextWeatherGloom;
-    _s6.current_rain_level     = gClimateCurrentRainLevel;
-    _s6.next_rain_level        = gClimateNextRainLevel;
+    _s6.current_weather        = gClimateCurrent.Weather;
+    _s6.next_weather           = gClimateNext.Weather;
+    _s6.temperature            = gClimateCurrent.Temperature;
+    _s6.next_temperature       = gClimateNext.Temperature;
+    _s6.current_weather_effect = gClimateCurrent.WeatherEffect;
+    _s6.next_weather_effect    = gClimateNext.WeatherEffect;
+    _s6.current_weather_gloom  = gClimateCurrent.WeatherGloom;
+    _s6.next_weather_gloom     = gClimateNext.WeatherGloom;
+    _s6.current_rain_level     = gClimateCurrent.RainLevel;
+    _s6.next_rain_level        = gClimateNext.RainLevel;
 
     // News items
     for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)

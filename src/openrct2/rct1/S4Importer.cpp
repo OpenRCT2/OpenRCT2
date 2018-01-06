@@ -2169,16 +2169,16 @@ private:
     {
         gClimate = _s4.climate;
         gClimateUpdateTimer = _s4.climate_timer;
-        gClimateCurrentTemperature = _s4.temperature;
-        gClimateCurrentWeather = _s4.weather;
-        gClimateCurrentWeatherEffect = 0;
-        gClimateCurrentWeatherGloom = _s4.weather_gloom;
-        gClimateCurrentRainLevel = _s4.rain;
-        gClimateNextTemperature = _s4.target_temperature;
-        gClimateNextWeather = _s4.target_weather;
-        gClimateNextWeatherEffect = 0;
-        gClimateNextWeatherGloom = _s4.target_weather_gloom;
-        gClimateNextRainLevel = _s4.target_rain;
+        gClimateCurrent.Temperature = _s4.temperature;
+        gClimateCurrent.Weather = _s4.weather;
+        gClimateCurrent.WeatherEffect = 0;
+        gClimateCurrent.WeatherGloom = _s4.weather_gloom;
+        gClimateCurrent.RainLevel = _s4.rain;
+        gClimateNext.Temperature = _s4.target_temperature;
+        gClimateNext.Weather = _s4.target_weather;
+        gClimateNext.WeatherEffect = 0;
+        gClimateNext.WeatherGloom = _s4.target_weather_gloom;
+        gClimateNext.RainLevel = _s4.target_rain;
     }
 
     void ImportScenarioNameDetails()

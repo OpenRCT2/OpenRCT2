@@ -914,7 +914,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
 {
-    uint8 gloom = gClimateCurrentWeatherGloom;
+    uint8 gloom = gClimateCurrent.WeatherGloom;
     if (gloom != 0) {
         gfx_filter_rect(
             dpi,

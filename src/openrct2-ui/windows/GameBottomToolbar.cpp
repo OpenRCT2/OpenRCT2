@@ -573,7 +573,7 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     x = w->x + window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET].left + 15;
     y += line_height + 1;
 
-    sint32 temperature = gClimateCurrentTemperature;
+    sint32 temperature = gClimateCurrent.Temperature;
     rct_string_id format = STR_CELSIUS_VALUE;
     if (gConfigGeneral.temperature_format == TEMPERATURE_FORMAT_F)
     {
@@ -585,15 +585,15 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     x += 30;
 
     // Current weather
-    gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrentWeather].SpriteId, x, y, 0);
+    gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrent.Weather].SpriteId, x, y, 0);
 
     // Next weather
-    if (ClimateWeatherData[gClimateCurrentWeather].SpriteId != ClimateWeatherData[gClimateNextWeather].SpriteId)
+    if (ClimateWeatherData[gClimateCurrent.Weather].SpriteId != ClimateWeatherData[gClimateNext.Weather].SpriteId)
     {
         if (gClimateUpdateTimer < 960)
         {
             gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
-            gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNextWeather].SpriteId, x + 40, y, 0);
+            gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNext.Weather].SpriteId, x + 40, y, 0);
         }
     }
 }

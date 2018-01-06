@@ -48,19 +48,11 @@ struct WeatherTransition
 extern const WeatherTransition * ClimateTransitions[4];
 
 // Climate data
-uint8   gClimate;
-uint8   gClimateCurrentWeather;
-sint8   gClimateCurrentTemperature;
-uint8   gClimateCurrentWeatherEffect;
-uint8   gClimateCurrentWeatherGloom;
-uint8   gClimateCurrentRainLevel;
-uint8   gClimateNextWeather;
-sint8   gClimateNextTemperature;
-uint8   gClimateNextWeatherEffect;
-uint8   gClimateNextWeatherGloom;
-uint8   gClimateNextRainLevel;
-uint16  gClimateUpdateTimer;
-uint16  gClimateLightningFlash;
+uint8           gClimate;
+ClimateState    gClimateCurrent;
+ClimateState    gClimateNext;
+uint16          gClimateUpdateTimer;
+uint16          gClimateLightningFlash;
 
 // Sound data
 static sint32           _rainVolume = 1;
@@ -98,11 +90,11 @@ extern "C"
         const WeatherState * weatherState = &ClimateWeatherData[weather];
 
         gClimate = climate;
-        gClimateCurrentWeather = weather;
-        gClimateCurrentTemperature = transition->BaseTemperature + weatherState->TemperatureDelta;
-        gClimateCurrentWeatherEffect = weatherState->EffectLevel;
-        gClimateCurrentWeatherGloom = weatherState->GloomLevel;
-        gClimateCurrentRainLevel = weatherState->RainLevel;
+        gClimateCurrent.Weather = weather;
+        gClimateCurrent.Temperature = transition->BaseTemperature + weatherState->TemperatureDelta;
+        gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
+        gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+        gClimateCurrent.RainLevel = weatherState->RainLevel;
 
         _lightningTimer = 0;
         _thunderTimer = 0;
@@ -136,34 +128,34 @@ extern "C"
             }
             else if (!(gCurrentTicks & 0x7F))
             {
-                if (gClimateCurrentTemperature == gClimateNextTemperature)
+                if (gClimateCurrent.Temperature == gClimateNext.Temperature)
                 {
-                    if (gClimateCurrentWeatherGloom == gClimateNextWeatherGloom)
+                    if (gClimateCurrent.WeatherGloom == gClimateNext.WeatherGloom)
                     {
-                        gClimateCurrentWeatherEffect = gClimateNextWeatherEffect;
+                        gClimateCurrent.WeatherEffect = gClimateNext.WeatherEffect;
                         _thunderTimer = 0;
                         _lightningTimer = 0;
 
-                        if (gClimateCurrentRainLevel == gClimateNextRainLevel)
+                        if (gClimateCurrent.RainLevel == gClimateNext.RainLevel)
                         {
-                            gClimateCurrentWeather = gClimateNextWeather;
+                            gClimateCurrent.Weather = gClimateNext.Weather;
                             climate_determine_future_weather(scenario_rand());
                             gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
                         }
-                        else if (gClimateNextRainLevel <= 2)
+                        else if (gClimateNext.RainLevel <= 2)
                         {
-                            gClimateCurrentRainLevel = climate_step_weather_level(gClimateCurrentRainLevel, gClimateNextRainLevel);
+                            gClimateCurrent.RainLevel = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
                         }
                     }
                     else
                     {
-                        gClimateCurrentWeatherGloom = climate_step_weather_level(gClimateCurrentWeatherGloom, gClimateNextWeatherGloom);
+                        gClimateCurrent.WeatherGloom = climate_step_weather_level(gClimateCurrent.WeatherGloom, gClimateNext.WeatherGloom);
                         gfx_invalidate_screen();
                     }
                 }
                 else
                 {
-                    gClimateCurrentTemperature = climate_step_weather_level(gClimateCurrentTemperature, gClimateNextTemperature);
+                    gClimateCurrent.Temperature = climate_step_weather_level(gClimateCurrent.Temperature, gClimateNext.Temperature);
                     gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
                 }
             }
@@ -175,7 +167,7 @@ extern "C"
             climate_update_lightning();
             climate_update_thunder();
         }
-        else if (gClimateCurrentWeatherEffect == 2)
+        else if (gClimateCurrent.WeatherEffect == 2)
         {
             // Create new thunder and lightning
             uint32 randomNumber = util_rand();
@@ -191,10 +183,10 @@ extern "C"
     void climate_force_weather(uint8 weather)
     {
         const auto weatherState = &ClimateWeatherData[weather];
-        gClimateCurrentWeather = weather;
-        gClimateCurrentWeatherGloom = weatherState->GloomLevel;
-        gClimateCurrentRainLevel = weatherState->RainLevel;
-        gClimateCurrentWeatherEffect = weatherState->EffectLevel;
+        gClimateCurrent.Weather = weather;
+        gClimateCurrent.WeatherGloom = weatherState->GloomLevel;
+        gClimateCurrent.RainLevel = weatherState->RainLevel;
+        gClimateCurrent.WeatherEffect = weatherState->EffectLevel;
         gClimateUpdateTimer = 1920;
 
         climate_update();
@@ -241,20 +233,20 @@ static void climate_determine_future_weather(sint32 randomDistribution)
     // Generate a random variable with values 0 up to DistributionSize-1 and chose weather from the distribution table accordingly
     const WeatherTransition * transition = &ClimateTransitions[gClimate][month];
     sint8 nextWeather = transition->Distribution[((randomDistribution & 0xFF) * transition->DistributionSize) >> 8];
-    gClimateNextWeather = nextWeather;
+    gClimateNext.Weather = nextWeather;
 
     const auto nextWeatherState = &ClimateWeatherData[nextWeather];
-    gClimateNextTemperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
-    gClimateNextWeatherEffect = nextWeatherState->EffectLevel;
-    gClimateNextWeatherGloom = nextWeatherState->GloomLevel;
-    gClimateNextRainLevel = nextWeatherState->RainLevel;
+    gClimateNext.Temperature = transition->BaseTemperature + nextWeatherState->TemperatureDelta;
+    gClimateNext.WeatherEffect = nextWeatherState->EffectLevel;
+    gClimateNext.WeatherGloom = nextWeatherState->GloomLevel;
+    gClimateNext.RainLevel = nextWeatherState->RainLevel;
 
     gClimateUpdateTimer = 1920;
 }
 
 static void climate_update_rain_sound()
 {
-    if (gClimateCurrentWeatherEffect == 1 || gClimateCurrentWeatherEffect == 2)
+    if (gClimateCurrent.WeatherEffect == 1 || gClimateCurrent.WeatherEffect == 2)
     {
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)

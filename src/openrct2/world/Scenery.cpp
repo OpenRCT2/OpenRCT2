@@ -130,7 +130,7 @@ void scenery_update_age(sint32 x, sint32 y, rct_tile_element *tileElement)
 
     if (
         !scenery_small_entry_has_flag(sceneryEntry, SMALL_SCENERY_FLAG_CAN_BE_WATERED) ||
-        (gClimateCurrentWeather < WEATHER_RAIN) ||
+        (gClimateCurrent.Weather < WEATHER_RAIN) ||
         (tileElement->properties.scenery.age < 5)
     ) {
         scenery_increase_age(x, y, tileElement);

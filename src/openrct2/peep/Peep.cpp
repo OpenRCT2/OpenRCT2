@@ -757,7 +757,7 @@ static void peep_decide_whether_to_leave_park(rct_peep * peep)
         peep->energy_target -= 2;
     }
 
-    if (gClimateCurrentTemperature >= 21 && peep->thirst >= 5)
+    if (gClimateCurrent.Temperature >= 21 && peep->thirst >= 5)
     {
         peep->thirst--;
     }
@@ -1899,7 +1899,7 @@ void peep_update_sprite_type(rct_peep * peep)
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (gClimateCurrentRainLevel != 0 && (peep->item_standard_flags & PEEP_ITEM_UMBRELLA) && peep->x != LOCATION_NULL)
+    if (gClimateCurrent.RainLevel != 0 && (peep->item_standard_flags & PEEP_ITEM_UMBRELLA) && peep->x != LOCATION_NULL)
     {
         sint32 x = peep->x & 0xFFE0;
         sint32 y = peep->y & 0xFFE0;
@@ -12152,13 +12152,13 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
     if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM) || (shopItem == SHOP_ITEM_CANDYFLOSS) ||
         (shopItem == SHOP_ITEM_SUNGLASSES))
     {
-        if (gClimateCurrentRainLevel != 0)
+        if (gClimateCurrent.RainLevel != 0)
             return false;
     }
 
     if ((shopItem == SHOP_ITEM_SUNGLASSES) || (shopItem == SHOP_ITEM_ICE_CREAM))
     {
-        if (gClimateCurrentTemperature < 12)
+        if (gClimateCurrent.Temperature < 12)
             return false;
     }
 
@@ -12174,7 +12174,7 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
         return false;
     }
 
-    if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrentRainLevel != 0))
+    if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrent.RainLevel != 0))
         goto loc_69B119;
 
     if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher)
@@ -12202,9 +12202,9 @@ loc_69B119:
             }
         }
 
-        if (gClimateCurrentTemperature >= 21)
+        if (gClimateCurrent.Temperature >= 21)
             value = get_shop_hot_value(shopItem);
-        else if (gClimateCurrentTemperature <= 11)
+        else if (gClimateCurrent.Temperature <= 11)
             value = get_shop_cold_value(shopItem);
         else
             value = get_shop_base_value(shopItem);
@@ -12214,7 +12214,7 @@ loc_69B119:
             value -= price;
             if (shopItem == SHOP_ITEM_UMBRELLA)
             {
-                if (gClimateCurrentRainLevel != 0)
+                if (gClimateCurrent.RainLevel != 0)
                     goto loc_69B221;
             }
 
@@ -12259,9 +12259,9 @@ loc_69B119:
 loc_69B221:
     if (!has_voucher)
     {
-        if (gClimateCurrentTemperature >= 21)
+        if (gClimateCurrent.Temperature >= 21)
             value = get_shop_hot_value(shopItem);
-        else if (gClimateCurrentTemperature <= 11)
+        else if (gClimateCurrent.Temperature <= 11)
             value = get_shop_cold_value(shopItem);
         else
             value = get_shop_base_value(shopItem);
@@ -13199,7 +13199,7 @@ static bool peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 ent
 
                 // Peeps won't go on rides that aren't sufficiently undercover while it's raining.
                 // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-                if (gClimateCurrentRainLevel != 0 && (ride->sheltered_eighths >> 5) < 3)
+                if (gClimateCurrent.RainLevel != 0 && (ride->sheltered_eighths >> 5) < 3)
                 {
                     if (peepAtRide)
                     {
