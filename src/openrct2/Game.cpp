@@ -231,7 +231,7 @@ void update_palette_effects()
         uint32 shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            uint8 gloom = gClimateCurrentWeatherGloom;
+            uint8 gloom = gClimateCurrent.WeatherGloom;
             if (gloom != 0)
             {
                 FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];

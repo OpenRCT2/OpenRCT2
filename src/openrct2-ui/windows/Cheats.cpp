@@ -621,7 +621,7 @@ static void window_cheats_misc_mousedown(rct_window *w, rct_widgetindex widgetIn
             dropdownWidget->right - dropdownWidget->left - 3
         );
 
-        currentWeather = gClimateCurrentWeather;
+        currentWeather = gClimateCurrent.Weather;
         dropdown_set_checked(currentWeather, true);
     }
     break;
@@ -995,7 +995,7 @@ static void window_cheats_invalidate(rct_window *w)
     }
 
     // Current weather
-    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrentWeather];
+    window_cheats_misc_widgets[WIDX_WEATHER].text = WeatherTypes[gClimateCurrent.Weather];
 }
 
 static void window_cheats_paint(rct_window *w, rct_drawpixelinfo *dpi)
