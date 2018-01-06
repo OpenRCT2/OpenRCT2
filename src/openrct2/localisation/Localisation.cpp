@@ -14,8 +14,6 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../common.h"
-
 #include <ctype.h>
 #include <limits.h>
 
@@ -30,6 +28,7 @@
 #include <errno.h>
 #endif // _WIN32
 
+#include "../common.h"
 #include "../config/Config.h"
 #include "../core/Util.hpp"
 #include "../management/Marketing.h"
