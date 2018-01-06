@@ -1379,13 +1379,16 @@ void ride_remove_provisional_track_piece()
     z = _unkF440C5.z;
 
     ride = get_ride(rideIndex);
-    if (ride->type == RIDE_TYPE_MAZE) {
-        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5;
-        game_do_command(x     , flags | (0 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-        game_do_command(x     , flags | (1 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-        game_do_command(x + 16, flags | (2 << 8), y + 16, rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-        game_do_command(x + 16, flags | (3 << 8), y     , rideIndex | (2 << 8), GAME_COMMAND_SET_MAZE_TRACK, z, 0);
-    } else {
+    if (ride->type == RIDE_TYPE_MAZE)
+    {
+        sint32 flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST;
+        maze_set_track(x, y, z, flags, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(x, y + 16, z, flags, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(x + 16, y + 16, z, flags, 2, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(x + 16, y, z, flags, 3, rideIndex, GC_SET_MAZE_TRACK_FILL);
+    }
+    else
+    {
         direction = _unkF440C5.direction;
         if (!(direction & 4)) {
             x -= TileDirectionDelta[direction].x;

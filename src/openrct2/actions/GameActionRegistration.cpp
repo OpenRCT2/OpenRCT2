@@ -24,6 +24,7 @@
 #include "RideSetName.hpp"
 #include "RideDemolishAction.hpp"
 #include "PlacePeepSpawnAction.hpp"
+#include "MazeSetTrackAction.hpp"
 
 namespace GameActions
 {
@@ -38,5 +39,6 @@ namespace GameActions
         Register<GuestSetNameAction>();
         Register<StaffSetNameAction>();
         Register<PlacePeepSpawnAction>();
+        Register<MazeSetTrackAction>();
     }
 }

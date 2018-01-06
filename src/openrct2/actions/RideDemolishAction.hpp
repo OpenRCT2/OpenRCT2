@@ -26,6 +26,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 #include "GameAction.h"
+#include "MazeSetTrackAction.hpp"
 
 struct RideDemolishAction : public GameActionBase<GAME_COMMAND_DEMOLISH_RIDE, GameActionResult>
 {
@@ -78,7 +79,7 @@ public:
             return std::make_unique<GameActionResult>(GA_ERROR::INVALID_PARAMETERS, STR_CANT_DEMOLISH_RIDE, STR_NONE);
         }
 
-        sint32 refundPrice = ride_get_refund_price(_rideIndex);
+        money32 refundPrice = DemolishTracks();
 
         ride_clear_for_construction(_rideIndex);
         ride_remove_peeps(_rideIndex);
@@ -216,5 +217,94 @@ public:
         windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
         return res;
+    }
+
+private:
+
+    money32 MazeRemoveTrack(uint16 x, uint16 y, uint16 z, uint8 direction) const
+    {
+        auto setMazeTrack = MazeSetTrackAction(x, y, z, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        setMazeTrack.SetFlags(GetFlags());
+
+        auto queryRes = setMazeTrack.Query();
+        if (queryRes->Error == GA_ERROR::OK)
+        {
+            auto execRes = setMazeTrack.Execute();
+            if (execRes->Error == GA_ERROR::OK)
+            {
+                return execRes->Cost;
+            }
+        }
+
+        return MONEY16_UNDEFINED;
+    }
+
+    money32 DemolishTracks() const
+    {
+        money32 refundPrice = 0;
+
+        uint8 oldpaused = gGamePaused;
+        gGamePaused = 0;
+
+        tile_element_iterator it;
+
+        tile_element_iterator_begin(&it);
+        while (tile_element_iterator_next(&it)) 
+        {
+            if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
+                continue;
+
+            if (track_element_get_ride_index(it.element) != _rideIndex)
+                continue;
+
+            sint32 x = it.x * 32, y = it.y * 32;
+            sint32 z = it.element->base_height * 8;
+
+            uint8 rotation = tile_element_get_direction(it.element);
+            uint8 type = track_element_get_type(it.element);
+
+            if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) 
+            {
+                money32 removePrice = game_do_command(
+                    x,
+                    GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_APPLY | (rotation << 8),
+                    y,
+                    type | (tile_element_get_track_sequence(it.element) << 8),
+                    GAME_COMMAND_REMOVE_TRACK,
+                    z,
+                    0);
+
+                if (removePrice == MONEY32_UNDEFINED) 
+                    tile_element_remove(it.element);
+                else 
+                    refundPrice += removePrice;
+
+                tile_element_iterator_restart_for_tile(&it);
+                continue;
+            }
+
+            static constexpr const LocationXY16 DirOffsets[] =
+            {
+                { 0, 0 },
+                { 0, 16 },
+                { 16, 16 },
+                { 16, 0 },
+            };
+
+            for (uint8 dir = 0; dir < 4; dir++)
+            {
+                const LocationXY16& off = DirOffsets[dir];
+                money32 removePrice = MazeRemoveTrack(x + off.x, y + off.y, z, dir);
+                if (removePrice != MONEY32_UNDEFINED)
+                    refundPrice += removePrice;
+                else
+                    break;
+            }
+
+            tile_element_iterator_restart_for_tile(&it);
+        }
+
+        gGamePaused = oldpaused;
+        return refundPrice;
     }
 };

@@ -555,7 +555,10 @@ sint32 track_get_actual_bank_3(rct_vehicle * vehicle, rct_tile_element * tileEle
 
 void game_command_place_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 void game_command_remove_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+
 void game_command_set_maze_track(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
+money32 maze_set_track(uint16 x, uint16 y, uint16 z, uint8 flags, uint8 direction, uint8 rideIndex, uint8 mode);
+
 void game_command_set_brakes_speed(sint32 * eax, sint32 * ebx, sint32 * ecx, sint32 * edx, sint32 * esi, sint32 * edi, sint32 * ebp);
 bool track_element_is_booster(uint8 rideType, uint8 trackType);
 bool track_element_has_speed_setting(uint8 trackType);
