@@ -4494,6 +4494,9 @@ STR_6189    :Eend
 STR_6190    :{SMALLFONT}{BLACK}Je kunt geen sprite selecteren als het spel nog op het titelscherm staat. Laad eerst het opgeslagen spel waarvan je een sprite wilt selecteren.
 STR_6191    :Land
 STR_6192    :Muur
+STR_6193    :{COMMA16} bezoeker
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} bezoeker
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} bezoeker
 
 #############
 # Scenarios #

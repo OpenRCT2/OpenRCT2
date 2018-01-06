@@ -3059,9 +3059,9 @@ STR_3051    :Golf agujero C
 STR_3052    :Golf agujero D
 STR_3053    :Golf agujero E
 STR_3054    :Cargando...
-STR_3055    :Blanca
-STR_3056    :Translúcida
-STR_3057    :{WINDOW_COLOUR_2}Marca de construcción:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Paredes de ladrillo
 STR_3059    :Arbusto
 STR_3060    :Bloque de hielo
@@ -3842,7 +3842,7 @@ STR_5503    :Escribe el nombre del host o la IP:
 STR_5504    :{SMALLFONT}{BLACK}Mostrar estado multijugador
 STR_5505    :No se pudo conectar al servidor.
 STR_5506    :Visitantes ignoran intensidad de atracc.
-STR_5507    :Los Manitas cortan el césped por defecto
+STR_5507    :<removed string - do not use>
 STR_5508    :Permitir cargar ficheros dañados
 STR_5509    :{SMALLFONT}{BLACK}Permite cargar escenarios y partidas que tengan una suma de comprobación incorrecta, como los escenarios de la demo o partidas dañadas.
 STR_5510    :Dispositivo de sonido predeterminado
@@ -4125,7 +4125,7 @@ STR_5817    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Estab
 STR_5818    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Usar escala "vecino próximo" (nearest-neighbour) si el coeficiente de la escala toma valores enteros.
 STR_5819    :{SMALLFONT}{BLACK}[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
 STR_5820    :{SMALLFONT}{BLACK}Minimizar el juego si se pierde el foco en el modo de pantalla completa.
-STR_5821    :{SMALLFONT}{BLACK}Cambiar el color de la marca de construcción cuando se construyen atracciones, senderos, tiendas, escenarios, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Habilita los ciclos de día y noche.{NEWLINE}Un ciclo completo tarda un mes en el juego.
 STR_5823    :{SMALLFONT}{BLACK}Muestra el texto de los letreros en mayúsculas (como en RCT1)
 STR_5824    :{SMALLFONT}{BLACK}Desactiva los relámpagos durante una tormenta eléctrica.
@@ -4154,7 +4154,7 @@ STR_5846    :{SMALLFONT}{BLACK}Establece con cuanta frecuencia OpenRCT2 guarda l
 STR_5847    :{SMALLFONT}{BLACK}Selecciona la secuencia del parque usada en el menú principal. Secuencias de RCT1/RCT2 requieren la importación de los escenarios para funcionar.
 STR_5848    :{SMALLFONT}{BLACK}Crea o modifica las secuencias del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Colocar automáticamente los nuevos empleados contratados.
-STR_5850    :{SMALLFONT}{BLACK}Los nuevos manitas contratados cortan el césped por defecto. (como en RCT1)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Establece el tiempo de inspección por defecto en las atracciones nuevas.
 STR_5852    :{SMALLFONT}{BLACK}Establece el nombre del canal TwitchTV que se utilizará para la integración de Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Habilitar/Deshabilitar efectos de sonido.
@@ -4201,7 +4201,7 @@ STR_5893    :Tasa de Cambio
 STR_5894    :Introduce la Tasa de Cambio
 STR_5895    :Guardar diseño de vía
 STR_5896    :¡Falló al guardar el diseño de vía!
-STR_5897    :Límite de ventanas:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}No se pudo cargar el diseño de vía:{NEWLINE}¡El archivo parece estar corrupto, dañado o no existe!
 STR_5899    :Alternar vent. depuración de pintado
 STR_5900    :Utilizar código de dibujado original

@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include <memory>
-
+#include <stdexcept>
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Context.h"
@@ -29,7 +29,7 @@
 
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "drawing.h"
+#include "Drawing.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -69,7 +69,7 @@ static inline uint32 rctc_to_rct2_index(uint32 image)
     else if (image >= 23804 && image < 24670) return image - 43;
     else if (image >= 24674 && image < 28244) return image - 47;
     else if (image >= 28246                 ) return image - 49;
-    else throw Exception("Invalid RCTC g1.dat file");
+    else throw std::runtime_error("Invalid RCTC g1.dat file");
 }
 
 static void read_and_convert_gxdat(IStream * stream, size_t count, bool is_rctc, rct_g1_element *elements)
@@ -206,7 +206,7 @@ extern "C"
 
             if (header.num_entries < SPR_G1_END)
             {
-                throw Exception("Not enough elements in g1.dat");
+                throw std::runtime_error("Not enough elements in g1.dat");
             }
 
             // Read element headers
@@ -226,7 +226,7 @@ extern "C"
             }
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_fatal("Unable to load g1 graphics");
             if (!gOpenRCT2Headless)
@@ -283,7 +283,7 @@ extern "C"
             }
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_fatal("Unable to load g2 graphics");
             if (!gOpenRCT2Headless)
@@ -378,7 +378,7 @@ extern "C"
             _csgLoaded = true;
             return true;
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             log_error("Unable to load csg graphics");
             return false;

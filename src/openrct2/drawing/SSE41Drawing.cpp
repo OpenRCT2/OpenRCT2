@@ -16,7 +16,7 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
-#include "drawing.h"
+#include "Drawing.h"
 
 #ifdef __SSE4_1__
 

@@ -3061,9 +3061,9 @@ STR_3051    :Golfloch C
 STR_3052    :Golfloch D
 STR_3053    :Golfloch E
 STR_3054    :Lädt...
-STR_3055    :Weiß
-STR_3056    :Durchsichtig
-STR_3057    :{WINDOW_COLOUR_2}Baumarkierung:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Ziegelmauern
 STR_3059    :Hecken
 STR_3060    :Eisblöcke
@@ -3841,7 +3841,7 @@ STR_5503    :Hostnamen oder IP-Adresse eingeben:
 STR_5504    :{SMALLFONT}{BLACK}Mehrspielerstatus anzeigen
 STR_5505    :Verbindung zum Server konnte nicht hergestellt werden
 STR_5506    :Besucher ignorieren Bahnintensität
-STR_5507    :Parkpfleger mähen standardmäßig Gras
+STR_5507    :<removed string - do not use>
 STR_5508    :Laden von Dateien mit unzul. Prüfsummen erlauben
 STR_5509    :{SMALLFONT}{BLACK}Erlaubt das Laden von Szenarios und gespeicherten Spielständen, die eine unzulässige Prüfsumme haben, wie Szenarios aus der Demo oder fehlerhafte Spielstände
 STR_5510    :Standard Audiogerät
@@ -4121,7 +4121,7 @@ STR_5817    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Stellt
 STR_5818    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Benutzt die Pixelwiederholung, wenn der Skalierungsfaktor auf einen ganzzahligen Wert eingestellt{NEWLINE}ist (1, 2, 3 etc.)
 STR_5819    :{SMALLFONT}{BLACK}[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :{SMALLFONT}{BLACK}Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
-STR_5821    :{SMALLFONT}{BLACK}Verändert die Farbe der Baumarkierung, wenn Attraktionen, Wege, Läden, Szenerien etc.++ gebaut werden
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
 STR_5823    :{SMALLFONT}{BLACK}Zeigt Text auf Bannern in Großbuchstaben an (RCT1-Verhalten)
 STR_5824    :{SMALLFONT}{BLACK}Deaktiviert den Blitzeffekt{NEWLINE}während eines Gewitters
@@ -4150,7 +4150,7 @@ STR_5846    :{SMALLFONT}{BLACK}Auswählen, wie oft OpenRCT2{NEWLINE}automatisch 
 STR_5847    :{SMALLFONT}{BLACK}Die auf dem Titelbildschirm angezeigte Parksequenz auswählen. Titelsequenzen von RCT1/2 benötigen importierte Szenarien, um zu funktionieren
 STR_5848    :{SMALLFONT}{BLACK}Benutzerdefinierte Titelsequenzen erstellen und verwalten
 STR_5849    :{SMALLFONT}{BLACK}Personal wird nach dem Einstellen automatisch platziert
-STR_5850    :{SMALLFONT}{BLACK}Neu eingestellte Parkpfleger{NEWLINE}mähen standardmäßig Gras (RCT1-Verhalten)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Stellt die für neu gebaute Attraktionen standardmäßige Inspektionszeit ein
 STR_5852    :{SMALLFONT}{BLACK}Den Namen des TwitchTV-Kanals einstellen, der für die Twitch-Integration{NEWLINE}benutzt wird
 STR_5853    :{SMALLFONT}{BLACK}Soundeffekte aktivieren/deaktivieren
@@ -4197,7 +4197,7 @@ STR_5893    :Wechselkurs
 STR_5894    :Wechselkurs eingeben:
 STR_5895    :Streckenentwurf speichern
 STR_5896    :Streckenentwurf konnte nicht gespeichert werden!
-STR_5897    :Fensterlimit:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Streckenentwurf konnte nicht geladen werden, da die Datei möglicherweise fehlt oder fehlerhaft ist!
 STR_5899    :Zeichen-Debugging-Fenster ein/aus
 STR_5900    :Originalen Zeichen-Code verw.

@@ -80,7 +80,7 @@ void StringTable::Read(IReadObjectContext * context, IStream * stream, uint8 id)
             _strings.push_back(entry);
         }
     }
-    catch (const Exception &)
+    catch (const std::exception &)
     {
         context->LogError(OBJECT_ERROR_BAD_STRING_TABLE, "Bad string table.");
         throw;

@@ -4499,6 +4499,9 @@ STR_6189    :Duck
 STR_6190    :{SMALLFONT}{BLACK}You cannot select a sprite while the main title screen is active.
 STR_6191    :Surface
 STR_6192    :Wall
+STR_6193    :{COMMA16} guest
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} guest
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} guest
 
 #############
 # Scenarios #
@@ -4954,27 +4957,55 @@ STR_CPTY    :8 passengers
 
 [BMSD]
 STR_NAME    :Twister train
+STR_DESC    :A spacious train with shoulder restraints
 
 [BMSU]
 STR_NAME    :Stand-up twister train
+STR_DESC    :A train with shoulder restraints, in which the riders stand up
 
 [BMFL]
 STR_NAME    :Floorless twister train
+STR_DESC    :A spacious train with shoulder restraints and no floor, making for a more exciting ride
 
 [WMMINE]
 STR_NAME    :Mine cars
+STR_DESC    :Cars shaped like an old mine cart
 
 [WMOUSE]
 STR_NAME    :Mouse cars
+STR_DESC    :Indivual cars shaped like a mouse
 
 [STEEP1]
 STR_NAME    :Horses
+STR_DESC    :Single cars shaped like a horse
 
 [STEEP2]
 STR_NAME    :Motorbikes
+STR_DESC    :Single cars shaped like a motorbike
 
 [SBOX]
 STR_NAME    :Soap boxes
+STR_DESC    :Single cars shaped like a soap box
+
+[BOB1]
+STR_NAME    :Bobsleigh train
+STR_DESC    :A train consisting of 2-seater cars where the riders are behind each other
+
+[INTBOB]
+STR_NAME    :6-seater bobsleighs
+STR_DESC    :Bobsleighs with three seating rows, with room for two people on each
+
+[LIFT1]
+STR_NAME    :Lift cabin
+STR_DESC    :Steel lift cabin
+
+[ARRT1]
+STR_NAME    :Corkscrew Roller Coaster train
+STR_DESC    :Roller coaster train with shoulder restraints
+
+[ARRT2]
+STR_NAME    :Hypercoaster train
+STR_DESC    :Comfortable trains with only lap bar restraints
 
 #WW
 [CONDORRD]
@@ -4987,6 +5018,15 @@ STR_CPTY    :4 passengers per car
 STR_NAME    :Conger Eel train
 STR_DESC    :A compact steel-tracked roller coaster where the Eel-shaped train travels through corkscrews and loops
 STR_CPTY    :4 passengers per car
+
+#WW
+[MINELIFT]
+STR_NAME    :Mine lift cabin
+STR_DESC    :A steel lift cabin commonly used in mines
+
+#WW
+[ANACONDA]
+STR_NAME    :Anaconda train
 
 ###########
 # Scenery #

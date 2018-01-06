@@ -87,10 +87,10 @@ public:
             fs.Read(fileData, fileLength);
             fileData[fileLength] = '\0';
         }
-        catch (const Exception &ex)
+        catch (const std::exception &ex)
         {
             Memory::Free(fileData);
-            log_error("Unable to open %s: %s", path, ex.GetMessage());
+            log_error("Unable to open %s: %s", path, ex.what());
             return nullptr;
         }
 

@@ -18,7 +18,7 @@
 #define _CONSOLE_H_
 
 #include "../common.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 
 typedef enum CONSOLE_INPUT
 {

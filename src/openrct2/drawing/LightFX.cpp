@@ -16,6 +16,8 @@
 
 #ifdef __ENABLE_LIGHTFX__
 
+#include <algorithm>
+#include <cmath>
 #include "../common.h"
 #include "../config/Config.h"
 #include "../Game.h"
@@ -24,8 +26,11 @@
 #include "../paint/tile_element/TileElement.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "drawing.h"
-#include "lightfx.h"
+#include "Drawing.h"
+#include "LightFX.h"
+
+extern "C"
+{
 
 static uint8 _bakedLightTexture_lantern_0[32*32];
 static uint8 _bakedLightTexture_lantern_1[64*64];
@@ -78,21 +83,21 @@ static rct_palette gPalette_light;
 static uint8 calc_light_intensity_lantern(sint32 x, sint32 y) {
     double distance = (double)(x * x + y * y);
 
-    double light = 0.03 + pow(10.0 / (1.0 + distance / 100.0), 0.55);
-    light *= min(1.0, max(0.0f, 2.0 - sqrt(distance) / 64));
+    double light = 0.03 + std::pow(10.0 / (1.0 + distance / 100.0), 0.55);
+    light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.1f;
 
-    return (uint8)(min(255.0, light * 255.0));
+    return (uint8)(std::min(255.0, light * 255.0));
 }
 
 static uint8 calc_light_intensity_spot(sint32 x, sint32 y) {
     double distance = (double)(x * x + y * y);
 
-    double light = 0.3 + pow(10.0 / (1.0 + distance / 100.0), 0.75);
-    light *= min(1.0, max(0.0f, 2.0 - sqrt(distance) / 64));
+    double light = 0.3 + std::pow(10.0 / (1.0 + distance / 100.0), 0.75);
+    light *= std::min(1.0, std::max(0.0, 2.0 - std::sqrt(distance) / 64));
     light *= 0.5f;
 
-    return (uint8)(min(255.0, light * 255.0)) >> 4;
+    return (uint8)(std::min(255.0, light * 255.0)) >> 4;
 }
 
 static void calc_rescale_light_half( uint8 *target, uint8 *source,uint32 targetWidth, uint32 targetHeight) {
@@ -177,9 +182,9 @@ void lightfx_prepare_light_list()
         }
 
         LocationXYZ16 coord_3d = {
-            .x = entry->x,
-            .y = entry->y,
-            .z = entry->z
+            /* .x = */ entry->x,
+            /* .y = */ entry->y,
+            /* .z = */ entry->z
         };
 
         LocationXY16 coord_2d = coordinate_3d_to_2d(&coord_3d, _current_view_rotation_front);
@@ -352,13 +357,13 @@ void lightfx_prepare_light_list()
 
                 sint32 projDot = (dirVecX * deltaX + dirVecY * deltaY) / 1000;
 
-                projDot = max(minDist, projDot);
+                projDot = std::max(minDist, projDot);
 
                 if (projDot < 5) {
                     lightIntensityOccluded  += 100;
                 }
                 else {
-                    lightIntensityOccluded  += max(0, 200 - (projDot * 20));
+                    lightIntensityOccluded  += std::max(0, 200 - (projDot * 20));
                 }
 
             //  log_warning("light %i [%i, %i, %i], [%i, %i] minDist to %i: %i; projdot: %i", light, coord_3d.x, coord_3d.y, coord_3d.z, mapCoord.x, mapCoord.y, baseHeight, minDist, projDot);
@@ -404,8 +409,8 @@ void lightfx_prepare_light_list()
 
         //  log_warning("sample-count: %i, occlusion: %i", totalSamplePoints, lightIntensityOccluded / totalSamplePoints);
 
-            entry->lightIntensity = min(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
-            entry->lightIntensity = max(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
+            entry->lightIntensity = std::min<uint32>(0xFF, (entry->lightIntensity * lightIntensityOccluded) / (totalSamplePoints * 100));
+            entry->lightIntensity = std::max<uint32>(0x00, entry->lightIntensity - _current_view_zoom_front * 5);
         }
 
         if (_current_view_zoom_front > 0) {
@@ -431,7 +436,7 @@ void lightfx_swap_buffers()
 
     tmp = _LightListBack;
     _LightListBack = _LightListFront;
-    _LightListFront = tmp;
+    _LightListFront = (lightlist_entry *)tmp;
 
     LightListCurrentCountFront = LightListCurrentCountBack;
     LightListCurrentCountBack = 0x0;
@@ -472,7 +477,7 @@ void lightfx_render_lights_to_frontbuffer()
 
     for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
         const uint8 *bufReadBase    = 0;
-        uint8       *bufWriteBase   = _light_rendered_buffer_front;
+        uint8       *bufWriteBase   = (uint8 *)_light_rendered_buffer_front;
         uint32      bufReadWidth, bufReadHeight;
         sint32      bufWriteX, bufWriteY;
         sint32      bufWriteWidth, bufWriteHeight;
@@ -587,7 +592,7 @@ void lightfx_render_lights_to_frontbuffer()
         if (entry->lightIntensity == 0xFF) {
             for (sint32 y = 0; y < bufWriteHeight; y++) {
                 for (sint32 x = 0; x < bufWriteWidth; x++) {
-                    *bufWriteBase = min(0xFF, *bufWriteBase + *bufReadBase);
+                    *bufWriteBase = std::min(0xFF, *bufWriteBase + *bufReadBase);
                     bufWriteBase++;
                     bufReadBase++;
                 }
@@ -599,7 +604,7 @@ void lightfx_render_lights_to_frontbuffer()
         else {
             for (sint32 y = 0; y < bufWriteHeight; y++) {
                 for (sint32 x = 0; x < bufWriteWidth; x++) {
-                    *bufWriteBase = min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->lightIntensity)) >> 8));
+                    *bufWriteBase = std::min(0xFF, *bufWriteBase + (((*bufReadBase) * (1 + entry->lightIntensity)) >> 8));
                     bufWriteBase++;
                     bufReadBase++;
                 }
@@ -825,12 +830,12 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
     static float fogginess = 0.0f;
     static float lightPolution = 0.0f;
 
-    float sunLight = max(0.0f, min(1.0f, 2.0f - night * 3.0f));
+    float sunLight = std::max(0.0f, std::min(1.0f, 2.0f - night * 3.0f));
 
     // Night version
-    natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(pow(night, 0.035f + sunLight * 10.50f)));
-    natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(pow(night, 0.100f + sunLight *  5.50f)));
-    natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(pow(night, 0.200f + sunLight *  1.5f)));
+    natLightR = flerp(natLightR * 4.0f, 0.635f, (float)(std::pow(night, 0.035f + sunLight * 10.50f)));
+    natLightG = flerp(natLightG * 4.0f, 0.650f, (float)(std::pow(night, 0.100f + sunLight *  5.50f)));
+    natLightB = flerp(natLightB * 4.0f, 0.850f, (float)(std::pow(night, 0.200f + sunLight *  1.5f)));
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
@@ -873,7 +878,7 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
 
     wetness *= 0.999995f;
     wetness += fogginess * 0.001f;
-    wetness = min(wetness, 1.0f);
+    wetness = std::min(wetness, 1.0f);
 
     float boost = 1.0f;
     float envFog = fogginess;
@@ -886,9 +891,9 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
     float reduceColourNat = 1.0f;
     float reduceColourLit = 1.0f;
 
-    reduceColourLit *= night / (float)pow(max(1.01f, 0.4f + lightAvg), 2.0);
+    reduceColourLit *= night / (float)std::pow(std::max(1.01f, 0.4f + lightAvg), 2.0);
 
-    float   targetLightPollution = reduceColourLit * max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
+    float   targetLightPollution = reduceColourLit * std::max(0.0f, 0.0f + 0.000001f * (float)lightfx_get_light_polution());
     lightPolution -= (lightPolution - targetLightPollution) * 0.001f;
 
     //  lightPollution /= 1.0f + fogginess * 1.0f;
@@ -938,7 +943,7 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
             // This experiment shifts the colour of pixels as-if they are wet, but it is not a pretty solution at all
             if ((i % 16)) {
                 float iVal = ((float)((i + 12) % 16)) / 16.0f;
-                float eff = (wetness * ((float)pow(iVal, 1.5) * 0.85f));
+                float eff = (wetness * ((float)std::pow(iVal, 1.5) * 0.85f));
                 reduceColourNat *= 1.0f - eff;
                 addLightNatR += fogR * eff * 3.95f;
                 addLightNatG += fogR * eff * 3.95f;
@@ -950,14 +955,14 @@ void lightfx_apply_palette_filter(uint8 i, uint8 *r, uint8 *g, uint8 *b)
         addLightNatG *= 1.0f - envFog;
         addLightNatB *= 1.0f - envFog;
 
-        *r = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
-        *g = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
-        *b = (uint8)(min(255.0f, max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
+        *r = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*r) * reduceColourNat * natLightR + envFog * fogR + addLightNatR))));
+        *g = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*g) * reduceColourNat * natLightG + envFog * fogG + addLightNatG))));
+        *b = (uint8)(std::min(255.0f, std::max(0.0f, (-overExpose + (float)(*b) * reduceColourNat * natLightB + envFog * fogB + addLightNatB))));
 
         rct_palette_entry * dstEntry = &gPalette_light.entries[i];
-        dstEntry->red = (uint8)(min(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
-        dstEntry->green = (uint8)(min(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
-        dstEntry->blue = (uint8)(min(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
+        dstEntry->red = (uint8)(std::min<float>(0xFF, ((float)(*r) * reduceColourLit * boost + lightFog) * elecMultR));
+        dstEntry->green = (uint8)(std::min<float>(0xFF, ((float)(*g) * reduceColourLit * boost + lightFog) * elecMultG));
+        dstEntry->blue = (uint8)(std::min<float>(0xFF, ((float)(*b) * reduceColourLit * boost + lightFog) * elecMultB));
     }
 }
 
@@ -966,7 +971,7 @@ static uint8 mix_light(uint32 a, uint32 b, uint32 intensity)
     intensity = intensity * 6;
     uint32 bMul = (b * intensity) >> 8;
     uint32 ab = a + bMul;
-    uint8 result = min(255, ab);
+    uint8 result = std::min<uint32>(255, ab);
     return result;
 }
 
@@ -1010,6 +1015,8 @@ void lightfx_render_to_texture(
             *dst++ = colour;
         }
     }
+}
+
 }
 
 #endif // __ENABLE_LIGHTFX__

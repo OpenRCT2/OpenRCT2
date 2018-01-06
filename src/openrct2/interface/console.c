@@ -18,7 +18,7 @@
 
 #include "../config/Config.h"
 #include "../Context.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Editor.h"
 #include "../EditorObjectSelectionSession.h"
 #include "../Game.h"
@@ -49,7 +49,7 @@
 #include "viewport.h"
 
 #ifndef NO_TTF
-#include "../drawing/ttf.h"
+#include "../drawing/TTF.h"
 #endif
 
 #define CONSOLE_BUFFER_SIZE 8192

@@ -16,7 +16,6 @@
 
 #include "config/Config.h"
 #include "core/Console.hpp"
-#include "core/Exception.hpp"
 #include "core/Guard.hpp"
 #include "core/Path.hpp"
 #include "core/String.hpp"

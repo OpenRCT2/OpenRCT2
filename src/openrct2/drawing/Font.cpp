@@ -15,15 +15,19 @@
 #pragma endregion
 
 #include "../core/Guard.hpp"
+#include "../core/Util.hpp"
 #include "../localisation/localisation.h"
 #include "../sprites.h"
-#include "drawing.h"
-#include "font.h"
-#include "ttf.h"
+#include "Drawing.h"
+#include "Font.h"
+#include "TTF.h"
 
 static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
 static uint8 _spriteFontCharacterWidths[896];
+
+extern "C"
+{
 
 #ifndef NO_TTF
 TTFFontSetDescriptor *gCurrentTTFFontSet;
@@ -125,7 +129,7 @@ sint32 font_sprite_get_codepoint_width(uint16 fontSpriteBase, sint32 codepoint)
     }
 
     sint32 spriteFontIdx = fontSpriteBase + font_sprite_get_codepoint_offset(codepoint);
-    if (spriteFontIdx < 0 || spriteFontIdx >= countof(_spriteFontCharacterWidths))
+    if (spriteFontIdx < 0 || spriteFontIdx >= (sint32)Util::CountOf(_spriteFontCharacterWidths))
     {
         log_warning("Invalid font index %u", spriteFontIdx);
         spriteFontIdx = 0;
@@ -269,4 +273,6 @@ bool font_supports_string(const utf8 *text, sint32 fontSize)
     } else {
         return font_supports_string_sprite(text);
     }
+}
+
 }

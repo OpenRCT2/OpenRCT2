@@ -21,8 +21,8 @@
 #include "Fonts.h"
 #include "FontFamilies.h"
 
-#include "../drawing/drawing.h"
-#include "../drawing/ttf.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/TTF.h"
 #include "../localisation/language.h"
 
 #ifndef NO_TTF

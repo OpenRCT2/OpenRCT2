@@ -61,7 +61,7 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->powered_acceleration   = 80;
     current->velocity               = 0;
     current->acceleration           = 0;
-    current->var_4A                 = 0;
+    current->swing_sprite                 = 0;
     current->swinging_car_var_0     = 0;
     current->var_4E                 = 0;
     current->restraints_position    = 0;

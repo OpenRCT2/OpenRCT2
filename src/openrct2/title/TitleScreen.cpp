@@ -27,7 +27,7 @@
 #include "TitleSequencePlayer.h"
 
 #include "../audio/audio.h"
-#include "../drawing/drawing.h"
+#include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Input.h"
 #include "../interface/viewport.h"

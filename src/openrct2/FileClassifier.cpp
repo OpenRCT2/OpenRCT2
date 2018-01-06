@@ -34,7 +34,7 @@ bool TryClassifyFile(const std::string &path, ClassifiedFileInfo * result)
         auto fs = FileStream(path, FILE_MODE_OPEN);
         return TryClassifyFile(&fs, result);
     }
-    catch (Exception)
+    catch (const std::exception &)
     {
         return false;
     }
@@ -87,10 +87,10 @@ static bool TryClassifyAsS6(IStream * stream, ClassifiedFileInfo * result)
         result->Version = s6Header.version;
         success = true;
     }
-    catch (const Exception& e)
+    catch (const std::exception &e)
     {
         // Exceptions are likely to occur if file is not S6 format
-        log_verbose(e.GetMessage());
+        log_verbose(e.what());
     }
     stream->SetPosition(originalPosition);
     return success;
@@ -123,9 +123,9 @@ static bool TryClassifyAsS4(IStream * stream, ClassifiedFileInfo * result)
             success = true;
         }
     }
-    catch (const Exception& e)
+    catch (const std::exception &e)
     {
-        Console::Error::WriteLine(e.GetMessage());
+        Console::Error::WriteLine(e.what());
     }
 
     stream->SetPosition(originalPosition);
@@ -158,9 +158,9 @@ static bool TryClassifyAsTD4_TD6(IStream * stream, ClassifiedFileInfo * result)
             }
         }
     }
-    catch (const Exception& e)
+    catch (const std::exception& e)
     {
-        Console::Error::WriteLine(e.GetMessage());
+        Console::Error::WriteLine(e.what());
     }
 
     return success;

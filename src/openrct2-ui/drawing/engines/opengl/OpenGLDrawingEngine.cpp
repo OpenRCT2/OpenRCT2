@@ -22,7 +22,6 @@
 
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/core/Exception.hpp>
 #include <openrct2/core/Math.hpp>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/IDrawingContext.h>
@@ -33,8 +32,8 @@
 
 #include <openrct2/interface/window.h>
 #include <openrct2/Intro.h>
-#include <openrct2/drawing/drawing.h>
-#include <openrct2/drawing/lightfx.h>
+#include <openrct2/drawing/Drawing.h>
+#include <openrct2/drawing/LightFX.h>
 
 #include "../DrawingEngines.h"
 #include "GLSLTypes.h"
@@ -182,13 +181,13 @@ public:
         {
             char szRequiredVersion[32];
             snprintf(szRequiredVersion, 32, "OpenGL %d.%d", requiredVersion.Major, requiredVersion.Minor);
-            throw Exception(std::string(szRequiredVersion) + std::string(" not available."));
+            throw std::runtime_error(std::string(szRequiredVersion) + std::string(" not available."));
         }
         SDL_GL_MakeCurrent(_window, _context);
 
         if (!OpenGLAPI::Initialise())
         {
-            throw Exception("Unable to initialise OpenGL.");
+            throw std::runtime_error("Unable to initialise OpenGL.");
         }
 
         _drawingContext->Initialise();

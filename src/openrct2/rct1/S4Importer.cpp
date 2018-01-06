@@ -18,7 +18,6 @@
 #include <vector>
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
-#include "../core/Exception.hpp"
 #include "../core/FileStream.hpp"
 #include "../core/Guard.hpp"
 #include "../core/IStream.hpp"
@@ -141,7 +140,7 @@ public:
         }
         else
         {
-            throw Exception("Invalid RCT1 park extension.");
+            throw std::runtime_error("Invalid RCT1 park extension.");
         }
     }
 
@@ -202,7 +201,7 @@ public:
         }
         else
         {
-            throw Exception("Unable to decode park.");
+            throw std::runtime_error("Unable to decode park.");
         }
         return ParkLoadResult::CreateOK();
     }
@@ -1146,12 +1145,12 @@ private:
 
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
-        dst->var_4A = src->var_4A;
+        dst->swing_sprite = src->swing_sprite;
         dst->swinging_car_var_0 = src->swinging_car_var_0;
         dst->var_4E = src->var_4E;
         dst->restraints_position = src->restraints_position;
         dst->var_BA = src->var_BA;
-        dst->var_BF = src->var_BF;
+        dst->sound_vector_factor = src->sound_vector_factor;
         dst->var_B6 = src->var_B6;
         dst->var_B8 = src->var_B8;
         dst->sound1_id = RCT12_SOUND_ID_NULL;
@@ -1829,7 +1828,7 @@ private:
             if (object == nullptr && objectType != OBJECT_TYPE_SCENERY_GROUP)
             {
                 log_error("Failed to load %s.", objectName);
-                throw Exception("Failed to load object.");
+                throw std::runtime_error("Failed to load object.");
             }
 
             entryIndex++;
@@ -2746,7 +2745,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
@@ -2766,7 +2765,7 @@ extern "C"
                 s4Importer->Import();
             }
         }
-        catch (const Exception &)
+        catch (const std::exception &)
         {
             delete result;
             result = new ParkLoadResult(ParkLoadResult::CreateUnknown());
