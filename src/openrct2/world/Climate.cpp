@@ -14,21 +14,21 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../config/Config.h"
-#include "../core/Math.hpp"
-#include "../OpenRCT2.h"
-#include "Climate.h"
-
 #include "../audio/audio.h"
 #include "../audio/AudioMixer.h"
 #include "../Cheats.h"
+#include "../config/Config.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
+#include "../OpenRCT2.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"
+#include "Climate.h"
 
 constexpr sint32 MAX_THUNDER_INSTANCES = 2;
 
@@ -45,7 +45,9 @@ struct WeatherTransition
     sint8 Distribution[24];
 };
 
-extern const WeatherTransition * ClimateTransitions[4];
+extern const WeatherTransition *    ClimateTransitions[4];
+extern const WeatherState           ClimateWeatherData[6];
+extern const FILTER_PALETTE_ID      ClimateWeatherGloomColours[4];
 
 // Climate data
 uint8           gClimate;
@@ -206,6 +208,27 @@ extern "C"
         climate_update_rain_sound();
         climate_update_thunder_sound();
     }
+
+    FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState * state)
+    {
+        auto paletteId = PALETTE_NULL;
+        auto gloom = state->WeatherGloom;
+        if (gloom < Util::CountOf(ClimateWeatherGloomColours))
+        {
+            paletteId = ClimateWeatherGloomColours[gloom];
+        }
+        return paletteId;
+    }
+}
+
+uint32 climate_get_weather_sprite_id(const ClimateState &state)
+{
+    uint32 spriteId = SPR_WEATHER_SUN;
+    if (state.Weather < Util::CountOf(ClimateWeatherData))
+    {
+        spriteId = ClimateWeatherData[state.Weather].SpriteId;
+    }
+    return spriteId;
 }
 
 static sint8 climate_step_weather_level(sint8 currentWeatherLevel, sint8 nextWeatherLevel)
@@ -371,7 +394,7 @@ static void climate_play_thunder(sint32 instanceIndex, sint32 soundId, sint32 vo
 
 const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] =
 {
-    (FILTER_PALETTE_ID)0,
+    PALETTE_NULL,
     PALETTE_DARKEN_1,
     PALETTE_DARKEN_2,
     PALETTE_DARKEN_3,

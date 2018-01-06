@@ -585,15 +585,17 @@ static void window_game_bottom_toolbar_draw_right_panel(rct_drawpixelinfo *dpi, 
     x += 30;
 
     // Current weather
-    gfx_draw_sprite(dpi, ClimateWeatherData[gClimateCurrent.Weather].SpriteId, x, y, 0);
+    auto currentWeatherSpriteId = climate_get_weather_sprite_id(gClimateCurrent);
+    gfx_draw_sprite(dpi, currentWeatherSpriteId, x, y, 0);
 
     // Next weather
-    if (ClimateWeatherData[gClimateCurrent.Weather].SpriteId != ClimateWeatherData[gClimateNext.Weather].SpriteId)
+    auto nextWeatherSpriteId = climate_get_weather_sprite_id(gClimateNext);
+    if (currentWeatherSpriteId != nextWeatherSpriteId)
     {
         if (gClimateUpdateTimer < 960)
         {
             gfx_draw_sprite(dpi, SPR_NEXT_WEATHER, x + 27, y + 5, 0);
-            gfx_draw_sprite(dpi, ClimateWeatherData[gClimateNext.Weather].SpriteId, x + 40, y, 0);
+            gfx_draw_sprite(dpi, nextWeatherSpriteId, x + 40, y, 0);
         }
     }
 }
