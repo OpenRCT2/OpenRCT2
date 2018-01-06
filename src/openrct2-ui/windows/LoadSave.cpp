@@ -41,6 +41,7 @@ enum {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
+    WIDX_RESIZE,
     WIDX_DEFAULT,
     WIDX_UP,
     WIDX_NEW_FOLDER,
@@ -56,6 +57,7 @@ static rct_widget window_loadsave_widgets[] = {
     { WWT_FRAME,        0,      0,                  WW - 1,         0,          WH - 1,     STR_NONE,                           STR_NONE },
     { WWT_CAPTION,      0,      1,                  WW - 2,         1,          14,         STR_NONE,                           STR_WINDOW_TITLE_TIP },
     { WWT_CLOSEBOX,     0,      WW - 13,            WW - 3,         2,          13,         STR_CLOSE_X,                        STR_CLOSE_WINDOW_TIP },     //Window close button
+    { WWT_RESIZE,       1,      0,                  WW - 1,         WH - 1,     WH - 1,     0xFFFFFFFF,                         STR_NONE },                 // tab content panel
     { WWT_BUTTON,       0,      4,                  85,             36,         49,         STR_LOADSAVE_DEFAULT,               STR_LOADSAVE_DEFAULT_TIP }, // Go to default directory
     { WWT_BUTTON,       0,      86,                 167,            36,         49,         STR_FILEBROWSER_ACTION_UP,          STR_NONE},                  // Up
     { WWT_BUTTON,       0,      168,                251,            36,         49,         STR_FILEBROWSER_ACTION_NEW_FOLDER,  STR_NONE },                 // New
@@ -73,18 +75,20 @@ static rct_widget window_loadsave_widgets[] = {
 
 static void window_loadsave_close(rct_window *w);
 static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void window_loadsave_resize(rct_window *w);
 static void window_loadsave_scrollgetsize(rct_window *w, sint32 scrollIndex, sint32 *width, sint32 *height);
 static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
 
 static rct_window_event_list window_loadsave_events = {
     window_loadsave_close,
     window_loadsave_mouseup,
-    nullptr,
+    window_loadsave_resize,
     nullptr,
     nullptr,
     nullptr,
@@ -107,7 +111,7 @@ static rct_window_event_list window_loadsave_events = {
     window_loadsave_tooltip,
     nullptr,
     nullptr,
-    nullptr,
+    window_loadsave_invalidate,
     window_loadsave_paint,
     window_loadsave_scrollpaint
 };
@@ -176,9 +180,14 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
 
     rct_window *w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr) {
-        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT);
+        w = window_create_centred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
+
+        w->min_width = WW;
+        w->min_height = WH;
+        w->max_width = WW * 2;
+        w->max_height = WH * 2;
     }
 
     w->no_list_items = 0;
@@ -247,6 +256,20 @@ static void window_loadsave_close(rct_window *w)
     }
 
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
+}
+
+static void window_loadsave_resize(rct_window *w)
+{
+    w->min_width = WW;
+    w->min_height = WH;
+    if (w->width < w->min_width) {
+        window_invalidate(w);
+        w->width = w->min_width;
+    }
+    if (w->height < w->min_height) {
+        window_invalidate(w);
+        w->height = w->min_height;
+    }
 }
 
 static bool browse(bool isSave, char *path, size_t pathSize)
@@ -475,13 +498,34 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
                 window_loadsave_select(w, path);
             break;
     }
-
-
 }
 
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId)
 {
     set_format_arg(0, rct_string_id, STR_LIST);
+}
+
+static void window_loadsave_invalidate(rct_window *w)
+{
+    window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
+    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
+    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+    window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
+    window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
+    window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
+
+    window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
+    window_loadsave_widgets[WIDX_SORT_NAME].right = w->width / 2;
+
+    window_loadsave_widgets[WIDX_SORT_DATE].left = w->width / 2 + 1;
+    window_loadsave_widgets[WIDX_SORT_DATE].right = w->width - 5;
+
+    window_loadsave_widgets[WIDX_SCROLL].right = w->width - 4;
+    window_loadsave_widgets[WIDX_SCROLL].bottom = w->height - 30;
+
+    window_loadsave_widgets[WIDX_BROWSE].top = w->height - 24;
+    window_loadsave_widgets[WIDX_BROWSE].bottom = w->height - 6;
 }
 
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
@@ -500,16 +544,22 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
     ch = utf8_write_codepoint(ch, FORMAT_BLACK);
     safe_strcpy(ch, _shortenedDirectory, sizeof(buffer) - (ch - buffer));
 
-    // Draw shadow
-    gfx_draw_string(dpi, buffer, COLOUR_BLACK, w->x + 4, w->y + 20);
-    rct_string_id id = STR_NONE;
+    // Draw path text
+#ifdef __APPLE__
+    set_format_arg(0, uintptr_t, (uintptr_t) macos_str_decomp_to_precomp(buffer));
+#else
+    set_format_arg(0, uintptr_t, (uintptr_t) buffer);
+#endif
+    gfx_draw_string_left_clipped(dpi, STR_STRING, gCommonFormatArgs, COLOUR_BLACK, w->x + 4, w->y + 20, w->width - 8);
 
     // Name button text
+    rct_string_id id = STR_NONE;
     if (gConfigGeneral.load_save_sort == SORT_NAME_ASCENDING)
         id = STR_UP;
     else if (gConfigGeneral.load_save_sort == SORT_NAME_DESCENDING)
         id = STR_DOWN;
 
+    // Draw name button indicator.
     gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4,
         w->y + window_loadsave_widgets[WIDX_SORT_NAME].top + 1, (w->width - 8) / 2);
 
@@ -554,14 +604,14 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name);
-        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, (WW - 5) / 2 - 5);
+        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, (w->width - 5) / 2 - 5);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted);
-            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, (WW - 5) / 2 + 5, y, (WW - 5) / 2);
+            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, (w->width - 5) / 2 + 5, y, (w->width - 5) / 2);
         }
     }
 }
