@@ -146,11 +146,14 @@ public:
                 const DirectoryChild * child = &state->Listing[state->Index];
                 if (child->Type == DIRECTORY_CHILD_TYPE::DC_DIRECTORY)
                 {
-                    utf8 childPath[MAX_PATH];
-                    String::Set(childPath, sizeof(childPath), state->Path.c_str());
-                    Path::Append(childPath, sizeof(childPath), child->Name.c_str());
+                    if (_recurse)
+                    {
+                        utf8 childPath[MAX_PATH];
+                        String::Set(childPath, sizeof(childPath), state->Path.c_str());
+                        Path::Append(childPath, sizeof(childPath), child->Name.c_str());
 
-                    PushState(childPath);
+                        PushState(childPath);
+                    }
                 }
                 else if (PatternMatch(child->Name))
                 {
