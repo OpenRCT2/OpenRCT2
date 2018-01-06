@@ -88,6 +88,7 @@ uint8           gMapSelectArrowDirection;
 
 uint16          gMapVirtualFloorBaseSize = 5*32;
 uint16          gMapVirtualFloorHeight;
+bool            gMapVirtualFloorVisible = false;
 
 uint8 gMapGroundFlags;
 
@@ -4737,7 +4738,7 @@ uint8 tile_element_get_ride_index(const rct_tile_element * tileElement)
 
 void map_set_virtual_floor_height(sint16 height)
 {
-    if (!input_test_place_object_modifier(PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    if (!gMapVirtualFloorVisible)
     {
         // If the modifiers are not set we do not actually care as the floor is invisible.
         return;
@@ -4750,19 +4751,29 @@ void map_set_virtual_floor_height(sint16 height)
     }
 }
 
+void map_enable_virtual_floor()
+{
+    gMapVirtualFloorVisible = true;
+}
+
 void map_remove_virtual_floor()
 {
-    if (gMapVirtualFloorHeight != 0)
+    if (!gMapVirtualFloorVisible)
     {
-        gVirtualFloorLastLocation.z = -1;
-        map_invalidate_virtual_floor_tiles();
-        gMapVirtualFloorHeight = 0;
+        return;
     }
+
+    // Force invalidation, even if the position hasn't changed.
+    gVirtualFloorLastLocation.z = -1;
+    map_invalidate_virtual_floor_tiles();
+
+    gMapVirtualFloorHeight = 0;
+    gMapVirtualFloorVisible = false;
 }
 
 void map_invalidate_virtual_floor_tiles()
 {
-    if (gMapVirtualFloorHeight == 0)
+    if (!gMapVirtualFloorVisible)
     {
         return;
     }
@@ -4811,7 +4822,7 @@ void map_invalidate_virtual_floor_tiles()
 
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
 {
-    if (gMapVirtualFloorHeight == 0)
+    if (!gMapVirtualFloorVisible)
     {
         return false;
     }

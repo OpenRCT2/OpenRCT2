@@ -169,7 +169,11 @@ void input_handle_keyboard(bool isTitle)
         }
     }
 
-    if (!(gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z)))
+    if (gInputPlaceObjectModifier & (PLACE_OBJECT_MODIFIER_COPY_Z | PLACE_OBJECT_MODIFIER_SHIFT_Z))
+    {
+        map_enable_virtual_floor();
+    }
+    else
     {
         map_remove_virtual_floor();
     }
