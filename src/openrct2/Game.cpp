@@ -14,10 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <memory>
 #include "audio/audio.h"
 #include "Cheats.h"
 #include "config/Config.h"
 #include "Context.h"
+#include "core/FileScanner.h"
 #include "core/Math.hpp"
 #include "core/Util.hpp"
 #include "Editor.h"
@@ -1430,12 +1432,8 @@ static sint32 compare_autosave_file_paths(const void * a, const void * b)
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)
 {
-    sint32 fileEnumHandle = 0;
-
     size_t autosavesCount       = 0;
     size_t numAutosavesToDelete = 0;
-
-    file_info fileInfo;
 
     utf8 filter[MAX_PATH];
 
@@ -1455,12 +1453,13 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     }
 
     // At first, count how many autosaves there are
-    fileEnumHandle = platform_enumerate_files_begin(filter);
-    while (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
     {
-        autosavesCount++;
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        while (scanner->Next())
+        {
+            autosavesCount++;
+        }
     }
-    platform_enumerate_files_end(fileEnumHandle);
 
     // If there are fewer autosaves than the number of files to keep we don't need to delete anything
     if (autosavesCount <= numberOfFilesToKeep)
@@ -1470,27 +1469,28 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     autosaveFiles = (utf8 **) malloc(sizeof(utf8 *) * autosavesCount);
 
-    fileEnumHandle = platform_enumerate_files_begin(filter);
-    for (size_t i = 0; i < autosavesCount; i++)
     {
-        autosaveFiles[i] = (utf8 *) malloc(sizeof(utf8) * MAX_PATH);
-        memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
-
-        if (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+        for (size_t i = 0; i < autosavesCount; i++)
         {
-            if (processLandscapeFolder)
+            autosaveFiles[i] = (utf8 *)malloc(sizeof(utf8) * MAX_PATH);
+            memset(autosaveFiles[i], 0, sizeof(utf8) * MAX_PATH);
+
+            if (scanner->Next())
             {
-                platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                if (processLandscapeFolder)
+                {
+                    platform_get_user_directory(autosaveFiles[i], "landscape", sizeof(utf8) * MAX_PATH);
+                }
+                else
+                {
+                    platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
+                }
+                safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
+                safe_strcat_path(autosaveFiles[i], scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
             }
-            else
-            {
-                platform_get_user_directory(autosaveFiles[i], "save", sizeof(utf8) * MAX_PATH);
-            }
-            safe_strcat_path(autosaveFiles[i], "autosave", sizeof(utf8) * MAX_PATH);
-            safe_strcat_path(autosaveFiles[i], fileInfo.path, sizeof(utf8) * MAX_PATH);
         }
     }
-    platform_enumerate_files_end(fileEnumHandle);
 
     qsort(autosaveFiles, autosavesCount, sizeof(char *), compare_autosave_file_paths);
 

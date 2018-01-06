@@ -16,10 +16,13 @@
 
 #include <algorithm>
 #include <ctime>
+#include <memory>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
@@ -845,19 +848,12 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             safe_strcat_path(filter, "*", sizeof(filter));
             path_append_extension(filter, extToken, sizeof(filter));
 
-            file_info fileInfo;
-            fileEnumHandle = platform_enumerate_files_begin(filter);
-            while (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
+            auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(filter, false));
+            while (scanner->Next())
             {
                 LoadSaveListItem newListItem;
-
-                char path[MAX_PATH];
-                safe_strcpy(path, directory, sizeof(path));
-                safe_strcat_path(path, fileInfo.path, sizeof(path));
-
-                newListItem.path = path;
+                newListItem.path = scanner->GetPath();
                 newListItem.type = TYPE_FILE;
-
                 newListItem.date_modified = platform_file_get_modified_time(newListItem.path.c_str());
 
                 // Cache a human-readable version of the modified date.
@@ -870,18 +866,15 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 // Remove the extension (but only the first extension token)
                 if (!showExtension)
                 {
-                    utf8 * removeExt = (utf8 *) fileInfo.path;
-                    path_remove_extension(removeExt);
-                    newListItem.name = String::ToStd(removeExt);
+                    newListItem.name = Path::GetFileNameWithoutExtension(newListItem.path);
                 }
                 else
                 {
-                    newListItem.name = fileInfo.path;
+                    newListItem.name = Path::GetFileName(newListItem.path);
                 }
 
                 _listItems.push_back(newListItem);
             }
-            platform_enumerate_files_end(fileEnumHandle);
 
             extToken = strtok(nullptr, ";");
             showExtension = true; //Show any extension after the first iteration
