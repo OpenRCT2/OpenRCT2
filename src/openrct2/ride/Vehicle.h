@@ -159,11 +159,11 @@ typedef struct rct_vehicle {
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
     union {
-        sint16 var_B6;
+        sint16 spin_speed;          // 0xB6
         sint16 crash_x;             // 0xB6
     };
     uint16 var_B8;
-    uint8 var_BA;
+    uint8 spin_sprite;              // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
     uint8 sound2_id;                // 0xBD
@@ -233,7 +233,7 @@ enum {
     VEHICLE_ENTRY_FLAG_11 = 1 << 11,
     VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1 << 12,  // Setting this will cause the game to set vehicleEntry->num_vertical_frames to vehicleEntry->num_vertical_frames_override, rather than determining it itself.
     VEHICLE_ENTRY_FLAG_13 = 1 << 13,
-    VEHICLE_ENTRY_FLAG_14 = 1 << 14,
+    VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES = 1 << 14,    // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to load/unload. Spinning without can load/unload at 4 rotations.
     VEHICLE_ENTRY_FLAG_15 = 1 << 15,
     VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 16,
     VEHICLE_ENTRY_FLAG_SWINGING = 1 << 17,

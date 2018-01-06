@@ -89,6 +89,10 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle);
 #define NO_SCREAM 254
 #define VEHICLE_INVALID_ID -1
 
+#define VEHICLE_MAX_SPIN_SPEED  1536
+#define VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING 700
+#define VEHICLE_STOPPING_SPIN_SPEED 600
+
 rct_vehicle * gCurrentVehicle;
 
 static uint8  _vehicleBreakdown;
@@ -1431,22 +1435,26 @@ static bool vehicle_open_restraints(rct_vehicle * vehicle)
 
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            if (abs(vehicle->var_B6) <= 700 && !(vehicle->var_BA & 0x30) &&
-                (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14) || !(vehicle->var_BA & 0xF8)))
+            // If the vehicle is a spinner it must be spinning slow
+            // For vehicles without additional frames there are 4 rotations it can unload from
+            // For vehicles with additional frames it must be facing forward
+            if (abs(vehicle->spin_speed) <= VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING && !(vehicle->spin_sprite & 0x30) &&
+                (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES) || !(vehicle->spin_sprite & 0xF8)))
             {
-                vehicle->var_B6 = 0;
+                vehicle->spin_speed = 0;
             }
             else
             {
                 restraintsOpen = false;
 
-                if (abs(vehicle->var_B6) < 600)
+                if (abs(vehicle->spin_speed) < VEHICLE_STOPPING_SPIN_SPEED)
                 {
-                    vehicle->var_B6 = 600;
+                    // Note will look odd if spinning right.
+                    vehicle->spin_speed = VEHICLE_STOPPING_SPIN_SPEED;
                 }
-                sint16 value = vehicle->var_B6 / 256;
-                vehicle->var_BA += value;
-                vehicle->var_B6 -= value;
+                sint16 value = vehicle->spin_speed / 256;
+                vehicle->spin_sprite += value;
+                vehicle->spin_speed -= value;
 
                 vehicle_invalidate(vehicle);
                 continue;
@@ -7066,53 +7074,52 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
     }
 }
 
-#pragma region off_9A2E84
+#pragma region TrackTypeToSpinFunction
 
 enum
 {
-    loc_6D673C,
-    loc_6D66F0,
-    loc_6D672B,
-    loc_6D6711,
-    loc_6D66D6,
-    loc_6D66C3,
-    loc_6D66B0,
-    loc_6D669A,
-    loc_6D6684,
-    loc_6D665A,
-    loc_6D6708,
-    loc_6D6703,
-    loc_6D66DD,
-    loc_6D6718
+    NO_SPIN,
+    L8_SPIN,
+    R8_SPIN,
+    LR_SPIN,
+    RL_SPIN,
+    L7_SPIN,
+    R7_SPIN,
+    L5_SPIN,
+    R5_SPIN,
+    RC_SPIN, // Rotation Control Spin
+    SP_SPIN, // Special rapids Spin
+    L9_SPIN,
+    R9_SPIN
 };
 
-static constexpr const uint8 off_9A2E84[256] = {
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B, loc_6D6711, loc_6D66D6,
-    loc_6D673C, loc_6D673C, loc_6D66C3, loc_6D66B0, loc_6D66C3, loc_6D66B0, loc_6D66C3, loc_6D66B0, loc_6D66C3, loc_6D66B0,
-    loc_6D669A, loc_6D6684, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D6711, loc_6D66D6, loc_6D66C3, loc_6D66B0, loc_6D66C3, loc_6D66B0, loc_6D66C3,
-    loc_6D66B0, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B, loc_6D669A, loc_6D6684, loc_6D669A, loc_6D6684, loc_6D673C,
-    loc_6D665A, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D6708, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D6703, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66DD, loc_6D6718, loc_6D66DD, loc_6D6718, loc_6D66DD, loc_6D6718, loc_6D66DD,
-    loc_6D6718, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66C3, loc_6D66B0,
-    loc_6D66C3, loc_6D66B0, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66C3,
-    loc_6D66B0, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66C3, loc_6D66B0, loc_6D66C3,
-    loc_6D66B0, loc_6D66F0, loc_6D672B, loc_6D66F0, loc_6D672B, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
-    loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C
+static const uint8 TrackTypeToSpinFunction[256] = {
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, LR_SPIN, RL_SPIN,
+    NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN,
+    L5_SPIN, R5_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, L8_SPIN, R8_SPIN, LR_SPIN, RL_SPIN, L7_SPIN, R7_SPIN, L7_SPIN, R7_SPIN, L7_SPIN,
+    R7_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L5_SPIN, R5_SPIN, L5_SPIN, R5_SPIN, NO_SPIN,
+    RC_SPIN, NO_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, SP_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    R5_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN, R9_SPIN, L9_SPIN,
+    R9_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN,
+    L7_SPIN, R7_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN,
+    R7_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, L7_SPIN, R7_SPIN, L7_SPIN,
+    R7_SPIN, L8_SPIN, R8_SPIN, L8_SPIN, R8_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN,
+    NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
 };
 
 #pragma endregion
@@ -7125,7 +7132,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
 {
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_13)
     {
-        vehicle->var_B6 = 0;
+        vehicle->spin_speed = 0;
         return;
     }
 
@@ -7137,81 +7144,96 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
     sint32 spinningInertia = vehicleEntry->spinning_inertia;
     sint32 trackType       = vehicle->track_type >> 2;
     sint32 dword_F64E08    = _vehicleVelocityF64E08;
-    sint32 unk;
-    switch (off_9A2E84[trackType])
+    sint32 spinSpeed;
+    // An L spin adds to the spin speed, R does the opposite
+    // The number indicates how much right shift of the velocity will become spin
+    // The bigger the number the less change in spin.
+    switch (TrackTypeToSpinFunction[trackType])
     {
-    case loc_6D665A:
+    case RC_SPIN:
+        // On a rotation control track element
         spinningInertia += 6;
-        unk = dword_F64E08 >> spinningInertia;
+        spinSpeed = dword_F64E08 >> spinningInertia;
+        // Alternate the spin direction (roughly). Perhaps in future save a value to the track
         if (vehicle->sprite_index & 1)
         {
-            vehicle->var_B6 -= unk;
+            vehicle->spin_speed -= spinSpeed;
         }
         else
         {
-            vehicle->var_B6 += unk;
+            vehicle->spin_speed += spinSpeed;
         }
         break;
-    case loc_6D6684:
-    case loc_6D6703:
+    case R5_SPIN:
+        // It looks like in the original there was going to be special code for whirlpool
+        // this has been removed and just uses R5_SPIN
         spinningInertia += 5;
-        vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D669A:
+    case L5_SPIN:
         spinningInertia += 5;
-        vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed += dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D66B0:
+    case R7_SPIN:
         spinningInertia += 7;
-        vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D66C3:
+    case L7_SPIN:
         spinningInertia += 7;
-        vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed += dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D66D6:
+    case RL_SPIN:
+        // Right Left Curve Track Piece
         if (vehicle->track_progress < 48)
         {
+            // R8_SPIN
             spinningInertia += 8;
-            vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+            vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
             break;
         }
-    case loc_6D66DD:
+        // Fall through
+    case L9_SPIN:
         spinningInertia += 9;
-        vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed += dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D66F0:
+    case L8_SPIN:
         spinningInertia += 8;
-        vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed += dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D6708:
+    case SP_SPIN:
+        // On rapids spin after fully on them
         if (vehicle->track_progress > 22)
         {
+            // L5_SPIN
             spinningInertia += 5;
-            vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
         }
         break;
-    case loc_6D6711:
+    case LR_SPIN:
+        // Left Right Curve Track Piece
         if (vehicle->track_progress < 48)
         {
+            // L8_SPIN
             spinningInertia += 8;
-            vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+            vehicle->spin_speed += dword_F64E08 >> spinningInertia;
             break;
         }
-    case loc_6D6718:
+        // Fall through
+    case R9_SPIN:
         spinningInertia += 9;
-        vehicle->var_B6 -= dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
         break;
-    case loc_6D672B:
+    case R8_SPIN:
         spinningInertia += 8;
-        vehicle->var_B6 += dword_F64E08 >> spinningInertia;
+        vehicle->spin_speed -= dword_F64E08 >> spinningInertia;
         break;
     }
 
-    unk             = Math::Clamp(static_cast<sint16>(-0x600), vehicle->var_B6, static_cast<sint16>(0x600));
-    vehicle->var_B6 = unk;
-    vehicle->var_BA += unk >> 8;
-    vehicle->var_B6 -= unk >> vehicleEntry->spinning_friction;
+    spinSpeed             = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED), vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED));
+    vehicle->spin_speed = spinSpeed;
+    vehicle->spin_sprite += spinSpeed >> 8;
+    // Note this actually increases the spin speed if going right!
+    vehicle->spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
     vehicle_invalidate(vehicle);
 }
 
@@ -9415,7 +9437,7 @@ loc_6DCEFF:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
-        vehicle->var_B6 = Math::Clamp(static_cast<sint16>(-0x200), (sint16)vehicle->var_B6, static_cast<sint16>(0x200));
+        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-0x200), (sint16)vehicle->spin_speed, static_cast<sint16>(0x200));
     }
 
     if (vehicle->vehicle_sprite_type != 0)
@@ -9425,7 +9447,7 @@ loc_6DCEFF:
         {
             if (vehicle->vehicle_sprite_type == 2)
             {
-                vehicle->var_B6 = 0;
+                vehicle->spin_speed = 0;
             }
         }
     }
@@ -9738,16 +9760,7 @@ loc_6DC23A:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
-        regs.bx = vehicle->var_B6;
-        if (regs.bx > 512)
-        {
-            regs.bx = 512;
-        }
-        if (regs.bx < -512)
-        {
-            regs.bx = -512;
-        }
-        vehicle->var_B6 = regs.bx;
+        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-0x200), (sint16)vehicle->spin_speed, static_cast<sint16>(0x200));
     }
 
     if (vehicle->vehicle_sprite_type != 0)
@@ -9761,7 +9774,7 @@ loc_6DC23A:
         {
             if (vehicle->vehicle_sprite_type == 2)
             {
-                vehicle->var_B6 = 0;
+                vehicle->spin_speed = 0;
             }
         }
         goto loc_6DC2F6;

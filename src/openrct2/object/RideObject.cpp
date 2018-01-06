@@ -159,7 +159,7 @@ void RideObject::Load()
                 {
                     vehicleEntry->var_20 = image_index;
                     b = vehicleEntry->base_num_frames * 72;
-                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
+                    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
                     {
                         b = vehicleEntry->base_num_frames * 16;
                     }
@@ -482,7 +482,7 @@ uint8 RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle * vehi
     }
     else
     {
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14))
+        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
             if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23 && vehicleEntry->var_11 != 6)
             {

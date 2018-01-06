@@ -903,9 +903,10 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle * vehicle,
         return;
     }
     vehicle_boundbox bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
+
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
     {
-        baseImage_id += (vehicle->var_BA / 8) & 31;
+        baseImage_id += (vehicle->spin_sprite / 8) & 31;
     }
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_23)
     {
@@ -1559,7 +1560,7 @@ static void vehicle_sprite_2_0(paint_session * session, rct_vehicle * vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
     {
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
         {
             sint32 ecx = (imageDirection / 2) + 16;
             sint32 ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;
@@ -1920,7 +1921,7 @@ static void vehicle_sprite_6_0(paint_session * session, rct_vehicle * vehicle, s
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
     {
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_14)
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
         {
             sint32 ecx = ((imageDirection / 2) ^ 8) + 16;
             sint32 ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->var_20;

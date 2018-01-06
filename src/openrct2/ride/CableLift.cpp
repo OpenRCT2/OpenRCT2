@@ -65,8 +65,8 @@ rct_vehicle * cable_lift_segment_create(sint32 rideIndex,
     current->swinging_car_var_0     = 0;
     current->var_4E                 = 0;
     current->restraints_position    = 0;
-    current->var_BA                 = 0;
-    current->var_B6                 = 0;
+    current->spin_sprite                 = 0;
+    current->spin_speed                 = 0;
     current->var_B8                 = 0;
     current->sound1_id              = RCT12_SOUND_ID_NULL;
     current->sound2_id              = RCT12_SOUND_ID_NULL;

@@ -1158,9 +1158,9 @@ private:
         dst->swinging_car_var_0 = src->swinging_car_var_0;
         dst->var_4E = src->var_4E;
         dst->restraints_position = src->restraints_position;
-        dst->var_BA = src->var_BA;
+        dst->spin_sprite = src->spin_sprite;
         dst->sound_vector_factor = src->sound_vector_factor;
-        dst->var_B6 = src->var_B6;
+        dst->spin_speed = src->spin_speed;
         dst->var_B8 = src->var_B8;
         dst->sound1_id = RCT12_SOUND_ID_NULL;
         dst->sound2_id = RCT12_SOUND_ID_NULL;
