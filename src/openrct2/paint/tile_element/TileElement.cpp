@@ -34,6 +34,7 @@
 #include "../Supports.h"
 #include "Surface.h"
 #include "TileElement.h"
+#include "VirtualFloor.h"
 
 #ifdef __TESTPAINT__
 uint16 testPaintVerticalTunnelHeight;
