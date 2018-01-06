@@ -144,7 +144,7 @@ extern "C"
                             climate_determine_future_weather(scenario_rand());
                             gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
                         }
-                        else if (gClimateNext.RainLevel <= 2)
+                        else if (gClimateNext.RainLevel <= RAIN_LEVEL_HEAVY)
                         {
                             gClimateCurrent.RainLevel = climate_step_weather_level(gClimateCurrent.RainLevel, gClimateNext.RainLevel);
                         }
@@ -169,7 +169,7 @@ extern "C"
             climate_update_lightning();
             climate_update_thunder();
         }
-        else if (gClimateCurrent.WeatherEffect == 2)
+        else if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
         {
             // Create new thunder and lightning
             uint32 randomNumber = util_rand();
@@ -269,7 +269,8 @@ static void climate_determine_future_weather(sint32 randomDistribution)
 
 static void climate_update_rain_sound()
 {
-    if (gClimateCurrent.WeatherEffect == 1 || gClimateCurrent.WeatherEffect == 2)
+    if (gClimateCurrent.WeatherEffect == WEATHER_EFFECT_RAIN ||
+        gClimateCurrent.WeatherEffect == WEATHER_EFFECT_STORM)
     {
         // Start playing the rain sound
         if (gRainSoundChannel == nullptr)
@@ -403,12 +404,12 @@ const FILTER_PALETTE_ID ClimateWeatherGloomColours[4] =
 // There is actually a sprite at 0x5A9C for snow but only these weather types seem to be fully implemented
 const WeatherState ClimateWeatherData[6] =
 {
-    { 10, 0, 0, 0, SPR_WEATHER_SUN          }, // Sunny
-    {  5, 0, 0, 0, SPR_WEATHER_SUN_CLOUD    }, // Partially Cloudy
-    {  0, 0, 0, 0, SPR_WEATHER_CLOUD        }, // Cloudy
-    { -2, 1, 1, 1, SPR_WEATHER_LIGHT_RAIN   }, // Rain
-    { -4, 1, 2, 2, SPR_WEATHER_HEAVY_RAIN   }, // Heavy Rain
-    {  2, 2, 2, 2, SPR_WEATHER_STORM        }, // Thunderstorm
+    { 10, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_SUN        }, // Sunny
+    {  5, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_SUN_CLOUD  }, // Partially Cloudy
+    {  0, WEATHER_EFFECT_NONE,  0, RAIN_LEVEL_NONE,  SPR_WEATHER_CLOUD      }, // Cloudy
+    { -2, WEATHER_EFFECT_RAIN,  1, RAIN_LEVEL_LIGHT, SPR_WEATHER_LIGHT_RAIN }, // Rain
+    { -4, WEATHER_EFFECT_RAIN,  2, RAIN_LEVEL_HEAVY, SPR_WEATHER_HEAVY_RAIN }, // Heavy Rain
+    {  2, WEATHER_EFFECT_STORM, 2, RAIN_LEVEL_HEAVY, SPR_WEATHER_STORM      }, // Thunderstorm
 };
 
 static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] =
