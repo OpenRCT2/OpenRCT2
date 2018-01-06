@@ -1899,7 +1899,7 @@ void peep_update_sprite_type(rct_peep * peep)
         peep->window_invalidate_flags |= PEEP_INVALIDATE_PEEP_INVENTORY;
     }
 
-    if (gClimateCurrent.RainLevel != RAIN_LEVEL_NONE && (peep->item_standard_flags & PEEP_ITEM_UMBRELLA) && peep->x != LOCATION_NULL)
+    if (climate_is_raining() && (peep->item_standard_flags & PEEP_ITEM_UMBRELLA) && peep->x != LOCATION_NULL)
     {
         sint32 x = peep->x & 0xFFE0;
         sint32 y = peep->y & 0xFFE0;
@@ -12152,7 +12152,7 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
     if ((shopItem == SHOP_ITEM_BALLOON) || (shopItem == SHOP_ITEM_ICE_CREAM) || (shopItem == SHOP_ITEM_CANDYFLOSS) ||
         (shopItem == SHOP_ITEM_SUNGLASSES))
     {
-        if (gClimateCurrent.RainLevel != RAIN_LEVEL_NONE)
+        if (climate_is_raining())
             return false;
     }
 
@@ -12174,7 +12174,7 @@ static bool peep_decide_and_buy_item(rct_peep * peep, sint32 rideIndex, sint32 s
         return false;
     }
 
-    if ((shopItem == SHOP_ITEM_UMBRELLA) && (gClimateCurrent.RainLevel != RAIN_LEVEL_NONE))
+    if (shopItem == SHOP_ITEM_UMBRELLA && climate_is_raining())
         goto loc_69B119;
 
     if ((shopItem != SHOP_ITEM_MAP) && shop_item_is_souvenir(shopItem) && !has_voucher)
@@ -12214,7 +12214,7 @@ loc_69B119:
             value -= price;
             if (shopItem == SHOP_ITEM_UMBRELLA)
             {
-                if (gClimateCurrent.RainLevel != RAIN_LEVEL_NONE)
+                if (climate_is_raining())
                     goto loc_69B221;
             }
 
@@ -13199,7 +13199,7 @@ static bool peep_should_go_on_ride(rct_peep * peep, sint32 rideIndex, sint32 ent
 
                 // Peeps won't go on rides that aren't sufficiently undercover while it's raining.
                 // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-                if (gClimateCurrent.RainLevel != RAIN_LEVEL_NONE && (ride->sheltered_eighths >> 5) < 3)
+                if (climate_is_raining() && (ride->sheltered_eighths >> 5) < 3)
                 {
                     if (peepAtRide)
                     {
