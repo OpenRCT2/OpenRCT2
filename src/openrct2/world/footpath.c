@@ -743,6 +743,11 @@ money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint
         }
     }
 
+    if (!scenery_tool_is_active())
+    {
+        map_set_virtual_floor_height(z * 8);
+    }
+
     return cost;
 }
 
