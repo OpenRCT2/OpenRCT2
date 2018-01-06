@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../../Input.h"
-#include "../../interface/Viewport.h"
-#include "../../sprites.h"
-#include "../../world/Map.h"
-#include "../Paint.h"
-#include "TileElement.h"
+#include "../Input.h"
+#include "../interface/Viewport.h"
+#include "../sprites.h"
+#include "../world/Map.h"
+#include "Paint.h"
+#include "tile_element/TileElement.h"
 #include "VirtualFloor.h"
 
 static const rct_xy_element offsets[4] =
