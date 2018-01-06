@@ -16,16 +16,16 @@
 
 #pragma warning(disable : 4706) // assignment within conditional expression
 
+#include <memory>
 #include <stdexcept>
 #include <vector>
 #include <jansson.h>
 
 #include "../common.h"
 #include "../config/Config.h"
-#include "../platform/platform.h"
-#include "themes.h"
-#include "Window.h"
-
+#include "../Context.h"
+#include "../core/File.h"
+#include "../core/FileScanner.h"
 #include "../core/Json.hpp"
 #include "../core/Math.hpp"
 #include "../core/Memory.hpp"
@@ -34,6 +34,11 @@
 #include "../core/Util.hpp"
 #include "../localisation/Language.h"
 #include "../localisation/StringIds.h"
+#include "../PlatformEnvironment.h"
+#include "themes.h"
+#include "Window.h"
+
+using namespace OpenRCT2;
 
 struct WindowThemeDesc;
 
@@ -64,25 +69,25 @@ struct UIThemeWindowEntry
 class UITheme
 {
 public:
-    utf8 *                          Name;
+    std::string                     Name;
     std::vector<UIThemeWindowEntry> Entries;
-    uint8                           Flags;
+    uint8                           Flags = 0;
 
-    explicit UITheme(const utf8 * name);
-    UITheme(const UITheme & copy);
-    ~UITheme();
+    explicit UITheme(const std::string &name)
+        : Name(name)
+    {
+    }
 
-    void                       SetName(const utf8 * name);
     const UIThemeWindowEntry * GetEntry(rct_windowclass windowClass) const;
     void                       SetEntry(const UIThemeWindowEntry * entry);
     void                       RemoveEntry(rct_windowclass windowClass);
 
     json_t * ToJson() const;
-    bool     WriteToFile(const utf8 * path) const;
+    bool     WriteToFile(const std::string &path) const;
 
     static UITheme * FromJson(const json_t * json);
-    static UITheme * FromFile(const utf8 * path);
-    static UITheme   CreatePredefined(const utf8 * name, const UIThemeWindowEntry * entries, uint8 flags);
+    static UITheme * FromFile(const std::string &path);
+    static UITheme   CreatePredefined(const std::string &name, const UIThemeWindowEntry * entries, uint8 flags);
 };
 
 /**
@@ -313,29 +318,6 @@ UIThemeWindowEntry UIThemeWindowEntry::FromJson(const WindowThemeDesc * wtDesc, 
 
 #pragma region UITheme
 
-UITheme::UITheme(const utf8 * name)
-{
-    Name = String::Duplicate(name);
-    Flags = 0;
-}
-
-UITheme::UITheme(const UITheme & copy)
-{
-    Name = String::Duplicate(copy.Name);
-    Flags = copy.Flags;
-    Entries = copy.Entries;
-}
-
-UITheme::~UITheme()
-{
-    Memory::Free(Name);
-}
-
-void UITheme::SetName(const utf8 * name)
-{
-    String::DiscardDuplicate(&Name, name);
-}
-
 const UIThemeWindowEntry * UITheme::GetEntry(rct_windowclass windowClass) const
 {
     for (const auto &entry : Entries)
@@ -393,7 +375,7 @@ json_t * UITheme::ToJson() const
 
     // Create theme object
     json_t * jsonTheme = json_object();
-    json_object_set_new(jsonTheme, "name", json_string(Name));
+    json_object_set_new(jsonTheme, "name", json_string(Name.c_str()));
     json_object_set_new(jsonTheme, "entries", jsonEntries);
 
     json_object_set_new(jsonTheme, "useLightsRide", json_boolean(Flags & UITHEME_FLAG_USE_LIGHTS_RIDE));
@@ -406,18 +388,18 @@ json_t * UITheme::ToJson() const
     return jsonTheme;
 }
 
-bool UITheme::WriteToFile(const utf8 * path) const
+bool UITheme::WriteToFile(const std::string &path) const
 {
     json_t * jsonTheme = ToJson();
     bool     result;
     try
     {
-        Json::WriteToFile(path, jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
+        Json::WriteToFile(path.c_str(), jsonTheme, JSON_INDENT(4) | JSON_PRESERVE_ORDER);
         result = true;
     }
-    catch (const std::exception & ex)
+    catch (const std::exception &ex)
     {
-        log_error("Unable to save %s: %s", path, ex.what());
+        log_error("Unable to save %s: %s", path.c_str(), ex.what());
         result = false;
     }
 
@@ -477,18 +459,18 @@ UITheme * UITheme::FromJson(const json_t * json)
     }
 }
 
-UITheme * UITheme::FromFile(const utf8 * path)
+UITheme * UITheme::FromFile(const std::string &path)
 {
     json_t  * json = nullptr;
     UITheme * result = nullptr;
     try
     {
-        json = Json::ReadFromFile(path);
+        json = Json::ReadFromFile(path.c_str());
         result = UITheme::FromJson(json);
     }
     catch (const std::exception &)
     {
-        log_error("Unable to read theme: %s", path);
+        log_error("Unable to read theme: %s", path.c_str());
         result = nullptr;
     }
 
@@ -496,7 +478,7 @@ UITheme * UITheme::FromFile(const utf8 * path)
     return result;
 }
 
-UITheme UITheme::CreatePredefined(const utf8 * name, const UIThemeWindowEntry * entries, uint8 flags)
+UITheme UITheme::CreatePredefined(const std::string &name, const UIThemeWindowEntry * entries, uint8 flags)
 {
     auto theme = UITheme(name);
     theme.Flags = flags | UITHEME_FLAG_PREDEFINED;
@@ -517,19 +499,19 @@ namespace ThemeManager
 {
     struct AvailableTheme
     {
-        utf8 Path[MAX_PATH];
-        utf8 Name[96];
+        std::string Path;
+        std::string Name;
     };
 
-    static utf8 *                      CurrentThemePath;
+    static std::string                 CurrentThemePath;
     static UITheme *                   CurrentTheme;
     static std::vector<AvailableTheme> AvailableThemes;
     static size_t                      ActiveAvailableThemeIndex = SIZE_MAX;
     static size_t                      NumPredefinedThemes = 0;
 
-    void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name);
+    std::string GetThemeFileName(const std::string &name);
     bool EnsureThemeDirectoryExists();
-    void GetThemePath(utf8 * buffer, size_t bufferSize);
+    std::string GetThemePath();
 
     static void GetAvailableThemes(std::vector<AvailableTheme> * outThemes)
     {
@@ -541,35 +523,28 @@ namespace ThemeManager
         for (auto predefinedTheme : PredefinedThemes)
         {
             AvailableTheme theme;
-            String::Set(theme.Path, sizeof(theme.Path), String::Empty);
-            String::Set(theme.Name, sizeof(theme.Name), predefinedTheme.Theme->Name);
-            outThemes->push_back(theme);
+            theme.Name = predefinedTheme.Theme->Name;
+            outThemes->push_back(std::move(theme));
 
             NumPredefinedThemes++;
         }
 
-        utf8 themesPattern[MAX_PATH];
-        GetThemePath(themesPattern, sizeof(themesPattern));
-        Path::Append(themesPattern, sizeof(themesPattern), "*.json");
-
-        sint32 handle = platform_enumerate_files_begin(themesPattern);
-        if (handle != INVALID_HANDLE)
+        auto themesPattern = Path::Combine(GetThemePath(), "*.json");
+        auto scanner = std::unique_ptr<IFileScanner>(Path::ScanDirectory(themesPattern, true));
+        while (scanner->Next())
         {
-            file_info fileInfo;
-            while (platform_enumerate_files_next(handle, &fileInfo))
+            auto fileInfo = scanner->GetFileInfo();
+            auto name = Path::GetFileNameWithoutExtension(std::string(fileInfo->Name));
+
+            AvailableTheme theme;
+            theme.Name = name;
+            theme.Path = GetThemeFileName(theme.Name);
+            outThemes->push_back(std::move(theme));
+
+            if (Path::Equals(CurrentThemePath, scanner->GetPath()))
             {
-                AvailableTheme theme;
-                Path::GetFileNameWithoutExtension(theme.Name, sizeof(theme.Name), fileInfo.path);
-                GetThemeFileName(theme.Path, sizeof(theme.Path), theme.Name);
-
-                outThemes->push_back(theme);
-
-                if (Path::Equals(CurrentThemePath, fileInfo.path))
-                {
-                    ActiveAvailableThemeIndex = outThemes->size() - 1;
-                }
+                ActiveAvailableThemeIndex = outThemes->size() - 1;
             }
-            platform_enumerate_files_end(handle);
         }
     }
 
@@ -589,14 +564,14 @@ namespace ThemeManager
         }
 
         CurrentTheme = theme;
-        String::DiscardUse(&CurrentThemePath, nullptr);
+        CurrentThemePath.clear();
 
         gfx_invalidate_screen();
     }
 
-    static void LoadTheme(const utf8 * path)
+    static void LoadTheme(const std::string &path)
     {
-        UITheme * theme = UITheme::FromFile(path);
+        auto theme = UITheme::FromFile(path);
         if (theme == nullptr)
         {
             // Fall-back to default
@@ -606,7 +581,7 @@ namespace ThemeManager
         else
         {
             LoadTheme(theme);
-            String::DiscardDuplicate(&CurrentThemePath, path);
+            CurrentThemePath = path;
         }
     }
 
@@ -614,16 +589,16 @@ namespace ThemeManager
     {
         for (size_t i = 0; i < ThemeManager::AvailableThemes.size(); i++)
         {
-            if (String::Equals(name, ThemeManager::AvailableThemes[i].Name))
+            const auto &theme = ThemeManager::AvailableThemes[i];
+            if (String::Equals(name, theme.Name))
             {
-                const utf8 * path = ThemeManager::AvailableThemes[i].Path;
-                if (String::IsNullOrEmpty(path))
+                if (theme.Path.empty())
                 {
                     LoadTheme((UITheme *)PredefinedThemes[i].Theme);
                 }
                 else
                 {
-                    LoadTheme(ThemeManager::AvailableThemes[i].Path);
+                    LoadTheme(theme.Path);
                 }
                 ActiveAvailableThemeIndex = i;
                 return true;
@@ -653,23 +628,32 @@ namespace ThemeManager
         }
     }
 
-    void GetThemeFileName(utf8 * buffer, size_t bufferSize, const utf8 * name)
+    std::string GetThemeFileName(const std::string &name)
     {
-        GetThemePath(buffer, bufferSize);
-        Path::Append(buffer, bufferSize, name);
-        String::Append(buffer, bufferSize, ".json");
+        auto themeDirectory = GetThemePath();
+        auto themePath = Path::Combine(themeDirectory, name + ".json");
+        return themePath;
     }
 
     bool EnsureThemeDirectoryExists()
     {
-        utf8 path[MAX_PATH];
-        GetThemePath(path, sizeof(path));
-        return platform_ensure_directory_exists(path);
+        try
+        {
+            auto path = GetThemePath();
+            Path::CreateDirectory(path);
+            return true;
+        }
+        catch (const std::exception &)
+        {
+            return false;
+        }
     }
 
-    void GetThemePath(utf8 * buffer, size_t bufferSize)
+    std::string GetThemePath()
     {
-        platform_get_user_directory(buffer, "themes", bufferSize);
+        auto context = GetContext();
+        auto env = context->GetPlatformEnvironment();
+        return env->GetDirectoryPath(DIRBASE::USER, DIRID::THEME);
     }
 }
 
@@ -687,18 +671,18 @@ extern "C"
 
     const utf8 * theme_manager_get_available_theme_path(size_t index)
     {
-        return ThemeManager::AvailableThemes[index].Path;
+        return ThemeManager::AvailableThemes[index].Path.c_str();
     }
 
     const utf8 * theme_manager_get_available_theme_config_name(size_t index)
     {
-        return ThemeManager::AvailableThemes[index].Name;
+        return ThemeManager::AvailableThemes[index].Name.c_str();
     }
     const utf8 * theme_manager_get_available_theme_name(size_t index)
     {
         if (index < ThemeManager::NumPredefinedThemes)
             return language_get_string(PredefinedThemes[index].Name);
-        return ThemeManager::AvailableThemes[index].Name;
+        return ThemeManager::AvailableThemes[index].Name.c_str();
     }
 
     size_t theme_manager_get_active_available_theme_index()
@@ -714,11 +698,11 @@ extern "C"
         }
         else
         {
-            const utf8 * path = ThemeManager::AvailableThemes[index].Path;
+            auto path = ThemeManager::AvailableThemes[index].Path;
             ThemeManager::LoadTheme(path);
 
             // HACK Check if theme load failed and fell back to RCT2
-            if (ThemeManager::CurrentThemePath == nullptr)
+            if (ThemeManager::CurrentThemePath.empty())
             {
                 index = 1;
             }
@@ -806,15 +790,14 @@ extern "C"
 
     void theme_rename(const utf8 * name)
     {
-        const utf8 * oldPath = ThemeManager::CurrentThemePath;
-        utf8         newPath[MAX_PATH];
+        const auto oldPath = ThemeManager::CurrentThemePath;
 
         ThemeManager::EnsureThemeDirectoryExists();
-        ThemeManager::GetThemeFileName(newPath, sizeof(newPath), name);
-        platform_file_move(oldPath, newPath);
-        String::DiscardDuplicate(&ThemeManager::CurrentThemePath, newPath);
+        auto newPath = ThemeManager::GetThemeFileName(name);
+        File::Move(oldPath, newPath);
+        ThemeManager::CurrentThemePath = newPath;
 
-        ThemeManager::CurrentTheme->SetName(name);
+        ThemeManager::CurrentTheme->Name = name;
         ThemeManager::CurrentTheme->WriteToFile(ThemeManager::CurrentThemePath);
 
         theme_manager_load_available_themes();
@@ -831,14 +814,12 @@ extern "C"
 
     void theme_duplicate(const utf8 * name)
     {
-        utf8 newPath[MAX_PATH];
-
         ThemeManager::EnsureThemeDirectoryExists();
-        ThemeManager::GetThemeFileName(newPath, sizeof(newPath), name);
+        auto newPath = ThemeManager::GetThemeFileName(name);
 
         // Copy the theme, save it and then load it back in
         UITheme * newTheme = new UITheme(*ThemeManager::CurrentTheme);
-        newTheme->SetName(name);
+        newTheme->Name = name;
         newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
         newTheme->WriteToFile(newPath);
         delete newTheme;
@@ -859,7 +840,7 @@ extern "C"
 
     void theme_delete()
     {
-        platform_file_delete(ThemeManager::CurrentThemePath);
+        File::Delete(ThemeManager::CurrentThemePath);
         ThemeManager::LoadTheme((UITheme *)&PredefinedThemeRCT2);
         ThemeManager::ActiveAvailableThemeIndex = 1;
         String::DiscardDuplicate(&gConfigInterface.current_theme_preset, theme_manager_get_available_theme_config_name(1));
