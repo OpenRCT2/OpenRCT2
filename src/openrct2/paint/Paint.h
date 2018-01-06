@@ -51,6 +51,15 @@ enum PAINT_QUADRANT_FLAGS {
     PAINT_QUADRANT_FLAG_NEXT = (1 << 1),
 };
 
+typedef struct paint_struct_bound_box {
+    uint16 x;
+    uint16 y;
+    uint16 z;
+    uint16 x_end;
+    uint16 y_end;
+    uint16 z_end;
+} paint_struct_bound_box;
+
 /* size 0x34 */
 struct paint_struct {
     uint32 image_id;        // 0x00
@@ -59,12 +68,7 @@ struct paint_struct {
         // If masked image_id is masked_id
         uint32 colour_image_id; // 0x04
     };
-    uint16 bound_box_x;     // 0x08
-    uint16 bound_box_y;     // 0x0A
-    uint16 bound_box_z; // 0x0C
-    uint16 bound_box_z_end; // 0x0E
-    uint16 bound_box_x_end; // 0x10
-    uint16 bound_box_y_end; // 0x12
+    paint_struct_bound_box bounds; // 0x08
     uint16 x;               // 0x14
     uint16 y;               // 0x16
     uint16 quadrant_index;
@@ -113,15 +117,6 @@ typedef struct sprite_bb {
     LocationXYZ16 bb_offset;
     LocationXYZ16 bb_size;
 } sprite_bb;
-
-typedef struct paint_struct_bound_box {
-    uint16 x;
-    uint16 y;
-    uint16 z;
-    uint16 x_end;
-    uint16 y_end;
-    uint16 z_end;
-} paint_struct_bound_box;
 
 enum PAINT_STRUCT_FLAGS {
     PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
@@ -209,7 +204,7 @@ paint_session * paint_session_alloc(rct_drawpixelinfo * dpi);
 void paint_session_free(paint_session *);
 void paint_session_generate(paint_session * session);
 paint_struct paint_session_arrange(paint_session * session);
-paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag);
+paint_struct * paint_arrange_structs_helper(paint_struct * ps_next, uint16 quadrantIndex, uint8 flag, uint8 rotation);
 void paint_draw_structs(rct_drawpixelinfo * dpi, paint_struct * ps, uint32 viewFlags);
 void paint_draw_money_structs(rct_drawpixelinfo * dpi, paint_string_struct * ps);
 
