@@ -171,6 +171,9 @@ public:
 
             for (sint32 i = 0; i < PEEP_MAX_THOUGHTS; i++)
             {
+                if (peep->thoughts[i].type == PEEP_THOUGHT_TYPE_NONE)
+                    break;
+
                 if (peep->thoughts[i].item == _rideIndex)
                 {
                     // Clear top thought, push others up
