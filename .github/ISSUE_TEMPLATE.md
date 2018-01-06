@@ -20,7 +20,7 @@
 <!-- If you have a dump file: zip it before you drag & drop it here. -->
 
 **Screenshots / Video:**
-<!-- Drag & drop screenshots here. You can use https://vid.me or https://youtube.com to upload video. -->
+<!-- Drag & drop screenshots here. You can use https://youtube.com to upload video. -->
 
 **Save game:**
 <!-- Change the file extension to .txt or package to a .zip so that it can be drag & dropped here... -->
