@@ -816,24 +816,19 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         w->disabled_widgets &= ~(1 << WIDX_NEW_FOLDER);
 
         // List all directories
-        char subDir[MAX_PATH];
-        sint32 fileEnumHandle = platform_enumerate_directories_begin(directory);
-        while (platform_enumerate_directories_next(fileEnumHandle, subDir))
+        auto subDirectories = Path::GetDirectories(directory);
+        for (const auto &sdName : subDirectories)
         {
+            auto subDir = sdName + PATH_SEPARATOR;
+
             LoadSaveListItem newListItem;
-
-            char path[MAX_PATH];
-            safe_strcpy(path, directory, sizeof(path));
-            safe_strcat_path(path, subDir, sizeof(path));
-
-            newListItem.path = path;
+            newListItem.path = Path::Combine(directory, subDir);
             newListItem.name = subDir;
             newListItem.type = TYPE_DIRECTORY;
             newListItem.loaded = false;
 
             _listItems.push_back(newListItem);
         }
-        platform_enumerate_files_end(fileEnumHandle);
 
         // List all files with the wanted extensions
         char filter[MAX_PATH];
