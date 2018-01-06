@@ -38,6 +38,20 @@ enum WEATHER
     WEATHER_THUNDER,
 };
 
+enum WEATHER_EFFECT
+{
+    WEATHER_EFFECT_NONE,
+    WEATHER_EFFECT_RAIN,
+    WEATHER_EFFECT_STORM,
+};
+
+enum RAIN_LEVEL
+{
+    RAIN_LEVEL_NONE,
+    RAIN_LEVEL_LIGHT,
+    RAIN_LEVEL_HEAVY,
+};
+
 typedef struct WeatherState
 {
     sint8   TemperatureDelta;

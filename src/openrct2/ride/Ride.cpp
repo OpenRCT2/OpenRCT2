@@ -2353,7 +2353,7 @@ static sint32 ride_get_new_breakdown_problem(Ride *ride)
     rct_ride_entry *entry;
 
     // Brake failure is more likely when it's raining
-    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrent.RainLevel == 0 ? 3 : 20;
+    _breakdownProblemProbabilities[BREAKDOWN_BRAKES_FAILURE] = gClimateCurrent.RainLevel == RAIN_LEVEL_NONE ? 3 : 20;
 
     entry = get_ride_entry_by_ride(ride);
     if (entry == nullptr || entry->flags & RIDE_ENTRY_FLAG_CANNOT_BREAK_DOWN)
