@@ -31,6 +31,7 @@
     #include "../localisation/Language.h"
 #endif
 
+#include <memory>
 #include <stack>
 #include <string>
 #include <vector>
@@ -170,6 +171,8 @@ public:
         return false;
     }
 
+    virtual void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) abstract;
+
 private:
     void PushState(const std::string &directory)
     {
@@ -219,10 +222,6 @@ private:
         patterns.shrink_to_fit();
         return patterns;
     }
-
-protected:
-    virtual void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) abstract;
-
 };
 
 #ifdef _WIN32
@@ -235,7 +234,6 @@ public:
     {
     }
 
-protected:
     void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         std::string pattern = path + "\\*";
@@ -296,7 +294,6 @@ public:
     {
     }
 
-protected:
     void GetDirectoryChildren(std::vector<DirectoryChild> &children, const std::string &path) override
     {
         struct dirent * * namelist;
@@ -389,6 +386,25 @@ void Path::QueryDirectory(QueryDirectoryResult * result, const std::string &patt
         result->PathChecksum += GetPathChecksum(path);
     }
     delete scanner;
+}
+
+std::vector<std::string> Path::GetDirectories(const std::string &path)
+{
+    auto scanner = std::unique_ptr<IFileScanner>(ScanDirectory(path, false));
+    auto baseScanner = static_cast<FileScannerBase *>(scanner.get());
+
+    std::vector<DirectoryChild> children;
+    baseScanner->GetDirectoryChildren(children, path);
+
+    std::vector<std::string> subDirectories;
+    for (const auto &c : children)
+    {
+        if (c.Type == DIRECTORY_CHILD_TYPE::DC_DIRECTORY)
+        {
+            subDirectories.push_back(c.Name);
+        }
+    }
+    return subDirectories;
 }
 
 static uint32 GetPathChecksum(const utf8 * path)
