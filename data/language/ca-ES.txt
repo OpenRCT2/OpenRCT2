@@ -3062,9 +3062,9 @@ STR_3051    :Forat C
 STR_3052    :Forat D
 STR_3053    :Forat E
 STR_3054    :S'està carregant...
-STR_3055    :Blanca
-STR_3056    :Translúcida
-STR_3057    :{WINDOW_COLOUR_2}Marca de construcció:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Parets de maó
 STR_3059    :Bardisses
 STR_3060    :Blocs de gel
@@ -3845,7 +3845,7 @@ STR_5503    :Escriviu el nom de l'hoste o de l'adreça IP:
 STR_5504    :{SMALLFONT}{BLACK}Mostra l'estat multijugador
 STR_5505    :No s'ha pogut connectar al servidor.
 STR_5506    :Els visitants ignoren les intensitats
-STR_5507    :Els encarregats de neteja per defecte tallen la gespa
+STR_5507    :<removed string - do not use>
 STR_5508    :Permet carregar arxius danyats
 STR_5509    :{SMALLFONT}{BLACK}Permet carregar escenaris i partides desades{NEWLINE}que tenen una suma de comprovació no vàlida,{NEWLINE}com els escenaris de la demostració{NEWLINE}o partides danyades.
 STR_5510    :Dispositiu de so predeterminat
@@ -4129,7 +4129,7 @@ STR_5817    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Est
 STR_5818    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Usa el mètode {LEFTGUILLEMET}Nearest Neighbour{RIGHTGUILLEMET}{NEWLINE}quan s'estableix l'escalat de finestres{NEWLINE}a valors enters (1, 2, 3...).
 STR_5819    :{SMALLFONT}{BLACK}[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :{SMALLFONT}{BLACK}Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
-STR_5821    :{SMALLFONT}{BLACK}Canvia el color del marcador de construcció quan s'estan construint{NEWLINE}atraccions, camins, botigues, estands, decoracions...
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
 STR_5823    :{SMALLFONT}{BLACK}Mostra els textos dels cartells en majúscula (com al RCT1).
 STR_5824    :{SMALLFONT}{BLACK}No mostris llampecs{NEWLINE}durant les tempestes.
@@ -4158,7 +4158,7 @@ STR_5846    :{SMALLFONT}{BLACK}Estableix el període de desades automàtiques de
 STR_5847    :{SMALLFONT}{BLACK}Seleccioneu la seqüència de parcs que s'usarà al menú principal.{NEWLINE}Les seqüències del RCT1/2 necessitaran que s'importin els escenaris corresponents.
 STR_5848    :{SMALLFONT}{BLACK}Crea i organitza les seqüències del menú principal.
 STR_5849    :{SMALLFONT}{BLACK}Coloca automàticament{NEWLINE}els empleats acabats de contractar.
-STR_5850    :{SMALLFONT}{BLACK}Els encarregats de la neteja nous segaran{NEWLINE}la gespa per defecte (com al RCT1).
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Estableix l'interval de revisió per defecte{NEWLINE}per a les atraccions noves.
 STR_5852    :{SMALLFONT}{BLACK}Estableix el nom del canal TwitchTV que s'ha d'usar per la integració del Twitch.
 STR_5853    :{SMALLFONT}{BLACK}Activa/Desactiva els efectes de so.
@@ -4205,7 +4205,7 @@ STR_5893    :Canvi de tipus
 STR_5894    :Escriviu el canvi de tipus
 STR_5895    :Desa el disseny de via
 STR_5896    :Ha fallat la desada del disseny de via!
-STR_5897    :Límit de finestres:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}No es pot carregar el disseny de via:{NEWLINE}L'arxiu està corromput, danyat o bé no existeix.
 STR_5899    :Alterna finestra de depuració del pintat
 STR_5900    :Usa el codi de pintat original

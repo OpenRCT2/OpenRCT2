@@ -2000,7 +2000,7 @@ STR_1990    :Plan du parc
 STR_1991    :Photo sur le vif
 STR_1992    :Parapluie
 STR_1993    :Boisson gazeuse
-STR_1994    :Hamurger
+STR_1994    :Hamburger
 STR_1995    :Frites
 STR_1996    :Glace
 STR_1997    :Barbe-à-papa
@@ -2028,7 +2028,7 @@ STR_2018    :Plans du parc
 STR_2019    :Photos sur le vif
 STR_2020    :Parapluies
 STR_2021    :Boissons gazeuses
-STR_2022    :Hamurgers
+STR_2022    :Hamburgers
 STR_2023    :Frites
 STR_2024    :Glaces
 STR_2025    :Barbes-à-papa
@@ -2056,13 +2056,13 @@ STR_2046    :un plan du parc
 STR_2047    :une photo sur le vif
 STR_2048    :un parapluie
 STR_2049    :une boisson gazeuse
-STR_2050    :un hamurger
+STR_2050    :un hamburger
 STR_2051    :des frites
 STR_2052    :une glace
 STR_2053    :une barbe-à-papa
 STR_2054    :une canette vide
 STR_2055    :un déchet
-STR_2056    :une boîte à hamurger vide
+STR_2056    :une boîte à hamburger vide
 STR_2057    :une pizza
 STR_2058    :un bon
 STR_2059    :du popcorn
@@ -2084,7 +2084,7 @@ STR_2074    :Plan de {STRINGID}
 STR_2075    :Photo sur le vif de {STRINGID}
 STR_2076    :Parapluie {OPENQUOTES}{STRINGID}{ENDQUOTES}
 STR_2077    :Boisson gazeuse
-STR_2078    :Hamurger
+STR_2078    :Hamburger
 STR_2079    :Frites
 STR_2080    :Glace
 STR_2081    :Barbe-à-papa
@@ -3063,9 +3063,9 @@ STR_3051    :Trou de golf C
 STR_3052    :Trou de golf D
 STR_3053    :Trou de golf E
 STR_3054    :Chargement...
-STR_3055    :Blanc
-STR_3056    :Translucide
-STR_3057    :{WINDOW_COLOUR_2}Marque construction :
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :Mur de briques
 STR_3059    :Haies
 STR_3060    :Blocs de glace
@@ -3846,7 +3846,7 @@ STR_5503    :Saisir nom d'hôte ou adresse IP :
 STR_5504    :{SMALLFONT}{BLACK}Afficher le statut multijoueur
 STR_5505    :Impossible de se connecter au serveur
 STR_5506    :Les visiteurs ignorent l'intensité
-STR_5507    :Les agents d'entretien tondent la pelouse par défaut
+STR_5507    :<removed string - do not use>
 STR_5508    :Autor. charg. de fichiers avec une empreinte incorrecte
 STR_5509    :{SMALLFONT}{BLACK}Autorise le chargement de scénarios et sauvegardes ayant une empreinte incorrecte, par exemple les scénarios de la démo ou des sauvegardes corrompues.
 STR_5510    :Périphérique audio par défaut
@@ -4130,7 +4130,7 @@ STR_5817    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Définit
 STR_5818    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Utilise l'échelle la plus proche quand le ratio de mise à l'échelle est un entier (1, 2, 3, etc.)
 STR_5819    :{SMALLFONT}{BLACK}[Requiert l'affichage matériel]{NEWLINE}Met le jeu en pause quand l'overlay Steam est ouvert
 STR_5820    :{SMALLFONT}{BLACK}Minimise le jeu si le focus est perdu en plein écran
-STR_5821    :{SMALLFONT}{BLACK}Change la couleur de la marque de construction pendant la construction d'attractions, allées, boutiques, éléments de décor, etc.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}Active le cycle jour / nuit.{NEWLINE}Chaque cycle dure un mois de jeu
 STR_5823    :{SMALLFONT}{BLACK}Affiche le texte des bannières en majuscule (comme dans RCT1)
 STR_5824    :{SMALLFONT}{BLACK}Désactive les éclairs pendant les orages
@@ -4159,7 +4159,7 @@ STR_5846    :{SMALLFONT}{BLACK}Définit la fréquence de la sauvegarde automatiq
 STR_5847    :{SMALLFONT}{BLACK}Sélectionne la séquence de parcs utilisée dans le menu principal. Les séquences titre de RCT1/2 requièrent des scénarios importés pour fonctionner
 STR_5848    :{SMALLFONT}{BLACK}Créer et gérer des séquences titre personnalisées
 STR_5849    :{SMALLFONT}{BLACK}Placer automatiquement les nouveaux employés
-STR_5850    :{SMALLFONT}{BLACK}Les nouveaux agents d'entretien tondent la pelouse par défaut (comme RCT1)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}Définit le délai d'inspection par défaut sur les nouvelles attractions
 STR_5852    :{SMALLFONT}{BLACK}Définit le nom de la chaîne TwitchTV utilisée pour l'intégration à Twitch
 STR_5853    :{SMALLFONT}{BLACK}Active/désactive les effets sonores
@@ -4206,7 +4206,7 @@ STR_5893    :Taux de change
 STR_5894    :Entrez le taux de change
 STR_5895    :Sauvegarder la voie
 STR_5896    :La sauvegarde de la voie a échoué !
-STR_5897    :Nombre de fenêtres max. :
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}Impossible de charger la voie, le fichier est peut-être corrompu ou manquant !
 STR_5899    :Afficher/masquer fenêtre de débogage du dessin
 STR_5900    :Utiliser le code de dessin original

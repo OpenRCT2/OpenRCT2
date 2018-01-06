@@ -3068,9 +3068,9 @@ STR_3051    :高尔夫球洞C
 STR_3052    :高尔夫球洞D
 STR_3053    :高尔夫球洞E
 STR_3054    :加载中...
-STR_3055    :白色
-STR_3056    :半透明
-STR_3057    :{WINDOW_COLOUR_2}建造标记:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :砖墙
 STR_3059    :树篱
 STR_3060    :冰砖墙
@@ -3851,7 +3851,7 @@ STR_5503    :请输入主机名称或IP地址:
 STR_5504    :{SMALLFONT}{BLACK}显示多人联机状态
 STR_5505    :无法连接至服务器.
 STR_5506    :游客忽略强烈程度
-STR_5507    :清洁工默认会修剪草皮
+STR_5507    :<removed string - do not use>
 STR_5508    :允许读取校验失败的文件
 STR_5509    :{SMALLFONT}{BLACK}允许读取校验失败的剧情和存档文件,{NEWLINE}例如试玩版的剧情或损坏的存档.
 STR_5510    :默认音频设备
@@ -4135,7 +4135,7 @@ STR_5817    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}设置UI缩放
 STR_5818    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}使用最近相邻缩放{NEWLINE}当窗口缩放比例设置为{NEWLINE}整数值时 (例如1, 2, 3等等)
 STR_5819    :{SMALLFONT}{BLACK}[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :{SMALLFONT}{BLACK}全屏模式时若游戏失焦{NEWLINE}则最小化游戏
-STR_5821    :{SMALLFONT}{BLACK}当修建游乐设施, 道路, 商店, 景观等时{NEWLINE}调整建造的颜色.
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
 STR_5823    :{SMALLFONT}{BLACK}横幅上显示全大写英文(RCT1效果)
 STR_5824    :{SMALLFONT}{BLACK}当暴风雨来临时{NEWLINE}禁用闪电效果
@@ -4164,7 +4164,7 @@ STR_5846    :{SMALLFONT}{BLACK}设置自动保存的频率
 STR_5847    :{SMALLFONT}{BLACK}选择主菜单界面使用的游乐园动画. 过山车大亨1/2的主菜单动画需要导入响应的文件
 STR_5848    :{SMALLFONT}{BLACK}创建并管理自定义主菜单动画
 STR_5849    :{SMALLFONT}{BLACK}自动放置新雇佣的员工
-STR_5850    :{SMALLFONT}{BLACK}新雇佣的清洁工默认会修剪草坪(过山车大亨1行为)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}设置新建游乐设施的默认检查的时间间隔
 STR_5852    :{SMALLFONT}{BLACK}设置Twitch集成中使用的TwitchTV频道名
 STR_5853    :{SMALLFONT}{BLACK}开启/关闭音效
@@ -4211,7 +4211,7 @@ STR_5893    :汇率
 STR_5894    :请输入汇率
 STR_5895    :保存轨道设计
 STR_5896    :保存轨道设计失败!
-STR_5897    :窗口数量限制:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}无法加载轨道, 文件可能{NEWLINE}损坏或丢失!
 STR_5899    :开启/关闭debug窗口
 STR_5900    :使用原始的渲染代码

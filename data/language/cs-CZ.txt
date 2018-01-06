@@ -4499,6 +4499,9 @@ STR_6189    :Kachna
 STR_6190    :{SMALLFONT}{BLACK}Nelze zvolit sprite, když je aktivní hlavní obrazovka.
 STR_6191    :Povrch
 STR_6192    :Stěna
+STR_6193    :{COMMA16} návštěvník
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} návštěvník
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} návštěvník
 
 ###############################################################################
 ## RCT2 Objects

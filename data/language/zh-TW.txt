@@ -3063,9 +3063,9 @@ STR_3051    :高爾夫球洞C
 STR_3052    :高爾夫球洞D
 STR_3053    :高爾夫球洞E
 STR_3054    :載入中...
-STR_3055    :白色
-STR_3056    :透明
-STR_3057    :{WINDOW_COLOUR_2}建造標記:
+STR_3055    :<removed string - do not use>
+STR_3056    :<removed string - do not use>
+STR_3057    :<removed string - do not use>
 STR_3058    :磚牆
 STR_3059    :樹籬
 STR_3060    :冰磚牆
@@ -3847,7 +3847,7 @@ STR_5503    :請輸入主機名稱或IP地址:
 STR_5504    :{SMALLFONT}{BLACK}顯示多人連線狀態
 STR_5505    :無法連接至伺服器.
 STR_5506    :遊客無視設施的刺激度
-STR_5507    :預設清潔工人會修剪草皮
+STR_5507    :<removed string - do not use>
 STR_5508    :允許載入校驗失敗的檔案
 STR_5509    :{SMALLFONT}{BLACK}允許載入校驗失敗的劇情及存檔, 例如試玩版的劇情或已損壞的存檔.
 STR_5510    :預設音效裝置
@@ -4130,7 +4130,7 @@ STR_5817    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}設定介面�
 STR_5818    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}當縮放遊戲的比例設置成為整數(例如1,2,3等){NEWLINE}將會使用最近鄰居法去縮放介面
 STR_5819    :{SMALLFONT}{BLACK}[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :{SMALLFONT}{BLACK}當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
-STR_5821    :{SMALLFONT}{BLACK}改變建造遊樂設施, 道路, 商店, 景物中{NEWLINE}顯示的建造標記的顏色
+STR_5821    :<removed string - do not use>
 STR_5822    :{SMALLFONT}{BLACK}循環日與夜.{NEWLINE}一個完整的循環需時一個遊戲月
 STR_5823    :{SMALLFONT}{BLACK}在橫額中顥示大階英文 (為夢幻遊樂園1((RCT1)的特色)
 STR_5824    :{SMALLFONT}{BLACK}禁用雷暴下的閃電效果
@@ -4159,7 +4159,7 @@ STR_5846    :{SMALLFONT}{BLACK}設置OpenRCT2自動儲存的時隔
 STR_5847    :{SMALLFONT}{BLACK}選擇主選單動畫. 夢幻遊樂園1((RCT1)或模擬樂園(RCT2)需要導入相關的劇情才能使用
 STR_5848    :{SMALLFONT}{BLACK}建立及管理自訂的主選單動畫
 STR_5849    :{SMALLFONT}{BLACK}自動放置新僱用的員工
-STR_5850    :{SMALLFONT}{BLACK}預設新僱用的清潔工人會修剪草皮{NEWLINE}(為夢幻遊樂園1((RCT1)的特色)
+STR_5850    :<removed string - do not use>
 STR_5851    :{SMALLFONT}{BLACK}設置新建設的遊樂設施{NEWLINE}的預設檢查時隔
 STR_5852    :{SMALLFONT}{BLACK}設置將會於Twitch整合功能的Twitch.tv頻道名稱
 STR_5853    :{SMALLFONT}{BLACK}啟用/禁用音效
@@ -4206,7 +4206,7 @@ STR_5893    :匯率
 STR_5894    :請輸入匯率
 STR_5895    :儲存軌道設計
 STR_5896    :軌道設計儲存失敗!
-STR_5897    :同時開啟視窗的數目限制:
+STR_5897    :<removed string - do not use>
 STR_5898    :{BLACK}無法載入軌道設計,{NEWLINE}該檔案可能已經被損壞或移除!
 STR_5899    :啟用/禁用繪圖除錯視窗
 STR_5900    :使用原有的繪圖代碼

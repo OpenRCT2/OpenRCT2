@@ -4254,6 +4254,30 @@ STR_6170    :Modifiche
 STR_6171    :Cerca
 STR_6172    :{SMALLFONT}{BLACK}Cerca
 STR_6173    :Digitare il nome da cercare:
+STR_6174    :Carica salvataggio
+STR_6175    :Carica scenario
+STR_6176    :Scenario da caricare:
+STR_6177    :Carica{MOVE_X}{87}Nessuno scenario selezionato
+STR_6178    :Carica{MOVE_X}{87}{RED}Scenario mancante
+STR_6179    :Seleziona
+STR_6180    :Nessuno scenario selezionato
+STR_6181    :{RED}Scenario mancante
+STR_6182    :Segui{MOVE_X}{87}{STRING}
+STR_6183    :Segui{MOVE_X}{87}Nessuno sprite selezionato
+STR_6184    :Segui sprite
+STR_6185    :Seleziona sprite
+STR_6186    :Nessuno sprite selezionato
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :Vomito
+STR_6189    :Anatra
+STR_6190    :{SMALLFONT}{BLACK}Non è possibile selezionare uno sprite mentre la schermata del titolo è attiva.
+STR_6191    :Superficie
+STR_6192    :Muro
+STR_6193    :{COMMA16} ospite
+STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} ospite
+STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} ospite
+
+
 
 
 #############
