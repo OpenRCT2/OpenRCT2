@@ -914,16 +914,16 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 
 static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
 {
-    uint8 gloom = gClimateCurrent.WeatherGloom;
-    if (gloom != 0) {
+    FILTER_PALETTE_ID paletteId = climate_get_weather_gloom_palette_id(&gClimateCurrent);
+    if (paletteId != PALETTE_NULL)
+    {
         gfx_filter_rect(
             dpi,
             dpi->x,
             dpi->y,
             dpi->width + dpi->x - 1,
             dpi->height + dpi->y - 1,
-            ClimateWeatherGloomColours[gloom]
-        );
+            paletteId);
     }
 }
 

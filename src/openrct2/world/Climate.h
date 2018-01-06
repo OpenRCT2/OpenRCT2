@@ -66,14 +66,17 @@ extern "C"
     extern uint16       gClimateUpdateTimer;
     extern uint16       gClimateLightningFlash;
 
-    extern const WeatherState       ClimateWeatherData[6];
-    extern const FILTER_PALETTE_ID  ClimateWeatherGloomColours[4];
-
     sint32 climate_celsius_to_fahrenheit(sint32 celsius);
     void climate_reset(sint32 climate);
     void climate_update();
     void climate_update_sound();
     void climate_force_weather(uint8 weather);
+
+    FILTER_PALETTE_ID climate_get_weather_gloom_palette_id(const ClimateState * state);
+
 #ifdef __cplusplus
 }
+
+uint32 climate_get_weather_sprite_id(const ClimateState &state);
+
 #endif

@@ -80,6 +80,8 @@ enum {
 };
 
 typedef enum {
+    PALETTE_NULL = 0,
+
     PALETTE_WATER = 32,
 
     PALETTE_34 = 34,

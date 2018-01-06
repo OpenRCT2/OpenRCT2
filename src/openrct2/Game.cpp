@@ -231,12 +231,11 @@ void update_palette_effects()
         uint32 shade = 0;
         if (gConfigGeneral.render_weather_gloom)
         {
-            uint8 gloom = gClimateCurrent.WeatherGloom;
-            if (gloom != 0)
+            auto paletteId = climate_get_weather_gloom_palette_id(&gClimateCurrent);
+            if (paletteId != PALETTE_NULL)
             {
-                FILTER_PALETTE_ID weatherColour = ClimateWeatherGloomColours[gloom];
                 shade = 1;
-                if (weatherColour != PALETTE_DARKEN_1)
+                if (paletteId != PALETTE_DARKEN_1)
                 {
                     shade = 2;
                 }
