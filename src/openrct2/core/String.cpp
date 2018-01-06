@@ -18,7 +18,7 @@
 #include <stdexcept>
 #include <vector>
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../util/Util.h"
 
 #include "Math.hpp"

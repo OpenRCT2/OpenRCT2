@@ -1,5 +1,5 @@
 #include "openrct2/localisation/LanguagePack.h"
-#include "openrct2/localisation/string_ids.h"
+#include "openrct2/localisation/StringIds.h"
 #include <gtest/gtest.h>
 
 class LanguagePackTest : public testing::Test

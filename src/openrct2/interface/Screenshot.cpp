@@ -26,7 +26,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../Intro.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"

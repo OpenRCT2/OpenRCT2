@@ -23,7 +23,7 @@
 #include "Park.h"
 #include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Track.h"
 

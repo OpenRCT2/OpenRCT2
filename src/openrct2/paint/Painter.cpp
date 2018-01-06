@@ -26,8 +26,8 @@
 #include "../interface/chat.h"
 #include "../interface/console.h"
 #include "../Intro.h"
-#include "../localisation/language.h"
-#include "../localisation/format_codes.h"
+#include "../localisation/Language.h"
+#include "../localisation/FormatCodes.h"
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;

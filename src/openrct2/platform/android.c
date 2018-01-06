@@ -18,7 +18,7 @@
 
 #include "platform.h"
 #include "../config/Config.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../util/Util.h"
 #include <wchar.h>
 #include <jni.h>

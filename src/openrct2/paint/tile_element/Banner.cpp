@@ -18,7 +18,7 @@
 #include "../../config/Config.h"
 #include "../../Game.h"
 #include "../../interface/viewport.h"
-#include "../../localisation/localisation.h"
+#include "../../localisation/Localisation.h"
 #include "TileElement.h"
 #include "../../world/Banner.h"
 #include "../../world/scenery.h"

@@ -25,7 +25,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include "KeyboardShortcuts.h"
 
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Input;

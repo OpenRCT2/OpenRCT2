@@ -35,7 +35,7 @@
 #include "../drawing/Drawing.h"
 #include "../Game.h"
 #include "../interface/console.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../peep/Peep.h"
 #include "../platform/platform.h"

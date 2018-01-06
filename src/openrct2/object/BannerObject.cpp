@@ -18,7 +18,7 @@
 #include "BannerObject.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../object/Object.h"
 #include "ObjectList.h"
 

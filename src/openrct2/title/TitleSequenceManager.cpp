@@ -26,7 +26,7 @@
 #include "TitleSequence.h"
 #include "TitleSequenceManager.h"
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 
 namespace TitleSequenceManager

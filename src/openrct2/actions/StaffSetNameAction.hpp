@@ -17,13 +17,13 @@
 #pragma once
 
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "GameAction.h"
 
 #include "../Cheats.h"
 #include "../peep/Staff.h"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../world/Park.h"
 
 struct StaffSetNameAction : public GameActionBase<GAME_COMMAND_SET_STAFF_NAME, GameActionResult>

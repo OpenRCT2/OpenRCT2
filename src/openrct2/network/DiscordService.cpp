@@ -20,7 +20,7 @@
 #include "../Context.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../world/Park.h"
 #include "DiscordService.h"

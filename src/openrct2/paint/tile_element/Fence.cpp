@@ -18,7 +18,7 @@
 #include "../../config/Config.h"
 #include "../../drawing/Drawing.h"
 #include "../../Game.h"
-#include "../../localisation/localisation.h"
+#include "../../localisation/Localisation.h"
 #include "../../interface/colour.h"
 #include "../../interface/viewport.h"
 #include "../../ride/Track.h"

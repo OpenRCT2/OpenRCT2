@@ -22,7 +22,7 @@
 #include <pwd.h>
 #include "platform.h"
 #include "../util/Util.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../config/Config.h"
 
 void macos_disallow_automatic_window_tabbing()

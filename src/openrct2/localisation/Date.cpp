@@ -16,8 +16,8 @@
 
 #include <time.h>
 #include "../Game.h"
-#include "date.h"
-#include "string_ids.h"
+#include "Date.h"
+#include "StringIds.h"
 
 uint16 gDateMonthTicks;
 uint16 gDateMonthsElapsed;

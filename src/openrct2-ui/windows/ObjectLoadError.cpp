@@ -18,7 +18,7 @@
 
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
 

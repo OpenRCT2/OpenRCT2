@@ -22,7 +22,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2-ui/interface/Dropdown.h>

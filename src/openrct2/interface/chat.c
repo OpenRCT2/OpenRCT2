@@ -18,7 +18,7 @@
 #include "../audio/AudioMixer.h"
 #include "../Context.h"
 #include "../interface/themes.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"

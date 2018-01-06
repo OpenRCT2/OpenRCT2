@@ -19,7 +19,7 @@
 #include "Window.h"
 
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 
 #define WW 420
 #define WH 280

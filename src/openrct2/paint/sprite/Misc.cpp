@@ -19,7 +19,7 @@
 #include "../../interface/viewport.h"
 #include "Sprite.h"
 #include "../Paint.h"
-#include "../../localisation/string_ids.h"
+#include "../../localisation/StringIds.h"
 
 /** rct2: 0x0097EDA4 */
 static const sint8 money_wave[] = {

@@ -20,7 +20,7 @@
 #include "NetworkAction.h"
 
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 
 sint32 NetworkActions::FindCommand(sint32 command)
 {

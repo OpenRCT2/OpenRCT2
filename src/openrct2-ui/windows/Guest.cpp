@@ -22,7 +22,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Peep.h>

@@ -18,7 +18,7 @@
 #include <openrct2/core/Util.hpp>
 #include <openrct2-ui/windows/Window.h>
 
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/interface/widget.h>
 
 enum WINDOW_MUSIC_CREDITS_WIDGET_IDX {

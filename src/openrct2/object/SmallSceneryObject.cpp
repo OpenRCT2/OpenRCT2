@@ -21,7 +21,7 @@
 #include "SmallSceneryObject.h"
 
 #include "../drawing/Drawing.h"
-#include "../localisation/language.h"
+#include "../localisation/Language.h"
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"
 

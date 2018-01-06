@@ -14,9 +14,14 @@
  *****************************************************************************/
 #pragma endregion
 
-#ifndef USER_H
-#define USER_H
+#pragma once
+
+#ifdef __cplusplus
+extern "C" {
+#endif
 
 void reset_user_strings();
 
-#endif // USER_H
+#ifdef __cplusplus
+}
+#endif

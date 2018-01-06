@@ -17,7 +17,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
 

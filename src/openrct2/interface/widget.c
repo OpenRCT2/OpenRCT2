@@ -20,7 +20,7 @@
 #include "widget.h"
 #include "window.h"
 #include "../platform/platform.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../util/Util.h"
 #include "../Context.h"
 

@@ -26,7 +26,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideGroupManager.h>

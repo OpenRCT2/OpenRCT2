@@ -20,7 +20,7 @@
 #include FT_FREETYPE_H
 
 #include "../config/Config.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../platform/platform.h"
 #include "TTF.h"

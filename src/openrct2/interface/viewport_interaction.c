@@ -18,7 +18,7 @@
 #include "../Editor.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/ride_data.h"

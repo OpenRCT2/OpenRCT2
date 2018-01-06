@@ -18,10 +18,10 @@
 
 #include "../core/Memory.hpp"
 #include "../core/MemoryStream.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "GameAction.h"
 
-#include "../localisation/date.h"
+#include "../localisation/Date.h"
 #include "../Cheats.h"
 #include "../interface/window.h"
 #include "../world/Park.h"

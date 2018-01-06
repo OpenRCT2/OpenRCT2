@@ -39,7 +39,7 @@ enum {
 
 #include "../common.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 
 #include "../Version.h"
 #include "NetworkTypes.h"

@@ -19,7 +19,7 @@
 
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/string_ids.h>
+#include <openrct2/localisation/StringIds.h>
 #include <openrct2/world/footpath.h>
 
 static rct_widget window_main_widgets[] = {

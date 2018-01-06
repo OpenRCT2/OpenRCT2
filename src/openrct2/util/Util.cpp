@@ -20,7 +20,7 @@
 #include "../core/Guard.hpp"
 #include "../core/Math.hpp"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../platform/platform.h"
 #include "../title/TitleScreen.h"
 #include "Util.h"

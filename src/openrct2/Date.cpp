@@ -16,7 +16,7 @@
 
 #include "core/Guard.hpp"
 #include "core/Math.hpp"
-#include "localisation/date.h"
+#include "localisation/Date.h"
 #include "Date.h"
 
 using namespace OpenRCT2;

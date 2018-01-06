@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "textinputbuffer.h"
 
 void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size)

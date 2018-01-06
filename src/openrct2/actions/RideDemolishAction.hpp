@@ -20,7 +20,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../interface/window.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../ride/Ride.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"

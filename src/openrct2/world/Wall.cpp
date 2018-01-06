@@ -20,7 +20,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/StringIds.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "LargeScenery.h"

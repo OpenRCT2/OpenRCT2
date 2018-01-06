@@ -17,7 +17,7 @@
 #include "../common.h"
 #include "../Cheats.h"
 #include "../Game.h"
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
 #include "../scenario/Scenario.h"

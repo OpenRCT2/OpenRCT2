@@ -37,8 +37,8 @@
 #include <pwd.h>
 
 #include "../config/Config.h"
-#include "../localisation/language.h"
-#include "../localisation/string_ids.h"
+#include "../localisation/Language.h"
+#include "../localisation/StringIds.h"
 #include "../util/Util.h"
 #include "platform.h"
 

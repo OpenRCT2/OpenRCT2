@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "localisation.h"
+#include "Localisation.h"
 #include <wchar.h>
 
 uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
@@ -118,7 +118,7 @@ sint32 utf8_length(const utf8 *text)
 
 wchar_t *utf8_to_widechar(const utf8 *src)
 {
-    wchar_t *result = malloc((utf8_length(src) + 1) * sizeof(wchar_t));
+    wchar_t * result = (wchar_t *)malloc((utf8_length(src) + 1) * sizeof(wchar_t));
     wchar_t *dst = result;
 
     const utf8 *ch = src;
@@ -137,7 +137,7 @@ wchar_t *utf8_to_widechar(const utf8 *src)
 
 utf8 *widechar_to_utf8(const wchar_t *src)
 {
-    utf8 *result = malloc((wcslen(src) * 4) + 1);
+    utf8 *result = (utf8 *)malloc((wcslen(src) * 4) + 1);
     utf8 *dst = result;
 
     for (; *src != 0; src++) {
@@ -146,7 +146,7 @@ utf8 *widechar_to_utf8(const wchar_t *src)
     *dst++ = 0;
 
     size_t size = (size_t)(dst - result);
-    return realloc(result, size);
+    return (utf8 *)realloc(result, size);
 }
 
 

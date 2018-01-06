@@ -31,7 +31,7 @@
 #include "AudioFormat.h"
 
 #include <openrct2/config/Config.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/platform/platform.h>
 

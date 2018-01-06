@@ -16,7 +16,7 @@
 
 #include "../Cheats.h"
 #include "../interface/window.h"
-#include "../localisation/date.h"
+#include "../localisation/Date.h"
 #include "../OpenRCT2.h"
 #include "../world/footpath.h"
 #include "../world/Map.h"

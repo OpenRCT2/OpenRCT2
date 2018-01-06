@@ -16,7 +16,8 @@
 
 #include "../core/Guard.hpp"
 #include "../core/Util.hpp"
-#include "../localisation/localisation.h"
+#include "../localisation/ConversionTables.h"
+#include "../localisation/Localisation.h"
 #include "../sprites.h"
 #include "Drawing.h"
 #include "Font.h"

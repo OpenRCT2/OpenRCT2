@@ -39,10 +39,10 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/viewport.h>
 #include <openrct2/interface/widget.h>
-#include <openrct2/localisation/currency.h>
-#include <openrct2/localisation/date.h>
-#include <openrct2/localisation/language.h>
-#include <openrct2/localisation/localisation.h>
+#include <openrct2/localisation/Currency.h>
+#include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Language.h>
+#include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>

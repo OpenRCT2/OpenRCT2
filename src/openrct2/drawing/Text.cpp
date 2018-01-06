@@ -16,7 +16,7 @@
 
 #include "Text.h"
 
-#include "../localisation/localisation.h"
+#include "../localisation/Localisation.h"
 
 static TextPaint _legacyPaint;
 
