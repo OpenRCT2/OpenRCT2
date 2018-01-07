@@ -71,7 +71,7 @@ matrix:
           env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=ubuntu_amd64
         - os: linux
           if: type != cron
-          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on" TARGET=windows
+          env: OPENRCT2_CMAKE_OPTS="-G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DFORCE32=on -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on -DCMAKE_BUILD_TYPE=release" TARGET=windows
         - os: linux
           if: type != cron
           env: TARGET=docker64 OPENRCT2_CMAKE_OPTS="-G Ninja -DDISABLE_TTF=ON -DCMAKE_BUILD_TYPE=release -DBUILD_SHARED_LIBS=ON -DDISABLE_RCT2_TESTS=on"
