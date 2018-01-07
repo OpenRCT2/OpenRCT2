@@ -19,10 +19,13 @@
 #include "DrawLineShader.h"
 #include "OpenGLFramebuffer.h"
 
-struct VDStruct
+namespace
 {
-    GLfloat mat[4][2];
-};
+    struct VDStruct
+    {
+        GLfloat mat[4][2];
+    };
+}
 
 constexpr VDStruct VertexData[2] =
 {
