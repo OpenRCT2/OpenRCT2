@@ -1328,6 +1328,62 @@ static sint32 cc_show_limits(const utf8 ** argv, sint32 argc)
     return 0;
 }
 
+static sint32 cc_for_date(const utf8 **argv, sint32 argc)
+{
+    sint32 year = 0;
+    sint32 month = 0;
+    sint32 day = 0;
+    if (argc < 1 || argc > 3)
+    {
+        return -1;
+    }
+
+    // All cases involve providing a year, so grab that first
+    year = atoi(argv[0]);
+    if (year < 1 || year > 8192)
+    {
+        return -1;
+    }
+
+    // YYYY (no month provided, preserve existing month)
+    if (argc == 1)
+    {
+        month = gDateMonthsElapsed % MONTH_COUNT + 1;
+    }
+
+    // YYYY MM or YYYY MM DD (month provided)
+    if (argc >= 2)
+    {
+        month = atoi(argv[1]);
+        month -= 2;
+        if (month < 1 || month > MONTH_COUNT)
+        {
+            return -1;
+        }
+    }
+
+    // YYYY OR YYYY MM (no day provided, preserve existing day)
+    if (argc <= 2)
+    {
+        day = Math::Clamp(1, gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, (int)days_in_month[month - 1]);
+    }
+
+    // YYYY MM DD (year, month, and day provided)
+    if (argc == 3)
+    {
+        day = atoi(argv[2]);
+        if (day < 1 || day > days_in_month[month-1])
+        {
+            return -1;
+        }
+    }
+
+    date_set(year, month, day);
+    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
+
+    return 1;
+}
+
 
 typedef sint32 (*console_command_func)(const utf8 **argv, sint32 argc);
 typedef struct console_command {
@@ -1407,7 +1463,7 @@ static const console_command console_command_table[] = {
     { "remove_unused_objects", cc_remove_unused_objects, "Removes all the unused objects from the object selection.", "remove_unused_objects" },
     { "remove_park_fences", cc_remove_park_fences, "Removes all park fences from the surface", "remove_park_fences"},
     { "show_limits", cc_show_limits, "Shows the map data counts and limits.", "show_limits" },
-    { "date", cmdline_for_date, "Sets the date to a given date. Format YYYY MM DD, YYYY MM, or YYYY."}
+    { "date", cc_for_date, "Sets the date to a given date.", "Format <year>[ <month>[ <day>]]."}
 };
 
 static sint32 cc_windows(const utf8 **argv, sint32 argc) {

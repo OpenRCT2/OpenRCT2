@@ -573,9 +573,11 @@ static void window_cheats_money_mousedown(rct_window *w, rct_widgetindex widgetI
         break;
     case WIDX_DATE_SET:
         date_set(year_spinner_value, month_spinner_value, day_spinner_value);
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
         break;
     case WIDX_DATE_RESET:
         date_set(1, 1, 1);
+        window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
         widget_invalidate(w, WIDX_YEAR_BOX);
         widget_invalidate(w, WIDX_MONTH_BOX);
         widget_invalidate(w, WIDX_DAY_BOX);
