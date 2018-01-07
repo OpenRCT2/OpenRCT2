@@ -1054,7 +1054,7 @@ static void widget_text_box_draw(rct_drawpixelinfo *dpi, rct_window *w, rct_widg
     gCurrentFontSpriteBase = FONT_SPRITE_BASE_MEDIUM;
     gCurrentFontFlags = 0;
 
-    if (!active || gTextInput == NULL) {
+    if (!active || gTextInput == nullptr) {
 
         if (w->widgets[widgetIndex].text != 0) {
             safe_strcpy(wrapped_string, w->widgets[widgetIndex].string, 512);

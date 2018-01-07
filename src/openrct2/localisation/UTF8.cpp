@@ -40,7 +40,7 @@ uint32 utf8_get_next(const utf8 *char_ptr, const utf8 **nextchar_ptr)
         numBytes = 1;
     }
 
-    if (nextchar_ptr != NULL)
+    if (nextchar_ptr != nullptr)
         *nextchar_ptr = char_ptr + numBytes;
     return result;
 }

@@ -74,7 +74,7 @@ static sint32 encoding_search_compare(const void *pKey, const void *pEntry)
 static wchar_t encoding_convert_x_to_unicode(wchar_t code, const encoding_convert_entry *table, size_t count)
 {
     encoding_convert_entry * entry = (encoding_convert_entry *)bsearch(&code, table, count, sizeof(encoding_convert_entry), encoding_search_compare);
-    if (entry == NULL) return code;
+    if (entry == nullptr) return code;
     else return entry->unicode;
 }
 

@@ -64,7 +64,7 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, NULL);
+    get_map_coordinates_from_pos(x, y, VIEWPORT_INTERACTION_MASK_SPRITE & VIEWPORT_INTERACTION_MASK_RIDE & VIEWPORT_INTERACTION_MASK_PARK, &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -100,7 +100,7 @@ sint32 viewport_interaction_get_item_left(sint32 x, sint32 y, viewport_interacti
     // If nothing is under cursor, find a close by peep
     if (info->type == VIEWPORT_INTERACTION_ITEM_NONE) {
         info->peep = viewport_interaction_get_closest_peep(x, y, 32);
-        if (info->peep == NULL)
+        if (info->peep == nullptr)
             return VIEWPORT_INTERACTION_ITEM_NONE;
 
         info->type = VIEWPORT_INTERACTION_ITEM_SPRITE;
@@ -200,7 +200,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
         return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
 
     LocationXY16 mapCoord = { 0 };
-    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, NULL);
+    get_map_coordinates_from_pos(x, y, ~(VIEWPORT_INTERACTION_MASK_TERRAIN & VIEWPORT_INTERACTION_MASK_WATER), &mapCoord.x, &mapCoord.y, &info->type, &info->tileElement, nullptr);
     info->x = mapCoord.x;
     info->y = mapCoord.y;
     tileElement = info->tileElement;
@@ -305,7 +305,7 @@ sint32 viewport_interaction_get_item_right(sint32 x, sint32 y, viewport_interact
     }
 
     if (!(input_test_flag(INPUT_FLAG_6)) || !(input_test_flag(INPUT_FLAG_TOOL_ACTIVE))) {
-        if (window_find_by_class(WC_RIDE_CONSTRUCTION) == NULL && window_find_by_class(WC_FOOTPATH) == NULL) {
+        if (window_find_by_class(WC_RIDE_CONSTRUCTION) == nullptr && window_find_by_class(WC_FOOTPATH) == nullptr) {
             return info->type = VIEWPORT_INTERACTION_ITEM_NONE;
         }
     }
@@ -449,7 +449,7 @@ static void viewport_interaction_remove_footpath(rct_tile_element *tileElement, 
     z = tileElement->base_height;
 
     w = window_find_by_class(WC_FOOTPATH);
-    if (w != NULL)
+    if (w != nullptr)
         footpath_provisional_update();
 
     tileElement2 = map_get_first_element_at(x / 32, y / 32);
@@ -565,17 +565,17 @@ static rct_peep *viewport_interaction_get_closest_peep(sint32 x, sint32 y, sint3
     rct_peep *peep, *closestPeep;
 
     w = window_find_from_point(x, y);
-    if (w == NULL)
-        return 0;
+    if (w == nullptr)
+        return nullptr;
 
     viewport = w->viewport;
-    if (viewport == NULL || viewport->zoom >= 2)
-        return 0;
+    if (viewport == nullptr || viewport->zoom >= 2)
+        return nullptr;
 
     x = ((x - viewport->x) << viewport->zoom) + viewport->view_x;
     y = ((y - viewport->y) << viewport->zoom) + viewport->view_y;
 
-    closestPeep = NULL;
+    closestPeep = nullptr;
     closestDistance = 0xFFFF;
     FOR_ALL_PEEPS(spriteIndex, peep) {
         if (peep->sprite_left == LOCATION_NULL)
@@ -651,8 +651,8 @@ void sub_68A15E(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, sint32 *di
 
     *x = map_pos.x & ~0x1F;
     *y = map_pos.y & ~0x1F;
-    if (direction != NULL) *direction = myDirection;
-    if (tileElement != NULL) *tileElement = myTileElement;
+    if (direction != nullptr) *direction = myDirection;
+    if (tileElement != nullptr) *tileElement = myTileElement;
 }
 
 }

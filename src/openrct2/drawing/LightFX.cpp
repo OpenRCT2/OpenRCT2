@@ -43,8 +43,8 @@ static uint8 _bakedLightTexture_spot_3[256 * 256];
 static rct_drawpixelinfo    _pixelInfo;
 static bool _lightfxAvailable = false;
 
-static void* _light_rendered_buffer_back = NULL;
-static void* _light_rendered_buffer_front = NULL;
+static void* _light_rendered_buffer_back = nullptr;
+static void* _light_rendered_buffer_front = nullptr;
 
 static uint32   _lightPolution_back = 0;
 static uint32   _lightPolution_front = 0;
@@ -279,12 +279,12 @@ void lightfx_prepare_light_list()
             for (sint32 pat = startSamplePoint; pat < totalSamplePoints; pat++) {
                 LocationXY16 mapCoord = { 0 };
 
-                rct_tile_element *tileElement = 0;
+                rct_tile_element *tileElement = nullptr;
 
                 sint32 interactionType = 0;
 
                 rct_window *w = window_get_main();
-                if (w != NULL) {
+                if (w != nullptr) {
                 //  get_map_coordinates_from_pos(entry->x + offsetPattern[pat*2] / mapFrontDiv, entry->y + offsetPattern[pat*2+1] / mapFrontDiv, VIEWPORT_INTERACTION_MASK_NONE, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, NULL);
 
 #ifdef LIGHTFX_UNKNOWN_PART_1
@@ -465,7 +465,7 @@ void lightfx_update_viewport_settings()
 
 void lightfx_render_lights_to_frontbuffer()
 {
-    if (_light_rendered_buffer_front == NULL) {
+    if (_light_rendered_buffer_front == nullptr) {
         return;
     }
 
@@ -476,7 +476,7 @@ void lightfx_render_lights_to_frontbuffer()
 //  log_warning("%i lights", LightListCurrentCountFront);
 
     for (uint32 light = 0; light < LightListCurrentCountFront; light++) {
-        const uint8 *bufReadBase    = 0;
+        const uint8 *bufReadBase    = nullptr;
         uint8       *bufWriteBase   = (uint8 *)_light_rendered_buffer_front;
         uint32      bufReadWidth, bufReadHeight;
         sint32      bufWriteX, bufWriteY;
@@ -990,7 +990,7 @@ void lightfx_render_to_texture(
     lightfx_render_lights_to_frontbuffer();
 
     uint8 * lightBits = (uint8 *)lightfx_get_front_buffer();
-    if (lightBits == NULL) {
+    if (lightBits == nullptr) {
         return;
     }
 

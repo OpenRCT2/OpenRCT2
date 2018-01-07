@@ -475,7 +475,7 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
 };
 
 void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
-                uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap) = NULL;
+                uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap) = nullptr;
 
 void mask_init()
 {
@@ -510,7 +510,7 @@ void gfx_filter_pixel(rct_drawpixelinfo *dpi, sint32 x, sint32 y, FILTER_PALETTE
 void gfx_transpose_palette(sint32 pal, uint8 product)
 {
     const rct_g1_element * g1 = gfx_get_g1_element(pal);
-    if (g1 != NULL)
+    if (g1 != nullptr)
     {
         sint32 width = g1->width;
         sint32 x = g1->x_offset;
@@ -542,13 +542,13 @@ void load_palette()
 
     uint32 palette = 0x5FC;
 
-    if (water_type != NULL) {
+    if (water_type != nullptr) {
         openrct2_assert(water_type->image_id != (uint32)-1, "Failed to load water palette");
         palette = water_type->image_id;
     }
 
     const rct_g1_element * g1 = gfx_get_g1_element(palette);
-    if (g1 != NULL)
+    if (g1 != nullptr)
     {
         sint32 width = g1->width;
         sint32 x = g1->x_offset;
@@ -640,7 +640,7 @@ void gfx_invalidate_pickedup_peep()
     if (sprite != UINT32_MAX)
     {
         const rct_g1_element * g1 = gfx_get_g1_element(sprite & 0x7FFFF);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             sint32 left = gPickupPeepX + g1->x_offset;
             sint32 top = gPickupPeepY + g1->y_offset;

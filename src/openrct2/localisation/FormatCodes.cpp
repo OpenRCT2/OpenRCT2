@@ -117,7 +117,7 @@ const char *format_get_token(uint32 code)
         if (code == format_code_tokens[i].code)
             return format_code_tokens[i].token;
     }
-    return 0;
+    return nullptr;
 }
 
 bool utf8_should_use_sprite_for_codepoint(sint32 codepoint)

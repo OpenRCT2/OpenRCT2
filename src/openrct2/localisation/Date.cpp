@@ -83,7 +83,7 @@ void date_update()
 
 void date_update_real_time_of_day()
 {
-    time_t timestamp = time(0);
+    time_t timestamp = time(nullptr);
     struct tm *now = localtime(&timestamp);
 
     gRealTimeOfDay.second = now->tm_sec;

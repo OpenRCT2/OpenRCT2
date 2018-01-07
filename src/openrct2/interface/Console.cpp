@@ -146,9 +146,9 @@ void console_update()
     if (gConsoleOpen) {
         // When scrolling the map, the console pixels get copied... therefore invalidate the screen
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             rct_viewport *mainViewport = mainWindow->viewport;
-            if (mainViewport != NULL) {
+            if (mainViewport != nullptr) {
                 if (_lastMainViewportX != mainViewport->view_x || _lastMainViewportY != mainViewport->view_y) {
                     _lastMainViewportX = mainViewport->view_x;
                     _lastMainViewportY = mainViewport->view_y;
@@ -498,7 +498,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     for (sint32 i = 0; i < RIDE_MODE_COUNT; i++) {
                         char mode_name[128] = { 0 };
                         rct_string_id mode_string_id = RideModeNames[i];
-                        format_string(mode_name, 128, mode_string_id, 0);
+                        format_string(mode_name, 128, mode_string_id, nullptr);
                         console_printf("%02d - %s", i, mode_name);
                     }
 
@@ -541,7 +541,7 @@ static sint32 cc_rides(const utf8 **argv, sint32 argc)
                     if (mode <= 0 || mode > (RIDE_MODE_COUNT - 1)) {
                         console_printf("Invalid ride mode.");
                     }
-                    else if (ride == NULL || ride->type == RIDE_TYPE_NULL) {
+                    else if (ride == nullptr || ride->type == RIDE_TYPE_NULL) {
                         console_printf("No ride found with index %d", ride_index);
                     }
                     else {
@@ -691,7 +691,7 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
 
-                if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != NULL)) {
+                if (int_valid[0] && int_valid[1] && ((GET_PEEP(int_val[0])) != nullptr)) {
                     rct_peep *peep = GET_PEEP(int_val[0]);
 
                     peep->energy = int_val[1];
@@ -702,13 +702,13 @@ static sint32 cc_staff(const utf8 **argv, sint32 argc)
                 bool int_valid[2] = { 0 };
                 int_val[0] = console_parse_int(argv[2], &int_valid[0]);
                 int_val[1] = console_parse_int(argv[3], &int_valid[1]);
-                rct_peep *peep = NULL;
+                rct_peep *peep = nullptr;
                 if (!int_valid[0]) {
                     console_writeline_error("Invalid staff ID");
                     return 1;
                 }
                 peep = GET_PEEP(int_val[0]);
-                bool is_entertainer = peep != NULL && peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER;
+                bool is_entertainer = peep != nullptr && peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_ENTERTAINER;
                 if (!is_entertainer) {
                     console_writeline_error("Specified staff is not entertainer");
                     return 1;
@@ -830,11 +830,11 @@ static sint32 cc_get(const utf8 **argv, sint32 argc)
         }
         else if (strcmp(argv[0], "location") == 0) {
             rct_window *w = window_get_main();
-            if (w != NULL) {
+            if (w != nullptr) {
                 sint32 interactionType;
                 rct_tile_element *tileElement;
                 LocationXY16 mapCoord = { 0 };
-                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, NULL);
+                get_map_coordinates_from_pos(w->viewport->view_width / 2, w->viewport->view_height / 2, VIEWPORT_INTERACTION_MASK_TERRAIN, &mapCoord.x, &mapCoord.y, &interactionType, &tileElement, nullptr);
                 mapCoord.x -= 16;
                 mapCoord.x /= 32;
                 mapCoord.y -= 16;
@@ -1036,7 +1036,7 @@ static sint32 cc_set(const utf8 **argv, sint32 argc)
         }
         else if (strcmp(argv[0], "location") == 0 && invalidArguments(&invalidArgs, int_valid[0] && int_valid[1])) {
             rct_window *w = window_get_main();
-            if (w != NULL) {
+            if (w != nullptr) {
                 sint32 x = (sint16)(int_val[0] * 32 + 16);
                 sint32 y = (sint16)(int_val[1] * 32 + 16);
                 sint32 z = tile_element_height(x, y);
@@ -1149,20 +1149,20 @@ static sint32 cc_load_object(const utf8 **argv, sint32 argc) {
         }
 
         const ObjectRepositoryItem * ori = object_repository_find_object_by_name(name);
-        if (ori == NULL) {
+        if (ori == nullptr) {
             console_writeline_error("Could not find the object.");
             return 1;
         }
 
         const rct_object_entry * entry = &ori->ObjectEntry;
         void * loadedObject = object_manager_get_loaded_object(entry);
-        if (loadedObject != NULL) {
+        if (loadedObject != nullptr) {
             console_writeline_error("Object is already in scenario.");
             return 1;
         }
 
         loadedObject = object_manager_load_object(entry);
-        if (loadedObject == NULL) {
+        if (loadedObject == nullptr) {
             console_writeline_error("Unable to load object.");
             return 1;
         }
@@ -1213,7 +1213,7 @@ static sint32 cc_object_count(const utf8 **argv, sint32 argc) {
 
         sint32 entryGroupIndex = 0;
         for (; entryGroupIndex < object_entry_group_counts[i]; entryGroupIndex++){
-            if (object_entry_groups[i].chunks[entryGroupIndex] == NULL){
+            if (object_entry_groups[i].chunks[entryGroupIndex] == nullptr){
                 break;
             }
         }

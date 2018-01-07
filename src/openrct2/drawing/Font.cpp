@@ -45,7 +45,7 @@ void font_sprite_initialise_characters()
         sint32 glyphOffset = fontSize * FONT_SPRITE_GLYPH_COUNT;
         for (uint8 glyphIndex = 0; glyphIndex < FONT_SPRITE_GLYPH_COUNT; glyphIndex++) {
             const rct_g1_element * g1 = gfx_get_g1_element(glyphIndex + SPR_CHAR_START + glyphOffset);
-            if (g1 != NULL)
+            if (g1 != nullptr)
             {
                 sint32 width = g1->width + 2 * g1->x_offset;
                 width += fontSize == FONT_SIZE_BIG ? 1 : -1;
@@ -250,7 +250,7 @@ bool font_supports_string_ttf(const utf8 *text, sint32 fontSize)
 #ifndef NO_TTF
     const utf8 *src = text;
     const TTF_Font *font = gCurrentTTFFontSet->size[fontSize].font;
-    if (font == NULL) {
+    if (font == nullptr) {
         return false;
     }
 

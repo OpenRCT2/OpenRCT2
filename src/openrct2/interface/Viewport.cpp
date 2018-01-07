@@ -50,7 +50,7 @@ uint8 gShowConstuctionRightsRefCount;
 rct_viewport g_viewport_list[MAX_VIEWPORT_COUNT];
 rct_viewport *g_music_tracking_viewport;
 
-static rct_tile_element *_interaction_element = NULL;
+static rct_tile_element *_interaction_element = nullptr;
 
 sint16 gSavedViewX;
 sint16 gSavedViewY;
@@ -157,14 +157,14 @@ void centre_2d_coordinates(sint32 x, sint32 y, sint32 z, sint32 * out_x, sint32 
 */
 void viewport_create(rct_window *w, sint32 x, sint32 y, sint32 width, sint32 height, sint32 zoom, sint32 centre_x, sint32 centre_y, sint32 centre_z, char flags, sint16 sprite)
 {
-    rct_viewport* viewport = NULL;
+    rct_viewport* viewport = nullptr;
     for (sint32 i = 0; i < MAX_VIEWPORT_COUNT; i++) {
         if (g_viewport_list[i].width == 0) {
             viewport = &g_viewport_list[i];
             break;
         }
     }
-    if (viewport == NULL) {
+    if (viewport == nullptr) {
         log_error("No more viewport slots left to allocate.");
         return;
     }
@@ -639,7 +639,7 @@ void viewport_update_sprite_follow(rct_window *window)
 void viewport_update_smart_sprite_follow(rct_window * window)
 {
     rct_sprite * sprite = try_get_sprite(window->viewport_smart_follow_sprite);
-    if (sprite == NULL)
+    if (sprite == nullptr)
     {
         window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
         window->viewport_target_sprite = SPRITE_INDEX_NULL;
@@ -907,7 +907,7 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
         viewport_paint_weather_gloom(dpi);
     }
 
-    if (session->PSStringHead != NULL) {
+    if (session->PSStringHead != nullptr) {
         paint_draw_money_structs(dpi, session->PSStringHead);
     }
 }
@@ -933,7 +933,7 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo * dpi)
  */
 void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
 {
-    screen_get_map_xy(*x, *y, x, y, NULL);
+    screen_get_map_xy(*x, *y, x, y, nullptr);
     if (*x == LOCATION_NULL)
         return;
 
@@ -963,7 +963,7 @@ void screen_pos_to_map_pos(sint16 *x, sint16 *y, sint32 *direction)
 
     *x = *x & ~0x1F;
     *y = *y & ~0x1F;
-    if (direction != NULL) *direction = my_direction;
+    if (direction != nullptr) *direction = my_direction;
 }
 
 LocationXY16 screen_coord_to_viewport_coord(rct_viewport *viewport, uint16 x, uint16 y)
@@ -1006,7 +1006,7 @@ void show_gridlines()
 {
     if (gShowGridLinesRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_GRIDLINES)) {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_GRIDLINES;
                 window_invalidate(mainWindow);
@@ -1025,7 +1025,7 @@ void hide_gridlines()
     gShowGridLinesRefCount--;
     if (gShowGridLinesRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (!gConfigGeneral.always_show_gridlines) {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
                 window_invalidate(mainWindow);
@@ -1042,7 +1042,7 @@ void show_land_rights()
 {
     if (gShowLandRightsRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP)) {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_LAND_OWNERSHIP;
                 window_invalidate(mainWindow);
@@ -1061,7 +1061,7 @@ void hide_land_rights()
     gShowLandRightsRefCount--;
     if (gShowLandRightsRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_LAND_OWNERSHIP) {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_LAND_OWNERSHIP;
                 window_invalidate(mainWindow);
@@ -1078,7 +1078,7 @@ void show_construction_rights()
 {
     if (gShowConstuctionRightsRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (!(mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS)) {
                 mainWindow->viewport->flags |= VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
                 window_invalidate(mainWindow);
@@ -1097,7 +1097,7 @@ void hide_construction_rights()
     gShowConstuctionRightsRefCount--;
     if (gShowConstuctionRightsRefCount == 0) {
         rct_window *mainWindow = window_get_main();
-        if (mainWindow != NULL) {
+        if (mainWindow != nullptr) {
             if (mainWindow->viewport->flags & VIEWPORT_FLAG_CONSTRUCTION_RIGHTS) {
                 mainWindow->viewport->flags &= ~VIEWPORT_FLAG_CONSTRUCTION_RIGHTS;
                 window_invalidate(mainWindow);
@@ -1114,7 +1114,7 @@ void viewport_set_visibility(uint8 mode)
 {
     rct_window* window = window_get_main();
 
-    if (window != NULL) {
+    if (window != nullptr) {
         rct_viewport* edi = window->viewport;
         uint32 invalidate = 0;
 
@@ -1281,7 +1281,7 @@ static bool is_pixel_present_rle(uint8 *esi, sint16 x_start_point, sint16 y_star
 static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 y, const uint8 * palette)
 {
     const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
-    if (g1 == NULL)
+    if (g1 == nullptr)
     {
         return false;
     }
@@ -1442,7 +1442,7 @@ static bool sub_679074(rct_drawpixelinfo *dpi, sint32 imageId, sint16 x, sint16 
  */
 static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 y)
 {
-    const uint8 * palette = NULL;
+    const uint8 * palette = nullptr;
     imageId &= 0xBFFFFFFF;
     if (imageId & IMAGE_TYPE_REMAP) {
         _currentImageType = IMAGE_TYPE_REMAP;
@@ -1452,7 +1452,7 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
         }
         sint32 g1Index = palette_to_g1_offset[index];
         const rct_g1_element * g1 = gfx_get_g1_element(g1Index);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             palette = g1->offset;
         }
@@ -1468,10 +1468,10 @@ static bool sub_679023(rct_drawpixelinfo *dpi, sint32 imageId, sint32 x, sint32 
  */
 void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
 {
-    while ((ps = ps->next_quadrant_ps) != NULL) {
+    while ((ps = ps->next_quadrant_ps) != nullptr) {
         paint_struct * old_ps = ps;
         paint_struct * next_ps = ps;
-        while (next_ps != NULL) {
+        while (next_ps != nullptr) {
             ps = next_ps;
             if (sub_679023(dpi, ps->image_id, ps->x, ps->y))
                 store_interaction_info(ps);
@@ -1479,7 +1479,7 @@ void sub_68862C(rct_drawpixelinfo * dpi, paint_struct * ps)
             next_ps = ps->var_20;
         }
 
-        for (attached_paint_struct *attached_ps = ps->attached_ps; attached_ps != NULL; attached_ps = attached_ps->next) {
+        for (attached_paint_struct *attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next) {
             if (sub_679023(
                 dpi,
                 attached_ps->image_id,
@@ -1517,7 +1517,7 @@ void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, si
 {
     _unk9AC154 = flags & 0xFFFF;
     _interactionSpriteType = 0;
-    if (window != NULL && window->viewport != NULL)
+    if (window != nullptr && window->viewport != nullptr)
     {
         rct_viewport* myviewport = window->viewport;
         screenX -= (sint32)myviewport->x;
@@ -1546,12 +1546,12 @@ void get_map_coordinates_from_pos_window(rct_window * window, sint32 screenX, si
             sub_68862C(dpi, &ps);
             paint_session_free(session);
         }
-        if (viewport != NULL) *viewport = myviewport;
+        if (viewport != nullptr) *viewport = myviewport;
     }
-    if (interactionType != NULL) *interactionType = _interactionSpriteType;
-    if (x != NULL) *x = _interactionMapX;
-    if (y != NULL) *y = _interactionMapY;
-    if (tileElement != NULL) *tileElement = _interaction_element;
+    if (interactionType != nullptr) *interactionType = _interactionSpriteType;
+    if (x != nullptr) *x = _interactionMapX;
+    if (y != nullptr) *y = _interactionMapY;
+    if (tileElement != nullptr) *tileElement = _interaction_element;
 }
 
 /**
@@ -1564,7 +1564,7 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
     {
         for (rct_window *w = g_window_list; w < gWindowNextSlot; w++)
         {
-            if (w->classification != WC_MAIN_WINDOW && w->viewport != NULL && w->viewport == viewport)
+            if (w->classification != WC_MAIN_WINDOW && w->viewport != nullptr && w->viewport == viewport)
             {
                 // note, window_is_visible will update viewport->visibility, so this should have a low hit count
                 if (!window_is_visible(w)) {
@@ -1606,17 +1606,17 @@ void viewport_invalidate(rct_viewport *viewport, sint32 left, sint32 top, sint32
 static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
 {
     rct_window *w = window_find_from_point(screenX, screenY);
-    if (w == NULL)
-        return NULL;
+    if (w == nullptr)
+        return nullptr;
 
     rct_viewport *viewport = w->viewport;
-    if (viewport == NULL)
-        return NULL;
+    if (viewport == nullptr)
+        return nullptr;
 
     if (screenX < viewport->x || screenY < viewport->y)
-        return NULL;
+        return nullptr;
     if (screenX >= viewport->x + viewport->width || screenY >= viewport->y + viewport->height)
-        return NULL;
+        return nullptr;
 
     return viewport;
 }
@@ -1636,8 +1636,8 @@ static rct_viewport *viewport_find_from_point(sint32 screenX, sint32 screenY)
 void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct_viewport **viewport) {
     sint16 my_x, my_y;
     sint32 interactionType;
-    rct_viewport *myViewport = NULL;
-    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, NULL, &myViewport);
+    rct_viewport *myViewport = nullptr;
+    get_map_coordinates_from_pos(screenX, screenY, VIEWPORT_INTERACTION_MASK_TERRAIN, &my_x, &my_y, &interactionType, nullptr, &myViewport);
     if (interactionType == VIEWPORT_INTERACTION_ITEM_NONE) {
         *x = LOCATION_NULL;
         return;
@@ -1656,7 +1656,7 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
     *x = map_pos.x;
     *y = map_pos.y;
 
-    if (viewport != NULL) *viewport = myViewport;
+    if (viewport != nullptr) *viewport = myViewport;
 }
 
 /**
@@ -1666,7 +1666,7 @@ void screen_get_map_xy(sint32 screenX, sint32 screenY, sint16 *x, sint16 *y, rct
 void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *mapX, sint16 *mapY)
 {
     rct_viewport *viewport = viewport_find_from_point(screenX, screenY);
-    if (viewport == NULL) {
+    if (viewport == nullptr) {
         *mapX = LOCATION_NULL;
         return;
     }
@@ -1690,7 +1690,7 @@ void screen_get_map_xy_with_z(sint16 screenX, sint16 screenY, sint16 z, sint16 *
  */
 void screen_get_map_xy_quadrant(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *quadrant)
 {
-    screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
+    screen_get_map_xy(screenX, screenY, mapX, mapY, nullptr);
     if (*mapX == LOCATION_NULL)
         return;
 
@@ -1720,7 +1720,7 @@ void screen_get_map_xy_quadrant_with_z(sint16 screenX, sint16 screenY, sint16 z,
  */
 void screen_get_map_xy_side(sint16 screenX, sint16 screenY, sint16 *mapX, sint16 *mapY, uint8 *side)
 {
-    screen_get_map_xy(screenX, screenY, mapX, mapY, NULL);
+    screen_get_map_xy(screenX, screenY, mapX, mapY, nullptr);
     if (*mapX == LOCATION_NULL)
         return;
 
@@ -1781,7 +1781,7 @@ sint16 get_height_marker_offset()
 void viewport_set_saved_view()
 {
     rct_window * w = window_get_main();
-    if (w != NULL) 
+    if (w != nullptr)
     {
         rct_viewport *viewport = w->viewport;
 

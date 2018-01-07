@@ -433,7 +433,7 @@ static void format_comma_separated_integer(char **dest, size_t *size, sint64 val
     char *nbegin, *nend, *ncur;
     char tmp;
     const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
-    const char *ch = NULL;
+    const char *ch = nullptr;
 
     if ((*size) == 0) return;
 
@@ -459,9 +459,9 @@ static void format_comma_separated_integer(char **dest, size_t *size, sint64 val
             ch = commaMark;
         }
 
-        if (ch != NULL ) {
+        if (ch != nullptr ) {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = NULL;
+            if (*ch == '\0') ch = nullptr;
         } else {
             digit = value % 10;
             value /= 10;
@@ -481,9 +481,9 @@ static void format_comma_separated_integer(char **dest, size_t *size, sint64 val
                 ch = commaMark;
             }
 
-            if (ch != NULL ) {
+            if (ch != nullptr ) {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = NULL;
+                if (*ch == '\0') ch = nullptr;
             } else {
                 digit = value % 10;
                 value /= 10;
@@ -517,7 +517,7 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, sint64 v
     char tmp;
     const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
     const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const char *ch = NULL;
+    const char *ch = nullptr;
     sint32 zeroNeeded = 1;
 
     if ((*size) == 0) return;
@@ -550,9 +550,9 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, sint64 v
             ch = commaMark;
         }
 
-        if (ch != NULL ) {
+        if (ch != nullptr ) {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = NULL;
+            if (*ch == '\0') ch = nullptr;
         } else {
             zeroNeeded = 0;
             digit = value % 10;
@@ -573,9 +573,9 @@ static void format_comma_separated_fixed_1dp(char **dest, size_t *size, sint64 v
                 ch = commaMark;
             }
 
-            if (ch != NULL ) {
+            if (ch != nullptr ) {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = NULL;
+                if (*ch == '\0') ch = nullptr;
             } else {
                 zeroNeeded = 0;
                 digit = value % 10;
@@ -610,7 +610,7 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, sint64 v
     char tmp;
     const char *commaMark = language_get_string(STR_LOCALE_THOUSANDS_SEPARATOR);
     const char *decimalMark = language_get_string(STR_LOCALE_DECIMAL_POINT);
-    const char *ch = NULL;
+    const char *ch = nullptr;
     sint32 zeroNeeded = 1;
 
     if ((*size) == 0) return;
@@ -649,9 +649,9 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, sint64 v
             ch = commaMark;
         }
 
-        if (ch != NULL ) {
+        if (ch != nullptr ) {
             format_push_char_safe(*ch++);
-            if (*ch == '\0') ch = NULL;
+            if (*ch == '\0') ch = nullptr;
         } else {
             zeroNeeded = 0;
             digit = value % 10;
@@ -672,9 +672,9 @@ static void format_comma_separated_fixed_2dp(char **dest, size_t *size, sint64 v
                 ch = commaMark;
             }
 
-            if (ch != NULL ) {
+            if (ch != nullptr ) {
                 format_push_wrap(*ch++);
-                if (*ch == '\0') ch = NULL;
+                if (*ch == '\0') ch = nullptr;
             } else {
                 zeroNeeded = 0;
                 digit = value % 10;
@@ -1271,16 +1271,16 @@ money32 string_to_money(char * string_to_monetise)
     }
 
     int number = 0, decimal = 0;
-    if (strstr(buffer, decimal_char) == NULL) {
+    if (strstr(buffer, decimal_char) == nullptr) {
         // If decimal char does not exist, no tokenising is needed.
         number = atoi(buffer);
     }
     else {
         char *numberText = strtok(buffer, decimal_char);
-        char *decimalText = strtok(NULL, decimal_char);
+        char *decimalText = strtok(nullptr, decimal_char);
 
-        if (numberText != NULL) number = atoi(numberText);
-        if (decimalText != NULL) decimal = atoi(decimalText);
+        if (numberText != nullptr) number = atoi(numberText);
+        if (decimalText != nullptr) decimal = atoi(decimalText);
 
         // The second parameter in MONEY must be two digits in length, while the game only ever uses
         // the first of the two digits.

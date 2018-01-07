@@ -151,7 +151,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
     *outNumLines = 0;
 
     // Pointer to the start of the current word
-    utf8 *currentWord = NULL;
+    utf8 *currentWord = nullptr;
 
     // Width of line up to current word
     sint32 currentWidth = 0;
@@ -171,7 +171,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             maxWidth = std::max(maxWidth, lineWidth);
             (*outNumLines)++;
             lineWidth = 0;
-            currentWord = NULL;
+            currentWord = nullptr;
             firstCh = ch;
             numCharactersOnLine = 0;
             continue;
@@ -189,13 +189,13 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
         if (lineWidth <= width || numCharactersOnLine == 0) {
             ch = nextCh;
             numCharactersOnLine++;
-        } else if (currentWord == NULL) {
+        } else if (currentWord == nullptr) {
             // Single word is longer than line, insert null terminator
             ch += utf8_insert_codepoint(ch, 0);
             maxWidth = std::max(maxWidth, lineWidth);
             (*outNumLines)++;
             lineWidth = 0;
-            currentWord = NULL;
+            currentWord = nullptr;
             firstCh = ch;
             numCharactersOnLine = 0;
         } else {
@@ -205,7 +205,7 @@ sint32 gfx_wrap_string(utf8 *text, sint32 width, sint32 *outNumLines, sint32 *ou
             maxWidth = std::max(maxWidth, currentWidth);
             (*outNumLines)++;
             lineWidth = 0;
-            currentWord = NULL;
+            currentWord = nullptr;
             firstCh = ch;
             numCharactersOnLine = 0;
         }
@@ -234,7 +234,7 @@ static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette
 
     sint32 colour32 = 0;
     const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-    if (g1 != NULL)
+    if (g1 != nullptr)
     {
         colour32 = ((uint32 *)g1->offset)[colour & 0xFF];
     }
@@ -291,7 +291,7 @@ void draw_string_centred_raw(rct_drawpixelinfo *dpi, sint32 x, sint32 y, sint32 
         gfx_draw_string(dpi, text, TEXT_COLOUR_254, x - (width / 2), y);
 
         const utf8 *ch = text;
-        const utf8 *nextCh = 0;
+        const utf8 *nextCh = nullptr;
 
         while ((utf8_get_next(ch, &nextCh)) != 0) {
             ch = nextCh;
@@ -474,7 +474,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
         return;
 
     TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(info->font_sprite_base);
-    if (fontDesc->font == NULL) {
+    if (fontDesc->font == nullptr) {
         ttf_draw_string_raw_sprite(dpi, text, info);
         return;
     }
@@ -485,7 +485,7 @@ static void ttf_draw_string_raw_ttf(rct_drawpixelinfo *dpi, const utf8 *text, te
     } else {
         uint8 colour = info->palette[1];
         TTFSurface * surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
-        if (surface == NULL)
+        if (surface == nullptr)
             return;
 
         sint32 drawX = info->x + fontDesc->offset_x;
@@ -610,7 +610,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     {
         uint16 eax = palette_to_g1_offset[(uint8)*nextCh++];
         const rct_g1_element * g1 = gfx_get_g1_element(eax);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             uint32 ebx = g1->offset[249] + 256;
             if (!(info->flags & TEXT_DRAW_FLAG_OUTLINE)) {
@@ -679,7 +679,7 @@ static const utf8 *ttf_process_format_code(rct_drawpixelinfo *dpi, const utf8 *t
     {
         uint32 imageId = *((uint32*)(nextCh));
         const rct_g1_element * g1 = gfx_get_g1_element(imageId & 0x7FFFF);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             if (!(info->flags & TEXT_DRAW_FLAG_NO_DRAW)) {
                 gfx_draw_sprite(dpi, imageId, info->x, info->y, 0);
@@ -812,7 +812,7 @@ static void ttf_process_initial_colour(sint32 colour, text_draw_info *info)
 
 void ttf_draw_string(rct_drawpixelinfo *dpi, char *text, sint32 colour, sint32 x, sint32 y)
 {
-    if (text == NULL) return;
+    if (text == nullptr) return;
 
     text_draw_info info;
     info.font_sprite_base = gCurrentFontSpriteBase;
@@ -855,7 +855,7 @@ static sint32 ttf_get_string_width(const utf8 *text)
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
-    ttf_process_string(NULL, text, &info);
+    ttf_process_string(nullptr, text, &info);
 
     return info.maxX;
 }

@@ -83,7 +83,7 @@ void scrolling_text_initialise_bitmaps()
     {
         sint32 imageId = SPR_SCROLLING_TEXT_START + i;
         const rct_g1_element * g1original = gfx_get_g1_element(imageId);
-        if (g1original != NULL)
+        if (g1original != nullptr)
         {
             rct_g1_element g1 = *g1original;
             g1.offset = _drawScrollTextList[i].bitmap;
@@ -1492,7 +1492,7 @@ static void scrolling_text_set_bitmap_for_sprite(utf8 *text, sint32 scroll, uint
         if (codepoint <= FORMAT_COLOUR_CODE_END && codepoint >= FORMAT_COLOUR_CODE_START){
             codepoint -= FORMAT_COLOUR_CODE_START;
             const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-            if (g1 != NULL)
+            if (g1 != nullptr)
             {
                 characterColour = g1->offset[codepoint * 4];
             }
@@ -1531,7 +1531,7 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
 {
 #ifndef NO_TTF
     TTFFontDescriptor *fontDesc = ttf_get_font_from_sprite_base(FONT_SPRITE_BASE_TINY);
-    if (fontDesc->font == NULL) {
+    if (fontDesc->font == nullptr) {
         scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets);
         return;
     }
@@ -1557,14 +1557,14 @@ static void scrolling_text_set_bitmap_for_ttf(utf8 *text, sint32 scroll, uint8 *
         colour = scrolling_text_get_colour(gCommonFormatArgs[7]);
     } else {
         const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
-        if (g1 != NULL)
+        if (g1 != nullptr)
         {
             colour = g1->offset[(colour - FORMAT_COLOUR_CODE_START) * 4];
         }
     }
 
     TTFSurface * surface = ttf_surface_cache_get_or_add(fontDesc->font, text);
-    if (surface == NULL) {
+    if (surface == nullptr) {
         return;
     }
 
