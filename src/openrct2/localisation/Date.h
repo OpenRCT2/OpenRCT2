@@ -61,7 +61,6 @@ extern openrct_timeofday gRealTimeOfDay;
 sint32 date_get_month(sint32 months);
 sint32 date_get_year(sint32 months);
 sint32 date_get_total_months(sint32 month, sint32 year);
-sint32 cmdline_for_date(const utf8 **argv, sint32 argc);
 void date_reset();
 void date_update();
 void date_set(sint32 year, sint32 month, sint32 day);

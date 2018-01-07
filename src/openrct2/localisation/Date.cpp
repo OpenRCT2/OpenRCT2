@@ -17,7 +17,6 @@
 #include <time.h>
 #include "../Game.h"
 #include "../core/Math.hpp"
-#include "../interface/window.h"
 #include "Date.h"
 #include "StringIds.h"
 
@@ -67,7 +66,6 @@ void date_reset()
     gDateMonthsElapsed = 0;
     gDateMonthTicks = 0;
     gCurrentTicks = 0;
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
 }
 
 void date_set(sint32 year, sint32 month, sint32 day)
@@ -77,57 +75,6 @@ void date_set(sint32 year, sint32 month, sint32 day)
     day = Math::Clamp(1, day, (int)days_in_month[month - 1]);
     gDateMonthsElapsed = (year - 1) * MONTH_COUNT + month - 1;
     gDateMonthTicks = 0x10000 / days_in_month[month - 1] * (day - 1) + 4;
-    window_invalidate_by_class(WC_BOTTOM_TOOLBAR);
-}
-
-sint32 cmdline_for_date(const utf8 **argv, sint32 argc)
-{
-    sint32 year = 0;
-    sint32 month = 0;
-    sint32 day = 0;
-    if (argc < 1 || argc > 3)
-    {
-        return -1;
-    }
-
-    //All cases involve providing a year, so grab that first
-    year = atoi(argv[0]);
-    if (year < 1 || year > 8192) {
-        return -1;
-    }
-
-    //YYYY (no month provided, preserve existing month)
-    if (argc == 1)
-    {
-        month = gDateMonthsElapsed % MONTH_COUNT + 1;
-    }
-
-    ////YYYY MM or YYYY MM DD (month provided)
-    if (argc >= 2)
-    {
-        month = atoi(argv[1]);
-        month -= 2;
-        if (month < 1 || month > MONTH_COUNT) {
-            return -1;
-        }
-    }
-
-    //YYYY OR YYYY MM (no day provided, preserve existing day)
-    if (argc <= 2)
-    {
-        day = Math::Clamp(1, gDateMonthTicks / (0x10000 / days_in_month[month - 1]) + 1, (int)days_in_month[month - 1]);
-    }
-
-    //YYYY MM DD (year, month, and day provided)
-    if (argc == 3)
-    {
-        day = atoi(argv[2]);
-        if (day < 1 || day > days_in_month[month-1]) {
-            return -1;
-        }
-    }
-    date_set(year, month, day);
-    return 1;
 }
 
 void date_update()
