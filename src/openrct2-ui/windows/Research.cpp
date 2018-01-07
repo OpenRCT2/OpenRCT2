@@ -392,8 +392,9 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
     rct_string_id lastDevelopmentFormat;
     if (gResearchLastItemSubject.rawValue != RESEARCHED_ITEMS_SEPARATOR)
     {
+        stringId = research_item_get_name(&gResearchNextItem);
         uint8 type = gResearchLastItemSubject.type;
-        lastDevelopmentFormat = type == RESEARCH_ENTRY_TYPE_RIDE ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
+        lastDevelopmentFormat = (type == RESEARCH_ENTRY_TYPE_RIDE) ? STR_RESEARCH_RIDE_LABEL : STR_RESEARCH_SCENERY_LABEL;
 
         gfx_draw_string_left_wrapped(dpi, &stringId, x, y, 266, lastDevelopmentFormat, COLOUR_BLACK);
     }
