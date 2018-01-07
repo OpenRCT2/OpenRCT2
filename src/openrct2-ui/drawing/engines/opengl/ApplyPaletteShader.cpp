@@ -18,11 +18,14 @@
 
 #include "ApplyPaletteShader.h"
 
-struct VDStruct
+namespace
 {
-    GLfloat position[2];
-    GLfloat texturecoordinate[2];
-};
+    struct VDStruct
+    {
+        GLfloat position[2];
+        GLfloat texturecoordinate[2];
+    };
+}
 
 constexpr VDStruct VertexData[4] =
 {
