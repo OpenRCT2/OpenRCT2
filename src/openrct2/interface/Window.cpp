@@ -57,7 +57,7 @@ widget_identifier gCurrentTextBox = { { 255, 0 }, 0 };
 char gTextBoxInput[TEXT_INPUT_SIZE] = { 0 };
 sint32 gMaxTextBoxInputLength = 0;
 sint32 gTextBoxFrameNo = 0;
-bool gUsingWidgetTextBox = 0;
+bool gUsingWidgetTextBox = false;
 TextInputSession * gTextInput;
 
 uint16 gWindowUpdateTicks;
@@ -1376,7 +1376,7 @@ void window_scroll_to_location(rct_window *w, sint32 x, sint32 y, sint32 z)
                 sint16 x2 = w->viewport->x + (sint16)(w->viewport->width * window_scroll_locations[i][0]);
                 sint16 y2 = w->viewport->y + (sint16)(w->viewport->height * window_scroll_locations[i][1]);
                 rct_window* w2 = w;
-                while (1) {
+                while (true) {
                     w2++;
                     if (w2 >= gWindowNextSlot) {
                         found = 1;
@@ -2121,7 +2121,7 @@ void window_relocate_windows(sint32 width, sint32 height){
         new_location += 8;
 
         // Adjust the viewport if required.
-        if (w->viewport){
+        if (w->viewport != nullptr){
             w->viewport->x -= x - w->x;
             w->viewport->y -= y - w->y;
         }
@@ -2189,7 +2189,7 @@ void window_resize_gui(sint32 width, sint32 height)
 void window_resize_gui_scenario_editor(sint32 width, sint32 height)
 {
     rct_window* mainWind = window_get_main();
-    if (mainWind) {
+    if (mainWind != nullptr) {
         rct_viewport* viewport = mainWind->viewport;
         mainWind->width = width;
         mainWind->height = height;
