@@ -981,16 +981,17 @@ void window_invalidate_all()
  */
 void widget_invalidate(rct_window *w, rct_widgetindex widgetIndex)
 {
-    rct_widget* widget;
-
-    assert(w != NULL);
+    if (w == nullptr)
+    {
+        return;
+    }
 #ifdef DEBUG
     for (sint32 i = 0; i <= widgetIndex; i++) {
         assert(w->widgets[i].type != WWT_LAST);
     }
 #endif
 
-    widget = &w->widgets[widgetIndex];
+    rct_widget * widget = &w->widgets[widgetIndex];
     if (widget->left == -2)
         return;
 
