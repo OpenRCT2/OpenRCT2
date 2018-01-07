@@ -127,7 +127,8 @@ typedef struct loadsave_list_item {
     char name[256];
     char path[MAX_PATH];
     time_t date_modified;
-    char date_formatted[30];
+    char date_formatted[20];
+    char time_formatted[20];
     uint8 type;
     bool loaded;
 } loadsave_list_item;
@@ -185,7 +186,7 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
         w->enabled_widgets = (1 << WIDX_CLOSE) | (1 << WIDX_UP) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_NEW_FILE) | (1 << WIDX_SORT_NAME) | (1 << WIDX_SORT_DATE) | (1 << WIDX_BROWSE) | (1 << WIDX_DEFAULT);
 
         w->min_width = WW;
-        w->min_height = WH;
+        w->min_height = WH / 2;
         w->max_width = WW * 2;
         w->max_height = WH * 2;
     }
@@ -260,8 +261,6 @@ static void window_loadsave_close(rct_window *w)
 
 static void window_loadsave_resize(rct_window *w)
 {
-    w->min_width = WW;
-    w->min_height = WH;
     if (w->width < w->min_width) {
         window_invalidate(w);
         w->width = w->min_width;
@@ -515,11 +514,12 @@ static void window_loadsave_invalidate(rct_window *w)
     window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
     window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
-    window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
-    window_loadsave_widgets[WIDX_SORT_NAME].right = w->width / 2;
+    rct_widget * date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
+    date_widget->left = w->width - (date_widget->right - date_widget->left) - 5;
+    date_widget->right = w->width - 5;
 
-    window_loadsave_widgets[WIDX_SORT_DATE].left = w->width / 2 + 1;
-    window_loadsave_widgets[WIDX_SORT_DATE].right = w->width - 5;
+    window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
+    window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
 
     window_loadsave_widgets[WIDX_SCROLL].right = w->width - 4;
     window_loadsave_widgets[WIDX_SCROLL].bottom = w->height - 30;
@@ -560,8 +560,9 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
         id = STR_DOWN;
 
     // Draw name button indicator.
-    gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) / 4,
-        w->y + window_loadsave_widgets[WIDX_SORT_NAME].top + 1, (w->width - 8) / 2);
+    rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+    gfx_draw_string_centred_clipped(dpi, STR_NAME, &id, COLOUR_GREY, w->x + 4 + sort_name_widget.left + (sort_name_widget.right - sort_name_widget.left) / 2,
+        w->y + sort_name_widget.top + 1, (sort_name_widget.right - sort_name_widget.left) / 2);
 
     // Date button text
     if (gConfigGeneral.load_save_sort == SORT_DATE_ASCENDING)
@@ -571,8 +572,9 @@ static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi)
     else
         id = STR_NONE;
 
-    gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + (w->width - 8) * 3 / 4,
-        w->y + window_loadsave_widgets[WIDX_SORT_DATE].top + 1, (w->width - 8) / 2);
+    rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+    gfx_draw_string_centred_clipped(dpi, STR_DATE, &id, COLOUR_GREY, w->x + 4 + sort_date_widget.left + (sort_date_widget.right - sort_date_widget.left) / 2,
+        w->y + sort_date_widget.top + 1, (sort_date_widget.right - sort_date_widget.left) / 2);
 }
 
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex)
@@ -604,14 +606,21 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
         set_format_arg(2, char*, _listItems[i].name);
-        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, (w->width - 5) / 2 - 5);
+        sint32 max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
+        gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, max_file_width);
 
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
+            sint32 offset = (w->widgets[WIDX_SORT_DATE].right + w->widgets[WIDX_SORT_DATE].left) / 2;
+            sint32 max_width = (w->widgets[WIDX_SORT_DATE].right - w->widgets[WIDX_SORT_DATE].left) / 2;
+
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted);
-            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, (w->width - 5) / 2 + 5, y, (w->width - 5) / 2);
+            gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, max_width);
+
+            set_format_arg(2, char*, _listItems[i].time_formatted);
+            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, max_width);
         }
     }
 }
@@ -773,7 +782,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 listItem->date_modified = platform_file_get_modified_time(listItem->path);
 
                 // Cache a human-readable version of the modified date.
-                std::strftime(listItem->date_formatted, sizeof(listItem->date_formatted), "%x %X", std::localtime(&listItem->date_modified));
+                std::strftime(listItem->date_formatted, sizeof(listItem->date_formatted), "%x", std::localtime(&listItem->date_modified));
+                std::strftime(listItem->time_formatted, sizeof(listItem->time_formatted), "%X", std::localtime(&listItem->date_modified));
 
                 // Mark if file is the currently loaded game
                 listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
