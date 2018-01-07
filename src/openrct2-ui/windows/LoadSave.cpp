@@ -30,6 +30,7 @@
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform2.h>
 #include <openrct2/util/Util.h>
 
 #pragma region Widgets
@@ -128,8 +129,8 @@ typedef struct loadsave_list_item {
     char name[256];
     char path[MAX_PATH];
     time_t date_modified;
-    char date_formatted[20];
-    char time_formatted[20];
+    std::string date_formatted;
+    std::string time_formatted;
     uint8 type;
     bool loaded;
 } loadsave_list_item;
@@ -524,13 +525,13 @@ static void window_loadsave_compute_max_date_width()
     tm.tm_yday = 294;
     tm.tm_isdst = -1;
 
-    char date[20];
-    std::strftime(date, sizeof(date), "%x", &tm);
-    maxDateWidth = gfx_get_string_width(date);
+    std::time_t long_time = mktime(&tm);
 
-    char time[20];
-    std::strftime(time, sizeof(time), "%X", &tm);
-    maxTimeWidth = gfx_get_string_width(time);
+    std::string date = Platform::FormatShortDate(long_time);
+    maxDateWidth = gfx_get_string_width(date.c_str());
+
+    std::string time = Platform::FormatTime(long_time);
+    maxTimeWidth = gfx_get_string_width(time.c_str());
 }
 
 static void window_loadsave_invalidate(rct_window *w)
@@ -644,10 +645,10 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
             sint32 offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
 
             set_format_arg(0, rct_string_id, STR_STRING);
-            set_format_arg(2, char*, _listItems[i].date_formatted);
+            set_format_arg(2, char*, _listItems[i].date_formatted.c_str());
             gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, maxDateWidth);
 
-            set_format_arg(2, char*, _listItems[i].time_formatted);
+            set_format_arg(2, char*, _listItems[i].time_formatted.c_str());
             gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, maxTimeWidth);
         }
     }
@@ -810,8 +811,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
                 listItem->date_modified = platform_file_get_modified_time(listItem->path);
 
                 // Cache a human-readable version of the modified date.
-                std::strftime(listItem->date_formatted, sizeof(listItem->date_formatted), "%x", std::localtime(&listItem->date_modified));
-                std::strftime(listItem->time_formatted, sizeof(listItem->time_formatted), "%X", std::localtime(&listItem->date_modified));
+                listItem->date_formatted = Platform::FormatShortDate(listItem->date_modified);
+                listItem->time_formatted = Platform::FormatTime(listItem->date_modified);
 
                 // Mark if file is the currently loaded game
                 listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
