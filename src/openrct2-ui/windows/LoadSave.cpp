@@ -81,6 +81,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
 static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, sint32 x, sint32 y);
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, rct_string_id *stringId);
+static void window_loadsave_compute_max_date_width();
 static void window_loadsave_invalidate(rct_window *w);
 static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, sint32 scrollIndex);
@@ -143,6 +144,9 @@ static char _parentDirectory[MAX_PATH];
 static char _extension[32];
 static char _defaultName[MAX_PATH];
 static sint32 _type;
+
+static sint32 maxDateWidth = 0;
+static sint32 maxTimeWidth = 0;
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
@@ -246,6 +250,8 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
 
     w->no_list_items = _listItemsCount;
     window_init_scroll_widgets(w);
+    window_loadsave_compute_max_date_width();
+
     return w;
 }
 
@@ -504,6 +510,29 @@ static void window_loadsave_tooltip(rct_window* w, rct_widgetindex widgetIndex, 
     set_format_arg(0, rct_string_id, STR_LIST);
 }
 
+static void window_loadsave_compute_max_date_width()
+{
+    // Generate a time object for a relatively wide time: 2000-10-20 00:00:00
+    std::tm tm;
+    tm.tm_sec = 0;
+    tm.tm_min = 0;
+    tm.tm_hour = 0;
+    tm.tm_mday = 20;
+    tm.tm_mon = 9;
+    tm.tm_year = 100;
+    tm.tm_wday = 5;
+    tm.tm_yday = 294;
+    tm.tm_isdst = -1;
+
+    char date[20];
+    std::strftime(date, sizeof(date), "%x", &tm);
+    maxDateWidth = gfx_get_string_width(date);
+
+    char time[20];
+    std::strftime(time, sizeof(time), "%X", &tm);
+    maxTimeWidth = gfx_get_string_width(time);
+}
+
 static void window_loadsave_invalidate(rct_window *w)
 {
     window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
@@ -515,7 +544,7 @@ static void window_loadsave_invalidate(rct_window *w)
     window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
     rct_widget * date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
-    date_widget->left = w->width - (date_widget->right - date_widget->left) - 5;
+    date_widget->left = w->width - maxDateWidth - maxTimeWidth - 24;
     date_widget->right = w->width - 5;
 
     window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
@@ -612,15 +641,14 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
         // Print formatted modified date, if this is a file
         if (_listItems[i].type == TYPE_FILE)
         {
-            sint32 offset = (w->widgets[WIDX_SORT_DATE].right + w->widgets[WIDX_SORT_DATE].left) / 2;
-            sint32 max_width = (w->widgets[WIDX_SORT_DATE].right - w->widgets[WIDX_SORT_DATE].left) / 2;
+            sint32 offset = w->widgets[WIDX_SORT_DATE].left + maxDateWidth;
 
             set_format_arg(0, rct_string_id, STR_STRING);
             set_format_arg(2, char*, _listItems[i].date_formatted);
-            gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, max_width);
+            gfx_draw_string_right_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset - 2, y, maxDateWidth);
 
             set_format_arg(2, char*, _listItems[i].time_formatted);
-            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, max_width);
+            gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, offset + 2, y, maxTimeWidth);
         }
     }
 }
