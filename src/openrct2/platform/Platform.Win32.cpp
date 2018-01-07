@@ -146,7 +146,7 @@ namespace Platform
         return path;
     }
 
-    SYSTEMTIME * TimeToSystemTime(std::time_t timestamp)
+    SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
     {
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
 
@@ -156,25 +156,27 @@ namespace Platform
 
         SYSTEMTIME st;
         FileTimeToSystemTime(&ft, &st);
-        return &st;
+        return st;
     }
 
     std::string FormatShortDate(std::time_t timestamp)
     {
-        SYSTEMTIME * st = TimeToSystemTime(timestamp);
+        SYSTEMTIME st = TimeToSystemTime(timestamp);
 
         wchar_t date[20];
-        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, st, nullptr, &date, sizeof(date), nullptr);
-        return String::ToUtf8(std::wstring(date));
+        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
+        std::string result = String::ToUtf8(std::wstring(date));
+        return result;
     }
 
     std::string FormatTime(std::time_t timestamp)
     {
-        SYSTEMTIME * st = TimeToSystemTime(timestamp);
+        SYSTEMTIME st = TimeToSystemTime(timestamp);
 
         wchar_t time[20];
-        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, st, nullptr, &time, sizeof(time));
-        return String::ToUtf8(std::wstring(time));
+        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
+        std::string result = String::ToUtf8(std::wstring(time));
+        return result;
     }
 }
 
