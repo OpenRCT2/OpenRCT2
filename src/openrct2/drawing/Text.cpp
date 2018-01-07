@@ -198,6 +198,11 @@ extern "C"
         DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::CENTRE);
     }
 
+    void gfx_draw_string_right_clipped(rct_drawpixelinfo * dpi, rct_string_id format, void * args, uint8 colour, sint32 x, sint32 y, sint32 width)
+    {
+        DrawTextEllipsisedCompat(dpi, x, y, width, format, args, colour, TextAlignment::RIGHT);
+    }
+
     // Wrapping
     sint32 gfx_draw_string_left_wrapped(rct_drawpixelinfo * dpi, void * args, sint32 x, sint32 y, sint32 width, rct_string_id format, uint8 colour)
     {
