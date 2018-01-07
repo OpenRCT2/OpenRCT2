@@ -1352,22 +1352,22 @@ sint32 win1252_to_utf8(utf8string dst, const char *src, size_t srcLength, size_t
 
     free(heapBuffer);
 #elif defined(__ANDROID__)
-    JNIEnv *env = SDL_AndroidGetJNIEnv();
+    JNIEnv *env = (_JNIEnv *)SDL_AndroidGetJNIEnv();
 
-    jclass *localisation = (*env)->FindClass(env, "website/openrct2/Localisation");
-    jmethodID win1252ToUtf8 = (*env)->GetStaticMethodID(env, localisation, "win1252ToUtf8", "([B)Ljava/lang/String;");
+    jclass localisation = env->FindClass("website/openrct2/Localisation");
+    jmethodID win1252ToUtf8 = env->GetStaticMethodID(localisation, "win1252ToUtf8", "([B)Ljava/lang/String;");
 
-    jbyteArray *bytes = (*env)->NewByteArray(env, srcLength);
-    (*env)->SetByteArrayRegion(env, bytes, 0, srcLength, (jbyte *) src);
+    jbyteArray bytes = env->NewByteArray(srcLength);
+    env->SetByteArrayRegion(bytes, 0, srcLength, (jbyte *) src);
 
-    jstring * jstring1 = (*env)->CallStaticObjectMethod(env, localisation, win1252ToUtf8, bytes);
+    jstring jstring1 = (jstring)env->CallStaticObjectMethod(localisation, win1252ToUtf8, bytes);
 
-    const char* utf = (*env)->GetStringUTFChars(env, jstring1, NULL);
+    const char* utf = env->GetStringUTFChars(jstring1, NULL);
     strcpy(dst, utf);
-    (*env)->ReleaseStringUTFChars(env, jstring1, utf);
-    (*env)->DeleteLocalRef(env, localisation);
-    (*env)->DeleteLocalRef(env, bytes);
-    (*env)->DeleteLocalRef(env, jstring1);
+    env->ReleaseStringUTFChars(jstring1, utf);
+    env->DeleteLocalRef(localisation);
+    env->DeleteLocalRef(bytes);
+    env->DeleteLocalRef(jstring1);
 
     int result = strlen(dst) + 1;
 #else
