@@ -14,12 +14,12 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include <ctime>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
-#include <openrct2/core/Memory.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/interface/Widget.h>
@@ -30,6 +30,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 #include <string>
+#include <vector>
 
 #pragma region Widgets
 
@@ -127,7 +128,7 @@ enum
     TYPE_FILE,
 };
 
-typedef struct loadsave_list_item
+typedef struct LoadSaveListItem
 {
     char name[256];
     char path[MAX_PATH];
@@ -136,12 +137,11 @@ typedef struct loadsave_list_item
     std::string time_formatted;
     uint8 type;
     bool loaded;
-} loadsave_list_item;
+} LoadSaveListItem;
 
 static loadsave_callback _loadSaveCallback;
 
-static sint32 _listItemsCount = 0;
-static loadsave_list_item *_listItems = nullptr;
+static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
 static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
@@ -154,7 +154,7 @@ static sint32 maxTimeWidth = 0;
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension);
 static void window_loadsave_select(rct_window *w, const char *path);
-static void window_loadsave_sort_list(sint32 index, sint32 endIndex);
+static void window_loadsave_sort_list();
 
 static rct_window *window_overwrite_prompt_open(const char *name, const char *path);
 
@@ -276,7 +276,7 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
         return nullptr;
     }
 
-    w->no_list_items = _listItemsCount;
+    w->no_list_items = static_cast<uint16>(_listItems.size());
     window_init_scroll_widgets(w);
     window_loadsave_compute_max_date_width();
 
@@ -285,12 +285,7 @@ rct_window *window_loadsave_open(sint32 type, const char *defaultName)
 
 static void window_loadsave_close(rct_window *w)
 {
-    if (_listItems != nullptr)
-    {
-        free(_listItems);
-        _listItems = nullptr;
-    }
-
+    _listItems.clear();
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 }
 
@@ -376,7 +371,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
         safe_strcpy(path, _parentDirectory, sizeof(path));
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = _listItemsCount;
+        w->no_list_items = static_cast<uint16>(_listItems.size());
         break;
 
     case WIDX_NEW_FILE:
@@ -398,7 +393,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             safe_strcpy(path, _directory, sizeof(path));
             window_loadsave_populate_list(w, isSave, path, _extension);
             window_init_scroll_widgets(w);
-            w->no_list_items = _listItemsCount;
+            w->no_list_items = static_cast<uint16>(_listItems.size());
         }
         break;
 
@@ -412,7 +407,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             gConfigGeneral.load_save_sort = SORT_NAME_ASCENDING;
         }
         config_save_default();
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
         window_invalidate(w);
         break;
 
@@ -426,7 +421,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
             gConfigGeneral.load_save_sort = SORT_DATE_DESCENDING;
         }
         config_save_default();
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
         window_invalidate(w);
         break;
 
@@ -449,7 +444,7 @@ static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex)
 
         window_loadsave_populate_list(w, isSave, path, _extension);
         window_init_scroll_widgets(w);
-        w->no_list_items = _listItemsCount;
+        w->no_list_items = static_cast<uint16>(_listItems.size());
         break;
     }
 }
@@ -482,7 +477,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
         window_init_scroll_widgets(w);
 
-        w->no_list_items = _listItemsCount;
+        w->no_list_items = static_cast<uint16>(_listItems.size());
     }
     else
     {
@@ -511,7 +506,7 @@ static void window_loadsave_scrollmouseover(rct_window *w, sint32 scrollIndex, s
 static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text)
 {
     char path[MAX_PATH];
-    sint32 i, overwrite;
+    bool overwrite;
 
     if (text == nullptr || text[0] == 0)
         return;
@@ -540,7 +535,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
             window_init_scroll_widgets(w);
 
-            w->no_list_items = _listItemsCount;
+            w->no_list_items = static_cast<uint16>(_listItems.size());
             window_invalidate(w);
             break;
 
@@ -549,12 +544,12 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             safe_strcat_path(path, text, sizeof(path));
             path_append_extension(path, _extension, sizeof(path));
 
-            overwrite = 0;
-            for (i = 0; i < _listItemsCount; i++)
+            overwrite = false;
+            for (auto &item : _listItems)
             {
-                if (_stricmp(_listItems[i].path, path) == 0)
+                if (_stricmp(item.path, path) == 0)
                 {
-                    overwrite = 1;
+                    overwrite = true;
                     break;
                 }
             }
@@ -719,36 +714,29 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
     }
 }
 
-static sint32 list_item_sort(const void *a, const void *b)
+static bool list_item_sort(LoadSaveListItem &a, LoadSaveListItem &b)
 {
-    const loadsave_list_item *itemA = (loadsave_list_item*)a;
-    const loadsave_list_item *itemB = (loadsave_list_item*)b;
-
-    if (itemA->type != itemB->type)
-        return itemA->type - itemB->type;
+    if (a.type != b.type)
+        return a.type - b.type < 0;
 
     switch (gConfigGeneral.load_save_sort)
     {
     case SORT_NAME_ASCENDING:
-        return strcicmp(itemA->name, itemB->name);
+        return strcicmp(a.name, b.name) < 0;
     case SORT_NAME_DESCENDING:
-        return -strcicmp(itemA->name, itemB->name);
+        return -strcicmp(a.name, b.name) < 0;
     case SORT_DATE_DESCENDING:
-        return (sint32) -difftime(itemA->date_modified, itemB->date_modified);
+        return -difftime(a.date_modified, b.date_modified) < 0;
     case SORT_DATE_ASCENDING:
-        return (sint32) difftime(itemA->date_modified, itemB->date_modified);
+        return difftime(a.date_modified, b.date_modified) < 0;
     default:
-        return strcicmp(itemA->name, itemB->name);
+        return strcicmp(a.name, b.name) < 0;
     }
 }
 
-static void window_loadsave_sort_list(sint32 index, sint32 endIndex)
+static void window_loadsave_sort_list()
 {
-    sint32 count = endIndex - index + 1;
-    if (count < 0)
-        return;
-
-    qsort(_listItems + index, count, sizeof(loadsave_list_item), list_item_sort);
+    std::sort(_listItems.begin(), _listItems.end(), list_item_sort);
 }
 
 static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, const char *directory, const char *extension)
@@ -760,12 +748,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
     }
     _shortenedDirectory[0] = '\0';
 
-    if (_listItems != nullptr)
-        free(_listItems);
-
-    sint32 listItemCapacity = 8;
-    _listItems = Memory::AllocateArray<loadsave_list_item>(listItemCapacity);
-    _listItemsCount = 0;
+    _listItems.clear();
 
     // Show "new" buttons when saving
     window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WWT_BUTTON : WWT_EMPTY;
@@ -778,27 +761,15 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         w->disabled_widgets |= (1 << WIDX_NEW_FILE) | (1 << WIDX_NEW_FOLDER) | (1 << WIDX_UP);
         for (sint32 x = 0; x < 26; x++)
         {
-            if (listItemCapacity <= _listItemsCount)
-            {
-                listItemCapacity *= 2;
-                void *new_memory = realloc(_listItems, listItemCapacity * sizeof(loadsave_list_item));
-                if (new_memory == nullptr) {
-                    log_error("Failed to reallocate memory for loadsave list");
-                    return;
-                }
-                _listItems = (loadsave_list_item*)new_memory;
-            }
-
             if (drives & (1 << x))
             {
                 // If the drive exists, list it
-                loadsave_list_item *listItem = &_listItems[_listItemsCount];
+                LoadSaveListItem newListItem;
+                snprintf(newListItem.path, sizeof(newListItem.path), "%c:" PATH_SEPARATOR, 'A' + x);
+                safe_strcpy(newListItem.name, newListItem.path, sizeof(newListItem.name));
+                newListItem.type = TYPE_DIRECTORY;
 
-                snprintf(listItem->path, sizeof(listItem->path), "%c:" PATH_SEPARATOR, 'A' + x);
-                safe_strcpy(listItem->name, listItem->path, sizeof(listItem->name));
-                listItem->type = TYPE_DIRECTORY;
-
-                _listItemsCount++;
+                _listItems.push_back(newListItem);
             }
         }
     }
@@ -844,20 +815,14 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         sint32 fileEnumHandle = platform_enumerate_directories_begin(directory);
         while (platform_enumerate_directories_next(fileEnumHandle, subDir))
         {
-            if (listItemCapacity <= _listItemsCount)
-            {
-                listItemCapacity *= 2;
-                _listItems = Memory::ReallocateArray(_listItems, listItemCapacity);
-            }
+            LoadSaveListItem newListItem;
+            safe_strcpy(newListItem.path, directory, sizeof(newListItem.path));
+            safe_strcat_path(newListItem.path, subDir, sizeof(newListItem.path));
+            safe_strcpy(newListItem.name, subDir, sizeof(newListItem.name));
+            newListItem.type = TYPE_DIRECTORY;
+            newListItem.loaded = false;
 
-            loadsave_list_item *listItem = &_listItems[_listItemsCount];
-            safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-            safe_strcat_path(listItem->path, subDir, sizeof(listItem->path));
-            safe_strcpy(listItem->name, subDir, sizeof(listItem->name));
-            listItem->type = TYPE_DIRECTORY;
-            listItem->loaded = false;
-
-            _listItemsCount++;
+            _listItems.push_back(newListItem);
         }
         platform_enumerate_files_end(fileEnumHandle);
 
@@ -878,32 +843,27 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             fileEnumHandle = platform_enumerate_files_begin(filter);
             while (platform_enumerate_files_next(fileEnumHandle, &fileInfo))
             {
-                if (listItemCapacity <= _listItemsCount)
-                {
-                    listItemCapacity *= 2;
-                    _listItems = Memory::ReallocateArray(_listItems, listItemCapacity);
-                }
+                LoadSaveListItem newListItem;
 
-                loadsave_list_item *listItem = &_listItems[_listItemsCount];
+                safe_strcpy(newListItem.path, directory, sizeof(newListItem.path));
+                safe_strcat_path(newListItem.path, fileInfo.path, sizeof(newListItem.path));
+                newListItem.type = TYPE_FILE;
 
-                safe_strcpy(listItem->path, directory, sizeof(listItem->path));
-                safe_strcat_path(listItem->path, fileInfo.path, sizeof(listItem->path));
-                listItem->type = TYPE_FILE;
-                listItem->date_modified = platform_file_get_modified_time(listItem->path);
+                newListItem.date_modified = platform_file_get_modified_time(newListItem.path);
 
                 // Cache a human-readable version of the modified date.
-                listItem->date_formatted = Platform::FormatShortDate(listItem->date_modified);
-                listItem->time_formatted = Platform::FormatTime(listItem->date_modified);
+                newListItem.date_formatted = Platform::FormatShortDate(newListItem.date_modified);
+                newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
 
                 // Mark if file is the currently loaded game
-                listItem->loaded = strcmp(listItem->path, gCurrentLoadedPath) == 0;
+                newListItem.loaded = strcmp(newListItem.path, gCurrentLoadedPath) == 0;
 
                 // Remove the extension (but only the first extension token)
-                safe_strcpy(listItem->name, fileInfo.path, sizeof(listItem->name));
+                safe_strcpy(newListItem.name, fileInfo.path, sizeof(newListItem.name));
                 if (!showExtension)
-                    path_remove_extension(listItem->name);
+                    path_remove_extension(newListItem.name);
 
-                _listItemsCount++;
+                _listItems.push_back(newListItem);
             }
             platform_enumerate_files_end(fileEnumHandle);
 
@@ -911,7 +871,7 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             showExtension = true; //Show any extension after the first iteration
         }
 
-        window_loadsave_sort_list(0, _listItemsCount - 1);
+        window_loadsave_sort_list();
     }
 }
 
