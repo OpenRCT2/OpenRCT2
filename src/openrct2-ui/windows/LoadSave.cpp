@@ -20,6 +20,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/Context.h>
 #include <openrct2/core/Guard.hpp>
+#include <openrct2/core/String.hpp>
 #include <openrct2/Editor.h>
 #include <openrct2/Game.h>
 #include <openrct2/interface/Widget.h>
@@ -130,8 +131,8 @@ enum
 
 typedef struct LoadSaveListItem
 {
-    char name[256];
-    char path[MAX_PATH];
+    std::string name;
+    std::string path;
     time_t date_modified;
     std::string date_formatted;
     std::string time_formatted;
@@ -472,7 +473,7 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
         includeNewItem = (_type & 1) == LOADSAVETYPE_SAVE;
 
         char directory[MAX_PATH];
-        safe_strcpy(directory, _listItems[selectedItem].path, sizeof(directory));
+        safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
         window_loadsave_populate_list(w, includeNewItem, directory, _extension);
         window_init_scroll_widgets(w);
@@ -484,9 +485,9 @@ static void window_loadsave_scrollmousedown(rct_window *w, sint32 scrollIndex, s
         // TYPE_FILE
         // Load or overwrite
         if ((_type & 0x01) == LOADSAVETYPE_SAVE)
-            window_overwrite_prompt_open(_listItems[selectedItem].name, _listItems[selectedItem].path);
+            window_overwrite_prompt_open(_listItems[selectedItem].name.c_str(), _listItems[selectedItem].path.c_str());
         else
-            window_loadsave_select(w, _listItems[selectedItem].path);
+            window_loadsave_select(w, _listItems[selectedItem].path.c_str());
     }
 }
 
@@ -547,7 +548,7 @@ static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex
             overwrite = false;
             for (auto &item : _listItems)
             {
-                if (_stricmp(item.path, path) == 0)
+                if (_stricmp(item.path.c_str(), path) == 0)
                 {
                     overwrite = true;
                     break;
@@ -695,7 +696,7 @@ static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, s
 
         // Print filename
         set_format_arg(0, rct_string_id, STR_STRING);
-        set_format_arg(2, char*, _listItems[i].name);
+        set_format_arg(2, char*, _listItems[i].name.c_str());
         sint32 max_file_width = w->widgets[WIDX_SORT_NAME].right - w->widgets[WIDX_SORT_NAME].left - 10;
         gfx_draw_string_left_clipped(dpi, stringId, gCommonFormatArgs, COLOUR_BLACK, 10, y, max_file_width);
 
@@ -722,15 +723,15 @@ static bool list_item_sort(LoadSaveListItem &a, LoadSaveListItem &b)
     switch (gConfigGeneral.load_save_sort)
     {
     case SORT_NAME_ASCENDING:
-        return strcicmp(a.name, b.name) < 0;
+        return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     case SORT_NAME_DESCENDING:
-        return -strcicmp(a.name, b.name) < 0;
+        return -strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     case SORT_DATE_DESCENDING:
         return -difftime(a.date_modified, b.date_modified) < 0;
     case SORT_DATE_ASCENDING:
         return difftime(a.date_modified, b.date_modified) < 0;
     default:
-        return strcicmp(a.name, b.name) < 0;
+        return strcicmp(a.name.c_str(), b.name.c_str()) < 0;
     }
 }
 
@@ -765,8 +766,8 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             {
                 // If the drive exists, list it
                 LoadSaveListItem newListItem;
-                snprintf(newListItem.path, sizeof(newListItem.path), "%c:" PATH_SEPARATOR, 'A' + x);
-                safe_strcpy(newListItem.name, newListItem.path, sizeof(newListItem.name));
+                newListItem.path = std::string(1, 'A' + x) + ":" PATH_SEPARATOR;
+                newListItem.name = newListItem.path;
                 newListItem.type = TYPE_DIRECTORY;
 
                 _listItems.push_back(newListItem);
@@ -816,9 +817,13 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
         while (platform_enumerate_directories_next(fileEnumHandle, subDir))
         {
             LoadSaveListItem newListItem;
-            safe_strcpy(newListItem.path, directory, sizeof(newListItem.path));
-            safe_strcat_path(newListItem.path, subDir, sizeof(newListItem.path));
-            safe_strcpy(newListItem.name, subDir, sizeof(newListItem.name));
+
+            char path[MAX_PATH];
+            safe_strcpy(path, directory, sizeof(path));
+            safe_strcat_path(path, subDir, sizeof(path));
+
+            newListItem.path = path;
+            newListItem.name = subDir;
             newListItem.type = TYPE_DIRECTORY;
             newListItem.loaded = false;
 
@@ -845,23 +850,33 @@ static void window_loadsave_populate_list(rct_window *w, sint32 includeNewItem, 
             {
                 LoadSaveListItem newListItem;
 
-                safe_strcpy(newListItem.path, directory, sizeof(newListItem.path));
-                safe_strcat_path(newListItem.path, fileInfo.path, sizeof(newListItem.path));
+                char path[MAX_PATH];
+                safe_strcpy(path, directory, sizeof(path));
+                safe_strcat_path(path, fileInfo.path, sizeof(path));
+
+                newListItem.path = path;
                 newListItem.type = TYPE_FILE;
 
-                newListItem.date_modified = platform_file_get_modified_time(newListItem.path);
+                newListItem.date_modified = platform_file_get_modified_time(newListItem.path.c_str());
 
                 // Cache a human-readable version of the modified date.
                 newListItem.date_formatted = Platform::FormatShortDate(newListItem.date_modified);
                 newListItem.time_formatted = Platform::FormatTime(newListItem.date_modified);
 
                 // Mark if file is the currently loaded game
-                newListItem.loaded = strcmp(newListItem.path, gCurrentLoadedPath) == 0;
+                newListItem.loaded = newListItem.path.compare(gCurrentLoadedPath) == 0;
 
                 // Remove the extension (but only the first extension token)
-                safe_strcpy(newListItem.name, fileInfo.path, sizeof(newListItem.name));
                 if (!showExtension)
-                    path_remove_extension(newListItem.name);
+                {
+                    utf8 * removeExt = (utf8 *) fileInfo.path;
+                    path_remove_extension(removeExt);
+                    newListItem.name = String::ToStd(removeExt);
+                }
+                else
+                {
+                    newListItem.name = fileInfo.path;
+                }
 
                 _listItems.push_back(newListItem);
             }
