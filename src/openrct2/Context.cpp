@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
 * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
 *
@@ -56,12 +56,13 @@
 #include "world/Park.h"
 #include "Version.h"
 
-#include "audio/audio.h"
-#include "config/Config.h"
-#include "drawing/LightFX.h"
 #include "Editor.h"
 #include "Game.h"
 #include "Input.h"
+#include "Intro.h"
+#include "audio/audio.h"
+#include "config/Config.h"
+#include "drawing/LightFX.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
 #include "interface/Viewport.h"
@@ -69,7 +70,7 @@
 #include "localisation/Date.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
-#include "network/http.h"
+#include "network/Http.h"
 #include "network/network.h"
 #include "network/twitch.h"
 #include "platform/platform.h"
@@ -102,6 +103,9 @@ namespace OpenRCT2
         std::unique_ptr<DiscordService> _discordService;
 #endif
         StdInOutConsole             _stdInOutConsole;
+#ifndef DISABLE_HTTP
+        http::HTTP _http;
+#endif
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -143,7 +147,6 @@ namespace OpenRCT2
         ~Context() override
         {
             window_close_all();
-            http_dispose();
             object_manager_unload_all_objects();
             gfx_object_check_all_images_freed();
             gfx_unload_g2();
@@ -420,7 +423,6 @@ namespace OpenRCT2
                 audio_init_ride_sounds_and_info();
             }
 
-            http_init();
             network_set_env(_env);
             chat_init();
             CopyOriginalUserFilesOver();
@@ -718,7 +720,7 @@ namespace OpenRCT2
 #ifndef DISABLE_HTTP
                     // Download park and open it using its temporary filename
                     void * data;
-                    size_t dataSize = http_download_park(gOpenRCT2StartupActionPath, &data);
+                    size_t dataSize = http::download_park(gOpenRCT2StartupActionPath, &data);
                     if (dataSize == 0)
                     {
                         title_load();
