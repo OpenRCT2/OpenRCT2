@@ -24,6 +24,7 @@
 
 #if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
     #define __USE_SHGETKNOWNFOLDERPATH__
+    #define __USE_GETDATEFORMATEX__
 #endif
 
 #include "../core/Path.hpp"
@@ -146,7 +147,7 @@ namespace Platform
         return path;
     }
 
-    SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
+    static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
     {
         LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
 
@@ -163,9 +164,16 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
+#ifdef __USE_GETDATEFORMATEX__
         wchar_t date[20];
         GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date), nullptr);
         std::string result = String::ToUtf8(std::wstring(date));
+#else
+        char date[20];
+        GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date));
+        std::string result(date);
+#endif
+
         return result;
     }
 
@@ -173,9 +181,16 @@ namespace Platform
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
 
+#ifdef __USE_GETDATEFORMATEX__
         wchar_t time[20];
         GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
         std::string result = String::ToUtf8(std::wstring(time));
+#else
+        char time[20];
+        GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
+        std::string result(time);
+#endif
+
         return result;
     }
 }
