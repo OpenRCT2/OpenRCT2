@@ -42,7 +42,7 @@ uint8  gResearchFundingLevel;
 uint8  gResearchPriorities;
 uint16 gResearchProgress;
 uint8  gResearchProgressStage;
-rct_research_item gResearchLastItemSubject;
+rct_research_item gResearchLastItem;
 uint8  gResearchExpectedMonth;
 uint8  gResearchExpectedDay;
 uint8  gResearchNextCategory;
@@ -196,7 +196,7 @@ static void research_next_design()
  */
 void research_finish_item(rct_research_item * researchItem)
 {
-    gResearchLastItemSubject = *researchItem;
+    gResearchLastItem = *researchItem;
     research_invalidate_related_windows();
 
     if (researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
@@ -442,7 +442,7 @@ void research_reset_current_item()
         research_finish_item(research);
     }
 
-    gResearchLastItemSubject.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
     gResearchProgressStage            = 0;
     gResearchProgress                 = 0;
 }

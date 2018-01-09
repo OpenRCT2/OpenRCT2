@@ -101,7 +101,7 @@ void park_init()
     gParkRating = 0;
     _guestGenerationProbability = 0;
     gTotalRideValueForMoney = 0;
-    gResearchLastItemSubject.rawValue = RESEARCHED_ITEMS_SEPARATOR;
+    gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
 
     for (i = 0; i < 20; i++)
         gMarketingCampaignDaysLeft[i] = 0;
