@@ -16,7 +16,7 @@
 
 #include "../Game.h"
 #include "../ride/Ride.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../interface/Viewport.h"
 #include "map_animation.h"

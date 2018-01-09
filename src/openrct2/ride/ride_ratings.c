@@ -21,7 +21,7 @@
 #include "../world/footpath.h"
 #include "../world/Map.h"
 #include "Ride.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "ride_ratings.h"
 #include "Station.h"
 #include "Track.h"

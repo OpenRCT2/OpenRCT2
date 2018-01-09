@@ -18,7 +18,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 // 1 2 0 3 4
 static const uint8 track_map_1x5[][5] = {

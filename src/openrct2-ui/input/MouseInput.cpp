@@ -32,7 +32,7 @@
 #include <openrct2/interface/Window.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/platform/platform.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>

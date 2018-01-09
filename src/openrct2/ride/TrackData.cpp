@@ -17,7 +17,7 @@
 #include "../core/Util.hpp"
 #include "Track.h"
 #include "TrackData.h"
-#include "track_paint.h"
+#include "TrackPaint.h"
 
 // clang-format off
 const rct_track_coordinates FlatTrackCoordinates[] = {

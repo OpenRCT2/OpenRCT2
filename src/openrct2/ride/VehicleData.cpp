@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../core/Util.hpp"
-#include "vehicle_data.h"
+#include "VehicleData.h"
 
 // clang-format off
 /** rct2: 0x0099F100 */

@@ -23,7 +23,7 @@ extern "C"
 {
 #endif
     #include "../common.h"
-    #include "ride_data.h"
+    #include "RideData.h"
 #ifdef __cplusplus
 }
 #endif

@@ -18,7 +18,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x0142805C */
 static const uint32 merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };

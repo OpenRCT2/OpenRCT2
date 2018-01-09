@@ -18,9 +18,9 @@
 #include "../Paint.h"
 #include "../../drawing/Drawing.h"
 #include "../../world/sprite.h"
-#include "../../ride/ride_data.h"
+#include "../../ride/RideData.h"
 #include "../../interface/Viewport.h"
-#include "../../ride/vehicle_paint.h"
+#include "../../ride/VehiclePaint.h"
 
 /**
  * Paint Quadrant

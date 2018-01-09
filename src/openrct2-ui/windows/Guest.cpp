@@ -27,7 +27,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/peep/Staff.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>

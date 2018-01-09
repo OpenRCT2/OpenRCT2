@@ -19,9 +19,9 @@
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
 #include "../Ride.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {

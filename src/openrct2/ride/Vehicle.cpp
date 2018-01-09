@@ -38,11 +38,11 @@
 #include "Vehicle.h"
 #include "CableLift.h"
 #include "Ride.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "Station.h"
 #include "Track.h"
 #include "TrackData.h"
-#include "vehicle_data.h"
+#include "VehicleData.h"
 
 static void vehicle_update(rct_vehicle * vehicle);
 

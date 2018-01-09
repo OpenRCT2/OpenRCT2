@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "Track.h"
-#include "track_paint.h"
+#include "TrackPaint.h"
 
 #ifdef __cplusplus
 extern "C" {

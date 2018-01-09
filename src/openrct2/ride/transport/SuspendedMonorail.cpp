@@ -22,9 +22,9 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x008636F4 */
 static void suspended_monorail_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,

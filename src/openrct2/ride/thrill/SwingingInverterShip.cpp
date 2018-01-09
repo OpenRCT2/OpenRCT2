@@ -18,7 +18,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x01428010 */
 static const uint32 swinging_inverter_ship_base_sprite_offset[] = { 0, 16, 0, 16 };

@@ -31,7 +31,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Track.h>
-#include <openrct2/ride/track_paint.h>
+#include <openrct2/ride/TrackPaint.h>
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>

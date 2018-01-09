@@ -20,7 +20,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../ride/Ride.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../Cheats.h"
 #include "Finance.h"
 #include "Marketing.h"

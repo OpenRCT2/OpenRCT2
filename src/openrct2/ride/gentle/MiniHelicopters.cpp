@@ -18,10 +18,10 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 /** rct2: 0x */
 static void paint_mini_helicopters_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,

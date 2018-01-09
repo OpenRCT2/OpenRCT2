@@ -22,7 +22,7 @@
 #include "../localisation/Localisation.h"
 #include "../OpenRCT2.h"
 #include "../ride/Ride.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../windows/Intent.h"

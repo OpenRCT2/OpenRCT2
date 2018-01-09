@@ -19,7 +19,7 @@
 #include "../../paint/Supports.h"
 #include "../../world/sprite.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 enum
 {

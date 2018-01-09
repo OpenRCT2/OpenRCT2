@@ -26,7 +26,7 @@
 #include "../paint/Paint.h"
 #include "../paint/Supports.h"
 #include "../peep/Staff.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../ride/TrackData.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"

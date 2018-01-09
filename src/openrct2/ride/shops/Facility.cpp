@@ -20,7 +20,7 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /**
  *
