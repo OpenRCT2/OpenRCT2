@@ -6854,7 +6854,7 @@ void ride_fix_breakdown(sint32 rideIndex, sint32 reliabilityIncreaseFactor)
             uint16 spriteIndex = ride->vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL) {
                 rct_vehicle *vehicle = GET_VEHICLE(spriteIndex);
-                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_7;
+                vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_CAR;
                 vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_BROKEN_TRAIN;
                 spriteIndex = vehicle->next_vehicle_on_train;

@@ -3825,7 +3825,7 @@ static void window_ride_maintenance_dropdown(rct_window *w, rct_widgetindex widg
                         vehicle = GET_VEHICLE(spriteId);
                         vehicle->update_flags &= ~(
                             VEHICLE_UPDATE_FLAG_BROKEN_CAR |
-                            VEHICLE_UPDATE_FLAG_7 |
+                            VEHICLE_UPDATE_FLAG_ZERO_VELOCITY |
                             VEHICLE_UPDATE_FLAG_BROKEN_TRAIN
                             );
                         spriteId = vehicle->next_vehicle_on_train;

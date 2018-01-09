@@ -248,7 +248,7 @@ enum {
     VEHICLE_ENTRY_FLAG_26 = 1 << 26,
     VEHICLE_ENTRY_FLAG_27 = 1 << 27,
     VEHICLE_ENTRY_FLAG_28 = 1 << 28,
-    VEHICLE_ENTRY_FLAG_29 = 1 << 29,
+    VEHICLE_ENTRY_FLAG_WATER_RIDE = 1 << 29,                    // Set on rides where water would provide continuous propulsion
     VEHICLE_ENTRY_FLAG_30 = 1 << 30,
     VEHICLE_ENTRY_FLAG_31 = 1u << 31,
 };
@@ -295,7 +295,7 @@ enum{
     VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
     VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
     VEHICLE_UPDATE_FLAG_6 = (1 << 6),
-    VEHICLE_UPDATE_FLAG_7 = (1 << 7),
+    VEHICLE_UPDATE_FLAG_ZERO_VELOCITY = (1 << 7),           // Used on rides when safety cutout stops them on a lift
     VEHICLE_UPDATE_FLAG_BROKEN_CAR = (1 << 8),
     VEHICLE_UPDATE_FLAG_BROKEN_TRAIN = (1 << 9),
     VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP = (1 << 10),
