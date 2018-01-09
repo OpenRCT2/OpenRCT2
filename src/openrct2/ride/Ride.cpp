@@ -4701,7 +4701,7 @@ static void vehicle_create_trains(sint32 rideIndex, sint32 x, sint32 y, sint32 z
         lastTrain.tail->next_vehicle_on_ride = firstTrain.head->sprite_index;
 }
 
-static void vehicle_unset_var_48_b1(rct_vehicle *head)
+static void vehicle_unset_update_flag_b1(rct_vehicle *head)
 {
     rct_vehicle *vehicle = head;
     while (true) {
@@ -4852,7 +4852,7 @@ static bool ride_create_vehicles(Ride *ride, sint32 rideIndex, rct_xy_element *e
                     vehicle_update_track_motion(vehicle, nullptr);
                 }
 
-                vehicle_unset_var_48_b1(vehicle);
+                vehicle_unset_update_flag_b1(vehicle);
             }
         }
     }
@@ -4872,7 +4872,7 @@ void loc_6DDF9C(Ride *ride, rct_tile_element *tileElement)
         train = GET_VEHICLE(ride->vehicles[i]);
         if (i == 0) {
             vehicle_update_track_motion(train, nullptr);
-            vehicle_unset_var_48_b1(train);
+            vehicle_unset_update_flag_b1(train);
             continue;
         }
 
