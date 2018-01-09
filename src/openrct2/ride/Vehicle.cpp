@@ -91,6 +91,7 @@ static bool vehicle_can_depart_synchronised(rct_vehicle * vehicle);
 
 #define VEHICLE_MAX_SPIN_SPEED  1536
 #define VEHICLE_MAX_SPIN_SPEED_FOR_STOPPING 700
+#define VEHICLE_MAX_SPIN_SPEED_WATER_RIDE 512
 #define VEHICLE_STOPPING_SPIN_SPEED 600
 
 rct_vehicle * gCurrentVehicle;
@@ -1944,10 +1945,10 @@ static void vehicle_update(rct_vehicle * vehicle)
         _vehicleBreakdown = ride->breakdown_reason_pending;
         if ((vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED) && ride->breakdown_reason_pending == BREAKDOWN_SAFETY_CUT_OUT)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_29) ||
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE) ||
                 (vehicle->vehicle_sprite_type == 2 && vehicle->velocity <= 0x20000))
             {
-                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+                vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
             }
         }
     }
@@ -3356,7 +3357,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
                     }
                 }
@@ -3374,7 +3375,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
                 {
                     if (_vehicleBreakdown == BREAKDOWN_SAFETY_CUT_OUT)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_1;
                     }
                 }
@@ -3794,7 +3795,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
                         if (_vehicleBreakdown == 0)
                         {
                             vehicle->var_B8 &= ~(1 << 1);
-                            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+                            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         }
                     }
                 }
@@ -3810,7 +3811,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
                 {
                     if (_vehicleBreakdown == 0)
                     {
-                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_7;
+                        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         vehicle->var_B8 &= ~(1 << 1);
                     }
                 }
@@ -6719,7 +6720,7 @@ static void check_and_apply_block_section_stop_site(rct_vehicle * vehicle)
 static void update_velocity(rct_vehicle * vehicle)
 {
     sint32 nextVelocity = vehicle->acceleration + vehicle->velocity;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_7)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ZERO_VELOCITY)
     {
         nextVelocity = 0;
     }
@@ -9425,7 +9426,7 @@ loc_6DCEFF:
     regs.eax *= regs.edx;
     regs.eax = regs.eax / regs.ebx;
 
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_29))
+    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE))
     {
         goto loc_6DD054;
     }
@@ -9437,7 +9438,7 @@ loc_6DCEFF:
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
     {
-        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-0x200), (sint16)vehicle->spin_speed, static_cast<sint16>(0x200));
+        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
     }
 
     if (vehicle->vehicle_sprite_type != 0)
@@ -9480,8 +9481,8 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
 {
     registers regs = { 0 };
 
-    Ride *                   ride         = get_ride(vehicle->ride);
-    rct_ride_entry *         rideEntry    = get_ride_entry(vehicle->ride_subtype);
+    Ride *                   ride = get_ride(vehicle->ride);
+    rct_ride_entry *         rideEntry = get_ride_entry(vehicle->ride_subtype);
     rct_ride_entry_vehicle * vehicleEntry = vehicle_get_vehicle_entry(vehicle);
 
     if (vehicleEntry == nullptr)
@@ -9494,10 +9495,10 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         return vehicle_update_track_motion_mini_golf(vehicle, outStation);
     }
 
-    _vehicleF64E2C           = 0;
-    gCurrentVehicle          = vehicle;
+    _vehicleF64E2C = 0;
+    gCurrentVehicle = vehicle;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex     = 0xFF;
+    _vehicleStationIndex = 0xFF;
 
     vehicle_update_track_motion_up_stop_check(vehicle);
     check_and_apply_block_section_stop_site(vehicle);
@@ -9515,7 +9516,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     while (spriteId != SPRITE_INDEX_NULL)
     {
         rct_vehicle * car = GET_VEHICLE(spriteId);
-        vehicleEntry      = vehicle_get_vehicle_entry(car);
+        vehicleEntry = vehicle_get_vehicle_entry(car);
         if (vehicleEntry == nullptr)
         {
             goto loc_6DBF3E;
@@ -9539,7 +9540,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         car->acceleration = dword_9A2970[car->vehicle_sprite_type];
         _vehicleUnkF64E10 = 1;
 
-        regs.eax                = _vehicleVelocityF64E0C + car->remaining_distance;
+        regs.eax = _vehicleVelocityF64E0C + car->remaining_distance;
         car->remaining_distance = regs.eax;
 
         car->var_B8 &= ~(1 << 1);
@@ -9584,7 +9585,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
                 {
                     break;
                 }
-                regs.ebx          = dword_9A2970[car->vehicle_sprite_type];
+                regs.ebx = dword_9A2970[car->vehicle_sprite_type];
                 car->acceleration = regs.ebx;
                 _vehicleUnkF64E10++;
                 continue;
@@ -9622,7 +9623,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     // eax
     sint32 totalAcceleration = 0;
     // ebp
-    sint32 totalFriction = 0;
+    sint32 totalMass = 0;
     // Not used
     regs.dx = 0;
     // ebx
@@ -9633,7 +9634,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         numVehicles++;
         // Not used?
         regs.dx |= vehicle->update_flags;
-        totalFriction += vehicle->mass;
+        totalMass += vehicle->mass;
         totalAcceleration += vehicle->acceleration;
 
         uint16 spriteIndex = vehicle->next_vehicle_on_train;
@@ -9644,7 +9645,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         vehicle = GET_VEHICLE(spriteIndex);
     }
 
-    vehicle  = gCurrentVehicle;
+    vehicle = gCurrentVehicle;
     regs.eax = (totalAcceleration / numVehicles) * 21;
     if (regs.eax < 0)
     {
@@ -9676,9 +9677,9 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     regs.edx >>= 4;
     regs.eax = regs.edx;
     // OpenRCT2: vehicles from different track types can have  0 mass.
-    if (totalFriction != 0)
+    if (totalMass != 0)
     {
-        regs.eax = regs.eax / totalFriction;
+        regs.eax = regs.eax / totalMass;
     }
     regs.ecx -= regs.eax;
 
@@ -9728,7 +9729,7 @@ loc_6DC238:
 loc_6DC23A:
     regs.ebx = regs.eax;
     regs.eax <<= 14;
-    regs.ebx *= totalFriction;
+    regs.ebx *= totalMass;
     regs.ebx >>= 2;
     if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
     {
@@ -9748,44 +9749,39 @@ loc_6DC23A:
         regs.eax *= 4;
     }
 
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_29))
-    {
-        goto loc_6DC2E3;
-    }
-
-    if (regs.eax < 0)
-    {
-        regs.eax >>= 4;
-    }
-
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-    {
-        vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-0x200), (sint16)vehicle->spin_speed, static_cast<sint16>(0x200));
-    }
-
-    if (vehicle->vehicle_sprite_type != 0)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
     {
         if (regs.eax < 0)
         {
-            regs.eax = 0;
+            regs.eax >>= 4;
         }
 
-        if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING))
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
         {
-            if (vehicle->vehicle_sprite_type == 2)
-            {
-                vehicle->spin_speed = 0;
-            }
+            vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
         }
-        goto loc_6DC2F6;
+
+        if (vehicle->vehicle_sprite_type != 0)
+        {
+            if (regs.eax < 0)
+            {
+                regs.eax = 0;
+            }
+
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
+            {
+                // If the vehicle is on the up slope kill the spin speed
+                if (vehicle->vehicle_sprite_type == 2)
+                {
+                    vehicle->spin_speed = 0;
+                }
+            }
+            goto loc_6DC2F6;
+        }
     }
 
-loc_6DC2E3:
-    regs.ebx = vehicle->velocity;
-    if (regs.ebx < 0)
-    {
-        regs.ebx = -regs.ebx;
-    }
+    regs.ebx = std::abs(vehicle->velocity);
+
     if (regs.ebx <= 0x10000)
     {
         regs.ecx = 0;
