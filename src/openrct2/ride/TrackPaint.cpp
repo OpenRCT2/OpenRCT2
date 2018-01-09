@@ -32,18 +32,18 @@
 // clang-format off
 /* rct2: 0x007667AC */
 static LocationXY16 loc_7667AC[] = {
-    {.x = -1, .y = 0},
-    {.x = 0, .y = -1},
-    {.x = 1, .y = 0},
-    {.x = 0, .y = 1},
+    { -1, 0 },
+    { 0,  -1 },
+    { 1,  0 },
+    { 0,  1 },
 };
 
 /* rct2: 0x007667AE */
 static LocationXY16 loc_7667AE[] = {
-    {.x = 0, .y = -1},
-    {.x = 1, .y = 0},
-    {.x = 0, .y = 1},
-    {.x = -1, .y = 0},
+    { 0, -1 },
+    { 1, 0 },
+    { 0, 1 },
+    { -1, 0 },
 };
 
 const uint8 track_map_2x2[][4] = {
@@ -996,7 +996,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * s
         uint32        imageId      = sprites[direction][index][0] | colourFlags;
         LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index][0]);
         LocationXY16  boundsLength = boundsLengths[direction][index][0];
-        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 }
+        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 }
                                                             : boundsOffsets[direction][index][0]);
 
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
@@ -1007,7 +1007,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * s
         uint32        imageId      = sprites[direction][index][1] | colourFlags;
         LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index][1]);
         LocationXY16  boundsLength = boundsLengths[direction][index][1];
-        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 }
+        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 }
                                                             : boundsOffsets[direction][index][1]);
 
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
@@ -1098,7 +1098,7 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * s
         uint32        imageId      = sprites[direction][index][0] | colourFlags;
         LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index][0]);
         LocationXY16  boundsLength = boundsLengths[direction][index][0];
-        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 }
+        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 }
                                                             : boundsOffsets[direction][index][0]);
 
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness[0], height,
@@ -1109,7 +1109,7 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * s
         uint32        imageId      = sprites[direction][index][1] | colourFlags;
         LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index][1]);
         LocationXY16  boundsLength = boundsLengths[direction][index][1];
-        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 }
+        LocationXYZ16 boundsOffset = (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 }
                                                             : boundsOffsets[direction][index][1]);
 
         sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness[1], height,
@@ -1273,7 +1273,7 @@ void track_paint_util_eighth_to_diag_tiles_paint(paint_session * session, const 
     LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index]);
     LocationXY16  boundsLength = boundsLengths[direction][index];
     LocationXYZ16 boundsOffset =
-        (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 } : boundsOffsets[direction][index]);
+        (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness[direction][index],
                height, boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
@@ -1315,7 +1315,7 @@ void track_paint_util_diag_tiles_paint(paint_session * session, sint8 thickness,
     LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction]);
     LocationXY16  boundsLength = boundsLengths[direction];
     LocationXYZ16 boundsOffset =
-        (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 } : boundsOffsets[direction]);
+        (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 } : boundsOffsets[direction]);
 
     sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness, height,
                boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
@@ -1435,7 +1435,7 @@ void               track_paint_util_right_quarter_turn_5_tiles_paint(paint_sessi
     LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index]);
     LocationXY16  boundsLength = boundsLengths[direction][index];
     LocationXYZ16 boundsOffset =
-        (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 } : boundsOffsets[direction][index]);
+        (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness, height,
                boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
@@ -1601,7 +1601,7 @@ void               track_paint_util_right_quarter_turn_3_tiles_paint(paint_sessi
     LocationXY16  offset       = (offsets == NULL ? (LocationXY16){ 0, 0 } : offsets[direction][index]);
     LocationXY16  boundsLength = boundsLengths[direction][index];
     LocationXYZ16 boundsOffset =
-        (boundsOffsets == NULL ? (LocationXYZ16){ .x = offset.x, .y = offset.y, .z = 0 } : boundsOffsets[direction][index]);
+        (boundsOffsets == NULL ? (LocationXYZ16){ offset.x, offset.y, 0 } : boundsOffsets[direction][index]);
 
     sub_98197C(session, imageId, (sint8)offset.x, (sint8)offset.y, boundsLength.x, boundsLength.y, thickness, height,
                boundsOffset.x, boundsOffset.y, height + boundsOffset.z, rotation);
