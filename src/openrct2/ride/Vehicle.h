@@ -219,7 +219,7 @@ typedef struct rct_vehicle_info {
 } rct_vehicle_info;
 
 enum {
-    VEHICLE_ENTRY_FLAG_0 = 1 << 0,                              // Set on powered vehicles that do not slow down when going down a hill
+    VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY = 1 << 0, // Set on powered vehicles that do not slow down when going down a hill
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_MINI_GOLF = 1 << 3,

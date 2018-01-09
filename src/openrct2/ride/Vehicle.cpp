@@ -6590,22 +6590,22 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle * vehicle)
  * This function must be called when the car is running through a non-stopping
  * state block-brake (precondition), which means that the block brake is acting
  * merely as a velocity regulator, in a closed state. When the brake is open, it
- * boosts the train to the speed limit
+ * boosts the train to the speedModifier limit
  */
 static void apply_non_stop_block_brake(rct_vehicle * vehicle, bool block_brake_closed)
 {
     if (vehicle->velocity >= 0)
     {
-        // If the vehicle is below the speed limit
+        // If the vehicle is below the speedModifier limit
         if (vehicle->velocity <= 0x20364)
         {
-            // Boost it to the fixed block brake speed
+            // Boost it to the fixed block brake speedModifier
             vehicle->velocity     = 0x20364;
             vehicle->acceleration = 0;
         }
         else if (block_brake_closed)
         {
-            // Slow it down till the fixed block brake speed
+            // Slow it down till the fixed block brake speedModifier
             vehicle->velocity -= vehicle->velocity >> 4;
             vehicle->acceleration = 0;
         }
@@ -7146,7 +7146,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
     sint32 trackType       = vehicle->track_type >> 2;
     sint32 dword_F64E08    = _vehicleVelocityF64E08;
     sint32 spinSpeed;
-    // An L spin adds to the spin speed, R does the opposite
+    // An L spin adds to the spin speedModifier, R does the opposite
     // The number indicates how much right shift of the velocity will become spin
     // The bigger the number the less change in spin.
     switch (TrackTypeToSpinFunction[trackType])
@@ -7233,7 +7233,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
     spinSpeed             = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED), vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED));
     vehicle->spin_speed = spinSpeed;
     vehicle->spin_sprite += spinSpeed >> 8;
-    // Note this actually increases the spin speed if going right!
+    // Note this actually increases the spin speedModifier if going right!
     vehicle->spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
     vehicle_invalidate(vehicle);
 }
@@ -9402,7 +9402,7 @@ loc_6DCEFF:
     {
         goto loc_6DD069;
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_0)
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
     {
         regs.eax = vehicle->speed * 0x4000;
         if (regs.eax < vehicle->velocity)
@@ -9471,6 +9471,118 @@ loc_6DD069:
     if (outStation != nullptr)
         *outStation = regs.ebx;
     return regs.eax;
+}
+
+/**
+ *
+ *  rct2: 0x006DC1E4
+ */
+static void vehicle_update_track_motion_powered_ride_acceleration(rct_vehicle * vehicle, rct_ride_entry_vehicle * vehicleEntry, uint32 totalMass, sint32 * acceleration)
+{
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED_RIDE_UNRESTRICTED_GRAVITY)
+    {
+        if (vehicle->velocity > (vehicle->speed * 0x4000))
+        {
+            // Same code as none powered rides
+            if (*acceleration <= 0)
+            {
+                if (*acceleration >= -500)
+                {
+                    if (vehicle->velocity <= 0x8000)
+                    {
+                        *acceleration += 400;
+                    }
+                }
+            }
+            return;
+        }
+    }
+
+    enum {
+        FULL_SPEED,
+        THREE_QUARTER_SPEED,
+        HALF_SPEED
+    };
+
+    uint8 speedModifier = FULL_SPEED;
+    uint16 trackType = vehicle->track_direction >> 2;
+
+    if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
+    {    
+        speedModifier = (vehicle->var_CD == 5) ? HALF_SPEED : THREE_QUARTER_SPEED;
+    }
+    else if (trackType == TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
+    {
+        speedModifier = (vehicle->var_CD == 6) ? HALF_SPEED : THREE_QUARTER_SPEED;
+    }
+
+    uint8 speed = vehicle->speed;
+    switch (speedModifier)
+    {
+    case HALF_SPEED:
+        speed = vehicle->speed >> 1;
+        break;
+    case THREE_QUARTER_SPEED:
+        speed = vehicle->speed - (vehicle->speed >> 2);
+        break;
+    }
+
+    sint32 poweredAcceleration = speed << 14;
+    sint32 quarterForce = (speed * totalMass) >> 2;
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
+    {
+        poweredAcceleration = -poweredAcceleration;
+    }
+    poweredAcceleration -= vehicle->velocity;
+    poweredAcceleration *= vehicle->powered_acceleration << 1;
+    if (quarterForce != 0)
+    {
+        poweredAcceleration /= quarterForce;
+    }
+
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_15)
+    {
+        poweredAcceleration *= 4;
+    }
+
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
+    {
+        if (poweredAcceleration < 0)
+        {
+            poweredAcceleration >>= 4;
+        }
+
+        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
+        {
+            vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
+        }
+
+        if (vehicle->vehicle_sprite_type != 0)
+        {
+            if (poweredAcceleration < 0)
+            {
+                poweredAcceleration = 0;
+            }
+
+            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
+            {
+                // If the vehicle is on the up slope kill the spin speedModifier
+                if (vehicle->vehicle_sprite_type == 2)
+                {
+                    vehicle->spin_speed = 0;
+                }
+            }
+            *acceleration += poweredAcceleration;
+            return;
+        }
+    }
+
+    if (std::abs(vehicle->velocity) <= 0x10000)
+    {
+        *acceleration = 0;
+    }
+
+    *acceleration += poweredAcceleration;
 }
 
 /**
@@ -9652,7 +9764,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         regs.eax += 511;
     }
     regs.eax >>= 9;
-    regs.ecx = regs.eax;
+    sint32 acceleration = regs.eax;
     regs.eax = vehicle->velocity;
     if (regs.eax < 0)
     {
@@ -9665,7 +9777,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         regs.eax >>= 12;
     }
 
-    regs.ecx -= regs.eax;
+    acceleration -= regs.eax;
     regs.edx = vehicle->velocity;
     regs.ebx = regs.edx;
     regs.edx >>= 8;
@@ -9681,133 +9793,31 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     {
         regs.eax = regs.eax / totalMass;
     }
-    regs.ecx -= regs.eax;
+    acceleration -= regs.eax;
 
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED))
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_POWERED)
     {
-        goto loc_6DC2FA;
+        vehicle_update_track_motion_powered_ride_acceleration(vehicle, vehicleEntry, totalMass, &acceleration);
     }
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_0)
+    else
     {
-        if (vehicle->velocity > (vehicle->speed * 0x4000))
+        if (acceleration <= 0)
         {
-            goto loc_6DC2FA;
-        }
-    }
-    regs.eax = vehicle->speed;
-    {
-        uint16 trackType = vehicle->track_direction >> 2;
-        if (trackType == TRACK_ELEM_LEFT_QUARTER_TURN_1_TILE)
-        {
-            goto loc_6DC22F;
-        }
-        if (trackType != TRACK_ELEM_RIGHT_QUARTER_TURN_1_TILE)
-        {
-            goto loc_6DC23A;
-        }
-        if (vehicle->var_CD == 6)
-        {
-            goto loc_6DC238;
-        }
-    }
-
-loc_6DC226:
-    regs.ebx = regs.eax >> 2;
-    regs.eax -= regs.ebx;
-    goto loc_6DC23A;
-
-loc_6DC22F:
-    if (vehicle->var_CD != 5)
-    {
-        goto loc_6DC226;
-    }
-
-loc_6DC238:
-    regs.eax >>= 1;
-
-loc_6DC23A:
-    regs.ebx = regs.eax;
-    regs.eax <<= 14;
-    regs.ebx *= totalMass;
-    regs.ebx >>= 2;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
-    {
-        regs.eax = -regs.eax;
-    }
-    regs.eax -= vehicle->velocity;
-    regs.eax *= vehicle->powered_acceleration << 1;
-    if (regs.ebx != 0)
-    {
-        regs.eax /= regs.ebx;
-    }
-
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_15)
-    {
-        regs.eax *= 4;
-    }
-
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_WATER_RIDE)
-    {
-        if (regs.eax < 0)
-        {
-            regs.eax >>= 4;
-        }
-
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-        {
-            vehicle->spin_speed = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED_WATER_RIDE), (sint16)vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED_WATER_RIDE));
-        }
-
-        if (vehicle->vehicle_sprite_type != 0)
-        {
-            if (regs.eax < 0)
+            if (acceleration >= -500)
             {
-                regs.eax = 0;
-            }
-
-            if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING)
-            {
-                // If the vehicle is on the up slope kill the spin speed
-                if (vehicle->vehicle_sprite_type == 2)
+                if (vehicle->velocity <= 0x8000)
                 {
-                    vehicle->spin_speed = 0;
+                    acceleration += 400;
                 }
             }
-            goto loc_6DC2F6;
         }
     }
 
-    regs.ebx = std::abs(vehicle->velocity);
-
-    if (regs.ebx <= 0x10000)
-    {
-        regs.ecx = 0;
-    }
-
-loc_6DC2F6:
-    regs.ecx += regs.eax;
-    goto loc_6DC316;
-
-loc_6DC2FA:
-    if (regs.ecx <= 0)
-    {
-        if (regs.ecx >= -500)
-        {
-            if (vehicle->velocity <= 0x8000)
-            {
-                regs.ecx += 400;
-            }
-        }
-    }
-
-loc_6DC316:
-    regs.bx = vehicle->track_type >> 2;
-    if (regs.bx == TRACK_ELEM_WATER_SPLASH)
+    if ((vehicle->track_type >> 2) == TRACK_ELEM_WATER_SPLASH)
     {
         if (vehicle->track_progress >= 48 && vehicle->track_progress <= 128)
         {
-            regs.eax = vehicle->velocity >> 6;
-            regs.ecx -= regs.eax;
+            acceleration -= vehicle->velocity >> 6;
         }
     }
 
@@ -9815,19 +9825,17 @@ loc_6DC316:
     {
         if (!vehicle->is_child)
         {
-            regs.bx = vehicle->track_type >> 2;
-            if (track_element_is_covered(regs.bx))
+            if (track_element_is_covered(vehicle->track_type >> 2))
             {
                 if (vehicle->velocity > 0x20000)
                 {
-                    regs.eax = vehicle->velocity >> 6;
-                    regs.ecx -= regs.eax;
+                    acceleration -= vehicle->velocity >> 6;
                 }
             }
         }
     }
 
-    vehicle->acceleration = regs.ecx;
+    vehicle->acceleration = acceleration;
 
     regs.eax = _vehicleMotionTrackFlags;
     regs.ebx = _vehicleStationIndex;
