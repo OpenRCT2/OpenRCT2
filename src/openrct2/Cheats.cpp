@@ -310,7 +310,7 @@ static void cheat_set_guest_parameter(sint32 parameter, sint32 value)
             peep->nausea_tolerance = value;
             break;
         case GUEST_PARAMETER_BATHROOM:
-            peep->bathroom = value;
+            peep->toilet = value;
             break;
         case GUEST_PARAMETER_PREFERRED_RIDE_INTENSITY:
             peep->intensity = (15 << 4) | value;

@@ -415,8 +415,8 @@ typedef struct rct1_peep {
     uint8 nausea_target;            // 0x3D
     uint8 hunger;                   // 0x3E
     uint8 thirst;                   // 0x3F
-    uint8 bathroom;                 // 0x40
-    uint8 var_41;
+    uint8 toilet;                   // 0x40
+    uint8 mass;                     // 0x41
     uint8 var_42;
     uint8 intensity;                // 0x43 The max intensity is stored in the first 4 bits, and the min intensity in the second 4 bits
     uint8 nausea_tolerance;         // 0x44
@@ -452,7 +452,7 @@ typedef struct rct1_peep {
     uint8 action_frame;             // 0x72
     uint8 var_73;
     union {
-        uint16 var_74; // time getting to ride to fix
+        uint16 mechanic_time_since_call; // time getting to ride to fix
         uint16 next_in_queue;       // 0x74
     };
     uint8 var_76;
@@ -506,8 +506,8 @@ typedef struct rct1_peep {
     uint8 var_EF;
     uint8 voucher_type;             // 0xF0
     uint8 voucher_arguments;        // 0xF1 ride_id or string_offset_id
-    uint8 var_F2;
-    uint8 var_F3;
+    uint8 surroundings_thought_timeout; // 0xF2
+    uint8 angriness;                // 0xF3
     uint8 var_F4;
     uint8 days_in_queue;            // 0xF5
     uint8 balloon_colour;           // 0xF6

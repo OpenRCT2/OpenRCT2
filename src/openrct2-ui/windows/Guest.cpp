@@ -1431,23 +1431,23 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     }
     window_guest_stats_bars_paint(nausea, x, y, w, dpi, ebp);
 
-    // Bathroom
+    // Toilet
     y += LIST_ROW_HEIGHT;
     gfx_draw_string_left(dpi, STR_GUEST_STAT_TOILET_LABEL, gCommonFormatArgs, COLOUR_BLACK, x, y);
 
-    sint32 bathroom = peep->bathroom - 32;
-    if (bathroom > 210) bathroom = 210;
+    sint32 toilet = peep->toilet - 32;
+    if (toilet > 210) toilet = 210;
 
-    bathroom -= 32;
-    if (bathroom < 0) bathroom = 0;
-    bathroom *= 45;
-    bathroom /= 32;
+    toilet -= 32;
+    if (toilet < 0) toilet = 0;
+    toilet *= 45;
+    toilet /= 32;
 
     ebp = COLOUR_BRIGHT_RED;
-    if (bathroom > 160){
+    if (toilet > 160){
         ebp |= BAR_BLINK;
     }
-    window_guest_stats_bars_paint(bathroom, x, y, w, dpi, ebp);
+    window_guest_stats_bars_paint(toilet, x, y, w, dpi, ebp);
 
     // Time in park
     y += LIST_ROW_HEIGHT + 1;
