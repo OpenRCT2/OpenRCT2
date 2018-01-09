@@ -20,6 +20,7 @@
 
 #include "common.h"
 
+#define RCT12_MAX_RIDES_IN_PARK             255
 #define RCT12_MAX_AWARDS                    4
 #define RCT12_MAX_NEWS_ITEMS                61
 #define RCT12_MAX_STATIONS_PER_RIDE         4

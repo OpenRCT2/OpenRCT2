@@ -689,7 +689,7 @@ private:
 
     void ImportRides()
     {
-        for (sint32 i = 0; i < MAX_RIDES; i++)
+        for (sint32 i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
         {
             if (_s4.rides[i].type != RIDE_TYPE_NULL)
             {
