@@ -119,7 +119,6 @@ void research_reset_items();
 void research_update_uncompleted_types();
 void research_update();
 void research_reset_current_item();
-void research_remove_non_separate_vehicle_types();
 void research_populate_list_random();
 void research_populate_list_researched();
 
