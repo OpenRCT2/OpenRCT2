@@ -871,8 +871,8 @@ private:
         dst->mechanic = src->mechanic;
         dst->breakdown_reason_pending = src->breakdown_reason_pending;
         dst->inspection_station = src->inspection_station;
-        //dst->broken_car?
-        //dst->broken_vehicle?
+        dst->broken_car = src->broken_car;
+        dst->broken_vehicle = src->broken_vehicle;
 
         // Measurement data
         dst->excitement = src->excitement;
