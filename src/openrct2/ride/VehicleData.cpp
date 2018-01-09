@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,6 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
+#include "../core/Util.hpp"
 #include "vehicle_data.h"
 
 /** rct2: 0x0099F100 */
@@ -797,7 +798,7 @@ const uint8 MotionSimulatorTimeToSpriteMap[] = {
     0xFF,
 };
 
-const sint32 MotionSimulatorTimeToSpriteMapCount = countof(MotionSimulatorTimeToSpriteMap);
+const sint32 MotionSimulatorTimeToSpriteMapCount = Util::CountOf(MotionSimulatorTimeToSpriteMap);
 
 /** rct2: 0x009A2930 */
 const sint32 dword_9A2930[] = {
