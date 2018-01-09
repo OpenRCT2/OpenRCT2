@@ -255,7 +255,7 @@ typedef struct rct_s6_data {
     rct_banner banners[RCT2_MAX_BANNERS_IN_PARK];
     char custom_strings[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32 game_ticks_1;
-    rct2_ride rides[RCT2_MAX_RIDES_IN_PARK];
+    rct2_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16 saved_age;
     uint16 saved_view_x;
     uint16 saved_view_y;
@@ -290,8 +290,9 @@ typedef struct rct_s6_data {
     uint8 current_rain_level;
     uint8 next_rain_level;
     rct12_news_item news_items[RCT12_MAX_NEWS_ITEMS];
-    uint8 pad_13CE730[64];
-    uint32 rct1_scenario_flags;
+    char rct1_scenario_name[62];     // Unused in RCT2
+    uint16 rct1_scenario_slot_index; // Unused in RCT2
+    uint32 rct1_scenario_flags;      // Unused in RCT2
     uint16 wide_path_tile_loop_x;
     uint16 wide_path_tile_loop_y;
     uint8 pad_13CE778[434];

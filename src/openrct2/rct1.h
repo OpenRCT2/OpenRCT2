@@ -27,7 +27,7 @@
 #include "world/sprite.h"
 #include "world/map_animation.h"
 
-#define RCT1_MAX_TILE_ELEMENTS         0xC000
+#define RCT1_MAX_TILE_ELEMENTS        0xC000
 #define RCT1_MAX_SPRITES              5000
 #define RCT1_MAX_TRAINS_PER_RIDE      12
 #define RCT1_MAX_MAP_SIZE             128
@@ -708,7 +708,7 @@ typedef struct rct1_s4 {
     rct_banner banners[100];
     char string_table[RCT12_MAX_USER_STRINGS][RCT12_USER_STRING_MAX_LENGTH];
     uint32 game_time_counter;
-    rct1_ride rides[255];
+    rct1_ride rides[RCT12_MAX_RIDES_IN_PARK];
     uint16 unk_game_time_counter;
     uint16 view_x;
     uint16 view_y;
@@ -793,9 +793,9 @@ typedef struct rct_track_td4 {
     money16 upkeep_cost;                            // 0x36
 
     // Added Attractions / Loopy Landscapes only
-    uint8 track_spine_colour[4];                    // 0x38
-    uint8 track_rail_colour[4];                     // 0x3C
-    uint8 track_support_colour[4];                  // 0x40
+    uint8 track_spine_colour[RCT12_NUM_COLOUR_SCHEMES];   // 0x38
+    uint8 track_rail_colour[RCT12_NUM_COLOUR_SCHEMES];    // 0x3C
+    uint8 track_support_colour[RCT12_NUM_COLOUR_SCHEMES]; // 0x40
     uint8 flags2;                                   // 0x44
 
     uint8 var_45[0x7F];                             // 0x45

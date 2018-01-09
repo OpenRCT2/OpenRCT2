@@ -460,7 +460,7 @@ public:
 
     void ImportRides()
     {
-        for (uint16 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
+        for (uint16 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
         {
             auto src = &_s6.rides[index];
             auto dst = get_ride(index);

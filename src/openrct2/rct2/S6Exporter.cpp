@@ -428,7 +428,7 @@ uint32 S6Exporter::GetLoanHash(money32 initialCash, money32 bankLoan, uint32 max
 
 void S6Exporter::ExportRides()
 {
-    for (sint32 index = 0; index < RCT2_MAX_RIDES_IN_PARK; index++)
+    for (sint32 index = 0; index < RCT12_MAX_RIDES_IN_PARK; index++)
     {
         auto src = get_ride(index);
         auto dst = &_s6.rides[index];
