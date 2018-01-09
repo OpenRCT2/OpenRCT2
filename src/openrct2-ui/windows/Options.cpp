@@ -1863,7 +1863,7 @@ static void window_options_paint(rct_window *w, rct_drawpixelinfo *dpi)
         if (gConfigGeneral.drawing_engine == DRAWING_ENGINE_SOFTWARE ||
             gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
-            colour |= 0x40;
+            colour |= COLOUR_FLAG_INSET;
         }
         gfx_draw_string_left(dpi, STR_SCALING_QUALITY, w, colour, w->x + 25, w->y + window_options_display_widgets[WIDX_SCALE_QUALITY].top + 1);
         break;
