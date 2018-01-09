@@ -799,7 +799,7 @@ const uint8 MotionSimulatorTimeToSpriteMap[] = {
     0xFF,
 };
 
-const sint32 MotionSimulatorTimeToSpriteMapCount = Util::CountOf(MotionSimulatorTimeToSpriteMap);
+const sint32 MotionSimulatorTimeToSpriteMapCount = static_cast<sint32>(Util::CountOf(MotionSimulatorTimeToSpriteMap));
 
 /** rct2: 0x009A2930 */
 const sint32 dword_9A2930[] = {
