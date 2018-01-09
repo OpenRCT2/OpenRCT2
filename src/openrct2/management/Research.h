@@ -102,10 +102,10 @@ extern uint8 gResearchFundingLevel;
 extern uint8 gResearchPriorities;
 extern uint16 gResearchProgress;
 extern uint8 gResearchProgressStage;
-extern rct_research_item gResearchLastItemSubject;
 extern uint8 gResearchExpectedMonth;
 extern uint8 gResearchExpectedDay;
 extern uint8 gResearchNextCategory;
+extern rct_research_item gResearchLastItem;
 extern rct_research_item gResearchNextItem;
 
 extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
