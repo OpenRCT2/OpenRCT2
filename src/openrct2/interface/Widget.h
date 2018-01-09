@@ -24,28 +24,23 @@ typedef enum {
     WWT_FRAME = 1,
     WWT_RESIZE = 2,
     WWT_IMGBTN = 3,
-    WWT_4 = 4, // Same as IMGBTN but uses .image + 1 while pressed/active
-    WWT_5 = 5,
     WWT_COLOURBTN = 6,
     WWT_TRNBTN = 7,
     WWT_TAB = 8,
     WWT_FLATBTN = 9,
-    WWT_DROPDOWN_BUTTON = 10,
-    WWT_11, // Same as dropdown button but uses .text + 1 while pressed/active
-    WWT_12, // looks like a normal label to me
-    WWT_13,
-    WWT_14,
+    WWT_BUTTON = 10,
+    WWT_LABEL_CENTRED = 12,    // Centred text
+    WWT_TABLE_HEADER = 13,     // Left-aligned textual button
+    WWT_LABEL = 14,            // Left-aligned text
     WWT_SPINNER = 15,
     WWT_DROPDOWN = 16,
     WWT_VIEWPORT = 17,
-    WWT_18,
     WWT_GROUPBOX = 19,
     WWT_CAPTION = 20,
     WWT_CLOSEBOX = 21,
     WWT_SCROLL = 22,
     WWT_CHECKBOX = 23,
-    WWT_24,
-    WWT_25,
+    WWT_PLACEHOLDER = 25,
     WWT_TEXT_BOX = 27,
     WWT_LAST = 26,
 } WINDOW_WIDGET_TYPES;

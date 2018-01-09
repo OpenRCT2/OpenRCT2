@@ -77,8 +77,8 @@ static rct_widget window_maze_construction_widgets[] = {
     { WWT_FLATBTN,          1,  38,     82,     125,    153,    SPR_CONSTRUCTION_DIRECTION_SW,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
     { WWT_FLATBTN,          1,  38,     82,     96,     124,    SPR_CONSTRUCTION_DIRECTION_NW,      STR_RIDE_CONSTRUCTION_BUILD_MAZE_IN_THIS_DIRECTION_TIP  },
     { WWT_GROUPBOX,         0,  3,      162,    168,    195,    0xFFFFFFFF,                         STR_NONE                                                },
-    { WWT_DROPDOWN_BUTTON,  1,  9,      78,     178,    189,    STR_RIDE_CONSTRUCTION_ENTRANCE,     STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
-    { WWT_DROPDOWN_BUTTON,  1,  87,     156,    178,    189,    STR_RIDE_CONSTRUCTION_EXIT,         STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
+    { WWT_BUTTON,           1,  9,      78,     178,    189,    STR_RIDE_CONSTRUCTION_ENTRANCE,     STR_RIDE_CONSTRUCTION_ENTRANCE_TIP                      },
+    { WWT_BUTTON,           1,  87,     156,    178,    189,    STR_RIDE_CONSTRUCTION_EXIT,         STR_RIDE_CONSTRUCTION_EXIT_TIP                          },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
     { WWT_EMPTY,            0,  0,      0,      0,      0,      0xFFFFFFFF,                         STR_NONE                                                },
     { WIDGETS_END }

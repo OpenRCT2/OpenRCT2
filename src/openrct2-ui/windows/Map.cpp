@@ -82,8 +82,8 @@ static rct_widget window_map_widgets[] = {
     { WWT_COLOURBTN,        1,  34,     64,     17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,                   STR_SHOW_RIDES_STALLS_ON_MAP_TIP },
     { WWT_SCROLL,           1,  3,      241,    46,     225,    SCROLL_BOTH,                            STR_NONE },
     { WWT_SPINNER,          1,  104,    198,    229,    240,    STR_MAP_SIZE_VALUE,                     STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  187,    197,    235,    239,    STR_NUMERIC_DOWN,                       STR_NONE },
+    { WWT_BUTTON,           1,  187,    197,    230,    234,    STR_NUMERIC_UP,                         STR_NONE },
+    { WWT_BUTTON,           1,  187,    197,    235,    239,    STR_NUMERIC_DOWN,                       STR_NONE },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_BUY_LAND_RIGHTS,                    STR_SELECT_PARK_OWNED_LAND_TIP },
     { WWT_FLATBTN,          1,  4,      27,     1,      24,     SPR_PARK_ENTRANCE,                      STR_BUILD_PARK_ENTRANCE_TIP },
     { WWT_FLATBTN,          1,  28,     51,     1,      24,     (uint32) SPR_NONE,                      STR_SET_STARTING_POSITIONS_TIP },
@@ -95,7 +95,7 @@ static rct_widget window_map_widgets[] = {
     { WWT_CHECKBOX,         1,  58,     241,    197,    208,    STR_LAND_SALE,                          STR_SET_LAND_TO_BE_AVAILABLE_TIP },
     { WWT_CHECKBOX,         1,  58,     231,    197,    208,    STR_CONSTRUCTION_RIGHTS_SALE,           STR_SET_CONSTRUCTION_RIGHTS_TO_BE_AVAILABLE_TIP },
     { WWT_FLATBTN,          1,  218,    241,    45,     68,     SPR_ROTATE_ARROW,                       STR_ROTATE_OBJECTS_90 },
-    { WWT_DROPDOWN_BUTTON,  1,  110,    240,    190,    201,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
+    { WWT_BUTTON,           1,  110,    240,    190,    201,    STR_MAPGEN_WINDOW_TITLE,                STR_MAP_GENERATOR_TIP},
     { WIDGETS_END },
 };
 
@@ -979,12 +979,12 @@ static void window_map_show_default_scenario_editor_buttons(rct_window *w) {
     w->widgets[WIDX_BUILD_PARK_ENTRANCE].type = WWT_FLATBTN;
     w->widgets[WIDX_PEOPLE_STARTING_POSITION].type = WWT_FLATBTN;
     w->widgets[WIDX_MAP_SIZE_SPINNER].type = WWT_SPINNER;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_DROPDOWN_BUTTON;
-    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_DROPDOWN_BUTTON;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WWT_BUTTON;
+    w->widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WWT_BUTTON;
 
     // Only show this in the scenario editor, even when in sandbox mode.
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-        w->widgets[WIDX_MAP_GENERATOR].type = WWT_DROPDOWN_BUTTON;
+        w->widgets[WIDX_MAP_GENERATOR].type = WWT_BUTTON;
 
     set_format_arg(2, uint16, gMapSize - 2);
 }

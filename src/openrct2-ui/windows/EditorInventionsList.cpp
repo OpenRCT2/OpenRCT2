@@ -56,9 +56,9 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     { WWT_SCROLL,           1,  4,      371,    56,     175,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_SCROLL,           1,  4,      371,    189,    396,    SCROLL_VERTICAL,        STR_NONE                },
     { WWT_FLATBTN,          1,  431,    544,    106,    219,    0xFFFFFFFF,             STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,       STR_NONE                },
+    { WWT_BUTTON,           1,  375,    594,    383,    396,    STR_RANDOM_SHUFFLE,     STR_RANDOM_SHUFFLE_TIP  },
+    { WWT_BUTTON,           1,  375,    594,    368,    381,    STR_MOVE_ALL_BOTTOM,    STR_NONE                },
+    { WWT_BUTTON,           1,  375,    594,    353,    366,    STR_MOVE_ALL_TOP,       STR_NONE                },
     { WIDGETS_END }
 };
 

@@ -121,7 +121,7 @@ static rct_widget window_staff_list_widgets[] = {
     { WWT_TAB,              1,  96,         126,        17,     43,     IMAGE_TYPE_REMAP | SPR_TAB,   STR_STAFF_ENTERTAINERS_TAB_TIP },   // entertainers tab
     { WWT_SCROLL,           1,  3,          316,        72,     266,    SCROLL_BOTH,            STR_NONE },                         // staff list
     { WWT_COLOURBTN,        1,  130,        141,        58,     69,     STR_NONE,               STR_UNIFORM_COLOUR_TIP },           // uniform colour picker
-    { WWT_DROPDOWN_BUTTON,  0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
+    { WWT_BUTTON,           0,  WW - 155,   WW - 11,    17,     29,     STR_NONE,               STR_HIRE_STAFF_TIP },               // hire button
     { WWT_FLATBTN,          1,  WW - 77,    WW - 54,    46,     69,     SPR_DEMOLISH,           STR_QUICK_FIRE_STAFF },             // quick fire staff
     { WWT_FLATBTN,          1,  WW - 53,    WW - 30,    46,     69,     SPR_PATROL_BTN,         STR_SHOW_PATROL_AREA_TIP },         // show staff patrol area tool
     { WWT_FLATBTN,          1,  WW - 29,    WW - 6,     46,     69,     SPR_MAP,                STR_SHOW_STAFF_ON_MAP_TIP },        // show staff on map button

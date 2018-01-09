@@ -52,8 +52,8 @@ static rct_widget window_install_track_widgets[] = {
     { WWT_FLATBTN,          0,  4,                      WW - 5,             18,     236,    STR_NONE,                               STR_NONE                },
     { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    374,    397,    SPR_ROTATE_ARROW,                       STR_ROTATE_90_TIP       },
     { WWT_FLATBTN,          0,  PREVIEW_BUTTONS_LEFT,   WW_LESS_PADDING,    350,    373,    SPR_SCENERY,                            STR_TOGGLE_SCENERY_TIP  },
-    { WWT_DROPDOWN_BUTTON,  0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    241,    252,    STR_INSTALL_NEW_TRACK_DESIGN_INSTALL,   STR_NONE                },
-    { WWT_DROPDOWN_BUTTON,  0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    256,    267,    STR_INSTALL_NEW_TRACK_DESIGN_CANCEL,    STR_NONE                },
+    { WWT_BUTTON,           0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    241,    252,    STR_INSTALL_NEW_TRACK_DESIGN_INSTALL,   STR_NONE                },
+    { WWT_BUTTON,           0,  ACTION_BUTTONS_LEFT,    WW_LESS_PADDING,    256,    267,    STR_INSTALL_NEW_TRACK_DESIGN_CANCEL,    STR_NONE                },
     { WIDGETS_END },
 };
 

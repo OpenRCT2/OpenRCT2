@@ -93,23 +93,23 @@ static rct_widget window_title_command_editor_widgets[] = {
     { WWT_CAPTION,              1,  1,          WW-2,       1,      14,     STR_TITLE_COMMAND_EDITOR_TITLE, STR_WINDOW_TITLE_TIP }, // title bar
     { WWT_CLOSEBOX,             1,  WW-13,      WW-3,       2,      13,     STR_CLOSE_X,                STR_CLOSE_WINDOW_TIP }, // close x button
     { WWT_DROPDOWN,             1,  WS,         WW-WS-1,    BY,     BY+11,  STR_NONE,                   STR_NONE }, // Command dropdown
-    { WWT_DROPDOWN_BUTTON,      1,  WW-WS-12,   WW-WS-2,    BY+1,   BY+10,  STR_DROPDOWN_GLYPH,         STR_NONE },
+    { WWT_BUTTON,               1,  WW-WS-12,   WW-WS-2,    BY+1,   BY+10,  STR_DROPDOWN_GLYPH,         STR_NONE },
     { WWT_TEXT_BOX,             1,  WS,         WW-WS-1,    BY2,    BY2+11, STR_NONE,                   STR_NONE }, // full textbox
 
     { WWT_TEXT_BOX,             1,  WS,         WS+WHA-4,   BY2,    BY2+11, STR_NONE,                   STR_NONE }, // x textbox
     { WWT_TEXT_BOX,             1,  WS+WHA+3,   WW-WS-1,    BY2,    BY2+11, STR_NONE,                   STR_NONE }, // y textbox
 
     { WWT_DROPDOWN,             1,  16,         WW-17,      BY2,    BY2+11, STR_NONE,                   STR_NONE }, // Save dropdown
-    { WWT_DROPDOWN_BUTTON,      1,  WW-28,      WW-18,      BY2+1,  BY2+10, STR_DROPDOWN_GLYPH,         STR_NONE },
+    { WWT_BUTTON,               1,  WW-28,      WW-18,      BY2+1,  BY2+10, STR_DROPDOWN_GLYPH,         STR_NONE },
 
-    { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+3,   WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION,                       STR_NONE }, // Get location/zoom/etc
-    { WWT_DROPDOWN_BUTTON,      1,  WS+WHA+12,  WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO,                    STR_NONE }, // Select scenario
+    { WWT_BUTTON,               1,  WS+WHA+3,   WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_GET_LOCATION,                       STR_NONE }, // Get location/zoom/etc
+    { WWT_BUTTON,               1,  WS+WHA+12,  WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_ACTION_SELECT_SCENARIO,                    STR_NONE }, // Select scenario
 
-    { WWT_DROPDOWN_BUTTON,      1,  WS,         WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE, STR_NONE }, // Select sprite
+    { WWT_BUTTON,               1,  WS,         WW-WS-1,    BY2-14, BY2-3,  STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE, STR_NONE }, // Select sprite
     { WWT_VIEWPORT,             1,  WS,         WW-WS-1,    BY2,    BY2+22, STR_NONE,                   STR_NONE }, // Viewport
 
-    { WWT_DROPDOWN_BUTTON,      1,  10,         80,         WH-21,  WH-10,  STR_OK,                     STR_NONE }, // OKAY
-    { WWT_DROPDOWN_BUTTON,      1,  WW-80,      WW-10,      WH-21,  WH-10,  STR_CANCEL,                 STR_NONE }, // Cancel
+    { WWT_BUTTON,               1,  10,         80,         WH-21,  WH-10,  STR_OK,                     STR_NONE }, // OKAY
+    { WWT_BUTTON,               1,  WW-80,      WW-10,      WH-21,  WH-10,  STR_CANCEL,                 STR_NONE }, // Cancel
 
     { WIDGETS_END },
 };
@@ -711,27 +711,27 @@ static void window_title_command_editor_invalidate(rct_window * w)
     case TITLE_SCRIPT_LOAD:
     case TITLE_SCRIPT_SPEED:
         window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
-        window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
+        window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WWT_BUTTON;
         break;
     case TITLE_SCRIPT_LOADSC:
         window_title_command_editor_widgets[WIDX_INPUT].type = WWT_DROPDOWN;
-        window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WWT_DROPDOWN_BUTTON;
+        window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WWT_BUTTON;
         break;
     case TITLE_SCRIPT_LOCATION:
         window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WWT_TEXT_BOX;
         window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WWT_TEXT_BOX;
-        window_title_command_editor_widgets[WIDX_GET].type = WWT_DROPDOWN_BUTTON;
+        window_title_command_editor_widgets[WIDX_GET].type = WWT_BUTTON;
         break;
     case TITLE_SCRIPT_ROTATE:
     case TITLE_SCRIPT_WAIT:
         window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
         break;
     case TITLE_SCRIPT_ZOOM:
-        window_title_command_editor_widgets[WIDX_GET].type = WWT_DROPDOWN_BUTTON;
+        window_title_command_editor_widgets[WIDX_GET].type = WWT_BUTTON;
         window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WWT_TEXT_BOX;
         break;
     case TITLE_SCRIPT_FOLLOW:
-        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_DROPDOWN_BUTTON;
+        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WWT_BUTTON;
         window_title_command_editor_widgets[WIDX_VIEWPORT].type = WWT_VIEWPORT;
 
         // Draw button pressed while the tool is active

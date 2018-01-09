@@ -160,27 +160,27 @@ static rct_widget window_title_editor_widgets[] = {
 
     // Presets Tab
     { WWT_DROPDOWN,         1,  125,    299,    60,     71,     STR_NONE,                           STR_NONE },                     // Preset title sequences
-    { WWT_DROPDOWN_BUTTON,  1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                 STR_NONE },
-    { WWT_DROPDOWN_BUTTON,  1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_CREATE,     STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP },                      // Create button
-    { WWT_DROPDOWN_BUTTON,  1,  10,     100,    82+20,  93+20,  STR_TITLE_EDITOR_ACTION_DUPLICATE,  STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP },                       // Duplicate button
-    { WWT_DROPDOWN_BUTTON,  1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP },                      // Delete button
-    { WWT_DROPDOWN_BUTTON,  1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP },                      // Rename button
+    { WWT_BUTTON,           1,  288,    298,    61,     70,     STR_DROPDOWN_GLYPH,                 STR_NONE },
+    { WWT_BUTTON,           1,  10,     100,    82,     93,     STR_TITLE_EDITOR_ACTION_CREATE,     STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP },                      // Create button
+    { WWT_BUTTON,           1,  10,     100,    82+20,  93+20,  STR_TITLE_EDITOR_ACTION_DUPLICATE,  STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP },                       // Duplicate button
+    { WWT_BUTTON,           1,  110,    200,    82,     93,     STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP },                      // Delete button
+    { WWT_BUTTON,           1,  210,    300,    82,     93,     STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP },                      // Rename button
 
     // Saves Tab
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_ADD,        STR_TITLE_EDITOR_ACTION_ADD_TIP }, // Add
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_REMOVE,     STR_TITLE_EDITOR_ACTION_REMOVE_TIP }, // Remove
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_TIP }, // Rename
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_LOAD,       STR_TITLE_EDITOR_ACTION_LOAD_TIP }, // Load
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_ADD,        STR_TITLE_EDITOR_ACTION_ADD_TIP }, // Add
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_REMOVE,     STR_TITLE_EDITOR_ACTION_REMOVE_TIP }, // Remove
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_RENAME,            STR_TITLE_EDITOR_ACTION_RENAME_TIP }, // Rename
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_LOAD,       STR_TITLE_EDITOR_ACTION_LOAD_TIP }, // Load
 
     // Script Tab
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_INSERT,     STR_TITLE_EDITOR_ACTION_INSERT_TIP }, // Insert
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_EDIT,       STR_TITLE_EDITOR_ACTION_EDIT_TIP }, // Edit
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_TIP }, // Delete
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY,         BH,         STR_TITLE_EDITOR_ACTION_INSERT,     STR_TITLE_EDITOR_ACTION_INSERT_TIP }, // Insert
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*1),  BH+(BS*1),  STR_TITLE_EDITOR_ACTION_EDIT,       STR_TITLE_EDITOR_ACTION_EDIT_TIP }, // Edit
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*2),  BH+(BS*2),  STR_TRACK_MANAGE_DELETE,            STR_TITLE_EDITOR_ACTION_DELETE_TIP }, // Delete
     //{ WWT_DROPDOWN_BUTTON,    1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_RELOAD,     STR_TITLE_EDITOR_ACTION_RELOAD_TIP }, // Reload
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_SKIP_TO,    STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP }, // Skip to
+    { WWT_BUTTON,           1,  BX,     BX+BW-1,BY+(BS*3),  BH+(BS*3),  STR_TITLE_EDITOR_ACTION_SKIP_TO,    STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP }, // Skip to
 
-    { WWT_DROPDOWN_BUTTON,  1,  BX,     BX+BW/2-1,BY+(BS*5),BH+(BS*5),  STR_DOWN,   STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP }, // Move down
-    { WWT_DROPDOWN_BUTTON,  1,  BX+BW/2,BX+BW-1,BY+(BS*5),  BH+(BS*5),  STR_UP, STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP }, // Move up
+    { WWT_BUTTON,           1,  BX,     BX+BW/2-1,BY+(BS*5),BH+(BS*5),  STR_DOWN,   STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP }, // Move down
+    { WWT_BUTTON,           1,  BX+BW/2,BX+BW-1,BY+(BS*5),  BH+(BS*5),  STR_UP, STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP }, // Move up
 
     { WWT_IMGBTN,           1,  BX,     BX+BW/4-1,  WH-32,  WH-16,      SPR_G2_TITLE_RESTART,   STR_TITLE_EDITOR_ACTION_REPLAY_TIP }, // Replay
     { WWT_IMGBTN,           1,  BX+BW/4,BX+BW/2-1,  WH-32,  WH-16,      SPR_G2_TITLE_STOP,      STR_TITLE_EDITOR_ACTION_STOP_TIP }, // Stop
@@ -760,18 +760,18 @@ static void window_title_editor_invalidate(rct_window * w)
     {
     case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WWT_DROPDOWN;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_DROPDOWN_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WWT_BUTTON;
         break;
     case WINDOW_TITLE_EDITOR_TAB_SAVES:
         window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_DROPDOWN_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WWT_BUTTON;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_IMGBTN;
@@ -779,13 +779,13 @@ static void window_title_editor_invalidate(rct_window * w)
         break;
     case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
         window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WWT_SCROLL;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_DROPDOWN_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WWT_BUTTON;
         //window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_DROPDOWN_BUTTON;
-        window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_DROPDOWN_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WWT_BUTTON;
+        window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WWT_BUTTON;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WWT_IMGBTN;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WWT_IMGBTN;
         window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WWT_IMGBTN;
