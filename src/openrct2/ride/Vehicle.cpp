@@ -1607,7 +1607,7 @@ static void vehicle_update_measurements(rct_vehicle * vehicle)
             return;
 
         uint16 track_elem_type = vehicle->track_type / 4;
-        if (track_elem_type == TRACK_ELEM_POWERED_LIFT || (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0))
+        if (track_elem_type == TRACK_ELEM_POWERED_LIFT || (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             if (!(ride->testing_flags & RIDE_TESTING_POWERED_LIFT))
             {
@@ -3339,7 +3339,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
         }
         else if (ride->mode == RIDE_MODE_SHUTTLE)
         {
-            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
+            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
             vehicle->velocity = 0;
         }
     }
@@ -3736,7 +3736,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
             }
             else if (ride->mode == RIDE_MODE_SHUTTLE)
             {
-                vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_3;
+                vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE;
                 vehicle->velocity = 0;
             }
             else
@@ -4577,7 +4577,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
         {
             eax        = vehicle->speed << 14;
             sint32 ebx = (vehicle->speed * mass) >> 2;
-            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
+            if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
             {
                 eax = -eax;
             }
@@ -6432,7 +6432,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
 
     sint32 ebx  = (vehicle->speed * vehicle->mass) >> 2;
     sint32 _eax = vehicle->speed << 14;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
     {
         _eax = -_eax;
     }
@@ -6997,7 +6997,7 @@ static void vehicle_update_swinging_car(rct_vehicle * vehicle)
             break;
         }
 
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)
+        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
         {
             dx = 0;
             cx = 0;
@@ -7131,7 +7131,7 @@ static const uint8 TrackTypeToSpinFunction[256] = {
  */
 static void vehicle_update_spinning_car(rct_vehicle * vehicle)
 {
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_13)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE)
     {
         vehicle->spin_speed = 0;
         return;
@@ -7910,7 +7910,7 @@ static void sub_6DBF3E(rct_vehicle * vehicle)
 
     if (trackType == TRACK_ELEM_TOWER_BASE && vehicle == gCurrentVehicle)
     {
-        if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_3))
+        if (vehicle->track_progress > 3 && !(vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE))
         {
             rct_xy_element input, output;
             sint32         outputZ, outputDirection;
@@ -8127,11 +8127,11 @@ loc_6DB41D:
     }
 
     // loc_6DB500
-    // Update VEHICLE_UPDATE_FLAG_0
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+    // Update VEHICLE_UPDATE_FLAG_ON_LIFT_HILL
+    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     if (track_element_is_lift_hill(tileElement))
     {
-        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+        vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     }
 
     trackType = track_element_get_type(tileElement);
@@ -8150,7 +8150,7 @@ loc_6DB41D:
         uint16 rideType = get_ride(track_element_get_ride_index(tileElement))->type;
         if (trackType == TRACK_ELEM_ROTATION_CONTROL_TOGGLE && rideType == RIDE_TYPE_STEEL_WILD_MOUSE)
         {
-            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_13;
+            vehicle->update_flags ^= VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE;
         }
     }
     // Change from original: this used to check if the vehicle allowed doors.
@@ -8531,14 +8531,14 @@ static bool vehicle_update_track_motion_backwards_get_new_track(rct_vehicle * ve
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_9;
                 }
             }
-            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_0;
+            vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
         }
     }
     else
     {
-        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)
+        if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
         {
-            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+            vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
             if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
             {
                 if (_vehicleVelocityF64E08 < 0)
@@ -8922,7 +8922,7 @@ loc_6DC476:
         vehicle->var_CD = regs.al;
     }
 
-    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+    vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
     vehicle->track_type = (track_element_get_type(tileElement) << 2) | (direction & 3);
     vehicle->var_CF     = tile_element_get_brake_booster_speed(tileElement);
     regs.ax             = 0;
@@ -9162,9 +9162,9 @@ loc_6DCA9A:
     vehicle->track_y = y;
     vehicle->track_z = z;
 
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
     {
-        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_0;
+        vehicle->update_flags &= ~VEHICLE_UPDATE_FLAG_ON_LIFT_HILL;
         if (vehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
         {
             if (_vehicleVelocityF64E08 < 0)
@@ -9339,7 +9339,7 @@ loc_6DCE68:
     }
 
 loc_6DCEB2:
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_0)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
     {
         _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
     }
@@ -9416,7 +9416,7 @@ loc_6DCEFF:
     regs.eax <<= 14;
     regs.ebx *= regs.ebp;
     regs.ebx >>= 2;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
     {
         regs.eax = -regs.eax;
     }
@@ -9599,7 +9599,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         sub_6DBF3E(car);
 
         // loc_6DC0F7
-        if (car->update_flags & VEHICLE_UPDATE_FLAG_0)
+        if (car->update_flags & VEHICLE_UPDATE_FLAG_ON_LIFT_HILL)
         {
             _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL;
         }
@@ -9689,8 +9689,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
     }
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_0)
     {
-        regs.eax = vehicle->speed * 0x4000;
-        if (regs.eax < vehicle->velocity)
+        if (vehicle->velocity > (vehicle->speed * 0x4000))
         {
             goto loc_6DC2FA;
         }
@@ -9731,14 +9730,12 @@ loc_6DC23A:
     regs.eax <<= 14;
     regs.ebx *= totalMass;
     regs.ebx >>= 2;
-    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_3)
+    if (vehicle->update_flags & VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE)
     {
         regs.eax = -regs.eax;
     }
     regs.eax -= vehicle->velocity;
-    regs.edx = vehicle->powered_acceleration;
-    regs.edx <<= 1;
-    regs.eax *= regs.edx;
+    regs.eax *= vehicle->powered_acceleration << 1;
     if (regs.ebx != 0)
     {
         regs.eax /= regs.ebx;

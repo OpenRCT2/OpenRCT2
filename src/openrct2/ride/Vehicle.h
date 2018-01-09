@@ -219,7 +219,7 @@ typedef struct rct_vehicle_info {
 } rct_vehicle_info;
 
 enum {
-    VEHICLE_ENTRY_FLAG_0 = 1 << 0,
+    VEHICLE_ENTRY_FLAG_0 = 1 << 0,                              // Set on powered vehicles that do not slow down when going down a hill
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_WHEELS = 1 << 1,
     VEHICLE_ENTRY_FLAG_NO_UPSTOP_BOBSLEIGH = 1 << 2,
     VEHICLE_ENTRY_FLAG_MINI_GOLF = 1 << 3,
@@ -288,10 +288,10 @@ enum {
 };
 
 enum{
-    VEHICLE_UPDATE_FLAG_0 = (1 << 0),
+    VEHICLE_UPDATE_FLAG_ON_LIFT_HILL = (1 << 0),
     VEHICLE_UPDATE_FLAG_1 = (1 << 1),
     VEHICLE_UPDATE_FLAG_WAIT_ON_ADJACENT = (1 << 2),
-    VEHICLE_UPDATE_FLAG_3 = (1 << 3),
+    VEHICLE_UPDATE_FLAG_REVERSING_SHUTTLE = (1 << 3),       // Shuttle is in reverse
     VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART = (1 << 4),
     VEHICLE_UPDATE_FLAG_TESTING = (1 << 5),
     VEHICLE_UPDATE_FLAG_6 = (1 << 6),
@@ -301,9 +301,7 @@ enum{
     VEHICLE_UPDATE_FLAG_ON_BREAK_FOR_DROP = (1 << 10),
     VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES = (1 << 11),   // Used on rides where trains can run for extended periods of time, i.e. the Flying, Lay-down and Multi-dimension RCs.
     VEHICLE_UPDATE_FLAG_12 = (1 << 12),
-    VEHICLE_UPDATE_FLAG_13 = (1 << 13),
-    VEHICLE_UPDATE_FLAG_14 = (1 << 14),
-    VEHICLE_UPDATE_FLAG_15 = (1 << 15)
+    VEHICLE_UPDATE_FLAG_ROTATION_OFF_WILD_MOUSE = (1 << 13) // After passing a rotation toggle track piece this will enable
 };
 
 enum {
