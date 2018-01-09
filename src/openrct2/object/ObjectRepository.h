@@ -111,8 +111,3 @@ void            object_draw_preview(const void * object, rct_drawpixelinfo * dpi
 #ifdef __cplusplus
 }
 #endif
-
-enum ORI_RIDE_FLAG
-{
-    ORI_RIDE_FLAG_SEPARATE = 1 << 0,
-};
