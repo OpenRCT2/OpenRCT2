@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -14,14 +14,15 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "../paint/Paint.h"
-#include "../drawing/Drawing.h"
-#include "../world/sprite.h"
-#include "../ride/ride_data.h"
-#include "Track.h"
-#include "../interface/Viewport.h"
 #include "../Game.h"
+#include "../core/Util.hpp"
+#include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
+#include "../interface/Viewport.h"
+#include "../paint/Paint.h"
+#include "../ride/ride_data.h"
+#include "../world/sprite.h"
+#include "Track.h"
 #include "vehicle_paint.h"
 
 // 0x0098E52C:
@@ -894,7 +895,7 @@ static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, 
 {
 
     sint32 baseImage_id = ebx;
-    if (vehicleEntry->draw_order >= countof(VehicleBoundboxes))
+    if (vehicleEntry->draw_order >= Util::CountOf(VehicleBoundboxes))
     {
         return;
     }
@@ -2334,7 +2335,7 @@ void vehicle_visual_splash_effect(paint_session * session, sint32 z, rct_vehicle
  */
 void vehicle_visual_default(paint_session * session, sint32 x, sint32 imageDirection, sint32 y, sint32 z, rct_vehicle *vehicle, const rct_ride_entry_vehicle *vehicleEntry)
 {
-    if (vehicle->vehicle_sprite_type < countof(vehicle_sprite_funcs)) {
+    if (vehicle->vehicle_sprite_type < Util::CountOf(vehicle_sprite_funcs)) {
         vehicle_sprite_funcs[vehicle->vehicle_sprite_type](session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
