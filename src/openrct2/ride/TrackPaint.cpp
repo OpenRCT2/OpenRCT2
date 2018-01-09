@@ -1,4 +1,4 @@
-#pragma region Copyright (c) 2014-2017 OpenRCT2 Developers
+#pragma region Copyright (c) 2014-2018 OpenRCT2 Developers
 /*****************************************************************************
  * OpenRCT2, an open source clone of Roller Coaster Tycoon 2.
  *
@@ -16,18 +16,18 @@
 
 #include "../config/Config.h"
 #include "../drawing/Drawing.h"
-#include "../paint/Supports.h"
 #include "../interface/Viewport.h"
-#include "../paint/Paint.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
+#include "../paint/Paint.h"
+#include "../paint/Supports.h"
+#include "../paint/tile_element/TileElement.h"
 #include "../sprites.h"
 #include "../world/Map.h"
 #include "../world/sprite.h"
-#include "ride_data.h"
 #include "TrackData.h"
+#include "ride_data.h"
 #include "track_paint.h"
-#include "../paint/tile_element/TileElement.h"
 
 /* rct2: 0x007667AC */
 static LocationXY16 loc_7667AC[] = {
@@ -588,26 +588,26 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
     sint32 imageOffset = 0;
     LocationXYZ16 offset, bounds = { 0, 0, 0 }, boundsOffset = { 0, 0, 0 };
 
-    offset = (LocationXYZ16) {0, 0, height};
+    offset = (LocationXYZ16) {0, 0, static_cast<sint16>(height)};
     switch (edge) {
         case EDGE_NE:
             bounds = (LocationXYZ16) {1, 30, heights[stationVariant][0]};
-            boundsOffset = (LocationXYZ16) {0, 1, height + 1};
+            boundsOffset = (LocationXYZ16) {0, 1, static_cast<sint16>(height + 1)};
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_SE_NW_BACK_1 : SPR_STATION_COVER_OFFSET_SE_NW_BACK_0;
             break;
         case EDGE_SE:
             bounds = (LocationXYZ16) {32, 32, 0};
-            boundsOffset = (LocationXYZ16) {0, 0, height + 1 + heights[stationVariant][0]};
+            boundsOffset = (LocationXYZ16) {0, 0, static_cast<sint16>(height + 1 + heights[stationVariant][0])};
             imageOffset = SPR_STATION_COVER_OFFSET_NE_SW_FRONT;
             break;
         case EDGE_SW:
             bounds = (LocationXYZ16) {32, 32, 0};
-            boundsOffset = (LocationXYZ16) {0, 0, height + 1 + heights[stationVariant][0]};
+            boundsOffset = (LocationXYZ16) {0, 0, static_cast<sint16>(height + 1 + heights[stationVariant][0])};
             imageOffset = SPR_STATION_COVER_OFFSET_SE_NW_FRONT;
             break;
         case EDGE_NW:
             bounds = (LocationXYZ16) {30, 1, heights[stationVariant][0]};
-            boundsOffset = (LocationXYZ16) {1, 0, height + 1};
+            boundsOffset = (LocationXYZ16) {1, 0, static_cast<sint16>(height + 1)};
             imageOffset = hasFence ? SPR_STATION_COVER_OFFSET_NE_SW_BACK_1 : SPR_STATION_COVER_OFFSET_NE_SW_BACK_0;
             break;
     }
