@@ -17,6 +17,7 @@
 #include "../core/Util.hpp"
 #include "vehicle_data.h"
 
+// clang-format off
 /** rct2: 0x0099F100 */
 static const uint8 Rotation1TimeToSpriteMap_0[] = {
     0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,   0,
@@ -919,3 +920,4 @@ const sint32 SpriteDirectionToSoundDirection[] = {
     -0x4800,    // 30
     -0x4800,    // 31
 };
+// clang-format on

@@ -25,6 +25,7 @@
 #include "Track.h"
 #include "vehicle_paint.h"
 
+// clang-format off
 // 0x0098E52C:
 const vehicle_boundbox VehicleBoundboxes[16][224] = {
     { // 0x0099123C:
@@ -889,6 +890,7 @@ const vehicle_boundbox VehicleBoundboxes[16][224] = {
     {  -6,  -6,   0, 12, 12, 31 }, {  -6,  -6,   0, 12, 12, 31 }, {  -6,  -6,   0, 12, 12, 31 }, {  -6,  -6,   0, 12, 12, 31 },
     }
 };
+// clang-format on
 
 // 6D5214
 static void vehicle_sprite_paint(paint_session * session, rct_vehicle *vehicle, sint32 ebx, sint32 ecx, sint32 z, const rct_ride_entry_vehicle *vehicleEntry)
@@ -2150,6 +2152,7 @@ static void vehicle_sprite_59(paint_session * session, rct_vehicle *vehicle, sin
 
 // 0x009A3B14:
 typedef void (*vehicle_sprite_func)(paint_session * session, rct_vehicle *vehicle, sint32 imageDirection, sint32 z, const rct_ride_entry_vehicle *vehicleEntry);
+// clang-format off
 static const vehicle_sprite_func vehicle_sprite_funcs[] = {
     vehicle_sprite_0,
     vehicle_sprite_1,
@@ -2212,6 +2215,7 @@ static const vehicle_sprite_func vehicle_sprite_funcs[] = {
     vehicle_sprite_58,
     vehicle_sprite_59,
 };
+// clang-format on
 
 /**
  *
