@@ -34,7 +34,7 @@
 #include "../ParkImporter.h"
 #include "../peep/Staff.h"
 #include "../platform/platform.h"
-#include "../rct1.h"
+#include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"

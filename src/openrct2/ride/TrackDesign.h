@@ -19,8 +19,8 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "../rct12.h"
-#include "../rct2.h"
+#include "../rct12/RCT12.h"
+#include "../rct2/RCT2.h"
 #include "../world/Map.h"
 #include "Vehicle.h"
 

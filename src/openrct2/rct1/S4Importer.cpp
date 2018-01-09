@@ -47,7 +47,7 @@
 #include "../object/ObjectManager.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../rct1.h"
+#include "RCT1.h"
 #include "../ride/ride_data.h"
 #include "../ride/Track.h"
 #include "../util/SawyerCoding.h"

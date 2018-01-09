@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../core/Math.hpp"
-#include "../rct12.h"
+#include "../rct12/RCT12.h"
 #include "../util/Util.h"
 #include "../world/sprite.h"
 #include "CableLift.h"

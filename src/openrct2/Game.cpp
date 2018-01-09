@@ -40,7 +40,7 @@
 #include "peep/Peep.h"
 #include "peep/Staff.h"
 #include "platform/platform.h"
-#include "rct1.h"
+#include "rct1/RCT1.h"
 #include "ride/Ride.h"
 #include "ride/ride_ratings.h"
 #include "ride/Track.h"

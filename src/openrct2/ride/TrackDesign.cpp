@@ -29,7 +29,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../rct1.h"
+#include "../rct1/RCT1.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/footpath.h"

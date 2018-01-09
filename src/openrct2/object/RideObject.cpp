@@ -24,7 +24,7 @@
 
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
-#include "../rct2.h"
+#include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 

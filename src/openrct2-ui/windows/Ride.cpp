@@ -37,7 +37,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/peep/Staff.h>
-#include <openrct2/rct1.h>
+#include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideGroupManager.h>
 #include <openrct2/ride/ride_data.h>
 #include <openrct2/ride/Track.h>

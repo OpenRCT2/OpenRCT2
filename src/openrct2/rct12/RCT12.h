@@ -18,7 +18,7 @@
 
 // Structures shared between both RCT1 and RCT2.
 
-#include "common.h"
+#include "../common.h"
 
 #define RCT12_MAX_RIDES_IN_PARK             255
 #define RCT12_MAX_AWARDS                    4
