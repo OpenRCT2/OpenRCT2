@@ -24,9 +24,9 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 #include "JuniorRollerCoaster.h"
 
 enum

@@ -26,8 +26,8 @@
 #include "../world/Map.h"
 #include "../world/sprite.h"
 #include "TrackData.h"
-#include "ride_data.h"
-#include "track_paint.h"
+#include "RideData.h"
+#include "TrackPaint.h"
 
 // clang-format off
 /* rct2: 0x007667AC */

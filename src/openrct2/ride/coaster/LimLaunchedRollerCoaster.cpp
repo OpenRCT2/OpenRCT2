@@ -22,9 +22,9 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void lim_launched_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,

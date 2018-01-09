@@ -19,7 +19,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x008A2ABC */
 static void paint_enterprise_structure(paint_session * session, Ride * ride, sint8 xOffset, sint8 yOffset, uint16 height,

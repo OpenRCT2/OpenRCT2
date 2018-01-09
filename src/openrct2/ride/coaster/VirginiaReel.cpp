@@ -20,8 +20,8 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 // 0x009927E6:
 static const vehicle_boundbox _virginiaReelBoundbox[] = {

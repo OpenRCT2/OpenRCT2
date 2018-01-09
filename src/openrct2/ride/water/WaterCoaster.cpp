@@ -17,7 +17,7 @@
 #include "../../common.h"
 #include "../coaster/JuniorRollerCoaster.h"
 #include "../Track.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 static void water_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
                                 rct_tile_element * tileElement)

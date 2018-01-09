@@ -51,7 +51,7 @@
 #include "CableLift.h"
 #include "music_list.h"
 #include "Ride.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "RideGroupManager.h"
 #include "Station.h"
 #include "Track.h"

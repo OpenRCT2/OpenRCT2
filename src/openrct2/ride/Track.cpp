@@ -32,7 +32,7 @@
 #include "../world/Park.h"
 #include "../world/scenery.h"
 #include "Ride.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "ride_ratings.h"
 #include "RideGroupManager.h"
 #include "Station.h"

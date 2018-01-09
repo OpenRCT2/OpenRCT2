@@ -30,7 +30,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideGroupManager.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>

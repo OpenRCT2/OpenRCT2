@@ -20,10 +20,10 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {

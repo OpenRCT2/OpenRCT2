@@ -23,7 +23,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Research.h"
 #include "Ride.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
 

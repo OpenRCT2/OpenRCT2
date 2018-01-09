@@ -17,7 +17,7 @@
 #include "../core/Util.hpp"
 #include "Track.h"
 #include "TrackData.h"
-#include "track_paint.h"
+#include "TrackPaint.h"
 
 const rct_track_coordinates FlatTrackCoordinates[] = {
     {    0,    0,    0,    0,    0,    0 },

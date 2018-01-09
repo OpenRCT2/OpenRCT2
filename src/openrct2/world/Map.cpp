@@ -28,7 +28,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../OpenRCT2.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"

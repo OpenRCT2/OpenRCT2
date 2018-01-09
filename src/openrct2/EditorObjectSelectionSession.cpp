@@ -23,7 +23,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "OpenRCT2.h"
-#include "ride/ride_data.h"
+#include "ride/RideData.h"
 #include "windows/Intent.h"
 #include "windows/_legacy.h"
 #include "world/footpath.h"

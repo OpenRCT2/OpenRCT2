@@ -20,10 +20,10 @@
 #include "../drawing/LightFX.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
-#include "../ride/ride_data.h"
+#include "../ride/RideData.h"
 #include "../world/sprite.h"
 #include "Track.h"
-#include "vehicle_paint.h"
+#include "VehiclePaint.h"
 
 // clang-format off
 // 0x0098E52C:

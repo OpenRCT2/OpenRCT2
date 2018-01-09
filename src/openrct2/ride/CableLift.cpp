@@ -21,8 +21,8 @@
 #include "CableLift.h"
 #include "Ride.h"
 #include "Track.h"
-#include "ride_data.h"
-#include "vehicle_data.h"
+#include "RideData.h"
+#include "VehicleData.h"
 
 static void cable_lift_update_moving_to_end_of_station(rct_vehicle * vehicle);
 static void cable_lift_update_waiting_to_depart(rct_vehicle * vehicle);

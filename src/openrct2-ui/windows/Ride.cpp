@@ -39,7 +39,7 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideGroupManager.h>
-#include <openrct2/ride/ride_data.h>
+#include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
 #include <openrct2/sprites.h>

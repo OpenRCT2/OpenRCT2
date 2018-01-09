@@ -29,7 +29,7 @@
 #include "../world/scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Wall.h"
-#include "ride_data.h"
+#include "RideData.h"
 #include "Track.h"
 #include "TrackData.h"
 #include "TrackDesign.h"

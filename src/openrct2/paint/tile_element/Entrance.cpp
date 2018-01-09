@@ -18,7 +18,7 @@
 #include "../../Game.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
-#include "../../ride/ride_data.h"
+#include "../../ride/RideData.h"
 #include "../../world/Entrance.h"
 #include "../../world/footpath.h"
 #include "../Paint.h"

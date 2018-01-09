@@ -22,8 +22,8 @@
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 #ifndef NO_VEHICLES
 // 0x0099279E:

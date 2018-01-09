@@ -22,9 +22,9 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 /** rct2: 0x0077839C */
 static void side_friction_rc_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,

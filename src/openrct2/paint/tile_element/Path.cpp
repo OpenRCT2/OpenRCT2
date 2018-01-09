@@ -21,7 +21,7 @@
 #include "../../object/ObjectList.h"
 #include "../../peep/Staff.h"
 #include "../../ride/Track.h"
-#include "../../ride/track_paint.h"
+#include "../../ride/TrackPaint.h"
 #include "../../world/footpath.h"
 #include "../../world/scenery.h"
 #include "../Paint.h"

@@ -21,7 +21,7 @@
     #include <openrct2/localisation/Localisation.h>
     #include <openrct2/paint/tile_element/TileElement.h>
     #include <openrct2/paint/Paint.h>
-    #include <openrct2/ride/track_paint.h>
+    #include <openrct2/ride/TrackPaint.h>
 
 enum WINDOW_DEBUG_PAINT_WIDGET_IDX
 {

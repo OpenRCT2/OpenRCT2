@@ -19,8 +19,8 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../Track.h"
-#include "../track_paint.h"
-#include "../vehicle_paint.h"
+#include "../TrackPaint.h"
+#include "../VehiclePaint.h"
 
 enum
 {

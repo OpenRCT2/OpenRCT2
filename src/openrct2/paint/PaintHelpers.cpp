@@ -15,7 +15,7 @@
 #pragma endregion
 
 #include "../interface/Viewport.h"
-#include "../ride/track_paint.h"
+#include "../ride/TrackPaint.h"
 #include "Paint.h"
 
 paint_struct * sub_98196C_rotated(

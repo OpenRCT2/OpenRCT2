@@ -31,7 +31,7 @@
 #include "../sprites.h"
 #include "Ride.h"
 #include "Track.h"
-#include "ride_data.h"
+#include "RideData.h"
 
 // clang-format off
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {

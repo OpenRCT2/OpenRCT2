@@ -22,9 +22,9 @@
 #include "../../sprites.h"
 #include "../../world/Map.h"
 #include "../../world/sprite.h"
-#include "../ride_data.h"
+#include "../RideData.h"
 #include "../TrackData.h"
-#include "../track_paint.h"
+#include "../TrackPaint.h"
 
 #define LOOPING_RC_BOOSTER_NE_SW (SPR_CSG_BEGIN + 55679)
 #define LOOPING_RC_BOOSTER_NW_SE (SPR_CSG_BEGIN + 55680)

@@ -17,7 +17,7 @@
 #ifndef _TRACK_PAINT_H
 #define _TRACK_PAINT_H
 
-#include "ride_data.h"
+#include "RideData.h"
 #include "../common.h"
 #include "../paint/tile_element/TileElement.h"
 #include "../paint/Paint.h"
