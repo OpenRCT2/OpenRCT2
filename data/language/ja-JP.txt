@@ -3333,7 +3333,7 @@ STR_3322    :{WINDOW_COLOUR_2}目標: {BLACK}{STRINGID}
 STR_3323    :Missing object data, ID: 
 STR_3324    :必要のアドオンキット: {STRINGID}
 STR_3325    :アドオンキットが必要
-STR_3326    :{WINDOW_COLOUR_2}(no image)
+STR_3326    :{WINDOW_COLOUR_2}(プレービューがない)
 STR_3327    :Starting positions for people not set
 STR_3328    :次のステップに進めません…
 STR_3329    :Park entrance not yet built
@@ -3353,19 +3353,19 @@ STR_3342    :シナリオエディター
 STR_3343    :ゲームセーブをシナリオに変換する
 STR_3344    :トラックデザイナー
 STR_3345    :トラックデザインマネージャー
-STR_3346    :Can't save track design...
-STR_3347    :Ride is too large, contains too many elements, or scenery is too spread out
-STR_3348    :Rename
-STR_3349    :Delete
-STR_3350    :Track design name
-STR_3351    :Enter new name for this track design:
-STR_3352    :Can't rename track design...
+STR_3346    :トラックデサインをセーブできません…
+STR_3347    :ライドが大きすぎるか、要素が多すぎるか、景色物が多すぎるか
+STR_3348    :名前を変更
+STR_3349    :削除
+STR_3350    :トラックデサイン名
+STR_3351    :トラックデサイン名を入力して下さい。
+STR_3352    :トラックデサイン名の変更はできません。
 STR_3353    :New name contains invalid characters
 STR_3354    :Another file exists with this name, or file is write-protected
 STR_3355    :File is write-protected or locked
-STR_3356    :Delete File
-STR_3357    :{WINDOW_COLOUR_2}Are you sure you want to permanently delete {STRING} ?
-STR_3358    :Can't delete track design...
+STR_3356    :ファイルの削除
+STR_3357    :{WINDOW_COLOUR_2}「{STRING}」を削除してほしいですか？
+STR_3358    :トラックデサインの削除はできません。
 STR_3359    :{BLACK}No track designs of this type
 STR_3360    :ご注意！
 STR_3361    :Too many track designs of this type - Some will not be listed.
@@ -3383,8 +3383,8 @@ STR_3372    :{BLACK}= ATM
 STR_3373    :{BLACK}= トイレ
 STR_3374    :Warning: Too many objects selected!
 STR_3375    :Not all objects in this scenery group could be selected
-STR_3376    :Install new
-STR_3377    :{SMALLFONT}{BLACK}Install a new track design file
+STR_3376    :インストール
+STR_3377    :{SMALLFONT}{BLACK}新しいトラックデサインをインストールため
 STR_3378    :インストール
 STR_3379    :キャンセル
 STR_3380    :Unable to install this track design...
@@ -3484,9 +3484,9 @@ STR_5144    :高速スピード
 STR_5145    :ターボスピード
 STR_5146    :ハイパースピード
 STR_5147    :カンニング
-STR_5148    :{SMALLFONT}{BLACK}Change the game speed
-STR_5149    :{SMALLFONT}{BLACK}Show cheat options
-STR_5150    :Enable debugging tools
+STR_5148    :{SMALLFONT}{BLACK}ゲーム速度の変更
+STR_5149    :{SMALLFONT}{BLACK}カンニングの表示
+STR_5150    :デバッグツールを有効にする
 STR_5151    :,
 STR_5152    :.
 STR_5153    :テーマを変更する
@@ -3560,10 +3560,10 @@ STR_5220    :ショートカット
 STR_5221    :ショートカットをセットする
 STR_5222    :ロード／セーブ
 STR_5223    :セーブのプロンプト
-STR_5224    :Demolish Rideのプロンプト
-STR_5225    :Fire Staffのプロンプト
-STR_5226    :Track Deleteのプロンプト
-STR_5227    :Save Overwriteのプロンプト
+STR_5224    :ライド破壊のプロンプト
+STR_5225    :スタフ解雇のプロンプト
+STR_5226    :トラック削除のプロンプト
+STR_5227    :セーブ保存のプロンプト
 STR_5228    :{SMALLFONT}{BLACK}メインUI
 STR_5229    :{SMALLFONT}{BLACK}パーク
 STR_5230    :{SMALLFONT}{BLACK}ツール
@@ -3590,12 +3590,12 @@ STR_5250    :タイトルの終了ボタン
 STR_5251    :タイトルの設定ボタン
 STR_5252    :タイトルのシナリオ選択
 STR_5253    :パーク・インフォメーション
-STR_5254    :Create
-STR_5255    :{SMALLFONT}{BLACK}Create a new title sequence from scratch
-STR_5256    :Create a new theme to make changes to
-STR_5257    :{SMALLFONT}{BLACK}Create a new theme based on the current one
-STR_5258    :{SMALLFONT}{BLACK}Delete the current theme
-STR_5259    :{SMALLFONT}{BLACK}Rename the current theme
+STR_5254    :新規
+STR_5255    :{SMALLFONT}{BLACK}新しいタイトルシーケンスを造るために
+STR_5256    :新しいテーマを造る
+STR_5257    :{SMALLFONT}{BLACK}いまのテーマてき新しいテーマを造る
+STR_5258    :{SMALLFONT}{BLACK}いまのテーマを削除する
+STR_5259    :{SMALLFONT}{BLACK}いまのテーマの名前を変更する
 STR_5260    :莫大スクリーンショット
 STR_5261    :フィルター
 STR_5262    :ワッキーワールド
@@ -3748,22 +3748,22 @@ STR_5408    :削除
 STR_5409    :挿入
 STR_5410    :編集
 STR_5411    :リロード
-STR_5412    :Skip to
+STR_5412    :スキップ
 STR_5413    :ロード
-STR_5414    :Load{MOVE_X}{87}Six Flags Magic Mountain.SC6
-STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
-STR_5417    :Location
-STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
+STR_5414    :ロード{MOVE_X}{87}Six Flags Magic Mountain.SC6
+STR_5415    :ロード{MOVE_X}{87}{STRING}
+STR_5416    :ロード{MOVE_X}{87}セーブ選定なし
+STR_5417    :場所
+STR_5418    :場所{MOVE_X}{87}{COMMA16}   {COMMA16}
 STR_5419    :回転
 STR_5420    :回転{MOVE_X}{87}{COMMA16}
 STR_5421    :ズーム
 STR_5422    :ズーム{MOVE_X}{87}{COMMA16}
-STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{UINT16}
-STR_5425    :Restart
-STR_5426    :End
-STR_5427    :Coordinates:
+STR_5423    :待機
+STR_5424    :待機{MOVE_X}{87}{UINT16}
+STR_5425    :再起動
+STR_5426    :お仕舞い
+STR_5427    :場所:
 STR_5428    :Anticlockwise rotations:
 STR_5429    :Zoom level:
 STR_5430    :Milliseconds to wait:
@@ -4480,11 +4480,34 @@ STR_6170    :微調整
 STR_6171    :検索
 STR_6172    :{SMALLFONT}{BLACK}検索
 STR_6173    :検索の名を入力して下さい。
+STR_6174    :セーブのロード
+STR_6175    :シナリオのロード
+STR_6176    :シナリオを選ぶ:
+STR_6177    :ロード{MOVE_X}{87}シナリオ選択なし
+STR_6178    :ロード{MOVE_X}{87}{RED}シナリオがない
+STR_6179    :選ぶ
+STR_6180    :シナリオ選択なし
+STR_6181    :{RED}シナリオがない
+STR_6182    :Follow{MOVE_X}{87}{STRING}
+STR_6183    :Follow{MOVE_X}{87}スプライト選択なし
+STR_6184    :スプライトのフォロー
+STR_6185    :スプライトを選ぶ
+STR_6186    :スプライト選択なし
+STR_6187    :{MEDIUMFONT}{OUTLINE}{WINDOW_COLOUR_2}{STRING}
+STR_6188    :嘔吐物
+STR_6189    :鴨
+STR_6190    :{SMALLFONT}{BLACK}タイトルスクリーンからスプライトに選択はでしかせん。
 STR_6191    :面
 STR_6192    :壁
 STR_6193    :{COMMA16}人の来客
 STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16}人の来客
 STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16}人の来客
+STR_6196    :{BLACK}年:
+STR_6197    :{BLACK}月:
+STR_6198    :{BLACK}日:
+STR_6199    :日付に設定
+STR_6200    :日付のリセット
+STR_6201    :{MONTH}
 
 
 #####################

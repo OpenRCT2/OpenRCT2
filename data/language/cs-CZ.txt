@@ -4502,6 +4502,12 @@ STR_6192    :Stěna
 STR_6193    :{COMMA16} návštěvník
 STR_6194    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA16} návštěvník
 STR_6195    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA16} návštěvník
+STR_6196    :{BLACK}Rok:
+STR_6197    :{BLACK}Měsíc:
+STR_6198    :{BLACK}Den:
+STR_6199    :Nastavit datum
+STR_6200    :Resetovat datum
+STR_6201    :{MONTH}
 
 ###############################################################################
 ## RCT2 Objects
