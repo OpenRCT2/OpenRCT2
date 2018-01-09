@@ -1416,8 +1416,8 @@ private:
         dst->nausea_target = src->nausea_target;
         dst->hunger = src->hunger;
         dst->thirst = src->thirst;
-        dst->bathroom = src->bathroom;
-        dst->var_41 = src->var_41;
+        dst->toilet = src->toilet;
+        dst->mass = src->mass;
 
         dst->litter_count = src->litter_count;
         dst->disgusting_count = src->disgusting_count;
@@ -1456,6 +1456,10 @@ private:
 
         dst->voucher_arguments = src->voucher_arguments;
         dst->voucher_type = src->voucher_type;
+
+        dst->surroundings_thought_timeout = src->surroundings_thought_timeout;
+        dst->angriness = src->angriness;
+        dst->var_F4 = src->var_F4;
 
         for (size_t i = 0; i < 32; i++)
         {

@@ -711,7 +711,7 @@ static void peep_update_hunger(rct_peep * peep)
         peep->hunger -= 2;
 
         peep->energy_target = Math::Min(peep->energy_target + 2, PEEP_MAX_ENERGY_TARGET);
-        peep->bathroom      = Math::Min(peep->bathroom + 1, 255);
+        peep->toilet      = Math::Min(peep->toilet + 1, 255);
     }
 }
 
@@ -1005,8 +1005,8 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
         if (peep->peep_flags & PEEP_FLAGS_BATHROOM)
         {
-            if (peep->bathroom <= 180)
-                peep->bathroom += 50;
+            if (peep->toilet <= 180)
+                peep->toilet += 50;
         }
 
         if (peep->peep_flags & PEEP_FLAGS_HAPPINESS)
@@ -1026,10 +1026,10 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
 
         if (peep->state == PEEP_STATE_WALKING || peep->state == PEEP_STATE_SITTING)
         {
-            peep->var_F2++;
-            if (peep->var_F2 >= 18)
+            peep->surroundings_thought_timeout++;
+            if (peep->surroundings_thought_timeout >= 18)
             {
-                peep->var_F2 = 0;
+                peep->surroundings_thought_timeout = 0;
                 if (peep->x != LOCATION_NULL)
                 {
 
@@ -1132,7 +1132,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_THIRSTY;
                     }
 
-                    if (peep->bathroom >= 160)
+                    if (peep->toilet >= 160)
                     {
                         possible_thoughts[num_thoughts++] = PEEP_THOUGHT_TYPE_BATHROOM;
                     }
@@ -1209,7 +1209,7 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             if (peep->thirst >= 5)
             {
                 peep->thirst -= 4;
-                peep->bathroom = Math::Min(255, peep->bathroom + 3);
+                peep->toilet = Math::Min(255, peep->toilet + 3);
             }
 
             if (peep->nausea_target >= 50)
@@ -1302,9 +1302,9 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
             peep->thirst = Math::Max(peep->thirst - 1, 0);
         }
 
-        if (peep->bathroom >= 195)
+        if (peep->toilet >= 195)
         {
-            peep->bathroom--;
+            peep->toilet--;
         }
 
         if (peep->state == PEEP_STATE_WALKING && peep->nausea_target >= 128)
@@ -1343,9 +1343,9 @@ static void sub_68F41A(rct_peep * peep, sint32 index)
         }
         else
         {
-            peep->hunger   = Math::Min(peep->hunger + 7, 255);
-            peep->thirst   = Math::Max(peep->thirst - 3, 0);
-            peep->bathroom = Math::Min(peep->bathroom + 2, 255);
+            peep->hunger = Math::Min(peep->hunger + 7, 255);
+            peep->thirst = Math::Max(peep->thirst - 3, 0);
+            peep->toilet = Math::Min(peep->toilet + 2, 255);
         }
 
         if (peep->var_42 == 0)
@@ -1972,7 +1972,7 @@ void peep_update_sprite_type(rct_peep * peep)
         return;
     }
 
-    if (peep->bathroom > 220)
+    if (peep->toilet > 220)
     {
         set_sprite_type(peep, PEEP_SPRITE_TYPE_REQUIRE_BATHROOM);
         return;
@@ -3361,7 +3361,7 @@ static void peep_update_ride_sub_state_5(rct_peep * peep)
         vehicle->num_peeps++;
         ride->cur_num_customers++;
 
-        vehicle->mass += seated_peep->var_41;
+        vehicle->mass += seated_peep->mass;
         invalidate_sprite_2((rct_sprite *)seated_peep);
         sprite_move(LOCATION_NULL, 0, 0, (rct_sprite *)seated_peep);
 
@@ -3376,7 +3376,7 @@ static void peep_update_ride_sub_state_5(rct_peep * peep)
     vehicle->num_peeps++;
     ride->cur_num_customers++;
 
-    vehicle->mass += peep->var_41;
+    vehicle->mass += peep->mass;
     invalidate_sprite_2((rct_sprite *)vehicle);
 
     invalidate_sprite_2((rct_sprite *)peep);
@@ -3422,7 +3422,7 @@ static void peep_update_ride_sub_state_7(rct_peep * peep)
     peep->action_sprite_image_offset = 0;
 
     vehicle->num_peeps--;
-    vehicle->mass -= peep->var_41;
+    vehicle->mass -= peep->mass;
     invalidate_sprite_2((rct_sprite *)vehicle);
 
     if (ride_station >= MAX_STATIONS)
@@ -4457,9 +4457,9 @@ static void peep_update_ride_sub_state_20(rct_peep * peep)
         return;
     }
 
-    if (peep->bathroom != 0)
+    if (peep->toilet != 0)
     {
-        peep->bathroom--;
+        peep->toilet--;
         return;
     }
 
@@ -6539,15 +6539,15 @@ static void peep_update_heading_to_inspect(rct_peep * peep)
 
     if (peep->sub_state == 0)
     {
-        peep->var_74 = 0;
+        peep->mechanic_time_since_call = 0;
         peep_reset_pathfind_goal(peep);
         peep->sub_state = 2;
     }
 
     if (peep->sub_state <= 3)
     {
-        peep->var_74++;
-        if (peep->var_74 > 2500)
+        peep->mechanic_time_since_call++;
+        if (peep->mechanic_time_since_call > 2500)
         {
             if (ride->lifecycle_flags & RIDE_LIFECYCLE_DUE_INSPECTION && ride->mechanic_status == RIDE_MECHANIC_STATUS_HEADING)
             {
@@ -6664,7 +6664,7 @@ static void peep_update_answering(rct_peep * peep)
         {
             peep->sub_state = 2;
             peep_window_state_update(peep);
-            peep->var_74 = 0;
+            peep->mechanic_time_since_call = 0;
             peep_reset_pathfind_goal(peep);
             return;
         }
@@ -6674,8 +6674,8 @@ static void peep_update_answering(rct_peep * peep)
     }
     else if (peep->sub_state <= 3)
     {
-        peep->var_74++;
-        if (peep->var_74 > 2500)
+        peep->mechanic_time_since_call++;
+        if (peep->mechanic_time_since_call > 2500)
         {
             ride->mechanic_status = RIDE_MECHANIC_STATUS_CALLING;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAINTENANCE;
@@ -7230,7 +7230,7 @@ static void peep_update_walking(rct_peep * peep)
     if (peep->happiness < 120)
         return;
 
-    if (peep->bathroom > 140)
+    if (peep->toilet > 140)
         return;
 
     uint16 chance = peep_has_food(peep) ? 13107 : 2849;
@@ -7943,7 +7943,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     sprite_move(x, y, z, (rct_sprite *)peep);
     invalidate_sprite_2((rct_sprite *)peep);
 
-    peep->var_41                  = (peep_rand() & 0x1F) + 45;
+    peep->mass                  = (peep_rand() & 0x1F) + 45;
     peep->var_C4                  = 0;
     peep->interaction_ride_index  = 0xFF;
     peep->type                    = PEEP_TYPE_GUEST;
@@ -8013,7 +8013,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     /* Adjust by the delta, clamping at min=0 and max=255. */
     peep->thirst = Math::Clamp(0, peep->thirst + thirst_delta, 0xFF);
 
-    peep->bathroom = 0;
+    peep->toilet = 0;
     peep->var_42   = 0;
     memset(&peep->rides_been_on, 0, 32);
 
@@ -8062,7 +8062,7 @@ rct_peep * peep_generate(sint32 x, sint32 y, sint32 z)
     peep->no_of_food               = 0;
     peep->no_of_drinks             = 0;
     peep->no_of_souvenirs          = 0;
-    peep->var_F2                   = 0;
+    peep->surroundings_thought_timeout = 0;
     peep->angriness                = 0;
     peep->var_F4                   = 0;
 
@@ -13411,7 +13411,7 @@ static bool peep_should_go_to_shop(rct_peep * peep, sint32 rideIndex, bool peepA
 
     if (ride->type == RIDE_TYPE_TOILETS)
     {
-        if (peep->bathroom < 70)
+        if (peep->toilet < 70)
         {
             peep_chose_not_to_go_on_ride(peep, rideIndex, peepAtShop, true);
             return false;
@@ -13419,7 +13419,7 @@ static bool peep_should_go_to_shop(rct_peep * peep, sint32 rideIndex, bool peepA
 
         // The amount that peeps are willing to pay to use the Toilets scales with their bathroom stat.
         // It effectively has a minimum of $0.10 (due to the check above) and a maximum of $0.60.
-        if (ride->price * 40 > peep->bathroom)
+        if (ride->price * 40 > peep->toilet)
         {
             if (peepAtShop)
             {
