@@ -346,10 +346,6 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem * item) const
     }
 
     uint8 flags = 0;
-    if (_legacyType.flags & RIDE_ENTRY_FLAG_SEPARATE_RIDE)
-    {
-        flags |= ORI_RIDE_FLAG_SEPARATE;
-    }
     item->RideFlags = flags;
 
     // Find the first non-null ride type, to be used when checking the ride group
