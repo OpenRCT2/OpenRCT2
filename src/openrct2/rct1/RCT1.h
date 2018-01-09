@@ -571,9 +571,9 @@ assert_struct_size(rct1_sprite, 0x100);
 typedef struct rct1_research_item {
     uint8 item;
     uint8 related_ride;
-    uint8 category;
+    uint8 type;
     uint8 flags;
-    uint8 expenditure_area;
+    uint8 category;
 } rct1_research_item;
 assert_struct_size(rct1_research_item, 5);
 
@@ -636,13 +636,13 @@ typedef struct rct1_s4 {
     uint8 research_progress;
     uint8 last_research_item;
     uint8 last_research_ride;
-    uint8 last_research_category;
-    uint8 last_research_flag;
+    uint8 last_research_type;
+    uint8 last_research_flags;
     rct1_research_item research_items[200];
     uint8 next_research_item;
     uint8 next_research_ride;
-    uint8 next_research_category;
-    uint8 next_research_flag;
+    uint8 next_research_type;
+    uint8 next_research_flags;
     uint16 unk_19953C;
     uint32 unk_19953E;
     uint16 cheat_detection_land_owned;
@@ -1096,19 +1096,19 @@ enum {
 };
 
 enum {
-    RCT1_RESEARCH_CATEGORY_THEME,
-    RCT1_RESEARCH_CATEGORY_RIDE,
-    RCT1_RESEARCH_CATEGORY_VEHICLE,
-    RCT1_RESEARCH_CATEGORY_SPECIAL,
+    RCT1_RESEARCH_TYPE_THEME,
+    RCT1_RESEARCH_TYPE_RIDE,
+    RCT1_RESEARCH_TYPE_VEHICLE,
+    RCT1_RESEARCH_TYPE_SPECIAL,
 };
 
 enum {
-    RCT1_RESEARCH_EXPENDITURE_ROLLERCOASTERS         = 1 << 0,
-    RCT1_RESEARCH_EXPENDITURE_THRILL_RIDES           = 1 << 1,
-    RCT1_RESEARCH_EXPENDITURE_GENTLE_TRANSPORT_RIDES = 1 << 2,
-    RCT1_RESEARCH_EXPENDITURE_SHOPS                  = 1 << 3,
-    RCT1_RESEARCH_EXPENDITURE_SCENERY_THEMEING       = 1 << 4,
-    RCT1_RESEARCH_EXPENDITURE_RIDE_IMPROVEMENTS      = 1 << 5,
+    RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS         = 1 << 0,
+    RCT1_RESEARCH_CATEGORY_THRILL_RIDES           = 1 << 1,
+    RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES = 1 << 2,
+    RCT1_RESEARCH_CATEGORY_SHOPS                  = 1 << 3,
+    RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING       = 1 << 4,
+    RCT1_RESEARCH_CATEGORY_RIDE_IMPROVEMENTS      = 1 << 5,
 };
 
 // Unconfirmed special track elements for research

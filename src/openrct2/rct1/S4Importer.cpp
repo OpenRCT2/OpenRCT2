@@ -406,11 +406,11 @@ private:
                 }
             }
 
-            switch (researchItem->category) {
-            case RCT1_RESEARCH_CATEGORY_THEME:
+            switch (researchItem->type) {
+            case RCT1_RESEARCH_TYPE_THEME:
                 AddEntriesForSceneryTheme(researchItem->item);
                 break;
-            case RCT1_RESEARCH_CATEGORY_RIDE:
+            case RCT1_RESEARCH_TYPE_RIDE:
             {
                 uint8 rideType = researchItem->item;
 
@@ -432,7 +432,7 @@ private:
                         }
                     }
 
-                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+                    if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE &&
                         researchItem2->related_ride == rideType)
                     {
                         AddEntryForVehicleType(rideType, researchItem2->item);
@@ -1949,8 +1949,8 @@ private:
                 }
             }
 
-            switch (researchItem->category) {
-            case RCT1_RESEARCH_CATEGORY_THEME:
+            switch (researchItem->type) {
+            case RCT1_RESEARCH_TYPE_THEME:
             {
                 uint8 rct1SceneryTheme = researchItem->item;
                 uint8 sceneryGroupEntryIndex = _sceneryThemeTypeToEntryMap[rct1SceneryTheme];
@@ -1961,7 +1961,7 @@ private:
                 }
                 break;
             }
-            case RCT1_RESEARCH_CATEGORY_RIDE:
+            case RCT1_RESEARCH_TYPE_RIDE:
             {
                 uint8 rct1RideType = researchItem->item;
                 _researchRideTypeUsed[rct1RideType] = true;
@@ -1978,7 +1978,7 @@ private:
                         continue;
                     }
 
-                    if (researchItem2->category == RCT1_RESEARCH_CATEGORY_VEHICLE &&
+                    if (researchItem2->type == RCT1_RESEARCH_TYPE_VEHICLE &&
                         researchItem2->related_ride == rct1RideType)
                     {
                         // Only add the vehicles that were listed before this ride, otherwise we might
@@ -2006,7 +2006,7 @@ private:
 
                 break;
             }
-            case RCT1_RESEARCH_CATEGORY_VEHICLE:
+            case RCT1_RESEARCH_TYPE_VEHICLE:
                 // Only add vehicle if the related ride has been seen, this to make sure that vehicles
                 // are researched only after the ride has been researched
                 if (_researchRideTypeUsed[researchItem->related_ride])
@@ -2015,7 +2015,7 @@ private:
                 }
 
                 break;
-            case RCT1_RESEARCH_CATEGORY_SPECIAL:
+            case RCT1_RESEARCH_TYPE_SPECIAL:
                 // Not supported
                 break;
             }
@@ -2025,25 +2025,25 @@ private:
 
         // Research funding / priority
         uint8 activeResearchTypes = 0;
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_ROLLERCOASTERS)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_ROLLERCOASTER);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_THRILL_RIDES)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_THRILL_RIDES)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_THRILL);
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_WATER);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_GENTLE_TRANSPORT_RIDES)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_GENTLE_TRANSPORT_RIDES)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_GENTLE);
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_TRANSPORT);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SHOPS)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SHOPS)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_SHOP);
         }
-        if (_s4.research_priority & RCT1_RESEARCH_EXPENDITURE_SCENERY_THEMEING)
+        if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_SCENERY_THEMEING)
         {
             activeResearchTypes |= (1 << RESEARCH_CATEGORY_SCENERYSET);
         }
@@ -2054,7 +2054,7 @@ private:
         gResearchProgress = _s4.research_progress;
         // gResearchProgressStage =
         gResearchNextItem.rawValue = _s4.next_research_item;
-        gResearchNextCategory = _s4.next_research_category;
+        gResearchNextCategory = _s4.next_research_type;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
 
