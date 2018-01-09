@@ -29,6 +29,7 @@
 #include "ride_data.h"
 #include "track_paint.h"
 
+// clang-format off
 /* rct2: 0x007667AC */
 static LocationXY16 loc_7667AC[] = {
     {.x = -1, .y = 0},
@@ -200,6 +201,7 @@ enum
     SPR_STATION_COVER_OFFSET_SE_NW_FRONT,
     SPR_STATION_COVER_OFFSET_TALL
 };
+// clang-format on
 
 bool gUseOriginalRidePaint = false;
 
@@ -732,6 +734,7 @@ void track_paint_util_draw_station_metal_supports_2(paint_session * session, uin
     }
 }
 
+// clang-format off
 const LocationXY16 defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
     {
         {32, 20},
@@ -777,6 +780,7 @@ const LocationXYZ16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
         {0, 6},
     }
 };
+// clang-format on
 
 static const sint8 right_helix_up_small_quarter_tiles_sprite_map[] = {0, -1, 1, 2};
 
@@ -805,6 +809,7 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * s
     }
 }
 
+// clang-format off
 const LocationXYZ16 defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
         {0, 6},
@@ -866,6 +871,7 @@ const LocationXY16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
         {32, 20},
     }
 };
+// clang-format on
 
 static const sint8 right_helix_up_large_quarter_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5][2], const LocationXY16 offsets[4][5][2], const LocationXY16 boundsLengths[4][5][2], const LocationXYZ16 boundsOffsets[4][5][2], uint8 rotation)
@@ -893,6 +899,7 @@ void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * s
     }
 }
 
+// clang-format off
 const LocationXY16 defaultLeftEighthToDiagBoundLengths[4][4] = {
     {
         {32, 20},
@@ -1027,6 +1034,7 @@ const sint8 defaultEighthToDiagThickness[4][4] = {
         1,
     },
 };
+// clang-format on
 
 const uint8 mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
 
@@ -1084,6 +1092,7 @@ void track_paint_util_diag_tiles_paint(paint_session * session, sint8 thickness,
 
 const uint8 mapLeftQuarterTurn5TilesToRightQuarterTurn5Tiles[] = {6, 4, 5, 3, 1, 2, 0};
 
+// clang-format off
 const LocationXY16 defaultRightQuarterTurn5TilesOffsets[4][5] = {
     {
         {0, 6},
@@ -1176,6 +1185,7 @@ const LocationXY16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
         {32, 20},
     }
 };
+// clang-format on
 
 static const sint8 right_quarter_turn_5_tiles_sprite_map[] = {0, -1, 1, 2, -1, 3, 4};
 void track_paint_util_right_quarter_turn_5_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][5], const LocationXY16 offsets[4][5], const LocationXY16 boundsLengths[4][5], const LocationXYZ16 boundsOffsets[4][5], uint8 rotation)
@@ -1258,6 +1268,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session *
 
 const uint8 mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[] = {3, 1, 2, 0};
 
+// clang-format off
 const LocationXY16 defaultRightQuarterTurn3TilesOffsets[4][3] = {
     {
         {0, 6},
@@ -1326,6 +1337,7 @@ const LocationXY16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
         {32, 20},
     }
 };
+// clang-format on
 
 static const sint8 right_quarter_turn_3_tiles_sprite_map[] = {0, -1, 1, 2};
 void track_paint_util_right_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction, uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3], const LocationXY16 offsets[4][3], const LocationXY16 boundsLengths[4][3], const LocationXYZ16 boundsOffsets[4][3], uint8 rotation)
