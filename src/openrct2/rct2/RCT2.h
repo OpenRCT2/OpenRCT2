@@ -17,10 +17,10 @@
 #ifndef _RCT2_H_
 #define _RCT2_H_
 
-#include "ride/ride_ratings.h"
-#include "ride/Vehicle.h"
-#include "common.h"
-#include "rct12.h"
+#include "../ride/ride_ratings.h"
+#include "../ride/Vehicle.h"
+#include "../common.h"
+#include "../rct12/RCT12.h"
 
 #define RCT2_MAX_STAFF                       200
 #define RCT2_MAX_BANNERS_IN_PARK             250

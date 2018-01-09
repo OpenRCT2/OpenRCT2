@@ -20,7 +20,7 @@
 #include "Tables.h"
 
 #include "../interface/Colour.h"
-#include "../rct1.h"
+#include "RCT1.h"
 #include "../ride/Ride.h"
 
 namespace RCT1

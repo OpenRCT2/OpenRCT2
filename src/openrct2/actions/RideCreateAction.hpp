@@ -25,7 +25,7 @@
 #include "../Cheats.h"
 #include "../interface/Window.h"
 #include "../world/Park.h"
-#include "../rct1.h"
+#include "../rct1/RCT1.h"
 #include "../ride/ride_data.h"
 #include "../ride/Ride.h"
 #include "../ride/Station.h"

@@ -711,6 +711,9 @@
 		4C7B53F0200143C200A52E21 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
 		4C7B53F1200143C200A52E21 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		4C7B53F2200143C200A52E21 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		4C7B54022004C57400A52E21 /* RCT1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT1.h; sourceTree = "<group>"; };
+		4C7B54032004C57B00A52E21 /* RCT12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT12.h; sourceTree = "<group>"; };
+		4C7B54042004C58200A52E21 /* RCT2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT2.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -1292,7 +1295,6 @@
 		F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S4Importer.cpp; sourceTree = "<group>"; };
 		F76C84681EC4E7CC00FA49E2 /* Tables.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = Tables.cpp; sourceTree = "<group>"; };
 		F76C84691EC4E7CC00FA49E2 /* Tables.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Tables.h; sourceTree = "<group>"; };
-		F76C846B1EC4E7CC00FA49E2 /* rct1.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct1.h; sourceTree = "<group>"; };
 		F76C846D1EC4E7CC00FA49E2 /* SawyerChunk.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerChunk.cpp; sourceTree = "<group>"; };
 		F76C846E1EC4E7CC00FA49E2 /* SawyerChunk.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerChunk.h; sourceTree = "<group>"; };
 		F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerChunkReader.cpp; sourceTree = "<group>"; };
@@ -1301,11 +1303,9 @@
 		F76C84721EC4E7CC00FA49E2 /* SawyerChunkWriter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerChunkWriter.h; sourceTree = "<group>"; };
 		F76C84731EC4E7CC00FA49E2 /* SawyerEncoding.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = SawyerEncoding.cpp; sourceTree = "<group>"; };
 		F76C84741EC4E7CC00FA49E2 /* SawyerEncoding.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SawyerEncoding.h; sourceTree = "<group>"; };
-		F76C84751EC4E7CC00FA49E2 /* rct12.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct12.h; sourceTree = "<group>"; };
 		F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Exporter.cpp; sourceTree = "<group>"; };
 		F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = S6Exporter.h; sourceTree = "<group>"; };
 		F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = S6Importer.cpp; sourceTree = "<group>"; };
-		F76C84811EC4E7CC00FA49E2 /* rct2.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = rct2.h; sourceTree = "<group>"; };
 		F76C84BC1EC4E7CC00FA49E2 /* ride_data.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_data.c; sourceTree = "<group>"; };
 		F76C84BD1EC4E7CC00FA49E2 /* ride_data.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ride_data.h; sourceTree = "<group>"; };
 		F76C84BE1EC4E7CC00FA49E2 /* ride_ratings.c */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.c; path = ride_ratings.c; sourceTree = "<group>"; };
@@ -1878,9 +1878,6 @@
 				F76C84521EC4E7CC00FA49E2 /* ParkImporter.h */,
 				F76C84641EC4E7CC00FA49E2 /* PlatformEnvironment.cpp */,
 				F76C84651EC4E7CC00FA49E2 /* PlatformEnvironment.h */,
-				F76C846B1EC4E7CC00FA49E2 /* rct1.h */,
-				F76C84751EC4E7CC00FA49E2 /* rct12.h */,
-				F76C84811EC4E7CC00FA49E2 /* rct2.h */,
 				F76C84FA1EC4E7CD00FA49E2 /* sprites.h */,
 				F76C850B1EC4E7CD00FA49E2 /* Version.cpp */,
 				F76C850C1EC4E7CD00FA49E2 /* Version.h */,
@@ -2244,6 +2241,7 @@
 		F76C84661EC4E7CC00FA49E2 /* rct1 */ = {
 			isa = PBXGroup;
 			children = (
+				4C7B54022004C57400A52E21 /* RCT1.h */,
 				F76C84671EC4E7CC00FA49E2 /* S4Importer.cpp */,
 				F76C84681EC4E7CC00FA49E2 /* Tables.cpp */,
 				F76C84691EC4E7CC00FA49E2 /* Tables.h */,
@@ -2254,6 +2252,7 @@
 		F76C846C1EC4E7CC00FA49E2 /* rct12 */ = {
 			isa = PBXGroup;
 			children = (
+				4C7B54032004C57B00A52E21 /* RCT12.h */,
 				F76C846D1EC4E7CC00FA49E2 /* SawyerChunk.cpp */,
 				F76C846E1EC4E7CC00FA49E2 /* SawyerChunk.h */,
 				F76C846F1EC4E7CC00FA49E2 /* SawyerChunkReader.cpp */,
@@ -2269,6 +2268,7 @@
 		F76C84761EC4E7CC00FA49E2 /* rct2 */ = {
 			isa = PBXGroup;
 			children = (
+				4C7B54042004C58200A52E21 /* RCT2.h */,
 				F76C847D1EC4E7CC00FA49E2 /* S6Exporter.cpp */,
 				F76C847E1EC4E7CC00FA49E2 /* S6Exporter.h */,
 				F76C847F1EC4E7CC00FA49E2 /* S6Importer.cpp */,

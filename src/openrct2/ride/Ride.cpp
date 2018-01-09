@@ -37,7 +37,7 @@
 #include "../OpenRCT2.h"
 #include "../peep/Peep.h"
 #include "../peep/Staff.h"
-#include "../rct1.h"
+#include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"

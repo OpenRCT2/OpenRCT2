@@ -23,7 +23,7 @@
 #include "../management/Finance.h"
 #include "../network/network.h"
 #include "../platform/platform.h"
-#include "../rct1.h"
+#include "../rct1/RCT1.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/footpath.h"

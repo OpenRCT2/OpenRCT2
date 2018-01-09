@@ -17,15 +17,15 @@
 #ifndef _RCT1_H_
 #define _RCT1_H_
 
-#include "management/Award.h"
-#include "management/NewsItem.h"
-#include "management/Research.h"
-#include "rct12.h"
-#include "ride/Ride.h"
-#include "world/Banner.h"
-#include "world/Map.h"
-#include "world/sprite.h"
-#include "world/map_animation.h"
+#include "../management/Award.h"
+#include "../management/NewsItem.h"
+#include "../management/Research.h"
+#include "../rct12/RCT12.h"
+#include "../ride/Ride.h"
+#include "../world/Banner.h"
+#include "../world/Map.h"
+#include "../world/sprite.h"
+#include "../world/map_animation.h"
 
 #define RCT1_MAX_TILE_ELEMENTS        0xC000
 #define RCT1_MAX_SPRITES              5000
