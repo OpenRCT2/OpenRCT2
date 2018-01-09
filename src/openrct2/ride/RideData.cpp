@@ -33,6 +33,7 @@
 #include "Track.h"
 #include "ride_data.h"
 
+// clang-format off
 const bool hasRunningTrack[RIDE_TYPE_COUNT] = {
     true,   // 0 Spiral Roller coaster
     true,   // 1 Stand Up Coaster
@@ -3181,3 +3182,4 @@ const rct_string_id RideModeNames[] = {
         STR_RIDE_MODE_POWERED_LAUNCH,
         STR_RIDE_MODE_POWERED_LAUNCH_BLOCK_SECTIONED_MODE,
 };
+// clang-format on
