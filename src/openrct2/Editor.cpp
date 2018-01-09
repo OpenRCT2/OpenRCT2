@@ -333,7 +333,6 @@ namespace Editor
         if (fromSave)
         {
             research_populate_list_random();
-            research_remove_non_separate_vehicle_types();
 
             if (gParkFlags & PARK_FLAGS_NO_MONEY)
             {

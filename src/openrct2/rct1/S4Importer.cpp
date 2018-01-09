@@ -2021,8 +2021,6 @@ private:
             }
         }
 
-        research_remove_non_separate_vehicle_types();
-
         // Research funding / priority
         uint8 activeResearchTypes = 0;
         if (_s4.research_priority & RCT1_RESEARCH_CATEGORY_ROLLERCOASTERS)

@@ -449,66 +449,6 @@ void research_reset_current_item()
 
 /**
  *
- *  rct2: 0x0068585B
- */
-void research_remove_non_separate_vehicle_types()
-{
-    rct_research_item * researchItem, * researchItem2;
-
-    researchItem = gResearchItems;
-    while ((researchItem + 1)->rawValue != RESEARCHED_ITEMS_END)
-    {
-        researchItem++;
-    }
-
-    do
-    {
-    loopBeginning:
-        if (
-            researchItem != gResearchItems &&
-            researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR &&
-            researchItem->rawValue != RESEARCHED_ITEMS_END &&
-            researchItem->type == RESEARCH_ENTRY_TYPE_RIDE)
-        {
-            rct_ride_entry * rideEntry = get_ride_entry(researchItem->entryIndex);
-            if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)))
-            {
-                // Check if ride type already exists further up for a vehicle type that isn't displayed as a ride
-                researchItem2 = researchItem - 1;
-                do
-                {
-                    if (
-                        researchItem2->rawValue != RESEARCHED_ITEMS_SEPARATOR &&
-                        researchItem2->type == RESEARCH_ENTRY_TYPE_RIDE
-                        )
-                    {
-                        rideEntry = get_ride_entry(researchItem2->entryIndex);
-                        if (!(rideEntry->flags & (RIDE_ENTRY_FLAG_SEPARATE_RIDE)))
-                        {
-
-                            if (researchItem->baseRideType == researchItem2->baseRideType)
-                            {
-                                // Remove item
-                                researchItem2 = researchItem;
-                                do
-                                {
-                                    *researchItem2 = *(researchItem2 + 1);
-                                }
-                                while ((researchItem2++)->rawValue != RESEARCHED_ITEMS_END_2);
-                                goto loopBeginning;
-                            }
-                        }
-                    }
-                }
-                while ((researchItem2--) != gResearchItems);
-            }
-        }
-    }
-    while ((researchItem--) != gResearchItems);
-}
-
-/**
- *
  *  rct2: 0x006857FA
  */
 static void research_insert_unresearched(sint32 entryIndex, sint32 category)
