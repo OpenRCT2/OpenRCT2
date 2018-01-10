@@ -151,7 +151,7 @@ typedef struct rct_s6_data {
     uint8 security_colour;
 
     // Ignored in scenario
-    uint32 researched_scenery_items[56];
+    uint32 researched_scenery_items[RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS];
 
     // SC6[9]
     uint16 park_rating;

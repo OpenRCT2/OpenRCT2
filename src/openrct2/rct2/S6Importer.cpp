@@ -236,7 +236,6 @@ public:
         // pad_01357400
         ImportResearchedRideTypes();
         ImportResearchedRideEntries();
-        ImportResearchedSceneryItems();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -733,7 +732,7 @@ public:
     {
         set_all_scenery_items_not_invented();
 
-        for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS; sceneryEntryIndex++)
+        for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
         {
             sint32 quadIndex = sceneryEntryIndex >> 5;
             sint32 bitIndex  = sceneryEntryIndex & 0x1F;
