@@ -149,6 +149,11 @@ rct_string_id research_get_friendly_base_ride_type_name(uint8 trackType, rct_rid
 void research_remove_flags();
 void research_fix();
 
+void research_items_make_all_unresearched();
+void research_items_make_all_researched();
+void research_items_shuffle();
+bool research_item_is_always_researched(rct_research_item * researchItem);
+
 #ifdef __cplusplus
 }
 #endif
