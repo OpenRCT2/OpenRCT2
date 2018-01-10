@@ -903,7 +903,8 @@ static void viewport_paint_column(rct_drawpixelinfo * dpi, uint32 viewFlags)
 
     if (gConfigGeneral.render_weather_gloom &&
         !gTrackDesignSaveMode &&
-        !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        !(viewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) &&
+        !(viewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     ) {
         viewport_paint_weather_gloom(dpi);
     }

@@ -37,7 +37,12 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
 
     if (gTrackDesignSaveMode) return;
 
-    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES) return;
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+    {
+        return;
+    }
+
+    bool highlightPathIssues = (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
     dpi = session->Unk140E9A8;
     if (dpi->zoom_level > 2) return;
@@ -45,6 +50,22 @@ void sprite_paint_setup(paint_session * session, const uint16 eax, const uint16 
 
     for (rct_sprite* spr = get_sprite(sprite_idx); sprite_idx != SPRITE_INDEX_NULL; sprite_idx = spr->unknown.next_in_quadrant) {
         spr = get_sprite(sprite_idx);
+
+        if (highlightPathIssues)
+        {
+            if (spr->unknown.sprite_identifier == SPRITE_IDENTIFIER_PEEP)
+            {
+                rct_peep * peep = (rct_peep*)spr;
+                if (!(peep->type == PEEP_TYPE_STAFF && peep->staff_type == STAFF_TYPE_HANDYMAN))
+                {
+                    continue;
+                }
+            }
+            else if (spr->unknown.sprite_identifier != SPRITE_IDENTIFIER_LITTER)
+            {
+                continue;
+            }
+        }
 
         // Only paint sprites that are below the clip height.
         // Here converting from land/path/etc height scale to pixel height scale.

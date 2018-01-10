@@ -4525,6 +4525,7 @@ STR_6215    :Construction
 STR_6216    :Operation
 STR_6217    :Ride / track availability
 STR_6218    :OpenRCT2 Official
+STR_6219    :Highlight vandalism and vomit
 
 #############
 # Scenarios #

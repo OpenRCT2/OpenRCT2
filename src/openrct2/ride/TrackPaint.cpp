@@ -2143,7 +2143,8 @@ void track_paint(paint_session * session, uint8 direction, sint32 height, rct_ti
 
     rct_drawpixelinfo * dpi = session->Unk140E9A8;
 
-    if (!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
+    if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex) &&
+        !(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         sint32 trackType         = track_element_get_type(tileElement);
         sint32 trackSequence     = tile_element_get_track_sequence(tileElement);
