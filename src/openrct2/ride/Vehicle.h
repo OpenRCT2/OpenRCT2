@@ -177,7 +177,10 @@ typedef struct rct_vehicle {
     };
     uint8 speed;                    // 0xC2
     uint8 powered_acceleration;     // 0xC3
-    uint8 var_C4;
+    union {
+        uint8 dodgems_collision_direction; // 0xC4
+        uint8 var_C4;
+    };
     uint8 var_C5;
     uint8 pad_C6[0x2];
     uint16 var_C8;
@@ -241,7 +244,7 @@ enum {
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,
     VEHICLE_ENTRY_FLAG_RIDERS_SCREAM = 1 << 20,
     VEHICLE_ENTRY_FLAG_21 = 1 << 21,
-    VEHICLE_ENTRY_FLAG_22 = 1 << 22,
+    VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION = 1 << 22,
     VEHICLE_ENTRY_FLAG_23 = 1 << 23,                            // Set on animated vehicles like the Multi-dimension coaster trains, Miniature Railway locomotives and Helicycles.
     VEHICLE_ENTRY_FLAG_24 = 1 << 24,
     VEHICLE_ENTRY_FLAG_25 = 1 << 25,

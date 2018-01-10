@@ -6331,17 +6331,17 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
 
     uint16 collideSprite = 0xFFFF;
 
-    if (vehicle->var_C4 != 0)
+    if (vehicle->dodgems_collision_direction != 0)
     {
-        uint8 oldC4     = vehicle->var_C4 & 0x1E;
-        vehicle->var_C4 = 0;
+        uint8 oldCollisionDirection = vehicle->dodgems_collision_direction & 0x1E;
+        vehicle->dodgems_collision_direction = 0;
 
         LocationXYZ16 location = { vehicle->x, vehicle->y, vehicle->z };
 
-        location.x += Unk9A36C4[oldC4].x;
-        location.y += Unk9A36C4[oldC4].y;
-        location.x += Unk9A36C4[oldC4 + 1].x;
-        location.y += Unk9A36C4[oldC4 + 1].y;
+        location.x += Unk9A36C4[oldCollisionDirection].x;
+        location.y += Unk9A36C4[oldCollisionDirection].y;
+        location.x += Unk9A36C4[oldCollisionDirection + 1].x;
+        location.y += Unk9A36C4[oldCollisionDirection + 1].y;
 
         if (!vehicle_update_dodgems_collision(vehicle, location.x, location.y, &collideSprite))
         {
@@ -6399,8 +6399,8 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
                 if (oldVelocity >= 131072)
                 {
                     rct_vehicle * collideVehicle = GET_VEHICLE(collideSprite);
-                    collideVehicle->var_C4       = direction;
-                    vehicle->var_C4              = direction ^ (1 << 4);
+                    collideVehicle->dodgems_collision_direction = direction;
+                    vehicle->dodgems_collision_direction = direction ^ (1 << 4);
                 }
             }
             else
@@ -6409,7 +6409,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
 
                 if (oldVelocity >= 131072)
                 {
-                    vehicle->var_C4 = direction ^ (1 << 4);
+                    vehicle->dodgems_collision_direction = direction ^ (1 << 4);
                 }
             }
         }
@@ -7671,7 +7671,7 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
         return false;
     }
 
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_22))
+    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
     {
         vehicle->var_C4 = 0;
 
@@ -7741,7 +7741,7 @@ static bool vehicle_update_motion_collision_detection(rct_vehicle * vehicle, sin
             if (collideType == nullptr)
                 continue;
 
-            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_22))
+            if (!(collideType->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
                 continue;
 
             uint32 x_diff = abs(collideVehicle->x - x);
@@ -8384,7 +8384,7 @@ loc_6DB967:
     {
         if (regs.eax > 0xE0000)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_22))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
             }
@@ -8704,7 +8704,7 @@ loc_6DBE7F:
     {
         if (regs.eax > 0xE0000)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_22))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
             }
@@ -9270,7 +9270,7 @@ loc_6DCD6B:
         regs.eax           = abs(vEDI->velocity - vEBP->velocity);
         if (regs.eax > 0xE0000)
         {
-            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_22))
+            if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
             {
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION;
             }
