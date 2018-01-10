@@ -1596,8 +1596,10 @@ void input_scroll_viewport(sint32 scrollX, sint32 scrollY)
     rct_window * mainWindow = window_get_main();
     rct_viewport * viewport = mainWindow->viewport;
 
-    sint32 dx = scrollX * (12 << viewport->zoom);
-    sint32 dy = scrollY * (12 << viewport->zoom);
+    const sint32 speed = gConfigGeneral.edge_scrolling_speed;
+
+    sint32 dx = scrollX * (speed << viewport->zoom);
+    sint32 dy = scrollY * (speed << viewport->zoom);
 
     if (scrollX != 0)
     {

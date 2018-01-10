@@ -64,6 +64,7 @@ typedef struct GeneralConfiguration
 
     // Controls
     bool        edge_scrolling;
+    sint32      edge_scrolling_speed;
     bool        trap_cursor;
     bool        invert_viewport_drag;
     bool        zoom_to_cursor;
