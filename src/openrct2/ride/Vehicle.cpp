@@ -2033,7 +2033,7 @@ static void vehicle_update(rct_vehicle * vehicle)
 static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
 {
     Ride * ride = get_ride(vehicle->ride);
-    sint32 eax, ebx;
+    sint32 flags, station;
 
     switch (ride->mode)
     {
@@ -2050,9 +2050,8 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
             vehicle->velocity -= vehicle->velocity / 16;
             vehicle->acceleration = 0;
         }
-
-        eax = vehicle_update_track_motion(vehicle, &ebx);
-        if (!(eax & (1 << 5)))
+        flags = vehicle_update_track_motion(vehicle, &station);
+        if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
             break;
         // Fall through to next case
     case RIDE_MODE_BUMPERCAR:
@@ -2102,10 +2101,9 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
             vehicle->acceleration = 0;
         }
 
-        sint32 station;
-        eax = vehicle_update_track_motion(vehicle, &station);
+        flags = vehicle_update_track_motion(vehicle, &station);
 
-        if (eax & (1 << 1))
+        if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1)
         {
             vehicle->velocity     = 0;
             vehicle->acceleration = 0;
@@ -2127,7 +2125,7 @@ static void vehicle_update_moving_to_end_of_station(rct_vehicle * vehicle)
             }
         }
 
-        if (!(eax & (1 << 0)))
+        if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
             break;
 
         vehicle->current_station = station;
@@ -3314,7 +3312,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
 
     uint32 flags = vehicle_update_track_motion(vehicle, nullptr);
 
-    if (flags & (1 << 8))
+    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_8)
     {
         if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
@@ -3324,7 +3322,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
         }
     }
 
-    if (flags & ((1 << 5) | (1 << 12)))
+    if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
     {
         if (ride->mode == RIDE_MODE_BOAT_HIRE)
         {
@@ -3400,13 +3398,13 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
 
         if (shouldLaunch)
         {
-            if (!(flags & (1 << 3)) || _vehicleStationIndex != vehicle->current_station)
+            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3) || _vehicleStationIndex != vehicle->current_station)
             {
                 vehicle_finish_departing(vehicle);
                 return;
             }
 
-            if (!(flags & (1 << 5)))
+            if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_5))
                 return;
             if (ride->mode == RIDE_MODE_BOAT_HIRE || ride->mode == RIDE_MODE_ROTATING_LIFT || ride->mode == RIDE_MODE_SHUTTLE)
                 return;
@@ -3695,7 +3693,9 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
     uint32 flags = vehicle_update_track_motion(vehicle, nullptr);
 
     bool skipCheck = false;
-    if (flags & ((1 << 8) | (1 << 9)) && ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && vehicle->sub_state == 0)
+    if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_8 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_9) &&
+        ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE &&
+        vehicle->sub_state == 0)
     {
         vehicle->sub_state = 1;
         vehicle->velocity  = 0;
@@ -3704,19 +3704,19 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
 
     if (!skipCheck)
     {
-        if (flags & (1 << 6))
+        if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_DERAILED)
         {
             vehicle_update_crash_setup(vehicle);
             return;
         }
 
-        if (flags & (1 << 7))
+        if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION)
         {
             vehicle_update_collision_setup(vehicle);
             return;
         }
 
-        if (flags & ((1 << 5) | (1 << 12)))
+        if (flags & (VEHICLE_UPDATE_MOTION_TRACK_FLAG_5 | VEHICLE_UPDATE_MOTION_TRACK_FLAG_12))
         {
             if (ride->mode == RIDE_MODE_ROTATING_LIFT)
             {
@@ -3823,7 +3823,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
         }
     }
 
-    if (!(flags & (1 << 3)))
+    if (!(flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_3))
         return;
 
     if (ride->mode == RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE && vehicle->velocity >= 0 &&
@@ -3975,13 +3975,13 @@ static void vehicle_update_arriving(rct_vehicle * vehicle)
     uint32 flags;
 loc_6D8E36:
     flags = vehicle_update_track_motion(vehicle, nullptr);
-    if (flags & (1 << 7) && unkF64E35 == 0)
+    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_COLLISION && unkF64E35 == 0)
     {
         vehicle_update_collision_setup(vehicle);
         return;
     }
 
-    if (flags & (1 << 0) && unkF64E35 == 0)
+    if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION && unkF64E35 == 0)
     {
         vehicle->status    = VEHICLE_STATUS_DEPARTING;
         vehicle->sub_state = 1;
@@ -3989,7 +3989,10 @@ loc_6D8E36:
         return;
     }
 
-    if (!(flags & ((1 << 0) | (1 << 1) | (1 << 5))))
+    if (!(flags &
+        (VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION |
+         VEHICLE_UPDATE_MOTION_TRACK_FLAG_1 |
+         VEHICLE_UPDATE_MOTION_TRACK_FLAG_5)))
     {
         if (vehicle->velocity > 98955)
             vehicle->var_C0 = 0;
@@ -3997,7 +4000,9 @@ loc_6D8E36:
     }
 
     vehicle->var_C0++;
-    if (flags & (1 << 1) && vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30 && vehicle->var_C0 < 40)
+    if ((flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1) &&
+        (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_30) &&
+        (vehicle->var_C0 < 40))
     {
         return;
     }
