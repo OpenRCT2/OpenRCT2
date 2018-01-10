@@ -3855,6 +3855,9 @@ enum {
     STR_DATE_RESET = 6200,
     STR_FORMAT_MONTH = 6201,
 
+    STR_ENABLE_VIRTUAL_FLOOR = 6202,
+    STR_ENABLE_VIRTUAL_FLOOR_TIP = 6203,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };

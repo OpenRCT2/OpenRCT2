@@ -4508,6 +4508,8 @@ STR_6198    :{BLACK}Day:
 STR_6199    :Set date
 STR_6200    :Reset date
 STR_6201    :{MONTH}
+STR_6202    :Enable virtual floor
+STR_6203    :{SMALLFONT}{BLACK}When enabled, a virtual floor will be rendered when holding Ctrl or Shift to ease vertical placement of elements.
 
 #############
 # Scenarios #
