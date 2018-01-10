@@ -3344,7 +3344,7 @@ static void vehicle_update_departing(rct_vehicle * vehicle)
 
     if (flags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_ON_LIFT_HILL)
     {
-        vehicle->var_B8 |= (1 << 1);
+        vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         if (ride->mode != RIDE_MODE_REVERSE_INCLINE_LAUNCHED_SHUTTLE)
         {
             sint32 speed = ride->lift_hill_speed * 31079;
@@ -3784,7 +3784,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
             if (vehicle->sub_state == 0)
             {
                 if (vehicle->velocity != 0)
-                    vehicle->var_B8 |= (1 << 1);
+                    vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
 
                 if (!(vehicle->update_flags & VEHICLE_UPDATE_FLAG_12))
                 {
@@ -3794,7 +3794,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
 
                         if (_vehicleBreakdown == 0)
                         {
-                            vehicle->var_B8 &= ~(1 << 1);
+                            vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                             vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
                         }
                     }
@@ -3803,7 +3803,7 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
         }
         else
         {
-            vehicle->var_B8 |= (1 << 1);
+            vehicle->sound2_flags |= VEHICLE_SOUND2_FLAGS_LIFT_HILL;
             if (vehicle->velocity <= ride->lift_hill_speed * 31079)
             {
                 vehicle->acceleration = 15539;
@@ -3812,12 +3812,12 @@ static void vehicle_update_travelling(rct_vehicle * vehicle)
                     if (_vehicleBreakdown == 0)
                     {
                         vehicle->update_flags |= VEHICLE_UPDATE_FLAG_ZERO_VELOCITY;
-                        vehicle->var_B8 &= ~(1 << 1);
+                        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                     }
                 }
                 else
                 {
-                    vehicle->var_B8 &= ~(1 << 1);
+                    vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
                 }
             }
         }
@@ -4332,7 +4332,7 @@ static void vehicle_update_motion_boat_hire(rct_vehicle * vehicle)
     vehicle->remaining_distance += _vehicleVelocityF64E0C;
     if (vehicle->remaining_distance >= 0x368A)
     {
-        vehicle->var_B8 &= ~(1 << 1);
+        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = vehicle->x;
         unk_F64E20.y = vehicle->y;
         unk_F64E20.z = vehicle->z;
@@ -5574,7 +5574,7 @@ static void vehicle_update_sound(rct_vehicle * vehicle)
             // Get lift hill sound
             screamId     = RideLiftData[ride->type].sound_id;
             screamVolume = 243;
-            if (!(vehicle->var_B8 & 2))
+            if (!(vehicle->sound2_flags & VEHICLE_SOUND2_FLAGS_LIFT_HILL))
                 screamId = 255;
         }
     }
@@ -6355,7 +6355,7 @@ static sint32 vehicle_update_motion_dodgems(rct_vehicle * vehicle)
 
     if (vehicle->remaining_distance >= 13962)
     {
-        vehicle->var_B8 &= ~(1 << 1);
+        vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = vehicle->x;
         unk_F64E20.y = vehicle->y;
         unk_F64E20.z = vehicle->z;
@@ -8766,7 +8766,7 @@ loc_6DC40E:
     {
         goto loc_6DCE02;
     }
-    vehicle->var_B8 &= ~(1 << 1);
+    vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
     unk_F64E20.x = vehicle->x;
     unk_F64E20.y = vehicle->y;
     unk_F64E20.z = vehicle->z;
@@ -9112,7 +9112,7 @@ loc_6DC9BC:
     /////////////////////////////////////////
 
 loc_6DCA7A:
-    vehicle->var_B8 &= ~(1 << 1);
+    vehicle->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
     unk_F64E20.x = vehicle->x;
     unk_F64E20.y = vehicle->y;
     unk_F64E20.z = vehicle->z;
@@ -9660,7 +9660,7 @@ sint32 vehicle_update_track_motion(rct_vehicle * vehicle, sint32 * outStation)
         regs.eax = _vehicleVelocityF64E0C + car->remaining_distance;
         car->remaining_distance = regs.eax;
 
-        car->var_B8 &= ~(1 << 1);
+        car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
         unk_F64E20.x = car->x;
         unk_F64E20.y = car->y;
         unk_F64E20.z = car->z;

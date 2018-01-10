@@ -325,7 +325,7 @@ typedef struct rct1_vehicle {
     uint8 next_free_seat;           // 0xB4
     uint8 restraints_position;      // 0xB5 0 == Close, 255 == Open
     sint16 spin_speed;
-    uint16 var_B8;
+    uint16 sound2_flags;
     uint8 spin_sprite;
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
