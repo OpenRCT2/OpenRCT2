@@ -700,7 +700,7 @@ public:
 
     void ImportResearchedRideTypes()
     {
-        Memory::Set(gResearchedRideTypes, false, sizeof(gResearchedRideTypes));
+        set_every_ride_type_not_invented();
 
         for (sint32 rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
         {
@@ -708,13 +708,13 @@ public:
             sint32 bitIndex  = rideType & 0x1F;
             bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32) 1 << bitIndex));
 
-            gResearchedRideTypes[rideType] = invented;
+            ride_type_set_invented(rideType);
         }
     }
 
     void ImportResearchedRideEntries()
     {
-        Memory::Set(gResearchedRideEntries, false, sizeof(gResearchedRideEntries));
+        set_every_ride_entry_not_invented();
 
         for (sint32 rideEntryIndex = 0; rideEntryIndex < MAX_RIDE_OBJECTS; rideEntryIndex++)
         {
@@ -722,7 +722,7 @@ public:
             sint32 bitIndex  = rideEntryIndex & 0x1F;
             bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32) 1 << bitIndex));
 
-            gResearchedRideEntries[rideEntryIndex] = invented;
+            ride_entry_set_invented(rideEntryIndex);
         }
 
     }

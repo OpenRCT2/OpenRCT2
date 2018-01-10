@@ -109,7 +109,7 @@ void park_init()
     research_reset_items();
     finance_init();
 
-    Memory::Set(gResearchedRideTypes, false, sizeof(gResearchedRideTypes));
+    set_every_ride_type_not_invented();
 
     set_all_scenery_items_invented();
 
