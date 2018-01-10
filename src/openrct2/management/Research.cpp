@@ -54,16 +54,13 @@ rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 // 0x00EE787C
 uint8 gResearchUncompletedCategories;
 
-bool gResearchedRideTypes[RIDE_TYPE_COUNT];
-bool gResearchedRideEntries[MAX_RIDE_OBJECTS];
+static bool _researchedRideTypes[RIDE_TYPE_COUNT];
+static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
 uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 
 bool gSilentResearch = false;
 
-static void ride_type_set_invented(sint32 rideType);
-static void ride_entry_set_invented(sint32 rideEntryIndex);
-static void scenery_set_invented(uint16 sceneryItem);
-static void scenery_set_not_invented(uint16 sceneryItem);
+
 
 /**
  *
@@ -414,6 +411,7 @@ void research_reset_current_item()
         ebp->category = cat;
     }
 
+    set_every_ride_type_not_invented();
     set_every_ride_entry_not_invented();
 
     set_all_scenery_items_invented();
@@ -683,12 +681,12 @@ void research_insert_scenery_group_entry(uint8 entryIndex, bool researched)
 
 bool ride_type_is_invented(sint32 rideType)
 {
-    return gResearchedRideTypes[rideType];
+    return _researchedRideTypes[rideType];
 }
 
 bool ride_entry_is_invented(sint32 rideEntryIndex)
 {
-    return gResearchedRideEntries[rideEntryIndex];
+    return _researchedRideEntries[rideEntryIndex];
 }
 
 bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType)
@@ -696,14 +694,14 @@ bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType)
     return RideTypePossibleTrackConfigurations[rideType] & (1ULL << trackType);
 }
 
-static void ride_type_set_invented(sint32 rideType)
+void ride_type_set_invented(sint32 rideType)
 {
-    gResearchedRideTypes[rideType] = true;
+    _researchedRideTypes[rideType] = true;
 }
 
-static void ride_entry_set_invented(sint32 rideEntryIndex)
+void ride_entry_set_invented(sint32 rideEntryIndex)
 {
-    gResearchedRideEntries[rideEntryIndex] = true;
+    _researchedRideEntries[rideEntryIndex] = true;
 }
 
 bool scenery_is_invented(uint16 sceneryItem)
@@ -714,14 +712,14 @@ bool scenery_is_invented(uint16 sceneryItem)
     return invented;
 }
 
-static void scenery_set_invented(uint16 sceneryItem)
+void scenery_set_invented(uint16 sceneryItem)
 {
     sint32 quadIndex = sceneryItem >> 5;
     sint32 bitIndex  = sceneryItem & 0x1F;
     gResearchedSceneryItems[quadIndex] |= (uint32) 1 << bitIndex;
 }
 
-static void scenery_set_not_invented(uint16 sceneryItem)
+void scenery_set_not_invented(uint16 sceneryItem)
 {
     sint32 quadIndex = sceneryItem >> 5;
     sint32 bitIndex  = sceneryItem & 0x1F;
@@ -762,16 +760,24 @@ void set_all_scenery_items_invented()
     }
 }
 
+void set_every_ride_type_invented()
+{
+    Memory::Set(_researchedRideTypes, true, sizeof(_researchedRideTypes));
+}
+
+void set_every_ride_type_not_invented()
+{
+    Memory::Set(_researchedRideTypes, false, sizeof(_researchedRideTypes));
+}
+
 void set_every_ride_entry_invented()
 {
-    Memory::Set(gResearchedRideTypes, true, sizeof(gResearchedRideTypes));
-    Memory::Set(gResearchedRideEntries, true, sizeof(gResearchedRideEntries));
+    Memory::Set(_researchedRideEntries, true, sizeof(_researchedRideEntries));
 }
 
 void set_every_ride_entry_not_invented()
 {
-    Memory::Set(gResearchedRideTypes, false, sizeof(gResearchedRideTypes));
-    Memory::Set(gResearchedRideEntries, false, sizeof(gResearchedRideEntries));
+    Memory::Set(_researchedRideEntries, false, sizeof(_researchedRideEntries));
 }
 
 /**
