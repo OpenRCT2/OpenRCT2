@@ -2052,7 +2052,6 @@ private:
         gResearchProgress = _s4.research_progress;
         // gResearchProgressStage =
         gResearchNextItem.rawValue = _s4.next_research_item;
-        gResearchNextCategory = _s4.next_research_type;
         // gResearchExpectedDay =
         // gResearchExpectedMonth =
 
