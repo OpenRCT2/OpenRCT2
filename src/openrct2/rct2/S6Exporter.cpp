@@ -687,7 +687,7 @@ void S6Exporter::ExportResearchedSceneryItems()
 {
     Memory::Set(_s6.researched_scenery_items, false, sizeof(_s6.researched_scenery_items));
 
-    for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS; sceneryEntryIndex++)
+    for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEMS; sceneryEntryIndex++)
     {
         if (scenery_is_invented(sceneryEntryIndex))
         {
