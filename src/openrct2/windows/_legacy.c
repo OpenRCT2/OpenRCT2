@@ -200,6 +200,10 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
 
         if (!scenery_tool_is_active())
         {
+            // Invalidate previous track piece (we may not be changing height!)
+            map_invalidate_virtual_floor_tiles();
+
+            // Set new virtual floor height.
             map_set_virtual_floor_height(z);
         }
 
@@ -234,7 +238,10 @@ money32 place_provisional_track_piece(sint32 rideIndex, sint32 trackType, sint32
 
         if (!scenery_tool_is_active())
         {
-            // Set height to where the next track piece would begin  
+            // Invalidate previous track piece (we may not be changing height!)
+            map_invalidate_virtual_floor_tiles();
+
+            // Set height to where the next track piece would begin
             map_set_virtual_floor_height(z - z_begin + z_end);
         }
 
