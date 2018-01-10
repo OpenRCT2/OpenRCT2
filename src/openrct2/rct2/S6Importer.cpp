@@ -345,7 +345,7 @@ public:
         gLastEntranceStyle             = _s6.last_entrance_style;
         // rct1_water_colour
         // pad_01358842
-        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
+        ImportResearchList();
         gMapBaseZ = _s6.map_base_z;
         memcpy(gScenarioName, _s6.scenario_name, sizeof(_s6.scenario_name));
         memcpy(gScenarioDetails, _s6.scenario_description, sizeof(_s6.scenario_description));
@@ -742,6 +742,11 @@ public:
             if (invented)
                 scenery_set_invented(sceneryEntryIndex);
         }
+    }
+
+    void ImportResearchList()
+    {
+        memcpy(gResearchItems, _s6.research_items, sizeof(_s6.research_items));
     }
 
     void Initialise()

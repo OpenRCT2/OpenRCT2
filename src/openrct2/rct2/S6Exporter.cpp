@@ -325,7 +325,7 @@ void S6Exporter::Export()
     _s6.last_entrance_style          = gLastEntranceStyle;
     // rct1_water_colour
     // pad_01358842
-    memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
+    ExportResearchList();
     _s6.map_base_z = gMapBaseZ;
     memcpy(_s6.scenario_name, gScenarioName, sizeof(_s6.scenario_name));
     memcpy(_s6.scenario_description, gScenarioDetails, sizeof(_s6.scenario_description));
@@ -696,6 +696,11 @@ void S6Exporter::ExportResearchedSceneryItems()
             _s6.researched_scenery_items[quadIndex] |= (uint32) 1 << bitIndex;
         }
     }
+}
+
+void S6Exporter::ExportResearchList()
+{
+    memcpy(_s6.research_items, gResearchItems, sizeof(_s6.research_items));
 }
 
 extern "C"
