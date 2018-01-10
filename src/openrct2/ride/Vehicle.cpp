@@ -6590,22 +6590,22 @@ static void vehicle_update_track_motion_up_stop_check(rct_vehicle * vehicle)
  * This function must be called when the car is running through a non-stopping
  * state block-brake (precondition), which means that the block brake is acting
  * merely as a velocity regulator, in a closed state. When the brake is open, it
- * boosts the train to the speedModifier limit
+ * boosts the train to the speed limit
  */
 static void apply_non_stop_block_brake(rct_vehicle * vehicle, bool block_brake_closed)
 {
     if (vehicle->velocity >= 0)
     {
-        // If the vehicle is below the speedModifier limit
+        // If the vehicle is below the speed limit
         if (vehicle->velocity <= 0x20364)
         {
-            // Boost it to the fixed block brake speedModifier
+            // Boost it to the fixed block brake speed
             vehicle->velocity     = 0x20364;
             vehicle->acceleration = 0;
         }
         else if (block_brake_closed)
         {
-            // Slow it down till the fixed block brake speedModifier
+            // Slow it down till the fixed block brake speed
             vehicle->velocity -= vehicle->velocity >> 4;
             vehicle->acceleration = 0;
         }
@@ -7146,7 +7146,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
     sint32 trackType       = vehicle->track_type >> 2;
     sint32 dword_F64E08    = _vehicleVelocityF64E08;
     sint32 spinSpeed;
-    // An L spin adds to the spin speedModifier, R does the opposite
+    // An L spin adds to the spin speed, R does the opposite
     // The number indicates how much right shift of the velocity will become spin
     // The bigger the number the less change in spin.
     switch (TrackTypeToSpinFunction[trackType])
@@ -7233,7 +7233,7 @@ static void vehicle_update_spinning_car(rct_vehicle * vehicle)
     spinSpeed             = Math::Clamp(static_cast<sint16>(-VEHICLE_MAX_SPIN_SPEED), vehicle->spin_speed, static_cast<sint16>(VEHICLE_MAX_SPIN_SPEED));
     vehicle->spin_speed = spinSpeed;
     vehicle->spin_sprite += spinSpeed >> 8;
-    // Note this actually increases the spin speedModifier if going right!
+    // Note this actually increases the spin speed if going right!
     vehicle->spin_speed -= spinSpeed >> vehicleEntry->spinning_friction;
     vehicle_invalidate(vehicle);
 }
