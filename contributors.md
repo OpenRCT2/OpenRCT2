@@ -64,6 +64,7 @@ The following people are not part of the project team, but have been contributin
 * Daniel Trujillo Viedma (gDanix) - Custom currency.
 * Niels NTG Poldervaart (Niels-NTG) - Misc.
 * (zaxcav) - Improvements to original pathfinding algorithm.
+* Jeroen D. Stout (JeroenDStout) - Light effects, train crossings, virtual floor.
 * Joël Troch (JoelTroch) - Keyboard shortcuts for ride construction.
 * Thomas Delebo (delebota) - Misc.
 * Brian Callahan (ibara) - OpenBSD port.
