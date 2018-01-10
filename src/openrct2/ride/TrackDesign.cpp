@@ -467,7 +467,7 @@ static void track_design_load_scenery_objects(rct_track_td6 * td6)
 
     // Load scenery objects
     rct_td6_scenery_element * scenery = td6->scenery_elements;
-    for (; scenery->scenery_object.end_flag != 0xFF; scenery++)
+    for (; scenery != nullptr && scenery->scenery_object.end_flag != 0xFF; scenery++)
     {
         rct_object_entry * sceneryEntry = &scenery->scenery_object;
         object_manager_load_object(sceneryEntry);
