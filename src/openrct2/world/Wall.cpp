@@ -250,6 +250,7 @@ static bool WallCheckObstruction(rct_scenery_entry * wall,
 
 #pragma region Edge Slopes Table
 
+// clang-format off
 enum EDGE_SLOPE
 {
     EDGE_SLOPE_ELEVATED     = (1 << 0), // 0x01
@@ -296,6 +297,7 @@ static const uint8 EdgeSlopes[][4] = {
     { EDGE_SLOPE_DOWNWARDS_ELEVATED, EDGE_SLOPE_DOWNWARDS,          EDGE_SLOPE_UPWARDS,            EDGE_SLOPE_UPWARDS_ELEVATED   },
     { 0,                             0,                             0,                             0                             },
 };
+// clang-format on
 
 #pragma endregion
 

@@ -19,6 +19,7 @@
 #include "Currency.h"
 #include "StringIds.h"
 
+// clang-format off
 currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "GBP",  10,     CURRENCY_PREFIX,    "\xC2\xA3",     CURRENCY_SUFFIX,    "GBP",  STR_POUNDS          },  // British Pound
     {   "USD",  10,     CURRENCY_PREFIX,    "$",            CURRENCY_PREFIX,    "$",    STR_DOLLARS         },  // US Dollar
@@ -38,6 +39,7 @@ currency_descriptor CurrencyDescriptors[CURRENCY_END] = {
     {   "CNY",  100,    CURRENCY_PREFIX,    "CN\xC2\xA5",   CURRENCY_PREFIX,    "CNY",  STR_CHINESE_YUAN    },  // Chinese Yuan
     {   "CTM",  10,     CURRENCY_PREFIX,    "Ctm",          CURRENCY_PREFIX,    "Ctm",  STR_CUSTOM_CURRENCY },  // Customizable currency
 };
+// clang-format on
 
 void currency_load_custom_currency_config()
 {

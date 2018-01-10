@@ -26,6 +26,7 @@
 #include "../platform/platform.h"
 #include "Localisation.h"
 
+// clang-format off
 const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
 {
     { "",       "",                     "",                      FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_UNDEFINED
@@ -51,6 +52,7 @@ const language_descriptor LanguagesDescriptors[LANGUAGE_COUNT] =
     { "fi-FI", "Finnish",               "Suomi",                 FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_ENGLISH_UK },          // LANGUAGE_FINNISH
     { "sv-SE", "Swedish",               "Svenska",               FAMILY_OPENRCT2_SPRITE,                RCT2_LANGUAGE_ID_SWEDISH },             // LANGUAGE_SWEDISH
 };
+// clang-format on
 
 extern "C" {
 
@@ -60,11 +62,13 @@ bool gUseTrueTypeFont = false;
 static ILanguagePack * _languageFallback = nullptr;
 static ILanguagePack * _languageCurrent = nullptr;
 
+// clang-format off
 const utf8 BlackUpArrowString[] =       { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB2, (utf8)(uint8)0x00 };
 const utf8 BlackDownArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xBC, (utf8)(uint8)0x00 };
 const utf8 BlackLeftArrowString[] =     { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x97, (utf8)(uint8)0x80, (utf8)(uint8)0x00 };
 const utf8 BlackRightArrowString[] =    { (utf8)(uint8)0xC2, (utf8)(uint8)0x8E, (utf8)(uint8)0xE2, (utf8)(uint8)0x96, (utf8)(uint8)0xB6, (utf8)(uint8)0x00 };
 const utf8 CheckBoxMarkString[] =       { (utf8)(uint8)0xE2, (utf8)(uint8)0x9C, (utf8)(uint8)0x93, (utf8)(uint8)0x00 };
+// clang-format on
 
 void utf8_remove_format_codes(utf8 * text, bool allowcolours)
 {

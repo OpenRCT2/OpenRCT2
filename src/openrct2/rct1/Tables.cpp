@@ -23,6 +23,7 @@
 #include "RCT1.h"
 #include "../ride/Ride.h"
 
+// clang-format off
 namespace RCT1
 {
     colour_t GetColour(colour_t colour)
@@ -1426,3 +1427,4 @@ namespace RCT1
         return map[sceneryType];
     }
 }
+// clang-format on

@@ -17,6 +17,7 @@
 #include "../core/Util.hpp"
 #include "../world/sprite.h"
 
+// clang-format off
 static const uint8 PeepSpriteImage_Normal_00_sequence[] = { 0, 1, 2, 3, 4, 5 };
 static const uint8 PeepSpriteImage_Normal_01_sequence[] = { 0, 1, 2, 3, 4, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 8 };
 static const uint8 PeepSpriteImage_Normal_02_sequence[] = { 0 };
@@ -5455,3 +5456,4 @@ rct_peep_animation_entry g_peep_animation_entries[] =
     { PeepSpriteImage_Soup, PeepSpriteBounds_Soup },
     { PeepSpriteImage_Sandwich, PeepSpriteBounds_Sandwich },
 };
+// clang-format on

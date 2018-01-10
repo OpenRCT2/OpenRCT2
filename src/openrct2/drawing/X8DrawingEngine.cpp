@@ -496,6 +496,7 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 }
 
 /** rct2: 0x0097FF04 */
+// clang-format off
 static const uint16 Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
@@ -540,6 +541,7 @@ static const uint16 * Patterns[] = {
     Pattern,
     PatternInverse
 };
+// clang-format on
 
 void X8DrawingContext::FillRect(uint32 colour, sint32 left, sint32 top, sint32 right, sint32 bottom)
 {

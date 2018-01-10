@@ -61,6 +61,7 @@ rct_vehicle_sound           gVehicleSoundList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params    gVehicleSoundParamsList[AUDIO_MAX_VEHICLE_SOUNDS];
 rct_vehicle_sound_params *  gVehicleSoundParamsListEnd;
 
+// clang-format off
 static sint32 SoundVolumeAdjust[SOUND_MAXID] =
 {
     0,      // SOUND_LIFT_1
@@ -127,6 +128,7 @@ static sint32 SoundVolumeAdjust[SOUND_MAXID] =
     -2700,  // SOUND_DOOR_CLOSE
     -700    // SOUND_62
 };
+// clang-format on
 
 AudioParams audio_get_params_from_location(sint32 soundId, const LocationXYZ16 *location);
 

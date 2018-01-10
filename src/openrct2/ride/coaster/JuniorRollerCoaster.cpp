@@ -873,6 +873,7 @@ static const uint32 junior_rc_track_pieces_left_quarter_turn_5_tiles_25_deg_up[2
       } }
 };
 
+// clang-format off
 const LocationXY16 junior_rc_left_quarter_turn_5_tiles_25_deg_up_offsets[4][5] = { {
                                                                                    { 0, 6 },
                                                                                    { 0, 0 },
@@ -1621,6 +1622,7 @@ static const uint32 junior_rc_track_pieces_diag_60_deg_down_to_25_deg_down[2][4]
         SPR_JUNIOR_RC_DIAG_25_DEG_UP_TO_60_DEG_UP_CHAIN_N_S,
     },
 };
+// clang-format on
 
 void junior_rc_paint_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, uint16 height,
                                 rct_tile_element * tileElement, JUNIOR_RC_CHAINTYPE chainType)

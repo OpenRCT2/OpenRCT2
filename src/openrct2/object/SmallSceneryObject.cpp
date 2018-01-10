@@ -155,6 +155,7 @@ uint8 * SmallSceneryObject::ReadFrameOffsets(IStream * stream)
     return Memory::Duplicate(data.data(), data.size());
 }
 
+// clang-format off
 void SmallSceneryObject::PerformFixes()
 {
     std::string identifier = GetIdentifier();
@@ -219,6 +220,7 @@ void SmallSceneryObject::PerformFixes()
         SetPrimarySceneryGroup(&scgAbstr);
     }
 }
+// clang-format on
 
 rct_object_entry SmallSceneryObject::GetScgPiratHeader()
 {

@@ -31,6 +31,7 @@
 #include "../../world/Map.h"
 #include "../../drawing/LightFX.h"
 
+// clang-format off
 const uint8 byte_98D800[] = {
     12, 9, 3, 6
 };
@@ -76,6 +77,7 @@ static const sint16 stru_98D804[][4] = {
 static const uint8 byte_98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
+// clang-format on
 
 void path_paint_box_support(paint_session * session, rct_tile_element * tileElement, sint32 height, rct_footpath_entry * footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);
 void path_paint_pole_support(paint_session * session, rct_tile_element* tileElement, sint16 height, rct_footpath_entry* footpathEntry, bool hasFences, uint32 imageFlags, uint32 sceneryImageFlags);

@@ -793,6 +793,7 @@ static void paint_miniature_railway_track_25_deg_down_to_flat(paint_session * se
     paint_miniature_railway_track_flat_to_25_deg_up(session, rideIndex, trackSequence, (direction + 2) % 4, height, tileElement);
 }
 
+// clang-format off
 const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = { {
                                                                                   { 0, 2 },
                                                                                   { 0, 16 },
@@ -879,6 +880,7 @@ const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4]
                                                                                         { 32, 16 },
                                                                                         { 32, 32 },
                                                                                     } };
+// clang-format on
 
 static const uint32 miniature_railway_right_quarter_turn_5_tiles_track_floor[4][5] = {
     { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_S_SEGMENT, SPR_FLOOR_PLANKS_N_SEGMENT, SPR_FLOOR_PLANKS_S_SEGMENT,

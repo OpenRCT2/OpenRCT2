@@ -24,6 +24,7 @@
 #include "../util/Util.h"
 
 // 98DA00
+// clang-format off
 sint32 object_entry_group_counts[] = {
     MAX_RIDE_OBJECTS,          // rides
     MAX_SMALL_SCENERY_OBJECTS, // small scenery
@@ -92,6 +93,7 @@ const rct_object_entry_group object_entry_groups[] = {
     (void**)(gWaterEntries              ), _objectEntriesWaters,    // water            0x009ADAE0, 0xF42868
     (void**)(gStexEntries               ), _objectEntriesStexs, // scenario text    0x009ADAE4, 0xF4287C
 };
+// clang-format on
 
 bool object_entry_is_empty(const rct_object_entry *entry)
 {

@@ -16,6 +16,7 @@
 
 #include "Localisation.h"
 
+// clang-format off
 const char real_name_initials[] = {
     'B', 'C', 'D', 'F', 'G', 'H', 'J', 'K', 'L', 'M', 'N', 'P', 'R', 'S', 'T', 'W'
 };
@@ -1047,3 +1048,4 @@ const char *real_names[] = {
     "Zachery",
     "Zola"
 };
+// clang-format on

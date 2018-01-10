@@ -19,6 +19,7 @@
 #include "TrackData.h"
 #include "track_paint.h"
 
+// clang-format off
 const rct_track_coordinates FlatTrackCoordinates[] = {
     {    0,    0,    0,    0,    0,    0 },
     {    0,    0,    0,    0,    0,    0 },
@@ -32310,3 +32311,4 @@ const uint16 TrackFlags[] = {
     /* TRACK_ELEM_MULTIDIM_FLAT_TO_90_DEG_DOWN_QUARTER_LOOP            */   TRACK_ELEM_FLAG_DOWN | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
     /*                                                                 */   TRACK_ELEM_FLAG_UP | TRACK_ELEM_FLAG_NORMAL_TO_INVERSION | TRACK_ELEM_FLAG_INVERSION_TO_NORMAL,
 };
+// clang-format on

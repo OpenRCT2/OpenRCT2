@@ -22,6 +22,7 @@
 #include <string>
 #include <thread>
 
+// clang-format off
 #ifdef _WIN32
     // winsock2 must be included before windows.h
     #include <winsock2.h>
@@ -58,6 +59,7 @@
         #define FLAG_NO_PIPE 0
     #endif // defined(__linux__)
 #endif // _WIN32
+// clang-format on
 
 #include "TcpSocket.h"
 

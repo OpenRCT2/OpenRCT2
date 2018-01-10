@@ -26,6 +26,7 @@ typedef struct format_code_token {
     const char *token;
 } format_code_token;
 
+// clang-format off
 static const format_code_token format_code_tokens[] = {
     { FORMAT_MOVE_X,                    "MOVE_X"                },
     { FORMAT_ADJUST_PALETTE,            "ADJUST_PALETTE"        },
@@ -99,6 +100,7 @@ static const format_code_token format_code_tokens[] = {
     { FORMAT_INVERTEDQUESTION,          "INVERTEDQUESTION"      },
     { FORMAT_COMMA1DP16,                "COMMA1DP16"            }
 };
+// clang-format on
 
 uint32 format_get_code(const char *token)
 {

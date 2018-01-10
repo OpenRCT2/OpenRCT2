@@ -99,6 +99,7 @@ struct WindowThemeDesc
 
 #pragma region Window Theme Descriptors
 
+// clang-format off
 #define COLOURS_1(c0) 1, { { (c0), 0, 0, 0, 0, 0 } }
 #define COLOURS_2(c0, c1) 2, { { (c0), (c1), 0, 0, 0, 0 } }
 #define COLOURS_3(c0, c1, c2) 3, { { (c0), (c1), (c2), 0, 0, 0 } }
@@ -230,6 +231,7 @@ static const PredefinedTheme PredefinedThemes[] = {
     { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
     { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 }
 };
+// clang-format on
 
 #pragma endregion
 
