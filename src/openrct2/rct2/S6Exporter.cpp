@@ -238,7 +238,7 @@ void S6Exporter::Export()
     _s6.mechanic_colour = gStaffMechanicColour;
     _s6.security_colour = gStaffSecurityColour;
 
-    memcpy(_s6.researched_scenery_items, gResearchedSceneryItems, sizeof(_s6.researched_scenery_items));
+    ExportResearchedSceneryItems();
 
     _s6.park_rating = gParkRating;
 
@@ -679,6 +679,21 @@ void S6Exporter::ExportResearchedRideEntries()
             sint32 quadIndex = rideEntryIndex >> 5;
             sint32 bitIndex  = rideEntryIndex & 0x1F;
             _s6.researched_ride_entries[quadIndex] |= (uint32) 1 << bitIndex;
+        }
+    }
+}
+
+void S6Exporter::ExportResearchedSceneryItems()
+{
+    Memory::Set(_s6.researched_scenery_items, false, sizeof(_s6.researched_scenery_items));
+
+    for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS; sceneryEntryIndex++)
+    {
+        if (scenery_is_invented(sceneryEntryIndex))
+        {
+            sint32 quadIndex = sceneryEntryIndex >> 5;
+            sint32 bitIndex  = sceneryEntryIndex & 0x1F;
+            _s6.researched_scenery_items[quadIndex] |= (uint32) 1 << bitIndex;
         }
     }
 }
