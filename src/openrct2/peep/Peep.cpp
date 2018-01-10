@@ -2561,7 +2561,7 @@ void remove_peep_from_queue(rct_peep * peep)
  *
  *  rct2: 0x00691C6E
  */
-static rct_vehicle * peep_choose_car_from_ride(rct_peep * peep, Ride * ride, uint8 * car_array, uint8 car_array_size)
+static rct_vehicle * peep_choose_car_from_ride(rct_peep * peep, Ride * ride, const uint8 * car_array, uint8 car_array_size)
 {
     uint8 chosen_car = peep_rand();
     if (ride_type_has_flag(ride->type, RIDE_TYPE_FLAG_HAS_G_FORCES) && ((chosen_car & 0xC) != 0xC))

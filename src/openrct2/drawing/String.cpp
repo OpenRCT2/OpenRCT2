@@ -230,7 +230,7 @@ void gfx_draw_string_left_centred(rct_drawpixelinfo *dpi, rct_string_id format, 
 /**
  * Changes the palette so that the next character changes colour
  */
-static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette_pointer) {
+static void colour_char(uint8 colour, const uint16* current_font_flags, uint8* palette_pointer) {
 
     sint32 colour32 = 0;
     const rct_g1_element * g1 = gfx_get_g1_element(SPR_TEXT_PALETTE);
@@ -254,7 +254,7 @@ static void colour_char(uint8 colour, uint16* current_font_flags, uint8* palette
  * Changes the palette so that the next character changes colour
  * This is specific to changing to a predefined window related colour
  */
-static void colour_char_window(uint8 colour, uint16* current_font_flags,uint8* palette_pointer) {
+static void colour_char_window(uint8 colour, const uint16* current_font_flags,uint8* palette_pointer) {
 
     sint32 eax;
 

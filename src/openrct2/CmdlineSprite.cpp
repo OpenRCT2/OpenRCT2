@@ -240,7 +240,7 @@ static bool sprite_file_export(sint32 spriteIndex, const char *outPath)
     }
 }
 
-static bool is_transparent_pixel(sint16 *colour){
+static bool is_transparent_pixel(const sint16 *colour){
     return colour[3] < 128;
 }
 
@@ -261,7 +261,7 @@ static bool is_changable_pixel(sint32 palette_index) {
     return true;
 }
 
-static sint32 get_closest_palette_index(sint16 *colour){
+static sint32 get_closest_palette_index(const sint16 *colour){
     uint32 smallest_error = (uint32)-1;
     sint32 best_match = -1;
 

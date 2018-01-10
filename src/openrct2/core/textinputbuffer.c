@@ -74,7 +74,7 @@ void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint)
     }
 }
 
-void textinputbuffer_insert(textinputbuffer * tib, utf8 * source)
+void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source)
 {
     const utf8 *ch = source;
     uint32 codepoint;
