@@ -16,7 +16,8 @@
 - Feature: [#6313] Add keyboard shortcut for toggle gridlines.
 - Feature: [#6324] Add command to deselect unused objects from the object selection.
 - Feature: [#6325] Allow using g1.dat from RCT Classic.
-- Feautre: [#6329] Render level crossings when the Miniature Railway crossed a path.
+- Feature: [#6329] Render level crossings when the Miniature Railway crossed a path.
+- Feature: [#6338] Virtual floor to help positioning objects vertically.
 - Feature: [#6353] Show custom RCT1 scenarios in New Scenario window.
 - Feature: [#6411] Add command to remove the park fence.
 - Feature: [#6414] Raise maximum launch speed of the Corkscrew RC back to 96 km/h (for RCT1 parity).
