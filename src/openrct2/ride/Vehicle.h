@@ -162,7 +162,7 @@ typedef struct rct_vehicle {
         sint16 spin_speed;          // 0xB6
         sint16 crash_x;             // 0xB6
     };
-    uint16 var_B8;
+    uint16 sound2_flags;            // 0xB8
     uint8 spin_sprite;              // 0xBA lowest 3 bits not used for sprite selection (divide by 8 to use)
     uint8 sound1_id;                // 0xBB
     uint8 sound1_volume;            // 0xBC
@@ -357,6 +357,10 @@ enum {
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_10 = 1 << 10,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_11 = 1 << 11,
     VEHICLE_UPDATE_MOTION_TRACK_FLAG_12 = 1 << 12,
+};
+
+enum {
+    VEHICLE_SOUND2_FLAGS_LIFT_HILL = 1 << 1 // When on a lift hill generate sound
 };
 
 #define VEHICLE_SEAT_PAIR_FLAG  0x80

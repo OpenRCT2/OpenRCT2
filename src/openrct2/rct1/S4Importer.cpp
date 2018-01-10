@@ -1161,7 +1161,7 @@ private:
         dst->spin_sprite = src->spin_sprite;
         dst->sound_vector_factor = src->sound_vector_factor;
         dst->spin_speed = src->spin_speed;
-        dst->var_B8 = src->var_B8;
+        dst->sound2_flags = src->sound2_flags;
         dst->sound1_id = RCT12_SOUND_ID_NULL;
         dst->sound2_id = RCT12_SOUND_ID_NULL;
         dst->var_C0 = src->var_C0;
