@@ -1658,6 +1658,10 @@ void ride_select_next_section()
             tileElement = outputElement.element;
             if (!scenery_tool_is_active())
             {
+                // Invalidate previous track piece (we may not be changing height!)
+                map_invalidate_virtual_floor_tiles();
+
+                // Set next element's height.
                 map_set_virtual_floor_height(tileElement->base_height << 3);
             }
         } else {
@@ -1719,6 +1723,10 @@ void ride_select_previous_section()
             _rideConstructionArrowPulseTime = 0;
             if (!scenery_tool_is_active())
             {
+                // Invalidate previous track piece (we may not be changing height!)
+                map_invalidate_virtual_floor_tiles();
+
+                // Set previous element's height.
                 map_set_virtual_floor_height(trackBeginEnd.begin_element->base_height << 3);
             }
             window_ride_construction_update_active_elements();

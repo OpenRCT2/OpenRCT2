@@ -47,6 +47,8 @@
 #include "TileInspector.h"
 #include "Wall.h"
 
+#include <limits>
+
 /**
  * Replaces 0x00993CCC, 0x00993CCE
  */
@@ -105,7 +107,8 @@ sint16 gMapBaseZ;
 rct_tile_element gTileElements[MAX_TILE_TILE_ELEMENT_POINTERS * 3];
 rct_tile_element *gTileElementTilePointers[MAX_TILE_TILE_ELEMENT_POINTERS];
 LocationXY16 gMapSelectionTiles[300];
-static LocationXYZ16 gVirtualFloorLastLocation;
+static LocationXYZ16 gVirtualFloorLastMinLocation;
+static LocationXYZ16 gVirtualFloorLastMaxLocation;
 rct2_peep_spawn gPeepSpawns[MAX_PEEP_SPAWNS];
 
 rct_tile_element *gNextFreeTileElement;
@@ -4753,6 +4756,14 @@ void map_set_virtual_floor_height(sint16 height)
 
 void map_enable_virtual_floor()
 {
+    if (gMapVirtualFloorVisible)
+    {
+        return;
+    }
+
+    // Force invalidation on the next draw.
+    gVirtualFloorLastMinLocation.z = std::numeric_limits<sint16>::max();
+    gVirtualFloorLastMaxLocation.z = std::numeric_limits<sint16>::lowest();
     gMapVirtualFloorVisible = true;
 }
 
@@ -4764,7 +4775,8 @@ void map_remove_virtual_floor()
     }
 
     // Force invalidation, even if the position hasn't changed.
-    gVirtualFloorLastLocation.z = -1;
+    gVirtualFloorLastMinLocation.z = std::numeric_limits<sint16>::max();
+    gVirtualFloorLastMaxLocation.z = std::numeric_limits<sint16>::lowest();
     map_invalidate_virtual_floor_tiles();
 
     gMapVirtualFloorHeight = 0;
@@ -4778,8 +4790,9 @@ void map_invalidate_virtual_floor_tiles()
         return;
     }
 
-    LocationXY16 min_position = { 0x7FFF, 0x7FFF };
-    LocationXY16 max_position = { 0, 0 };
+    // First, let's figure out how big our selection is.
+    LocationXY16 min_position = { std::numeric_limits<sint16>::max(),    std::numeric_limits<sint16>::max()    };
+    LocationXY16 max_position = { std::numeric_limits<sint16>::lowest(), std::numeric_limits<sint16>::lowest() };
 
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
     {
@@ -4797,27 +4810,54 @@ void map_invalidate_virtual_floor_tiles()
         }
     }
 
+    // Do not invalidate if we're between ticks.
+    if (min_position.x == std::numeric_limits<sint16>::max()    || min_position.y == std::numeric_limits<sint16>::max() ||
+        max_position.x == std::numeric_limits<sint16>::lowest() || max_position.y == std::numeric_limits<sint16>::lowest())
+        return;
+
+    // Apply the virtual floor size to the computed invalidation area.
     min_position.x  -= gMapVirtualFloorBaseSize + 1;
     min_position.y  -= gMapVirtualFloorBaseSize + 1;
     max_position.x  += gMapVirtualFloorBaseSize + 1;
     max_position.y  += gMapVirtualFloorBaseSize + 1;
 
-    if (gVirtualFloorLastLocation.x == min_position.x &&
-        gVirtualFloorLastLocation.y == min_position.y &&
-        gVirtualFloorLastLocation.z == gMapVirtualFloorHeight)
-        return;
-
-    for (sint16 x = min_position.x; x < max_position.x; x++)
+    // Do not invalidate if floor hasn't moved.
+    if (gVirtualFloorLastMinLocation.x == min_position.x &&
+        gVirtualFloorLastMinLocation.y == min_position.y &&
+        gVirtualFloorLastMinLocation.z == gMapVirtualFloorHeight)
     {
-        for (sint16 y = min_position.y; y < max_position.y; y++)
+        return;
+    }
+
+    LocationXY16 corr_min_position = min_position;
+    LocationXY16 corr_max_position = max_position;
+
+    // Invalidate previous locations, too, if appropriate.
+    if (gVirtualFloorLastMinLocation.z != std::numeric_limits<sint16>::max() &&
+        gVirtualFloorLastMaxLocation.z != std::numeric_limits<sint16>::lowest())
+    {
+        corr_min_position.x = std::min(min_position.x, gVirtualFloorLastMinLocation.x);
+        corr_min_position.y = std::min(min_position.y, gVirtualFloorLastMinLocation.y);
+        corr_max_position.x = std::max(max_position.x, gVirtualFloorLastMaxLocation.x);
+        corr_max_position.y = std::max(max_position.y, gVirtualFloorLastMaxLocation.y);
+    }
+
+    for (sint16 x = corr_min_position.x; x < corr_max_position.x; x++)
+    {
+        for (sint16 y = corr_min_position.y; y < corr_max_position.y; y++)
         {
             map_invalidate_tile_full(x, y);
         }
     }
 
-    gVirtualFloorLastLocation.x = min_position.x;
-    gVirtualFloorLastLocation.y = min_position.y;
-    gVirtualFloorLastLocation.z = gMapVirtualFloorHeight;
+    // Save minimal and maximal positions. Note: not their corrected positions!
+    gVirtualFloorLastMinLocation.x = min_position.x;
+    gVirtualFloorLastMinLocation.y = min_position.y;
+    gVirtualFloorLastMinLocation.z = gMapVirtualFloorHeight;
+
+    gVirtualFloorLastMaxLocation.x = max_position.x;
+    gVirtualFloorLastMaxLocation.y = max_position.y;
+    gVirtualFloorLastMaxLocation.z = gMapVirtualFloorHeight;
 }
 
 bool map_tile_is_part_of_virtual_floor(sint16 x, sint16 y)
