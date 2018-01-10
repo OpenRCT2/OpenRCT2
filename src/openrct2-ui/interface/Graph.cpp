@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2-ui/interface/Graph.h>
 
-static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
+static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, const uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
     sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
@@ -42,7 +42,7 @@ static void graph_draw_months_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint
     }
 }
 
-static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
+static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, const uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
     sint32 i, x, y, lastX, lastY;
     lastX = -1;
@@ -66,7 +66,7 @@ static void graph_draw_line_a_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint
     }
 }
 
-static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
+static void graph_draw_line_b_uint8(rct_drawpixelinfo *dpi, const uint8 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
     sint32 i, x, y, lastX, lastY;
 
@@ -96,7 +96,7 @@ void graph_draw_uint8(rct_drawpixelinfo *dpi, uint8 *history, sint32 count, sint
     graph_draw_line_b_uint8(dpi, history, count, baseX, baseY);
 }
 
-static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY)
+static void graph_draw_months_money32(rct_drawpixelinfo *dpi, const money32 *history, sint32 count, sint32 baseX, sint32 baseY)
 {
     sint32 i, x, y, yearOver32, currentMonth, currentDay;
 
@@ -120,7 +120,7 @@ static void graph_draw_months_money32(rct_drawpixelinfo *dpi, money32 *history, 
     }
 }
 
-static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
+static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, const money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
     sint32 i, x, y, lastX, lastY;
     lastX = -1;
@@ -144,7 +144,7 @@ static void graph_draw_line_a_money32(rct_drawpixelinfo *dpi, money32 *history, 
     }
 }
 
-static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
+static void graph_draw_line_b_money32(rct_drawpixelinfo *dpi, const money32 *history, sint32 count, sint32 baseX, sint32 baseY, sint32 modifier, sint32 offset)
 {
     sint32 i, x, y, lastX, lastY;
 

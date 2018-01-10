@@ -252,7 +252,7 @@ private:
         }
     }
 
-    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, uint32 * palette)
+    void CopyBitsToTexture(SDL_Texture * texture, uint8 * src, sint32 width, sint32 height, const uint32 * palette)
     {
         void *  pixels;
         sint32     pitch;

@@ -737,7 +737,7 @@ sint32 game_do_command_p(uint32 command, sint32 * eax, sint32 * ebx, sint32 * ec
     return MONEY32_UNDEFINED;
 }
 
-void game_log_multiplayer_command(int command, int * eax, int * ebx, int * ecx, int * edx, int * edi, int * ebp)
+void game_log_multiplayer_command(int command, const int * eax, const int * ebx, const int * ecx, int * edx, int * edi, int * ebp)
 {
     // Get player name
     int player_index = network_get_player_index(game_command_playerid);

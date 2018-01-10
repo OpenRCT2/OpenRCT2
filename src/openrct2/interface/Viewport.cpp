@@ -1203,7 +1203,7 @@ static bool pixel_is_present_bmp(uint32 imageType, const rct_g1_element * g1, co
 /**
  * rct2: 0x0067933B, 0x00679788, 0x00679C4A, 0x0067A117
  */
-static bool is_pixel_present_rle(uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
+static bool is_pixel_present_rle(const uint8 *esi, sint16 x_start_point, sint16 y_start_point, sint32 round) {
     const uint8 *ebx = esi + ((uint16 *) esi)[y_start_point];
 
     uint8 last_data_line = 0;

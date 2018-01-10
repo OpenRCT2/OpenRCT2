@@ -79,8 +79,8 @@ void lightfx_render_to_texture(
     uint8 * bits,
     uint32 width,
     uint32 height,
-    uint32 * palette,
-    uint32 * lightPalette);
+    const uint32 * palette,
+    const uint32 * lightPalette);
 
 #ifdef __cplusplus
 }
