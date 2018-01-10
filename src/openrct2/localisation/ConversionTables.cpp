@@ -17,6 +17,7 @@
 #include "ConversionTables.h"
 #include "FormatCodes.h"
 
+// clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[256] =
 {
     { 0, 0 },
@@ -46293,3 +46294,4 @@ const encoding_convert_entry CP949ToUnicodeTable[17176] =
     { 0xFDFD, 0x7FB2 }, // CJK UNIFIED IDEOGRAPH
     { 0xFDFE, 0x8A70 }, // CJK UNIFIED IDEOGRAPH
 };
+//clang-format on

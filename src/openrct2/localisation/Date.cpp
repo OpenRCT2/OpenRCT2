@@ -26,6 +26,7 @@ uint16 gDateMonthsElapsed;
 // rct2: 0x00993988
 const sint16 days_in_month[MONTH_COUNT] = { 31, 30, 31, 30, 31, 31, 30, 31 };
 
+// clang-format off
 const rct_string_id DateFormatStringIds[] = {
     STR_DATE_FORMAT_DAY_MONTH_YEAR,
     STR_DATE_FORMAT_MONTH_DAY_YEAR,
@@ -39,6 +40,7 @@ const rct_string_id DateFormatStringFormatIds[] = {
     STR_DATE_FORMAT_YMD,
     STR_DATE_FORMAT_YDM
 };
+// clang-format on
 
 openrct_timeofday gRealTimeOfDay;
 

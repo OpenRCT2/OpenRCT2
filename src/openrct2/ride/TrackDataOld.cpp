@@ -17,6 +17,7 @@
 #include "TrackData.h"
 
 /** rct2: 0x008A42F4 */
+// clang-format off
 static const uint32 _OldSpiralRollerCoasterTrackPaintFunctions[256] = {
     0x008A4ABC, // TRACK_ELEM_FLAT
     0x008A4D0C, // TRACK_ELEM_END_STATION
@@ -19359,3 +19360,4 @@ const uint32 * RideTypeTrackPaintFunctionsOld[RIDE_TYPE_COUNT] = {
     _null,                                                  // RIDE_TYPE_59
     _OldLimLaunchedRollerCoasterTrackPaintFunctions,        // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
 };
+//clang-format on

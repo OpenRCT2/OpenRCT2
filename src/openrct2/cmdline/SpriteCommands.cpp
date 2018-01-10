@@ -30,6 +30,7 @@ sint32 gSpriteMode = 0;
 
 static const char * _mode;
 
+// clang-format off
 static const CommandLineOptionDefinition SpriteOptions[]
 {
     { CMDLINE_TYPE_STRING, &_mode, 'm', "mode", "the type of sprite conversion <" SZ_DEFAULT "|" SZ_CLOSEST "|" SZ_DITHERING ">" },
@@ -49,6 +50,7 @@ const CommandLineCommand CommandLine::SpriteCommands[]
     DefineCommand("exportall", "<spritefile> <output directory>",          SpriteOptions, HandleSprite),
     CommandTableEnd
 };
+// clang-format on
 
 static exitcode_t HandleSprite(CommandLineArgEnumerator *argEnumerator)
 {

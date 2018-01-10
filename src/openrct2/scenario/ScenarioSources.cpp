@@ -38,6 +38,7 @@ namespace ScenarioSources
 
     #pragma region Scenario Data
 
+    // clang-format off
     static const ScenarioAlias ScenarioAliases[] =
     {
         // UK - US differences:
@@ -257,6 +258,7 @@ namespace ScenarioSources
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesRealParks),
         DEFINE_SCENARIO_TITLE_DESC_GROUP(ScenarioTitlesOtherParks),
     };
+    // clang-format on
 
     #pragma endregion
 

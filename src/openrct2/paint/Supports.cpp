@@ -20,6 +20,7 @@
 #include "tile_element/TileElement.h"
 
 /** rct2: 0x0097AF20, 0x0097AF21 */
+// clang-format off
 static const LocationXY8 loc_97AF20[] = {
     {4,  4},
     {28, 4},
@@ -328,6 +329,7 @@ static const uint16 word_97B3C4[] = {
     15,
     0,
 };
+// clang-format on
 
 extern bool gUseOriginalRidePaint;
 

@@ -212,6 +212,7 @@ bool RideGroupManager::RideGroupIsInvented(const RideGroup * rideGroup)
 
 const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(const uint8 rideType)
 {
+    // clang-format off
     static const std::vector<const char *> preferredRideEntryOrder[] =
     {
         { "SPDRCR  " },                                                             // RIDE_TYPE_SPIRAL_ROLLER_COASTER
@@ -305,7 +306,8 @@ const std::vector<const char *> RideGroupManager::GetPreferredRideEntryOrder(con
         { "PMT1    " },                                                             // RIDE_TYPE_MINE_RIDE
         { },                                                                        // RIDE_TYPE_59
         { "PREMT1  " },                                                             // RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER
-   };
+    };
+    // clang-format on
     return preferredRideEntryOrder[rideType];
 }
 

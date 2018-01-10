@@ -48,6 +48,7 @@ sint32 gPickupPeepY;
  *
  * rct2: 0x0009ABE0C
  */
+// clang-format off
 uint8 gPeepPalette[256] = {
     0x00, 0xF3, 0xF4, 0xF5, 0x04, 0x05, 0x06, 0x07, 0x08, 0x09, 0x0A, 0x0B, 0x0C, 0x0D, 0x0E, 0x0F,
     0x10, 0x11, 0x12, 0x13, 0x14, 0x15, 0x16, 0x17, 0x18, 0x19, 0x1A, 0x1B, 0x1C, 0x1D, 0x1E, 0x1F,
@@ -473,6 +474,7 @@ const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT] = {
     WINDOW_PALETTE_BRIGHT_PINK,             // COLOUR_BRIGHT_PINK
     {PALETTE_TRANSLUCENT_LIGHT_PINK,        PALETTE_TRANSLUCENT_LIGHT_PINK_HIGHLIGHT,       PALETTE_TRANSLUCENT_LIGHT_PINK_SHADOW},
 };
+// clang-format on
 
 void (*mask_fn)(sint32 width, sint32 height, const uint8 * RESTRICT maskSrc, const uint8 * RESTRICT colourSrc,
                 uint8 * RESTRICT dst, sint32 maskWrap, sint32 colourWrap, sint32 dstWrap) = nullptr;

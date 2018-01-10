@@ -62,6 +62,7 @@
 #pragma region Ride classification table
 
 /** rct2: 0x0097C3AF */
+// clang-format off
 const uint8 gRideClassifications[255] = {
     RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
     RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
@@ -128,6 +129,7 @@ const uint8 gRideClassifications[255] = {
     RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE,
     RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE, RIDE_CLASS_RIDE
 };
+// clang-format on
 
 uint8 gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 

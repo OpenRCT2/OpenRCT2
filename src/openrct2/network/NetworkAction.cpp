@@ -55,6 +55,7 @@ sint32 NetworkActions::FindCommandByPermissionName(const std::string &permission
     return -1;
 }
 
+// clang-format off
 const std::vector<NetworkAction> NetworkActions::Actions =
 {
     {
@@ -226,5 +227,6 @@ const std::vector<NetworkAction> NetworkActions::Actions =
         }
     }
 };
+// clang-format on
 
 #endif

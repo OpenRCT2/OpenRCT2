@@ -63,6 +63,7 @@ static utf8 * _openrctDataPath = nullptr;
 static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
 
+// clang-format off
 static const CommandLineOptionDefinition StandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
@@ -156,6 +157,7 @@ const CommandLineExample CommandLine::RootExamples[]
 #endif
     ExampleTableEnd
 };
+// clang-format on
 
 exitcode_t CommandLine::HandleCommandDefault()
 {

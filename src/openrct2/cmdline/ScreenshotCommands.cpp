@@ -19,6 +19,7 @@
 
 static ScreenshotOptions options;
 
+// clang-format off
 static const CommandLineOptionDefinition ScreenshotOptionsDef[]
 {
     { CMDLINE_TYPE_INTEGER, &options.weather,       NAC, "weather",       "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
@@ -42,6 +43,7 @@ const CommandLineCommand CommandLine::ScreenshotCommands[]
     DefineCommand("", "<file> <output_image> giant <zoom> <rotation>",                      ScreenshotOptionsDef, HandleScreenshot),
     CommandTableEnd
 };
+// clang-format on
 
 static exitcode_t HandleScreenshot(CommandLineArgEnumerator *argEnumerator)
 {

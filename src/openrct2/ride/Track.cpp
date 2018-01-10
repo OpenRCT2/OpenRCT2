@@ -42,6 +42,7 @@
 uint8 gTrackGroundFlags;
 
 /**  rct2: 0x00997C9D */
+// clang-format off
 const rct_trackdefinition TrackDefinitions[256] =
 {
     // TYPE                         VANGLE END                  VANGLE START                BANK END                BANK START              PREVIEW Z OFFSET
@@ -563,6 +564,7 @@ const rct_trackdefinition FlatRideTrackDefinitions[256] =
     { TRACK_QUARTER_LOOP_UNINVERTED,TRACK_SLOPE_NONE,           TRACK_SLOPE_UP_90,          TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                           },  // 253
     { TRACK_QUARTER_LOOP_UNINVERTED,TRACK_SLOPE_DOWN_90,        TRACK_SLOPE_NONE,           TRACK_BANK_UPSIDE_DOWN, TRACK_BANK_NONE,        0                           },  // 254
 };
+// clang-format on
 
 /**
  * Helper method to determine if a connects to b by its bank and angle, not location.

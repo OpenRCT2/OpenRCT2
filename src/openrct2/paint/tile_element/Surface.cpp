@@ -25,6 +25,7 @@
 #include "Surface.h"
 #include "TileElement.h"
 
+// clang-format off
 static constexpr const uint8 byte_97B444[] =
 {
     0, 2, 1, 3, 8, 10, 9, 11, 4, 6,
@@ -420,6 +421,7 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] =
         { 1,  30 }
     },
 };
+// clang-format on
 
 static uint8 viewport_surface_paint_setup_get_relative_slope(rct_tile_element * tileElement, sint32 rotation)
 {

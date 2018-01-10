@@ -48,6 +48,7 @@ uint8 gMapTooltipFormatArgs[40];
     bool gDebugStringFormatting = false;
 #endif
 
+// clang-format off
 const rct_string_id SpeedNames[] = {
     STR_SPEED_NORMAL,
     STR_SPEED_QUICK,
@@ -330,6 +331,7 @@ const rct_string_id DateGameShortMonthNames[MONTH_COUNT] = {
     STR_MONTH_SHORT_SEP,
     STR_MONTH_SHORT_OCT,
 };
+// clang-format on
 
 #define format_push_char_safe(C) { *(*dest)++ = (C); --(*size); }
 #define format_handle_overflow(X) if ((*size) <= (X)) { *(*dest) = '\0'; (*size) = 0; return; }

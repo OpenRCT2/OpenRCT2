@@ -159,6 +159,7 @@ extern bool TempForScrollText;
 
 #define SCROLL_POS(x, y)    ((y * 64) + x)
 
+// clang-format off
 static const sint16 _scrollpos0[] = {
     SCROLL_POS( 35, 12 ),
     SCROLL_POS( 36, 12 ),
@@ -1418,6 +1419,7 @@ static const sint16* _scrollPositions[MAX_SCROLLING_TEXT_MODES] = {
     _scrollpos36,
     _scrollpos37,
 };
+// clang-format on
 
 extern "C"
 {

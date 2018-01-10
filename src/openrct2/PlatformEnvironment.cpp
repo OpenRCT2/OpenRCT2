@@ -174,6 +174,7 @@ IPlatformEnvironment * OpenRCT2::CreatePlatformEnvironment()
     return env;
 }
 
+// clang-format off
 const char * PlatformEnvironment::DirectoryNamesRCT2[] =
 {
     "Data",                 // DATA
@@ -225,3 +226,4 @@ const char * PlatformEnvironment::FileNames[] =
     "scores.dat",           // SCORES (LEGACY)
     "Saved Games" PATH_SEPARATOR "scores.dat",  // SCORES (RCT2)
 };
+// clang-format on
