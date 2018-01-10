@@ -293,10 +293,7 @@ void research_finish_item(rct_research_item * researchItem)
         rct_scenery_group_entry * sceneryGroupEntry = get_scenery_group_entry(researchItem->entryIndex);
         if (sceneryGroupEntry != nullptr)
         {
-            for (sint32 i = 0; i < sceneryGroupEntry->entry_count; i++)
-            {
-                scenery_set_invented(sceneryGroupEntry->scenery_entries[i]);
-            }
+            scenery_group_set_invented(researchItem->entryIndex);
 
             set_format_arg(0, rct_string_id, sceneryGroupEntry->name);
 
@@ -741,6 +738,19 @@ bool scenery_group_is_invented(sint32 sgIndex)
         }
     }
     return invented;
+}
+
+void scenery_group_set_invented(sint32 sgIndex)
+{
+    const auto sgEntry = get_scenery_group_entry(sgIndex);
+    if (sgEntry != nullptr && sgEntry->entry_count > 0)
+    {
+        for (auto i = 0; i < sgEntry->entry_count; i++)
+        {
+            auto sceneryEntryIndex = sgEntry->scenery_entries[i];
+            scenery_set_invented(sceneryEntryIndex);
+        }
+    }
 }
 
 void set_all_scenery_items_invented()
