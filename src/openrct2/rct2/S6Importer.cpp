@@ -236,6 +236,7 @@ public:
         // pad_01357400
         ImportResearchedRideTypes();
         ImportResearchedRideEntries();
+        ImportResearchedSceneryItems();
         // _s6.researched_track_types_a
         // _s6.researched_track_types_b
 
@@ -256,7 +257,7 @@ public:
         gStaffMechanicColour = _s6.mechanic_colour;
         gStaffSecurityColour = _s6.security_colour;
 
-        memcpy(gResearchedSceneryItems, _s6.researched_scenery_items, sizeof(_s6.researched_scenery_items));
+        ImportResearchedSceneryItems();
 
         gParkRating = _s6.park_rating;
 
@@ -708,7 +709,8 @@ public:
             sint32 bitIndex  = rideType & 0x1F;
             bool   invented  = (_s6.researched_ride_types[quadIndex] & ((uint32) 1 << bitIndex));
 
-            ride_type_set_invented(rideType);
+            if (invented)
+                ride_type_set_invented(rideType);
         }
     }
 
@@ -722,9 +724,24 @@ public:
             sint32 bitIndex  = rideEntryIndex & 0x1F;
             bool   invented  = (_s6.researched_ride_entries[quadIndex] & ((uint32) 1 << bitIndex));
 
-            ride_entry_set_invented(rideEntryIndex);
+            if (invented)
+                ride_entry_set_invented(rideEntryIndex);
         }
+    }
 
+    void ImportResearchedSceneryItems()
+    {
+        set_all_scenery_items_not_invented();
+
+        for (uint16 sceneryEntryIndex = 0; sceneryEntryIndex < RCT2_MAX_RESEARCHED_SCENERY_ITEM_QUADS; sceneryEntryIndex++)
+        {
+            sint32 quadIndex = sceneryEntryIndex >> 5;
+            sint32 bitIndex  = sceneryEntryIndex & 0x1F;
+            bool   invented  = (_s6.researched_scenery_items[quadIndex] & ((uint32) 1 << bitIndex));
+
+            if (invented)
+                scenery_set_invented(sceneryEntryIndex);
+        }
     }
 
     void Initialise()

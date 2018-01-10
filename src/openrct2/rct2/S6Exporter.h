@@ -53,6 +53,7 @@ private:
     static uint32 GetLoanHash(money32 initialCash, money32 bankLoan, uint32 maxBankLoan);
     void ExportResearchedRideTypes();
     void ExportResearchedRideEntries();
+    void ExportResearchedSceneryItems();
 };
 
 #endif

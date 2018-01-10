@@ -58,12 +58,12 @@ enum
 #define RESEARCHED_ITEMS_SEPARATOR -1
 // Everything before this point and after separator still requires research
 #define RESEARCHED_ITEMS_END -2
-// Extra end of list entry. Unsure why?
+// Extra end of list entry. Leftover from RCT1.
 #define RESEARCHED_ITEMS_END_2 -3
 
-#define MAX_RESEARCH_ITEMS           500
-#define MAX_RESEARCHED_SCENERY_ITEMS  56 // Actually 56 * 32 = 1792
-#define MAX_RESEARCHED_TRACK_TYPES   128
+#define MAX_RESEARCH_ITEMS            500
+#define MAX_RESEARCHED_TRACK_TYPES    128
+#define MAX_RESEARCHED_SCENERY_ITEMS 1792
 
 #define RESEARCH_ENTRY_RIDE_MASK 0x10000
 
@@ -110,7 +110,6 @@ extern rct_research_item gResearchNextItem;
 
 extern rct_research_item gResearchItems[MAX_RESEARCH_ITEMS];
 extern uint8 gResearchUncompletedCategories;
-extern uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 extern bool gSilentResearch;
 
 void research_reset_items();
@@ -140,6 +139,7 @@ bool track_piece_is_available_for_ride_type(uint8 rideType, sint32 trackType);
 bool scenery_group_is_invented(sint32 sgIndex);
 bool scenery_is_invented(uint16 sceneryItem);
 void set_all_scenery_items_invented();
+void set_all_scenery_items_not_invented();
 void set_every_ride_type_invented();
 void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
