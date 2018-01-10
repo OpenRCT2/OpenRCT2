@@ -155,7 +155,10 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
 
     bool partOfVirtualFloor = false;
 #ifndef __TESTPAINT__
-    partOfVirtualFloor = map_tile_is_part_of_virtual_floor(session->MapPosition.x, session->MapPosition.y);
+    if (gConfigGeneral.use_virtual_floor)
+    {
+        partOfVirtualFloor = map_tile_is_part_of_virtual_floor(session->MapPosition.x, session->MapPosition.y);
+    }
 #endif // __TESTPAINT__
 
     /* Check if the first (lowest) tile_element is below the clip
@@ -332,7 +335,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
     } while (!tile_element_is_last_for_tile(tile_element++));
 
 #ifndef __TESTPAINT__
-    if (partOfVirtualFloor)
+    if (gConfigGeneral.use_virtual_floor && partOfVirtualFloor)
     {
         virtual_floor_paint(session);
     }
