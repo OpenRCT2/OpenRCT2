@@ -1352,7 +1352,7 @@ void surface_paint(paint_session * session, uint8 direction, uint16 height, rct_
         const uint16 localHeight = height + 16;
         const uint16 waterHeight = map_get_water_height(tileElement) * 16;
 
-        if (!gTrackDesignSaveMode)
+        if (!gTrackDesignSaveMode && !(gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         {
             session->Unk141E9DC = waterHeight;
 

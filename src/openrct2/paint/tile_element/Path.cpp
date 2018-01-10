@@ -603,6 +603,12 @@ static void sub_6A3F61(paint_session * session, rct_tile_element * tile_element,
     if (dpi->zoom_level <= 1) {
         if (!gTrackDesignSaveMode) {
             if (footpath_element_has_path_scenery(tile_element)) {
+                if ((gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES) &&
+                    !(tile_element->flags & TILE_ELEMENT_FLAG_BROKEN))
+                {
+                    return;
+                }
+
                 session->InteractionType = VIEWPORT_INTERACTION_ITEM_FOOTPATH_ITEM;
                 if (sceneryImageFlags != 0) {
                     session->InteractionType = VIEWPORT_INTERACTION_ITEM_NONE;
@@ -695,6 +701,11 @@ void path_paint(paint_session * session, uint8 direction, uint16 height, rct_til
         if (!track_design_save_contains_tile_element(tile_element)) {
             imageFlags = 0x21700000;
         }
+    }
+
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        imageFlags = 0x21700000;
     }
 
     if (footpath_element_path_scenery_is_ghost(tile_element)) {

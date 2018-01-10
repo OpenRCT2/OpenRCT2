@@ -44,6 +44,10 @@ static constexpr const LocationXY16 lengths[] = {
  *  rct2: 0x006DFF47
  */
 void scenery_paint(paint_session * session, uint8 direction, sint32 height, rct_tile_element* tileElement) {
+    if (gCurrentViewportFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
     //RCT2_CALLPROC_X(0x6DFF47, 0, 0, direction, height, (sint32)tileElement, 0, 0); return;
     session->InteractionType = VIEWPORT_INTERACTION_ITEM_SCENERY;
     LocationXYZ16 boxlength;

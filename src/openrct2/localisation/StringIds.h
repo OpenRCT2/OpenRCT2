@@ -3876,6 +3876,8 @@ enum {
 
     STR_OBJECT_FILTER_OPENRCT2_OFFICIAL = 6218,
 
+    STR_HIGHLIGHT_PATH_ISSUES_MENU = 6219,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     STR_COUNT = 32768
 };
