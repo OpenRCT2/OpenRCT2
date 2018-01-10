@@ -54,6 +54,7 @@ private:
     void ExportResearchedRideTypes();
     void ExportResearchedRideEntries();
     void ExportResearchedSceneryItems();
+    void ExportResearchList();
 };
 
 #endif
