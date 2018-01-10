@@ -598,6 +598,7 @@ static void window_loadsave_invalidate(rct_window *w)
     window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
     window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
     window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
     window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
     window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
 
