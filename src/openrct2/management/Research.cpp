@@ -35,6 +35,7 @@
 #include "Finance.h"
 #include "Research.h"
 #include "../core/Memory.hpp"
+#include "../util/Util.h"
 
 const sint32 _researchRate[] = {0, 160, 250, 400};
 
@@ -927,4 +928,87 @@ void research_fix()
                 research_insert_scenery_group_entry(i, true);
         }
     }
+}
+
+void research_items_make_all_unresearched()
+{
+    rct_research_item * researchItem, * nextResearchItem, researchItemTemp;
+
+    sint32 sorted;
+    do {
+        sorted = 1;
+        for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++)
+        {
+            if (research_item_is_always_researched(researchItem))
+                continue;
+
+            nextResearchItem = researchItem + 1;
+            if (nextResearchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR || research_item_is_always_researched(nextResearchItem))
+            {
+                // Bubble up always researched item or separator
+                researchItemTemp = *researchItem;
+                *researchItem = *nextResearchItem;
+                *nextResearchItem = researchItemTemp;
+                sorted = 0;
+
+                if (researchItem->rawValue == RESEARCHED_ITEMS_SEPARATOR)
+                    break;
+            }
+        }
+    }
+    while (!sorted);
+}
+
+void research_items_make_all_researched()
+{
+    rct_research_item * researchItem, researchItemTemp;
+
+    // Find separator
+    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) { }
+
+    // Move separator below all items
+    for (; (researchItem + 1)->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+    {
+        // Swap separator with research item
+        researchItemTemp = *researchItem;
+        *researchItem = *(researchItem + 1);
+        *(researchItem + 1) = researchItemTemp;
+    }
+}
+
+/**
+ *
+ *  rct2: 0x00685A93
+ */
+void research_items_shuffle()
+{
+    rct_research_item * researchItem, * researchOrderBase, researchItemTemp;
+    sint32 i, numNonResearchedItems;
+
+    // Skip pre-researched items
+    for (researchItem = gResearchItems; researchItem->rawValue != RESEARCHED_ITEMS_SEPARATOR; researchItem++) {}
+    researchItem++;
+    researchOrderBase = researchItem;
+
+    // Count non pre-researched items
+    numNonResearchedItems = 0;
+    for (; researchItem->rawValue != RESEARCHED_ITEMS_END; researchItem++)
+        numNonResearchedItems++;
+
+    // Shuffle list
+    for (i = 0; i < numNonResearchedItems; i++)
+    {
+        sint32 ri = util_rand() % numNonResearchedItems;
+        if (ri == i)
+            continue;
+
+        researchItemTemp = researchOrderBase[i];
+        researchOrderBase[i] = researchOrderBase[ri];
+        researchOrderBase[ri] = researchItemTemp;
+    }
+}
+
+bool research_item_is_always_researched(rct_research_item * researchItem)
+{
+    return (researchItem->flags & (RESEARCH_ENTRY_FLAG_RIDE_ALWAYS_RESEARCHED | RESEARCH_ENTRY_FLAG_SCENERY_SET_ALWAYS_RESEARCHED)) != 0;
 }
