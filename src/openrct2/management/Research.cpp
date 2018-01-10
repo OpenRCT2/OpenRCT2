@@ -61,8 +61,9 @@ uint32 gResearchedSceneryItems[MAX_RESEARCHED_SCENERY_ITEMS];
 bool gSilentResearch = false;
 
 static void ride_type_set_invented(sint32 rideType);
-
 static void ride_entry_set_invented(sint32 rideEntryIndex);
+static void scenery_set_invented(uint16 sceneryItem);
+static void scenery_set_not_invented(uint16 sceneryItem);
 
 /**
  *
@@ -299,8 +300,7 @@ void research_finish_item(rct_research_item * researchItem)
         {
             for (sint32 i = 0; i < sceneryGroupEntry->entry_count; i++)
             {
-                sint32 subSceneryEntryIndex = sceneryGroupEntry->scenery_entries[i];
-                gResearchedSceneryItems[subSceneryEntryIndex >> 5] |= 1UL << (subSceneryEntryIndex & 0x1F);
+                scenery_set_invented(sceneryGroupEntry->scenery_entries[i]);
             }
 
             set_format_arg(0, rct_string_id, sceneryGroupEntry->name);
@@ -416,10 +416,7 @@ void research_reset_current_item()
 
     set_every_ride_entry_not_invented();
 
-    for (auto &researchedSceneryItem : gResearchedSceneryItems)
-    {
-        researchedSceneryItem = 0xFFFFFFFF;
-    }
+    set_all_scenery_items_invented();
 
     for (sint32 i = 0; i < MAX_SCENERY_GROUP_OBJECTS; ++i)
     {
@@ -431,8 +428,7 @@ void research_reset_current_item()
 
         for (sint32 j = 0; j < scenery_set->entry_count; ++j)
         {
-            uint8 value = scenery_set->scenery_entries[j] & 0x1F;
-            gResearchedSceneryItems[scenery_set->scenery_entries[j] >> 5] &= ~(1UL << value);
+            scenery_set_not_invented(scenery_set->scenery_entries[j]);
         }
     }
 
@@ -716,6 +712,20 @@ bool scenery_is_invented(uint16 sceneryItem)
     sint32 bitIndex  = sceneryItem & 0x1F;
     bool   invented  = (gResearchedSceneryItems[quadIndex] & ((uint32) 1 << bitIndex));
     return invented;
+}
+
+static void scenery_set_invented(uint16 sceneryItem)
+{
+    sint32 quadIndex = sceneryItem >> 5;
+    sint32 bitIndex  = sceneryItem & 0x1F;
+    gResearchedSceneryItems[quadIndex] |= (uint32) 1 << bitIndex;
+}
+
+static void scenery_set_not_invented(uint16 sceneryItem)
+{
+    sint32 quadIndex = sceneryItem >> 5;
+    sint32 bitIndex  = sceneryItem & 0x1F;
+    gResearchedSceneryItems[quadIndex] &= ~((uint32) 1 << bitIndex);
 }
 
 bool scenery_group_is_invented(sint32 sgIndex)
