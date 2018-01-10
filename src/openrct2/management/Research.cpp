@@ -45,7 +45,6 @@ uint8  gResearchProgressStage;
 rct_research_item gResearchLastItem;
 uint8  gResearchExpectedMonth;
 uint8  gResearchExpectedDay;
-uint8  gResearchNextCategory;
 rct_research_item gResearchNextItem;
 
 // 0x01358844[500]
@@ -171,7 +170,6 @@ static void research_next_design()
     }
 
     gResearchNextItem      = *researchItem;
-    gResearchNextCategory  = researchItem->category;
     gResearchProgress      = 0;
     gResearchProgressStage = RESEARCH_STAGE_DESIGNING;
 
@@ -437,8 +435,8 @@ void research_reset_current_item()
     }
 
     gResearchLastItem.rawValue = RESEARCHED_ITEMS_SEPARATOR;
-    gResearchProgressStage            = 0;
-    gResearchProgress                 = 0;
+    gResearchProgressStage     = RESEARCH_STAGE_INITIAL_RESEARCH;
+    gResearchProgress          = 0;
 }
 
 /**

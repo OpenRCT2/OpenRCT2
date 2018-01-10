@@ -357,7 +357,7 @@ void window_research_development_page_paint(rct_window *w, rct_drawpixelinfo *dp
         stringId = STR_RESEARCH_UNKNOWN;
         if (gResearchProgressStage != RESEARCH_STAGE_INITIAL_RESEARCH)
         {
-            stringId = ResearchCategoryNames[gResearchNextCategory];
+            stringId = ResearchCategoryNames[gResearchNextItem.category];
             if (gResearchProgressStage != RESEARCH_STAGE_DESIGNING)
             {
                 stringId = research_item_get_name(&gResearchNextItem);

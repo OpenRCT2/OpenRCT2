@@ -104,7 +104,6 @@ extern uint16 gResearchProgress;
 extern uint8 gResearchProgressStage;
 extern uint8 gResearchExpectedMonth;
 extern uint8 gResearchExpectedDay;
-extern uint8 gResearchNextCategory;
 extern rct_research_item gResearchLastItem;
 extern rct_research_item gResearchNextItem;
 
