@@ -179,7 +179,7 @@ void addhook(uintptr_t address, hook_function *function)
     if (_hookTableOffset > _maxHooks) {
         return;
     }
-    uint32 hookaddress = (uint32)_hookTableAddress + (_hookTableOffset * HOOK_BYTE_COUNT);
+    uint32 hookaddress = (uint32)((uint64)(_hookTableAddress) & 0xFFFFFFFF) + (_hookTableOffset * HOOK_BYTE_COUNT);
     uint8 data[9];
     sint32 i = 0;
     data[i++] = 0xE9; // jmp

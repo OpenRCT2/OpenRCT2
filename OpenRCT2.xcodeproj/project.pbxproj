@@ -78,11 +78,11 @@
 		4C7B53FB200143C200A52E21 /* ViewportInteraction.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EE200143C200A52E21 /* ViewportInteraction.cpp */; };
 		4C7B53FC200143C200A52E21 /* Widget.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53EF200143C200A52E21 /* Widget.cpp */; };
 		4C7B53FD200143C200A52E21 /* Window.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B53F1200143C200A52E21 /* Window.cpp */; };
+		4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540020015AC600A52E21 /* VirtualFloor.cpp */; };
 		4C7B54062005735F00A52E21 /* VehicleData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54052005735F00A52E21 /* VehicleData.cpp */; };
 		4C7B54082005736700A52E21 /* VehiclePaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54072005736700A52E21 /* VehiclePaint.cpp */; };
 		4C7B540D20060D8100A52E21 /* TrackPaint.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540B20060D8100A52E21 /* TrackPaint.cpp */; };
 		4C7B541C20060D8E00A52E21 /* RideData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541420060D8E00A52E21 /* RideData.cpp */; };
-		4C7B540120015AC600A52E21 /* VirtualFloor.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B540020015AC600A52E21 /* VirtualFloor.cpp */; };
 		4C7B54432007646A00A52E21 /* Balloon.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541D2007646A00A52E21 /* Balloon.cpp */; };
 		4C7B54442007646A00A52E21 /* Banner.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B541E2007646A00A52E21 /* Banner.cpp */; };
 		4C7B54452007646A00A52E21 /* Climate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54202007646A00A52E21 /* Climate.cpp */; };
@@ -103,6 +103,9 @@
 		4C7B54542007646A00A52E21 /* Sprite.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543C2007646A00A52E21 /* Sprite.cpp */; };
 		4C7B54552007646A00A52E21 /* TileInspector.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B543E2007646A00A52E21 /* TileInspector.cpp */; };
 		4C7B54562007646A00A52E21 /* Wall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B54402007646A00A52E21 /* Wall.cpp */; };
+		4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545720079C4000A52E21 /* Addresses.cpp */; };
+		4C7B545E20079C4000A52E21 /* Data.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545A20079C4000A52E21 /* Data.cpp */; };
+		4C7B546120079C4900A52E21 /* Hook.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C7B545F20079C4900A52E21 /* Hook.cpp */; };
 		4C8667821EEFDCDF0024AAB8 /* RideGroupManager.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */; };
 		4C8B42701EEB1ABD00F015CA /* X8DrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */; };
 		4C8B42721EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4C8B42711EEB1AE400F015CA /* HardwareDisplayDrawingEngine.cpp */; };
@@ -204,8 +207,6 @@
 		4CFE4E891F950164005243C2 /* TrackData.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E861F950164005243C2 /* TrackData.cpp */; };
 		4CFE4E8A1F950164005243C2 /* TrackDataOld.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E881F950164005243C2 /* TrackDataOld.cpp */; };
 		4CFE4E901F9625B0005243C2 /* Track.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 4CFE4E8E1F9625B0005243C2 /* Track.cpp */; };
-		C606CCBE1DB4054000FE4015 /* compat.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAB1DB4054000FE4015 /* compat.c */; };
-		C606CCBF1DB4054000FE4015 /* data.c in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAC1DB4054000FE4015 /* data.c */; };
 		C606CCC01DB4054000FE4015 /* FunctionCall.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */; };
 		C606CCC11DB4054000FE4015 /* generate.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB01DB4054000FE4015 /* generate.cpp */; };
 		C606CCC41DB4054000FE4015 /* main.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C606CCB41DB4054000FE4015 /* main.cpp */; };
@@ -697,6 +698,7 @@
 		4C7B53F0200143C200A52E21 /* Widget.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Widget.h; sourceTree = "<group>"; };
 		4C7B53F1200143C200A52E21 /* Window.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Window.cpp; sourceTree = "<group>"; };
 		4C7B53F2200143C200A52E21 /* Window.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Window.h; sourceTree = "<group>"; };
+		4C7B540020015AC600A52E21 /* VirtualFloor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VirtualFloor.cpp; sourceTree = "<group>"; };
 		4C7B54022004C57400A52E21 /* RCT1.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT1.h; sourceTree = "<group>"; };
 		4C7B54032004C57B00A52E21 /* RCT12.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT12.h; sourceTree = "<group>"; };
 		4C7B54042004C58200A52E21 /* RCT2.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCT2.h; sourceTree = "<group>"; };
@@ -708,7 +710,6 @@
 		4C7B540C20060D8100A52E21 /* TrackPaint.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TrackPaint.h; sourceTree = "<group>"; };
 		4C7B541420060D8E00A52E21 /* RideData.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideData.cpp; sourceTree = "<group>"; };
 		4C7B541520060D8E00A52E21 /* RideData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideData.h; sourceTree = "<group>"; };
-		4C7B540020015AC600A52E21 /* VirtualFloor.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = VirtualFloor.cpp; sourceTree = "<group>"; };
 		4C7B541D2007646A00A52E21 /* Balloon.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Balloon.cpp; sourceTree = "<group>"; };
 		4C7B541E2007646A00A52E21 /* Banner.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Banner.cpp; sourceTree = "<group>"; };
 		4C7B541F2007646A00A52E21 /* Banner.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Banner.h; sourceTree = "<group>"; };
@@ -747,6 +748,12 @@
 		4C7B54402007646A00A52E21 /* Wall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Wall.cpp; sourceTree = "<group>"; };
 		4C7B54412007646A00A52E21 /* Wall.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Wall.h; sourceTree = "<group>"; };
 		4C7B54422007646A00A52E21 /* Water.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Water.h; sourceTree = "<group>"; };
+		4C7B545720079C4000A52E21 /* Addresses.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Addresses.cpp; sourceTree = "<group>"; };
+		4C7B545820079C4000A52E21 /* addresses.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = addresses.h; sourceTree = "<group>"; };
+		4C7B545A20079C4000A52E21 /* Data.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Data.cpp; sourceTree = "<group>"; };
+		4C7B545B20079C4000A52E21 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = data.h; sourceTree = "<group>"; };
+		4C7B545F20079C4900A52E21 /* Hook.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Hook.cpp; sourceTree = "<group>"; };
+		4C7B546020079C4900A52E21 /* hook.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = hook.h; sourceTree = "<group>"; };
 		4C8667801EEFDCDF0024AAB8 /* RideGroupManager.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = RideGroupManager.cpp; sourceTree = "<group>"; };
 		4C8667811EEFDCDF0024AAB8 /* RideGroupManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RideGroupManager.h; sourceTree = "<group>"; };
 		4C8B426E1EEB1ABD00F015CA /* X8DrawingEngine.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = X8DrawingEngine.cpp; sourceTree = "<group>"; };
@@ -869,9 +876,6 @@
 		4CFE4E881F950164005243C2 /* TrackDataOld.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TrackDataOld.cpp; sourceTree = "<group>"; };
 		4CFE4E8E1F9625B0005243C2 /* Track.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = Track.cpp; sourceTree = "<group>"; };
 		4CFE4E8F1F9625B0005243C2 /* Track.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Track.h; sourceTree = "<group>"; };
-		C606CCAB1DB4054000FE4015 /* compat.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = compat.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		C606CCAC1DB4054000FE4015 /* data.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; lineEnding = 0; path = data.c; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.c; };
-		C606CCAD1DB4054000FE4015 /* data.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = data.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = FunctionCall.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.h; lineEnding = 0; path = FunctionCall.hpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
 		C606CCB01DB4054000FE4015 /* generate.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; lineEnding = 0; path = generate.cpp; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.cpp; };
@@ -1487,14 +1491,17 @@
 		C64FDA5E1D6D99F400F259B9 /* Paint */ = {
 			isa = PBXGroup;
 			children = (
-				C606CCAB1DB4054000FE4015 /* compat.c */,
-				C606CCAC1DB4054000FE4015 /* data.c */,
-				C606CCAD1DB4054000FE4015 /* data.h */,
+				4C7B545720079C4000A52E21 /* Addresses.cpp */,
+				4C7B545820079C4000A52E21 /* addresses.h */,
+				4C7B545A20079C4000A52E21 /* Data.cpp */,
+				4C7B545B20079C4000A52E21 /* data.h */,
 				C606CCAE1DB4054000FE4015 /* FunctionCall.cpp */,
 				C606CCAF1DB4054000FE4015 /* FunctionCall.hpp */,
 				C606CCCA1DB427A000FE4015 /* GeneralSupportHeightCall.cpp */,
 				C606CCCB1DB427A000FE4015 /* GeneralSupportHeightCall.hpp */,
 				C606CCB01DB4054000FE4015 /* generate.cpp */,
+				4C7B545F20079C4900A52E21 /* Hook.cpp */,
+				4C7B546020079C4900A52E21 /* hook.h */,
 				C606CCB41DB4054000FE4015 /* main.cpp */,
 				C606CCB51DB4054000FE4015 /* PaintIntercept.cpp */,
 				C606CCD61DB4E1CD00FE4015 /* PaintIntercept.hpp */,
@@ -3070,11 +3077,9 @@
 				C606CCD21DB4D7C800FE4015 /* SideTunnelCall.cpp in Sources */,
 				C606CCD51DB4DD6C00FE4015 /* VerticalTunnelCall.cpp in Sources */,
 				C606CCCF1DB427A000FE4015 /* SegmentSupportHeightCall.cpp in Sources */,
-				C606CCBE1DB4054000FE4015 /* compat.c in Sources */,
 				C606CCC61DB4054000FE4015 /* Printer.cpp in Sources */,
 				C606CCC41DB4054000FE4015 /* main.cpp in Sources */,
 				C606CCC11DB4054000FE4015 /* generate.cpp in Sources */,
-				C606CCBF1DB4054000FE4015 /* data.c in Sources */,
 				C606CCC81DB4054000FE4015 /* TestTrack.cpp in Sources */,
 				C606CCC51DB4054000FE4015 /* PaintIntercept.cpp in Sources */,
 				C606CCCE1DB427A000FE4015 /* GeneralSupportHeightCall.cpp in Sources */,
@@ -3197,6 +3202,7 @@
 				4C7B54062005735F00A52E21 /* VehicleData.cpp in Sources */,
 				4C7B53FC200143C200A52E21 /* Widget.cpp in Sources */,
 				4C7B54512007646A00A52E21 /* Particle.cpp in Sources */,
+				4C7B546120079C4900A52E21 /* Hook.cpp in Sources */,
 				4C6A66AD1FE2787700694CB6 /* TileElement.cpp in Sources */,
 				4CE4624C1FD1613D0001CD98 /* Platform.Posix.cpp in Sources */,
 				4C6A669B1FE2786F00694CB6 /* Sprite.cpp in Sources */,
@@ -3228,6 +3234,7 @@
 				4CFE4E851F90AF41005243C2 /* Vehicle.cpp in Sources */,
 				4C7B540D20060D8100A52E21 /* TrackPaint.cpp in Sources */,
 				4C93F16A1F8B745700A9330D /* CarRide.cpp in Sources */,
+				4C7B545E20079C4000A52E21 /* Data.cpp in Sources */,
 				C654DF331F69C0430040F43D /* LoadSave.cpp in Sources */,
 				C68313C61FDB4EBA006DB3D8 /* input.cpp in Sources */,
 				4C6A66A71FE2787700694CB6 /* Entrance.cpp in Sources */,
@@ -3263,6 +3270,7 @@
 				C666EE771F37ACB10061AA04 /* SavePrompt.cpp in Sources */,
 				4C6A669A1FE2786F00694CB6 /* Peep.cpp in Sources */,
 				4C7B54562007646A00A52E21 /* Wall.cpp in Sources */,
+				4C7B545C20079C4000A52E21 /* Addresses.cpp in Sources */,
 				4C7B53C31FFF935B00A52E21 /* RealNames.cpp in Sources */,
 				4C93F16C1F8B745700A9330D /* CrookedHouse.cpp in Sources */,
 				4C93F18A1F8B747A00A9330D /* Enterprise.cpp in Sources */,
