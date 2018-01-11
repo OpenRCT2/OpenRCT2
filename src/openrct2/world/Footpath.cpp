@@ -1256,29 +1256,6 @@ static bool footpath_disconnect_queue_from_path(sint32 x, sint32 y, rct_tile_ele
     return false;
 }
 
-static bool footpath_is_queue_connected_to_path(sint32 x, sint32 y, rct_tile_element *tileElement, sint32 direction)
-{
-    if (!footpath_element_is_queue(tileElement))
-        return false;
-
-    if (!(tileElement->properties.path.edges & (1 << direction)))
-        return false;
-
-    x += TileDirectionDelta[direction].x;
-    y += TileDirectionDelta[direction].y;
-    tileElement = map_get_path_element_at(x / 32, y / 32, tileElement->base_height);
-    if (tileElement == NULL)
-        return false;
-
-    if (footpath_element_is_queue(tileElement))
-        return false;
-
-    if (tileElement->properties.path.edges & ((1 << direction) ^ 2))
-        return true;
-
-    return false;
-}
-
 /**
  *
  *  rct2: 0x006A6D7E

@@ -916,20 +916,6 @@ static bool index_is_in_list(uint16 index, enum SPRITE_LIST sl)
     return false;
 }
 
-static bool index_is_in_spatial_list(uint16 index, sint32 quadrant)
-{
-    uint16 sprite_index = gSpriteSpatialIndex[quadrant];
-    while (sprite_index != SPRITE_INDEX_NULL)
-    {
-        if (sprite_index == index)
-        {
-            return true;
-        }
-        sprite_index = get_sprite(sprite_index)->unknown.next_in_quadrant;
-    }
-    return false;
-}
-
 sint32 check_for_sprite_list_cycles(bool fix)
 {
     for (sint32 i = 0; i < NUM_SPRITE_LISTS; i++) {
