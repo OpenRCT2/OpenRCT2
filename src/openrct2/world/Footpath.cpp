@@ -777,14 +777,15 @@ money32 footpath_provisional_set(sint32 type, sint32 x, sint32 y, sint32 z, sint
  */
 void footpath_provisional_remove()
 {
-    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1) {
+    if (gFootpathProvisionalFlags & PROVISIONAL_PATH_FLAG_1)
+    {
         gFootpathProvisionalFlags &= ~PROVISIONAL_PATH_FLAG_1;
 
         footpath_remove(
             gFootpathProvisionalPosition.x,
             gFootpathProvisionalPosition.y,
             gFootpathProvisionalPosition.z,
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5
+            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_5 | GAME_COMMAND_FLAG_GHOST
         );
     }
 }
