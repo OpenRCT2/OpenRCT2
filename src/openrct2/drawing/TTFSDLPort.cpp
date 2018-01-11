@@ -168,16 +168,6 @@ static int TTF_underline_top_row(TTF_Font *font)
     return font->ascent - font->underline_offset - 1;
 }
 
-/* Gets the top row of the underline. for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_underline_top_row(TTF_Font *font, c_glyph *glyph)
-{
-    return glyph->maxy - font->underline_offset - 1;
-}
-
 /* Gets the bottom row of the underline. The outline
 is taken into account.
 */
@@ -192,16 +182,6 @@ static int TTF_underline_bottom_row(TTF_Font *font)
     return row;
 }
 
-/* Gets the bottom row of the underline. for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_underline_bottom_row(TTF_Font *font, c_glyph *glyph)
-{
-    return TTF_underline_bottom_row(font) - font->ascent + glyph->maxy;
-}
-
 /* Gets the top row of the strikethrough. The outline
 is taken into account.
 */
@@ -210,16 +190,6 @@ static int TTF_strikethrough_top_row(TTF_Font *font)
     /* With outline, the first text row is 'outline'. */
     /* So, we don't have to remove the top part of the outline height. */
     return font->height / 2;
-}
-
-/* Gets the top row of the strikethrough for a given glyph. The outline
-is taken into account.
-Need to update row according to height difference between font and glyph:
-font_value - font->ascent + glyph->maxy
-*/
-static int TTF_Glyph_strikethrough_top_row(TTF_Font *font, c_glyph *glyph)
-{
-    return TTF_strikethrough_top_row(font) - font->ascent + glyph->maxy;
 }
 
 static void TTF_initLineMectrics(const TTF_Font *font, const TTFSurface *textbuf, const int row, uint8 **pdst, int *pheight)
@@ -526,11 +496,6 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE *src, int freesrc, int ptsize, long in
     font->glyph_italics *= font->height;
 
     return font;
-}
-
-static TTF_Font* TTF_OpenFontRW(FILE *src, int freesrc, int ptsize)
-{
-    return TTF_OpenFontIndexRW(src, freesrc, ptsize, 0);
 }
 
 static TTF_Font* TTF_OpenFontIndex(const char *file, int ptsize, long index)
@@ -1420,17 +1385,6 @@ TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
         TTF_drawLine_Shaded(font, textbuf, row);
     }
     return textbuf;
-}
-
-static bool CharacterIsDelimiter(char c, const char *delimiters)
-{
-    while (*delimiters) {
-        if (c == *delimiters) {
-            return true;
-        }
-        ++delimiters;
-    }
-    return false;
 }
 
 void TTF_SetFontHinting(TTF_Font* font, int hinting)
