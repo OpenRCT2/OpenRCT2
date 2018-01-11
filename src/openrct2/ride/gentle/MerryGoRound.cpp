@@ -21,10 +21,10 @@
 #include "../TrackPaint.h"
 
 /** rct2: 0x0142805C */
-static const uint32 merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };
+static constexpr const uint32 merry_go_round_rider_offsets[] = { 0, 32, 64, 96, 16, 48, 80, 112 };
 
 /** rct2: 0x0142807C */
-static const uint16 merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 0 };
+static constexpr const uint16 merry_go_round_breakdown_vibration[] = { 0, 1, 2, 3, 4, 3, 2, 1, 0, 0 };
 
 /**
  * rct2: 0x0076287D

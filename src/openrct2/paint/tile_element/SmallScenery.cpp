@@ -25,14 +25,14 @@
 #include "../../world/scenery.h"
 #include "../../world/SmallScenery.h"
 
-static const LocationXY16 offsets[] = {
+static constexpr const LocationXY16 offsets[] = {
     {  3,  3 },
     {  3, 17 },
     { 17,  3 },
     {  3,  3 }
 };
 
-static const LocationXY16 lengths[] = {
+static constexpr const LocationXY16 lengths[] = {
     { 12, 26 },
     { 26, 12 },
     { 12, 26 },

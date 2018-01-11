@@ -80,7 +80,7 @@ static void stand_up_rc_track_flat(paint_session * session, uint8 rideIndex, uin
 static void stand_up_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                       sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 25567, 25571, SPR_STATION_BASE_A_SW_NE },
         { 25568, 25572, SPR_STATION_BASE_A_NW_SE },
         { 25567, 25571, SPR_STATION_BASE_A_SW_NE },

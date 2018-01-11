@@ -315,7 +315,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             newPeep->id         = newStaffIndex;
             newPeep->staff_type = staff_type;
 
-            static const rct_string_id staffNames[] = {
+            static constexpr const rct_string_id staffNames[] = {
                 STR_HANDYMAN_X,
                 STR_MECHANIC_X,
                 STR_SECURITY_GUARD_X,
@@ -323,7 +323,7 @@ static money32 staff_hire_new_staff_member(uint8 staff_type, uint8 flags, sint16
             };
 
             /* rct2: 0x009929FC */
-            static const uint8 spriteTypes[] = {
+            static constexpr const uint8 spriteTypes[] = {
                 PEEP_SPRITE_TYPE_HANDYMAN,
                 PEEP_SPRITE_TYPE_MECHANIC,
                 PEEP_SPRITE_TYPE_SECURITY,
@@ -399,7 +399,7 @@ void game_command_hire_new_staff_member(sint32 * eax, sint32 * ebx, sint32 * ecx
 }
 
 /** rct2: 0x00982134 */
-static const bool peep_slow_walking_types[] = {
+static constexpr const bool peep_slow_walking_types[] = {
     false, // PEEP_SPRITE_TYPE_NORMAL
     false, // PEEP_SPRITE_TYPE_HANDYMAN
     false, // PEEP_SPRITE_TYPE_MECHANIC

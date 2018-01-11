@@ -141,7 +141,7 @@ typedef struct staff_naming_convention
     rct_string_id action_hire;
 } staff_naming_convention;
 
-static const staff_naming_convention StaffNamingConvention[] = {
+static constexpr const staff_naming_convention StaffNamingConvention[] = {
     { STR_HANDYMAN_PLURAL,          STR_HANDYMAN_SINGULAR,          STR_HIRE_HANDYMAN },
     { STR_MECHANIC_PLURAL,          STR_MECHANIC_SINGULAR,          STR_HIRE_MECHANIC },
     { STR_SECURITY_GUARD_PLURAL,    STR_SECURITY_GUARD_SINGULAR,    STR_HIRE_SECURITY_GUARD },
@@ -616,14 +616,14 @@ void window_staff_list_paint(rct_window *w, rct_drawpixelinfo *dpi)
 }
 
 /** rct2: 0x00992A08 */
-static const uint32 staffOrderBaseSprites[] = {
+static constexpr const uint32 staffOrderBaseSprites[] = {
     SPR_STAFF_ORDERS_SWEEPING,
     SPR_STAFF_ORDERS_INSPECT_RIDES,
     0,
     0,
 };
 
-static const uint32 staffCostumeSprites[] = {
+static constexpr const uint32 staffCostumeSprites[] = {
     SPR_STAFF_COSTUME_PANDA,
     SPR_STAFF_COSTUME_TIGER,
     SPR_STAFF_COSTUME_ELEPHANT,

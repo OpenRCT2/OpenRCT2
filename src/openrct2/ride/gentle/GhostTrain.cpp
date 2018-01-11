@@ -74,42 +74,42 @@ enum
     SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE = 28882
 };
 
-static const uint32 ghost_train_track_pieces_flat[4] = {
+static constexpr const uint32 ghost_train_track_pieces_flat[4] = {
     SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
     SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
     SPR_GHOST_TRAIN_TRACK_FLAT_SW_NE,
     SPR_GHOST_TRAIN_TRACK_FLAT_NW_SE,
 };
 
-static const uint32 ghost_train_track_pieces_flat_to_25_deg_up[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_flat_to_25_deg_up[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_SW_NE, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_FLAT_TO_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_25_deg_up_to_flat[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_25_deg_up_to_flat[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_SW_NE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_TO_FLAT_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
+static constexpr const uint32 ghost_train_track_pieces_25_deg_up[4][2] = {
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SW_NE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SW_NE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NW_SE, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NW_SE },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_NE_SW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_NE_SW },
     { SPR_GHOST_TRAIN_TRACK_25_DEG_UP_SE_NW, SPR_GHOST_TRAIN_TRACK_25_DEG_UP_FRONT_SE_NW },
 };
 
-static const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
+static constexpr const uint32 ghost_train_track_pieces_quarter_turn_1_tile[4] = {
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SW_NW,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NW_NE,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_NE_SE,
     SPR_GHOST_TRAIN_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
     { SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -120,14 +120,14 @@ static const uint32 ghost_train_track_pieces_quarter_turn_3_tiles[4][3] = {
       SPR_GHOST_TRAIN_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
 };
 
-static const uint32 ghost_train_track_pieces_spinning_tunnel_track[4] = {
+static constexpr const uint32 ghost_train_track_pieces_spinning_tunnel_track[4] = {
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_SW_NE,
     SPR_GHOST_TRAIN_SPINNING_TUNNEL_TRACK_NW_SE,
 };
 
-static const uint32 ghost_train_track_pieces_brakes[4] = {
+static constexpr const uint32 ghost_train_track_pieces_brakes[4] = {
     SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,
     SPR_GHOST_TRAIN_TRACK_BRAKES_NW_SE,
     SPR_GHOST_TRAIN_TRACK_BRAKES_SW_NE,

@@ -22,7 +22,7 @@
 #include "../../localisation/StringIds.h"
 
 /** rct2: 0x0097EDA4 */
-static const sint8 money_wave[] = {
+static constexpr const sint8 money_wave[] = {
     0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
     0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1
 };

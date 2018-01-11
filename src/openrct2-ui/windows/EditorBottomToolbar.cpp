@@ -114,7 +114,7 @@ static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
     nullptr
 };
 
-static const rct_string_id EditorStepNames[] = {
+static constexpr const rct_string_id EditorStepNames[] = {
     STR_EDITOR_STEP_OBJECT_SELECTION,
     STR_EDITOR_STEP_LANDSCAPE_EDITOR,
     STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,

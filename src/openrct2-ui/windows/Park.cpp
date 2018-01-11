@@ -523,7 +523,7 @@ typedef struct window_park_award {
     uint32 sprite;
 } window_park_award;
 
-static const window_park_award ParkAwards[] = {
+static constexpr const window_park_award ParkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
     { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
     { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },

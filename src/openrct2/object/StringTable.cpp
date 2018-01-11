@@ -22,7 +22,7 @@
 #include "Object.h"
 #include "StringTable.h"
 
-static const uint8 RCT2ToOpenRCT2LanguageId[] =
+static constexpr const uint8 RCT2ToOpenRCT2LanguageId[] =
 {
     LANGUAGE_ENGLISH_UK,
     LANGUAGE_ENGLISH_US,

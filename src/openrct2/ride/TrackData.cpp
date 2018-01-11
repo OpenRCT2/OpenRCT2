@@ -6487,8 +6487,8 @@ const track_descriptor gTrackDescriptors[142] = {
 };
 
 #define CREATE_VEHICLE_INFO(VAR, ...) \
-    static const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
-    static const rct_vehicle_info_list VAR = { static_cast<uint16>(Util::CountOf(VAR##_data)), VAR##_data };
+    static constexpr const rct_vehicle_info VAR##_data [] = __VA_ARGS__ ; \
+    static constexpr const rct_vehicle_info_list VAR = { static_cast<uint16>(Util::CountOf(VAR##_data)), VAR##_data };
 
 CREATE_VEHICLE_INFO(TrackVehicleInfo_8BE57A, {
     {     31,   16,    0,  0,  0,  0 }, {     30,   16,    0,  0,  0,  0 }, {     29,   16,    0,  0,  0,  0 }, {     28,   16,    0,  0,  0,  0 }, {     27,   16,    0,  0,  0,  0 },

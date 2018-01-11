@@ -106,7 +106,7 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_options_widgets
 };
 
-const uint64 window_multiplayer_page_enabled_widgets[] = {
+static constexpr const uint64 window_multiplayer_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4),
     (1 << WIDX_CLOSE) | (1 << WIDX_TAB1) | (1 << WIDX_TAB2) | (1 << WIDX_TAB3) | (1 << WIDX_TAB4) | (1 << WIDX_DEFAULT_GROUP) | (1 << WIDX_DEFAULT_GROUP_DROPDOWN) | (1 << WIDX_ADD_GROUP) | (1 << WIDX_REMOVE_GROUP) | (1 << WIDX_RENAME_GROUP) | (1 << WIDX_SELECTED_GROUP) | (1 << WIDX_SELECTED_GROUP_DROPDOWN),
@@ -281,8 +281,8 @@ static rct_window_event_list *window_multiplayer_page_events[] = {
     &window_multiplayer_options_events
 };
 
-static const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
-static const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
+static constexpr const sint32 window_multiplayer_animation_divisor[] = { 4, 4, 2, 2 };
+static constexpr const sint32 window_multiplayer_animation_frames[] = { 8, 8, 7, 4 };
 
 static void window_multiplayer_draw_tab_images(rct_window *w, rct_drawpixelinfo *dpi);
 static void window_multiplayer_set_page(rct_window* w, sint32 page);

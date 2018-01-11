@@ -28,22 +28,22 @@
 #include "../Paint.h"
 #include "TileElement.h"
 
-static const uint8 byte_9A406C[] = {
+static constexpr const uint8 byte_9A406C[] = {
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2,
     2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2
 };
 
-static const uint8 byte_9A408C[] = {
+static constexpr const uint8 byte_9A408C[] = {
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0,
     0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0
 };
 
-static const uint8 byte_9A40AC[] = {
+static constexpr const uint8 byte_9A40AC[] = {
     2, 2, 6, 10, 14, 18, 18, 18, 18, 18, 14, 10, 6, 2, 22, 2,
     2, 2, 22, 26, 30, 34, 34, 34, 34, 34, 30, 26, 22, 2, 6, 2
 };
 
-static const uint8 byte_9A40CC[] = {
+static constexpr const uint8 byte_9A40CC[] = {
     0, 0, 20, 24, 28, 32, 32, 32, 32, 32, 28, 24, 20, 0, 4, 0,
     0, 0, 4, 8, 12, 16, 16, 16, 16, 16, 12, 8, 4, 0, 20, 0
 };

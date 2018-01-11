@@ -41,7 +41,7 @@ namespace TitleSequenceManager
     void Scan();
 }
 
-constexpr size_t PREDEFINED_INDEX_CUSTOM = SIZE_MAX;
+constexpr const size_t PREDEFINED_INDEX_CUSTOM = SIZE_MAX;
 
 extern "C" {
 #endif

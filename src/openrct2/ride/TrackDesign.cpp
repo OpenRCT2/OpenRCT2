@@ -608,7 +608,7 @@ static void track_design_mirror_ride(rct_track_td6 * td6)
 }
 
 /** rct2: 0x00993EDC */
-static const uint8 maze_segment_mirror_map[] = {
+static constexpr const uint8 maze_segment_mirror_map[] = {
     5, 4, 2, 7, 1, 0, 14, 3, 13, 12, 10, 15, 9, 8, 6, 11
 };
 

@@ -1389,7 +1389,7 @@ void input_state_widget_pressed(sint32 x, sint32 y, sint32 state, rct_widgetinde
             gDropdownLastColourHover = dropdown_index;
             window_tooltip_close();
 
-            static const rct_string_id colourTooltips[] = {
+            static constexpr const rct_string_id colourTooltips[] = {
                 STR_COLOUR_BLACK_TIP,
                 STR_COLOUR_GREY_TIP,
                 STR_COLOUR_WHITE_TIP,

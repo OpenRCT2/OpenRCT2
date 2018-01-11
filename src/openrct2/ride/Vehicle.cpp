@@ -103,13 +103,13 @@ rct_vehicle * _vehicleFrontVehicle;
 LocationXYZ16 unk_F64E20;
 
 // clang-format off
-static const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
-static const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
-static const uint8 byte_9A3A18[] = {
+static constexpr const uint8 byte_9A3A14[] = { SOUND_SCREAM_8, SOUND_SCREAM_1 };
+static constexpr const uint8 byte_9A3A16[] = { SOUND_SCREAM_1, SOUND_SCREAM_6 };
+static constexpr const uint8 byte_9A3A18[] = {
     SOUND_SCREAM_3, SOUND_SCREAM_1, SOUND_SCREAM_5, SOUND_SCREAM_6,
     SOUND_SCREAM_7, SOUND_SCREAM_2, SOUND_SCREAM_4
 };
-static const uint8 _soundParams[SOUND_MAXID][2] =
+static constexpr const uint8 _soundParams[SOUND_MAXID][2] =
 {
     { 1, 0 },   // SOUND_LIFT_1
     { 1, 0 },   // SOUND_TRACK_FRICTION_1
@@ -176,7 +176,7 @@ static const uint8 _soundParams[SOUND_MAXID][2] =
     { 0, 0 }    // SOUND_62
 };
 
-static const uint8 SpaceRingsTimeToSpriteMap[] =
+static constexpr const uint8 SpaceRingsTimeToSpriteMap[] =
 {
     0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1,
     1, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4,
@@ -310,7 +310,7 @@ static const uint8 SpaceRingsTimeToSpriteMap[] =
     255
 };
 
-static const sint8 SwingingTimeToSpriteMap_0[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_0[] =
 {
     0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3,
     3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 0,
@@ -318,7 +318,7 @@ static const sint8 SwingingTimeToSpriteMap_0[] =
     -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -2, -2, -2, -2,
     -2, -2, -1, -1, -1, -1, -1, -1, -1, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_1[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_1[] =
 {
     0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5,
     5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 2, 2, 2, 2, 2, 1, 1, 1, 1,
@@ -326,7 +326,7 @@ static const sint8 SwingingTimeToSpriteMap_1[] =
     -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -4,
     -4, -4, -4, -3, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1, -1, -1, -1, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_2[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_2[] =
 {
     0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7,
     7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 6, 6, 6, 5, 5, 5, 5, 5, 5, 4, 4, 4, 4, 4, 3, 3, 3, 3, 2,
@@ -335,7 +335,7 @@ static const sint8 SwingingTimeToSpriteMap_2[] =
     -6, -6, -6, -6, -6, -6, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -1, -1,
     -1, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_3[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_3[] =
 {
     0, 1, 1, 2, 2, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 8, 8, 8, 8, 8, 8, 8, 8, 9, 9,
     9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 8, 8, 8, 8, 8, 8, 8, 8, 7, 7, 7, 7, 7, 7, 6, 6, 6, 6, 6, 5, 5, 5, 5, 4,
@@ -344,7 +344,7 @@ static const sint8 SwingingTimeToSpriteMap_3[] =
     -9, -8, -8, -8, -8, -8, -8, -8, -8, -7, -7, -7, -7, -7, -7, -6, -6, -6, -6, -6, -5, -5, -5, -5, -4, -4,
     -4, -3, -3, -2, -2, -1, -1, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_4[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_4[] =
 {
     0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
     6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6,
@@ -355,7 +355,7 @@ static const sint8 SwingingTimeToSpriteMap_4[] =
     -6, -6, -6, -5, -5, -5, -5, -5, -5, -5, -4, -4, -4, -4, -4, -3, -3, -3, -3, -3, -2, -2, -2, -2, -2, -1,
     -1, -1, -1, -1, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_5[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_5[] =
 {
     0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9,
     9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14,
@@ -370,7 +370,7 @@ static const sint8 SwingingTimeToSpriteMap_5[] =
     -11, -11, -11, -10, -10, -10, -10, -9, -9, -9, -9, -8, -8, -8, -8, -7, -7, -7, -7, -6, -6, -6, -6, -5,
     -5, -5, -5, -4, -4, -4, -4, -3, -3, -3, -3, -2, -2, -2, -2, -1, -1, -1, -1, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_6[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_6[] =
 {
     0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11,
     11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20,
@@ -388,7 +388,7 @@ static const sint8 SwingingTimeToSpriteMap_6[] =
     -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9, -9, -9, -8, -8, -8, -7, -7, -7, -6, -6, -6,
     -5, -5, -5, -4, -4, -4, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_7[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_7[] =
 {
     0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 6, 6, 6, 7, 7, 7, 8, 8, 8, 9, 9, 9, 10, 10, 10, 11, 11,
     11, 12, 12, 12, 13, 13, 13, 14, 14, 14, 15, 15, 15, 16, 16, 16, 17, 17, 17, 18, 18, 18, 19, 19, 19, 20,
@@ -400,7 +400,7 @@ static const sint8 SwingingTimeToSpriteMap_7[] =
     -14, -14, -13, -13, -13, -12, -12, -12, -11, -11, -11, -10, -10, -10, -9, -9, -9, -8, -8, -8, -7, -7,
     -7, -6, -6, -6, -5, -5, -5, -4, -4, -4, -3, -3, -3, -2, -2, -2, -1, -1, -1, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_8[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_8[] =
 {
     0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
     6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6,
@@ -411,7 +411,7 @@ static const sint8 SwingingTimeToSpriteMap_8[] =
     26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31,
     31, 31, 31, 31, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_9[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_9[] =
 {
     0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 5, 5, 5, 5, 5, 5, 5, 6, 6, 6, 6, 6,
     6, 6, 6, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6, 6, 6,
@@ -422,7 +422,7 @@ static const sint8 SwingingTimeToSpriteMap_9[] =
     26, 26, 26, 27, 27, 27, 27, 27, 27, 27, 28, 28, 28, 28, 28, 29, 29, 29, 29, 29, 30, 30, 30, 30, 30, 31,
     31, 31, 31, 31, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_10[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_10[] =
 {
     0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9,
     9, 9, 9, 10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 14, 14, 15, 15,
@@ -438,7 +438,7 @@ static const sint8 SwingingTimeToSpriteMap_10[] =
     19, 20, 20, 20, 20, 21, 21, 21, 21, 22, 22, 22, 22, 23, 23, 23, 23, 24, 24, 24, 24, 25, 25, 25, 25, 26,
     26, 26, 26, 27, 27, 27, 27, 28, 28, 28, 28, 29, 29, 29, 29, 30, 30, 30, 30, 31, 31, 31, 31, 0, 0, -128
 };
-static const sint8 SwingingTimeToSpriteMap_11[] =
+static constexpr const sint8 SwingingTimeToSpriteMap_11[] =
 {
     0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 8, 8, 8, 8, 9, 9, 9, 9,
     10, 10, 10, 10, 11, 11, 11, 11, 12, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 16, 16,
@@ -448,7 +448,7 @@ static const sint8 SwingingTimeToSpriteMap_11[] =
 };
 
 /** rct2: 0x0099F9D0 */
-static const sint8 * SwingingTimeToSpriteMaps[] = {
+static constexpr const sint8 * SwingingTimeToSpriteMaps[] = {
     SwingingTimeToSpriteMap_0,
     SwingingTimeToSpriteMap_1,
     SwingingTimeToSpriteMap_2,
@@ -471,7 +471,7 @@ typedef struct
 } unk_9a36c4;
 
 /** rct2: 0x009A36C4 */
-static const unk_9a36c4 Unk9A36C4[] =
+static constexpr const unk_9a36c4 Unk9A36C4[] =
 {
     {-1, 0, 8716},
     {-1, 0, 8716},
@@ -508,7 +508,7 @@ static const unk_9a36c4 Unk9A36C4[] =
 };
 
 /** rct2: 0x009A37C4 */
-static const LocationXY16 Unk9A37C4[] =
+static constexpr const LocationXY16 Unk9A37C4[] =
 {
     { 0,  0},
     { 0, +1},
@@ -522,7 +522,7 @@ static const LocationXY16 Unk9A37C4[] =
 };
 
 /** rct2: 0x009A37E4 */
-static const sint32 Unk9A37E4[] =
+static constexpr const sint32 Unk9A37E4[] =
 {
     2147483647,
     2106585154,
@@ -587,7 +587,7 @@ static const sint32 Unk9A37E4[] =
 };
 
 /** rct2: 0x009A38D4 */
-static const sint32 Unk9A38D4[] =
+static constexpr const sint32 Unk9A38D4[] =
 {
     0,
     417115092,
@@ -652,7 +652,7 @@ static const sint32 Unk9A38D4[] =
 };
 
 /** rct2: 0x009A39C4 */
-static const sint32 Unk9A39C4[] =
+static constexpr const sint32 Unk9A39C4[] =
 {
     2147483647,
     2096579710,
@@ -676,7 +676,7 @@ static const sint32 Unk9A39C4[] =
     1946281152,
 };
 
-static const LocationXY16 AvoidCollisionMoveOffset[] =
+static constexpr const LocationXY16 AvoidCollisionMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -685,13 +685,13 @@ static const LocationXY16 AvoidCollisionMoveOffset[] =
 };
 
 
-static const uint8 DoorOpenSoundIds[] =
+static constexpr const uint8 DoorOpenSoundIds[] =
 {
     SOUND_DOOR_OPEN,
     SOUND_62
 };
 
-static const uint8 DoorCloseSoundIds[] =
+static constexpr const uint8 DoorCloseSoundIds[] =
 {
     SOUND_DOOR_CLOSE,
     SOUND_62
@@ -808,7 +808,7 @@ const rct_vehicle_info * vehicle_get_move_info(sint32 cd, sint32 typeAndDirectio
 {
     if (!vehicle_move_info_valid(cd, typeAndDirection, offset))
     {
-        static const rct_vehicle_info zero = { 0 };
+        static constexpr const rct_vehicle_info zero = { 0 };
         return &zero;
     }
     return &gTrackVehicleInfo[cd][typeAndDirection]->info[offset];
@@ -3596,7 +3596,7 @@ static void vehicle_update_collision_setup(rct_vehicle * vehicle)
 }
 
 /** rct2: 0x009A3AC4, 0x009A3AC6 */
-static const LocationXY16 stru_9A3AC4[] = {
+static constexpr const LocationXY16 stru_9A3AC4[] = {
     { -256, 0 }, { -236, 98 }, { -181, 181 }, { -98, 236 }, { 0, 256 },  { 98, 236 },   { 181, 181 },   { 236, 98 },
     { 256, 0 },  { 236, -98 }, { 181, -181 }, { 98, -236 }, { 0, -256 }, { -98, -236 }, { -181, -181 }, { -236, -98 },
 };
@@ -4637,7 +4637,7 @@ static void vehicle_update_boat_location(rct_vehicle * vehicle)
         }
     }
 
-    static const sint8 rotations[] = { 0, 1, -1, 2 };
+    static constexpr const sint8 rotations[] = { 0, 1, -1, 2 };
     for (auto rotation : rotations)
     {
         if (randDirection + rotation == curDirection)
@@ -7093,7 +7093,7 @@ enum
     loc_6D6718
 };
 
-static const uint8 off_9A2E84[256] = {
+static constexpr const uint8 off_9A2E84[256] = {
     loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,
     loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D673C, loc_6D673C,
     loc_6D673C, loc_6D673C, loc_6D66F0, loc_6D672B, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C, loc_6D673C,

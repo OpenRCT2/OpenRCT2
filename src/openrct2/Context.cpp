@@ -187,7 +187,7 @@ namespace OpenRCT2
 
         std::string GetPathLegacy(sint32 pathId) override
         {
-            static const char * const LegacyFileNames[PATH_ID_END] =
+            static constexpr const char * const LegacyFileNames[PATH_ID_END] =
             {
                 nullptr,
                 nullptr,

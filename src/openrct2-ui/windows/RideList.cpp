@@ -137,7 +137,7 @@ enum {
     DROPDOWN_LIST_COUNT
 };
 
-static const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -155,13 +155,13 @@ static const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = 
     STR_GUESTS_FAVOURITE
 };
 
-static const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
-static const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false,
     false,
     false,
@@ -179,7 +179,7 @@ static const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
     false
 };
 
-static const rct_string_id page_names[] = {
+static constexpr const rct_string_id page_names[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,

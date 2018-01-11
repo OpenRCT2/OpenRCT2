@@ -435,7 +435,7 @@ static rct_window_event_list *const _windowFinancesPageEvents[] =
     (1ULL << WIDX_TAB_5) | \
     (1ULL << WIDX_TAB_6))
 
-static const uint32 WindowFinancesPageEnabledWidgets[] =
+static constexpr const uint32 WindowFinancesPageEnabledWidgets[] =
 {
     ALWAYS_ENABLED_WIDGETS |
     (1ULL << WIDX_LOAN_INCREASE) |
@@ -467,7 +467,7 @@ static const uint32 WindowFinancesPageEnabledWidgets[] =
     (1ULL << WIDX_SCENERY_AND_THEMING)
 };
 
-static const uint32 WindowFinancesPageHoldDownWidgets[] =
+static constexpr const uint32 WindowFinancesPageHoldDownWidgets[] =
 {
     (1ULL << WIDX_LOAN_INCREASE) |
     (1ULL << WIDX_LOAN_DECREASE),
@@ -481,12 +481,12 @@ static const uint32 WindowFinancesPageHoldDownWidgets[] =
 
 #pragma endregion
 
-static const sint32 WindowFinancesTabAnimationLoops[] =
+static constexpr const sint32 WindowFinancesTabAnimationLoops[] =
 {
     16, 32, 32, 32, 38, 16
 };
 
-static const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
+static constexpr const rct_string_id window_finances_summary_row_labels[RCT_EXPENDITURE_TYPE_COUNT] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,

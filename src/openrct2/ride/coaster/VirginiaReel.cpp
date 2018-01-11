@@ -24,7 +24,7 @@
 #include "../VehiclePaint.h"
 
 // 0x009927E6:
-static const vehicle_boundbox _virginiaReelBoundbox[] = {
+static constexpr const vehicle_boundbox _virginiaReelBoundbox[] = {
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
     { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 }, { -11, -11, 1, 22, 22, 13 },
@@ -80,63 +80,63 @@ enum
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW              = 21503,
 };
 
-static const uint32 virginia_reel_track_pieces_flat[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat[4] = {
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_NW_SE,
 };
 
-static const uint32 virginia_reel_track_pieces_flat_lift_hill[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat_lift_hill[4] = {
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_LIFT_HILL_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat_to_25_deg_up[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat_to_25_deg_up_lift_hill[4] = {
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_FLAT_TO_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_25_deg_up_to_flat[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_25_deg_up_to_flat_lift_hill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_TO_FLAT_LIFT_HILL_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_25_deg_up[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_25_deg_up[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_25_deg_up_lift_hill[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_25_deg_up_lift_hill[4] = {
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SW_NE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NW_SE,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_NE_SW,
     SPR_VIRGINIA_REEL_25_DEG_UP_LIFT_HILL_SE_NW,
 };
 
-static const uint32 virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -147,7 +147,7 @@ static const uint32 virginia_reel_track_pieces_flat_quarter_turn_3_tiles[4][3] =
       SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
 };
 
-static const uint32 virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
+static constexpr const uint32 virginia_reel_track_pieces_flat_quarter_turn_1_tile[4] = {
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_SW_NW,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NW_NE,
     SPR_VIRGINIA_REEL_FLAT_QUARTER_TURN_1_TILE_NE_SE,
@@ -460,7 +460,7 @@ static void paint_virginia_reel_station(paint_session * session, uint8 rideIndex
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint8 virginia_reel_left_quarter_turn_supports[] = { 5, 2, 3, 4 };
+static constexpr const uint8 virginia_reel_left_quarter_turn_supports[] = { 5, 2, 3, 4 };
 
 /** rct2: 0x00811304 */
 static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
@@ -488,7 +488,7 @@ static void paint_virginia_reel_track_left_quarter_turn_3_tiles(paint_session * 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint8 virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
 
 /** rct2: 0x00811314 */
 static void paint_virginia_reel_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,

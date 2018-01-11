@@ -185,7 +185,7 @@ static void water_rc_track_right_quarter_turn_5_tiles_25_deg_up(paint_session * 
                                                                JUNIOR_RC_CHAIN_NONE);
 }
 
-static const uint8 water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = { 6, 4, 5, 3, 1, 2, 0 };
+static constexpr const uint8 water_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = { 6, 4, 5, 3, 1, 2, 0 };
 
 static void water_rc_track_left_quarter_turn_5_tiles_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                                  uint8 direction, sint32 height, rct_tile_element * tileElement)
@@ -219,7 +219,7 @@ static void water_rc_track_right_quarter_turn_3_tiles_25_deg_down(paint_session 
                                                                  tileElement, JUNIOR_RC_CHAIN_NONE);
 }
 
-static const uint8 water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 water_rc_left_quarter_turn_3_tiles_to_right_turn_map[] = { 3, 1, 2, 0 };
 
 static void water_rc_track_left_quarter_turn_3_tiles_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                                uint8 direction, sint32 height, rct_tile_element * tileElement)

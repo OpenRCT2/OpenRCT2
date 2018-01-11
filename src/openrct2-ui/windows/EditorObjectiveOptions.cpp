@@ -36,14 +36,14 @@ enum {
     WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_COUNT
 };
 
-static const rct_string_id ClimateNames[] = {
+static constexpr const rct_string_id ClimateNames[] = {
     STR_CLIMATE_COOL_AND_WET,
     STR_CLIMATE_WARM,
     STR_CLIMATE_HOT_AND_DRY,
     STR_CLIMATE_COLD,
 };
 
-static const rct_string_id ObjectiveDropdownOptionNames[] = {
+static constexpr const rct_string_id ObjectiveDropdownOptionNames[] = {
     STR_OBJECTIVE_DROPDOWN_NONE,
     STR_OBJECTIVE_DROPDOWN_NUMBER_OF_GUESTS_AT_A_GIVEN_DATE,
     STR_OBJECTIVE_DROPDOWN_PARK_VALUE_AT_A_GIVEN_DATE,

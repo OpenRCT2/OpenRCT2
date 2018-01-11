@@ -160,7 +160,7 @@ static uint8   _lastUpdatedCameraRotation           = UINT8_MAX;
 static bool    _footpathErrorOccured;
 
 /** rct2: 0x0098D8B4 */
-static const uint8 DefaultPathSlope[] = {
+static constexpr const uint8 DefaultPathSlope[] = {
     0,
     SLOPE_IS_IRREGULAR_FLAG,
     SLOPE_IS_IRREGULAR_FLAG,
@@ -180,7 +180,7 @@ static const uint8 DefaultPathSlope[] = {
 };
 
 /** rct2: 0x0098D7E0 */
-static const uint8 ConstructionPreviewImages[][4] = {
+static constexpr const uint8 ConstructionPreviewImages[][4] = {
     {5,  10, 5,  10}, // Flat
     {16, 17, 18, 19}, // Upwards
     {18, 19, 16, 17}, // Downwards

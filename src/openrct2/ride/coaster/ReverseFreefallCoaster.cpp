@@ -94,14 +94,14 @@ enum
     SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SE_NW_5  = 22225,
 };
 
-static const uint32 reverse_freefall_rc_track_pieces_station[4] = {
+static constexpr const uint32 reverse_freefall_rc_track_pieces_station[4] = {
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
     SPR_REVERSE_FREEFALL_RC_STATION_SW_NE,
     SPR_REVERSE_FREEFALL_RC_STATION_NW_SE,
 };
 
-static const uint32 reverse_freefall_rc_track_pieces_slope[7][4] = {
+static constexpr const uint32 reverse_freefall_rc_track_pieces_slope[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_NW_SE_0,
@@ -141,7 +141,7 @@ static const uint32 reverse_freefall_rc_track_pieces_slope[7][4] = {
     },
 };
 
-static const uint32 reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
+static constexpr const uint32 reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
     {
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_SW_NE_0,
         SPR_REVERSE_FREEFALL_RC_SLOPE_SUPPORTS_NW_SE_0,
@@ -186,14 +186,14 @@ static const uint32 reverse_freefall_rc_track_pieces_slope_supports[7][4] = {
     },
 };
 
-static const uint32 reverse_freefall_rc_track_pieces_vertical[4] = {
+static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_NE_SW,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SE_NW,
 };
 
-static const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
+static constexpr const uint32 reverse_freefall_rc_track_pieces_vertical_supports[4] = {
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_SW_NE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NW_SE,
     SPR_REVERSE_FREEFALL_RC_VERTICAL_SUPPORTS_NE_SW,
@@ -267,10 +267,10 @@ static void paint_reverse_freefall_rc_slope(paint_session * session, uint8 rideI
 {
     TESTPAINT_IGNORE_ALL();
 
-    static const sint8  bbHeights03[]     = { 1, 6, 14, 37, 64 };
-    static const sint8  bbHeights12[]     = { 1, 6, 14, 27, 59 };
-    static const sint32 supportHeights[]  = { 48, 64, 128, 176, 208, 240, 240 };
-    static const sint32 tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
+    static constexpr const sint8  bbHeights03[]     = { 1, 6, 14, 37, 64 };
+    static constexpr const sint8  bbHeights12[]     = { 1, 6, 14, 27, 59 };
+    static constexpr const sint32 supportHeights[]  = { 48, 64, 128, 176, 208, 240, 240 };
+    static constexpr const sint32 tunnelOffsets03[] = { 0, 0, 0, 16, 64 };
 
     uint32 supportsImageId =
         reverse_freefall_rc_track_pieces_slope_supports[trackSequence][direction] | session->TrackColours[SCHEME_SUPPORTS];

@@ -270,10 +270,10 @@ static rct_windowclass *window_themes_tab_classes[] = {
 static uint8 _selected_tab = 0;
 static sint16 _colour_index_1 = -1;
 static sint8 _colour_index_2 = -1;
-static const uint8 _row_height = 32;
-static const uint8 _button_offset_x = 220;
-static const uint8 _button_offset_y = 3;
-static const uint8 _check_offset_y = 3 + 12 + 2;
+static constexpr const uint8 _row_height = 32;
+static constexpr const uint8 _button_offset_x = 220;
+static constexpr const uint8 _button_offset_y = 3;
+static constexpr const uint8 _check_offset_y = 3 + 12 + 2;
 
 static void window_themes_init_vars()
 {

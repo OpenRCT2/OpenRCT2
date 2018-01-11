@@ -36,7 +36,7 @@ const uint8 byte_98D800[] = {
     12, 9, 3, 6
 };
 
-static const uint8 byte_98D6E0[] = {
+static constexpr const uint8 byte_98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,
     0, 1, 2, 20, 4, 5, 6, 22, 8, 9, 10, 26, 12, 13, 14, 36,
     0, 1, 2, 3, 4, 5, 21, 23, 8, 9, 10, 11, 12, 13, 33, 37,
@@ -55,7 +55,7 @@ static const uint8 byte_98D6E0[] = {
     0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 50
 };
 
-static const sint16 stru_98D804[][4] = {
+static constexpr const sint16 stru_98D804[][4] = {
     {3, 3, 26, 26},
     {0, 3, 29, 26},
     {3, 3, 26, 29},
@@ -74,7 +74,7 @@ static const sint16 stru_98D804[][4] = {
     {0, 0, 32, 32},
 };
 
-static const uint8 byte_98D8A4[] = {
+static constexpr const uint8 byte_98D8A4[] = {
     0, 0, 1, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 0, 1, 0
 };
 // clang-format on
@@ -842,7 +842,7 @@ void path_paint_box_support(paint_session * session, rct_tile_element * tileElem
     // By default, add 1 to the z bounding box to always clip above the surface
     uint8 boundingBoxZOffset = 1;
 
-    // If we are on the same tile as a straight track, add the offset 2 so we 
+    // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {
@@ -969,7 +969,7 @@ void path_paint_pole_support(paint_session * session, rct_tile_element* tileElem
     // By default, add 1 to the z bounding box to always clip above the surface
     uint8 boundingBoxZOffset = 1;
 
-    // If we are on the same tile as a straight track, add the offset 2 so we 
+    // If we are on the same tile as a straight track, add the offset 2 so we
     //  can clip above gravel part of the track sprite
     if (session->TrackElementOnSameHeight)
     {

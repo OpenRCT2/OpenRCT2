@@ -95,7 +95,7 @@ static void side_friction_rc_track_flat(paint_session * session, uint8 rideIndex
 static void side_friction_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                            sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4] = {
+    static constexpr const uint32 imageIds[4] = {
         21610,
         21611,
         21610,

@@ -492,7 +492,7 @@ extern "C"
         sint32 i, rideIndex;
         Ride *ride;
 
-        static const LocationXY16 NeighbourCheckOrder[] =
+        static constexpr const LocationXY16 NeighbourCheckOrder[] =
         {
             {  32,   0 },
             { -32,   0 },

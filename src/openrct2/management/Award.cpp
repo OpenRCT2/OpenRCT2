@@ -27,7 +27,7 @@
 #define NEGATIVE 0
 #define POSITIVE 1
 
-static const uint8 AwardPositiveMap[] =
+static constexpr const uint8 AwardPositiveMap[] =
 {
     NEGATIVE, // PARK_AWARD_MOST_UNTIDY
     POSITIVE, // PARK_AWARD_MOST_TIDY
@@ -48,7 +48,7 @@ static const uint8 AwardPositiveMap[] =
     POSITIVE, // PARK_AWARD_BEST_GENTLE_RIDES
 };
 
-static const rct_string_id AwardNewsStrings[] =
+static constexpr const rct_string_id AwardNewsStrings[] =
 {
     STR_NEWS_ITEM_AWARD_MOST_UNTIDY,
     STR_NEWS_ITEM_MOST_TIDY,
@@ -552,7 +552,7 @@ static bool award_is_deserved_best_custom_designed_rides(sint32 awardType, sint3
 }
 
 /** At least 5 colourful rides and more than half of the rides are colourful. */
-static const uint8 dazzling_ride_colours[] = {5, 14, 20, 30};
+static constexpr const uint8 dazzling_ride_colours[] = {5, 14, 20, 30};
 
 static bool award_is_deserved_most_dazzling_ride_colours(sint32 awardType, sint32 activeAwardTypes)
 {
@@ -642,7 +642,7 @@ static bool award_is_deserved_best_gentle_rides(sint32 awardType, sint32 activeA
 
 typedef bool (* award_deserved_check)(sint32, sint32);
 
-static const award_deserved_check _awardChecks[] =
+static constexpr const award_deserved_check _awardChecks[] =
 {
     award_is_deserved_most_untidy,
     award_is_deserved_most_tidy,

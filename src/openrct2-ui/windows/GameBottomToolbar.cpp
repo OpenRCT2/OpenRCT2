@@ -464,14 +464,14 @@ static void window_game_bottom_toolbar_draw_left_panel(rct_drawpixelinfo *dpi, r
             );
     }
 
-    static const rct_string_id guestCountFormats[] =
+    static constexpr const rct_string_id guestCountFormats[] =
     {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
     };
 
-    static const rct_string_id guestCountFormatsSingular[] =
+    static constexpr const rct_string_id guestCountFormatsSingular[] =
     {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,

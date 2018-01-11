@@ -76,70 +76,70 @@ enum
     SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SE_NE_PART_2  = 28820,
 };
 
-static const uint32 car_ride_track_pieces_flat[4] = {
+static constexpr const uint32 car_ride_track_pieces_flat[4] = {
     SPR_CAR_RIDE_FLAT_SW_NE,
     SPR_CAR_RIDE_FLAT_NW_SE,
     SPR_CAR_RIDE_FLAT_SW_NE,
     SPR_CAR_RIDE_FLAT_NW_SE,
 };
 
-static const uint32 car_ride_track_pieces_log_bumps[4] = {
+static constexpr const uint32 car_ride_track_pieces_log_bumps[4] = {
     SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
     SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
     SPR_CAR_RIDE_LOG_BUMPS_SW_NE,
     SPR_CAR_RIDE_LOG_BUMPS_NW_SE,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up[4] = {
     SPR_CAR_RIDE_25_DEG_UP_SW_NE,
     SPR_CAR_RIDE_25_DEG_UP_NW_SE,
     SPR_CAR_RIDE_25_DEG_UP_NE_SW,
     SPR_CAR_RIDE_25_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_flat_to_25_deg_up[4] = {
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_CAR_RIDE_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up_to_flat[4] = {
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_SW_NE,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_NW_SE,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_NE_SW,
     SPR_CAR_RIDE_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_60_deg_up[4] = {
+static constexpr const uint32 car_ride_track_pieces_60_deg_up[4] = {
     SPR_CAR_RIDE_60_DEG_UP_SW_NE,
     SPR_CAR_RIDE_60_DEG_UP_NW_SE,
     SPR_CAR_RIDE_60_DEG_UP_NE_SW,
     SPR_CAR_RIDE_60_DEG_UP_SE_NW,
 };
 
-static const uint32 car_ride_track_pieces_25_deg_up_to_60_deg_up[4][2] = {
+static constexpr const uint32 car_ride_track_pieces_25_deg_up_to_60_deg_up[4][2] = {
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SW_NE, 0 },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NW_SE, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_NE_SW, SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW },
     { SPR_CAR_RIDE_25_DEG_UP_TO_60_DEG_UP_SE_NW, 0 },
 };
 
-static const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
+static constexpr const uint32 car_ride_track_pieces_60_deg_up_to_25_deg_up[4][2] = {
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SW_NE, 0 },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NW_SE, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_NE_SW, SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW },
     { SPR_CAR_RIDE_60_DEG_UP_TO_25_DEG_UP_SE_NW, 0 },
 };
 
-static const uint32 car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
+static constexpr const uint32 car_ride_track_pieces_left_quarter_turn_1_tile[4] = {
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SW_NW,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NW_NE,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_NE_SE,
     SPR_CAR_RIDE_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static const uint32 car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 car_ride_track_pieces_quarter_turn_3_tiles[4][3] = {
     { SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_CAR_RIDE_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_CAR_RIDE_QUARTER_TURN_3_TILES_NW_SW_PART_1,

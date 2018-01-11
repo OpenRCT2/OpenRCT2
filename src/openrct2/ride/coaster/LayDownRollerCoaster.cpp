@@ -139,7 +139,7 @@ static void lay_down_rc_track_station(paint_session * session, uint8 rideIndex, 
 {
     if (track_element_is_inverted(tileElement))
     {
-        static const uint32 imageIds[4][3] = {
+        static constexpr const uint32 imageIds[4][3] = {
             { SPR_STATION_BASE_C_SW_NE, 26557, SPR_STATION_INVERTED_BAR_A_SW_NE },
             { SPR_STATION_BASE_C_NW_SE, 26558, SPR_STATION_INVERTED_BAR_A_NW_SE },
             { SPR_STATION_BASE_C_SW_NE, 26557, SPR_STATION_INVERTED_BAR_A_SW_NE },
@@ -159,7 +159,7 @@ static void lay_down_rc_track_station(paint_session * session, uint8 rideIndex, 
     }
     else
     {
-        static const uint32 imageIds[4][3] = {
+        static constexpr const uint32 imageIds[4][3] = {
             { 16236, 16232, SPR_STATION_BASE_A_SW_NE },
             { 16237, 16233, SPR_STATION_BASE_A_NW_SE },
             { 16236, 16232, SPR_STATION_BASE_A_SW_NE },

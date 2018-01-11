@@ -53,7 +53,7 @@ static ride_list_item _windowNewRideListItems[384];
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
  */
-const char RideTypeViewOrder[] = {
+static constexpr const char RideTypeViewOrder[] = {
     // Transport rides
     RIDE_TYPE_MINIATURE_RAILWAY,
     RIDE_TYPE_MONORAIL,
@@ -254,7 +254,7 @@ static rct_window_event_list window_new_ride_events = {
 
 #pragma endregion
 
-static const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
+static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
     STR_NEW_TRANSPORT_RIDES,
     STR_NEW_GENTLE_RIDES,
     STR_NEW_ROLLER_COASTERS,
@@ -264,8 +264,8 @@ static const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = 
     STR_RESEARCH_AND_DEVELOPMENT,
 };
 
-const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+static constexpr const sint32 window_new_ride_tab_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
+static constexpr const sint32 window_new_ride_tab_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 
 static void window_new_ride_set_page(rct_window *w, sint32 page);
 static void window_new_ride_refresh_widget_sizing(rct_window *w);
@@ -642,7 +642,7 @@ static void window_new_ride_set_pressed_tab(rct_window *w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + _windowNewRideCurrentTab);
 }
 
-const sint32 ThrillRidesTabAnimationSequence[] = {
+static constexpr const sint32 ThrillRidesTabAnimationSequence[] = {
     5, 6, 5, 4, 3, 2, 1, 0, 0, 0, 0, 0, 0, 0, 1, 2, 3, 4, 0, 0, 0
 };
 

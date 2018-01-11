@@ -45,14 +45,14 @@ namespace Config
 {
     #pragma region Enums
 
-    static auto Enum_MeasurementFormat = ConfigEnum<sint32>(
+    static const auto Enum_MeasurementFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("IMPERIAL", MEASUREMENT_FORMAT_IMPERIAL),
         ConfigEnumEntry<sint32>("METRIC", MEASUREMENT_FORMAT_METRIC),
         ConfigEnumEntry<sint32>("SI", MEASUREMENT_FORMAT_SI),
     });
 
-    static auto Enum_Currency = ConfigEnum<sint32>(
+    static const auto Enum_Currency = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("GBP", CURRENCY_POUNDS),
         ConfigEnumEntry<sint32>("USD", CURRENCY_DOLLARS),
@@ -73,13 +73,13 @@ namespace Config
         ConfigEnumEntry<sint32>("CUSTOM", CURRENCY_CUSTOM),
     });
 
-    static auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
+    static const auto Enum_CurrencySymbolAffix = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("PREFIX", CURRENCY_PREFIX),
         ConfigEnumEntry<sint32>("SUFFIX", CURRENCY_SUFFIX),
     });
 
-    static auto Enum_DateFormat = ConfigEnum<sint32>(
+    static const auto Enum_DateFormat = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("DD/MM/YY", DATE_FORMAT_DAY_MONTH_YEAR),
         ConfigEnumEntry<sint32>("MM/DD/YY", DATE_FORMAT_MONTH_DAY_YEAR),
@@ -87,20 +87,20 @@ namespace Config
         ConfigEnumEntry<sint32>("YY/DD/MM", DATE_FORMAT_YEAR_DAY_MONTH),
     });
 
-    static auto Enum_DrawingEngine = ConfigEnum<sint32>(
+    static const auto Enum_DrawingEngine = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("SOFTWARE", DRAWING_ENGINE_SOFTWARE),
         ConfigEnumEntry<sint32>("SOFTWARE_HWD", DRAWING_ENGINE_SOFTWARE_WITH_HARDWARE_DISPLAY),
         ConfigEnumEntry<sint32>("OPENGL", DRAWING_ENGINE_OPENGL),
     });
 
-    static auto Enum_Temperature = ConfigEnum<sint32>(
+    static const auto Enum_Temperature = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("CELSIUS", TEMPERATURE_FORMAT_C),
         ConfigEnumEntry<sint32>("FAHRENHEIT", TEMPERATURE_FORMAT_F),
     });
-    
-    static auto Enum_ScaleQuality = ConfigEnum<sint32>(
+
+    static const auto Enum_ScaleQuality = ConfigEnum<sint32>(
     {
         ConfigEnumEntry<sint32>("NEAREST_NEIGHBOUR", SCALE_QUALITY_NN),
         ConfigEnumEntry<sint32>("LINEAR", SCALE_QUALITY_LINEAR),
@@ -599,7 +599,7 @@ namespace Config
     {
         log_verbose("config_find_rct2_path(...)");
 
-        static const utf8 * searchLocations[] =
+        static constexpr const utf8 * searchLocations[] =
         {
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
             R"(C:\Program Files\Atari\RollerCoaster Tycoon 2)",

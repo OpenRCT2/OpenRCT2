@@ -528,13 +528,13 @@ static uint64 PressedWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 #pragma endregion
 
-static const sint32 TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr const sint32 TabAnimationDivisor[WINDOW_MAPGEN_PAGE_COUNT] = {
     1, 1, 1, 1
 };
-static const sint32 TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr const sint32 TabAnimationFrames[WINDOW_MAPGEN_PAGE_COUNT] = {
     1, 1, 1, 1
 };
-static const sint32 TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
+static constexpr const sint32 TabAnimationLoops[WINDOW_MAPGEN_PAGE_COUNT] = {
     16, 16, 16, 0
 };
 

@@ -39,7 +39,7 @@ namespace ScenarioSources
     #pragma region Scenario Data
 
     // clang-format off
-    static const ScenarioAlias ScenarioAliases[] =
+    static constexpr const ScenarioAlias ScenarioAliases[] =
     {
         // UK - US differences:
         { "Katie's Dreamland",                      "Katie's World"                             },
@@ -56,7 +56,7 @@ namespace ScenarioSources
     };
 
     // RCT
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT1[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1[] =
     {
         { SC_FOREST_FRONTIERS,          "Forest Frontiers",     SCENARIO_CATEGORY_BEGINNER      },
         { SC_DYNAMITE_DUNES,            "Dynamite Dunes",       SCENARIO_CATEGORY_BEGINNER      },
@@ -83,7 +83,7 @@ namespace ScenarioSources
     };
 
     // RCT: Added Attractions
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
     {
         { SC_WHISPERING_CLIFFS,         "Whispering Cliffs",    SCENARIO_CATEGORY_BEGINNER      },
         { SC_THREE_MONKEYS_PARK,        "Three Monkeys Park",   SCENARIO_CATEGORY_BEGINNER      },
@@ -118,7 +118,7 @@ namespace ScenarioSources
     };
 
     // RCT: Loopy Landscapes
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT1LL[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1LL[] =
     {
         {   SC_ICEBERG_ISLANDS,         "Iceberg Islands",      SCENARIO_CATEGORY_BEGINNER      },
         {   SC_VOLCANIA,                "Volcania",             SCENARIO_CATEGORY_BEGINNER      },
@@ -153,7 +153,7 @@ namespace ScenarioSources
     };
 
     // RCT2
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2[] =
     {
         { SC_UNIDENTIFIED,              "Crazy Castle",         SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Electric Fields",      SCENARIO_CATEGORY_BEGINNER      },
@@ -173,7 +173,7 @@ namespace ScenarioSources
     };
 
     // RCT2: Wacky Worlds
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2WW[] =
     {
         { SC_UNIDENTIFIED,              "Africa - Victoria Falls",                          SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Asia - Great Wall of China Tourism Enhancement",   SCENARIO_CATEGORY_BEGINNER      },
@@ -195,7 +195,7 @@ namespace ScenarioSources
     };
 
     // RCT2: Time Twister
-    static const ScenarioTitleDescriptor ScenarioTitlesRCT2TT[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT2TT[] =
     {
         { SC_UNIDENTIFIED,              "Dark Age - Robin Hood",                            SCENARIO_CATEGORY_BEGINNER      },
         { SC_UNIDENTIFIED,              "Prehistoric - After the Asteroid",                 SCENARIO_CATEGORY_BEGINNER      },
@@ -214,7 +214,7 @@ namespace ScenarioSources
     };
 
     // Real parks
-    static const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesRealParks[] =
     {
         { SC_ALTON_TOWERS,              "Alton Towers",                                     SCENARIO_CATEGORY_REAL  },
         { SC_HEIDE_PARK,                "Heide-Park",                                       SCENARIO_CATEGORY_REAL  },
@@ -227,7 +227,7 @@ namespace ScenarioSources
     };
 
     // Other parks
-    static const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
+    static constexpr const ScenarioTitleDescriptor ScenarioTitlesOtherParks[] =
     {
         { SC_FORT_ANACHRONISM,          "Fort Anachronism",                                 SCENARIO_CATEGORY_DLC               },
         { SC_PCPLAYER,                  "PC Player",                                        SCENARIO_CATEGORY_DLC               },

@@ -396,7 +396,7 @@ const WeatherState ClimateWeatherData[6] =
     {  2, 2, 2, 2, SPR_WEATHER_STORM        }, // Thunderstorm
 };
 
-static const WeatherTransition ClimateTransitionsCoolAndWet[] =
+static constexpr const WeatherTransition ClimateTransitionsCoolAndWet[] =
 {
     {  8, 18, { 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 0, 0, 0, 0, 0 } },
     { 10, 21, { 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 3, 3, 4, 4, 4, 5, 0, 0 } },
@@ -407,7 +407,7 @@ static const WeatherTransition ClimateTransitionsCoolAndWet[] =
     { 16, 19, { 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 4, 5, 0, 0, 0, 0 } },
     { 13, 16, { 0, 0, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 3, 4, 5, 0, 0, 0, 0, 0, 0, 0 } },
 };
-static const WeatherTransition ClimateTransitionsWarm[] = {
+static constexpr const WeatherTransition ClimateTransitionsWarm[] = {
     { 12, 21, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0 } },
     { 13, 22, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 5, 0 } },
     { 16, 17, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
@@ -417,7 +417,7 @@ static const WeatherTransition ClimateTransitionsWarm[] = {
     { 19, 17, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 3, 0, 0, 0, 0, 0, 0 } },
     { 16, 17, { 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 4, 0, 0, 0, 0, 0, 0 } },
 };
-static const WeatherTransition ClimateTransitionsHotAndDry[] = {
+static constexpr const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 12, 15, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 14, 12, { 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 16, 11, { 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
@@ -427,7 +427,7 @@ static const WeatherTransition ClimateTransitionsHotAndDry[] = {
     { 21, 12, { 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
     { 16, 13, { 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 2, 3, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 } },
 };
-static const WeatherTransition ClimateTransitionsCold[] = {
+static constexpr const WeatherTransition ClimateTransitionsCold[] = {
     {  4, 18, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0 } },
     {  5, 21, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 3, 4, 5, 0, 0 } },
     {  7, 17, { 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 4, 0, 0, 0, 0, 0, 0 } },

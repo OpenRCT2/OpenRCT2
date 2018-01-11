@@ -37,7 +37,7 @@
 #include "../core/Memory.hpp"
 #include "../util/Util.h"
 
-const sint32 _researchRate[] = {0, 160, 250, 400};
+static constexpr const sint32 _researchRate[] = {0, 160, 250, 400};
 
 uint8  gResearchFundingLevel;
 uint8  gResearchPriorities;

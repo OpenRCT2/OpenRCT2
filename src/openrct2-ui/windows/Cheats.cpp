@@ -40,7 +40,7 @@ enum {
     WINDOW_CHEATS_PAGE_RIDES,
 };
 
-static const rct_string_id WeatherTypes[] = {
+static constexpr const rct_string_id WeatherTypes[] = {
     STR_SUNNY,
     STR_PARTIALLY_CLOUDY,
     STR_CLOUDY,

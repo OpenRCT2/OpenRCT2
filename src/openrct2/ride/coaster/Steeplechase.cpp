@@ -73,7 +73,7 @@ static void steeplechase_track_flat(paint_session * session, uint8 rideIndex, ui
 static void steeplechase_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                        sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 28635, SPR_STATION_BASE_B_SW_NE },
         { 28636, SPR_STATION_BASE_B_NW_SE },
         { 28635, SPR_STATION_BASE_B_SW_NE },

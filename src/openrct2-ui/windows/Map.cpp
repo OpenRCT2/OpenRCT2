@@ -101,7 +101,7 @@ static rct_widget window_map_widgets[] = {
 
 // used in transforming viewport view coordinates to minimap coordinates
 // rct2: 0x00981BBC
-const LocationXY16 MiniMapOffsets[] = {
+static constexpr const LocationXY16 MiniMapOffsets[] = {
     { 256 - 8,   0 },
     { 512 - 8, 256 },
     { 256 - 8, 512 },
@@ -109,7 +109,7 @@ const LocationXY16 MiniMapOffsets[] = {
 };
 
 /** rct2: 0x00981BCC */
-static const uint16 RideKeyColours[] = {
+static constexpr const uint16 RideKeyColours[] = {
     MAP_COLOUR(PALETTE_INDEX_61),   // COLOUR_KEY_RIDE
     MAP_COLOUR(PALETTE_INDEX_42),   // COLOUR_KEY_FOOD
     MAP_COLOUR(PALETTE_INDEX_20),   // COLOUR_KEY_DRINK
@@ -1434,8 +1434,8 @@ static void map_window_decrease_map_size()
     gfx_invalidate_screen();
 }
 
-static const uint16 WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
-static const uint16 TerrainColour[] = {
+static constexpr const uint16 WaterColour = MAP_COLOUR(PALETTE_INDEX_195);
+static constexpr const uint16 TerrainColour[] = {
     MAP_COLOUR(PALETTE_INDEX_73),                       // TERRAIN_GRASS
     MAP_COLOUR(PALETTE_INDEX_40),                       // TERRAIN_SAND
     MAP_COLOUR(PALETTE_INDEX_108),                      // TERRAIN_DIRT
@@ -1452,7 +1452,7 @@ static const uint16 TerrainColour[] = {
     MAP_COLOUR(PALETTE_INDEX_222),                      // TERRAIN_SAND_LIGHT
 };
 
-static const uint16 ElementTypeMaskColour[] = {
+static constexpr const uint16 ElementTypeMaskColour[] = {
     0xFFFF,         // TILE_ELEMENT_TYPE_SURFACE
     0x0000,         // TILE_ELEMENT_TYPE_PATH
     0x00FF,         // TILE_ELEMENT_TYPE_TRACK
@@ -1464,7 +1464,7 @@ static const uint16 ElementTypeMaskColour[] = {
     0x0000,         // TILE_ELEMENT_TYPE_CORRUPT
 };
 
-static const uint16 ElementTypeAddColour[] = {
+static constexpr const uint16 ElementTypeAddColour[] = {
     MAP_COLOUR(PALETTE_INDEX_0),                        // TILE_ELEMENT_TYPE_SURFACE
     MAP_COLOUR(PALETTE_INDEX_17),                       // TILE_ELEMENT_TYPE_PATH
     MAP_COLOUR_2(PALETTE_INDEX_183, PALETTE_INDEX_0),   // TILE_ELEMENT_TYPE_TRACK
@@ -1487,7 +1487,7 @@ enum {
     COLOUR_KEY_TOILETS
 };
 
-static const uint8 RideColourKey[] = {
+static constexpr const uint8 RideColourKey[] = {
     COLOUR_KEY_RIDE,                // RIDE_TYPE_SPIRAL_ROLLER_COASTER
     COLOUR_KEY_RIDE,                // RIDE_TYPE_STAND_UP_ROLLER_COASTER
     COLOUR_KEY_RIDE,                // RIDE_TYPE_SUSPENDED_SWINGING_COASTER
