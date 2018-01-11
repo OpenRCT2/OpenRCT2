@@ -48,7 +48,7 @@
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
 #include "../world/Park.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 #include "Console.h"
 #include "Viewport.h"
 

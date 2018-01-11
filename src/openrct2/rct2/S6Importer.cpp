@@ -46,7 +46,7 @@
 #include "../util/SawyerCoding.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
-#include "../world/map_animation.h"
+#include "../world/MapAnimation.h"
 #include "../world/Park.h"
 
 class ObjectLoadException : public std::runtime_error

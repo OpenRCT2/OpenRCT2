@@ -40,7 +40,7 @@
 #include "../peep/Peep.h"
 #include "../platform/platform.h"
 #include "../util/Util.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "http.h"
 #include "twitch.h"
 

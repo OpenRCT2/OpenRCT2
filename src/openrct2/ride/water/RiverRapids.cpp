@@ -20,7 +20,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
-#include "../../world/sprite.h"
+#include "../../world/Sprite.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../VehiclePaint.h"

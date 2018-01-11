@@ -29,7 +29,7 @@
 #include <openrct2/interface/themes.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/scenery.h>
+#include <openrct2/world/Scenery.h>
 
 enum {
     WIDX_PREVIOUS_IMAGE,        // 1

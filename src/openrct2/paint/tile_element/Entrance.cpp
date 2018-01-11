@@ -20,7 +20,7 @@
 #include "../../localisation/Localisation.h"
 #include "../../ride/RideData.h"
 #include "../../world/Entrance.h"
-#include "../../world/footpath.h"
+#include "../../world/Footpath.h"
 #include "../Paint.h"
 #include "../Supports.h"
 #include "TileElement.h"

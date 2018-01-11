@@ -55,13 +55,13 @@
 #include "world/Banner.h"
 #include "world/Climate.h"
 #include "world/Entrance.h"
-#include "world/footpath.h"
+#include "world/Footpath.h"
 #include "world/Map.h"
-#include "world/map_animation.h"
+#include "world/MapAnimation.h"
 #include "world/Park.h"
-#include "world/scenery.h"
-#include "world/sprite.h"
-#include "world/water.h"
+#include "world/Scenery.h"
+#include "world/Sprite.h"
+#include "world/Water.h"
 #include "object/ObjectList.h"
 
 #define NUMBER_OF_AUTOSAVES_TO_KEEP 9

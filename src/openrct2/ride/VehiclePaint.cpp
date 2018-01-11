@@ -21,7 +21,7 @@
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
 #include "../ride/RideData.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "Track.h"
 #include "VehiclePaint.h"
 

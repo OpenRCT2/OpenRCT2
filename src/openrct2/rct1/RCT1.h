@@ -24,8 +24,8 @@
 #include "../ride/Ride.h"
 #include "../world/Banner.h"
 #include "../world/Map.h"
-#include "../world/sprite.h"
-#include "../world/map_animation.h"
+#include "../world/Sprite.h"
+#include "../world/MapAnimation.h"
 
 #define RCT1_MAX_TILE_ELEMENTS        0xC000
 #define RCT1_MAX_SPRITES              5000

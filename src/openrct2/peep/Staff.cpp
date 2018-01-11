@@ -31,9 +31,9 @@
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Entrance.h"
-#include "../world/footpath.h"
-#include "../world/scenery.h"
-#include "../world/sprite.h"
+#include "../world/Footpath.h"
+#include "../world/Scenery.h"
+#include "../world/Sprite.h"
 #include "Peep.h"
 #include "Staff.h"
 

@@ -18,10 +18,10 @@
 #include "../network/network.h"
 #include "../OpenRCT2.h"
 #include "../ride/TrackDesign.h"
-#include "footpath.h"
+#include "Footpath.h"
 #include "Map.h"
 #include "Park.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 
 static money32 SmallSceneryRemove(sint16 x, sint16 y, uint8 baseHeight, uint8 quadrant, uint8 sceneryType, uint8 flags)

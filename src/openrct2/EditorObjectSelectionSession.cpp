@@ -26,7 +26,7 @@
 #include "ride/RideData.h"
 #include "windows/Intent.h"
 #include "windows/_legacy.h"
-#include "world/footpath.h"
+#include "world/Footpath.h"
 #include "world/LargeScenery.h"
 
 bool _maxObjectsWasHit;

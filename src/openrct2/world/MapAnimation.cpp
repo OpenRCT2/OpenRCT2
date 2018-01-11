@@ -19,18 +19,16 @@
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../interface/Viewport.h"
-#include "map_animation.h"
+#include "MapAnimation.h"
 #include "Map.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
-#include "sprite.h"
-#include "footpath.h"
+#include "Sprite.h"
+#include "Footpath.h"
 
 typedef bool (*map_animation_invalidate_event_handler)(sint32 x, sint32 y, sint32 baseZ);
 
 static bool map_animation_invalidate(rct_map_animation *obj);
-
-static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT];
 
 uint16 gNumMapAnimations;
 rct_map_animation gAnimatedObjects[MAX_ANIMATED_OBJECTS];
@@ -93,16 +91,6 @@ void map_animation_invalidate_all()
             aobj++;
         }
     }
-}
-
-/**
- * @returns true if the animation should be removed.
- */
-static bool map_animation_invalidate(rct_map_animation *obj)
-{
-    assert(obj->type < MAP_ANIMATION_TYPE_COUNT);
-
-    return _animatedObjectEventHandlers[obj->type](obj->x, obj->y, obj->baseZ);
 }
 
 /**
@@ -556,3 +544,13 @@ static const map_animation_invalidate_event_handler _animatedObjectEventHandlers
     map_animation_invalidate_wall_door,
     map_animation_invalidate_wall
 };
+
+/**
+ * @returns true if the animation should be removed.
+ */
+static bool map_animation_invalidate(rct_map_animation *obj)
+{
+    assert(obj->type < MAP_ANIMATION_TYPE_COUNT);
+    
+    return _animatedObjectEventHandlers[obj->type](obj->x, obj->y, obj->baseZ);
+}

@@ -18,7 +18,7 @@
 
 #include "../common.h"
 #include "Map.h"
-#include "scenery.h"
+#include "Scenery.h"
 
 #ifdef __cplusplus
 extern "C" {

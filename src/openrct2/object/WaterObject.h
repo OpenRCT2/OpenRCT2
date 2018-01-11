@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../world/water.h"
+#include "../world/Water.h"
 
 class WaterObject final : public Object
 {

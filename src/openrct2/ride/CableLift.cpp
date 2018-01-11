@@ -17,7 +17,7 @@
 #include "../core/Math.hpp"
 #include "../rct12/RCT12.h"
 #include "../util/Util.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "CableLift.h"
 #include "Ride.h"
 #include "Track.h"

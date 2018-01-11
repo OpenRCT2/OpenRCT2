@@ -20,7 +20,7 @@
 
 #include "Object.h"
 
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 
 struct ObjectRepositoryItem;
 

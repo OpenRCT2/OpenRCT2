@@ -22,7 +22,7 @@
 
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
-#include "../world/scenery.h"
+#include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 
 SmallSceneryObject::~SmallSceneryObject()

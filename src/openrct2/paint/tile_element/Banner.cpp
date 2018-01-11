@@ -21,7 +21,7 @@
 #include "../../localisation/Localisation.h"
 #include "TileElement.h"
 #include "../../world/Banner.h"
-#include "../../world/scenery.h"
+#include "../../world/Scenery.h"
 
 /** rct2: 0x0098D884 */
 // BannerBoundBoxes[rotation][0] is for the pole in the back

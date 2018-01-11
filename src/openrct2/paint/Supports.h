@@ -18,7 +18,7 @@
 #define _DRAWING_SUPPORTS_H_
 
 #include "../common.h"
-#include "../world/footpath.h"
+#include "../world/Footpath.h"
 
 #ifdef __cplusplus
 extern "C" {

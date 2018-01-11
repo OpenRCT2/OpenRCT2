@@ -47,9 +47,9 @@
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
-#include "../world/map_animation.h"
+#include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 
 S6Exporter::S6Exporter()
 {

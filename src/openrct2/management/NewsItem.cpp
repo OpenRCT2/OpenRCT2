@@ -25,7 +25,7 @@
 #include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/sprite.h"
+#include "../world/Sprite.h"
 #include "NewsItem.h"
 
 NewsItem gNewsItems[MAX_NEWS_ITEMS];

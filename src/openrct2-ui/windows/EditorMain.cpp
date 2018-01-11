@@ -20,7 +20,7 @@
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/world/footpath.h>
+#include <openrct2/world/Footpath.h>
 
 static void window_editor_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
 

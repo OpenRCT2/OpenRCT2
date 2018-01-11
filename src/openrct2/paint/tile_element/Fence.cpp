@@ -23,7 +23,7 @@
 #include "../../interface/Viewport.h"
 #include "../../ride/Track.h"
 #include "../../world/Map.h"
-#include "../../world/scenery.h"
+#include "../../world/Scenery.h"
 #include "../../world/Wall.h"
 #include "../Paint.h"
 #include "TileElement.h"

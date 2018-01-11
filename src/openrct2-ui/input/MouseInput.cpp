@@ -36,8 +36,8 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Banner.h>
 #include <openrct2/world/Map.h>
-#include <openrct2/world/scenery.h>
-#include <openrct2/world/sprite.h>
+#include <openrct2/world/Scenery.h>
+#include <openrct2/world/Sprite.h>
 
 typedef struct rct_mouse_data
 {

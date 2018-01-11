@@ -111,7 +111,7 @@ private:
             "../../paint/paint.h",
             "../../sprites.h",
             "../../world/Map.h",
-            "../../world/sprite.h",
+            "../../world/Sprite.h",
             "../ride_data.h",
             "../TrackData.h",
             "../track_paint.h",

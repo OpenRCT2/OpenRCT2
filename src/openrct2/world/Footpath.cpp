@@ -15,6 +15,8 @@
 #pragma endregion
 
 #include "../Cheats.h"
+#include "../core/Math.hpp"
+#include "../core/Util.hpp"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
@@ -836,7 +838,7 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
     }
 
     LocationXY16 minPosition = position;
-    LocationXY16 maxPosition = { position.x + 31, position.y + 31 };
+    LocationXY16 maxPosition = { sint16(position.x + 31), sint16(position.y + 31) };
 
     position.x += 16;
     position.y += 16;
@@ -855,8 +857,8 @@ void footpath_get_coordinates_from_pos(sint32 screenX, sint32 screenY, sint32 *x
             z = tile_element_height(position.x, position.y);
         }
         position = viewport_coord_to_map_coord(start_vp_pos.x, start_vp_pos.y, z);
-        position.x = clamp(minPosition.x, position.x, maxPosition.x);
-        position.y = clamp(minPosition.y, position.y, maxPosition.y);
+        position.x = Math::Clamp(minPosition.x, position.x, maxPosition.x);
+        position.y = Math::Clamp(minPosition.y, position.y, maxPosition.y);
     }
 
     // Determine to which edge the cursor is closest
@@ -1473,7 +1475,7 @@ void footpath_connect_edges(sint32 x, sint32 y, rct_tile_element *tileElement, s
             }
         }
 
-        neighbourList.count = min(neighbourList.count, 2);
+        neighbourList.count = std::min(neighbourList.count, 2);
     }
 
     while (neighbour_list_pop(&neighbourList, &neighbour)) {
@@ -1605,7 +1607,7 @@ void footpath_queue_chain_reset()
 void footpath_queue_chain_push(uint8 rideIndex)
 {
     if (rideIndex != 255) {
-        uint8 * lastSlot = _footpathQueueChain + countof(_footpathQueueChain) - 1;
+        uint8 * lastSlot = _footpathQueueChain + Util::CountOf(_footpathQueueChain) - 1;
         if (_footpathQueueChainNext <= lastSlot) {
             *_footpathQueueChainNext++ = rideIndex;
         }

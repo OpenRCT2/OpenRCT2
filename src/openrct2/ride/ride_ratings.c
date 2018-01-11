@@ -18,7 +18,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../OpenRCT2.h"
-#include "../world/footpath.h"
+#include "../world/Footpath.h"
 #include "../world/Map.h"
 #include "Ride.h"
 #include "RideData.h"

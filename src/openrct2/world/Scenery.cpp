@@ -22,11 +22,11 @@
 #include "../object/ObjectList.h"
 #include "../scenario/Scenario.h"
 #include "Climate.h"
-#include "footpath.h"
+#include "Footpath.h"
 #include "Fountain.h"
 #include "Map.h"
 #include "Park.h"
-#include "scenery.h"
+#include "Scenery.h"
 #include "SmallScenery.h"
 
 uint8 gWindowSceneryActiveTabIndex;

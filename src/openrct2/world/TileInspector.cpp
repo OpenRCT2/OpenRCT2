@@ -22,7 +22,7 @@
 #include "../ride/Track.h"
 #include "../windows/Intent.h"
 #include "../windows/tile_inspector.h"
-#include "footpath.h"
+#include "Footpath.h"
 #include "Map.h"
 #include "TileInspector.h"
 
