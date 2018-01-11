@@ -729,7 +729,7 @@ void lightfx_add_lights_magic_vehicles()
             place_y = vehicle->y;
             place_z = vehicle->z;
 
-            static const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
+            static constexpr const sint16 offsetLookup[32] = { 10, 10, 9, 8, 7, 6, 4, 2, 0, -2, -4, -6, -7, -8, -9, -10, -10, -10, -9, -8, -7, -6, -4, -2, 0, 2, 4, 6, 7, 8, 9, 10 };
 
             Ride *ride = get_ride(vehicle->ride);
             switch (ride->type) {

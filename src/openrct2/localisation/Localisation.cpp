@@ -825,7 +825,7 @@ static void format_velocity(char **dest, size_t *size, uint16 value)
     format_string_part(dest, size, stringId, (char**)&argRef);
 }
 
-static const rct_string_id DurationFormats[][2] = {
+static constexpr const rct_string_id DurationFormats[][2] = {
     {STR_DURATION_SEC,      STR_DURATION_SECS},
     {STR_DURATION_MIN_SEC,  STR_DURATION_MIN_SECS},
     {STR_DURATION_MINS_SEC, STR_DURATION_MINS_SECS},
@@ -858,7 +858,7 @@ static void format_duration(char **dest, size_t *size, uint16 value)
     format_string_part(dest, size, stringId, (char**)&argsRef);
 }
 
-static const rct_string_id RealtimeFormats[][2] = {
+static constexpr const rct_string_id RealtimeFormats[][2] = {
     {STR_REALTIME_MIN,       STR_REALTIME_MINS},
     {STR_REALTIME_HOUR_MIN,  STR_REALTIME_HOUR_MINS},
     {STR_REALTIME_HOURS_MIN, STR_REALTIME_HOURS_MINS},

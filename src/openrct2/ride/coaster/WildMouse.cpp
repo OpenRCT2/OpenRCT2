@@ -701,7 +701,7 @@ static void wild_mouse_track_left_quarter_turn_3(paint_session * session, uint8 
 static void wild_mouse_track_left_quarter_turn_1(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                  sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4] = {
+    static constexpr const uint32 imageIds[4] = {
         SPR_WILD_MOUSE_QUARTER_TURN_1_SW_NE,
         SPR_WILD_MOUSE_QUARTER_TURN_1_NW_SE,
         SPR_WILD_MOUSE_QUARTER_TURN_1_NE_SW,

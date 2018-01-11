@@ -2785,7 +2785,7 @@ static void vehicle_sprite_59(paint_session * session, rct_vehicle * vehicle, si
 typedef void (*vehicle_sprite_func)(paint_session * session, rct_vehicle * vehicle, sint32 imageDirection, sint32 z,
                                     const rct_ride_entry_vehicle * vehicleEntry);
 // clang-format off
-static const vehicle_sprite_func vehicle_sprite_funcs[] = {
+static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
     vehicle_sprite_0,
     vehicle_sprite_1,
     vehicle_sprite_2,

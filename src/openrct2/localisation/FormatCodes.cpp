@@ -27,7 +27,7 @@ typedef struct format_code_token {
 } format_code_token;
 
 // clang-format off
-static const format_code_token format_code_tokens[] = {
+static constexpr const format_code_token format_code_tokens[] = {
     { FORMAT_MOVE_X,                    "MOVE_X"                },
     { FORMAT_ADJUST_PALETTE,            "ADJUST_PALETTE"        },
     { FORMAT_NEWLINE,                   "NEWLINE"               },

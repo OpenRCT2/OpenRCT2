@@ -64,7 +64,7 @@ static utf8 * _rct2DataPath    = nullptr;
 static bool   _silentBreakpad  = false;
 
 // clang-format off
-static const CommandLineOptionDefinition StandardOptions[]
+static constexpr const CommandLineOptionDefinition StandardOptions[]
 {
     { CMDLINE_TYPE_SWITCH,  &_help,            'h', "help",              "show this help message and exit"                            },
     { CMDLINE_TYPE_SWITCH,  &_version,         'v', "version",           "show version information and exit"                          },
@@ -99,7 +99,7 @@ static exitcode_t HandleCommandScanObjects(CommandLineArgEnumerator * enumerator
 
 static bool _removeShell = false;
 
-static const CommandLineOptionDefinition RegisterShellOptions[]
+static constexpr const CommandLineOptionDefinition RegisterShellOptions[]
 {
     { CMDLINE_TYPE_SWITCH, &_removeShell, 'd', "remove", "remove shell integration" },
 };

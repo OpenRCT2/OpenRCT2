@@ -20,7 +20,7 @@
 static ScreenshotOptions options;
 
 // clang-format off
-static const CommandLineOptionDefinition ScreenshotOptionsDef[]
+static constexpr const CommandLineOptionDefinition ScreenshotOptionsDef[]
 {
     { CMDLINE_TYPE_INTEGER, &options.weather,       NAC, "weather",       "weather to be used (0 = default, 1 = sunny, ..., 6 = thunder)." },
     { CMDLINE_TYPE_SWITCH,  &options.hide_guests,   NAC, "no-peeps",      "hide peeps" },

@@ -141,7 +141,7 @@ enum
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_S_N                = 23452,
 };
 
-static const uint32 miniature_railway_track_floor[4] = { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS,
+static constexpr const uint32 miniature_railway_track_floor[4] = { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS,
                                                          SPR_FLOOR_PLANKS_90_DEG };
 
 static constexpr const uint32 miniature_railway_track_pieces_flat[4] = {
@@ -520,7 +520,7 @@ static constexpr const LocationXY16 miniature_railway_track_pieces_left_eight_to
     },
 };
 
-static const uint32 miniature_railway_track_pieces_diag_flat[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_diag_flat[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_E_W,

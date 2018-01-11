@@ -1865,7 +1865,7 @@ static void junior_rc_right_quarter_turn_5_tiles_paint_setup(paint_session * ses
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint8 junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = { 6, 4, 5, 3, 1, 2, 0 };
+static constexpr const uint8 junior_rc_left_quarter_turn_5_tiles_to_right_turn_map[] = { 6, 4, 5, 3, 1, 2, 0 };
 
 /* rct2: 0x0051917A */
 static void junior_rc_left_quarter_turn_5_tiles_paint_setup(paint_session * session, uint8 rideIndex, uint8 trackSequence,

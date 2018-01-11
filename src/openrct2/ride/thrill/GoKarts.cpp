@@ -95,14 +95,14 @@ enum
     SPR_GO_KARTS_START_LIGHTS_GREEN_SE_NW              = 20819,
 };
 
-static const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_starting_grid_end[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_END_SW_NE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_END_NW_SE, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_END_NE_SW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_NE_SW },
     { SPR_GO_KARTS_STARTING_GRID_END_SE_NW, SPR_GO_KARTS_STARTING_GRID_END_FRONT_SE_NW },
 };
 
-static const uint32 go_karts_track_pieces_starting_grid[4][2] = {
+static constexpr const uint32 go_karts_track_pieces_starting_grid[4][2] = {
     { SPR_GO_KARTS_STARTING_GRID_SW_NE, SPR_GO_KARTS_STARTING_GRID_FRONT_SW_NE },
     { SPR_GO_KARTS_STARTING_GRID_NW_SE, SPR_GO_KARTS_STARTING_GRID_FRONT_NW_SE },
     { SPR_GO_KARTS_STARTING_GRID_NE_SW, SPR_GO_KARTS_STARTING_GRID_FRONT_NE_SW },

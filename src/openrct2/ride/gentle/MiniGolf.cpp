@@ -187,7 +187,7 @@ enum
     SPR_MINI_GOLF_HOLE_E_TRIM_PART_3_SW_NW = 14556,
 };
 
-static const uint32 mini_golf_track_sprites_25_deg_up[][3] = { {
+static constexpr const uint32 mini_golf_track_sprites_25_deg_up[][3] = { {
                                                                    SPR_MINI_GOLF_25_DEG_UP_SW_NE,
                                                                    SPR_MINI_GOLF_25_DEG_UP_FENCE_BACK_SW_NE,
                                                                    SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SW_NE,
@@ -208,7 +208,7 @@ static const uint32 mini_golf_track_sprites_25_deg_up[][3] = { {
                                                                    SPR_MINI_GOLF_25_DEG_UP_FENCE_FRONT_SE_NW,
                                                                } };
 
-static const uint32 mini_golf_track_sprites_flat_to_25_deg_up[][3] = { {
+static constexpr const uint32 mini_golf_track_sprites_flat_to_25_deg_up[][3] = { {
                                                                            SPR_MINI_GOLF_FLAT_TO_25_DEG_UP_SW_NE,
                                                                            SPR_MINI_GOLF_FLAT_TO_25_DEG_UP_FENCE_BACK_SW_NE,
                                                                            SPR_MINI_GOLF_FLAT_TO_25_DEG_UP_FENCE_FRONT_SW_NE,
@@ -229,7 +229,7 @@ static const uint32 mini_golf_track_sprites_flat_to_25_deg_up[][3] = { {
                                                                            SPR_MINI_GOLF_FLAT_TO_25_DEG_UP_FENCE_FRONT_SE_NW,
                                                                        } };
 
-static const uint32 mini_golf_track_sprites_25_deg_up_to_flat[][3] = { {
+static constexpr const uint32 mini_golf_track_sprites_25_deg_up_to_flat[][3] = { {
                                                                            SPR_MINI_GOLF_25_DEG_UP_TO_FLAT_SW_NE,
                                                                            SPR_MINI_GOLF_25_DEG_UP_TO_FLAT_FENCE_BACK_SW_NE,
                                                                            SPR_MINI_GOLF_25_DEG_UP_TO_FLAT_FENCE_FRONT_SW_NE,

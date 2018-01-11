@@ -528,7 +528,7 @@ static bool map_animation_invalidate_wall(sint32 x, sint32 y, sint32 baseZ)
  *
  *  rct2: 0x009819DC
  */
-static const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
+static constexpr const map_animation_invalidate_event_handler _animatedObjectEventHandlers[MAP_ANIMATION_TYPE_COUNT] = {
     map_animation_invalidate_ride_entrance,
     map_animation_invalidate_queue_banner,
     map_animation_invalidate_small_scenery,
