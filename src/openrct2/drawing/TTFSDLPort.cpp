@@ -642,7 +642,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
     if (((want & CACHED_BITMAP) && !(cached->stored & CACHED_BITMAP)) ||
         ((want & CACHED_PIXMAP) && !(cached->stored & CACHED_PIXMAP))) {
         int mono = (want & CACHED_BITMAP);
-        int i;
+        unsigned int i;
         FT_Bitmap* src;
         FT_Bitmap* dst;
         FT_Glyph bitmap_glyph = NULL;
@@ -740,7 +740,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                 if (mono) {
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
-                    int j;
+                    unsigned int j;
                     if (src->pixel_mode == FT_PIXEL_MODE_MONO) {
                         for (j = 0; j < src->width; j += 8) {
                             unsigned char c = *srcp++;
@@ -801,7 +801,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
                     unsigned char c;
-                    int j, k;
+                    unsigned int j, k;
                     for (j = 0; j < src->width; j += 8) {
                         c = *srcp++;
                         for (k = 0; k < 8; ++k) {
@@ -1172,7 +1172,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     uint8* src;
     uint8* dst;
     uint8 *dst_check;
-    int row, col;
+    unsigned int row, col;
     c_glyph *glyph;
 
     FT_Bitmap *current;
