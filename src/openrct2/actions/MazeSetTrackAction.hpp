@@ -56,16 +56,18 @@ private:
     uint16 _x;
     uint16 _y;
     uint16 _z;
+    bool _initialPlacement;
     uint8 _direction;
     uint8 _rideIndex;
     uint8 _mode;
 
 public:
     MazeSetTrackAction() {}
-    MazeSetTrackAction(uint16 x, uint16 y, uint16 z, uint8 direction, uint8 rideIndex, uint8 mode)
+    MazeSetTrackAction(uint16 x, uint16 y, uint16 z, bool initialPlacement, uint8 direction, uint8 rideIndex, uint8 mode)
         : _x(x),
         _y(y),
         _z(z),
+        _initialPlacement(initialPlacement),
         _direction(direction),
         _rideIndex(rideIndex),
         _mode(mode)
@@ -81,7 +83,7 @@ public:
     {
         GameAction::Serialise(stream);
 
-        stream << _x << _y << _z << _direction << _rideIndex << _mode;
+        stream << _x << _y << _z << _initialPlacement << _direction << _rideIndex << _mode;
     }
 
     GameActionResult::Ptr Query() const override
@@ -247,13 +249,10 @@ public:
             ride->station_heights[0] = tileElement->base_height;
             ride->station_starts[0].xy = 0;
 
-            if (_direction == 4)
+            if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
             {
-                if (!(flags & GAME_COMMAND_FLAG_GHOST))
-                {
-                    ride->overall_view.x = flooredX / 32;
-                    ride->overall_view.y = flooredY / 32;
-                }
+                ride->overall_view.x = flooredX / 32;
+                ride->overall_view.y = flooredY / 32;
             }
         }
 
@@ -265,7 +264,7 @@ public:
 
             tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
 
-            if (_direction != 4)
+            if (!_initialPlacement)
             {
                 segmentOffset = byte_993CE9[(_direction + segmentOffset)];
                 tileElement->properties.track.maze_entry &= ~(1 << segmentOffset);
@@ -301,7 +300,7 @@ public:
             break;
 
         case GC_SET_MAZE_TRACK_FILL:
-            if (_direction != 4)
+            if (!_initialPlacement)
             {
                 uint16 previousSegmentX = _x - TileDirectionDelta[_direction].x / 2;
                 uint16 previousSegmentY = _y - TileDirectionDelta[_direction].y / 2;

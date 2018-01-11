@@ -253,9 +253,9 @@
 #pragma endregion
 
 #pragma region MazeSetTrack
-    money32 maze_set_track(uint16 x, uint16 y, uint16 z, uint8 flags, uint8 direction, uint8 rideIndex, uint8 mode)
+    money32 maze_set_track(uint16 x, uint16 y, uint16 z, uint8 flags, bool initialPlacement, uint8 direction, uint8 rideIndex, uint8 mode)
     {
-        auto gameAction = MazeSetTrackAction(x, y, z, direction, rideIndex, mode);
+        auto gameAction = MazeSetTrackAction(x, y, z, initialPlacement, direction, rideIndex, mode);
         gameAction.SetFlags(flags);
 
         GameActionResult::Ptr res;

@@ -114,7 +114,7 @@ public:
                 {
                     peep->current_ride = MAX_RIDES;
                     if (peep->time_to_stand >= 50)
-                    { 
+                    {
                         // make peep stop watching the ride
                         peep->time_to_stand = 50;
                     }
@@ -223,7 +223,7 @@ private:
 
     money32 MazeRemoveTrack(uint16 x, uint16 y, uint16 z, uint8 direction) const
     {
-        auto setMazeTrack = MazeSetTrackAction(x, y, z, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
+        auto setMazeTrack = MazeSetTrackAction(x, y, z, false, direction, _rideIndex, GC_SET_MAZE_TRACK_FILL);
         setMazeTrack.SetFlags(GetFlags());
 
         auto queryRes = setMazeTrack.Query();
@@ -236,7 +236,7 @@ private:
             }
         }
 
-        return MONEY16_UNDEFINED;
+        return MONEY32_UNDEFINED;
     }
 
     money32 DemolishTracks() const
@@ -249,7 +249,7 @@ private:
         tile_element_iterator it;
 
         tile_element_iterator_begin(&it);
-        while (tile_element_iterator_next(&it)) 
+        while (tile_element_iterator_next(&it))
         {
             if (tile_element_get_type(it.element) != TILE_ELEMENT_TYPE_TRACK)
                 continue;
@@ -263,7 +263,7 @@ private:
             uint8 rotation = tile_element_get_direction(it.element);
             uint8 type = track_element_get_type(it.element);
 
-            if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP) 
+            if (type != TRACK_ELEM_INVERTED_90_DEG_UP_TO_FLAT_QUARTER_LOOP)
             {
                 money32 removePrice = game_do_command(
                     x,
@@ -274,9 +274,9 @@ private:
                     z,
                     0);
 
-                if (removePrice == MONEY32_UNDEFINED) 
+                if (removePrice == MONEY32_UNDEFINED)
                     tile_element_remove(it.element);
-                else 
+                else
                     refundPrice += removePrice;
 
                 tile_element_iterator_restart_for_tile(&it);
