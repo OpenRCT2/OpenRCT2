@@ -9943,7 +9943,7 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
     if (xyElement.element && vehicle->status != VEHICLE_STATUS_ARRIVING)
     {
         sint16  autoReserveAhead = 4 + abs(vehicle->velocity) / 150000;
-        bool    keepReserving;
+        sint16  crossingBonus = 0;
 
             // vehicle positions mean we have to take larger
             //  margins for travelling backwards
@@ -9954,8 +9954,6 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
 
         while (true)
         {
-            keepReserving = false;
-
             rct_tile_element *tileElement = map_get_path_element_at(
                xyElement.x / 32,
                xyElement.y / 32,
@@ -9964,11 +9962,15 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
 
             if (tileElement)
             {
+                crossingBonus = 4;
                 tileElement->flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
-                keepReserving = true;
+            }
+            else
+            {
+                crossingBonus = 0;
             }
 
-            if (--autoReserveAhead <= 0 && !keepReserving)
+            if (--autoReserveAhead + crossingBonus <= 0)
             {
                 break;
             }
