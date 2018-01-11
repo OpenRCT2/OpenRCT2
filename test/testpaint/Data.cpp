@@ -17,7 +17,7 @@
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 
-const utf8string RideNames[RIDE_TYPE_COUNT] = {
+const_utf8string RideNames[RIDE_TYPE_COUNT] = {
     "SpiralRollerCoaster",
     "StandUpRollerCoaster",
     "SuspendedSwingingCoaster",
@@ -111,7 +111,7 @@ const utf8string RideNames[RIDE_TYPE_COUNT] = {
     "LimLaunchedRollerCoaster",
 };
 
-const utf8string TrackNames[256] = {
+const_utf8string TrackNames[256] = {
     "Flat",
     "EndStation",
     "BeginStation",
@@ -370,7 +370,7 @@ const utf8string TrackNames[256] = {
     "Elem255",
 };
 
-const utf8string FlatTrackNames[256] = {
+const_utf8string FlatTrackNames[256] = {
     "",
     "",
     "",
@@ -629,7 +629,7 @@ const utf8string FlatTrackNames[256] = {
     "",
 };
 
-const utf8string TrackElemNames[] = {
+const_utf8string TrackElemNames[] = {
     "TRACK_ELEM_FLAT",
     "TRACK_ELEM_END_STATION",
     "TRACK_ELEM_BEGIN_STATION",
@@ -888,7 +888,7 @@ const utf8string TrackElemNames[] = {
     "TRACK_ELEM_255",
 };
 
-const utf8string RideCodeNames[RIDE_TYPE_COUNT] = {
+const_utf8string RideCodeNames[RIDE_TYPE_COUNT] = {
     "spiral_rc",
     "stand_up_rc",
     "suspended_swinging_rc",
@@ -982,7 +982,7 @@ const utf8string RideCodeNames[RIDE_TYPE_COUNT] = {
     "lim_launched_rc",
 };
 
-const utf8string TrackCodeNames[256] = {
+const_utf8string TrackCodeNames[256] = {
     "flat",
     "end_station",
     "begin_station",
