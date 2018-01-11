@@ -42,6 +42,9 @@ struct DataSerializerTraitsIntegral
 };
 
 template<>
+struct DataSerializerTraits<bool> : public DataSerializerTraitsIntegral<bool> {};
+
+template<>
 struct DataSerializerTraits<uint8> : public DataSerializerTraitsIntegral<uint8> {};
 
 template<>
