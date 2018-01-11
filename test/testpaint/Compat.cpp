@@ -23,7 +23,7 @@
 #include <openrct2/world/Sprite.h>
 #include <openrct2/paint/tile_element/TileElement.h>
 #include <openrct2/ride/Ride.h>
-#include "addresses.h"
+#include "Addresses.h"
 
 #define gRideEntries                RCT2_ADDRESS(0x009ACFA4, rct_ride_entry *)
 #define gTileElementTilePointers    RCT2_ADDRESS(0x013CE9A4, rct_tile_element *)

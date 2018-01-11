@@ -14,7 +14,7 @@
  *****************************************************************************/
 #pragma endregion
 
-#include "addresses.h"
+#include "Addresses.h"
 
 #if defined(__GNUC__)
     #ifdef __clang__

@@ -28,7 +28,7 @@
 #include "TestTrack.hpp"
 #include "Utils.hpp"
 
-#include "data.h"
+#include "Data.h"
 #include <openrct2/rct2/RCT2.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
