@@ -3560,7 +3560,8 @@ void ride_construction_tooldown_construct(sint32 screenX, sint32 screenY)
                 _currentTrackBeginY,
                 _currentTrackBeginZ,
                 GAME_COMMAND_FLAG_APPLY,
-                4,
+                true,
+                0,
                 _currentRideIndex,
                 GC_SET_MAZE_TRACK_BUILD);
 
