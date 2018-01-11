@@ -50,6 +50,7 @@
 
 static void vehicle_update(rct_vehicle * vehicle);
 static void vehicle_update_crossings(rct_vehicle * vehicle);
+static void vehicle_claxon(rct_vehicle * vehicle);
 
 static void   vehicle_update_showing_film(rct_vehicle * vehicle);
 static void   vehicle_update_doing_circus_show(rct_vehicle * vehicle);
@@ -9944,6 +9945,7 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
     {
         sint16  autoReserveAhead = 4 + abs(vehicle->velocity) / 150000;
         sint16  crossingBonus = 0;
+        bool    playedClaxon = false;
 
             // vehicle positions mean we have to take larger
             //  margins for travelling backwards
@@ -9962,6 +9964,10 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
 
             if (tileElement)
             {
+                if (!playedClaxon && 0 == (tileElement->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE))
+                {
+                    vehicle_claxon(vehicle);
+                }
                 crossingBonus = 4;
                 tileElement->flags |= TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE;
             }
@@ -10039,4 +10045,10 @@ void vehicle_update_crossings(rct_vehicle * vehicle)
             }
         }
     }
+}
+
+void vehicle_claxon(rct_vehicle * vehicle)
+{
+    rct_ride_entry* rideEntry = get_ride_entry(vehicle->ride_subtype);
+    audio_play_sound_at_location((rideEntry->vehicles[0].sound_range == 3)? SOUND_TRAIN_WHISTLE : SOUND_TRAM, vehicle->x, vehicle->y, vehicle->z);
 }
