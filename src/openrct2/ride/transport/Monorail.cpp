@@ -403,7 +403,7 @@ static constexpr const uint32 monorail_track_pieces_diag_flat[4] = {
     SPR_MONORAIL_DIAG_FLAT_S_N,
 };
 
-static const uint32 monorail_track_pieces_diag_flat_to_25_deg_up[4] = {
+static constexpr const uint32 monorail_track_pieces_diag_flat_to_25_deg_up[4] = {
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_N_S,
     SPR_MONORAIL_DIAG_FLAT_TO_25_DEG_UP_E_W,

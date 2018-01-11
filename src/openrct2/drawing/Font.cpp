@@ -23,7 +23,7 @@
 #include "Font.h"
 #include "TTF.h"
 
-static const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
+static constexpr const sint32 SpriteFontLineHeight[] = { 6, 10, 10, 18 };
 
 static uint8 _spriteFontCharacterWidths[896];
 

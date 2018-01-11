@@ -57,14 +57,14 @@ const LocationXY16 word_981D6C[4] = {
 };
 
 // rct2: 0x0097B974
-static const uint16 EntranceDirections[] = {
+static constexpr const uint16 EntranceDirections[] = {
     (4    ), 0, 0, 0, 0, 0, 0, 0,   // ENTRANCE_TYPE_RIDE_ENTRANCE,
     (4    ), 0, 0, 0, 0, 0, 0, 0,   // ENTRANCE_TYPE_RIDE_EXIT,
     (4 | 1), 0, 0, 0, 0, 0, 0, 0,   // ENTRANCE_TYPE_PARK_ENTRANCE
 };
 
 /** rct2: 0x0098D7F0 */
-static const uint8 connected_path_count[] = {
+static constexpr const uint8 connected_path_count[] = {
     0, // 0b0000
     1, // 0b0001
     1, // 0b0010
@@ -172,7 +172,7 @@ static void loc_6A6620(sint32 flags, sint32 x, sint32 y, rct_tile_element *tileE
 }
 
 /** rct2: 0x0098D7EC */
-static const uint8 byte_98D7EC[] = {
+static constexpr const uint8 byte_98D7EC[] = {
     207, 159, 63, 111
 };
 

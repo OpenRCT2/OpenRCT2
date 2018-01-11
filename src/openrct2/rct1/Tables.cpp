@@ -28,7 +28,7 @@ namespace RCT1
 {
     colour_t GetColour(colour_t colour)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             COLOUR_BLACK,
             COLOUR_GREY,
@@ -73,7 +73,7 @@ namespace RCT1
 
     uint8 GetPeepSpriteType(uint8 rct1SpriteType)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             PEEP_SPRITE_TYPE_NORMAL, // 0x00
             PEEP_SPRITE_TYPE_HANDYMAN, // 0x01
@@ -121,7 +121,7 @@ namespace RCT1
 
     uint8 GetTerrain(uint8 terrain)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             TERRAIN_GRASS,
             TERRAIN_SAND,
@@ -146,7 +146,7 @@ namespace RCT1
 
     uint8 GetTerrainEdge(uint8 terrainEdge)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             TERRAIN_EDGE_ROCK,
             TERRAIN_EDGE_BRICK,
@@ -423,7 +423,7 @@ namespace RCT1
 
     uint8 GetVehicleSubEntryIndex(uint8 vehicleSubEntry)
     {
-        static const uint8 map[] =
+        static constexpr const uint8 map[] =
         {
             0, // STEEL_RC_FRONT
             1, // STEEL_RC_CARRIAGE
@@ -687,7 +687,7 @@ namespace RCT1
 
     const char * GetRideTypeObject(uint8 rideType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "PTCT1   ",  // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
             "TOGST   ",  // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
@@ -782,7 +782,7 @@ namespace RCT1
 
     const char * GetVehicleObject(uint8 vehicleType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
             "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
@@ -881,7 +881,7 @@ namespace RCT1
 
     const char * GetSmallSceneryObject(uint8 smallSceneryType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "TL0     ",
             "TL1     ",
@@ -1133,7 +1133,7 @@ namespace RCT1
 
     const char * GetLargeSceneryObject(uint8 largeSceneryType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "SCOL    ",
             "SHS1    ",
@@ -1180,7 +1180,7 @@ namespace RCT1
 
     const char * GetWallObject(uint8 wallType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "WMF     ",
             "WMFG    ",
@@ -1284,7 +1284,7 @@ namespace RCT1
 
     const char * GetPathObject(uint8 pathType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "TARMAC  ",  // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
             "PATHSPCE",  // RCT1_FOOTPATH_TYPE_QUEUE_RED
@@ -1321,7 +1321,7 @@ namespace RCT1
 
     const char * GetPathAddtionObject(uint8 pathAdditionType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "        ",  // RCT1_PATH_ADDITION_NONE
             "LAMP1   ",  // RCT1_PATH_ADDITION_LAMP_1
@@ -1344,7 +1344,7 @@ namespace RCT1
 
     const char * GetSceneryGroupObject(uint8 sceneryGroupType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "        ", // RCT1_SCENERY_THEME_GENERAL
             "SCGMINE ", // RCT1_SCENERY_THEME_MINE
@@ -1370,7 +1370,7 @@ namespace RCT1
 
     const char * GetWaterObject(uint8 waterType)
     {
-        static const char * map[] =
+        static constexpr const char * map[] =
         {
             "WTRCYAN ",
             "WTRORNG ",

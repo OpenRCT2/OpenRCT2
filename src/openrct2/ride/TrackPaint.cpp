@@ -160,7 +160,7 @@ const uint32 trackSpritesSubmarineRideMiniHelicoptersQuarterTurn1Tile[4] = {
     SPR_TRACK_SUBMARINE_RIDE_MINI_HELICOPTERS_FLAT_QUARTER_TURN_1_TILE_SE_SW,
 };
 
-static const uint32 trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
+static constexpr const uint32 trackSpritesGhostTrainSpinningTunnel[2][2][4] = {
     {
         {
             SPR_GHOST_TRAIN_SPINNING_TUNNEL_BACK_SW_NE_FRAME_0,
@@ -744,7 +744,7 @@ bool track_paint_util_draw_station_covers_2(paint_session * session, enum edge_t
         return false;
     }
 
-    static const sint16 heights[][2] = {
+    static constexpr const sint16 heights[][2] = {
         { 22, 0 },
         { 30, 0 },
         { 46, 0 },
@@ -976,7 +976,7 @@ const LocationXYZ16 defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
 };
 // clang-format on
 
-static const sint8 right_helix_up_small_quarter_tiles_sprite_map[] = { 0, -1, 1, 2 };
+static constexpr const sint8 right_helix_up_small_quarter_tiles_sprite_map[] = { 0, -1, 1, 2 };
 
 void track_paint_util_right_helix_up_small_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height,
                                                                sint32 direction, uint8 trackSequence, uint32 colourFlags,
@@ -1079,7 +1079,7 @@ const LocationXY16 defaultRightHelixUpLargeQuarterBoundLengths[4][5][2] = {
 };
 // clang-format on
 
-static const sint8 right_helix_up_large_quarter_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
+static constexpr const sint8 right_helix_up_large_quarter_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 void track_paint_util_right_helix_up_large_quarter_tiles_paint(paint_session * session, const sint8 thickness[2], sint16 height,
                                                                sint32 direction, uint8 trackSequence, uint32 colourFlags,
                                                                const uint32        sprites[4][5][2],
@@ -1256,7 +1256,7 @@ const sint8 defaultEighthToDiagThickness[4][4] = {
 
 const uint8 mapLeftEighthTurnToOrthogonal[] = { 4, 2, 3, 1, 0 };
 
-static const sint8 eighth_to_diag_sprite_map[] = { 0, 1, 2, -1, 3 };
+static constexpr const sint8 eighth_to_diag_sprite_map[] = { 0, 1, 2, -1, 3 };
 void track_paint_util_eighth_to_diag_tiles_paint(paint_session * session, const sint8 thickness[4][4], sint16 height,
                                                  sint32 direction, uint8 trackSequence, uint32 colourFlags,
                                                  const uint32 sprites[4][4], const LocationXY16 offsets[4][4],
@@ -1293,7 +1293,7 @@ const LocationXY16 defaultDiagBoundLengths[4] = {
     { 32, 32 },
 };
 
-static const sint8 diag_sprite_map[4][4] = {
+static constexpr const sint8 diag_sprite_map[4][4] = {
     { -1, 0, -1, -1 },
     { -1, -1, -1, 0 },
     { -1, -1, 0, -1 },
@@ -1418,7 +1418,7 @@ const LocationXY16 defaultRightQuarterTurn5TilesBoundLengths[4][5] = {
 };
 // clang-format on
 
-static const sint8 right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
+static constexpr const sint8 right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 void               track_paint_util_right_quarter_turn_5_tiles_paint(paint_session * session, sint8 thickness, sint16 height,
                                                                      sint32 direction, uint8 trackSequence, uint32 colourFlags,
                                                                      const uint32 sprites[4][5], const LocationXY16 offsets[4][5],
@@ -1500,7 +1500,7 @@ void track_paint_util_right_quarter_turn_5_tiles_wooden_supports(paint_session *
 {
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static const uint8 supportTypes[][7] = {
+        static constexpr const uint8 supportTypes[][7] = {
             { 0, 0xFF, 4, 2, 0xFF, 4, 1 },
             { 1, 0xFF, 5, 3, 0xFF, 5, 0 },
             { 0, 0xFF, 2, 4, 0xFF, 2, 1 },
@@ -1584,7 +1584,7 @@ const LocationXY16 defaultRightQuarterTurn3TilesBoundLengths[4][3] = {
 };
 // clang-format on
 
-static const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
+static constexpr const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
 void               track_paint_util_right_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height,
                                                                      sint32 direction, uint8 trackSequence, uint32 colourFlags,
                                                                      const uint32 sprites[4][3], const LocationXY16 offsets[4][3],
@@ -1790,7 +1790,7 @@ void track_paint_util_right_quarter_turn_3_tiles_25_deg_down_tunnel(paint_sessio
     }
 }
 
-static const sint8 left_quarter_turn_3_tiles_sprite_map[] = { 2, -1, 1, 0 };
+static constexpr const sint8 left_quarter_turn_3_tiles_sprite_map[] = { 2, -1, 1, 0 };
 void track_paint_util_left_quarter_turn_3_tiles_paint(paint_session * session, sint8 thickness, sint16 height, sint32 direction,
                                                       uint8 trackSequence, uint32 colourFlags, const uint32 sprites[4][3],
                                                       uint8 rotation)
@@ -2003,7 +2003,7 @@ void track_paint_util_spinning_tunnel_paint(paint_session * session, sint8 thick
 void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 direction, sint32 height,
                                                rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_S },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_W },
         { SPR_ON_RIDE_PHOTO_SIGN_SMALL_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_SMALL_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_SMALL_N },
@@ -2041,7 +2041,7 @@ void track_paint_util_onride_photo_small_paint(paint_session * session, uint8 di
 void track_paint_util_onride_photo_paint(paint_session * session, uint8 direction, sint32 height,
                                          rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { SPR_ON_RIDE_PHOTO_SIGN_SW_NE, SPR_ON_RIDE_PHOTO_CAMERA_S, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_S },
         { SPR_ON_RIDE_PHOTO_SIGN_NW_SE, SPR_ON_RIDE_PHOTO_CAMERA_W, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_W },
         { SPR_ON_RIDE_PHOTO_SIGN_NE_SW, SPR_ON_RIDE_PHOTO_CAMERA_N, SPR_ON_RIDE_PHOTO_CAMERA_FLASH_N },
@@ -2076,7 +2076,7 @@ void track_paint_util_onride_photo_paint(paint_session * session, uint8 directio
     }
 }
 
-static const uint16 RightVerticalLoopSegments[] = {
+static constexpr const uint16 RightVerticalLoopSegments[] = {
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4,
     SEGMENT_C0 | SEGMENT_C4 | SEGMENT_D0 | SEGMENT_D4,
