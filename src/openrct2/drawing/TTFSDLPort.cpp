@@ -784,7 +784,7 @@ static FT_Error Load_Glyph(TTF_Font* font, uint16 ch, c_glyph* cached, int want)
                     unsigned char *srcp = src->buffer + soffset;
                     unsigned char *dstp = dst->buffer + doffset;
                     unsigned char c;
-                    int j, k;
+                    unsigned int j, k;
                     for (j = 0; j < src->width; j += 4) {
                         c = *srcp++;
                         for (k = 0; k < 4; ++k) {
@@ -1213,7 +1213,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
             if (row + glyph->yoffset < 0) {
                 continue;
             }
-            if (row + glyph->yoffset >= textbuf->h) {
+            if ((row + glyph->yoffset) >= textbuf->h) {
                 continue;
             }
             dst = (uint8*)textbuf->pixels +
