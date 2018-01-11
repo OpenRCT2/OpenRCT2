@@ -97,7 +97,7 @@ void platform_posix_sub_resolve_openrct_data_path(utf8 *out, size_t size) {
         "/var/lib/openrct2",
         "/usr/share/openrct2",
     };
-    for (size_t i = 0; i < countof(searchLocations); i++)
+    for (size_t i = 0; i < Util::CountOf(searchLocations); i++)
     {
         log_verbose("Looking for OpenRCT2 data in %s", searchLocations[i]);
         if (platform_directory_exists(searchLocations[i]))
@@ -118,7 +118,7 @@ static void platform_posix_sub_resolve_openrct_doc_path(utf8 *out, size_t size) 
         "./doc",
         "/usr/share/doc/openrct2",
     };
-    for (size_t i = 0; i < countof(searchLocations); i++)
+    for (size_t i = 0; i < Util::CountOf(searchLocations); i++)
     {
         log_verbose("Looking for OpenRCT2 doc path at %s", searchLocations[i]);
         if (platform_directory_exists(searchLocations[i]))

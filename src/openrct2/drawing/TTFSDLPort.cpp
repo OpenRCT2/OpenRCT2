@@ -1190,7 +1190,7 @@ TTFSurface *TTF_RenderUTF8_Solid(TTF_Font *font,
     }
 
     /* Create the target surface */
-    textbuf = calloc(1, sizeof(TTFSurface));
+    textbuf = (TTFSurface *)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL) {
         return NULL;
     }
@@ -1311,7 +1311,7 @@ TTFSurface *TTF_RenderUTF8_Shaded(TTF_Font *font,
     }
 
     /* Create the target surface */
-    textbuf = calloc(1, sizeof(TTFSurface));
+    textbuf = (TTFSurface *)calloc(1, sizeof(TTFSurface));
     if (textbuf == NULL)
     {
         return NULL;

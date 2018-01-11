@@ -19,7 +19,7 @@
 
 #include "../common.h"
 
-typedef struct textinputbuffer {
+typedef struct TextInputBuffer {
     utf8 * buffer;
     size_t max_size;            // Maximum number of bytes (excluding null terminator)
     size_t current_size;        // Number of bytes (excluding null terminator)
@@ -30,15 +30,15 @@ typedef struct textinputbuffer {
     size_t selection_size;      // Selection length in bytes
 } textinputbuffer;
 
-void textinputbuffer_init(textinputbuffer * tib, utf8 * buffer, size_t size);
-void textinputbuffer_clear(textinputbuffer * tib);
-void textinputbuffer_remove_selected(textinputbuffer * tib);
-void textinputbuffer_insert_codepoint(textinputbuffer * tib, uint32 codepoint);
-void textinputbuffer_insert(textinputbuffer * tib, const utf8 * source);
-void textinputbuffer_cursor_left(textinputbuffer * tib);
-void textinputbuffer_cursor_right(textinputbuffer * tib);
-void textinputbuffer_cursor_home(textinputbuffer * tib);
-void textinputbuffer_cursor_end(textinputbuffer * tib);
-void textinputbuffer_recalculate_length(textinputbuffer * tib);
+void textinputbuffer_init(TextInputBuffer * tib, utf8 * buffer, size_t size);
+void textinputbuffer_clear(TextInputBuffer * tib);
+void textinputbuffer_remove_selected(TextInputBuffer * tib);
+void textinputbuffer_insert_codepoint(TextInputBuffer * tib, uint32 codepoint);
+void textinputbuffer_insert(TextInputBuffer * tib, const utf8 * source);
+void textinputbuffer_cursor_left(TextInputBuffer * tib);
+void textinputbuffer_cursor_right(TextInputBuffer * tib);
+void textinputbuffer_cursor_home(TextInputBuffer * tib);
+void textinputbuffer_cursor_end(TextInputBuffer * tib);
+void textinputbuffer_recalculate_length(TextInputBuffer * tib);
 
 #endif

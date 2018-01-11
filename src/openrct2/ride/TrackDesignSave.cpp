@@ -14,9 +14,11 @@
  *****************************************************************************/
 #pragma endregion
 
+#include <algorithm>
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../Context.h"
+#include "../core/Memory.hpp"
 #include "../Game.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -632,7 +634,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
 {
     // Copy TD6 scenery elements to new memory and add end marker
     size_t totalSceneryElementsSize = _trackSavedTileElementsDescCount * sizeof(rct_td6_scenery_element);
-    td6->scenery_elements = malloc(totalSceneryElementsSize + 1);
+    td6->scenery_elements = (rct_td6_scenery_element *)malloc(totalSceneryElementsSize + 1);
     memcpy(td6->scenery_elements, _trackSavedTileElementsDesc, totalSceneryElementsSize);
     *((uint8*)&td6->scenery_elements[_trackSavedTileElementsDescCount]) = 0xFF;
 
@@ -715,7 +717,7 @@ static bool track_design_save_copy_scenery_to_td6(rct_track_td6 *td6)
  */
 static rct_track_td6 *track_design_save_to_td6(uint8 rideIndex)
 {
-    rct_track_td6 *td6 = calloc(1, sizeof(rct_track_td6));
+    rct_track_td6 *td6 = (rct_track_td6 *)calloc(1, sizeof(rct_track_td6));
     Ride *ride = get_ride(rideIndex);
     td6->type = ride->type;
     rct_object_entry_extended *object = &object_entry_groups[OBJECT_TYPE_RIDE].entries[ride->subtype];
@@ -825,10 +827,10 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
         return false;
     }
 
-    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, tileElement->base_height * 8 };
+    gTrackPreviewOrigin = (LocationXYZ16) { startX, startY, (sint16)(tileElement->base_height * 8) };
 
     size_t numMazeElements = 0;
-    td6->maze_elements = calloc(8192, sizeof(rct_td6_maze_element));
+    td6->maze_elements = (rct_td6_maze_element *)calloc(8192, sizeof(rct_td6_maze_element));
     rct_td6_maze_element *maze = td6->maze_elements;
 
     // x is defined here as we can start the search
@@ -919,7 +921,7 @@ static bool track_design_save_to_td6_for_maze(uint8 rideIndex, rct_track_td6 *td
     numMazeElements++;
 
     // Trim memory
-    td6->maze_elements = realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element));
+    td6->maze_elements = (rct_td6_maze_element *)realloc(td6->maze_elements, numMazeElements * sizeof(rct_td6_maze_element));
 
     // Save global vars as they are still used by scenery
     sint16 startZ = gTrackPreviewOrigin.z;
@@ -957,9 +959,9 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
         rct_tile_element* initial_map = trackElement.element;
         do {
             rct_xy_element lastGood = {
-                .element = trackBeginEnd.begin_element,
-                .x = trackBeginEnd.begin_x,
-                .y = trackBeginEnd.begin_y
+                /*.x = */trackBeginEnd.begin_x,
+                /*.y = */trackBeginEnd.begin_y,
+                /*.element = */trackBeginEnd.begin_element
             };
 
             if (!track_block_get_previous(trackBeginEnd.end_x, trackBeginEnd.end_y, trackBeginEnd.begin_element, &trackBeginEnd)) {
@@ -991,7 +993,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     gTrackPreviewOrigin = (LocationXYZ16) { start_x, start_y, start_z };
 
     size_t numTrackElements = 0;
-    td6->track_elements = calloc(TRACK_TD6_MAX_ELEMENTS, sizeof(rct_td6_track_element));
+    td6->track_elements = (rct_td6_track_element *)calloc(TRACK_TD6_MAX_ELEMENTS, sizeof(rct_td6_track_element));
     rct_td6_track_element *track = td6->track_elements;
     do {
         track->type = track_element_get_type(trackElement.element);
@@ -1045,11 +1047,11 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
     }
     while (trackElement.element != initialMap);
 
-    td6->track_elements = realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
+    td6->track_elements = (rct_td6_track_element *)realloc(td6->track_elements, numTrackElements * sizeof(rct_td6_track_element) + 1);
     *((uint8*)&td6->track_elements[numTrackElements]) = 0xFF;
 
     size_t numEntranceElements = 0;
-    td6->entrance_elements = calloc(32, sizeof(rct_td6_entrance_element));
+    td6->entrance_elements = (rct_td6_entrance_element *)calloc(32, sizeof(rct_td6_entrance_element));
     rct_td6_entrance_element *entrance = td6->entrance_elements;
 
     // First entrances, second exits
@@ -1114,7 +1116,7 @@ static bool track_design_save_to_td6_for_tracked_ride(uint8 rideIndex, rct_track
             numEntranceElements++;
         }
     }
-    td6->entrance_elements = realloc(td6->entrance_elements, numEntranceElements * sizeof(rct_td6_entrance_element) + 1);
+    td6->entrance_elements = (rct_td6_entrance_element *)realloc(td6->entrance_elements, numEntranceElements * sizeof(rct_td6_entrance_element) + 1);
     *((uint8*)&td6->entrance_elements[numEntranceElements]) = 0xFF;
 
     place_virtual_track(td6, PTD_OPERATION_DRAW_OUTLINES, true, 0, 4096, 4096, 0);
@@ -1188,7 +1190,7 @@ static void auto_buffer_write(auto_buffer *buffer, const void *src, size_t len)
     size_t remainingSpace = buffer->capacity - buffer->length;
     if (remainingSpace < len) {
         do {
-            buffer->capacity = max(8, buffer->capacity * 2);
+            buffer->capacity = std::max(8UL, buffer->capacity * 2);
             remainingSpace = buffer->capacity - buffer->length;
         } while (remainingSpace < len);
 
@@ -1227,7 +1229,7 @@ bool track_design_save_to_file(const utf8 *path)
     auto_buffer_write(&td6Buffer, &EndMarker, sizeof(EndMarker));
 
     // Encode TD6 data
-    uint8 *encodedData = malloc(0x8000);
+    uint8 * encodedData = Memory::Allocate<uint8>(0x8000);
     assert(td6Buffer.ptr != NULL);
     size_t encodedDataLength = sawyercoding_encode_td6((uint8*)td6Buffer.ptr, encodedData, td6Buffer.length);
 
