@@ -155,14 +155,14 @@ enum
     SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SE_NE_PART_1 = 17025,
 };
 
-static const uint32 _wild_mouse_brakes_image_ids[4] = {
+static constexpr const uint32 _wild_mouse_brakes_image_ids[4] = {
     SPR_WILD_MOUSE_BRAKES_SW_NE,
     SPR_WILD_MOUSE_BRAKES_NW_SE,
     SPR_WILD_MOUSE_BRAKES_SW_NE,
     SPR_WILD_MOUSE_BRAKES_NW_SE,
 };
 
-static const uint32 _wild_mouse_block_brakes_image_ids[4] = {
+static constexpr const uint32 _wild_mouse_block_brakes_image_ids[4] = {
     SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE,
     SPR_WILD_MOUSE_BLOCK_BRAKES_NW_SE,
     SPR_WILD_MOUSE_BLOCK_BRAKES_SW_NE,
@@ -173,7 +173,7 @@ static const uint32 _wild_mouse_block_brakes_image_ids[4] = {
 static void wild_mouse_track_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction, sint32 height,
                                   rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_SW_NE, SPR_WILD_MOUSE_FLAT_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_FLAT_NW_SE, SPR_WILD_MOUSE_FLAT_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_FLAT_SW_NE, SPR_WILD_MOUSE_FLAT_CHAIN_NE_SW },
@@ -196,7 +196,7 @@ static void wild_mouse_track_flat(paint_session * session, uint8 rideIndex, uint
 static void wild_mouse_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                      sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 baseImageIds[4] = {
+    static constexpr const uint32 baseImageIds[4] = {
         SPR_STATION_BASE_B_SW_NE,
         SPR_STATION_BASE_B_NW_SE,
         SPR_STATION_BASE_B_SW_NE,
@@ -228,7 +228,7 @@ static void wild_mouse_track_station(paint_session * session, uint8 rideIndex, u
 static void wild_mouse_track_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                        sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_25_DEG_NW_SE, SPR_WILD_MOUSE_25_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_25_DEG_NE_SW, SPR_WILD_MOUSE_25_DEG_CHAIN_NE_SW },
@@ -259,7 +259,7 @@ static void wild_mouse_track_25_deg_up(paint_session * session, uint8 rideIndex,
 static void wild_mouse_track_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                        sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_60_DEG_NW_SE, SPR_WILD_MOUSE_60_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_60_DEG_NE_SW, SPR_WILD_MOUSE_60_DEG_CHAIN_NE_SW },
@@ -304,7 +304,7 @@ static void wild_mouse_track_60_deg_up(paint_session * session, uint8 rideIndex,
 static void wild_mouse_track_flat_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_NW_SE, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_FLAT_TO_25_DEG_NE_SW, SPR_WILD_MOUSE_FLAT_TO_25_DEG_CHAIN_NE_SW },
@@ -335,13 +335,13 @@ static void wild_mouse_track_flat_to_25_deg_up(paint_session * session, uint8 ri
 static void wild_mouse_track_25_deg_up_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_NE_SW },
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_SE_NW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_SE_NW },
     };
-    static const uint32 frontImageIds[4][2] = {
+    static constexpr const uint32 frontImageIds[4][2] = {
         { 0, 0 },
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NW_SE },
         { SPR_WILD_MOUSE_25_DEG_TO_60_DEG_FRONT_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_60_DEG_CHAIN_FRONT_NE_SW },
@@ -381,13 +381,13 @@ static void wild_mouse_track_25_deg_up_to_60_deg_up(paint_session * session, uin
 static void wild_mouse_track_60_deg_up_to_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                     uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SW_NE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_NE_SW },
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_SE_NW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_SE_NW },
     };
-    static const uint32 frontImageIds[4][2] = {
+    static constexpr const uint32 frontImageIds[4][2] = {
         { 0, 0 },
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NW_SE },
         { SPR_WILD_MOUSE_60_DEG_TO_25_DEG_FRONT_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_25_DEG_CHAIN_FRONT_NE_SW },
@@ -427,7 +427,7 @@ static void wild_mouse_track_60_deg_up_to_25_deg_up(paint_session * session, uin
 static void wild_mouse_track_25_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_SW_NE, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_NW_SE, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_25_DEG_TO_FLAT_NE_SW, SPR_WILD_MOUSE_25_DEG_TO_FLAT_CHAIN_NE_SW },
@@ -499,7 +499,7 @@ static void wild_mouse_track_25_deg_down_to_flat(paint_session * session, uint8 
 static void wild_mouse_track_right_quarter_turn_3(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const sprite_bb imageIds[4][3] = {
+    static constexpr const sprite_bb imageIds[4][3] = {
         {
             { SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_0, { 0, 0, 0 }, { 0, 6, 0 }, { 32, 20, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_SW_SE_PART_1, { 0, 0, 0 }, { 16, 16, 0 }, { 16, 16, 3 } },
@@ -554,7 +554,7 @@ static void wild_mouse_track_right_quarter_turn_3(paint_session * session, uint8
 static void wild_mouse_track_right_quarter_turn_3_25_deg_down(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                               uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const sprite_bb imageIds[4][2] = {
+    static constexpr const sprite_bb imageIds[4][2] = {
         {
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SW_SE_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SW_SE_PART_1, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 3 } },
@@ -572,7 +572,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_down(paint_session * se
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_DOWN_SE_NE_PART_1, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
         }
     };
-    static const sint16 generalSupportHeights[] = { 72, 56, 56, 72 };
+    static constexpr const sint16 generalSupportHeights[] = { 72, 56, 56, 72 };
 
     if (trackSequence == 0 || trackSequence == 3)
     {
@@ -620,7 +620,7 @@ static void wild_mouse_track_left_quarter_turn_3_25_deg_up(paint_session * sessi
 static void wild_mouse_track_right_quarter_turn_3_25_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                             uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const sprite_bb imageIds[4][2] = {
+    static constexpr const sprite_bb imageIds[4][2] = {
         {
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_UP_SW_SE_PART_0, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_UP_SW_SE_PART_1, { 6, 0, 0 }, { 0, 0, 0 }, { 20, 32, 3 } },
@@ -638,7 +638,7 @@ static void wild_mouse_track_right_quarter_turn_3_25_deg_up(paint_session * sess
             { SPR_WILD_MOUSE_QUARTER_TURN_3_25_DEG_UP_SE_NE_PART_1, { 0, 6, 0 }, { 0, 0, 0 }, { 32, 20, 3 } },
         }
     };
-    static const sint16 generalSupportHeights[] = { 72, 56, 56, 72 };
+    static constexpr const sint16 generalSupportHeights[] = { 72, 56, 56, 72 };
 
     if (trackSequence == 0 || trackSequence == 3)
     {
@@ -742,13 +742,13 @@ static void wild_mouse_track_right_quarter_turn_1(paint_session * session, uint8
 static void wild_mouse_track_flat_to_60_deg_up(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_SW_NE, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_NW_SE, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_NE_SW, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_NE_SW },
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_SE_NW, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_SE_NW },
     };
-    static const uint32 frontImageIds[4][2] = {
+    static constexpr const uint32 frontImageIds[4][2] = {
         { 0, 0 },
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_FRONT_NW_SE, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_FRONT_NW_SE },
         { SPR_WILD_MOUSE_FLAT_TO_60_DEG_FRONT_NE_SW, SPR_WILD_MOUSE_FLAT_TO_60_DEG_CHAIN_FRONT_NE_SW },
@@ -788,13 +788,13 @@ static void wild_mouse_track_flat_to_60_deg_up(paint_session * session, uint8 ri
 static void wild_mouse_track_60_deg_up_to_flat(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][2] = {
+    static constexpr const uint32 imageIds[4][2] = {
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_SW_NE, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_SW_NE },
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_NW_SE },
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_NE_SW },
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_SE_NW, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_SE_NW },
     };
-    static const uint32 frontImageIds[4][2] = {
+    static constexpr const uint32 frontImageIds[4][2] = {
         { 0, 0 },
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_FRONT_NW_SE, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_FRONT_NW_SE },
         { SPR_WILD_MOUSE_60_DEG_TO_FLAT_FRONT_NE_SW, SPR_WILD_MOUSE_60_DEG_TO_FLAT_CHAIN_FRONT_NE_SW },
@@ -871,7 +871,7 @@ static void wild_mouse_track_brakes(paint_session * session, uint8 rideIndex, ui
 static void wild_mouse_track_rotation_control_toggle(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                      uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4] = {
+    static constexpr const uint32 imageIds[4] = {
         SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE,
         SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_NW_SE,
         SPR_WILD_MOUSE_ROTATION_CONTROL_TOGGLE_SW_NE,

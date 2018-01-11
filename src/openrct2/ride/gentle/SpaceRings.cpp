@@ -29,7 +29,7 @@ enum
     SPR_SPACE_RINGS_FENCE_NW = 22149,
 };
 
-static const uint32 space_rings_fence_sprites[] = {
+static constexpr const uint32 space_rings_fence_sprites[] = {
     SPR_SPACE_RINGS_FENCE_NE,
     SPR_SPACE_RINGS_FENCE_SE,
     SPR_SPACE_RINGS_FENCE_SW,

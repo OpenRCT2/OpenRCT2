@@ -113,7 +113,7 @@ struct WindowThemeDesc
 
 #define THEME_WC(wc) wc, #wc
 
-static const WindowThemeDesc WindowThemeDescriptors[] =
+static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
 {
     // WindowClass, WindowClassSZ                  WindowName                                        NumColours, DefaultTheme
     { THEME_WC(WC_TOP_TOOLBAR),                    STR_THEMES_WINDOW_TOP_TOOLBAR,                    COLOURS_4(COLOUR_LIGHT_BLUE,               COLOUR_DARK_GREEN,               COLOUR_DARK_BROWN,             COLOUR_GREY         ) },
@@ -184,7 +184,7 @@ static const WindowThemeDesc WindowThemeDescriptors[] =
 
 #define COLOURS_RCT1(c0, c1, c2, c3, c4, c5) { { (c0), (c1), (c2), (c3), (c4), (c5) } }
 
-static const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
+static constexpr const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
 {
     { WC_TOP_TOOLBAR,              COLOURS_RCT1(COLOUR_GREY,               COLOUR_GREY,                COLOUR_GREY,                COLOUR_GREY,     COLOUR_BLACK,    COLOUR_BLACK)    },
     { WC_BOTTOM_TOOLBAR,           COLOURS_RCT1(TRANSLUCENT(COLOUR_GREY),  TRANSLUCENT(COLOUR_GREY),   COLOUR_BLACK,               COLOUR_YELLOW,   COLOUR_BLACK,    COLOUR_BLACK)    },
@@ -207,7 +207,7 @@ static const UIThemeWindowEntry PredefinedThemeRCT1_Entries[] =
     THEME_DEF_END
 };
 
-static const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
+static constexpr const UIThemeWindowEntry PredefinedThemeRCT2_Entries[] =
 {
     THEME_DEF_END
 };
@@ -227,7 +227,7 @@ struct PredefinedTheme
     rct_string_id Name;
 };
 
-static const PredefinedTheme PredefinedThemes[] = {
+static constexpr const PredefinedTheme PredefinedThemes[] = {
     { &PredefinedThemeRCT1, STR_TITLE_SEQUENCE_RCT1 },
     { &PredefinedThemeRCT2, STR_TITLE_SEQUENCE_RCT2 }
 };

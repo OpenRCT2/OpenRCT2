@@ -53,7 +53,7 @@ enum {
     VIEW_COUNT
 };
 
-static const rct_string_id pageNames[] = {
+static constexpr const rct_string_id pageNames[] = {
     STR_PAGE_1,
     STR_PAGE_2,
     STR_PAGE_3,
@@ -61,13 +61,13 @@ static const rct_string_id pageNames[] = {
     STR_PAGE_5,
 };
 
-static const rct_string_id filterNames[] = {
+static constexpr const rct_string_id filterNames[] = {
     STR_GUESTS_FILTER,
     STR_GUESTS_FILTER_THINKING,
     STR_GUESTS_FILTER_THINKING_ABOUT,
 };
 
-static const rct_string_id viewNames[VIEW_COUNT] = {
+static constexpr const rct_string_id viewNames[VIEW_COUNT] = {
     STR_ACTIONS,
     STR_THOUGHTS,
 };
@@ -90,7 +90,7 @@ static rct_widget window_guest_list_widgets[] = {
     { WIDGETS_END },
 };
 
-static const uint8 SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
+static constexpr const uint8 SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
 
 static void window_guest_list_mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void window_guest_list_resize(rct_window *w);

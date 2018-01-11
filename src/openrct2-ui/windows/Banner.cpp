@@ -41,7 +41,7 @@ enum WINDOW_BANNER_WIDGET_IDX {
     WIDX_TEXT_COLOUR_DROPDOWN_BUTTON
 };
 
-static const rct_string_id BannerColouredTextFormats[] = {
+static constexpr const rct_string_id BannerColouredTextFormats[] = {
     STR_TEXT_COLOR_BLACK,
     STR_TEXT_COLOR_GREY,
     STR_TEXT_COLOR_WHITE,

@@ -35,7 +35,7 @@ static rct_widget window_music_credits_widgets[] = {
     { WIDGETS_END },
 };
 
-static const rct_string_id music_credits[] = {
+static constexpr const rct_string_id music_credits[] = {
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_MARCH_CHILDREN_OF_THE_REGIMENT,
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_HEYKENS_SERENADE,
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_IN_CONTINENTAL_MOOD,
@@ -49,7 +49,7 @@ static const rct_string_id music_credits[] = {
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_BELLA_BELLA_BIMBA,
 };
 
-static const rct_string_id music_credits_rct2[] = {
+static constexpr const rct_string_id music_credits_rct2[] = {
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_RCT2_TITLE_MUSIC,
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_DODGEMS_BEAT,
     STR_MUSIC_ACKNOWLEDGEMENTS_TRACK_MIS_SUMMERS_HEAT,

@@ -85,7 +85,7 @@ void bolliger_mabillard_track_flat(paint_session * session, uint8 rideIndex, uin
 void bolliger_mabillard_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                       sint32 height, rct_tile_element * tileElement, sint32 supportType)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 17154, 17150, SPR_STATION_BASE_A_SW_NE },
         { 17155, 17151, SPR_STATION_BASE_A_NW_SE },
         { 17154, 17150, SPR_STATION_BASE_A_SW_NE },

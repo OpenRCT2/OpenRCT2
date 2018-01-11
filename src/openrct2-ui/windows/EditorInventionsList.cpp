@@ -155,7 +155,7 @@ static rct_window_event_list window_editor_inventions_list_drag_events = {
 
 static rct_research_item *_editorInventionsListDraggedItem;
 
-static const rct_string_id EditorInventionsResearchCategories[] = {
+static constexpr const rct_string_id EditorInventionsResearchCategories[] = {
     STR_RESEARCH_NEW_TRANSPORT_RIDES,
     STR_RESEARCH_NEW_GENTLE_RIDES,
     STR_RESEARCH_NEW_ROLLER_COASTERS,

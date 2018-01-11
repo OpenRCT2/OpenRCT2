@@ -384,7 +384,7 @@ static rct_widget *window_options_page_widgets[] = {
 
 #pragma endregion
 
-static const rct_string_id window_options_autosave_names[6] = {
+static constexpr const rct_string_id window_options_autosave_names[6] = {
     STR_SAVE_EVERY_MINUTE,
     STR_SAVE_EVERY_5MINUTES,
     STR_SAVE_EVERY_15MINUTES,
@@ -393,19 +393,19 @@ static const rct_string_id window_options_autosave_names[6] = {
     STR_SAVE_NEVER,
 };
 
-static const rct_string_id window_options_title_music_names[] = {
+static constexpr const rct_string_id window_options_title_music_names[] = {
     STR_OPTIONS_MUSIC_VALUE_NONE ,
     STR_ROLLERCOASTER_TYCOON_1_DROPDOWN ,
     STR_ROLLERCOASTER_TYCOON_2_DROPDOWN ,
     STR_OPTIONS_MUSIC_VALUE_RANDOM,
 };
 
-static const rct_string_id window_options_scale_quality_names[] = {
+static constexpr const rct_string_id window_options_scale_quality_names[] = {
     STR_SCALING_QUALITY_LINEAR,
     STR_SCALING_QUALITY_SMOOTH_NN
 };
 
-static const rct_string_id window_options_fullscreen_mode_names[] = {
+static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_WINDOWED,
     STR_OPTIONS_DISPLAY_FULLSCREEN,
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,

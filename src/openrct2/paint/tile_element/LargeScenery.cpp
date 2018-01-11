@@ -161,7 +161,7 @@ typedef struct boundbox {
     LocationXY16 length;
 } boundbox;
 
-static const boundbox s98E3C4[] = {
+static constexpr const boundbox s98E3C4[] = {
     { 3,   3, 26, 26 },
     { 17, 17, 12, 12 },
     { 17,  3, 12, 12 },

@@ -84,7 +84,7 @@ static rct_widget window_scenarioselect_widgets[] = {
     { WIDGETS_END },
 };
 
-static const rct_string_id ScenarioOriginStringIds[] = {
+static constexpr const rct_string_id ScenarioOriginStringIds[] = {
     STR_SCENARIO_CATEGORY_RCT1,
     STR_SCENARIO_CATEGORY_RCT1_AA,
     STR_SCENARIO_CATEGORY_RCT1_LL,
@@ -721,6 +721,6 @@ static bool is_locking_enabled(rct_window *w)
         return false;
     if (_titleEditor)
         return false;
-    
+
     return true;
 }

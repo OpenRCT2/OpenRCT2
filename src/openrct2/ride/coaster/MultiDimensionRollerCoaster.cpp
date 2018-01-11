@@ -111,7 +111,7 @@ static void multi_dimension_rc_track_flat(paint_session * session, uint8 rideInd
 static void multi_dimension_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                              sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 15810, 15812, SPR_STATION_INVERTED_BAR_A_SW_NE },
         { 15811, 15813, SPR_STATION_INVERTED_BAR_A_NW_SE },
         { 15810, 15812, SPR_STATION_INVERTED_BAR_A_SW_NE },

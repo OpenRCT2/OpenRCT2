@@ -59,7 +59,7 @@ static void suspended_monorail_track_flat(paint_session * session, uint8 rideInd
 static void suspended_monorail_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                              sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { SPR_STATION_BASE_C_SW_NE, 25853, SPR_STATION_INVERTED_BAR_F_SW_NE },
         { SPR_STATION_BASE_C_NW_SE, 25854, SPR_STATION_INVERTED_BAR_F_NW_SE },
         { SPR_STATION_BASE_C_SW_NE, 25853, SPR_STATION_INVERTED_BAR_F_SW_NE },

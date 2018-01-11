@@ -183,7 +183,7 @@ static rct_window_event_list window_ride_construction_events = {
 #pragma region RideConfigurationStringIds
 
 // rct2: 0x00999492
-static const rct_string_id RideConfigurationStringIds[] = {
+static constexpr const rct_string_id RideConfigurationStringIds[] = {
     0,                                      // 0
     STR_STATION_PLATFORM,                   // 1
     0,                                      // 2
@@ -486,7 +486,7 @@ static void ride_construction_tooldown_entrance_exit(sint32 screenX, sint32 scre
 
 static uint8 _currentPossibleRideConfigurations[32];
 
-static const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
+static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_180,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_135,
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_NEG_90,

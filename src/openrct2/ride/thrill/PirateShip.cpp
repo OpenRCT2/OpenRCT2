@@ -21,7 +21,7 @@
 #include "../TrackPaint.h"
 
 // 1 2 0 3 4
-static const uint8 track_map_1x5[][5] = {
+static constexpr const uint8 track_map_1x5[][5] = {
     { 0, 1, 2, 3, 4 },
     { 0, 4, 3, 2, 1 },
     { 0, 4, 3, 2, 1 },
@@ -37,10 +37,10 @@ typedef struct pirate_ship_bound_box
 } pirate_ship_bound_box;
 
 /** rct2: 0x008A83B0 */
-static const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
+static constexpr const uint32 pirate_ship_base_sprite_offset[] = { 0, 9, 0, 9 };
 
 /** rct2: 0x008A83C0 */
-static const pirate_ship_bound_box pirate_ship_data[] = {
+static constexpr const pirate_ship_bound_box pirate_ship_data[] = {
     { 31, 16, 1, 8 },
     { 16, 31, 8, 1 },
     { 31, 16, 1, 8 },
@@ -55,7 +55,7 @@ enum
     SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE = 21997,
 };
 
-static const uint32 pirate_ship_frame_sprites[][2] = {
+static constexpr const uint32 pirate_ship_frame_sprites[][2] = {
     { SPR_PIRATE_SHIP_FRAME_SW_NE, SPR_PIRATE_SHIP_FRAME_FRONT_SW_NE },
     { SPR_PIRATE_SHIP_FRAME_NW_SE, SPR_PIRATE_SHIP_FRAME_FRONT_NW_SE },
 };

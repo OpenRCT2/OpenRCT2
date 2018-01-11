@@ -144,24 +144,24 @@ enum
 static const uint32 miniature_railway_track_floor[4] = { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS,
                                                          SPR_FLOOR_PLANKS_90_DEG };
 
-static const uint32 miniature_railway_track_pieces_flat[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_flat[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NW_SE,
 };
 
-static const uint32 miniature_railway_station_floor[4] = { SPR_STATION_BASE_A_SW_NE, SPR_STATION_BASE_A_NW_SE,
+static constexpr const uint32 miniature_railway_station_floor[4] = { SPR_STATION_BASE_A_SW_NE, SPR_STATION_BASE_A_NW_SE,
                                                            SPR_STATION_BASE_A_SW_NE, SPR_STATION_BASE_A_NW_SE };
 
-static const uint32 miniature_railway_track_pieces_flat_station[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_flat_station[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_NO_BASE_NW_SE,
 };
 
-static const uint32 miniature_railway_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
+static constexpr const uint32 miniature_railway_track_pieces_flat_quarter_turn_5_tiles[4][5] = {
     {
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_5_TILES_SW_SE_PART_0,
         SPR_MINIATURE_RAILWAY_QUARTER_TURN_5_TILES_SW_SE_PART_1,
@@ -192,28 +192,28 @@ static const uint32 miniature_railway_track_pieces_flat_quarter_turn_5_tiles[4][
     }
 };
 
-static const uint32 miniature_railway_track_pieces_25_deg_up[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_25_DEG_UP_SW_NE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_NW_SE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_NE_SW,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_SE_NW,
 };
 
-static const uint32 miniature_railway_track_pieces_flat_to_25_deg_up[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_flat_to_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_MINIATURE_RAILWAY_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 miniature_railway_track_pieces_25_deg_up_to_flat[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_25_deg_up_to_flat[4] = {
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_MINIATURE_RAILWAY_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 miniature_railway_track_pieces_s_bend_left[2][4] = { {
+static constexpr const uint32 miniature_railway_track_pieces_s_bend_left[2][4] = { {
                                                                              SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_0,
                                                                              SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_1,
                                                                              SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SW_NE_PART_2,
@@ -226,7 +226,7 @@ static const uint32 miniature_railway_track_pieces_s_bend_left[2][4] = { {
                                                                              SPR_MINIATURE_RAILWAY_S_BEND_LEFT_SE_NW_PART_0,
                                                                          } };
 
-static const uint32 miniature_railway_track_pieces_s_bend_right[2][4] = { {
+static constexpr const uint32 miniature_railway_track_pieces_s_bend_right[2][4] = { {
                                                                               SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_0,
                                                                               SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_1,
                                                                               SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SW_NE_PART_2,
@@ -239,7 +239,7 @@ static const uint32 miniature_railway_track_pieces_s_bend_right[2][4] = { {
                                                                               SPR_MINIATURE_RAILWAY_S_BEND_RIGHT_SE_NW_PART_0,
                                                                           } };
 
-static const uint32 miniature_railway_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
+static constexpr const uint32 miniature_railway_track_pieces_flat_quarter_turn_3_tiles[4][3] = {
     { SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_0, SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_1,
       SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SW_SE_PART_2 },
     { SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_0, SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_NW_SW_PART_1,
@@ -250,7 +250,7 @@ static const uint32 miniature_railway_track_pieces_flat_quarter_turn_3_tiles[4][
       SPR_MINIATURE_RAILWAY_QUARTER_TURN_3_TILES_SE_NE_PART_2 }
 };
 
-static const uint32 miniature_railway_track_pieces_right_eight_to_diag[4][4] = {
+static constexpr const uint32 miniature_railway_track_pieces_right_eight_to_diag[4][4] = {
     {
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_0,
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_E_PART_1,
@@ -277,7 +277,7 @@ static const uint32 miniature_railway_track_pieces_right_eight_to_diag[4][4] = {
     },
 };
 
-static const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_diag_bounds[4][4] = {
+static constexpr const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_diag_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -304,7 +304,7 @@ static const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_diag_bo
     },
 };
 
-static const LocationXY16 miniature_railway_track_pieces_right_eight_to_diag_offset[4][4] = {
+static constexpr const LocationXY16 miniature_railway_track_pieces_right_eight_to_diag_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -331,7 +331,7 @@ static const LocationXY16 miniature_railway_track_pieces_right_eight_to_diag_off
     },
 };
 
-static const uint32 miniature_railway_track_pieces_left_eight_to_diag[4][4] = {
+static constexpr const uint32 miniature_railway_track_pieces_left_eight_to_diag[4][4] = {
     {
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_N_PART_0,
         SPR_MINIATURE_RAILWAY_EIGHT_TO_DIAG_SW_N_PART_1,
@@ -358,7 +358,7 @@ static const uint32 miniature_railway_track_pieces_left_eight_to_diag[4][4] = {
     },
 };
 
-static const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_diag_bounds[4][4] = {
+static constexpr const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_diag_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -385,7 +385,7 @@ static const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_diag_bou
     },
 };
 
-static const LocationXY16 miniature_railway_track_pieces_left_eight_to_diag_offset[4][4] = {
+static constexpr const LocationXY16 miniature_railway_track_pieces_left_eight_to_diag_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -412,7 +412,7 @@ static const LocationXY16 miniature_railway_track_pieces_left_eight_to_diag_offs
     },
 };
 
-static const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
+static constexpr const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_orthog_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -439,7 +439,7 @@ static const LocationXYZ16 miniature_railway_track_pieces_right_eight_to_orthog_
     },
 };
 
-static const LocationXY16 miniature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
+static constexpr const LocationXY16 miniature_railway_track_pieces_right_eight_to_orthog_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -466,7 +466,7 @@ static const LocationXY16 miniature_railway_track_pieces_right_eight_to_orthog_o
     },
 };
 
-static const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_orthog_bounds[4][4] = {
+static constexpr const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_orthog_bounds[4][4] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -493,7 +493,7 @@ static const LocationXYZ16 miniature_railway_track_pieces_left_eight_to_orthog_b
     },
 };
 
-static const LocationXY16 miniature_railway_track_pieces_left_eight_to_orthog_offset[4][4] = {
+static constexpr const LocationXY16 miniature_railway_track_pieces_left_eight_to_orthog_offset[4][4] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -527,21 +527,21 @@ static const uint32 miniature_railway_track_pieces_diag_flat[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_S_N,
 };
 
-static const uint32 miniature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_diag_flat_to_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_E_W,
     SPR_MINIATURE_RAILWAY_DIAG_FLAT_TO_25_DEG_UP_S_N,
 };
 
-static const uint32 miniature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_diag_25_deg_up_to_flat[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_E_W,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_TO_FLAT_S_N,
 };
 
-static const uint32 miniature_railway_track_pieces_diag_25_deg_up[4] = {
+static constexpr const uint32 miniature_railway_track_pieces_diag_25_deg_up[4] = {
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_W_E,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_N_S,
     SPR_MINIATURE_RAILWAY_DIAG_25_DEG_UP_E_W,
@@ -794,7 +794,7 @@ static void paint_miniature_railway_track_25_deg_down_to_flat(paint_session * se
 }
 
 // clang-format off
-const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = { {
+static constexpr const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = { {
                                                                                   { 0, 2 },
                                                                                   { 0, 16 },
                                                                                   { 0, 0 },
@@ -823,7 +823,7 @@ const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_offsets[4][5] = 
                                                                                   { 0, 2 },
                                                                               } };
 
-const LocationXYZ16 miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
+static constexpr const LocationXYZ16 miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4][5] = { {
                                                                                          { 0, 2, 0 },
                                                                                          { 0, 16, 0 },
                                                                                          { 0, 0, 0 },
@@ -852,7 +852,7 @@ const LocationXYZ16 miniature_railway_right_quarter_turn_5_tiles_bound_offsets[4
                                                                                          { 0, 2, 0 },
                                                                                      } };
 
-const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
+static constexpr const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4][5] = { {
                                                                                         { 32, 32 },
                                                                                         { 32, 16 },
                                                                                         { 16, 16 },
@@ -882,7 +882,7 @@ const LocationXY16 miniature_railway_right_quarter_turn_5_tiles_bound_lengths[4]
                                                                                     } };
 // clang-format on
 
-static const uint32 miniature_railway_right_quarter_turn_5_tiles_track_floor[4][5] = {
+static constexpr const uint32 miniature_railway_right_quarter_turn_5_tiles_track_floor[4][5] = {
     { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_S_SEGMENT, SPR_FLOOR_PLANKS_N_SEGMENT, SPR_FLOOR_PLANKS_S_SEGMENT,
       SPR_FLOOR_PLANKS_90_DEG },
     { SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_W_SEGMENT, SPR_FLOOR_PLANKS_E_SEGMENT, SPR_FLOOR_PLANKS_W_SEGMENT,
@@ -893,11 +893,11 @@ static const uint32 miniature_railway_right_quarter_turn_5_tiles_track_floor[4][
       SPR_FLOOR_PLANKS },
 };
 
-static const sint8 right_quarter_turn_5_supports_type[4][7] = {
+static constexpr const sint8 right_quarter_turn_5_supports_type[4][7] = {
     { 0, -1, 4, 2, -1, 4, 1 }, { 1, -1, 5, 3, -1, 5, 0 }, { 0, -1, 2, 4, -1, 2, 1 }, { 1, -1, 3, 5, -1, 3, 0 }
 };
 
-static const sint8 miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
+static constexpr const sint8 miniature_railway_right_quarter_turn_5_tiles_sprite_map[] = { 0, -1, 1, 2, -1, 3, 4 };
 
 /** rct2: 0x008AD140 */
 static void paint_miniature_railway_track_right_quarter_turn_5_tiles(paint_session * session, uint8 rideIndex,
@@ -997,9 +997,9 @@ static void paint_miniature_railway_track_left_quarter_turn_5_tiles(paint_sessio
                                                              tileElement);
 }
 
-static const sint8 s_bend_left_supports_type[4][4] = { { 0, 5, 3, 0 }, { 1, 2, 4, 1 }, { 0, 5, 3, 0 }, { 1, 2, 4, 1 } };
+static constexpr const sint8 s_bend_left_supports_type[4][4] = { { 0, 5, 3, 0 }, { 1, 2, 4, 1 }, { 0, 5, 3, 0 }, { 1, 2, 4, 1 } };
 
-static const uint32 miniature_railway_s_bend_left_tiles_track_floor[2][4] = { { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_W_SEGMENT,
+static constexpr const uint32 miniature_railway_s_bend_left_tiles_track_floor[2][4] = { { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_W_SEGMENT,
                                                                                 SPR_FLOOR_PLANKS_E_SEGMENT, SPR_FLOOR_PLANKS },
                                                                               {
                                                                                   SPR_FLOOR_PLANKS_90_DEG,
@@ -1020,14 +1020,14 @@ static void paint_miniature_railway_track_s_bend_left(paint_session * session, u
     bool isSupported = wooden_a_supports_paint_setup(session, s_bend_left_supports_type[direction][trackSequence], 0, height,
                                                      session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    const LocationXY16 offsetList[] = {
+    static constexpr const LocationXY16 offsetList[] = {
         { 0, 2 },
         { 0, 0 },
         { 0, 6 },
         { 0, 2 },
     };
 
-    const LocationXY16 boundsList[] = {
+    static constexpr const LocationXY16 boundsList[] = {
         { 32, 27 },
         { 32, 26 },
         { 32, 26 },
@@ -1091,9 +1091,9 @@ static void paint_miniature_railway_track_s_bend_left(paint_session * session, u
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const sint8 s_bend_right_supports_type[4][4] = { { 0, 4, 2, 0 }, { 1, 5, 3, 1 }, { 0, 4, 2, 0 }, { 1, 5, 3, 1 } };
+static constexpr const sint8 s_bend_right_supports_type[4][4] = { { 0, 4, 2, 0 }, { 1, 5, 3, 1 }, { 0, 4, 2, 0 }, { 1, 5, 3, 1 } };
 
-static const uint32 miniature_railway_s_bend_right_tiles_track_floor[2][4] = { { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_S_SEGMENT,
+static constexpr const uint32 miniature_railway_s_bend_right_tiles_track_floor[2][4] = { { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_S_SEGMENT,
                                                                                  SPR_FLOOR_PLANKS_N_SEGMENT, SPR_FLOOR_PLANKS },
                                                                                {
                                                                                    SPR_FLOOR_PLANKS_90_DEG,
@@ -1114,14 +1114,14 @@ static void paint_miniature_railway_track_s_bend_right(paint_session * session, 
     bool isSupported = wooden_a_supports_paint_setup(session, s_bend_right_supports_type[direction][trackSequence], 0, height,
                                                      session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
-    const LocationXY16 offsetList[] = {
+    static constexpr const LocationXY16 offsetList[] = {
         { 0, 2 },
         { 0, 6 },
         { 0, 0 },
         { 0, 2 },
     };
 
-    const LocationXY16 boundsList[] = {
+    static constexpr const LocationXY16 boundsList[] = {
         { 32, 27 },
         { 32, 26 },
         { 32, 26 },
@@ -1185,7 +1185,7 @@ static void paint_miniature_railway_track_s_bend_right(paint_session * session, 
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint32 miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = { {
+static constexpr const uint32 miniature_railway_right_quarter_turn_3_tile_track_floor[4][3] = { {
                                                                                           SPR_FLOOR_PLANKS_S_SEGMENT,
                                                                                           0,
                                                                                           SPR_FLOOR_PLANKS_S_SEGMENT,
@@ -1206,7 +1206,7 @@ static const uint32 miniature_railway_right_quarter_turn_3_tile_track_floor[4][3
                                                                                           SPR_FLOOR_PLANKS_E_SEGMENT,
                                                                                       } };
 
-const LocationXYZ16 miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = { {
+static constexpr const LocationXYZ16 miniature_railway_right_quarter_turn_3_tile_bound_offsets[4][3] = { {
                                                                                         { 0, 6, 0 },
                                                                                         { 16, 16, 0 },
                                                                                         { 6, 0, 0 },
@@ -1235,7 +1235,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
     bool isSupported = false;
     if (trackSequence != 1 && trackSequence != 2)
     {
-        const uint8 supportType[] = { 4, 5, 2, 3 };
+        static constexpr const uint8 supportType[] = { 4, 5, 2, 3 };
         isSupported               = wooden_a_supports_paint_setup(session, supportType[direction], 0, height,
                                                     session->TrackColours[SCHEME_SUPPORTS], nullptr);
     }
@@ -1260,7 +1260,7 @@ static void paint_miniature_railway_track_right_quarter_turn_3_tiles(paint_sessi
             miniature_railway_right_quarter_turn_3_tile_track_floor, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
             miniature_railway_right_quarter_turn_3_tile_bound_offsets, get_current_rotation());
 
-        static const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
+        static constexpr const sint8 right_quarter_turn_3_tiles_sprite_map[] = { 0, -1, 1, 2 };
 
         sint32 index = right_quarter_turn_3_tiles_sprite_map[trackSequence];
 
@@ -1303,9 +1303,9 @@ static void paint_miniature_railway_track_left_quarter_turn_3_tiles(paint_sessio
                                                              tileElement);
 }
 
-static const sint8 paint_miniature_railway_eighth_to_diag_index[] = { 0, 1, 2, -1, 3 };
+static constexpr const sint8 paint_miniature_railway_eighth_to_diag_index[] = { 0, 1, 2, -1, 3 };
 
-static const uint32 miniature_railway_floor_track_pieces_left_eight_to_diag[4][5] = {
+static constexpr const uint32 miniature_railway_floor_track_pieces_left_eight_to_diag[4][5] = {
     { SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS, SPR_FLOOR_PLANKS_E_SEGMENT, SPR_FLOOR_PLANKS_W_SEGMENT, SPR_FLOOR_PLANKS_90_DEG },
     { SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_S_SEGMENT, SPR_FLOOR_PLANKS_N_SEGMENT,
       SPR_FLOOR_PLANKS },
@@ -1314,7 +1314,7 @@ static const uint32 miniature_railway_floor_track_pieces_left_eight_to_diag[4][5
       SPR_FLOOR_PLANKS },
 };
 
-static const LocationXYZ16 miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
+static constexpr const LocationXYZ16 miniature_railway_track_floor_pieces_left_eight_to_diag_bounds[4][5] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -1345,7 +1345,7 @@ static const LocationXYZ16 miniature_railway_track_floor_pieces_left_eight_to_di
     },
 };
 
-static const LocationXY16 miniature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
+static constexpr const LocationXY16 miniature_railway_track_floor_pieces_left_eight_to_diag_offset[4][5] = {
     {
         { 0, 0 },
         { 0, 0 },
@@ -1442,7 +1442,7 @@ static void paint_miniature_railway_track_left_eighth_to_diag(paint_session * se
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-static const uint32 miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
+static constexpr const uint32 miniature_railway_floor_track_pieces_right_eight_to_diag[4][5] = {
     { SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_N_SEGMENT, SPR_FLOOR_PLANKS_S_SEGMENT,
       SPR_FLOOR_PLANKS_90_DEG },
     { SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_90_DEG, SPR_FLOOR_PLANKS_E_SEGMENT, SPR_FLOOR_PLANKS_W_SEGMENT,
@@ -1452,7 +1452,7 @@ static const uint32 miniature_railway_floor_track_pieces_right_eight_to_diag[4][
       SPR_FLOOR_PLANKS },
 };
 
-static const LocationXYZ16 miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[4][5] = {
+static constexpr const LocationXYZ16 miniature_railway_track_floor_pieces_right_eight_to_diag_bounds[4][5] = {
     {
         { 32, 32, 2 },
         { 32, 16, 2 },
@@ -1483,7 +1483,7 @@ static const LocationXYZ16 miniature_railway_track_floor_pieces_right_eight_to_d
     },
 };
 
-static const LocationXY16 miniature_railway_track_floor_pieces_right_eight_to_diag_offset[4][5] = {
+static constexpr const LocationXY16 miniature_railway_track_floor_pieces_right_eight_to_diag_offset[4][5] = {
     {
         { 0, 0 },
         { 0, 16 },
@@ -1603,7 +1603,7 @@ static void paint_miniature_railway_track_right_eighth_to_orthogonal(paint_sessi
                                                       tileElement);
 }
 
-static const bool miniature_railway_diag_image_segment[][4] = {
+static constexpr const bool miniature_railway_diag_image_segment[][4] = {
     { false, true, false, false },
     { false, false, false, true },
     { false, false, true, false },
@@ -1620,7 +1620,7 @@ enum
     SUPPORT_PLAIN_W      = 5,
 };
 
-static const sint16 monorail_diag_support_types[][4] = {
+static constexpr const sint16 monorail_diag_support_types[][4] = {
     { -1, SUPPORT_PLAIN_N, SUPPORT_PLAIN_S, SUPPORT_PLAIN },
     { -1, SUPPORT_PLAIN_E, SUPPORT_PLAIN_W, SUPPORT_PLAIN_90_DEG },
     { -1, SUPPORT_PLAIN_S, SUPPORT_PLAIN_N, SUPPORT_PLAIN },
@@ -1634,7 +1634,7 @@ typedef struct floor_desc
     LocationXY16 bound_offset;
 } floor_desc;
 
-static const floor_desc floors[] = {
+static constexpr const floor_desc floors[] = {
     { SPR_FLOOR_PLANKS, { 32, 32 }, { 0, 0 } },
     { SPR_FLOOR_PLANKS_90_DEG, { 32, 32 }, { 0, 0 } }, // -16,-16(1:3)
     { SPR_FLOOR_PLANKS_N_SEGMENT, { 32, 32 }, { -16, -16 } },
@@ -1752,7 +1752,7 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
         floorBoundOffset = { -16, -16 };
     }
 
-    const sint8 offsetsB[4][4][2] = {
+    static constexpr const sint8 offsetsB[4][4][2] = {
         { { 0, 0 }, { +8, +16 }, { +8, +8 }, { +8, +8 } },
         { { 0, 0 }, { -8, -8 }, { -8, -8 }, { +8, +8 } },
         { { 0, 0 }, { +8, +8 }, { +8, +16 }, { +8, +8 } },
@@ -1761,7 +1761,7 @@ static void miniature_railway_track_diag_25_deg_up(paint_session * session, uint
 
     uint32             imageId   = miniature_railway_track_pieces_diag_25_deg_up[direction];
     bool               drawRail  = miniature_railway_diag_image_segment[direction][trackSequence];
-    static const sint8 offsetB[] = { +8, 0, +8, +8 };
+    static constexpr const sint8 offsetB[] = { +8, 0, +8, +8 };
     if (hasSupports)
     {
         sub_98197C(session, floorImage | session->TrackColours[SCHEME_SUPPORTS], 0, 0, floorBoundSize.x, floorBoundSize.y,

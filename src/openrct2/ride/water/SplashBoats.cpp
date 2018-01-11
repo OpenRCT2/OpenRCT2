@@ -230,133 +230,133 @@ enum
     SPR_SPLASH_BOATS_S_BEND_TOP_NW_NE_NW_SEQ_0  = 20995,
 };
 
-static const uint32 SplashBoats25DegUpImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_SE_NW,
 };
 
-static const uint32 SplashBoats25DegUpFrontImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoats60DegUpImageId[4] = {
+static constexpr const uint32 SplashBoats60DegUpImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_SE_NW,
 };
 
-static const uint32 SplashBoats60DegUpFrontImageId[4] = {
+static constexpr const uint32 SplashBoats60DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoatsFlatTo25DegUpImageId[4] = {
+static constexpr const uint32 SplashBoatsFlatTo25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 SplashBoatsFlatTo25DegUpFrontImageId[4] = {
+static constexpr const uint32 SplashBoatsFlatTo25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoats25DegUpToFlatImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpToFlatImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_SE_NW,
 };
 
-static const uint32 SplashBoats25DegUpToFlatFrontImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpToFlatFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoats25DegUpTo60DegUpImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpTo60DegUpImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_SE_NW,
 };
 
-static const uint32 SplashBoats25DegUpTo60DegUpFrontImageId[4] = {
+static constexpr const uint32 SplashBoats25DegUpTo60DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_60_DEG_UP_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoats60DegUpTo25DegUpImageId[4] = {
+static constexpr const uint32 SplashBoats60DegUpTo25DegUpImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_SE_NW,
 };
 
-static const uint32 SplashBoats60DegUpTo25DegUpFrontImageId[4] = {
+static constexpr const uint32 SplashBoats60DegUpTo25DegUpFrontImageId[4] = {
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_NW_SE,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_60_DEG_UP_TO_25_DEG_UP_FRONT_SE_NW,
 };
 
-static const uint32 SplashBoats25DegDownImageId[4] = {
+static constexpr const uint32 SplashBoats25DegDownImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_DOWN_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_DOWN_SE_NW,
 };
 
-static const uint32 SplashBoats25DegDownFrontImageId[4] = {
+static constexpr const uint32 SplashBoats25DegDownFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SE_NW,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_FRONT_NW_SE,
 };
 
-static const uint32 SplashBoatsFlatTo25DegDownImageId[4] = {
+static constexpr const uint32 SplashBoatsFlatTo25DegDownImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_NW_SE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_DOWN_SE_NW,
 };
 
-static const uint32 SplashBoatsFlatTo25DegDownFrontImageId[4] = {
+static constexpr const uint32 SplashBoatsFlatTo25DegDownFrontImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SE_NW,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_UP_TO_FLAT_FRONT_NW_SE,
 };
 
-static const uint32 SplashBoats25DegDownToFlatImageId[4] = {
+static constexpr const uint32 SplashBoats25DegDownToFlatImageId[4] = {
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_SW_NE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_NW_SE,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_NE_SW,
     SPR_SPLASH_BOATS_25_DEG_DOWN_TO_FLAT_SE_NW,
 };
 
-static const uint32 SplashBoats25DegDownToFlatFrontImageId[4] = {
+static constexpr const uint32 SplashBoats25DegDownToFlatFrontImageId[4] = {
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NE_SW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SE_NW,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_SW_NE,
     SPR_SPLASH_BOATS_FLAT_TO_25_DEG_UP_FRONT_NW_SE,
 };
 
-static const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
+static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 27, 2 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_TOP_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 0 },  { 32, 16, 2 },
@@ -387,7 +387,7 @@ static const sprite_bb RiverRaftsLeftQuarterTurn5_Top[4][5] = {
     }
 };
 
-static const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
+static constexpr const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 27, 0 },
         SPR_SPLASH_BOATS_TURN_LEFT_5_SIDE_SW_NW_SEQ_2, { 0, 0, 0 }, { 0, 0, 27 },  { 32, 16, 0 },
@@ -418,7 +418,7 @@ static const sprite_bb RiverRaftsLeftQuarterTurn5_Side[4][5] = {
     }
 };
 
-static const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
+static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 0 },  { 32, 32, 2 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_TOP_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 0 }, { 32, 16, 2 },
@@ -449,7 +449,7 @@ static const sprite_bb RiverRaftsRightQuarterTurn5_Top[4][5] = {
     }
 };
 
-static const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
+static constexpr const sprite_bb RiverRaftsRightQuarterTurn5_Side[4][5] = {
     {
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_0, { 0, 0, 0 }, { 0, 2, 27 },  { 32, 32, 0 },
         SPR_SPLASH_BOATS_TURN_RIGHT_5_SIDE_SW_SE_SEQ_2, { 0, 0, 0 }, { 0, 16, 27 }, { 32, 16, 0 },
@@ -633,7 +633,7 @@ static void paint_splash_boats_track_25_deg_down(paint_session * session, uint8 
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 50, height, 0, 27, height);
 
-    static const uint8 specialSupport[] = { 11, 12, 9, 10 };
+    static constexpr const uint8 specialSupport[] = { 11, 12, 9, 10 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height,
                                   session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -664,7 +664,7 @@ static void paint_splash_boats_track_flat_to_25_deg_down(paint_session * session
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 34, height, 0, 27, height);
 
-    static const uint8 specialSupport[] = { 7, 8, 5, 6 };
+    static constexpr const uint8 specialSupport[] = { 7, 8, 5, 6 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height,
                                   session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -701,7 +701,7 @@ static void paint_splash_boats_track_25_deg_down_to_flat(paint_session * session
     sub_98197C_rotated(session, direction, imageId, 0, 0, 32, 20, 2, height, 0, 6, height);
     sub_98197C_rotated(session, direction, frontImageId, 0, 0, 32, 1, 42, height, 0, 27, height);
 
-    static const uint8 specialSupport[] = { 3, 4, 1, 2 };
+    static constexpr const uint8 specialSupport[] = { 3, 4, 1, 2 };
     wooden_a_supports_paint_setup(session, (direction & 1), specialSupport[direction], height,
                                   session->TrackColours[SCHEME_SUPPORTS], nullptr);
 
@@ -816,7 +816,7 @@ static void paint_splash_boats_track_left_quarter_turn_5_tiles(paint_session * s
 
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static const uint8 supportTypes[][7] = {
+        static constexpr const uint8 supportTypes[][7] = {
             { 0, 0xFF, 5, 3, 0xFF, 5, 1 },
             { 1, 0xFF, 2, 4, 0xFF, 2, 0 },
             { 0, 0xFF, 3, 5, 0xFF, 3, 1 },
@@ -893,7 +893,7 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * 
 
     if (trackSequence != 1 && trackSequence != 4)
     {
-        static const uint8 supportTypes[][7] = {
+        static constexpr const uint8 supportTypes[][7] = {
             { 0, 0xFF, 4, 2, 0xFF, 4, 1 },
             { 1, 0xFF, 5, 3, 0xFF, 5, 0 },
             { 0, 0xFF, 2, 4, 0xFF, 2, 1 },
@@ -963,7 +963,7 @@ static void paint_splash_boats_track_right_quarter_turn_5_tiles(paint_session * 
 static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                  sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][4][2] = {
+    static constexpr const uint32 imageIds[4][4][2] = {
         { { SPR_SPLASH_BOATS_S_BEND_TOP_NE_NW_NE_SEQ_0, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_NW_NE_SEQ_0 },
           { SPR_SPLASH_BOATS_S_BEND_TOP_NE_NW_NE_SEQ_1, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_NW_NE_SEQ_1 },
           { SPR_SPLASH_BOATS_S_BEND_TOP_NE_NW_NE_SEQ_2, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_NW_NE_SEQ_2 },
@@ -985,8 +985,8 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
     uint32 imageId      = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     sint16 bboy;
-    static const sint32 supportTypes1[] = { 5, 2, 3, 4 };
-    static const sint32 supportTypes2[] = { 3, 4, 5, 2 };
+    static constexpr const sint32 supportTypes1[] = { 5, 2, 3, 4 };
+    static constexpr const sint32 supportTypes2[] = { 3, 4, 5, 2 };
 
     switch (trackSequence)
     {
@@ -1052,7 +1052,7 @@ static void paint_splash_boats_track_s_bend_left(paint_session * session, uint8 
 static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][4][2] = {
+    static constexpr const uint32 imageIds[4][4][2] = {
         { { SPR_SPLASH_BOATS_S_BEND_TOP_NE_SE_NE_SEQ_0, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_SE_NE_SEQ_0 },
           { SPR_SPLASH_BOATS_S_BEND_TOP_NE_SE_NE_SEQ_1, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_SE_NE_SEQ_1 },
           { SPR_SPLASH_BOATS_S_BEND_TOP_NE_SE_NE_SEQ_2, SPR_SPLASH_BOATS_S_BEND_SIDE_NE_SE_NE_SEQ_2 },
@@ -1074,8 +1074,8 @@ static void paint_splash_boats_track_s_bend_right(paint_session * session, uint8
     uint32 imageId      = imageIds[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
     uint32 frontImageId = imageIds[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
     sint16 bboy;
-    static const sint32 supportTypes1[] = { 4, 5, 2, 3 };
-    static const sint32 supportTypes2[] = { 2, 3, 4, 5 };
+    static constexpr const sint32 supportTypes1[] = { 4, 5, 2, 3 };
+    static constexpr const sint32 supportTypes2[] = { 2, 3, 4, 5 };
 
 
     switch (trackSequence)

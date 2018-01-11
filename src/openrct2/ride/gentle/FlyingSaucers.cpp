@@ -29,7 +29,7 @@ enum
     SPR_FLYING_SAUCERS_FENCE_NW = 21924,
 };
 
-static const uint32 flying_saucers_fence_sprites[] = {
+static constexpr const uint32 flying_saucers_fence_sprites[] = {
     SPR_FLYING_SAUCERS_FENCE_NE,
     SPR_FLYING_SAUCERS_FENCE_SE,
     SPR_FLYING_SAUCERS_FENCE_SW,

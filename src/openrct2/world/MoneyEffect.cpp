@@ -20,7 +20,7 @@
 #include "../OpenRCT2.h"
 #include "Sprite.h"
 
-static const LocationXY16 _moneyEffectMoveOffset[] = {
+static constexpr const LocationXY16 _moneyEffectMoveOffset[] = {
     {1,  -1},
     {1,  1},
     {-1, 1},

@@ -89,7 +89,7 @@ enum {
     WINDOW_OBJECT_SELECTION_PAGE_COUNT
 };
 
-static const rct_string_id ObjectSelectionPageNames[WINDOW_OBJECT_SELECTION_PAGE_COUNT] = {
+static constexpr const rct_string_id ObjectSelectionPageNames[WINDOW_OBJECT_SELECTION_PAGE_COUNT] = {
     STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS,
     STR_OBJECT_SELECTION_SMALL_SCENERY,
     STR_OBJECT_SELECTION_LARGE_SCENERY,
@@ -230,8 +230,8 @@ static rct_window_event_list window_editor_object_selection_events = {
 
 #pragma endregion
 
-const sint32 window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
-const sint32 window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
+static constexpr const sint32 window_editor_object_selection_animation_loops[] = { 20, 32, 10, 72, 24, 28, 16 };
+static constexpr const sint32 window_editor_object_selection_animation_divisor[] = { 4, 8, 2, 4, 4, 4, 2 };
 
 static void window_editor_object_set_page(rct_window *w, sint32 page);
 static void window_editor_object_selection_set_pressed_tab(rct_window *w);

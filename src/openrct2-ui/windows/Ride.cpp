@@ -399,7 +399,7 @@ static rct_widget *window_ride_page_widgets[] = {
     (1ULL << WIDX_TAB_9) | \
     (1ULL << WIDX_TAB_10)
 
-const uint64 window_ride_page_enabled_widgets[] = {
+static constexpr const uint64 window_ride_page_enabled_widgets[] = {
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_VIEW) |
         (1ULL << WIDX_VIEW_DROPDOWN) |
@@ -493,7 +493,7 @@ const uint64 window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_SHOW_GUESTS_QUEUING),
 };
 
-const uint64 window_ride_page_hold_down_widgets[] = {
+static constexpr const uint64 window_ride_page_hold_down_widgets[] = {
     (1ULL << WIDX_RIDE_TYPE_INCREASE) |
         (1ULL << WIDX_RIDE_TYPE_DECREASE),
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
@@ -971,10 +971,10 @@ typedef struct ride_overall_view_t {
 
 static ride_overall_view ride_overall_views[MAX_RIDES] = {0};
 
-const sint32 window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
-const sint32 window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
+static constexpr const sint32 window_ride_tab_animation_divisor[] = { 0, 0, 2, 2, 4, 2, 8, 8, 2, 0 };
+static constexpr const sint32 window_ride_tab_animation_frames[] = { 0, 0, 4, 16, 8, 16, 8, 8, 8, 0 };
 
-static const rct_string_id RatingNames[] = {
+static constexpr const rct_string_id RatingNames[] = {
     STR_RATING_LOW,
     STR_RATING_MEDIUM,
     STR_RATING_HIGH,
@@ -983,7 +983,7 @@ static const rct_string_id RatingNames[] = {
     STR_RATING_ULTRA_EXTREME,
 };
 
-static const rct_string_id RideBreakdownReasonNames[] = {
+static constexpr const rct_string_id RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT ,
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
     STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,
@@ -994,14 +994,14 @@ static const rct_string_id RideBreakdownReasonNames[] = {
     STR_RIDE_BREAKDOWN_CONTROL_FAILURE
 };
 
-static const rct_string_id ColourSchemeNames[] = {
+static constexpr const rct_string_id ColourSchemeNames[] = {
     STR_MAIN_COLOUR_SCHEME,
     STR_ALTERNATIVE_COLOUR_SCHEME_1,
     STR_ALTERNATIVE_COLOUR_SCHEME_2,
     STR_ALTERNATIVE_COLOUR_SCHEME_3,
 };
 
-static const rct_string_id VehicleLoadNames[] = {
+static constexpr const rct_string_id VehicleLoadNames[] = {
     STR_QUARTER_LOAD,
     STR_HALF_LOAD,
     STR_THREE_QUARTER_LOAD,
@@ -1009,13 +1009,13 @@ static const rct_string_id VehicleLoadNames[] = {
     STR_ANY_LOAD,
 };
 
-static const rct_string_id VehicleColourSchemeNames[] = {
+static constexpr const rct_string_id VehicleColourSchemeNames[] = {
     STR_ALL_VEHICLES_IN_SAME_COLOURS ,
     STR_DIFFERENT_COLOURS_PER ,
     STR_DIFFERENT_COLOURS_PER_VEHICLE ,
 };
 
-static const rct_string_id VehicleStatusNames[] = {
+static constexpr const rct_string_id VehicleStatusNames[] = {
     STR_MOVING_TO_END_OF,           // VEHICLE_STATUS_MOVING_TO_END_OF_STATION
     STR_WAITING_FOR_PASSENGERS_AT,  // VEHICLE_STATUS_WAITING_FOR_PASSENGERS
     STR_WAITING_TO_DEPART,          // VEHICLE_STATUS_WAITING_TO_DEPART
@@ -1049,7 +1049,7 @@ static const rct_string_id VehicleStatusNames[] = {
     STR_STOPPED_BY_BLOCK_BRAKES,    // VEHICLE_STATUS_STOPPED_BY_BLOCK_BRAKES
 };
 
-static const rct_string_id SingleSessionVehicleStatusNames[] = {
+static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
     STR_STOPPING_0,                 // VEHICLE_STATUS_MOVING_TO_END_OF_STATION
     STR_WAITING_FOR_PASSENGERS,     // VEHICLE_STATUS_WAITING_FOR_PASSENGERS
     STR_WAITING_TO_START,           // VEHICLE_STATUS_WAITING_TO_DEPART
@@ -1059,7 +1059,7 @@ static const rct_string_id SingleSessionVehicleStatusNames[] = {
     STR_UNLOADING_PASSENGERS,       // VEHICLE_STATUS_UNLOADING_PASSENGERS
 };
 
-static const rct_string_id MusicStyleNames[] = {
+static constexpr const rct_string_id MusicStyleNames[] = {
     STR_MUSIC_STYLE_DODGEMS_BEAT,
     STR_MUSIC_STYLE_FAIRGROUND_ORGAN,
     STR_MUSIC_STYLE_ROMAN_FANFARE,
@@ -1100,7 +1100,7 @@ typedef struct window_ride_maze_design_option {
     uint32 sprite;
 } window_ride_maze_design_option;
 
-static const window_ride_maze_design_option MazeOptions[] = {
+static constexpr const window_ride_maze_design_option MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_BRICK_WALLS,     SPR_RIDE_DESIGN_PREVIEW_MAZE_BRICK_WALLS },
     { STR_RIDE_DESIGN_MAZE_HEDGES,          SPR_RIDE_DESIGN_PREVIEW_MAZE_HEDGES },
     { STR_RIDE_DESIGN_MAZE_ICE_BLOCKS,      SPR_RIDE_DESIGN_PREVIEW_MAZE_ICE_BLOCKS },
@@ -1113,7 +1113,7 @@ typedef struct window_ride_colour_preview
     uint32 supports;
 } window_ride_colour_preview;
 
-static const window_ride_colour_preview TrackColourPreviews[] = {
+static constexpr const window_ride_colour_preview TrackColourPreviews[] = {
     { SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_TRACK,          SPR_RIDE_DESIGN_PREVIEW_SPIRAL_ROLLER_COASTER_SUPPORTS},
     { SPR_RIDE_DESIGN_PREVIEW_STAND_UP_ROLLER_COASTER_TRACK,        SPR_RIDE_DESIGN_PREVIEW_STAND_UP_ROLLER_COASTER_SUPPORTS},
     { SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_SWINGING_COASTER_TRACK,     SPR_RIDE_DESIGN_PREVIEW_SUSPENDED_SWINGING_COASTER_SUPPORTS},
@@ -1215,7 +1215,7 @@ typedef struct rct_window_graphs_y_axis {
 } rct_window_graphs_y_axis;
 
 /** rct2: 0x0098DD98 */
-static const rct_window_graphs_y_axis window_graphs_y_axi[] = {
+static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
     {11, 0,  10, STR_RIDE_STATS_VELOCITY_FORMAT},   // GRAPH_VELOCITY
     {10, 0,  15, STR_RIDE_STATS_ALTITUDE_FORMAT},   // GRAPH_ALTITUDE
     {13, -3, 1,  STR_RIDE_STATS_G_FORCE_FORMAT},    // GRAPH_VERTICAL
@@ -4039,7 +4039,7 @@ static void window_ride_maintenance_paint(rct_window *w, rct_drawpixelinfo *dpi)
 
 #pragma region Colour
 
-const uint8 window_ride_entrance_style_list[] = {
+static constexpr const uint8 window_ride_entrance_style_list[] = {
     RIDE_ENTRANCE_STYLE_PLAIN,
     RIDE_ENTRANCE_STYLE_CANVAS_TENT,
     RIDE_ENTRANCE_STYLE_WOODEN,
@@ -4705,7 +4705,7 @@ static void window_ride_colour_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi
 
 #pragma region Music
 
-const uint8 MusicStyleOrder[] = {
+static constexpr const uint8 MusicStyleOrder[] = {
     MUSIC_STYLE_GENTLE,
     MUSIC_STYLE_SUMMER,
     MUSIC_STYLE_WATER,

@@ -418,7 +418,7 @@ static rct_window_event_list *window_guest_page_events[] = {
 void window_guest_set_colours();
 
 // 0x981D3C
-static const uint32 window_guest_page_enabled_widgets[] = {
+static constexpr const uint32 window_guest_page_enabled_widgets[] = {
     (1 << WIDX_CLOSE) |
     (1 << WIDX_TAB_1) |
     (1 << WIDX_TAB_2) |
@@ -1480,7 +1480,7 @@ void window_guest_stats_paint(rct_window *w, rct_drawpixelinfo *dpi)
     gfx_draw_string_left(dpi, string_id, gCommonFormatArgs, COLOUR_BLACK, x + 4, y);
 
     // Nausea tolerance
-    static const rct_string_id nauseaTolerances[] = {
+    static constexpr const rct_string_id nauseaTolerances[] = {
         STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
         STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
         STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,

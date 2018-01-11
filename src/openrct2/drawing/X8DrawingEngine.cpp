@@ -54,7 +54,7 @@ void X8RainDrawer::SetDPI(rct_drawpixelinfo * dpi)
 
 void X8RainDrawer::Draw(sint32 x, sint32 y, sint32 width, sint32 height, sint32 xStart, sint32 yStart)
 {
-    static const uint8 RainPattern[] =
+    static constexpr const uint8 RainPattern[] =
     {
         32, 32, 0, 12, 0, 14, 0, 16, 255, 0, 255, 0, 255, 0, 255, 0, 255,
         0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0, 255, 0,
@@ -497,7 +497,7 @@ void X8DrawingContext::Clear(uint8 paletteIndex)
 
 /** rct2: 0x0097FF04 */
 // clang-format off
-static const uint16 Pattern[] = {
+static constexpr const uint16 Pattern[] = {
     0b0111111110000000,
     0b0011111111000000,
     0b0001111111100000,
@@ -517,7 +517,7 @@ static const uint16 Pattern[] = {
 };
 
 /** rct2: 0x0097FF14 */
-static const uint16 PatternInverse[] = {
+static constexpr const uint16 PatternInverse[] = {
     0b1000000001111111,
     0b1100000000111111,
     0b1110000000011111,
@@ -537,7 +537,7 @@ static const uint16 PatternInverse[] = {
 };
 
 /** rct2: 0x0097FEFC */
-static const uint16 * Patterns[] = {
+static constexpr const uint16 * Patterns[] = {
     Pattern,
     PatternInverse
 };

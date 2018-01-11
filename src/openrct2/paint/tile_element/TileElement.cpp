@@ -349,7 +349,7 @@ static void sub_68B3FB(paint_session * session, sint32 x, sint32 y)
         return;
     }
 
-    static const sint32 segmentPositions[][3] = {
+    static constexpr const sint32 segmentPositions[][3] = {
         {0, 6, 2},
         {5, 4, 8},
         {1, 7, 3},

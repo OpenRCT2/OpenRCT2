@@ -36,7 +36,7 @@
 #include <openrct2/world/SmallScenery.h>
 #include <openrct2/world/TileInspector.h>
 
-static const rct_string_id TerrainTypeStringIds[] = {
+static constexpr const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_GRASS,
     STR_TILE_INSPECTOR_TERRAIN_SAND,
     STR_TILE_INSPECTOR_TERRAIN_DIRT,
@@ -55,7 +55,7 @@ static const rct_string_id TerrainTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_UNDERGROUND_VIEW,
 };
 
-static const rct_string_id TerrainEdgeTypeStringIds[] = {
+static constexpr const rct_string_id TerrainEdgeTypeStringIds[] = {
     STR_TILE_INSPECTOR_TERRAIN_EDGE_ROCK,
     STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_RED,
     STR_TILE_INSPECTOR_TERRAIN_EDGE_WOOD_BLACK,
@@ -63,19 +63,19 @@ static const rct_string_id TerrainEdgeTypeStringIds[] = {
 
 };
 
-static const rct_string_id EntranceTypeStringIds[] = {
+static constexpr const rct_string_id EntranceTypeStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_ENTRANCE,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_RIDE_EXIT,
     STR_TILE_INSPECTOR_ENTRANCE_TYPE_PARK_ENTRANC,
 };
 
-static const rct_string_id ParkEntrancePartStringIds[] = {
+static constexpr const rct_string_id ParkEntrancePartStringIds[] = {
     STR_TILE_INSPECTOR_ENTRANCE_MIDDLE,
     STR_TILE_INSPECTOR_ENTRANCE_LEFT,
     STR_TILE_INSPECTOR_ENTRANCE_RIGHT
 };
 
-static const rct_string_id WallSlopeStringIds[] = {
+static constexpr const rct_string_id WallSlopeStringIds[] = {
     STR_TILE_INSPECTOR_WALL_FLAT,
     STR_TILE_INSPECTOR_WALL_SLOPED_LEFT,
     STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT

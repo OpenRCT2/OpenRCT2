@@ -20,14 +20,14 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-static const uint8 edges_1x4_ne_sw[] = {
+static constexpr const uint8 edges_1x4_ne_sw[] = {
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_NE,
     EDGE_NW | EDGE_SE,
     EDGE_NW | EDGE_SE | EDGE_SW,
 };
 
-static const uint8 edges_1x4_nw_se[] = {
+static constexpr const uint8 edges_1x4_nw_se[] = {
     EDGE_NE | EDGE_SW,
     EDGE_NE | EDGE_SW | EDGE_NW,
     EDGE_NE | EDGE_SW,

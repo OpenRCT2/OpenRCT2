@@ -94,7 +94,7 @@ static void heartline_twister_rc_track_flat(paint_session * session, uint8 rideI
 static void heartline_twister_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                                sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 19732, SPR_STATION_BASE_B_SW_NE },
         { 19733, SPR_STATION_BASE_B_NW_SE },
         { 19732, SPR_STATION_BASE_B_SW_NE },

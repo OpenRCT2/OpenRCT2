@@ -135,7 +135,7 @@ uint8 gTypeToRideEntryIndexMap[TYPE_TO_RIDE_ENTRY_SLOTS];
 
 #pragma endregion
 
-static const sint32 RideInspectionInterval[] = {
+static constexpr const sint32 RideInspectionInterval[] = {
     10, 20, 30, 45, 60, 120, 0, 0
 };
 
@@ -2145,7 +2145,7 @@ void ride_update_popularity(Ride* ride, uint8 pop_amount){
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */
-static const LocationXY16 ride_spiral_slide_main_tile_offset[][4] = {
+static constexpr const LocationXY16 ride_spiral_slide_main_tile_offset[][4] = {
     {
         {  32,  32 },
         {   0,  32 },
@@ -4439,14 +4439,14 @@ static sint32 count_free_misc_sprite_slots()
     return Math::Max(0, miscSpriteCount + remainingSpriteCount - 300);
 }
 
-static const LocationXY16 word_9A3AB4[4] = {
+static constexpr const LocationXY16 word_9A3AB4[4] = {
     {   0,   0 },
     {   0, -96 },
     { -96, -96 },
     { -96,   0 },
 };
 
-static const LocationXY16 word_9A2A60[] = {
+static constexpr const LocationXY16 word_9A2A60[] = {
     {   0,  16 },
     {  16,  31 },
     {  31,  16 },
@@ -5487,7 +5487,7 @@ sint32 ride_get_refund_price(sint32 ride_id)
             GAME_COMMAND_SET_MAZE_TRACK,
             z,
             0);
-        // Above gamecommand may remove the tile element which will cause the next game command to 
+        // Above gamecommand may remove the tile element which will cause the next game command to
         // return MONEY32_UNDEFINED as it does not need to be called.
 
         money32 removePrice = game_do_command(
@@ -7937,7 +7937,7 @@ bool ride_has_ratings(const Ride * ride)
 
 const char * ride_type_get_enum_name(sint32 rideType)
 {
-    static const char * RideTypeEnumNames[RIDE_TYPE_COUNT] =
+    static constexpr const char * RideTypeEnumNames[RIDE_TYPE_COUNT] =
     {
         nameof(RIDE_TYPE_SPIRAL_ROLLER_COASTER),
         nameof(RIDE_TYPE_STAND_UP_ROLLER_COASTER),

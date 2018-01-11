@@ -30,7 +30,7 @@ uint8 gClipHeight = 128; // Default to middle value
 paint_session gPaintSession;
 static bool _paintSessionInUse;
 
-static const uint8 BoundBoxDebugColours[] =
+static constexpr const uint8 BoundBoxDebugColours[] =
 {
     0,   // NONE
     102, // TERRAIN

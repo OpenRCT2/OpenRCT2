@@ -64,7 +64,7 @@ static rct_widget window_quit_prompt_widgets[] = {
     { WIDGETS_END },
 };
 
-static const rct_string_id window_save_prompt_labels[][2] = {
+static constexpr const rct_string_id window_save_prompt_labels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },

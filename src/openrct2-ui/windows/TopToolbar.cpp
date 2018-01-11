@@ -153,7 +153,7 @@ enum {
 #pragma region Toolbar_widget_ordering
 
 // from left to right
-static const sint32 left_aligned_widgets_order[] = {
+static constexpr const sint32 left_aligned_widgets_order[] = {
     WIDX_PAUSE,
     WIDX_FASTFORWARD,
     WIDX_FILE_MENU,
@@ -173,7 +173,7 @@ static const sint32 left_aligned_widgets_order[] = {
 };
 
 // from right to left
-static const sint32 right_aligned_widgets_order[] = {
+static constexpr const sint32 right_aligned_widgets_order[] = {
     WIDX_NEWS,
     WIDX_GUESTS,
     WIDX_STAFF,

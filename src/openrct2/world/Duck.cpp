@@ -32,9 +32,9 @@ enum DUCK_STATE
     DOUBLE_DRINK,
     FLY_AWAY,
 };
-constexpr sint32 DUCK_MAX_STATES = 5;
+constexpr const sint32 DUCK_MAX_STATES = 5;
 
-static const LocationXY16 DuckMoveOffset[] =
+static constexpr const LocationXY16 DuckMoveOffset[] =
 {
     { -1,  0 },
     {  0,  1 },
@@ -42,33 +42,33 @@ static const LocationXY16 DuckMoveOffset[] =
     {  0, -1 },
 };
 
-static const uint8 DuckAnimationFlyToWater[] =
+static constexpr const uint8 DuckAnimationFlyToWater[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static const uint8 DuckAnimationSwim[] =
+static constexpr const uint8 DuckAnimationSwim[] =
 {
     0
 };
 
-static const uint8 DuckAnimationDrink[] =
+static constexpr const uint8 DuckAnimationDrink[] =
 {
     1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0, 0, 0, 0xFF
 };
 
-static const uint8 DuckAnimationDoubleDrink[] =
+static constexpr const uint8 DuckAnimationDoubleDrink[] =
 {
     4, 4, 4, 4, 5, 5, 5, 5, 6, 6, 6, 6, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 7, 6,
     6, 6, 6, 5, 5, 5, 5, 4, 4, 4, 4, 0, 0, 0, 0, 0xFF
 };
 
-static const uint8 DuckAnimationFlyAway[] =
+static constexpr const uint8 DuckAnimationFlyAway[] =
 {
     8, 9, 10, 11, 12, 13
 };
 
-static const uint8 * DuckAnimations[] =
+static constexpr const uint8 * DuckAnimations[] =
 {
     DuckAnimationFlyToWater,    // FLY_TO_WATER
     DuckAnimationSwim,          // SWIM

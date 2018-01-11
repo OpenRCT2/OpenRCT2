@@ -30,7 +30,7 @@
 static void lim_launched_rc_track_station(paint_session * session, uint8 rideIndex, uint8 trackSequence, uint8 direction,
                                           sint32 height, rct_tile_element * tileElement)
 {
-    static const uint32 imageIds[4][3] = {
+    static constexpr const uint32 imageIds[4][3] = {
         { 15018, 15020, SPR_STATION_BASE_B_SW_NE },
         { 15019, 15021, SPR_STATION_BASE_B_NW_SE },
         { 15018, 15020, SPR_STATION_BASE_B_SW_NE },

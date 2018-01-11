@@ -184,7 +184,7 @@ bool loc_690FD0(rct_peep * peep, uint8 * rideToView, uint8 * rideSeatToView, rct
 #endif
 
 // clang-format off
-static const char *gPeepEasterEggNames[] = {
+static constexpr const char *gPeepEasterEggNames[] = {
     "MICHAEL SCHUMACHER",
     "JACQUES VILLENEUVE",
     "DAMON HILL",
@@ -433,7 +433,7 @@ static uint8 PeepActionToSpriteTypeMap[] = {
     PEEP_ACTION_SPRITE_TYPE_WITHDRAW_MONEY
 };
 
-static const bool SpriteTypeToSlowWalkMap[] = {
+static constexpr const bool SpriteTypeToSlowWalkMap[] = {
     false, false, false, false, false, false, false, false,
     false, false, false, true,  false, false, true,  true,
     true,  true,  true,  false, true,  false, true,  true,
@@ -443,18 +443,18 @@ static const bool SpriteTypeToSlowWalkMap[] = {
 };
 
 // These arrays contain the base minimum and maximum nausea ratings for peeps, based on their nausea tolerance level.
-static const ride_rating NauseaMinimumThresholds[] = {
+static constexpr const ride_rating NauseaMinimumThresholds[] = {
     0, 0, 200, 400
 };
 
-static const ride_rating NauseaMaximumThresholds[] = {
+static constexpr const ride_rating NauseaMaximumThresholds[] = {
     300, 600, 800, 1000
 };
 
 // Locations of the spiral slide platform that a peep walks from the entrance of the ride to the
 // entrance of the slide. Up to 4 locations for each 4 sides that an ride entrance can be located
 // and 4 different rotations of the ride. 4 * 4 * 4 = 64 locations.
-static const LocationXY16 SpiralSlideWalkingPath[64] = {
+static constexpr const LocationXY16 SpiralSlideWalkingPath[64] = {
     {  56,   8 },
     {   8,   8 },
     {   8,  32 },
@@ -800,7 +800,7 @@ static void peep_decide_whether_to_leave_park(rct_peep * peep)
 
 // clang-format off
 /** rct2: 0x009822F4, 0x00982310 */
-static const uint8 byte_9822F4[] = {
+static constexpr const uint8 byte_9822F4[] = {
     0,      // SHOP_ITEM_BALLOON
     0,      // SHOP_ITEM_TOY
     0,      // SHOP_ITEM_MAP
@@ -858,7 +858,7 @@ static const uint8 byte_9822F4[] = {
 };
 
 /** rct2: 009823AC */
-static const uint8 crowded_thoughts[] = {
+static constexpr const uint8 crowded_thoughts[] = {
     PEEP_THOUGHT_TYPE_LOST,
     PEEP_THOUGHT_TYPE_TIRED,
     PEEP_THOUGHT_TYPE_BAD_LITTER,
@@ -878,7 +878,7 @@ static const uint8 crowded_thoughts[] = {
 };
 
 /** rct2: 0x00982326 */
-static const uint8 peep_item_containers[] = {
+static constexpr const uint8 peep_item_containers[] = {
     0xFF,                           // PEEP_ITEM_BALLOON
     0xFF,                           // PEEP_ITEM_TOY
     0xFF,                           // PEEP_ITEM_MAP
@@ -910,7 +910,7 @@ static const uint8 peep_item_containers[] = {
 };
 
 /** rct2: 0x00982342 */
-static const uint8 peep_extra_item_containers[] = {
+static constexpr const uint8 peep_extra_item_containers[] = {
     0xFF,                           // PEEP_ITEM_PHOTO2
     0xFF,                           // PEEP_ITEM_PHOTO3
     0xFF,                           // PEEP_ITEM_PHOTO4
@@ -1646,7 +1646,7 @@ static void peep_check_cant_find_ride(rct_peep * peep)
  *
  *  rct2: 0x69C2D0
  * Check if cant find exit.
- */ 
+ */
 static void peep_check_cant_find_exit(rct_peep * peep)
 {
     if (!(peep->peep_flags & PEEP_FLAGS_LEAVING_PARK))
@@ -1664,7 +1664,7 @@ static void peep_check_cant_find_exit(rct_peep * peep)
 }
 
 /** rct2: 0x00981D7C, 0x00981D7E */
-static const LocationXY16 word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
+static constexpr const LocationXY16 word_981D7C[4] = { { -2, 0 }, { 0, 2 }, { 2, 0 }, { 0, -2 } };
 
 /**
  *
@@ -2404,7 +2404,7 @@ static void peep_try_get_up_from_sitting(rct_peep * peep)
 }
 
 /** rct2: 0x00981F2C, 0x00981F2E */
-static const LocationXY16 _981F2C[] = {
+static constexpr const LocationXY16 _981F2C[] = {
     { 7, 12 }, { 12, 25 }, { 25, 20 }, { 20, 7 }, { 7, 20 }, { 20, 25 }, { 25, 12 }, { 12, 7 },
 };
 
@@ -2852,7 +2852,7 @@ static void peep_update_ride_sub_state_0(rct_peep * peep)
 }
 
 /** rct2: 0x00981FD4, 0x00981FD6 */
-static const LocationXY16 _981FD4[] = {
+static constexpr const LocationXY16 _981FD4[] = {
     { 8, 8 },
     { 8, 24 },
     { 24, 24 },
@@ -3989,7 +3989,7 @@ static void peep_update_ride_sub_state_14(rct_peep * peep)
 }
 
 /** rct2: 0x00981F0C, 0x00981F0E */
-static const LocationXY16 _981F0C[] = {
+static constexpr const LocationXY16 _981F0C[] = {
     { 25, 56 },
     { 56, 7 },
     { 7, -24 },
@@ -3997,7 +3997,7 @@ static const LocationXY16 _981F0C[] = {
 };
 
 /** rct2: 0x00981F1C, 0x00981F1E */
-static const LocationXY16 _981F1C[] = {
+static constexpr const LocationXY16 _981F1C[] = {
     { 8, 56 },
     { 56, 24 },
     { 24, -24 },
@@ -4173,7 +4173,7 @@ static void peep_update_ride_sub_state_16(rct_peep * peep)
 }
 
 /** rct2: 0x00981FE4 */
-static const uint8 _981FE4[][4] = {
+static constexpr const uint8 _981FE4[][4] = {
     { 15, 7, 15, 7 },
     { 11, 3, 11, 3 },
     { 7, 15, 7, 15 },
@@ -4181,7 +4181,7 @@ static const uint8 _981FE4[][4] = {
 };
 
 /** rct2: 0x00981FF4 */
-static const uint8 _981FF4[][4] = {
+static constexpr const uint8 _981FF4[][4] = {
     { 1, 2, 14, 0 },
     { 4, 5, 6, 2 },
     { 6, 8, 9, 10 },
@@ -4606,7 +4606,7 @@ static void peep_update_ride(rct_peep * peep)
     }
 }
 
-static const uint32 loc_992A18[9] = {
+static constexpr const uint32 loc_992A18[9] = {
     (1 << 14) | (1 << 13) | (1 << 12) | (1 << 10) | (1 << 9) | (1 << 8) | (1 << 7),
     (1 << 14) | (1 << 13) | (1 << 12) | (1 << 2) | (1 << 1),
     (1 << 14) | (1 << 13) | (1 << 12) | (1 << 4) | (1 << 1),
@@ -4874,7 +4874,7 @@ static bool peep_update_fixing_sub_state_6(bool firstRun, rct_peep * peep, Ride 
 }
 
 /** rct2: 0x00992A3C */
-static const LocationXY16 _992A3C[] = {
+static constexpr const LocationXY16 _992A3C[] = {
     { -12, 0 },
     { 0, 12 },
     { 12, 0 },
@@ -5427,7 +5427,7 @@ static void peep_update_queuing(rct_peep * peep)
 }
 
 /** rct2: 0x009929C8 */
-static const LocationXY16 _9929C8[] = {
+static constexpr const LocationXY16 _9929C8[] = {
     { 28, 28 }, { 28, 4 }, { 20, 4 }, { 20, 28 }, { 12, 28 }, { 12, 4 }, { 4, 4 }, { 4, 28 },
 };
 
@@ -5985,7 +5985,7 @@ static sint32 peep_update_walking_find_bench(rct_peep * peep)
 }
 
 /** rct2: 0x00992A4C */
-static const LocationXY16 _992A4C[] = {
+static constexpr const LocationXY16 _992A4C[] = {
     { 11, 16 },
     { 16, 21 },
     { 21, 16 },
@@ -6293,7 +6293,7 @@ static void peep_update_buying(rct_peep * peep)
 }
 
 /** rct2: 0x0097EFCC */
-static const uint8 item_standard_litter[32] = {
+static constexpr const uint8 item_standard_litter[32] = {
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_BALLOON
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_TOY
     LITTER_TYPE_RUBBISH,          // PEEP_ITEM_MAP
@@ -6325,7 +6325,7 @@ static const uint8 item_standard_litter[32] = {
 };
 
 /** rct2: 0x0097EFE8 */
-static const uint8 item_extra_litter[32] = {
+static constexpr const uint8 item_extra_litter[32] = {
     LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO2
     LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO3
     LITTER_TYPE_RUBBISH,            // PEEP_ITEM_PHOTO4
@@ -6755,7 +6755,7 @@ static void peep_update_answering(rct_peep * peep)
 }
 
 /** rct2: 0x00992A5C */
-static const LocationXY16 _992A5C[] = {
+static constexpr const LocationXY16 _992A5C[] = {
     { 3, 16 }, { 16, 29 }, { 29, 16 }, { 16, 3 }, { 3, 29 }, { 29, 29 }, { 29, 3 }, { 3, 3 },
 };
 
@@ -7024,7 +7024,7 @@ static void peep_update_patrolling(rct_peep * peep)
 
 // clang-format off
 /** rct2: 0x00981F4C, 0x00981F4E */
-static const LocationXY16 _981F4C[] = {
+static constexpr const LocationXY16 _981F4C[] = {
     {  7,  5 },
     {  5, 25 },
     { 25,  5 },
@@ -7129,7 +7129,7 @@ static void peep_update_walking(rct_peep * peep)
         {
             if ((0xFFFF & peep_rand()) <= 4096)
             {
-                static const uint8 litter_types[] = {
+                static constexpr const uint8 litter_types[] = {
                     LITTER_TYPE_EMPTY_CAN,
                     LITTER_TYPE_RUBBISH,
                     LITTER_TYPE_EMPTY_BURGER_BOX,
@@ -7833,7 +7833,7 @@ void peep_update_days_in_queue()
 
 // clang-format off
 /** rct2: 0x009823A0 */
-static const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
+static constexpr const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
     PEEP_NAUSEA_TOLERANCE_NONE,
     PEEP_NAUSEA_TOLERANCE_LOW, PEEP_NAUSEA_TOLERANCE_LOW,
     PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE, PEEP_NAUSEA_TOLERANCE_AVERAGE,
@@ -7841,7 +7841,7 @@ static const enum PEEP_NAUSEA_TOLERANCE nausea_tolerance_distribution[] = {
 };
 
 /** rct2: 0x009823BC */
-static const uint8 trouser_colours[] = {
+static constexpr const uint8 trouser_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -7870,7 +7870,7 @@ static const uint8 trouser_colours[] = {
 };
 
 /** rct2: 0x009823D5 */
-static const uint8 tshirt_colours[] = {
+static constexpr const uint8 tshirt_colours[] = {
     COLOUR_BLACK,
     COLOUR_GREY,
     COLOUR_LIGHT_BROWN,
@@ -8260,7 +8260,7 @@ void peep_thought_set_format_args(rct_peep_thought * thought)
 }
 
 /** rct2: 0x00982004 */
-static const bool peep_allow_pick_up[] = {
+static constexpr const bool peep_allow_pick_up[] = {
     true,  // PEEP_STATE_FALLING
     false, // PEEP_STATE_1
     false, // PEEP_STATE_QUEUING_FRONT
@@ -8314,7 +8314,7 @@ enum
     PEEP_FACE_OFFSET_VERY_VERY_HAPPY,
 };
 
-static const sint32 face_sprite_small[] = {
+static constexpr const sint32 face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_ANGRY,
     SPR_PEEP_SMALL_FACE_VERY_VERY_SICK,
     SPR_PEEP_SMALL_FACE_VERY_SICK,
@@ -8330,7 +8330,7 @@ static const sint32 face_sprite_small[] = {
     SPR_PEEP_SMALL_FACE_VERY_VERY_HAPPY,
 };
 
-static const sint32 face_sprite_large[] = {
+static constexpr const sint32 face_sprite_large[] = {
     SPR_PEEP_LARGE_FACE_ANGRY_0,
     SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0,
     SPR_PEEP_LARGE_FACE_VERY_SICK_0,

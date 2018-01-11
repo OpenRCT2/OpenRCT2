@@ -1971,7 +1971,7 @@ static uint8 maze_element_get_segment_bit(uint16 x, uint16 y)
 }
 
 /** rct2: 0x00993CE9 */
-static const uint8 byte_993CE9[] = {
+static constexpr const uint8 byte_993CE9[] = {
     0xFF, 0xE0, 0xFF,
     14, 0, 1, 2,
     6, 2, 4, 5,
@@ -1980,12 +1980,12 @@ static const uint8 byte_993CE9[] = {
 };
 
 /** rct2: 0x00993CFC */
-static const uint8 byte_993CFC[] = {
+static constexpr const uint8 byte_993CFC[] = {
     5, 12, 0xFF, 0xFF, 9, 0, 0xFF, 0xFF, 13, 4, 0xFF, 0xFF, 1, 8, 0xFF, 0xFF
 };
 
 /** rct2: 0x00993D0C */
-static const uint8 byte_993D0C[] = {
+static constexpr const uint8 byte_993D0C[] = {
     3, 0, 0xFF, 0xFF, 0, 1, 0xFF, 0xFF, 1, 2, 0xFF, 0xFF, 2, 3, 0xFF, 0xFF
 };
 

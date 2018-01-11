@@ -173,7 +173,7 @@ static void submarine_ride_paint_track_left_quarter_turn_3_tiles(paint_session *
     paint_util_set_general_support_height(session, height + 16, 0x20);
 }
 
-static const uint8 submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
+static constexpr const uint8 submarine_ride_right_quarter_turn_3_tiles_to_left_turn_map[] = { 3, 1, 2, 0 };
 static void submarine_ride_paint_track_right_quarter_turn_3_tiles(paint_session * session, uint8 rideIndex, uint8 trackSequence,
                                                                   uint8 direction, sint32 height, rct_tile_element * tileElement)
 {

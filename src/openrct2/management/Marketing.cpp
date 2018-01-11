@@ -36,7 +36,7 @@ const money16 AdvertisingCampaignPricePerWeek[] =
     MONEY(200, 00)   // RIDE
 };
 
-static const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
+static constexpr const sint32 AdvertisingCampaignGuestGenerationProbabilities[] = {400, 300, 200, 200, 250, 200};
 
 uint8 gMarketingCampaignDaysLeft[20];
 uint8 gMarketingCampaignRideIndex[22];

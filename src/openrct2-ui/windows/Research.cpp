@@ -210,7 +210,7 @@ static uint32 window_research_page_enabled_widgets[] = {
 
 const sint32 window_research_tab_animation_loops[] = { 16, 16 };
 
-static const rct_string_id ResearchCategoryNames[] = {
+static constexpr const rct_string_id ResearchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_TRANSPORT,
     STR_RESEARCH_CATEGORY_GENTLE,
     STR_RESEARCH_CATEGORY_ROLLERCOASTER,
@@ -220,7 +220,7 @@ static const rct_string_id ResearchCategoryNames[] = {
     STR_RESEARCH_CATEGORY_SCENERYSET,
 };
 
-static const rct_string_id ResearchStageNames[] = {
+static constexpr const rct_string_id ResearchStageNames[] = {
     STR_RESEARCH_STAGE_INITIAL_RESEARCH,
     STR_RESEARCH_STAGE_DESIGNING,
     STR_RESEARCH_STAGE_COMPLETING_DESIGN,
