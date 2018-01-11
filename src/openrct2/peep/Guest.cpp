@@ -5248,6 +5248,12 @@ void rct_peep::UpdateWalking()
         }
     }
 
+    rct_tile_element * path_element = map_get_path_element_at(destination_x / 32, destination_y / 32, next_z);
+    if (path_element && path_element->flags & TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE)
+    {
+        return;
+    }
+
     uint8 pathingResult;
     PerformNextAction(pathingResult);
     if (!(pathingResult & PATHING_DESTINATION_REACHED))
