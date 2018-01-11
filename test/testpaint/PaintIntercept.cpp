@@ -15,7 +15,7 @@
 #pragma endregion
 
 
-#include "hook.h"
+#include "Hook.h"
 #include "PaintIntercept.hpp"
 #include "FunctionCall.hpp"
 #include "TestPaint.hpp"

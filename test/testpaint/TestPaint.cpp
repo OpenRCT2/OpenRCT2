@@ -17,7 +17,7 @@
 #include <algorithm>
 #include <vector>
 
-#include "hook.h"
+#include "Hook.h"
 #include "GeneralSupportHeightCall.hpp"
 #include "Printer.hpp"
 #include "SegmentSupportHeightCall.hpp"

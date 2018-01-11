@@ -24,7 +24,7 @@
     #include <sys/mman.h>
 #endif // _WIN32
 
-#include "hook.h"
+#include "Hook.h"
 
 void* _hookTableAddress = 0;
 sint32 _hookTableOffset = 0;
