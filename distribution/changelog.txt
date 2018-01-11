@@ -1,5 +1,6 @@
 0.1.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#3505] Allow up to 1024 items per scenery tab.
 - Feature: [#3510] Auto-append extension if none is specified.
 - Feature: [#3994] Show bottom toolbar with map tooltip (theme option).
 - Feature: [#4184] Add command and cheat to alter the date.
@@ -47,6 +48,7 @@
 - Fix: [#4991] Inverted helices can be built on the Lay Down RC, but are not drawn.
 - Fix: [#5190] Cannot build Wild Mouse - Flying Dutchman Gold Mine.
 - Fix: [#5224] Multiplayer window is not closed when server shuts down.
+- Fix: [#5228] Top toolbar disappears when opening SC4 file.
 - Fix: [#5398] Attempting to place Mini Maze.TD4 results in weird behaviour and crashes.
 - Fix: [#5417] Hacked Crooked House tracked rides do not dispatch vehicles.
 - Fix: [#5445] Patrol area not imported from RCT1 saves and scenarios.
