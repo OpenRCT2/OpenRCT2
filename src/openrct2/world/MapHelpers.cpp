@@ -385,10 +385,10 @@ sint32 tile_smooth(sint32 x, sint32 y)
     }
 
     // Count number from the three tiles that is currently higher
-    sint8 thresholdW = Math::Clamp(neighbourHeightOffset.SW, 0, 1) + Math::Clamp(neighbourHeightOffset.W, 0, 1) + Math::Clamp(neighbourHeightOffset.NW, 0, 1);
-    sint8 thresholdN = Math::Clamp(neighbourHeightOffset.NW, 0, 1) + Math::Clamp(neighbourHeightOffset.N, 0, 1) + Math::Clamp(neighbourHeightOffset.NE, 0, 1);
-    sint8 thresholdE = Math::Clamp(neighbourHeightOffset.NE, 0, 1) + Math::Clamp(neighbourHeightOffset.E, 0, 1) + Math::Clamp(neighbourHeightOffset.SE, 0, 1);
-    sint8 thresholdS = Math::Clamp(neighbourHeightOffset.SE, 0, 1) + Math::Clamp(neighbourHeightOffset.S, 0, 1) + Math::Clamp(neighbourHeightOffset.SW, 0, 1);
+    sint8 thresholdW = Math::Clamp(0, neighbourHeightOffset.SW, 1) + Math::Clamp(0, neighbourHeightOffset.W, 1) + Math::Clamp(0, neighbourHeightOffset.NW, 1);
+    sint8 thresholdN = Math::Clamp(0, neighbourHeightOffset.NW, 1) + Math::Clamp(0, neighbourHeightOffset.N, 1) + Math::Clamp(0, neighbourHeightOffset.NE, 1);
+    sint8 thresholdE = Math::Clamp(0, neighbourHeightOffset.NE, 1) + Math::Clamp(0, neighbourHeightOffset.E, 1) + Math::Clamp(0, neighbourHeightOffset.SE, 1);
+    sint8 thresholdS = Math::Clamp(0, neighbourHeightOffset.SE, 1) + Math::Clamp(0, neighbourHeightOffset.S, 1) + Math::Clamp(0, neighbourHeightOffset.SW, 1);
 
     uint8 slope = TILE_ELEMENT_SLOPE_FLAT;
     slope |= (thresholdW >= 1) ? SLOPE_W_THRESHOLD_FLAGS : 0;
